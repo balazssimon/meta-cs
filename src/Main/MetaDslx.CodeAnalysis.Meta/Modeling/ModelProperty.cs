@@ -371,6 +371,7 @@ namespace MetaDslx.Modeling
                         }
                         if ((descriptor == this.declaringDescriptor || this.declaringDescriptor.AllBaseDescriptors.Contains(descriptor)))
                         {
+                            // TODO: MetaDslx
                             if (/*!this.IsCollection ||*/ !this.IsUnique) throw new InvalidOperationException("Error subsetting property: " + this.FullDeclaredName + "->" + prop.FullDeclaredName + ". The subsetting property must be a collection of unique values.");
                             if (/*!prop.IsCollection ||*/ !prop.IsUnique) throw new InvalidOperationException("Error subsetting property: " + this.FullDeclaredName + "->" + prop.FullDeclaredName + ". The subsetted property must be a collection of unique values.");
                             this.RegisterSubsettedProperty(prop);
@@ -391,11 +392,12 @@ namespace MetaDslx.Modeling
                         }
                         if ((descriptor == this.declaringDescriptor || this.declaringDescriptor.AllBaseDescriptors != null && this.declaringDescriptor.AllBaseDescriptors.Contains(descriptor)))
                         {
-                            if (this.IsCollection ^ prop.IsCollection) throw new InvalidOperationException("Error redefining property: " + this.FullDeclaredName + "->" + prop.FullDeclaredName + ". The redefining and the redefined property must be of the same kind: either a single value or a collection.");
+                            // TODO: MetaDslx
+                            /*if (this.IsCollection ^ prop.IsCollection) throw new InvalidOperationException("Error redefining property: " + this.FullDeclaredName + "->" + prop.FullDeclaredName + ". The redefining and the redefined property must be of the same kind: either a single value or a collection.");
                             if (this.IsCollection && prop.IsCollection)
                             {
                                 if (this.IsUnique ^ prop.IsUnique) throw new InvalidOperationException("Error redefining property: " + this.FullDeclaredName + "->" + prop.FullDeclaredName + ". The redefining and the redefined property must have the same uniqueness.");
-                            }
+                            }*/
                             this.RegisterRedefinedProperty(prop);
                         }
                         else

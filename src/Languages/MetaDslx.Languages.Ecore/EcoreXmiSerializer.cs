@@ -22,6 +22,7 @@ namespace MetaDslx.Languages.Ecore
         {
             this.RequireXmiRoot = false;
             this.XmiNamespaces.Add("http://www.omg.org/XMI");
+            this.NamespaceToMetamodelMap.Add(EcoreInstance.MMetaModel.Uri, EcoreInstance.MMetaModel);
             this.UriToModelMap.Add(EcoreInstance.MMetaModel.Uri, EcoreInstance.MModel);
         }
 
@@ -30,6 +31,7 @@ namespace MetaDslx.Languages.Ecore
         {
             this.RequireXmiRoot = false;
             this.XmiNamespaces.Add("http://www.omg.org/XMI");
+            this.NamespaceToMetamodelMap.Add(EcoreInstance.MMetaModel.Uri, EcoreInstance.MMetaModel);
             this.UriToModelMap.Add(EcoreInstance.MMetaModel.Uri, EcoreInstance.MModel);
         }
     }
@@ -59,7 +61,7 @@ namespace MetaDslx.Languages.Ecore
         public ImmutableModel ReadModel(string xmiCode, EcoreXmiReadOptions options = null)
         {
             if (xmiCode == null) throw new ArgumentNullException(nameof(xmiCode));
-            return _xmiSerializer.ReadModel(xmiCode, options ?? new EcoreXmiReadOptions(EcoreInstance.MMetaModel));
+            return _xmiSerializer.ReadModel(xmiCode, options ?? new EcoreXmiReadOptions());
         }
 
         public ImmutableModel ReadModelFromFile(string xmiFilePath, IMetaModel metaModel)
@@ -72,7 +74,7 @@ namespace MetaDslx.Languages.Ecore
         public ImmutableModel ReadModelFromFile(string xmiFilePath, EcoreXmiReadOptions options = null)
         {
             if (xmiFilePath == null) throw new ArgumentNullException(nameof(xmiFilePath));
-            return _xmiSerializer.ReadModelFromFile(xmiFilePath, options ?? new EcoreXmiReadOptions(EcoreInstance.MMetaModel));
+            return _xmiSerializer.ReadModelFromFile(xmiFilePath, options ?? new EcoreXmiReadOptions());
         }
 
         public ImmutableModelGroup ReadModelGroup(string xmiCode, IMetaModel metaModel)
@@ -105,7 +107,7 @@ namespace MetaDslx.Languages.Ecore
             _xmiSerializer.WriteModelToFile(xmiFilePath, model, options ?? new EcoreXmiWriteOptions());
         }
 
-        public IReadOnlyDictionary<string, string> WriteModelGroup(IModelGroup modelGroup, EcoreXmiWriteOptions options)
+        public IReadOnlyDictionary<string, string> WriteModelGroup(IModelGroup modelGroup, EcoreXmiWriteOptions options = null)
         {
             return _xmiSerializer.WriteModelGroup(modelGroup, options);
         }

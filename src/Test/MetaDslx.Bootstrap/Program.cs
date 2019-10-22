@@ -12,6 +12,7 @@ using MetaDslx.Languages.Meta.Model;
 using MetaDslx.Languages.Meta.Symbols;
 using MetaDslx.Languages.Mof.Generator;
 using MetaDslx.Languages.Mof.Model;
+using MetaDslx.Languages.Uml.Generator;
 using MetaDslx.Languages.Uml.Model;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
@@ -245,7 +246,9 @@ namespace MetaDslx.Bootstrap
             //*/
             //MetaXmiTest();
             //XmiTest();
-            EcoreXmiTest();
+            //MofXmiTest();
+            UmlXmiTest();
+            //EcoreXmiTest();
             //MetaDslxXmiTest();
             //*/
         }
@@ -392,7 +395,7 @@ namespace MetaDslx.Bootstrap
         //*/
 
         //*/
-        public static void XmiTest()
+        public static void MofXmiTest()
         {
             MofDescriptor.Initialize();
             UmlDescriptor.Initialize();
@@ -402,21 +405,18 @@ namespace MetaDslx.Bootstrap
 
             try
             {
-                var xmi = new XmiSerializer();
-                var readOptions = new XmiReadOptions();
-                readOptions.NamespaceToMetamodelMap.Add(MofDescriptor.MUri, MofInstance.MMetaModel);
-                readOptions.NamespaceToMetamodelMap.Add(UmlDescriptor.MUri, MofInstance.MMetaModel);
-                var modelGroup = xmi.ReadModelGroupFromFile(fileName, readOptions);
+                var xmi = new MofXmiSerializer();
+                var modelGroup = xmi.ReadModelGroupFromFile(fileName);
                 Console.WriteLine(modelGroup);
-                /*var writeOptions = new XmiWriteOptions();
+                var writeOptions = new MofXmiWriteOptions();
                 int i = 0;
                 foreach (var model in modelGroup.Models)
                 {
                     writeOptions.ModelToFileMap.Add(model, "../../../file" + i + ".xmi");
                     ++i;
                 }
-                xmi.WriteModelGroupToFile(modelGroup, writeOptions);*/
-                var xmiCode = xmi.WriteModelGroup(modelGroup);
+                xmi.WriteModelGroupToFile(modelGroup, writeOptions);
+                //var xmiCode = xmi.WriteModelGroup(modelGroup);
                 MofModelToMetaModelGenerator mgen = new MofModelToMetaModelGenerator(modelGroup.Objects);
                 string metaCode = mgen.Generate("MetaDslx.Languages.Uml.Model", "Uml", "http://www.omg.org/spec/UML");
                 File.WriteAllText("../../../Uml.txt", metaCode);
@@ -427,6 +427,43 @@ namespace MetaDslx.Bootstrap
             }
         }
         //*/
+
+        //*/
+        public static void UmlXmiTest()
+        {
+            MofDescriptor.Initialize();
+            UmlDescriptor.Initialize();
+            EcoreDescriptor.Initialize();
+
+            string fileName = "../../../Uml.xmi";
+
+            try
+            {
+                var xmi = new UmlXmiSerializer();
+                var readOptions = new UmlXmiReadOptions();
+                readOptions.IgnoredNamespaces.Add("http://www.omg.org/spec/MOF/20131001");
+                var modelGroup = xmi.ReadModelGroupFromFile(fileName, readOptions);
+                Console.WriteLine(modelGroup);
+                var writeOptions = new UmlXmiWriteOptions();
+                int i = 0;
+                foreach (var model in modelGroup.Models)
+                {
+                    writeOptions.ModelToFileMap.Add(model, "../../../file" + i + ".xmi");
+                    ++i;
+                }
+                xmi.WriteModelGroupToFile(modelGroup, writeOptions);
+                //var xmiCode = xmi.WriteModelGroup(modelGroup);
+                UmlModelToMetaModelGenerator mgen = new UmlModelToMetaModelGenerator(modelGroup.Objects);
+                string metaCode = mgen.Generate("MetaDslx.Languages.Uml.Model", "Uml", "http://www.omg.org/spec/UML");
+                File.WriteAllText("../../../Uml.txt", metaCode);
+            }
+            catch (ModelException mex)
+            {
+                Console.WriteLine(mex.Diagnostic.ToString());
+            }
+        }
+        //*/
+
 
         //*/
         public static void EcoreXmiTest()
@@ -454,7 +491,7 @@ namespace MetaDslx.Bootstrap
         }
         //*/
 
-        /*/
+        //*/
         public static void MetaDslxXmiTest()
         {
             MofDescriptor.Initialize();
@@ -465,10 +502,10 @@ namespace MetaDslx.Bootstrap
 
             try
             {
-                var xmi = new EcoreXmiSerializer();
-                var model = xmi.ReadModelFromFile(fileName, new MetaDslxXmiReadOptions(EcoreInstance.MMetaModel));
+                var xmi = new MetaXmiSerializer();
+                var model = xmi.ReadModelFromFile(fileName);
                 Console.WriteLine(model);
-                xmi.WriteModelToFile("../../../RailDsl2.ecore", model, new MetaDslxXmiWriteOptions());
+                xmi.WriteModelToFile("../../../RailDsl2.ecore", model);
                 //MofModelToMetaModelGenerator mgen = new MofModelToMetaModelGenerator(model.Objects);
                 //string metaCode = mgen.Generate("MetaDslx.Languages.Uml.Model", "Uml", "http://www.omg.org/spec/UML/20161101");
                 //File.WriteAllText("../../../Uml.txt", metaCode);

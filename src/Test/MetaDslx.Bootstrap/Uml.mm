@@ -3,25 +3,26 @@
     metamodel Uml(Uri="http://www.omg.org/spec/UML"); 
 
     /// <summary>
-    /// Boolean is used for logical expressions, consisting of the predefined values true and false.
+	/// Boolean is used for logical expressions, consisting of the predefined values true and false.
     /// </summary>
-    const PrimitiveType Boolean;
+	const PrimitiveType Boolean;
     /// <summary>
-    /// Integer is a primitive type representing integer values.
+	/// Integer is a primitive type representing integer values.
     /// </summary>
-    const PrimitiveType Integer;
+	const PrimitiveType Integer;
     /// <summary>
-    /// Real is a primitive type representing the mathematical concept of real.
+	/// Real is a primitive type representing the mathematical concept of real.
     /// </summary>
-    const PrimitiveType Real;
+	const PrimitiveType Real;
     /// <summary>
-    /// String is a sequence of characters in some suitable character set used to display information about the model. Character sets may include non-Roman alphabets and characters.
+	/// String is a sequence of characters in some suitable character set used to display information 
+	/// about the model. Character sets may include non-Roman alphabets and characters.
     /// </summary>
-    const PrimitiveType String;
+	const PrimitiveType String;
     /// <summary>
-    /// UnlimitedNatural is a primitive type representing unlimited natural values.
+	/// UnlimitedNatural is a primitive type representing unlimited natural values.
     /// </summary>
-    const PrimitiveType UnlimitedNatural;
+	const PrimitiveType UnlimitedNatural;
 
     /// <summary>
     /// ObjectNodeOrderingKind is an enumeration indicating queuing order for offering the tokens held by an ObjectNode.
@@ -340,11 +341,11 @@
     	/// <summary>
     	/// ActivityEdges expressing flow between the nodes of the Activity.
     	/// </summary>
-    	containment set<ActivityEdge> Edge subsets Element.OwnedElement;
+    	set<ActivityEdge> Edge subsets Element.OwnedElement;
     	/// <summary>
     	/// Top-level ActivityGroups in the Activity.
     	/// </summary>
-    	containment set<ActivityGroup> Group subsets Element.OwnedElement;
+    	set<ActivityGroup> Group subsets Element.OwnedElement;
     	/// <summary>
     	/// If true, this Activity must not make any changes to objects. The default is false (an Activity may make nonlocal changes). (This is an assertion, not an executable property. It may be used by an execution engine to optimize model execution. If the assertion is violated by the Activity, then the model is ill-formed.) 
     	/// </summary>
@@ -356,7 +357,7 @@
     	/// <summary>
     	/// ActivityNodes coordinated by the Activity.
     	/// </summary>
-    	containment set<ActivityNode> Node subsets Element.OwnedElement;
+    	set<ActivityNode> Node subsets Element.OwnedElement;
     	/// <summary>
     	/// Top-level ActivityPartitions in the Activity.
     	/// </summary>
@@ -364,11 +365,11 @@
     	/// <summary>
     	/// Top-level StructuredActivityNodes in the Activity.
     	/// </summary>
-    	containment set<StructuredActivityNode> StructuredNode subsets Activity.Group, Activity.Node;
+    	set<StructuredActivityNode> StructuredNode subsets Activity.Group, Activity.Node;
     	/// <summary>
     	/// Top-level Variables defined by the Activity.
     	/// </summary>
-    	containment set<Variable> Variable subsets Namespace.OwnedMember;
+    	set<Variable> Variable subsets Namespace.OwnedMember;
     }
 
     /// <summary>
@@ -383,7 +384,7 @@
     	/// <summary>
     	/// A ValueSpecification that is evaluated to determine if a token can traverse the ActivityEdge. If an ActivityEdge has no guard, then there is no restriction on tokens traversing the edge.
     	/// </summary>
-    	containment ValueSpecification Guard subsets Element.OwnedElement;
+    	ValueSpecification Guard subsets Element.OwnedElement;
     	/// <summary>
     	/// ActivityGroups containing the ActivityEdge.
     	/// </summary>
@@ -415,7 +416,7 @@
     	/// <summary>
     	/// The minimum number of tokens that must traverse the ActivityEdge at the same time. If no weight is specified, this is equivalent to specifying a constant value of 1.
     	/// </summary>
-    	containment ValueSpecification Weight subsets Element.OwnedElement;
+    	ValueSpecification Weight subsets Element.OwnedElement;
     	// spec:
     	//     result = (redefiningElement.oclIsKindOf(ActivityEdge))
     	readonly bool IsConsistentWith(RedefinableElement redefiningElement);
@@ -552,7 +553,7 @@
     	/// <summary>
     	/// Other ActivityPartitions immediately contained in this ActivityPartition (as its subgroups).
     	/// </summary>
-    	containment set<ActivityPartition> Subpartition subsets ActivityGroup.Subgroup;
+    	set<ActivityPartition> Subpartition subsets ActivityGroup.Subgroup;
     	/// <summary>
     	/// Other ActivityPartitions immediately containing this ActivityPartition (as its superGroups).
     	/// </summary>
@@ -633,7 +634,7 @@
     	/// <summary>
     	/// A set of ExceptionHandlers that are examined if an exception propagates out of the ExceptionNode.
     	/// </summary>
-    	containment set<ExceptionHandler> Handler subsets Element.OwnedElement;
+    	set<ExceptionHandler> Handler subsets Element.OwnedElement;
     }
 
     /// <summary>
@@ -691,7 +692,7 @@
     	/// <summary>
     	/// A ValueSpecification giving the condition under which the JoinNode will offer a token on its outgoing ActivityEdge. If no joinSpec is specified, then the JoinNode will offer an outgoing token if tokens are offered on all of its incoming ActivityEdges (an &quot;and&quot; condition).
     	/// </summary>
-    	containment ValueSpecification JoinSpec subsets Element.OwnedElement;
+    	ValueSpecification JoinSpec subsets Element.OwnedElement;
     }
 
     /// <summary>
@@ -748,7 +749,7 @@
     	/// <summary>
     	/// The maximum number of tokens that may be held by this ObjectNode. Tokens cannot flow into the ObjectNode if the upperBound is reached. If no upperBound is specified, then there is no limit on how many tokens the ObjectNode can hold.
     	/// </summary>
-    	containment ValueSpecification UpperBound subsets Element.OwnedElement;
+    	ValueSpecification UpperBound subsets Element.OwnedElement;
     }
 
     /// <summary>
@@ -782,7 +783,7 @@
     	/// <summary>
     	/// A ValueSpecification that evaluates to the value of the Duration.
     	/// </summary>
-    	containment ValueSpecification Expr subsets Element.OwnedElement;
+    	ValueSpecification Expr subsets Element.OwnedElement;
     	/// <summary>
     	/// Refers to the Observations that are involved in the computation of the Duration value
     	/// </summary>
@@ -801,7 +802,7 @@
     	/// <summary>
     	/// The DurationInterval constraining the duration.
     	/// </summary>
-    	containment DurationInterval Specification redefines IntervalConstraint.Specification;
+    	DurationInterval Specification redefines IntervalConstraint.Specification;
     }
 
     /// <summary>
@@ -842,7 +843,7 @@
     	/// <summary>
     	/// Specifies a sequence of operand ValueSpecifications.
     	/// </summary>
-    	containment list<ValueSpecification> Operand subsets Element.OwnedElement;
+    	list<ValueSpecification> Operand subsets Element.OwnedElement;
     	/// <summary>
     	/// The symbol associated with this node in the expression tree.
     	/// </summary>
@@ -872,7 +873,7 @@
     	/// <summary>
     	/// The Interval that specifies the condition of the IntervalConstraint.
     	/// </summary>
-    	containment Interval Specification redefines Constraint.Specification;
+    	Interval Specification redefines Constraint.Specification;
     }
 
     /// <summary>
@@ -1094,7 +1095,7 @@
     	/// <summary>
     	/// The StringExpressions that constitute this StringExpression.
     	/// </summary>
-    	containment list<StringExpression> SubExpression subsets Element.OwnedElement;
+    	list<StringExpression> SubExpression subsets Element.OwnedElement;
     	/// <summary>
     	/// The query stringValue() returns the String resulting from concatenating, in order, all the component String values of all the operands or subExpressions that are part of the StringExpression.
     	/// </summary>
@@ -1118,7 +1119,7 @@
     	/// <summary>
     	/// TheTimeInterval constraining the duration.
     	/// </summary>
-    	containment TimeInterval Specification redefines IntervalConstraint.Specification;
+    	TimeInterval Specification redefines IntervalConstraint.Specification;
     }
 
     /// <summary>
@@ -1129,7 +1130,7 @@
     	/// <summary>
     	/// A ValueSpecification that evaluates to the value of the TimeExpression.
     	/// </summary>
-    	containment ValueSpecification Expr subsets Element.OwnedElement;
+    	ValueSpecification Expr subsets Element.OwnedElement;
     	/// <summary>
     	/// Refers to the Observations that are involved in the computation of the TimeExpression value.
     	/// </summary>
@@ -1237,7 +1238,7 @@
     	/// <summary>
     	/// References the condition that must hold when the first ExtensionPoint is reached for the extension to take place. If no constraint is associated with the Extend relationship, the extension is unconditional.
     	/// </summary>
-    	containment Constraint Condition subsets Element.OwnedElement;
+    	Constraint Condition subsets Element.OwnedElement;
     	/// <summary>
     	/// The UseCase that is being extended.
     	/// </summary>
@@ -1286,15 +1287,15 @@
     	/// <summary>
     	/// The Extend relationships owned by this UseCase.
     	/// </summary>
-    	containment set<Extend> Extend subsets Namespace.OwnedMember;
+    	set<Extend> Extend subsets Namespace.OwnedMember;
     	/// <summary>
     	/// The ExtensionPoints owned by this UseCase.
     	/// </summary>
-    	containment set<ExtensionPoint> ExtensionPoint subsets Namespace.OwnedMember;
+    	set<ExtensionPoint> ExtensionPoint subsets Namespace.OwnedMember;
     	/// <summary>
     	/// The Include relationships owned by this UseCase.
     	/// </summary>
-    	containment set<Include> Include subsets Namespace.OwnedMember;
+    	set<Include> Include subsets Namespace.OwnedMember;
     	/// <summary>
     	/// The subjects to which this UseCase applies. Each subject or its parts realize all the UseCases that apply to it.
     	/// </summary>
@@ -1333,7 +1334,7 @@
     	/// <summary>
     	/// The ends that are owned by the Association itself.
     	/// </summary>
-    	containment list<Property> OwnedEnd subsets Association.MemberEnd, Classifier.Feature, Namespace.OwnedMember;
+    	list<Property> OwnedEnd subsets Association.MemberEnd, Classifier.Feature, Namespace.OwnedMember;
     }
 
     /// <summary>
@@ -1342,7 +1343,7 @@
     class AssociationClass : Class, Association
     {
     }
-
+	
     /// <summary>
     /// A Class classifies a set of objects and specifies the features that characterize the structure and behavior of those objects.  A Class may have an internal structure and Ports.
     /// </summary>
@@ -1367,19 +1368,19 @@
     	/// <summary>
     	/// The Classifiers owned by the Class that are not ownedBehaviors.
     	/// </summary>
-    	containment list<Classifier> NestedClassifier subsets Namespace.OwnedMember;
+    	list<Classifier> NestedClassifier subsets Namespace.OwnedMember;
     	/// <summary>
     	/// The attributes (i.e., the Properties) owned by the Class.
     	/// </summary>
-    	containment list<Property> OwnedAttribute redefines StructuredClassifier.OwnedAttribute subsets Classifier.Attribute, Namespace.OwnedMember;
+    	list<Property> OwnedAttribute redefines StructuredClassifier.OwnedAttribute subsets Classifier.Attribute, Namespace.OwnedMember;
     	/// <summary>
     	/// The Operations owned by the Class.
     	/// </summary>
-    	containment list<Operation> OwnedOperation subsets Classifier.Feature, Namespace.OwnedMember;
+    	list<Operation> OwnedOperation subsets Classifier.Feature, Namespace.OwnedMember;
     	/// <summary>
     	/// The Receptions owned by the Class.
     	/// </summary>
-    	containment set<Reception> OwnedReception subsets Classifier.Feature, Namespace.OwnedMember;
+    	set<Reception> OwnedReception subsets Classifier.Feature, Namespace.OwnedMember;
     	/// <summary>
     	/// The superclasses of a Class, derived from its Generalizations.
     	/// </summary>
@@ -1407,7 +1408,7 @@
     	/// <summary>
     	/// A mapping between features of the Collaboration and features of the owning Classifier. This mapping indicates which ConnectableElement of the Classifier plays which role(s) in the Collaboration. A ConnectableElement may be bound to multiple roles in the same CollaborationUse (that is, it may play multiple roles).
     	/// </summary>
-    	containment set<Dependency> RoleBinding subsets Element.OwnedElement;
+    	set<Dependency> RoleBinding subsets Element.OwnedElement;
     	/// <summary>
     	/// The Collaboration which is used in this CollaborationUse. The Collaboration defines the cooperation between its roles which are mapped to ConnectableElements relating to the Classifier owning the CollaborationUse.
     	/// </summary>
@@ -1426,7 +1427,7 @@
     	/// <summary>
     	/// The set of PackageableElements that a Component owns. In the namespace of a Component, all model elements that are involved in or related to its definition may be owned or imported explicitly. These may include e.g., Classes, Interfaces, Components, Packages, UseCases, Dependencies (e.g., mappings), and Artifacts.
     	/// </summary>
-    	containment set<PackageableElement> PackagedElement subsets Namespace.OwnedMember;
+    	set<PackageableElement> PackagedElement subsets Namespace.OwnedMember;
     	/// <summary>
     	/// The Interfaces that the Component exposes to its environment. These Interfaces may be Realized by the Component or any of its realizingClassifiers, or they may be the Interfaces that are provided by its public Ports.
     	/// </summary>
@@ -1442,7 +1443,7 @@
     	/// <summary>
     	/// The set of Realizations owned by the Component. Realizations reference the Classifiers of which the Component is an abstraction; i.e., that realize its behavior.
     	/// </summary>
-    	containment set<ComponentRealization> Realization subsets Element.OwnedElement;
+    	set<ComponentRealization> Realization subsets Element.OwnedElement;
     	/// <summary>
     	/// The Interfaces that the Component requires from other Components in its environment in order to be able to offer its full set of provided functionality. These Interfaces may be used by the Component or any of its realizingClassifiers, or they may be the Interfaces that are required by its public Ports.
     	/// </summary>
@@ -1513,7 +1514,7 @@
     	/// <summary>
     	/// A Connector has at least two ConnectorEnds, each representing the participation of instances of the Classifiers typing the ConnectableElements attached to the end. The set of ConnectorEnds is ordered.
     	/// </summary>
-    	containment list<ConnectorEnd> End subsets Element.OwnedElement;
+    	list<ConnectorEnd> End subsets Element.OwnedElement;
     	/// <summary>
     	/// Indicates the kind of Connector. This is derived: a Connector with one or more ends connected to a Port which is not on a Part and which is not a behavior port is a delegation; otherwise it is an assembly.
     	/// </summary>
@@ -1642,11 +1643,11 @@
     	/// <summary>
     	/// The Properties owned by the StructuredClassifier.
     	/// </summary>
-    	containment list<Property> OwnedAttribute subsets Classifier.Attribute, Namespace.OwnedMember, StructuredClassifier.Role;
+    	list<Property> OwnedAttribute subsets Classifier.Attribute, Namespace.OwnedMember, StructuredClassifier.Role;
     	/// <summary>
     	/// The connectors owned by the StructuredClassifier.
     	/// </summary>
-    	containment set<Connector> OwnedConnector subsets Classifier.Feature, Namespace.OwnedMember;
+    	set<Connector> OwnedConnector subsets Classifier.Feature, Namespace.OwnedMember;
     	/// <summary>
     	/// The Properties specifying instances that the StructuredClassifier owns by composition. This collection is derived, selecting those owned Properties where isComposite is true.
     	/// </summary>
@@ -1730,7 +1731,7 @@
     	/// <summary>
     	/// Conformance between ProtocolStateMachine 
     	/// </summary>
-    	containment set<ProtocolConformance> Conformance subsets Element.OwnedElement;
+    	set<ProtocolConformance> Conformance subsets Element.OwnedElement;
     }
 
     /// <summary>
@@ -1741,11 +1742,11 @@
     	/// <summary>
     	/// Specifies the post condition of the Transition which is the Condition that should be obtained once the Transition is triggered. This post condition is part of the post condition of the Operation connected to the Transition.
     	/// </summary>
-    	containment Constraint PostCondition subsets Namespace.OwnedRule;
+    	Constraint PostCondition subsets Namespace.OwnedRule;
     	/// <summary>
     	/// Specifies the precondition of the Transition. It specifies the Condition that should be verified before triggering the Transition. This guard condition added to the source State will be evaluated as part of the precondition of the Operation referred by the Transition if any.
     	/// </summary>
-    	containment Constraint PreCondition subsets Transition.Guard;
+    	Constraint PreCondition subsets Transition.Guard;
     	/// <summary>
     	/// This association refers to the associated Operation. It is derived from the Operation of the CallEvent Trigger when applicable.
     	/// </summary>
@@ -1808,11 +1809,11 @@
     	/// <summary>
     	/// The set of Vertices that are owned by this Region.
     	/// </summary>
-    	containment set<Vertex> Subvertex subsets Namespace.OwnedMember;
+    	set<Vertex> Subvertex subsets Namespace.OwnedMember;
     	/// <summary>
     	/// The set of Transitions owned by the Region.
     	/// </summary>
-    	containment set<Transition> Transition subsets Namespace.OwnedMember;
+    	set<Transition> Transition subsets Namespace.OwnedMember;
     	/// <summary>
     	/// The operation belongsToPSM () checks if the Region belongs to a ProtocolStateMachine.
     	/// </summary>
@@ -1871,27 +1872,27 @@
     	/// <summary>
     	/// The entry and exit connection points used in conjunction with this (submachine) State, i.e., as targets and sources, respectively, in the Region with the submachine State. A connection point reference references the corresponding definition of a connection point Pseudostate in the StateMachine referenced by the submachine State.
     	/// </summary>
-    	containment set<ConnectionPointReference> Connection subsets Namespace.OwnedMember;
+    	set<ConnectionPointReference> Connection subsets Namespace.OwnedMember;
     	/// <summary>
     	/// The entry and exit Pseudostates of a composite State. These can only be entry or exit Pseudostates, and they must have different names. They can only be defined for composite States.
     	/// </summary>
-    	containment set<Pseudostate> ConnectionPoint subsets Namespace.OwnedMember;
+    	set<Pseudostate> ConnectionPoint subsets Namespace.OwnedMember;
     	/// <summary>
     	/// A list of Triggers that are candidates to be retained by the StateMachine if they trigger no Transitions out of the State (not consumed). A deferred Trigger is retained until the StateMachine reaches a State configuration where it is no longer deferred.
     	/// </summary>
-    	containment set<Trigger> DeferrableTrigger subsets Element.OwnedElement;
+    	set<Trigger> DeferrableTrigger subsets Element.OwnedElement;
     	/// <summary>
     	/// An optional Behavior that is executed while being in the State. The execution starts when this State is entered, and ceases either by itself when done, or when the State is exited, whichever comes first.
     	/// </summary>
-    	containment Behavior DoActivity subsets Element.OwnedElement;
+    	Behavior DoActivity subsets Element.OwnedElement;
     	/// <summary>
     	/// An optional Behavior that is executed whenever this State is entered regardless of the Transition taken to reach the State. If defined, entry Behaviors are always executed to completion prior to any internal Behavior or Transitions performed within the State.
     	/// </summary>
-    	containment Behavior Entry subsets Element.OwnedElement;
+    	Behavior Entry subsets Element.OwnedElement;
     	/// <summary>
     	/// An optional Behavior that is executed whenever this State is exited regardless of which Transition was taken out of the State. If defined, exit Behaviors are always executed to completion only after all internal and transition Behaviors have completed execution.
     	/// </summary>
-    	containment Behavior Exit subsets Element.OwnedElement;
+    	Behavior Exit subsets Element.OwnedElement;
     	/// <summary>
     	/// A state with isComposite=true is said to be a composite State. A composite State is a State that contains at least one Region.
     	/// </summary>
@@ -1919,11 +1920,11 @@
     	/// <summary>
     	/// The Regions owned directly by the State.
     	/// </summary>
-    	containment set<Region> Region subsets Namespace.OwnedMember;
+    	set<Region> Region subsets Namespace.OwnedMember;
     	/// <summary>
     	/// Specifies conditions that are always true when this State is the current State. In ProtocolStateMachines state invariants are additional conditions to the preconditions of the outgoing Transitions, and to the postcondition of the incoming Transitions.
     	/// </summary>
-    	containment Constraint StateInvariant subsets Namespace.OwnedRule;
+    	Constraint StateInvariant subsets Namespace.OwnedRule;
     	/// <summary>
     	/// The StateMachine that is to be inserted in place of the (submachine) State.
     	/// </summary>
@@ -1955,7 +1956,7 @@
     	/// <summary>
     	/// The connection points defined for this StateMachine. They represent the interface of the StateMachine when used as part of submachine State
     	/// </summary>
-    	containment set<Pseudostate> ConnectionPoint subsets Namespace.OwnedMember;
+    	set<Pseudostate> ConnectionPoint subsets Namespace.OwnedMember;
     	/// <summary>
     	/// The StateMachines of which this is an extension.
     	/// </summary>
@@ -1963,7 +1964,7 @@
     	/// <summary>
     	/// The Regions owned directly by the StateMachine.
     	/// </summary>
-    	containment set<Region> Region subsets Namespace.OwnedMember;
+    	set<Region> Region subsets Namespace.OwnedMember;
     	/// <summary>
     	/// References the submachine(s) in case of a submachine State. Multiple machines are referenced in case of a concurrent State.
     	/// </summary>
@@ -2046,11 +2047,11 @@
     	/// <summary>
     	/// Specifies an optional behavior to be performed when the Transition fires.
     	/// </summary>
-    	containment Behavior Effect subsets Element.OwnedElement;
+    	Behavior Effect subsets Element.OwnedElement;
     	/// <summary>
     	/// A guard is a Constraint that provides a fine-grained control over the firing of the Transition. The guard is evaluated when an Event occurrence is dispatched by the StateMachine. If the guard is true at that time, the Transition may be enabled, otherwise, it is disabled. Guards should be pure expressions without side effects. Guard expressions with side effects are ill formed.
     	/// </summary>
-    	containment Constraint Guard subsets Namespace.OwnedRule;
+    	Constraint Guard subsets Namespace.OwnedRule;
     	/// <summary>
     	/// Indicates the precise type of the Transition.
     	/// </summary>
@@ -2076,7 +2077,7 @@
     	/// <summary>
     	/// Specifies the Triggers that may fire the transition.
     	/// </summary>
-    	containment set<Trigger> Trigger subsets Element.OwnedElement;
+    	set<Trigger> Trigger subsets Element.OwnedElement;
     	/// <summary>
     	/// The query containingStateMachine() returns the StateMachine that contains the Transition either directly or transitively.
     	/// </summary>
@@ -2197,11 +2198,11 @@
     	/// <summary>
     	/// The set of InterfaceRealizations owned by the BehavioredClassifier. Interface realizations reference the Interfaces of which the BehavioredClassifier is an implementation.
     	/// </summary>
-    	containment set<InterfaceRealization> InterfaceRealization subsets Element.OwnedElement, NamedElement.ClientDependency;
+    	set<InterfaceRealization> InterfaceRealization subsets Element.OwnedElement, NamedElement.ClientDependency;
     	/// <summary>
     	/// Behaviors owned by a BehavioredClassifier.
     	/// </summary>
-    	containment set<Behavior> OwnedBehavior subsets Namespace.OwnedMember;
+    	set<Behavior> OwnedBehavior subsets Namespace.OwnedMember;
     }
 
     /// <summary>
@@ -2212,11 +2213,11 @@
     	/// <summary>
     	/// The attributes owned by the DataType.
     	/// </summary>
-    	containment list<Property> OwnedAttribute subsets Classifier.Attribute, Namespace.OwnedMember;
+    	list<Property> OwnedAttribute subsets Classifier.Attribute, Namespace.OwnedMember;
     	/// <summary>
     	/// The Operations owned by the DataType.
     	/// </summary>
-    	containment list<Operation> OwnedOperation subsets Classifier.Feature, Namespace.OwnedMember;
+    	list<Operation> OwnedOperation subsets Classifier.Feature, Namespace.OwnedMember;
     }
 
     /// <summary>
@@ -2227,7 +2228,7 @@
     	/// <summary>
     	/// The ordered set of literals owned by this Enumeration.
     	/// </summary>
-    	containment list<EnumerationLiteral> OwnedLiteral subsets Namespace.OwnedMember;
+    	list<EnumerationLiteral> OwnedLiteral subsets Namespace.OwnedMember;
     }
 
     /// <summary>
@@ -2255,23 +2256,23 @@
     	/// <summary>
     	/// References all the Classifiers that are defined (nested) within the Interface.
     	/// </summary>
-    	containment list<Classifier> NestedClassifier subsets Namespace.OwnedMember;
+    	list<Classifier> NestedClassifier subsets Namespace.OwnedMember;
     	/// <summary>
     	/// The attributes (i.e., the Properties) owned by the Interface.
     	/// </summary>
-    	containment list<Property> OwnedAttribute subsets Classifier.Attribute, Namespace.OwnedMember;
+    	list<Property> OwnedAttribute subsets Classifier.Attribute, Namespace.OwnedMember;
     	/// <summary>
     	/// The Operations owned by the Interface.
     	/// </summary>
-    	containment list<Operation> OwnedOperation subsets Classifier.Feature, Namespace.OwnedMember;
+    	list<Operation> OwnedOperation subsets Classifier.Feature, Namespace.OwnedMember;
     	/// <summary>
     	/// Receptions that objects providing this Interface are willing to accept.
     	/// </summary>
-    	containment set<Reception> OwnedReception subsets Classifier.Feature, Namespace.OwnedMember;
+    	set<Reception> OwnedReception subsets Classifier.Feature, Namespace.OwnedMember;
     	/// <summary>
     	/// References a ProtocolStateMachine specifying the legal sequences of the invocation of the BehavioralFeatures described in the Interface.
     	/// </summary>
-    	containment ProtocolStateMachine Protocol subsets Namespace.OwnedMember;
+    	ProtocolStateMachine Protocol subsets Namespace.OwnedMember;
     	/// <summary>
     	/// References all the Interfaces redefined by this Interface.
     	/// </summary>
@@ -2319,7 +2320,7 @@
     	/// <summary>
     	/// The attributes owned by the Signal.
     	/// </summary>
-    	containment list<Property> OwnedAttribute subsets Classifier.Attribute, Namespace.OwnedMember;
+    	list<Property> OwnedAttribute subsets Classifier.Attribute, Namespace.OwnedMember;
     }
 
     /// <summary>
@@ -2342,7 +2343,7 @@
     	/// <summary>
     	/// References the end of the extension that is typed by a Stereotype.
     	/// </summary>
-    	containment ExtensionEnd OwnedEnd redefines Association.OwnedEnd;
+    	ExtensionEnd OwnedEnd redefines Association.OwnedEnd;
     	/// <summary>
     	/// The query metaclassEnd() returns the Property that is typed by a metaclass (as opposed to a stereotype).
     	/// </summary>
@@ -2439,15 +2440,15 @@
     	/// <summary>
     	/// References the PackageMerges that are owned by this Package.
     	/// </summary>
-    	containment set<PackageMerge> PackageMerge subsets Element.OwnedElement;
+    	set<PackageMerge> PackageMerge subsets Element.OwnedElement;
     	/// <summary>
     	/// Specifies the packageable elements that are owned by this Package.
     	/// </summary>
-    	containment set<PackageableElement> PackagedElement subsets Namespace.OwnedMember;
+    	set<PackageableElement> PackagedElement subsets Namespace.OwnedMember;
     	/// <summary>
     	/// References the ProfileApplications that indicate which profiles have been applied to the Package.
     	/// </summary>
-    	containment set<ProfileApplication> ProfileApplication subsets Element.OwnedElement;
+    	set<ProfileApplication> ProfileApplication subsets Element.OwnedElement;
     	/// <summary>
     	/// The query allApplicableStereotypes() returns all the directly or indirectly owned stereotypes, including stereotypes contained in sub-profiles.
     	/// </summary>
@@ -2513,11 +2514,11 @@
     	/// <summary>
     	/// References a metaclass that may be extended.
     	/// </summary>
-    	containment set<ElementImport> MetaclassReference subsets Namespace.ElementImport;
+    	set<ElementImport> MetaclassReference subsets Namespace.ElementImport;
     	/// <summary>
     	/// References a package containing (directly or indirectly) metaclasses that may be extended.
     	/// </summary>
-    	containment set<PackageImport> MetamodelReference subsets Namespace.PackageImport;
+    	set<PackageImport> MetamodelReference subsets Namespace.PackageImport;
     }
 
     /// <summary>
@@ -2547,7 +2548,7 @@
     	/// <summary>
     	/// Stereotype can change the graphical appearance of the extended model element by using attached icons. When this association is not null, it references the location of the icon content to be displayed within diagrams presenting the extended model elements.
     	/// </summary>
-    	containment set<Image> Icon subsets Element.OwnedElement;
+    	set<Image> Icon subsets Element.OwnedElement;
     	/// <summary>
     	/// The profile that directly or indirectly contains this stereotype.
     	/// </summary>
@@ -2592,7 +2593,7 @@
     	/// <summary>
     	/// Specifies the gates that form the interface between this CombinedFragment and its surroundings
     	/// </summary>
-    	containment set<Gate> CfragmentGate subsets Element.OwnedElement;
+    	set<Gate> CfragmentGate subsets Element.OwnedElement;
     	/// <summary>
     	/// Specifies the operation which defines the semantics of this combination of InteractionFragments.
     	/// </summary>
@@ -2600,7 +2601,7 @@
     	/// <summary>
     	/// The set of operands of the combined fragment.
     	/// </summary>
-    	containment list<InteractionOperand> Operand subsets Element.OwnedElement;
+    	list<InteractionOperand> Operand subsets Element.OwnedElement;
     }
 
     /// <summary>
@@ -2798,23 +2799,23 @@
     	/// <summary>
     	/// Actions owned by the Interaction.
     	/// </summary>
-    	containment set<Action> Action subsets Element.OwnedElement;
+    	set<Action> Action subsets Element.OwnedElement;
     	/// <summary>
     	/// Specifies the gates that form the message interface between this Interaction and any InteractionUses which reference it.
     	/// </summary>
-    	containment set<Gate> FormalGate subsets Namespace.OwnedMember;
+    	set<Gate> FormalGate subsets Namespace.OwnedMember;
     	/// <summary>
     	/// The ordered set of fragments in the Interaction.
     	/// </summary>
-    	containment list<InteractionFragment> Fragment subsets Namespace.OwnedMember;
+    	list<InteractionFragment> Fragment subsets Namespace.OwnedMember;
     	/// <summary>
     	/// Specifies the participants in this Interaction.
     	/// </summary>
-    	containment set<Lifeline> Lifeline subsets Namespace.OwnedMember;
+    	set<Lifeline> Lifeline subsets Namespace.OwnedMember;
     	/// <summary>
     	/// The Messages contained in this Interaction.
     	/// </summary>
-    	containment set<Message> Message subsets Namespace.OwnedMember;
+    	set<Message> Message subsets Namespace.OwnedMember;
     }
 
     /// <summary>
@@ -2825,11 +2826,11 @@
     	/// <summary>
     	/// The maximum number of iterations of a loop
     	/// </summary>
-    	containment ValueSpecification Maxint subsets Element.OwnedElement;
+    	ValueSpecification Maxint subsets Element.OwnedElement;
     	/// <summary>
     	/// The minimum number of iterations of a loop
     	/// </summary>
-    	containment ValueSpecification Minint subsets Element.OwnedElement;
+    	ValueSpecification Minint subsets Element.OwnedElement;
     }
 
     /// <summary>
@@ -2852,7 +2853,7 @@
     	/// <summary>
     	/// The general ordering relationships contained in this fragment.
     	/// </summary>
-    	containment set<GeneralOrdering> GeneralOrdering subsets Element.OwnedElement;
+    	set<GeneralOrdering> GeneralOrdering subsets Element.OwnedElement;
     }
 
     /// <summary>
@@ -2867,11 +2868,11 @@
     	/// <summary>
     	/// The fragments of the operand.
     	/// </summary>
-    	containment list<InteractionFragment> Fragment subsets Namespace.OwnedMember;
+    	list<InteractionFragment> Fragment subsets Namespace.OwnedMember;
     	/// <summary>
     	/// Constraint of the operand.
     	/// </summary>
-    	containment InteractionConstraint Guard subsets Element.OwnedElement;
+    	InteractionConstraint Guard subsets Element.OwnedElement;
     }
 
     /// <summary>
@@ -2882,11 +2883,11 @@
     	/// <summary>
     	/// The actual gates of the InteractionUse.
     	/// </summary>
-    	containment set<Gate> ActualGate subsets Element.OwnedElement;
+    	set<Gate> ActualGate subsets Element.OwnedElement;
     	/// <summary>
     	/// The actual arguments of the Interaction.
     	/// </summary>
-    	containment list<ValueSpecification> Argument subsets Element.OwnedElement;
+    	list<ValueSpecification> Argument subsets Element.OwnedElement;
     	/// <summary>
     	/// Refers to the Interaction that defines its meaning.
     	/// </summary>
@@ -2894,7 +2895,7 @@
     	/// <summary>
     	/// The value of the executed Interaction.
     	/// </summary>
-    	containment ValueSpecification ReturnValue subsets Element.OwnedElement;
+    	ValueSpecification ReturnValue subsets Element.OwnedElement;
     	/// <summary>
     	/// The recipient of the return value.
     	/// </summary>
@@ -2925,7 +2926,7 @@
     	/// <summary>
     	/// If the referenced ConnectableElement is multivalued, then this specifies the specific individual part within that set.
     	/// </summary>
-    	containment ValueSpecification Selector subsets Element.OwnedElement;
+    	ValueSpecification Selector subsets Element.OwnedElement;
     }
 
     /// <summary>
@@ -2936,7 +2937,7 @@
     	/// <summary>
     	/// The arguments of the Message.
     	/// </summary>
-    	containment list<ValueSpecification> Argument subsets Element.OwnedElement;
+    	list<ValueSpecification> Argument subsets Element.OwnedElement;
     	/// <summary>
     	/// The Connector on which this Message is sent.
     	/// </summary>
@@ -3092,7 +3093,7 @@
     	/// <summary>
     	/// A Constraint that should hold at runtime for this StateInvariant.
     	/// </summary>
-    	containment Constraint Invariant subsets Element.OwnedElement;
+    	Constraint Invariant subsets Element.OwnedElement;
     }
 
     /// <summary>
@@ -3154,19 +3155,19 @@
     	/// <summary>
     	/// The set of model elements that are manifested in the Artifact. That is, these model elements are utilized in the construction (or generation) of the artifact.
     	/// </summary>
-    	containment set<Manifestation> Manifestation subsets Element.OwnedElement, NamedElement.ClientDependency;
+    	set<Manifestation> Manifestation subsets Element.OwnedElement, NamedElement.ClientDependency;
     	/// <summary>
     	/// The Artifacts that are defined (nested) within the Artifact. The association is a specialization of the ownedMember association from Namespace to NamedElement.
     	/// </summary>
-    	containment set<Artifact> NestedArtifact subsets Namespace.OwnedMember;
+    	set<Artifact> NestedArtifact subsets Namespace.OwnedMember;
     	/// <summary>
     	/// The attributes or association ends defined for the Artifact. The association is a specialization of the ownedMember association.
     	/// </summary>
-    	containment list<Property> OwnedAttribute subsets Classifier.Attribute, Namespace.OwnedMember;
+    	list<Property> OwnedAttribute subsets Classifier.Attribute, Namespace.OwnedMember;
     	/// <summary>
     	/// The Operations defined for the Artifact. The association is a specialization of the ownedMember association.
     	/// </summary>
-    	containment list<Operation> OwnedOperation subsets Classifier.Feature, Namespace.OwnedMember;
+    	list<Operation> OwnedOperation subsets Classifier.Feature, Namespace.OwnedMember;
     }
 
     /// <summary>
@@ -3192,7 +3193,7 @@
     	/// <summary>
     	/// The specification of properties that parameterize the deployment and execution of one or more Artifacts.
     	/// </summary>
-    	containment set<DeploymentSpecification> Configuration subsets Element.OwnedElement;
+    	set<DeploymentSpecification> Configuration subsets Element.OwnedElement;
     	/// <summary>
     	/// The Artifacts that are deployed onto a Node. This association specializes the supplier association.
     	/// </summary>
@@ -3236,7 +3237,7 @@
     	/// <summary>
     	/// The set of Deployments for a DeploymentTarget.
     	/// </summary>
-    	containment set<Deployment> Deployment subsets Element.OwnedElement, NamedElement.ClientDependency;
+    	set<Deployment> Deployment subsets Element.OwnedElement, NamedElement.ClientDependency;
     }
 
     /// <summary>
@@ -3272,7 +3273,7 @@
     	/// <summary>
     	/// The Nodes that are defined (nested) within the Node.
     	/// </summary>
-    	containment set<Node> NestedNode subsets Namespace.OwnedMember;
+    	set<Node> NestedNode subsets Namespace.OwnedMember;
     }
 
     /// <summary>
@@ -3283,7 +3284,7 @@
     	/// <summary>
     	/// An OpaqueExpression that states the abstraction relationship between the supplier(s) and the client(s). In some cases, such as derivation, it is usually formal and unidirectional; in other cases, such as trace, it is usually informal and bidirectional. The mapping expression is optional and may be omitted if the precise relationship between the Elements is not specified.
     	/// </summary>
-    	containment OpaqueExpression Mapping subsets Element.OwnedElement;
+    	OpaqueExpression Mapping subsets Element.OwnedElement;
     }
 
     /// <summary>
@@ -3317,7 +3318,7 @@
     	/// <summary>
     	/// A condition that must be true when evaluated in order for the Constraint to be satisfied.
     	/// </summary>
-    	containment ValueSpecification Specification subsets Element.OwnedElement;
+    	ValueSpecification Specification subsets Element.OwnedElement;
     }
 
     /// <summary>
@@ -3358,7 +3359,7 @@
     	/// <summary>
     	/// The Comments owned by this Element.
     	/// </summary>
-    	containment set<Comment> OwnedComment subsets Element.OwnedElement;
+    	set<Comment> OwnedComment subsets Element.OwnedElement;
     	/// <summary>
     	/// The Elements owned by this Element.
     	/// </summary>
@@ -3436,7 +3437,7 @@
     	/// <summary>
     	/// The specification of the lower bound for this multiplicity.
     	/// </summary>
-    	containment ValueSpecification LowerValue subsets Element.OwnedElement;
+    	ValueSpecification LowerValue subsets Element.OwnedElement;
     	/// <summary>
     	/// The upper bound of the multiplicity interval.
     	/// </summary>
@@ -3446,7 +3447,7 @@
     	/// <summary>
     	/// The specification of the upper bound for this multiplicity.
     	/// </summary>
-    	containment ValueSpecification UpperValue subsets Element.OwnedElement;
+    	ValueSpecification UpperValue subsets Element.OwnedElement;
     	/// <summary>
     	/// The operation compatibleWith takes another multiplicity as input. It returns true if the other multiplicity is wider than, or the same as, self.
     	/// </summary>
@@ -3508,7 +3509,7 @@
     	/// <summary>
     	/// The StringExpression used to define the name of this NamedElement.
     	/// </summary>
-    	containment StringExpression NameExpression subsets Element.OwnedElement;
+    	StringExpression NameExpression subsets Element.OwnedElement;
     	/// <summary>
     	/// Specifies the Namespace that owns the NamedElement.
     	/// </summary>
@@ -3582,7 +3583,7 @@
     	/// <summary>
     	/// References the ElementImports owned by the Namespace.
     	/// </summary>
-    	containment set<ElementImport> ElementImport subsets Element.OwnedElement;
+    	set<ElementImport> ElementImport subsets Element.OwnedElement;
     	/// <summary>
     	/// References the PackageableElements that are members of this Namespace as a result of either PackageImports or ElementImports.
     	/// </summary>
@@ -3600,11 +3601,11 @@
     	/// <summary>
     	/// Specifies a set of Constraints owned by this Namespace.
     	/// </summary>
-    	containment set<Constraint> OwnedRule subsets Namespace.OwnedMember;
+    	set<Constraint> OwnedRule subsets Namespace.OwnedMember;
     	/// <summary>
     	/// References the PackageImports owned by the Namespace.
     	/// </summary>
-    	containment set<PackageImport> PackageImport subsets Element.OwnedElement;
+    	set<PackageImport> PackageImport subsets Element.OwnedElement;
     	/// <summary>
     	/// The query excludeCollisions() excludes from a set of PackageableElements any that would not be distinguishable from each other in this Namespace.
     	/// </summary>
@@ -3725,11 +3726,11 @@
     	/// <summary>
     	/// The optional TemplateSignature specifying the formal TemplateParameters for this TemplateableElement. If a TemplateableElement has a TemplateSignature, then it is a template.
     	/// </summary>
-    	containment TemplateSignature OwnedTemplateSignature subsets Element.OwnedElement;
+    	TemplateSignature OwnedTemplateSignature subsets Element.OwnedElement;
     	/// <summary>
     	/// The optional TemplateBindings from this TemplateableElement to one or more templates.
     	/// </summary>
-    	containment set<TemplateBinding> TemplateBinding subsets Element.OwnedElement;
+    	set<TemplateBinding> TemplateBinding subsets Element.OwnedElement;
     	/// <summary>
     	/// The query isTemplate() returns whether this TemplateableElement is actually a template.
     	/// </summary>
@@ -3756,7 +3757,7 @@
     	/// <summary>
     	/// The TemplateParameterSubstitutions owned by this TemplateBinding.
     	/// </summary>
-    	containment set<TemplateParameterSubstitution> ParameterSubstitution subsets Element.OwnedElement;
+    	set<TemplateParameterSubstitution> ParameterSubstitution subsets Element.OwnedElement;
     	/// <summary>
     	/// The TemplateSignature for the template that is the target of this TemplateBinding.
     	/// </summary>
@@ -3775,11 +3776,11 @@
     	/// <summary>
     	/// The ParameterableElement that is owned by this TemplateParameter for the purpose of providing a default.
     	/// </summary>
-    	containment ParameterableElement OwnedDefault subsets Element.OwnedElement, TemplateParameter.Default;
+    	ParameterableElement OwnedDefault subsets Element.OwnedElement, TemplateParameter.Default;
     	/// <summary>
     	/// The ParameterableElement that is owned by this TemplateParameter for the purpose of exposing it as the parameteredElement.
     	/// </summary>
-    	containment ParameterableElement OwnedParameteredElement subsets Element.OwnedElement, TemplateParameter.ParameteredElement;
+    	ParameterableElement OwnedParameteredElement subsets Element.OwnedElement, TemplateParameter.ParameteredElement;
     	/// <summary>
     	/// The ParameterableElement exposed by this TemplateParameter.
     	/// </summary>
@@ -3806,7 +3807,7 @@
     	/// <summary>
     	/// The ParameterableElement that is owned by this TemplateParameterSubstitution as its actual parameter.
     	/// </summary>
-    	containment ParameterableElement OwnedActual subsets Element.OwnedElement, TemplateParameterSubstitution.Actual;
+    	ParameterableElement OwnedActual subsets Element.OwnedElement, TemplateParameterSubstitution.Actual;
     	/// <summary>
     	/// The TemplateBinding that owns this TemplateParameterSubstitution.
     	/// </summary>
@@ -3821,7 +3822,7 @@
     	/// <summary>
     	/// The formal parameters that are owned by this TemplateSignature.
     	/// </summary>
-    	containment list<TemplateParameter> OwnedParameter subsets Element.OwnedElement, TemplateSignature.Parameter;
+    	list<TemplateParameter> OwnedParameter subsets Element.OwnedElement, TemplateSignature.Parameter;
     	/// <summary>
     	/// The ordered set of all formal TemplateParameters for this TemplateSignature.
     	/// </summary>
@@ -3904,19 +3905,19 @@
     	/// <summary>
     	/// References a list of Parameters to the Behavior which describes the order and type of arguments that can be given when the Behavior is invoked and of the values which will be returned when the Behavior completes its execution.
     	/// </summary>
-    	containment list<Parameter> OwnedParameter subsets Namespace.OwnedMember;
+    	list<Parameter> OwnedParameter subsets Namespace.OwnedMember;
     	/// <summary>
     	/// The ParameterSets owned by this Behavior.
     	/// </summary>
-    	containment set<ParameterSet> OwnedParameterSet subsets Namespace.OwnedMember;
+    	set<ParameterSet> OwnedParameterSet subsets Namespace.OwnedMember;
     	/// <summary>
     	/// An optional set of Constraints specifying what is fulfilled after the execution of the Behavior is completed, if its precondition was fulfilled before its invocation.
     	/// </summary>
-    	containment set<Constraint> Postcondition subsets Namespace.OwnedRule;
+    	set<Constraint> Postcondition subsets Namespace.OwnedRule;
     	/// <summary>
     	/// An optional set of Constraints specifying what must be fulfilled before the Behavior is invoked.
     	/// </summary>
-    	containment set<Constraint> Precondition subsets Namespace.OwnedRule;
+    	set<Constraint> Precondition subsets Namespace.OwnedRule;
     	/// <summary>
     	/// Designates a BehavioralFeature that the Behavior implements. The BehavioralFeature must be owned by the BehavioredClassifier that owns the Behavior or be inherited by it. The Parameters of the BehavioralFeature and the implementing Behavior must match. A Behavior does not need to have a specification, in which case it either is the classifierBehavior of a BehavioredClassifier or it can only be invoked by another Behavior of the Classifier.
     	/// </summary>
@@ -3972,7 +3973,7 @@
     	/// <summary>
     	/// A Boolean-valued ValueSpecification that will result in a ChangeEvent whenever its value changes from false to true.
     	/// </summary>
-    	containment ValueSpecification ChangeExpression subsets Element.OwnedElement;
+    	ValueSpecification ChangeExpression subsets Element.OwnedElement;
     }
 
     /// <summary>
@@ -4042,7 +4043,7 @@
     	/// <summary>
     	/// Specifies the time of the TimeEvent.
     	/// </summary>
-    	containment TimeExpression When subsets Element.OwnedElement;
+    	TimeExpression When subsets Element.OwnedElement;
     }
 
     /// <summary>
@@ -4095,11 +4096,11 @@
     	/// <summary>
     	/// The ordered set of formal Parameters of this BehavioralFeature.
     	/// </summary>
-    	containment list<Parameter> OwnedParameter subsets Namespace.OwnedMember;
+    	list<Parameter> OwnedParameter subsets Namespace.OwnedMember;
     	/// <summary>
     	/// The ParameterSets owned by this BehavioralFeature.
     	/// </summary>
-    	containment set<ParameterSet> OwnedParameterSet subsets Namespace.OwnedMember;
+    	set<ParameterSet> OwnedParameterSet subsets Namespace.OwnedMember;
     	/// <summary>
     	/// The Types representing exceptions that may be raised during an invocation of this BehavioralFeature.
     	/// </summary>
@@ -4144,7 +4145,7 @@
     	/// <summary>
     	/// The CollaborationUses owned by the Classifier.
     	/// </summary>
-    	containment set<CollaborationUse> CollaborationUse subsets Element.OwnedElement;
+    	set<CollaborationUse> CollaborationUse subsets Element.OwnedElement;
     	/// <summary>
     	/// Specifies each Feature directly defined in the classifier. Note that there may be members of the Classifier that are of the type Feature but are not included, e.g., inherited features.
     	/// </summary>
@@ -4158,7 +4159,7 @@
     	/// <summary>
     	/// The Generalization relationships for this Classifier. These Generalizations navigate to more general Classifiers in the generalization hierarchy.
     	/// </summary>
-    	containment set<Generalization> Generalization subsets Element.OwnedElement;
+    	set<Generalization> Generalization subsets Element.OwnedElement;
     	/// <summary>
     	/// All elements inherited by this Classifier from its general Classifiers.
     	/// </summary>
@@ -4176,11 +4177,11 @@
     	/// <summary>
     	/// The optional RedefinableTemplateSignature specifying the formal template parameters.
     	/// </summary>
-    	containment RedefinableTemplateSignature OwnedTemplateSignature redefines TemplateableElement.OwnedTemplateSignature;
+    	RedefinableTemplateSignature OwnedTemplateSignature redefines TemplateableElement.OwnedTemplateSignature;
     	/// <summary>
     	/// The UseCases owned by this classifier.
     	/// </summary>
-    	containment set<UseCase> OwnedUseCase subsets Namespace.OwnedMember;
+    	set<UseCase> OwnedUseCase subsets Namespace.OwnedMember;
     	/// <summary>
     	/// The GeneralizationSet of which this Classifier is a power type.
     	/// </summary>
@@ -4196,7 +4197,7 @@
     	/// <summary>
     	/// The Substitutions owned by this Classifier.
     	/// </summary>
-    	containment set<Substitution> Substitution subsets Element.OwnedElement, NamedElement.ClientDependency;
+    	set<Substitution> Substitution subsets Element.OwnedElement, NamedElement.ClientDependency;
     	/// <summary>
     	/// TheClassifierTemplateParameter that exposes this element as a formal parameter.
     	/// </summary>
@@ -4412,11 +4413,11 @@
     	/// <summary>
     	/// A Slot giving the value or values of a StructuralFeature of the instance. An InstanceSpecification can have one Slot per StructuralFeature of its Classifiers, including inherited features. It is not necessary to model a Slot for every StructuralFeature, in which case the InstanceSpecification is a partial description.
     	/// </summary>
-    	containment set<Slot> Slot subsets Element.OwnedElement;
+    	set<Slot> Slot subsets Element.OwnedElement;
     	/// <summary>
     	/// A specification of how to compute, derive, or construct the instance.
     	/// </summary>
-    	containment ValueSpecification Specification subsets Element.OwnedElement;
+    	ValueSpecification Specification subsets Element.OwnedElement;
     }
 
     /// <summary>
@@ -4438,7 +4439,7 @@
     	/// <summary>
     	/// An optional Constraint on the result values of an invocation of this Operation.
     	/// </summary>
-    	containment Constraint BodyCondition subsets Namespace.OwnedRule;
+    	Constraint BodyCondition subsets Namespace.OwnedRule;
     	/// <summary>
     	/// The Class that owns this operation, if any.
     	/// </summary>
@@ -4476,15 +4477,15 @@
     	/// <summary>
     	/// The parameters owned by this Operation.
     	/// </summary>
-    	containment list<Parameter> OwnedParameter redefines BehavioralFeature.OwnedParameter;
+    	list<Parameter> OwnedParameter redefines BehavioralFeature.OwnedParameter;
     	/// <summary>
     	/// An optional set of Constraints specifying the state of the system when the Operation is completed.
     	/// </summary>
-    	containment set<Constraint> Postcondition subsets Namespace.OwnedRule;
+    	set<Constraint> Postcondition subsets Namespace.OwnedRule;
     	/// <summary>
     	/// An optional set of Constraints on the state of the system when the Operation is invoked.
     	/// </summary>
-    	containment set<Constraint> Precondition subsets Namespace.OwnedRule;
+    	set<Constraint> Precondition subsets Namespace.OwnedRule;
     	/// <summary>
     	/// The Types representing exceptions that may be raised during an invocation of this operation.
     	/// </summary>
@@ -4574,7 +4575,7 @@
     	/// <summary>
     	/// Specifies a ValueSpecification that represents a value to be used when no argument is supplied for the Parameter.
     	/// </summary>
-    	containment ValueSpecification DefaultValue subsets Element.OwnedElement;
+    	ValueSpecification DefaultValue subsets Element.OwnedElement;
     	/// <summary>
     	/// Indicates whether a parameter is being sent into or out of a behavioral element.
     	/// </summary>
@@ -4609,7 +4610,7 @@
     	/// <summary>
     	/// A constraint that should be satisfied for the owner of the Parameters in an input ParameterSet to start execution using the values provided for those Parameters, or the owner of the Parameters in an output ParameterSet to end execution providing the values for those Parameters, if all preconditions and conditions on input ParameterSets were satisfied.
     	/// </summary>
-    	containment set<Constraint> Condition subsets Element.OwnedElement;
+    	set<Constraint> Condition subsets Element.OwnedElement;
     	/// <summary>
     	/// Parameters in the ParameterSet.
     	/// </summary>
@@ -4644,7 +4645,7 @@
     	/// <summary>
     	/// A ValueSpecification that is evaluated to give a default value for the Property when an instance of the owning Classifier is instantiated.
     	/// </summary>
-    	containment ValueSpecification DefaultValue subsets Element.OwnedElement;
+    	ValueSpecification DefaultValue subsets Element.OwnedElement;
     	/// <summary>
     	/// The Interface that owns this Property, if any.
     	/// </summary>
@@ -4685,7 +4686,7 @@
     	/// <summary>
     	/// An optional list of ordered qualifier attributes for the end.
     	/// </summary>
-    	containment list<Property> Qualifier subsets Element.OwnedElement;
+    	list<Property> Qualifier subsets Element.OwnedElement;
     	/// <summary>
     	/// The properties that are redefined by this property, if any.
     	/// </summary>
@@ -4819,7 +4820,7 @@
     	/// <summary>
     	/// The value or values held by the Slot.
     	/// </summary>
-    	containment list<ValueSpecification> Value subsets Element.OwnedElement;
+    	list<ValueSpecification> Value subsets Element.OwnedElement;
     }
 
     /// <summary>
@@ -4841,11 +4842,11 @@
     	/// <summary>
     	/// The OutputPin on which the result value is placed.
     	/// </summary>
-    	containment OutputPin Result subsets Action.Output;
+    	OutputPin Result subsets Action.Output;
     	/// <summary>
     	/// The ValueSpecification to be evaluated.
     	/// </summary>
-    	containment ValueSpecification Value subsets Element.OwnedElement;
+    	ValueSpecification Value subsets Element.OwnedElement;
     }
 
     /// <summary>
@@ -4874,11 +4875,11 @@
     	/// <summary>
     	/// The OutputPin on which is put the input object as modified by the WriteStructuralFeatureAction.
     	/// </summary>
-    	containment OutputPin Result subsets Action.Output;
+    	OutputPin Result subsets Action.Output;
     	/// <summary>
     	/// The InputPin that provides the value to be added or removed from the StructuralFeature.
     	/// </summary>
-    	containment InputPin Value subsets Action.Input;
+    	InputPin Value subsets Action.Input;
     }
 
     /// <summary>
@@ -4889,7 +4890,7 @@
     	/// <summary>
     	/// The InputPin that gives the value to be added or removed from the Variable.
     	/// </summary>
-    	containment InputPin Value subsets Action.Input;
+    	InputPin Value subsets Action.Input;
     }
 
     /// <summary>
@@ -4900,7 +4901,7 @@
     	/// <summary>
     	/// An OutputPin where a value is placed containing sufficient information to perform a subsequent ReplyAction and return control to the caller. The contents of this value are opaque. It can be passed and copied but it cannot be manipulated by the model.
     	/// </summary>
-    	containment OutputPin ReturnInformation subsets Action.Output;
+    	OutputPin ReturnInformation subsets Action.Output;
     }
 
     /// <summary>
@@ -4915,11 +4916,11 @@
     	/// <summary>
     	/// OutputPins holding the values received from an Event occurrence.
     	/// </summary>
-    	containment list<OutputPin> Result subsets Action.Output;
+    	list<OutputPin> Result subsets Action.Output;
     	/// <summary>
     	/// The Triggers specifying the Events of which the AcceptEventAction waits for occurrences.
     	/// </summary>
-    	containment set<Trigger> Trigger subsets Element.OwnedElement;
+    	set<Trigger> Trigger subsets Element.OwnedElement;
     }
 
     /// <summary>
@@ -4953,11 +4954,11 @@
     	/// <summary>
     	/// A Constraint that must be satisfied when execution of the Action is completed.
     	/// </summary>
-    	containment set<Constraint> LocalPostcondition subsets Element.OwnedElement;
+    	set<Constraint> LocalPostcondition subsets Element.OwnedElement;
     	/// <summary>
     	/// A Constraint that must be satisfied when execution of the Action is started.
     	/// </summary>
-    	containment set<Constraint> LocalPrecondition subsets Element.OwnedElement;
+    	set<Constraint> LocalPrecondition subsets Element.OwnedElement;
     	/// <summary>
     	/// The ordered set of OutputPins representing outputs from the Action.
     	/// </summary>
@@ -4992,7 +4993,7 @@
     	/// <summary>
     	/// The Action used to provide the values of the ActionInputPin.
     	/// </summary>
-    	containment Action FromAction subsets Element.OwnedElement;
+    	Action FromAction subsets Element.OwnedElement;
     }
 
     /// <summary>
@@ -5003,7 +5004,7 @@
     	/// <summary>
     	/// The InputPin that gives the position at which to insert the value in an ordered StructuralFeature. The type of the insertAt InputPin is UnlimitedNatural, but the value cannot be zero. It is omitted for unordered StructuralFeatures.
     	/// </summary>
-    	containment InputPin InsertAt subsets Action.Input;
+    	InputPin InsertAt subsets Action.Input;
     	/// <summary>
     	/// Specifies whether existing values of the StructuralFeature should be removed before adding the new value.
     	/// </summary>
@@ -5018,7 +5019,7 @@
     	/// <summary>
     	/// The InputPin that gives the position at which to insert a new value or move an existing value in ordered Variables. The type of the insertAt InputPin is UnlimitedNatural, but the value cannot be zero. It is omitted for unordered Variables.
     	/// </summary>
-    	containment InputPin InsertAt subsets Action.Input;
+    	InputPin InsertAt subsets Action.Input;
     	/// <summary>
     	/// Specifies whether existing values of the Variable should be removed before adding the new value.
     	/// </summary>
@@ -5048,7 +5049,7 @@
     	/// <summary>
     	/// The OutputPins on which the reply values from the invocation are placed (if the call is synchronous).
     	/// </summary>
-    	containment list<OutputPin> Result subsets Action.Output;
+    	list<OutputPin> Result subsets Action.Output;
     	/// <summary>
     	/// Return the in and inout ownedParameters of the Behavior or Operation being called. (This operation is abstract and should be overridden by subclasses of CallAction.)
     	/// </summary>
@@ -5094,7 +5095,7 @@
     	/// <summary>
     	/// The InputPin that provides the target object to which the Operation call request is sent.
     	/// </summary>
-    	containment InputPin Target subsets Action.Input;
+    	InputPin Target subsets Action.Input;
     	/// <summary>
     	/// Return the inout, out and return ownedParameters of the Operation being called.
     	/// </summary>
@@ -5152,7 +5153,7 @@
     	/// <summary>
     	/// The InputPin that gives the object whose participation in the Association is to be cleared.
     	/// </summary>
-    	containment InputPin Object subsets Action.Input;
+    	InputPin Object subsets Action.Input;
     }
 
     /// <summary>
@@ -5163,7 +5164,7 @@
     	/// <summary>
     	/// The OutputPin on which is put the input object as modified by the ClearStructuralFeatureAction.
     	/// </summary>
-    	containment OutputPin Result subsets Action.Output;
+    	OutputPin Result subsets Action.Output;
     }
 
     /// <summary>
@@ -5181,7 +5182,7 @@
     	/// <summary>
     	/// The set of Clauses composing the ConditionalNode.
     	/// </summary>
-    	containment set<Clause> Clause subsets Element.OwnedElement;
+    	set<Clause> Clause subsets Element.OwnedElement;
     	/// <summary>
     	/// If true, the modeler asserts that the test for at least one Clause of the ConditionalNode will succeed.
     	/// </summary>
@@ -5193,7 +5194,7 @@
     	/// <summary>
     	/// The OutputPins that onto which are moved values from the bodyOutputs of the Clause selected for execution.
     	/// </summary>
-    	containment list<OutputPin> Result redefines StructuredActivityNode.StructuredNodeOutput;
+    	list<OutputPin> Result redefines StructuredActivityNode.StructuredNodeOutput;
     	/// <summary>
     	/// Return only this ConditionalNode. This prevents Actions within the ConditionalNode from having their OutputPins used as bodyOutputs or decider Pins in containing LoopNodes or ConditionalNodes.
     	/// </summary>
@@ -5210,7 +5211,7 @@
     	/// <summary>
     	/// The LinkEndData that specifies the values to be placed on the Association ends for the new link.
     	/// </summary>
-    	containment set<LinkEndCreationData> EndData redefines LinkAction.EndData;
+    	set<LinkEndCreationData> EndData redefines LinkAction.EndData;
     }
 
     /// <summary>
@@ -5221,7 +5222,7 @@
     	/// <summary>
     	/// The output pin on which the newly created link object is placed.
     	/// </summary>
-    	containment OutputPin Result subsets Action.Output;
+    	OutputPin Result subsets Action.Output;
     }
 
     /// <summary>
@@ -5236,7 +5237,7 @@
     	/// <summary>
     	/// The OutputPin on which the newly created object is placed.
     	/// </summary>
-    	containment OutputPin Result subsets Action.Output;
+    	OutputPin Result subsets Action.Output;
     }
 
     /// <summary>
@@ -5247,7 +5248,7 @@
     	/// <summary>
     	/// The LinkEndData that the values of the Association ends for the links to be destroyed.
     	/// </summary>
-    	containment set<LinkEndDestructionData> EndData redefines LinkAction.EndData;
+    	set<LinkEndDestructionData> EndData redefines LinkAction.EndData;
     }
 
     /// <summary>
@@ -5266,7 +5267,7 @@
     	/// <summary>
     	/// The InputPin providing the object to be destroyed.
     	/// </summary>
-    	containment InputPin Target subsets Action.Input;
+    	InputPin Target subsets Action.Input;
     }
 
     /// <summary>
@@ -5318,7 +5319,7 @@
     	/// <summary>
     	/// The InputPins that provide the argument values passed in the invocation request.
     	/// </summary>
-    	containment list<InputPin> Argument subsets Action.Input;
+    	list<InputPin> Argument subsets Action.Input;
     	/// <summary>
     	/// For CallOperationActions, SendSignalActions, and SendObjectActions, an optional Port of the target object through which the invocation request is sent.
     	/// </summary>
@@ -5333,11 +5334,11 @@
     	/// <summary>
     	/// The LinkEndData identifying the values on the ends of the links acting on by this LinkAction.
     	/// </summary>
-    	containment set<LinkEndData> EndData subsets Element.OwnedElement;
+    	set<LinkEndData> EndData subsets Element.OwnedElement;
     	/// <summary>
     	/// InputPins used by the LinkEndData of the LinkAction.
     	/// </summary>
-    	containment set<InputPin> InputValue subsets Action.Input;
+    	set<InputPin> InputValue subsets Action.Input;
     	/// <summary>
     	/// Returns the Association acted on by this LinkAction.
     	/// </summary>
@@ -5379,7 +5380,7 @@
     	/// <summary>
     	/// A set of QualifierValues used to provide values for the qualifiers of the end.
     	/// </summary>
-    	containment set<QualifierValue> Qualifier subsets Element.OwnedElement;
+    	set<QualifierValue> Qualifier subsets Element.OwnedElement;
     	/// <summary>
     	/// The InputPin that provides the specified value for the given end. This InputPin is omitted if the LinkEndData specifies the &quot;open&quot; end for a ReadLinkAction.
     	/// </summary>
@@ -5437,15 +5438,15 @@
     	/// <summary>
     	/// A list of OutputPins that hold the values of the loop variables during an execution of the loop. When the test fails, the values are moved to the result OutputPins of the loop.
     	/// </summary>
-    	containment list<OutputPin> LoopVariable subsets Element.OwnedElement;
+    	list<OutputPin> LoopVariable subsets Element.OwnedElement;
     	/// <summary>
     	/// A list of InputPins whose values are moved into the loopVariable Pins before the first iteration of the loop.
     	/// </summary>
-    	containment list<InputPin> LoopVariableInput redefines StructuredActivityNode.StructuredNodeInput;
+    	list<InputPin> LoopVariableInput redefines StructuredActivityNode.StructuredNodeInput;
     	/// <summary>
     	/// A list of OutputPins that receive the loopVariable values after the last iteration of the loop and constitute the output of the LoopNode.
     	/// </summary>
-    	containment list<OutputPin> Result redefines StructuredActivityNode.StructuredNodeOutput;
+    	list<OutputPin> Result redefines StructuredActivityNode.StructuredNodeOutput;
     	/// <summary>
     	/// The set of ExecutableNodes executed before the first iteration of the loop, in order to initialize values or perform other setup computations.
     	/// </summary>
@@ -5480,7 +5481,7 @@
     	/// <summary>
     	/// The InputPins providing inputs to the OpaqueAction.
     	/// </summary>
-    	containment set<InputPin> InputValue subsets Action.Input;
+    	set<InputPin> InputValue subsets Action.Input;
     	/// <summary>
     	/// If provided, a specification of the language used for each of the body Strings.
     	/// </summary>
@@ -5488,7 +5489,7 @@
     	/// <summary>
     	/// The OutputPins on which the OpaqueAction provides outputs.
     	/// </summary>
-    	containment set<OutputPin> OutputValue subsets Action.Output;
+    	set<OutputPin> OutputValue subsets Action.Output;
     }
 
     /// <summary>
@@ -5532,7 +5533,7 @@
     	/// <summary>
     	/// An InputPin whose value becomes the exception object.
     	/// </summary>
-    	containment InputPin Exception subsets Action.Input;
+    	InputPin Exception subsets Action.Input;
     }
 
     /// <summary>
@@ -5547,7 +5548,7 @@
     	/// <summary>
     	/// The OutputPin on which the Classifier instances are placed.
     	/// </summary>
-    	containment OutputPin Result subsets Action.Output;
+    	OutputPin Result subsets Action.Output;
     }
 
     /// <summary>
@@ -5566,11 +5567,11 @@
     	/// <summary>
     	/// The InputPin that holds the object whose classification is to be tested.
     	/// </summary>
-    	containment InputPin Object subsets Action.Input;
+    	InputPin Object subsets Action.Input;
     	/// <summary>
     	/// The OutputPin that holds the Boolean result of the test.
     	/// </summary>
-    	containment OutputPin Result subsets Action.Output;
+    	OutputPin Result subsets Action.Output;
     }
 
     /// <summary>
@@ -5581,7 +5582,7 @@
     	/// <summary>
     	/// The OutputPin on which the objects retrieved from the &quot;open&quot; end of those links whose values on other ends are given by the endData.
     	/// </summary>
-    	containment OutputPin Result subsets Action.Output;
+    	OutputPin Result subsets Action.Output;
     	/// <summary>
     	/// Returns the ends corresponding to endData with no value InputPin. (A well-formed ReadLinkAction is constrained to have only one of these.)
     	/// </summary>
@@ -5602,11 +5603,11 @@
     	/// <summary>
     	/// The input pin from which the link object is obtained.
     	/// </summary>
-    	containment InputPin Object subsets Action.Input;
+    	InputPin Object subsets Action.Input;
     	/// <summary>
     	/// The OutputPin where the result value is placed.
     	/// </summary>
-    	containment OutputPin Result subsets Action.Output;
+    	OutputPin Result subsets Action.Output;
     }
 
     /// <summary>
@@ -5617,7 +5618,7 @@
     	/// <summary>
     	/// The InputPin from which the link object is obtained.
     	/// </summary>
-    	containment InputPin Object subsets Action.Input;
+    	InputPin Object subsets Action.Input;
     	/// <summary>
     	/// The qualifier Property to be read.
     	/// </summary>
@@ -5625,7 +5626,7 @@
     	/// <summary>
     	/// The OutputPin where the result value is placed.
     	/// </summary>
-    	containment OutputPin Result subsets Action.Output;
+    	OutputPin Result subsets Action.Output;
     }
 
     /// <summary>
@@ -5636,7 +5637,7 @@
     	/// <summary>
     	/// The OutputPin on which the context object is placed.
     	/// </summary>
-    	containment OutputPin Result subsets Action.Output;
+    	OutputPin Result subsets Action.Output;
     }
 
     /// <summary>
@@ -5647,7 +5648,7 @@
     	/// <summary>
     	/// The OutputPin on which the result values are placed.
     	/// </summary>
-    	containment OutputPin Result subsets Action.Output;
+    	OutputPin Result subsets Action.Output;
     }
 
     /// <summary>
@@ -5658,7 +5659,7 @@
     	/// <summary>
     	/// The OutputPin on which the result values are placed.
     	/// </summary>
-    	containment OutputPin Result subsets Action.Output;
+    	OutputPin Result subsets Action.Output;
     }
 
     /// <summary>
@@ -5677,7 +5678,7 @@
     	/// <summary>
     	/// The InputPin that holds the object to be reclassified.
     	/// </summary>
-    	containment InputPin Object subsets Action.Input;
+    	InputPin Object subsets Action.Input;
     	/// <summary>
     	/// A set of Classifiers to be removed from the Classifiers of the given object.
     	/// </summary>
@@ -5692,7 +5693,7 @@
     	/// <summary>
     	/// The InputPin that provides the collection to be reduced.
     	/// </summary>
-    	containment InputPin Collection subsets Action.Input;
+    	InputPin Collection subsets Action.Input;
     	/// <summary>
     	/// Indicates whether the order of the input collection should determine the order in which the reducer Behavior is applied to its elements.
     	/// </summary>
@@ -5704,7 +5705,7 @@
     	/// <summary>
     	/// The output pin on which the result value is placed.
     	/// </summary>
-    	containment OutputPin Result subsets Action.Output;
+    	OutputPin Result subsets Action.Output;
     }
 
     /// <summary>
@@ -5719,7 +5720,7 @@
     	/// <summary>
     	/// An InputPin that provides the position of an existing value to remove in ordered, nonunique structural features. The type of the removeAt InputPin is UnlimitedNatural, but the value cannot be zero or unlimited.
     	/// </summary>
-    	containment InputPin RemoveAt subsets Action.Input;
+    	InputPin RemoveAt subsets Action.Input;
     }
 
     /// <summary>
@@ -5734,7 +5735,7 @@
     	/// <summary>
     	/// An InputPin that provides the position of an existing value to remove in ordered, nonunique Variables. The type of the removeAt InputPin is UnlimitedNatural, but the value cannot be zero or unlimited.
     	/// </summary>
-    	containment InputPin RemoveAt subsets Action.Input;
+    	InputPin RemoveAt subsets Action.Input;
     }
 
     /// <summary>
@@ -5749,11 +5750,11 @@
     	/// <summary>
     	/// A list of InputPins providing the values for the output (inout, out, and return) Parameters of the Operation. These values are returned to the caller.
     	/// </summary>
-    	containment list<InputPin> ReplyValue subsets Action.Input;
+    	list<InputPin> ReplyValue subsets Action.Input;
     	/// <summary>
     	/// An InputPin that holds the return information value produced by an earlier AcceptCallAction.
     	/// </summary>
-    	containment InputPin ReturnInformation subsets Action.Input;
+    	InputPin ReturnInformation subsets Action.Input;
     }
 
     /// <summary>
@@ -5764,11 +5765,11 @@
     	/// <summary>
     	/// The request object, which is transmitted to the target object. The object may be copied in transmission, so identity might not be preserved.
     	/// </summary>
-    	containment InputPin Request redefines InvocationAction.Argument;
+    	InputPin Request redefines InvocationAction.Argument;
     	/// <summary>
     	/// The target object to which the object is sent.
     	/// </summary>
-    	containment InputPin Target subsets Action.Input;
+    	InputPin Target subsets Action.Input;
     }
 
     /// <summary>
@@ -5783,7 +5784,7 @@
     	/// <summary>
     	/// The InputPin that provides the target object to which the Signal instance is sent.
     	/// </summary>
-    	containment InputPin Target subsets Action.Input;
+    	InputPin Target subsets Action.Input;
     }
 
     /// <summary>
@@ -5794,7 +5795,7 @@
     	/// <summary>
     	/// The ordered set of ExecutableNodes to be sequenced.
     	/// </summary>
-    	containment list<ExecutableNode> ExecutableNode redefines StructuredActivityNode.Node;
+    	list<ExecutableNode> ExecutableNode redefines StructuredActivityNode.Node;
     }
 
     /// <summary>
@@ -5805,7 +5806,7 @@
     	/// <summary>
     	/// The InputPin that holds the object whose classifierBehavior is to be started.
     	/// </summary>
-    	containment InputPin Object subsets Action.Input;
+    	InputPin Object subsets Action.Input;
     }
 
     /// <summary>
@@ -5816,7 +5817,7 @@
     	/// <summary>
     	/// An InputPin that holds the object that is either a Behavior to be started or has a classifierBehavior to be started.
     	/// </summary>
-    	containment InputPin Object subsets Action.Input;
+    	InputPin Object subsets Action.Input;
     	/// <summary>
     	/// Return the inout, out and return ownedParameters of the Behavior being called.
     	/// </summary>
@@ -5852,7 +5853,7 @@
     	/// <summary>
     	/// The InputPin from which the object whose StructuralFeature is to be read or written is obtained.
     	/// </summary>
-    	containment InputPin Object subsets Action.Input;
+    	InputPin Object subsets Action.Input;
     	/// <summary>
     	/// The StructuralFeature to be read or written.
     	/// </summary>
@@ -5871,7 +5872,7 @@
     	/// <summary>
     	/// The ActivityEdges immediately contained in the StructuredActivityNode.
     	/// </summary>
-    	containment set<ActivityEdge> Edge subsets ActivityGroup.ContainedEdge, Element.OwnedElement;
+    	set<ActivityEdge> Edge subsets ActivityGroup.ContainedEdge, Element.OwnedElement;
     	/// <summary>
     	/// If true, then any object used by an Action within the StructuredActivityNode cannot be accessed by any Action outside the node until the StructuredActivityNode as a whole completes. Any concurrent Actions that would result in accessing such objects are required to have their execution deferred until the completion of the StructuredActivityNode.
     	/// </summary>
@@ -5879,19 +5880,19 @@
     	/// <summary>
     	/// The ActivityNodes immediately contained in the StructuredActivityNode.
     	/// </summary>
-    	containment set<ActivityNode> Node subsets ActivityGroup.ContainedNode, Element.OwnedElement;
+    	set<ActivityNode> Node subsets ActivityGroup.ContainedNode, Element.OwnedElement;
     	/// <summary>
     	/// The InputPins owned by the StructuredActivityNode.
     	/// </summary>
-    	containment set<InputPin> StructuredNodeInput subsets Action.Input;
+    	set<InputPin> StructuredNodeInput subsets Action.Input;
     	/// <summary>
     	/// The OutputPins owned by the StructuredActivityNode.
     	/// </summary>
-    	containment set<OutputPin> StructuredNodeOutput subsets Action.Output;
+    	set<OutputPin> StructuredNodeOutput subsets Action.Output;
     	/// <summary>
     	/// The Variables defined in the scope of the StructuredActivityNode.
     	/// </summary>
-    	containment set<Variable> Variable subsets Namespace.OwnedMember;
+    	set<Variable> Variable subsets Namespace.OwnedMember;
     	/// <summary>
     	/// Returns this StructuredActivityNode and all Actions contained in it.
     	/// </summary>
@@ -5934,15 +5935,15 @@
     	/// <summary>
     	/// The InputPin on which the first input object is placed.
     	/// </summary>
-    	containment InputPin First subsets Action.Input;
+    	InputPin First subsets Action.Input;
     	/// <summary>
     	/// The OutputPin whose Boolean value indicates whether the two input objects are identical.
     	/// </summary>
-    	containment OutputPin Result subsets Action.Output;
+    	OutputPin Result subsets Action.Output;
     	/// <summary>
     	/// The OutputPin on which the second input object is placed.
     	/// </summary>
-    	containment InputPin Second subsets Action.Input;
+    	InputPin Second subsets Action.Input;
     }
 
     /// <summary>
@@ -5953,11 +5954,11 @@
     	/// <summary>
     	/// The InputPin that gives the object to be unmarshalled.
     	/// </summary>
-    	containment InputPin Object subsets Action.Input;
+    	InputPin Object subsets Action.Input;
     	/// <summary>
     	/// The OutputPins on which are placed the values of the StructuralFeatures of the input object.
     	/// </summary>
-    	containment list<OutputPin> Result subsets Action.Output;
+    	list<OutputPin> Result subsets Action.Output;
     	/// <summary>
     	/// The type of the object to be unmarshalled.
     	/// </summary>
@@ -5972,7 +5973,7 @@
     	/// <summary>
     	/// The ValueSpecification that is evaluated to obtain the value that the ValuePin will provide.
     	/// </summary>
-    	containment ValueSpecification Value subsets Element.OwnedElement;
+    	ValueSpecification Value subsets Element.OwnedElement;
     }
 
     // association ObjectNode.Selection with Behavior.ObjectNode;
@@ -6405,7 +6406,7 @@
     // association VariableAction.Variable with Variable.VariableAction;
     // association ValueSpecificationAction.Result with OutputPin.ValueSpecificationAction;
     // association ValueSpecificationAction.Value with ValueSpecification.ValueSpecificationAction;
-
+	
 	// MetaDslx:
 	association Connector.End with ConnectorEnd.Connector;
 	association Interaction.Action with Action.Interaction;
@@ -6413,5 +6414,6 @@
 	association CombinedFragment.Operand with InteractionOperand.CombinedFragment;
 	association InteractionUse.ActualGate with Gate.InteractionUse;
 	association Interaction.FormalGate with Gate.Interaction;
-	association Class.NestedClassifier with Classifier.NestingClass;
+    association Class.NestedClassifier with Classifier.NestingClass;
+	
 }

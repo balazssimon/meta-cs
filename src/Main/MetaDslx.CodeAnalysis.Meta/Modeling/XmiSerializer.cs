@@ -474,7 +474,8 @@ namespace MetaDslx.Modeling
             _currentXmlWriter.WriteAttributeString(Xmi, "type", _options.XmiNamespace, ns.Item1 + ":" + obj.MId.DisplayTypeName);
             _currentXmlWriter.WriteAttributeString(Xmi, "id", _options.XmiNamespace, obj.MId.Id);
             HashSet<IModelObject> written = new HashSet<IModelObject>();
-            foreach (var prop in obj.MProperties)
+            HashSet<string> writtenProperties = new HashSet<string>();
+            foreach (var prop in obj.MProperties.Reverse())
             {
                 if (prop.IsDerived || prop.IsDerivedUnion) continue;
                 bool oppositeIsContainment = prop.OppositeProperties.Any(p => p.IsContainment);
@@ -482,6 +483,7 @@ namespace MetaDslx.Modeling
                 bool isModelObjectType = typeof(IModelObject).IsAssignableFrom(prop.ImmutableTypeInfo.Type);
                 if (!prop.IsCollection && (!prop.IsContainment || !isModelObjectType))
                 {
+                    if (writtenProperties.Contains(prop.Name)) continue;
                     if (isModelObjectType)
                     {
                         var value = obj.MGet(prop) as IModelObject;
@@ -510,9 +512,10 @@ namespace MetaDslx.Modeling
                             }
                         }
                     }
+                    writtenProperties.Add(prop.Name);
                 }
             }
-            foreach (var prop in obj.MProperties)
+            foreach (var prop in obj.MProperties.Reverse())
             {
                 if (prop.IsDerived || prop.IsDerivedUnion) continue;
                 bool oppositeIsContainment = prop.OppositeProperties.Any(p => p.IsContainment);

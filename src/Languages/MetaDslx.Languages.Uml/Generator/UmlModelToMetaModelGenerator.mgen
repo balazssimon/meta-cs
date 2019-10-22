@@ -1,8 +1,8 @@
-﻿namespace MetaDslx.Languages.Mof.Generator;
-generator MofModelToMetaModelGenerator for IEnumerable<ImmutableObject>;
+﻿namespace MetaDslx.Languages.Uml.Generator;
+generator UmlModelToMetaModelGenerator for IEnumerable<ImmutableObject>;
 
 using MetaDslx.Modeling;
-using MetaDslx.Languages.Mof.Model;
+using MetaDslx.Languages.Uml.Model;
 using System.Collections.Immutable;
 using Roslyn.Utilities;
 
@@ -170,18 +170,18 @@ association [first.Class.Name].[first.Name.ToPascalCase()] with [second.Class.Na
 end template
 
 template GenerateComment(Element elem)
-[if (hasloop (elem->OwnedComment->text:Body where !string.IsNullOrWhiteSpace(text)))]
+[if (hasloop (elem->OwnedComment where !string.IsNullOrWhiteSpace(OwnedComment.Body)))]
 /// <summary>
-	[loop (elem->OwnedComment->text:Body where !string.IsNullOrWhiteSpace(text))]
-		[loop (line:CommentLines(text, true))]
+	[loop (elem->OwnedComment where !string.IsNullOrWhiteSpace(OwnedComment.Body))]
+		[loop (line:CommentLines(OwnedComment.Body, true))]
 /// [line]
 		[end loop]
 	[end loop]
 /// </summary>
 	[if (elem is Operation)]
-		[loop (elem->typeof(Operation)->param:OwnedParameter->OwnedComment->text:Body where !string.IsNullOrWhiteSpace(text))]
+		[loop (elem->typeof(Operation)->param:OwnedParameter->OwnedComment where !string.IsNullOrWhiteSpace(OwnedComment.Body))]
 /// <param name="[param.Name]">
-			[loop (line:CommentLines(text, true))]
+			[loop (line:CommentLines(OwnedComment.Body, true))]
 /// [line]
 			[end loop]
 /// </param>
@@ -202,16 +202,18 @@ end template
 
 template GenerateSpecification(Namespace ns)
 	[loop (ns->rule:OwnedRule->spec:Specification->expr:typeof(OpaqueExpression))]
-		[loop (rule->OwnedComment->commentText:Body where !string.IsNullOrWhiteSpace(commentText))]
+		[loop (rule->OwnedComment where !string.IsNullOrWhiteSpace(OwnedComment.Body))]
 /// <para>
-			[loop (line:CommentLines(commentText, true))]
+			[loop (line:CommentLines(OwnedComment.Body, true))]
 /// [line]
 			[end loop]
 /// </para>
 		[end loop]
 // [rule.Name]:
-		[loop (line:CommentLines(expr.Body, false))]
+		[loop (expr->Body)]
+			[loop (line:CommentLines(Body, false))]
 //     [line]
+			[end loop]
 		[end loop]
 	[end loop]
 end template

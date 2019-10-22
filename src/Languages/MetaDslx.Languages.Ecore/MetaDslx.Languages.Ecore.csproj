@@ -44,7 +44,6 @@
     <ProjectReference Include="..\..\Main\MetaDslx.CodeAnalysis.Common\MetaDslx.CodeAnalysis.Common.csproj" />
     <ProjectReference Include="..\..\Main\MetaDslx.CodeAnalysis.CSharp\MetaDslx.CodeAnalysis.CSharp.csproj" />
     <ProjectReference Include="..\..\Main\MetaDslx.CodeAnalysis.Meta\MetaDslx.CodeAnalysis.Meta.csproj" />
-    <ProjectReference Include="..\MetaDslx.Languages.Mof\MetaDslx.Languages.Mof.csproj" />
   </ItemGroup>
 
 </Project>

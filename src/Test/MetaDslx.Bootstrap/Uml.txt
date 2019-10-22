@@ -340,11 +340,11 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// ActivityEdges expressing flow between the nodes of the Activity.
     	/// </summary>
-    	set<ActivityEdge> Edge subsets Element.OwnedElement;
+    	containment ActivityEdge Edge subsets Element.OwnedElement;
     	/// <summary>
     	/// Top-level ActivityGroups in the Activity.
     	/// </summary>
-    	set<ActivityGroup> Group subsets Element.OwnedElement;
+    	containment ActivityGroup Group subsets Element.OwnedElement;
     	/// <summary>
     	/// If true, this Activity must not make any changes to objects. The default is false (an Activity may make nonlocal changes). (This is an assertion, not an executable property. It may be used by an execution engine to optimize model execution. If the assertion is violated by the Activity, then the model is ill-formed.) 
     	/// </summary>
@@ -356,19 +356,19 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// ActivityNodes coordinated by the Activity.
     	/// </summary>
-    	set<ActivityNode> Node subsets Element.OwnedElement;
+    	containment ActivityNode Node subsets Element.OwnedElement;
     	/// <summary>
     	/// Top-level ActivityPartitions in the Activity.
     	/// </summary>
-    	set<ActivityPartition> Partition subsets Activity.Group;
+    	ActivityPartition Partition subsets Activity.Group;
     	/// <summary>
     	/// Top-level StructuredActivityNodes in the Activity.
     	/// </summary>
-    	set<StructuredActivityNode> StructuredNode subsets Activity.Group, Activity.Node;
+    	containment StructuredActivityNode StructuredNode subsets Activity.Group, Activity.Node;
     	/// <summary>
     	/// Top-level Variables defined by the Activity.
     	/// </summary>
-    	set<Variable> Variable subsets Namespace.OwnedMember;
+    	containment Variable Variable subsets Namespace.OwnedMember;
     }
 
     /// <summary>
@@ -383,15 +383,15 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// A ValueSpecification that is evaluated to determine if a token can traverse the ActivityEdge. If an ActivityEdge has no guard, then there is no restriction on tokens traversing the edge.
     	/// </summary>
-    	ValueSpecification Guard subsets Element.OwnedElement;
+    	containment ValueSpecification Guard subsets Element.OwnedElement;
     	/// <summary>
     	/// ActivityGroups containing the ActivityEdge.
     	/// </summary>
-    	union set<ActivityGroup> InGroup;
+    	ActivityGroup InGroup;
     	/// <summary>
     	/// ActivityPartitions containing the ActivityEdge.
     	/// </summary>
-    	set<ActivityPartition> InPartition subsets ActivityEdge.InGroup;
+    	ActivityPartition InPartition subsets ActivityEdge.InGroup;
     	/// <summary>
     	/// The StructuredActivityNode containing the ActivityEdge, if it is owned by a StructuredActivityNode.
     	/// </summary>
@@ -403,7 +403,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// ActivityEdges from a generalization of the Activity containing this ActivityEdge that are redefined by this ActivityEdge.
     	/// </summary>
-    	set<ActivityEdge> RedefinedEdge subsets RedefinableElement.RedefinedElement;
+    	ActivityEdge RedefinedEdge subsets RedefinableElement.RedefinedElement;
     	/// <summary>
     	/// The ActivityNode from which tokens are taken when they traverse the ActivityEdge.
     	/// </summary>
@@ -415,7 +415,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The minimum number of tokens that must traverse the ActivityEdge at the same time. If no weight is specified, this is equivalent to specifying a constant value of 1.
     	/// </summary>
-    	ValueSpecification Weight subsets Element.OwnedElement;
+    	containment ValueSpecification Weight subsets Element.OwnedElement;
     	// spec:
     	//     result = (redefiningElement.oclIsKindOf(ActivityEdge))
     	readonly bool IsConsistentWith(RedefinableElement redefiningElement);
@@ -436,11 +436,11 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// ActivityEdges immediately contained in the ActivityGroup.
     	/// </summary>
-    	union set<ActivityEdge> ContainedEdge;
+    	ActivityEdge ContainedEdge;
     	/// <summary>
     	/// ActivityNodes immediately contained in the ActivityGroup.
     	/// </summary>
-    	union set<ActivityNode> ContainedNode;
+    	ActivityNode ContainedNode;
     	/// <summary>
     	/// The Activity containing the ActivityGroup, if it is directly owned by an Activity.
     	/// </summary>
@@ -448,7 +448,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// Other ActivityGroups immediately contained in this ActivityGroup.
     	/// </summary>
-    	union set<ActivityGroup> Subgroup subsets Element.OwnedElement;
+    	ActivityGroup Subgroup subsets Element.OwnedElement;
     	/// <summary>
     	/// The ActivityGroup immediately containing this ActivityGroup, if it is directly owned by another ActivityGroup.
     	/// </summary>
@@ -475,15 +475,15 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// ActivityGroups containing the ActivityNode.
     	/// </summary>
-    	union set<ActivityGroup> InGroup;
+    	ActivityGroup InGroup;
     	/// <summary>
     	/// InterruptibleActivityRegions containing the ActivityNode.
     	/// </summary>
-    	set<InterruptibleActivityRegion> InInterruptibleRegion subsets ActivityNode.InGroup;
+    	InterruptibleActivityRegion InInterruptibleRegion subsets ActivityNode.InGroup;
     	/// <summary>
     	/// ActivityPartitions containing the ActivityNode.
     	/// </summary>
-    	set<ActivityPartition> InPartition subsets ActivityNode.InGroup;
+    	ActivityPartition InPartition subsets ActivityNode.InGroup;
     	/// <summary>
     	/// The StructuredActivityNode containing the ActvityNode, if it is directly owned by a StructuredActivityNode.
     	/// </summary>
@@ -491,15 +491,15 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// ActivityEdges that have the ActivityNode as their target.
     	/// </summary>
-    	set<ActivityEdge> Incoming;
+    	ActivityEdge Incoming;
     	/// <summary>
     	/// ActivityEdges that have the ActivityNode as their source.
     	/// </summary>
-    	set<ActivityEdge> Outgoing;
+    	ActivityEdge Outgoing;
     	/// <summary>
     	/// ActivityNodes from a generalization of the Activity containining this ActivityNode that are redefined by this ActivityNode.
     	/// </summary>
-    	set<ActivityNode> RedefinedNode subsets RedefinableElement.RedefinedElement;
+    	ActivityNode RedefinedNode subsets RedefinableElement.RedefinedElement;
     	/// <summary>
     	/// The Activity that directly or indirectly contains this ActivityNode.
     	/// </summary>
@@ -532,7 +532,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// ActivityEdges immediately contained in the ActivityPartition.
     	/// </summary>
-    	set<ActivityEdge> Edge subsets ActivityGroup.ContainedEdge;
+    	ActivityEdge Edge subsets ActivityGroup.ContainedEdge;
     	/// <summary>
     	/// Indicates whether the ActivityPartition groups other ActivityPartitions along a dimension.
     	/// </summary>
@@ -544,7 +544,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// ActivityNodes immediately contained in the ActivityPartition.
     	/// </summary>
-    	set<ActivityNode> Node subsets ActivityGroup.ContainedNode;
+    	ActivityNode Node subsets ActivityGroup.ContainedNode;
     	/// <summary>
     	/// An Element represented by the functionality modeled within the ActivityPartition.
     	/// </summary>
@@ -552,7 +552,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// Other ActivityPartitions immediately contained in this ActivityPartition (as its subgroups).
     	/// </summary>
-    	set<ActivityPartition> Subpartition subsets ActivityGroup.Subgroup;
+    	containment ActivityPartition Subpartition subsets ActivityGroup.Subgroup;
     	/// <summary>
     	/// Other ActivityPartitions immediately containing this ActivityPartition (as its superGroups).
     	/// </summary>
@@ -614,7 +614,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The Classifiers whose instances the ExceptionHandler catches as exceptions. If an exception occurs whose type is any exceptionType, the ExceptionHandler catches the exception and executes the handlerBody.
     	/// </summary>
-    	set<Classifier> ExceptionType;
+    	Classifier ExceptionType;
     	/// <summary>
     	/// An ExecutableNode that is executed if the ExceptionHandler catches an exception.
     	/// </summary>
@@ -633,7 +633,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// A set of ExceptionHandlers that are examined if an exception propagates out of the ExceptionNode.
     	/// </summary>
-    	set<ExceptionHandler> Handler subsets Element.OwnedElement;
+    	containment ExceptionHandler Handler subsets Element.OwnedElement;
     }
 
     /// <summary>
@@ -672,11 +672,11 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The ActivityEdges leaving the InterruptibleActivityRegion on which a traversing token will result in the termination of other tokens flowing in the InterruptibleActivityRegion.
     	/// </summary>
-    	set<ActivityEdge> InterruptingEdge;
+    	ActivityEdge InterruptingEdge;
     	/// <summary>
     	/// ActivityNodes immediately contained in the InterruptibleActivityRegion.
     	/// </summary>
-    	set<ActivityNode> Node subsets ActivityGroup.ContainedNode;
+    	ActivityNode Node subsets ActivityGroup.ContainedNode;
     }
 
     /// <summary>
@@ -691,7 +691,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// A ValueSpecification giving the condition under which the JoinNode will offer a token on its outgoing ActivityEdge. If no joinSpec is specified, then the JoinNode will offer an outgoing token if tokens are offered on all of its incoming ActivityEdges (an &quot;and&quot; condition).
     	/// </summary>
-    	ValueSpecification JoinSpec subsets Element.OwnedElement;
+    	containment ValueSpecification JoinSpec subsets Element.OwnedElement;
     }
 
     /// <summary>
@@ -732,7 +732,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The States required to be associated with the values held by tokens on this ObjectNode.
     	/// </summary>
-    	set<State> InState;
+    	State InState;
     	/// <summary>
     	/// Indicates whether the type of the ObjectNode is to be treated as representing control values that may traverse ControlFlows.
     	/// </summary>
@@ -748,7 +748,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The maximum number of tokens that may be held by this ObjectNode. Tokens cannot flow into the ObjectNode if the upperBound is reached. If no upperBound is specified, then there is no limit on how many tokens the ObjectNode can hold.
     	/// </summary>
-    	ValueSpecification UpperBound subsets Element.OwnedElement;
+    	containment ValueSpecification UpperBound subsets Element.OwnedElement;
     }
 
     /// <summary>
@@ -782,11 +782,11 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// A ValueSpecification that evaluates to the value of the Duration.
     	/// </summary>
-    	ValueSpecification Expr subsets Element.OwnedElement;
+    	containment ValueSpecification Expr subsets Element.OwnedElement;
     	/// <summary>
     	/// Refers to the Observations that are involved in the computation of the Duration value
     	/// </summary>
-    	set<Observation> Observation;
+    	Observation Observation;
     }
 
     /// <summary>
@@ -797,11 +797,11 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The value of firstEvent[i] is related to constrainedElement[i] (where i is 1 or 2). If firstEvent[i] is true, then the corresponding observation event is the first time instant the execution enters constrainedElement[i]. If firstEvent[i] is false, then the corresponding observation event is the last time instant the execution is within constrainedElement[i].
     	/// </summary>
-    	set<bool> FirstEvent;
+    	bool FirstEvent;
     	/// <summary>
     	/// The DurationInterval constraining the duration.
     	/// </summary>
-    	DurationInterval Specification redefines IntervalConstraint.Specification;
+    	containment DurationInterval Specification redefines IntervalConstraint.Specification;
     }
 
     /// <summary>
@@ -827,11 +827,11 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The DurationObservation is determined as the duration between the entering or exiting of a single event Element during execution, or the entering/exiting of one event Element and the entering/exiting of a second.
     	/// </summary>
-    	list<NamedElement> Event;
+    	NamedElement Event;
     	/// <summary>
     	/// The value of firstEvent[i] is related to event[i] (where i is 1 or 2). If firstEvent[i] is true, then the corresponding observation event is the first time instant the execution enters event[i]. If firstEvent[i] is false, then the corresponding observation event is the time instant the execution exits event[i].
     	/// </summary>
-    	set<bool> FirstEvent;
+    	bool FirstEvent;
     }
 
     /// <summary>
@@ -842,7 +842,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// Specifies a sequence of operand ValueSpecifications.
     	/// </summary>
-    	list<ValueSpecification> Operand subsets Element.OwnedElement;
+    	containment ValueSpecification Operand subsets Element.OwnedElement;
     	/// <summary>
     	/// The symbol associated with this node in the expression tree.
     	/// </summary>
@@ -872,7 +872,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The Interval that specifies the condition of the IntervalConstraint.
     	/// </summary>
-    	Interval Specification redefines Constraint.Specification;
+    	containment Interval Specification redefines Constraint.Specification;
     }
 
     /// <summary>
@@ -1035,11 +1035,11 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// A textual definition of the behavior of the OpaqueExpression, possibly in multiple languages.
     	/// </summary>
-    	multi_list<string> Body;
+    	string Body;
     	/// <summary>
     	/// Specifies the languages used to express the textual bodies of the OpaqueExpression.  Languages are matched to body Strings by order. The interpretation of the body depends on the languages. If the languages are unspecified, they may be implicit from the expression body or the context.
     	/// </summary>
-    	list<string> Language;
+    	string Language;
     	/// <summary>
     	/// If an OpaqueExpression is specified using a UML Behavior, then this refers to the single required return Parameter of that Behavior. When the Behavior completes execution, the values on this Parameter give the result of evaluating the OpaqueExpression.
     	/// </summary>
@@ -1094,7 +1094,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The StringExpressions that constitute this StringExpression.
     	/// </summary>
-    	list<StringExpression> SubExpression subsets Element.OwnedElement;
+    	containment StringExpression SubExpression subsets Element.OwnedElement;
     	/// <summary>
     	/// The query stringValue() returns the String resulting from concatenating, in order, all the component String values of all the operands or subExpressions that are part of the StringExpression.
     	/// </summary>
@@ -1118,7 +1118,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// TheTimeInterval constraining the duration.
     	/// </summary>
-    	TimeInterval Specification redefines IntervalConstraint.Specification;
+    	containment TimeInterval Specification redefines IntervalConstraint.Specification;
     }
 
     /// <summary>
@@ -1129,11 +1129,11 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// A ValueSpecification that evaluates to the value of the TimeExpression.
     	/// </summary>
-    	ValueSpecification Expr subsets Element.OwnedElement;
+    	containment ValueSpecification Expr subsets Element.OwnedElement;
     	/// <summary>
     	/// Refers to the Observations that are involved in the computation of the TimeExpression value.
     	/// </summary>
-    	set<Observation> Observation;
+    	Observation Observation;
     }
 
     /// <summary>
@@ -1237,7 +1237,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// References the condition that must hold when the first ExtensionPoint is reached for the extension to take place. If no constraint is associated with the Extend relationship, the extension is unconditional.
     	/// </summary>
-    	Constraint Condition subsets Element.OwnedElement;
+    	containment Constraint Condition subsets Element.OwnedElement;
     	/// <summary>
     	/// The UseCase that is being extended.
     	/// </summary>
@@ -1249,7 +1249,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// An ordered list of ExtensionPoints belonging to the extended UseCase, specifying where the respective behavioral fragments of the extending UseCase are to be inserted. The first fragment in the extending UseCase is associated with the first extension point in the list, the second fragment with the second point, and so on. Note that, in most practical cases, the extending UseCase has just a single behavior fragment, so that the list of ExtensionPoints is trivial.
     	/// </summary>
-    	list<ExtensionPoint> ExtensionLocation;
+    	ExtensionPoint ExtensionLocation;
     }
 
     /// <summary>
@@ -1286,25 +1286,25 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The Extend relationships owned by this UseCase.
     	/// </summary>
-    	set<Extend> Extend subsets Namespace.OwnedMember;
+    	containment Extend Extend subsets Namespace.OwnedMember;
     	/// <summary>
     	/// The ExtensionPoints owned by this UseCase.
     	/// </summary>
-    	set<ExtensionPoint> ExtensionPoint subsets Namespace.OwnedMember;
+    	containment ExtensionPoint ExtensionPoint subsets Namespace.OwnedMember;
     	/// <summary>
     	/// The Include relationships owned by this UseCase.
     	/// </summary>
-    	set<Include> Include subsets Namespace.OwnedMember;
+    	containment Include Include subsets Namespace.OwnedMember;
     	/// <summary>
     	/// The subjects to which this UseCase applies. Each subject or its parts realize all the UseCases that apply to it.
     	/// </summary>
-    	set<Classifier> Subject;
+    	Classifier Subject;
     	/// <summary>
     	/// The query allIncludedUseCases() returns the transitive closure of all UseCases (directly or indirectly) included by this UseCase.
     	/// </summary>
     	// spec:
     	//     result = (self.include.addition->union(self.include.addition->collect(uc | uc.allIncludedUseCases()))->asSet())
-    	readonly set<UseCase> AllIncludedUseCases();
+    	readonly UseCase AllIncludedUseCases();
     }
 
     /// <summary>
@@ -1317,7 +1317,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// </summary>
     	// spec:
     	//     result = (memberEnd->collect(type)->asSet())
-    	derived set<Type> EndType subsets Relationship.RelatedElement;
+    	derived Type EndType subsets Relationship.RelatedElement;
     	/// <summary>
     	/// Specifies whether the Association is derived from other model elements such as other Associations.
     	/// </summary>
@@ -1325,15 +1325,15 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// Each end represents participation of instances of the Classifier connected to the end in links of the Association.
     	/// </summary>
-    	list<Property> MemberEnd subsets Namespace.Member;
+    	Property MemberEnd subsets Namespace.Member;
     	/// <summary>
     	/// The navigable ends that are owned by the Association itself.
     	/// </summary>
-    	set<Property> NavigableOwnedEnd subsets Association.OwnedEnd;
+    	Property NavigableOwnedEnd subsets Association.OwnedEnd;
     	/// <summary>
     	/// The ends that are owned by the Association itself.
     	/// </summary>
-    	list<Property> OwnedEnd subsets Association.MemberEnd, Classifier.Feature, Namespace.OwnedMember;
+    	containment Property OwnedEnd subsets Association.MemberEnd, Classifier.Feature, Namespace.OwnedMember;
     }
 
     /// <summary>
@@ -1355,7 +1355,7 @@ namespace MetaDslx.Languages.Uml.Model
     	//     result = (Extension.allInstances()->select(ext | 
     	//       let endTypes : Sequence(Classifier) = ext.memberEnd->collect(type.oclAsType(Classifier)) in
     	//       endTypes->includes(self) or endTypes.allParents()->includes(self) ))
-    	derived set<Extension> Extension;
+    	derived Extension Extension;
     	/// <summary>
     	/// If true, the Class does not provide a complete declaration and cannot be instantiated. An abstract Class is typically used as a target of Associations or Generalizations.
     	/// </summary>
@@ -1367,25 +1367,25 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The Classifiers owned by the Class that are not ownedBehaviors.
     	/// </summary>
-    	list<Classifier> NestedClassifier subsets Namespace.OwnedMember;
+    	containment Classifier NestedClassifier subsets Namespace.OwnedMember;
     	/// <summary>
     	/// The attributes (i.e., the Properties) owned by the Class.
     	/// </summary>
-    	list<Property> OwnedAttribute redefines StructuredClassifier.OwnedAttribute subsets Classifier.Attribute, Namespace.OwnedMember;
+    	containment Property OwnedAttribute redefines StructuredClassifier.OwnedAttribute subsets Classifier.Attribute, Namespace.OwnedMember;
     	/// <summary>
     	/// The Operations owned by the Class.
     	/// </summary>
-    	list<Operation> OwnedOperation subsets Classifier.Feature, Namespace.OwnedMember;
+    	containment Operation OwnedOperation subsets Classifier.Feature, Namespace.OwnedMember;
     	/// <summary>
     	/// The Receptions owned by the Class.
     	/// </summary>
-    	set<Reception> OwnedReception subsets Classifier.Feature, Namespace.OwnedMember;
+    	containment Reception OwnedReception subsets Classifier.Feature, Namespace.OwnedMember;
     	/// <summary>
     	/// The superclasses of a Class, derived from its Generalizations.
     	/// </summary>
     	// spec:
     	//     result = (self.general()->select(oclIsKindOf(Class))->collect(oclAsType(Class))->asSet())
-    	derived set<Class> SuperClass redefines Classifier.General;
+    	derived Class SuperClass redefines Classifier.General;
     }
 
     /// <summary>
@@ -1396,7 +1396,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// Represents the participants in the Collaboration.
     	/// </summary>
-    	set<ConnectableElement> CollaborationRole subsets StructuredClassifier.Role;
+    	ConnectableElement CollaborationRole subsets StructuredClassifier.Role;
     }
 
     /// <summary>
@@ -1407,7 +1407,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// A mapping between features of the Collaboration and features of the owning Classifier. This mapping indicates which ConnectableElement of the Classifier plays which role(s) in the Collaboration. A ConnectableElement may be bound to multiple roles in the same CollaborationUse (that is, it may play multiple roles).
     	/// </summary>
-    	set<Dependency> RoleBinding subsets Element.OwnedElement;
+    	containment Dependency RoleBinding subsets Element.OwnedElement;
     	/// <summary>
     	/// The Collaboration which is used in this CollaborationUse. The Collaboration defines the cooperation between its roles which are mapped to ConnectableElements relating to the Classifier owning the CollaborationUse.
     	/// </summary>
@@ -1426,7 +1426,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The set of PackageableElements that a Component owns. In the namespace of a Component, all model elements that are involved in or related to its definition may be owned or imported explicitly. These may include e.g., Classes, Interfaces, Components, Packages, UseCases, Dependencies (e.g., mappings), and Artifacts.
     	/// </summary>
-    	set<PackageableElement> PackagedElement subsets Namespace.OwnedMember;
+    	containment PackageableElement PackagedElement subsets Namespace.OwnedMember;
     	/// <summary>
     	/// The Interfaces that the Component exposes to its environment. These Interfaces may be Realized by the Component or any of its realizingClassifiers, or they may be the Interfaces that are provided by its public Ports.
     	/// </summary>
@@ -1438,11 +1438,11 @@ namespace MetaDslx.Languages.Uml.Model
     	//             ports : Set(Port) = self.ownedPort->union(allParents()->collect(ownedPort))->asSet(),
     	//             providedByPorts : Set(Interface) = ports.provided->asSet()
     	//     in     ris->union(realizingClassifierInterfaces) ->union(providedByPorts)->asSet())
-    	derived set<Interface> Provided;
+    	derived Interface Provided;
     	/// <summary>
     	/// The set of Realizations owned by the Component. Realizations reference the Classifiers of which the Component is an abstraction; i.e., that realize its behavior.
     	/// </summary>
-    	set<ComponentRealization> Realization subsets Element.OwnedElement;
+    	containment ComponentRealization Realization subsets Element.OwnedElement;
     	/// <summary>
     	/// The Interfaces that the Component requires from other Components in its environment in order to be able to offer its full set of provided functionality. These Interfaces may be used by the Component or any of its realizingClassifiers, or they may be the Interfaces that are required by its public Ports.
     	/// </summary>
@@ -1455,7 +1455,7 @@ namespace MetaDslx.Languages.Uml.Model
     	//             usedByPorts : Set(Interface) = ports.required->asSet()
     	//     in	    uis->union(realizingClassifierInterfaces)->union(usedByPorts)->asSet()
     	//     )
-    	derived set<Interface> Required;
+    	derived Interface Required;
     }
 
     /// <summary>
@@ -1470,7 +1470,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The Classifiers that are involved in the implementation of the Component that owns this Realization.
     	/// </summary>
-    	set<Classifier> RealizingClassifier subsets Dependency.Client;
+    	Classifier RealizingClassifier subsets Dependency.Client;
     }
 
     /// <summary>
@@ -1483,7 +1483,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// </summary>
     	// spec:
     	//     result = (ConnectorEnd.allInstances()->select(role = self))
-    	derived set<ConnectorEnd> End;
+    	derived ConnectorEnd End;
     	/// <summary>
     	/// The ConnectableElementTemplateParameter for this ConnectableElement parameter.
     	/// </summary>
@@ -1509,11 +1509,11 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The set of Behaviors that specify the valid interaction patterns across the Connector.
     	/// </summary>
-    	set<Behavior> Contract;
+    	Behavior Contract;
     	/// <summary>
     	/// A Connector has at least two ConnectorEnds, each representing the participation of instances of the Classifiers typing the ConnectableElements attached to the end. The set of ConnectorEnds is ordered.
     	/// </summary>
-    	list<ConnectorEnd> End subsets Element.OwnedElement;
+    	containment ConnectorEnd End subsets Element.OwnedElement;
     	/// <summary>
     	/// Indicates the kind of Connector. This is derived: a Connector with one or more ends connected to a Port which is not on a Part and which is not a behavior port is a delegation; otherwise it is an assembly.
     	/// </summary>
@@ -1529,7 +1529,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// A Connector may be redefined when its containing Classifier is specialized. The redefining Connector may have a type that specializes the type of the redefined Connector. The types of the ConnectorEnds of the redefining Connector may specialize the types of the ConnectorEnds of the redefined Connector. The properties of the ConnectorEnds of the redefining Connector may be replaced.
     	/// </summary>
-    	set<Connector> RedefinedConnector subsets RedefinableElement.RedefinedElement;
+    	Connector RedefinedConnector subsets RedefinableElement.RedefinedElement;
     	/// <summary>
     	/// An optional Association that classifies links corresponding to this Connector.
     	/// </summary>
@@ -1573,7 +1573,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// </summary>
     	// spec:
     	//     result = (ownedAttribute->select(oclIsKindOf(Port))->collect(oclAsType(Port))->asOrderedSet())
-    	derived set<Port> OwnedPort subsets StructuredClassifier.OwnedAttribute;
+    	derived Port OwnedPort subsets StructuredClassifier.OwnedAttribute;
     }
 
     /// <summary>
@@ -1602,17 +1602,17 @@ namespace MetaDslx.Languages.Uml.Model
     	/// </summary>
     	// spec:
     	//     result = (if isConjugated then basicRequired() else basicProvided() endif)
-    	derived set<Interface> Provided;
+    	derived Interface Provided;
     	/// <summary>
     	/// A Port may be redefined when its containing EncapsulatedClassifier is specialized. The redefining Port may have additional Interfaces to those that are associated with the redefined Port or it may replace an Interface by one of its subtypes.
     	/// </summary>
-    	set<Port> RedefinedPort subsets Property.RedefinedProperty;
+    	Port RedefinedPort subsets Property.RedefinedProperty;
     	/// <summary>
     	/// The Interfaces specifying the set of Operations and Receptions that the EncapsulatedCassifier expects its environment to handle via this port. This association is derived according to the value of isConjugated. If isConjugated is false, required is derived as the union of the sets of Interfaces used by the type of the Port and its supertypes. If isConjugated is true, it is derived as the union of the sets of Interfaces realized by the type of the Port and its supertypes, or directly from the type of the Port if the Port is typed by an Interface.
     	/// </summary>
     	// spec:
     	//     result = (if isConjugated then basicProvided() else basicRequired() endif)
-    	derived set<Interface> Required;
+    	derived Interface Required;
     	/// <summary>
     	/// The union of the sets of Interfaces realized by the type of the Port and its supertypes, or directly the type of the Port if the Port is typed by an Interface.
     	/// </summary>
@@ -1621,13 +1621,13 @@ namespace MetaDslx.Languages.Uml.Model
     	//     then type.oclAsType(Interface)->asSet() 
     	//     else type.oclAsType(Classifier).allRealizedInterfaces() 
     	//     endif)
-    	readonly set<Interface> BasicProvided();
+    	readonly Interface BasicProvided();
     	/// <summary>
     	/// The union of the sets of Interfaces used by the type of the Port and its supertypes.
     	/// </summary>
     	// spec:
     	//     result = ( type.oclAsType(Classifier).allUsedInterfaces() )
-    	readonly set<Interface> BasicRequired();
+    	readonly Interface BasicRequired();
     }
 
     /// <summary>
@@ -1638,27 +1638,27 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The Properties owned by the StructuredClassifier.
     	/// </summary>
-    	list<Property> OwnedAttribute subsets Classifier.Attribute, Namespace.OwnedMember, StructuredClassifier.Role;
+    	containment Property OwnedAttribute subsets Classifier.Attribute, Namespace.OwnedMember, StructuredClassifier.Role;
     	/// <summary>
     	/// The connectors owned by the StructuredClassifier.
     	/// </summary>
-    	set<Connector> OwnedConnector subsets Classifier.Feature, Namespace.OwnedMember;
+    	containment Connector OwnedConnector subsets Classifier.Feature, Namespace.OwnedMember;
     	/// <summary>
     	/// The Properties specifying instances that the StructuredClassifier owns by composition. This collection is derived, selecting those owned Properties where isComposite is true.
     	/// </summary>
     	// spec:
     	//     result = (ownedAttribute->select(isComposite))
-    	derived set<Property> Part;
+    	derived Property Part;
     	/// <summary>
     	/// The roles that instances may play in this StructuredClassifier.
     	/// </summary>
-    	union set<ConnectableElement> Role subsets Namespace.Member;
+    	ConnectableElement Role subsets Namespace.Member;
     	/// <summary>
     	/// All features of type ConnectableElement, equivalent to all direct and inherited roles.
     	/// </summary>
     	// spec:
     	//     result = (allFeatures()->select(oclIsKindOf(ConnectableElement))->collect(oclAsType(ConnectableElement))->asSet())
-    	readonly set<ConnectableElement> AllRoles();
+    	readonly ConnectableElement AllRoles();
     }
 
     /// <summary>
@@ -1669,11 +1669,11 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The entryPoint Pseudostates corresponding to this connection point.
     	/// </summary>
-    	set<Pseudostate> Entry;
+    	Pseudostate Entry;
     	/// <summary>
     	/// The exitPoints kind Pseudostates corresponding to this connection point.
     	/// </summary>
-    	set<Pseudostate> Exit;
+    	Pseudostate Exit;
     	/// <summary>
     	/// The State in which the ConnectionPointReference is defined.
     	/// </summary>
@@ -1726,7 +1726,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// Conformance between ProtocolStateMachine 
     	/// </summary>
-    	set<ProtocolConformance> Conformance subsets Element.OwnedElement;
+    	containment ProtocolConformance Conformance subsets Element.OwnedElement;
     }
 
     /// <summary>
@@ -1737,17 +1737,17 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// Specifies the post condition of the Transition which is the Condition that should be obtained once the Transition is triggered. This post condition is part of the post condition of the Operation connected to the Transition.
     	/// </summary>
-    	Constraint PostCondition subsets Namespace.OwnedRule;
+    	containment Constraint PostCondition subsets Namespace.OwnedRule;
     	/// <summary>
     	/// Specifies the precondition of the Transition. It specifies the Condition that should be verified before triggering the Transition. This guard condition added to the source State will be evaluated as part of the precondition of the Operation referred by the Transition if any.
     	/// </summary>
-    	Constraint PreCondition subsets Transition.Guard;
+    	containment Constraint PreCondition subsets Transition.Guard;
     	/// <summary>
     	/// This association refers to the associated Operation. It is derived from the Operation of the CallEvent Trigger when applicable.
     	/// </summary>
     	// spec:
     	//     result = (trigger->collect(event)->select(oclIsKindOf(CallEvent))->collect(oclAsType(CallEvent).operation)->asSet())
-    	derived set<Operation> Referred;
+    	derived Operation Referred;
     }
 
     /// <summary>
@@ -1804,11 +1804,11 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The set of Vertices that are owned by this Region.
     	/// </summary>
-    	set<Vertex> Subvertex subsets Namespace.OwnedMember;
+    	containment Vertex Subvertex subsets Namespace.OwnedMember;
     	/// <summary>
     	/// The set of Transitions owned by the Region.
     	/// </summary>
-    	set<Transition> Transition subsets Namespace.OwnedMember;
+    	containment Transition Transition subsets Namespace.OwnedMember;
     	/// <summary>
     	/// The operation belongsToPSM () checks if the Region belongs to a ProtocolStateMachine.
     	/// </summary>
@@ -1867,27 +1867,27 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The entry and exit connection points used in conjunction with this (submachine) State, i.e., as targets and sources, respectively, in the Region with the submachine State. A connection point reference references the corresponding definition of a connection point Pseudostate in the StateMachine referenced by the submachine State.
     	/// </summary>
-    	set<ConnectionPointReference> Connection subsets Namespace.OwnedMember;
+    	containment ConnectionPointReference Connection subsets Namespace.OwnedMember;
     	/// <summary>
     	/// The entry and exit Pseudostates of a composite State. These can only be entry or exit Pseudostates, and they must have different names. They can only be defined for composite States.
     	/// </summary>
-    	set<Pseudostate> ConnectionPoint subsets Namespace.OwnedMember;
+    	containment Pseudostate ConnectionPoint subsets Namespace.OwnedMember;
     	/// <summary>
     	/// A list of Triggers that are candidates to be retained by the StateMachine if they trigger no Transitions out of the State (not consumed). A deferred Trigger is retained until the StateMachine reaches a State configuration where it is no longer deferred.
     	/// </summary>
-    	set<Trigger> DeferrableTrigger subsets Element.OwnedElement;
+    	containment Trigger DeferrableTrigger subsets Element.OwnedElement;
     	/// <summary>
     	/// An optional Behavior that is executed while being in the State. The execution starts when this State is entered, and ceases either by itself when done, or when the State is exited, whichever comes first.
     	/// </summary>
-    	Behavior DoActivity subsets Element.OwnedElement;
+    	containment Behavior DoActivity subsets Element.OwnedElement;
     	/// <summary>
     	/// An optional Behavior that is executed whenever this State is entered regardless of the Transition taken to reach the State. If defined, entry Behaviors are always executed to completion prior to any internal Behavior or Transitions performed within the State.
     	/// </summary>
-    	Behavior Entry subsets Element.OwnedElement;
+    	containment Behavior Entry subsets Element.OwnedElement;
     	/// <summary>
     	/// An optional Behavior that is executed whenever this State is exited regardless of which Transition was taken out of the State. If defined, exit Behaviors are always executed to completion only after all internal and transition Behaviors have completed execution.
     	/// </summary>
-    	Behavior Exit subsets Element.OwnedElement;
+    	containment Behavior Exit subsets Element.OwnedElement;
     	/// <summary>
     	/// A state with isComposite=true is said to be a composite State. A composite State is a State that contains at least one Region.
     	/// </summary>
@@ -1915,11 +1915,11 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The Regions owned directly by the State.
     	/// </summary>
-    	set<Region> Region subsets Namespace.OwnedMember;
+    	containment Region Region subsets Namespace.OwnedMember;
     	/// <summary>
     	/// Specifies conditions that are always true when this State is the current State. In ProtocolStateMachines state invariants are additional conditions to the preconditions of the outgoing Transitions, and to the postcondition of the incoming Transitions.
     	/// </summary>
-    	Constraint StateInvariant subsets Namespace.OwnedRule;
+    	containment Constraint StateInvariant subsets Namespace.OwnedRule;
     	/// <summary>
     	/// The StateMachine that is to be inserted in place of the (submachine) State.
     	/// </summary>
@@ -1951,19 +1951,19 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The connection points defined for this StateMachine. They represent the interface of the StateMachine when used as part of submachine State
     	/// </summary>
-    	set<Pseudostate> ConnectionPoint subsets Namespace.OwnedMember;
+    	containment Pseudostate ConnectionPoint subsets Namespace.OwnedMember;
     	/// <summary>
     	/// The StateMachines of which this is an extension.
     	/// </summary>
-    	set<StateMachine> ExtendedStateMachine redefines Behavior.RedefinedBehavior;
+    	StateMachine ExtendedStateMachine redefines Behavior.RedefinedBehavior;
     	/// <summary>
     	/// The Regions owned directly by the StateMachine.
     	/// </summary>
-    	set<Region> Region subsets Namespace.OwnedMember;
+    	containment Region Region subsets Namespace.OwnedMember;
     	/// <summary>
     	/// References the submachine(s) in case of a submachine State. Multiple machines are referenced in case of a concurrent State.
     	/// </summary>
-    	set<State> SubmachineState;
+    	State SubmachineState;
     	/// <summary>
     	/// The operation LCA(s1,s2) returns the Region that is the least common ancestor of Vertices s1 and s2, based on the StateMachine containment hierarchy.
     	/// </summary>
@@ -2042,11 +2042,11 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// Specifies an optional behavior to be performed when the Transition fires.
     	/// </summary>
-    	Behavior Effect subsets Element.OwnedElement;
+    	containment Behavior Effect subsets Element.OwnedElement;
     	/// <summary>
     	/// A guard is a Constraint that provides a fine-grained control over the firing of the Transition. The guard is evaluated when an Event occurrence is dispatched by the StateMachine. If the guard is true at that time, the Transition may be enabled, otherwise, it is disabled. Guards should be pure expressions without side effects. Guard expressions with side effects are ill formed.
     	/// </summary>
-    	Constraint Guard subsets Namespace.OwnedRule;
+    	containment Constraint Guard subsets Namespace.OwnedRule;
     	/// <summary>
     	/// Indicates the precise type of the Transition.
     	/// </summary>
@@ -2072,7 +2072,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// Specifies the Triggers that may fire the transition.
     	/// </summary>
-    	set<Trigger> Trigger subsets Element.OwnedElement;
+    	containment Trigger Trigger subsets Element.OwnedElement;
     	/// <summary>
     	/// The query containingStateMachine() returns the StateMachine that contains the Transition either directly or transitively.
     	/// </summary>
@@ -2104,13 +2104,13 @@ namespace MetaDslx.Languages.Uml.Model
     	/// </summary>
     	// spec:
     	//     result = (Transition.allInstances()->select(target=self))
-    	derived set<Transition> Incoming;
+    	derived Transition Incoming;
     	/// <summary>
     	/// Specifies the Transitions departing from this Vertex.
     	/// </summary>
     	// spec:
     	//     result = (Transition.allInstances()->select(source=self))
-    	derived set<Transition> Outgoing;
+    	derived Transition Outgoing;
     	/// <summary>
     	/// References the Classifier in which context this element may be redefined.
     	/// </summary>
@@ -2193,11 +2193,11 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The set of InterfaceRealizations owned by the BehavioredClassifier. Interface realizations reference the Interfaces of which the BehavioredClassifier is an implementation.
     	/// </summary>
-    	set<InterfaceRealization> InterfaceRealization subsets Element.OwnedElement, NamedElement.ClientDependency;
+    	containment InterfaceRealization InterfaceRealization subsets Element.OwnedElement, NamedElement.ClientDependency;
     	/// <summary>
     	/// Behaviors owned by a BehavioredClassifier.
     	/// </summary>
-    	set<Behavior> OwnedBehavior subsets Namespace.OwnedMember;
+    	containment Behavior OwnedBehavior subsets Namespace.OwnedMember;
     }
 
     /// <summary>
@@ -2208,11 +2208,11 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The attributes owned by the DataType.
     	/// </summary>
-    	list<Property> OwnedAttribute subsets Classifier.Attribute, Namespace.OwnedMember;
+    	containment Property OwnedAttribute subsets Classifier.Attribute, Namespace.OwnedMember;
     	/// <summary>
     	/// The Operations owned by the DataType.
     	/// </summary>
-    	list<Operation> OwnedOperation subsets Classifier.Feature, Namespace.OwnedMember;
+    	containment Operation OwnedOperation subsets Classifier.Feature, Namespace.OwnedMember;
     }
 
     /// <summary>
@@ -2223,7 +2223,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The ordered set of literals owned by this Enumeration.
     	/// </summary>
-    	list<EnumerationLiteral> OwnedLiteral subsets Namespace.OwnedMember;
+    	containment EnumerationLiteral OwnedLiteral subsets Namespace.OwnedMember;
     }
 
     /// <summary>
@@ -2251,27 +2251,27 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// References all the Classifiers that are defined (nested) within the Interface.
     	/// </summary>
-    	list<Classifier> NestedClassifier subsets Namespace.OwnedMember;
+    	containment Classifier NestedClassifier subsets Namespace.OwnedMember;
     	/// <summary>
     	/// The attributes (i.e., the Properties) owned by the Interface.
     	/// </summary>
-    	list<Property> OwnedAttribute subsets Classifier.Attribute, Namespace.OwnedMember;
+    	containment Property OwnedAttribute subsets Classifier.Attribute, Namespace.OwnedMember;
     	/// <summary>
     	/// The Operations owned by the Interface.
     	/// </summary>
-    	list<Operation> OwnedOperation subsets Classifier.Feature, Namespace.OwnedMember;
+    	containment Operation OwnedOperation subsets Classifier.Feature, Namespace.OwnedMember;
     	/// <summary>
     	/// Receptions that objects providing this Interface are willing to accept.
     	/// </summary>
-    	set<Reception> OwnedReception subsets Classifier.Feature, Namespace.OwnedMember;
+    	containment Reception OwnedReception subsets Classifier.Feature, Namespace.OwnedMember;
     	/// <summary>
     	/// References a ProtocolStateMachine specifying the legal sequences of the invocation of the BehavioralFeatures described in the Interface.
     	/// </summary>
-    	ProtocolStateMachine Protocol subsets Namespace.OwnedMember;
+    	containment ProtocolStateMachine Protocol subsets Namespace.OwnedMember;
     	/// <summary>
     	/// References all the Interfaces redefined by this Interface.
     	/// </summary>
-    	set<Interface> RedefinedInterface subsets Classifier.RedefinedClassifier;
+    	Interface RedefinedInterface subsets Classifier.RedefinedClassifier;
     }
 
     /// <summary>
@@ -2315,7 +2315,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The attributes owned by the Signal.
     	/// </summary>
-    	list<Property> OwnedAttribute subsets Classifier.Attribute, Namespace.OwnedMember;
+    	containment Property OwnedAttribute subsets Classifier.Attribute, Namespace.OwnedMember;
     }
 
     /// <summary>
@@ -2338,7 +2338,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// References the end of the extension that is typed by a Stereotype.
     	/// </summary>
-    	ExtensionEnd OwnedEnd redefines Association.OwnedEnd;
+    	containment ExtensionEnd OwnedEnd redefines Association.OwnedEnd;
     	/// <summary>
     	/// The query metaclassEnd() returns the Property that is typed by a metaclass (as opposed to a stereotype).
     	/// </summary>
@@ -2415,7 +2415,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// </summary>
     	// spec:
     	//     result = (packagedElement->select(oclIsKindOf(Package))->collect(oclAsType(Package))->asSet())
-    	derived set<Package> NestedPackage subsets Package.PackagedElement;
+    	derived Package NestedPackage subsets Package.PackagedElement;
     	/// <summary>
     	/// References the Package that owns this Package.
     	/// </summary>
@@ -2425,25 +2425,25 @@ namespace MetaDslx.Languages.Uml.Model
     	/// </summary>
     	// spec:
     	//     result = (packagedElement->select(oclIsKindOf(Stereotype))->collect(oclAsType(Stereotype))->asSet())
-    	derived set<Stereotype> OwnedStereotype subsets Package.PackagedElement;
+    	derived Stereotype OwnedStereotype subsets Package.PackagedElement;
     	/// <summary>
     	/// References the packaged elements that are Types.
     	/// </summary>
     	// spec:
     	//     result = (packagedElement->select(oclIsKindOf(Type))->collect(oclAsType(Type))->asSet())
-    	derived set<Type> OwnedType subsets Package.PackagedElement;
+    	derived Type OwnedType subsets Package.PackagedElement;
     	/// <summary>
     	/// References the PackageMerges that are owned by this Package.
     	/// </summary>
-    	set<PackageMerge> PackageMerge subsets Element.OwnedElement;
+    	containment PackageMerge PackageMerge subsets Element.OwnedElement;
     	/// <summary>
     	/// Specifies the packageable elements that are owned by this Package.
     	/// </summary>
-    	set<PackageableElement> PackagedElement subsets Namespace.OwnedMember;
+    	containment PackageableElement PackagedElement subsets Namespace.OwnedMember;
     	/// <summary>
     	/// References the ProfileApplications that indicate which profiles have been applied to the Package.
     	/// </summary>
-    	set<ProfileApplication> ProfileApplication subsets Element.OwnedElement;
+    	containment ProfileApplication ProfileApplication subsets Element.OwnedElement;
     	/// <summary>
     	/// The query allApplicableStereotypes() returns all the directly or indirectly owned stereotypes, including stereotypes contained in sub-profiles.
     	/// </summary>
@@ -2451,7 +2451,7 @@ namespace MetaDslx.Languages.Uml.Model
     	//     result = (let ownedPackages : Bag(Package) = ownedMember->select(oclIsKindOf(Package))->collect(oclAsType(Package)) in
     	//      ownedStereotype->union(ownedPackages.allApplicableStereotypes())->flatten()->asSet()
     	//     )
-    	readonly set<Stereotype> AllApplicableStereotypes();
+    	readonly Stereotype AllApplicableStereotypes();
     	/// <summary>
     	/// The query containingProfile() returns the closest profile directly or indirectly containing this package (or this package itself, if it is a profile).
     	/// </summary>
@@ -2483,7 +2483,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// </summary>
     	// spec:
     	//     result = (member->select( m | m.oclIsKindOf(PackageableElement) and self.makesVisible(m))->collect(oclAsType(PackageableElement))->asSet())
-    	readonly set<PackageableElement> VisibleMembers();
+    	readonly PackageableElement VisibleMembers();
     }
 
     /// <summary>
@@ -2509,11 +2509,11 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// References a metaclass that may be extended.
     	/// </summary>
-    	set<ElementImport> MetaclassReference subsets Namespace.ElementImport;
+    	containment ElementImport MetaclassReference subsets Namespace.ElementImport;
     	/// <summary>
     	/// References a package containing (directly or indirectly) metaclasses that may be extended.
     	/// </summary>
-    	set<PackageImport> MetamodelReference subsets Namespace.PackageImport;
+    	containment PackageImport MetamodelReference subsets Namespace.PackageImport;
     }
 
     /// <summary>
@@ -2543,7 +2543,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// Stereotype can change the graphical appearance of the extended model element by using attached icons. When this association is not null, it references the location of the icon content to be displayed within diagrams presenting the extended model elements.
     	/// </summary>
-    	set<Image> Icon subsets Element.OwnedElement;
+    	containment Image Icon subsets Element.OwnedElement;
     	/// <summary>
     	/// The profile that directly or indirectly contains this stereotype.
     	/// </summary>
@@ -2588,7 +2588,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// Specifies the gates that form the interface between this CombinedFragment and its surroundings
     	/// </summary>
-    	set<Gate> CfragmentGate subsets Element.OwnedElement;
+    	containment Gate CfragmentGate subsets Element.OwnedElement;
     	/// <summary>
     	/// Specifies the operation which defines the semantics of this combination of InteractionFragments.
     	/// </summary>
@@ -2596,7 +2596,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The set of operands of the combined fragment.
     	/// </summary>
-    	list<InteractionOperand> Operand subsets Element.OwnedElement;
+    	containment InteractionOperand Operand subsets Element.OwnedElement;
     }
 
     /// <summary>
@@ -2607,7 +2607,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The set of messages that apply to this fragment.
     	/// </summary>
-    	set<NamedElement> Message;
+    	NamedElement Message;
     }
 
     /// <summary>
@@ -2782,23 +2782,23 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// Actions owned by the Interaction.
     	/// </summary>
-    	set<Action> Action subsets Element.OwnedElement;
+    	containment Action Action subsets Element.OwnedElement;
     	/// <summary>
     	/// Specifies the gates that form the message interface between this Interaction and any InteractionUses which reference it.
     	/// </summary>
-    	set<Gate> FormalGate subsets Namespace.OwnedMember;
+    	containment Gate FormalGate subsets Namespace.OwnedMember;
     	/// <summary>
     	/// The ordered set of fragments in the Interaction.
     	/// </summary>
-    	list<InteractionFragment> Fragment subsets Namespace.OwnedMember;
+    	containment InteractionFragment Fragment subsets Namespace.OwnedMember;
     	/// <summary>
     	/// Specifies the participants in this Interaction.
     	/// </summary>
-    	set<Lifeline> Lifeline subsets Namespace.OwnedMember;
+    	containment Lifeline Lifeline subsets Namespace.OwnedMember;
     	/// <summary>
     	/// The Messages contained in this Interaction.
     	/// </summary>
-    	set<Message> Message subsets Namespace.OwnedMember;
+    	containment Message Message subsets Namespace.OwnedMember;
     }
 
     /// <summary>
@@ -2809,11 +2809,11 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The maximum number of iterations of a loop
     	/// </summary>
-    	ValueSpecification Maxint subsets Element.OwnedElement;
+    	containment ValueSpecification Maxint subsets Element.OwnedElement;
     	/// <summary>
     	/// The minimum number of iterations of a loop
     	/// </summary>
-    	ValueSpecification Minint subsets Element.OwnedElement;
+    	containment ValueSpecification Minint subsets Element.OwnedElement;
     }
 
     /// <summary>
@@ -2824,7 +2824,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// References the Lifelines that the InteractionFragment involves.
     	/// </summary>
-    	set<Lifeline> Covered;
+    	Lifeline Covered;
     	/// <summary>
     	/// The Interaction enclosing this InteractionFragment.
     	/// </summary>
@@ -2836,7 +2836,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The general ordering relationships contained in this fragment.
     	/// </summary>
-    	set<GeneralOrdering> GeneralOrdering subsets Element.OwnedElement;
+    	containment GeneralOrdering GeneralOrdering subsets Element.OwnedElement;
     }
 
     /// <summary>
@@ -2847,11 +2847,11 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The fragments of the operand.
     	/// </summary>
-    	list<InteractionFragment> Fragment subsets Namespace.OwnedMember;
+    	containment InteractionFragment Fragment subsets Namespace.OwnedMember;
     	/// <summary>
     	/// Constraint of the operand.
     	/// </summary>
-    	InteractionConstraint Guard subsets Element.OwnedElement;
+    	containment InteractionConstraint Guard subsets Element.OwnedElement;
     }
 
     /// <summary>
@@ -2862,11 +2862,11 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The actual gates of the InteractionUse.
     	/// </summary>
-    	set<Gate> ActualGate subsets Element.OwnedElement;
+    	containment Gate ActualGate subsets Element.OwnedElement;
     	/// <summary>
     	/// The actual arguments of the Interaction.
     	/// </summary>
-    	list<ValueSpecification> Argument subsets Element.OwnedElement;
+    	containment ValueSpecification Argument subsets Element.OwnedElement;
     	/// <summary>
     	/// Refers to the Interaction that defines its meaning.
     	/// </summary>
@@ -2874,7 +2874,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The value of the executed Interaction.
     	/// </summary>
-    	ValueSpecification ReturnValue subsets Element.OwnedElement;
+    	containment ValueSpecification ReturnValue subsets Element.OwnedElement;
     	/// <summary>
     	/// The recipient of the return value.
     	/// </summary>
@@ -2889,7 +2889,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// References the InteractionFragments in which this Lifeline takes part.
     	/// </summary>
-    	set<InteractionFragment> CoveredBy;
+    	InteractionFragment CoveredBy;
     	/// <summary>
     	/// References the Interaction that represents the decomposition.
     	/// </summary>
@@ -2905,7 +2905,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// If the referenced ConnectableElement is multivalued, then this specifies the specific individual part within that set.
     	/// </summary>
-    	ValueSpecification Selector subsets Element.OwnedElement;
+    	containment ValueSpecification Selector subsets Element.OwnedElement;
     }
 
     /// <summary>
@@ -2916,7 +2916,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The arguments of the Message.
     	/// </summary>
-    	list<ValueSpecification> Argument subsets Element.OwnedElement;
+    	containment ValueSpecification Argument subsets Element.OwnedElement;
     	/// <summary>
     	/// The Connector on which this Message is sent.
     	/// </summary>
@@ -2971,7 +2971,7 @@ namespace MetaDslx.Languages.Uml.Model
     	//     result = (message->asSet().messageEnd->asSet()->excluding(self))
     	// pre:
     	//     message->notEmpty()
-    	readonly set<MessageEnd> OppositeEnd();
+    	readonly MessageEnd OppositeEnd();
     	/// <summary>
     	/// This query returns value true if this MessageEnd is a sendEvent.
     	/// </summary>
@@ -3024,7 +3024,7 @@ namespace MetaDslx.Languages.Uml.Model
     	//       else endMOS.enclosingOperand.oclAsType(InteractionFragment)->asSet()
     	//       endif
     	//     endif)
-    	readonly set<InteractionFragment> EnclosingFragment();
+    	readonly InteractionFragment EnclosingFragment();
     }
 
     /// <summary>
@@ -3046,11 +3046,11 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// References the GeneralOrderings that specify EventOcurrences that must occur after this OccurrenceSpecification.
     	/// </summary>
-    	set<GeneralOrdering> ToAfter;
+    	GeneralOrdering ToAfter;
     	/// <summary>
     	/// References the GeneralOrderings that specify EventOcurrences that must occur before this OccurrenceSpecification.
     	/// </summary>
-    	set<GeneralOrdering> ToBefore;
+    	GeneralOrdering ToBefore;
     }
 
     /// <summary>
@@ -3072,7 +3072,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// A Constraint that should hold at runtime for this StateInvariant.
     	/// </summary>
-    	Constraint Invariant subsets Element.OwnedElement;
+    	containment Constraint Invariant subsets Element.OwnedElement;
     }
 
     /// <summary>
@@ -3083,31 +3083,31 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// Specifies the information items that may circulate on this information flow.
     	/// </summary>
-    	set<Classifier> Conveyed;
+    	Classifier Conveyed;
     	/// <summary>
     	/// Defines from which source the conveyed InformationItems are initiated.
     	/// </summary>
-    	set<NamedElement> InformationSource subsets DirectedRelationship.Source;
+    	NamedElement InformationSource subsets DirectedRelationship.Source;
     	/// <summary>
     	/// Defines to which target the conveyed InformationItems are directed.
     	/// </summary>
-    	set<NamedElement> InformationTarget subsets DirectedRelationship.Target;
+    	NamedElement InformationTarget subsets DirectedRelationship.Target;
     	/// <summary>
     	/// Determines which Relationship will realize the specified flow.
     	/// </summary>
-    	set<Relationship> Realization;
+    	Relationship Realization;
     	/// <summary>
     	/// Determines which ActivityEdges will realize the specified flow.
     	/// </summary>
-    	set<ActivityEdge> RealizingActivityEdge;
+    	ActivityEdge RealizingActivityEdge;
     	/// <summary>
     	/// Determines which Connectors will realize the specified flow.
     	/// </summary>
-    	set<Connector> RealizingConnector;
+    	Connector RealizingConnector;
     	/// <summary>
     	/// Determines which Messages will realize the specified flow.
     	/// </summary>
-    	set<Message> RealizingMessage;
+    	Message RealizingMessage;
     }
 
     /// <summary>
@@ -3118,7 +3118,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// Determines the classifiers that will specify the structure and nature of the information. An information item represents all its represented classifiers.
     	/// </summary>
-    	set<Classifier> Represented;
+    	Classifier Represented;
     }
 
     /// <summary>
@@ -3134,19 +3134,19 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The set of model elements that are manifested in the Artifact. That is, these model elements are utilized in the construction (or generation) of the artifact.
     	/// </summary>
-    	set<Manifestation> Manifestation subsets Element.OwnedElement, NamedElement.ClientDependency;
+    	containment Manifestation Manifestation subsets Element.OwnedElement, NamedElement.ClientDependency;
     	/// <summary>
     	/// The Artifacts that are defined (nested) within the Artifact. The association is a specialization of the ownedMember association from Namespace to NamedElement.
     	/// </summary>
-    	set<Artifact> NestedArtifact subsets Namespace.OwnedMember;
+    	containment Artifact NestedArtifact subsets Namespace.OwnedMember;
     	/// <summary>
     	/// The attributes or association ends defined for the Artifact. The association is a specialization of the ownedMember association.
     	/// </summary>
-    	list<Property> OwnedAttribute subsets Classifier.Attribute, Namespace.OwnedMember;
+    	containment Property OwnedAttribute subsets Classifier.Attribute, Namespace.OwnedMember;
     	/// <summary>
     	/// The Operations defined for the Artifact. The association is a specialization of the ownedMember association.
     	/// </summary>
-    	list<Operation> OwnedOperation subsets Classifier.Feature, Namespace.OwnedMember;
+    	containment Operation OwnedOperation subsets Classifier.Feature, Namespace.OwnedMember;
     }
 
     /// <summary>
@@ -3172,11 +3172,11 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The specification of properties that parameterize the deployment and execution of one or more Artifacts.
     	/// </summary>
-    	set<DeploymentSpecification> Configuration subsets Element.OwnedElement;
+    	containment DeploymentSpecification Configuration subsets Element.OwnedElement;
     	/// <summary>
     	/// The Artifacts that are deployed onto a Node. This association specializes the supplier association.
     	/// </summary>
-    	set<DeployedArtifact> DeployedArtifact subsets Dependency.Supplier;
+    	DeployedArtifact DeployedArtifact subsets Dependency.Supplier;
     	/// <summary>
     	/// The DeployedTarget which is the target of a Deployment.
     	/// </summary>
@@ -3212,11 +3212,11 @@ namespace MetaDslx.Languages.Uml.Model
     	/// </summary>
     	// spec:
     	//     result = (deployment.deployedArtifact->select(oclIsKindOf(Artifact))->collect(oclAsType(Artifact).manifestation)->collect(utilizedElement)->asSet())
-    	derived set<PackageableElement> DeployedElement;
+    	derived PackageableElement DeployedElement;
     	/// <summary>
     	/// The set of Deployments for a DeploymentTarget.
     	/// </summary>
-    	set<Deployment> Deployment subsets Element.OwnedElement, NamedElement.ClientDependency;
+    	containment Deployment Deployment subsets Element.OwnedElement, NamedElement.ClientDependency;
     }
 
     /// <summary>
@@ -3252,7 +3252,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The Nodes that are defined (nested) within the Node.
     	/// </summary>
-    	set<Node> NestedNode subsets Namespace.OwnedMember;
+    	containment Node NestedNode subsets Namespace.OwnedMember;
     }
 
     /// <summary>
@@ -3263,7 +3263,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// An OpaqueExpression that states the abstraction relationship between the supplier(s) and the client(s). In some cases, such as derivation, it is usually formal and unidirectional; in other cases, such as trace, it is usually informal and bidirectional. The mapping expression is optional and may be omitted if the precise relationship between the Elements is not specified.
     	/// </summary>
-    	OpaqueExpression Mapping subsets Element.OwnedElement;
+    	containment OpaqueExpression Mapping subsets Element.OwnedElement;
     }
 
     /// <summary>
@@ -3274,7 +3274,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// References the Element(s) being commented.
     	/// </summary>
-    	set<Element> AnnotatedElement;
+    	Element AnnotatedElement;
     	/// <summary>
     	/// Specifies a string that is the comment.
     	/// </summary>
@@ -3289,7 +3289,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The ordered set of Elements referenced by this Constraint.
     	/// </summary>
-    	list<Element> ConstrainedElement;
+    	Element ConstrainedElement;
     	/// <summary>
     	/// Specifies the Namespace that owns the Constraint.
     	/// </summary>
@@ -3297,7 +3297,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// A condition that must be true when evaluated in order for the Constraint to be satisfied.
     	/// </summary>
-    	ValueSpecification Specification subsets Element.OwnedElement;
+    	containment ValueSpecification Specification subsets Element.OwnedElement;
     }
 
     /// <summary>
@@ -3308,11 +3308,11 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The Element(s) dependent on the supplier Element(s). In some cases (such as a trace Abstraction) the assignment of direction (that is, the designation of the client Element) is at the discretion of the modeler and is a stipulation.
     	/// </summary>
-    	set<NamedElement> Client subsets DirectedRelationship.Source;
+    	NamedElement Client subsets DirectedRelationship.Source;
     	/// <summary>
     	/// The Element(s) on which the client Element(s) depend in some respect. The modeler may stipulate a sense of Dependency direction suitable for their domain.
     	/// </summary>
-    	set<NamedElement> Supplier subsets DirectedRelationship.Target;
+    	NamedElement Supplier subsets DirectedRelationship.Target;
     }
 
     /// <summary>
@@ -3323,11 +3323,11 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// Specifies the source Element(s) of the DirectedRelationship.
     	/// </summary>
-    	union set<Element> Source subsets Relationship.RelatedElement;
+    	Element Source subsets Relationship.RelatedElement;
     	/// <summary>
     	/// Specifies the target Element(s) of the DirectedRelationship.
     	/// </summary>
-    	union set<Element> Target subsets Relationship.RelatedElement;
+    	Element Target subsets Relationship.RelatedElement;
     }
 
     /// <summary>
@@ -3338,11 +3338,11 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The Comments owned by this Element.
     	/// </summary>
-    	set<Comment> OwnedComment subsets Element.OwnedElement;
+    	containment Comment OwnedComment subsets Element.OwnedElement;
     	/// <summary>
     	/// The Elements owned by this Element.
     	/// </summary>
-    	union set<Element> OwnedElement;
+    	Element OwnedElement;
     	/// <summary>
     	/// The Element that owns this Element.
     	/// </summary>
@@ -3352,7 +3352,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// </summary>
     	// spec:
     	//     result = (ownedElement->union(ownedElement->collect(e | e.allOwnedElements()))->asSet())
-    	readonly set<Element> AllOwnedElements();
+    	readonly Element AllOwnedElements();
     	/// <summary>
     	/// The query mustBeOwned() indicates whether Elements of this type must have an owner. Subclasses of Element that do not require an owner must override this operation.
     	/// </summary>
@@ -3416,7 +3416,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The specification of the lower bound for this multiplicity.
     	/// </summary>
-    	ValueSpecification LowerValue subsets Element.OwnedElement;
+    	containment ValueSpecification LowerValue subsets Element.OwnedElement;
     	/// <summary>
     	/// The upper bound of the multiplicity interval.
     	/// </summary>
@@ -3426,7 +3426,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The specification of the upper bound for this multiplicity.
     	/// </summary>
-    	ValueSpecification UpperValue subsets Element.OwnedElement;
+    	containment ValueSpecification UpperValue subsets Element.OwnedElement;
     	/// <summary>
     	/// The operation compatibleWith takes another multiplicity as input. It returns true if the other multiplicity is wider than, or the same as, self.
     	/// </summary>
@@ -3479,7 +3479,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// </summary>
     	// spec:
     	//     result = (Dependency.allInstances()->select(d | d.client->includes(self)))
-    	derived set<Dependency> ClientDependency;
+    	derived Dependency ClientDependency;
     	/// <summary>
     	/// The name of the NamedElement.
     	/// </summary>
@@ -3487,7 +3487,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The StringExpression used to define the name of this NamedElement.
     	/// </summary>
-    	StringExpression NameExpression subsets Element.OwnedElement;
+    	containment StringExpression NameExpression subsets Element.OwnedElement;
     	/// <summary>
     	/// Specifies the Namespace that owns the NamedElement.
     	/// </summary>
@@ -3523,7 +3523,7 @@ namespace MetaDslx.Languages.Uml.Model
     	//         namespace.allNamespaces()->prepend(namespace)
     	//       endif
     	//     endif)
-    	readonly list<Namespace> AllNamespaces();
+    	readonly Namespace AllNamespaces();
     	/// <summary>
     	/// The query allOwningPackages() returns the set of all the enclosing Namespaces of this NamedElement, working outwards, that are Packages, up to but not including the first such Namespace that is not a Package.
     	/// </summary>
@@ -3535,7 +3535,7 @@ namespace MetaDslx.Languages.Uml.Model
     	//     else
     	//       null
     	//     endif)
-    	readonly set<Package> AllOwningPackages();
+    	readonly Package AllOwningPackages();
     	/// <summary>
     	/// The query isDistinguishableFrom() determines whether two NamedElements may logically co-exist within a Namespace. By default, two named elements are distinguishable if (a) they have types neither of which is a kind of the other or (b) they have different names.
     	/// </summary>
@@ -3560,35 +3560,35 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// References the ElementImports owned by the Namespace.
     	/// </summary>
-    	set<ElementImport> ElementImport subsets Element.OwnedElement;
+    	containment ElementImport ElementImport subsets Element.OwnedElement;
     	/// <summary>
     	/// References the PackageableElements that are members of this Namespace as a result of either PackageImports or ElementImports.
     	/// </summary>
     	// spec:
     	//     result = (self.importMembers(elementImport.importedElement->asSet()->union(packageImport.importedPackage->collect(p | p.visibleMembers()))->asSet()))
-    	derived set<PackageableElement> ImportedMember subsets Namespace.Member;
+    	derived PackageableElement ImportedMember subsets Namespace.Member;
     	/// <summary>
     	/// A collection of NamedElements identifiable within the Namespace, either by being owned or by being introduced by importing or inheritance.
     	/// </summary>
-    	union set<NamedElement> Member;
+    	NamedElement Member;
     	/// <summary>
     	/// A collection of NamedElements owned by the Namespace.
     	/// </summary>
-    	union set<NamedElement> OwnedMember subsets Element.OwnedElement, Namespace.Member;
+    	NamedElement OwnedMember subsets Element.OwnedElement, Namespace.Member;
     	/// <summary>
     	/// Specifies a set of Constraints owned by this Namespace.
     	/// </summary>
-    	set<Constraint> OwnedRule subsets Namespace.OwnedMember;
+    	containment Constraint OwnedRule subsets Namespace.OwnedMember;
     	/// <summary>
     	/// References the PackageImports owned by the Namespace.
     	/// </summary>
-    	set<PackageImport> PackageImport subsets Element.OwnedElement;
+    	containment PackageImport PackageImport subsets Element.OwnedElement;
     	/// <summary>
     	/// The query excludeCollisions() excludes from a set of PackageableElements any that would not be distinguishable from each other in this Namespace.
     	/// </summary>
     	// spec:
     	//     result = (imps->reject(imp1  | imps->exists(imp2 | not imp1.isDistinguishableFrom(imp2, self))))
-    	readonly set<PackageableElement> ExcludeCollisions(set<PackageableElement> imps);
+    	readonly PackageableElement ExcludeCollisions(PackageableElement imps);
     	/// <summary>
     	/// The query getNamesOfMember() gives a set of all of the names that a member would have in a Namespace, taking importing into account. In general a member can have multiple names in a Namespace if it is imported more than once with different aliases.
     	/// </summary>
@@ -3603,13 +3603,13 @@ namespace MetaDslx.Languages.Uml.Model
     	//          self.packageImport->select(pi | pi.importedPackage.visibleMembers().oclAsType(NamedElement)->includes(element))-> collect(pi | pi.importedPackage.getNamesOfMember(element))->asSet()
     	//       endif
     	//     endif)
-    	readonly set<string> GetNamesOfMember(NamedElement element);
+    	readonly string GetNamesOfMember(NamedElement element);
     	/// <summary>
     	/// The query importMembers() defines which of a set of PackageableElements are actually imported into the Namespace. This excludes hidden ones, i.e., those which have names that conflict with names of ownedMembers, and it also excludes PackageableElements that would have the indistinguishable names when imported.
     	/// </summary>
     	// spec:
     	//     result = (self.excludeCollisions(imps)->select(imp | self.ownedMember->forAll(mem | imp.isDistinguishableFrom(mem, self))))
-    	readonly set<PackageableElement> ImportMembers(set<PackageableElement> imps);
+    	readonly PackageableElement ImportMembers(PackageableElement imps);
     	/// <summary>
     	/// The Boolean query membersAreDistinguishable() determines whether all of the Namespace&apos;s members are distinguishable within it.
     	/// </summary>
@@ -3692,7 +3692,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// Specifies the elements related by the Relationship.
     	/// </summary>
-    	union set<Element> RelatedElement;
+    	Element RelatedElement;
     }
 
     /// <summary>
@@ -3703,11 +3703,11 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The optional TemplateSignature specifying the formal TemplateParameters for this TemplateableElement. If a TemplateableElement has a TemplateSignature, then it is a template.
     	/// </summary>
-    	TemplateSignature OwnedTemplateSignature subsets Element.OwnedElement;
+    	containment TemplateSignature OwnedTemplateSignature subsets Element.OwnedElement;
     	/// <summary>
     	/// The optional TemplateBindings from this TemplateableElement to one or more templates.
     	/// </summary>
-    	set<TemplateBinding> TemplateBinding subsets Element.OwnedElement;
+    	containment TemplateBinding TemplateBinding subsets Element.OwnedElement;
     	/// <summary>
     	/// The query isTemplate() returns whether this TemplateableElement is actually a template.
     	/// </summary>
@@ -3719,7 +3719,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// </summary>
     	// spec:
     	//     result = (self.allOwnedElements()->select(oclIsKindOf(ParameterableElement)).oclAsType(ParameterableElement)->asSet())
-    	readonly set<ParameterableElement> ParameterableElements();
+    	readonly ParameterableElement ParameterableElements();
     }
 
     /// <summary>
@@ -3734,7 +3734,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The TemplateParameterSubstitutions owned by this TemplateBinding.
     	/// </summary>
-    	set<TemplateParameterSubstitution> ParameterSubstitution subsets Element.OwnedElement;
+    	containment TemplateParameterSubstitution ParameterSubstitution subsets Element.OwnedElement;
     	/// <summary>
     	/// The TemplateSignature for the template that is the target of this TemplateBinding.
     	/// </summary>
@@ -3753,11 +3753,11 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The ParameterableElement that is owned by this TemplateParameter for the purpose of providing a default.
     	/// </summary>
-    	ParameterableElement OwnedDefault subsets Element.OwnedElement, TemplateParameter.Default;
+    	containment ParameterableElement OwnedDefault subsets Element.OwnedElement, TemplateParameter.Default;
     	/// <summary>
     	/// The ParameterableElement that is owned by this TemplateParameter for the purpose of exposing it as the parameteredElement.
     	/// </summary>
-    	ParameterableElement OwnedParameteredElement subsets Element.OwnedElement, TemplateParameter.ParameteredElement;
+    	containment ParameterableElement OwnedParameteredElement subsets Element.OwnedElement, TemplateParameter.ParameteredElement;
     	/// <summary>
     	/// The ParameterableElement exposed by this TemplateParameter.
     	/// </summary>
@@ -3784,7 +3784,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The ParameterableElement that is owned by this TemplateParameterSubstitution as its actual parameter.
     	/// </summary>
-    	ParameterableElement OwnedActual subsets Element.OwnedElement, TemplateParameterSubstitution.Actual;
+    	containment ParameterableElement OwnedActual subsets Element.OwnedElement, TemplateParameterSubstitution.Actual;
     	/// <summary>
     	/// The TemplateBinding that owns this TemplateParameterSubstitution.
     	/// </summary>
@@ -3799,11 +3799,11 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The formal parameters that are owned by this TemplateSignature.
     	/// </summary>
-    	list<TemplateParameter> OwnedParameter subsets Element.OwnedElement, TemplateSignature.Parameter;
+    	containment TemplateParameter OwnedParameter subsets Element.OwnedElement, TemplateSignature.Parameter;
     	/// <summary>
     	/// The ordered set of all formal TemplateParameters for this TemplateSignature.
     	/// </summary>
-    	list<TemplateParameter> Parameter;
+    	TemplateParameter Parameter;
     	/// <summary>
     	/// The TemplateableElement that owns this TemplateSignature.
     	/// </summary>
@@ -3880,19 +3880,19 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// References a list of Parameters to the Behavior which describes the order and type of arguments that can be given when the Behavior is invoked and of the values which will be returned when the Behavior completes its execution.
     	/// </summary>
-    	list<Parameter> OwnedParameter subsets Namespace.OwnedMember;
+    	containment Parameter OwnedParameter subsets Namespace.OwnedMember;
     	/// <summary>
     	/// The ParameterSets owned by this Behavior.
     	/// </summary>
-    	set<ParameterSet> OwnedParameterSet subsets Namespace.OwnedMember;
+    	containment ParameterSet OwnedParameterSet subsets Namespace.OwnedMember;
     	/// <summary>
     	/// An optional set of Constraints specifying what is fulfilled after the execution of the Behavior is completed, if its precondition was fulfilled before its invocation.
     	/// </summary>
-    	set<Constraint> Postcondition subsets Namespace.OwnedRule;
+    	containment Constraint Postcondition subsets Namespace.OwnedRule;
     	/// <summary>
     	/// An optional set of Constraints specifying what must be fulfilled before the Behavior is invoked.
     	/// </summary>
-    	set<Constraint> Precondition subsets Namespace.OwnedRule;
+    	containment Constraint Precondition subsets Namespace.OwnedRule;
     	/// <summary>
     	/// Designates a BehavioralFeature that the Behavior implements. The BehavioralFeature must be owned by the BehavioredClassifier that owns the Behavior or be inherited by it. The Parameters of the BehavioralFeature and the implementing Behavior must match. A Behavior does not need to have a specification, in which case it either is the classifierBehavior of a BehavioredClassifier or it can only be invoked by another Behavior of the Classifier.
     	/// </summary>
@@ -3900,7 +3900,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// References the Behavior that this Behavior redefines. A subtype of Behavior may redefine any other subtype of Behavior. If the Behavior implements a BehavioralFeature, it replaces the redefined Behavior. If the Behavior is a classifierBehavior, it extends the redefined Behavior.
     	/// </summary>
-    	set<Behavior> RedefinedBehavior subsets Classifier.RedefinedClassifier;
+    	Behavior RedefinedBehavior subsets Classifier.RedefinedClassifier;
     	/// <summary>
     	/// The first BehavioredClassifier reached by following the chain of owner relationships from the Behavior, if any.
     	/// </summary>
@@ -3920,13 +3920,13 @@ namespace MetaDslx.Languages.Uml.Model
     	/// </summary>
     	// spec:
     	//     result = (ownedParameter->select(direction=ParameterDirectionKind::_'in' or direction=ParameterDirectionKind::inout))
-    	readonly list<Parameter> InputParameters();
+    	readonly Parameter InputParameters();
     	/// <summary>
     	/// The out, inout and return ownedParameters.
     	/// </summary>
     	// spec:
     	//     result = (ownedParameter->select(direction=ParameterDirectionKind::out or direction=ParameterDirectionKind::inout or direction=ParameterDirectionKind::return))
-    	readonly list<Parameter> OutputParameters();
+    	readonly Parameter OutputParameters();
     }
 
     /// <summary>
@@ -3948,7 +3948,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// A Boolean-valued ValueSpecification that will result in a ChangeEvent whenever its value changes from false to true.
     	/// </summary>
-    	ValueSpecification ChangeExpression subsets Element.OwnedElement;
+    	containment ValueSpecification ChangeExpression subsets Element.OwnedElement;
     }
 
     /// <summary>
@@ -3988,11 +3988,11 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// Specifies the behavior in one or more languages.
     	/// </summary>
-    	multi_list<string> Body;
+    	string Body;
     	/// <summary>
     	/// Languages the body strings use in the same order as the body strings.
     	/// </summary>
-    	list<string> Language;
+    	string Language;
     }
 
     /// <summary>
@@ -4018,7 +4018,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// Specifies the time of the TimeEvent.
     	/// </summary>
-    	TimeExpression When subsets Element.OwnedElement;
+    	containment TimeExpression When subsets Element.OwnedElement;
     }
 
     /// <summary>
@@ -4033,7 +4033,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// A optional Port of through which the given effect is detected.
     	/// </summary>
-    	set<Port> Port;
+    	Port Port;
     }
 
     /// <summary>
@@ -4067,19 +4067,19 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// A Behavior that implements the BehavioralFeature. There may be at most one Behavior for a particular pairing of a Classifier (as owner of the Behavior) and a BehavioralFeature (as specification of the Behavior).
     	/// </summary>
-    	set<Behavior> Method;
+    	Behavior Method;
     	/// <summary>
     	/// The ordered set of formal Parameters of this BehavioralFeature.
     	/// </summary>
-    	list<Parameter> OwnedParameter subsets Namespace.OwnedMember;
+    	containment Parameter OwnedParameter subsets Namespace.OwnedMember;
     	/// <summary>
     	/// The ParameterSets owned by this BehavioralFeature.
     	/// </summary>
-    	set<ParameterSet> OwnedParameterSet subsets Namespace.OwnedMember;
+    	containment ParameterSet OwnedParameterSet subsets Namespace.OwnedMember;
     	/// <summary>
     	/// The Types representing exceptions that may be raised during an invocation of this BehavioralFeature.
     	/// </summary>
-    	set<Type> RaisedException;
+    	Type RaisedException;
     	/// <summary>
     	/// The query isDistinguishableFrom() determines whether two BehavioralFeatures may coexist in the same Namespace. It specifies that they must have different signatures.
     	/// </summary>
@@ -4095,13 +4095,13 @@ namespace MetaDslx.Languages.Uml.Model
     	/// </summary>
     	// spec:
     	//     result = (ownedParameter->select(direction=ParameterDirectionKind::_'in' or direction=ParameterDirectionKind::inout))
-    	readonly list<Parameter> InputParameters();
+    	readonly Parameter InputParameters();
     	/// <summary>
     	/// The ownedParameters with direction out, inout, or return.
     	/// </summary>
     	// spec:
     	//     result = (ownedParameter->select(direction=ParameterDirectionKind::out or direction=ParameterDirectionKind::inout or direction=ParameterDirectionKind::return))
-    	readonly list<Parameter> OutputParameters();
+    	readonly Parameter OutputParameters();
     }
 
     /// <summary>
@@ -4112,31 +4112,31 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// All of the Properties that are direct (i.e., not inherited or imported) attributes of the Classifier.
     	/// </summary>
-    	union list<Property> Attribute subsets Classifier.Feature;
+    	Property Attribute subsets Classifier.Feature;
     	/// <summary>
     	/// The CollaborationUses owned by the Classifier.
     	/// </summary>
-    	set<CollaborationUse> CollaborationUse subsets Element.OwnedElement;
+    	containment CollaborationUse CollaborationUse subsets Element.OwnedElement;
     	/// <summary>
     	/// Specifies each Feature directly defined in the classifier. Note that there may be members of the Classifier that are of the type Feature but are not included, e.g., inherited features.
     	/// </summary>
-    	union set<Feature> Feature subsets Namespace.Member;
+    	Feature Feature subsets Namespace.Member;
     	/// <summary>
     	/// The generalizing Classifiers for this Classifier.
     	/// </summary>
     	// spec:
     	//     result = (parents())
-    	derived set<Classifier> General;
+    	derived Classifier General;
     	/// <summary>
     	/// The Generalization relationships for this Classifier. These Generalizations navigate to more general Classifiers in the generalization hierarchy.
     	/// </summary>
-    	set<Generalization> Generalization subsets Element.OwnedElement;
+    	containment Generalization Generalization subsets Element.OwnedElement;
     	/// <summary>
     	/// All elements inherited by this Classifier from its general Classifiers.
     	/// </summary>
     	// spec:
     	//     result = (inherit(parents()->collect(inheritableMembers(self))->asSet()))
-    	derived set<NamedElement> InheritedMember subsets Namespace.Member;
+    	derived NamedElement InheritedMember subsets Namespace.Member;
     	/// <summary>
     	/// If true, the Classifier can only be instantiated by instantiating one of its specializations. An abstract Classifier is intended to be used by other Classifiers e.g., as the target of Associations or Generalizations.
     	/// </summary>
@@ -4148,19 +4148,19 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The optional RedefinableTemplateSignature specifying the formal template parameters.
     	/// </summary>
-    	RedefinableTemplateSignature OwnedTemplateSignature redefines TemplateableElement.OwnedTemplateSignature;
+    	containment RedefinableTemplateSignature OwnedTemplateSignature redefines TemplateableElement.OwnedTemplateSignature;
     	/// <summary>
     	/// The UseCases owned by this classifier.
     	/// </summary>
-    	set<UseCase> OwnedUseCase subsets Namespace.OwnedMember;
+    	containment UseCase OwnedUseCase subsets Namespace.OwnedMember;
     	/// <summary>
     	/// The GeneralizationSet of which this Classifier is a power type.
     	/// </summary>
-    	set<GeneralizationSet> PowertypeExtent;
+    	GeneralizationSet PowertypeExtent;
     	/// <summary>
     	/// The Classifiers redefined by this Classifier.
     	/// </summary>
-    	set<Classifier> RedefinedClassifier subsets RedefinableElement.RedefinedElement;
+    	Classifier RedefinedClassifier subsets RedefinableElement.RedefinedElement;
     	/// <summary>
     	/// A CollaborationUse which indicates the Collaboration that represents this Classifier.
     	/// </summary>
@@ -4168,7 +4168,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The Substitutions owned by this Classifier.
     	/// </summary>
-    	set<Substitution> Substitution subsets Element.OwnedElement, NamedElement.ClientDependency;
+    	containment Substitution Substitution subsets Element.OwnedElement, NamedElement.ClientDependency;
     	/// <summary>
     	/// TheClassifierTemplateParameter that exposes this element as a formal parameter.
     	/// </summary>
@@ -4176,19 +4176,19 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The set of UseCases for which this Classifier is the subject.
     	/// </summary>
-    	set<UseCase> UseCase;
+    	UseCase UseCase;
     	/// <summary>
     	/// The query allFeatures() gives all of the Features in the namespace of the Classifier. In general, through mechanisms such as inheritance, this will be a larger set than feature.
     	/// </summary>
     	// spec:
     	//     result = (member->select(oclIsKindOf(Feature))->collect(oclAsType(Feature))->asSet())
-    	readonly set<Feature> AllFeatures();
+    	readonly Feature AllFeatures();
     	/// <summary>
     	/// The query allParents() gives all of the direct and indirect ancestors of a generalized Classifier.
     	/// </summary>
     	// spec:
     	//     result = (parents()->union(parents()->collect(allParents())->asSet()))
-    	readonly set<Classifier> AllParents();
+    	readonly Classifier AllParents();
     	/// <summary>
     	/// The query conformsTo() gives true for a Classifier that defines a type that conforms to another. This is used, for example, in the specification of signature conformance for operations.
     	/// </summary>
@@ -4217,7 +4217,7 @@ namespace MetaDslx.Languages.Uml.Model
     	//       ownedMember->select(oclIsKindOf(RedefinableElement))->
     	//         select(redefinedElement->includes(inh.oclAsType(RedefinableElement)))
     	//            ->notEmpty()))
-    	readonly set<NamedElement> Inherit(set<NamedElement> inhs);
+    	readonly NamedElement Inherit(NamedElement inhs);
     	/// <summary>
     	/// The query inheritableMembers() gives all of the members of a Classifier that may be inherited in one of its descendants, subject to whatever visibility restrictions apply.
     	/// </summary>
@@ -4225,7 +4225,7 @@ namespace MetaDslx.Languages.Uml.Model
     	//     c.allParents()->includes(self)
     	// spec:
     	//     result = (member->select(m | c.hasVisibilityOf(m)))
-    	readonly set<NamedElement> InheritableMembers(Classifier c);
+    	readonly NamedElement InheritableMembers(Classifier c);
     	/// <summary>
     	/// The query isTemplate() returns whether this Classifier is actually a template.
     	/// </summary>
@@ -4243,7 +4243,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// </summary>
     	// spec:
     	//     result = (generalization.general->asSet())
-    	readonly set<Classifier> Parents();
+    	readonly Classifier Parents();
     	/// <summary>
     	/// The Interfaces directly realized by this Classifier
     	/// </summary>
@@ -4251,7 +4251,7 @@ namespace MetaDslx.Languages.Uml.Model
     	//     result = ((clientDependency->
     	//       select(oclIsKindOf(Realization) and supplier->forAll(oclIsKindOf(Interface))))->
     	//           collect(supplier.oclAsType(Interface))->asSet())
-    	readonly set<Interface> DirectlyRealizedInterfaces();
+    	readonly Interface DirectlyRealizedInterfaces();
     	/// <summary>
     	/// The Interfaces directly used by this Classifier
     	/// </summary>
@@ -4259,19 +4259,19 @@ namespace MetaDslx.Languages.Uml.Model
     	//     result = ((supplierDependency->
     	//       select(oclIsKindOf(Usage) and client->forAll(oclIsKindOf(Interface))))->
     	//         collect(client.oclAsType(Interface))->asSet())
-    	readonly set<Interface> DirectlyUsedInterfaces();
+    	readonly Interface DirectlyUsedInterfaces();
     	/// <summary>
     	/// The Interfaces realized by this Classifier and all of its generalizations
     	/// </summary>
     	// spec:
     	//     result = (directlyRealizedInterfaces()->union(self.allParents()->collect(directlyRealizedInterfaces()))->asSet())
-    	readonly set<Interface> AllRealizedInterfaces();
+    	readonly Interface AllRealizedInterfaces();
     	/// <summary>
     	/// The Interfaces used by this Classifier and all of its generalizations
     	/// </summary>
     	// spec:
     	//     result = (directlyUsedInterfaces()->union(self.allParents()->collect(directlyUsedInterfaces()))->asSet())
-    	readonly set<Interface> AllUsedInterfaces();
+    	readonly Interface AllUsedInterfaces();
     	// spec:
     	//     result = (substitution.contract->includes(contract))
     	readonly bool IsSubstitutableFor(Classifier contract);
@@ -4280,7 +4280,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// </summary>
     	// spec:
     	//     result = (attribute->asSequence()->union(parents()->asSequence().allAttributes())->select(p | member->includes(p))->asOrderedSet())
-    	readonly list<Property> AllAttributes();
+    	readonly Property AllAttributes();
     	/// <summary>
     	/// All StructuralFeatures related to the Classifier that may have Slots, including direct attributes, inherited attributes, private attributes in generalizations, and memberEnds of Associations, but excluding redefined StructuralFeatures.
     	/// </summary>
@@ -4289,7 +4289,7 @@ namespace MetaDslx.Languages.Uml.Model
     	//       collect(oclAsType(StructuralFeature))->
     	//        union(self.inherit(self.allParents()->collect(p | p.attribute)->asSet())->
     	//          collect(oclAsType(StructuralFeature)))->asSet())
-    	readonly set<StructuralFeature> AllSlottableFeatures();
+    	readonly StructuralFeature AllSlottableFeatures();
     }
 
     /// <summary>
@@ -4304,7 +4304,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The classifiers that constrain the argument that can be used for the parameter. If the allowSubstitutable attribute is true, then any Classifier that is compatible with this constraining Classifier can be substituted; otherwise, it must be either this Classifier or one of its specializations. If this property is empty, there are no constraints on the Classifier that can be used as an argument.
     	/// </summary>
-    	set<Classifier> ConstrainingClassifier;
+    	Classifier ConstrainingClassifier;
     	/// <summary>
     	/// The Classifier exposed by this ClassifierTemplateParameter.
     	/// </summary>
@@ -4338,7 +4338,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// Represents a set of instances of Generalization.  A Generalization may appear in many GeneralizationSets.
     	/// </summary>
-    	set<GeneralizationSet> GeneralizationSet;
+    	GeneralizationSet GeneralizationSet;
     	/// <summary>
     	/// Indicates whether the specific Classifier can be used wherever the general Classifier can be used. If true, the execution traces of the specific Classifier shall be a superset of the execution traces of the general Classifier. If false, there is no such constraint on execution traces. If unset, the modeler has not stated whether there is such a constraint or not.
     	/// </summary>
@@ -4357,7 +4357,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// Designates the instances of Generalization that are members of this GeneralizationSet.
     	/// </summary>
-    	set<Generalization> Generalization;
+    	Generalization Generalization;
     	/// <summary>
     	/// Indicates (via the associated Generalizations) whether or not the set of specific Classifiers are covering for a particular general classifier. When isCovering is true, every instance of a particular general Classifier is also an instance of at least one of its specific Classifiers for the GeneralizationSet. When isCovering is false, there are one or more instances of the particular general Classifier that are not instances of at least one of its specific Classifiers defined for the GeneralizationSet.
     	/// </summary>
@@ -4380,15 +4380,15 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The Classifier or Classifiers of the represented instance. If multiple Classifiers are specified, the instance is classified by all of them.
     	/// </summary>
-    	set<Classifier> Classifier;
+    	Classifier Classifier;
     	/// <summary>
     	/// A Slot giving the value or values of a StructuralFeature of the instance. An InstanceSpecification can have one Slot per StructuralFeature of its Classifiers, including inherited features. It is not necessary to model a Slot for every StructuralFeature, in which case the InstanceSpecification is a partial description.
     	/// </summary>
-    	set<Slot> Slot subsets Element.OwnedElement;
+    	containment Slot Slot subsets Element.OwnedElement;
     	/// <summary>
     	/// A specification of how to compute, derive, or construct the instance.
     	/// </summary>
-    	ValueSpecification Specification subsets Element.OwnedElement;
+    	containment ValueSpecification Specification subsets Element.OwnedElement;
     }
 
     /// <summary>
@@ -4410,7 +4410,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// An optional Constraint on the result values of an invocation of this Operation.
     	/// </summary>
-    	Constraint BodyCondition subsets Namespace.OwnedRule;
+    	containment Constraint BodyCondition subsets Namespace.OwnedRule;
     	/// <summary>
     	/// The Class that owns this operation, if any.
     	/// </summary>
@@ -4448,23 +4448,23 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The parameters owned by this Operation.
     	/// </summary>
-    	list<Parameter> OwnedParameter redefines BehavioralFeature.OwnedParameter;
+    	containment Parameter OwnedParameter redefines BehavioralFeature.OwnedParameter;
     	/// <summary>
     	/// An optional set of Constraints specifying the state of the system when the Operation is completed.
     	/// </summary>
-    	set<Constraint> Postcondition subsets Namespace.OwnedRule;
+    	containment Constraint Postcondition subsets Namespace.OwnedRule;
     	/// <summary>
     	/// An optional set of Constraints on the state of the system when the Operation is invoked.
     	/// </summary>
-    	set<Constraint> Precondition subsets Namespace.OwnedRule;
+    	containment Constraint Precondition subsets Namespace.OwnedRule;
     	/// <summary>
     	/// The Types representing exceptions that may be raised during an invocation of this operation.
     	/// </summary>
-    	set<Type> RaisedException redefines BehavioralFeature.RaisedException;
+    	Type RaisedException redefines BehavioralFeature.RaisedException;
     	/// <summary>
     	/// The Operations that are redefined by this Operation.
     	/// </summary>
-    	set<Operation> RedefinedOperation subsets RedefinableElement.RedefinedElement;
+    	Operation RedefinedOperation subsets RedefinableElement.RedefinedElement;
     	/// <summary>
     	/// The OperationTemplateParameter that exposes this element as a formal parameter.
     	/// </summary>
@@ -4518,7 +4518,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// </summary>
     	// spec:
     	//     result = (ownedParameter->select (direction = ParameterDirectionKind::return))
-    	readonly set<Parameter> ReturnResult();
+    	readonly Parameter ReturnResult();
     }
 
     /// <summary>
@@ -4546,7 +4546,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// Specifies a ValueSpecification that represents a value to be used when no argument is supplied for the Parameter.
     	/// </summary>
-    	ValueSpecification DefaultValue subsets Element.OwnedElement;
+    	containment ValueSpecification DefaultValue subsets Element.OwnedElement;
     	/// <summary>
     	/// Indicates whether a parameter is being sent into or out of a behavioral element.
     	/// </summary>
@@ -4570,7 +4570,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The ParameterSets containing the parameter. See ParameterSet.
     	/// </summary>
-    	set<ParameterSet> ParameterSet;
+    	ParameterSet ParameterSet;
     }
 
     /// <summary>
@@ -4581,11 +4581,11 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// A constraint that should be satisfied for the owner of the Parameters in an input ParameterSet to start execution using the values provided for those Parameters, or the owner of the Parameters in an output ParameterSet to end execution providing the values for those Parameters, if all preconditions and conditions on input ParameterSets were satisfied.
     	/// </summary>
-    	set<Constraint> Condition subsets Element.OwnedElement;
+    	containment Constraint Condition subsets Element.OwnedElement;
     	/// <summary>
     	/// Parameters in the ParameterSet.
     	/// </summary>
-    	set<Parameter> Parameter;
+    	Parameter Parameter;
     }
 
     /// <summary>
@@ -4616,7 +4616,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// A ValueSpecification that is evaluated to give a default value for the Property when an instance of the owning Classifier is instantiated.
     	/// </summary>
-    	ValueSpecification DefaultValue subsets Element.OwnedElement;
+    	containment ValueSpecification DefaultValue subsets Element.OwnedElement;
     	/// <summary>
     	/// The Interface that owns this Property, if any.
     	/// </summary>
@@ -4657,15 +4657,15 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// An optional list of ordered qualifier attributes for the end.
     	/// </summary>
-    	list<Property> Qualifier subsets Element.OwnedElement;
+    	containment Property Qualifier subsets Element.OwnedElement;
     	/// <summary>
     	/// The properties that are redefined by this property, if any.
     	/// </summary>
-    	set<Property> RedefinedProperty subsets RedefinableElement.RedefinedElement;
+    	Property RedefinedProperty subsets RedefinableElement.RedefinedElement;
     	/// <summary>
     	/// The properties of which this Property is constrained to be a subset, if any.
     	/// </summary>
-    	set<Property> SubsettedProperty;
+    	Property SubsettedProperty;
     	/// <summary>
     	/// The query isAttribute() is true if the Property is defined as an attribute of some Classifier.
     	/// </summary>
@@ -4710,7 +4710,7 @@ namespace MetaDslx.Languages.Uml.Model
     	//       else Set{} 
     	//       endif
     	//     endif)
-    	readonly set<Type> SubsettingContext();
+    	readonly Type SubsettingContext();
     }
 
     /// <summary>
@@ -4725,11 +4725,11 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The RedefinableElement that is being redefined by this element.
     	/// </summary>
-    	union set<RedefinableElement> RedefinedElement;
+    	RedefinableElement RedefinedElement;
     	/// <summary>
     	/// The contexts that this element may be redefined from.
     	/// </summary>
-    	union set<Classifier> RedefinitionContext;
+    	Classifier RedefinitionContext;
     	/// <summary>
     	/// The query isConsistentWith() specifies, for any two RedefinableElements in a context in which redefinition is possible, whether redefinition would be logically consistent. By default, this is false; this operation must be overridden for subclasses of RedefinableElement to define the consistency conditions.
     	/// </summary>
@@ -4758,13 +4758,13 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The signatures extended by this RedefinableTemplateSignature.
     	/// </summary>
-    	set<RedefinableTemplateSignature> ExtendedSignature subsets RedefinableElement.RedefinedElement;
+    	RedefinableTemplateSignature ExtendedSignature subsets RedefinableElement.RedefinedElement;
     	/// <summary>
     	/// The formal template parameters of the extended signatures.
     	/// </summary>
     	// spec:
     	//     result = (if extendedSignature->isEmpty() then Set{} else extendedSignature.parameter->asSet() endif)
-    	derived set<TemplateParameter> InheritedParameter subsets TemplateSignature.Parameter;
+    	derived TemplateParameter InheritedParameter subsets TemplateSignature.Parameter;
     	/// <summary>
     	/// The query isConsistentWith() specifies, for any two RedefinableTemplateSignatures in a context in which redefinition is possible, whether redefinition would be logically consistent. A redefining template signature is always consistent with a redefined template signature, as redefinition only adds new formal parameters.
     	/// </summary>
@@ -4791,7 +4791,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The value or values held by the Slot.
     	/// </summary>
-    	list<ValueSpecification> Value subsets Element.OwnedElement;
+    	containment ValueSpecification Value subsets Element.OwnedElement;
     }
 
     /// <summary>
@@ -4813,11 +4813,11 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The OutputPin on which the result value is placed.
     	/// </summary>
-    	OutputPin Result subsets Action.Output;
+    	containment OutputPin Result subsets Action.Output;
     	/// <summary>
     	/// The ValueSpecification to be evaluated.
     	/// </summary>
-    	ValueSpecification Value subsets Element.OwnedElement;
+    	containment ValueSpecification Value subsets Element.OwnedElement;
     }
 
     /// <summary>
@@ -4846,11 +4846,11 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The OutputPin on which is put the input object as modified by the WriteStructuralFeatureAction.
     	/// </summary>
-    	OutputPin Result subsets Action.Output;
+    	containment OutputPin Result subsets Action.Output;
     	/// <summary>
     	/// The InputPin that provides the value to be added or removed from the StructuralFeature.
     	/// </summary>
-    	InputPin Value subsets Action.Input;
+    	containment InputPin Value subsets Action.Input;
     }
 
     /// <summary>
@@ -4861,7 +4861,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The InputPin that gives the value to be added or removed from the Variable.
     	/// </summary>
-    	InputPin Value subsets Action.Input;
+    	containment InputPin Value subsets Action.Input;
     }
 
     /// <summary>
@@ -4872,7 +4872,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// An OutputPin where a value is placed containing sufficient information to perform a subsequent ReplyAction and return control to the caller. The contents of this value are opaque. It can be passed and copied but it cannot be manipulated by the model.
     	/// </summary>
-    	OutputPin ReturnInformation subsets Action.Output;
+    	containment OutputPin ReturnInformation subsets Action.Output;
     }
 
     /// <summary>
@@ -4887,11 +4887,11 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// OutputPins holding the values received from an Event occurrence.
     	/// </summary>
-    	list<OutputPin> Result subsets Action.Output;
+    	containment OutputPin Result subsets Action.Output;
     	/// <summary>
     	/// The Triggers specifying the Events of which the AcceptEventAction waits for occurrences.
     	/// </summary>
-    	set<Trigger> Trigger subsets Element.OwnedElement;
+    	containment Trigger Trigger subsets Element.OwnedElement;
     }
 
     /// <summary>
@@ -4913,7 +4913,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The ordered set of InputPins representing the inputs to the Action.
     	/// </summary>
-    	union list<InputPin> Input subsets Element.OwnedElement;
+    	InputPin Input subsets Element.OwnedElement;
     	/// <summary>
     	/// If true, the Action can begin a new, concurrent execution, even if there is already another execution of the Action ongoing. If false, the Action cannot begin a new execution until any previous execution has completed.
     	/// </summary>
@@ -4921,27 +4921,27 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// A Constraint that must be satisfied when execution of the Action is completed.
     	/// </summary>
-    	set<Constraint> LocalPostcondition subsets Element.OwnedElement;
+    	containment Constraint LocalPostcondition subsets Element.OwnedElement;
     	/// <summary>
     	/// A Constraint that must be satisfied when execution of the Action is started.
     	/// </summary>
-    	set<Constraint> LocalPrecondition subsets Element.OwnedElement;
+    	containment Constraint LocalPrecondition subsets Element.OwnedElement;
     	/// <summary>
     	/// The ordered set of OutputPins representing outputs from the Action.
     	/// </summary>
-    	union list<OutputPin> Output subsets Element.OwnedElement;
+    	OutputPin Output subsets Element.OwnedElement;
     	/// <summary>
     	/// Return this Action and all Actions contained directly or indirectly in it. By default only the Action itself is returned, but the operation is overridden for StructuredActivityNodes.
     	/// </summary>
     	// spec:
     	//     result = (self->asSet())
-    	readonly set<Action> AllActions();
+    	readonly Action AllActions();
     	/// <summary>
     	/// Returns all the ActivityNodes directly or indirectly owned by this Action. This includes at least all the Pins of the Action.
     	/// </summary>
     	// spec:
     	//     result = (input.oclAsType(Pin)->asSet()->union(output->asSet()))
-    	readonly set<ActivityNode> AllOwnedNodes();
+    	readonly ActivityNode AllOwnedNodes();
     	// spec:
     	//     result = (if inStructuredNode<>null then inStructuredNode.containingBehavior() 
     	//     else if activity<>null then activity
@@ -4960,7 +4960,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The Action used to provide the values of the ActionInputPin.
     	/// </summary>
-    	Action FromAction subsets Element.OwnedElement;
+    	containment Action FromAction subsets Element.OwnedElement;
     }
 
     /// <summary>
@@ -4971,7 +4971,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The InputPin that gives the position at which to insert the value in an ordered StructuralFeature. The type of the insertAt InputPin is UnlimitedNatural, but the value cannot be zero. It is omitted for unordered StructuralFeatures.
     	/// </summary>
-    	InputPin InsertAt subsets Action.Input;
+    	containment InputPin InsertAt subsets Action.Input;
     	/// <summary>
     	/// Specifies whether existing values of the StructuralFeature should be removed before adding the new value.
     	/// </summary>
@@ -4986,7 +4986,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The InputPin that gives the position at which to insert a new value or move an existing value in ordered Variables. The type of the insertAt InputPin is UnlimitedNatural, but the value cannot be zero. It is omitted for unordered Variables.
     	/// </summary>
-    	InputPin InsertAt subsets Action.Input;
+    	containment InputPin InsertAt subsets Action.Input;
     	/// <summary>
     	/// Specifies whether existing values of the Variable should be removed before adding the new value.
     	/// </summary>
@@ -5016,15 +5016,15 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The OutputPins on which the reply values from the invocation are placed (if the call is synchronous).
     	/// </summary>
-    	list<OutputPin> Result subsets Action.Output;
+    	containment OutputPin Result subsets Action.Output;
     	/// <summary>
     	/// Return the in and inout ownedParameters of the Behavior or Operation being called. (This operation is abstract and should be overridden by subclasses of CallAction.)
     	/// </summary>
-    	readonly list<Parameter> InputParameters();
+    	readonly Parameter InputParameters();
     	/// <summary>
     	/// Return the inout, out and return ownedParameters of the Behavior or Operation being called. (This operation is abstract and should be overridden by subclasses of CallAction.)
     	/// </summary>
-    	readonly list<Parameter> OutputParameters();
+    	readonly Parameter OutputParameters();
     }
 
     /// <summary>
@@ -5041,13 +5041,13 @@ namespace MetaDslx.Languages.Uml.Model
     	/// </summary>
     	// spec:
     	//     result = (behavior.outputParameters())
-    	readonly list<Parameter> OutputParameters();
+    	readonly Parameter OutputParameters();
     	/// <summary>
     	/// Return the in and inout ownedParameters of the Behavior being called.
     	/// </summary>
     	// spec:
     	//     result = (behavior.inputParameters())
-    	readonly list<Parameter> InputParameters();
+    	readonly Parameter InputParameters();
     }
 
     /// <summary>
@@ -5062,19 +5062,19 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The InputPin that provides the target object to which the Operation call request is sent.
     	/// </summary>
-    	InputPin Target subsets Action.Input;
+    	containment InputPin Target subsets Action.Input;
     	/// <summary>
     	/// Return the inout, out and return ownedParameters of the Operation being called.
     	/// </summary>
     	// spec:
     	//     result = (operation.outputParameters())
-    	readonly list<Parameter> OutputParameters();
+    	readonly Parameter OutputParameters();
     	/// <summary>
     	/// Return the in and inout ownedParameters of the Operation being called.
     	/// </summary>
     	// spec:
     	//     result = (operation.inputParameters())
-    	readonly list<Parameter> InputParameters();
+    	readonly Parameter InputParameters();
     }
 
     /// <summary>
@@ -5085,11 +5085,11 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The set of ExecutableNodes that are executed if the test evaluates to true and the Clause is chosen over other Clauses within the ConditionalNode that also have tests that evaluate to true.
     	/// </summary>
-    	set<ExecutableNode> Body;
+    	ExecutableNode Body;
     	/// <summary>
     	/// The OutputPins on Actions within the body section whose values are moved to the result OutputPins of the containing ConditionalNode after execution of the body.
     	/// </summary>
-    	list<OutputPin> BodyOutput;
+    	OutputPin BodyOutput;
     	/// <summary>
     	/// An OutputPin on an Action in the test section whose Boolean value determines the result of the test.
     	/// </summary>
@@ -5097,15 +5097,15 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// A set of Clauses whose tests must all evaluate to false before this Clause can evaluate its test.
     	/// </summary>
-    	set<Clause> PredecessorClause;
+    	Clause PredecessorClause;
     	/// <summary>
     	/// A set of Clauses that may not evaluate their tests unless the test for this Clause evaluates to false.
     	/// </summary>
-    	set<Clause> SuccessorClause;
+    	Clause SuccessorClause;
     	/// <summary>
     	/// The set of ExecutableNodes that are executed in order to provide a test result for the Clause.
     	/// </summary>
-    	set<ExecutableNode> Test;
+    	ExecutableNode Test;
     }
 
     /// <summary>
@@ -5120,7 +5120,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The InputPin that gives the object whose participation in the Association is to be cleared.
     	/// </summary>
-    	InputPin Object subsets Action.Input;
+    	containment InputPin Object subsets Action.Input;
     }
 
     /// <summary>
@@ -5131,7 +5131,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The OutputPin on which is put the input object as modified by the ClearStructuralFeatureAction.
     	/// </summary>
-    	OutputPin Result subsets Action.Output;
+    	containment OutputPin Result subsets Action.Output;
     }
 
     /// <summary>
@@ -5149,7 +5149,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The set of Clauses composing the ConditionalNode.
     	/// </summary>
-    	set<Clause> Clause subsets Element.OwnedElement;
+    	containment Clause Clause subsets Element.OwnedElement;
     	/// <summary>
     	/// If true, the modeler asserts that the test for at least one Clause of the ConditionalNode will succeed.
     	/// </summary>
@@ -5161,13 +5161,13 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The OutputPins that onto which are moved values from the bodyOutputs of the Clause selected for execution.
     	/// </summary>
-    	list<OutputPin> Result redefines StructuredActivityNode.StructuredNodeOutput;
+    	containment OutputPin Result redefines StructuredActivityNode.StructuredNodeOutput;
     	/// <summary>
     	/// Return only this ConditionalNode. This prevents Actions within the ConditionalNode from having their OutputPins used as bodyOutputs or decider Pins in containing LoopNodes or ConditionalNodes.
     	/// </summary>
     	// spec:
     	//     result = (self->asSet())
-    	readonly set<Action> AllActions();
+    	readonly Action AllActions();
     }
 
     /// <summary>
@@ -5178,7 +5178,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The LinkEndData that specifies the values to be placed on the Association ends for the new link.
     	/// </summary>
-    	set<LinkEndCreationData> EndData redefines LinkAction.EndData;
+    	containment LinkEndCreationData EndData redefines LinkAction.EndData;
     }
 
     /// <summary>
@@ -5189,7 +5189,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The output pin on which the newly created link object is placed.
     	/// </summary>
-    	OutputPin Result subsets Action.Output;
+    	containment OutputPin Result subsets Action.Output;
     }
 
     /// <summary>
@@ -5204,7 +5204,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The OutputPin on which the newly created object is placed.
     	/// </summary>
-    	OutputPin Result subsets Action.Output;
+    	containment OutputPin Result subsets Action.Output;
     }
 
     /// <summary>
@@ -5215,7 +5215,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The LinkEndData that the values of the Association ends for the links to be destroyed.
     	/// </summary>
-    	set<LinkEndDestructionData> EndData redefines LinkAction.EndData;
+    	containment LinkEndDestructionData EndData redefines LinkAction.EndData;
     }
 
     /// <summary>
@@ -5234,7 +5234,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The InputPin providing the object to be destroyed.
     	/// </summary>
-    	InputPin Target subsets Action.Input;
+    	containment InputPin Target subsets Action.Input;
     }
 
     /// <summary>
@@ -5260,7 +5260,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The ExpansionNodes that hold the input collections for the ExpansionRegion.
     	/// </summary>
-    	set<ExpansionNode> InputElement;
+    	ExpansionNode InputElement;
     	/// <summary>
     	/// The mode in which the ExpansionRegion executes its contents. If parallel, executions are concurrent. If iterative, executions are sequential. If stream, a stream of values flows into a single execution.
     	/// </summary>
@@ -5268,7 +5268,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The ExpansionNodes that form the output collections of the ExpansionRegion.
     	/// </summary>
-    	set<ExpansionNode> OutputElement;
+    	ExpansionNode OutputElement;
     }
 
     /// <summary>
@@ -5286,7 +5286,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The InputPins that provide the argument values passed in the invocation request.
     	/// </summary>
-    	list<InputPin> Argument subsets Action.Input;
+    	containment InputPin Argument subsets Action.Input;
     	/// <summary>
     	/// For CallOperationActions, SendSignalActions, and SendObjectActions, an optional Port of the target object through which the invocation request is sent.
     	/// </summary>
@@ -5301,11 +5301,11 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The LinkEndData identifying the values on the ends of the links acting on by this LinkAction.
     	/// </summary>
-    	set<LinkEndData> EndData subsets Element.OwnedElement;
+    	containment LinkEndData EndData subsets Element.OwnedElement;
     	/// <summary>
     	/// InputPins used by the LinkEndData of the LinkAction.
     	/// </summary>
-    	set<InputPin> InputValue subsets Action.Input;
+    	containment InputPin InputValue subsets Action.Input;
     	/// <summary>
     	/// Returns the Association acted on by this LinkAction.
     	/// </summary>
@@ -5332,7 +5332,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// </summary>
     	// spec:
     	//     result = (self.LinkEndData::allPins()->including(insertAt))
-    	readonly multi_set<InputPin> AllPins();
+    	readonly InputPin AllPins();
     }
 
     /// <summary>
@@ -5347,7 +5347,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// A set of QualifierValues used to provide values for the qualifiers of the end.
     	/// </summary>
-    	set<QualifierValue> Qualifier subsets Element.OwnedElement;
+    	containment QualifierValue Qualifier subsets Element.OwnedElement;
     	/// <summary>
     	/// The InputPin that provides the specified value for the given end. This InputPin is omitted if the LinkEndData specifies the &quot;open&quot; end for a ReadLinkAction.
     	/// </summary>
@@ -5357,7 +5357,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// </summary>
     	// spec:
     	//     result = (value->asBag()->union(qualifier.value))
-    	readonly multi_set<InputPin> AllPins();
+    	readonly InputPin AllPins();
     }
 
     /// <summary>
@@ -5378,7 +5378,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// </summary>
     	// spec:
     	//     result = (self.LinkEndData::allPins()->including(destroyAt))
-    	readonly multi_set<InputPin> AllPins();
+    	readonly InputPin AllPins();
     }
 
     /// <summary>
@@ -5389,11 +5389,11 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The OutputPins on Actions within the bodyPart, the values of which are moved to the loopVariable OutputPins after the completion of each execution of the bodyPart, before the next iteration of the loop begins or before the loop exits.
     	/// </summary>
-    	list<OutputPin> BodyOutput;
+    	OutputPin BodyOutput;
     	/// <summary>
     	/// The set of ExecutableNodes that perform the repetitive computations of the loop. The bodyPart is executed as long as the test section produces a true value.
     	/// </summary>
-    	set<ExecutableNode> BodyPart;
+    	ExecutableNode BodyPart;
     	/// <summary>
     	/// An OutputPin on an Action in the test section whose Boolean value determines whether to continue executing the loop bodyPart.
     	/// </summary>
@@ -5405,35 +5405,35 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// A list of OutputPins that hold the values of the loop variables during an execution of the loop. When the test fails, the values are moved to the result OutputPins of the loop.
     	/// </summary>
-    	list<OutputPin> LoopVariable subsets Element.OwnedElement;
+    	containment OutputPin LoopVariable subsets Element.OwnedElement;
     	/// <summary>
     	/// A list of InputPins whose values are moved into the loopVariable Pins before the first iteration of the loop.
     	/// </summary>
-    	list<InputPin> LoopVariableInput redefines StructuredActivityNode.StructuredNodeInput;
+    	containment InputPin LoopVariableInput redefines StructuredActivityNode.StructuredNodeInput;
     	/// <summary>
     	/// A list of OutputPins that receive the loopVariable values after the last iteration of the loop and constitute the output of the LoopNode.
     	/// </summary>
-    	list<OutputPin> Result redefines StructuredActivityNode.StructuredNodeOutput;
+    	containment OutputPin Result redefines StructuredActivityNode.StructuredNodeOutput;
     	/// <summary>
     	/// The set of ExecutableNodes executed before the first iteration of the loop, in order to initialize values or perform other setup computations.
     	/// </summary>
-    	set<ExecutableNode> SetupPart;
+    	ExecutableNode SetupPart;
     	/// <summary>
     	/// The set of ExecutableNodes executed in order to provide the test result for the loop.
     	/// </summary>
-    	set<ExecutableNode> Test;
+    	ExecutableNode Test;
     	/// <summary>
     	/// Return only this LoopNode. This prevents Actions within the LoopNode from having their OutputPins used as bodyOutputs or decider Pins in containing LoopNodes or ConditionalNodes.
     	/// </summary>
     	// spec:
     	//     result = (self->asSet())
-    	readonly set<Action> AllActions();
+    	readonly Action AllActions();
     	/// <summary>
     	/// Return the loopVariable OutputPins in addition to other source nodes for the LoopNode as a StructuredActivityNode.
     	/// </summary>
     	// spec:
     	//     result = (self.StructuredActivityNode::sourceNodes()->union(loopVariable))
-    	readonly set<ActivityNode> SourceNodes();
+    	readonly ActivityNode SourceNodes();
     }
 
     /// <summary>
@@ -5444,19 +5444,19 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// Provides a textual specification of the functionality of the Action, in one or more languages other than UML.
     	/// </summary>
-    	multi_list<string> Body;
+    	string Body;
     	/// <summary>
     	/// The InputPins providing inputs to the OpaqueAction.
     	/// </summary>
-    	set<InputPin> InputValue subsets Action.Input;
+    	containment InputPin InputValue subsets Action.Input;
     	/// <summary>
     	/// If provided, a specification of the language used for each of the body Strings.
     	/// </summary>
-    	list<string> Language;
+    	string Language;
     	/// <summary>
     	/// The OutputPins on which the OpaqueAction provides outputs.
     	/// </summary>
-    	set<OutputPin> OutputValue subsets Action.Output;
+    	containment OutputPin OutputValue subsets Action.Output;
     }
 
     /// <summary>
@@ -5500,7 +5500,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// An InputPin whose value becomes the exception object.
     	/// </summary>
-    	InputPin Exception subsets Action.Input;
+    	containment InputPin Exception subsets Action.Input;
     }
 
     /// <summary>
@@ -5515,7 +5515,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The OutputPin on which the Classifier instances are placed.
     	/// </summary>
-    	OutputPin Result subsets Action.Output;
+    	containment OutputPin Result subsets Action.Output;
     }
 
     /// <summary>
@@ -5534,11 +5534,11 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The InputPin that holds the object whose classification is to be tested.
     	/// </summary>
-    	InputPin Object subsets Action.Input;
+    	containment InputPin Object subsets Action.Input;
     	/// <summary>
     	/// The OutputPin that holds the Boolean result of the test.
     	/// </summary>
-    	OutputPin Result subsets Action.Output;
+    	containment OutputPin Result subsets Action.Output;
     }
 
     /// <summary>
@@ -5549,13 +5549,13 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The OutputPin on which the objects retrieved from the &quot;open&quot; end of those links whose values on other ends are given by the endData.
     	/// </summary>
-    	OutputPin Result subsets Action.Output;
+    	containment OutputPin Result subsets Action.Output;
     	/// <summary>
     	/// Returns the ends corresponding to endData with no value InputPin. (A well-formed ReadLinkAction is constrained to have only one of these.)
     	/// </summary>
     	// spec:
     	//     result = (endData->select(value=null).end->asOrderedSet())
-    	readonly list<Property> OpenEnd();
+    	readonly Property OpenEnd();
     }
 
     /// <summary>
@@ -5570,11 +5570,11 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The input pin from which the link object is obtained.
     	/// </summary>
-    	InputPin Object subsets Action.Input;
+    	containment InputPin Object subsets Action.Input;
     	/// <summary>
     	/// The OutputPin where the result value is placed.
     	/// </summary>
-    	OutputPin Result subsets Action.Output;
+    	containment OutputPin Result subsets Action.Output;
     }
 
     /// <summary>
@@ -5585,7 +5585,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The InputPin from which the link object is obtained.
     	/// </summary>
-    	InputPin Object subsets Action.Input;
+    	containment InputPin Object subsets Action.Input;
     	/// <summary>
     	/// The qualifier Property to be read.
     	/// </summary>
@@ -5593,7 +5593,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The OutputPin where the result value is placed.
     	/// </summary>
-    	OutputPin Result subsets Action.Output;
+    	containment OutputPin Result subsets Action.Output;
     }
 
     /// <summary>
@@ -5604,7 +5604,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The OutputPin on which the context object is placed.
     	/// </summary>
-    	OutputPin Result subsets Action.Output;
+    	containment OutputPin Result subsets Action.Output;
     }
 
     /// <summary>
@@ -5615,7 +5615,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The OutputPin on which the result values are placed.
     	/// </summary>
-    	OutputPin Result subsets Action.Output;
+    	containment OutputPin Result subsets Action.Output;
     }
 
     /// <summary>
@@ -5626,7 +5626,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The OutputPin on which the result values are placed.
     	/// </summary>
-    	OutputPin Result subsets Action.Output;
+    	containment OutputPin Result subsets Action.Output;
     }
 
     /// <summary>
@@ -5641,15 +5641,15 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// A set of Classifiers to be added to the Classifiers of the given object.
     	/// </summary>
-    	set<Classifier> NewClassifier;
+    	Classifier NewClassifier;
     	/// <summary>
     	/// The InputPin that holds the object to be reclassified.
     	/// </summary>
-    	InputPin Object subsets Action.Input;
+    	containment InputPin Object subsets Action.Input;
     	/// <summary>
     	/// A set of Classifiers to be removed from the Classifiers of the given object.
     	/// </summary>
-    	set<Classifier> OldClassifier;
+    	Classifier OldClassifier;
     }
 
     /// <summary>
@@ -5660,7 +5660,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The InputPin that provides the collection to be reduced.
     	/// </summary>
-    	InputPin Collection subsets Action.Input;
+    	containment InputPin Collection subsets Action.Input;
     	/// <summary>
     	/// Indicates whether the order of the input collection should determine the order in which the reducer Behavior is applied to its elements.
     	/// </summary>
@@ -5672,7 +5672,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The output pin on which the result value is placed.
     	/// </summary>
-    	OutputPin Result subsets Action.Output;
+    	containment OutputPin Result subsets Action.Output;
     }
 
     /// <summary>
@@ -5687,7 +5687,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// An InputPin that provides the position of an existing value to remove in ordered, nonunique structural features. The type of the removeAt InputPin is UnlimitedNatural, but the value cannot be zero or unlimited.
     	/// </summary>
-    	InputPin RemoveAt subsets Action.Input;
+    	containment InputPin RemoveAt subsets Action.Input;
     }
 
     /// <summary>
@@ -5702,7 +5702,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// An InputPin that provides the position of an existing value to remove in ordered, nonunique Variables. The type of the removeAt InputPin is UnlimitedNatural, but the value cannot be zero or unlimited.
     	/// </summary>
-    	InputPin RemoveAt subsets Action.Input;
+    	containment InputPin RemoveAt subsets Action.Input;
     }
 
     /// <summary>
@@ -5717,11 +5717,11 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// A list of InputPins providing the values for the output (inout, out, and return) Parameters of the Operation. These values are returned to the caller.
     	/// </summary>
-    	list<InputPin> ReplyValue subsets Action.Input;
+    	containment InputPin ReplyValue subsets Action.Input;
     	/// <summary>
     	/// An InputPin that holds the return information value produced by an earlier AcceptCallAction.
     	/// </summary>
-    	InputPin ReturnInformation subsets Action.Input;
+    	containment InputPin ReturnInformation subsets Action.Input;
     }
 
     /// <summary>
@@ -5732,11 +5732,11 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The request object, which is transmitted to the target object. The object may be copied in transmission, so identity might not be preserved.
     	/// </summary>
-    	InputPin Request redefines InvocationAction.Argument;
+    	containment InputPin Request redefines InvocationAction.Argument;
     	/// <summary>
     	/// The target object to which the object is sent.
     	/// </summary>
-    	InputPin Target subsets Action.Input;
+    	containment InputPin Target subsets Action.Input;
     }
 
     /// <summary>
@@ -5751,7 +5751,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The InputPin that provides the target object to which the Signal instance is sent.
     	/// </summary>
-    	InputPin Target subsets Action.Input;
+    	containment InputPin Target subsets Action.Input;
     }
 
     /// <summary>
@@ -5762,7 +5762,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The ordered set of ExecutableNodes to be sequenced.
     	/// </summary>
-    	list<ExecutableNode> ExecutableNode redefines StructuredActivityNode.Node;
+    	containment ExecutableNode ExecutableNode redefines StructuredActivityNode.Node;
     }
 
     /// <summary>
@@ -5773,7 +5773,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The InputPin that holds the object whose classifierBehavior is to be started.
     	/// </summary>
-    	InputPin Object subsets Action.Input;
+    	containment InputPin Object subsets Action.Input;
     }
 
     /// <summary>
@@ -5784,19 +5784,19 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// An InputPin that holds the object that is either a Behavior to be started or has a classifierBehavior to be started.
     	/// </summary>
-    	InputPin Object subsets Action.Input;
+    	containment InputPin Object subsets Action.Input;
     	/// <summary>
     	/// Return the inout, out and return ownedParameters of the Behavior being called.
     	/// </summary>
     	// spec:
     	//     result = (self.behavior().outputParameters())
-    	readonly list<Parameter> OutputParameters();
+    	readonly Parameter OutputParameters();
     	/// <summary>
     	/// Return the in and inout ownedParameters of the Behavior being called.
     	/// </summary>
     	// spec:
     	//     result = (self.behavior().inputParameters())
-    	readonly list<Parameter> InputParameters();
+    	readonly Parameter InputParameters();
     	/// <summary>
     	/// If the type of the object InputPin is a Behavior, then that Behavior. Otherwise, if the type of the object InputPin is a BehavioredClassifier, then the classifierBehavior of that BehavioredClassifier.
     	/// </summary>
@@ -5820,7 +5820,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The InputPin from which the object whose StructuralFeature is to be read or written is obtained.
     	/// </summary>
-    	InputPin Object subsets Action.Input;
+    	containment InputPin Object subsets Action.Input;
     	/// <summary>
     	/// The StructuralFeature to be read or written.
     	/// </summary>
@@ -5839,7 +5839,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The ActivityEdges immediately contained in the StructuredActivityNode.
     	/// </summary>
-    	set<ActivityEdge> Edge subsets ActivityGroup.ContainedEdge, Element.OwnedElement;
+    	containment ActivityEdge Edge subsets ActivityGroup.ContainedEdge, Element.OwnedElement;
     	/// <summary>
     	/// If true, then any object used by an Action within the StructuredActivityNode cannot be accessed by any Action outside the node until the StructuredActivityNode as a whole completes. Any concurrent Actions that would result in accessing such objects are required to have their execution deferred until the completion of the StructuredActivityNode.
     	/// </summary>
@@ -5847,45 +5847,45 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The ActivityNodes immediately contained in the StructuredActivityNode.
     	/// </summary>
-    	set<ActivityNode> Node subsets ActivityGroup.ContainedNode, Element.OwnedElement;
+    	containment ActivityNode Node subsets ActivityGroup.ContainedNode, Element.OwnedElement;
     	/// <summary>
     	/// The InputPins owned by the StructuredActivityNode.
     	/// </summary>
-    	set<InputPin> StructuredNodeInput subsets Action.Input;
+    	containment InputPin StructuredNodeInput subsets Action.Input;
     	/// <summary>
     	/// The OutputPins owned by the StructuredActivityNode.
     	/// </summary>
-    	set<OutputPin> StructuredNodeOutput subsets Action.Output;
+    	containment OutputPin StructuredNodeOutput subsets Action.Output;
     	/// <summary>
     	/// The Variables defined in the scope of the StructuredActivityNode.
     	/// </summary>
-    	set<Variable> Variable subsets Namespace.OwnedMember;
+    	containment Variable Variable subsets Namespace.OwnedMember;
     	/// <summary>
     	/// Returns this StructuredActivityNode and all Actions contained in it.
     	/// </summary>
     	// spec:
     	//     result = (node->select(oclIsKindOf(Action)).oclAsType(Action).allActions()->including(self)->asSet())
-    	readonly set<Action> AllActions();
+    	readonly Action AllActions();
     	/// <summary>
     	/// Returns all the ActivityNodes contained directly or indirectly within this StructuredActivityNode, in addition to the Pins of the StructuredActivityNode.
     	/// </summary>
     	// spec:
     	//     result = (self.Action::allOwnedNodes()->union(node)->union(node->select(oclIsKindOf(Action)).oclAsType(Action).allOwnedNodes())->asSet())
-    	readonly set<ActivityNode> AllOwnedNodes();
+    	readonly ActivityNode AllOwnedNodes();
     	/// <summary>
     	/// Return those ActivityNodes contained immediately within the StructuredActivityNode that may act as sources of edges owned by the StructuredActivityNode.
     	/// </summary>
     	// spec:
     	//     result = (node->union(input.oclAsType(ActivityNode)->asSet())->
     	//       union(node->select(oclIsKindOf(Action)).oclAsType(Action).output)->asSet())
-    	readonly set<ActivityNode> SourceNodes();
+    	readonly ActivityNode SourceNodes();
     	/// <summary>
     	/// Return those ActivityNodes contained immediately within the StructuredActivityNode that may act as targets of edges owned by the StructuredActivityNode.
     	/// </summary>
     	// spec:
     	//     result = (node->union(output.oclAsType(ActivityNode)->asSet())->
     	//       union(node->select(oclIsKindOf(Action)).oclAsType(Action).input)->asSet())
-    	readonly set<ActivityNode> TargetNodes();
+    	readonly ActivityNode TargetNodes();
     	/// <summary>
     	/// The Activity that directly or indirectly contains this StructuredActivityNode (considered as an Action).
     	/// </summary>
@@ -5902,15 +5902,15 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The InputPin on which the first input object is placed.
     	/// </summary>
-    	InputPin First subsets Action.Input;
+    	containment InputPin First subsets Action.Input;
     	/// <summary>
     	/// The OutputPin whose Boolean value indicates whether the two input objects are identical.
     	/// </summary>
-    	OutputPin Result subsets Action.Output;
+    	containment OutputPin Result subsets Action.Output;
     	/// <summary>
     	/// The OutputPin on which the second input object is placed.
     	/// </summary>
-    	InputPin Second subsets Action.Input;
+    	containment InputPin Second subsets Action.Input;
     }
 
     /// <summary>
@@ -5921,11 +5921,11 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The InputPin that gives the object to be unmarshalled.
     	/// </summary>
-    	InputPin Object subsets Action.Input;
+    	containment InputPin Object subsets Action.Input;
     	/// <summary>
     	/// The OutputPins on which are placed the values of the StructuralFeatures of the input object.
     	/// </summary>
-    	list<OutputPin> Result subsets Action.Output;
+    	containment OutputPin Result subsets Action.Output;
     	/// <summary>
     	/// The type of the object to be unmarshalled.
     	/// </summary>
@@ -5940,7 +5940,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The ValueSpecification that is evaluated to obtain the value that the ValuePin will provide.
     	/// </summary>
-    	ValueSpecification Value subsets Element.OwnedElement;
+    	containment ValueSpecification Value subsets Element.OwnedElement;
     }
 
     // association ObjectNode.Selection with Behavior.ObjectNode;
