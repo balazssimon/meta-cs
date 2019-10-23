@@ -204,6 +204,13 @@ public interface IMetaParserVisitor<Result> : IParseTreeVisitor<Result> {
 	Result VisitFieldDeclaration([NotNull] MetaParser.FieldDeclarationContext context);
 
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaParser.fieldContainment"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitFieldContainment([NotNull] MetaParser.FieldContainmentContext context);
+
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="MetaParser.fieldModifier"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

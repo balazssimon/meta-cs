@@ -74,10 +74,12 @@ classMemberDeclaration
 
                         
               
-fieldDeclaration : attribute*                 fieldModifier?                 typeReference name defaultValue? redefinitionsOrSubsettings* TSemicolon;
+fieldDeclaration : attribute* fieldContainment? fieldModifier?                 typeReference name defaultValue? redefinitionsOrSubsettings* TSemicolon;
+                                        
+fieldContainment : KContainment;
+               
 fieldModifier 
-	:                                      KContainment 
-	|                                   KReadonly 
+	:                                   KReadonly 
 	|                               KLazy 
 	|                                  KDerived
 	|                                       KUnion

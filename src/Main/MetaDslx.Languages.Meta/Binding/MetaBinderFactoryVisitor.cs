@@ -29,9 +29,7 @@ namespace MetaDslx.Languages.Meta.Binding
 		public static object UseClassAncestors = new object();
 		public static object UseQualifier = new object();
 		public static object UseFieldDeclaration = new object();
-		public static object UseFieldModifier = new object();
 		public static object UseTypeReference = new object();
-		public static object UseKContainment = new object();
 		public static object UseKReadonly = new object();
 		public static object UseKLazy = new object();
 		public static object UseKDerived = new object();
@@ -66,6 +64,8 @@ namespace MetaDslx.Languages.Meta.Binding
 		public static object UseEnumValue = new object();
 		public static object Use = new object();
 		public static object UseClassBody = new object();
+		public static object UseFieldContainment = new object();
+		public static object UseFieldModifier = new object();
 		public static object UseDefaultValue = new object();
 		public static object UseConstValue = new object();
 		public static object UseVoidType = new object();
@@ -601,7 +601,6 @@ namespace MetaDslx.Languages.Meta.Binding
 			object use = null;
 			if (this.ForChild)
 			{
-				if (LookupPosition.IsInNode(this.Position, parent.FieldModifier)) use = UseFieldModifier;
 				if (LookupPosition.IsInNode(this.Position, parent.TypeReference)) use = UseTypeReference;
 			}
 			Binder resultBinder = null;
@@ -611,16 +610,28 @@ namespace MetaDslx.Languages.Meta.Binding
 				resultBinder = this.CreateSymbolDefBinder(resultBinder, parent, type: typeof(MetaProperty));
 				resultBinder = this.CreateDocumentationBinder(resultBinder, parent);
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
-				if (use == UseFieldModifier)
-				{
-					resultBinder = this.CreatePropertyBinder(resultBinder, parent.FieldModifier, name: "Kind");
-					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
-				}
 				if (use == UseTypeReference)
 				{
 					resultBinder = this.CreatePropertyBinder(resultBinder, parent.TypeReference, name: "Type");
 					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
 				}
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitFieldContainment(FieldContainmentSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "IsContainment", value: true);
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -636,6 +647,7 @@ namespace MetaDslx.Languages.Meta.Binding
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitParent(parent);
+				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "Kind");
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 			}
 			return resultBinder;

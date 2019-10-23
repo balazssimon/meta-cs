@@ -299,6 +299,17 @@ public interface IMetaParserListener : IParseTreeListener {
 	void ExitFieldDeclaration([NotNull] MetaParser.FieldDeclarationContext context);
 
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaParser.fieldContainment"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterFieldContainment([NotNull] MetaParser.FieldContainmentContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaParser.fieldContainment"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitFieldContainment([NotNull] MetaParser.FieldContainmentContext context);
+
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaParser.fieldModifier"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

@@ -1666,22 +1666,32 @@ namespace MetaDslx.Languages.Meta.Binding
 						}
 					}
 				}
+				if (node.FieldContainment != null)
+				{
+					if (state == BoundNodeFactoryState.InParent)
+					{
+						if (LookupPosition.IsInNode(this.Position, node.FieldContainment))
+						{
+							this.Visit(node.FieldContainment, childBoundNodes);
+						}
+					}
+					else
+					{
+						this.Visit(node.FieldContainment, childBoundNodes);
+					}
+				}
 				if (node.FieldModifier != null)
 				{
 					if (state == BoundNodeFactoryState.InParent)
 					{
 						if (LookupPosition.IsInNode(this.Position, node.FieldModifier))
 						{
-							var childBoundNodesOfFieldModifier = ArrayBuilder<object>.GetInstance();
-							this.Visit(node.FieldModifier, childBoundNodesOfFieldModifier);
-							BoundNode boundFieldModifier;
-							boundFieldModifier = this.CreateBoundProperty(this.BoundTree, childBoundNodesOfFieldModifier.ToImmutableAndFree(), name: "Kind", syntax: node.FieldModifier, hasErrors: false);
-							childBoundNodes.Add(boundFieldModifier);
+							this.Visit(node.FieldModifier, childBoundNodes);
 						}
 					}
 					else
 					{
-						childBoundNodes.Add(node.FieldModifier);
+						this.Visit(node.FieldModifier, childBoundNodes);
 					}
 				}
 				if (node.TypeReference != null)
@@ -1770,6 +1780,54 @@ namespace MetaDslx.Languages.Meta.Binding
 			}
 		}
 		
+		public BoundNode VisitFieldContainment(FieldContainmentSyntax node, ArrayBuilder<object> childBoundNodesForParent)
+		{
+			if (node == null || node.IsMissing) return null;
+			var state = this.State;
+			if (this.State == BoundNodeFactoryState.InParent) this.State = BoundNodeFactoryState.InNode;
+			else if (this.State == BoundNodeFactoryState.InNode) this.State = BoundNodeFactoryState.InChild;
+			try
+			{
+				if (state == BoundNodeFactoryState.InChild)
+				{
+					if (this.BoundTree.TryGetBoundNode(node, out BoundNode cachedBoundNode))
+					{
+						childBoundNodesForParent.Add(cachedBoundNode);
+						return cachedBoundNode;
+					}
+					else
+					{
+						childBoundNodesForParent.Add(node);
+						return null;
+					}
+				}
+				var childBoundNodes = ArrayBuilder<object>.GetInstance();
+				if (state == BoundNodeFactoryState.InParent)
+				{
+					Debug.Assert(childBoundNodes.Count == 1 && childBoundNodes[0] is BoundNode);
+					if (childBoundNodes.Count == 1 && childBoundNodes[0] is BoundNode) return (BoundNode)childBoundNodes[0];
+					else return null;
+				}
+				else if (state == BoundNodeFactoryState.InNode)
+				{
+					BoundNode resultNode;
+					resultNode = this.CreateBoundProperty(this.BoundTree, childBoundNodes.ToImmutableAndFree(), name: "IsContainment", value: true, syntax: node, hasErrors: false);
+					childBoundNodesForParent.Add(resultNode); 
+					return resultNode;
+				}
+				else
+				{
+					Debug.Assert(false);
+					childBoundNodesForParent.Add(node);
+					return null;
+				}
+			}
+			finally
+			{
+				this.State = state;
+			}
+		}
+		
 		public BoundNode VisitFieldModifier(FieldModifierSyntax node, ArrayBuilder<object> childBoundNodesForParent)
 		{
 			if (node == null || node.IsMissing) return null;
@@ -1785,35 +1843,36 @@ namespace MetaDslx.Languages.Meta.Binding
 						childBoundNodesForParent.Add(cachedBoundNode);
 						return cachedBoundNode;
 					}
+					else
+					{
+						childBoundNodesForParent.Add(node);
+						return null;
+					}
 				}
+				var childBoundNodes = ArrayBuilder<object>.GetInstance();
 				if (state == BoundNodeFactoryState.InNode || (state == BoundNodeFactoryState.InParent && LookupPosition.IsInNode(this.Position, node.FieldModifier)))
 				{
 					switch (node.FieldModifier.GetKind().Switch())
 					{
-						case MetaSyntaxKind.KContainment:
-							BoundNode boundKContainment;
-							boundKContainment = this.CreateBoundValue(this.BoundTree, ImmutableArray<object>.Empty, value: MetaPropertyKind.Containment, syntax: node, hasErrors: false);
-							childBoundNodesForParent.Add(boundKContainment);
-							break;
 						case MetaSyntaxKind.KReadonly:
 							BoundNode boundKReadonly;
 							boundKReadonly = this.CreateBoundValue(this.BoundTree, ImmutableArray<object>.Empty, value: MetaPropertyKind.Readonly, syntax: node, hasErrors: false);
-							childBoundNodesForParent.Add(boundKReadonly);
+							childBoundNodes.Add(boundKReadonly);
 							break;
 						case MetaSyntaxKind.KLazy:
 							BoundNode boundKLazy;
 							boundKLazy = this.CreateBoundValue(this.BoundTree, ImmutableArray<object>.Empty, value: MetaPropertyKind.Lazy, syntax: node, hasErrors: false);
-							childBoundNodesForParent.Add(boundKLazy);
+							childBoundNodes.Add(boundKLazy);
 							break;
 						case MetaSyntaxKind.KDerived:
 							BoundNode boundKDerived;
 							boundKDerived = this.CreateBoundValue(this.BoundTree, ImmutableArray<object>.Empty, value: MetaPropertyKind.Derived, syntax: node, hasErrors: false);
-							childBoundNodesForParent.Add(boundKDerived);
+							childBoundNodes.Add(boundKDerived);
 							break;
 						case MetaSyntaxKind.KUnion:
 							BoundNode boundKUnion;
 							boundKUnion = this.CreateBoundValue(this.BoundTree, ImmutableArray<object>.Empty, value: MetaPropertyKind.DerivedUnion, syntax: node, hasErrors: false);
-							childBoundNodesForParent.Add(boundKUnion);
+							childBoundNodes.Add(boundKUnion);
 							break;
 						default:
 							break;
@@ -1821,12 +1880,21 @@ namespace MetaDslx.Languages.Meta.Binding
 				}
 				if (state == BoundNodeFactoryState.InParent)
 				{
-					Debug.Assert(childBoundNodesForParent.Count == 1 && childBoundNodesForParent[0] is BoundNode);
-					if (childBoundNodesForParent.Count == 1 && childBoundNodesForParent[0] is BoundNode) return (BoundNode)childBoundNodesForParent[0];
+					Debug.Assert(childBoundNodes.Count == 1 && childBoundNodes[0] is BoundNode);
+					if (childBoundNodes.Count == 1 && childBoundNodes[0] is BoundNode) return (BoundNode)childBoundNodes[0];
 					else return null;
+				}
+				else if (state == BoundNodeFactoryState.InNode)
+				{
+					BoundNode resultNode;
+					resultNode = this.CreateBoundProperty(this.BoundTree, childBoundNodes.ToImmutableAndFree(), name: "Kind", syntax: node, hasErrors: false);
+					childBoundNodesForParent.Add(resultNode); 
+					return resultNode;
 				}
 				else
 				{
+					Debug.Assert(false);
+					childBoundNodesForParent.Add(node);
 					return null;
 				}
 			}

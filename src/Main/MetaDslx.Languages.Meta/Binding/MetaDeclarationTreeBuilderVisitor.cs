@@ -436,15 +436,8 @@ namespace MetaDslx.Languages.Meta.Binding
 						this.Visit(child);
 					}
 				}
-				this.BeginProperty(node.FieldModifier, name: "Kind");
-				try
-				{
-					this.Visit(node.FieldModifier);
-				}
-				finally
-				{
-					this.EndProperty();
-				}
+				this.Visit(node.FieldContainment);
+				this.Visit(node.FieldModifier);
 				this.BeginProperty(node.TypeReference, name: "Type");
 				try
 				{
@@ -470,22 +463,40 @@ namespace MetaDslx.Languages.Meta.Binding
 			}
 		}
 		
+		public virtual void VisitFieldContainment(FieldContainmentSyntax node)
+		{
+			this.BeginProperty(node, name: "IsContainment", value: true);
+			try
+			{
+			}
+			finally
+			{
+				this.EndProperty();
+			}
+		}
+		
 		public virtual void VisitFieldModifier(FieldModifierSyntax node)
 		{
-			switch (node.FieldModifier.GetKind().Switch())
+			this.BeginProperty(node, name: "Kind");
+			try
 			{
-				case MetaSyntaxKind.KContainment:
-					break;
-				case MetaSyntaxKind.KReadonly:
-					break;
-				case MetaSyntaxKind.KLazy:
-					break;
-				case MetaSyntaxKind.KDerived:
-					break;
-				case MetaSyntaxKind.KUnion:
-					break;
-				default:
-					break;
+				switch (node.FieldModifier.GetKind().Switch())
+				{
+					case MetaSyntaxKind.KReadonly:
+						break;
+					case MetaSyntaxKind.KLazy:
+						break;
+					case MetaSyntaxKind.KDerived:
+						break;
+					case MetaSyntaxKind.KUnion:
+						break;
+					default:
+						break;
+				}
+			}
+			finally
+			{
+				this.EndProperty();
 			}
 		}
 		

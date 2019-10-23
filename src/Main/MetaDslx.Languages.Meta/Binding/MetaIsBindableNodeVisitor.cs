@@ -1039,13 +1039,27 @@ namespace MetaDslx.Languages.Meta.Binding
 						}
 					}
 				}
+				if (node.FieldContainment != null)
+				{
+					if (state == BoundNodeFactoryState.InParent)
+					{
+						if (LookupPosition.IsInNode(this.Position, node.FieldContainment))
+						{
+							if (this.Visit(node.FieldContainment)) return true;
+						}
+					}
+					else
+					{
+						if (this.Visit(node.FieldContainment)) return true;
+					}
+				}
 				if (node.FieldModifier != null)
 				{
 					if (state == BoundNodeFactoryState.InParent)
 					{
 						if (LookupPosition.IsInNode(this.Position, node.FieldModifier))
 						{
-							return true;
+							if (this.Visit(node.FieldModifier)) return true;
 						}
 					}
 					else
@@ -1116,6 +1130,26 @@ namespace MetaDslx.Languages.Meta.Binding
 			}
 		}
 		
+		public bool VisitFieldContainment(FieldContainmentSyntax node)
+		{
+			var state = this.State;
+			if (this.State == BoundNodeFactoryState.InParent) this.State = BoundNodeFactoryState.InNode;
+			else if (this.State == BoundNodeFactoryState.InNode) this.State = BoundNodeFactoryState.InChild;
+			try
+			{
+				if (state == BoundNodeFactoryState.InChild) return false;
+				if (state == BoundNodeFactoryState.InNode) 
+				{
+					return true;
+				}
+				return false;
+			}
+			finally
+			{
+				this.State = state;
+			}
+		}
+		
 		public bool VisitFieldModifier(FieldModifierSyntax node)
 		{
 			var state = this.State;
@@ -1124,11 +1158,14 @@ namespace MetaDslx.Languages.Meta.Binding
 			try
 			{
 				if (state == BoundNodeFactoryState.InChild) return false;
+				if (state == BoundNodeFactoryState.InNode) 
+				{
+					return true;
+				}
 				if (state == BoundNodeFactoryState.InNode || (state == BoundNodeFactoryState.InParent && LookupPosition.IsInNode(this.Position, node.FieldModifier)))
 				{
 					switch (node.FieldModifier.GetKind().Switch())
 					{
-						case MetaSyntaxKind.KContainment:
 						case MetaSyntaxKind.KReadonly:
 						case MetaSyntaxKind.KLazy:
 						case MetaSyntaxKind.KDerived:

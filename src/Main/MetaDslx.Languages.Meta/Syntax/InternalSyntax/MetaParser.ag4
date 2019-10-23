@@ -74,10 +74,12 @@ classMemberDeclaration
 
 $SymbolDef(MetaProperty)
 $Documentation
-fieldDeclaration : attribute* $Property(Kind) fieldModifier? $Property(Type) typeReference name defaultValue? redefinitionsOrSubsettings* TSemicolon;
+fieldDeclaration : attribute* fieldContainment? fieldModifier? $Property(Type) typeReference name defaultValue? redefinitionsOrSubsettings* TSemicolon;
+$Property(name=IsContainment,value=true)
+fieldContainment : KContainment;
+$Property(Kind)
 fieldModifier 
-	: $Value(MetaPropertyKind.Containment) KContainment 
-	| $Value(MetaPropertyKind.Readonly) KReadonly 
+	: $Value(MetaPropertyKind.Readonly) KReadonly 
 	| $Value(MetaPropertyKind.Lazy) KLazy 
 	| $Value(MetaPropertyKind.Derived) KDerived
 	| $Value(MetaPropertyKind.DerivedUnion) KUnion

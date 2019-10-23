@@ -615,6 +615,16 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			    }
 				var attribute = attributeBuilder.ToList();
 				_pool.Free(attributeBuilder);
+				MetaParser.FieldContainmentContext fieldContainmentContext = context.fieldContainment();
+				FieldContainmentGreen fieldContainment = null;
+				if (fieldContainmentContext != null)
+				{
+					fieldContainment = (FieldContainmentGreen)this.Visit(fieldContainmentContext);
+				}
+				else
+				{
+					fieldContainment = FieldContainmentGreen.__Missing;
+				}
 				MetaParser.FieldModifierContext fieldModifierContext = context.fieldModifier();
 				FieldModifierGreen fieldModifier = null;
 				if (fieldModifierContext != null)
@@ -664,18 +674,21 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				var redefinitionsOrSubsettings = redefinitionsOrSubsettingsBuilder.ToList();
 				_pool.Free(redefinitionsOrSubsettingsBuilder);
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), MetaSyntaxKind.TSemicolon);
-				return this.factory.FieldDeclaration(attribute, fieldModifier, typeReference, name, defaultValue, redefinitionsOrSubsettings, tSemicolon);
+				return this.factory.FieldDeclaration(attribute, fieldContainment, fieldModifier, typeReference, name, defaultValue, redefinitionsOrSubsettings, tSemicolon);
+			}
+			
+			public override GreenNode VisitFieldContainment(MetaParser.FieldContainmentContext context)
+			{
+				if (context == null) return FieldContainmentGreen.__Missing;
+				InternalSyntaxToken kContainment = (InternalSyntaxToken)this.VisitTerminal(context.KContainment(), MetaSyntaxKind.KContainment);
+				return this.factory.FieldContainment(kContainment);
 			}
 			
 			public override GreenNode VisitFieldModifier(MetaParser.FieldModifierContext context)
 			{
 				if (context == null) return FieldModifierGreen.__Missing;
 				InternalSyntaxToken fieldModifier = null;
-				if (context.KContainment() != null)
-				{
-					fieldModifier = (InternalSyntaxToken)this.VisitTerminal(context.KContainment());
-				}
-				else 	if (context.KReadonly() != null)
+				if (context.KReadonly() != null)
 				{
 					fieldModifier = (InternalSyntaxToken)this.VisitTerminal(context.KReadonly());
 				}
