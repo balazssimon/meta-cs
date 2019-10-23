@@ -2946,11 +2946,11 @@
     	/// </summary>
     	Interaction Interaction subsets NamedElement.Namespace;
     	/// <summary>
-    	/// The derived kind of the Message (complete, lost, found, or unknown).
+    	/// The kind of the Message (complete, lost, found, or unknown).
     	/// </summary>
     	// spec:
     	//     result = (messageKind)
-    	derived MessageKind MessageKind;
+    	MessageKind MessageKind;
     	/// <summary>
     	/// The sort of communication reflected by the Message.
     	/// </summary>
