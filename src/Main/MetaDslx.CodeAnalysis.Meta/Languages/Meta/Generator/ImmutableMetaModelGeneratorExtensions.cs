@@ -774,7 +774,7 @@ namespace MetaDslx.Languages.Meta.Generator
         {
             foreach (var op in cls.GetAllFinalOperations())
             {
-                if (op.Name == operation.Name) return op;
+                if (op.ConformsTo(operation)) return op;
             }
             return operation;
         }
@@ -783,7 +783,7 @@ namespace MetaDslx.Languages.Meta.Generator
         {
             foreach (var prop in cls.GetAllFinalProperties())
             {
-                if (prop.Name == property.Name) return prop;
+                if (prop.ConformsTo(property)) return prop;
             }
             return property;
         }

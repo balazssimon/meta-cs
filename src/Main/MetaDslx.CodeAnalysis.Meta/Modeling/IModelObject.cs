@@ -6,7 +6,7 @@ using System.Text;
 
 namespace MetaDslx.Modeling
 {
-    public interface IModelObject
+    public interface IModelObject : IEquatable<IModelObject>
     {
         IMetaModel MMetaModel { get; }
         MetaClass MMetaClass { get; }

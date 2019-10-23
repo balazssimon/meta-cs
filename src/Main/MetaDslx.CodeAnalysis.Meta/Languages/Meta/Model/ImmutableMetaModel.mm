@@ -52,6 +52,7 @@
 	[Type]
 	abstract class MetaType
 	{
+		bool ConformsTo(MetaType type);
 	}
 
 	class MetaNamedType : MetaType, MetaNamedElement
@@ -99,15 +100,18 @@
 	{
 		MetaCollectionKind Kind;
 		MetaType InnerType;
+		bool ConformsTo(MetaType type);
 	}
 
 	class MetaNullableType : MetaType
 	{
 		MetaType InnerType;
+		bool ConformsTo(MetaType type);
 	}
 
 	class MetaPrimitiveType : MetaDeclaration, MetaType
 	{
+		bool ConformsTo(MetaType type);
 	}
 
 	[Scope]
@@ -128,6 +132,7 @@
 	{
 		string DotNetName;
 		readonly ModelObject Value;
+		bool ConformsTo(MetaType type);
 	}
 
 	[Scope]
@@ -138,6 +143,7 @@
 		list<MetaClass> SuperClasses;
 		containment list<MetaProperty> Properties;
 		containment list<MetaOperation> Operations;
+		bool ConformsTo(MetaType type);
 		list<MetaClass> GetAllSuperClasses(bool includeSelf);
 		list<MetaProperty> GetAllSuperProperties(bool includeSelf);
 		list<MetaOperation> GetAllSuperOperations(bool includeSelf);
@@ -155,6 +161,7 @@
 		bool IsReadonly;
 		containment list<MetaParameter> Parameters;
 		MetaType ReturnType;
+		bool ConformsTo(MetaOperation operation);
 	}
 
 	association MetaOperation.Parent with MetaClass.Operations;
@@ -187,6 +194,7 @@
 		list<MetaProperty> SubsettingProperties;
 		list<MetaProperty> RedefinedProperties;
 		list<MetaProperty> RedefiningProperties;
+		bool ConformsTo(MetaProperty property);
 	}
 
 	association MetaProperty.Class with MetaClass.Properties;

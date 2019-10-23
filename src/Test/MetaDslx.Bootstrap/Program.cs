@@ -3,8 +3,8 @@ using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Symbols.CSharp;
 using MetaDslx.CodeAnalysis.Symbols.Source;
-using MetaDslx.Languages.Ecore;
-using MetaDslx.Languages.Ecore.Model;
+//using MetaDslx.Languages.Ecore;
+//using MetaDslx.Languages.Ecore.Model;
 using MetaDslx.Languages.Meta;
 using MetaDslx.Languages.Meta.Binding;
 using MetaDslx.Languages.Meta.Generator;
@@ -68,7 +68,7 @@ namespace MetaDslx.Bootstrap
             Console.WriteLine(test.SayHello("me"));
             //*/
 
-            /*/
+            //*/
             ImmutableModel coreModel = MetaInstance.MModel;
             Console.WriteLine(coreModel);
 
@@ -170,7 +170,7 @@ namespace MetaDslx.Bootstrap
 
             //*/
 
-            /*/
+            //*/
             ImmutableMetaModelGenerator mmgen = new ImmutableMetaModelGenerator(compiledModel.Objects);
             string generatedCsharpModel = mmgen.Generate();
             File.WriteAllText("Model.cs.txt", generatedCsharpModel);
@@ -243,7 +243,7 @@ namespace MetaDslx.Bootstrap
             WebSequenceDiagramsTest();
             //*/
 
-            //*/
+            /*/
             //MetaXmiTest();
             //XmiTest();
             //MofXmiTest();
@@ -398,8 +398,6 @@ namespace MetaDslx.Bootstrap
         public static void MofXmiTest()
         {
             MofDescriptor.Initialize();
-            UmlDescriptor.Initialize();
-            EcoreDescriptor.Initialize();
 
             string fileName = "../../../Uml.xmi";
 
@@ -431,9 +429,7 @@ namespace MetaDslx.Bootstrap
         //*/
         public static void UmlXmiTest()
         {
-            MofDescriptor.Initialize();
             UmlDescriptor.Initialize();
-            EcoreDescriptor.Initialize();
 
             string fileName = "../../../Uml.xmi";
 
@@ -465,11 +461,9 @@ namespace MetaDslx.Bootstrap
         //*/
 
 
-        //*/
+        /*/
         public static void EcoreXmiTest()
         {
-            MofDescriptor.Initialize();
-            UmlDescriptor.Initialize();
             EcoreDescriptor.Initialize();
 
             string fileName = "../../../RailDsl.ecore";
@@ -494,9 +488,7 @@ namespace MetaDslx.Bootstrap
         //*/
         public static void MetaDslxXmiTest()
         {
-            MofDescriptor.Initialize();
-            UmlDescriptor.Initialize();
-            EcoreDescriptor.Initialize();
+            MetaDescriptor.Initialize();
 
             string fileName = "../../../RailDsl.ecore";
 

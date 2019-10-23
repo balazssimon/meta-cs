@@ -151,9 +151,9 @@ namespace MetaDslx.Languages.Meta.Model.Internal
             int i = result.Count - 1;
             while (i >= 0)
             {
-                string name = result[i].Name;
-                MetaPropertyBuilder prop = result.First(p => p.Name == name);
-                if (prop != result[i])
+                var currentProp = result[i];
+                MetaPropertyBuilder prop = result.First(p => p.ConformsTo(currentProp));
+                if (prop != currentProp)
                 {
                     result.RemoveAt(i);
                 }
@@ -170,9 +170,9 @@ namespace MetaDslx.Languages.Meta.Model.Internal
             int i = result.Count - 1;
             while (i >= 0)
             {
-                string name = result[i].Name;
-                MetaOperationBuilder op = result.First(o => o.Name == name);
-                if (op != result[i])
+                var currentOp = result[i];
+                MetaOperationBuilder op = result.First(o => o.ConformsTo(currentOp));
+                if (op != currentOp)
                 {
                     result.RemoveAt(i);
                 }
@@ -181,6 +181,70 @@ namespace MetaDslx.Languages.Meta.Model.Internal
             return result;
         }
 
+        public override bool MetaType_ConformsTo(MetaTypeBuilder _this, MetaTypeBuilder type)
+        {
+            return type != null && _this == type;
+        }
+
+        public override bool MetaCollectionType_ConformsTo(MetaCollectionTypeBuilder _this, MetaTypeBuilder type)
+        {
+            return type is MetaCollectionTypeBuilder typeBuilder && _this.InnerType.ConformsTo(typeBuilder.InnerType);
+        }
+
+        public override bool MetaNullableType_ConformsTo(MetaNullableTypeBuilder _this, MetaTypeBuilder type)
+        {
+            return type is MetaNullableTypeBuilder typeBuilder && _this.InnerType.ConformsTo(typeBuilder.InnerType);
+        }
+
+        public override bool MetaPrimitiveType_ConformsTo(MetaPrimitiveTypeBuilder _this, MetaTypeBuilder type)
+        {
+            if (type == null) return false;
+            if (_this == type) return true;
+            if (type == MetaInstance.Object) return true;
+            if (type is MetaNullableTypeBuilder nullableTypeBuilder && _this.ConformsTo(nullableTypeBuilder.InnerType)) return true;
+            if (_this == MetaInstance.Byte && (type == MetaInstance.Int || type == MetaInstance.Long || type == MetaInstance.Float || type == MetaInstance.Double)) return true;
+            if (_this == MetaInstance.Int && (type == MetaInstance.Long || type == MetaInstance.Float || type == MetaInstance.Double)) return true;
+            if (_this == MetaInstance.Long && (type == MetaInstance.Float || type == MetaInstance.Double)) return true;
+            if (_this == MetaInstance.Float && (type == MetaInstance.Double)) return true;
+            return false;
+        }
+
+        public override bool MetaConstant_ConformsTo(MetaConstantBuilder _this, MetaTypeBuilder type)
+        {
+            return _this == type;
+        }
+
+        public override bool MetaClass_ConformsTo(MetaClassBuilder _this, MetaTypeBuilder type)
+        {
+            return type is MetaClassBuilder superClass && _this.GetAllSuperClasses(true).Contains(superClass);
+        }
+
+        public override bool MetaOperation_ConformsTo(MetaOperationBuilder _this, MetaOperationBuilder operation)
+        {
+            if (operation == null) return false;
+            if (_this.Name != operation.Name) return false;
+            if (_this.Parameters.Count != operation.Parameters.Count) return false;
+            if (!_this.Parent.ConformsTo(operation.Parent)) return false;
+            if (!_this.ReturnType.ConformsTo(operation.ReturnType)) return false;
+            for (int i = 0; i < _this.Parameters.Count; i++)
+            {
+                var thisParam = _this.Parameters[i];
+                var otherParam = operation.Parameters[i];
+                if (!otherParam.Type.ConformsTo(thisParam.Type)) return false;
+            }
+            return true;
+        }
+
+        public override bool MetaProperty_ConformsTo(MetaPropertyBuilder _this, MetaPropertyBuilder property)
+        {
+            if (property == null) return false;
+            if (_this.Name != property.Name) return false;
+            if (!_this.Class.ConformsTo(property.Class)) return false;
+            if (_this.IsContainment && !property.IsContainment) return false;
+            if (!_this.Type.ConformsTo(property.Type) && !property.Type.ConformsTo(_this.Type)) return false;
+            if (_this.Type is MetaCollectionTypeBuilder && !(property.Type is MetaCollectionTypeBuilder)) return false;
+            return true;
+        }
     }
     //*/
 }

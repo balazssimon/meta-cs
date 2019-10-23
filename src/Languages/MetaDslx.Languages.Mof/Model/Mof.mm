@@ -65,7 +65,7 @@
 	{
 		Public
 	}
-
+	
 	[Type]
 	abstract class Type : PackageableElement
 	{

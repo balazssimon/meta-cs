@@ -178,11 +178,16 @@ namespace MetaDslx.Modeling
             return result;
         }
 
+        public bool Equals(IModelObject other)
+        {
+            return other != null && this.id.Equals(other.MId);
+        }
+
         public override bool Equals(object obj)
         {
             if (obj is IModelObject other)
             {
-                return this.id.Equals(other.MId);
+                return this.Equals(other);
             }
             return false;
         }
@@ -202,6 +207,7 @@ namespace MetaDslx.Modeling
             }
             return result;
         }
+
     }
 
 }
