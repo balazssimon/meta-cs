@@ -448,7 +448,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// Other ActivityGroups immediately contained in this ActivityGroup.
     	/// </summary>
-    	union set<ActivityGroup> Subgroup subsets Element.OwnedElement;
+    	containment union set<ActivityGroup> Subgroup subsets Element.OwnedElement;
     	/// <summary>
     	/// The ActivityGroup immediately containing this ActivityGroup, if it is directly owned by another ActivityGroup.
     	/// </summary>
@@ -1573,7 +1573,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// </summary>
     	// spec:
     	//     result = (ownedAttribute->select(oclIsKindOf(Port))->collect(oclAsType(Port))->asOrderedSet())
-    	derived set<Port> OwnedPort subsets StructuredClassifier.OwnedAttribute;
+    	containment derived set<Port> OwnedPort subsets StructuredClassifier.OwnedAttribute;
     }
 
     /// <summary>
@@ -2415,7 +2415,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// </summary>
     	// spec:
     	//     result = (packagedElement->select(oclIsKindOf(Package))->collect(oclAsType(Package))->asSet())
-    	derived set<Package> NestedPackage subsets Package.PackagedElement;
+    	containment derived set<Package> NestedPackage subsets Package.PackagedElement;
     	/// <summary>
     	/// References the Package that owns this Package.
     	/// </summary>
@@ -2425,13 +2425,13 @@ namespace MetaDslx.Languages.Uml.Model
     	/// </summary>
     	// spec:
     	//     result = (packagedElement->select(oclIsKindOf(Stereotype))->collect(oclAsType(Stereotype))->asSet())
-    	derived set<Stereotype> OwnedStereotype subsets Package.PackagedElement;
+    	containment derived set<Stereotype> OwnedStereotype subsets Package.PackagedElement;
     	/// <summary>
     	/// References the packaged elements that are Types.
     	/// </summary>
     	// spec:
     	//     result = (packagedElement->select(oclIsKindOf(Type))->collect(oclAsType(Type))->asSet())
-    	derived set<Type> OwnedType subsets Package.PackagedElement;
+    	containment derived set<Type> OwnedType subsets Package.PackagedElement;
     	/// <summary>
     	/// References the PackageMerges that are owned by this Package.
     	/// </summary>
@@ -3342,7 +3342,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The Elements owned by this Element.
     	/// </summary>
-    	union set<Element> OwnedElement;
+    	containment union set<Element> OwnedElement;
     	/// <summary>
     	/// The Element that owns this Element.
     	/// </summary>
@@ -3574,7 +3574,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// A collection of NamedElements owned by the Namespace.
     	/// </summary>
-    	union set<NamedElement> OwnedMember subsets Element.OwnedElement, Namespace.Member;
+    	containment union set<NamedElement> OwnedMember subsets Element.OwnedElement, Namespace.Member;
     	/// <summary>
     	/// Specifies a set of Constraints owned by this Namespace.
     	/// </summary>
@@ -4913,7 +4913,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The ordered set of InputPins representing the inputs to the Action.
     	/// </summary>
-    	union list<InputPin> Input subsets Element.OwnedElement;
+    	containment union list<InputPin> Input subsets Element.OwnedElement;
     	/// <summary>
     	/// If true, the Action can begin a new, concurrent execution, even if there is already another execution of the Action ongoing. If false, the Action cannot begin a new execution until any previous execution has completed.
     	/// </summary>
@@ -4929,7 +4929,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// <summary>
     	/// The ordered set of OutputPins representing outputs from the Action.
     	/// </summary>
-    	union list<OutputPin> Output subsets Element.OwnedElement;
+    	containment union list<OutputPin> Output subsets Element.OwnedElement;
     	/// <summary>
     	/// Return this Action and all Actions contained directly or indirectly in it. By default only the Action itself is returned, but the operation is overridden for StructuredActivityNodes.
     	/// </summary>

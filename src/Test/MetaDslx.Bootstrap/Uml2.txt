@@ -1,4 +1,4 @@
-﻿namespace MetaDslx.Languages.Uml.Model
+namespace MetaDslx.Languages.Uml.Model
 {
     metamodel Uml(Uri="http://www.omg.org/spec/UML"); 
 
@@ -1541,11 +1541,7 @@
     /// </summary>
     class ConnectorEnd : MultiplicityElement
     {
-		/// <summary>
-		/// The Connector of which the ConnectorEnd is the endpoint.
-		/// </summary>
-		Connector Connector subsets Element.Owner;
-		/// <summary>
+    	/// <summary>
     	/// A derived property referencing the corresponding end on the Association which types the Connector owing this ConnectorEnd, if any. It is derived by selecting the end at the same place in the ordering of Association ends as this ConnectorEnd.
     	/// </summary>
     	// spec:
@@ -2663,18 +2659,6 @@
     /// </summary>
     class Gate : MessageEnd
     {
-	    	/// <summary>
-    	/// The CombinedFragment to which the Gate is attached to.
-    	/// </summary>
-		CombinedFragment CombinedFragment subsets Element.Owner;
-    	/// <summary>
-    	/// The InteractionUse of which the Gate is an actual gate.
-    	/// </summary>
-		InteractionUse InteractionUse subsets Element.Owner;
-		/// <summary>
-    	/// The Interaction that owns the Gate.
-    	/// </summary>
-		Interaction Interaction subsets NamedElement.Namespace;
     	/// <summary>
     	/// This query returns true if this Gate is attached to the boundary of a CombinedFragment, and its other end (if present)  is outside of the same CombinedFragment.
     	/// </summary>
@@ -2860,10 +2844,6 @@
     /// </summary>
     class InteractionOperand : InteractionFragment, Namespace
     {
-	    /// <summary>
-    	/// The CombinedFragment that contains the InteractionOperand.
-    	/// </summary>
-		CombinedFragment CombinedFragment subsets Element.Owner;
     	/// <summary>
     	/// The fragments of the operand.
     	/// </summary>
@@ -3503,7 +3483,6 @@
     	/// <summary>
     	/// The name of the NamedElement.
     	/// </summary>
-		[Name]
     	string Name;
     	/// <summary>
     	/// The StringExpression used to define the name of this NamedElement.
@@ -3576,7 +3555,6 @@
     /// <summary>
     /// A Namespace is an Element in a model that owns and/or imports a set of NamedElements that can be identified by name.
     /// </summary>
-	[Scope]
     abstract class Namespace : NamedElement
     {
     	/// <summary>
@@ -3835,7 +3813,6 @@
     /// <summary>
     /// A Type constrains the values represented by a TypedElement.
     /// </summary>
-	[Type]
     abstract class Type : PackageableElement
     {
     	/// <summary>
@@ -3858,7 +3835,6 @@
     	/// <summary>
     	/// The type of the TypedElement.
     	/// </summary>
-		[Type]
     	Type Type;
     }
 
@@ -4133,10 +4109,6 @@
     /// </summary>
     abstract class Classifier : Namespace, Type, TemplateableElement, RedefinableElement
     {
-	    /// <summary>
-    	/// The Class owning the Classifier.
-    	/// </summary>
-		Class NestingClass subsets NamedElement.Namespace;
     	/// <summary>
     	/// All of the Properties that are direct (i.e., not inherited or imported) attributes of the Classifier.
     	/// </summary>
@@ -4927,10 +4899,6 @@
     /// </summary>
     abstract class Action : ExecutableNode
     {
-		/// <summary>
-    	/// The Interaction that owns the Action.
-    	/// </summary>
-		Interaction Interaction subsets NamedElement.Namespace;
     	/// <summary>
     	/// The context Classifier of the Behavior that contains this Action, or the Behavior itself if it has no context.
     	/// </summary>
@@ -6405,13 +6373,4 @@
     // association VariableAction.Variable with Variable.VariableAction;
     // association ValueSpecificationAction.Result with OutputPin.ValueSpecificationAction;
     // association ValueSpecificationAction.Value with ValueSpecification.ValueSpecificationAction;
-
-	// MetaDslx:
-	association Connector.End with ConnectorEnd.Connector;
-	association Interaction.Action with Action.Interaction;
-	association CombinedFragment.CfragmentGate with Gate.CombinedFragment;
-	association CombinedFragment.Operand with InteractionOperand.CombinedFragment;
-	association InteractionUse.ActualGate with Gate.InteractionUse;
-	association Interaction.FormalGate with Gate.Interaction;
-	association Class.NestedClassifier with Classifier.NestingClass;
 }

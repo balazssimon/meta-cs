@@ -152,7 +152,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
             while (i >= 0)
             {
                 var currentProp = result[i];
-                MetaPropertyBuilder prop = result.First(p => p.ConformsTo(currentProp));
+                MetaPropertyBuilder prop = result.First(p => p.Name == currentProp.Name);
                 if (prop != currentProp)
                 {
                     result.RemoveAt(i);

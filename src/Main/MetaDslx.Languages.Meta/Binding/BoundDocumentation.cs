@@ -49,7 +49,7 @@ namespace MetaDslx.Languages.Meta.Binding
                     break;
                 case MetaSyntaxKind.FieldDeclaration:
                     var fld = (FieldDeclarationSyntax)syntax;
-                    this.SetDocumentation(mobj, fld.FieldModifier.Span.Length > 0 ? fld.FieldModifier.GetFirstToken() : fld.TypeReference.GetFirstToken(), fld.Attribute);
+                    this.SetDocumentation(mobj, fld.FieldContainment.Span.Length > 0 ? fld.FieldContainment.GetFirstToken() : (fld.FieldModifier.Span.Length > 0 ? fld.FieldModifier.GetFirstToken() : fld.TypeReference.GetFirstToken()), fld.Attribute);
                     break;
                 case MetaSyntaxKind.OperationDeclaration:
                     var op = (OperationDeclarationSyntax)syntax;

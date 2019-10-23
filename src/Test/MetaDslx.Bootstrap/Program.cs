@@ -68,7 +68,7 @@ namespace MetaDslx.Bootstrap
             Console.WriteLine(test.SayHello("me"));
             //*/
 
-            //*/
+            /*/
             ImmutableModel coreModel = MetaInstance.MModel;
             Console.WriteLine(coreModel);
 
@@ -170,7 +170,7 @@ namespace MetaDslx.Bootstrap
 
             //*/
 
-            //*/
+            /*/
             ImmutableMetaModelGenerator mmgen = new ImmutableMetaModelGenerator(compiledModel.Objects);
             string generatedCsharpModel = mmgen.Generate();
             File.WriteAllText("Model.cs.txt", generatedCsharpModel);
@@ -243,11 +243,11 @@ namespace MetaDslx.Bootstrap
             WebSequenceDiagramsTest();
             //*/
 
-            /*/
+            //*/
             //MetaXmiTest();
             //XmiTest();
-            //MofXmiTest();
-            UmlXmiTest();
+            MofXmiTest();
+            //UmlXmiTest();
             //EcoreXmiTest();
             //MetaDslxXmiTest();
             //*/

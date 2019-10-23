@@ -73,7 +73,7 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
             throw new NotImplementedException();
         }
 
-        public override EStructuralFeatureBuilder EClass_GetStructuralFeature2(EClassBuilder _this, string featureName)
+        public override EStructuralFeatureBuilder EClass_GetStructuralFeature(EClassBuilder _this, string featureName)
         {
             throw new NotImplementedException();
         }
@@ -88,7 +88,7 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
             throw new NotImplementedException();
         }
 
-        public override EEnumLiteralBuilder EEnum_GetEEnumLiteral2(EEnumBuilder _this, int value)
+        public override EEnumLiteralBuilder EEnum_GetEEnumLiteral(EEnumBuilder _this, int value)
         {
             throw new NotImplementedException();
         }
@@ -153,7 +153,7 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
             throw new NotImplementedException();
         }
 
-        public override object EObject_EGet2(EObjectBuilder _this, EStructuralFeatureBuilder feature, bool resolve)
+        public override object EObject_EGet(EObjectBuilder _this, EStructuralFeatureBuilder feature, bool resolve)
         {
             throw new NotImplementedException();
         }

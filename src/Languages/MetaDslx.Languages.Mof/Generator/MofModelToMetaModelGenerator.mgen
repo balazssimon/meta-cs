@@ -76,23 +76,19 @@ end template
 
 template GenerateProperty(Property prop)
 [GenerateComment(prop)]
-[GenerateModifiers(prop)][GenerateType(prop, prop.Type)] [prop.Name.ToPascalCase()][prop.GenerateDefaultValue()][GenerateRedefines(prop)][GenerateSubsets(prop)];
+[GenerateContainment(prop)][GenerateModifiers(prop)][GenerateType(prop, prop.Type)] [prop.Name.ToPascalCase()][prop.GenerateDefaultValue()][GenerateRedefines(prop)][GenerateSubsets(prop)];
+end template
+
+template GenerateContainment(Property prop)
+[prop.Aggregation == AggregationKind.Composite ? "containment " : ""]
 end template
 
 template GenerateModifiers(Property prop)
-[if (prop.Aggregation == AggregationKind.Composite)]
-	[if (prop.Upper > 1 || prop.Upper < 0)]
-[prop.IsDerivedUnion ? "union " : (prop.IsDerived ? "derived " : "containment ")]
-	[else if (!prop.IsDerivedUnion)]
-[prop.IsDerived ? "derived " : "containment "]
-	[end if]
-[else]
 	[if (prop.Upper > 1 || prop.Upper < 0)]
 [prop.IsDerivedUnion ? "union " : (prop.IsDerived ? "derived " : "")]
 	[else if (!prop.IsDerivedUnion)]
 [prop.IsDerived ? "derived " : ""]
 	[end if]
-[end if]
 end template
 
 template GenerateType(MultiplicityElement me, Model.Type t)
