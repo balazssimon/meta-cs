@@ -43,6 +43,7 @@ extern function string GetFieldName(MetaProperty mproperty, MetaClass mclass)
 extern function bool IsReferenceType(MetaType mtype)
 extern function string GetImmBldCallParameterNames(MetaModel mmodel, MetaOperation operation, ClassKind kind)
 extern function string GetImmBldReturn(MetaModel mmodel, MetaOperation operation, ClassKind kind)
+extern function MetaOperation GetFinalOperation(MetaClass cls, MetaOperation operation)
 
 
 template GenerateDocumentation(MetaDocumentedElement elem)
@@ -542,10 +543,10 @@ public static readonly [Properties.CoreNs].ModelProperty [prop.CSharpName(model,
 end template
 
 template GenerateDescriptorPropertyAttributes(MetaModel model, MetaClass cls, MetaProperty prop)
-[if(prop.Kind == MetaPropertyKind.Containment)]
+[if(prop.IsContainment)]
 ["["+Properties.CoreNs+".ContainmentAttribute]"]
 [end if]
-[if(prop.Kind != MetaPropertyKind.Normal && prop.Kind != MetaPropertyKind.Containment)]
+[if(prop.Kind != MetaPropertyKind.Normal)]
 ["["+Properties.CoreNs+".ReadonlyAttribute]"]
 [end if]
 [if(prop.Kind == MetaPropertyKind.Derived)]
@@ -649,7 +650,7 @@ internal abstract class [model.CSharpName(ModelKind.ImplementationBase)]
 	public virtual void [cls.CSharpName(model, ClassKind.Immutable)]([cls.CSharpName(model, ClassKind.Builder)] _this)
 	{
 		this.Call[cls.CSharpName(model, ClassKind.Immutable)]SuperConstructors(_this);
-		[loop(cls->prop:Properties)]
+		[loop(cls->prop:GetAllFinalProperties())]
 			[if (metaMetaModel && cls.Name == "MetaConstant" && prop.Name == "Value")]
 			[else if (prop.DefaultValue != null)]
 				[if(!(prop.Type is MetaCollectionType))]
@@ -660,15 +661,15 @@ internal abstract class [model.CSharpName(ModelKind.ImplementationBase)]
 				[end if]
 			[else if (prop.Kind == MetaPropertyKind.Lazy || prop.Kind == MetaPropertyKind.Derived)]
 				[if(!(prop.Type is MetaCollectionType))]
-		_this.Set[prop.CSharpName(model, PropertyKind.Builder)]Lazy(this.[cls.CSharpName(model, ClassKind.Immutable)]_ComputeProperty_[prop.CSharpName(model)]);
+		_this.Set[prop.CSharpName(model, PropertyKind.Builder)]Lazy(this.[prop.Class.CSharpName(model, ClassKind.Immutable)]_ComputeProperty_[prop.CSharpName(model)]);
 				[else]
-		_this.[prop.CSharpName(model, PropertyKind.Builder)].AddRangeLazy<[cls.CSharpName(model, ClassKind.Builder)]>(this.[cls.CSharpName(model, ClassKind.Immutable)]_ComputeProperty_[prop.CSharpName(model)]);
+		_this.[prop.CSharpName(model, PropertyKind.Builder)].AddRangeLazy<[prop.Class.CSharpName(model, ClassKind.Builder)]>(this.[prop.Class.CSharpName(model, ClassKind.Immutable)]_ComputeProperty_[prop.CSharpName(model)]);
 				[end if]
 			[else if (prop.Kind == MetaPropertyKind.Readonly)]
 				[if(!(prop.Type is MetaCollectionType))]
-		_this.Set[prop.CSharpName(model, PropertyKind.Builder)]Lazy(this.[cls.CSharpName(model, ClassKind.Immutable)]_ComputeProperty_[prop.CSharpName(model)]);
+		_this.Set[prop.CSharpName(model, PropertyKind.Builder)]Lazy(this.[prop.Class.CSharpName(model, ClassKind.Immutable)]_ComputeProperty_[prop.CSharpName(model)]);
 				[else]
-		_this.[prop.CSharpName(model, PropertyKind.Builder)].AddRangeLazy([cls.CSharpName(model, ClassKind.Immutable)]_ComputeProperty_[prop.CSharpName(model)]);
+		_this.[prop.CSharpName(model, PropertyKind.Builder)].AddRangeLazy([prop.Class.CSharpName(model, ClassKind.Immutable)]_ComputeProperty_[prop.CSharpName(model)]);
 				[end if]
 			[end if]
 		[end loop]
@@ -953,7 +954,7 @@ template GenerateBuilderProperty(MetaModel model, MetaProperty prop)
 	[if (prop.Class.GetAllSuperProperties(false).Any(p => p.Name == prop.Name) || (model.IsMetaMetaModel() && prop.Class.Name == "MetaModel"))]
 new \
 	[end if]
-	[if((prop.Kind == MetaPropertyKind.Normal || prop.Kind == MetaPropertyKind.Containment) && !(prop.Type is MetaCollectionType))]
+	[if((prop.Kind == MetaPropertyKind.Normal) && !(prop.Type is MetaCollectionType))]
 [prop.Type.CSharpName(model, ClassKind.Builder, true)] [prop.CSharpName(model, PropertyKind.Builder)] { get; set; }
 	[else]
 [prop.Type.CSharpName(model, ClassKind.Builder, true)] [prop.CSharpName(model, PropertyKind.Builder)] { get; }
@@ -1106,7 +1107,8 @@ template GenerateImmutableOperationImpl(MetaModel model, MetaClass cls, MetaOper
 ^
 [op.ReturnType.CSharpName(model, ClassKind.ImmutableOperation, true)] [op.Parent.CSharpName(model, ClassKind.Immutable, true)].[op.Name]([GetClassParameters(model, (MetaClass)op.Parent, op, ClassKind.ImmutableOperation)])
 {
-    [GetReturn(model, op, ClassKind.ImmutableOperation)][model.CSharpName(ModelKind.ImplementationProvider)].Implementation.[op.Parent.CSharpName(model, ClassKind.Immutable)]_[op.Name]([GetClassImplCallParameterNames(model, op, ClassKind.ImmutableOperation)]);
+[var finalOp = GetFinalOperation(cls, op)]
+    [GetReturn(model, finalOp, ClassKind.ImmutableOperation)][model.CSharpName(ModelKind.ImplementationProvider)].Implementation.[finalOp.Parent.CSharpName(model, ClassKind.Immutable)]_[finalOp.Name]([GetClassImplCallParameterNames(model, finalOp, ClassKind.ImmutableOperation)]);
 }
 end template
 
@@ -1216,7 +1218,7 @@ public [prop.Type.CSharpName(model, ClassKind.Builder, true)] [prop.Name]
 	[else]
 	get { return this.GetValue<[prop.Type.CSharpName(model, ClassKind.Builder, true)]>([prop.CSharpName(null, PropertyKind.Descriptor, true)]); }
 	[end if]
-	[if((prop.Kind == MetaPropertyKind.Normal || prop.Kind == MetaPropertyKind.Containment) && !(prop.Type is MetaCollectionType))]
+	[if((prop.Kind == MetaPropertyKind.Normal) && !(prop.Type is MetaCollectionType))]
 		[if (prop.Type.IsReferenceType())]
 	set { this.SetReference<[prop.Type.CSharpName(model, ClassKind.Builder, true)]>([prop.CSharpName(null, PropertyKind.Descriptor, true)], value); }
 		[else]
@@ -1259,6 +1261,7 @@ template GenerateBuilderOperationImpl(MetaModel model, MetaClass cls, MetaOperat
 ^
 [op.ReturnType.CSharpName(model, ClassKind.BuilderOperation, true)] [op.Parent.CSharpName(model, ClassKind.Builder, true)].[op.Name]([GetClassParameters(model, (MetaClass)op.Parent, op, ClassKind.BuilderOperation)])
 {
-    [GetReturn(model, op, ClassKind.BuilderOperation)][model.CSharpName(ModelKind.ImplementationProvider)].Implementation.[op.Parent.CSharpName(model, ClassKind.Immutable)]_[op.Name]([GetClassImplCallParameterNames(model, op, ClassKind.BuilderOperation)]);
+[var finalOp = GetFinalOperation(cls, op)]
+    [GetReturn(model, finalOp, ClassKind.BuilderOperation)][model.CSharpName(ModelKind.ImplementationProvider)].Implementation.[finalOp.Parent.CSharpName(model, ClassKind.Immutable)]_[finalOp.Name]([GetClassImplCallParameterNames(model, finalOp, ClassKind.BuilderOperation)]);
 }
 end template

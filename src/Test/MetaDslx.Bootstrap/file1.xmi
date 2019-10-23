@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xmi:XMI xmlns:uml="http://www.omg.org/spec/UML" xmlns:xmi="http://www.omg.org/spec/XMI">
-  <uml:Package xmi:type="uml:Package" xmi:id="1fe4112a-21ff-4e47-915e-9b8196e353b8" uRI="http://www.omg.org/spec/PrimitiveTypes/20161101" name="PrimitiveTypes">
-    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="70c6aeda-fa75-43b3-8349-b14e40cb53ad" namespace="1fe4112a-21ff-4e47-915e-9b8196e353b8" name="Boolean" owner="1fe4112a-21ff-4e47-915e-9b8196e353b8">
-      <ownedComment xmi:type="uml:Comment" xmi:id="4c811ccc-73e8-4b2c-a79c-af3119937a10" body="Boolean is used for logical expressions, consisting of the predefined values true and false." owner="70c6aeda-fa75-43b3-8349-b14e40cb53ad">
-        <annotatedElement xmi:idref="70c6aeda-fa75-43b3-8349-b14e40cb53ad" />
+  <uml:Package xmi:type="uml:Package" xmi:id="6cc7d882-ed09-4da2-bf63-ab2fb276f1de" uRI="http://www.omg.org/spec/PrimitiveTypes/20161101" name="PrimitiveTypes">
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="65f462e3-45e5-4ec7-add0-4dae737130a6" namespace="6cc7d882-ed09-4da2-bf63-ab2fb276f1de" name="Boolean" owner="6cc7d882-ed09-4da2-bf63-ab2fb276f1de">
+      <ownedComment xmi:type="uml:Comment" xmi:id="28b20afb-4758-42fc-96cf-7e09fcecd682" body="Boolean is used for logical expressions, consisting of the predefined values true and false." owner="65f462e3-45e5-4ec7-add0-4dae737130a6">
+        <annotatedElement xmi:idref="65f462e3-45e5-4ec7-add0-4dae737130a6" />
       </ownedComment>
     </packagedElement>
-    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="cd2e0d61-0f38-4f9f-8362-80af156c0568" namespace="1fe4112a-21ff-4e47-915e-9b8196e353b8" name="Integer" owner="1fe4112a-21ff-4e47-915e-9b8196e353b8">
-      <ownedComment xmi:type="uml:Comment" xmi:id="fc1e3e96-3332-433a-9a67-9a0f1576c7b5" body="Integer is a primitive type representing integer values." owner="cd2e0d61-0f38-4f9f-8362-80af156c0568">
-        <annotatedElement xmi:idref="cd2e0d61-0f38-4f9f-8362-80af156c0568" />
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="9712d885-bfd1-4a75-86f8-6f3eb39c3307" namespace="6cc7d882-ed09-4da2-bf63-ab2fb276f1de" name="Integer" owner="6cc7d882-ed09-4da2-bf63-ab2fb276f1de">
+      <ownedComment xmi:type="uml:Comment" xmi:id="45746473-5eb5-4f31-8243-ea794eff1dd2" body="Integer is a primitive type representing integer values." owner="9712d885-bfd1-4a75-86f8-6f3eb39c3307">
+        <annotatedElement xmi:idref="9712d885-bfd1-4a75-86f8-6f3eb39c3307" />
       </ownedComment>
     </packagedElement>
-    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="874e3965-1286-4497-8e0c-1276129947f4" namespace="1fe4112a-21ff-4e47-915e-9b8196e353b8" name="Real" owner="1fe4112a-21ff-4e47-915e-9b8196e353b8">
-      <ownedComment xmi:type="uml:Comment" xmi:id="e8f188ce-b9b0-4611-a19a-f8482281d566" body="Real is a primitive type representing the mathematical concept of real." owner="874e3965-1286-4497-8e0c-1276129947f4">
-        <annotatedElement xmi:idref="874e3965-1286-4497-8e0c-1276129947f4" />
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="8f70bcaf-86b8-4b73-a8bd-ec22dba8dda2" namespace="6cc7d882-ed09-4da2-bf63-ab2fb276f1de" name="Real" owner="6cc7d882-ed09-4da2-bf63-ab2fb276f1de">
+      <ownedComment xmi:type="uml:Comment" xmi:id="2e1671c7-819d-4c19-b36d-525ccfb4c9fe" body="Real is a primitive type representing the mathematical concept of real." owner="8f70bcaf-86b8-4b73-a8bd-ec22dba8dda2">
+        <annotatedElement xmi:idref="8f70bcaf-86b8-4b73-a8bd-ec22dba8dda2" />
       </ownedComment>
     </packagedElement>
-    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="5af3e3bb-8cb5-49a3-a650-540b8599ab78" namespace="1fe4112a-21ff-4e47-915e-9b8196e353b8" name="String" owner="1fe4112a-21ff-4e47-915e-9b8196e353b8">
-      <ownedComment xmi:type="uml:Comment" xmi:id="7d4e85b6-8248-4724-82bd-a984371b53ff" body="String is a sequence of characters in some suitable character set used to display information about the model. Character sets may include non-Roman alphabets and characters." owner="5af3e3bb-8cb5-49a3-a650-540b8599ab78">
-        <annotatedElement xmi:idref="5af3e3bb-8cb5-49a3-a650-540b8599ab78" />
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="9b88987f-2bef-47f6-8941-9f765632bf6b" namespace="6cc7d882-ed09-4da2-bf63-ab2fb276f1de" name="String" owner="6cc7d882-ed09-4da2-bf63-ab2fb276f1de">
+      <ownedComment xmi:type="uml:Comment" xmi:id="90d59b0d-893e-4679-9821-8847df76f150" body="String is a sequence of characters in some suitable character set used to display information about the model. Character sets may include non-Roman alphabets and characters." owner="9b88987f-2bef-47f6-8941-9f765632bf6b">
+        <annotatedElement xmi:idref="9b88987f-2bef-47f6-8941-9f765632bf6b" />
       </ownedComment>
     </packagedElement>
-    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="14e5be94-d7ea-40f0-9c95-82f3ea2c6eb0" namespace="1fe4112a-21ff-4e47-915e-9b8196e353b8" name="UnlimitedNatural" owner="1fe4112a-21ff-4e47-915e-9b8196e353b8">
-      <ownedComment xmi:type="uml:Comment" xmi:id="d900fd3c-36b7-43fc-b310-5d0d43cbb36a" body="UnlimitedNatural is a primitive type representing unlimited natural values." owner="14e5be94-d7ea-40f0-9c95-82f3ea2c6eb0">
-        <annotatedElement xmi:idref="14e5be94-d7ea-40f0-9c95-82f3ea2c6eb0" />
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="4d27744a-98e3-4ae3-96bc-a57505ab0ee0" namespace="6cc7d882-ed09-4da2-bf63-ab2fb276f1de" name="UnlimitedNatural" owner="6cc7d882-ed09-4da2-bf63-ab2fb276f1de">
+      <ownedComment xmi:type="uml:Comment" xmi:id="69c53dcf-d818-46a3-9b55-126ab71b0517" body="UnlimitedNatural is a primitive type representing unlimited natural values." owner="4d27744a-98e3-4ae3-96bc-a57505ab0ee0">
+        <annotatedElement xmi:idref="4d27744a-98e3-4ae3-96bc-a57505ab0ee0" />
       </ownedComment>
     </packagedElement>
   </uml:Package>

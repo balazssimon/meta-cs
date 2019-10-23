@@ -173,8 +173,7 @@
 		Readonly,
 		Lazy,
 		Derived,
-		DerivedUnion,
-		Containment
+		DerivedUnion
 	}
 
 	class MetaProperty : MetaNamedElement, MetaTypedElement
@@ -182,6 +181,7 @@
 		MetaPropertyKind Kind;
 		MetaClass Class;
 		string DefaultValue;
+		bool IsContainment;
 		list<MetaProperty> OppositeProperties;
 		list<MetaProperty> SubsettedProperties;
 		list<MetaProperty> SubsettingProperties;

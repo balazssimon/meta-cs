@@ -769,6 +769,24 @@ namespace MetaDslx.Languages.Meta.Generator
             }
             return string.Empty;
         }
+
+        public MetaOperation GetFinalOperation(MetaClass cls, MetaOperation operation)
+        {
+            foreach (var op in cls.GetAllFinalOperations())
+            {
+                if (op.Name == operation.Name) return op;
+            }
+            return operation;
+        }
+
+        public MetaProperty GetFinalProperty(MetaClass cls, MetaProperty property)
+        {
+            foreach (var prop in cls.GetAllFinalProperties())
+            {
+                if (prop.Name == property.Name) return prop;
+            }
+            return property;
+        }
     }
     //*/
 }
