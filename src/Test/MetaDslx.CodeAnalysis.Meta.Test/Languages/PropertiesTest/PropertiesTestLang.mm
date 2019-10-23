@@ -330,4 +330,31 @@
 		list<BaseClass> List2ListDerived subsets List2ListBase;
 	}
 
+	class UnionSet
+	{
+		union set<BaseClass> Union1;
+		set<BaseClass> Subset1 subsets Union1;
+		set<BaseClass> Subset2 subsets Subset1;
+		set<BaseClass> Subset3 subsets Subset1;
+		union set<DerivedClass> Union2 subsets Subset1;
+		set<DerivedClass> Subset4 subsets Union2;
+		set<DerivedClass> Subset5 subsets Union2;
+	}
+
+	class UnionSingle
+	{
+		union BaseClass Union1;
+		set<BaseClass> Subset1 subsets Union1;
+		set<BaseClass> Subset2 subsets Subset1;
+		set<BaseClass> Subset3 subsets Subset1;
+		BaseClass Subset4 subsets Subset1;
+		DerivedClass Subset5 subsets Subset4;
+		union set<DerivedClass> Union2 subsets Union1;
+		set<DerivedClass> Subset6 subsets Union2;
+		set<DerivedClass> Subset7 subsets Union2;
+		BaseClass Subset8 subsets Subset6;
+		DerivedClass Subset9 subsets Subset6;
+	}
+
+
 }

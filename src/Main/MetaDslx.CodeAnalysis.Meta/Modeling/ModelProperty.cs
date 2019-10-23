@@ -371,9 +371,8 @@ namespace MetaDslx.Modeling
                         }
                         if ((descriptor == this.declaringDescriptor || this.declaringDescriptor.AllBaseDescriptors.Contains(descriptor)))
                         {
-                            // TODO: MetaDslx
-                            if (/*!this.IsCollection ||*/ !this.IsUnique) throw new InvalidOperationException("Error subsetting property: " + this.FullDeclaredName + "->" + prop.FullDeclaredName + ". The subsetting property must be a collection of unique values.");
-                            if (/*!prop.IsCollection ||*/ !prop.IsUnique) throw new InvalidOperationException("Error subsetting property: " + this.FullDeclaredName + "->" + prop.FullDeclaredName + ". The subsetted property must be a collection of unique values.");
+                            if (!this.IsUnique) throw new InvalidOperationException("Error subsetting property: " + this.FullDeclaredName + "->" + prop.FullDeclaredName + ". The subsetting property must be a collection of unique values.");
+                            if (!prop.IsUnique) throw new InvalidOperationException("Error subsetting property: " + this.FullDeclaredName + "->" + prop.FullDeclaredName + ". The subsetted property must be a collection of unique values.");
                             this.RegisterSubsettedProperty(prop);
                         }
                         else
@@ -392,12 +391,7 @@ namespace MetaDslx.Modeling
                         }
                         if ((descriptor == this.declaringDescriptor || this.declaringDescriptor.AllBaseDescriptors != null && this.declaringDescriptor.AllBaseDescriptors.Contains(descriptor)))
                         {
-                            // TODO: MetaDslx
-                            /*if (this.IsCollection ^ prop.IsCollection) throw new InvalidOperationException("Error redefining property: " + this.FullDeclaredName + "->" + prop.FullDeclaredName + ". The redefining and the redefined property must be of the same kind: either a single value or a collection.");
-                            if (this.IsCollection && prop.IsCollection)
-                            {
-                                if (this.IsUnique ^ prop.IsUnique) throw new InvalidOperationException("Error redefining property: " + this.FullDeclaredName + "->" + prop.FullDeclaredName + ". The redefining and the redefined property must have the same uniqueness.");
-                            }*/
+                            if (this.IsContainment && !prop.IsContainment) throw new InvalidOperationException("Error redefining property: " + this.FullDeclaredName + "->" + prop.FullDeclaredName + ". The redefining property cannot be a containment if the redefined property is not a containment.");
                             this.RegisterRedefinedProperty(prop);
                         }
                         else
@@ -414,7 +408,6 @@ namespace MetaDslx.Modeling
                         {
                             throw new InvalidOperationException("Error in setting opposite property: " + this.FullDeclaredName + "->" + propAnnot.DeclaringType+"."+propAnnot.PropertyName + ". The opposite property cannot be found.");
                         }
-                        if (!this.IsUnique) throw new InvalidOperationException("Error in setting opposite property: " + this.FullDeclaredName + "->" + prop.FullDeclaredName + ". A property which has an opposite must be either a single value or a unique collection.");
                         bool foundThisProperty = false;
                         foreach (var oppositeAnnot in prop.annotations)
                         {
@@ -440,7 +433,7 @@ namespace MetaDslx.Modeling
                     }
                     else if (annot is DerivedUnionAttribute)
                     {
-                        if (!this.IsCollection || !this.IsUnique) throw new InvalidOperationException("Error in property: " + this.FullDeclaredName + ". A derived union property must be a collection of unique values.");
+                        if (!this.IsUnique) throw new InvalidOperationException("Error in property: " + this.FullDeclaredName + ". A derived union property must be contain unique values.");
                         this.flags |= ModelPropertyFlags.DerivedUnion | ModelPropertyFlags.Readonly;
                     }
                 }

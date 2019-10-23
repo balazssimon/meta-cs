@@ -543,6 +543,9 @@ public static readonly [Properties.CoreNs].ModelProperty [prop.CSharpName(model,
 end template
 
 template GenerateDescriptorPropertyAttributes(MetaModel model, MetaClass cls, MetaProperty prop)
+[if (prop.Type is MetaCollectionType && (((MetaCollectionType)prop.Type).Kind == MetaCollectionKind.MultiSet || ((MetaCollectionType)prop.Type).Kind == MetaCollectionKind.MultiList))]
+["["+Properties.CoreNs+".NonUnique]"]
+[end if]
 [if(prop.IsContainment)]
 ["["+Properties.CoreNs+".ContainmentAttribute]"]
 [end if]

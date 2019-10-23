@@ -598,8 +598,13 @@ namespace MetaDslx.Modeling.Internal
                 if (!oid.Descriptor.HasAffectedProperties(property) || value is LazyValue || value is GreenDerivedValue)
                 {
                     object oldValue = null;
-                    if (replace && index >= 0) changed = this.RemoveItemCore(objectRef, property, true, reassign, index, false, ref oldValue) || changed;
-                    changed = this.AddItemCore(objectRef, property, reassign, index, value) || changed;
+                    bool removedValue = false;
+                    bool removedAllValues = false;
+                    bool valueAdded;
+                    bool newValueAdded;
+                    if (replace && index >= 0) (removedValue, removedAllValues) = this.RemoveItemCore(objectRef, property, true, reassign, index, false, ref oldValue);
+                    (valueAdded, newValueAdded) = this.AddItemCore(objectRef, property, reassign, index, value);
+                    if (removedValue || valueAdded) changed = true;
                     this.UpdateModel(objectRef.Model);
                 }
                 else
@@ -623,7 +628,10 @@ namespace MetaDslx.Modeling.Internal
             {
                 if (!oid.Descriptor.HasAffectedProperties(property) || value is LazyValue || value is GreenDerivedValue)
                 {
-                    changed = this.RemoveItemCore(objectRef, property, true, reassign, index, removeAll, ref value) || changed;
+                    bool removedValue = false;
+                    bool removedAllValues = false;
+                    (removedValue, removedAllValues) = this.RemoveItemCore(objectRef, property, true, reassign, index, removeAll, ref value);
+                    if (removedValue) changed = true;
                     this.UpdateModel(objectRef.Model);
                 }
                 else
@@ -1003,10 +1011,10 @@ namespace MetaDslx.Modeling.Internal
         /// <param name="index"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        private bool AddItemCore(ObjectRef objectRef, ModelProperty property, bool reassign, int index, object value)
+        private (bool valueAdded, bool newValueAdded) AddItemCore(ObjectRef objectRef, ModelProperty property, bool reassign, int index, object value)
         {
             Debug.Assert(objectRef.Object.Properties.ContainsKey(property));
-            if (!this.CheckOldItem(objectRef, property, reassign)) return false;
+            if (!this.CheckOldItem(objectRef, property, reassign)) return (false, false);
             this.CheckNewItem(objectRef, property, ref value);
             GreenList list;
             object listValue;
@@ -1018,6 +1026,7 @@ namespace MetaDslx.Modeling.Internal
             {
                 list = (GreenList)listValue;
             }
+            bool newReference = false;
             GreenList oldList = list;
             if (value is LazyValue)
             {
@@ -1026,7 +1035,7 @@ namespace MetaDslx.Modeling.Internal
             }
             else
             {
-                bool newReference = value is ObjectId && !list.Contains(value);
+                newReference = value is ObjectId && !list.Contains(value);
                 if (index >= 0 && index <= list.Count)
                 {
                     list = list.Insert(index, value);
@@ -1043,7 +1052,7 @@ namespace MetaDslx.Modeling.Internal
             GreenObject green = objectRef.Object;
             green = green.Update(green.Parent, green.Children, green.Properties.SetItem(property, list));
             objectRef.Update(green);
-            return list != oldList;
+            return (list != oldList, newReference);
         }
 
         /// <summary>
@@ -1058,21 +1067,21 @@ namespace MetaDslx.Modeling.Internal
         /// <param name="removeAll"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        private bool RemoveItemCore(ObjectRef objectRef, ModelProperty property, bool forceRemove, bool reassign, int index, bool removeAll, ref object value)
+        private (bool valueRemoved, bool allValuesRemoved) RemoveItemCore(ObjectRef objectRef, ModelProperty property, bool forceRemove, bool reassign, int index, bool removeAll, ref object value)
         {
             Debug.Assert(objectRef.Object.Properties.ContainsKey(property));
-            if (!this.CheckOldItem(objectRef, property, reassign)) return false;
+            if (!this.CheckOldItem(objectRef, property, reassign)) return (false, false);
             GreenList list;
             object listValue;
             if (this.TryGetValueCore(objectRef, property, false, false, out listValue))
             {
-                if (listValue == null) return false;
+                if (listValue == null) return (false, false);
                 Debug.Assert(listValue is GreenList);
                 list = (GreenList)listValue;
             }
             else
             {
-                return false;
+                return (false, false);
             }
             if (!forceRemove && property.IsDerivedUnion)
             {
@@ -1100,7 +1109,7 @@ namespace MetaDslx.Modeling.Internal
                                     GreenList subsetList = (GreenList)representingSubsetValue;
                                     if (subsetList.Contains(value))
                                     {
-                                        return false;
+                                        return (false, false);
                                     }
                                 }
                             }
@@ -1135,7 +1144,7 @@ namespace MetaDslx.Modeling.Internal
             GreenObject green = objectRef.Object;
             green = green.Update(green.Parent, green.Children, green.Properties.SetItem(property, list));
             objectRef.Update(green);
-            return oldList != list || removedAll;
+            return (oldList != list || removedAll, removedAll);
         }
 
         /// <summary>
@@ -1231,13 +1240,15 @@ namespace MetaDslx.Modeling.Internal
             }
             // Setting the value:
             bool valueAdded = false;
+            bool newValueAdded = false;
             if (property.IsCollection)
             {
-                valueAdded = this.AddItemCore(objectRef, property, reassign, index, value);
+                (valueAdded, newValueAdded) = this.AddItemCore(objectRef, property, reassign, index, value);
             }
             else
             {
                 valueAdded = this.SetValueCore(objectRef, property, reassign, value);
+                newValueAdded = valueAdded;
             }
             if (valueAdded)
             {
@@ -1263,11 +1274,11 @@ namespace MetaDslx.Modeling.Internal
                 foreach (var subsettedProp in propertyInfo.SubsettedProperties)
                 {
                     ModelProperty subsettedRepProp = this.GetRepresentingProperty(oid, subsettedProp);
-                    this.SlowAddValueCore(mid, oid, subsettedRepProp, reassign, -1, value, valueAddedToSelf, valueAddedToOpposite);
+                    this.SlowAddValueCore(mid, oid, subsettedRepProp, reassign || subsettedProp.IsDerivedUnion, -1, value, valueAddedToSelf, valueAddedToOpposite);
                 }
             }
             // Updating opposite properties:
-            if (valueId != null && propertyInfo.OppositeProperties.Count > 0)
+            if (newValueAdded && valueId != null && propertyInfo.OppositeProperties.Count > 0)
             {
                 ObjectRef valueObjectRef = this.ResolveObjectRef(valueId, true);
                 if (valueObjectRef != null)
@@ -1281,7 +1292,6 @@ namespace MetaDslx.Modeling.Internal
                     if (valueAddedToOpposite == null)
                     {
                         valueAddedToOpposite = new HashSet<ModelProperty>();
-
                         foreach (var oppositeProp in propertyInfo.OppositeProperties)
                         {
                             ModelProperty oppositeRepProp = this.GetRepresentingProperty(valueId, oppositeProp);
@@ -1335,13 +1345,15 @@ namespace MetaDslx.Modeling.Internal
             }
             // Setting the value:
             bool valueRemoved = false;
+            bool allValuesRemoved = false;
             if (property.IsCollection)
             {
-                valueRemoved = this.RemoveItemCore(objectRef, property, forceRemove, reassign, index, removeAll, ref value);
+                (valueRemoved, allValuesRemoved) = this.RemoveItemCore(objectRef, property, forceRemove, reassign, index, removeAll, ref value);
             }
             else
             {
                 valueRemoved = this.SetValueCore(objectRef, property, reassign, GreenObject.Unassigned);
+                allValuesRemoved = valueRemoved;
             }
             if (valueRemoved)
             {
@@ -1379,7 +1391,7 @@ namespace MetaDslx.Modeling.Internal
                 }
             }
             // Updating opposite properties:
-            if (value is ObjectId && propertyInfo.OppositeProperties.Count > 0)
+            if (allValuesRemoved && value is ObjectId && propertyInfo.OppositeProperties.Count > 0)
             {
                 ObjectId valueId = (ObjectId)value;
                 ObjectRef valueObjectRef = this.ResolveObjectRef(valueId, true);
@@ -1391,10 +1403,17 @@ namespace MetaDslx.Modeling.Internal
                         else valueRemovedFromSelf.UnionWith(propertyInfo.EquivalentProperties);
                         valueRemovedFromSelf.Add(property);
                     }
-                    foreach (var oppositeProp in propertyInfo.OppositeProperties)
+                    if (valueRemovedFromOpposite == null)
                     {
-                        ModelProperty oppositeRepProp = this.GetRepresentingProperty(valueId, oppositeProp);
-                        this.SlowRemoveValueCore(valueObjectRef.Model.Id, valueId, oppositeRepProp, true, reassign, -1, removeAll, oid, valueRemovedFromOpposite, valueRemovedFromSelf);
+                        valueRemovedFromOpposite = new HashSet<ModelProperty>();
+                        foreach (var oppositeProp in propertyInfo.OppositeProperties)
+                        {
+                            ModelProperty oppositeRepProp = this.GetRepresentingProperty(valueId, oppositeProp);
+                            if (!valueRemovedFromOpposite.Contains(oppositeProp))
+                            {
+                                this.SlowRemoveValueCore(valueObjectRef.Model.Id, valueId, oppositeRepProp, true, reassign, -1, true, oid, valueRemovedFromOpposite, valueRemovedFromSelf);
+                            }
+                        }
                     }
                 }
             }
