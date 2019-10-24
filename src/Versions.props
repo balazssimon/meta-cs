@@ -41,5 +41,6 @@
 	<MicrosoftBuildVersion>16.0.461</MicrosoftBuildVersion>
 	<MicrosoftNetDskTestVersion>16.3.0</MicrosoftNetDskTestVersion>
 	<XUnitVersion>2.4.1</XUnitVersion>
+	<OmgVersion>0.1.0</OmgVersion>
   </PropertyGroup>
 </Project>

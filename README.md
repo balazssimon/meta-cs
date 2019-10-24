@@ -9,6 +9,9 @@ MetaDslx supports the following features:
 * compilers with a Roslyn-style public API, based on ANTLR4 grammars extended with semantic annotations
 * creating user friendly template-based code generators
 * generating syntax highlighters for Visual Studio
+* complete implementation of the OMG metamodel standards: [MOF](https://www.omg.org/spec/MOF/), [UML](https://www.omg.org/spec/UML/)
+* model serialization and deserialization through the XMI(https://www.omg.org/spec/XMI/) standard
+* implementation of the Eclipse EMF [ecore](https://wiki.eclipse.org/Ecore) metamodel
 
 # Documentation
 
