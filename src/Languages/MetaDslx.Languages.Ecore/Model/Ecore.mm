@@ -201,8 +201,8 @@
 		bool Unique = "true";
 		int LowerBound;
 		int UpperBound = "1";
-		bool Many;
-		bool Required;
+		derived bool Many;
+		derived bool Required;
 		containment EGenericType EGenericType;
 	}
 
@@ -223,13 +223,13 @@
 	class EAttribute : EStructuralFeature
 	{
 		bool ID;
-		EDataType EAttributeType;
+		derived EDataType EAttributeType;
 	}
 
 	class EReference : EStructuralFeature
 	{
 		bool Containment;
-		bool Container;
+		derived bool Container;
 		bool ResolveProxies = "true";
 		EReference EOpposite;
 		derived EClass EReferenceType;

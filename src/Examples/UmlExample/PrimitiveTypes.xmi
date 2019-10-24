@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.omg.org/spec/UML/20161101">
+	<uml:Package xmi:type="uml:Package" xmi:id="_0" name="PrimitiveTypes" URI="http://www.omg.org/spec/PrimitiveTypes/20161101">
+		<packagedElement xmi:type="uml:PrimitiveType" xmi:id="Boolean" name="Boolean">
+			<ownedComment xmi:type="uml:Comment" xmi:id="Boolean-_ownedComment.0" annotatedElement="Boolean">
+				<body>Boolean is used for logical expressions, consisting of the predefined values true and false.</body>
+			</ownedComment>
+		</packagedElement>
+		<packagedElement xmi:type="uml:PrimitiveType" xmi:id="Integer" name="Integer">
+			<ownedComment xmi:type="uml:Comment" xmi:id="Integer-_ownedComment.0" annotatedElement="Integer">
+				<body>Integer is a primitive type representing integer values.</body>
+			</ownedComment>
+		</packagedElement>
+		<packagedElement xmi:type="uml:PrimitiveType" xmi:id="Real" name="Real">
+			<ownedComment xmi:type="uml:Comment" xmi:id="Real-_ownedComment.0" annotatedElement="Real">
+				<body>Real is a primitive type representing the mathematical concept of real.</body>
+			</ownedComment>
+		</packagedElement>
+		<packagedElement xmi:type="uml:PrimitiveType" xmi:id="String" name="String">
+			<ownedComment xmi:type="uml:Comment" xmi:id="String-_ownedComment.0" annotatedElement="String">
+				<body>String is a sequence of characters in some suitable character set used to display information about the model. Character sets may include non-Roman alphabets and characters.</body>
+			</ownedComment>
+		</packagedElement>
+		<packagedElement xmi:type="uml:PrimitiveType" xmi:id="UnlimitedNatural" name="UnlimitedNatural">
+			<ownedComment xmi:type="uml:Comment" xmi:id="UnlimitedNatural-_ownedComment.0" annotatedElement="UnlimitedNatural">
+				<body>UnlimitedNatural is a primitive type representing unlimited natural values.</body>
+			</ownedComment>
+		</packagedElement>
+	</uml:Package>
+</xmi:XMI>

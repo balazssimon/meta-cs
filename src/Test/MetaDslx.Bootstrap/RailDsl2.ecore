@@ -1,144 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ecore:EPackage xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmi:type="ecore:EPackage" xmi:id="f2bdd0d4-f12a-4ba8-90d8-44827659cd6f" name="railDsl" nsURI="http://www.bme.hu/iit/vke/raildsl" nsPrefix="railDsl" xmlns:xmi="http://www.omg.org/XMI">
-  <eClassifiers xmi:type="ecore:EClass" xmi:id="54f4c731-6eba-4141-bb2c-8d56b2586a89" name="Station">
-    <eSuperTypes xmi:idref="71449b99-6dbb-4945-944c-c49e84ed3e53" />
-    <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="1bcb1ade-0e1b-404c-a1f0-97e018f4f55c" name="declarations" eType="43cb7f15-93f9-4518-bfe5-edd12ad2278d" upperBound="-1" containment="true" />
+<ecore:EPackage xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmi:type="ecore:EPackage" xmi:id="09525c21-cb75-4191-8494-817b58af3dae" nsPrefix="railDsl" nsURI="http://www.bme.hu/iit/vke/raildsl" name="railDsl" xmlns:xmi="http://www.omg.org/XMI">
+  <eClassifiers xmi:type="ecore:EClass" xmi:id="bee9bb3d-8e08-4238-ba36-e582ad64c32c" name="Station">
+    <eSuperTypes xmi:idref="8f72315d-525c-4433-9b44-0b29ae8dc583" />
+    <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="45e3b191-841e-4301-a8bc-ab8e0324a83e" containment="true" upperBound="-1" eType="2c08c12e-9ea2-46dc-92b8-7518f2299834" name="declarations" />
   </eClassifiers>
-  <eClassifiers xmi:type="ecore:EClass" xmi:id="43cb7f15-93f9-4518-bfe5-edd12ad2278d" name="Declaration" abstract="true">
-    <eSuperTypes xmi:idref="71449b99-6dbb-4945-944c-c49e84ed3e53" />
+  <eClassifiers xmi:type="ecore:EClass" xmi:id="2c08c12e-9ea2-46dc-92b8-7518f2299834" abstract="true" name="Declaration">
+    <eSuperTypes xmi:idref="8f72315d-525c-4433-9b44-0b29ae8dc583" />
   </eClassifiers>
-  <eClassifiers xmi:type="ecore:EClass" xmi:id="bd9c9546-2724-4baf-9756-a902f39998a8" name="TrackObject" abstract="true">
-    <eSuperTypes xmi:idref="43cb7f15-93f9-4518-bfe5-edd12ad2278d" />
-    <eSuperTypes xmi:idref="858eb8c1-bf2b-4b3c-9728-a9300a39b1ab" />
-    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="1cc89ae9-0cbf-41c6-851b-16f807aa5262" name="length" eType="http://www.eclipse.org/emf/2002/Ecore#//EDouble" />
+  <eClassifiers xmi:type="ecore:EClass" xmi:id="274d36df-bcae-49b5-bf9e-5cfe4e125cf9" abstract="true" name="TrackObject">
+    <eSuperTypes xmi:idref="2c08c12e-9ea2-46dc-92b8-7518f2299834" />
+    <eSuperTypes xmi:idref="93f1823d-0017-4660-8742-79a12ecd69a5" />
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="4cb39aa9-36cb-4067-8fa9-1e5357c93cac" eType="http://www.eclipse.org/emf/2002/Ecore#//EDouble" name="length" />
   </eClassifiers>
-  <eClassifiers xmi:type="ecore:EClass" xmi:id="f089ca4c-9a5f-40f1-ab49-14b9f38baa9c" name="Vertex">
-    <eSuperTypes xmi:idref="43cb7f15-93f9-4518-bfe5-edd12ad2278d" />
-    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="6055f696-bccc-4c61-a95c-7683998314eb" name="kind" eType="abb24485-c91c-4d72-9730-435850ad21c0" />
+  <eClassifiers xmi:type="ecore:EClass" xmi:id="e7108c4a-5887-4e90-b4d3-cd8b85f49fc4" name="Vertex">
+    <eSuperTypes xmi:idref="2c08c12e-9ea2-46dc-92b8-7518f2299834" />
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="c30f48bf-14da-4e8b-87ee-1a20f03b57d3" eType="eb316645-7d33-4316-9e8c-793d741e3526" name="kind" />
   </eClassifiers>
-  <eClassifiers xmi:type="ecore:EClass" xmi:id="b45bd5e8-0fef-4adc-9ae5-b8596932b65e" name="Segment">
-    <eSuperTypes xmi:idref="bd9c9546-2724-4baf-9756-a902f39998a8" />
-    <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="ccb27568-12c1-47e7-a135-ad71920a62cc" name="start" eType="f089ca4c-9a5f-40f1-ab49-14b9f38baa9c" />
-    <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="2ea0d5e7-77c6-4a00-ab94-42c7d0233aa0" name="end" eType="f089ca4c-9a5f-40f1-ab49-14b9f38baa9c" />
-    <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="89e6a536-b4a4-4348-8037-4b393ef6ab88" name="objects" eType="e72b8463-9f5b-4e52-8239-ad33f462196e" upperBound="-1" containment="true" />
+  <eClassifiers xmi:type="ecore:EClass" xmi:id="3382b4d6-8a79-4bb6-bf54-75d84a8be6b3" name="Segment">
+    <eSuperTypes xmi:idref="274d36df-bcae-49b5-bf9e-5cfe4e125cf9" />
+    <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="3a22dd76-c003-4a83-89ec-0442230a91ff" eType="e7108c4a-5887-4e90-b4d3-cd8b85f49fc4" name="start" />
+    <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="a2a386c6-dc6b-4576-9c41-6850b7d79039" eType="e7108c4a-5887-4e90-b4d3-cd8b85f49fc4" name="end" />
+    <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="ff703d33-efee-40ac-abc6-4a7d7075336f" containment="true" upperBound="-1" eType="1e7f8ab4-a01d-4219-9e41-1344fe140db8" name="objects" />
   </eClassifiers>
-  <eClassifiers xmi:type="ecore:EClass" xmi:id="e72b8463-9f5b-4e52-8239-ad33f462196e" name="SegmentObject" abstract="true">
-    <eSuperTypes xmi:idref="71449b99-6dbb-4945-944c-c49e84ed3e53" />
-    <eSuperTypes xmi:idref="858eb8c1-bf2b-4b3c-9728-a9300a39b1ab" />
-    <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="168e8e67-bb40-4611-be12-6d919c661469" name="position" eType="a2df4ed7-47e5-45f0-b325-1475176f08cc" containment="true" />
+  <eClassifiers xmi:type="ecore:EClass" xmi:id="1e7f8ab4-a01d-4219-9e41-1344fe140db8" abstract="true" name="SegmentObject">
+    <eSuperTypes xmi:idref="8f72315d-525c-4433-9b44-0b29ae8dc583" />
+    <eSuperTypes xmi:idref="93f1823d-0017-4660-8742-79a12ecd69a5" />
+    <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="3c6de5da-b026-443b-9135-9b20b976b579" containment="true" eType="3a0d01dc-8694-4b81-8a33-26d70b2b09da" name="position" />
   </eClassifiers>
-  <eClassifiers xmi:type="ecore:EClass" xmi:id="438afcf4-cee5-4488-bdac-600ef32a853c" name="Derailer">
-    <eSuperTypes xmi:idref="e72b8463-9f5b-4e52-8239-ad33f462196e" />
-    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="04947dd0-78fd-4287-a4ec-9d454dd230f8" name="active" eType="http://www.eclipse.org/emf/2002/Ecore#//EBoolean" />
+  <eClassifiers xmi:type="ecore:EClass" xmi:id="341f0a7c-1b9f-454d-aea9-e90a1113862a" name="Derailer">
+    <eSuperTypes xmi:idref="1e7f8ab4-a01d-4219-9e41-1344fe140db8" />
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="7d79a68b-8f2c-4d16-9447-35be589cd969" eType="http://www.eclipse.org/emf/2002/Ecore#//EBoolean" name="active" />
   </eClassifiers>
-  <eClassifiers xmi:type="ecore:EClass" xmi:id="d3df5ed0-3b10-4665-a27b-7985a264fa0d" name="LevelCrossing">
-    <eSuperTypes xmi:idref="e72b8463-9f5b-4e52-8239-ad33f462196e" />
-    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="dce1f46a-9971-481c-b922-78c8c1e745d5" name="closed" eType="http://www.eclipse.org/emf/2002/Ecore#//EBoolean" />
-    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="41fb338e-5ac2-46d4-ba97-2a03d1704730" name="length" eType="http://www.eclipse.org/emf/2002/Ecore#//EDouble" />
+  <eClassifiers xmi:type="ecore:EClass" xmi:id="56c1179c-569b-4983-8804-6e78443b4732" name="LevelCrossing">
+    <eSuperTypes xmi:idref="1e7f8ab4-a01d-4219-9e41-1344fe140db8" />
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="11c30641-45e9-4a41-80cc-a5f56c67b26b" eType="http://www.eclipse.org/emf/2002/Ecore#//EBoolean" name="closed" />
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="ab8b0a86-c64b-4304-9013-cfcd17727420" eType="http://www.eclipse.org/emf/2002/Ecore#//EDouble" name="length" />
   </eClassifiers>
-  <eClassifiers xmi:type="ecore:EClass" xmi:id="b43e1fcb-73ee-469f-9f07-3b296a021fc3" name="Signal">
-    <eSuperTypes xmi:idref="e72b8463-9f5b-4e52-8239-ad33f462196e" />
-    <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="6187ecf6-4b5a-4a71-8b73-b8fddf241efa" name="distantFor" eType="b43e1fcb-73ee-469f-9f07-3b296a021fc3" />
-    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="52fb28d6-3cda-4e89-aee7-47f902f5e8ed" name="main" eType="http://www.eclipse.org/emf/2002/Ecore#//EBoolean" />
-    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="990ee85f-d65d-4735-916a-88d808e9699f" name="shunting" eType="http://www.eclipse.org/emf/2002/Ecore#//EBoolean" />
+  <eClassifiers xmi:type="ecore:EClass" xmi:id="a8dada2c-a312-4ea8-bca1-f0736009e5e3" name="Signal">
+    <eSuperTypes xmi:idref="1e7f8ab4-a01d-4219-9e41-1344fe140db8" />
+    <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="c07d4f32-b54f-4916-8fbb-23e94a7e59aa" eType="a8dada2c-a312-4ea8-bca1-f0736009e5e3" name="distantFor" />
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="503863f5-7c2e-4410-9c47-d332c28e9599" eType="http://www.eclipse.org/emf/2002/Ecore#//EBoolean" name="main" />
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="9c4a2b76-86e7-4d56-b1c0-fc751c8cfc40" eType="http://www.eclipse.org/emf/2002/Ecore#//EBoolean" name="shunting" />
   </eClassifiers>
-  <eClassifiers xmi:type="ecore:EClass" xmi:id="4da48aa7-288a-4edd-a1a8-a73b9a5bb4bb" name="Platform">
-    <eSuperTypes xmi:idref="e72b8463-9f5b-4e52-8239-ad33f462196e" />
-    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="53a4d4e7-0512-4e40-b72e-f6fbd9603d43" name="length" eType="http://www.eclipse.org/emf/2002/Ecore#//EDouble" />
+  <eClassifiers xmi:type="ecore:EClass" xmi:id="7302788b-ae03-4260-b425-e6312b2b6b05" name="Platform">
+    <eSuperTypes xmi:idref="1e7f8ab4-a01d-4219-9e41-1344fe140db8" />
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="7bced225-505b-45dd-a068-6de909684d89" eType="http://www.eclipse.org/emf/2002/Ecore#//EDouble" name="length" />
   </eClassifiers>
-  <eClassifiers xmi:type="ecore:EClass" xmi:id="a2df4ed7-47e5-45f0-b325-1475176f08cc" name="SegmentPosition">
-    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="2a52e6e8-b7aa-4b85-b806-d60a451a34dc" name="atStart" eType="http://www.eclipse.org/emf/2002/Ecore#//EBoolean" />
-    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="e7dabb1c-b64c-4f13-a668-c3ddc85d4b1b" name="atEnd" eType="http://www.eclipse.org/emf/2002/Ecore#//EBoolean" />
-    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="bfade506-3e91-497f-9023-d084f7f385ac" name="position" eType="http://www.eclipse.org/emf/2002/Ecore#//EDouble" />
-    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="f6af822f-1459-4ab1-a4af-d6b55d0e6c06" name="side" eType="8f3409a3-f6d4-4826-a617-8de28540cccc" />
-    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="3db6474e-2d8d-4e46-82cf-1504e179f7af" name="orientation" eType="67b40cee-3418-4eca-b49d-15e7801ca33e" />
-    <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="7b7a8c26-9b4f-469a-a126-5d4249f934c3" name="segment" eType="b45bd5e8-0fef-4adc-9ae5-b8596932b65e" />
+  <eClassifiers xmi:type="ecore:EClass" xmi:id="3a0d01dc-8694-4b81-8a33-26d70b2b09da" name="SegmentPosition">
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="dea565f1-1e87-4093-8c16-7088e61861c5" eType="http://www.eclipse.org/emf/2002/Ecore#//EBoolean" name="atStart" />
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="19c233a2-67e5-431f-a3a7-1b3c62809dd3" eType="http://www.eclipse.org/emf/2002/Ecore#//EBoolean" name="atEnd" />
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="df3edf4b-d4a6-438e-8726-4a269d8e4ac3" eType="http://www.eclipse.org/emf/2002/Ecore#//EDouble" name="position" />
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="cbbb97e1-494a-4c1b-8da6-8c309d585a59" eType="55a9e5c6-9eb9-445a-87ab-02456ff01098" name="side" />
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="3fdcb183-a532-42ce-9479-47402b4425c1" eType="2b2f3ab9-67dc-4c37-8f19-ea04ec0b611f" name="orientation" />
+    <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="04e5637c-0290-4ba6-8dc3-9acdf461ac5b" eType="3382b4d6-8a79-4bb6-bf54-75d84a8be6b3" name="segment" />
   </eClassifiers>
-  <eClassifiers xmi:type="ecore:EClass" xmi:id="85296c5c-9659-4f59-b895-b101ed4b9188" name="Point">
-    <eSuperTypes xmi:idref="bd9c9546-2724-4baf-9756-a902f39998a8" />
-    <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="988472b4-0168-497a-8a8e-0360d2a31cd2" name="inputs" eType="f089ca4c-9a5f-40f1-ab49-14b9f38baa9c" upperBound="-1" />
-    <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="53ab95ba-d6f0-46d9-865b-c715ea890ba4" name="outputs" eType="f089ca4c-9a5f-40f1-ab49-14b9f38baa9c" upperBound="-1" />
-    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="b7ee9463-abf3-4ac2-bc31-65541f11eea7" name="kind" eType="0f5b5560-84ed-4644-897b-d8b3292d4c01" />
-    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="6b089bdc-5701-48f1-9b65-f1d02b9dce14" name="selectedInput" eType="http://www.eclipse.org/emf/2002/Ecore#//EInt" />
-    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="d52d37e7-6a9a-454e-9656-4e412cd81ed2" name="selectedOutput" eType="http://www.eclipse.org/emf/2002/Ecore#//EInt" />
-    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="9018c7ee-e51d-477b-b1e5-9beade633729" name="locked" eType="http://www.eclipse.org/emf/2002/Ecore#//EBoolean" />
+  <eClassifiers xmi:type="ecore:EClass" xmi:id="b4d3ae0d-7a6f-4938-af19-d28b558221ce" name="Point">
+    <eSuperTypes xmi:idref="274d36df-bcae-49b5-bf9e-5cfe4e125cf9" />
+    <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="1427eb6e-8d97-4b20-b1fc-3ccc42370522" upperBound="-1" eType="e7108c4a-5887-4e90-b4d3-cd8b85f49fc4" name="inputs" />
+    <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="0ba6bd52-3a7f-46b1-b592-43f53fb9a80a" upperBound="-1" eType="e7108c4a-5887-4e90-b4d3-cd8b85f49fc4" name="outputs" />
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="f1a3f54a-1eb1-409e-9c53-05e0799b57a9" eType="1a3683d9-062c-40bf-858a-5fd8f85382d2" name="kind" />
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="58bf3e1a-385c-4926-80b7-6bb90881fb0c" eType="http://www.eclipse.org/emf/2002/Ecore#//EInt" name="selectedInput" />
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="e6f012ae-ebc6-4566-a2d4-11d02dbdeb66" eType="http://www.eclipse.org/emf/2002/Ecore#//EInt" name="selectedOutput" />
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="3cfdb3f3-c4eb-4e9b-8a9c-8ad6f742dfa1" eType="http://www.eclipse.org/emf/2002/Ecore#//EBoolean" name="locked" />
   </eClassifiers>
-  <eClassifiers xmi:type="ecore:EClass" xmi:id="fcdb272f-365f-4d98-ad88-7d2752dedec0" name="Track">
-    <eSuperTypes xmi:idref="43cb7f15-93f9-4518-bfe5-edd12ad2278d" />
-    <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="ff1554e2-a893-4e5d-aa46-e43fac9d221e" name="elements" eType="bd9c9546-2724-4baf-9756-a902f39998a8" unique="false" upperBound="-1" />
+  <eClassifiers xmi:type="ecore:EClass" xmi:id="a8a3d9dd-694e-4a8e-a30c-694e74f1782d" name="Track">
+    <eSuperTypes xmi:idref="2c08c12e-9ea2-46dc-92b8-7518f2299834" />
+    <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="d8b8b389-f3d9-45eb-93a8-c1bef7bc48cd" upperBound="-1" unique="false" eType="274d36df-bcae-49b5-bf9e-5cfe4e125cf9" name="elements" />
   </eClassifiers>
-  <eClassifiers xmi:type="ecore:EEnum" xmi:id="032893ab-9326-4094-bacb-5096a509e2db" name="SpeedLimit">
-    <eLiterals xmi:type="ecore:EEnumLiteral" xmi:id="eb5fa012-3374-4745-8b7a-0084e9f0da4a" name="Stop" />
-    <eLiterals xmi:type="ecore:EEnumLiteral" xmi:id="21ecf042-94c1-4456-9a74-b7f19ad4f9c2" name="Speed40" value="2" />
-    <eLiterals xmi:type="ecore:EEnumLiteral" xmi:id="5dbafe55-80dd-4a77-90c9-443602399a2f" name="Speed80" value="3" />
-    <eLiterals xmi:type="ecore:EEnumLiteral" xmi:id="d079b4e3-0fcc-4df3-8a85-ea82379b53fb" name="Speed120" value="4" />
-    <eLiterals xmi:type="ecore:EEnumLiteral" xmi:id="af9d379c-190a-40f6-9caf-27954f8c9b01" name="Max" value="5" />
+  <eClassifiers xmi:type="ecore:EEnum" xmi:id="5ffca613-be38-41fb-ae7a-37adb66964d4" name="SpeedLimit">
+    <eLiterals xmi:type="ecore:EEnumLiteral" xmi:id="dc9b7821-69b0-4f28-bd61-f300fd3bc16a" name="Stop" />
+    <eLiterals xmi:type="ecore:EEnumLiteral" xmi:id="21137d22-791d-4988-89ab-aac9bd2d1242" value="2" name="Speed40" />
+    <eLiterals xmi:type="ecore:EEnumLiteral" xmi:id="7154b625-fec1-44fb-83a4-a2a5ec5847a7" value="3" name="Speed80" />
+    <eLiterals xmi:type="ecore:EEnumLiteral" xmi:id="5bf83f17-8f4e-4383-93b8-e1eb5e8fffa8" value="4" name="Speed120" />
+    <eLiterals xmi:type="ecore:EEnumLiteral" xmi:id="73809f31-a1e9-4268-9ced-1924e305deb9" value="5" name="Max" />
   </eClassifiers>
-  <eClassifiers xmi:type="ecore:EEnum" xmi:id="0f5b5560-84ed-4644-897b-d8b3292d4c01" name="PointKind">
-    <eLiterals xmi:type="ecore:EEnumLiteral" xmi:id="af000630-26bd-4c0f-9898-b75526854762" name="FixedCrossing" />
-    <eLiterals xmi:type="ecore:EEnumLiteral" xmi:id="6e7a613a-1686-4a6d-820f-bdddbe4aee6b" name="SimplePoint" value="1" />
-    <eLiterals xmi:type="ecore:EEnumLiteral" xmi:id="8529e3db-52c0-46b2-9659-d871e025f4d7" name="DoublePoint" value="2" />
-    <eLiterals xmi:type="ecore:EEnumLiteral" xmi:id="b3c2c557-c0a2-4807-9084-7c884e8b9202" name="SingleSlipPoint" value="3" />
-    <eLiterals xmi:type="ecore:EEnumLiteral" xmi:id="65b61ed9-2430-403d-8af7-b47603dec8d1" name="DoubleSlipPoint" value="4" />
+  <eClassifiers xmi:type="ecore:EEnum" xmi:id="1a3683d9-062c-40bf-858a-5fd8f85382d2" name="PointKind">
+    <eLiterals xmi:type="ecore:EEnumLiteral" xmi:id="0ef7e4b9-cd90-49ed-b126-1940f49005e2" name="FixedCrossing" />
+    <eLiterals xmi:type="ecore:EEnumLiteral" xmi:id="62617a82-c39e-43a8-ae55-9e0052b1d86f" value="1" name="SimplePoint" />
+    <eLiterals xmi:type="ecore:EEnumLiteral" xmi:id="70fddd69-0f53-4517-b712-f4066ae4a33a" value="2" name="DoublePoint" />
+    <eLiterals xmi:type="ecore:EEnumLiteral" xmi:id="784d8d9f-99bf-487e-920d-84cf26a1f23d" value="3" name="SingleSlipPoint" />
+    <eLiterals xmi:type="ecore:EEnumLiteral" xmi:id="7b9b1e5f-2c6b-4877-931d-09802b2f1f16" value="4" name="DoubleSlipPoint" />
   </eClassifiers>
-  <eClassifiers xmi:type="ecore:EEnum" xmi:id="abb24485-c91c-4d72-9730-435850ad21c0" name="VertexKind">
-    <eLiterals xmi:type="ecore:EEnumLiteral" xmi:id="f5fd018e-261b-4146-893b-6fa397e5e01a" name="InnerVertex" />
-    <eLiterals xmi:type="ecore:EEnumLiteral" xmi:id="f53601a1-11d7-4777-afb2-9b2255ebc1c8" name="TrackEnd" value="1" />
-    <eLiterals xmi:type="ecore:EEnumLiteral" xmi:id="33fd21ec-c469-42fa-9bc7-3ca5f13ecd15" name="StationBorder" value="2" />
+  <eClassifiers xmi:type="ecore:EEnum" xmi:id="eb316645-7d33-4316-9e8c-793d741e3526" name="VertexKind">
+    <eLiterals xmi:type="ecore:EEnumLiteral" xmi:id="1b1adf33-b263-4fbe-a120-d0349c05b5df" name="InnerVertex" />
+    <eLiterals xmi:type="ecore:EEnumLiteral" xmi:id="d5ecdf63-2ad8-4b5b-b7c9-498595b743f0" value="1" name="TrackEnd" />
+    <eLiterals xmi:type="ecore:EEnumLiteral" xmi:id="da455e54-54e9-4659-9318-e9b3c117cf8e" value="2" name="StationBorder" />
   </eClassifiers>
-  <eClassifiers xmi:type="ecore:EClass" xmi:id="71449b99-6dbb-4945-944c-c49e84ed3e53" name="NamedElement" abstract="true">
-    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="58de6ce3-19da-4892-8ca2-b5a3b3dee4df" name="name" eType="http://www.eclipse.org/emf/2002/Ecore#//EString" />
+  <eClassifiers xmi:type="ecore:EClass" xmi:id="8f72315d-525c-4433-9b44-0b29ae8dc583" abstract="true" name="NamedElement">
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="0c7eb5d3-d39c-422f-ba20-f779a2878ec3" eType="http://www.eclipse.org/emf/2002/Ecore#//EString" name="name" />
   </eClassifiers>
-  <eClassifiers xmi:type="ecore:EEnum" xmi:id="67b40cee-3418-4eca-b49d-15e7801ca33e" name="Orientation">
-    <eLiterals xmi:type="ecore:EEnumLiteral" xmi:id="a6d66c2a-4aef-4606-9dac-197875b4939d" name="Forwards" />
-    <eLiterals xmi:type="ecore:EEnumLiteral" xmi:id="e265f9bd-5c13-49c7-a3d2-6c515a028086" name="Backwards" value="1" />
+  <eClassifiers xmi:type="ecore:EEnum" xmi:id="2b2f3ab9-67dc-4c37-8f19-ea04ec0b611f" name="Orientation">
+    <eLiterals xmi:type="ecore:EEnumLiteral" xmi:id="1cfad0b9-4b53-439e-aa45-269949a1da1f" name="Forwards" />
+    <eLiterals xmi:type="ecore:EEnumLiteral" xmi:id="33c99bbb-b299-49f2-b1e0-83b93964491e" value="1" name="Backwards" />
   </eClassifiers>
-  <eClassifiers xmi:type="ecore:EEnum" xmi:id="8f3409a3-f6d4-4826-a617-8de28540cccc" name="Side">
-    <eLiterals xmi:type="ecore:EEnumLiteral" xmi:id="81c24cad-a8e8-4e13-9cb9-c03cd96ad517" name="Both" />
-    <eLiterals xmi:type="ecore:EEnumLiteral" xmi:id="df07b547-0955-4913-921b-dd960f19b157" name="Right" value="1" />
-    <eLiterals xmi:type="ecore:EEnumLiteral" xmi:id="694a735a-0258-4e98-b6e1-044630b5d4a2" name="Left" value="2" />
+  <eClassifiers xmi:type="ecore:EEnum" xmi:id="55a9e5c6-9eb9-445a-87ab-02456ff01098" name="Side">
+    <eLiterals xmi:type="ecore:EEnumLiteral" xmi:id="8137d688-1229-4daa-9ee3-7ce8ded505d1" name="Both" />
+    <eLiterals xmi:type="ecore:EEnumLiteral" xmi:id="caa27f85-93d2-4ae6-85fb-4fa0f1556509" value="1" name="Right" />
+    <eLiterals xmi:type="ecore:EEnumLiteral" xmi:id="62f089bf-1b81-4238-b2e8-f64f375fafe3" value="2" name="Left" />
   </eClassifiers>
-  <eClassifiers xmi:type="ecore:EClass" xmi:id="34340dba-3dcf-44b7-afa4-b3cb2f75e504" name="Train">
-    <eSuperTypes xmi:idref="43cb7f15-93f9-4518-bfe5-edd12ad2278d" />
-    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="790cadaf-0099-4608-888b-59158bd1ddb1" name="length" eType="http://www.eclipse.org/emf/2002/Ecore#//EDouble" />
-    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="a5e8bec1-6a6d-4034-b69e-4e371c5051fa" name="speed" eType="http://www.eclipse.org/emf/2002/Ecore#//EDouble" />
-    <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="2b86fc93-922c-4e18-bde4-e2751092ee8c" name="segments" eType="22ab250e-3b79-491c-b6e8-37dc9aa599a1" upperBound="-1" containment="true" />
-    <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="af31a1ec-a57e-4579-bc44-1234ed5ea423" name="position" eType="a2df4ed7-47e5-45f0-b325-1475176f08cc" />
-    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="3605f621-7b18-4385-8cc3-6098f7a75f4a" name="acceleration" eType="http://www.eclipse.org/emf/2002/Ecore#//EDouble" />
+  <eClassifiers xmi:type="ecore:EClass" xmi:id="26cb219a-ae3f-483a-831b-064dd59db4d0" name="Train">
+    <eSuperTypes xmi:idref="2c08c12e-9ea2-46dc-92b8-7518f2299834" />
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="30089842-5410-4bcf-86fd-6e12a3f4a52e" eType="http://www.eclipse.org/emf/2002/Ecore#//EDouble" name="length" />
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="36c38143-b1dd-4cb6-b31a-e63a27451ea0" eType="http://www.eclipse.org/emf/2002/Ecore#//EDouble" name="speed" />
+    <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="f042aeaa-e580-4378-b977-9d842db62a5f" containment="true" upperBound="-1" eType="1bd40316-2339-472a-a134-5120ad71dff0" name="segments" />
+    <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="865e9057-6a6c-4f83-8468-4f3b6b1fdfce" eType="3a0d01dc-8694-4b81-8a33-26d70b2b09da" name="position" />
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="bf24ad4a-135e-44a5-b105-443cecbf9ad2" eType="http://www.eclipse.org/emf/2002/Ecore#//EDouble" name="acceleration" />
   </eClassifiers>
-  <eClassifiers xmi:type="ecore:EClass" xmi:id="22ab250e-3b79-491c-b6e8-37dc9aa599a1" name="TrainSegment">
-    <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="afd13d53-80ef-4b48-beda-4dbb2d43b30b" name="position" eType="a2df4ed7-47e5-45f0-b325-1475176f08cc" />
-    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="71836c60-60e1-4ec5-b07b-b3db47678894" name="length" eType="http://www.eclipse.org/emf/2002/Ecore#//EDouble" />
+  <eClassifiers xmi:type="ecore:EClass" xmi:id="1bd40316-2339-472a-a134-5120ad71dff0" name="TrainSegment">
+    <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="90fee2f0-06b7-404f-a620-021ad1f4a1ee" eType="3a0d01dc-8694-4b81-8a33-26d70b2b09da" name="position" />
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="2e081ca7-26e5-4859-bfab-0b9fb109ec39" eType="http://www.eclipse.org/emf/2002/Ecore#//EDouble" name="length" />
   </eClassifiers>
-  <eClassifiers xmi:type="ecore:EClass" xmi:id="858eb8c1-bf2b-4b3c-9728-a9300a39b1ab" name="RouteObject" abstract="true">
-    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="20d31b9d-14d9-4693-9a5e-a1853d975d9c" defaultValueLiteral="Max" name="speedLimit" eType="032893ab-9326-4094-bacb-5096a509e2db" />
-    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="9452b1b0-926c-4168-9a3a-844201ddfaa0" name="error" eType="http://www.eclipse.org/emf/2002/Ecore#//EBoolean" />
+  <eClassifiers xmi:type="ecore:EClass" xmi:id="93f1823d-0017-4660-8742-79a12ecd69a5" abstract="true" name="RouteObject">
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="68164085-8438-477e-8b3c-024bd3266c57" eType="5ffca613-be38-41fb-ae7a-37adb66964d4" name="speedLimit" defaultValueLiteral="Max" />
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="63cd5b3b-802d-4cc3-a26f-b690d44bc321" eType="http://www.eclipse.org/emf/2002/Ecore#//EBoolean" name="error" />
   </eClassifiers>
-  <eClassifiers xmi:type="ecore:EClass" xmi:id="df6f7003-b861-4449-bcce-e3a5bea2c1a4" name="TrainRoute">
-    <eSuperTypes xmi:idref="43cb7f15-93f9-4518-bfe5-edd12ad2278d" />
-    <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="94780473-9986-4251-a1fd-249999e3b856" name="path" eType="16324a5e-3a56-432f-9aa5-3d6bbc32dbb8" upperBound="-1" containment="true" />
-    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="f65de97b-526d-4404-bb7a-998f21216282" name="kind" eType="de7efbf9-442a-4d85-bb3c-c14a725676aa" />
-    <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="e456b1ce-15ea-4d6b-bb33-7aa6d7e47692" name="startSignal" eType="b43e1fcb-73ee-469f-9f07-3b296a021fc3" />
-    <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="b5e246b7-71b5-421a-9176-5edc064763e2" name="endSignal" eType="b43e1fcb-73ee-469f-9f07-3b296a021fc3" />
-    <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="bc11e103-ed72-4214-b85a-9fe56917fa45" name="protectionObjects" eType="16324a5e-3a56-432f-9aa5-3d6bbc32dbb8" upperBound="-1" containment="true" />
-    <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="f866cb8a-7fe8-46eb-944c-5c659b0ecffb" name="conflictingRoutes" eType="df6f7003-b861-4449-bcce-e3a5bea2c1a4" upperBound="-1" />
-    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="9bef1f68-ce3b-4ea6-be05-7c5c647b175e" name="locked" eType="http://www.eclipse.org/emf/2002/Ecore#//EBoolean" />
+  <eClassifiers xmi:type="ecore:EClass" xmi:id="5d8fa2d1-fa75-43cc-85dd-89e62ef4f521" name="TrainRoute">
+    <eSuperTypes xmi:idref="2c08c12e-9ea2-46dc-92b8-7518f2299834" />
+    <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="e9d98d04-d430-4d8e-a576-655fbe2738b0" containment="true" upperBound="-1" eType="b145aaba-c580-4a99-81f8-d2c1a8faa149" name="path" />
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="74cb5ac2-287d-4589-83c5-1180f6e213eb" eType="362d0256-32c2-4ecc-a58a-b720fdf6a1e0" name="kind" />
+    <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="f0ea57fd-dfa7-48e9-a805-68b5b1f07927" eType="a8dada2c-a312-4ea8-bca1-f0736009e5e3" name="startSignal" />
+    <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="0499c085-412e-4de1-ab6f-2858cb962d06" eType="a8dada2c-a312-4ea8-bca1-f0736009e5e3" name="endSignal" />
+    <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="a74c1704-7193-4467-8524-ca8506a301da" containment="true" upperBound="-1" eType="b145aaba-c580-4a99-81f8-d2c1a8faa149" name="protectionObjects" />
+    <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="260d6560-2f6d-43d8-ab1a-ca3ab05e6f8c" upperBound="-1" eType="5d8fa2d1-fa75-43cc-85dd-89e62ef4f521" name="conflictingRoutes" />
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="a23a1480-5109-4da0-9187-e08bf18eb708" eType="http://www.eclipse.org/emf/2002/Ecore#//EBoolean" name="locked" />
   </eClassifiers>
-  <eClassifiers xmi:type="ecore:EEnum" xmi:id="de7efbf9-442a-4d85-bb3c-c14a725676aa" name="TrainRouteKind">
-    <eLiterals xmi:type="ecore:EEnumLiteral" xmi:id="a532a44e-943d-4e06-946c-158ae6bfcc78" name="Main" />
-    <eLiterals xmi:type="ecore:EEnumLiteral" xmi:id="38e32240-6355-46e5-936c-82216a36fd42" name="Shunting" value="1" />
+  <eClassifiers xmi:type="ecore:EEnum" xmi:id="362d0256-32c2-4ecc-a58a-b720fdf6a1e0" name="TrainRouteKind">
+    <eLiterals xmi:type="ecore:EEnumLiteral" xmi:id="aac3d3bf-680a-4d7a-a754-99382734c004" name="Main" />
+    <eLiterals xmi:type="ecore:EEnumLiteral" xmi:id="9e264bba-a262-4fd0-a8fc-11f255b67ddb" value="1" name="Shunting" />
   </eClassifiers>
-  <eClassifiers xmi:type="ecore:EClass" xmi:id="16324a5e-3a56-432f-9aa5-3d6bbc32dbb8" name="TrainRouteObject">
-    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="d24a0c10-6ba4-4c4a-b2b9-33eeec39eb95" name="speedLimit" eType="032893ab-9326-4094-bacb-5096a509e2db" />
+  <eClassifiers xmi:type="ecore:EClass" xmi:id="b145aaba-c580-4a99-81f8-d2c1a8faa149" name="TrainRouteObject">
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="a09fc4a2-1319-4f9f-9142-91d6032904a6" eType="5ffca613-be38-41fb-ae7a-37adb66964d4" name="speedLimit" />
   </eClassifiers>
-  <eClassifiers xmi:type="ecore:EClass" xmi:id="6153c0d4-574d-47df-bf41-0f46e7e0d979" name="TrainRoutePoint">
-    <eSuperTypes xmi:idref="16324a5e-3a56-432f-9aa5-3d6bbc32dbb8" />
-    <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="e2769cea-c941-4749-b0ad-7168de978c27" name="originalPoint" eType="85296c5c-9659-4f59-b895-b101ed4b9188" />
-    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="176bf8f7-c641-4d0a-b2e5-d75e151cc0d0" name="selectedInput" eType="http://www.eclipse.org/emf/2002/Ecore#//EInt" />
-    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="a90df8ca-1dd2-4f23-a221-4ea62aa918c4" name="selectedOutput" eType="http://www.eclipse.org/emf/2002/Ecore#//EInt" />
+  <eClassifiers xmi:type="ecore:EClass" xmi:id="498df621-7d65-4af2-86bf-1684e99a05b4" name="TrainRoutePoint">
+    <eSuperTypes xmi:idref="b145aaba-c580-4a99-81f8-d2c1a8faa149" />
+    <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="000241f6-bb93-4986-950a-b0d73acc54ac" eType="b4d3ae0d-7a6f-4938-af19-d28b558221ce" name="originalPoint" />
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="c84be952-0a73-495d-9382-2532a48170ae" eType="http://www.eclipse.org/emf/2002/Ecore#//EInt" name="selectedInput" />
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="0cd19a56-7826-4c0f-8f8d-5ef1bed40d1f" eType="http://www.eclipse.org/emf/2002/Ecore#//EInt" name="selectedOutput" />
   </eClassifiers>
-  <eClassifiers xmi:type="ecore:EClass" xmi:id="5a3d7e69-6b1f-47fe-974e-131d3f04c922" name="TrainRouteSegment">
-    <eSuperTypes xmi:idref="16324a5e-3a56-432f-9aa5-3d6bbc32dbb8" />
-    <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="1b7f0bf3-8202-46dc-bde1-b9a98dfb013a" name="originalSegment" eType="b45bd5e8-0fef-4adc-9ae5-b8596932b65e" />
+  <eClassifiers xmi:type="ecore:EClass" xmi:id="7892ebab-30bb-4efb-bc5f-1704501ee308" name="TrainRouteSegment">
+    <eSuperTypes xmi:idref="b145aaba-c580-4a99-81f8-d2c1a8faa149" />
+    <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="597118d9-d068-4067-96ac-52fb8150eccc" eType="3382b4d6-8a79-4bb6-bf54-75d84a8be6b3" name="originalSegment" />
   </eClassifiers>
 </ecore:EPackage>

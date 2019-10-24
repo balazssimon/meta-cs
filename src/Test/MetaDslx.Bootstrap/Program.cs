@@ -3,8 +3,8 @@ using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Symbols.CSharp;
 using MetaDslx.CodeAnalysis.Symbols.Source;
-//using MetaDslx.Languages.Ecore;
-//using MetaDslx.Languages.Ecore.Model;
+using MetaDslx.Languages.Ecore;
+using MetaDslx.Languages.Ecore.Model;
 using MetaDslx.Languages.Meta;
 using MetaDslx.Languages.Meta.Binding;
 using MetaDslx.Languages.Meta.Generator;
@@ -246,9 +246,9 @@ namespace MetaDslx.Bootstrap
             //*/
             //MetaXmiTest();
             //XmiTest();
-            MofXmiTest();
+            //MofXmiTest();
             //UmlXmiTest();
-            //EcoreXmiTest();
+            EcoreXmiTest();
             //MetaDslxXmiTest();
             //*/
         }
@@ -461,7 +461,7 @@ namespace MetaDslx.Bootstrap
         //*/
 
 
-        /*/
+        //*/
         public static void EcoreXmiTest()
         {
             EcoreDescriptor.Initialize();
@@ -471,9 +471,13 @@ namespace MetaDslx.Bootstrap
             try
             {
                 var xmi = new EcoreXmiSerializer();
-                var model = xmi.ReadModelFromFile(fileName);
-                Console.WriteLine(model);
-                xmi.WriteModelToFile("../../../RailDsl2.ecore", model);
+                var emodel = xmi.ReadModelFromFile(fileName);
+                Console.WriteLine(emodel);
+                xmi.WriteModelToFile("../../../RailDsl2.ecore", emodel);
+                var metaModel = EcoreModelConverter.ToMetaModel(emodel);
+                var gen = new MetaModelGenerator(metaModel.Objects);
+                string metaCode = gen.Generate(metaModel.Objects.OfType<MetaModel>().First());
+                File.WriteAllText("../../../RailDsl.mm", metaCode);
                 //MofModelToMetaModelGenerator mgen = new MofModelToMetaModelGenerator(model.Objects);
                 //string metaCode = mgen.Generate("MetaDslx.Languages.Uml.Model", "Uml", "http://www.omg.org/spec/UML/20161101");
                 //File.WriteAllText("../../../Uml.txt", metaCode);

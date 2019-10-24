@@ -8,6 +8,11 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
 {
     internal class EcoreImplementation : EcoreImplementationBase
     {
+        public override EDataTypeBuilder EAttribute_ComputeProperty_EAttributeType(EAttributeBuilder _this)
+        {
+            throw new NotImplementedException();
+        }
+
         public override int EClassifier_GetClassifierID(EClassifierBuilder _this)
         {
             throw new NotImplementedException();
@@ -188,6 +193,11 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
             throw new NotImplementedException();
         }
 
+        public override bool EReference_ComputeProperty_Container(EReferenceBuilder _this)
+        {
+            throw new NotImplementedException();
+        }
+
         public override EClassBuilder EReference_ComputeProperty_EReferenceType(EReferenceBuilder _this)
         {
             throw new NotImplementedException();
@@ -199,6 +209,16 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
         }
 
         public override int EStructuralFeature_GetFeatureID(EStructuralFeatureBuilder _this)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool ETypedElement_ComputeProperty_Many(ETypedElementBuilder _this)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool ETypedElement_ComputeProperty_Required(ETypedElementBuilder _this)
         {
             throw new NotImplementedException();
         }

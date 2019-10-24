@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="ASCII"?>
+<railDsl:Station xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:railDsl="http://www.bme.hu/iit/vke/raildsl" name="Rail01">
+  <declarations xsi:type="railDsl:Segment" start="//@declarations.1" end="//@declarations.2"/>
+  <declarations xsi:type="railDsl:Vertex" name="V1" kind="InnerVertex"/>
+  <declarations xsi:type="railDsl:Vertex" name="V2" kind="InnerVertex"/>
+</railDsl:Station>

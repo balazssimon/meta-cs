@@ -45,5 +45,9 @@
     <ProjectReference Include="..\..\Main\MetaDslx.CodeAnalysis.CSharp\MetaDslx.CodeAnalysis.CSharp.csproj" />
     <ProjectReference Include="..\..\Main\MetaDslx.CodeAnalysis.Meta\MetaDslx.CodeAnalysis.Meta.csproj" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <Folder Include="Generator\" />
+  </ItemGroup>
 
 </Project>

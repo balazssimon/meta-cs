@@ -68,47 +68,79 @@ namespace MetaDslx.Modeling
     {
         public ImmutableModel ReadModel(string xmiCode, IMetaModel metaModel)
         {
+            var result = this.ReadModel(xmiCode, metaModel, out var diagnostics);
+            if (diagnostics.Length > 0)
+            {
+                throw new ModelException(diagnostics[0]);
+            }
+            return result;
+        }
+
+        public ImmutableModel ReadModel(string xmiCode, IMetaModel metaModel, out ImmutableArray<Diagnostic> diagnostics)
+        {
             if (xmiCode == null) throw new ArgumentNullException(nameof(xmiCode));
             if (metaModel == null) throw new ArgumentNullException(nameof(metaModel));
             var options = new XmiReadOptions();
             options.NamespaceToMetamodelMap.Add(metaModel.Uri, metaModel);
-            return this.ReadModelFromFile(xmiCode, options);
+            return this.ReadModel(xmiCode, options, out diagnostics);
         }
 
         public ImmutableModel ReadModel(string xmiCode, XmiReadOptions options)
+        {
+            var result = this.ReadModel(xmiCode, options, out var diagnostics);
+            if (diagnostics.Length > 0)
+            {
+                throw new ModelException(diagnostics[0]);
+            }
+            return result;
+        }
+
+        public ImmutableModel ReadModel(string xmiCode, XmiReadOptions options, out ImmutableArray<Diagnostic> diagnostics)
         {
             if (xmiCode == null) throw new ArgumentNullException(nameof(xmiCode));
             if (options == null) throw new ArgumentNullException(nameof(options));
             XmiReader reader = new XmiReader(options);
             reader.LoadXmiCode(null, xmiCode);
-            var diagnostics = reader.Diagnostics.ToReadOnly();
-            if (diagnostics.Length > 0)
-            {
-                throw new ModelException(diagnostics[0]);
-            }
+            diagnostics = reader.Diagnostics.ToReadOnly();
             return reader.Model.ToImmutable();
         }
 
         public ImmutableModel ReadModelFromFile(string xmiFilePath, IMetaModel metaModel)
         {
+            var result = this.ReadModelFromFile(xmiFilePath, metaModel, out var diagnostics);
+            if (diagnostics.Length > 0)
+            {
+                throw new ModelException(diagnostics[0]);
+            }
+            return result;
+        }
+
+        public ImmutableModel ReadModelFromFile(string xmiFilePath, IMetaModel metaModel, out ImmutableArray<Diagnostic> diagnostics)
+        {
             if (xmiFilePath == null) throw new ArgumentNullException(nameof(xmiFilePath));
             if (metaModel == null) throw new ArgumentNullException(nameof(metaModel));
             var options = new XmiReadOptions();
             options.NamespaceToMetamodelMap.Add(metaModel.Uri, metaModel);
-            return this.ReadModelFromFile(xmiFilePath, options);
+            return this.ReadModelFromFile(xmiFilePath, options, out diagnostics);
         }
 
         public ImmutableModel ReadModelFromFile(string xmiFilePath, XmiReadOptions options)
+        {
+            var result = this.ReadModelFromFile(xmiFilePath, options, out var diagnostics);
+            if (diagnostics.Length > 0)
+            {
+                throw new ModelException(diagnostics[0]);
+            }
+            return result;
+        }
+
+        public ImmutableModel ReadModelFromFile(string xmiFilePath, XmiReadOptions options, out ImmutableArray<Diagnostic> diagnostics)
         {
             if (xmiFilePath == null) throw new ArgumentNullException(nameof(xmiFilePath));
             if (options == null) throw new ArgumentNullException(nameof(options));
             XmiReader reader = new XmiReader(options);
             reader.LoadXmiFile(new Uri(Path.GetFullPath(xmiFilePath)), null);
-            var diagnostics = reader.Diagnostics.ToReadOnly();
-            if (diagnostics.Length > 0)
-            {
-                throw new ModelException(diagnostics[0]);
-            }
+            diagnostics = reader.Diagnostics.ToReadOnly();
             return reader.Model.ToImmutable();
         }
 
@@ -117,9 +149,19 @@ namespace MetaDslx.Modeling
             return this.ReadModel(xmiCode, metaModel).ModelGroup;
         }
 
+        public ImmutableModelGroup ReadModelGroup(string xmiCode, IMetaModel metaModel, out ImmutableArray<Diagnostic> diagnostics)
+        {
+            return this.ReadModel(xmiCode, metaModel, out diagnostics).ModelGroup;
+        }
+
         public ImmutableModelGroup ReadModelGroup(string xmiCode, XmiReadOptions options)
         {
             return this.ReadModel(xmiCode, options).ModelGroup;
+        }
+
+        public ImmutableModelGroup ReadModelGroup(string xmiCode, XmiReadOptions options, out ImmutableArray<Diagnostic> diagnostics)
+        {
+            return this.ReadModel(xmiCode, options, out diagnostics).ModelGroup;
         }
 
         public ImmutableModelGroup ReadModelGroupFromFile(string xmiFilePath, IMetaModel metaModel)
@@ -127,12 +169,32 @@ namespace MetaDslx.Modeling
             return this.ReadModelFromFile(xmiFilePath, metaModel).ModelGroup;
         }
 
+        public ImmutableModelGroup ReadModelGroupFromFile(string xmiFilePath, IMetaModel metaModel, out ImmutableArray<Diagnostic> diagnostics)
+        {
+            return this.ReadModelFromFile(xmiFilePath, metaModel, out diagnostics).ModelGroup;
+        }
+
         public ImmutableModelGroup ReadModelGroupFromFile(string xmiFilePath, XmiReadOptions options)
         {
             return this.ReadModelFromFile(xmiFilePath, options).ModelGroup;
         }
 
+        public ImmutableModelGroup ReadModelGroupFromFile(string xmiFilePath, XmiReadOptions options, out ImmutableArray<Diagnostic> diagnostics)
+        {
+            return this.ReadModelFromFile(xmiFilePath, options, out diagnostics).ModelGroup;
+        }
+
         public string WriteModel(IModel model, XmiWriteOptions options = null)
+        {
+            var result = WriteModel(model, options, out var diagnostics);
+            if (diagnostics.Length > 0)
+            {
+                throw new ModelException(diagnostics[0]);
+            }
+            return result;
+        }
+
+        public string WriteModel(IModel model, XmiWriteOptions options, out ImmutableArray<Diagnostic> diagnostics)
         {
             if (model == null) throw new ArgumentNullException(nameof(model));
             if (model.ModelGroup.Models.Count() != 1) throw new ArgumentException("The number of models in the model group must be exactly one. Use the WriteModelGroup() method to serialize a model group of multiple models.", nameof(model));
@@ -158,17 +220,22 @@ namespace MetaDslx.Modeling
                     }
                     var xmiWriter = new XmiWriter(writers, new Dictionary<IModel, string>(), modelToUriMap, options ?? new XmiWriteOptions(), model.ModelGroup);
                     xmiWriter.WriteModelGroup();
-                    var diagnostics = xmiWriter.Diagnostics.ToReadOnly();
-                    if (diagnostics.Length > 0)
-                    {
-                        throw new ModelException(diagnostics[0]);
-                    }
+                    diagnostics = xmiWriter.Diagnostics.ToReadOnly();
                 }
                 return Encoding.UTF8.GetString(stream.ToArray());
             }
         }
 
         public void WriteModelToFile(string xmiFilePath, IModel model, XmiWriteOptions options = null)
+        {
+            WriteModelToFile(xmiFilePath, model, options, out var diagnostics);
+            if (diagnostics.Length > 0)
+            {
+                throw new ModelException(diagnostics[0]);
+            }
+        }
+
+        public void WriteModelToFile(string xmiFilePath, IModel model, XmiWriteOptions options, out ImmutableArray<Diagnostic> diagnostics)
         {
             if (xmiFilePath == null) throw new ArgumentNullException(nameof(xmiFilePath));
             if (model == null) throw new ArgumentNullException(nameof(model));
@@ -195,15 +262,21 @@ namespace MetaDslx.Modeling
                 modelToAbsoluteFileMap.Add(model, Path.GetFullPath(xmiFilePath));
                 var xmiWriter = new XmiWriter(writers, modelToAbsoluteFileMap, modelToUriMap, options ?? new XmiWriteOptions(), model.ModelGroup);
                 xmiWriter.WriteModelGroup();
-                var diagnostics = xmiWriter.Diagnostics.ToReadOnly();
-                if (diagnostics.Length > 0)
-                {
-                    throw new ModelException(diagnostics[0]);
-                }
+                diagnostics = xmiWriter.Diagnostics.ToReadOnly();
             }
         }
 
         public IReadOnlyDictionary<string, string> WriteModelGroup(IModelGroup modelGroup, XmiWriteOptions options = null)
+        {
+            var result = WriteModelGroup(modelGroup, options, out var diagnostics);
+            if (diagnostics.Length > 0)
+            {
+                throw new ModelException(diagnostics[0]);
+            }
+            return result;
+        }
+
+        public IReadOnlyDictionary<string, string> WriteModelGroup(IModelGroup modelGroup, XmiWriteOptions options, out ImmutableArray<Diagnostic> diagnostics)
         {
             if (modelGroup == null) throw new ArgumentNullException(nameof(modelGroup));
             XmlWriterSettings settings = new XmlWriterSettings();
@@ -255,11 +328,7 @@ namespace MetaDslx.Modeling
                 }
                 var xmiWriter = new XmiWriter(writers, new Dictionary<IModel, string>(), modelToUriMap, options ?? new XmiWriteOptions(), modelGroup);
                 xmiWriter.WriteModelGroup();
-                var diagnostics = xmiWriter.Diagnostics.ToReadOnly();
-                if (diagnostics.Length > 0)
-                {
-                    throw new ModelException(diagnostics[0]);
-                }
+                diagnostics = xmiWriter.Diagnostics.ToReadOnly();
                 foreach (var entry in writers)
                 {
                     var writer = entry.Value;
@@ -285,6 +354,15 @@ namespace MetaDslx.Modeling
         }
 
         public void WriteModelGroupToFile(IModelGroup modelGroup, XmiWriteOptions options)
+        {
+            WriteModelGroupToFile(modelGroup, options, out var diagnostics);
+            if (diagnostics.Length > 0)
+            {
+                throw new ModelException(diagnostics[0]);
+            }
+        }
+
+        public void WriteModelGroupToFile(IModelGroup modelGroup, XmiWriteOptions options, out ImmutableArray<Diagnostic> diagnostics)
         {
             if (modelGroup == null) throw new ArgumentNullException(nameof(modelGroup));
             if (options == null) throw new ArgumentNullException(nameof(options));
@@ -335,11 +413,7 @@ namespace MetaDslx.Modeling
                 }
                 var xmiWriter = new XmiWriter(writers, modelToAbsoluteFileMap, modelToUriMap, options, modelGroup);
                 xmiWriter.WriteModelGroup();
-                var diagnostics = xmiWriter.Diagnostics.ToReadOnly();
-                if (diagnostics.Length > 0)
-                {
-                    throw new ModelException(diagnostics[0]);
-                }
+                diagnostics = xmiWriter.Diagnostics.ToReadOnly();
             }
             finally
             {

@@ -35,6 +35,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.Languages.Ecore", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.Languages.Uml", "Languages\MetaDslx.Languages.Uml\MetaDslx.Languages.Uml.csproj", "{B75EE4BD-A7A1-4298-824E-BBCF0074F837}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UmlExample", "Examples\UmlExample\UmlExample.csproj", "{6F26D26B-DC30-44FB-A625-4870F11430A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RailDsl", "Examples\RailDsl\RailDsl.csproj", "{87F24A01-7611-441A-B12D-6E976E8B78E2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -105,6 +109,14 @@ Global
 		{B75EE4BD-A7A1-4298-824E-BBCF0074F837}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B75EE4BD-A7A1-4298-824E-BBCF0074F837}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B75EE4BD-A7A1-4298-824E-BBCF0074F837}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F26D26B-DC30-44FB-A625-4870F11430A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F26D26B-DC30-44FB-A625-4870F11430A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F26D26B-DC30-44FB-A625-4870F11430A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F26D26B-DC30-44FB-A625-4870F11430A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87F24A01-7611-441A-B12D-6E976E8B78E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87F24A01-7611-441A-B12D-6E976E8B78E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87F24A01-7611-441A-B12D-6E976E8B78E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87F24A01-7611-441A-B12D-6E976E8B78E2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
