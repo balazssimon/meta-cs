@@ -325,7 +325,7 @@ template GenerateInstancePropertyValue(MetaModel model, bool metaMetaModel, Immu
 [MetaDeclaration valueDecl = value as MetaDeclaration]
 [IEnumerable<object> valueCollection = value as IEnumerable<object>]
 [if (value == null)]
-	[if (prop.MutableTypeInfo.Type != null && prop.MutableTypeInfo.Type.IsClass)]
+	[if (prop.MutableType != null && prop.MutableType.IsClass)]
 [name].[prop.Name] = null;
 	[else]
 // [name].[prop.Name] = null;
@@ -369,7 +369,7 @@ template GenerateInstancePropertyCollectionValue(MetaModel model, bool metaMetaM
 [MetaDeclaration valueDecl = value as MetaDeclaration]
 [IEnumerable<object> valueCollection = value as IEnumerable<object>]
 [if (value == null)]
-	[if (prop.MutableTypeInfo.Type != null && prop.MutableTypeInfo.Type.IsClass)]
+	[if (prop.MutableType != null && prop.MutableType.IsClass)]
 [name].[prop.Name].Add(null);
 	[else]
 // [name].[prop.Name].Add(null);
@@ -532,19 +532,25 @@ public static readonly [Properties.CoreNs].ModelProperty [prop.CSharpName(model,
     [Properties.CoreNs].ModelProperty.Register(declaringType: typeof([cls.CSharpName(model, ClassKind.Descriptor)]), name: "[prop.CSharpName(model)]",
 [if (prop.Type is MetaCollectionType)]
 	[MetaCollectionType collType = (MetaCollectionType)prop.Type]
-        immutableTypeInfo: new [Properties.CoreNs].ModelPropertyTypeInfo(typeof([collType.InnerType.CSharpName(null, ClassKind.Immutable, true)]), typeof([prop.Type.CSharpName(null, ClassKind.Immutable, true)])),
-        mutableTypeInfo: new [Properties.CoreNs].ModelPropertyTypeInfo(typeof([collType.InnerType.CSharpName(null, ClassKind.Builder, true)]), typeof([prop.Type.CSharpName(null, ClassKind.Builder, true)])),
+        immutableType: typeof([collType.InnerType.CSharpName(null, ClassKind.Immutable, true)]),
+        mutableType: typeof([collType.InnerType.CSharpName(null, ClassKind.Builder, true)]),
 [else]
-        immutableTypeInfo: new [Properties.CoreNs].ModelPropertyTypeInfo(typeof([prop.Type.CSharpName(null, ClassKind.Immutable, true)]), null),
-        mutableTypeInfo: new [Properties.CoreNs].ModelPropertyTypeInfo(typeof([prop.Type.CSharpName(null, ClassKind.Builder, true)]), null),
+        immutableType: typeof([prop.Type.CSharpName(null, ClassKind.Immutable, true)]),
+        mutableType: typeof([prop.Type.CSharpName(null, ClassKind.Builder, true)]),
 [end if]
 		metaProperty: () => [prop.CSharpName(null, PropertyKind.ImmutableInstance, true)],
 		defaultValue: [prop.DefaultValue != null ? prop.DefaultValue : "null"]);
 end template
 
 template GenerateDescriptorPropertyAttributes(MetaModel model, MetaClass cls, MetaProperty prop)
+[if (prop.Type is MetaCollectionType && (((MetaCollectionType)prop.Type).Kind == MetaCollectionKind.List || ((MetaCollectionType)prop.Type).Kind == MetaCollectionKind.MultiList))]
+["["+Properties.CoreNs+".CollectionAttribute]"]
+[end if]
 [if (prop.Type is MetaCollectionType && (((MetaCollectionType)prop.Type).Kind == MetaCollectionKind.MultiSet || ((MetaCollectionType)prop.Type).Kind == MetaCollectionKind.MultiList))]
-["["+Properties.CoreNs+".NonUnique]"]
+["["+Properties.CoreNs+".NonUniqueAttribute]"]
+[end if]
+[if (prop.Type is MetaCollectionType && (((MetaCollectionType)prop.Type).Kind == MetaCollectionKind.List || ((MetaCollectionType)prop.Type).Kind == MetaCollectionKind.MultiList))]
+["["+Properties.CoreNs+".OrderedAttribute]"]
 [end if]
 [if(prop.IsContainment)]
 ["["+Properties.CoreNs+".ContainmentAttribute]"]

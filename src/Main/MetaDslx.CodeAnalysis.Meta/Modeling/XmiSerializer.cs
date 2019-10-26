@@ -554,7 +554,7 @@ namespace MetaDslx.Modeling
                 if (prop.IsDerived || prop.IsDerivedUnion) continue;
                 bool oppositeIsContainment = prop.OppositeProperties.Any(p => p.IsContainment);
                 if (oppositeIsContainment) continue;
-                bool isModelObjectType = typeof(IModelObject).IsAssignableFrom(prop.ImmutableTypeInfo.Type);
+                bool isModelObjectType = prop.IsModelObject;
                 if (!prop.IsCollection && (!prop.IsContainment || !isModelObjectType))
                 {
                     if (writtenProperties.Contains(prop.Name)) continue;
@@ -594,7 +594,7 @@ namespace MetaDslx.Modeling
                 if (prop.IsDerived || prop.IsDerivedUnion) continue;
                 bool oppositeIsContainment = prop.OppositeProperties.Any(p => p.IsContainment);
                 if (oppositeIsContainment) continue;
-                bool isModelObjectType = typeof(IModelObject).IsAssignableFrom(prop.ImmutableTypeInfo.Type);
+                bool isModelObjectType = prop.IsModelObject;
                 if (prop.IsCollection && (!prop.IsContainment || !isModelObjectType))
                 {
                     if (isModelObjectType)
@@ -633,7 +633,7 @@ namespace MetaDslx.Modeling
             foreach (var prop in obj.MProperties.Reverse())
             {
                 if (prop.IsDerived || prop.IsDerivedUnion) continue;
-                bool isModelObjectType = typeof(IModelObject).IsAssignableFrom(prop.ImmutableTypeInfo.Type);
+                bool isModelObjectType = prop.IsModelObject;
                 if (prop.IsContainment && isModelObjectType)
                 {
                     if (prop.IsCollection)
@@ -1060,9 +1060,9 @@ namespace MetaDslx.Modeling
                         ModelProperty property = parent.MGetProperty(parentProperty);
                         if (property != null)
                         {
-                            if (typeof(ImmutableObject).IsAssignableFrom(property.ImmutableTypeInfo.Type))
+                            if (property.IsModelObject)
                             {
-                                typeName = property.ImmutableTypeInfo.Type.Name;
+                                typeName = property.ImmutableType.Name;
                                 var typeNs = element.Parent != null ? element.Parent.Name.Namespace : element.Name.Namespace;
                                 factory = GetFactory(element, typeNs.NamespaceName) ?? currentFactory;
                                 if (factory == null)
@@ -1277,55 +1277,55 @@ namespace MetaDslx.Modeling
                 {
                     IEnumerable<object> values = null;
                     object value = null;
-                    if (typeof(ImmutableObject).IsAssignableFrom(property.ImmutableTypeInfo.Type))
+                    if (property.IsModelObject)
                     {
                         values = this.ResolveObjectsByReference(location, propertyValue, context);
                     }
-                    else if (property.ImmutableTypeInfo.Type.IsEnum)
+                    else if (property.ImmutableType.IsEnum)
                     {
                         try
                         {
-                            value = Enum.Parse(property.ImmutableTypeInfo.Type, propertyValue, true);
+                            value = Enum.Parse(property.ImmutableType, propertyValue, true);
                         }
                         catch (Exception)
                         {
-                            this.AddError(location, $"Value '{propertyValue}' is invalid for the enum type '{property.ImmutableTypeInfo.Type.FullName}'.");
+                            this.AddError(location, $"Value '{propertyValue}' is invalid for the enum type '{property.ImmutableType.FullName}'.");
                             return;
                         }
                     }
-                    else if (property.ImmutableTypeInfo.Type == typeof(string))
+                    else if (property.ImmutableType == typeof(string))
                     {
                         value = propertyValue;
                     }
-                    else if (property.ImmutableTypeInfo.Type == typeof(bool))
+                    else if (property.ImmutableType == typeof(bool))
                     {
                         value = propertyValue.ToLower() == "true" || propertyValue == "1";
                     }
-                    else if (property.ImmutableTypeInfo.Type == typeof(int))
+                    else if (property.ImmutableType == typeof(int))
                     {
                         int.TryParse(propertyValue, out int intValue);
                         if (propertyValue == "*") intValue = -1;
                         value = intValue;
                     }
-                    else if (property.ImmutableTypeInfo.Type == typeof(long))
+                    else if (property.ImmutableType == typeof(long))
                     {
                         long.TryParse(propertyValue, out long longValue);
                         if (propertyValue == "*") longValue = -1;
                         value = longValue;
                     }
-                    else if (property.ImmutableTypeInfo.Type == typeof(float))
+                    else if (property.ImmutableType == typeof(float))
                     {
                         float.TryParse(propertyValue, out float floatValue);
                         value = floatValue;
                     }
-                    else if (property.ImmutableTypeInfo.Type == typeof(double))
+                    else if (property.ImmutableType == typeof(double))
                     {
                         double.TryParse(propertyValue, out double doubleValue);
                         value = doubleValue;
                     }
                     else
                     {
-                        this.AddError(location, $"Unhandled value type: {property.ImmutableTypeInfo.Type.FullName}.");
+                        this.AddError(location, $"Unhandled value type: {property.ImmutableType.FullName}.");
                         return;
                     }
                     if (values != null)
@@ -1349,7 +1349,7 @@ namespace MetaDslx.Modeling
 
         private object ResolveMetaConstantValue(ModelProperty property, object value)
         {
-            if (property.ImmutableTypeInfo.Type != typeof(MetaConstant))
+            if (property.ImmutableType != typeof(MetaConstant))
             {
                 if (value is MetaConstant metaConstant) return metaConstant.Value;
                 else if (value is MetaConstantBuilder metaConstantBuilder) return metaConstantBuilder.Value;

@@ -366,15 +366,15 @@ namespace MetaDslx.Modeling.Internal
         {
             ObjectRef objectRef = this.ResolveObjectRef(mid, oid, true);
             if (objectRef == null) return false;
-            foreach (var property in objectRef.Object.Properties.Keys)
+            foreach (var slot in objectRef.Object.Slots.Keys)
             {
-                if (property.IsCollection)
+                if (slot.IsCollection)
                 {
-                    this.ClearItems(mid, oid, property, true);
+                    this.ClearItems(mid, oid, slot, true);
                 }
                 else
                 {
-                    this.SetValue(mid, oid, property, true, null);
+                    this.SetValue(mid, oid, slot, true, null);
                 }
             }
             if (this.group != null)
@@ -395,39 +395,39 @@ namespace MetaDslx.Modeling.Internal
             ObjectRef partObjectRef = this.ResolveObjectRef(mid, partOid, true);
             if (targetObjectRef == null || partObjectRef == null) this.MakeException(Location.None, ModelErrorCode.ERR_CannotMergeObjectsResolve, partOid, targetOid);
             GreenObject partObject = partObjectRef.Object;
-            foreach (var property in partObject.Properties.Keys)
+            foreach (var slot in partObject.Slots.Keys)
             {
-                object partValue = this.GetValue(mid, partOid, property);
+                object partValue = this.GetValue(mid, partOid, slot);
                 if (partValue != GreenObject.Unassigned)
                 {
-                    if (property.IsCollection)
+                    if (slot.IsCollection)
                     {
                         GreenList partValues = partValue as GreenList;
                         if (partValues != null)
                         {
                             foreach (var item in partValues)
                             {
-                                this.AddItem(mid, targetOid, property, false, false, -1, item);
+                                this.AddItem(mid, targetOid, slot, false, false, -1, item);
                             }
                             foreach (var lazyItem in partValues.LazyItems)
                             {
-                                this.AddItem(mid, targetOid, property, false, false, -1, lazyItem);
+                                this.AddItem(mid, targetOid, slot, false, false, -1, lazyItem);
                             }
-                            this.ClearItems(mid, partOid, property, true);
+                            this.ClearItems(mid, partOid, slot, true);
                         }
                     }
                     else
                     {
-                        object targetValue = this.GetValue(mid, targetOid, property);
+                        object targetValue = this.GetValue(mid, targetOid, slot);
                         if (targetValue == GreenObject.Unassigned)
                         {
-                            this.SetValue(mid, targetOid, property, false, partValue);
+                            this.SetValue(mid, targetOid, slot, false, partValue);
                         }
                         else if (targetValue != partValue)
                         {
-                            this.MakeException(Location.None, ModelErrorCode.ERR_CannotMergeObjectsProperty, partOid, targetOid, property.Name, partValue, targetValue);
+                            this.MakeException(Location.None, ModelErrorCode.ERR_CannotMergeObjectsProperty, partOid, targetOid, slot.Name, partValue, targetValue);
                         }
-                        this.SetValue(mid, partOid, property, true, null);
+                        this.SetValue(mid, partOid, slot, true, null);
                     }
                 }
             }
@@ -446,8 +446,8 @@ namespace MetaDslx.Modeling.Internal
             ObjectRef objectRef = this.ResolveObjectRef(mid, oid, true);
             Debug.Assert(objectRef != null);
             GreenObject green = objectRef.Object;
-            if (green.Properties.ContainsKey(property)) return false;
-            this.UpdateObject(mid, oid, green.Update(green.Parent, green.Children, green.Properties.Add(property, GreenObject.Unassigned)));
+            if (green.Slots.ContainsKey(property)) return false;
+            this.UpdateObject(mid, oid, green.Update(green.Parent, green.Children, green.Slots.Add(property, GreenObject.Unassigned)));
             return true;
         }
 
@@ -458,7 +458,7 @@ namespace MetaDslx.Modeling.Internal
             if (objectRef != null)
             {
                 GreenModel model = objectRef.Model;
-                ImmutableHashSet<ModelProperty> lazyProperties;
+                ImmutableHashSet<Slot> lazyProperties;
                 if (model.LazyProperties.TryGetValue(oid, out lazyProperties) && lazyProperties.Count > 0)
                 {
                     foreach (var property in lazyProperties)
@@ -474,35 +474,32 @@ namespace MetaDslx.Modeling.Internal
             return objectRef.Object.Children;
         }
 
-        public bool TryGetValue(ModelId mid, ObjectId oid, ModelProperty property, out object value)
+        public bool TryGetValue(ModelId mid, ObjectId oid, Slot slot, out object value)
         {
-            property = this.GetRepresentingProperty(oid, property);
-            if (this.TryGetValueCore(mid, oid, property, false, false, out value))
+            if (this.TryGetValueCore(mid, oid, slot, false, false, out value))
             {
                 return true;
             }
             return false;
         }
 
-        public bool HasValue(ModelId mid, ObjectId oid, ModelProperty property)
+        public bool HasValue(ModelId mid, ObjectId oid, Slot slot)
         {
-            property = this.GetRepresentingProperty(oid, property);
             object value;
-            return this.TryGetValueCore(mid, oid, property, false, false, out value);
+            return this.TryGetValueCore(mid, oid, slot, false, false, out value);
         }
 
-        public object GetValue(ModelId mid, ObjectId oid, ModelProperty property)
+        public object GetValue(ModelId mid, ObjectId oid, Slot slot)
         {
-            property = this.GetRepresentingProperty(oid, property);
             object value;
-            if (this.TryGetValueCore(mid, oid, property, false, false, out value))
+            if (this.TryGetValueCore(mid, oid, slot, false, false, out value))
             {
                 return value;
             }
             return null;
         }
 
-        public object GetValue(ModelId mid, ObjectId oid, ModelProperty property, bool lazyEval)
+        public object GetValue(ModelId mid, ObjectId oid, Slot slot, bool lazyEval)
         {
             if (lazyEval)
             {
@@ -510,154 +507,138 @@ namespace MetaDslx.Modeling.Internal
                 if (objectRef != null)
                 {
                     GreenModel model = objectRef.Model;
-                    ImmutableHashSet<ModelProperty> lazyProperties;
+                    ImmutableHashSet<Slot> lazyProperties;
                     if (model.LazyProperties.TryGetValue(oid, out lazyProperties) && lazyProperties.Count > 0)
                     {
                         ModelObjectDescriptor objectInfo = oid.Descriptor;
                         if (objectInfo != null)
                         {
-                            ModelPropertyInfo propertyInfo = objectInfo.GetPropertyInfo(property);
-                            if (propertyInfo != null)
+                            if (lazyProperties.Contains(slot))
                             {
-                                if (propertyInfo.RepresentingProperty != null) property = propertyInfo.RepresentingProperty;
-                                if (lazyProperties.Contains(property))
-                                {
-                                    this.LazyEvalCore(mid, oid, property);
-                                }
-                                foreach (var supersetProp in propertyInfo.SubsetProperties)
-                                {
-                                    if (lazyProperties.Contains(supersetProp))
-                                    {
-                                        this.LazyEvalCore(mid, oid, supersetProp);
-                                    }
-                                }
+                                this.LazyEvalCore(mid, oid, slot);
                             }
-                            else
+                            foreach (var supersetSlot in slot.SubsetSlots)
                             {
-                                if (lazyProperties.Contains(property))
+                                if (lazyProperties.Contains(supersetSlot))
                                 {
-                                    this.LazyEvalCore(mid, oid, property);
+                                    this.LazyEvalCore(mid, oid, supersetSlot);
                                 }
                             }
                         }
                     }
                 }
             }
-            return this.GetValue(mid, oid, property);
+            return this.GetValue(mid, oid, slot);
         }
 
-        public void SetValue(ModelId mid, ObjectId oid, ModelProperty property, bool reassign, object value)
+        public void SetValue(ModelId mid, ObjectId oid, Slot slot, bool reassign, object value)
         {
-            Debug.Assert(!property.IsCollection);
+            Debug.Assert(!slot.IsCollection);
             if (value is ObjectId)
             {
                 if (!this.ObjectExists((ObjectId)value))
                 {
-                    if (this.group != null) this.MakeException(Location.None, ModelErrorCode.ERR_ObjectCannotBeAssignedToPropertyModelGroup, value, property, oid);
-                    else this.MakeException(Location.None, ModelErrorCode.ERR_ObjectCannotBeAssignedToPropertyModel, value, property, oid);
+                    if (this.group != null) this.MakeException(Location.None, ModelErrorCode.ERR_ObjectCannotBeAssignedToPropertyModelGroup, value, slot, oid);
+                    else this.MakeException(Location.None, ModelErrorCode.ERR_ObjectCannotBeAssignedToPropertyModel, value, slot, oid);
                 }
             }
             ObjectRef objectRef = this.ResolveObjectRef(mid, oid, true);
             Debug.Assert(objectRef != null);
             GreenObject green = objectRef.Object;
-            property = this.GetRepresentingProperty(oid, property);
             object oldValue;
-            if (green.Properties.TryGetValue(property, out oldValue) && value != oldValue)
+            if (green.Slots.TryGetValue(slot, out oldValue) && value != oldValue)
             {
-                if (!oid.Descriptor.HasAffectedProperties(property) || value is LazyValue || value is GreenDerivedValue)
+                if (slot.IsSimpleSlot || value is LazyValue || value is GreenDerivedValue)
                 {
-                    this.SetValueCore(objectRef, property, reassign, value);
+                    this.SetValueCore(objectRef, slot, reassign, value);
                     this.UpdateModel(objectRef.Model);
                 }
                 else
                 {
-                    this.SlowRemoveValueCore(mid, oid, property, true, reassign, -1, false, oldValue, null, null);
-                    this.SlowAddValueCore(mid, oid, property, reassign, -1, value, null, null);
+                    this.SlowRemoveValueCore(mid, oid, slot, true, reassign, -1, false, oldValue, null, null);
+                    this.SlowAddValueCore(mid, oid, slot, reassign, -1, value, null, null);
                 }
             }
         }
 
-        public bool AddItem(ModelId mid, ObjectId oid, ModelProperty property, bool reassign, bool replace, int index, object value)
+        public bool AddItem(ModelId mid, ObjectId oid, Slot slot, bool reassign, bool replace, int index, object value)
         {
-            Debug.Assert(property.IsCollection);
+            Debug.Assert(slot.IsCollection);
             if (value is ObjectId)
             {
                 if (!this.ObjectExists((ObjectId)value))
                 {
-                    if (this.group != null) this.MakeException(Location.None, ModelErrorCode.ERR_ObjectCannotBeAddedToPropertyModelGroup, value, property, oid);
-                    else this.MakeException(Location.None, ModelErrorCode.ERR_ObjectCannotBeAddedToPropertyModel, value, property, oid);
+                    if (this.group != null) this.MakeException(Location.None, ModelErrorCode.ERR_ObjectCannotBeAddedToPropertyModelGroup, value, slot, oid);
+                    else this.MakeException(Location.None, ModelErrorCode.ERR_ObjectCannotBeAddedToPropertyModel, value, slot, oid);
                 }
             }
             ObjectRef objectRef = this.ResolveObjectRef(mid, oid, true);
             Debug.Assert(objectRef != null);
             GreenObject green = objectRef.Object;
-            property = this.GetRepresentingProperty(oid, property);
             bool changed = false;
-            if (green.Properties.ContainsKey(property))
+            if (green.Slots.ContainsKey(slot))
             {
-                if (!oid.Descriptor.HasAffectedProperties(property) || value is LazyValue || value is GreenDerivedValue)
+                if (slot.IsSimpleSlot || value is LazyValue || value is GreenDerivedValue)
                 {
                     object oldValue = null;
                     bool removedValue = false;
                     bool removedAllValues = false;
                     bool valueAdded;
                     bool newValueAdded;
-                    if (replace && index >= 0) (removedValue, removedAllValues) = this.RemoveItemCore(objectRef, property, true, reassign, index, false, ref oldValue);
-                    (valueAdded, newValueAdded) = this.AddItemCore(objectRef, property, reassign, index, value);
+                    if (replace && index >= 0) (removedValue, removedAllValues) = this.RemoveItemCore(objectRef, slot, true, reassign, index, false, ref oldValue);
+                    (valueAdded, newValueAdded) = this.AddItemCore(objectRef, slot, reassign, index, value);
                     if (removedValue || valueAdded) changed = true;
                     this.UpdateModel(objectRef.Model);
                 }
                 else
                 {
-                    if (replace && index >= 0) changed = this.SlowRemoveValueCore(mid, oid, property, true, reassign, index, false, null, null, null) || changed;
-                    changed = this.SlowAddValueCore(mid, oid, property, reassign, index, value, null, null) || changed;
+                    if (replace && index >= 0) changed = this.SlowRemoveValueCore(mid, oid, slot, true, reassign, index, false, null, null, null) || changed;
+                    changed = this.SlowAddValueCore(mid, oid, slot, reassign, index, value, null, null) || changed;
                 }
             }
             return changed;
         }
 
-        public bool RemoveItem(ModelId mid, ObjectId oid, ModelProperty property, bool reassign, int index, bool removeAll, object value)
+        public bool RemoveItem(ModelId mid, ObjectId oid, Slot slot, bool reassign, int index, bool removeAll, object value)
         {
-            Debug.Assert(property.IsCollection);
+            Debug.Assert(slot.IsCollection);
             ObjectRef objectRef = this.ResolveObjectRef(mid, oid, true);
             Debug.Assert(objectRef != null);
             GreenObject green = objectRef.Object;
-            property = this.GetRepresentingProperty(oid, property);
             bool changed = false;
-            if (green.Properties.ContainsKey(property))
+            if (green.Slots.ContainsKey(slot))
             {
-                if (!oid.Descriptor.HasAffectedProperties(property) || value is LazyValue || value is GreenDerivedValue)
+                if (slot.IsSimpleSlot || value is LazyValue || value is GreenDerivedValue)
                 {
                     bool removedValue = false;
                     bool removedAllValues = false;
-                    (removedValue, removedAllValues) = this.RemoveItemCore(objectRef, property, true, reassign, index, removeAll, ref value);
+                    (removedValue, removedAllValues) = this.RemoveItemCore(objectRef, slot, true, reassign, index, removeAll, ref value);
                     if (removedValue) changed = true;
                     this.UpdateModel(objectRef.Model);
                 }
                 else
                 {
-                    changed = this.SlowRemoveValueCore(mid, oid, property, true, reassign, index, removeAll, value, null, null) || changed;
+                    changed = this.SlowRemoveValueCore(mid, oid, slot, true, reassign, index, removeAll, value, null, null) || changed;
                 }
             }
             return changed;
         }
 
-        public bool ClearItems(ModelId mid, ObjectId oid, ModelProperty property, bool reassign)
+        public bool ClearItems(ModelId mid, ObjectId oid, Slot slot, bool reassign)
         {
-            Debug.Assert(property.IsCollection);
-            property = this.GetRepresentingProperty(oid, property);
+            Debug.Assert(slot.IsCollection);
             object listValue;
             bool changed = false;
-            if (this.TryGetValueCore(mid, oid, property, false, false, out listValue) && (listValue is GreenList))
+            if (this.TryGetValueCore(mid, oid, slot, false, false, out listValue) && (listValue is GreenList))
             {
                 GreenList list = (GreenList)listValue;
                 changed = list.Count > 0 || list.HasLazyItems;
-                if (property.IsModelObject || oid.Descriptor.HasAffectedProperties(property))
+                if (slot.IsModelObject || !slot.IsSimpleSlot)
                 {
-                    this.ClearLazyItems(mid, oid, property, reassign);
+                    this.ClearLazyItems(mid, oid, slot, reassign);
                     foreach (var value in list)
                     {
-                        this.RemoveItem(mid, oid, property, reassign, -1, true, value);
+                        this.RemoveItem(mid, oid, slot, reassign, -1, true, value);
                     }
                 }
                 else
@@ -665,12 +646,12 @@ namespace MetaDslx.Modeling.Internal
                     ObjectRef objectRef = this.ResolveObjectRef(mid, oid, true);
                     Debug.Assert(objectRef != null);
                     GreenModel oldModel = objectRef.Model;
-                    ImmutableHashSet<ModelProperty> oldLazyProperties;
-                    bool hasLazy = oldModel.LazyProperties.TryGetValue(oid, out oldLazyProperties) && oldLazyProperties.Contains(property);
+                    ImmutableHashSet<Slot> oldLazyProperties;
+                    bool hasLazy = oldModel.LazyProperties.TryGetValue(oid, out oldLazyProperties) && oldLazyProperties.Contains(slot);
                     var newLazyModelProperties = oldModel.LazyProperties;
                     if (hasLazy)
                     {
-                        var newLazyProperties = oldLazyProperties.Remove(property);
+                        var newLazyProperties = oldLazyProperties.Remove(slot);
                         if (newLazyProperties.Count > 0)
                         {
                             newLazyModelProperties = newLazyModelProperties.SetItem(oid, newLazyProperties);
@@ -685,7 +666,7 @@ namespace MetaDslx.Modeling.Internal
                         oldGreen.Update(
                             oldGreen.Parent,
                             oldGreen.Children,
-                            oldGreen.Properties.SetItem(property, hasLazy ? list.ClearLazy().Clear() : list.Clear()));
+                            oldGreen.Slots.SetItem(slot, hasLazy ? list.ClearLazy().Clear() : list.Clear()));
                     GreenModel newModel =
                         oldModel.Update(
                             oldModel.Name,
@@ -700,13 +681,12 @@ namespace MetaDslx.Modeling.Internal
             return changed;
         }
 
-        public bool ClearLazyItems(ModelId mid, ObjectId oid, ModelProperty property, bool reassign)
+        public bool ClearLazyItems(ModelId mid, ObjectId oid, Slot slot, bool reassign)
         {
-            Debug.Assert(property.IsCollection);
+            Debug.Assert(slot.IsCollection);
             ObjectRef objectRef = this.ResolveObjectRef(mid, oid, true);
             Debug.Assert(objectRef != null);
-            property = this.GetRepresentingProperty(oid, property);
-            bool changed = this.ClearLazyItemsCore(objectRef, property, reassign);
+            bool changed = this.ClearLazyItemsCore(objectRef, slot, reassign);
             this.UpdateModel(objectRef.Model);
             return changed;
         }
@@ -716,7 +696,7 @@ namespace MetaDslx.Modeling.Internal
             ObjectRef objectRef = this.ResolveObjectRef(mid, oid, true);
             Debug.Assert(objectRef != null);
             GreenModel model = objectRef.Model;
-            ImmutableHashSet<ModelProperty> properties;
+            ImmutableHashSet<Slot> properties;
             int counter = 0;
             bool changed = false;
             bool evaluatedAny = true;
@@ -726,7 +706,7 @@ namespace MetaDslx.Modeling.Internal
                 evaluatedAny = false;
                 if (model.LazyProperties.TryGetValue(oid, out properties))
                 {
-                    var propList = objectRef.Id.Descriptor.Properties;
+                    var propList = objectRef.Id.Descriptor.Slots;
                     foreach (var prop in propList)
                     {
                         if (properties.Contains(prop) && !prop.IsDerived)
@@ -811,23 +791,10 @@ namespace MetaDslx.Modeling.Internal
             }
         }
 
-        private ModelProperty GetRepresentingProperty(ObjectId oid, ModelProperty property)
-        {
-            ModelProperty result = property;
-            ModelObjectDescriptor objectInfo = oid.Descriptor;
-            if (objectInfo != null)
-            {
-                ModelPropertyInfo propInfo = objectInfo.GetPropertyInfo(property);
-                if (propInfo != null) result = propInfo.RepresentingProperty;
-                if (result == null) result = property;
-            }
-            return result;
-        }
-
-        private bool TryGetValueCore(ObjectRef objectRef, ModelProperty property, bool returnUnassignedValue, bool returnLazyValue, out object value)
+        private bool TryGetValueCore(ObjectRef objectRef, Slot slot, bool returnUnassignedValue, bool returnLazyValue, out object value)
         {
             GreenObject green = objectRef.Object;
-            if (green.Properties.TryGetValue(property, out value))
+            if (green.Slots.TryGetValue(slot, out value))
             {
                 if (value != GreenObject.Unassigned)
                 {
@@ -842,7 +809,7 @@ namespace MetaDslx.Modeling.Internal
                 {
                     if (!returnUnassignedValue)
                     {
-                        value = property.DefaultValue;
+                        value = slot.DefaultValue;
                     }
                     return true;
                 }
@@ -851,42 +818,42 @@ namespace MetaDslx.Modeling.Internal
             return false;
         }
 
-        private bool TryGetValueCore(ModelId mid, ObjectId oid, ModelProperty property, bool returnUnassignedValue, bool returnLazyValue, out object value)
+        private bool TryGetValueCore(ModelId mid, ObjectId oid, Slot slot, bool returnUnassignedValue, bool returnLazyValue, out object value)
         {
             value = null;
             ObjectRef objectRef = this.ResolveObjectRef(mid, oid, false);
             if (objectRef == null) return false;
-            return this.TryGetValueCore(objectRef, property, returnUnassignedValue, returnLazyValue, out value);
+            return this.TryGetValueCore(objectRef, slot, returnUnassignedValue, returnLazyValue, out value);
         }
 
-        private bool CheckOldValue(ObjectRef objectRef, ModelProperty property, bool reassign, object oldValue)
+        private bool CheckOldValue(ObjectRef objectRef, Slot slot, bool reassign, object oldValue)
         {
             if (!reassign)
             {
-                if (property.IsDerived && oldValue != GreenObject.Unassigned)
+                if (slot.IsDerived && oldValue != GreenObject.Unassigned)
                 {
-                    this.MakeException(Location.None, ModelErrorCode.ERR_CannotReassignDerivedProperty, property, objectRef.Id);
+                    this.MakeException(Location.None, ModelErrorCode.ERR_CannotReassignDerivedProperty, slot, objectRef.Id);
                     return false;
                 }
-                if (property.IsReadonly && oldValue != GreenObject.Unassigned)
+                if (slot.IsReadonly && oldValue != GreenObject.Unassigned)
                 {
-                    this.MakeException(Location.None, ModelErrorCode.ERR_CannotReassignReadOnlyProperty, property, objectRef.Id);
+                    this.MakeException(Location.None, ModelErrorCode.ERR_CannotReassignReadOnlyProperty, slot, objectRef.Id);
                     return false;
                 }
                 if (oldValue is LazyValue)
                 {
-                    this.MakeException(Location.None, ModelErrorCode.ERR_CannotReassignLazyValuedProperty, property, objectRef.Id);
+                    this.MakeException(Location.None, ModelErrorCode.ERR_CannotReassignLazyValuedProperty, slot, objectRef.Id);
                     return false;
                 }
             }
             return true;
         }
 
-        private bool CheckNewValue(ObjectRef objectRef, ModelProperty property, ref object value)
+        private bool CheckNewValue(ObjectRef objectRef, Slot slot, ref object value)
         {
-            if (value == null && property.IsNonNull)
+            if (value == null && slot.IsNonNull)
             {
-                this.MakeException(Location.None, ModelErrorCode.ERR_CannotAssignNullToProperty, property, objectRef.Id);
+                this.MakeException(Location.None, ModelErrorCode.ERR_CannotAssignNullToProperty, slot, objectRef.Id);
                 value = null;
                 return false;
             }
@@ -894,44 +861,44 @@ namespace MetaDslx.Modeling.Internal
             {
                 return true;
             }
-            if ((value is ObjectId) && !property.MutableTypeInfo.Type.IsAssignableFrom(((ObjectId)value).Descriptor.MutableType))
+            if ((value is ObjectId) && !slot.IsAssignableFrom(((ObjectId)value).Descriptor.MutableType, out var unassignableProperty))
             {
-                this.MakeException(Location.None, ModelErrorCode.ERR_CannotAssignValueToProperty, value, ((ObjectId)value).Descriptor.MutableType, property, property.MutableTypeInfo.Type, objectRef.Id);
+                this.MakeException(Location.None, ModelErrorCode.ERR_CannotAssignValueToProperty, value, ((ObjectId)value).Descriptor.MutableType, unassignableProperty, unassignableProperty.MutableType, objectRef.Id);
                 value = null;
                 return false;
             }
-            if (!(value is ObjectId) && !property.MutableTypeInfo.Type.IsAssignableFrom(value.GetType()))
+            if (!(value is ObjectId) && !slot.IsAssignableFrom(value.GetType(), out unassignableProperty))
             {
-                this.MakeException(Location.None, ModelErrorCode.ERR_CannotAssignValueToProperty, value, value.GetType(), property, property.MutableTypeInfo.Type, objectRef.Id);
+                this.MakeException(Location.None, ModelErrorCode.ERR_CannotAssignValueToProperty, value, value.GetType(), unassignableProperty, unassignableProperty.MutableType, objectRef.Id);
                 value = null;
                 return false;
             }
             return true;
         }
 
-        private bool CheckOldItem(ObjectRef objectRef, ModelProperty property, bool reassign)
+        private bool CheckOldItem(ObjectRef objectRef, Slot slot, bool reassign)
         {
             if (!reassign)
             {
-                if (property.IsDerived)
+                if (slot.IsDerived)
                 {
-                    this.MakeException(Location.None, ModelErrorCode.ERR_CannotChangeDerivedProperty, property, objectRef.Id);
+                    this.MakeException(Location.None, ModelErrorCode.ERR_CannotChangeDerivedProperty, slot, objectRef.Id);
                     return false;
                 }
-                if (property.IsReadonly)
+                if (slot.IsReadonly)
                 {
-                    this.MakeException(Location.None, ModelErrorCode.ERR_CannotChangeReadOnlyProperty, property, objectRef.Id);
+                    this.MakeException(Location.None, ModelErrorCode.ERR_CannotChangeReadOnlyProperty, slot, objectRef.Id);
                     return false;
                 }
             }
             return true;
         }
 
-        private bool CheckNewItem(ObjectRef objectRef, ModelProperty property, ref object value)
+        private bool CheckNewItem(ObjectRef objectRef, Slot slot, ref object value)
         {
-            if (value == null && property.IsNonNull)
+            if (value == null && slot.IsNonNull)
             {
-                this.MakeException(Location.None, ModelErrorCode.ERR_CannotAddNullToProperty, property, objectRef.Id);
+                this.MakeException(Location.None, ModelErrorCode.ERR_CannotAddNullToProperty, slot, objectRef.Id);
                 value = null;
                 return false;
             }
@@ -939,15 +906,15 @@ namespace MetaDslx.Modeling.Internal
             {
                 return true;
             }
-            if ((value is ObjectId) && !property.MutableTypeInfo.Type.IsAssignableFrom(((ObjectId)value).Descriptor.MutableType))
+            if ((value is ObjectId) && !slot.IsAssignableFrom(((ObjectId)value).Descriptor.MutableType, out var unassignableProperty))
             {
-                this.MakeException(Location.None, ModelErrorCode.ERR_CannotAddValueToProperty, value, ((ObjectId)value).Descriptor.MutableType, property, property.MutableTypeInfo.Type, objectRef.Id);
+                this.MakeException(Location.None, ModelErrorCode.ERR_CannotAddValueToProperty, value, ((ObjectId)value).Descriptor.MutableType, unassignableProperty, unassignableProperty.MutableType, objectRef.Id);
                 value = null;
                 return false;
             }
-            if (!(value is ObjectId) && !property.MutableTypeInfo.Type.IsAssignableFrom(value.GetType()))
+            if (!(value is ObjectId) && !slot.IsAssignableFrom(value.GetType(), out unassignableProperty))
             {
-                this.MakeException(Location.None, ModelErrorCode.ERR_CannotAddValueToProperty, value, value.GetType(), property, property.MutableTypeInfo.Type, objectRef.Id);
+                this.MakeException(Location.None, ModelErrorCode.ERR_CannotAddValueToProperty, value, value.GetType(), unassignableProperty, unassignableProperty.MutableType, objectRef.Id);
                 value = null;
                 return false;
             }
@@ -959,44 +926,44 @@ namespace MetaDslx.Modeling.Internal
         /// Make sure to convert the property to its representing version before calling this method.
         /// </summary>
         /// <param name="objectRef"></param>
-        /// <param name="property"></param>
+        /// <param name="slot"></param>
         /// <param name="reassign"></param>
         /// <param name="value"></param>
         /// <param name="oldValue"></param>
         /// <returns></returns>
-        private bool SetValueCore(ObjectRef objectRef, ModelProperty property, bool reassign, object value)
+        private bool SetValueCore(ObjectRef objectRef, Slot slot, bool reassign, object value)
         {
-            Debug.Assert(objectRef.Object.Properties.ContainsKey(property));
+            Debug.Assert(objectRef.Object.Slots.ContainsKey(slot));
             object oldValue;
-            if (!this.TryGetValueCore(objectRef, property, true, true, out oldValue)) return false;
+            if (!this.TryGetValueCore(objectRef, slot, true, true, out oldValue)) return false;
             if (value == oldValue) return false;
-            if (!this.CheckOldValue(objectRef, property, reassign, oldValue)) return false;
-            this.CheckNewValue(objectRef, property, ref value);
+            if (!this.CheckOldValue(objectRef, slot, reassign, oldValue)) return false;
+            this.CheckNewValue(objectRef, slot, ref value);
             if (oldValue != null && oldValue != GreenObject.Unassigned)
             {
                 if (oldValue is ObjectId)
                 {
-                    this.RemoveReferenceCore(objectRef, property, (ObjectId)oldValue);
+                    this.RemoveReferenceCore(objectRef, slot, (ObjectId)oldValue);
                 }
                 else if ((oldValue is LazyValue) && !(value is LazyValue))
                 {
-                    this.RemoveLazyPropertyCore(objectRef, property);
+                    this.RemoveLazyPropertyCore(objectRef, slot);
                 }
             }
             if (value != null && value != GreenObject.Unassigned)
             {
                 if (value is ObjectId)
                 {
-                    this.AddReferenceCore(objectRef, property, (ObjectId)value);
+                    this.AddReferenceCore(objectRef, slot, (ObjectId)value);
                 }
                 else if ((value is LazyValue) && !(oldValue is LazyValue))
                 {
-                    this.AddLazyPropertyCore(objectRef, property);
+                    this.AddLazyPropertyCore(objectRef, slot);
                 }
             }
             GreenObject green = objectRef.Object;
-            if (value == property.DefaultValue) green = green.Update(green.Parent, green.Children, green.Properties.SetItem(property, GreenObject.Unassigned));
-            else green = green.Update(green.Parent, green.Children, green.Properties.SetItem(property, value));
+            if (value == slot.DefaultValue) green = green.Update(green.Parent, green.Children, green.Slots.SetItem(slot, GreenObject.Unassigned));
+            else green = green.Update(green.Parent, green.Children, green.Slots.SetItem(slot, value));
             objectRef.Update(green);
             return true;
         }
@@ -1006,21 +973,21 @@ namespace MetaDslx.Modeling.Internal
         /// Make sure to convert the property to its representing version before calling this method.
         /// </summary>
         /// <param name="objectRef"></param>
-        /// <param name="property"></param>
+        /// <param name="slot"></param>
         /// <param name="reassign"></param>
         /// <param name="index"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        private (bool valueAdded, bool newValueAdded) AddItemCore(ObjectRef objectRef, ModelProperty property, bool reassign, int index, object value)
+        private (bool valueAdded, bool newValueAdded) AddItemCore(ObjectRef objectRef, Slot slot, bool reassign, int index, object value)
         {
-            Debug.Assert(objectRef.Object.Properties.ContainsKey(property));
-            if (!this.CheckOldItem(objectRef, property, reassign)) return (false, false);
-            this.CheckNewItem(objectRef, property, ref value);
+            Debug.Assert(objectRef.Object.Slots.ContainsKey(slot));
+            if (!this.CheckOldItem(objectRef, slot, reassign)) return (false, false);
+            this.CheckNewItem(objectRef, slot, ref value);
             GreenList list;
             object listValue;
-            if (!this.TryGetValueCore(objectRef, property, false, false, out listValue) || !(listValue is GreenList))
+            if (!this.TryGetValueCore(objectRef, slot, false, false, out listValue) || !(listValue is GreenList))
             {
-                list = property.IsUnique ? GreenList.EmptyUnique : GreenList.EmptyNonUnique;
+                list = slot.IsUnique ? GreenList.EmptyUnique : GreenList.EmptyNonUnique;
             }
             else
             {
@@ -1031,7 +998,7 @@ namespace MetaDslx.Modeling.Internal
             if (value is LazyValue)
             {
                 list = list.AddLazy((LazyValue)value);
-                this.AddLazyPropertyCore(objectRef, property);
+                this.AddLazyPropertyCore(objectRef, slot);
             }
             else
             {
@@ -1046,11 +1013,11 @@ namespace MetaDslx.Modeling.Internal
                 }
                 if (newReference)
                 {
-                    this.AddReferenceCore(objectRef, property, (ObjectId)value);
+                    this.AddReferenceCore(objectRef, slot, (ObjectId)value);
                 }
             }
             GreenObject green = objectRef.Object;
-            green = green.Update(green.Parent, green.Children, green.Properties.SetItem(property, list));
+            green = green.Update(green.Parent, green.Children, green.Slots.SetItem(slot, list));
             objectRef.Update(green);
             return (list != oldList, newReference);
         }
@@ -1060,20 +1027,20 @@ namespace MetaDslx.Modeling.Internal
         /// Make sure to convert the property to its representing version before calling this method.
         /// </summary>
         /// <param name="objectRef"></param>
-        /// <param name="property"></param>
+        /// <param name="slot"></param>
         /// <param name="forceRemove"></param>
         /// <param name="reassign"></param>
         /// <param name="index"></param>
         /// <param name="removeAll"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        private (bool valueRemoved, bool allValuesRemoved) RemoveItemCore(ObjectRef objectRef, ModelProperty property, bool forceRemove, bool reassign, int index, bool removeAll, ref object value)
+        private (bool valueRemoved, bool allValuesRemoved) RemoveItemCore(ObjectRef objectRef, Slot slot, bool forceRemove, bool reassign, int index, bool removeAll, ref object value)
         {
-            Debug.Assert(objectRef.Object.Properties.ContainsKey(property));
-            if (!this.CheckOldItem(objectRef, property, reassign)) return (false, false);
+            Debug.Assert(objectRef.Object.Slots.ContainsKey(slot));
+            if (!this.CheckOldItem(objectRef, slot, reassign)) return (false, false);
             GreenList list;
             object listValue;
-            if (this.TryGetValueCore(objectRef, property, false, false, out listValue))
+            if (this.TryGetValueCore(objectRef, slot, false, false, out listValue))
             {
                 if (listValue == null) return (false, false);
                 Debug.Assert(listValue is GreenList);
@@ -1083,34 +1050,25 @@ namespace MetaDslx.Modeling.Internal
             {
                 return (false, false);
             }
-            if (!forceRemove && property.IsDerivedUnion)
+            if (!forceRemove && slot.IsDerivedUnion)
             {
                 if (index >= 0)
                 {
                     if (index < list.Count) value = list[index];
                 }
-                ModelObjectDescriptor objectInfo = objectRef.Id.Descriptor;
-                if (objectInfo != null)
+                if (slot.SubsettingSlots.Length > 0)
                 {
-                    ModelPropertyInfo propInfo = objectInfo.GetPropertyInfo(property);
-                    if (propInfo != null && propInfo.SubsettingProperties.Count > 0)
+                    ImmutableDictionary<Slot, object> properties = objectRef.Object.Slots;
+                    foreach (var subsetSlot in slot.SubsettingSlots)
                     {
-                        ImmutableDictionary<ModelProperty, object> properties = objectRef.Object.Properties;
-                        foreach (var subsetProp in propInfo.SubsettingProperties)
+                        if (properties.TryGetValue(subsetSlot, out var representingSubsetValue))
                         {
-                            ModelProperty representingSubsetProp = subsetProp;
-                            ModelPropertyInfo subsetPropInfo = objectInfo.GetPropertyInfo(subsetProp);
-                            if (subsetPropInfo != null && subsetPropInfo.RepresentingProperty != null) representingSubsetProp = subsetPropInfo.RepresentingProperty;
-                            object representingSubsetValue;
-                            if (properties.TryGetValue(representingSubsetProp, out representingSubsetValue))
+                            if (representingSubsetValue is GreenList)
                             {
-                                if (representingSubsetValue is GreenList)
+                                GreenList subsetList = (GreenList)representingSubsetValue;
+                                if (subsetList.Contains(value))
                                 {
-                                    GreenList subsetList = (GreenList)representingSubsetValue;
-                                    if (subsetList.Contains(value))
-                                    {
-                                        return (false, false);
-                                    }
+                                    return (false, false);
                                 }
                             }
                         }
@@ -1138,11 +1096,11 @@ namespace MetaDslx.Modeling.Internal
             {
                 if (removedAll)
                 {
-                    this.RemoveReferenceCore(objectRef, property, (ObjectId)value);
+                    this.RemoveReferenceCore(objectRef, slot, (ObjectId)value);
                 }
             }
             GreenObject green = objectRef.Object;
-            green = green.Update(green.Parent, green.Children, green.Properties.SetItem(property, list));
+            green = green.Update(green.Parent, green.Children, green.Slots.SetItem(slot, list));
             objectRef.Update(green);
             return (oldList != list || removedAll, removedAll);
         }
@@ -1152,102 +1110,69 @@ namespace MetaDslx.Modeling.Internal
         /// Make sure to convert the property to its representing version before calling this method.
         /// </summary>
         /// <param name="objectRef"></param>
-        /// <param name="property"></param>
+        /// <param name="slot"></param>
         /// <param name="reassign"></param>
         /// <param name="index"></param>
         /// <param name="value"></param>
         /// <param name="valueAddedToSelf"></param>
         /// <param name="valueAddedToOpposite"></param>
-        private bool SlowAddValueCore(ModelId mid, ObjectId oid, ModelProperty property, bool reassign, int index, object value, HashSet<ModelProperty> valueAddedToSelf, HashSet<ModelProperty> valueAddedToOpposite)
+        private bool SlowAddValueCore(ModelId mid, ObjectId oid, Slot slot, bool reassign, int index, object value, HashSet<Slot> valueAddedToSelf, HashSet<Slot> valueAddedToOpposite)
         {
-            if (valueAddedToSelf != null && valueAddedToSelf.Contains(property)) return false;
-            ModelObjectDescriptor info = oid.Descriptor;
-            if (info == null) return false;
-            ModelPropertyInfo propertyInfo = info.GetPropertyInfo(property);
-            if (propertyInfo == null) return false;
+            if (valueAddedToSelf != null && valueAddedToSelf.Contains(slot)) return false;
             ObjectRef objectRef = this.ResolveObjectRef(oid, true);
             if (objectRef == null) return false;
             ObjectId valueId = value as ObjectId;
             // Checking the value:
             if (!reassign)
             {
-                foreach (var eqProp in propertyInfo.EquivalentProperties)
+                if (slot.IsDerived)
                 {
-                    if (eqProp.IsDerived)
-                    {
-                        this.MakeException(Location.None, ModelErrorCode.ERR_CannotChangeDerivedProperty, eqProp, oid);
-                    }
-                    if (eqProp.IsReadonly)
-                    {
-                        this.MakeException(Location.None, ModelErrorCode.ERR_CannotChangeReadOnlyProperty, eqProp, oid);
-                    }
+                    this.MakeException(Location.None, ModelErrorCode.ERR_CannotChangeDerivedProperty, slot, oid);
+                }
+                if (slot.IsReadonly)
+                {
+                    this.MakeException(Location.None, ModelErrorCode.ERR_CannotChangeReadOnlyProperty, slot, oid);
                 }
             }
             if (value == null)
             {
-                foreach (var eqProp in propertyInfo.EquivalentProperties)
+                if (slot.IsNonNull)
                 {
-                    if (eqProp.IsNonNull)
+                    if (slot.IsCollection)
                     {
-                        if (eqProp.IsCollection)
-                        {
-                            this.MakeException(Location.None, ModelErrorCode.ERR_CannotAddNullToProperty, eqProp, oid);
-                        }
-                        else
-                        {
-                            this.MakeException(Location.None, ModelErrorCode.ERR_CannotAssignNullToProperty, eqProp, oid);
-                        }
+                        this.MakeException(Location.None, ModelErrorCode.ERR_CannotAddNullToProperty, slot, oid);
+                    }
+                    else
+                    {
+                        this.MakeException(Location.None, ModelErrorCode.ERR_CannotAssignNullToProperty, slot, oid);
                     }
                 }
             }
             else if (value != GreenObject.Unassigned)
             {
-                if (valueId != null)
+                var valueType = valueId != null ? valueId.Descriptor.MutableType : value.GetType();
+                if (!slot.IsAssignableFrom(valueType, out var unassignableProperty))
                 {
-                    foreach (var eqProp in propertyInfo.EquivalentProperties)
+                    if (slot.IsCollection)
                     {
-                        if (!eqProp.MutableTypeInfo.Type.IsAssignableFrom(valueId.Descriptor.MutableType))
-                        {
-                            if (eqProp.IsCollection)
-                            {
-                                this.MakeException(Location.None, ModelErrorCode.ERR_CannotAddValueToProperty, value, valueId.Descriptor.MutableType, eqProp, eqProp.MutableTypeInfo.Type, oid);
-                            }
-                            else
-                            {
-                                this.MakeException(Location.None, ModelErrorCode.ERR_CannotAssignValueToProperty, value, valueId.Descriptor.MutableType, eqProp, eqProp.MutableTypeInfo.Type, oid);
-                            }
-                        }
+                        this.MakeException(Location.None, ModelErrorCode.ERR_CannotAddValueToProperty, value, valueId.Descriptor.MutableType, unassignableProperty, unassignableProperty.MutableType, oid);
                     }
-                }
-                else
-                {
-                    Type valueType = value.GetType();
-                    foreach (var eqProp in propertyInfo.EquivalentProperties)
+                    else
                     {
-                        if (!eqProp.MutableTypeInfo.Type.IsAssignableFrom(valueType))
-                        {
-                            if (eqProp.IsCollection)
-                            {
-                                this.MakeException(Location.None, ModelErrorCode.ERR_CannotAddValueToProperty, value, valueType, eqProp, eqProp.MutableTypeInfo.Type, oid);
-                            }
-                            else
-                            {
-                                this.MakeException(Location.None, ModelErrorCode.ERR_CannotAssignValueToProperty, value, valueType, eqProp, eqProp.MutableTypeInfo.Type, oid);
-                            }
-                        }
+                        this.MakeException(Location.None, ModelErrorCode.ERR_CannotAssignValueToProperty, value, valueId.Descriptor.MutableType, unassignableProperty, unassignableProperty.MutableType, oid);
                     }
                 }
             }
             // Setting the value:
             bool valueAdded = false;
             bool newValueAdded = false;
-            if (property.IsCollection)
+            if (slot.IsCollection)
             {
-                (valueAdded, newValueAdded) = this.AddItemCore(objectRef, property, reassign, index, value);
+                (valueAdded, newValueAdded) = this.AddItemCore(objectRef, slot, reassign, index, value);
             }
             else
             {
-                valueAdded = this.SetValueCore(objectRef, property, reassign, value);
+                valueAdded = this.SetValueCore(objectRef, slot, reassign, value);
                 newValueAdded = valueAdded;
             }
             if (valueAdded)
@@ -1258,46 +1183,42 @@ namespace MetaDslx.Modeling.Internal
             {
                 if (valueAddedToSelf != null)
                 {
-                    valueAddedToSelf.UnionWith(propertyInfo.EquivalentProperties);
-                    valueAddedToSelf.Add(property);
+                    valueAddedToSelf.Add(slot);
                 }
                 return false;
             }
             // Updating subsetted properties:
             bool initValueAdded = true;
-            if (propertyInfo.SubsettedProperties.Count > 0)
+            if (slot.SubsettedSlots.Length > 0)
             {
                 initValueAdded = false;
-                if (valueAddedToSelf == null) valueAddedToSelf = new HashSet<ModelProperty>(propertyInfo.EquivalentProperties);
-                else valueAddedToSelf.UnionWith(propertyInfo.EquivalentProperties);
-                valueAddedToSelf.Add(property);
-                foreach (var subsettedProp in propertyInfo.SubsettedProperties)
+                if (valueAddedToSelf == null) valueAddedToSelf = new HashSet<Slot>();
+                valueAddedToSelf.Add(slot);
+                foreach (var subsettedSlot in slot.SubsettedSlots)
                 {
-                    ModelProperty subsettedRepProp = this.GetRepresentingProperty(oid, subsettedProp);
-                    this.SlowAddValueCore(mid, oid, subsettedRepProp, reassign || subsettedProp.IsDerivedUnion, -1, value, valueAddedToSelf, valueAddedToOpposite);
+                    this.SlowAddValueCore(mid, oid, subsettedSlot, reassign || subsettedSlot.IsDerivedUnion, -1, value, valueAddedToSelf, valueAddedToOpposite);
                 }
             }
             // Updating opposite properties:
-            if (newValueAdded && valueId != null && propertyInfo.OppositeProperties.Count > 0)
+            if (newValueAdded && valueId != null && slot.OppositeProperties.Length > 0)
             {
                 ObjectRef valueObjectRef = this.ResolveObjectRef(valueId, true);
                 if (valueObjectRef != null)
                 {
                     if (initValueAdded)
                     {
-                        if (valueAddedToSelf == null) valueAddedToSelf = new HashSet<ModelProperty>(propertyInfo.EquivalentProperties);
-                        else valueAddedToSelf.UnionWith(propertyInfo.EquivalentProperties);
-                        valueAddedToSelf.Add(property);
+                        if (valueAddedToSelf == null) valueAddedToSelf = new HashSet<Slot>();
+                        valueAddedToSelf.Add(slot);
                     }
                     if (valueAddedToOpposite == null)
                     {
-                        valueAddedToOpposite = new HashSet<ModelProperty>();
-                        foreach (var oppositeProp in propertyInfo.OppositeProperties)
+                        valueAddedToOpposite = new HashSet<Slot>();
+                        foreach (var oppositeProp in slot.OppositeProperties)
                         {
-                            ModelProperty oppositeRepProp = this.GetRepresentingProperty(valueId, oppositeProp);
-                            if (!valueAddedToOpposite.Contains(oppositeProp))
+                            var oppositeSlot = valueId.Descriptor.GetSlot(oppositeProp);
+                            if (!valueAddedToOpposite.Contains(oppositeSlot))
                             {
-                                this.SlowAddValueCore(valueObjectRef.Model.Id, valueId, oppositeRepProp, reassign, -1, oid, valueAddedToOpposite, valueAddedToSelf);
+                                this.SlowAddValueCore(valueObjectRef.Model.Id, valueId, oppositeSlot, reassign, -1, oid, valueAddedToOpposite, valueAddedToSelf);
                             }
                         }
                     }
@@ -1311,7 +1232,7 @@ namespace MetaDslx.Modeling.Internal
         /// Make sure to convert the property to its representing version before calling this method.
         /// </summary>
         /// <param name="objectRef"></param>
-        /// <param name="property"></param>
+        /// <param name="slot"></param>
         /// <param name="forceRemove"></param>
         /// <param name="reassign"></param>
         /// <param name="index"></param>
@@ -1319,40 +1240,33 @@ namespace MetaDslx.Modeling.Internal
         /// <param name="value"></param>
         /// <param name="valueRemovedFromSelf"></param>
         /// <param name="valueRemovedFromOpposite"></param>
-        private bool SlowRemoveValueCore(ModelId mid, ObjectId oid, ModelProperty property, bool forceRemove, bool reassign, int index, bool removeAll, object value, HashSet<ModelProperty> valueRemovedFromSelf, HashSet<ModelProperty> valueRemovedFromOpposite)
+        private bool SlowRemoveValueCore(ModelId mid, ObjectId oid, Slot slot, bool forceRemove, bool reassign, int index, bool removeAll, object value, HashSet<Slot> valueRemovedFromSelf, HashSet<Slot> valueRemovedFromOpposite)
         {
-            if (valueRemovedFromSelf != null && valueRemovedFromSelf.Contains(property)) return false;
-            ModelObjectDescriptor info = oid.Descriptor;
-            if (info == null) return false;
-            ModelPropertyInfo propertyInfo = info.GetPropertyInfo(property);
-            if (propertyInfo == null) return false;
+            if (valueRemovedFromSelf != null && valueRemovedFromSelf.Contains(slot)) return false;
             ObjectRef objectRef = this.ResolveObjectRef(oid, true);
             if (objectRef == null) return false;
             // Checking the value:
             if (!reassign)
             {
-                foreach (var eqProp in propertyInfo.EquivalentProperties)
+                if (slot.IsDerived)
                 {
-                    if (eqProp.IsDerived)
-                    {
-                        this.MakeException(Location.None, ModelErrorCode.ERR_CannotChangeDerivedProperty, eqProp, oid);
-                    }
-                    if (eqProp.IsReadonly)
-                    {
-                        this.MakeException(Location.None, ModelErrorCode.ERR_CannotChangeReadOnlyProperty, eqProp, oid);
-                    }
+                    this.MakeException(Location.None, ModelErrorCode.ERR_CannotChangeDerivedProperty, slot, oid);
+                }
+                if (slot.IsReadonly)
+                {
+                    this.MakeException(Location.None, ModelErrorCode.ERR_CannotChangeReadOnlyProperty, slot, oid);
                 }
             }
             // Setting the value:
             bool valueRemoved = false;
             bool allValuesRemoved = false;
-            if (property.IsCollection)
+            if (slot.IsCollection)
             {
-                (valueRemoved, allValuesRemoved) = this.RemoveItemCore(objectRef, property, forceRemove, reassign, index, removeAll, ref value);
+                (valueRemoved, allValuesRemoved) = this.RemoveItemCore(objectRef, slot, forceRemove, reassign, index, removeAll, ref value);
             }
             else
             {
-                valueRemoved = this.SetValueCore(objectRef, property, reassign, GreenObject.Unassigned);
+                valueRemoved = this.SetValueCore(objectRef, slot, reassign, GreenObject.Unassigned);
                 allValuesRemoved = valueRemoved;
             }
             if (valueRemoved)
@@ -1361,37 +1275,33 @@ namespace MetaDslx.Modeling.Internal
             }
             else
             {
-                if (forceRemove || !property.IsDerivedUnion)
+                if (forceRemove || !slot.IsDerivedUnion)
                 {
                     if (valueRemovedFromSelf != null)
                     {
-                        valueRemovedFromSelf.UnionWith(propertyInfo.EquivalentProperties);
-                        valueRemovedFromSelf.Add(property);
+                        valueRemovedFromSelf.Add(slot);
                     }
                 }
                 return false;
             }
             // Updating subsetting properties:
             bool initValueRemoved = true;
-            if (propertyInfo.SubsettingProperties.Count > 0 || propertyInfo.DerivedUnionProperties.Count > 0)
+            if (slot.SubsettingSlots.Length > 0 || slot.DerivedUnionSlots.Length > 0)
             {
-                if (valueRemovedFromSelf == null) valueRemovedFromSelf = new HashSet<ModelProperty>(propertyInfo.EquivalentProperties);
-                else valueRemovedFromSelf.UnionWith(propertyInfo.EquivalentProperties);
-                valueRemovedFromSelf.Add(property);
+                if (valueRemovedFromSelf == null) valueRemovedFromSelf = new HashSet<Slot>();
+                valueRemovedFromSelf.Add(slot);
                 initValueRemoved = false;
-                foreach (var subsettingProp in propertyInfo.SubsettingProperties)
+                foreach (var subsettingSlot in slot.SubsettingSlots)
                 {
-                    ModelProperty subsettingRepProp = this.GetRepresentingProperty(oid, subsettingProp);
-                    this.SlowRemoveValueCore(mid, oid, subsettingRepProp, true, reassign, -1, removeAll, value, valueRemovedFromSelf, valueRemovedFromOpposite);
+                    this.SlowRemoveValueCore(mid, oid, subsettingSlot, true, reassign, -1, removeAll, value, valueRemovedFromSelf, valueRemovedFromOpposite);
                 }
-                foreach (var subsettedProp in propertyInfo.DerivedUnionProperties)
+                foreach (var subsettedSlot in slot.DerivedUnionSlots)
                 {
-                    ModelProperty subsettedRepProp = this.GetRepresentingProperty(oid, subsettedProp);
-                    this.SlowRemoveValueCore(mid, oid, subsettedRepProp, false, reassign, -1, removeAll, value, valueRemovedFromSelf, valueRemovedFromOpposite);
+                    this.SlowRemoveValueCore(mid, oid, subsettedSlot, false, reassign, -1, removeAll, value, valueRemovedFromSelf, valueRemovedFromOpposite);
                 }
             }
             // Updating opposite properties:
-            if (allValuesRemoved && value is ObjectId && propertyInfo.OppositeProperties.Count > 0)
+            if (allValuesRemoved && value is ObjectId && slot.OppositeProperties.Length > 0)
             {
                 ObjectId valueId = (ObjectId)value;
                 ObjectRef valueObjectRef = this.ResolveObjectRef(valueId, true);
@@ -1399,19 +1309,18 @@ namespace MetaDslx.Modeling.Internal
                 {
                     if (initValueRemoved)
                     {
-                        if (valueRemovedFromSelf == null) valueRemovedFromSelf = new HashSet<ModelProperty>(propertyInfo.EquivalentProperties);
-                        else valueRemovedFromSelf.UnionWith(propertyInfo.EquivalentProperties);
-                        valueRemovedFromSelf.Add(property);
+                        if (valueRemovedFromSelf == null) valueRemovedFromSelf = new HashSet<Slot>();
+                        valueRemovedFromSelf.Add(slot);
                     }
                     if (valueRemovedFromOpposite == null)
                     {
-                        valueRemovedFromOpposite = new HashSet<ModelProperty>();
-                        foreach (var oppositeProp in propertyInfo.OppositeProperties)
+                        valueRemovedFromOpposite = new HashSet<Slot>();
+                        foreach (var oppositeProp in slot.OppositeProperties)
                         {
-                            ModelProperty oppositeRepProp = this.GetRepresentingProperty(valueId, oppositeProp);
-                            if (!valueRemovedFromOpposite.Contains(oppositeProp))
+                            var oppositeSlot = valueId.Descriptor.GetSlot(oppositeProp);
+                            if (!valueRemovedFromOpposite.Contains(oppositeSlot))
                             {
-                                this.SlowRemoveValueCore(valueObjectRef.Model.Id, valueId, oppositeRepProp, true, reassign, -1, true, oid, valueRemovedFromOpposite, valueRemovedFromSelf);
+                                this.SlowRemoveValueCore(valueObjectRef.Model.Id, valueId, oppositeSlot, true, reassign, -1, true, oid, valueRemovedFromOpposite, valueRemovedFromSelf);
                             }
                         }
                     }
@@ -1425,25 +1334,25 @@ namespace MetaDslx.Modeling.Internal
         /// Make sure to convert the property to its representing version before calling this method.
         /// </summary>
         /// <param name="objectRef"></param>
-        /// <param name="property"></param>
+        /// <param name="slot"></param>
         /// <param name="valueOid"></param>
-        private void AddReferenceCore(ObjectRef objectRef, ModelProperty property, ObjectId valueOid)
+        private void AddReferenceCore(ObjectRef objectRef, Slot slot, ObjectId valueOid)
         {
             GreenModel model = objectRef.Model;
-            ImmutableDictionary<ObjectId, ImmutableHashSet<ModelProperty>> references;
+            ImmutableDictionary<ObjectId, ImmutableHashSet<Slot>> references;
             if (!model.References.TryGetValue(valueOid, out references))
             {
-                references = ImmutableDictionary<ObjectId, ImmutableHashSet<ModelProperty>>.Empty;
+                references = ImmutableDictionary<ObjectId, ImmutableHashSet<Slot>>.Empty;
             }
             ObjectId oid = objectRef.Id;
-            ImmutableHashSet<ModelProperty> properties;
-            if (!references.TryGetValue(oid, out properties))
+            ImmutableHashSet<Slot> slots;
+            if (!references.TryGetValue(oid, out slots))
             {
-                properties = ImmutableHashSet<ModelProperty>.Empty;
+                slots = ImmutableHashSet<Slot>.Empty;
             }
-            if (!properties.Contains(property))
+            if (!slots.Contains(slot))
             {
-                if (property.IsContainment)
+                if (slot.IsContainment)
                 {
                     ObjectRef valueRef = this.ResolveObjectRef(valueOid, true);
                     if (valueRef != null)
@@ -1452,18 +1361,18 @@ namespace MetaDslx.Modeling.Internal
                         {
                             if (valueRef.Object.Parent != oid)
                             {
-                                this.MakeException(Location.None, ModelErrorCode.ERR_InvalidContainment, valueOid, property, oid, valueRef.Object.Parent);
+                                this.MakeException(Location.None, ModelErrorCode.ERR_InvalidContainment, valueOid, slot, oid, valueRef.Object.Parent);
                             }
                         }
                         else
                         {
                             if (valueOid == oid)
                             {
-                                this.MakeException(Location.None, ModelErrorCode.ERR_InvalidSelfContainment, valueOid, property, oid);
+                                this.MakeException(Location.None, ModelErrorCode.ERR_InvalidSelfContainment, valueOid, slot, oid);
                             }
                             if (valueRef.Model.Id != model.Id)
                             {
-                                this.MakeException(Location.None, ModelErrorCode.ERR_InvalidModelContainment, valueOid, property, oid);
+                                this.MakeException(Location.None, ModelErrorCode.ERR_InvalidModelContainment, valueOid, slot, oid);
                             }
                             if (objectRef.Object.Parent != null)
                             {
@@ -1475,7 +1384,7 @@ namespace MetaDslx.Modeling.Internal
                                 {
                                     if (ids.Contains(currentId))
                                     {
-                                        this.MakeException(Location.None, ModelErrorCode.ERR_CircularContainment, valueOid, property, oid);
+                                        this.MakeException(Location.None, ModelErrorCode.ERR_CircularContainment, valueOid, slot, oid);
                                     }
                                     ids.Add(currentId);
                                     if (model.Objects.TryGetValue(currentId, out currentGreen))
@@ -1490,11 +1399,11 @@ namespace MetaDslx.Modeling.Internal
                             }
                             GreenObject green = objectRef.Object;
                             Debug.Assert(!green.Children.Contains(valueOid));
-                            objectRef.Update(green.Update(green.Parent, green.Children.Add(valueOid), green.Properties));
+                            objectRef.Update(green.Update(green.Parent, green.Children.Add(valueOid), green.Slots));
                             GreenObject valueObject;
                             if (objectRef.Model.Objects.TryGetValue(valueOid, out valueObject))
                             {
-                                valueRef.Update(objectRef.Model, valueRef.Object.Update(oid, valueObject.Children, valueObject.Properties), true);
+                                valueRef.Update(objectRef.Model, valueRef.Object.Update(oid, valueObject.Children, valueObject.Slots), true);
                                 model = valueRef.Model;
                             }
                             else
@@ -1504,7 +1413,7 @@ namespace MetaDslx.Modeling.Internal
                         }
                     }
                 }
-                references = references.SetItem(oid, properties.Add(property));
+                references = references.SetItem(oid, slots.Add(slot));
                 model = model.Update(model.Name, model.Version, model.Objects, model.StrongObjects, model.LazyProperties, model.References.SetItem(valueOid, references));
                 objectRef.Update(model, objectRef.Object, false);
             }
@@ -1515,36 +1424,36 @@ namespace MetaDslx.Modeling.Internal
         /// Make sure to convert the property to its representing version before calling this method.
         /// </summary>
         /// <param name="objectRef"></param>
-        /// <param name="property"></param>
+        /// <param name="slot"></param>
         /// <param name="valueOid"></param>
-        private void RemoveReferenceCore(ObjectRef objectRef, ModelProperty property, ObjectId valueOid)
+        private void RemoveReferenceCore(ObjectRef objectRef, Slot slot, ObjectId valueOid)
         {
             GreenModel model = objectRef.Model;
-            ImmutableDictionary<ObjectId, ImmutableHashSet<ModelProperty>> references;
+            ImmutableDictionary<ObjectId, ImmutableHashSet<Slot>> references;
             if (!model.References.TryGetValue(valueOid, out references))
             {
                 return;
             }
             ObjectId oid = objectRef.Id;
-            ImmutableHashSet<ModelProperty> properties;
-            if (!references.TryGetValue(oid, out properties))
+            ImmutableHashSet<Slot> slots;
+            if (!references.TryGetValue(oid, out slots))
             {
                 return;
             }
-            if (properties.Contains(property))
+            if (slots.Contains(slot))
             {
-                properties = properties.Remove(property);
-                if (properties.Count == 0) references = references.Remove(oid);
-                else references = references.SetItem(oid, properties.Remove(property));
-                ImmutableDictionary<ObjectId, ImmutableDictionary<ObjectId, ImmutableHashSet<ModelProperty>>> modelReferences;
+                slots = slots.Remove(slot);
+                if (slots.Count == 0) references = references.Remove(oid);
+                else references = references.SetItem(oid, slots.Remove(slot));
+                ImmutableDictionary<ObjectId, ImmutableDictionary<ObjectId, ImmutableHashSet<Slot>>> modelReferences;
                 if (references.Count == 0) modelReferences = model.References.Remove(valueOid);
                 else modelReferences = model.References.SetItem(valueOid, references);
                 ImmutableDictionary<ObjectId, GreenObject> modelObjects = model.Objects;
                 GreenObject green = objectRef.Object;
-                if (property.IsContainment)
+                if (slot.IsContainment)
                 {
                     bool lostParent = true;
-                    foreach (var prop in properties)
+                    foreach (var prop in slots)
                     {
                         if (prop.IsContainment)
                         {
@@ -1557,9 +1466,9 @@ namespace MetaDslx.Modeling.Internal
                         GreenObject valueObject;
                         if (model.Objects.TryGetValue(valueOid, out valueObject))
                         {
-                            green = green.Update(green.Parent, green.Children.Remove(valueOid), green.Properties);
+                            green = green.Update(green.Parent, green.Children.Remove(valueOid), green.Slots);
                             modelObjects = modelObjects.
-                                SetItem(valueOid, valueObject.Update(null, valueObject.Children, valueObject.Properties)).
+                                SetItem(valueOid, valueObject.Update(null, valueObject.Children, valueObject.Slots)).
                                 SetItem(oid, green);
                         }
                         else
@@ -1578,19 +1487,19 @@ namespace MetaDslx.Modeling.Internal
         /// Make sure to convert the property to its representing version before calling this method.
         /// </summary>
         /// <param name="objectRef"></param>
-        /// <param name="property"></param>
-        private void AddLazyPropertyCore(ObjectRef objectRef, ModelProperty property)
+        /// <param name="slot"></param>
+        private void AddLazyPropertyCore(ObjectRef objectRef, Slot slot)
         {
             ObjectId oid = objectRef.Id;
-            ImmutableHashSet<ModelProperty> lazyProperties;
+            ImmutableHashSet<Slot> lazyProperties;
             GreenModel model = objectRef.Model;
             if (!model.LazyProperties.TryGetValue(oid, out lazyProperties))
             {
-                lazyProperties = ImmutableHashSet<ModelProperty>.Empty;
+                lazyProperties = ImmutableHashSet<Slot>.Empty;
             }
-            if (!lazyProperties.Contains(property))
+            if (!lazyProperties.Contains(slot))
             {
-                lazyProperties = lazyProperties.Add(property);
+                lazyProperties = lazyProperties.Add(slot);
                 model = model.Update(model.Name, model.Version, model.Objects, model.StrongObjects, model.LazyProperties.SetItem(oid, lazyProperties), model.References);
                 objectRef.Update(model, objectRef.Object, false);
             }
@@ -1601,15 +1510,15 @@ namespace MetaDslx.Modeling.Internal
         /// Make sure to convert the property to its representing version before calling this method.
         /// </summary>
         /// <param name="objectRef"></param>
-        /// <param name="property"></param>
-        private void RemoveLazyPropertyCore(ObjectRef objectRef, ModelProperty property)
+        /// <param name="slot"></param>
+        private void RemoveLazyPropertyCore(ObjectRef objectRef, Slot slot)
         {
             ObjectId oid = objectRef.Id;
-            ImmutableHashSet<ModelProperty> lazyProperties;
+            ImmutableHashSet<Slot> lazyProperties;
             GreenModel model = objectRef.Model;
             if (model.LazyProperties.TryGetValue(oid, out lazyProperties))
             {
-                lazyProperties = lazyProperties.Remove(property);
+                lazyProperties = lazyProperties.Remove(slot);
                 if (lazyProperties.Count == 0) model = model.Update(model.Name, model.Version, model.Objects, model.StrongObjects, model.LazyProperties.Remove(oid), model.References);
                 else model = model.Update(model.Name, model.Version, model.Objects, model.StrongObjects, model.LazyProperties.SetItem(oid, lazyProperties), model.References);
                 objectRef.Update(model, objectRef.Object, false);
@@ -1621,24 +1530,24 @@ namespace MetaDslx.Modeling.Internal
         /// Make sure to convert the property to its representing version before calling this method.
         /// </summary>
         /// <param name="objectRef"></param>
-        /// <param name="property"></param>
+        /// <param name="slot"></param>
         /// <param name="reassign"></param>
-        private bool ClearLazyItemsCore(ObjectRef objectRef, ModelProperty property, bool reassign)
+        private bool ClearLazyItemsCore(ObjectRef objectRef, Slot slot, bool reassign)
         {
-            Debug.Assert(property.IsCollection);
+            Debug.Assert(slot.IsCollection);
             ObjectId oid = objectRef.Id;
             GreenModel oldModel = objectRef.Model;
-            ImmutableHashSet<ModelProperty> oldLazyProperties;
+            ImmutableHashSet<Slot> oldLazyProperties;
             bool changed = false;
-            if (oldModel.LazyProperties.TryGetValue(oid, out oldLazyProperties) && oldLazyProperties.Contains(property))
+            if (oldModel.LazyProperties.TryGetValue(oid, out oldLazyProperties) && oldLazyProperties.Contains(slot))
             {
                 object listValue;
-                if (this.TryGetValueCore(objectRef, property, false, false, out listValue) && (listValue is GreenList))
+                if (this.TryGetValueCore(objectRef, slot, false, false, out listValue) && (listValue is GreenList))
                 {
                     GreenList list = (GreenList)listValue;
                     GreenObject oldGreen = objectRef.Object;
-                    GreenObject newGreen = oldGreen.Update(oldGreen.Parent, oldGreen.Children, oldGreen.Properties.SetItem(property, list.ClearLazy()));
-                    ImmutableHashSet<ModelProperty> newLazyProperties = oldLazyProperties.Remove(property);
+                    GreenObject newGreen = oldGreen.Update(oldGreen.Parent, oldGreen.Children, oldGreen.Slots.SetItem(slot, list.ClearLazy()));
+                    ImmutableHashSet<Slot> newLazyProperties = oldLazyProperties.Remove(slot);
                     GreenModel newModel;
                     if (newLazyProperties.Count == 0)
                     {
@@ -1674,12 +1583,12 @@ namespace MetaDslx.Modeling.Internal
         /// Make sure to convert the property to its representing version before calling this method.
         /// </summary>
         /// <param name="objectRef"></param>
-        /// <param name="property"></param>
-        private void LazyEvalCore(ModelId mid, ObjectId oid, ModelProperty property)
+        /// <param name="slot"></param>
+        private void LazyEvalCore(ModelId mid, ObjectId oid, Slot slot)
         {
             object greenValue;
             if (this.lazyEvalStack == null) this.lazyEvalStack = new List<GreenLazyEvalEntry>();
-            GreenLazyEvalEntry entry = new GreenLazyEvalEntry(oid, property);
+            GreenLazyEvalEntry entry = new GreenLazyEvalEntry(oid, slot.EffectiveProperty);
             int entryIndex = this.lazyEvalStack.IndexOf(entry);
             if (entryIndex >= 0)
             {
@@ -1689,7 +1598,7 @@ namespace MetaDslx.Modeling.Internal
             {
                 var redModel = this.redModel ?? this.redModelGroup.GetModel(mid);
                 this.lazyEvalStack.Add(entry);
-                if (this.TryGetValueCore(mid, oid, property, false, true, out greenValue))
+                if (this.TryGetValueCore(mid, oid, slot, false, true, out greenValue))
                 {
                     if (greenValue is LazyValue lazyValue)
                     {
@@ -1698,21 +1607,21 @@ namespace MetaDslx.Modeling.Internal
                             if (lazyValue.IsSingleValue)
                             {
                                 object value = this.LazyEvalValue(lazyValue, redModel, oid);
-                                this.SetValue(mid, oid, property, true, value);
+                                this.SetValue(mid, oid, slot, true, value);
                             }
                             else
                             {
                                 IEnumerable<object> values = this.LazyEvalValues(lazyValue, redModel, oid);
                                 foreach (var value in values)
                                 {
-                                    this.AddItem(mid, oid, property, true, false, -1, value);
+                                    this.AddItem(mid, oid, slot, true, false, -1, value);
                                 }
                             }
                         }
                         catch (Exception ex)
                         {
                             this.MakeLazyEvalException(this.lazyEvalStack, ex, (LazyValue)greenValue, ModelErrorCode.ERR_LazyEvaluationError, ex.Message);
-                            this.SetValue(mid, oid, property, true, null);
+                            this.SetValue(mid, oid, slot, true, null);
                         }
                     }
                     else if (greenValue is GreenList)
@@ -1720,7 +1629,7 @@ namespace MetaDslx.Modeling.Internal
                         GreenList list = (GreenList)greenValue;
                         if (list.HasLazyItems)
                         {
-                            this.ClearLazyItems(mid, oid, property, true);
+                            this.ClearLazyItems(mid, oid, slot, true);
                             foreach (var lazyItem in list.LazyItems)
                             {
                                 if (lazyItem.IsSingleValue)
@@ -1730,7 +1639,7 @@ namespace MetaDslx.Modeling.Internal
                                         object value = this.LazyEvalValue(lazyItem, redModel, oid);
                                         if (value != null)
                                         {
-                                            this.AddItem(mid, oid, property, true, false, -1, value);
+                                            this.AddItem(mid, oid, slot, true, false, -1, value);
                                         }
                                     }
                                     catch (Exception ex)
@@ -1747,7 +1656,7 @@ namespace MetaDslx.Modeling.Internal
                                         {
                                             if (value != null)
                                             {
-                                                this.AddItem(mid, oid, property, true, false, -1, value);
+                                                this.AddItem(mid, oid, slot, true, false, -1, value);
                                             }
                                         }
                                     }

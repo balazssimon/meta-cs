@@ -3,17 +3,17 @@ using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Symbols.CSharp;
 using MetaDslx.CodeAnalysis.Symbols.Source;
-using MetaDslx.Languages.Ecore;
-using MetaDslx.Languages.Ecore.Model;
 using MetaDslx.Languages.Meta;
 using MetaDslx.Languages.Meta.Binding;
 using MetaDslx.Languages.Meta.Generator;
 using MetaDslx.Languages.Meta.Model;
 using MetaDslx.Languages.Meta.Symbols;
-using MetaDslx.Languages.Mof.Generator;
-using MetaDslx.Languages.Mof.Model;
-using MetaDslx.Languages.Uml.Generator;
-using MetaDslx.Languages.Uml.Model;
+//using MetaDslx.Languages.Mof.Generator;
+//using MetaDslx.Languages.Mof.Model;
+//using MetaDslx.Languages.Uml.Generator;
+//using MetaDslx.Languages.Uml.Model;
+//using MetaDslx.Languages.Ecore;
+//using MetaDslx.Languages.Ecore.Model;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using System;
@@ -68,17 +68,17 @@ namespace MetaDslx.Bootstrap
             Console.WriteLine(test.SayHello("me"));
             //*/
 
-            /*/
+            //*/
             ImmutableModel coreModel = MetaInstance.MModel;
             Console.WriteLine(coreModel);
 
-            //string text = File.ReadAllText(@"..\..\..\..\..\Main\MetaDslx.CodeAnalysis.Meta\Languages\Meta\Model\ImmutableMetaModel.mm");
+            string text = File.ReadAllText(@"..\..\..\..\..\Main\MetaDslx.CodeAnalysis.Meta\Languages\Meta\Model\ImmutableMetaModel.mm");
             //string text = File.ReadAllText(@"..\..\..\Calculator.mm");
             //string text = File.ReadAllText(@"..\..\..\..\..\..\..\soal-cs\Src\Main\MetaDslx.Languages.Soal\Symbols\Soal.mm");
             //string text = File.ReadAllText(@"..\..\..\..\..\Test\WebSequenceDiagramsModel\Symbols\UmlModel.mm");
             //string text = File.ReadAllText(@"..\..\..\..\..\Main\MetaDslx.Languages.Omg\Mof\Model\Mof.mm");
             //string text = File.ReadAllText(@"..\..\..\..\..\Languages\MetaDslx.Languages.Uml\Model\Uml.mm");
-            string text = File.ReadAllText(@"..\..\..\..\..\Languages\MetaDslx.Languages.Ecore\Model\Ecore.mm");
+            //string text = File.ReadAllText(@"..\..\..\..\..\Languages\MetaDslx.Languages.Ecore\Model\Ecore.mm");
 
             var tree = MetaSyntaxTree.ParseText(text);
             var declarations = MetaDeclarationTreeBuilderVisitor.ForTree((MetaSyntaxTree)tree, "Script", false);
@@ -170,7 +170,7 @@ namespace MetaDslx.Bootstrap
 
             //*/
 
-            /*/
+            //*/
             ImmutableMetaModelGenerator mmgen = new ImmutableMetaModelGenerator(compiledModel.Objects);
             string generatedCsharpModel = mmgen.Generate();
             File.WriteAllText("Model.cs.txt", generatedCsharpModel);
@@ -243,7 +243,7 @@ namespace MetaDslx.Bootstrap
             WebSequenceDiagramsTest();
             //*/
 
-            //*/
+            /*/
             //MetaXmiTest();
             //XmiTest();
             //MofXmiTest();
@@ -394,7 +394,7 @@ namespace MetaDslx.Bootstrap
         }
         //*/
 
-        //*/
+        /*/
         public static void MofXmiTest()
         {
             MofDescriptor.Initialize();
@@ -426,7 +426,7 @@ namespace MetaDslx.Bootstrap
         }
         //*/
 
-        //*/
+        /*/
         public static void UmlXmiTest()
         {
             UmlDescriptor.Initialize();
@@ -461,7 +461,7 @@ namespace MetaDslx.Bootstrap
         //*/
 
 
-        //*/
+        /*/
         public static void EcoreXmiTest()
         {
             EcoreDescriptor.Initialize();

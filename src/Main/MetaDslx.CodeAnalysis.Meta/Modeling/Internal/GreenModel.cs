@@ -22,8 +22,8 @@ namespace MetaDslx.Modeling.Internal
         private readonly ImmutableList<ObjectId> strongObjects;
         // TODO: replace with immutable weak dictionaries:
         private readonly ImmutableDictionary<ObjectId, GreenObject> objects;
-        private readonly ImmutableDictionary<ObjectId, ImmutableHashSet<ModelProperty>> lazyProperties;
-        private readonly ImmutableDictionary<ObjectId, ImmutableDictionary<ObjectId, ImmutableHashSet<ModelProperty>>> references;
+        private readonly ImmutableDictionary<ObjectId, ImmutableHashSet<Slot>> lazyProperties;
+        private readonly ImmutableDictionary<ObjectId, ImmutableDictionary<ObjectId, ImmutableHashSet<Slot>>> references;
 
         internal GreenModel(ModelId id, string name, ModelVersion version)
         {
@@ -32,8 +32,8 @@ namespace MetaDslx.Modeling.Internal
             this.version = version;
             this.objects = ImmutableDictionary<ObjectId, GreenObject>.Empty;
             this.strongObjects = ImmutableList<ObjectId>.Empty;
-            this.lazyProperties = ImmutableDictionary<ObjectId, ImmutableHashSet<ModelProperty>>.Empty;
-            this.references = ImmutableDictionary<ObjectId, ImmutableDictionary<ObjectId, ImmutableHashSet<ModelProperty>>>.Empty;
+            this.lazyProperties = ImmutableDictionary<ObjectId, ImmutableHashSet<Slot>>.Empty;
+            this.references = ImmutableDictionary<ObjectId, ImmutableDictionary<ObjectId, ImmutableHashSet<Slot>>>.Empty;
         }
 
         private GreenModel(ModelId id,
@@ -41,8 +41,8 @@ namespace MetaDslx.Modeling.Internal
             ModelVersion version,
             ImmutableDictionary<ObjectId, GreenObject> objects,
             ImmutableList<ObjectId> strongObjects,
-            ImmutableDictionary<ObjectId, ImmutableHashSet<ModelProperty>> lazyProperties,
-            ImmutableDictionary<ObjectId, ImmutableDictionary<ObjectId, ImmutableHashSet<ModelProperty>>> references)
+            ImmutableDictionary<ObjectId, ImmutableHashSet<Slot>> lazyProperties,
+            ImmutableDictionary<ObjectId, ImmutableDictionary<ObjectId, ImmutableHashSet<Slot>>> references)
         {
             Debug.Assert(objects != null);
             Debug.Assert(lazyProperties != null);
@@ -61,8 +61,8 @@ namespace MetaDslx.Modeling.Internal
             ModelVersion version,
             ImmutableDictionary<ObjectId, GreenObject> objects,
             ImmutableList<ObjectId> strongObjects,
-            ImmutableDictionary<ObjectId, ImmutableHashSet<ModelProperty>> lazyProperties,
-            ImmutableDictionary<ObjectId, ImmutableDictionary<ObjectId, ImmutableHashSet<ModelProperty>>> references)
+            ImmutableDictionary<ObjectId, ImmutableHashSet<Slot>> lazyProperties,
+            ImmutableDictionary<ObjectId, ImmutableDictionary<ObjectId, ImmutableHashSet<Slot>>> references)
         {
             if (this.name != name || this.version != version || this.objects != objects || 
                 this.strongObjects != strongObjects || 
@@ -78,8 +78,8 @@ namespace MetaDslx.Modeling.Internal
         internal ModelVersion Version { get { return this.version; } }
         internal ImmutableDictionary<ObjectId, GreenObject> Objects { get { return this.objects; } }
         internal ImmutableList<ObjectId> StrongObjects { get { return this.strongObjects; } }
-        internal ImmutableDictionary<ObjectId, ImmutableHashSet<ModelProperty>> LazyProperties { get { return this.lazyProperties; } }
-        internal ImmutableDictionary<ObjectId, ImmutableDictionary<ObjectId, ImmutableHashSet<ModelProperty>>> References { get { return this.references; } }
+        internal ImmutableDictionary<ObjectId, ImmutableHashSet<Slot>> LazyProperties { get { return this.lazyProperties; } }
+        internal ImmutableDictionary<ObjectId, ImmutableDictionary<ObjectId, ImmutableHashSet<Slot>>> References { get { return this.references; } }
 
         internal GreenModel AddObject(ObjectId oid, bool weak)
         {
@@ -91,7 +91,7 @@ namespace MetaDslx.Modeling.Internal
         {
             Debug.Assert(!this.lazyProperties.ContainsKey(oid));
             ImmutableDictionary<ObjectId, GreenObject> objects = this.objects;
-            ImmutableDictionary<ObjectId, ImmutableHashSet<ModelProperty>> refs;
+            ImmutableDictionary<ObjectId, ImmutableHashSet<Slot>> refs;
             if (this.references.TryGetValue(oid, out refs))
             {
                 foreach (var refEntry in refs)
@@ -100,10 +100,10 @@ namespace MetaDslx.Modeling.Internal
                     if (this.objects.TryGetValue(refEntry.Key, out green))
                     {
                         GreenObject oldGreen = green;
-                        foreach (var prop in refEntry.Value)
+                        foreach (var slot in refEntry.Value)
                         {
                             object value;
-                            if (green.Properties.TryGetValue(prop, out value))
+                            if (green.Slots.TryGetValue(slot, out value))
                             {
                                 if (value is GreenList)
                                 {
@@ -111,14 +111,14 @@ namespace MetaDslx.Modeling.Internal
                                     green = green.Update(
                                         green.Parent == oid ? null : green.Parent,
                                         green.Children.RemoveAll(item => item == oid),
-                                        green.Properties.SetItem(prop, list.RemoveAll(oid)));
+                                        green.Slots.SetItem(slot, list.RemoveAll(oid)));
                                 }
                                 else if ((ObjectId)value == oid)
                                 {
                                     green = green.Update(
                                         green.Parent == oid ? null : green.Parent,
                                         green.Children.RemoveAll(item => item == oid),
-                                        green.Properties.SetItem(prop, GreenObject.Unassigned));
+                                        green.Slots.SetItem(slot, GreenObject.Unassigned));
                                 }
                             }
                         }
@@ -143,13 +143,13 @@ namespace MetaDslx.Modeling.Internal
         {
             Debug.Assert(!this.lazyProperties.ContainsKey(oid));
             ImmutableDictionary<ObjectId, GreenObject> objects = this.objects;
-            ImmutableDictionary<ObjectId, ImmutableHashSet<ModelProperty>> refs;
+            ImmutableDictionary<ObjectId, ImmutableHashSet<Slot>> refs;
             if (this.references.TryGetValue(oid, out refs))
             {
-                ImmutableDictionary<ObjectId, ImmutableHashSet<ModelProperty>> targetRefs;
+                ImmutableDictionary<ObjectId, ImmutableHashSet<Slot>> targetRefs;
                 if (!this.references.TryGetValue(targetOid, out targetRefs))
                 {
-                    targetRefs = ImmutableDictionary<ObjectId, ImmutableHashSet<ModelProperty>>.Empty;
+                    targetRefs = ImmutableDictionary<ObjectId, ImmutableHashSet<Slot>>.Empty;
                 }
                 foreach (var refEntry in refs)
                 {
@@ -157,15 +157,15 @@ namespace MetaDslx.Modeling.Internal
                     if (this.objects.TryGetValue(refEntry.Key, out green))
                     {
                         GreenObject oldGreen = green;
-                        ImmutableHashSet<ModelProperty> targetProps;
-                        if (!targetRefs.TryGetValue(refEntry.Key, out targetProps))
+                        ImmutableHashSet<Slot> targetSlots;
+                        if (!targetRefs.TryGetValue(refEntry.Key, out targetSlots))
                         {
-                            targetProps = ImmutableHashSet<ModelProperty>.Empty;
+                            targetSlots = ImmutableHashSet<Slot>.Empty;
                         }
-                        foreach (var prop in refEntry.Value)
+                        foreach (var slot in refEntry.Value)
                         {
                             object value;
-                            if (green.Properties.TryGetValue(prop, out value))
+                            if (green.Slots.TryGetValue(slot, out value))
                             {
                                 if (value is GreenList)
                                 {
@@ -173,16 +173,16 @@ namespace MetaDslx.Modeling.Internal
                                     green = green.Update(
                                         green.Parent == oid ? targetOid : green.Parent,
                                         green.Children.Replace(oid, targetOid),
-                                        green.Properties.SetItem(prop, list.Replace(oid, targetOid)));
-                                    targetProps = targetProps.Add(prop);
+                                        green.Slots.SetItem(slot, list.Replace(oid, targetOid)));
+                                    targetSlots = targetSlots.Add(slot);
                                 }
                                 else if ((ObjectId)value == oid)
                                 {
                                     green = green.Update(
                                         green.Parent == oid ? targetOid : green.Parent,
                                         green.Children.Replace(oid, targetOid),
-                                        green.Properties.SetItem(prop, targetOid));
-                                    targetProps = targetProps.Add(prop);
+                                        green.Slots.SetItem(slot, targetOid));
+                                    targetSlots = targetSlots.Add(slot);
                                 }
                             }
                         }
@@ -190,9 +190,9 @@ namespace MetaDslx.Modeling.Internal
                         {
                             objects.SetItem(refEntry.Key, green);
                         }
-                        if (targetProps.Count > 0)
+                        if (targetSlots.Count > 0)
                         {
-                            targetRefs = targetRefs.SetItem(refEntry.Key, targetProps);
+                            targetRefs = targetRefs.SetItem(refEntry.Key, targetSlots);
                         }
                     }
                 }

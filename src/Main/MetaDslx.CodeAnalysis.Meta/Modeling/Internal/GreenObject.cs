@@ -12,47 +12,47 @@ namespace MetaDslx.Modeling.Internal
 
         private ObjectId parent;
         private ImmutableList<ObjectId> children;
-        private ImmutableDictionary<ModelProperty, object> properties;
+        private ImmutableDictionary<Slot, object> slots;
 
         private GreenObject()
         {
             this.children = ImmutableList<ObjectId>.Empty;
-            this.properties = ImmutableDictionary<ModelProperty, object>.Empty;
+            this.slots = ImmutableDictionary<Slot, object>.Empty;
         }
 
         private GreenObject(
             ObjectId parent,
             ImmutableList<ObjectId> children,
-            ImmutableDictionary<ModelProperty, object> properties)
+            ImmutableDictionary<Slot, object> slots)
         {
             this.parent = parent;
             this.children = children;
-            this.properties = properties;
+            this.slots = slots;
         }
 
         internal GreenObject Update(
             ObjectId parent,
             ImmutableList<ObjectId> children,
-            ImmutableDictionary<ModelProperty, object> properties)
+            ImmutableDictionary<Slot, object> slots)
         {
-            if (this.parent != parent || this.children != children || this.properties != properties)
+            if (this.parent != parent || this.children != children || this.slots != slots)
             {
-                return new GreenObject(parent, children, properties);
+                return new GreenObject(parent, children, slots);
             }
             return this;
         }
 
-        internal static GreenObject CreateWithProperties(ImmutableArray<ModelProperty> properties)
+        internal static GreenObject CreateWithSlots(ImmutableArray<Slot> slots)
         {
             return GreenObject.Empty.Update(
                 null,
                 ImmutableList<ObjectId>.Empty,
-                properties.ToImmutableDictionary(p => p, p => GreenObject.Unassigned));
+                slots.ToImmutableDictionary(s => s, s => GreenObject.Unassigned));
         }
 
         internal ObjectId Parent { get { return this.parent; } }
         internal ImmutableList<ObjectId> Children { get { return this.children; } }
-        internal ImmutableDictionary<ModelProperty, object> Properties { get { return this.properties; } }
+        internal ImmutableDictionary<Slot, object> Slots { get { return this.slots; } }
     }
 
 }

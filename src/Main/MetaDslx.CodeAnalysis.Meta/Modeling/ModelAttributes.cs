@@ -92,6 +92,22 @@ namespace MetaDslx.Modeling
     }
 
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = false)]
+    public sealed class CollectionAttribute : Attribute
+    {
+        public CollectionAttribute()
+        {
+        }
+    }
+
+    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = false)]
+    public sealed class OrderedAttribute : Attribute
+    {
+        public OrderedAttribute()
+        {
+        }
+    }
+
+    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = false)]
     public sealed class NonUniqueAttribute : Attribute
     {
         public NonUniqueAttribute()

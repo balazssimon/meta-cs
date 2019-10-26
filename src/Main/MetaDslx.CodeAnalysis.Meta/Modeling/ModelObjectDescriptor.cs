@@ -37,7 +37,6 @@ namespace MetaDslx.Modeling
         private Type descriptorType;
         private GreenObject emptyGreenObject;
         private MetaModelObjectFlags metaFlags;
-        private ModelObjectDescriptorAttribute descriptor;
         private ConstructorInfo _idConstructor;
         private Type idType;
         private Type immutableType;
@@ -45,9 +44,11 @@ namespace MetaDslx.Modeling
         private ModelProperty nameProperty;
         private ModelProperty typeProperty;
         private ImmutableArray<Attribute> annotations;
-        private ImmutableList<ModelObjectDescriptor> baseDescriptors;
-        private ImmutableList<ModelProperty> declaredProperties;
-        private ImmutableDictionary<ModelProperty, ModelPropertyInfo> propertyInfo;
+        private ImmutableArray<ModelObjectDescriptor> baseDescriptors;
+        private ImmutableArray<ModelProperty> declaredProperties;
+        private ImmutableDictionary<ModelProperty, Slot> slotMap;
+        private ImmutableArray<Slot> slots;
+        private ImmutableArray<ModelProperty> allProperties;
         private ImmutableArray<ModelProperty> properties;
 
         private ModelObjectDescriptor(Type descriptorType)
@@ -86,10 +87,11 @@ namespace MetaDslx.Modeling
             this.nameProperty = null;
             this.typeProperty = null;
             this.emptyGreenObject = GreenObject.Empty;
-            this.baseDescriptors = ImmutableList<ModelObjectDescriptor>.Empty;
-            this.declaredProperties = ImmutableList<ModelProperty>.Empty;
-            this.propertyInfo = ImmutableDictionary<ModelProperty, ModelPropertyInfo>.Empty;
-            this.properties = ImmutableArray<ModelProperty>.Empty;
+            this.baseDescriptors = ImmutableArray<ModelObjectDescriptor>.Empty;
+            this.declaredProperties = ImmutableArray<ModelProperty>.Empty;
+            this.slotMap = ImmutableDictionary<ModelProperty, Slot>.Empty;
+            this.slots = ImmutableArray<Slot>.Empty;
+            this.allProperties = ImmutableArray<ModelProperty>.Empty;
         }
 
         public static ModelObjectDescriptor GetDescriptor(Type type)
@@ -176,8 +178,8 @@ namespace MetaDslx.Modeling
         private void AddBaseDescriptor(ModelObjectDescriptor baseDescriptor)
         {
             if (this.initializedBaseDescriptors) throw new InvalidOperationException("Cannot add a base descriptor to an initialized descriptor.");
-            ImmutableList<ModelObjectDescriptor> oldBaseDescriptors;
-            ImmutableList<ModelObjectDescriptor> newBaseDescriptors;
+            ImmutableArray<ModelObjectDescriptor> oldBaseDescriptors;
+            ImmutableArray<ModelObjectDescriptor> newBaseDescriptors;
             do
             {
                 oldBaseDescriptors = this.baseDescriptors;
@@ -189,7 +191,7 @@ namespace MetaDslx.Modeling
                 {
                     newBaseDescriptors = oldBaseDescriptors;
                 }
-            } while (Interlocked.CompareExchange(ref this.baseDescriptors, newBaseDescriptors, oldBaseDescriptors) != oldBaseDescriptors);
+            } while (ImmutableInterlocked.InterlockedCompareExchange(ref this.baseDescriptors, newBaseDescriptors, oldBaseDescriptors) != oldBaseDescriptors);
             if (baseDescriptor.IsScope)
             {
                 this.metaFlags |= MetaModelObjectFlags.Scope;
@@ -209,13 +211,13 @@ namespace MetaDslx.Modeling
             }
             else
             {
-                ImmutableList<ModelProperty> oldDeclaredProperties;
-                ImmutableList<ModelProperty> newDeclaredProperties;
+                ImmutableArray<ModelProperty> oldDeclaredProperties;
+                ImmutableArray<ModelProperty> newDeclaredProperties;
                 do
                 {
                     oldDeclaredProperties = this.declaredProperties;
                     newDeclaredProperties = oldDeclaredProperties.Add(property);
-                } while (Interlocked.CompareExchange(ref this.declaredProperties, newDeclaredProperties, oldDeclaredProperties) != oldDeclaredProperties);
+                } while (ImmutableInterlocked.InterlockedCompareExchange(ref this.declaredProperties, newDeclaredProperties, oldDeclaredProperties) != oldDeclaredProperties);
             }
         }
 
@@ -257,7 +259,7 @@ namespace MetaDslx.Modeling
             return this.CreateObjectId().CreateImmutable(model);
         }
 
-        public ImmutableList<ModelObjectDescriptor> BaseDescriptors
+        public ImmutableArray<ModelObjectDescriptor> BaseDescriptors
         {
             get
             {
@@ -267,45 +269,60 @@ namespace MetaDslx.Modeling
         }
 
         private ImmutableArray<ModelObjectDescriptor> lazyAllBaseDescriptors;
+
+        /// <summary>
+        /// The list of all descriptors of which this descriptors is a declared subtype, excluding this descriptor
+        /// itself. This includes all declared base descriptors, all declared base descriptors of base
+        /// descriptors, and all declared base descriptors of those results (recursively).  Each result
+        /// appears exactly once in the list. This list is topologically sorted by the inheritance
+        /// relationship: if descriptors type A extends descriptors type B, then A precedes B in the list.
+        /// </summary>
         public ImmutableArray<ModelObjectDescriptor> AllBaseDescriptors
         {
             get
             {
-                if (lazyAllBaseDescriptors == default)
+                if (lazyAllBaseDescriptors.IsDefault)
                 {
-                    var builder = ArrayBuilder<ModelObjectDescriptor>.GetInstance();
-                    try
-                    {
-                        this.CollectAllBaseDescriptors(builder);
-                    }
-                    finally
-                    {
-                        ImmutableInterlocked.InterlockedCompareExchange(ref lazyAllBaseDescriptors, builder.ToImmutableAndFree(), default);
-                    }
+                    ImmutableInterlocked.InterlockedInitialize(ref lazyAllBaseDescriptors, this.MakeAllBaseDescriptors());
                 }
                 return lazyAllBaseDescriptors;
             }
         }
 
-        private void CollectAllBaseDescriptors(ArrayBuilder<ModelObjectDescriptor> baseDescriptors)
+        /// Produce all base descriptors in topologically sorted order. We use
+        /// ModelObjectDescriptor.BaseDescriptors as the source of edge data, which has had cycles and infinitely
+        /// long dependency cycles removed. Consequently, it is possible (and we do) use the
+        /// simplest version of Tarjan's topological sorting algorithm.
+        private ImmutableArray<ModelObjectDescriptor> MakeAllBaseDescriptors()
         {
-            foreach (var item in this.BaseDescriptors)
+            var result = ArrayBuilder<ModelObjectDescriptor>.GetInstance();
+            var visited = new HashSet<ModelObjectDescriptor>();
+            var baseTypes = this.BaseDescriptors;
+            for (int i = baseTypes.Length - 1; i >= 0; i--)
             {
-                if (!baseDescriptors.Contains(item))
+                AddAllBaseDescriptors(baseTypes[i], visited, result);
+            }
+            result.ReverseContents();
+            return result.ToImmutableAndFree();
+        }
+
+        private static void AddAllBaseDescriptors(ModelObjectDescriptor baseType, HashSet<ModelObjectDescriptor> visited, ArrayBuilder<ModelObjectDescriptor> result)
+        {
+            if (visited.Add(baseType))
+            {
+                ImmutableArray<ModelObjectDescriptor> baseTypes = baseType.BaseDescriptors;
+                for (int i = baseTypes.Length - 1; i >= 0; i--)
                 {
-                    foreach (var baseItem in item.AllBaseDescriptors)
-                    {
-                        if (!baseDescriptors.Contains(baseItem))
-                        {
-                            baseDescriptors.Add(baseItem);
-                        }
-                    }
-                    baseDescriptors.Add(item);
+                    var nextBaseType = baseTypes[i];
+                    AddAllBaseDescriptors(nextBaseType, visited, result);
                 }
+                result.Add(baseType);
             }
         }
 
-        public ImmutableList<ModelProperty> DeclaredProperties { get { return this.declaredProperties; } }
+        public ImmutableArray<ModelProperty> DeclaredProperties { get { return this.declaredProperties; } }
+        public ImmutableArray<ModelProperty> AllProperties { get { return this.allProperties; } }
+        public ImmutableArray<ModelProperty> Properties { get { return this.properties; } }
 
         public bool IsLocal
         {
@@ -380,20 +397,20 @@ namespace MetaDslx.Modeling
                 return this.typeProperty;
             }
         }
-        public ImmutableArray<ModelProperty> Properties
+        internal ImmutableArray<Slot> Slots
         {
             get
             {
                 if (!this.initialized) this.Initialize();
-                return this.properties;
+                return this.slots;
             }
         }
-        internal ImmutableDictionary<ModelProperty, ModelPropertyInfo> PropertyInfo
+        internal ImmutableDictionary<ModelProperty, Slot> PropertyInfo
         {
             get
             {
                 if (!this.initialized) this.Initialize();
-                return this.propertyInfo;
+                return this.slotMap;
             }
         }
         internal GreenObject EmptyGreenObject
@@ -436,16 +453,36 @@ namespace MetaDslx.Modeling
                 this.initialized = true;
                 RuntimeHelpers.RunClassConstructor(this.descriptorType.TypeHandle);
                 this.CreateProperties();
-                this.CreatePropertyInfo();
+                this.CreateSlots();
                 this.CreateEmptyGreenObject();
             }
         }
 
         private void CreateProperties()
         {
+            var allProperties = ArrayBuilder<ModelProperty>.GetInstance();
             var properties = ArrayBuilder<ModelProperty>.GetInstance();
             try
             {
+                foreach (var baseDescriptor in this.AllBaseDescriptors.Reverse())
+                {
+                    foreach (var prop in baseDescriptor.allProperties)
+                    {
+                        if (!allProperties.Contains(prop))
+                        {
+                            allProperties.Add(prop);
+                            if (prop.IsName)
+                            {
+                                this.nameProperty = prop;
+                            }
+                            if (prop.IsType)
+                            {
+                                this.typeProperty = prop;
+                            }
+                        }
+                    }
+                }
+                allProperties.AddRange(this.declaredProperties);
                 foreach (var prop in this.declaredProperties)
                 {
                     if (prop.IsName)
@@ -457,192 +494,40 @@ namespace MetaDslx.Modeling
                         this.typeProperty = prop;
                     }
                 }
-                foreach (var baseDescriptor in this.baseDescriptors.Reverse())
+                foreach (var prop in allProperties)
                 {
-                    foreach (var prop in baseDescriptor.Properties.Reverse())
+                    int nameIndex = properties.FindIndex(p => p.Name == prop.Name);
+                    if (nameIndex >= 0) properties.RemoveAt(nameIndex);
+                    foreach (var redefProp in prop.RedefinedProperties)
                     {
-                        if (!properties.Contains(prop))
-                        {
-                            properties.Add(prop);
-                            if (this.nameProperty == null && prop.IsName)
-                            {
-                                this.nameProperty = prop;
-                                if (prop.IsLocal)
-                                {
-                                    this.metaFlags |= MetaModelObjectFlags.Local;
-                                }
-                            }
-                            if (this.typeProperty == null && prop.IsType)
-                            {
-                                this.typeProperty = prop;
-                            }
-                        }
+                        int index = properties.IndexOf(redefProp);
+                        if (index >= 0) properties.RemoveAt(index);
                     }
+                    properties.Add(prop);
                 }
-                properties.AddRange(this.declaredProperties);
             }
             finally
             {
+                ImmutableInterlocked.InterlockedExchange(ref this.allProperties, allProperties.ToImmutableAndFree());
                 ImmutableInterlocked.InterlockedExchange(ref this.properties, properties.ToImmutableAndFree());
             }
         }
 
-        private void CreatePropertyInfo()
+        private void CreateSlots()
         {
-            foreach (var prop in this.properties)
-            {
-                if (prop.RedefinedProperties.Count > 0)
-                {
-                    ModelPropertyInfo propInfo = this.GetOrCreatePropertyInfo(prop);
-                    propInfo.AddRedefinedProperty(this, prop, true);
-                    foreach (var redefinedProp in prop.RedefinedProperties)
-                    {
-                        propInfo.AddRedefinedProperty(this, redefinedProp, true);
-                    }
-                }
-            }
-            foreach (var prop in this.properties)
-            {
-                ModelPropertyInfo propInfo = this.GetPropertyInfo(prop);
-                if (propInfo != null && propInfo.EquivalentProperties.Count > 0)
-                {
-                    int index = -1;
-                    ModelProperty representingProp = null;
-                    foreach (var eqProp in propInfo.EquivalentProperties)
-                    {
-                        int eqIndex = this.properties.IndexOf(eqProp);
-                        if (index < 0 || (eqIndex >= 0 && eqIndex < index))
-                        {
-                            index = eqIndex;
-                            representingProp = eqProp;
-                        }
-                    }
-                    Debug.Assert(representingProp != null);
-                    if (representingProp != null)
-                    {
-                        propInfo.SetRepresentingProperty(this, representingProp, true);
-                    }
-                }
-            }
-            foreach (var prop in this.properties)
-            {
-                if (prop.SubsettedProperties.Count > 0)
-                {
-                    ModelPropertyInfo propInfo = this.GetOrCreatePropertyInfo(prop);
-                    foreach (var subsettedProp in prop.SubsettedProperties)
-                    {
-                        ModelPropertyInfo subsettedPropInfo = this.GetOrCreatePropertyInfo(subsettedProp);
-                        propInfo.AddSubsettedProperty(this, subsettedProp, true);
-                        subsettedPropInfo.AddSubsettingProperty(this, prop, true);
-                        if (subsettedProp.IsDerivedUnion)
-                        {
-                            propInfo.AddDerivedUnionProperty(this, subsettedProp, true);
-                        }
-                    }
-                }
-                if (prop.OppositeProperties.Count > 0)
-                {
-                    ModelPropertyInfo propInfo = this.GetOrCreatePropertyInfo(prop);
-                    foreach (var oppositeProp in prop.OppositeProperties)
-                    {
-                        propInfo.AddOppositeProperty(this, oppositeProp, true);
-                    }
-                }
-            }
-            foreach (var prop in this.properties)
-            {
-                ModelPropertyInfo propInfo = this.GetPropertyInfo(prop);
-                if (propInfo != null && propInfo.SubsettedProperties.Count > 0)
-                {
-                    List<ModelProperty> supersetProperties = new List<ModelProperty>();
-                    ModelProperty repProp = propInfo.RepresentingProperty;
-                    if (repProp == null) repProp = prop;
-                    supersetProperties.Add(repProp);
-                    int i = 0;
-                    while (i < supersetProperties.Count)
-                    {
-                        ModelProperty currentProp = supersetProperties[i];
-                        foreach (var subsettedProp in currentProp.SubsettedProperties)
-                        {
-                            ModelPropertyInfo subsettedPropInfo = this.GetPropertyInfo(subsettedProp);
-                            if (subsettedPropInfo != null)
-                            {
-                                ModelProperty subsettedRepProp = subsettedProp;
-                                if (subsettedPropInfo.RepresentingProperty != null) subsettedRepProp = subsettedPropInfo.RepresentingProperty;
-                                if (!supersetProperties.Contains(subsettedRepProp))
-                                {
-                                    supersetProperties.Add(subsettedRepProp);
-                                }
-                            }
-                        }
-                        ++i;
-                    }
-                    supersetProperties.Remove(repProp);
-                    foreach (var supersetProp in supersetProperties)
-                    {
-                        propInfo.AddSupersetProperty(this, supersetProp, true);
-                    }
-                }
-                if (propInfo != null && propInfo.SubsettingProperties.Count > 0)
-                {
-                    List<ModelProperty> subsetProperties = new List<ModelProperty>();
-                    ModelProperty repProp = propInfo.RepresentingProperty;
-                    if (repProp == null) repProp = prop;
-                    subsetProperties.Add(repProp);
-                    int i = 0;
-                    while (i < subsetProperties.Count)
-                    {
-                        ModelProperty currentProp = subsetProperties[i];
-                        ModelPropertyInfo currentPropInfo = this.GetPropertyInfo(currentProp);
-                        foreach (var subsettedProp in currentPropInfo.SubsettingProperties)
-                        {
-                            ModelPropertyInfo subsettedPropInfo = this.GetPropertyInfo(subsettedProp);
-                            if (subsettedPropInfo != null)
-                            {
-                                ModelProperty subsettedRepProp = subsettedProp;
-                                if (subsettedPropInfo.RepresentingProperty != null) subsettedRepProp = subsettedPropInfo.RepresentingProperty;
-                                if (!subsetProperties.Contains(subsettedRepProp))
-                                {
-                                    subsetProperties.Add(subsettedRepProp);
-                                }
-                            }
-                        }
-                        ++i;
-                    }
-                    subsetProperties.Remove(repProp);
-                    foreach (var subsetProp in subsetProperties)
-                    {
-                        propInfo.AddSubsetProperty(this, subsetProp, true);
-                    }
-                }
-            }
-        }
-
-        internal ModelPropertyInfo GetOrCreatePropertyInfo(ModelProperty property)
-        {
-            ModelPropertyInfo result;
-            if (!this.propertyInfo.TryGetValue(property, out result))
-            {
-                result = new ModelPropertyInfo(property);
-                Interlocked.Exchange(ref this.propertyInfo, this.propertyInfo.Add(property, result));
-            }
-            return result;
+            this.slotMap = ComplexSlotBuilder.Build(this.allProperties);
+            this.slots = this.allProperties.Select(p => this.slotMap[p]).ToImmutableArray();
         }
 
         private void CreateEmptyGreenObject()
         {
-            Interlocked.Exchange(ref this.emptyGreenObject, GreenObject.CreateWithProperties(this.Properties));
+            Interlocked.Exchange(ref this.emptyGreenObject, GreenObject.CreateWithSlots(this.Slots));
         }
 
-        public bool HasAffectedProperties(ModelProperty property)
+        internal Slot GetSlot(ModelProperty property)
         {
-            return this.propertyInfo.ContainsKey(property);
-        }
-
-        public ModelPropertyInfo GetPropertyInfo(ModelProperty property)
-        {
-            ModelPropertyInfo result;
-            if (this.propertyInfo.TryGetValue(property, out result))
+            Slot result;
+            if (this.slotMap.TryGetValue(property, out result))
             {
                 return result;
             }

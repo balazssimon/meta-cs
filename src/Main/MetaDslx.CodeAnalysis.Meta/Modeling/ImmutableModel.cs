@@ -207,9 +207,8 @@ namespace MetaDslx.Modeling
             if (this.green.Objects.TryGetValue(oid, out green))
             {
                 object greenValue;
-                ModelPropertyInfo mpi = oid.Descriptor.GetPropertyInfo(property);
-                if (mpi != null && mpi.RepresentingProperty != null) property = mpi.RepresentingProperty;
-                if (green.Properties.TryGetValue(property, out greenValue))
+                Slot slot = oid.Descriptor.GetSlot(property);
+                if (green.Slots.TryGetValue(slot, out greenValue))
                 {
                     return greenValue;
                 }
@@ -373,10 +372,10 @@ namespace MetaDslx.Modeling
 
         internal IReadOnlyList<ModelProperty> MProperties(ObjectId oid)
         {
-            ModelObjectDescriptor msi = oid.Descriptor;
-            if (msi != null)
+            ModelObjectDescriptor descriptor = oid.Descriptor;
+            if (descriptor != null)
             {
-                return msi.Properties;
+                return descriptor.Properties;
             }
             return ImmutableArray<ModelProperty>.Empty;
         }
@@ -384,11 +383,11 @@ namespace MetaDslx.Modeling
         internal IReadOnlyList<ModelProperty> MAllProperties(ObjectId oid)
         {
             GreenObject green;
-            if (this.green.Objects.TryGetValue(oid, out green))
+            if (this.Green.Objects.TryGetValue(oid, out green))
             {
-                return green.Properties.Keys.ToList();
+                return green.Slots.Keys.Select(s => s.EffectiveProperty).ToImmutableArray();
             }
-            return ImmutableList<ModelProperty>.Empty;
+            return ImmutableArray<ModelProperty>.Empty;
         }
 
         internal object MGet(ObjectId oid, ModelProperty property)

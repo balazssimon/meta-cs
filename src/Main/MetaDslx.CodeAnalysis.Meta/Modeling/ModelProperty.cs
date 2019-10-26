@@ -22,9 +22,10 @@ namespace MetaDslx.Modeling
         Readonly = 0x0004,
         Derived = 0x0008,
         DerivedUnion = 0x0010,
-        NonUnique = 0x0020,
-        NonNull = 0x0040,
-        Containment = 0x0080
+        Ordered = 0x0020,
+        NonUnique = 0x0040,
+        NonNull = 0x0080,
+        Containment = 0x0100
     }
 
     [Flags]
@@ -48,7 +49,36 @@ namespace MetaDslx.Modeling
         Initialized
     }
 
-    public sealed class ModelProperty
+    internal interface Slot
+    {
+        bool IsSimpleSlot { get; }
+        ModelProperty EffectiveProperty { get; }
+        string Name { get; }
+
+        bool IsModelObject { get; }
+        bool IsCollection { get; }
+        bool IsReadonly { get; }
+        bool IsDerived { get; }
+        bool IsDerivedUnion { get; }
+        bool IsContainment { get; }
+        bool IsNonNull { get; }
+        bool IsUnique { get; }
+        object DefaultValue { get; }
+        Type ImmutableType { get; }
+        Type MutableType { get; }
+
+        ImmutableArray<ModelProperty> EquivalentProperties { get; }
+        ImmutableArray<Slot> SupersetSlots { get; }
+        ImmutableArray<Slot> SubsetSlots { get; }
+        ImmutableArray<Slot> SubsettedSlots { get; }
+        ImmutableArray<Slot> SubsettingSlots { get; }
+        ImmutableArray<Slot> DerivedUnionSlots { get; }
+        ImmutableArray<ModelProperty> OppositeProperties { get; }
+
+        bool IsAssignableFrom(Type type, out ModelProperty unassignableProperty);
+    }
+
+    public sealed class ModelProperty : Slot
     {
         private static object lockObject = new object();
         private ModelPropertyInitState state;
@@ -56,54 +86,45 @@ namespace MetaDslx.Modeling
         private string name;
         private ModelPropertyFlags flags;
         private MetaModelPropertyFlags metaFlags;
-        private ModelPropertyTypeInfo immutableTypeInfo;
-        private ModelPropertyTypeInfo mutableTypeInfo;
-        private ImmutableList<Attribute> annotations;
-        private ImmutableList<ModelProperty> subsettedProperties;
-        private ImmutableList<ModelProperty> redefinedProperties;
-        private ImmutableList<ModelProperty> oppositeProperties;
+        private Type immutableType;
+        private Type mutableType;
+        private ImmutableArray<Attribute> annotations;
+        private ImmutableArray<ModelProperty> subsettedProperties;
+        private ImmutableArray<ModelProperty> redefinedProperties;
+        private ImmutableArray<ModelProperty> oppositeProperties;
         private Lazy<MetaProperty> metaProperty = null;
         private object defaultValue = null;
 
-        private ModelProperty(ModelObjectDescriptor declaringDescriptor, string name, ModelPropertyTypeInfo immutableTypeInfo, ModelPropertyTypeInfo mutableTypeInfo, Func<MetaProperty> metaProperty, object defaultValue)
+        private ModelProperty(ModelObjectDescriptor declaringDescriptor, string name, Type immutableType, Type mutableType, Func<MetaProperty> metaProperty, object defaultValue)
         {
             if (name == null) throw new ArgumentNullException(nameof(name));
-            if (immutableTypeInfo == null) throw new ArgumentNullException(nameof(immutableTypeInfo));
-            if (mutableTypeInfo == null) throw new ArgumentNullException(nameof(mutableTypeInfo));
-            if ((immutableTypeInfo.CollectionType == null && mutableTypeInfo.CollectionType != null) ||
-                (immutableTypeInfo.CollectionType != null && mutableTypeInfo.CollectionType == null))
-            {
-                throw new ArgumentException("The immutable and mutable types must must be of the same kind: either a single value or a collection.");
-            }
+            if (immutableType == null) throw new ArgumentNullException(nameof(immutableType));
+            if (mutableType == null) throw new ArgumentNullException(nameof(mutableType));
             this.declaringDescriptor = declaringDescriptor;
             this.name = name;
             this.flags = ModelPropertyFlags.None;
-            if (typeof(ImmutableObjectBase).IsAssignableFrom(immutableTypeInfo.Type) || typeof(MutableObjectBase).IsAssignableFrom(mutableTypeInfo.Type))
+            if (typeof(ImmutableObjectBase).IsAssignableFrom(immutableType) || typeof(MutableObjectBase).IsAssignableFrom(mutableType))
             {
                 this.flags |= ModelPropertyFlags.ModelObject;
             }
-            if (immutableTypeInfo.CollectionType != null && mutableTypeInfo.CollectionType != null)
-            {
-                this.flags |= ModelPropertyFlags.Collection;
-            }
-            this.immutableTypeInfo = immutableTypeInfo;
-            this.mutableTypeInfo = mutableTypeInfo;
+            this.immutableType = immutableType;
+            this.mutableType = mutableType;
             FieldInfo info = declaringDescriptor.DescriptorType.GetField(name + "Property", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
             if (info == null) throw new InvalidOperationException("Cannot find static field '" + name + "Property' in " + declaringDescriptor.DescriptorType.FullName + ".");
-            this.annotations = info.GetCustomAttributes().ToImmutableList();
+            this.annotations = info.GetCustomAttributes().ToImmutableArray();
             this.state = ModelPropertyInitState.None;
-            this.subsettedProperties = ImmutableList<ModelProperty>.Empty;
-            this.redefinedProperties = ImmutableList<ModelProperty>.Empty;
-            this.oppositeProperties = ImmutableList<ModelProperty>.Empty;
+            this.subsettedProperties = ImmutableArray<ModelProperty>.Empty;
+            this.redefinedProperties = ImmutableArray<ModelProperty>.Empty;
+            this.oppositeProperties = ImmutableArray<ModelProperty>.Empty;
             if (metaProperty != null) this.metaProperty = new Lazy<MetaProperty>(metaProperty, true);
             else this.metaProperty = new Lazy<MetaProperty>(() => null, true);
             this.defaultValue = defaultValue;
         }
 
-        public static ModelProperty Register(Type declaringType, string name, ModelPropertyTypeInfo immutableTypeInfo, ModelPropertyTypeInfo mutableTypeInfo, Func<MetaProperty> metaProperty = null, object defaultValue = null)
+        public static ModelProperty Register(Type declaringType, string name, Type immutableType, Type mutableType, Func<MetaProperty> metaProperty = null, object defaultValue = null)
         {
             ModelObjectDescriptor descriptor = ModelObjectDescriptor.GetDescriptorForDescriptorType(declaringType);
-            ModelProperty result = new ModelProperty(descriptor, name, immutableTypeInfo, mutableTypeInfo, metaProperty, defaultValue);
+            ModelProperty result = new ModelProperty(descriptor, name, immutableType, mutableType, metaProperty, defaultValue);
             descriptor.AddProperty(result);
             return result;
         }
@@ -111,15 +132,26 @@ namespace MetaDslx.Modeling
         public static ModelProperty Register(Type declaringType, string name, Type valueType, object defaultValue = null)
         {
             ModelObjectDescriptor descriptor = ModelObjectDescriptor.GetDescriptorForDescriptorType(declaringType);
-            ModelProperty result = new ModelProperty(descriptor, name, new ModelPropertyTypeInfo(valueType, null), new ModelPropertyTypeInfo(valueType, null), null, defaultValue);
+            ModelProperty result = new ModelProperty(descriptor, name, valueType, valueType, null, defaultValue);
             descriptor.AddProperty(result);
             return result;
         }
 
+        public bool IsSimpleSlot => true;
+        ModelProperty Slot.EffectiveProperty => this;
+
         public ModelObjectDescriptor DeclaringDescriptor { get { return this.declaringDescriptor; } }
         public string Name { get { return this.name; } }
+        internal ModelPropertyFlags Flags => this.flags;
         public bool IsModelObject { get { return this.flags.HasFlag(ModelPropertyFlags.ModelObject); } }
-        public bool IsCollection { get { return this.flags.HasFlag(ModelPropertyFlags.Collection); } }
+        public bool IsCollection
+        {
+            get
+            {
+                if (this.state == ModelPropertyInitState.None) this.InitializeFlags();
+                return this.flags.HasFlag(ModelPropertyFlags.Collection);
+            }
+        }
         public bool IsReadonly
         {
             get
@@ -158,6 +190,14 @@ namespace MetaDslx.Modeling
             {
                 if (this.state == ModelPropertyInitState.None) this.InitializeFlags();
                 return !this.flags.HasFlag(ModelPropertyFlags.NonUnique);
+            }
+        }
+        public bool IsOrdered
+        {
+            get
+            {
+                if (this.state == ModelPropertyInitState.None) this.InitializeFlags();
+                return this.flags.HasFlag(ModelPropertyFlags.Ordered);
             }
         }
         public bool IsContainment
@@ -246,16 +286,16 @@ namespace MetaDslx.Modeling
         }
 
 
-        public ModelPropertyTypeInfo ImmutableTypeInfo { get { return this.immutableTypeInfo; } }
-        public ModelPropertyTypeInfo MutableTypeInfo { get { return this.mutableTypeInfo; } }
+        public Type ImmutableType { get { return this.immutableType; } }
+        public Type MutableType { get { return this.mutableType; } }
 
         public object DefaultValue
         {
             get
             {
-                if (this.ImmutableTypeInfo.Type.IsValueType)
+                if (this.ImmutableType.IsValueType)
                 {
-                    return this.defaultValue ?? Activator.CreateInstance(this.ImmutableTypeInfo.Type);
+                    return this.defaultValue ?? Activator.CreateInstance(this.ImmutableType);
                 }
                 else
                 {
@@ -264,8 +304,8 @@ namespace MetaDslx.Modeling
             }
         }
 
-        public ImmutableList<Attribute> Annotations { get { return this.annotations; } }
-        public ImmutableList<ModelProperty> SubsettedProperties
+        public ImmutableArray<Attribute> Annotations { get { return this.annotations; } }
+        public ImmutableArray<ModelProperty> SubsettedProperties
         {
             get
             {
@@ -273,7 +313,7 @@ namespace MetaDslx.Modeling
                 return this.subsettedProperties;
             }
         }
-        public ImmutableList<ModelProperty> RedefinedProperties
+        public ImmutableArray<ModelProperty> RedefinedProperties
         {
             get
             {
@@ -281,7 +321,7 @@ namespace MetaDslx.Modeling
                 return this.redefinedProperties;
             }
         }
-        public ImmutableList<ModelProperty> OppositeProperties
+        public ImmutableArray<ModelProperty> OppositeProperties
         {
             get
             {
@@ -309,6 +349,14 @@ namespace MetaDslx.Modeling
                     else if (annot is DerivedAttribute)
                     {
                         this.flags |= ModelPropertyFlags.Derived | ModelPropertyFlags.Readonly;
+                    }
+                    else if (annot is CollectionAttribute)
+                    {
+                        this.flags |= ModelPropertyFlags.Collection;
+                    }
+                    else if (annot is OrderedAttribute)
+                    {
+                        this.flags |= ModelPropertyFlags.Ordered;
                     }
                     else if (annot is NonUniqueAttribute)
                     {
@@ -358,6 +406,9 @@ namespace MetaDslx.Modeling
             {
                 if (this.state == ModelPropertyInitState.Initialized) return;
                 if (this.state == ModelPropertyInitState.None) this.InitializeFlags();
+                var subsettedPropertiesBuilder = ArrayBuilder<ModelProperty>.GetInstance();
+                var redefinedPropertiesBuilder = ArrayBuilder<ModelProperty>.GetInstance();
+                var oppositePropertiesBuilder = ArrayBuilder<ModelProperty>.GetInstance();
                 foreach (var annot in this.annotations)
                 {
                     if (annot is SubsetsAttribute)
@@ -373,7 +424,7 @@ namespace MetaDslx.Modeling
                         {
                             if (!this.IsUnique) throw new InvalidOperationException("Error subsetting property: " + this.FullDeclaredName + "->" + prop.FullDeclaredName + ". The subsetting property must be a collection of unique values.");
                             if (!prop.IsUnique) throw new InvalidOperationException("Error subsetting property: " + this.FullDeclaredName + "->" + prop.FullDeclaredName + ". The subsetted property must be a collection of unique values.");
-                            this.RegisterSubsettedProperty(prop);
+                            subsettedPropertiesBuilder.Add(prop);
                         }
                         else
                         {
@@ -392,7 +443,7 @@ namespace MetaDslx.Modeling
                         if ((descriptor == this.declaringDescriptor || this.declaringDescriptor.AllBaseDescriptors != null && this.declaringDescriptor.AllBaseDescriptors.Contains(descriptor)))
                         {
                             if (this.IsContainment && !prop.IsContainment) throw new InvalidOperationException("Error redefining property: " + this.FullDeclaredName + "->" + prop.FullDeclaredName + ". The redefining property cannot be a containment if the redefined property is not a containment.");
-                            this.RegisterRedefinedProperty(prop);
+                            redefinedPropertiesBuilder.Add(prop);
                         }
                         else
                         {
@@ -424,7 +475,7 @@ namespace MetaDslx.Modeling
                         }
                         if (foundThisProperty)
                         {
-                            this.RegisterOppositeProperty(prop);
+                            oppositePropertiesBuilder.Add(prop);
                         }
                         else
                         {
@@ -437,67 +488,44 @@ namespace MetaDslx.Modeling
                         this.flags |= ModelPropertyFlags.DerivedUnion | ModelPropertyFlags.Readonly;
                     }
                 }
+                subsettedProperties = subsettedPropertiesBuilder.ToImmutableAndFree();
+                redefinedProperties = redefinedPropertiesBuilder.ToImmutableAndFree();
+                oppositeProperties = oppositePropertiesBuilder.ToImmutableAndFree();
                 this.state = ModelPropertyInitState.Initialized;
             }
-        }
-
-        private void RegisterSubsettedProperty(ModelProperty property)
-        {
-            ImmutableList<ModelProperty> oldProperties;
-            ImmutableList<ModelProperty> newProperties;
-            do
-            {
-                oldProperties = this.subsettedProperties;
-                if (!oldProperties.Contains(property))
-                {
-                    newProperties = oldProperties.Add(property);
-                }
-                else
-                {
-                    newProperties = oldProperties;
-                }
-            } while (Interlocked.CompareExchange(ref this.subsettedProperties, newProperties, oldProperties) != oldProperties);
-        }
-
-        private void RegisterRedefinedProperty(ModelProperty property)
-        {
-            ImmutableList<ModelProperty> oldProperties;
-            ImmutableList<ModelProperty> newProperties;
-            do
-            {
-                oldProperties = this.redefinedProperties;
-                if (!oldProperties.Contains(property))
-                {
-                    newProperties = oldProperties.Add(property);
-                }
-                else
-                {
-                    newProperties = oldProperties;
-                }
-            } while (Interlocked.CompareExchange(ref this.redefinedProperties, newProperties, oldProperties) != oldProperties);
-        }
-
-        private void RegisterOppositeProperty(ModelProperty property)
-        {
-            ImmutableList<ModelProperty> oldProperties;
-            ImmutableList<ModelProperty> newProperties;
-            do
-            {
-                oldProperties = this.oppositeProperties;
-                if (!oldProperties.Contains(property))
-                {
-                    newProperties = oldProperties.Add(property);
-                }
-                else
-                {
-                    newProperties = oldProperties;
-                }
-            } while (Interlocked.CompareExchange(ref this.oppositeProperties, newProperties, oldProperties) != oldProperties);
         }
 
         public string FullDeclaredName
         {
             get { return this.DeclaringDescriptor.DescriptorType.FullName + "." + this.Name; }
+        }
+
+        ImmutableArray<ModelProperty> Slot.EquivalentProperties => ImmutableArray.Create(this);
+
+        ImmutableArray<Slot> Slot.SupersetSlots => ImmutableArray<Slot>.Empty;
+
+        ImmutableArray<Slot> Slot.SubsetSlots => ImmutableArray<Slot>.Empty;
+
+        ImmutableArray<Slot> Slot.SubsettedSlots => ImmutableArray<Slot>.Empty;
+
+        ImmutableArray<Slot> Slot.SubsettingSlots => ImmutableArray<Slot>.Empty;
+
+        ImmutableArray<Slot> Slot.DerivedUnionSlots => ImmutableArray<Slot>.Empty;
+
+        ImmutableArray<ModelProperty> Slot.OppositeProperties => ImmutableArray<ModelProperty>.Empty;
+
+        bool Slot.IsAssignableFrom(Type type, out ModelProperty unassignableProperty)
+        {
+            if (this.ImmutableType.IsAssignableFrom(type) || this.MutableType.IsAssignableFrom(type))
+            {
+                unassignableProperty = null;
+                return true;
+            }
+            else
+            {
+                unassignableProperty = this;
+                return false;
+            }
         }
 
         public override string ToString()
@@ -519,180 +547,438 @@ namespace MetaDslx.Modeling
 
         public System.Type Type { get { return this.type; } }
         public System.Type CollectionType { get { return this.collectionType; } }
+
+        public bool IsSubTypeOf(ModelPropertyTypeInfo superType)
+        {
+            return superType.Type.IsAssignableFrom(this.Type);
+        }
     }
 
-    public sealed class ModelPropertyInfo
+    internal sealed class ComplexSlot : Slot
     {
-        private ModelProperty representingProperty;
-        private ImmutableHashSet<ModelProperty> equivalentProperties;
-        private ImmutableHashSet<ModelProperty> supersetProperties;
-        private ImmutableHashSet<ModelProperty> subsetProperties;
-        private ImmutableHashSet<ModelProperty> subsettedProperties;
-        private ImmutableHashSet<ModelProperty> subsettingProperties;
-        private ImmutableHashSet<ModelProperty> derivedUnionProperties;
-        private ImmutableHashSet<ModelProperty> oppositeProperties;
+        private ModelPropertyFlags flags;
+        private ModelProperty effectiveProperty;
+        private ImmutableArray<ModelProperty> equivalentProperties;
+        private ImmutableArray<Slot> supersetSlots;
+        private ImmutableArray<Slot> subsetSlots;
+        private ImmutableArray<Slot> subsettedSlots;
+        private ImmutableArray<Slot> subsettingSlots;
+        private ImmutableArray<Slot> derivedUnionSlots;
+        private ImmutableArray<ModelProperty> oppositeProperties;
 
-        internal ModelPropertyInfo(ModelProperty property)
+        internal ComplexSlot(ModelPropertyFlags flags, ModelProperty effectiveProperty)
         {
-            this.representingProperty = null;
-            this.equivalentProperties = ImmutableHashSet<ModelProperty>.Empty;
-            this.supersetProperties = ImmutableHashSet<ModelProperty>.Empty;
-            this.subsetProperties = ImmutableHashSet<ModelProperty>.Empty;
-            this.subsettedProperties = ImmutableHashSet<ModelProperty>.Empty;
-            this.subsettingProperties = ImmutableHashSet<ModelProperty>.Empty;
-            this.derivedUnionProperties = ImmutableHashSet<ModelProperty>.Empty;
-            this.oppositeProperties = ImmutableHashSet<ModelProperty>.Empty;
+            this.flags = flags;
+            this.effectiveProperty = effectiveProperty;
         }
 
-        public ModelProperty RepresentingProperty { get { return this.representingProperty; } }
-        public ImmutableHashSet<ModelProperty> EquivalentProperties { get { return this.equivalentProperties; } }
-        public ImmutableHashSet<ModelProperty> SupersetProperties { get { return this.supersetProperties; } }
-        public ImmutableHashSet<ModelProperty> SubsetProperties { get { return this.subsetProperties; } }
-        public ImmutableHashSet<ModelProperty> SubsettedProperties { get { return this.subsettedProperties; } }
-        public ImmutableHashSet<ModelProperty> SubsettingProperties { get { return this.subsettingProperties; } }
-        public ImmutableHashSet<ModelProperty> DerivedUnionProperties { get { return this.derivedUnionProperties; } }
-        public ImmutableHashSet<ModelProperty> OppositeProperties { get { return this.oppositeProperties; } }
+        internal void UpdateSlots(ImmutableArray<ModelProperty> equivalentProperties, ImmutableArray<Slot> supersetSlots, ImmutableArray<Slot> subsetSlots,
+            ImmutableArray<Slot> subsettedSlots, ImmutableArray<Slot> subsettingSlots, ImmutableArray<Slot> derivedUnionSlots, ImmutableArray<ModelProperty> oppositeProperties)
+        {
+            this.equivalentProperties = equivalentProperties;
+            this.supersetSlots = supersetSlots;
+            this.subsetSlots = subsetSlots;
+            this.subsettedSlots = subsettedSlots;
+            this.subsettingSlots = subsettingSlots;
+            this.derivedUnionSlots = derivedUnionSlots;
+            this.oppositeProperties = oppositeProperties;
+        }
 
-        internal void AddRedefinedProperty(ModelObjectDescriptor descriptor, ModelProperty property, bool firstCall)
+        public bool IsSimpleSlot => false;
+        public ModelProperty EffectiveProperty => this.effectiveProperty;
+        public string Name => this.effectiveProperty.Name;
+        public ModelPropertyFlags Flags => this.flags;
+
+        public ImmutableArray<ModelProperty> EquivalentProperties => this.equivalentProperties;
+        public ImmutableArray<Slot> SupersetSlots => this.supersetSlots; 
+        public ImmutableArray<Slot> SubsetSlots => this.subsetSlots;
+        public ImmutableArray<Slot> SubsettedSlots => this.subsettedSlots; 
+        public ImmutableArray<Slot> SubsettingSlots => this.subsettingSlots;
+        public ImmutableArray<Slot> DerivedUnionSlots => this.derivedUnionSlots; 
+        public ImmutableArray<ModelProperty> OppositeProperties => this.oppositeProperties; 
+
+        public Type ImmutableType => this.effectiveProperty.ImmutableType;
+        public Type MutableType => this.effectiveProperty.MutableType; 
+
+        public object DefaultValue => this.effectiveProperty.DefaultValue;
+
+        public bool IsModelObject => this.flags.HasFlag(ModelPropertyFlags.ModelObject); 
+        public bool IsCollection => this.flags.HasFlag(ModelPropertyFlags.Collection); 
+        public bool IsReadonly => this.flags.HasFlag(ModelPropertyFlags.Readonly);
+        public bool IsDerived => this.flags.HasFlag(ModelPropertyFlags.Derived);
+        public bool IsDerivedUnion => this.flags.HasFlag(ModelPropertyFlags.DerivedUnion);
+        public bool IsNonNull => this.flags.HasFlag(ModelPropertyFlags.NonNull);
+        public bool IsUnique => !this.flags.HasFlag(ModelPropertyFlags.NonUnique);
+        public bool IsOrdered => this.flags.HasFlag(ModelPropertyFlags.Ordered);
+        public bool IsContainment => this.flags.HasFlag(ModelPropertyFlags.Containment);
+
+        public bool IsAssignableFrom(Type type, out ModelProperty unassignableProperty)
+        {
+            foreach (var eqProp in this.equivalentProperties)
+            {
+                if (!eqProp.ImmutableType.IsAssignableFrom(type) && !eqProp.MutableType.IsAssignableFrom(type))
+                {
+                    unassignableProperty = eqProp;
+                    return false;
+                }
+            }
+            unassignableProperty = null;
+            return true;
+        }
+
+        public override string ToString()
+        {
+            return this.effectiveProperty.ToString();
+        }
+    }
+
+    internal class ComplexSlotBuilder
+    {
+        private ModelProperty effectiveProperty;
+        private ModelPropertyFlags flags;
+        private Dictionary<ModelProperty, ComplexSlotBuilder> map;
+        private ArrayBuilder<ModelProperty> equivalentProperties;
+        private ArrayBuilder<ComplexSlotBuilder> supersetSlots;
+        private ArrayBuilder<ComplexSlotBuilder> subsetSlots;
+        private ArrayBuilder<ModelProperty> subsettedProperties;
+        private ArrayBuilder<ModelProperty> subsettingProperties;
+        private ArrayBuilder<ModelProperty> derivedUnionProperties;
+        private ArrayBuilder<ModelProperty> oppositeProperties;
+
+        public static ImmutableDictionary<ModelProperty, Slot> Build(ImmutableArray<ModelProperty> properties)
+        {
+            var effectiveProperties = ArrayBuilder<ModelProperty>.GetInstance();
+            foreach (var prop in properties)
+            {
+                int nameIndex = effectiveProperties.FindIndex(p => p.Name == prop.Name);
+                if (nameIndex >= 0) effectiveProperties.RemoveAt(nameIndex);
+                foreach (var redefProp in prop.RedefinedProperties)
+                {
+                    int index = effectiveProperties.IndexOf(redefProp);
+                    if (index >= 0) effectiveProperties.RemoveAt(index);
+                }
+                effectiveProperties.Add(prop);
+            }
+            var eqMap = new Dictionary<ModelProperty, ComplexSlotBuilder>();
+            foreach (var prop in properties)
+            {
+                if (prop.RedefinedProperties.Length > 0)
+                {
+                    var slot = CreateComplexSlot(eqMap, prop);
+                    slot.AddRedefinedProperty(prop, true);
+                    foreach (var redefinedProp in prop.RedefinedProperties)
+                    {
+                        slot.AddRedefinedProperty(redefinedProp, true);
+                    }
+                }
+            }
+            var map = new Dictionary<ModelProperty, ComplexSlotBuilder>();
+            foreach (var entry in eqMap)
+            {
+                var slot = GetComplexSlot(map, entry.Key);
+                if (slot == null)
+                {
+                    slot = entry.Value;
+                    slot.effectiveProperty = null;
+                    foreach (var eqProp in entry.Value.equivalentProperties)
+                    {
+                        map.Add(eqProp, slot);
+                        slot.flags = AddFlag(ModelPropertyFlags.ModelObject, slot.flags, eqProp.Flags);
+                        slot.flags = RemoveFlag(ModelPropertyFlags.Collection, slot.flags, eqProp.Flags);
+                        slot.flags = AddFlag(ModelPropertyFlags.Readonly, slot.flags, eqProp.Flags);
+                        slot.flags = AddFlag(ModelPropertyFlags.Derived, slot.flags, eqProp.Flags);
+                        slot.flags = AddFlag(ModelPropertyFlags.DerivedUnion, slot.flags, eqProp.Flags);
+                        slot.flags = RemoveFlag(ModelPropertyFlags.NonUnique, slot.flags, eqProp.Flags);
+                        slot.flags = AddFlag(ModelPropertyFlags.Ordered, slot.flags, eqProp.Flags);
+                        slot.flags = AddFlag(ModelPropertyFlags.NonNull, slot.flags, eqProp.Flags);
+                        slot.flags = AddFlag(ModelPropertyFlags.Containment, slot.flags, eqProp.Flags);
+                        if (effectiveProperties.Contains(eqProp))
+                        {
+                            Debug.Assert(slot.effectiveProperty == null);
+                            slot.effectiveProperty = eqProp;
+                        }
+                    }
+                    Debug.Assert(slot.effectiveProperty != null);
+                }
+            }
+            effectiveProperties.Free();
+            foreach (var prop in properties)
+            {
+                if (prop.SubsettedProperties.Length > 0)
+                {
+                    var slot = CreateComplexSlot(map, prop);
+                    foreach (var subsettedProp in prop.SubsettedProperties)
+                    {
+                        var subsettedSlot = CreateComplexSlot(map, subsettedProp);
+                        slot.AddSubsettedProperty(subsettedProp, true);
+                        subsettedSlot.AddSubsettingProperty(prop, true);
+                        if (subsettedProp.IsDerivedUnion)
+                        {
+                            slot.AddDerivedUnionProperty(subsettedProp, true);
+                        }
+                    }
+                }
+                if (prop.OppositeProperties.Length > 0)
+                {
+                    var slot = CreateComplexSlot(map, prop);
+                    foreach (var oppositeProp in prop.OppositeProperties)
+                    {
+                        slot.AddOppositeProperty(oppositeProp, true);
+                    }
+                }
+            }
+            foreach (var prop in properties)
+            {
+                var slot = GetComplexSlot(map, prop);
+                if (slot != null && slot.subsettedProperties.Count > 0)
+                {
+                    var visited = slot.supersetSlots;
+                    visited.Add(slot);
+                    int i = 0;
+                    while (i < visited.Count)
+                    {
+                        var currentSlot = visited[i];
+                        foreach (var subsettedProp in currentSlot.subsettedProperties)
+                        {
+                            var subsettedSlot = GetComplexSlot(map, subsettedProp);
+                            if (subsettedSlot != null)
+                            {
+                                if (!visited.Contains(subsettedSlot))
+                                {
+                                    visited.Add(subsettedSlot);
+                                }
+                            }
+                        }
+                        ++i;
+                    }
+                    visited.RemoveAt(0);
+                    visited.Free();
+                }
+                if (slot != null && slot.subsettingProperties.Count > 0)
+                {
+                    var visited = slot.subsetSlots;
+                    visited.Add(slot);
+                    int i = 0;
+                    while (i < visited.Count)
+                    {
+                        var currentSlot = visited[i];
+                        foreach (var subsettingProp in currentSlot.subsettingProperties)
+                        {
+                            var subsettingSlot = GetComplexSlot(map, subsettingProp);
+                            if (subsettingSlot != null)
+                            {
+                                if (!visited.Contains(subsettingSlot))
+                                {
+                                    visited.Add(subsettingSlot);
+                                }
+                            }
+                        }
+                        ++i;
+                    }
+                    visited.RemoveAt(0);
+                    visited.Free();
+                }
+            }
+            var imap = new Dictionary<ComplexSlotBuilder, ComplexSlot>();
+            var result = ImmutableDictionary.CreateBuilder<ModelProperty, Slot>();
+            foreach (var slotBuilder in map.Values.Distinct())
+            {
+                imap.Add(slotBuilder, new ComplexSlot(slotBuilder.flags, slotBuilder.effectiveProperty));
+            }
+            foreach (var entry in map)
+            {
+                result.Add(entry.Key, entry.Value.ToImmutable(map, imap));
+            }
+            foreach (var slot in eqMap.Values)
+            {
+                slot.Free();
+            }
+            foreach (var prop in properties)
+            {
+                if (!result.ContainsKey(prop))
+                {
+                    result.Add(prop, prop);
+                }
+            }
+            return result.ToImmutable();
+        }
+
+        private ComplexSlotBuilder(Dictionary<ModelProperty, ComplexSlotBuilder> map)
+        {
+            this.map = map;
+            this.equivalentProperties = ArrayBuilder<ModelProperty>.GetInstance();
+            this.supersetSlots = ArrayBuilder<ComplexSlotBuilder>.GetInstance();
+            this.subsetSlots = ArrayBuilder<ComplexSlotBuilder>.GetInstance();
+            this.subsettedProperties = ArrayBuilder<ModelProperty>.GetInstance();
+            this.subsettingProperties = ArrayBuilder<ModelProperty>.GetInstance();
+            this.derivedUnionProperties = ArrayBuilder<ModelProperty>.GetInstance();
+            this.oppositeProperties = ArrayBuilder<ModelProperty>.GetInstance();
+        }
+
+        private ComplexSlot ToImmutable(Dictionary<ModelProperty, ComplexSlotBuilder> map, Dictionary<ComplexSlotBuilder, ComplexSlot> imap)
+        {
+            var equivalentProperties = this.equivalentProperties.ToImmutable();
+            var supersetSlots = this.supersetSlots.Select(s => (Slot)imap[s]).ToImmutableArray();
+            var subsetSlots = this.subsetSlots.Select(s => (Slot)imap[s]).ToImmutableArray();
+            var subsettedSlots = this.subsettedProperties.Select(p => GetSlot(p, map, imap)).ToImmutableArray();
+            var subsettingSlots = this.subsettingProperties.Select(p => GetSlot(p, map, imap)).ToImmutableArray();
+            var derivedUnionSlots = this.derivedUnionProperties.Select(p => GetSlot(p, map, imap)).ToImmutableArray();
+            var oppositeProperties = this.oppositeProperties.ToImmutable();
+            var result = imap[this];
+            result.UpdateSlots(equivalentProperties, supersetSlots, subsetSlots, subsettedSlots, subsettingSlots, derivedUnionSlots, oppositeProperties);
+            return result;
+        }
+
+        private Slot GetSlot(ModelProperty property, Dictionary<ModelProperty, ComplexSlotBuilder> map, Dictionary<ComplexSlotBuilder, ComplexSlot> imap)
+        {
+            if (map.TryGetValue(property, out var slotBuilder))
+            {
+                if (imap.TryGetValue(slotBuilder, out var slot))
+                {
+                    return slot;
+                }
+                else
+                {
+                    Debug.Assert(false);
+                    return property;
+                }
+            }
+            else
+            {
+                return property;
+            }
+        }
+
+        private void Free()
+        {
+            this.equivalentProperties.Free();
+            this.supersetSlots.Free();
+            this.subsetSlots.Free();
+            this.subsettedProperties.Free();
+            this.subsettingProperties.Free();
+            this.derivedUnionProperties.Free();
+        }
+
+        private static ComplexSlotBuilder CreateComplexSlot(Dictionary<ModelProperty, ComplexSlotBuilder>  map, ModelProperty property)
+        {
+            ComplexSlotBuilder result;
+            if (!map.TryGetValue(property, out result))
+            {
+                result = new ComplexSlotBuilder(map);
+                map.Add(property, result);
+                result.effectiveProperty = property;
+                result.flags = property.Flags;
+            }
+            return result;
+        }
+
+        private static ComplexSlotBuilder GetComplexSlot(Dictionary<ModelProperty, ComplexSlotBuilder> map, ModelProperty property)
+        {
+            map.TryGetValue(property, out var result);
+            return result;
+        }
+
+        private static ModelPropertyFlags AddFlag(ModelPropertyFlags flag, ModelPropertyFlags accumulatedFlags, ModelPropertyFlags propertyFlags)
+        {
+            if (propertyFlags.HasFlag(flag)) return accumulatedFlags | flag;
+            else return accumulatedFlags;
+        }
+
+        private static ModelPropertyFlags RemoveFlag(ModelPropertyFlags flag, ModelPropertyFlags accumulatedFlags, ModelPropertyFlags propertyFlags)
+        {
+            if (!propertyFlags.HasFlag(flag)) return accumulatedFlags & ~flag;
+            else return accumulatedFlags;
+        }
+
+        private void AddRedefinedProperty(ModelProperty property, bool firstCall)
         {
             if (property == null) return;
             if (!this.equivalentProperties.Contains(property))
             {
-                this.equivalentProperties = this.equivalentProperties.Add(property);
+                this.equivalentProperties.Add(property);
                 if (firstCall)
                 {
-                    ModelPropertyInfo propInfo = descriptor.GetOrCreatePropertyInfo(property);
                     foreach (var eqProp in this.equivalentProperties)
                     {
-                        propInfo.AddRedefinedProperty(descriptor, eqProp, false);
-                    }
-                    foreach (var eqProp in this.equivalentProperties)
-                    {
-                        ModelPropertyInfo eqPropInfo = descriptor.GetOrCreatePropertyInfo(eqProp);
-                        eqPropInfo.AddRedefinedProperty(descriptor, property, false);
+                        var eqSlot = CreateComplexSlot(map, eqProp);
+                        eqSlot.AddRedefinedProperty(property, false);
                     }
                 }
             }
         }
 
-        internal void SetRepresentingProperty(ModelObjectDescriptor descriptor, ModelProperty property, bool firstCall)
-        {
-            if (property == null) return;
-            this.representingProperty = property;
-            if (firstCall)
-            {
-                foreach (var eqProp in this.equivalentProperties)
-                {
-                    ModelPropertyInfo eqPropInfo = descriptor.GetOrCreatePropertyInfo(eqProp);
-                    eqPropInfo.SetRepresentingProperty(descriptor, property, false);
-                }
-            }
-        }
-
-        internal void AddSupersetProperty(ModelObjectDescriptor descriptor, ModelProperty property, bool firstCall)
-        {
-            if (property == null) return;
-            if (this.equivalentProperties.Contains(property)) return;
-            if (!this.supersetProperties.Contains(property))
-            {
-                this.supersetProperties = this.supersetProperties.Add(property);
-                if (firstCall)
-                {
-                    foreach (var eqProp in this.equivalentProperties)
-                    {
-                        ModelPropertyInfo eqPropInfo = descriptor.GetOrCreatePropertyInfo(eqProp);
-                        eqPropInfo.AddSupersetProperty(descriptor, property, false);
-                    }
-                }
-            }
-        }
-
-        internal void AddSubsetProperty(ModelObjectDescriptor descriptor, ModelProperty property, bool firstCall)
-        {
-            if (property == null) return;
-            if (this.equivalentProperties.Contains(property)) return;
-            if (!this.subsetProperties.Contains(property))
-            {
-                this.subsetProperties = this.subsetProperties.Add(property);
-                if (firstCall)
-                {
-                    foreach (var eqProp in this.equivalentProperties)
-                    {
-                        ModelPropertyInfo eqPropInfo = descriptor.GetOrCreatePropertyInfo(eqProp);
-                        eqPropInfo.AddSubsetProperty(descriptor, property, false);
-                    }
-                }
-            }
-        }
-        internal void AddSubsettedProperty(ModelObjectDescriptor descriptor, ModelProperty property, bool firstCall)
+        private void AddSubsettedProperty(ModelProperty property, bool firstCall)
         {
             if (property == null) return;
             if (this.equivalentProperties.Contains(property)) return;
             if (!this.subsettedProperties.Contains(property))
             {
-                this.subsettedProperties = this.subsettedProperties.Add(property);
+                this.subsettedProperties.Add(property);
                 if (firstCall)
                 {
                     foreach (var eqProp in this.equivalentProperties)
                     {
-                        ModelPropertyInfo eqPropInfo = descriptor.GetOrCreatePropertyInfo(eqProp);
-                        eqPropInfo.AddSubsettedProperty(descriptor, property, false);
+                        var eqSlot = CreateComplexSlot(map, eqProp);
+                        eqSlot.AddSubsettedProperty(property, false);
                     }
                 }
             }
         }
 
-        internal void AddSubsettingProperty(ModelObjectDescriptor descriptor, ModelProperty property, bool firstCall)
+        private void AddSubsettingProperty(ModelProperty property, bool firstCall)
         {
             if (property == null) return;
             if (this.equivalentProperties.Contains(property)) return;
             if (!this.subsettingProperties.Contains(property))
             {
-                this.subsettingProperties = this.subsettingProperties.Add(property);
+                this.subsettingProperties.Add(property);
                 if (firstCall)
                 {
                     foreach (var eqProp in this.equivalentProperties)
                     {
-                        ModelPropertyInfo eqPropInfo = descriptor.GetOrCreatePropertyInfo(eqProp);
-                        eqPropInfo.AddSubsettingProperty(descriptor, property, false);
+                        var eqSlot = CreateComplexSlot(map, eqProp);
+                        eqSlot.AddSubsettingProperty(property, false);
                     }
                 }
             }
         }
 
-        internal void AddDerivedUnionProperty(ModelObjectDescriptor descriptor, ModelProperty property, bool firstCall)
+        private void AddDerivedUnionProperty(ModelProperty property, bool firstCall)
         {
             if (property == null) return;
             if (this.equivalentProperties.Contains(property)) return;
             if (!this.derivedUnionProperties.Contains(property))
             {
-                this.derivedUnionProperties = this.derivedUnionProperties.Add(property);
+                this.derivedUnionProperties.Add(property);
                 if (firstCall)
                 {
                     foreach (var eqProp in this.equivalentProperties)
                     {
-                        ModelPropertyInfo eqPropInfo = descriptor.GetOrCreatePropertyInfo(eqProp);
-                        eqPropInfo.AddDerivedUnionProperty(descriptor, property, false);
+                        var eqSlot = CreateComplexSlot(map, eqProp);
+                        eqSlot.AddDerivedUnionProperty(property, false);
                     }
                 }
             }
         }
 
-        internal void AddOppositeProperty(ModelObjectDescriptor descriptor, ModelProperty property, bool firstCall)
+        private void AddOppositeProperty(ModelProperty property, bool firstCall)
         {
             if (property == null) return;
+            if (this.equivalentProperties.Contains(property)) return;
             if (!this.oppositeProperties.Contains(property))
             {
-                this.oppositeProperties = this.oppositeProperties.Add(property);
+                this.oppositeProperties.Add(property);
                 if (firstCall)
                 {
                     foreach (var eqProp in this.equivalentProperties)
                     {
-                        ModelPropertyInfo eqPropInfo = descriptor.GetOrCreatePropertyInfo(eqProp);
-                        eqPropInfo.AddOppositeProperty(descriptor, property, false);
+                        var eqSlot = CreateComplexSlot(map, eqProp);
+                        eqSlot.AddOppositeProperty(property, false);
                     }
                 }
             }
         }
+
     }
+
 }

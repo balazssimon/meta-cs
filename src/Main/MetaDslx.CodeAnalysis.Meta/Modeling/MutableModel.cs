@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
@@ -490,10 +491,11 @@ namespace MetaDslx.Modeling
             GreenModelUpdateContext ctx = null;
             try
             {
+                var slot = oid.Descriptor.GetSlot(property);
                 do
                 {
                     ctx = this.BeginUpdate();
-                    value = ctx.Updater.GetValue(this.id, oid, property, true);
+                    value = ctx.Updater.GetValue(this.id, oid, slot, true);
                 } while (!this.EndUpdate(ctx));
                 value = this.ToRedValue(value, oid);
             }
@@ -510,9 +512,8 @@ namespace MetaDslx.Modeling
             if (this.Green.Objects.TryGetValue(oid, out green))
             {
                 object greenValue;
-                ModelPropertyInfo mpi = oid.Descriptor.GetPropertyInfo(property);
-                if (mpi != null && mpi.RepresentingProperty != null) property = mpi.RepresentingProperty;
-                if (green.Properties.TryGetValue(property, out greenValue))
+                var slot = oid.Descriptor.GetSlot(property);
+                if (green.Slots.TryGetValue(slot, out greenValue))
                 {
                     return greenValue;
                 }
@@ -564,10 +565,11 @@ namespace MetaDslx.Modeling
             GreenModelUpdateContext ctx = null;
             try
             {
+                var slot = oid.Descriptor.GetSlot(property);
                 do
                 {
                     ctx = this.BeginUpdate();
-                    ctx.Updater.SetValue(this.id, oid, property, creating, this.ToGreenValue(value));
+                    ctx.Updater.SetValue(this.id, oid, slot, creating, this.ToGreenValue(value));
                 } while (!this.EndUpdate(ctx));
             }
             finally
@@ -592,10 +594,11 @@ namespace MetaDslx.Modeling
             GreenModelUpdateContext ctx = null;
             try
             {
+                var slot = oid.Descriptor.GetSlot(property);
                 do
                 {
                     ctx = this.BeginUpdate();
-                    ctx.Updater.SetValue(this.id, oid, property, creating, property.IsDerived ? (object)new GreenDerivedValue(value) : value);
+                    ctx.Updater.SetValue(this.id, oid, slot, creating, property.IsDerived ? (object)new GreenDerivedValue(value) : value);
                 } while (!this.EndUpdate(ctx));
             }
             finally
@@ -623,10 +626,11 @@ namespace MetaDslx.Modeling
             GreenModelUpdateContext ctx = null;
             try
             {
+                var slot = oid.Descriptor.GetSlot(property);
                 do
                 {
                     ctx = this.BeginUpdate();
-                    value = ctx.Updater.GetValue(this.id, oid, property, true);
+                    value = ctx.Updater.GetValue(this.id, oid, slot, true);
                 } while (!this.EndUpdate(ctx));
                 GreenList result = value as GreenList;
                 if (result == null) result = property.IsUnique ? GreenList.EmptyUnique : GreenList.EmptyNonUnique;
@@ -656,10 +660,11 @@ namespace MetaDslx.Modeling
             GreenModelUpdateContext ctx = null;
             try
             {
+                var slot = oid.Descriptor.GetSlot(property);
                 do
                 {
                     ctx = this.BeginUpdate();
-                    changed = ctx.Updater.AddItem(this.id, oid, property, creating, false, -1, this.ToGreenValue(value));
+                    changed = ctx.Updater.AddItem(this.id, oid, slot, creating, false, -1, this.ToGreenValue(value));
                 } while (!this.EndUpdate(ctx));
                 return changed;
             }
@@ -675,10 +680,11 @@ namespace MetaDslx.Modeling
             GreenModelUpdateContext ctx = null;
             try
             {
+                var slot = oid.Descriptor.GetSlot(property);
                 do
                 {
                     ctx = this.BeginUpdate();
-                    changed = ctx.Updater.AddItem(this.id, oid, property, creating, false, -1, value);
+                    changed = ctx.Updater.AddItem(this.id, oid, slot, creating, false, -1, value);
                 } while (!this.EndUpdate(ctx));
             }
             finally
@@ -694,12 +700,13 @@ namespace MetaDslx.Modeling
             GreenModelUpdateContext ctx = null;
             try
             {
+                var slot = oid.Descriptor.GetSlot(property);
                 do
                 {
                     ctx = this.BeginUpdate();
                     foreach (var value in values)
                     {
-                        changed = ctx.Updater.AddItem(this.id, oid, property, creating, false, -1, this.ToGreenValue(value));
+                        changed = ctx.Updater.AddItem(this.id, oid, slot, creating, false, -1, this.ToGreenValue(value));
                     }
                 } while (!this.EndUpdate(ctx));
             }
@@ -716,12 +723,13 @@ namespace MetaDslx.Modeling
             GreenModelUpdateContext ctx = null;
             try
             {
+                var slot = oid.Descriptor.GetSlot(property);
                 do
                 {
                     ctx = this.BeginUpdate();
                     foreach (var value in values)
                     {
-                        changed = ctx.Updater.AddItem(this.id, oid, property, creating, false, -1, value);
+                        changed = ctx.Updater.AddItem(this.id, oid, slot, creating, false, -1, value);
                     }
                 } while (!this.EndUpdate(ctx));
             }
@@ -738,10 +746,11 @@ namespace MetaDslx.Modeling
             GreenModelUpdateContext ctx = null;
             try
             {
+                var slot = oid.Descriptor.GetSlot(property);
                 do
                 {
                     ctx = this.BeginUpdate();
-                    changed = ctx.Updater.AddItem(this.id, oid, property, creating, false, -1, values);
+                    changed = ctx.Updater.AddItem(this.id, oid, slot, creating, false, -1, values);
                 } while (!this.EndUpdate(ctx));
             }
             finally
@@ -757,10 +766,11 @@ namespace MetaDslx.Modeling
             GreenModelUpdateContext ctx = null;
             try
             {
+                var slot = oid.Descriptor.GetSlot(property);
                 do
                 {
                     ctx = this.BeginUpdate();
-                    changed = ctx.Updater.RemoveItem(this.id, oid, property, creating, -1, false, this.ToGreenValue(value));
+                    changed = ctx.Updater.RemoveItem(this.id, oid, slot, creating, -1, false, this.ToGreenValue(value));
                 } while (!this.EndUpdate(ctx));
             }
             finally
@@ -776,10 +786,11 @@ namespace MetaDslx.Modeling
             GreenModelUpdateContext ctx = null;
             try
             {
+                var slot = oid.Descriptor.GetSlot(property);
                 do
                 {
                     ctx = this.BeginUpdate();
-                    changed = ctx.Updater.RemoveItem(this.id, oid, property, creating, -1, true, this.ToGreenValue(value));
+                    changed = ctx.Updater.RemoveItem(this.id, oid, slot, creating, -1, true, this.ToGreenValue(value));
                 } while (!this.EndUpdate(ctx));
             }
             finally
@@ -795,10 +806,11 @@ namespace MetaDslx.Modeling
             GreenModelUpdateContext ctx = null;
             try
             {
+                var slot = oid.Descriptor.GetSlot(property);
                 do
                 {
                     ctx = this.BeginUpdate();
-                    changed = ctx.Updater.AddItem(this.id, oid, property, creating, false, index, this.ToGreenValue(value));
+                    changed = ctx.Updater.AddItem(this.id, oid, slot, creating, false, index, this.ToGreenValue(value));
                 } while (!this.EndUpdate(ctx));
             }
             finally
@@ -814,10 +826,11 @@ namespace MetaDslx.Modeling
             GreenModelUpdateContext ctx = null;
             try
             {
+                var slot = oid.Descriptor.GetSlot(property);
                 do
                 {
                     ctx = this.BeginUpdate();
-                    changed = ctx.Updater.AddItem(this.id, oid, property, creating, true, index, this.ToGreenValue(value));
+                    changed = ctx.Updater.AddItem(this.id, oid, slot, creating, true, index, this.ToGreenValue(value));
                 } while (!this.EndUpdate(ctx));
             }
             finally
@@ -833,10 +846,11 @@ namespace MetaDslx.Modeling
             GreenModelUpdateContext ctx = null;
             try
             {
+                var slot = oid.Descriptor.GetSlot(property);
                 do
                 {
                     ctx = this.BeginUpdate();
-                    changed = ctx.Updater.RemoveItem(this.id, oid, property, creating, index, false, null);
+                    changed = ctx.Updater.RemoveItem(this.id, oid, slot, creating, index, false, null);
                 } while (!this.EndUpdate(ctx));
             }
             finally
@@ -852,10 +866,11 @@ namespace MetaDslx.Modeling
             GreenModelUpdateContext ctx = null;
             try
             {
+                var slot = oid.Descriptor.GetSlot(property);
                 do
                 {
                     ctx = this.BeginUpdate();
-                    changed = ctx.Updater.ClearItems(this.id, oid, property, creating);
+                    changed = ctx.Updater.ClearItems(this.id, oid, slot, creating);
                 } while (!this.EndUpdate(ctx));
             }
             finally
@@ -871,10 +886,11 @@ namespace MetaDslx.Modeling
             GreenModelUpdateContext ctx = null;
             try
             {
+                var slot = oid.Descriptor.GetSlot(property);
                 do
                 {
                     ctx = this.BeginUpdate();
-                    changed = ctx.Updater.ClearLazyItems(this.id, oid, property, creating);
+                    changed = ctx.Updater.ClearLazyItems(this.id, oid, slot, creating);
                 } while (!this.EndUpdate(ctx));
             }
             finally
@@ -1046,10 +1062,10 @@ namespace MetaDslx.Modeling
 
         internal IReadOnlyList<ModelProperty> MProperties(ObjectId oid)
         {
-            ModelObjectDescriptor msi = oid.Descriptor;
-            if (msi != null)
+            ModelObjectDescriptor descriptor = oid.Descriptor;
+            if (descriptor != null)
             {
-                return msi.Properties;
+                return descriptor.Properties;
             }
             return ImmutableArray<ModelProperty>.Empty;
         }
@@ -1059,7 +1075,7 @@ namespace MetaDslx.Modeling
             GreenObject green;
             if (this.Green.Objects.TryGetValue(oid, out green))
             {
-                return green.Properties.Keys.ToImmutableArray();
+                return green.Slots.Keys.Select(s => s.EffectiveProperty).ToImmutableArray();
             }
             return ImmutableArray<ModelProperty>.Empty;
         }
