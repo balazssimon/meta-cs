@@ -14,7 +14,7 @@
     <IsPackable>true</IsPackable>
     <Authors>Balazs Simon</Authors>
     <PackageId>MetaDslx.Languages.Uml-v2.5.1</PackageId>
-    <VersionPrefix>$(OmgVersion)</VersionPrefix>
+    <VersionPrefix>$(MetaDslxLanguagesPackageVersion)</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <PackageDescription>
       The complete implementation of the OMG UML 2.5.1 metamodel standard with XMI serialization support.
@@ -32,21 +32,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Collections.Immutable" Version="$(SystemCollectionsImmutableVersion)" />
-    <PackageReference Include="System.Memory" Version="$(SystemMemoryVersion)" />
-    <PackageReference Include="System.Reflection.Metadata" Version="$(SystemReflectionMetadataVersion)" />
-    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="$(SystemRuntimeCompilerServicesUnsafeVersion)" />
-    <PackageReference Include="System.Threading.Tasks.Extensions" Version="$(SystemThreadingTasksExtensionsVersion)" />
-    <PackageReference Include="System.Text.Encoding.CodePages" Version="$(SystemTextEncodingCodePagesVersion)" />
     <PackageReference Include="MetaDslx.BuildTasks" Version="$(BootstrapVersion)" PrivateAssets="all" />
-    <!--PackageReference Include="MetaDslx.CodeAnalysis" Version="$(BootstrapVersion)" /-->
+    <PackageReference Include="MetaDslx.CodeAnalysis" Version="$(BootstrapVersion)" />
   </ItemGroup>
 
-  <ItemGroup>
+
+  <!--ItemGroup>
     <ProjectReference Include="..\..\Main\MetaDslx.CodeAnalysis.Antlr4\MetaDslx.CodeAnalysis.Antlr4.csproj" />
     <ProjectReference Include="..\..\Main\MetaDslx.CodeAnalysis.Common\MetaDslx.CodeAnalysis.Common.csproj" />
     <ProjectReference Include="..\..\Main\MetaDslx.CodeAnalysis.CSharp\MetaDslx.CodeAnalysis.CSharp.csproj" />
     <ProjectReference Include="..\..\Main\MetaDslx.CodeAnalysis.Meta\MetaDslx.CodeAnalysis.Meta.csproj" />
-  </ItemGroup>
+  </ItemGroup-->
 
 </Project>

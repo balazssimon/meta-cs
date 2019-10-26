@@ -33,7 +33,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.Languages.Mof", "L
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.Languages.Ecore", "Languages\MetaDslx.Languages.Ecore\MetaDslx.Languages.Ecore.csproj", "{49C7C72B-3A37-459E-883A-EC030FD85172}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.Languages.Uml", "Languages\MetaDslx.Languages.Uml\MetaDslx.Languages.Uml.csproj", "{B75EE4BD-A7A1-4298-824E-BBCF0074F837}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.Languages.Uml-v2.5.1", "Languages\MetaDslx.Languages.Uml-v2.5.1\MetaDslx.Languages.Uml-v2.5.1.csproj", "{B75EE4BD-A7A1-4298-824E-BBCF0074F837}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UmlExample", "Examples\UmlExample\UmlExample.csproj", "{6F26D26B-DC30-44FB-A625-4870F11430A1}"
 EndProject
