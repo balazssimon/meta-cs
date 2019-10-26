@@ -231,6 +231,14 @@ namespace MetaDslx.Modeling
             {
                 return ImmutableModelSet<T>.FromGreenList((GreenList)greenValue, this, oid);
             }
+            else
+            {
+                Slot slot = oid.Descriptor.GetSlot(property);
+                if (!slot.IsCollection)
+                {
+                    return ImmutableModelSet<T>.FromGreenSingleValue(greenValue, this, oid);
+                }
+            }
             return ImmutableModelSet<T>.FromGreenList(property.IsUnique ? GreenList.EmptyUnique : GreenList.EmptyNonUnique, this, oid);
         }
 
@@ -241,6 +249,14 @@ namespace MetaDslx.Modeling
             if (greenValue is GreenList)
             {
                 return ImmutableModelList<T>.FromGreenList((GreenList)greenValue, this, oid);
+            }
+            else
+            {
+                Slot slot = oid.Descriptor.GetSlot(property);
+                if (!slot.IsCollection)
+                {
+                    return ImmutableModelList<T>.FromGreenSingleValue(greenValue, this, oid);
+                }
             }
             return ImmutableModelList<T>.FromGreenList(property.IsUnique ? GreenList.EmptyUnique : GreenList.EmptyNonUnique, this, oid);
         }

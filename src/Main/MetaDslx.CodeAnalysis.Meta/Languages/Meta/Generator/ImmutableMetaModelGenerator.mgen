@@ -543,7 +543,7 @@ public static readonly [Properties.CoreNs].ModelProperty [prop.CSharpName(model,
 end template
 
 template GenerateDescriptorPropertyAttributes(MetaModel model, MetaClass cls, MetaProperty prop)
-[if (prop.Type is MetaCollectionType && (((MetaCollectionType)prop.Type).Kind == MetaCollectionKind.List || ((MetaCollectionType)prop.Type).Kind == MetaCollectionKind.MultiList))]
+[if (prop.Type is MetaCollectionType)]
 ["["+Properties.CoreNs+".CollectionAttribute]"]
 [end if]
 [if (prop.Type is MetaCollectionType && (((MetaCollectionType)prop.Type).Kind == MetaCollectionKind.MultiSet || ((MetaCollectionType)prop.Type).Kind == MetaCollectionKind.MultiList))]

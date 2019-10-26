@@ -12,20 +12,6 @@ namespace MetaDslx.Modeling
 {
     public abstract class MutableModelList<T> : IMutableModelCollection<T>, IList<T>, IReadOnlyList<T>
     {
-        /*public ImmutableModelList<TImmutable> ToImmutable<TImmutable>()
-        {
-            var immutableItems = this.Select(item => item is MutableObject immObj ? (TImmutable)immObj.ToImmutable() : (TImmutable)(object)item);
-            if (this.IsUnique) return ImmutableModelList<TImmutable>.CreateUnique(immutableItems);
-            else return ImmutableModelList<TImmutable>.CreateNonUnique(immutableItems);
-        }
-
-        public ImmutableModelList<TImmutable> ToImmutable<TImmutable>(ImmutableModel model)
-        {
-            var immutableItems = this.Select(item => item is MutableObject immObj ? (TImmutable)immObj.ToImmutable(model) : (TImmutable)(object)item);
-            if (this.IsUnique) return ImmutableModelList<TImmutable>.CreateUnique(immutableItems);
-            else return ImmutableModelList<TImmutable>.CreateNonUnique(immutableItems);
-        }*/
-
         public abstract bool IsUnique { get; }
         public abstract T this[int index] { get; set; }
         public abstract int Count { get; }
@@ -75,363 +61,30 @@ namespace MetaDslx.Modeling
             return this.GetEnumerator();
         }
 
-        /*
-        public static MutableModelList<T> CreateUnique()
+        internal static MutableModelList<T> FromGreenList(MutableObjectBase obj, Slot slot)
         {
-            return new MutableModelListFromEnumerable<T>(true);
-        }
-
-        public static MutableModelList<T> CreateNonUnique()
-        {
-            return new MutableModelListFromEnumerable<T>(false);
-        }
-
-        public static MutableModelList<T> CreateUnique(IEnumerable<T> items)
-        {
-            return new MutableModelListFromEnumerable<T>(items, true);
-        }
-
-        public static MutableModelList<T> CreateUnique(ISet<T> items)
-        {
-            return new MutableModelListFromEnumerable<T>(items, true);
-        }
-
-        public static MutableModelList<T> CreateUnique(ImmutableHashSet<T> items)
-        {
-            return new MutableModelListFromEnumerable<T>(items, true);
-        }
-
-        public static MutableModelList<T> CreateNonUnique(IEnumerable<T> items)
-        {
-            return new MutableModelListFromEnumerable<T>(items, false);
-        }
-
-        public static MutableModelList<T> CreateNonUnique(ImmutableList<T> items)
-        {
-            return new MutableModelListFromEnumerable<T>(items, false);
-        }*/
-
-        internal static MutableModelList<T> FromGreenList(MutableObjectBase obj, ModelProperty property)
-        {
-            return new MutableModelListFromGreenList<T>(obj, property);
+            if (slot.IsCollection) return new MutableModelListFromGreenList<T>(obj, slot);
+            else return new MutableModelListFromGreenSingle<T>(obj, slot);
         }
     }
-
-    /*
-    [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    internal class MutableModelListFromEnumerable<T> : MutableModelList<T>
-    {
-        private bool unique;
-        private ImmutableList<T> items;
-        private ImmutableList<LazyValue<T>> lazyItems;
-
-        internal MutableModelListFromEnumerable(bool unique)
-        {
-            this.unique = unique;
-            this.items = ImmutableList<T>.Empty;
-            this.lazyItems = ImmutableList<LazyValue<T>>.Empty;
-        }
-
-        internal MutableModelListFromEnumerable(IEnumerable<T> items, bool unique)
-        {
-            this.unique = unique;
-            if (this.unique)
-            {
-                this.items = ImmutableList<T>.Empty;
-                this.AddRange(items);
-            }
-            else
-            {
-                this.items = items.ToImmutableList();
-            }
-            this.lazyItems = ImmutableList<LazyValue<T>>.Empty;
-        }
-
-        internal MutableModelListFromEnumerable(ISet<T> items, bool unique)
-        {
-            this.unique = unique;
-            this.items = items.ToImmutableList();
-            this.lazyItems = ImmutableList<LazyValue<T>>.Empty;
-        }
-
-        internal MutableModelListFromEnumerable(ImmutableHashSet<T> items, bool unique)
-        {
-            this.unique = unique;
-            this.items = items.ToImmutableList();
-            this.lazyItems = ImmutableList<LazyValue<T>>.Empty;
-        }
-
-        internal MutableModelListFromEnumerable(ImmutableList<T> items, bool unique)
-        {
-            this.unique = unique;
-            if (this.unique)
-            {
-                this.items = ImmutableList<T>.Empty;
-                this.AddRange(items);
-            }
-            else
-            {
-                this.items = items;
-            }
-            this.lazyItems = ImmutableList<LazyValue<T>>.Empty;
-        }
-
-        private void EvalLazyItems()
-        {
-            if (this.lazyItems.Count == 0) return;
-            ImmutableList<LazyValue<T>> oldLazyItems;
-            ImmutableList<LazyValue<T>> newLazyItems;
-            do
-            {
-                oldLazyItems = this.lazyItems;
-                newLazyItems = ImmutableList<LazyValue<T>>.Empty;
-            } while (Interlocked.CompareExchange(ref this.lazyItems, newLazyItems, oldLazyItems) != oldLazyItems);
-            foreach (var lazyItem in oldLazyItems)
-            {
-                if (lazyItem.IsSingleValue) this.Add(lazyItem.CreateTypedRedValue());
-                else this.AddRange(lazyItem.CreateTypedRedValues());
-            }
-        }
-
-        public override bool IsUnique => this.unique;
-
-        public override int Count
-        {
-            get
-            {
-                this.EvalLazyItems();
-                return this.items.Count;
-            }
-        }
-
-        public override int LazyCount
-        {
-            get { return this.lazyItems.Count; }
-        }
-
-        public override bool IsReadOnly
-        {
-            get { return false; }
-        }
-
-        public override T this[int index]
-        {
-            get
-            {
-                return this.items[index];
-            }
-            set
-            {
-                ImmutableList<T> oldItems;
-                ImmutableList<T> newItems;
-                do
-                {
-                    oldItems = this.items;
-                    if (this.unique)
-                    {
-                        newItems = oldItems.RemoveAt(index).Remove(value);
-                        if (index > newItems.Count) index = newItems.Count;
-                        newItems = newItems.Insert(index, value);
-                    }
-                    else
-                    {
-                        newItems = oldItems.SetItem(index, value);
-                    }
-                } while (Interlocked.CompareExchange(ref this.items, newItems, oldItems) != oldItems);
-            }
-        }
-
-        public override void Add(T item)
-        {
-            ImmutableList<T> oldItems;
-            ImmutableList<T> newItems;
-            do
-            {
-                oldItems = this.items;
-                if (this.unique)
-                {
-                    if (oldItems.Contains(item)) newItems = oldItems;
-                    else newItems = oldItems.Add(item);
-                }
-                else
-                {
-                    newItems = oldItems.Add(item);
-                }
-            } while (Interlocked.CompareExchange(ref this.items, newItems, oldItems) != oldItems);
-        }
-
-        public override void AddRange(IEnumerable<T> items)
-        {
-            if (this.unique)
-            {
-                foreach (var item in items)
-                {
-                    this.Add(item);
-                }
-            }
-            else
-            {
-                ImmutableList<T> oldItems;
-                ImmutableList<T> newItems;
-                do
-                {
-                    oldItems = this.items;
-                    newItems = oldItems.AddRange(items);
-                } while (Interlocked.CompareExchange(ref this.items, newItems, oldItems) != oldItems);
-            }
-        }
-
-        public override void AddLazy(LazyValue<T> item)
-        {
-            ImmutableList<LazyValue<T>> oldLazyItems;
-            ImmutableList<LazyValue<T>> newLazyItems;
-            do
-            {
-                oldLazyItems = this.lazyItems;
-                newLazyItems = oldLazyItems.Add(item);
-            } while (Interlocked.CompareExchange(ref this.lazyItems, newLazyItems, oldLazyItems) != oldLazyItems);
-        }
-
-        public override void AddRangeLazy(IEnumerable<LazyValue<T>> items)
-        {
-            ImmutableList<LazyValue<T>> oldLazyItems;
-            ImmutableList<LazyValue<T>> newLazyItems;
-            do
-            {
-                oldLazyItems = this.lazyItems;
-                newLazyItems = oldLazyItems.AddRange(items);
-            } while (Interlocked.CompareExchange(ref this.lazyItems, newLazyItems, oldLazyItems) != oldLazyItems);
-        }
-
-        public override void Clear()
-        {
-            this.ClearLazy();
-            ImmutableList<T> oldItems;
-            ImmutableList<T> newItems;
-            do
-            {
-                oldItems = this.items;
-                newItems = ImmutableList<T>.Empty;
-            } while (Interlocked.CompareExchange(ref this.items, newItems, oldItems) != oldItems);
-        }
-
-        public override void ClearLazy()
-        {
-            ImmutableList<LazyValue<T>> oldLazyItems;
-            ImmutableList<LazyValue<T>> newLazyItems;
-            do
-            {
-                oldLazyItems = this.lazyItems;
-                newLazyItems = ImmutableList<LazyValue<T>>.Empty;
-            } while (Interlocked.CompareExchange(ref this.lazyItems, newLazyItems, oldLazyItems) != oldLazyItems);
-        }
-
-        public override bool Contains(T item)
-        {
-            this.EvalLazyItems();
-            return this.items.Contains(item);
-        }
-
-        public override void CopyTo(T[] array, int arrayIndex)
-        {
-            this.EvalLazyItems();
-            ImmutableList<T> items = this.items;
-            for (int i = 0; i < items.Count && arrayIndex + i < array.Length; i++)
-            {
-                array[arrayIndex + i] = items[i];
-            }
-        }
-
-        public override IEnumerator<T> GetEnumerator()
-        {
-            this.EvalLazyItems();
-            return this.items.GetEnumerator();
-        }
-
-        public override int IndexOf(T item)
-        {
-            this.EvalLazyItems();
-            return this.items.IndexOf(item);
-        }
-
-        public override void Insert(int index, T item)
-        {
-            ImmutableList<T> oldItems;
-            ImmutableList<T> newItems;
-            do
-            {
-                oldItems = this.items;
-                if (this.unique)
-                {
-                    newItems = oldItems.Remove(item);
-                    if (index > newItems.Count) index = newItems.Count;
-                    newItems = newItems.Insert(index, item);
-                }
-                else
-                {
-                    newItems = oldItems.Insert(index, item);
-                }
-            } while (Interlocked.CompareExchange(ref this.items, newItems, oldItems) != oldItems);
-        }
-
-        public override bool Remove(T item)
-        {
-            ImmutableList<T> oldItems;
-            ImmutableList<T> newItems;
-            do
-            {
-                oldItems = this.items;
-                newItems = oldItems.Remove(item);
-            } while (Interlocked.CompareExchange(ref this.items, newItems, oldItems) != oldItems);
-            return newItems != oldItems;
-        }
-
-        public override bool RemoveAll(T item)
-        {
-            ImmutableList<T> oldItems;
-            ImmutableList<T> newItems;
-            do
-            {
-                oldItems = this.items;
-                newItems = oldItems.RemoveAll(it => (it == null && item == null) || (it != null && it.Equals(item)));
-            } while (Interlocked.CompareExchange(ref this.items, newItems, oldItems) != oldItems);
-            return newItems != oldItems;
-        }
-
-        public override void RemoveAt(int index)
-        {
-            ImmutableList<T> oldItems;
-            ImmutableList<T> newItems;
-            do
-            {
-                oldItems = this.items;
-                newItems = oldItems.RemoveAt(index);
-            } while (Interlocked.CompareExchange(ref this.items, newItems, oldItems) != oldItems);
-        }
-
-        private string DebuggerDisplay
-        {
-            get { return string.Format("Count = {0}, LazyCount = {1}", this.items.Count, this.lazyItems.Count); }
-        }
-    }*/
 
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
     internal class MutableModelListFromGreenList<T> : MutableModelList<T>
     {
         private MutableObjectBase obj;
-        private ModelProperty property;
+        private Slot slot;
 
-        internal MutableModelListFromGreenList(MutableObjectBase obj, ModelProperty property)
+        internal MutableModelListFromGreenList(MutableObjectBase obj, Slot slot)
         {
             this.obj = obj;
-            this.property = property;
+            this.slot = slot;
         }
 
-        public override bool IsUnique => this.property.IsUnique;
+        public override bool IsUnique => this.slot.IsUnique;
 
         private GreenList GetGreen(bool lazyEval)
         {
-            return this.obj.MModel.GetGreenList(this.obj.MId, property, lazyEval);
+            return this.obj.MModel.GetGreenList(this.obj.MId, slot.EffectiveProperty, lazyEval);
         }
 
         public override int Count
@@ -446,7 +99,7 @@ namespace MetaDslx.Modeling
 
         public override bool IsReadOnly
         {
-            get { return this.obj.MIsReadOnly || this.property.IsReadonly; }
+            get { return this.obj.MIsReadOnly || this.slot.IsReadonly; }
         }
 
         public override T this[int index]
@@ -458,13 +111,13 @@ namespace MetaDslx.Modeling
             }
             set
             {
-                this.obj.MModel.ReplaceItem(this.obj.MId, this.property, index, value, this.obj.MIsBeingCreated);
+                this.obj.MModel.ReplaceItem(this.obj.MId, this.slot.EffectiveProperty, index, value, this.obj.MIsBeingCreated);
             }
         }
 
         public override void Add(T item)
         {
-            this.obj.MModel.AddItem(this.obj.MId, this.property, item, this.obj.MIsBeingCreated);
+            this.obj.MModel.AddItem(this.obj.MId, this.slot.EffectiveProperty, item, this.obj.MIsBeingCreated);
         }
 
         public override void AddRange(IEnumerable<T> items)
@@ -477,7 +130,7 @@ namespace MetaDslx.Modeling
 
         public override void AddLazy(LazyValue<T> item)
         {
-            this.obj.MModel.AddLazyItem(this.obj.MId, this.property, item, this.obj.MIsBeingCreated);
+            this.obj.MModel.AddLazyItem(this.obj.MId, this.slot.EffectiveProperty, item, this.obj.MIsBeingCreated);
         }
 
         public override void AddRangeLazy(IEnumerable<LazyValue<T>> items)
@@ -490,12 +143,12 @@ namespace MetaDslx.Modeling
 
         public override void Clear()
         {
-            this.obj.MModel.ClearItems(this.obj.MId, this.property, this.obj.MIsBeingCreated);
+            this.obj.MModel.ClearItems(this.obj.MId, this.slot.EffectiveProperty, this.obj.MIsBeingCreated);
         }
 
         public override void ClearLazy()
         {
-            this.obj.MModel.ClearLazyItems(this.obj.MId, this.property, this.obj.MIsBeingCreated);
+            this.obj.MModel.ClearLazyItems(this.obj.MId, this.slot.EffectiveProperty, this.obj.MIsBeingCreated);
         }
 
         public override bool Contains(T item)
@@ -534,22 +187,22 @@ namespace MetaDslx.Modeling
 
         public override void Insert(int index, T item)
         {
-            this.obj.MModel.InsertItem(this.obj.MId, this.property, index, item, this.obj.MIsBeingCreated);
+            this.obj.MModel.InsertItem(this.obj.MId, this.slot.EffectiveProperty, index, item, this.obj.MIsBeingCreated);
         }
 
         public override bool Remove(T item)
         {
-            return this.obj.MModel.RemoveItem(this.obj.MId, this.property, item, this.obj.MIsBeingCreated);
+            return this.obj.MModel.RemoveItem(this.obj.MId, this.slot.EffectiveProperty, item, this.obj.MIsBeingCreated);
         }
 
         public override bool RemoveAll(T item)
         {
-            return this.obj.MModel.RemoveAllItems(this.obj.MId, this.property, item, this.obj.MIsBeingCreated);
+            return this.obj.MModel.RemoveAllItems(this.obj.MId, this.slot.EffectiveProperty, item, this.obj.MIsBeingCreated);
         }
 
         public override void RemoveAt(int index)
         {
-            this.obj.MModel.RemoveItemAt(this.obj.MId, this.property, index, this.obj.MIsBeingCreated);
+            this.obj.MModel.RemoveItemAt(this.obj.MId, this.slot.EffectiveProperty, index, this.obj.MIsBeingCreated);
         }
 
         private string DebuggerDisplay
@@ -558,6 +211,184 @@ namespace MetaDslx.Modeling
             {
                 GreenList green = this.GetGreen(false);
                 return string.Format("Count = {0}, LazyCount = {1}", green.Count, green.LazyItems.Count);
+            }
+        }
+    }
+
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
+    internal class MutableModelListFromGreenSingle<T> : MutableModelList<T>
+    {
+        private MutableObjectBase obj;
+        private Slot slot;
+
+        internal MutableModelListFromGreenSingle(MutableObjectBase obj, Slot slot)
+        {
+            this.obj = obj;
+            this.slot = slot;
+        }
+
+        public override bool IsUnique => slot.IsUnique;
+
+        public override T this[int index]
+        {
+            get
+            {
+                if (index == 0) return this.GetRed(true);
+                else throw new IndexOutOfRangeException(string.Format("Invalid index: {0}", index));
+            }
+            set
+            {
+                if (index == 0) this.obj.MModel.SetValue<T>(this.obj.MId, this.slot.EffectiveProperty, value, this.obj.MIsBeingCreated);
+                else throw new IndexOutOfRangeException(string.Format("Invalid index: {0}", index));
+            }
+        }
+
+        public bool HasValue => !this.obj.MModel.MHasDefaultValue(this.obj.MId, this.slot.EffectiveProperty);
+        public bool HasLazyValue => this.obj.MModel.GetLazyValue(this.obj.MId, this.slot.EffectiveProperty) != null;
+
+        private bool HasKnownValue(T value)
+        {
+            object green = this.GetGreen(true);
+            object greenItem = this.obj.MModel.ToGreenValue(value);
+            return (green == null && greenItem == null) || (green != null && green.Equals(greenItem));
+        }
+
+        private T GetRed(bool lazyEval)
+        {
+            return (T)this.obj.MModel.GetValue(this.obj.MId, this.slot.EffectiveProperty);
+        }
+
+        private object GetGreen(bool lazyEval)
+        {
+            var redValue = this.obj.MModel.GetValue(this.obj.MId, this.slot.EffectiveProperty);
+            return this.obj.MModel.ToGreenValue(redValue);
+        }
+
+        public override int Count
+        {
+            get { return this.HasValue ? 1 : 0; }
+        }
+
+        public override int LazyCount
+        {
+            get { return this.HasLazyValue ? 1 : 0; }
+        }
+
+        public override bool IsReadOnly
+        {
+            get { return this.obj.MIsReadOnly || this.slot.IsReadonly; }
+        }
+
+        public override void Add(T item)
+        {
+            if (this.HasValue && !this.HasKnownValue(item)) throw new ModelException(ModelErrorCode.ERR_CannotAddMultipleValuesToNonCollectionProperty.ToDiagnosticWithNoLocation(this.slot, this.obj));
+            this.obj.MModel.SetValue<T>(this.obj.MId, this.slot.EffectiveProperty, item, this.obj.MIsBeingCreated);
+        }
+
+        public override void AddRange(IEnumerable<T> items)
+        {
+            foreach (var item in items)
+            {
+                this.Add(item);
+            }
+        }
+
+        public override void AddLazy(LazyValue<T> item)
+        {
+            if (this.HasLazyValue) throw new ModelException(ModelErrorCode.ERR_CannotAddMultipleValuesToNonCollectionProperty.ToDiagnosticWithNoLocation(this.slot, this.obj));
+            this.obj.MModel.AddLazyItem(this.obj.MId, this.slot.EffectiveProperty, item, this.obj.MIsBeingCreated);
+        }
+
+        public override void AddRangeLazy(IEnumerable<LazyValue<T>> items)
+        {
+            foreach (var item in items)
+            {
+                this.AddLazy(item);
+            }
+        }
+
+        public override void Clear()
+        {
+            this.obj.MModel.SetValue(this.obj.MId, this.slot.EffectiveProperty, GreenObject.Unassigned, this.obj.MIsBeingCreated);
+        }
+
+        public override void ClearLazy()
+        {
+            this.obj.MModel.SetValue(this.obj.MId, this.slot.EffectiveProperty, GreenObject.Unassigned, this.obj.MIsBeingCreated);
+        }
+
+        public override bool Contains(T item)
+        {
+            return this.HasKnownValue(item);
+        }
+
+        public override void CopyTo(T[] array, int arrayIndex)
+        {
+            if (arrayIndex == 0 && array.Length >= 1)
+            {
+                array[0] = this.GetRed(true);
+            }
+        }
+
+        public override IEnumerator<T> GetEnumerator()
+        {
+            if (this.HasValue)
+            {
+                yield return this.GetRed(true);
+            }
+            else
+            {
+                yield break;
+            }
+        }
+
+        public override int IndexOf(T item)
+        {
+            if (this.HasKnownValue(item)) return 0;
+            else return -1;
+        }
+
+        public override void Insert(int index, T item)
+        {
+            if (index != 0) throw new IndexOutOfRangeException(string.Format("Invalid index: {0}", index));
+            if (!this.HasValue)
+            {
+                this.obj.MModel.SetValue<T>(this.obj.MId, this.slot.EffectiveProperty, item, this.obj.MIsBeingCreated);
+            }
+            else if (!this.HasKnownValue(item))
+            {
+                throw new ModelException(ModelErrorCode.ERR_CannotAddMultipleValuesToNonCollectionProperty.ToDiagnosticWithNoLocation(this.slot, this.obj));
+            }
+        }
+
+        public override bool Remove(T item)
+        {
+            if (this.HasValue && this.HasKnownValue(item))
+            {
+                this.obj.MModel.SetValue(this.obj.MId, this.slot.EffectiveProperty, GreenObject.Unassigned, this.obj.MIsBeingCreated);
+                return true;
+            }
+            return false;
+        }
+
+        public override bool RemoveAll(T item)
+        {
+            return this.Remove(item);
+        }
+
+        public override void RemoveAt(int index)
+        {
+            if (index != 0) throw new IndexOutOfRangeException(string.Format("Invalid index: {0}", index));
+            this.obj.MModel.SetValue(this.obj.MId, this.slot.EffectiveProperty, GreenObject.Unassigned, this.obj.MIsBeingCreated);
+        }
+
+        private string DebuggerDisplay
+        {
+            get
+            {
+                if (this.HasValue) return "Count = 1";
+                else if (this.HasLazyValue) return "Count = 0, LazyCount = 1";
+                else return "Count = 0";
             }
         }
     }

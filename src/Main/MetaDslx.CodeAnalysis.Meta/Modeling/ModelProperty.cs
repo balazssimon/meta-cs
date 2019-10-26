@@ -103,7 +103,7 @@ namespace MetaDslx.Modeling
             this.declaringDescriptor = declaringDescriptor;
             this.name = name;
             this.flags = ModelPropertyFlags.None;
-            if (typeof(ImmutableObjectBase).IsAssignableFrom(immutableType) || typeof(MutableObjectBase).IsAssignableFrom(mutableType))
+            if (typeof(IModelObject).IsAssignableFrom(immutableType) || typeof(IModelObject).IsAssignableFrom(mutableType))
             {
                 this.flags |= ModelPropertyFlags.ModelObject;
             }
@@ -692,6 +692,7 @@ namespace MetaDslx.Modeling
                         slot.flags = AddFlag(ModelPropertyFlags.Ordered, slot.flags, eqProp.Flags);
                         slot.flags = AddFlag(ModelPropertyFlags.NonNull, slot.flags, eqProp.Flags);
                         slot.flags = AddFlag(ModelPropertyFlags.Containment, slot.flags, eqProp.Flags);
+                        if (!slot.flags.HasFlag(ModelPropertyFlags.Collection)) slot.flags = slot.flags & ~ModelPropertyFlags.NonUnique;
                         if (effectiveProperties.Contains(eqProp))
                         {
                             Debug.Assert(slot.effectiveProperty == null);
@@ -746,13 +747,19 @@ namespace MetaDslx.Modeling
                                 if (!visited.Contains(subsettedSlot))
                                 {
                                     visited.Add(subsettedSlot);
+                                    slot.flags = AddFlag(ModelPropertyFlags.ModelObject, slot.flags, subsettedSlot.flags);
+                                    slot.flags = RemoveFlag(ModelPropertyFlags.Collection, slot.flags, subsettedSlot.flags);
+                                    slot.flags = RemoveFlag(ModelPropertyFlags.NonUnique, slot.flags, subsettedSlot.flags);
+                                    slot.flags = AddFlag(ModelPropertyFlags.Ordered, slot.flags, subsettedSlot.flags);
+                                    slot.flags = AddFlag(ModelPropertyFlags.NonNull, slot.flags, subsettedSlot.flags);
+                                    slot.flags = AddFlag(ModelPropertyFlags.Containment, slot.flags, subsettedSlot.flags);
+                                    if (!slot.flags.HasFlag(ModelPropertyFlags.Collection)) slot.flags = slot.flags & ~ModelPropertyFlags.NonUnique;
                                 }
                             }
                         }
                         ++i;
                     }
                     visited.RemoveAt(0);
-                    visited.Free();
                 }
                 if (slot != null && slot.subsettingProperties.Count > 0)
                 {
@@ -776,7 +783,6 @@ namespace MetaDslx.Modeling
                         ++i;
                     }
                     visited.RemoveAt(0);
-                    visited.Free();
                 }
             }
             var imap = new Dictionary<ComplexSlotBuilder, ComplexSlot>();

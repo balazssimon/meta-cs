@@ -14,20 +14,6 @@ namespace MetaDslx.Modeling
         public static readonly ImmutableModelList<T> Empty = new ImmutableModelListFromEnumerable<T>(true);
         public static readonly ImmutableModelList<T> EmptyNonUnique = new ImmutableModelListFromEnumerable<T>(false);
 
-        /*public MutableModelList<TMutable> ToMutable<TMutable>()
-        {
-            var mutableItems = this.Select(item => item is ImmutableObject immObj ? (TMutable)immObj.ToMutable() : (TMutable)(object)item);
-            if (this.IsUnique) return MutableModelList<TMutable>.CreateUnique(mutableItems);
-            else return MutableModelList<TMutable>.CreateNonUnique(mutableItems);
-        }
-
-        public MutableModelList<TMutable> ToMutable<TMutable>(MutableModel model)
-        {
-            var mutableItems = this.Select(item => item is ImmutableObject immObj ? (TMutable)immObj.ToMutable(model) : (TMutable)(object)item);
-            if (this.IsUnique) return MutableModelList<TMutable>.CreateUnique(mutableItems);
-            else return MutableModelList<TMutable>.CreateNonUnique(mutableItems);
-        }*/
-
         public abstract bool IsUnique { get; }
 
         public abstract T this[int index] { get; }
@@ -42,31 +28,6 @@ namespace MetaDslx.Modeling
         {
             return this.GetEnumerator();
         }
-
-        public static ImmutableModelList<T> CreateUnique(IEnumerable<T> items)
-        {
-            return new ImmutableModelListFromEnumerable<T>(items, true);
-        }
-        
-        public static ImmutableModelList<T> CreateNonUnique(IEnumerable<T> items)
-        {
-            return new ImmutableModelListFromEnumerable<T>(items, false);
-        }
-        /*
-        public static ImmutableModelList<T> CreateUnique(ISet<T> items)
-        {
-            return new ImmutableModelListFromEnumerable<T>(items, true);
-        }
-
-        public static ImmutableModelList<T> CreateUnique(ImmutableHashSet<T> items)
-        {
-            return new ImmutableModelListFromEnumerable<T>(items, true);
-        }
-
-        public static ImmutableModelList<T> CreateNonUnique(ImmutableList<T> items)
-        {
-            return new ImmutableModelListFromEnumerable<T>(items, false);
-        }*/
 
         internal static ImmutableModelList<T> FromGreenList(GreenList green, ImmutableModel model, ObjectId context)
         {
@@ -86,6 +47,11 @@ namespace MetaDslx.Modeling
         internal static ImmutableModelList<T> FromObjectIdList(ImmutableList<ObjectId> green, MutableModel model)
         {
             return new ImmutableModelListFromObjectIdListMutable<T>(green, model);
+        }
+
+        internal static ImmutableModelList<T> FromGreenSingleValue(object value, ImmutableModel model, ObjectId context)
+        {
+            return new ImmutableModelListFromGreenSingle<T>(value, model, context);
         }
     }
 
@@ -309,5 +275,51 @@ namespace MetaDslx.Modeling
         }
     }
 
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
+    internal class ImmutableModelListFromGreenSingle<T> : ImmutableModelList<T>
+    {
+        private object greenValue;
+        private ImmutableModel model;
+        private ObjectId context;
+
+        internal ImmutableModelListFromGreenSingle(object greenValue, ImmutableModel model, ObjectId context)
+        {
+            this.greenValue = greenValue;
+            this.model = model;
+            this.context = context;
+        }
+
+        public override bool IsUnique => true;
+
+        public override int Count => this.greenValue == GreenObject.Unassigned ? 0 : 1;
+
+        private int LazyCount => this.greenValue is LazyValue ? 1 : 0;
+
+        public override T this[int index]
+        {
+            get 
+            {
+                if (index != 0) throw new IndexOutOfRangeException(string.Format("Invalid index: {0}", index));
+                return (T)this.model.ToRedValue(this.greenValue, context);
+            }
+        }
+
+        public override bool Contains(T item)
+        {
+            var itemGreen = this.model.ToGreenValue(item);
+            return (this.greenValue == null && itemGreen == null) || (this.greenValue != null && this.greenValue.Equals(itemGreen));
+        }
+
+        public override IEnumerator<T> GetEnumerator()
+        {
+            if (this.greenValue == GreenObject.Unassigned) yield break;
+            else yield return (T)this.model.ToRedValue(this.greenValue, context);
+        }
+
+        private string DebuggerDisplay
+        {
+            get { return string.Format("Count = {0}, LazyCount = {1}", this.Count, this.LazyCount); }
+        }
+    }
 
 }

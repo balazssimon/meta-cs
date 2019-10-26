@@ -526,7 +526,7 @@ namespace MetaDslx.Modeling
             var greenValue = this.GetGreenValue(oid, property);
             if (property.IsCollection)
             {
-                return greenValue is GreenList greenList && greenList.Count == 0;
+                return greenValue == GreenObject.Unassigned || (greenValue is GreenList greenList && greenList.Count == 0);
             }
             else
             {
@@ -645,13 +645,15 @@ namespace MetaDslx.Modeling
         internal MutableModelSet<T> GetSet<T>(MutableObjectBase obj, ModelProperty property)
         {
             Debug.Assert(property.IsCollection);
-            return MutableModelSet<T>.FromGreenList(obj, property);
+            var slot = obj.MId.Descriptor.GetSlot(property);
+            return MutableModelSet<T>.FromGreenList(obj, slot);
         }
 
         internal MutableModelList<T> GetList<T>(MutableObjectBase obj, ModelProperty property)
         {
             Debug.Assert(property.IsCollection);
-            return MutableModelList<T>.FromGreenList(obj, property);
+            var slot = obj.MId.Descriptor.GetSlot(property);
+            return MutableModelList<T>.FromGreenList(obj, slot);
         }
 
         internal bool AddItem(ObjectId oid, ModelProperty property, object value, bool creating)

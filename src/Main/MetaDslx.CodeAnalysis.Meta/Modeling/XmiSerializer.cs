@@ -548,17 +548,14 @@ namespace MetaDslx.Modeling
             _currentXmlWriter.WriteAttributeString(Xmi, "type", _options.XmiNamespace, ns.Item1 + ":" + obj.MId.DisplayTypeName);
             _currentXmlWriter.WriteAttributeString(Xmi, "id", _options.XmiNamespace, obj.MId.Id);
             HashSet<IModelObject> written = new HashSet<IModelObject>();
-            HashSet<string> writtenProperties = new HashSet<string>();
-            foreach (var prop in obj.MProperties.Reverse())
+            foreach (var prop in obj.MProperties)
             {
                 if (prop.IsDerived || prop.IsDerivedUnion) continue;
                 bool oppositeIsContainment = prop.OppositeProperties.Any(p => p.IsContainment);
                 if (oppositeIsContainment) continue;
-                bool isModelObjectType = prop.IsModelObject;
-                if (!prop.IsCollection && (!prop.IsContainment || !isModelObjectType))
+                if (!prop.IsCollection && (!prop.IsContainment || !prop.IsModelObject))
                 {
-                    if (writtenProperties.Contains(prop.Name)) continue;
-                    if (isModelObjectType)
+                    if (prop.IsModelObject)
                     {
                         var value = obj.MGet(prop) as IModelObject;
                         if (value != null)
@@ -586,7 +583,6 @@ namespace MetaDslx.Modeling
                             }
                         }
                     }
-                    writtenProperties.Add(prop.Name);
                 }
             }
             foreach (var prop in obj.MProperties.Reverse())
@@ -594,10 +590,9 @@ namespace MetaDslx.Modeling
                 if (prop.IsDerived || prop.IsDerivedUnion) continue;
                 bool oppositeIsContainment = prop.OppositeProperties.Any(p => p.IsContainment);
                 if (oppositeIsContainment) continue;
-                bool isModelObjectType = prop.IsModelObject;
-                if (prop.IsCollection && (!prop.IsContainment || !isModelObjectType))
+                if (prop.IsCollection && (!prop.IsContainment || !prop.IsModelObject))
                 {
-                    if (isModelObjectType)
+                    if (prop.IsModelObject)
                     {
                         var values = obj.MGet(prop) as System.Collections.IEnumerable;
                         if (values != null)
@@ -633,8 +628,7 @@ namespace MetaDslx.Modeling
             foreach (var prop in obj.MProperties.Reverse())
             {
                 if (prop.IsDerived || prop.IsDerivedUnion) continue;
-                bool isModelObjectType = prop.IsModelObject;
-                if (prop.IsContainment && isModelObjectType)
+                if (prop.IsContainment && prop.IsModelObject)
                 {
                     if (prop.IsCollection)
                     {

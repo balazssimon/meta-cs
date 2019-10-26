@@ -531,7 +531,7 @@ namespace MetaDslx.Modeling.Internal
             return this.GetValue(mid, oid, slot);
         }
 
-        public void SetValue(ModelId mid, ObjectId oid, Slot slot, bool reassign, object value)
+        public bool SetValue(ModelId mid, ObjectId oid, Slot slot, bool reassign, object value)
         {
             Debug.Assert(!slot.IsCollection);
             if (value is ObjectId)
@@ -548,17 +548,20 @@ namespace MetaDslx.Modeling.Internal
             object oldValue;
             if (green.Slots.TryGetValue(slot, out oldValue) && value != oldValue)
             {
+                bool result;
                 if (slot.IsSimpleSlot || value is LazyValue || value is GreenDerivedValue)
                 {
-                    this.SetValueCore(objectRef, slot, reassign, value);
+                    result = this.SetValueCore(objectRef, slot, reassign, value);
                     this.UpdateModel(objectRef.Model);
                 }
                 else
                 {
-                    this.SlowRemoveValueCore(mid, oid, slot, true, reassign, -1, false, oldValue, null, null);
-                    this.SlowAddValueCore(mid, oid, slot, reassign, -1, value, null, null);
+                    result = this.SlowRemoveValueCore(mid, oid, slot, true, reassign, -1, false, oldValue, null, null);
+                    result = this.SlowAddValueCore(mid, oid, slot, reassign, -1, value, null, null) || result;
                 }
+                return result;
             }
+            return false;
         }
 
         public bool AddItem(ModelId mid, ObjectId oid, Slot slot, bool reassign, bool replace, int index, object value)
