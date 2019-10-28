@@ -1071,41 +1071,51 @@ namespace MetaDslx.Modeling
             MutableObjectBase obj = null;
             if (factory != null && typeName != null)
             {
-                obj = (MutableObjectBase)factory.Create(typeName);
-                string parentPropertyName = element.Name.LocalName.ToPascalCase();
-                ModelProperty parentProperty = parent?.MGetProperty(parentPropertyName);
-                if (parentProperty != null)
+                try
                 {
-                    try
-                    {
-                        parent.MAdd(parentProperty, obj);
-                    }
-                    catch (ModelException mex)
-                    {
-                        this.AddError(element, mex);
-                    }
+                    obj = (MutableObjectBase)factory.Create(typeName);
                 }
-                this.RegisterObjectByPosition(element, obj);
-                foreach (var nameProp in obj.MAllProperties.Where(p => p.IsName))
+                catch (ModelException mex)
                 {
-                    var nameAttr = element.Attribute(nameProp.Name.ToCamelCase());
-                    if (nameAttr != null)
+                    this.AddError(element, mex);
+                }
+                if (obj != null)
+                {
+                    string parentPropertyName = element.Name.LocalName.ToPascalCase();
+                    ModelProperty parentProperty = parent?.MGetProperty(parentPropertyName);
+                    if (parentProperty != null)
                     {
-                        string name = nameAttr.Value;
                         try
                         {
-                            obj.MAdd(nameProp, name);
+                            parent.MAdd(parentProperty, obj);
                         }
                         catch (ModelException mex)
                         {
                             this.AddError(element, mex);
                         }
                     }
-                }
-                if (idAttribute != null)
-                {
-                    string id = idAttribute.Value;
-                    this.RegisterObjectById(idAttribute, id, obj);
+                    this.RegisterObjectByPosition(element, obj);
+                    foreach (var nameProp in obj.MAllProperties.Where(p => p.IsName))
+                    {
+                        var nameAttr = element.Attribute(nameProp.Name.ToCamelCase());
+                        if (nameAttr != null)
+                        {
+                            string name = nameAttr.Value;
+                            try
+                            {
+                                obj.MAdd(nameProp, name);
+                            }
+                            catch (ModelException mex)
+                            {
+                                this.AddError(element, mex);
+                            }
+                        }
+                    }
+                    if (idAttribute != null)
+                    {
+                        string id = idAttribute.Value;
+                        this.RegisterObjectById(idAttribute, id, obj);
+                    }
                 }
             }
             foreach (var child in element.Elements())
