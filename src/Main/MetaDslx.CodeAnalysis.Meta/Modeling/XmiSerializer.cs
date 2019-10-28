@@ -197,7 +197,7 @@ namespace MetaDslx.Modeling
         public string WriteModel(IModel model, XmiWriteOptions options, out ImmutableArray<Diagnostic> diagnostics)
         {
             if (model == null) throw new ArgumentNullException(nameof(model));
-            if (model.ModelGroup.Models.Count() != 1) throw new ArgumentException("The number of models in the model group must be exactly one. Use the WriteModelGroup() method to serialize a model group of multiple models.", nameof(model));
+            if (model.ModelGroup != null && model.ModelGroup.Models.Count() != 1) throw new ArgumentException("The number of models in the model group must be exactly one. Use the WriteModelGroup() method to serialize a model group of multiple models.", nameof(model));
             XmlWriterSettings settings = new XmlWriterSettings();
             settings.Indent = true;
             settings.Encoding = Encoding.UTF8;
@@ -239,7 +239,7 @@ namespace MetaDslx.Modeling
         {
             if (xmiFilePath == null) throw new ArgumentNullException(nameof(xmiFilePath));
             if (model == null) throw new ArgumentNullException(nameof(model));
-            if (model.ModelGroup.Models.Count() != 1) throw new ArgumentException("The number of models in the model group must be exactly one. Use the WriteModelGroupToFile() method to serialize a model group of multiple models.", nameof(model));
+            if (model.ModelGroup != null && model.ModelGroup.Models.Count() != 1) throw new ArgumentException("The number of models in the model group must be exactly one. Use the WriteModelGroupToFile() method to serialize a model group of multiple models.", nameof(model));
             XmlWriterSettings settings = new XmlWriterSettings();
             settings.Indent = true;
             settings.Encoding = Encoding.UTF8;

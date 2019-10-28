@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<railDsl:Station xmlns:railDsl="http://www.bme.hu/iit/vke/raildsl" xmi:type="railDsl:Station" xmi:id="d3ab282b-eef7-4914-ad74-60b5990bd291" name="Rail01" xmlns:xmi="http://www.omg.org/XMI">
+  <declarations xmi:type="railDsl:Segment" xmi:id="9e521584-a26c-4cf8-a855-ec66f68f276c" start="2c1ea474-212d-439d-a8cd-cc055de941ff" end="ef9b733c-e036-4e32-b233-553df19868c7" />
+  <declarations xmi:type="railDsl:Vertex" xmi:id="2c1ea474-212d-439d-a8cd-cc055de941ff" name="V1" />
+  <declarations xmi:type="railDsl:Vertex" xmi:id="ef9b733c-e036-4e32-b233-553df19868c7" name="V2" />
+</railDsl:Station>

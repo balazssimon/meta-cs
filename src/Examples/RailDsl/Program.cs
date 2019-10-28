@@ -15,6 +15,7 @@ namespace RailDsl
             {
                 Console.WriteLine(vertex.Name);
             }
+            xmiSerializer.WriteModelToFile("../../../Rail02.xmi", model);
         }
     }
 }

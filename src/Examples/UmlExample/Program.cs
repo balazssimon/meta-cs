@@ -14,6 +14,7 @@ namespace UmlExample
             {
                 Console.WriteLine(primitiveType.MName);
             }
+            xmiSerializer.WriteModelToFile("../../../PrimitiveTypes2.xmi", model);
         }
     }
 }

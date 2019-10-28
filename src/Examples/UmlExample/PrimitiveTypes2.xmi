@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xmi:XMI xmlns:uml="http://www.omg.org/spec/UML" xmlns:xmi="http://www.omg.org/spec/XMI">
+  <uml:Package xmi:type="uml:Package" xmi:id="2545e780-a262-476d-9c90-748419cbf2f2" name="PrimitiveTypes" uRI="http://www.omg.org/spec/PrimitiveTypes/20161101">
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="a059990b-e78d-4c28-9afa-31b3fce32ac3" name="Boolean">
+      <ownedComment xmi:type="uml:Comment" xmi:id="c5b41eb2-56d6-4b5d-b017-a3f12491cfc9" body="Boolean is used for logical expressions, consisting of the predefined values true and false.">
+        <annotatedElement xmi:idref="a059990b-e78d-4c28-9afa-31b3fce32ac3" />
+      </ownedComment>
+    </packagedElement>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="55496c40-06a5-444a-9e38-5c924d22ff05" name="Integer">
+      <ownedComment xmi:type="uml:Comment" xmi:id="11febfea-6c69-4ff9-b43a-8335265773b5" body="Integer is a primitive type representing integer values.">
+        <annotatedElement xmi:idref="55496c40-06a5-444a-9e38-5c924d22ff05" />
+      </ownedComment>
+    </packagedElement>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="4f86795c-f82b-4cd8-8bd2-297970c73663" name="Real">
+      <ownedComment xmi:type="uml:Comment" xmi:id="2a15752d-d69d-4680-996a-86dcf7401b1c" body="Real is a primitive type representing the mathematical concept of real.">
+        <annotatedElement xmi:idref="4f86795c-f82b-4cd8-8bd2-297970c73663" />
+      </ownedComment>
+    </packagedElement>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="fd8ff293-a956-4db8-ac7e-29b270c1b770" name="String">
+      <ownedComment xmi:type="uml:Comment" xmi:id="3bb0008e-164c-47a6-9647-fbc4c117bf24" body="String is a sequence of characters in some suitable character set used to display information about the model. Character sets may include non-Roman alphabets and characters.">
+        <annotatedElement xmi:idref="fd8ff293-a956-4db8-ac7e-29b270c1b770" />
+      </ownedComment>
+    </packagedElement>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="585eba64-565a-42dc-a02d-68b995102db2" name="UnlimitedNatural">
+      <ownedComment xmi:type="uml:Comment" xmi:id="7aa3a7a3-f9b0-4a74-ba52-0c5910f0f7b3" body="UnlimitedNatural is a primitive type representing unlimited natural values.">
+        <annotatedElement xmi:idref="585eba64-565a-42dc-a02d-68b995102db2" />
+      </ownedComment>
+    </packagedElement>
+  </uml:Package>
+</xmi:XMI>
