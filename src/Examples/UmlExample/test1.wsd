@@ -1,0 +1,4 @@
+title Authentication Sequence
+
+B->A: text1
+A-->>B: text2

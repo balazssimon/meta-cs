@@ -1,0 +1,1309 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xmi:XMI xmlns:uml="http://www.omg.org/spec/UML" xmlns:xmi="http://www.omg.org/spec/XMI">
+  <uml:Model xmi:type="uml:Model" xmi:id="eee1b65b-83d5-4ff7-906d-a812e87c85b2">
+    <packagedElement xmi:type="uml:Package" xmi:id="69dfce01-f817-451f-b263-094da8d3fb9c" name="Use Case View">
+      <packagedElement xmi:type="uml:Actor" xmi:id="b151f41e-c3cf-41b7-8e07-c913c383bdf3" name="Player" />
+      <packagedElement xmi:type="uml:UseCase" xmi:id="e02a1516-e4be-4082-9ae5-f26a074163af" name="Control PacMan" />
+      <packagedElement xmi:type="uml:UseCase" xmi:id="7e62301b-a8b2-483a-bc52-c5fb345943bb" name="View Maze" />
+      <packagedElement xmi:type="uml:Association" xmi:id="e1bbe2d2-6bc8-4fcc-8619-65cfcf6d64c9">
+        <memberEnd xmi:idref="be9f44cb-ce79-498e-97c9-f5b843c87255" />
+        <memberEnd xmi:idref="7c0586bb-40eb-4819-b2b2-7a602e61a9f0" />
+        <ownedEnd xmi:type="uml:Property" xmi:id="be9f44cb-ce79-498e-97c9-f5b843c87255" featuringClassifier="e1bbe2d2-6bc8-4fcc-8619-65cfcf6d64c9" type="b151f41e-c3cf-41b7-8e07-c913c383bdf3" association="e1bbe2d2-6bc8-4fcc-8619-65cfcf6d64c9" />
+        <ownedEnd xmi:type="uml:Property" xmi:id="7c0586bb-40eb-4819-b2b2-7a602e61a9f0" featuringClassifier="e1bbe2d2-6bc8-4fcc-8619-65cfcf6d64c9" type="e02a1516-e4be-4082-9ae5-f26a074163af" association="e1bbe2d2-6bc8-4fcc-8619-65cfcf6d64c9" />
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="1b4dec51-769b-4f07-ad77-9856c11fa3b1">
+        <memberEnd xmi:idref="12f5cdc9-32ac-4cc4-974e-54ef2d0aa7da" />
+        <memberEnd xmi:idref="1b6c53dc-9034-4abc-bd42-ab82a343abf0" />
+        <ownedEnd xmi:type="uml:Property" xmi:id="12f5cdc9-32ac-4cc4-974e-54ef2d0aa7da" featuringClassifier="1b4dec51-769b-4f07-ad77-9856c11fa3b1" type="b151f41e-c3cf-41b7-8e07-c913c383bdf3" association="1b4dec51-769b-4f07-ad77-9856c11fa3b1" />
+        <ownedEnd xmi:type="uml:Property" xmi:id="1b6c53dc-9034-4abc-bd42-ab82a343abf0" featuringClassifier="1b4dec51-769b-4f07-ad77-9856c11fa3b1" type="7e62301b-a8b2-483a-bc52-c5fb345943bb" association="1b4dec51-769b-4f07-ad77-9856c11fa3b1" />
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="a86ba1de-e6f6-49bf-a267-8b5f3a44b766" name="Logical View">
+      <packagedElement xmi:type="uml:Enumeration" xmi:id="55feec0a-4f71-4fce-b1e3-2c1a6abc4424" name="Direction">
+        <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="9afcd658-0938-4036-9048-f3291b7d7357" name="Up" />
+        <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="d7e454da-eff2-47a2-8a58-f0798b3a2992" name="Down" />
+        <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="d77c8b31-e9f1-4653-9809-023f44b26409" name="Right" />
+        <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="804c861a-06ab-4034-b429-b18cfc451d25" name="Left" />
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="566a0577-f26d-419b-a3bb-ce8d02cd8c70" name="Path" />
+      <packagedElement xmi:type="uml:Class" xmi:id="9dc3aeba-5e37-4596-b842-7ab8f2dde672" name="Field">
+        <ownedOperation xmi:type="uml:Operation" xmi:id="0c1885de-c27e-457a-bc49-66d79bdd73ef" name="Accept" featuringClassifier="9dc3aeba-5e37-4596-b842-7ab8f2dde672">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="ca6d3d57-b688-4567-a199-12f9ae4b19be" name="t" type="795a0782-71a9-4260-848a-25602c2a963c" />
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="0f710cc5-fbab-4703-b14d-816828dd46a3" name="Remove" featuringClassifier="9dc3aeba-5e37-4596-b842-7ab8f2dde672">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="b5655f5b-93d7-494d-b919-edaddc83f076" name="t" type="795a0782-71a9-4260-848a-25602c2a963c" />
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="2c5155bd-6140-4119-a6c1-a90bfa30e9e2" name="Step" featuringClassifier="9dc3aeba-5e37-4596-b842-7ab8f2dde672" />
+        <ownedOperation xmi:type="uml:Operation" xmi:id="3c5b225d-bd8c-41df-afe7-65d8385433f1" name="ResetTimeSincePacman" featuringClassifier="9dc3aeba-5e37-4596-b842-7ab8f2dde672" />
+        <ownedOperation xmi:type="uml:Operation" xmi:id="01384134-a2ec-4322-8fee-64c2eae42ee6" name="GetTimeSincePacman" featuringClassifier="9dc3aeba-5e37-4596-b842-7ab8f2dde672">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="eb132349-6fa8-43cc-b9b8-e271641a6cc2" type="ae68f04e-e685-4fe7-b82a-95e0ef6fadfe" direction="Return" />
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="22b473c3-c326-4bb4-8d8b-5a165f3f4e38" name="GetNeighbor" featuringClassifier="9dc3aeba-5e37-4596-b842-7ab8f2dde672">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="1d1fe758-3611-4f49-8923-b20e3cbb7af4" type="9dc3aeba-5e37-4596-b842-7ab8f2dde672" direction="Return" />
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="fab64549-0c89-4f6c-9cde-219693abb904" name="d" type="55feec0a-4f71-4fce-b1e3-2c1a6abc4424" />
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="b32a25e3-08b6-481a-8e8f-04d338e32fef" name="SetNeighbor" featuringClassifier="9dc3aeba-5e37-4596-b842-7ab8f2dde672">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="592b225c-0386-44c9-bc98-db4250925f69" name="d" type="55feec0a-4f71-4fce-b1e3-2c1a6abc4424" />
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="3d515362-1308-4131-b171-fac3364c39f9" name="f" type="9dc3aeba-5e37-4596-b842-7ab8f2dde672" />
+        </ownedOperation>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="bd65f2c2-de7a-4d6e-ba83-76854adf49f5" name="timeSincePacman" visibility="Private" featuringClassifier="9dc3aeba-5e37-4596-b842-7ab8f2dde672" type="ae68f04e-e685-4fe7-b82a-95e0ef6fadfe" />
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="c61f1c03-21fc-4218-8414-b9878b9fda52">
+        <memberEnd xmi:idref="ea66845a-a235-4436-a9ff-7d205767ca2b" />
+        <memberEnd xmi:idref="282541c6-25e3-427d-be28-57115687b6b4" />
+        <ownedEnd xmi:type="uml:Property" xmi:id="ea66845a-a235-4436-a9ff-7d205767ca2b" featuringClassifier="c61f1c03-21fc-4218-8414-b9878b9fda52" type="9dc3aeba-5e37-4596-b842-7ab8f2dde672" association="c61f1c03-21fc-4218-8414-b9878b9fda52">
+          <qualifier xmi:type="uml:Property" xmi:id="fe0a5940-bb62-4454-a150-6796af8c37cb" name="Direction" visibility="Private" />
+        </ownedEnd>
+        <ownedEnd xmi:type="uml:Property" xmi:id="282541c6-25e3-427d-be28-57115687b6b4" name="neighbors" visibility="Private" featuringClassifier="c61f1c03-21fc-4218-8414-b9878b9fda52" type="9dc3aeba-5e37-4596-b842-7ab8f2dde672" association="c61f1c03-21fc-4218-8414-b9878b9fda52">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="8af25ece-1a62-44cb-85ed-c997e42c4856" value="1" />
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="afe7bb51-08d7-47e3-ba23-6ce8de1ad9c9" />
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="a4169835-1998-4325-b232-b5a624cb9680">
+        <supplier xmi:idref="55feec0a-4f71-4fce-b1e3-2c1a6abc4424" />
+        <client xmi:idref="9dc3aeba-5e37-4596-b842-7ab8f2dde672" />
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="b4a9d846-c295-487d-a6f5-9b275a1f0bc2">
+        <memberEnd xmi:idref="fe4b3cd3-4144-45e8-898d-54b561328191" />
+        <memberEnd xmi:idref="b43d90e7-c027-46a5-ae52-24efde4423e6" />
+        <ownedEnd xmi:type="uml:Property" xmi:id="fe4b3cd3-4144-45e8-898d-54b561328191" featuringClassifier="b4a9d846-c295-487d-a6f5-9b275a1f0bc2" type="566a0577-f26d-419b-a3bb-ce8d02cd8c70" association="b4a9d846-c295-487d-a6f5-9b275a1f0bc2" />
+        <ownedEnd xmi:type="uml:Property" xmi:id="b43d90e7-c027-46a5-ae52-24efde4423e6" name="fields" visibility="Private" featuringClassifier="b4a9d846-c295-487d-a6f5-9b275a1f0bc2" type="9dc3aeba-5e37-4596-b842-7ab8f2dde672" association="b4a9d846-c295-487d-a6f5-9b275a1f0bc2">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="6b4ae1fc-a4be-4662-8a51-2c32a30ea56c" value="-1" />
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="6ad80824-079c-4430-9234-a48b29983ff1" />
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Interface" xmi:id="57be1635-7881-42f2-86ac-c6a37e49f18a" name="Steppable">
+        <ownedOperation xmi:type="uml:Operation" xmi:id="9ca70849-90da-43d3-99fc-a58342d23e20" name="Step" featuringClassifier="57be1635-7881-42f2-86ac-c6a37e49f18a" />
+      </packagedElement>
+      <packagedElement xmi:type="uml:Realization" xmi:id="21d03db8-a21d-4861-992e-7e63fd85717f">
+        <supplier xmi:idref="57be1635-7881-42f2-86ac-c6a37e49f18a" />
+        <client xmi:idref="9dc3aeba-5e37-4596-b842-7ab8f2dde672" />
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="795a0782-71a9-4260-848a-25602c2a963c" name="Thing">
+        <ownedOperation xmi:type="uml:Operation" xmi:id="52416286-c7da-4af1-8aa3-28c9c960af0e" name="CollideWith" featuringClassifier="795a0782-71a9-4260-848a-25602c2a963c">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="38c5afc1-ed38-47a3-b118-a504eb7020bf" name="t" type="795a0782-71a9-4260-848a-25602c2a963c" />
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="ad8b3344-9ea6-4e34-9816-38153c85eb93" name="HitBy" featuringClassifier="795a0782-71a9-4260-848a-25602c2a963c">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="fa6f7842-da0e-492b-b7c5-322adc6c9692" name="p" type="9ed319dc-a982-474f-86cc-0232f111ea80" />
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="6ba827a6-b666-44cc-9c1d-f24dfeecf93e" name="HitBy" featuringClassifier="795a0782-71a9-4260-848a-25602c2a963c">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="f085c9d6-e1f6-4af7-adc8-ffff71e4eae2" name="m" type="32b2c41d-7ebc-4f9a-8d7b-90ff1f4eb2f3" />
+        </ownedOperation>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="c5bb934b-12f2-4c85-8d97-a1521360b7ab">
+        <memberEnd xmi:idref="e1b5ae34-1aad-496b-9fed-ef51c01afae8" />
+        <memberEnd xmi:idref="c26c6dcd-e119-4c58-b3f6-2576f9e054fe" />
+        <ownedEnd xmi:type="uml:Property" xmi:id="e1b5ae34-1aad-496b-9fed-ef51c01afae8" name="things" visibility="Private" featuringClassifier="c5bb934b-12f2-4c85-8d97-a1521360b7ab" type="795a0782-71a9-4260-848a-25602c2a963c" association="c5bb934b-12f2-4c85-8d97-a1521360b7ab">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="b34db3d3-f834-4cbd-8954-b75a1d374b41" value="-1" />
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="420477d9-eafb-4eed-8be4-248fe6ce2315" />
+        </ownedEnd>
+        <ownedEnd xmi:type="uml:Property" xmi:id="c26c6dcd-e119-4c58-b3f6-2576f9e054fe" name="field" visibility="Private" featuringClassifier="c5bb934b-12f2-4c85-8d97-a1521360b7ab" type="9dc3aeba-5e37-4596-b842-7ab8f2dde672" association="c5bb934b-12f2-4c85-8d97-a1521360b7ab">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="90614c26-68ba-4048-b991-f71a9e75d487" value="1" />
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="582386c5-f373-485f-b14f-21dcbbc0bbb7" />
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="9ed319dc-a982-474f-86cc-0232f111ea80" name="Pacman">
+        <ownedOperation xmi:type="uml:Operation" xmi:id="0f9429b5-133d-47f7-97b7-a7d24c0ee000" name="CollideWith" featuringClassifier="9ed319dc-a982-474f-86cc-0232f111ea80">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="80536e00-0860-4363-bcae-cc2a1bb86f02" name="t" type="795a0782-71a9-4260-848a-25602c2a963c" />
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="85375e5a-3bbb-45a1-9ea3-032150538ee2" name="HitBy" featuringClassifier="9ed319dc-a982-474f-86cc-0232f111ea80">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="460acbcc-ce4f-4b62-9586-aa05e5edc32a" name="m" type="32b2c41d-7ebc-4f9a-8d7b-90ff1f4eb2f3" />
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="842233f4-6b80-45f3-a0aa-2ce78a4d4b98" name="Move" featuringClassifier="9ed319dc-a982-474f-86cc-0232f111ea80">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="a31eb709-4e73-4017-b229-b6afe3ede976" name="d" type="55feec0a-4f71-4fce-b1e3-2c1a6abc4424" />
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="13217945-c8bf-4cb6-bfdd-b10ffce272c8" name="Die" featuringClassifier="9ed319dc-a982-474f-86cc-0232f111ea80" />
+        <ownedOperation xmi:type="uml:Operation" xmi:id="daad2a47-9f68-423d-8659-bcbc7df8def2" name="PlaceBomb" featuringClassifier="9ed319dc-a982-474f-86cc-0232f111ea80" />
+        <ownedOperation xmi:type="uml:Operation" xmi:id="17f749c6-ec1e-4ef5-9da3-0fee1255b560" name="AddPoints" featuringClassifier="9ed319dc-a982-474f-86cc-0232f111ea80">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="94bac60d-b83f-4ddc-829f-666931eed671" name="p" type="ae68f04e-e685-4fe7-b82a-95e0ef6fadfe" />
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="48339067-df7f-4f0b-bf65-e4c7495f4dc6" name="AddLife" featuringClassifier="9ed319dc-a982-474f-86cc-0232f111ea80">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="9c9f7b07-b169-4f4c-939f-44e3f33a004b" type="652cfb86-2d2d-40ea-a499-63ad187f400e" direction="Return" />
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="be2df083-ba4e-4a7c-947c-8c1e59230f3b" name="AddBomb" featuringClassifier="9ed319dc-a982-474f-86cc-0232f111ea80">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="e9c7de64-c709-4eaf-9ba9-118ace4a1a58" type="652cfb86-2d2d-40ea-a499-63ad187f400e" direction="Return" />
+        </ownedOperation>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="df39a6bf-2c98-46e0-b36c-cc8801169f1d" name="points" visibility="Private" featuringClassifier="9ed319dc-a982-474f-86cc-0232f111ea80" type="ae68f04e-e685-4fe7-b82a-95e0ef6fadfe" />
+        <ownedAttribute xmi:type="uml:Property" xmi:id="75b6cede-9a38-4461-8e24-da73a17f3221" name="lives" visibility="Private" featuringClassifier="9ed319dc-a982-474f-86cc-0232f111ea80" type="ae68f04e-e685-4fe7-b82a-95e0ef6fadfe" />
+        <ownedAttribute xmi:type="uml:Property" xmi:id="a2ad80e4-5360-4382-a7be-d27086ceb546" name="bombs" visibility="Private" featuringClassifier="9ed319dc-a982-474f-86cc-0232f111ea80" type="ae68f04e-e685-4fe7-b82a-95e0ef6fadfe" />
+        <generalization xmi:type="uml:Generalization" xmi:id="47240659-0560-4d2e-bd06-8cbfe4a0872d" general="795a0782-71a9-4260-848a-25602c2a963c" />
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="32b2c41d-7ebc-4f9a-8d7b-90ff1f4eb2f3" name="Monster" isAbstract="true">
+        <ownedOperation xmi:type="uml:Operation" xmi:id="d249fca3-65ba-476d-8bd8-d0cc2936005b" name="CollideWith" featuringClassifier="32b2c41d-7ebc-4f9a-8d7b-90ff1f4eb2f3">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="ed82482f-e60b-4afd-a058-e543aacba8bd" name="t" type="795a0782-71a9-4260-848a-25602c2a963c" />
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="804a2e22-bc25-4e73-84ba-08805a02c35b" name="HitBy" featuringClassifier="32b2c41d-7ebc-4f9a-8d7b-90ff1f4eb2f3">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="03a9e710-adf9-4048-b357-901967f5093d" name="p" type="9ed319dc-a982-474f-86cc-0232f111ea80" />
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="4ca9eea8-332d-4df8-b48a-28120790bdb1" name="Die" featuringClassifier="32b2c41d-7ebc-4f9a-8d7b-90ff1f4eb2f3" />
+        <ownedOperation xmi:type="uml:Operation" xmi:id="5e31c1e2-27dc-4b8d-aa87-204766e80650" name="Move" featuringClassifier="32b2c41d-7ebc-4f9a-8d7b-90ff1f4eb2f3">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="cb56b621-7b6a-42f0-9ecd-1e4c23850010" name="d" type="55feec0a-4f71-4fce-b1e3-2c1a6abc4424" />
+        </ownedOperation>
+        <generalization xmi:type="uml:Generalization" xmi:id="ad4fca7a-8c73-4634-9831-a08eb2ddb484" general="795a0782-71a9-4260-848a-25602c2a963c" />
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="3b0a3450-e627-46ec-b423-d70763a4153a" name="Pellet">
+        <ownedOperation xmi:type="uml:Operation" xmi:id="47022b42-8e19-4a8e-aa4a-52e3199b76c1" name="HitBy" featuringClassifier="3b0a3450-e627-46ec-b423-d70763a4153a">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="1d9da8ab-d68a-414a-aa33-2fea16d87934" name="p" type="9ed319dc-a982-474f-86cc-0232f111ea80" />
+        </ownedOperation>
+        <generalization xmi:type="uml:Generalization" xmi:id="3dd3cb6e-231a-4498-bfdc-c79d2693aeb9" general="795a0782-71a9-4260-848a-25602c2a963c" />
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="7a35719b-6380-4c04-b1c6-bdeb74613940" name="PowerPellet">
+        <ownedOperation xmi:type="uml:Operation" xmi:id="0401e7e0-7a8e-473a-bf42-8130e4989f4b" name="Step" featuringClassifier="7a35719b-6380-4c04-b1c6-bdeb74613940" />
+        <ownedAttribute xmi:type="uml:Property" xmi:id="b173beb3-2629-4967-83cf-d7b5f302a0d5" name="timeCounter" visibility="Private" featuringClassifier="7a35719b-6380-4c04-b1c6-bdeb74613940" type="ae68f04e-e685-4fe7-b82a-95e0ef6fadfe" />
+        <generalization xmi:type="uml:Generalization" xmi:id="9c96ff1c-6c32-43b8-b696-c3e02c25cb33" general="3b0a3450-e627-46ec-b423-d70763a4153a" />
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="015234d0-8f89-4103-a67f-2972f46e78d9" name="BonusPellet">
+        <ownedOperation xmi:type="uml:Operation" xmi:id="ea1def0f-4946-4606-8d74-d525d19940d7" name="HitBy" featuringClassifier="015234d0-8f89-4103-a67f-2972f46e78d9">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="8ee1809f-b650-4b3f-90b8-ac29a9b4c631" name="p" type="9ed319dc-a982-474f-86cc-0232f111ea80" />
+        </ownedOperation>
+        <generalization xmi:type="uml:Generalization" xmi:id="879b2195-0f6b-4c6a-9128-ee3b56d7f4ca" general="7a35719b-6380-4c04-b1c6-bdeb74613940" />
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="53ee2e71-e28a-477c-9555-d9fabb9bf7a3" name="LifePellet">
+        <ownedOperation xmi:type="uml:Operation" xmi:id="f28a16e8-ab2e-4ce1-8650-8b5841336a93" name="HitBy" featuringClassifier="53ee2e71-e28a-477c-9555-d9fabb9bf7a3">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="c1a23536-29f7-4419-b6b2-9d0c76c86255" name="p" type="9ed319dc-a982-474f-86cc-0232f111ea80" />
+        </ownedOperation>
+        <generalization xmi:type="uml:Generalization" xmi:id="e0c224ab-4f33-41ba-8033-128a9c791dce" general="7a35719b-6380-4c04-b1c6-bdeb74613940" />
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="9657f46f-1471-4077-bdb4-d833b31ea04c" name="BombPellet">
+        <ownedOperation xmi:type="uml:Operation" xmi:id="08674062-7a49-4a0b-818c-ecb393933dcd" name="HitBy" featuringClassifier="9657f46f-1471-4077-bdb4-d833b31ea04c">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="2bc27be2-05dc-476b-8612-79752f2609f4" name="p" type="9ed319dc-a982-474f-86cc-0232f111ea80" />
+        </ownedOperation>
+        <generalization xmi:type="uml:Generalization" xmi:id="b0c84792-f79f-4925-aa4d-f42c52e2c826" general="7a35719b-6380-4c04-b1c6-bdeb74613940" />
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="bab8d031-d9ee-4f39-b956-5f1d5ca6fdfc" name="Bomb">
+        <ownedOperation xmi:type="uml:Operation" xmi:id="049bfe2f-9219-4f8d-be15-5433352becf1" name="HitBy" featuringClassifier="bab8d031-d9ee-4f39-b956-5f1d5ca6fdfc">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="4c3527bb-4c21-463b-a240-44f587cde86a" name="p" type="9ed319dc-a982-474f-86cc-0232f111ea80" />
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="8729eea9-fa62-4969-a7cc-157ad5c90bea" name="HitBy" featuringClassifier="bab8d031-d9ee-4f39-b956-5f1d5ca6fdfc">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="0bcb7037-7a0c-42a1-8c45-dd68a76d6f6a" name="m" type="32b2c41d-7ebc-4f9a-8d7b-90ff1f4eb2f3" />
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="5f660ae8-a742-4e0c-b64c-9da04d07279b" name="Step" featuringClassifier="bab8d031-d9ee-4f39-b956-5f1d5ca6fdfc" />
+        <ownedAttribute xmi:type="uml:Property" xmi:id="f8019353-fa0c-4d33-8c21-0dd3a4ad49d0" name="timeCounter" visibility="Private" featuringClassifier="bab8d031-d9ee-4f39-b956-5f1d5ca6fdfc" type="ae68f04e-e685-4fe7-b82a-95e0ef6fadfe" />
+        <generalization xmi:type="uml:Generalization" xmi:id="48e4f79b-86b7-4b74-8d21-7f6ee32a1cca" general="795a0782-71a9-4260-848a-25602c2a963c" />
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="82ee1add-dff2-4b2a-b905-40d7b46ed78c" name="Blinky">
+        <ownedOperation xmi:type="uml:Operation" xmi:id="f53ecdcd-b3ac-49d5-9cd4-4f815acf6be6" name="Step" featuringClassifier="82ee1add-dff2-4b2a-b905-40d7b46ed78c" />
+        <generalization xmi:type="uml:Generalization" xmi:id="c6812016-a817-4fd8-ab7e-9e243d285d6f" general="32b2c41d-7ebc-4f9a-8d7b-90ff1f4eb2f3" />
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="cfc5515c-be6c-4dae-b81e-61b9482d3dff" name="Clyde">
+        <ownedOperation xmi:type="uml:Operation" xmi:id="23261043-bbde-49e4-a2c1-30b1234e927f" name="Step" featuringClassifier="cfc5515c-be6c-4dae-b81e-61b9482d3dff" />
+        <generalization xmi:type="uml:Generalization" xmi:id="e369f438-ab82-4a7e-a041-630e5a8e01a0" general="32b2c41d-7ebc-4f9a-8d7b-90ff1f4eb2f3" />
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="f01d3b7a-7265-4b4e-b103-4f00797c2d8f" name="Pinky">
+        <ownedOperation xmi:type="uml:Operation" xmi:id="9c09000e-63aa-41bc-9dc9-62552ba6e619" name="Step" featuringClassifier="f01d3b7a-7265-4b4e-b103-4f00797c2d8f" />
+        <generalization xmi:type="uml:Generalization" xmi:id="355e4150-dc0e-446f-a164-d3db79da8b03" general="32b2c41d-7ebc-4f9a-8d7b-90ff1f4eb2f3" />
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="bc389d0d-c918-4569-bb66-f4a1c422187c" name="Inky">
+        <ownedOperation xmi:type="uml:Operation" xmi:id="dd7b74f9-ba33-4da4-be86-534a278eccc6" name="Step" featuringClassifier="bc389d0d-c918-4569-bb66-f4a1c422187c" />
+        <generalization xmi:type="uml:Generalization" xmi:id="3651e98f-3a93-4a1b-9fda-62b4aceb56f3" general="32b2c41d-7ebc-4f9a-8d7b-90ff1f4eb2f3" />
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="19750bc3-fb08-4662-ac65-cc262bf5c1a0" name="Timer">
+        <ownedOperation xmi:type="uml:Operation" xmi:id="d19cbb9b-4750-4d7e-8488-18746f9b98c8" name="Tick" featuringClassifier="19750bc3-fb08-4662-ac65-cc262bf5c1a0" />
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="c3aa1d20-4fcc-4765-8536-bbb0f8c7e65f">
+        <memberEnd xmi:idref="4c85972b-26ef-4403-a72f-458d84442fc7" />
+        <memberEnd xmi:idref="4e3dbe70-ec8a-4a13-a0be-15a953861cda" />
+        <ownedEnd xmi:type="uml:Property" xmi:id="4c85972b-26ef-4403-a72f-458d84442fc7" featuringClassifier="c3aa1d20-4fcc-4765-8536-bbb0f8c7e65f" type="19750bc3-fb08-4662-ac65-cc262bf5c1a0" association="c3aa1d20-4fcc-4765-8536-bbb0f8c7e65f" />
+        <ownedEnd xmi:type="uml:Property" xmi:id="4e3dbe70-ec8a-4a13-a0be-15a953861cda" featuringClassifier="c3aa1d20-4fcc-4765-8536-bbb0f8c7e65f" type="57be1635-7881-42f2-86ac-c6a37e49f18a" association="c3aa1d20-4fcc-4765-8536-bbb0f8c7e65f">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="e3513e3b-8004-4b68-8cb2-9619cd540daf" value="-1" />
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="87781e9b-aa51-4609-a5e5-fc5ea00b90e8" />
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="c8b78f0c-a9ce-4de9-aa57-60fe38c74599" name="Maze">
+        <ownedOperation xmi:type="uml:Operation" xmi:id="df2ff9f9-450e-43e1-84ed-a907a080a565" name="AddPellet" featuringClassifier="c8b78f0c-a9ce-4de9-aa57-60fe38c74599">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="b7eb9d0f-a60c-4e0f-ba23-ae6aed74b3fd" name="p" type="3b0a3450-e627-46ec-b423-d70763a4153a" />
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="d4e7135b-d2dc-4431-b7c9-fd04a04da53d" name="RemovePellet" featuringClassifier="c8b78f0c-a9ce-4de9-aa57-60fe38c74599">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="cfb39fc0-79ae-4caf-86b9-30363e728727" name="p" type="3b0a3450-e627-46ec-b423-d70763a4153a" />
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="03ab7f98-44b0-416e-a63e-edf5f1f58909" name="GetPacmansPath" featuringClassifier="c8b78f0c-a9ce-4de9-aa57-60fe38c74599">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="2f4769bd-43e8-48a3-943c-f8217aa0dcb6" type="566a0577-f26d-419b-a3bb-ce8d02cd8c70" direction="Return" />
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="d9228a77-692a-4cf9-aa37-bcdf6bd78322" name="from" type="9dc3aeba-5e37-4596-b842-7ab8f2dde672" />
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="3d8c43f4-ed36-418f-80e5-1f58c0e59ed5" name="GetShortestPathToPacman" featuringClassifier="c8b78f0c-a9ce-4de9-aa57-60fe38c74599">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="d796088f-5180-44e6-b9b4-5a146843248e" type="566a0577-f26d-419b-a3bb-ce8d02cd8c70" direction="Return" />
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="2d5b7211-b8da-4a66-90d5-2e2827b0f9d4" name="from" type="9dc3aeba-5e37-4596-b842-7ab8f2dde672" />
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="0913f943-a57a-4968-844c-b1efcb73e357" name="CreatePowerPellet" featuringClassifier="c8b78f0c-a9ce-4de9-aa57-60fe38c74599" />
+        <ownedOperation xmi:type="uml:Operation" xmi:id="7884fdf3-4e54-4ff2-805b-07f17daa6d6a" name="Step" featuringClassifier="c8b78f0c-a9ce-4de9-aa57-60fe38c74599" />
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="47f8d293-a951-4ac3-8ded-0e4035007a40" name="Game">
+        <ownedOperation xmi:type="uml:Operation" xmi:id="b97ecc7c-ee9e-4732-883f-8026af5cd787" name="StartGame" featuringClassifier="47f8d293-a951-4ac3-8ded-0e4035007a40" />
+        <ownedOperation xmi:type="uml:Operation" xmi:id="b7bf3620-a47e-4efc-8220-e9302cb96cce" name="NextLevel" featuringClassifier="47f8d293-a951-4ac3-8ded-0e4035007a40" />
+        <ownedOperation xmi:type="uml:Operation" xmi:id="8f828be4-08d8-463f-ba81-870252ae2859" name="EndGame" featuringClassifier="47f8d293-a951-4ac3-8ded-0e4035007a40" />
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="528a26d1-d7d3-4d26-9ae2-8297641b3a27">
+        <memberEnd xmi:idref="188a6a06-b38a-4ecc-a0d1-c700ac44f98b" />
+        <memberEnd xmi:idref="a67ca491-0f35-45c0-9925-6cd393374339" />
+        <ownedEnd xmi:type="uml:Property" xmi:id="188a6a06-b38a-4ecc-a0d1-c700ac44f98b" featuringClassifier="528a26d1-d7d3-4d26-9ae2-8297641b3a27" type="c8b78f0c-a9ce-4de9-aa57-60fe38c74599" association="528a26d1-d7d3-4d26-9ae2-8297641b3a27" />
+        <ownedEnd xmi:type="uml:Property" xmi:id="a67ca491-0f35-45c0-9925-6cd393374339" featuringClassifier="528a26d1-d7d3-4d26-9ae2-8297641b3a27" type="9dc3aeba-5e37-4596-b842-7ab8f2dde672" aggregation="Composite" association="528a26d1-d7d3-4d26-9ae2-8297641b3a27" />
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="3fa3b5ad-8677-42e5-b9f4-a73b322dd20b">
+        <memberEnd xmi:idref="19fe7e82-4236-43be-9588-037267931e00" />
+        <memberEnd xmi:idref="4985f370-3280-446d-9e7c-2b48271d5ba1" />
+        <ownedEnd xmi:type="uml:Property" xmi:id="19fe7e82-4236-43be-9588-037267931e00" name="fields" visibility="Private" featuringClassifier="3fa3b5ad-8677-42e5-b9f4-a73b322dd20b" type="9dc3aeba-5e37-4596-b842-7ab8f2dde672" association="3fa3b5ad-8677-42e5-b9f4-a73b322dd20b">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="fd44dd2a-5c23-4bac-9b1b-e6aa6be32862" value="-1" />
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="12c26494-0aa7-4e29-9de7-b230a2bf905c" />
+        </ownedEnd>
+        <ownedEnd xmi:type="uml:Property" xmi:id="4985f370-3280-446d-9e7c-2b48271d5ba1" featuringClassifier="3fa3b5ad-8677-42e5-b9f4-a73b322dd20b" type="c8b78f0c-a9ce-4de9-aa57-60fe38c74599" aggregation="Composite" association="3fa3b5ad-8677-42e5-b9f4-a73b322dd20b" />
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="8a3cbde3-cc77-46aa-8097-1dc2ef802b7c">
+        <memberEnd xmi:idref="a05689fa-1ab3-408a-98cd-8f93fa4973fa" />
+        <memberEnd xmi:idref="0502f67a-f51b-4a7b-8ce7-7cf957868233" />
+        <ownedEnd xmi:type="uml:Property" xmi:id="a05689fa-1ab3-408a-98cd-8f93fa4973fa" name="levels" visibility="Private" featuringClassifier="8a3cbde3-cc77-46aa-8097-1dc2ef802b7c" type="c8b78f0c-a9ce-4de9-aa57-60fe38c74599" association="8a3cbde3-cc77-46aa-8097-1dc2ef802b7c">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="a5f458d8-14c9-4323-82b8-31b0d80b75d9" value="-1" />
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="ca0eb8db-86d9-42dc-a75a-83c2fb9fa912" />
+        </ownedEnd>
+        <ownedEnd xmi:type="uml:Property" xmi:id="0502f67a-f51b-4a7b-8ce7-7cf957868233" featuringClassifier="8a3cbde3-cc77-46aa-8097-1dc2ef802b7c" type="47f8d293-a951-4ac3-8ded-0e4035007a40" aggregation="Composite" association="8a3cbde3-cc77-46aa-8097-1dc2ef802b7c" />
+      </packagedElement>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="fea9af1a-babb-4b84-ab6b-b75c3bf1ec0c">
+        <supplier xmi:idref="c8b78f0c-a9ce-4de9-aa57-60fe38c74599" />
+        <client xmi:idref="566a0577-f26d-419b-a3bb-ce8d02cd8c70" />
+      </packagedElement>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="641cadb8-10f3-4694-a327-ff9ce57ecbc2">
+        <supplier xmi:idref="566a0577-f26d-419b-a3bb-ce8d02cd8c70" />
+        <client xmi:idref="c8b78f0c-a9ce-4de9-aa57-60fe38c74599" />
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="68259dbf-d337-4050-907f-ed51a58e692b">
+        <memberEnd xmi:idref="82fd022b-3ba8-4fc3-9d9f-f0afde681163" />
+        <memberEnd xmi:idref="e31f5f9a-4313-4494-8eda-0c9b70b87756" />
+        <ownedEnd xmi:type="uml:Property" xmi:id="82fd022b-3ba8-4fc3-9d9f-f0afde681163" name="maze" visibility="Private" featuringClassifier="68259dbf-d337-4050-907f-ed51a58e692b" type="c8b78f0c-a9ce-4de9-aa57-60fe38c74599" association="68259dbf-d337-4050-907f-ed51a58e692b">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="6a60ff6a-275e-47df-95c9-7b38e13b41df" value="1" />
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="78061481-3040-4b55-97c6-a6944a3a9401" />
+        </ownedEnd>
+        <ownedEnd xmi:type="uml:Property" xmi:id="e31f5f9a-4313-4494-8eda-0c9b70b87756" name="remainingPellets" visibility="Private" featuringClassifier="68259dbf-d337-4050-907f-ed51a58e692b" type="3b0a3450-e627-46ec-b423-d70763a4153a" association="68259dbf-d337-4050-907f-ed51a58e692b">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="d780df16-3009-48c5-ab9a-bc79731c7c37" value="-1" />
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="153d4333-be35-4c6b-9ef9-482fafb09124" />
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Realization" xmi:id="89e63426-34be-4955-ab3b-2ee3df1fa5a3">
+        <supplier xmi:idref="57be1635-7881-42f2-86ac-c6a37e49f18a" />
+        <client xmi:idref="bab8d031-d9ee-4f39-b956-5f1d5ca6fdfc" />
+      </packagedElement>
+      <packagedElement xmi:type="uml:Realization" xmi:id="d56932cb-c5e3-4e47-bf15-c1f8ab7c7699">
+        <supplier xmi:idref="57be1635-7881-42f2-86ac-c6a37e49f18a" />
+        <client xmi:idref="32b2c41d-7ebc-4f9a-8d7b-90ff1f4eb2f3" />
+      </packagedElement>
+      <packagedElement xmi:type="uml:Realization" xmi:id="5abb6d3a-1cdc-4de8-b1ee-6eb924e5b2e5">
+        <supplier xmi:idref="57be1635-7881-42f2-86ac-c6a37e49f18a" />
+        <client xmi:idref="c8b78f0c-a9ce-4de9-aa57-60fe38c74599" />
+      </packagedElement>
+      <packagedElement xmi:type="uml:Realization" xmi:id="14d1ac24-8cdd-4a65-8652-3f71ea695036">
+        <supplier xmi:idref="57be1635-7881-42f2-86ac-c6a37e49f18a" />
+        <client xmi:idref="7a35719b-6380-4c04-b1c6-bdeb74613940" />
+      </packagedElement>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="bc34145d-49a9-4dac-ab44-72d09c9beb7a">
+        <supplier xmi:idref="c8b78f0c-a9ce-4de9-aa57-60fe38c74599" />
+        <client xmi:idref="cfc5515c-be6c-4dae-b81e-61b9482d3dff" />
+      </packagedElement>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="929fbe11-4cca-4bd1-a645-f17bb8ffd7b6">
+        <supplier xmi:idref="c8b78f0c-a9ce-4de9-aa57-60fe38c74599" />
+        <client xmi:idref="f01d3b7a-7265-4b4e-b103-4f00797c2d8f" />
+      </packagedElement>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="2817fd75-9236-431b-b9d9-32f487ae082e">
+        <supplier xmi:idref="c8b78f0c-a9ce-4de9-aa57-60fe38c74599" />
+        <client xmi:idref="82ee1add-dff2-4b2a-b905-40d7b46ed78c" />
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="7e089e3f-50bc-4447-a41d-94c6f48880a8">
+        <memberEnd xmi:idref="8c8601e7-4deb-41e9-b62a-c976f7a6ea6b" />
+        <memberEnd xmi:idref="b7b2c59b-4b94-41c3-b261-f55c9186dc6c" />
+        <ownedEnd xmi:type="uml:Property" xmi:id="8c8601e7-4deb-41e9-b62a-c976f7a6ea6b" name="pacman" visibility="Private" featuringClassifier="7e089e3f-50bc-4447-a41d-94c6f48880a8" type="9ed319dc-a982-474f-86cc-0232f111ea80" association="7e089e3f-50bc-4447-a41d-94c6f48880a8">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="fd6fdc0f-2d96-4fcb-88f8-261c03ce6fb3" value="1" />
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="515fc8b3-55e5-4eac-84f1-36ef5e7afe92" />
+        </ownedEnd>
+        <ownedEnd xmi:type="uml:Property" xmi:id="b7b2c59b-4b94-41c3-b261-f55c9186dc6c" visibility="Private" featuringClassifier="7e089e3f-50bc-4447-a41d-94c6f48880a8" type="c8b78f0c-a9ce-4de9-aa57-60fe38c74599" association="7e089e3f-50bc-4447-a41d-94c6f48880a8" />
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="b2f717c6-cb48-411f-a1de-f5c3008d1651">
+        <memberEnd xmi:idref="ea394534-c9f5-4a67-bfe5-44d47820605d" />
+        <memberEnd xmi:idref="61faecd3-5e1f-4915-88cb-f4e89f13ce3d" />
+        <ownedEnd xmi:type="uml:Property" xmi:id="ea394534-c9f5-4a67-bfe5-44d47820605d" featuringClassifier="b2f717c6-cb48-411f-a1de-f5c3008d1651" type="47f8d293-a951-4ac3-8ded-0e4035007a40" association="b2f717c6-cb48-411f-a1de-f5c3008d1651" />
+        <ownedEnd xmi:type="uml:Property" xmi:id="61faecd3-5e1f-4915-88cb-f4e89f13ce3d" name="currentLevel" visibility="Private" featuringClassifier="b2f717c6-cb48-411f-a1de-f5c3008d1651" type="c8b78f0c-a9ce-4de9-aa57-60fe38c74599" association="b2f717c6-cb48-411f-a1de-f5c3008d1651">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="6e1bf14c-dba0-44fd-9e24-59c131b1f200" value="1" />
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="99804203-84a8-4be0-88bc-4d14ac85435c" />
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="cc152277-061c-4e4f-9b4b-74f949910e3c">
+        <supplier xmi:idref="47f8d293-a951-4ac3-8ded-0e4035007a40" />
+        <client xmi:idref="9ed319dc-a982-474f-86cc-0232f111ea80" />
+      </packagedElement>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="2f2cb96c-a535-4b0a-91b6-e62271a8ffc1">
+        <supplier xmi:idref="19750bc3-fb08-4662-ac65-cc262bf5c1a0" />
+        <client xmi:idref="57be1635-7881-42f2-86ac-c6a37e49f18a" />
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="20527781-e997-4573-8dfd-feb578acf5f2" name="Component View" />
+    <packagedElement xmi:type="uml:Package" xmi:id="f6400eb2-1b17-405f-83e5-d13535a37223" name="Deployment View" />
+  </uml:Model>
+  <uml:Interaction xmi:type="uml:Interaction" xmi:id="714abb58-1a08-4840-8414-b97c713b8ec0" name="Pacman moves">
+    <message xmi:type="uml:Message" xmi:id="c60d94c1-146f-4cc0-b57e-715cc42d8393" receiveEvent="6e41f918-528d-4d46-aeb4-17bb3638af78" sendEvent="f84812ac-10dc-4afe-b236-25e7d4050c76" signature="842233f4-6b80-45f3-a0aa-2ce78a4d4b98">
+      <argument xmi:type="uml:LiteralString" xmi:id="f4dda326-d55e-4df7-a674-07b11492ae45" value="d" />
+    </message>
+    <message xmi:type="uml:Message" xmi:id="647e7eff-33df-4323-9189-0156391259da" receiveEvent="7ce1d244-2a18-424c-861c-31776533753c" sendEvent="569bc7da-b625-4403-8bba-d38e0e54c899" signature="22b473c3-c326-4bb4-8d8b-5a165f3f4e38">
+      <argument xmi:type="uml:LiteralString" xmi:id="8108e8d6-3bc6-4ef3-9c20-67f1617bbf10" value="d" />
+    </message>
+    <message xmi:type="uml:Message" xmi:id="170164d8-830c-4e73-b27e-7c8fa54cd64c" name="f2" messageSort="Reply" receiveEvent="c660ce9a-fb1e-407a-bef5-db904d738796" sendEvent="1f1ba859-cdac-4b39-b3f2-1e6d3c1e3032" />
+    <message xmi:type="uml:Message" xmi:id="fc3516c4-d5fb-4475-91f9-4a44ae0563a2" receiveEvent="3b489d60-ef5d-43af-990e-ce1be616f150" sendEvent="6ceee1c8-165c-4b02-8093-b61420a8d52d" signature="0f710cc5-fbab-4703-b14d-816828dd46a3">
+      <argument xmi:type="uml:LiteralString" xmi:id="3c30cf3c-883b-4e87-8a26-921c2d3e2589" value="p" />
+    </message>
+    <message xmi:type="uml:Message" xmi:id="437a248e-e5ee-4b65-81d2-7182d3429840" messageSort="Reply" receiveEvent="d5e71238-f12e-4a26-be40-8da32441b198" sendEvent="53e9ab66-f59a-4ef5-bc6f-21f9778d5001" />
+    <message xmi:type="uml:Message" xmi:id="af16395e-f6bd-45df-8459-3cb89671194c" receiveEvent="b4143e0f-4a14-48c2-a480-bad29ac00bf3" sendEvent="cc4963f1-300e-432a-9dc6-b699b9abc318" signature="0c1885de-c27e-457a-bc49-66d79bdd73ef">
+      <argument xmi:type="uml:LiteralString" xmi:id="733f5275-6c19-4938-bec6-da5e3b1d069f" value="p" />
+    </message>
+    <message xmi:type="uml:Message" xmi:id="723f7bf4-717f-4183-b6b4-a788ecc2f434" receiveEvent="7f68949c-5aac-40c7-89ea-da1267272940" sendEvent="3a42e66d-5719-4f0b-8af7-fd33a8904167" signature="52416286-c7da-4af1-8aa3-28c9c960af0e">
+      <argument xmi:type="uml:LiteralString" xmi:id="01c3968f-0b0f-45f7-85b7-7e3dcc79fbe1" value="p" />
+    </message>
+    <message xmi:type="uml:Message" xmi:id="de527ebf-1347-492d-8422-2228b2b1ce32" receiveEvent="f3f95560-4a5a-45d5-8a3b-9ffcc547917f" sendEvent="548bb1f8-a5a9-4f9f-953c-18d95be12275" signature="ad8b3344-9ea6-4e34-9816-38153c85eb93" />
+    <message xmi:type="uml:Message" xmi:id="a4a85e5b-e559-42d3-b573-26cd4588a514" messageSort="Reply" receiveEvent="ae37215e-0969-4591-ba68-359d84f713ca" sendEvent="22d38ff6-52fd-4614-8281-523b22b8c0e3" />
+    <message xmi:type="uml:Message" xmi:id="ec9c2263-4613-4f41-99ab-2885de9d12cd" messageSort="Reply" receiveEvent="b18ca30d-5ed8-4346-95db-e1d4f3076423" sendEvent="3e03498a-a6d4-4b4c-9f62-8de8529f004a" />
+    <message xmi:type="uml:Message" xmi:id="5576f053-4cbf-428f-bf66-07626e696462" messageSort="Reply" receiveEvent="92bd6dd6-2ca9-4d1f-90a0-c8186d2db9d6" sendEvent="9cbbf987-0d9d-404f-8f48-54b2fd3d0459" />
+    <message xmi:type="uml:Message" xmi:id="0535936a-cf14-4bb4-b324-638f2bb5ddd8" receiveEvent="ed482eaf-d813-4464-8166-07886a85f1f9" sendEvent="c849b2fb-1762-4790-b2c8-d1690a046fa5" signature="3c5b225d-bd8c-41df-afe7-65d8385433f1" />
+    <message xmi:type="uml:Message" xmi:id="b454230f-27e1-40bb-bc70-7e56773a3402" messageSort="Reply" receiveEvent="919c5f8b-9f8f-40c2-98ef-a667017841a6" sendEvent="1e33370a-b3e4-4fd9-9d18-1b18ad70f1ab" />
+    <message xmi:type="uml:Message" xmi:id="3fedb3a5-2d66-4ca9-aea9-154d0ad9a8f1" messageSort="Reply" receiveEvent="a1c1189d-74ec-4075-a2fb-a4b6cc213f3e" sendEvent="6d34c357-9221-465e-aab8-48a00dcbb611" />
+    <lifeline xmi:type="uml:Lifeline" xmi:id="e39b2309-3727-4d98-9494-3996c255b6c9">
+      <coveredBy xmi:idref="f84812ac-10dc-4afe-b236-25e7d4050c76" />
+      <coveredBy xmi:idref="a1c1189d-74ec-4075-a2fb-a4b6cc213f3e" />
+    </lifeline>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="0b80f5cd-1dd7-41f6-b2c6-6eb0e3c3fa68" classifier="9ed319dc-a982-474f-86cc-0232f111ea80">
+      <coveredBy xmi:idref="6e41f918-528d-4d46-aeb4-17bb3638af78" />
+      <coveredBy xmi:idref="569bc7da-b625-4403-8bba-d38e0e54c899" />
+      <coveredBy xmi:idref="c660ce9a-fb1e-407a-bef5-db904d738796" />
+      <coveredBy xmi:idref="6ceee1c8-165c-4b02-8093-b61420a8d52d" />
+      <coveredBy xmi:idref="d5e71238-f12e-4a26-be40-8da32441b198" />
+      <coveredBy xmi:idref="cc4963f1-300e-432a-9dc6-b699b9abc318" />
+      <coveredBy xmi:idref="7f68949c-5aac-40c7-89ea-da1267272940" />
+      <coveredBy xmi:idref="548bb1f8-a5a9-4f9f-953c-18d95be12275" />
+      <coveredBy xmi:idref="ae37215e-0969-4591-ba68-359d84f713ca" />
+      <coveredBy xmi:idref="3e03498a-a6d4-4b4c-9f62-8de8529f004a" />
+      <coveredBy xmi:idref="92bd6dd6-2ca9-4d1f-90a0-c8186d2db9d6" />
+      <coveredBy xmi:idref="c849b2fb-1762-4790-b2c8-d1690a046fa5" />
+      <coveredBy xmi:idref="919c5f8b-9f8f-40c2-98ef-a667017841a6" />
+      <coveredBy xmi:idref="6d34c357-9221-465e-aab8-48a00dcbb611" />
+    </lifeline>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="22a014b0-d790-4844-a636-9fd2eeca5dbb" classifier="9dc3aeba-5e37-4596-b842-7ab8f2dde672">
+      <coveredBy xmi:idref="7ce1d244-2a18-424c-861c-31776533753c" />
+      <coveredBy xmi:idref="1f1ba859-cdac-4b39-b3f2-1e6d3c1e3032" />
+      <coveredBy xmi:idref="3b489d60-ef5d-43af-990e-ce1be616f150" />
+      <coveredBy xmi:idref="53e9ab66-f59a-4ef5-bc6f-21f9778d5001" />
+    </lifeline>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="de27e863-58b8-4b09-9620-5e51919d37b8" classifier="9dc3aeba-5e37-4596-b842-7ab8f2dde672">
+      <coveredBy xmi:idref="b4143e0f-4a14-48c2-a480-bad29ac00bf3" />
+      <coveredBy xmi:idref="3a42e66d-5719-4f0b-8af7-fd33a8904167" />
+      <coveredBy xmi:idref="b18ca30d-5ed8-4346-95db-e1d4f3076423" />
+      <coveredBy xmi:idref="9cbbf987-0d9d-404f-8f48-54b2fd3d0459" />
+      <coveredBy xmi:idref="ed482eaf-d813-4464-8166-07886a85f1f9" />
+      <coveredBy xmi:idref="1e33370a-b3e4-4fd9-9d18-1b18ad70f1ab" />
+    </lifeline>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="2a7d4ec6-1771-4f1e-9440-23beb19271dc" classifier="795a0782-71a9-4260-848a-25602c2a963c">
+      <coveredBy xmi:idref="f3f95560-4a5a-45d5-8a3b-9ffcc547917f" />
+      <coveredBy xmi:idref="22d38ff6-52fd-4614-8281-523b22b8c0e3" />
+    </lifeline>
+    <fragment xmi:type="uml:CombinedFragment" xmi:id="ee03d8bf-ab19-4fd1-9731-f43cd31ff5cb" interactionOperator="Loop">
+      <operand xmi:type="uml:InteractionOperand" xmi:id="d4654226-258a-4412-b632-48f4d0de8947" name="InteractionOperand1">
+        <guard xmi:type="uml:InteractionConstraint" xmi:id="55f9a692-aba1-490c-8d2c-87ed00dd0ce0">
+          <specification xmi:type="uml:LiteralString" xmi:id="249709f5-776c-4b1a-a34a-93dc780ca50e" value="for all t:Thing" />
+        </guard>
+      </operand>
+    </fragment>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="f84812ac-10dc-4afe-b236-25e7d4050c76" covered="e39b2309-3727-4d98-9494-3996c255b6c9" message="c60d94c1-146f-4cc0-b57e-715cc42d8393" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="6e41f918-528d-4d46-aeb4-17bb3638af78" covered="0b80f5cd-1dd7-41f6-b2c6-6eb0e3c3fa68" message="c60d94c1-146f-4cc0-b57e-715cc42d8393" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="569bc7da-b625-4403-8bba-d38e0e54c899" covered="0b80f5cd-1dd7-41f6-b2c6-6eb0e3c3fa68" message="647e7eff-33df-4323-9189-0156391259da" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="7ce1d244-2a18-424c-861c-31776533753c" covered="22a014b0-d790-4844-a636-9fd2eeca5dbb" message="647e7eff-33df-4323-9189-0156391259da" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="1f1ba859-cdac-4b39-b3f2-1e6d3c1e3032" covered="22a014b0-d790-4844-a636-9fd2eeca5dbb" message="170164d8-830c-4e73-b27e-7c8fa54cd64c" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="c660ce9a-fb1e-407a-bef5-db904d738796" covered="0b80f5cd-1dd7-41f6-b2c6-6eb0e3c3fa68" message="170164d8-830c-4e73-b27e-7c8fa54cd64c" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="6ceee1c8-165c-4b02-8093-b61420a8d52d" covered="0b80f5cd-1dd7-41f6-b2c6-6eb0e3c3fa68" message="fc3516c4-d5fb-4475-91f9-4a44ae0563a2" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="3b489d60-ef5d-43af-990e-ce1be616f150" covered="22a014b0-d790-4844-a636-9fd2eeca5dbb" message="fc3516c4-d5fb-4475-91f9-4a44ae0563a2" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="53e9ab66-f59a-4ef5-bc6f-21f9778d5001" covered="22a014b0-d790-4844-a636-9fd2eeca5dbb" message="437a248e-e5ee-4b65-81d2-7182d3429840" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="d5e71238-f12e-4a26-be40-8da32441b198" covered="0b80f5cd-1dd7-41f6-b2c6-6eb0e3c3fa68" message="437a248e-e5ee-4b65-81d2-7182d3429840" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="cc4963f1-300e-432a-9dc6-b699b9abc318" covered="0b80f5cd-1dd7-41f6-b2c6-6eb0e3c3fa68" message="af16395e-f6bd-45df-8459-3cb89671194c" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="b4143e0f-4a14-48c2-a480-bad29ac00bf3" covered="de27e863-58b8-4b09-9620-5e51919d37b8" message="af16395e-f6bd-45df-8459-3cb89671194c" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="3a42e66d-5719-4f0b-8af7-fd33a8904167" covered="de27e863-58b8-4b09-9620-5e51919d37b8" message="723f7bf4-717f-4183-b6b4-a788ecc2f434" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="7f68949c-5aac-40c7-89ea-da1267272940" covered="0b80f5cd-1dd7-41f6-b2c6-6eb0e3c3fa68" message="723f7bf4-717f-4183-b6b4-a788ecc2f434" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="548bb1f8-a5a9-4f9f-953c-18d95be12275" covered="0b80f5cd-1dd7-41f6-b2c6-6eb0e3c3fa68" message="de527ebf-1347-492d-8422-2228b2b1ce32" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="f3f95560-4a5a-45d5-8a3b-9ffcc547917f" covered="2a7d4ec6-1771-4f1e-9440-23beb19271dc" message="de527ebf-1347-492d-8422-2228b2b1ce32" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="22d38ff6-52fd-4614-8281-523b22b8c0e3" covered="2a7d4ec6-1771-4f1e-9440-23beb19271dc" message="a4a85e5b-e559-42d3-b573-26cd4588a514" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="ae37215e-0969-4591-ba68-359d84f713ca" covered="0b80f5cd-1dd7-41f6-b2c6-6eb0e3c3fa68" message="a4a85e5b-e559-42d3-b573-26cd4588a514" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="3e03498a-a6d4-4b4c-9f62-8de8529f004a" covered="0b80f5cd-1dd7-41f6-b2c6-6eb0e3c3fa68" message="ec9c2263-4613-4f41-99ab-2885de9d12cd" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="b18ca30d-5ed8-4346-95db-e1d4f3076423" covered="de27e863-58b8-4b09-9620-5e51919d37b8" message="ec9c2263-4613-4f41-99ab-2885de9d12cd" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="9cbbf987-0d9d-404f-8f48-54b2fd3d0459" covered="de27e863-58b8-4b09-9620-5e51919d37b8" message="5576f053-4cbf-428f-bf66-07626e696462" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="92bd6dd6-2ca9-4d1f-90a0-c8186d2db9d6" covered="0b80f5cd-1dd7-41f6-b2c6-6eb0e3c3fa68" message="5576f053-4cbf-428f-bf66-07626e696462" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="c849b2fb-1762-4790-b2c8-d1690a046fa5" covered="0b80f5cd-1dd7-41f6-b2c6-6eb0e3c3fa68" message="0535936a-cf14-4bb4-b324-638f2bb5ddd8" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="ed482eaf-d813-4464-8166-07886a85f1f9" covered="de27e863-58b8-4b09-9620-5e51919d37b8" message="0535936a-cf14-4bb4-b324-638f2bb5ddd8" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="1e33370a-b3e4-4fd9-9d18-1b18ad70f1ab" covered="de27e863-58b8-4b09-9620-5e51919d37b8" message="b454230f-27e1-40bb-bc70-7e56773a3402" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="919c5f8b-9f8f-40c2-98ef-a667017841a6" covered="0b80f5cd-1dd7-41f6-b2c6-6eb0e3c3fa68" message="b454230f-27e1-40bb-bc70-7e56773a3402" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="6d34c357-9221-465e-aab8-48a00dcbb611" covered="0b80f5cd-1dd7-41f6-b2c6-6eb0e3c3fa68" message="3fedb3a5-2d66-4ca9-aea9-154d0ad9a8f1" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="a1c1189d-74ec-4075-a2fb-a4b6cc213f3e" covered="e39b2309-3727-4d98-9494-3996c255b6c9" message="3fedb3a5-2d66-4ca9-aea9-154d0ad9a8f1" />
+  </uml:Interaction>
+  <uml:Interaction xmi:type="uml:Interaction" xmi:id="dd959570-d514-4c84-8cb1-c6d4ea7341f3" name="Eat pellet">
+    <message xmi:type="uml:Message" xmi:id="32cc93ea-1bba-48a3-b405-9c9db94ea6fb" receiveEvent="8c0ed12e-7213-4bd9-af4d-64a3d2cd54aa" sendEvent="7755bb39-c1d9-4d64-97d9-97739affa16e" signature="47022b42-8e19-4a8e-aa4a-52e3199b76c1" />
+    <message xmi:type="uml:Message" xmi:id="246995b3-7478-4515-8b20-eb8d2831dda2" receiveEvent="afa63295-26e4-4066-88d5-6e36f7ea58af" sendEvent="1223c8dd-78e5-4d88-8a04-7061f399d4d2" signature="17f749c6-ec1e-4ef5-9da3-0fee1255b560" />
+    <message xmi:type="uml:Message" xmi:id="54e9b2d5-7196-449d-be6c-b9f0a1600904" messageSort="Reply" receiveEvent="14e4dc56-9b0a-41b1-af4f-cb150de28cd5" sendEvent="208ae626-1a3a-47fb-97a6-c71633090c64" />
+    <message xmi:type="uml:Message" xmi:id="020f2814-e944-42e7-9a93-be2ebefe9bd9" name="Remove" receiveEvent="c08902c9-1699-4e23-a2d5-ccb33cca1cce" sendEvent="e987f6d9-86e5-440a-8a59-e8117e1c55de" />
+    <message xmi:type="uml:Message" xmi:id="4c5ec32b-0035-4c15-964b-97308483716f" messageSort="Reply" receiveEvent="63dd3c55-248d-463b-bd8e-972ac198985f" sendEvent="adbd816c-79e3-4923-9a84-ccdce209b053" />
+    <message xmi:type="uml:Message" xmi:id="d3fbb4d5-33c3-41b4-a348-01e7c61946f0" receiveEvent="ba8abdbc-d8bb-4767-8995-4f2be3046d27" sendEvent="0dc29b28-d557-4db4-86e1-996dce54610a" signature="d4e7135b-d2dc-4431-b7c9-fd04a04da53d" />
+    <message xmi:type="uml:Message" xmi:id="9c115fdb-21fa-4ae6-9e12-6a0c6637d7b2" messageSort="Reply" receiveEvent="a286ced2-4808-441f-acc2-18ac4b323b03" sendEvent="eef18ea1-4c6f-4219-8f78-4e363140edea" />
+    <message xmi:type="uml:Message" xmi:id="4f41aa7f-a5a7-4b97-9689-3157ce44e6e8" messageSort="Reply" receiveEvent="b85e422a-800b-45b4-960f-72e24b55d578" sendEvent="5c6fc1b7-b07a-40bc-b765-b49094607516" />
+    <lifeline xmi:type="uml:Lifeline" xmi:id="4d2ae429-ef79-4ca3-a982-cb23607e6ad2" classifier="9ed319dc-a982-474f-86cc-0232f111ea80">
+      <coveredBy xmi:idref="7755bb39-c1d9-4d64-97d9-97739affa16e" />
+      <coveredBy xmi:idref="afa63295-26e4-4066-88d5-6e36f7ea58af" />
+      <coveredBy xmi:idref="208ae626-1a3a-47fb-97a6-c71633090c64" />
+      <coveredBy xmi:idref="b85e422a-800b-45b4-960f-72e24b55d578" />
+    </lifeline>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="bc7d6438-0621-4d7a-b37b-9fbc597664d3" classifier="3b0a3450-e627-46ec-b423-d70763a4153a">
+      <coveredBy xmi:idref="8c0ed12e-7213-4bd9-af4d-64a3d2cd54aa" />
+      <coveredBy xmi:idref="1223c8dd-78e5-4d88-8a04-7061f399d4d2" />
+      <coveredBy xmi:idref="14e4dc56-9b0a-41b1-af4f-cb150de28cd5" />
+      <coveredBy xmi:idref="e987f6d9-86e5-440a-8a59-e8117e1c55de" />
+      <coveredBy xmi:idref="63dd3c55-248d-463b-bd8e-972ac198985f" />
+      <coveredBy xmi:idref="0dc29b28-d557-4db4-86e1-996dce54610a" />
+      <coveredBy xmi:idref="a286ced2-4808-441f-acc2-18ac4b323b03" />
+      <coveredBy xmi:idref="5c6fc1b7-b07a-40bc-b765-b49094607516" />
+    </lifeline>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="e249e031-1738-4d8f-8354-7616cd8e8647">
+      <coveredBy xmi:idref="c08902c9-1699-4e23-a2d5-ccb33cca1cce" />
+      <coveredBy xmi:idref="adbd816c-79e3-4923-9a84-ccdce209b053" />
+    </lifeline>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="f4b40acd-03f2-4e3d-a082-88b2f03822c9" classifier="c8b78f0c-a9ce-4de9-aa57-60fe38c74599">
+      <coveredBy xmi:idref="ba8abdbc-d8bb-4767-8995-4f2be3046d27" />
+      <coveredBy xmi:idref="eef18ea1-4c6f-4219-8f78-4e363140edea" />
+    </lifeline>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="7755bb39-c1d9-4d64-97d9-97739affa16e" covered="4d2ae429-ef79-4ca3-a982-cb23607e6ad2" message="32cc93ea-1bba-48a3-b405-9c9db94ea6fb" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="8c0ed12e-7213-4bd9-af4d-64a3d2cd54aa" covered="bc7d6438-0621-4d7a-b37b-9fbc597664d3" message="32cc93ea-1bba-48a3-b405-9c9db94ea6fb" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="1223c8dd-78e5-4d88-8a04-7061f399d4d2" covered="bc7d6438-0621-4d7a-b37b-9fbc597664d3" message="246995b3-7478-4515-8b20-eb8d2831dda2" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="afa63295-26e4-4066-88d5-6e36f7ea58af" covered="4d2ae429-ef79-4ca3-a982-cb23607e6ad2" message="246995b3-7478-4515-8b20-eb8d2831dda2" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="208ae626-1a3a-47fb-97a6-c71633090c64" covered="4d2ae429-ef79-4ca3-a982-cb23607e6ad2" message="54e9b2d5-7196-449d-be6c-b9f0a1600904" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="14e4dc56-9b0a-41b1-af4f-cb150de28cd5" covered="bc7d6438-0621-4d7a-b37b-9fbc597664d3" message="54e9b2d5-7196-449d-be6c-b9f0a1600904" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="e987f6d9-86e5-440a-8a59-e8117e1c55de" covered="bc7d6438-0621-4d7a-b37b-9fbc597664d3" message="020f2814-e944-42e7-9a93-be2ebefe9bd9" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="c08902c9-1699-4e23-a2d5-ccb33cca1cce" covered="e249e031-1738-4d8f-8354-7616cd8e8647" message="020f2814-e944-42e7-9a93-be2ebefe9bd9" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="adbd816c-79e3-4923-9a84-ccdce209b053" covered="e249e031-1738-4d8f-8354-7616cd8e8647" message="4c5ec32b-0035-4c15-964b-97308483716f" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="63dd3c55-248d-463b-bd8e-972ac198985f" covered="bc7d6438-0621-4d7a-b37b-9fbc597664d3" message="4c5ec32b-0035-4c15-964b-97308483716f" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="0dc29b28-d557-4db4-86e1-996dce54610a" covered="bc7d6438-0621-4d7a-b37b-9fbc597664d3" message="d3fbb4d5-33c3-41b4-a348-01e7c61946f0" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="ba8abdbc-d8bb-4767-8995-4f2be3046d27" covered="f4b40acd-03f2-4e3d-a082-88b2f03822c9" message="d3fbb4d5-33c3-41b4-a348-01e7c61946f0" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="eef18ea1-4c6f-4219-8f78-4e363140edea" covered="f4b40acd-03f2-4e3d-a082-88b2f03822c9" message="9c115fdb-21fa-4ae6-9e12-6a0c6637d7b2" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="a286ced2-4808-441f-acc2-18ac4b323b03" covered="bc7d6438-0621-4d7a-b37b-9fbc597664d3" message="9c115fdb-21fa-4ae6-9e12-6a0c6637d7b2" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="5c6fc1b7-b07a-40bc-b765-b49094607516" covered="bc7d6438-0621-4d7a-b37b-9fbc597664d3" message="4f41aa7f-a5a7-4b97-9689-3157ce44e6e8" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="b85e422a-800b-45b4-960f-72e24b55d578" covered="4d2ae429-ef79-4ca3-a982-cb23607e6ad2" message="4f41aa7f-a5a7-4b97-9689-3157ce44e6e8" />
+  </uml:Interaction>
+  <uml:Interaction xmi:type="uml:Interaction" xmi:id="29860710-868c-480b-a8ac-ed8760fa8350" name="Eat life pellet">
+    <message xmi:type="uml:Message" xmi:id="2d492cc0-37e7-4ee5-808d-817cece0f6ed" receiveEvent="3bd106c0-5cf7-4bab-a04f-652340ebaf51" sendEvent="88fd31c3-d02d-4cfd-9799-c2dbc1f3a24f" signature="f28a16e8-ab2e-4ce1-8650-8b5841336a93" />
+    <message xmi:type="uml:Message" xmi:id="c3400c8e-7925-4a9e-b67f-5234e3fae81f" receiveEvent="d698654d-4ce9-4bfc-9f93-e58ec4ac4f39" sendEvent="a14836f8-b0c8-49d5-b1d6-a0f3a4481abf" signature="48339067-df7f-4f0b-bf65-e4c7495f4dc6" />
+    <message xmi:type="uml:Message" xmi:id="3dad8f54-ce97-40ee-b600-ee21c6afbd43" messageSort="Reply" receiveEvent="c39df55e-04c3-462b-8b5f-40db71002285" sendEvent="4c5eeacb-6335-4e23-8bb8-880412438f96" />
+    <message xmi:type="uml:Message" xmi:id="17dd8656-38dd-4fa2-8d50-6b277ce0324c" receiveEvent="7ac2b571-72a3-405d-b330-ad07c8f72027" sendEvent="2a77b41b-122e-4e75-934a-dcd0a51da627" signature="0f710cc5-fbab-4703-b14d-816828dd46a3">
+      <argument xmi:type="uml:LiteralString" xmi:id="e0300c57-94e7-4a1d-b357-a8caa8833708" value="lp" />
+    </message>
+    <message xmi:type="uml:Message" xmi:id="3898541a-1204-40fc-af11-1de142e014e4" messageSort="Reply" receiveEvent="f6e96324-35cb-4a27-a5d8-0889b7fec55c" sendEvent="59621670-37a3-4123-a302-e93554b87186" />
+    <message xmi:type="uml:Message" xmi:id="6146fe2a-7a3a-4b64-abfb-0aca30358537" receiveEvent="f76a7346-3b10-4a79-b8d8-047a18677989" sendEvent="dc6f2a8e-a5c2-4624-b5fa-63f3512ef75a" signature="d4e7135b-d2dc-4431-b7c9-fd04a04da53d">
+      <argument xmi:type="uml:LiteralString" xmi:id="718eade4-f1de-4cca-81f3-ec4748102462" value="lp" />
+    </message>
+    <message xmi:type="uml:Message" xmi:id="a1c64ead-059b-4531-b8e0-b16dd60a3a6a" messageSort="Reply" receiveEvent="21919f06-03e5-45b2-929e-c1169a3428e4" sendEvent="8f7d59df-2bdd-4940-a325-cc8dcec79bfd" />
+    <message xmi:type="uml:Message" xmi:id="c67130f6-2c83-4573-8db7-23ce90f22450" name="RemoveSteppable" receiveEvent="033bcb56-b743-4a3e-ad28-845e4e56ae83" sendEvent="2be75c8c-826b-4499-83cb-16df3fde2777" />
+    <message xmi:type="uml:Message" xmi:id="f7b9228c-0a06-4177-812a-3fc1e724c60c" messageSort="Reply" receiveEvent="710393bb-e4ac-4d1a-91d3-fd455df33cf3" sendEvent="d6040030-52a4-4031-8678-585e4a24cf98" />
+    <message xmi:type="uml:Message" xmi:id="c71871b4-79c3-4de9-99d6-95d394f6ae2d" messageSort="Reply" receiveEvent="0e047588-1486-4c1e-a10a-90cfb93813f4" sendEvent="be3d4176-79be-42a7-93b3-7efea7486ca2" />
+    <lifeline xmi:type="uml:Lifeline" xmi:id="d8e09250-d6ab-40f4-aaf3-8b7fab6eac3c" classifier="9ed319dc-a982-474f-86cc-0232f111ea80">
+      <coveredBy xmi:idref="88fd31c3-d02d-4cfd-9799-c2dbc1f3a24f" />
+      <coveredBy xmi:idref="d698654d-4ce9-4bfc-9f93-e58ec4ac4f39" />
+      <coveredBy xmi:idref="4c5eeacb-6335-4e23-8bb8-880412438f96" />
+      <coveredBy xmi:idref="0e047588-1486-4c1e-a10a-90cfb93813f4" />
+    </lifeline>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="f9e58aaa-3a06-4f4c-8a10-db9d90ad449a" classifier="53ee2e71-e28a-477c-9555-d9fabb9bf7a3">
+      <coveredBy xmi:idref="3bd106c0-5cf7-4bab-a04f-652340ebaf51" />
+      <coveredBy xmi:idref="a14836f8-b0c8-49d5-b1d6-a0f3a4481abf" />
+      <coveredBy xmi:idref="c39df55e-04c3-462b-8b5f-40db71002285" />
+      <coveredBy xmi:idref="2a77b41b-122e-4e75-934a-dcd0a51da627" />
+      <coveredBy xmi:idref="f6e96324-35cb-4a27-a5d8-0889b7fec55c" />
+      <coveredBy xmi:idref="dc6f2a8e-a5c2-4624-b5fa-63f3512ef75a" />
+      <coveredBy xmi:idref="21919f06-03e5-45b2-929e-c1169a3428e4" />
+      <coveredBy xmi:idref="2be75c8c-826b-4499-83cb-16df3fde2777" />
+      <coveredBy xmi:idref="710393bb-e4ac-4d1a-91d3-fd455df33cf3" />
+      <coveredBy xmi:idref="be3d4176-79be-42a7-93b3-7efea7486ca2" />
+    </lifeline>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="3a6657a4-6142-4c8f-9515-853e45aca90d" classifier="9dc3aeba-5e37-4596-b842-7ab8f2dde672">
+      <coveredBy xmi:idref="7ac2b571-72a3-405d-b330-ad07c8f72027" />
+      <coveredBy xmi:idref="59621670-37a3-4123-a302-e93554b87186" />
+    </lifeline>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="db5bcd10-4b10-4727-8f70-b97089db37c9" classifier="c8b78f0c-a9ce-4de9-aa57-60fe38c74599">
+      <coveredBy xmi:idref="f76a7346-3b10-4a79-b8d8-047a18677989" />
+      <coveredBy xmi:idref="8f7d59df-2bdd-4940-a325-cc8dcec79bfd" />
+    </lifeline>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="2d9b4859-b8b7-40f7-8412-e595ed7d87b9" classifier="19750bc3-fb08-4662-ac65-cc262bf5c1a0">
+      <coveredBy xmi:idref="033bcb56-b743-4a3e-ad28-845e4e56ae83" />
+      <coveredBy xmi:idref="d6040030-52a4-4031-8678-585e4a24cf98" />
+    </lifeline>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="88fd31c3-d02d-4cfd-9799-c2dbc1f3a24f" covered="d8e09250-d6ab-40f4-aaf3-8b7fab6eac3c" message="2d492cc0-37e7-4ee5-808d-817cece0f6ed" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="3bd106c0-5cf7-4bab-a04f-652340ebaf51" covered="f9e58aaa-3a06-4f4c-8a10-db9d90ad449a" message="2d492cc0-37e7-4ee5-808d-817cece0f6ed" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="a14836f8-b0c8-49d5-b1d6-a0f3a4481abf" covered="f9e58aaa-3a06-4f4c-8a10-db9d90ad449a" message="c3400c8e-7925-4a9e-b67f-5234e3fae81f" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="d698654d-4ce9-4bfc-9f93-e58ec4ac4f39" covered="d8e09250-d6ab-40f4-aaf3-8b7fab6eac3c" message="c3400c8e-7925-4a9e-b67f-5234e3fae81f" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="4c5eeacb-6335-4e23-8bb8-880412438f96" covered="d8e09250-d6ab-40f4-aaf3-8b7fab6eac3c" message="3dad8f54-ce97-40ee-b600-ee21c6afbd43" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="c39df55e-04c3-462b-8b5f-40db71002285" covered="f9e58aaa-3a06-4f4c-8a10-db9d90ad449a" message="3dad8f54-ce97-40ee-b600-ee21c6afbd43" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="2a77b41b-122e-4e75-934a-dcd0a51da627" covered="f9e58aaa-3a06-4f4c-8a10-db9d90ad449a" message="17dd8656-38dd-4fa2-8d50-6b277ce0324c" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="7ac2b571-72a3-405d-b330-ad07c8f72027" covered="3a6657a4-6142-4c8f-9515-853e45aca90d" message="17dd8656-38dd-4fa2-8d50-6b277ce0324c" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="59621670-37a3-4123-a302-e93554b87186" covered="3a6657a4-6142-4c8f-9515-853e45aca90d" message="3898541a-1204-40fc-af11-1de142e014e4" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="f6e96324-35cb-4a27-a5d8-0889b7fec55c" covered="f9e58aaa-3a06-4f4c-8a10-db9d90ad449a" message="3898541a-1204-40fc-af11-1de142e014e4" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="dc6f2a8e-a5c2-4624-b5fa-63f3512ef75a" covered="f9e58aaa-3a06-4f4c-8a10-db9d90ad449a" message="6146fe2a-7a3a-4b64-abfb-0aca30358537" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="f76a7346-3b10-4a79-b8d8-047a18677989" covered="db5bcd10-4b10-4727-8f70-b97089db37c9" message="6146fe2a-7a3a-4b64-abfb-0aca30358537" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="8f7d59df-2bdd-4940-a325-cc8dcec79bfd" covered="db5bcd10-4b10-4727-8f70-b97089db37c9" message="a1c64ead-059b-4531-b8e0-b16dd60a3a6a" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="21919f06-03e5-45b2-929e-c1169a3428e4" covered="f9e58aaa-3a06-4f4c-8a10-db9d90ad449a" message="a1c64ead-059b-4531-b8e0-b16dd60a3a6a" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="2be75c8c-826b-4499-83cb-16df3fde2777" covered="f9e58aaa-3a06-4f4c-8a10-db9d90ad449a" message="c67130f6-2c83-4573-8db7-23ce90f22450" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="033bcb56-b743-4a3e-ad28-845e4e56ae83" covered="2d9b4859-b8b7-40f7-8412-e595ed7d87b9" message="c67130f6-2c83-4573-8db7-23ce90f22450" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="d6040030-52a4-4031-8678-585e4a24cf98" covered="2d9b4859-b8b7-40f7-8412-e595ed7d87b9" message="f7b9228c-0a06-4177-812a-3fc1e724c60c" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="710393bb-e4ac-4d1a-91d3-fd455df33cf3" covered="f9e58aaa-3a06-4f4c-8a10-db9d90ad449a" message="f7b9228c-0a06-4177-812a-3fc1e724c60c" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="be3d4176-79be-42a7-93b3-7efea7486ca2" covered="f9e58aaa-3a06-4f4c-8a10-db9d90ad449a" message="c71871b4-79c3-4de9-99d6-95d394f6ae2d" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="0e047588-1486-4c1e-a10a-90cfb93813f4" covered="d8e09250-d6ab-40f4-aaf3-8b7fab6eac3c" message="c71871b4-79c3-4de9-99d6-95d394f6ae2d" />
+  </uml:Interaction>
+  <uml:Interaction xmi:type="uml:Interaction" xmi:id="76b779da-cb8e-4c69-a374-57e23bcac989" name="Eat bomb pellet">
+    <message xmi:type="uml:Message" xmi:id="33d6a43e-025e-468d-a2b9-e3d9243b0f90" receiveEvent="82636655-7632-479e-b720-64c3deb9e36c" sendEvent="6704f511-b60f-47b6-b734-a3ab7987dbbb" signature="08674062-7a49-4a0b-818c-ecb393933dcd">
+      <argument xmi:type="uml:LiteralString" xmi:id="4fd0d63e-bf06-427f-90cf-44d13311d5b4" value="p" />
+    </message>
+    <message xmi:type="uml:Message" xmi:id="6b086d9d-c080-4341-9a8a-c1ee5537283b" receiveEvent="0858ba42-616c-4297-9e71-f0ffb4a9b140" sendEvent="18b26f12-bc90-4ec3-a1f6-84de87d8477d" signature="be2df083-ba4e-4a7c-947c-8c1e59230f3b" />
+    <message xmi:type="uml:Message" xmi:id="a71a9533-a94f-428c-8ff4-cad0b5224681" name="bombAdded=result" messageSort="Reply" receiveEvent="3996540a-05d9-46ff-bdec-bb3d4e503431" sendEvent="0710fbed-63ba-4b11-9f73-7acd31038c99" />
+    <message xmi:type="uml:Message" xmi:id="a350dc8c-e9c6-404e-a15d-dd4b1a98b195" receiveEvent="d1a0e51b-0dc1-4584-990f-e9ff791ebc55" sendEvent="a0f6d718-891d-4d84-9c65-a04ad43f8e4c" signature="0f710cc5-fbab-4703-b14d-816828dd46a3" />
+    <message xmi:type="uml:Message" xmi:id="2701cd27-29ca-44f9-9077-213da2d23836" messageSort="Reply" receiveEvent="8f6683ec-5b6d-48e4-a401-feb965478c1d" sendEvent="8e228261-f26a-4ae3-8746-0accbec549da" />
+    <message xmi:type="uml:Message" xmi:id="0bdfcdd8-a602-412d-9b83-92cc8d7fb119" receiveEvent="fc15d620-4ab8-4dc5-bdd7-0d398ad19302" sendEvent="c0a731ce-5e87-4354-970d-a1067312f7c0" signature="d4e7135b-d2dc-4431-b7c9-fd04a04da53d" />
+    <message xmi:type="uml:Message" xmi:id="facc924b-dcf6-4f83-91c4-426849fbb2c0" messageSort="Reply" receiveEvent="d7f947ee-43a1-45d0-8647-be982019210b" sendEvent="61f24dea-2f03-4400-96ce-a90ae91f7f08" />
+    <message xmi:type="uml:Message" xmi:id="6623f63b-1a01-40eb-b37e-42a7da381a5f" name="RemoveSteppable" receiveEvent="e11b75a7-039a-4fbd-9161-8e7a514a8d68" sendEvent="14a81127-5d30-4c2e-b86c-f330de4f4804" />
+    <message xmi:type="uml:Message" xmi:id="ea20845c-224a-4b8e-9525-a06ee3b0433e" messageSort="Reply" receiveEvent="1fb9f97f-567f-4bb1-a6a4-3e41b5b98fbf" sendEvent="1a579c83-7643-45be-b010-9baf8d1c72b2" />
+    <message xmi:type="uml:Message" xmi:id="091db135-a76b-4b50-9c4e-41591a0d3e04" messageSort="Reply" receiveEvent="92cb050d-eb2a-43ca-a6be-17c828422692" sendEvent="3c1fea89-71da-4d59-ae4f-c5b9295efd01" />
+    <lifeline xmi:type="uml:Lifeline" xmi:id="6bc78644-bf2b-4f22-b32b-945cae921c9e" classifier="9ed319dc-a982-474f-86cc-0232f111ea80">
+      <coveredBy xmi:idref="6704f511-b60f-47b6-b734-a3ab7987dbbb" />
+      <coveredBy xmi:idref="0858ba42-616c-4297-9e71-f0ffb4a9b140" />
+      <coveredBy xmi:idref="0710fbed-63ba-4b11-9f73-7acd31038c99" />
+      <coveredBy xmi:idref="92cb050d-eb2a-43ca-a6be-17c828422692" />
+    </lifeline>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="9dce207d-c451-41f4-acbb-44c81b8f6c41" classifier="9657f46f-1471-4077-bdb4-d833b31ea04c">
+      <coveredBy xmi:idref="82636655-7632-479e-b720-64c3deb9e36c" />
+      <coveredBy xmi:idref="18b26f12-bc90-4ec3-a1f6-84de87d8477d" />
+      <coveredBy xmi:idref="3996540a-05d9-46ff-bdec-bb3d4e503431" />
+      <coveredBy xmi:idref="a0f6d718-891d-4d84-9c65-a04ad43f8e4c" />
+      <coveredBy xmi:idref="8f6683ec-5b6d-48e4-a401-feb965478c1d" />
+      <coveredBy xmi:idref="c0a731ce-5e87-4354-970d-a1067312f7c0" />
+      <coveredBy xmi:idref="d7f947ee-43a1-45d0-8647-be982019210b" />
+      <coveredBy xmi:idref="14a81127-5d30-4c2e-b86c-f330de4f4804" />
+      <coveredBy xmi:idref="1fb9f97f-567f-4bb1-a6a4-3e41b5b98fbf" />
+      <coveredBy xmi:idref="3c1fea89-71da-4d59-ae4f-c5b9295efd01" />
+    </lifeline>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="63747020-6125-441a-a891-5017038e6de1" classifier="9dc3aeba-5e37-4596-b842-7ab8f2dde672">
+      <coveredBy xmi:idref="d1a0e51b-0dc1-4584-990f-e9ff791ebc55" />
+      <coveredBy xmi:idref="8e228261-f26a-4ae3-8746-0accbec549da" />
+    </lifeline>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="0f672214-045a-4c17-a3a8-74627842851a" classifier="c8b78f0c-a9ce-4de9-aa57-60fe38c74599">
+      <coveredBy xmi:idref="fc15d620-4ab8-4dc5-bdd7-0d398ad19302" />
+      <coveredBy xmi:idref="61f24dea-2f03-4400-96ce-a90ae91f7f08" />
+    </lifeline>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="35d3ed16-5ee6-4d36-923e-8493ee7aeda6" classifier="19750bc3-fb08-4662-ac65-cc262bf5c1a0">
+      <coveredBy xmi:idref="e11b75a7-039a-4fbd-9161-8e7a514a8d68" />
+      <coveredBy xmi:idref="1a579c83-7643-45be-b010-9baf8d1c72b2" />
+    </lifeline>
+    <fragment xmi:type="uml:CombinedFragment" xmi:id="083eace3-1c85-4950-b275-be070ac64c0d" interactionOperator="Opt">
+      <operand xmi:type="uml:InteractionOperand" xmi:id="c87902a0-c84b-479b-b5b7-4ff225d46278" name="InteractionOperand1">
+        <guard xmi:type="uml:InteractionConstraint" xmi:id="ce4e4c0c-11e8-4cae-b363-8353a6534d41">
+          <specification xmi:type="uml:LiteralString" xmi:id="27277a2c-55fe-49cb-85f3-8855393f45b5" value="bombAdded" />
+        </guard>
+      </operand>
+    </fragment>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="6704f511-b60f-47b6-b734-a3ab7987dbbb" covered="6bc78644-bf2b-4f22-b32b-945cae921c9e" message="33d6a43e-025e-468d-a2b9-e3d9243b0f90" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="82636655-7632-479e-b720-64c3deb9e36c" covered="9dce207d-c451-41f4-acbb-44c81b8f6c41" message="33d6a43e-025e-468d-a2b9-e3d9243b0f90" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="18b26f12-bc90-4ec3-a1f6-84de87d8477d" covered="9dce207d-c451-41f4-acbb-44c81b8f6c41" message="6b086d9d-c080-4341-9a8a-c1ee5537283b" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="0858ba42-616c-4297-9e71-f0ffb4a9b140" covered="6bc78644-bf2b-4f22-b32b-945cae921c9e" message="6b086d9d-c080-4341-9a8a-c1ee5537283b" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="0710fbed-63ba-4b11-9f73-7acd31038c99" covered="6bc78644-bf2b-4f22-b32b-945cae921c9e" message="a71a9533-a94f-428c-8ff4-cad0b5224681" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="3996540a-05d9-46ff-bdec-bb3d4e503431" covered="9dce207d-c451-41f4-acbb-44c81b8f6c41" message="a71a9533-a94f-428c-8ff4-cad0b5224681" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="a0f6d718-891d-4d84-9c65-a04ad43f8e4c" covered="9dce207d-c451-41f4-acbb-44c81b8f6c41" message="a350dc8c-e9c6-404e-a15d-dd4b1a98b195" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="d1a0e51b-0dc1-4584-990f-e9ff791ebc55" covered="63747020-6125-441a-a891-5017038e6de1" message="a350dc8c-e9c6-404e-a15d-dd4b1a98b195" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="8e228261-f26a-4ae3-8746-0accbec549da" covered="63747020-6125-441a-a891-5017038e6de1" message="2701cd27-29ca-44f9-9077-213da2d23836" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="8f6683ec-5b6d-48e4-a401-feb965478c1d" covered="9dce207d-c451-41f4-acbb-44c81b8f6c41" message="2701cd27-29ca-44f9-9077-213da2d23836" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="c0a731ce-5e87-4354-970d-a1067312f7c0" covered="9dce207d-c451-41f4-acbb-44c81b8f6c41" message="0bdfcdd8-a602-412d-9b83-92cc8d7fb119" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="fc15d620-4ab8-4dc5-bdd7-0d398ad19302" covered="0f672214-045a-4c17-a3a8-74627842851a" message="0bdfcdd8-a602-412d-9b83-92cc8d7fb119" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="61f24dea-2f03-4400-96ce-a90ae91f7f08" covered="0f672214-045a-4c17-a3a8-74627842851a" message="facc924b-dcf6-4f83-91c4-426849fbb2c0" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="d7f947ee-43a1-45d0-8647-be982019210b" covered="9dce207d-c451-41f4-acbb-44c81b8f6c41" message="facc924b-dcf6-4f83-91c4-426849fbb2c0" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="14a81127-5d30-4c2e-b86c-f330de4f4804" covered="9dce207d-c451-41f4-acbb-44c81b8f6c41" message="6623f63b-1a01-40eb-b37e-42a7da381a5f" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="e11b75a7-039a-4fbd-9161-8e7a514a8d68" covered="35d3ed16-5ee6-4d36-923e-8493ee7aeda6" message="6623f63b-1a01-40eb-b37e-42a7da381a5f" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="1a579c83-7643-45be-b010-9baf8d1c72b2" covered="35d3ed16-5ee6-4d36-923e-8493ee7aeda6" message="ea20845c-224a-4b8e-9525-a06ee3b0433e" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="1fb9f97f-567f-4bb1-a6a4-3e41b5b98fbf" covered="9dce207d-c451-41f4-acbb-44c81b8f6c41" message="ea20845c-224a-4b8e-9525-a06ee3b0433e" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="3c1fea89-71da-4d59-ae4f-c5b9295efd01" covered="9dce207d-c451-41f4-acbb-44c81b8f6c41" message="091db135-a76b-4b50-9c4e-41591a0d3e04" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="92cb050d-eb2a-43ca-a6be-17c828422692" covered="6bc78644-bf2b-4f22-b32b-945cae921c9e" message="091db135-a76b-4b50-9c4e-41591a0d3e04" />
+  </uml:Interaction>
+  <uml:Interaction xmi:type="uml:Interaction" xmi:id="3939817a-1cc3-469d-a728-a2c97b490529" name="Place bomb">
+    <message xmi:type="uml:Message" xmi:id="1e568a50-7c3e-4db3-9359-8dd8a3896b91" receiveEvent="d99230e3-4bd5-410d-8ebf-5e6c72d04932" sendEvent="2ec70cd9-9b2a-4b59-a0fa-122041535d08" signature="daad2a47-9f68-423d-8659-bcbc7df8def2" />
+    <message xmi:type="uml:Message" xmi:id="3ada6e14-3364-4fcc-bc18-8d93201961f2" name="Bomb" messageSort="CreateMessage" receiveEvent="cedca84d-f5ab-4a34-9156-dc8ea5ee7e7c" sendEvent="17ecaade-956b-4ac4-a061-87126460ba02" />
+    <message xmi:type="uml:Message" xmi:id="67df2a6d-59a7-4726-aa0a-0c0f48b6d351" name="AddSteppable" receiveEvent="23e7a8e3-85b4-458c-98ae-b34964ecc8ba" sendEvent="62cb45a3-d0b1-4496-af44-130a847d59af" />
+    <message xmi:type="uml:Message" xmi:id="230b0a33-7d47-4b4d-b2bd-125d3ba42643" messageSort="Reply" receiveEvent="b554a3d5-6332-4235-8a2a-ddccc21b729d" sendEvent="2db442f2-41e3-4d90-b92e-3d498ceff097" />
+    <message xmi:type="uml:Message" xmi:id="c26c4da8-0d20-4543-b22f-454afd889b73" messageSort="Reply" receiveEvent="851f20d3-1f16-40fb-83af-5a68721f69ce" sendEvent="a24d7b84-ac7e-41a4-843c-202be88eaf6e" />
+    <message xmi:type="uml:Message" xmi:id="f02b4df5-c928-4762-8e6c-9f882d347101" receiveEvent="d7a73205-3a3f-453e-a768-b8bf27eb4eea" sendEvent="5c799d01-2263-412e-8edf-eacc0c92c849" signature="0c1885de-c27e-457a-bc49-66d79bdd73ef" />
+    <message xmi:type="uml:Message" xmi:id="ba69148a-9034-45c6-b131-c03771464612" receiveEvent="c9e50aa8-00ce-4a3a-a86e-9fa632da0b47" sendEvent="2cdd09d1-7a75-4c33-b063-b7037fac4ea4" signature="0f9429b5-133d-47f7-97b7-a7d24c0ee000" />
+    <message xmi:type="uml:Message" xmi:id="c7da1618-5f75-43d6-8f3e-fd98e8f67b37" messageSort="Reply" receiveEvent="72129efd-1847-4371-9540-d9ce44cd9d28" sendEvent="6cd1abf2-da8e-4c1f-a07c-8cda9045a836" />
+    <message xmi:type="uml:Message" xmi:id="50377519-7b05-48d6-8976-e0cddd458d4c" messageSort="Reply" receiveEvent="81c226fc-d282-4246-8665-b3b1e8045fef" sendEvent="bc01bd1c-181d-4001-9bbc-2da9ae0bfd54" />
+    <message xmi:type="uml:Message" xmi:id="a0f91e42-06fd-4800-9ff8-55a97b21864b" messageSort="Reply" receiveEvent="df81f712-a224-46cb-837c-031cb19af7db" sendEvent="45f23be3-c21b-4177-ae6e-2f0a14ba71de" />
+    <lifeline xmi:type="uml:Lifeline" xmi:id="fdba936a-9857-4be9-882f-ceb4470183e5">
+      <coveredBy xmi:idref="2ec70cd9-9b2a-4b59-a0fa-122041535d08" />
+      <coveredBy xmi:idref="df81f712-a224-46cb-837c-031cb19af7db" />
+    </lifeline>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="3629ff1e-ec57-4973-a462-f0e1f6dbda19" classifier="9ed319dc-a982-474f-86cc-0232f111ea80">
+      <coveredBy xmi:idref="d99230e3-4bd5-410d-8ebf-5e6c72d04932" />
+      <coveredBy xmi:idref="17ecaade-956b-4ac4-a061-87126460ba02" />
+      <coveredBy xmi:idref="851f20d3-1f16-40fb-83af-5a68721f69ce" />
+      <coveredBy xmi:idref="5c799d01-2263-412e-8edf-eacc0c92c849" />
+      <coveredBy xmi:idref="81c226fc-d282-4246-8665-b3b1e8045fef" />
+      <coveredBy xmi:idref="45f23be3-c21b-4177-ae6e-2f0a14ba71de" />
+    </lifeline>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="bb2fc620-7f70-486e-931c-fa3892fdd6c6" classifier="bab8d031-d9ee-4f39-b956-5f1d5ca6fdfc">
+      <coveredBy xmi:idref="cedca84d-f5ab-4a34-9156-dc8ea5ee7e7c" />
+      <coveredBy xmi:idref="62cb45a3-d0b1-4496-af44-130a847d59af" />
+      <coveredBy xmi:idref="b554a3d5-6332-4235-8a2a-ddccc21b729d" />
+      <coveredBy xmi:idref="a24d7b84-ac7e-41a4-843c-202be88eaf6e" />
+      <coveredBy xmi:idref="c9e50aa8-00ce-4a3a-a86e-9fa632da0b47" />
+      <coveredBy xmi:idref="6cd1abf2-da8e-4c1f-a07c-8cda9045a836" />
+    </lifeline>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="4e92d76b-692b-4ebe-a9e9-ed2b1a406f5d" classifier="19750bc3-fb08-4662-ac65-cc262bf5c1a0">
+      <coveredBy xmi:idref="23e7a8e3-85b4-458c-98ae-b34964ecc8ba" />
+      <coveredBy xmi:idref="2db442f2-41e3-4d90-b92e-3d498ceff097" />
+    </lifeline>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="463538d2-fdb7-422c-8a93-6a9ff4e333e8" classifier="9dc3aeba-5e37-4596-b842-7ab8f2dde672">
+      <coveredBy xmi:idref="d7a73205-3a3f-453e-a768-b8bf27eb4eea" />
+      <coveredBy xmi:idref="2cdd09d1-7a75-4c33-b063-b7037fac4ea4" />
+      <coveredBy xmi:idref="72129efd-1847-4371-9540-d9ce44cd9d28" />
+      <coveredBy xmi:idref="bc01bd1c-181d-4001-9bbc-2da9ae0bfd54" />
+    </lifeline>
+    <fragment xmi:type="uml:CombinedFragment" xmi:id="630ba0a4-ebac-41d8-b819-c21012970277" interactionOperator="Loop">
+      <operand xmi:type="uml:InteractionOperand" xmi:id="5ca552ee-0cb6-4d2d-8a0b-f84da32ae908" name="InteractionOperand1">
+        <guard xmi:type="uml:InteractionConstraint" xmi:id="650d90f8-fbea-4b1a-8f0e-d9c100e2cfda">
+          <specification xmi:type="uml:LiteralString" xmi:id="8c1f61b6-2aba-4dbe-b42d-9fdecd9ac58f" value="for all t:Thing" />
+        </guard>
+      </operand>
+    </fragment>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="2ec70cd9-9b2a-4b59-a0fa-122041535d08" covered="fdba936a-9857-4be9-882f-ceb4470183e5" message="1e568a50-7c3e-4db3-9359-8dd8a3896b91" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="d99230e3-4bd5-410d-8ebf-5e6c72d04932" covered="3629ff1e-ec57-4973-a462-f0e1f6dbda19" message="1e568a50-7c3e-4db3-9359-8dd8a3896b91" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="17ecaade-956b-4ac4-a061-87126460ba02" covered="3629ff1e-ec57-4973-a462-f0e1f6dbda19" message="3ada6e14-3364-4fcc-bc18-8d93201961f2" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="cedca84d-f5ab-4a34-9156-dc8ea5ee7e7c" covered="bb2fc620-7f70-486e-931c-fa3892fdd6c6" message="3ada6e14-3364-4fcc-bc18-8d93201961f2" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="62cb45a3-d0b1-4496-af44-130a847d59af" covered="bb2fc620-7f70-486e-931c-fa3892fdd6c6" message="67df2a6d-59a7-4726-aa0a-0c0f48b6d351" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="23e7a8e3-85b4-458c-98ae-b34964ecc8ba" covered="4e92d76b-692b-4ebe-a9e9-ed2b1a406f5d" message="67df2a6d-59a7-4726-aa0a-0c0f48b6d351" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="2db442f2-41e3-4d90-b92e-3d498ceff097" covered="4e92d76b-692b-4ebe-a9e9-ed2b1a406f5d" message="230b0a33-7d47-4b4d-b2bd-125d3ba42643" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="b554a3d5-6332-4235-8a2a-ddccc21b729d" covered="bb2fc620-7f70-486e-931c-fa3892fdd6c6" message="230b0a33-7d47-4b4d-b2bd-125d3ba42643" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="a24d7b84-ac7e-41a4-843c-202be88eaf6e" covered="bb2fc620-7f70-486e-931c-fa3892fdd6c6" message="c26c4da8-0d20-4543-b22f-454afd889b73" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="851f20d3-1f16-40fb-83af-5a68721f69ce" covered="3629ff1e-ec57-4973-a462-f0e1f6dbda19" message="c26c4da8-0d20-4543-b22f-454afd889b73" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="5c799d01-2263-412e-8edf-eacc0c92c849" covered="3629ff1e-ec57-4973-a462-f0e1f6dbda19" message="f02b4df5-c928-4762-8e6c-9f882d347101" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="d7a73205-3a3f-453e-a768-b8bf27eb4eea" covered="463538d2-fdb7-422c-8a93-6a9ff4e333e8" message="f02b4df5-c928-4762-8e6c-9f882d347101" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="2cdd09d1-7a75-4c33-b063-b7037fac4ea4" covered="463538d2-fdb7-422c-8a93-6a9ff4e333e8" message="ba69148a-9034-45c6-b131-c03771464612" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="c9e50aa8-00ce-4a3a-a86e-9fa632da0b47" covered="bb2fc620-7f70-486e-931c-fa3892fdd6c6" message="ba69148a-9034-45c6-b131-c03771464612" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="6cd1abf2-da8e-4c1f-a07c-8cda9045a836" covered="bb2fc620-7f70-486e-931c-fa3892fdd6c6" message="c7da1618-5f75-43d6-8f3e-fd98e8f67b37" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="72129efd-1847-4371-9540-d9ce44cd9d28" covered="463538d2-fdb7-422c-8a93-6a9ff4e333e8" message="c7da1618-5f75-43d6-8f3e-fd98e8f67b37" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="bc01bd1c-181d-4001-9bbc-2da9ae0bfd54" covered="463538d2-fdb7-422c-8a93-6a9ff4e333e8" message="50377519-7b05-48d6-8976-e0cddd458d4c" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="81c226fc-d282-4246-8665-b3b1e8045fef" covered="3629ff1e-ec57-4973-a462-f0e1f6dbda19" message="50377519-7b05-48d6-8976-e0cddd458d4c" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="45f23be3-c21b-4177-ae6e-2f0a14ba71de" covered="3629ff1e-ec57-4973-a462-f0e1f6dbda19" message="a0f91e42-06fd-4800-9ff8-55a97b21864b" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="df81f712-a224-46cb-837c-031cb19af7db" covered="fdba936a-9857-4be9-882f-ceb4470183e5" message="a0f91e42-06fd-4800-9ff8-55a97b21864b" />
+  </uml:Interaction>
+  <uml:Interaction xmi:type="uml:Interaction" xmi:id="8e60edce-9c8c-4014-9f0a-d5977d2ff011" name="Pacman hits bomb">
+    <message xmi:type="uml:Message" xmi:id="46812a93-773a-42ed-bf7d-87ba81c6b49d" receiveEvent="c8a60c38-5eca-4d06-a00f-6e63e123f5e2" sendEvent="caf9308a-7f83-40b0-adff-a371836da4b4" signature="0f9429b5-133d-47f7-97b7-a7d24c0ee000" />
+    <message xmi:type="uml:Message" xmi:id="3adc1f89-24ce-4895-a5fb-c47fa841a1da" receiveEvent="37f58bea-daf4-49b6-929f-92f098a1b79f" sendEvent="e9bca07e-eb9f-43bb-8235-a0267225b59c" signature="049bfe2f-9219-4f8d-be15-5433352becf1" />
+    <message xmi:type="uml:Message" xmi:id="c29b5432-1d80-41d6-95ba-4853b419e3bc" receiveEvent="026d21ca-6f6c-438d-b25d-8db719e92de3" sendEvent="9a898ef8-3cb9-4c2b-8e52-0dc48768c4d1" signature="0f710cc5-fbab-4703-b14d-816828dd46a3" />
+    <message xmi:type="uml:Message" xmi:id="bdd88cb1-2ad4-43a1-9498-42299e36e340" messageSort="Reply" receiveEvent="b1bbd496-a2c1-4093-b9c8-4718ed61be31" sendEvent="fd99cab1-fdef-48bb-9e07-b5ba2d7ca842" />
+    <message xmi:type="uml:Message" xmi:id="0c146261-e3ed-45cc-8450-3a9ab508abaf" name="RemoveSteppable" receiveEvent="643aaca2-a86b-4415-9b9c-61946a552098" sendEvent="70579dd9-a1ac-424c-b817-eaf42f33b98e" />
+    <message xmi:type="uml:Message" xmi:id="615b2993-9fe9-42f8-80d1-8598f96a5a0e" messageSort="Reply" receiveEvent="d3034098-fb87-44ff-a73c-694cf04eebce" sendEvent="145837d7-5903-4e62-9762-3500830dd98f" />
+    <message xmi:type="uml:Message" xmi:id="84fa4d93-4d05-450a-85b5-b3df5b78a8fa" receiveEvent="0e9148cc-fd7e-4a01-8c85-b400be8bf52c" sendEvent="cd2fdcd8-799f-45e3-9fa1-193395f5d747" signature="13217945-c8bf-4cb6-bfdd-b10ffce272c8" />
+    <message xmi:type="uml:Message" xmi:id="8af4037c-5f0d-4bd3-ad4d-552cf0f7564e" receiveEvent="fe892be0-de1a-42fb-9e54-b265537ffddd" sendEvent="bcb93ac3-7d6d-4f02-816d-7d32138e96f3" signature="8f828be4-08d8-463f-ba81-870252ae2859" />
+    <message xmi:type="uml:Message" xmi:id="4c77c871-9cca-428c-802b-5a181bd8917b" messageSort="Reply" receiveEvent="7a1a2fbe-79a0-4ceb-8970-f0b8b9a58a48" sendEvent="636d96c8-26a8-4dd4-be71-66a3c17a0f5f" />
+    <message xmi:type="uml:Message" xmi:id="ad92f0e5-5f5a-43ff-b8ed-a0ae4f016b18" messageSort="Reply" receiveEvent="f69faf0d-6d77-4e6f-9062-d4763ac3a0b9" sendEvent="ea5e6332-d970-4299-bde3-f981934d3e1c" />
+    <message xmi:type="uml:Message" xmi:id="7dec6746-5bfb-4acc-b685-97cabcfeeed7" messageSort="Reply" receiveEvent="2bf20a1c-8e22-40ea-9ec3-20ee100ec493" sendEvent="b47c5234-582d-438d-a21f-8e535a992c32" />
+    <message xmi:type="uml:Message" xmi:id="c671e837-c5d4-4bf1-b972-abfc044f607e" messageSort="Reply" receiveEvent="18b2bfb1-61b2-458e-b8f7-1c030bd629b9" sendEvent="c6de3a90-f278-41c1-8cc2-f321433869e3" />
+    <lifeline xmi:type="uml:Lifeline" xmi:id="0d52aee5-e761-4206-916d-1498bdc456f7" classifier="9dc3aeba-5e37-4596-b842-7ab8f2dde672">
+      <coveredBy xmi:idref="caf9308a-7f83-40b0-adff-a371836da4b4" />
+      <coveredBy xmi:idref="026d21ca-6f6c-438d-b25d-8db719e92de3" />
+      <coveredBy xmi:idref="fd99cab1-fdef-48bb-9e07-b5ba2d7ca842" />
+      <coveredBy xmi:idref="18b2bfb1-61b2-458e-b8f7-1c030bd629b9" />
+    </lifeline>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="e49b152f-57a5-41be-ab11-1e4de9605dfa" classifier="9ed319dc-a982-474f-86cc-0232f111ea80">
+      <coveredBy xmi:idref="c8a60c38-5eca-4d06-a00f-6e63e123f5e2" />
+      <coveredBy xmi:idref="e9bca07e-eb9f-43bb-8235-a0267225b59c" />
+      <coveredBy xmi:idref="0e9148cc-fd7e-4a01-8c85-b400be8bf52c" />
+      <coveredBy xmi:idref="bcb93ac3-7d6d-4f02-816d-7d32138e96f3" />
+      <coveredBy xmi:idref="7a1a2fbe-79a0-4ceb-8970-f0b8b9a58a48" />
+      <coveredBy xmi:idref="ea5e6332-d970-4299-bde3-f981934d3e1c" />
+      <coveredBy xmi:idref="2bf20a1c-8e22-40ea-9ec3-20ee100ec493" />
+      <coveredBy xmi:idref="c6de3a90-f278-41c1-8cc2-f321433869e3" />
+    </lifeline>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="9a37e047-683f-4a63-b515-d5139466dd5b" classifier="bab8d031-d9ee-4f39-b956-5f1d5ca6fdfc">
+      <coveredBy xmi:idref="37f58bea-daf4-49b6-929f-92f098a1b79f" />
+      <coveredBy xmi:idref="9a898ef8-3cb9-4c2b-8e52-0dc48768c4d1" />
+      <coveredBy xmi:idref="b1bbd496-a2c1-4093-b9c8-4718ed61be31" />
+      <coveredBy xmi:idref="70579dd9-a1ac-424c-b817-eaf42f33b98e" />
+      <coveredBy xmi:idref="d3034098-fb87-44ff-a73c-694cf04eebce" />
+      <coveredBy xmi:idref="cd2fdcd8-799f-45e3-9fa1-193395f5d747" />
+      <coveredBy xmi:idref="f69faf0d-6d77-4e6f-9062-d4763ac3a0b9" />
+      <coveredBy xmi:idref="b47c5234-582d-438d-a21f-8e535a992c32" />
+    </lifeline>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="2e5b084c-07a6-4579-ac8f-7fa193c521a8" classifier="19750bc3-fb08-4662-ac65-cc262bf5c1a0">
+      <coveredBy xmi:idref="643aaca2-a86b-4415-9b9c-61946a552098" />
+      <coveredBy xmi:idref="145837d7-5903-4e62-9762-3500830dd98f" />
+    </lifeline>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="f455aa0d-1efc-443c-96cb-84efbc0efab1" classifier="47f8d293-a951-4ac3-8ded-0e4035007a40">
+      <coveredBy xmi:idref="fe892be0-de1a-42fb-9e54-b265537ffddd" />
+      <coveredBy xmi:idref="636d96c8-26a8-4dd4-be71-66a3c17a0f5f" />
+    </lifeline>
+    <fragment xmi:type="uml:CombinedFragment" xmi:id="f6ea9d6a-ca01-4605-a401-5d121fb89c5b" interactionOperator="Opt">
+      <operand xmi:type="uml:InteractionOperand" xmi:id="8e57d94b-59a1-4752-80fb-be48c746f9cb" name="InteractionOperand1">
+        <guard xmi:type="uml:InteractionConstraint" xmi:id="80a31222-1a56-4035-b9f6-0047b425e19a">
+          <specification xmi:type="uml:LiteralString" xmi:id="61433697-0ae0-4bb9-9b36-cf7667b8b961" value="lives==0" />
+        </guard>
+      </operand>
+    </fragment>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="caf9308a-7f83-40b0-adff-a371836da4b4" covered="0d52aee5-e761-4206-916d-1498bdc456f7" message="46812a93-773a-42ed-bf7d-87ba81c6b49d" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="c8a60c38-5eca-4d06-a00f-6e63e123f5e2" covered="e49b152f-57a5-41be-ab11-1e4de9605dfa" message="46812a93-773a-42ed-bf7d-87ba81c6b49d" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="e9bca07e-eb9f-43bb-8235-a0267225b59c" covered="e49b152f-57a5-41be-ab11-1e4de9605dfa" message="3adc1f89-24ce-4895-a5fb-c47fa841a1da" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="37f58bea-daf4-49b6-929f-92f098a1b79f" covered="9a37e047-683f-4a63-b515-d5139466dd5b" message="3adc1f89-24ce-4895-a5fb-c47fa841a1da" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="9a898ef8-3cb9-4c2b-8e52-0dc48768c4d1" covered="9a37e047-683f-4a63-b515-d5139466dd5b" message="c29b5432-1d80-41d6-95ba-4853b419e3bc" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="026d21ca-6f6c-438d-b25d-8db719e92de3" covered="0d52aee5-e761-4206-916d-1498bdc456f7" message="c29b5432-1d80-41d6-95ba-4853b419e3bc" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="fd99cab1-fdef-48bb-9e07-b5ba2d7ca842" covered="0d52aee5-e761-4206-916d-1498bdc456f7" message="bdd88cb1-2ad4-43a1-9498-42299e36e340" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="b1bbd496-a2c1-4093-b9c8-4718ed61be31" covered="9a37e047-683f-4a63-b515-d5139466dd5b" message="bdd88cb1-2ad4-43a1-9498-42299e36e340" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="70579dd9-a1ac-424c-b817-eaf42f33b98e" covered="9a37e047-683f-4a63-b515-d5139466dd5b" message="0c146261-e3ed-45cc-8450-3a9ab508abaf" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="643aaca2-a86b-4415-9b9c-61946a552098" covered="2e5b084c-07a6-4579-ac8f-7fa193c521a8" message="0c146261-e3ed-45cc-8450-3a9ab508abaf" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="145837d7-5903-4e62-9762-3500830dd98f" covered="2e5b084c-07a6-4579-ac8f-7fa193c521a8" message="615b2993-9fe9-42f8-80d1-8598f96a5a0e" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="d3034098-fb87-44ff-a73c-694cf04eebce" covered="9a37e047-683f-4a63-b515-d5139466dd5b" message="615b2993-9fe9-42f8-80d1-8598f96a5a0e" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="cd2fdcd8-799f-45e3-9fa1-193395f5d747" covered="9a37e047-683f-4a63-b515-d5139466dd5b" message="84fa4d93-4d05-450a-85b5-b3df5b78a8fa" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="0e9148cc-fd7e-4a01-8c85-b400be8bf52c" covered="e49b152f-57a5-41be-ab11-1e4de9605dfa" message="84fa4d93-4d05-450a-85b5-b3df5b78a8fa" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="bcb93ac3-7d6d-4f02-816d-7d32138e96f3" covered="e49b152f-57a5-41be-ab11-1e4de9605dfa" message="8af4037c-5f0d-4bd3-ad4d-552cf0f7564e" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="fe892be0-de1a-42fb-9e54-b265537ffddd" covered="f455aa0d-1efc-443c-96cb-84efbc0efab1" message="8af4037c-5f0d-4bd3-ad4d-552cf0f7564e" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="636d96c8-26a8-4dd4-be71-66a3c17a0f5f" covered="f455aa0d-1efc-443c-96cb-84efbc0efab1" message="4c77c871-9cca-428c-802b-5a181bd8917b" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="7a1a2fbe-79a0-4ceb-8970-f0b8b9a58a48" covered="e49b152f-57a5-41be-ab11-1e4de9605dfa" message="4c77c871-9cca-428c-802b-5a181bd8917b" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="ea5e6332-d970-4299-bde3-f981934d3e1c" covered="e49b152f-57a5-41be-ab11-1e4de9605dfa" message="ad92f0e5-5f5a-43ff-b8ed-a0ae4f016b18" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="f69faf0d-6d77-4e6f-9062-d4763ac3a0b9" covered="9a37e047-683f-4a63-b515-d5139466dd5b" message="ad92f0e5-5f5a-43ff-b8ed-a0ae4f016b18" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="b47c5234-582d-438d-a21f-8e535a992c32" covered="9a37e047-683f-4a63-b515-d5139466dd5b" message="7dec6746-5bfb-4acc-b685-97cabcfeeed7" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="2bf20a1c-8e22-40ea-9ec3-20ee100ec493" covered="e49b152f-57a5-41be-ab11-1e4de9605dfa" message="7dec6746-5bfb-4acc-b685-97cabcfeeed7" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="c6de3a90-f278-41c1-8cc2-f321433869e3" covered="e49b152f-57a5-41be-ab11-1e4de9605dfa" message="c671e837-c5d4-4bf1-b972-abfc044f607e" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="18b2bfb1-61b2-458e-b8f7-1c030bd629b9" covered="0d52aee5-e761-4206-916d-1498bdc456f7" message="c671e837-c5d4-4bf1-b972-abfc044f607e" />
+  </uml:Interaction>
+  <uml:Interaction xmi:type="uml:Interaction" xmi:id="e86fbe68-b40d-4b18-82fd-23e9e4c0a5ad" name="Time step">
+    <message xmi:type="uml:Message" xmi:id="76445ad0-8ba6-4d26-a8d4-5807b6aa3287" name="Tick" receiveEvent="be310032-48c5-4c6c-81b8-f79474eb36a3" sendEvent="e8e033da-8953-40ca-a730-e34dac5f53e4" />
+    <message xmi:type="uml:Message" xmi:id="90323f45-c052-41c9-b940-fddfa2a3832c" receiveEvent="6d33632b-6556-4210-87d2-36b0ddaa1f83" sendEvent="8bc30402-e43c-444f-8409-e50cbf92af22" signature="9ca70849-90da-43d3-99fc-a58342d23e20" />
+    <message xmi:type="uml:Message" xmi:id="fb19679c-44df-47aa-84a6-1c4d66d0ad44" messageSort="Reply" receiveEvent="bc3a040f-d4b3-45a6-af67-0aba246c7d03" sendEvent="9deaab96-2053-470b-870b-7a0bcd34aade" />
+    <message xmi:type="uml:Message" xmi:id="f921e271-fb61-45af-b80a-309a76eb09fa" messageSort="Reply" receiveEvent="965c8056-c682-4f8a-91ea-cfbedcd87e99" sendEvent="07f4e8cd-a82c-456e-becc-6fccae1f0940" />
+    <lifeline xmi:type="uml:Lifeline" xmi:id="3d14d296-e094-4204-a84a-4668639e334f">
+      <coveredBy xmi:idref="e8e033da-8953-40ca-a730-e34dac5f53e4" />
+      <coveredBy xmi:idref="965c8056-c682-4f8a-91ea-cfbedcd87e99" />
+    </lifeline>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="d56bbf44-2ed4-4a8a-9842-f2cf3084d29b" classifier="19750bc3-fb08-4662-ac65-cc262bf5c1a0">
+      <coveredBy xmi:idref="be310032-48c5-4c6c-81b8-f79474eb36a3" />
+      <coveredBy xmi:idref="8bc30402-e43c-444f-8409-e50cbf92af22" />
+      <coveredBy xmi:idref="bc3a040f-d4b3-45a6-af67-0aba246c7d03" />
+      <coveredBy xmi:idref="07f4e8cd-a82c-456e-becc-6fccae1f0940" />
+    </lifeline>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="34be2ed5-2b42-4cd7-90e5-c939897252c7" classifier="57be1635-7881-42f2-86ac-c6a37e49f18a">
+      <coveredBy xmi:idref="6d33632b-6556-4210-87d2-36b0ddaa1f83" />
+      <coveredBy xmi:idref="9deaab96-2053-470b-870b-7a0bcd34aade" />
+    </lifeline>
+    <fragment xmi:type="uml:CombinedFragment" xmi:id="12bb2876-47ad-4732-8a9f-1db45c732f05" interactionOperator="Loop">
+      <operand xmi:type="uml:InteractionOperand" xmi:id="d1dc3c46-f911-4251-ba50-205a596d4a60" name="InteractionOperand1">
+        <guard xmi:type="uml:InteractionConstraint" xmi:id="e34065e8-be72-49d7-ab02-b51054903bc5">
+          <specification xmi:type="uml:LiteralString" xmi:id="f968e302-c368-4257-919e-5fa009af3538" value="for all s:Steppable" />
+        </guard>
+      </operand>
+    </fragment>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="e8e033da-8953-40ca-a730-e34dac5f53e4" covered="3d14d296-e094-4204-a84a-4668639e334f" message="76445ad0-8ba6-4d26-a8d4-5807b6aa3287" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="be310032-48c5-4c6c-81b8-f79474eb36a3" covered="d56bbf44-2ed4-4a8a-9842-f2cf3084d29b" message="76445ad0-8ba6-4d26-a8d4-5807b6aa3287" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="8bc30402-e43c-444f-8409-e50cbf92af22" covered="d56bbf44-2ed4-4a8a-9842-f2cf3084d29b" message="90323f45-c052-41c9-b940-fddfa2a3832c" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="6d33632b-6556-4210-87d2-36b0ddaa1f83" covered="34be2ed5-2b42-4cd7-90e5-c939897252c7" message="90323f45-c052-41c9-b940-fddfa2a3832c" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="9deaab96-2053-470b-870b-7a0bcd34aade" covered="34be2ed5-2b42-4cd7-90e5-c939897252c7" message="fb19679c-44df-47aa-84a6-1c4d66d0ad44" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="bc3a040f-d4b3-45a6-af67-0aba246c7d03" covered="d56bbf44-2ed4-4a8a-9842-f2cf3084d29b" message="fb19679c-44df-47aa-84a6-1c4d66d0ad44" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="07f4e8cd-a82c-456e-becc-6fccae1f0940" covered="d56bbf44-2ed4-4a8a-9842-f2cf3084d29b" message="f921e271-fb61-45af-b80a-309a76eb09fa" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="965c8056-c682-4f8a-91ea-cfbedcd87e99" covered="3d14d296-e094-4204-a84a-4668639e334f" message="f921e271-fb61-45af-b80a-309a76eb09fa" />
+  </uml:Interaction>
+  <uml:Interaction xmi:type="uml:Interaction" xmi:id="5b6287b1-fede-47d2-9548-2fa31248a77e" name="Bomb steps">
+    <message xmi:type="uml:Message" xmi:id="ea87e3a7-896d-4291-96c7-579b685b1d16" receiveEvent="55aad789-7d90-4262-ada1-3c74f9133d07" sendEvent="ec792401-d83c-46aa-a1ce-292a8cad0d2f" signature="5f660ae8-a742-4e0c-b64c-9da04d07279b" />
+    <message xmi:type="uml:Message" xmi:id="b66a5272-20ed-49ca-b0f2-18264f0c653a" receiveEvent="1fa72ab8-0351-4bd9-b065-1a88f52de5ac" sendEvent="571e2449-9054-47cd-959d-226203f9af95" signature="0f710cc5-fbab-4703-b14d-816828dd46a3" />
+    <message xmi:type="uml:Message" xmi:id="9778446f-8533-4a3b-b599-8cad0a4c7c01" messageSort="Reply" receiveEvent="b864a96a-6967-4691-bc2d-0e109d9edf34" sendEvent="eb143229-9ad8-411d-b7d4-12f3b3fad809" />
+    <message xmi:type="uml:Message" xmi:id="41eb520a-101c-4a86-bb32-66d3c39eb250" name="RemoveSteppable" receiveEvent="066d5135-dced-44fd-8d55-6fcf357c7d5c" sendEvent="5bcca5c6-1869-46d0-b6a3-12af8b5c3fe7" />
+    <message xmi:type="uml:Message" xmi:id="4ecab0d8-0443-4b65-9268-77b8a17d0332" messageSort="Reply" receiveEvent="9bed3873-ce35-4dca-977d-f4758ee8752c" sendEvent="34243ae0-5d7e-4e5c-9b77-2a7f0a982068" />
+    <message xmi:type="uml:Message" xmi:id="e930cb3b-535d-4535-830a-153647a416a0" messageSort="Reply" receiveEvent="6868e692-9507-4df1-8708-ea23b5ffe183" sendEvent="6952ad4e-f136-4b91-a97b-507c87e3e2a4" />
+    <lifeline xmi:type="uml:Lifeline" xmi:id="e28dd349-7ec1-4ed7-8f58-f324ad6efdc1" classifier="19750bc3-fb08-4662-ac65-cc262bf5c1a0">
+      <coveredBy xmi:idref="ec792401-d83c-46aa-a1ce-292a8cad0d2f" />
+      <coveredBy xmi:idref="066d5135-dced-44fd-8d55-6fcf357c7d5c" />
+      <coveredBy xmi:idref="34243ae0-5d7e-4e5c-9b77-2a7f0a982068" />
+      <coveredBy xmi:idref="6868e692-9507-4df1-8708-ea23b5ffe183" />
+    </lifeline>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="a88e2e98-a0e8-478a-87d3-6dd7ab6fdef3" classifier="bab8d031-d9ee-4f39-b956-5f1d5ca6fdfc">
+      <coveredBy xmi:idref="55aad789-7d90-4262-ada1-3c74f9133d07" />
+      <coveredBy xmi:idref="571e2449-9054-47cd-959d-226203f9af95" />
+      <coveredBy xmi:idref="b864a96a-6967-4691-bc2d-0e109d9edf34" />
+      <coveredBy xmi:idref="5bcca5c6-1869-46d0-b6a3-12af8b5c3fe7" />
+      <coveredBy xmi:idref="9bed3873-ce35-4dca-977d-f4758ee8752c" />
+      <coveredBy xmi:idref="6952ad4e-f136-4b91-a97b-507c87e3e2a4" />
+    </lifeline>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="009193ff-33c8-423d-894d-9404defb0c83" classifier="9dc3aeba-5e37-4596-b842-7ab8f2dde672">
+      <coveredBy xmi:idref="1fa72ab8-0351-4bd9-b065-1a88f52de5ac" />
+      <coveredBy xmi:idref="eb143229-9ad8-411d-b7d4-12f3b3fad809" />
+    </lifeline>
+    <fragment xmi:type="uml:CombinedFragment" xmi:id="6ee0ce0d-8811-438e-8512-08ebf1515ffb" interactionOperator="Opt">
+      <operand xmi:type="uml:InteractionOperand" xmi:id="7ddfdfcb-a994-4d63-98d1-5a0e5351f90e" name="InteractionOperand1">
+        <guard xmi:type="uml:InteractionConstraint" xmi:id="2e760eab-9bba-4d6c-8cc1-059c77ede6d9">
+          <specification xmi:type="uml:LiteralString" xmi:id="88828625-9175-4690-9a19-6a3bc2e67cf9" value="timeCounter==0" />
+        </guard>
+      </operand>
+    </fragment>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="ec792401-d83c-46aa-a1ce-292a8cad0d2f" covered="e28dd349-7ec1-4ed7-8f58-f324ad6efdc1" message="ea87e3a7-896d-4291-96c7-579b685b1d16" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="55aad789-7d90-4262-ada1-3c74f9133d07" covered="a88e2e98-a0e8-478a-87d3-6dd7ab6fdef3" message="ea87e3a7-896d-4291-96c7-579b685b1d16" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="571e2449-9054-47cd-959d-226203f9af95" covered="a88e2e98-a0e8-478a-87d3-6dd7ab6fdef3" message="b66a5272-20ed-49ca-b0f2-18264f0c653a" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="1fa72ab8-0351-4bd9-b065-1a88f52de5ac" covered="009193ff-33c8-423d-894d-9404defb0c83" message="b66a5272-20ed-49ca-b0f2-18264f0c653a" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="eb143229-9ad8-411d-b7d4-12f3b3fad809" covered="009193ff-33c8-423d-894d-9404defb0c83" message="9778446f-8533-4a3b-b599-8cad0a4c7c01" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="b864a96a-6967-4691-bc2d-0e109d9edf34" covered="a88e2e98-a0e8-478a-87d3-6dd7ab6fdef3" message="9778446f-8533-4a3b-b599-8cad0a4c7c01" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="5bcca5c6-1869-46d0-b6a3-12af8b5c3fe7" covered="a88e2e98-a0e8-478a-87d3-6dd7ab6fdef3" message="41eb520a-101c-4a86-bb32-66d3c39eb250" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="066d5135-dced-44fd-8d55-6fcf357c7d5c" covered="e28dd349-7ec1-4ed7-8f58-f324ad6efdc1" message="41eb520a-101c-4a86-bb32-66d3c39eb250" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="34243ae0-5d7e-4e5c-9b77-2a7f0a982068" covered="e28dd349-7ec1-4ed7-8f58-f324ad6efdc1" message="4ecab0d8-0443-4b65-9268-77b8a17d0332" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="9bed3873-ce35-4dca-977d-f4758ee8752c" covered="a88e2e98-a0e8-478a-87d3-6dd7ab6fdef3" message="4ecab0d8-0443-4b65-9268-77b8a17d0332" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="6952ad4e-f136-4b91-a97b-507c87e3e2a4" covered="a88e2e98-a0e8-478a-87d3-6dd7ab6fdef3" message="e930cb3b-535d-4535-830a-153647a416a0" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="6868e692-9507-4df1-8708-ea23b5ffe183" covered="e28dd349-7ec1-4ed7-8f58-f324ad6efdc1" message="e930cb3b-535d-4535-830a-153647a416a0" />
+  </uml:Interaction>
+  <uml:Interaction xmi:type="uml:Interaction" xmi:id="5bf2d3af-eb7f-467f-9901-54820bb793f4" name="Maze steps">
+    <message xmi:type="uml:Message" xmi:id="f2768638-1927-491a-b282-5a30bb9894f1" receiveEvent="9c6294b8-ced5-4ddf-bbf7-329291ca02b2" sendEvent="2f86912d-7adb-49d0-b027-2249706ccb1f" signature="7884fdf3-4e54-4ff2-805b-07f17daa6d6a" />
+    <message xmi:type="uml:Message" xmi:id="3085df43-b10c-4976-bc60-c8de2480bc18" receiveEvent="8cc05169-ad22-4d79-af64-05ffba5ee24f" sendEvent="ba9b44b3-a6fc-4f07-93d2-25c46ac04e5d" signature="0913f943-a57a-4968-844c-b1efcb73e357" />
+    <message xmi:type="uml:Message" xmi:id="4acc14c5-be48-43ec-bafb-2765bdbd04b6" messageSort="CreateMessage" receiveEvent="e0722955-8770-4689-9cf8-48bc0122f11d" sendEvent="a3317460-780e-487e-8682-bb0f930d753e" />
+    <message xmi:type="uml:Message" xmi:id="5547d2a1-a7c4-4a37-b3e1-61b4b4f8de49" name="AddSteppable" receiveEvent="0b5c8e68-2405-443d-a572-798d805d0406" sendEvent="3af41e0f-8a03-4f54-8d0a-da5f8418e9ce" />
+    <message xmi:type="uml:Message" xmi:id="356f467b-207a-49c7-81b8-11e5b3e608b1" messageSort="Reply" receiveEvent="b404a01f-4fff-4279-bde7-68d7d9870989" sendEvent="8f0e7c8c-dad6-48ac-96d4-32cec46d5235" />
+    <message xmi:type="uml:Message" xmi:id="5717aecf-8c7b-46c6-8102-4450eaa91084" messageSort="Reply" receiveEvent="b561d404-14dc-4591-83b5-fd07aa4a0050" sendEvent="3026f3ad-1102-4748-99e0-c4ff2b2b67d1" />
+    <message xmi:type="uml:Message" xmi:id="248b2748-d38c-4159-9f3e-89eca9505622" receiveEvent="74e5d0d8-407a-43c0-945e-5eb6f11ffacf" sendEvent="b06bfdef-d380-43ca-8ecf-24268751afed" signature="0c1885de-c27e-457a-bc49-66d79bdd73ef" />
+    <message xmi:type="uml:Message" xmi:id="4bc6e95d-6ae8-486d-9305-5ae21bc5cfa1" messageSort="Reply" receiveEvent="143e889c-1e1b-42ba-b6fd-049021ff7922" sendEvent="2ce3a434-0268-46df-b5de-2d0ed110cd9b" />
+    <message xmi:type="uml:Message" xmi:id="5e2015fd-4264-4c17-826c-698d4e81060a" messageSort="Reply" receiveEvent="92b32e16-a71f-4e9b-80c0-e63edd36d197" sendEvent="701530e8-7ae0-4060-aff4-828cc7f77435" />
+    <lifeline xmi:type="uml:Lifeline" xmi:id="ac0951e3-a51b-4112-ba1c-c02897701e38" classifier="19750bc3-fb08-4662-ac65-cc262bf5c1a0">
+      <coveredBy xmi:idref="2f86912d-7adb-49d0-b027-2249706ccb1f" />
+      <coveredBy xmi:idref="0b5c8e68-2405-443d-a572-798d805d0406" />
+      <coveredBy xmi:idref="8f0e7c8c-dad6-48ac-96d4-32cec46d5235" />
+      <coveredBy xmi:idref="92b32e16-a71f-4e9b-80c0-e63edd36d197" />
+    </lifeline>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="81839d32-4ab1-4f3e-b75e-165c69211ae2" classifier="c8b78f0c-a9ce-4de9-aa57-60fe38c74599">
+      <coveredBy xmi:idref="9c6294b8-ced5-4ddf-bbf7-329291ca02b2" />
+      <coveredBy xmi:idref="ba9b44b3-a6fc-4f07-93d2-25c46ac04e5d" />
+      <coveredBy xmi:idref="8cc05169-ad22-4d79-af64-05ffba5ee24f" />
+      <coveredBy xmi:idref="a3317460-780e-487e-8682-bb0f930d753e" />
+      <coveredBy xmi:idref="b561d404-14dc-4591-83b5-fd07aa4a0050" />
+      <coveredBy xmi:idref="b06bfdef-d380-43ca-8ecf-24268751afed" />
+      <coveredBy xmi:idref="143e889c-1e1b-42ba-b6fd-049021ff7922" />
+      <coveredBy xmi:idref="701530e8-7ae0-4060-aff4-828cc7f77435" />
+    </lifeline>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="33070181-9b60-467b-b67d-36ef024809fc" classifier="7a35719b-6380-4c04-b1c6-bdeb74613940">
+      <coveredBy xmi:idref="e0722955-8770-4689-9cf8-48bc0122f11d" />
+      <coveredBy xmi:idref="3af41e0f-8a03-4f54-8d0a-da5f8418e9ce" />
+      <coveredBy xmi:idref="b404a01f-4fff-4279-bde7-68d7d9870989" />
+      <coveredBy xmi:idref="3026f3ad-1102-4748-99e0-c4ff2b2b67d1" />
+    </lifeline>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="d4ddae6d-29bc-4af8-a370-fb2f4e0949a3" classifier="9dc3aeba-5e37-4596-b842-7ab8f2dde672">
+      <coveredBy xmi:idref="74e5d0d8-407a-43c0-945e-5eb6f11ffacf" />
+      <coveredBy xmi:idref="2ce3a434-0268-46df-b5de-2d0ed110cd9b" />
+    </lifeline>
+    <fragment xmi:type="uml:CombinedFragment" xmi:id="b470ba3a-0d0d-4f82-b4c7-bbd40113a3db" interactionOperator="Opt">
+      <operand xmi:type="uml:InteractionOperand" xmi:id="10a66e5a-e12e-48c4-9ecb-453f408fc704" name="InteractionOperand1">
+        <guard xmi:type="uml:InteractionConstraint" xmi:id="f6af6e0c-2bcb-43d8-bb54-d071ee27eb5d">
+          <specification xmi:type="uml:LiteralString" xmi:id="5395bc2f-8ce2-41ce-9356-d4284a30b01b" value="random" />
+        </guard>
+      </operand>
+    </fragment>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="2f86912d-7adb-49d0-b027-2249706ccb1f" covered="ac0951e3-a51b-4112-ba1c-c02897701e38" message="f2768638-1927-491a-b282-5a30bb9894f1" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="9c6294b8-ced5-4ddf-bbf7-329291ca02b2" covered="81839d32-4ab1-4f3e-b75e-165c69211ae2" message="f2768638-1927-491a-b282-5a30bb9894f1" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="ba9b44b3-a6fc-4f07-93d2-25c46ac04e5d" covered="81839d32-4ab1-4f3e-b75e-165c69211ae2" message="3085df43-b10c-4976-bc60-c8de2480bc18" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="8cc05169-ad22-4d79-af64-05ffba5ee24f" covered="81839d32-4ab1-4f3e-b75e-165c69211ae2" message="3085df43-b10c-4976-bc60-c8de2480bc18" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="a3317460-780e-487e-8682-bb0f930d753e" covered="81839d32-4ab1-4f3e-b75e-165c69211ae2" message="4acc14c5-be48-43ec-bafb-2765bdbd04b6" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="e0722955-8770-4689-9cf8-48bc0122f11d" covered="33070181-9b60-467b-b67d-36ef024809fc" message="4acc14c5-be48-43ec-bafb-2765bdbd04b6" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="3af41e0f-8a03-4f54-8d0a-da5f8418e9ce" covered="33070181-9b60-467b-b67d-36ef024809fc" message="5547d2a1-a7c4-4a37-b3e1-61b4b4f8de49" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="0b5c8e68-2405-443d-a572-798d805d0406" covered="ac0951e3-a51b-4112-ba1c-c02897701e38" message="5547d2a1-a7c4-4a37-b3e1-61b4b4f8de49" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="8f0e7c8c-dad6-48ac-96d4-32cec46d5235" covered="ac0951e3-a51b-4112-ba1c-c02897701e38" message="356f467b-207a-49c7-81b8-11e5b3e608b1" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="b404a01f-4fff-4279-bde7-68d7d9870989" covered="33070181-9b60-467b-b67d-36ef024809fc" message="356f467b-207a-49c7-81b8-11e5b3e608b1" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="3026f3ad-1102-4748-99e0-c4ff2b2b67d1" covered="33070181-9b60-467b-b67d-36ef024809fc" message="5717aecf-8c7b-46c6-8102-4450eaa91084" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="b561d404-14dc-4591-83b5-fd07aa4a0050" covered="81839d32-4ab1-4f3e-b75e-165c69211ae2" message="5717aecf-8c7b-46c6-8102-4450eaa91084" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="b06bfdef-d380-43ca-8ecf-24268751afed" covered="81839d32-4ab1-4f3e-b75e-165c69211ae2" message="248b2748-d38c-4159-9f3e-89eca9505622" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="74e5d0d8-407a-43c0-945e-5eb6f11ffacf" covered="d4ddae6d-29bc-4af8-a370-fb2f4e0949a3" message="248b2748-d38c-4159-9f3e-89eca9505622" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="2ce3a434-0268-46df-b5de-2d0ed110cd9b" covered="d4ddae6d-29bc-4af8-a370-fb2f4e0949a3" message="4bc6e95d-6ae8-486d-9305-5ae21bc5cfa1" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="143e889c-1e1b-42ba-b6fd-049021ff7922" covered="81839d32-4ab1-4f3e-b75e-165c69211ae2" message="4bc6e95d-6ae8-486d-9305-5ae21bc5cfa1" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="701530e8-7ae0-4060-aff4-828cc7f77435" covered="81839d32-4ab1-4f3e-b75e-165c69211ae2" message="5e2015fd-4264-4c17-826c-698d4e81060a" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="92b32e16-a71f-4e9b-80c0-e63edd36d197" covered="ac0951e3-a51b-4112-ba1c-c02897701e38" message="5e2015fd-4264-4c17-826c-698d4e81060a" />
+  </uml:Interaction>
+  <uml:Interaction xmi:type="uml:Interaction" xmi:id="d4ce1238-9cd1-4ca0-85e9-a172f3473772" name="Blinky steps">
+    <message xmi:type="uml:Message" xmi:id="94d4eea8-cebf-41ef-8d02-1e030030423c" receiveEvent="bda57804-65c6-4f59-9c81-5bb6560acaf4" sendEvent="8a20cd5c-3f83-4172-8ae7-406dbb3eab0e" signature="f53ecdcd-b3ac-49d5-9cd4-4f815acf6be6" />
+    <message xmi:type="uml:Message" xmi:id="04c78cef-1074-463b-a00e-b20a4a1fbe99" receiveEvent="1a97a3c2-bb4b-4f44-8808-9b770de87005" sendEvent="c024ecb1-ac99-4c42-8e07-f05f24c1d687" signature="03ab7f98-44b0-416e-a63e-edf5f1f58909" />
+    <message xmi:type="uml:Message" xmi:id="11ef72a7-1f46-4e33-adf2-1e8ec8e23621" messageSort="Reply" receiveEvent="6da22bb1-8bdf-4b47-aab0-3c5243aaccc9" sendEvent="3cc045ed-6de5-4f06-8911-0a33fca230a1" />
+    <message xmi:type="uml:Message" xmi:id="5ad34a83-8257-4623-9bb9-1c9fdf5cae3a" receiveEvent="19ebf4ed-1bbe-468d-b346-2d61475cce7f" sendEvent="2d4a2856-b030-4d88-a1d8-4a89be548512" signature="5e31c1e2-27dc-4b8d-aa87-204766e80650" />
+    <message xmi:type="uml:Message" xmi:id="2a3fae29-3961-4acb-b754-1dc385b6ab51" messageSort="Reply" receiveEvent="2dc829d4-e9d6-4ae4-aa0a-cf8c2566b1fa" sendEvent="95f43b1f-ed64-4245-b6bd-d84feb24c5bd" />
+    <lifeline xmi:type="uml:Lifeline" xmi:id="620c3312-44fd-47f1-9769-1e9cbd8e2a1d" classifier="19750bc3-fb08-4662-ac65-cc262bf5c1a0">
+      <coveredBy xmi:idref="8a20cd5c-3f83-4172-8ae7-406dbb3eab0e" />
+      <coveredBy xmi:idref="2dc829d4-e9d6-4ae4-aa0a-cf8c2566b1fa" />
+    </lifeline>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="31e4db15-5e11-41ec-8d41-612b5324c144" classifier="82ee1add-dff2-4b2a-b905-40d7b46ed78c">
+      <coveredBy xmi:idref="bda57804-65c6-4f59-9c81-5bb6560acaf4" />
+      <coveredBy xmi:idref="c024ecb1-ac99-4c42-8e07-f05f24c1d687" />
+      <coveredBy xmi:idref="6da22bb1-8bdf-4b47-aab0-3c5243aaccc9" />
+      <coveredBy xmi:idref="2d4a2856-b030-4d88-a1d8-4a89be548512" />
+      <coveredBy xmi:idref="19ebf4ed-1bbe-468d-b346-2d61475cce7f" />
+      <coveredBy xmi:idref="95f43b1f-ed64-4245-b6bd-d84feb24c5bd" />
+    </lifeline>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="7ce4b06c-9b1f-4aa9-904b-6ecb1654d19f" classifier="c8b78f0c-a9ce-4de9-aa57-60fe38c74599">
+      <coveredBy xmi:idref="1a97a3c2-bb4b-4f44-8808-9b770de87005" />
+      <coveredBy xmi:idref="3cc045ed-6de5-4f06-8911-0a33fca230a1" />
+    </lifeline>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="8a20cd5c-3f83-4172-8ae7-406dbb3eab0e" covered="620c3312-44fd-47f1-9769-1e9cbd8e2a1d" message="94d4eea8-cebf-41ef-8d02-1e030030423c" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="bda57804-65c6-4f59-9c81-5bb6560acaf4" covered="31e4db15-5e11-41ec-8d41-612b5324c144" message="94d4eea8-cebf-41ef-8d02-1e030030423c" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="c024ecb1-ac99-4c42-8e07-f05f24c1d687" covered="31e4db15-5e11-41ec-8d41-612b5324c144" message="04c78cef-1074-463b-a00e-b20a4a1fbe99" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="1a97a3c2-bb4b-4f44-8808-9b770de87005" covered="7ce4b06c-9b1f-4aa9-904b-6ecb1654d19f" message="04c78cef-1074-463b-a00e-b20a4a1fbe99" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="3cc045ed-6de5-4f06-8911-0a33fca230a1" covered="7ce4b06c-9b1f-4aa9-904b-6ecb1654d19f" message="11ef72a7-1f46-4e33-adf2-1e8ec8e23621" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="6da22bb1-8bdf-4b47-aab0-3c5243aaccc9" covered="31e4db15-5e11-41ec-8d41-612b5324c144" message="11ef72a7-1f46-4e33-adf2-1e8ec8e23621" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="2d4a2856-b030-4d88-a1d8-4a89be548512" covered="31e4db15-5e11-41ec-8d41-612b5324c144" message="5ad34a83-8257-4623-9bb9-1c9fdf5cae3a" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="19ebf4ed-1bbe-468d-b346-2d61475cce7f" covered="31e4db15-5e11-41ec-8d41-612b5324c144" message="5ad34a83-8257-4623-9bb9-1c9fdf5cae3a" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="95f43b1f-ed64-4245-b6bd-d84feb24c5bd" covered="31e4db15-5e11-41ec-8d41-612b5324c144" message="2a3fae29-3961-4acb-b754-1dc385b6ab51" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="2dc829d4-e9d6-4ae4-aa0a-cf8c2566b1fa" covered="620c3312-44fd-47f1-9769-1e9cbd8e2a1d" message="2a3fae29-3961-4acb-b754-1dc385b6ab51" />
+  </uml:Interaction>
+  <uml:Interaction xmi:type="uml:Interaction" xmi:id="592ffe1c-f912-4960-8400-b61ad1021607" name="Clyde steps">
+    <message xmi:type="uml:Message" xmi:id="3f541d1f-fa67-49a2-b3eb-12c9f74d2c2c" receiveEvent="5c6b2158-5230-494e-89e5-8380165e0c5f" sendEvent="8724ae8a-969d-436e-b117-b88814ab5c02" signature="23261043-bbde-49e4-a2c1-30b1234e927f" />
+    <message xmi:type="uml:Message" xmi:id="4e838d14-e2ed-428f-8afd-d8262ead1d1b" receiveEvent="fe42d869-2ef2-4360-b5cb-820f17387b94" sendEvent="fd20674f-3335-4ada-bc42-2f6ca21f3c5f" signature="3d8c43f4-ed36-418f-80e5-1f58c0e59ed5" />
+    <message xmi:type="uml:Message" xmi:id="d68612b3-4957-4833-ab80-dfe41ce57031" messageSort="CreateMessage" receiveEvent="1f433cee-8728-4255-a7f7-8fbd1fba72dd" sendEvent="77021c2e-beec-4450-a4c8-93d89a5712f4" />
+    <message xmi:type="uml:Message" xmi:id="7a3047c5-5999-428a-a19b-f043054df070" messageSort="Reply" receiveEvent="4ff0da2b-d5ea-4276-abd5-f1edcda72e28" sendEvent="149952eb-f20a-4708-ad47-4ff385e31113" />
+    <message xmi:type="uml:Message" xmi:id="d547b867-0a6f-4af4-ba95-e069e46bc8ab" messageSort="Reply" receiveEvent="7f60b727-20be-4ff6-a70e-5195f169bc08" sendEvent="9818fda4-7e01-4512-b7cb-eb1542d191de" />
+    <message xmi:type="uml:Message" xmi:id="a3fad007-eed2-4d55-8e3b-19d309776784" receiveEvent="92e24282-abbe-49e2-870c-16ce65cb4415" sendEvent="c8d719a1-e162-4837-8177-39f6e9adf92d" signature="5e31c1e2-27dc-4b8d-aa87-204766e80650" />
+    <message xmi:type="uml:Message" xmi:id="e81c66a4-1051-447f-9a5b-992ba70e0dd5" messageSort="Reply" receiveEvent="b832d0f7-6f1a-454a-803a-0754d172fb1a" sendEvent="277938db-0e44-48dc-97de-64beac36eba8" />
+    <lifeline xmi:type="uml:Lifeline" xmi:id="164290bc-0d9b-4d76-9e32-0c2ce6c08576" classifier="19750bc3-fb08-4662-ac65-cc262bf5c1a0">
+      <coveredBy xmi:idref="8724ae8a-969d-436e-b117-b88814ab5c02" />
+      <coveredBy xmi:idref="b832d0f7-6f1a-454a-803a-0754d172fb1a" />
+    </lifeline>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="2e2c08f2-1ffa-4479-9b59-dc2ffe8bf363" classifier="cfc5515c-be6c-4dae-b81e-61b9482d3dff">
+      <coveredBy xmi:idref="5c6b2158-5230-494e-89e5-8380165e0c5f" />
+      <coveredBy xmi:idref="fd20674f-3335-4ada-bc42-2f6ca21f3c5f" />
+      <coveredBy xmi:idref="7f60b727-20be-4ff6-a70e-5195f169bc08" />
+      <coveredBy xmi:idref="c8d719a1-e162-4837-8177-39f6e9adf92d" />
+      <coveredBy xmi:idref="92e24282-abbe-49e2-870c-16ce65cb4415" />
+      <coveredBy xmi:idref="277938db-0e44-48dc-97de-64beac36eba8" />
+    </lifeline>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="8800bffa-b121-4579-af7a-f695cfc404b8" classifier="c8b78f0c-a9ce-4de9-aa57-60fe38c74599">
+      <coveredBy xmi:idref="fe42d869-2ef2-4360-b5cb-820f17387b94" />
+      <coveredBy xmi:idref="77021c2e-beec-4450-a4c8-93d89a5712f4" />
+      <coveredBy xmi:idref="4ff0da2b-d5ea-4276-abd5-f1edcda72e28" />
+      <coveredBy xmi:idref="9818fda4-7e01-4512-b7cb-eb1542d191de" />
+    </lifeline>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="8f76f80d-8058-4263-b345-bddf9656eff5" classifier="566a0577-f26d-419b-a3bb-ce8d02cd8c70">
+      <coveredBy xmi:idref="1f433cee-8728-4255-a7f7-8fbd1fba72dd" />
+      <coveredBy xmi:idref="149952eb-f20a-4708-ad47-4ff385e31113" />
+    </lifeline>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="8724ae8a-969d-436e-b117-b88814ab5c02" covered="164290bc-0d9b-4d76-9e32-0c2ce6c08576" message="3f541d1f-fa67-49a2-b3eb-12c9f74d2c2c" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="5c6b2158-5230-494e-89e5-8380165e0c5f" covered="2e2c08f2-1ffa-4479-9b59-dc2ffe8bf363" message="3f541d1f-fa67-49a2-b3eb-12c9f74d2c2c" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="fd20674f-3335-4ada-bc42-2f6ca21f3c5f" covered="2e2c08f2-1ffa-4479-9b59-dc2ffe8bf363" message="4e838d14-e2ed-428f-8afd-d8262ead1d1b" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="fe42d869-2ef2-4360-b5cb-820f17387b94" covered="8800bffa-b121-4579-af7a-f695cfc404b8" message="4e838d14-e2ed-428f-8afd-d8262ead1d1b" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="77021c2e-beec-4450-a4c8-93d89a5712f4" covered="8800bffa-b121-4579-af7a-f695cfc404b8" message="d68612b3-4957-4833-ab80-dfe41ce57031" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="1f433cee-8728-4255-a7f7-8fbd1fba72dd" covered="8f76f80d-8058-4263-b345-bddf9656eff5" message="d68612b3-4957-4833-ab80-dfe41ce57031" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="149952eb-f20a-4708-ad47-4ff385e31113" covered="8f76f80d-8058-4263-b345-bddf9656eff5" message="7a3047c5-5999-428a-a19b-f043054df070" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="4ff0da2b-d5ea-4276-abd5-f1edcda72e28" covered="8800bffa-b121-4579-af7a-f695cfc404b8" message="7a3047c5-5999-428a-a19b-f043054df070" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="9818fda4-7e01-4512-b7cb-eb1542d191de" covered="8800bffa-b121-4579-af7a-f695cfc404b8" message="d547b867-0a6f-4af4-ba95-e069e46bc8ab" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="7f60b727-20be-4ff6-a70e-5195f169bc08" covered="2e2c08f2-1ffa-4479-9b59-dc2ffe8bf363" message="d547b867-0a6f-4af4-ba95-e069e46bc8ab" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="c8d719a1-e162-4837-8177-39f6e9adf92d" covered="2e2c08f2-1ffa-4479-9b59-dc2ffe8bf363" message="a3fad007-eed2-4d55-8e3b-19d309776784" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="92e24282-abbe-49e2-870c-16ce65cb4415" covered="2e2c08f2-1ffa-4479-9b59-dc2ffe8bf363" message="a3fad007-eed2-4d55-8e3b-19d309776784" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="277938db-0e44-48dc-97de-64beac36eba8" covered="2e2c08f2-1ffa-4479-9b59-dc2ffe8bf363" message="e81c66a4-1051-447f-9a5b-992ba70e0dd5" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="b832d0f7-6f1a-454a-803a-0754d172fb1a" covered="164290bc-0d9b-4d76-9e32-0c2ce6c08576" message="e81c66a4-1051-447f-9a5b-992ba70e0dd5" />
+  </uml:Interaction>
+  <uml:Interaction xmi:type="uml:Interaction" xmi:id="59b4ac7c-4011-4fdb-8a7d-5ba1622214fc" name="Inky steps">
+    <message xmi:type="uml:Message" xmi:id="37d5925e-7040-4191-9c28-cd5e985c8de7" receiveEvent="9aebba28-4560-47f9-bfa2-078e32edac14" sendEvent="fe596491-d20f-4086-9062-d4d7a4d77acc" signature="dd7b74f9-ba33-4da4-be86-534a278eccc6" />
+    <message xmi:type="uml:Message" xmi:id="1f464f35-1388-4672-be20-2094ece8d32f" receiveEvent="545983fc-a295-4970-a756-16a6aecbc004" sendEvent="a5785c00-0a6d-47ea-90c6-50f40e3baeb2" signature="5e31c1e2-27dc-4b8d-aa87-204766e80650" />
+    <message xmi:type="uml:Message" xmi:id="05b7d1fb-a54b-4e87-aae9-7d392651bc9d" messageSort="Reply" receiveEvent="27fe8750-dd90-4fb7-a8fc-144937697e39" sendEvent="56dbceb9-877a-464f-bdb8-72bdf8cbdaf7" />
+    <lifeline xmi:type="uml:Lifeline" xmi:id="f4b0ffd3-3b67-4598-b0df-ae6de012da5f" classifier="19750bc3-fb08-4662-ac65-cc262bf5c1a0">
+      <coveredBy xmi:idref="fe596491-d20f-4086-9062-d4d7a4d77acc" />
+      <coveredBy xmi:idref="27fe8750-dd90-4fb7-a8fc-144937697e39" />
+    </lifeline>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="b30a0518-3d65-43b9-80b8-ab460d0f9b2d" classifier="bc389d0d-c918-4569-bb66-f4a1c422187c">
+      <coveredBy xmi:idref="9aebba28-4560-47f9-bfa2-078e32edac14" />
+      <coveredBy xmi:idref="a5785c00-0a6d-47ea-90c6-50f40e3baeb2" />
+      <coveredBy xmi:idref="545983fc-a295-4970-a756-16a6aecbc004" />
+      <coveredBy xmi:idref="56dbceb9-877a-464f-bdb8-72bdf8cbdaf7" />
+    </lifeline>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="fe596491-d20f-4086-9062-d4d7a4d77acc" covered="f4b0ffd3-3b67-4598-b0df-ae6de012da5f" message="37d5925e-7040-4191-9c28-cd5e985c8de7" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="9aebba28-4560-47f9-bfa2-078e32edac14" covered="b30a0518-3d65-43b9-80b8-ab460d0f9b2d" message="37d5925e-7040-4191-9c28-cd5e985c8de7" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="a5785c00-0a6d-47ea-90c6-50f40e3baeb2" covered="b30a0518-3d65-43b9-80b8-ab460d0f9b2d" message="1f464f35-1388-4672-be20-2094ece8d32f" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="545983fc-a295-4970-a756-16a6aecbc004" covered="b30a0518-3d65-43b9-80b8-ab460d0f9b2d" message="1f464f35-1388-4672-be20-2094ece8d32f" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="56dbceb9-877a-464f-bdb8-72bdf8cbdaf7" covered="b30a0518-3d65-43b9-80b8-ab460d0f9b2d" message="05b7d1fb-a54b-4e87-aae9-7d392651bc9d" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="27fe8750-dd90-4fb7-a8fc-144937697e39" covered="f4b0ffd3-3b67-4598-b0df-ae6de012da5f" message="05b7d1fb-a54b-4e87-aae9-7d392651bc9d" />
+  </uml:Interaction>
+  <uml:Interaction xmi:type="uml:Interaction" xmi:id="1b292fb2-f9f2-4814-9ee2-e3cb2bb06394" name="Monster moves">
+    <message xmi:type="uml:Message" xmi:id="89448c89-3ef0-4e2d-abec-e86d7624f5a0" receiveEvent="bd269f87-d71c-441b-91ba-7c90cc271cb4" sendEvent="9df3ba84-e851-4894-86c8-e596d87040c0" signature="5e31c1e2-27dc-4b8d-aa87-204766e80650" />
+    <message xmi:type="uml:Message" xmi:id="f2e92855-73ff-477c-b45a-e8ac3abed027" receiveEvent="8d374ce8-267c-4761-9c7f-ea0e661aa7ff" sendEvent="0b428bdc-653c-4b61-8f1f-8e18a52c8b0a" signature="22b473c3-c326-4bb4-8d8b-5a165f3f4e38" />
+    <message xmi:type="uml:Message" xmi:id="0bee26cc-1604-4155-afbb-f562a3d10077" name="f2" messageSort="Reply" receiveEvent="7f4cc1ff-01f3-4536-9dd4-187a5f8ea80a" sendEvent="ed7128c0-66c6-4922-a442-6e94ea8e62dd" />
+    <message xmi:type="uml:Message" xmi:id="711d4faa-f2f3-4285-8525-bb400a6d8463" receiveEvent="19d94bfa-ec90-4752-983d-3f6c2ca2d6c1" sendEvent="905bd611-2fe6-4028-8fe3-c81292594d98" signature="0f710cc5-fbab-4703-b14d-816828dd46a3" />
+    <message xmi:type="uml:Message" xmi:id="51c224e8-4c59-4d8e-bd94-5696d0dba013" messageSort="Reply" receiveEvent="d1b1a257-c1c6-43e7-8d8a-966e0a2c1151" sendEvent="ed5698cb-348b-41eb-a8ed-2fb7c54ecdc9" />
+    <message xmi:type="uml:Message" xmi:id="457b1078-e1b4-4f3b-b290-1a36da5b1538" name="Accept" receiveEvent="d3c2fc81-c388-41f1-8511-c1dfb4e2458e" sendEvent="9fcb18b3-9aae-49d8-9876-d01dfa77b1f9" />
+    <message xmi:type="uml:Message" xmi:id="68ae9a1b-19de-462d-aa07-8a7eba73f11a" receiveEvent="452bddd5-8cc4-4e19-8b33-f845c42bc451" sendEvent="015efbf8-ba38-4b56-92fe-b261d73c51df" signature="d249fca3-65ba-476d-8bd8-d0cc2936005b" />
+    <message xmi:type="uml:Message" xmi:id="f464b5bc-7eb6-4261-b152-2df313b07116" receiveEvent="649ca103-1346-453a-98b7-d95fe30346cb" sendEvent="f4294a9c-ca57-485a-855b-01807deef046" signature="ad8b3344-9ea6-4e34-9816-38153c85eb93" />
+    <message xmi:type="uml:Message" xmi:id="c6e3c107-dbcc-411e-afa6-b85ec9e85196" messageSort="Reply" receiveEvent="c6bec745-f74e-4099-a772-74577ab1cf80" sendEvent="26055b13-0cf1-4e43-b4a6-0b737c477a17" />
+    <message xmi:type="uml:Message" xmi:id="4f0d4d8c-fdb7-4e69-9f22-576145d03202" messageSort="Reply" receiveEvent="00e44e76-2938-4b57-83fb-5e08373d7aa8" sendEvent="df89f43a-2631-453d-93e4-d4891cda9c03" />
+    <message xmi:type="uml:Message" xmi:id="36f3f245-e3fe-4182-9861-c2cb9ca4bee5" messageSort="Reply" receiveEvent="12fef028-9c17-4fcb-bed9-c906dd4257c5" sendEvent="ceeef365-64ac-4557-96b3-218be6c0c320" />
+    <message xmi:type="uml:Message" xmi:id="36c3d2d5-e781-443b-843b-0b49a0483847" messageSort="Reply" receiveEvent="c6535ecc-b7a6-4d7a-b26b-fc6fbd4e0227" sendEvent="0a76ae06-f826-4205-927e-bdebf7f5120d" />
+    <lifeline xmi:type="uml:Lifeline" xmi:id="6e111507-31d0-404b-a7f7-c1801ce39724">
+      <coveredBy xmi:idref="9df3ba84-e851-4894-86c8-e596d87040c0" />
+      <coveredBy xmi:idref="c6535ecc-b7a6-4d7a-b26b-fc6fbd4e0227" />
+    </lifeline>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="289d6b0a-2d85-4404-9627-d3586a47bebe" classifier="32b2c41d-7ebc-4f9a-8d7b-90ff1f4eb2f3">
+      <coveredBy xmi:idref="bd269f87-d71c-441b-91ba-7c90cc271cb4" />
+      <coveredBy xmi:idref="0b428bdc-653c-4b61-8f1f-8e18a52c8b0a" />
+      <coveredBy xmi:idref="7f4cc1ff-01f3-4536-9dd4-187a5f8ea80a" />
+      <coveredBy xmi:idref="905bd611-2fe6-4028-8fe3-c81292594d98" />
+      <coveredBy xmi:idref="d1b1a257-c1c6-43e7-8d8a-966e0a2c1151" />
+      <coveredBy xmi:idref="9fcb18b3-9aae-49d8-9876-d01dfa77b1f9" />
+      <coveredBy xmi:idref="452bddd5-8cc4-4e19-8b33-f845c42bc451" />
+      <coveredBy xmi:idref="f4294a9c-ca57-485a-855b-01807deef046" />
+      <coveredBy xmi:idref="c6bec745-f74e-4099-a772-74577ab1cf80" />
+      <coveredBy xmi:idref="df89f43a-2631-453d-93e4-d4891cda9c03" />
+      <coveredBy xmi:idref="12fef028-9c17-4fcb-bed9-c906dd4257c5" />
+      <coveredBy xmi:idref="0a76ae06-f826-4205-927e-bdebf7f5120d" />
+    </lifeline>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="af5b2b20-3ea7-4153-b37f-6d6698734157" classifier="9dc3aeba-5e37-4596-b842-7ab8f2dde672">
+      <coveredBy xmi:idref="8d374ce8-267c-4761-9c7f-ea0e661aa7ff" />
+      <coveredBy xmi:idref="ed7128c0-66c6-4922-a442-6e94ea8e62dd" />
+      <coveredBy xmi:idref="19d94bfa-ec90-4752-983d-3f6c2ca2d6c1" />
+      <coveredBy xmi:idref="ed5698cb-348b-41eb-a8ed-2fb7c54ecdc9" />
+    </lifeline>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="706870a0-49a2-4f7f-b907-0626ec4e6e16" classifier="9dc3aeba-5e37-4596-b842-7ab8f2dde672">
+      <coveredBy xmi:idref="d3c2fc81-c388-41f1-8511-c1dfb4e2458e" />
+      <coveredBy xmi:idref="015efbf8-ba38-4b56-92fe-b261d73c51df" />
+      <coveredBy xmi:idref="00e44e76-2938-4b57-83fb-5e08373d7aa8" />
+      <coveredBy xmi:idref="ceeef365-64ac-4557-96b3-218be6c0c320" />
+    </lifeline>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="1ef58d47-942c-4a6e-979a-30058f680bfe" classifier="795a0782-71a9-4260-848a-25602c2a963c">
+      <coveredBy xmi:idref="649ca103-1346-453a-98b7-d95fe30346cb" />
+      <coveredBy xmi:idref="26055b13-0cf1-4e43-b4a6-0b737c477a17" />
+    </lifeline>
+    <fragment xmi:type="uml:CombinedFragment" xmi:id="e442cf36-2fb4-41c3-ae7c-829b9691df73" interactionOperator="Loop">
+      <operand xmi:type="uml:InteractionOperand" xmi:id="f4657d53-73c5-4289-b6ae-d6d6b5433769" name="InteractionOperand1">
+        <guard xmi:type="uml:InteractionConstraint" xmi:id="c3828e1c-9702-4d4b-bdbc-edea4f569e61">
+          <specification xmi:type="uml:LiteralString" xmi:id="5522a51d-853c-4bc7-bb57-590f228ca7ed" value="for all t:Thing" />
+        </guard>
+      </operand>
+    </fragment>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="9df3ba84-e851-4894-86c8-e596d87040c0" covered="6e111507-31d0-404b-a7f7-c1801ce39724" message="89448c89-3ef0-4e2d-abec-e86d7624f5a0" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="bd269f87-d71c-441b-91ba-7c90cc271cb4" covered="289d6b0a-2d85-4404-9627-d3586a47bebe" message="89448c89-3ef0-4e2d-abec-e86d7624f5a0" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="0b428bdc-653c-4b61-8f1f-8e18a52c8b0a" covered="289d6b0a-2d85-4404-9627-d3586a47bebe" message="f2e92855-73ff-477c-b45a-e8ac3abed027" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="8d374ce8-267c-4761-9c7f-ea0e661aa7ff" covered="af5b2b20-3ea7-4153-b37f-6d6698734157" message="f2e92855-73ff-477c-b45a-e8ac3abed027" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="ed7128c0-66c6-4922-a442-6e94ea8e62dd" covered="af5b2b20-3ea7-4153-b37f-6d6698734157" message="0bee26cc-1604-4155-afbb-f562a3d10077" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="7f4cc1ff-01f3-4536-9dd4-187a5f8ea80a" covered="289d6b0a-2d85-4404-9627-d3586a47bebe" message="0bee26cc-1604-4155-afbb-f562a3d10077" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="905bd611-2fe6-4028-8fe3-c81292594d98" covered="289d6b0a-2d85-4404-9627-d3586a47bebe" message="711d4faa-f2f3-4285-8525-bb400a6d8463" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="19d94bfa-ec90-4752-983d-3f6c2ca2d6c1" covered="af5b2b20-3ea7-4153-b37f-6d6698734157" message="711d4faa-f2f3-4285-8525-bb400a6d8463" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="ed5698cb-348b-41eb-a8ed-2fb7c54ecdc9" covered="af5b2b20-3ea7-4153-b37f-6d6698734157" message="51c224e8-4c59-4d8e-bd94-5696d0dba013" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="d1b1a257-c1c6-43e7-8d8a-966e0a2c1151" covered="289d6b0a-2d85-4404-9627-d3586a47bebe" message="51c224e8-4c59-4d8e-bd94-5696d0dba013" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="9fcb18b3-9aae-49d8-9876-d01dfa77b1f9" covered="289d6b0a-2d85-4404-9627-d3586a47bebe" message="457b1078-e1b4-4f3b-b290-1a36da5b1538" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="d3c2fc81-c388-41f1-8511-c1dfb4e2458e" covered="706870a0-49a2-4f7f-b907-0626ec4e6e16" message="457b1078-e1b4-4f3b-b290-1a36da5b1538" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="015efbf8-ba38-4b56-92fe-b261d73c51df" covered="706870a0-49a2-4f7f-b907-0626ec4e6e16" message="68ae9a1b-19de-462d-aa07-8a7eba73f11a" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="452bddd5-8cc4-4e19-8b33-f845c42bc451" covered="289d6b0a-2d85-4404-9627-d3586a47bebe" message="68ae9a1b-19de-462d-aa07-8a7eba73f11a" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="f4294a9c-ca57-485a-855b-01807deef046" covered="289d6b0a-2d85-4404-9627-d3586a47bebe" message="f464b5bc-7eb6-4261-b152-2df313b07116" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="649ca103-1346-453a-98b7-d95fe30346cb" covered="1ef58d47-942c-4a6e-979a-30058f680bfe" message="f464b5bc-7eb6-4261-b152-2df313b07116" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="26055b13-0cf1-4e43-b4a6-0b737c477a17" covered="1ef58d47-942c-4a6e-979a-30058f680bfe" message="c6e3c107-dbcc-411e-afa6-b85ec9e85196" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="c6bec745-f74e-4099-a772-74577ab1cf80" covered="289d6b0a-2d85-4404-9627-d3586a47bebe" message="c6e3c107-dbcc-411e-afa6-b85ec9e85196" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="df89f43a-2631-453d-93e4-d4891cda9c03" covered="289d6b0a-2d85-4404-9627-d3586a47bebe" message="4f0d4d8c-fdb7-4e69-9f22-576145d03202" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="00e44e76-2938-4b57-83fb-5e08373d7aa8" covered="706870a0-49a2-4f7f-b907-0626ec4e6e16" message="4f0d4d8c-fdb7-4e69-9f22-576145d03202" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="ceeef365-64ac-4557-96b3-218be6c0c320" covered="706870a0-49a2-4f7f-b907-0626ec4e6e16" message="36f3f245-e3fe-4182-9861-c2cb9ca4bee5" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="12fef028-9c17-4fcb-bed9-c906dd4257c5" covered="289d6b0a-2d85-4404-9627-d3586a47bebe" message="36f3f245-e3fe-4182-9861-c2cb9ca4bee5" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="0a76ae06-f826-4205-927e-bdebf7f5120d" covered="289d6b0a-2d85-4404-9627-d3586a47bebe" message="36c3d2d5-e781-443b-843b-0b49a0483847" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="c6535ecc-b7a6-4d7a-b26b-fc6fbd4e0227" covered="6e111507-31d0-404b-a7f7-c1801ce39724" message="36c3d2d5-e781-443b-843b-0b49a0483847" />
+  </uml:Interaction>
+  <uml:Interaction xmi:type="uml:Interaction" xmi:id="85a08616-982f-4912-8eeb-3466dba4fe63" name="Eat bonus pellet">
+    <message xmi:type="uml:Message" xmi:id="346ecc45-5670-450a-ac1e-89e1a64837cb" receiveEvent="12b761c5-f121-4e28-bb24-3b03eb09c78c" sendEvent="1fc7cce6-9a80-4c83-af69-11a6b898ede1" signature="ea1def0f-4946-4606-8d74-d525d19940d7" />
+    <message xmi:type="uml:Message" xmi:id="d1b8067e-2366-453f-9a48-3a865a19fc88" receiveEvent="ac974b33-e7f4-42fa-a5f4-2d69fecd7be4" sendEvent="92b1c637-195b-40a9-a325-2a114db625d0" signature="17f749c6-ec1e-4ef5-9da3-0fee1255b560" />
+    <message xmi:type="uml:Message" xmi:id="b45ff23b-4925-496e-8900-46ac745a40f1" messageSort="Reply" receiveEvent="9d8ab09f-7945-47f9-b4c9-1992d738224e" sendEvent="d2d15ab8-06ec-45ac-9db4-5f7de7601679" />
+    <message xmi:type="uml:Message" xmi:id="03150362-3b75-4f6a-9221-1de895f81702" receiveEvent="b10e5ef4-6c74-4fbe-8978-7279fa39ba12" sendEvent="2d2eef4e-e4fd-4d31-9559-6503f2ef78e1" signature="0f710cc5-fbab-4703-b14d-816828dd46a3" />
+    <message xmi:type="uml:Message" xmi:id="00cc89f4-d0fb-4df8-a492-1b2d75465ca4" messageSort="Reply" receiveEvent="5e3ccfbc-7bc9-4016-8a16-b2bd9f121624" sendEvent="d18c83fc-d7ff-4847-ba3f-45c81a11b7bb" />
+    <message xmi:type="uml:Message" xmi:id="e806f844-930b-460f-bf6c-fb70c714bdeb" receiveEvent="81dbe79a-6b31-44b3-a109-8ff542265240" sendEvent="62c81161-2216-46d8-b39e-2b7381ab26c4" signature="d4e7135b-d2dc-4431-b7c9-fd04a04da53d" />
+    <message xmi:type="uml:Message" xmi:id="751b0703-6603-47ce-be6a-e6d9adfc6087" messageSort="Reply" receiveEvent="f4c43d33-6cc7-4174-8d86-f9d73a3c2303" sendEvent="aaa84cf5-8e36-4c6a-be73-e8dee97ed5c2" />
+    <message xmi:type="uml:Message" xmi:id="7ea05df7-a326-4a96-848a-8bd2f1c22443" name="RemoveSteppable" receiveEvent="4436174d-1ac0-4e8d-9c74-4cc7b784bb01" sendEvent="e434943c-f3f8-46bb-b8aa-e3cda7ab5630" />
+    <message xmi:type="uml:Message" xmi:id="86cd82a8-421b-4e9f-a0ce-396f88270b4d" messageSort="Reply" receiveEvent="1d20cfca-0c9e-4cdc-bcaf-7618fb6de143" sendEvent="024cbb00-aa4b-4fb4-8b53-4c5e2d770db8" />
+    <message xmi:type="uml:Message" xmi:id="7d221adb-0ad7-419a-b251-8373141a63d6" messageSort="Reply" receiveEvent="ee9dfca1-bccc-4ea8-9ab6-c558eb0e104f" sendEvent="a37a6dc3-4457-4f79-b350-3d3acd677a9b" />
+    <lifeline xmi:type="uml:Lifeline" xmi:id="7d998131-92c4-4961-9ed7-fadcbddad17a" classifier="9ed319dc-a982-474f-86cc-0232f111ea80">
+      <coveredBy xmi:idref="1fc7cce6-9a80-4c83-af69-11a6b898ede1" />
+      <coveredBy xmi:idref="ac974b33-e7f4-42fa-a5f4-2d69fecd7be4" />
+      <coveredBy xmi:idref="d2d15ab8-06ec-45ac-9db4-5f7de7601679" />
+      <coveredBy xmi:idref="ee9dfca1-bccc-4ea8-9ab6-c558eb0e104f" />
+    </lifeline>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="ad70c4bd-fb8f-46aa-bb5f-d90093209df5" classifier="015234d0-8f89-4103-a67f-2972f46e78d9">
+      <coveredBy xmi:idref="12b761c5-f121-4e28-bb24-3b03eb09c78c" />
+      <coveredBy xmi:idref="92b1c637-195b-40a9-a325-2a114db625d0" />
+      <coveredBy xmi:idref="9d8ab09f-7945-47f9-b4c9-1992d738224e" />
+      <coveredBy xmi:idref="2d2eef4e-e4fd-4d31-9559-6503f2ef78e1" />
+      <coveredBy xmi:idref="5e3ccfbc-7bc9-4016-8a16-b2bd9f121624" />
+      <coveredBy xmi:idref="62c81161-2216-46d8-b39e-2b7381ab26c4" />
+      <coveredBy xmi:idref="f4c43d33-6cc7-4174-8d86-f9d73a3c2303" />
+      <coveredBy xmi:idref="e434943c-f3f8-46bb-b8aa-e3cda7ab5630" />
+      <coveredBy xmi:idref="1d20cfca-0c9e-4cdc-bcaf-7618fb6de143" />
+      <coveredBy xmi:idref="a37a6dc3-4457-4f79-b350-3d3acd677a9b" />
+    </lifeline>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="1b1808c0-7027-466b-9a75-a42f1b44a1b3" classifier="9dc3aeba-5e37-4596-b842-7ab8f2dde672">
+      <coveredBy xmi:idref="b10e5ef4-6c74-4fbe-8978-7279fa39ba12" />
+      <coveredBy xmi:idref="d18c83fc-d7ff-4847-ba3f-45c81a11b7bb" />
+    </lifeline>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="76b404bd-bf81-4ddd-8e74-d9a6eb5da428" classifier="c8b78f0c-a9ce-4de9-aa57-60fe38c74599">
+      <coveredBy xmi:idref="81dbe79a-6b31-44b3-a109-8ff542265240" />
+      <coveredBy xmi:idref="aaa84cf5-8e36-4c6a-be73-e8dee97ed5c2" />
+    </lifeline>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="75fad521-ef38-4177-a1fe-1ca3e8757c50" classifier="19750bc3-fb08-4662-ac65-cc262bf5c1a0">
+      <coveredBy xmi:idref="4436174d-1ac0-4e8d-9c74-4cc7b784bb01" />
+      <coveredBy xmi:idref="024cbb00-aa4b-4fb4-8b53-4c5e2d770db8" />
+    </lifeline>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="1fc7cce6-9a80-4c83-af69-11a6b898ede1" covered="7d998131-92c4-4961-9ed7-fadcbddad17a" message="346ecc45-5670-450a-ac1e-89e1a64837cb" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="12b761c5-f121-4e28-bb24-3b03eb09c78c" covered="ad70c4bd-fb8f-46aa-bb5f-d90093209df5" message="346ecc45-5670-450a-ac1e-89e1a64837cb" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="92b1c637-195b-40a9-a325-2a114db625d0" covered="ad70c4bd-fb8f-46aa-bb5f-d90093209df5" message="d1b8067e-2366-453f-9a48-3a865a19fc88" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="ac974b33-e7f4-42fa-a5f4-2d69fecd7be4" covered="7d998131-92c4-4961-9ed7-fadcbddad17a" message="d1b8067e-2366-453f-9a48-3a865a19fc88" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="d2d15ab8-06ec-45ac-9db4-5f7de7601679" covered="7d998131-92c4-4961-9ed7-fadcbddad17a" message="b45ff23b-4925-496e-8900-46ac745a40f1" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="9d8ab09f-7945-47f9-b4c9-1992d738224e" covered="ad70c4bd-fb8f-46aa-bb5f-d90093209df5" message="b45ff23b-4925-496e-8900-46ac745a40f1" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="2d2eef4e-e4fd-4d31-9559-6503f2ef78e1" covered="ad70c4bd-fb8f-46aa-bb5f-d90093209df5" message="03150362-3b75-4f6a-9221-1de895f81702" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="b10e5ef4-6c74-4fbe-8978-7279fa39ba12" covered="1b1808c0-7027-466b-9a75-a42f1b44a1b3" message="03150362-3b75-4f6a-9221-1de895f81702" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="d18c83fc-d7ff-4847-ba3f-45c81a11b7bb" covered="1b1808c0-7027-466b-9a75-a42f1b44a1b3" message="00cc89f4-d0fb-4df8-a492-1b2d75465ca4" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="5e3ccfbc-7bc9-4016-8a16-b2bd9f121624" covered="ad70c4bd-fb8f-46aa-bb5f-d90093209df5" message="00cc89f4-d0fb-4df8-a492-1b2d75465ca4" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="62c81161-2216-46d8-b39e-2b7381ab26c4" covered="ad70c4bd-fb8f-46aa-bb5f-d90093209df5" message="e806f844-930b-460f-bf6c-fb70c714bdeb" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="81dbe79a-6b31-44b3-a109-8ff542265240" covered="76b404bd-bf81-4ddd-8e74-d9a6eb5da428" message="e806f844-930b-460f-bf6c-fb70c714bdeb" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="aaa84cf5-8e36-4c6a-be73-e8dee97ed5c2" covered="76b404bd-bf81-4ddd-8e74-d9a6eb5da428" message="751b0703-6603-47ce-be6a-e6d9adfc6087" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="f4c43d33-6cc7-4174-8d86-f9d73a3c2303" covered="ad70c4bd-fb8f-46aa-bb5f-d90093209df5" message="751b0703-6603-47ce-be6a-e6d9adfc6087" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="e434943c-f3f8-46bb-b8aa-e3cda7ab5630" covered="ad70c4bd-fb8f-46aa-bb5f-d90093209df5" message="7ea05df7-a326-4a96-848a-8bd2f1c22443" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="4436174d-1ac0-4e8d-9c74-4cc7b784bb01" covered="75fad521-ef38-4177-a1fe-1ca3e8757c50" message="7ea05df7-a326-4a96-848a-8bd2f1c22443" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="024cbb00-aa4b-4fb4-8b53-4c5e2d770db8" covered="75fad521-ef38-4177-a1fe-1ca3e8757c50" message="86cd82a8-421b-4e9f-a0ce-396f88270b4d" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="1d20cfca-0c9e-4cdc-bcaf-7618fb6de143" covered="ad70c4bd-fb8f-46aa-bb5f-d90093209df5" message="86cd82a8-421b-4e9f-a0ce-396f88270b4d" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="a37a6dc3-4457-4f79-b350-3d3acd677a9b" covered="ad70c4bd-fb8f-46aa-bb5f-d90093209df5" message="7d221adb-0ad7-419a-b251-8373141a63d6" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="ee9dfca1-bccc-4ea8-9ab6-c558eb0e104f" covered="7d998131-92c4-4961-9ed7-fadcbddad17a" message="7d221adb-0ad7-419a-b251-8373141a63d6" />
+  </uml:Interaction>
+  <uml:Interaction xmi:type="uml:Interaction" xmi:id="4a1eb0c4-e9bc-4050-a121-2d24d53e0f78" name="Monster kills Pacman">
+    <message xmi:type="uml:Message" xmi:id="31f96c2a-6818-441a-bcf3-41793bdac44b" receiveEvent="ce04b1a2-1d15-47c8-bc2a-a053e133bcdb" sendEvent="b71b4493-9179-459f-8e03-a818aaf4ab60" signature="804a2e22-bc25-4e73-84ba-08805a02c35b" />
+    <message xmi:type="uml:Message" xmi:id="1a902180-3100-4559-bdaa-7978923425a4" receiveEvent="973d423b-6bfe-4fdd-ac1d-cd957ec49edb" sendEvent="e0b19f16-edc4-40d6-9d33-77bc7c3fac11" signature="13217945-c8bf-4cb6-bfdd-b10ffce272c8" />
+    <message xmi:type="uml:Message" xmi:id="ecc42813-9d44-4777-bdba-85daf0b09d5c" name="EndGame" receiveEvent="05da32f6-a84a-42c7-ad2b-955f91b49bf6" sendEvent="c678483d-bc15-4c1a-8ed9-77d9ed3c861e" />
+    <message xmi:type="uml:Message" xmi:id="3faaa9f0-6033-4a1b-bbf3-04c628de61a1" messageSort="Reply" receiveEvent="75a86bd8-8377-4723-a770-aed556b39093" sendEvent="c38a99aa-3e29-41ca-8dfb-e40f3ed55380" />
+    <message xmi:type="uml:Message" xmi:id="b5551b83-892e-441a-88bf-a13bcc1d72fc" messageSort="Reply" receiveEvent="248d3560-62c7-4243-a7ac-12cca7a3098a" sendEvent="3e55978b-ed10-4c61-9aa9-0fcfeb8efa53" />
+    <message xmi:type="uml:Message" xmi:id="8a7e32da-55db-4c8e-a80d-202e475adb9e" messageSort="Reply" receiveEvent="7401863e-b84b-42ee-90b0-5e42c2d21c02" sendEvent="4c0a24d5-28ad-4062-9e27-e3625225962a" />
+    <lifeline xmi:type="uml:Lifeline" xmi:id="179d458f-3c73-464a-abe4-267bfc65f9c9" classifier="9ed319dc-a982-474f-86cc-0232f111ea80">
+      <coveredBy xmi:idref="b71b4493-9179-459f-8e03-a818aaf4ab60" />
+      <coveredBy xmi:idref="973d423b-6bfe-4fdd-ac1d-cd957ec49edb" />
+      <coveredBy xmi:idref="c678483d-bc15-4c1a-8ed9-77d9ed3c861e" />
+      <coveredBy xmi:idref="75a86bd8-8377-4723-a770-aed556b39093" />
+      <coveredBy xmi:idref="3e55978b-ed10-4c61-9aa9-0fcfeb8efa53" />
+      <coveredBy xmi:idref="7401863e-b84b-42ee-90b0-5e42c2d21c02" />
+    </lifeline>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="79b580e3-73f0-4a62-8243-cdd6e81d0cca" classifier="32b2c41d-7ebc-4f9a-8d7b-90ff1f4eb2f3">
+      <coveredBy xmi:idref="ce04b1a2-1d15-47c8-bc2a-a053e133bcdb" />
+      <coveredBy xmi:idref="e0b19f16-edc4-40d6-9d33-77bc7c3fac11" />
+      <coveredBy xmi:idref="248d3560-62c7-4243-a7ac-12cca7a3098a" />
+      <coveredBy xmi:idref="4c0a24d5-28ad-4062-9e27-e3625225962a" />
+    </lifeline>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="e22f3ab0-660e-47f1-8a74-655cc2184499" classifier="47f8d293-a951-4ac3-8ded-0e4035007a40">
+      <coveredBy xmi:idref="05da32f6-a84a-42c7-ad2b-955f91b49bf6" />
+      <coveredBy xmi:idref="c38a99aa-3e29-41ca-8dfb-e40f3ed55380" />
+    </lifeline>
+    <fragment xmi:type="uml:CombinedFragment" xmi:id="a94fb5d7-0c94-47b2-9322-b6c39ae187c0" interactionOperator="Opt">
+      <operand xmi:type="uml:InteractionOperand" xmi:id="c2c9600f-ae04-4b72-8a6e-d1ac84468694" name="InteractionOperand1">
+        <guard xmi:type="uml:InteractionConstraint" xmi:id="77911fa3-1604-46c4-b409-8bd0b3bcd51e">
+          <specification xmi:type="uml:LiteralString" xmi:id="d06cd2f8-9211-4789-b788-7e4940a9d362" value="lives==0" />
+        </guard>
+      </operand>
+    </fragment>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="b71b4493-9179-459f-8e03-a818aaf4ab60" covered="179d458f-3c73-464a-abe4-267bfc65f9c9" message="31f96c2a-6818-441a-bcf3-41793bdac44b" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="ce04b1a2-1d15-47c8-bc2a-a053e133bcdb" covered="79b580e3-73f0-4a62-8243-cdd6e81d0cca" message="31f96c2a-6818-441a-bcf3-41793bdac44b" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="e0b19f16-edc4-40d6-9d33-77bc7c3fac11" covered="79b580e3-73f0-4a62-8243-cdd6e81d0cca" message="1a902180-3100-4559-bdaa-7978923425a4" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="973d423b-6bfe-4fdd-ac1d-cd957ec49edb" covered="179d458f-3c73-464a-abe4-267bfc65f9c9" message="1a902180-3100-4559-bdaa-7978923425a4" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="c678483d-bc15-4c1a-8ed9-77d9ed3c861e" covered="179d458f-3c73-464a-abe4-267bfc65f9c9" message="ecc42813-9d44-4777-bdba-85daf0b09d5c" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="05da32f6-a84a-42c7-ad2b-955f91b49bf6" covered="e22f3ab0-660e-47f1-8a74-655cc2184499" message="ecc42813-9d44-4777-bdba-85daf0b09d5c" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="c38a99aa-3e29-41ca-8dfb-e40f3ed55380" covered="e22f3ab0-660e-47f1-8a74-655cc2184499" message="3faaa9f0-6033-4a1b-bbf3-04c628de61a1" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="75a86bd8-8377-4723-a770-aed556b39093" covered="179d458f-3c73-464a-abe4-267bfc65f9c9" message="3faaa9f0-6033-4a1b-bbf3-04c628de61a1" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="3e55978b-ed10-4c61-9aa9-0fcfeb8efa53" covered="179d458f-3c73-464a-abe4-267bfc65f9c9" message="b5551b83-892e-441a-88bf-a13bcc1d72fc" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="248d3560-62c7-4243-a7ac-12cca7a3098a" covered="79b580e3-73f0-4a62-8243-cdd6e81d0cca" message="b5551b83-892e-441a-88bf-a13bcc1d72fc" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="4c0a24d5-28ad-4062-9e27-e3625225962a" covered="79b580e3-73f0-4a62-8243-cdd6e81d0cca" message="8a7e32da-55db-4c8e-a80d-202e475adb9e" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="7401863e-b84b-42ee-90b0-5e42c2d21c02" covered="179d458f-3c73-464a-abe4-267bfc65f9c9" message="8a7e32da-55db-4c8e-a80d-202e475adb9e" />
+  </uml:Interaction>
+  <uml:Interaction xmi:type="uml:Interaction" xmi:id="336f2f26-8557-4bb5-bff7-86674e50b5a1" name="Monster hits bomb">
+    <message xmi:type="uml:Message" xmi:id="e1590af2-7197-4882-9cf4-22c8c4cf12db" receiveEvent="f1a6427b-b37d-4185-9067-ae8d968cf2b1" sendEvent="90c0788c-0f12-44d8-8d99-7129a7f460e8" signature="049bfe2f-9219-4f8d-be15-5433352becf1" />
+    <message xmi:type="uml:Message" xmi:id="441ff554-a470-4918-86f2-bc622e00a4d3" receiveEvent="ed1137a8-3af1-4c8a-8500-661044acbc46" sendEvent="e9e2e0ba-0a0b-4457-811f-be8f4681cd50" signature="0f710cc5-fbab-4703-b14d-816828dd46a3" />
+    <message xmi:type="uml:Message" xmi:id="c0a2123e-2b6a-4bb2-8273-898a2ae78565" messageSort="Reply" receiveEvent="a3560171-4ce0-4210-a75b-211ffe13c242" sendEvent="507a226f-ab13-4005-8e93-66c3f1869edc" />
+    <message xmi:type="uml:Message" xmi:id="91132669-079f-4cd1-8368-b281bc133e78" name="RemoveSteppable" receiveEvent="57080af5-f7ec-4ded-ba39-f3b7c0e0874f" sendEvent="c8f3edaf-6da2-4bff-a3e5-66238ba1908b" />
+    <message xmi:type="uml:Message" xmi:id="b634fe2f-b0b6-40b2-8790-9b7e99ecc1aa" messageSort="Reply" receiveEvent="1c85f1dd-8229-47da-a074-5114c04da45f" sendEvent="33dfa8bc-88ce-4255-9a65-1991dc12d495" />
+    <message xmi:type="uml:Message" xmi:id="1b1e1db0-d218-49f9-a237-e09d71d62e95" receiveEvent="317dcb77-b8a6-4756-9b35-a92a3e425af5" sendEvent="5207fae9-5bc6-4ecc-ade0-927cd90e8093" signature="4ca9eea8-332d-4df8-b48a-28120790bdb1" />
+    <message xmi:type="uml:Message" xmi:id="f253a5af-1e4d-4601-8513-11af504498ea" receiveEvent="fd6244a9-a2af-4bf4-ad3d-26b496cb5cc7" sendEvent="3b138547-22f2-4199-80bb-788b1b891a5e" signature="0f710cc5-fbab-4703-b14d-816828dd46a3" />
+    <message xmi:type="uml:Message" xmi:id="18ed9d50-fae7-41be-90b4-c7c68f808da3" messageSort="Reply" receiveEvent="8655eb4d-20f6-42c0-ab64-1c3b68113d86" sendEvent="42462ae0-4411-4b0f-85e7-ab2aeabc330e" />
+    <message xmi:type="uml:Message" xmi:id="c47881d3-0d30-468c-8b69-2fcd374bb760" name="RemoveSteppable" receiveEvent="87cc1eda-51e0-4a77-8a7c-10c975eec621" sendEvent="aaec9c39-72ee-473e-9b7d-1d17b807c018" />
+    <message xmi:type="uml:Message" xmi:id="5198dc98-53f3-41cf-a68a-c9031bc1960d" messageSort="Reply" receiveEvent="ec48fd75-a2c5-4f35-b423-15cc3f6f7084" sendEvent="788fe1d4-edef-4086-b35b-04b2d1ec316e" />
+    <message xmi:type="uml:Message" xmi:id="c2ab3f7d-b5ef-4011-9c61-cded331c0764" messageSort="Reply" receiveEvent="379f5510-125d-4193-9a42-a0ec9e939039" sendEvent="64a64a46-e53b-4633-9a3b-e5eff048b123" />
+    <message xmi:type="uml:Message" xmi:id="0db3c2a3-74ab-48ce-8927-7dc5ed0448e4" messageSort="Reply" receiveEvent="6163ccde-0f27-4408-bb33-52c08a54dba4" sendEvent="c1a3126d-cd25-4f6b-8530-ee90a2434328" />
+    <lifeline xmi:type="uml:Lifeline" xmi:id="4ebbcb5a-ba33-491e-9c69-a2a464d3fcec" classifier="32b2c41d-7ebc-4f9a-8d7b-90ff1f4eb2f3">
+      <coveredBy xmi:idref="90c0788c-0f12-44d8-8d99-7129a7f460e8" />
+      <coveredBy xmi:idref="317dcb77-b8a6-4756-9b35-a92a3e425af5" />
+      <coveredBy xmi:idref="3b138547-22f2-4199-80bb-788b1b891a5e" />
+      <coveredBy xmi:idref="8655eb4d-20f6-42c0-ab64-1c3b68113d86" />
+      <coveredBy xmi:idref="aaec9c39-72ee-473e-9b7d-1d17b807c018" />
+      <coveredBy xmi:idref="ec48fd75-a2c5-4f35-b423-15cc3f6f7084" />
+      <coveredBy xmi:idref="64a64a46-e53b-4633-9a3b-e5eff048b123" />
+      <coveredBy xmi:idref="6163ccde-0f27-4408-bb33-52c08a54dba4" />
+    </lifeline>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="98c1e892-f9de-469b-8ce7-6abe1760f7c0" classifier="bab8d031-d9ee-4f39-b956-5f1d5ca6fdfc">
+      <coveredBy xmi:idref="f1a6427b-b37d-4185-9067-ae8d968cf2b1" />
+      <coveredBy xmi:idref="e9e2e0ba-0a0b-4457-811f-be8f4681cd50" />
+      <coveredBy xmi:idref="a3560171-4ce0-4210-a75b-211ffe13c242" />
+      <coveredBy xmi:idref="c8f3edaf-6da2-4bff-a3e5-66238ba1908b" />
+      <coveredBy xmi:idref="1c85f1dd-8229-47da-a074-5114c04da45f" />
+      <coveredBy xmi:idref="5207fae9-5bc6-4ecc-ade0-927cd90e8093" />
+      <coveredBy xmi:idref="379f5510-125d-4193-9a42-a0ec9e939039" />
+      <coveredBy xmi:idref="c1a3126d-cd25-4f6b-8530-ee90a2434328" />
+    </lifeline>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="88ba4b32-bfe6-4fd3-824d-bc697321aca9" classifier="9dc3aeba-5e37-4596-b842-7ab8f2dde672">
+      <coveredBy xmi:idref="ed1137a8-3af1-4c8a-8500-661044acbc46" />
+      <coveredBy xmi:idref="507a226f-ab13-4005-8e93-66c3f1869edc" />
+      <coveredBy xmi:idref="fd6244a9-a2af-4bf4-ad3d-26b496cb5cc7" />
+      <coveredBy xmi:idref="42462ae0-4411-4b0f-85e7-ab2aeabc330e" />
+    </lifeline>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="42df55c7-8bf6-4869-954c-0f924d917a87" classifier="19750bc3-fb08-4662-ac65-cc262bf5c1a0">
+      <coveredBy xmi:idref="57080af5-f7ec-4ded-ba39-f3b7c0e0874f" />
+      <coveredBy xmi:idref="33dfa8bc-88ce-4255-9a65-1991dc12d495" />
+      <coveredBy xmi:idref="87cc1eda-51e0-4a77-8a7c-10c975eec621" />
+      <coveredBy xmi:idref="788fe1d4-edef-4086-b35b-04b2d1ec316e" />
+    </lifeline>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="90c0788c-0f12-44d8-8d99-7129a7f460e8" covered="4ebbcb5a-ba33-491e-9c69-a2a464d3fcec" message="e1590af2-7197-4882-9cf4-22c8c4cf12db" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="f1a6427b-b37d-4185-9067-ae8d968cf2b1" covered="98c1e892-f9de-469b-8ce7-6abe1760f7c0" message="e1590af2-7197-4882-9cf4-22c8c4cf12db" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="e9e2e0ba-0a0b-4457-811f-be8f4681cd50" covered="98c1e892-f9de-469b-8ce7-6abe1760f7c0" message="441ff554-a470-4918-86f2-bc622e00a4d3" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="ed1137a8-3af1-4c8a-8500-661044acbc46" covered="88ba4b32-bfe6-4fd3-824d-bc697321aca9" message="441ff554-a470-4918-86f2-bc622e00a4d3" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="507a226f-ab13-4005-8e93-66c3f1869edc" covered="88ba4b32-bfe6-4fd3-824d-bc697321aca9" message="c0a2123e-2b6a-4bb2-8273-898a2ae78565" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="a3560171-4ce0-4210-a75b-211ffe13c242" covered="98c1e892-f9de-469b-8ce7-6abe1760f7c0" message="c0a2123e-2b6a-4bb2-8273-898a2ae78565" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="c8f3edaf-6da2-4bff-a3e5-66238ba1908b" covered="98c1e892-f9de-469b-8ce7-6abe1760f7c0" message="91132669-079f-4cd1-8368-b281bc133e78" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="57080af5-f7ec-4ded-ba39-f3b7c0e0874f" covered="42df55c7-8bf6-4869-954c-0f924d917a87" message="91132669-079f-4cd1-8368-b281bc133e78" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="33dfa8bc-88ce-4255-9a65-1991dc12d495" covered="42df55c7-8bf6-4869-954c-0f924d917a87" message="b634fe2f-b0b6-40b2-8790-9b7e99ecc1aa" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="1c85f1dd-8229-47da-a074-5114c04da45f" covered="98c1e892-f9de-469b-8ce7-6abe1760f7c0" message="b634fe2f-b0b6-40b2-8790-9b7e99ecc1aa" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="5207fae9-5bc6-4ecc-ade0-927cd90e8093" covered="98c1e892-f9de-469b-8ce7-6abe1760f7c0" message="1b1e1db0-d218-49f9-a237-e09d71d62e95" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="317dcb77-b8a6-4756-9b35-a92a3e425af5" covered="4ebbcb5a-ba33-491e-9c69-a2a464d3fcec" message="1b1e1db0-d218-49f9-a237-e09d71d62e95" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="3b138547-22f2-4199-80bb-788b1b891a5e" covered="4ebbcb5a-ba33-491e-9c69-a2a464d3fcec" message="f253a5af-1e4d-4601-8513-11af504498ea" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="fd6244a9-a2af-4bf4-ad3d-26b496cb5cc7" covered="88ba4b32-bfe6-4fd3-824d-bc697321aca9" message="f253a5af-1e4d-4601-8513-11af504498ea" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="42462ae0-4411-4b0f-85e7-ab2aeabc330e" covered="88ba4b32-bfe6-4fd3-824d-bc697321aca9" message="18ed9d50-fae7-41be-90b4-c7c68f808da3" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="8655eb4d-20f6-42c0-ab64-1c3b68113d86" covered="4ebbcb5a-ba33-491e-9c69-a2a464d3fcec" message="18ed9d50-fae7-41be-90b4-c7c68f808da3" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="aaec9c39-72ee-473e-9b7d-1d17b807c018" covered="4ebbcb5a-ba33-491e-9c69-a2a464d3fcec" message="c47881d3-0d30-468c-8b69-2fcd374bb760" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="87cc1eda-51e0-4a77-8a7c-10c975eec621" covered="42df55c7-8bf6-4869-954c-0f924d917a87" message="c47881d3-0d30-468c-8b69-2fcd374bb760" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="788fe1d4-edef-4086-b35b-04b2d1ec316e" covered="42df55c7-8bf6-4869-954c-0f924d917a87" message="5198dc98-53f3-41cf-a68a-c9031bc1960d" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="ec48fd75-a2c5-4f35-b423-15cc3f6f7084" covered="4ebbcb5a-ba33-491e-9c69-a2a464d3fcec" message="5198dc98-53f3-41cf-a68a-c9031bc1960d" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="64a64a46-e53b-4633-9a3b-e5eff048b123" covered="4ebbcb5a-ba33-491e-9c69-a2a464d3fcec" message="c2ab3f7d-b5ef-4011-9c61-cded331c0764" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="379f5510-125d-4193-9a42-a0ec9e939039" covered="98c1e892-f9de-469b-8ce7-6abe1760f7c0" message="c2ab3f7d-b5ef-4011-9c61-cded331c0764" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="c1a3126d-cd25-4f6b-8530-ee90a2434328" covered="98c1e892-f9de-469b-8ce7-6abe1760f7c0" message="0db3c2a3-74ab-48ce-8927-7dc5ed0448e4" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="6163ccde-0f27-4408-bb33-52c08a54dba4" covered="4ebbcb5a-ba33-491e-9c69-a2a464d3fcec" message="0db3c2a3-74ab-48ce-8927-7dc5ed0448e4" />
+  </uml:Interaction>
+  <uml:Interaction xmi:type="uml:Interaction" xmi:id="d55308be-475f-402a-ab09-bd843e285e3b" name="Next level">
+    <message xmi:type="uml:Message" xmi:id="226694e5-3ab1-4f51-b6d2-8a77c09bfbdb" receiveEvent="0e996fd3-0f17-4ad1-9efc-9e3bf0a65e29" sendEvent="030e3718-65cf-4da6-93b4-bbe0450f1991" signature="d4e7135b-d2dc-4431-b7c9-fd04a04da53d" />
+    <message xmi:type="uml:Message" xmi:id="bfe1633e-69f8-463c-a44a-b08ff082ff18" receiveEvent="48534837-b7ce-493d-8fef-ea42465b4810" sendEvent="28c517b3-5122-42d8-ba6a-bffa1b21712f" signature="b7bf3620-a47e-4efc-8220-e9302cb96cce" />
+    <message xmi:type="uml:Message" xmi:id="be0908ab-2b25-4ee3-b4c9-b21ccfee52b8" messageSort="Reply" receiveEvent="f7a61b45-3277-47c3-9c82-628c9243bfeb" sendEvent="5c18585a-4f32-4d9e-b52c-2e98186e7f0a" />
+    <message xmi:type="uml:Message" xmi:id="d4c3c3f0-e82e-43bb-9cea-31d9070c6a5d" messageSort="Reply" receiveEvent="9b22f60b-bea0-42b7-9975-a0774ba7265d" sendEvent="937f5356-0200-4a12-8f80-550c612e7273" />
+    <lifeline xmi:type="uml:Lifeline" xmi:id="04ef1740-bf55-4e95-bd2c-d00e0511b981">
+      <coveredBy xmi:idref="030e3718-65cf-4da6-93b4-bbe0450f1991" />
+      <coveredBy xmi:idref="9b22f60b-bea0-42b7-9975-a0774ba7265d" />
+    </lifeline>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="891165e6-5320-4503-b6c4-c334cdc8bf9d" classifier="c8b78f0c-a9ce-4de9-aa57-60fe38c74599">
+      <coveredBy xmi:idref="0e996fd3-0f17-4ad1-9efc-9e3bf0a65e29" />
+      <coveredBy xmi:idref="28c517b3-5122-42d8-ba6a-bffa1b21712f" />
+      <coveredBy xmi:idref="f7a61b45-3277-47c3-9c82-628c9243bfeb" />
+      <coveredBy xmi:idref="937f5356-0200-4a12-8f80-550c612e7273" />
+    </lifeline>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="7fec33ab-3850-453d-9634-58a187459bc1" classifier="47f8d293-a951-4ac3-8ded-0e4035007a40">
+      <coveredBy xmi:idref="48534837-b7ce-493d-8fef-ea42465b4810" />
+      <coveredBy xmi:idref="5c18585a-4f32-4d9e-b52c-2e98186e7f0a" />
+    </lifeline>
+    <fragment xmi:type="uml:CombinedFragment" xmi:id="7b57d415-688a-4941-b537-7e08eb2a4212" interactionOperator="Opt">
+      <operand xmi:type="uml:InteractionOperand" xmi:id="985eff64-f51f-4dce-99d3-2fc28106f9b3" name="InteractionOperand1">
+        <guard xmi:type="uml:InteractionConstraint" xmi:id="dd3725b9-747c-4368-a145-eefc9a376542">
+          <specification xmi:type="uml:LiteralString" xmi:id="5e666ea6-a9d2-4186-952d-486ba008574a" value="no more pellets" />
+        </guard>
+      </operand>
+    </fragment>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="030e3718-65cf-4da6-93b4-bbe0450f1991" covered="04ef1740-bf55-4e95-bd2c-d00e0511b981" message="226694e5-3ab1-4f51-b6d2-8a77c09bfbdb" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="0e996fd3-0f17-4ad1-9efc-9e3bf0a65e29" covered="891165e6-5320-4503-b6c4-c334cdc8bf9d" message="226694e5-3ab1-4f51-b6d2-8a77c09bfbdb" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="28c517b3-5122-42d8-ba6a-bffa1b21712f" covered="891165e6-5320-4503-b6c4-c334cdc8bf9d" message="bfe1633e-69f8-463c-a44a-b08ff082ff18" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="48534837-b7ce-493d-8fef-ea42465b4810" covered="7fec33ab-3850-453d-9634-58a187459bc1" message="bfe1633e-69f8-463c-a44a-b08ff082ff18" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="5c18585a-4f32-4d9e-b52c-2e98186e7f0a" covered="7fec33ab-3850-453d-9634-58a187459bc1" message="be0908ab-2b25-4ee3-b4c9-b21ccfee52b8" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="f7a61b45-3277-47c3-9c82-628c9243bfeb" covered="891165e6-5320-4503-b6c4-c334cdc8bf9d" message="be0908ab-2b25-4ee3-b4c9-b21ccfee52b8" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="937f5356-0200-4a12-8f80-550c612e7273" covered="891165e6-5320-4503-b6c4-c334cdc8bf9d" message="d4c3c3f0-e82e-43bb-9cea-31d9070c6a5d" />
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="9b22f60b-bea0-42b7-9975-a0774ba7265d" covered="04ef1740-bf55-4e95-bd2c-d00e0511b981" message="d4c3c3f0-e82e-43bb-9cea-31d9070c6a5d" />
+  </uml:Interaction>
+  <uml:Lifeline xmi:type="uml:Lifeline" xmi:id="eb5d6e99-6c0a-4577-9892-cb248e0d909a" classifier="795a0782-71a9-4260-848a-25602c2a963c" />
+  <uml:Lifeline xmi:type="uml:Lifeline" xmi:id="0254f32b-109d-48db-ab0b-b523f1883c95" classifier="9dc3aeba-5e37-4596-b842-7ab8f2dde672" />
+  <uml:Lifeline xmi:type="uml:Lifeline" xmi:id="0255f2c3-cc28-497c-bab0-f1f28be799f9" classifier="9dc3aeba-5e37-4596-b842-7ab8f2dde672" />
+  <uml:Lifeline xmi:type="uml:Lifeline" xmi:id="8d746491-9587-4bed-88fd-e851dd0f3a80" classifier="19750bc3-fb08-4662-ac65-cc262bf5c1a0" />
+  <uml:PrimitiveType xmi:type="uml:PrimitiveType" xmi:id="ae68f04e-e685-4fe7-b82a-95e0ef6fadfe" name="long" />
+  <uml:PrimitiveType xmi:type="uml:PrimitiveType" xmi:id="652cfb86-2d2d-40ea-a499-63ad187f400e" name="boolean" />
+</xmi:XMI>

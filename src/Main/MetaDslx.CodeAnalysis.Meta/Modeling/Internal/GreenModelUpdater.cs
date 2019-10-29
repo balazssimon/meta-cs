@@ -888,7 +888,7 @@ namespace MetaDslx.Modeling.Internal
                     this.MakeException(Location.None, ModelErrorCode.ERR_CannotChangeDerivedProperty, slot, objectRef.Id);
                     return false;
                 }
-                if (slot.IsReadonly)
+                if (slot.IsReadonly && !slot.IsDerivedUnion)
                 {
                     this.MakeException(Location.None, ModelErrorCode.ERR_CannotChangeReadOnlyProperty, slot, objectRef.Id);
                     return false;
@@ -1132,7 +1132,7 @@ namespace MetaDslx.Modeling.Internal
                 {
                     this.MakeException(Location.None, ModelErrorCode.ERR_CannotChangeDerivedProperty, slot, oid);
                 }
-                if (slot.IsReadonly)
+                if (slot.IsReadonly && !slot.IsDerivedUnion)
                 {
                     this.MakeException(Location.None, ModelErrorCode.ERR_CannotChangeReadOnlyProperty, slot, oid);
                 }
@@ -1199,7 +1199,10 @@ namespace MetaDslx.Modeling.Internal
                 valueAddedToSelf.Add(slot);
                 foreach (var subsettedSlot in slot.SubsettedSlots)
                 {
-                    this.SlowAddValueCore(mid, oid, subsettedSlot, reassign || subsettedSlot.IsDerivedUnion, -1, value, valueAddedToSelf, valueAddedToOpposite);
+                    if (!subsettedSlot.IsDerived)
+                    {
+                        this.SlowAddValueCore(mid, oid, subsettedSlot, reassign || subsettedSlot.IsDerivedUnion, -1, value, valueAddedToSelf, valueAddedToOpposite);
+                    }
                 }
             }
             // Updating opposite properties:
@@ -1219,7 +1222,7 @@ namespace MetaDslx.Modeling.Internal
                         foreach (var oppositeProp in slot.OppositeProperties)
                         {
                             var oppositeSlot = valueId.Descriptor.GetSlot(oppositeProp);
-                            if (!valueAddedToOpposite.Contains(oppositeSlot))
+                            if (oppositeSlot != null && !oppositeSlot.IsDerived && !valueAddedToOpposite.Contains(oppositeSlot))
                             {
                                 this.SlowAddValueCore(valueObjectRef.Model.Id, valueId, oppositeSlot, reassign, -1, oid, valueAddedToOpposite, valueAddedToSelf);
                             }
@@ -1255,7 +1258,7 @@ namespace MetaDslx.Modeling.Internal
                 {
                     this.MakeException(Location.None, ModelErrorCode.ERR_CannotChangeDerivedProperty, slot, oid);
                 }
-                if (slot.IsReadonly)
+                if (slot.IsReadonly && !slot.IsDerivedUnion)
                 {
                     this.MakeException(Location.None, ModelErrorCode.ERR_CannotChangeReadOnlyProperty, slot, oid);
                 }
@@ -1296,7 +1299,10 @@ namespace MetaDslx.Modeling.Internal
                 initValueRemoved = false;
                 foreach (var subsettingSlot in slot.SubsettingSlots)
                 {
-                    this.SlowRemoveValueCore(mid, oid, subsettingSlot, true, reassign, -1, removeAll, value, valueRemovedFromSelf, valueRemovedFromOpposite);
+                    if (!subsettingSlot.IsDerived)
+                    {
+                        this.SlowRemoveValueCore(mid, oid, subsettingSlot, true, reassign, -1, removeAll, value, valueRemovedFromSelf, valueRemovedFromOpposite);
+                    }
                 }
                 foreach (var subsettedSlot in slot.DerivedUnionSlots)
                 {
@@ -1321,7 +1327,7 @@ namespace MetaDslx.Modeling.Internal
                         foreach (var oppositeProp in slot.OppositeProperties)
                         {
                             var oppositeSlot = valueId.Descriptor.GetSlot(oppositeProp);
-                            if (!valueRemovedFromOpposite.Contains(oppositeSlot))
+                            if (oppositeSlot != null && !oppositeSlot.IsDerived && !valueRemovedFromOpposite.Contains(oppositeSlot))
                             {
                                 this.SlowRemoveValueCore(valueObjectRef.Model.Id, valueId, oppositeSlot, true, reassign, -1, true, oid, valueRemovedFromOpposite, valueRemovedFromSelf);
                             }

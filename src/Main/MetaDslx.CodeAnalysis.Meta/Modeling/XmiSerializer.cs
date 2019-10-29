@@ -219,7 +219,7 @@ namespace MetaDslx.Modeling
                         modelToUriMap.Add(model, "model0");
                     }
                     var xmiWriter = new XmiWriter(writers, new Dictionary<IModel, string>(), modelToUriMap, options ?? new XmiWriteOptions(), model.ModelGroup);
-                    xmiWriter.WriteModelGroup();
+                    xmiWriter.WriteModel(model);
                     diagnostics = xmiWriter.Diagnostics.ToReadOnly();
                 }
                 return Encoding.UTF8.GetString(stream.ToArray());
@@ -261,7 +261,7 @@ namespace MetaDslx.Modeling
                 var modelToAbsoluteFileMap = new Dictionary<IModel, string>();
                 modelToAbsoluteFileMap.Add(model, Path.GetFullPath(xmiFilePath));
                 var xmiWriter = new XmiWriter(writers, modelToAbsoluteFileMap, modelToUriMap, options ?? new XmiWriteOptions(), model.ModelGroup);
-                xmiWriter.WriteModelGroup();
+                xmiWriter.WriteModel(model);
                 diagnostics = xmiWriter.Diagnostics.ToReadOnly();
             }
         }
@@ -480,42 +480,45 @@ namespace MetaDslx.Modeling
 
         public void WriteModelGroup()
         {
-            foreach (var model in _modelGroup.Models)
+            if (_modelGroup != null)
             {
-                _currentModel = model;
-                if (_xmlWriters.TryGetValue(model, out _currentXmlWriter))
+                foreach (var model in _modelGroup.Models)
                 {
-                    _modelToAbsoluteFileMap.TryGetValue(model, out _currentFile);
-                    this.WriteModel();
+                    this.WriteModel(model);
                 }
-                _currentXmlWriter.Flush();
             }
         }
 
-        public void WriteModel()
+        public void WriteModel(IModel model)
         {
-            _modelToRelativeFileMap.Clear();
-            _allObjects = _currentModel.Objects.Where(obj => obj.MParent == null);
-            List<IModelObject> rootObjects = _allObjects.Where(obj => obj.MParent == null).ToList();
-            IModelObject xmiRoot = null;
-            if (_options.RequireXmiRoot)
+            _currentModel = model;
+            if (_xmlWriters.TryGetValue(model, out _currentXmlWriter))
             {
-                _currentXmlWriter.WriteStartElement(Xmi, "XMI", _options.XmiNamespace);
-                this.WriteXmlNamespaces();
-                foreach (var obj in rootObjects)
+                _modelToAbsoluteFileMap.TryGetValue(model, out _currentFile);
+                _modelToRelativeFileMap.Clear();
+                _allObjects = _currentModel.Objects.Where(obj => obj.MParent == null);
+                List<IModelObject> rootObjects = _allObjects.Where(obj => obj.MParent == null).ToList();
+                IModelObject xmiRoot = null;
+                if (_options.RequireXmiRoot)
                 {
-                    this.WriteObject(obj, null);
+                    _currentXmlWriter.WriteStartElement(Xmi, "XMI", _options.XmiNamespace);
+                    this.WriteXmlNamespaces();
+                    foreach (var obj in rootObjects)
+                    {
+                        this.WriteObject(obj, null);
+                    }
+                    _currentXmlWriter.WriteEndElement();
                 }
-                _currentXmlWriter.WriteEndElement();
-            }
-            else
-            {
-                if (rootObjects.Count > 1)
+                else
                 {
-                    this.Diagnostics.Add(ModelErrorCode.ERR_XmiError.ToDiagnostic(Location.None, "Multiple root model objects found. If the XMI root is not used the number model objects with no parent must be exactly one."));
+                    if (rootObjects.Count > 1)
+                    {
+                        this.Diagnostics.Add(ModelErrorCode.ERR_XmiError.ToDiagnostic(Location.None, "Multiple root model objects found. If the XMI root is not used the number model objects with no parent must be exactly one."));
+                    }
+                    xmiRoot = rootObjects.FirstOrDefault();
+                    this.WriteObject(xmiRoot, null);
                 }
-                xmiRoot = rootObjects.FirstOrDefault();
-                this.WriteObject(xmiRoot, null);
+                _currentXmlWriter.Flush();
             }
         }
 

@@ -1,9 +1,10 @@
-﻿using MetaDslx.Modeling;
+﻿using MetaDslx.Languages.Uml.Model;
+using MetaDslx.Modeling;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MetaDslx.Languages.Uml.Model
+namespace MetaDslx.Languages.Uml.Serialization
 {
     public class UmlXmiReadOptions : XmiReadOptions
     {
