@@ -20,6 +20,7 @@ namespace UmlExample
             UmlDescriptor.Initialize();
             var umlSerializer = new WhiteStarUmlSerializer();
             var model = umlSerializer.ReadModelFromFile("../../../pacman.uml", out var diagnostics);
+            //var model = umlSerializer.ReadModelFromFile("../../../Async.uml", out var diagnostics);
             DiagnosticFormatter df = new DiagnosticFormatter();
             for (int i = 0; i < 10 && i < diagnostics.Length; i++)
             {

@@ -2906,10 +2906,6 @@
     /// </summary>
     class Lifeline : NamedElement
     {
-	    /// <summary>
-    	/// References the Classifier which is the type of the lifeline.
-    	/// </summary>
-    	Classifier Classifier; // MetaDslx (non-standard)
     	/// <summary>
     	/// References the InteractionFragments in which this Lifeline takes part.
     	/// </summary>

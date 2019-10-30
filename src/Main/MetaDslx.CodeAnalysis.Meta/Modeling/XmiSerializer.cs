@@ -582,6 +582,7 @@ namespace MetaDslx.Modeling
                             {
                                 var valueStr = value.ToString();
                                 if (value.GetType() == typeof(bool)) valueStr = valueStr.ToLower();
+                                else if (value.GetType().IsEnum) valueStr = valueStr.ToCamelCase();
                                 _currentXmlWriter.WriteAttributeString(prop.Name.ToCamelCase(), valueStr);
                             }
                         }

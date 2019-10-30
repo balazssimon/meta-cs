@@ -15,6 +15,29 @@ namespace MetaDslx.Languages.Uml.Serialization
 {
     public class WhiteStarUmlSerializer
     {
+        public ImmutableModel ReadModelFromFile(string filePath)
+        {
+            if (filePath == null) throw new ArgumentNullException(nameof(filePath));
+            var umlCode = File.ReadAllText(filePath);
+            var result = this.ReadModel(filePath, umlCode, out var diagnostics);
+            if (diagnostics.Length > 0)
+            {
+                throw new ModelException(diagnostics[0]);
+            }
+            return result;
+        }
+
+        public ImmutableModel ReadModel(string umlCode)
+        {
+            if (umlCode == null) throw new ArgumentNullException(nameof(umlCode));
+            var result = this.ReadModel(string.Empty, umlCode, out var diagnostics);
+            if (diagnostics.Length > 0)
+            {
+                throw new ModelException(diagnostics[0]);
+            }
+            return result;
+        }
+
         public ImmutableModel ReadModelFromFile(string filePath, out ImmutableArray<Diagnostic> diagnostics)
         {
             if (filePath == null) throw new ArgumentNullException(nameof(filePath));
@@ -49,6 +72,7 @@ namespace MetaDslx.Languages.Uml.Serialization
         private DiagnosticBag _diagnostics;
         private Dictionary<string, MutableObjectBase> _objectsById;
         private Dictionary<(int, int), MutableObjectBase> _objectsByPosition;
+        private Dictionary<MutableObjectBase, XElement> _elementsByObject;
         private Dictionary<string, PrimitiveTypeBuilder> _primitiveTypes;
 
         public WhiteStarUmlReader(string fileUri, string umlCode)
@@ -61,6 +85,7 @@ namespace MetaDslx.Languages.Uml.Serialization
             _diagnostics = new DiagnosticBag();
             _objectsById = new Dictionary<string, MutableObjectBase>();
             _objectsByPosition = new Dictionary<(int, int), MutableObjectBase>();
+            _elementsByObject = new Dictionary<MutableObjectBase, XElement>();
             _primitiveTypes = new Dictionary<string, PrimitiveTypeBuilder>();
         }
 
@@ -89,6 +114,7 @@ namespace MetaDslx.Languages.Uml.Serialization
         {
             this.CreateObjects();
             this.ReadObjects();
+            this.ReadSequenceViews();
             this.PostProcessObjects();
             foreach (var mobj in _model.Objects)
             {
@@ -123,6 +149,118 @@ namespace MetaDslx.Languages.Uml.Serialization
             }
         }
 
+        private void ReadSequenceViews()
+        {
+            var viewTypes = new HashSet<string>() { "UMLSeqStimulusView", "UMLSeqObjectView", "UMLCombinedFragmentView", "UMLInteractionOperandView" };
+            var interactionElements = _body.Descendants(_whiteStarUmlNamespace + "OBJ").Where(e => e.Attribute("type")?.Value == "UMLInteractionInstanceSet");
+            foreach (var interactionElement in interactionElements)
+            {
+                var interactionId = interactionElement.Attribute("guid")?.Value;
+                if (interactionId != null)
+                {
+                    var interaction = ResolveObjectById(interactionElement, interactionId) as InteractionBuilder;
+                    if (interaction != null)
+                    {
+                        var sequenceViews = new Dictionary<MutableObjectBase, (int, int)>();
+                        var views = interactionElement.Descendants(_whiteStarUmlNamespace + "OBJ").Where(e => viewTypes.Contains(e.Attribute("type")?.Value));
+                        foreach (var view in views)
+                        {
+                            var viewType = view.Attribute("type").Value;
+                            var seqIdElement = view.Elements(_whiteStarUmlNamespace + "REF").Where(e => e.Attribute("name")?.Value == "Model").FirstOrDefault();
+                            var seqId = seqIdElement?.Value;
+                            if (seqId != null)
+                            {
+                                var seqObj = ResolveObjectById(seqIdElement, seqId);
+                                if (seqObj != null)
+                                {
+                                    if (viewType == "UMLSeqStimulusView" && seqObj is MessageBuilder message)
+                                    {
+                                        var pointsElement = view.Elements(_whiteStarUmlNamespace + "ATTR").Where(e => e.Attribute("name")?.Value == "Points").FirstOrDefault();
+                                        var points = pointsElement?.Value;
+                                        if (!string.IsNullOrWhiteSpace(points))
+                                        {
+                                            var pointItems = points.Split(new char[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries);
+                                            if (pointItems.Length >= 4)
+                                            {
+                                                if (int.TryParse(pointItems[1], out int start) && int.TryParse(pointItems[3], out int end))
+                                                {
+                                                    sequenceViews.Add((MutableObjectBase)message.SendEvent, (start, start));
+                                                    sequenceViews.Add((MutableObjectBase)message.ReceiveEvent, (end, end));
+                                                }
+                                            }
+                                        }
+                                    }
+                                    else if (viewType == "UMLSeqObjectView" || viewType == "UMLCombinedFragmentView" || viewType == "UMLInteractionOperandView")
+                                    {
+                                        var topElement = view.Elements(_whiteStarUmlNamespace + "ATTR").Where(e => e.Attribute("name")?.Value == "Top").FirstOrDefault();
+                                        var heightElement = view.Elements(_whiteStarUmlNamespace + "ATTR").Where(e => e.Attribute("name")?.Value == "Height").FirstOrDefault();
+                                        var topString = topElement?.Value;
+                                        var heightString = heightElement?.Value;
+                                        if (topString != null && heightString != null && int.TryParse(topString, out int top) && int.TryParse(heightString, out int height))
+                                        {
+                                            sequenceViews.Add(seqObj, (top, top + height));
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        var orderedViews = sequenceViews.OrderBy(entry => entry.Value.Item1).ThenByDescending(entry => entry.Value.Item2).ToList();
+                        var fragmentStack = new Stack<KeyValuePair<MutableObjectBase, (int, int)>>();
+                        foreach (var view in orderedViews)
+                        {
+                            if (view.Key is LifelineBuilder lifeline)
+                            {
+                                interaction.Lifeline.Add(lifeline);
+                            }
+                            else
+                            {
+                                InteractionOperandBuilder currentFragment = null;
+                                while (fragmentStack.Count > 0)
+                                {
+                                    var top = fragmentStack.Peek();
+                                    if (top.Value.Item2 < view.Value.Item1)
+                                    {
+                                        fragmentStack.Pop();
+                                    }
+                                    else
+                                    {
+                                        currentFragment = (InteractionOperandBuilder)top.Key;
+                                        break;
+                                    }
+                                }
+                                if (view.Key is CombinedFragmentBuilder combinedFragment)
+                                {
+                                    if (currentFragment != null)
+                                    {
+                                        currentFragment.Fragment.Add(combinedFragment);
+                                    }
+                                    else
+                                    {
+                                        interaction.Fragment.Add(combinedFragment);
+                                    }
+                                }
+                                else if (view.Key is InteractionOperandBuilder interactionOperand)
+                                {
+                                    fragmentStack.Push(view);
+                                }
+                                else if (view.Key is MessageOccurrenceSpecificationBuilder messageEnd)
+                                {
+                                    if (currentFragment != null)
+                                    {
+                                        currentFragment.Fragment.Add(messageEnd);
+                                    }
+                                    else
+                                    {
+                                        interaction.Fragment.Add(messageEnd);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         private void PostProcessObjects()
         {
             foreach (var prop in _model.Objects.OfType<PropertyBuilder>())
@@ -131,6 +269,30 @@ namespace MetaDslx.Languages.Uml.Serialization
                 {
                     prop.Association.OwnedEnd.Add(prop);
                 }
+            }
+            foreach (var inter in _model.Objects.OfType<InteractionBuilder>())
+            {
+                var collaboration = _factory.Collaboration();
+                collaboration.Name = "locals";
+                foreach (var lifeline in inter.Lifeline)
+                {
+                    var lifelineProp = _factory.Property();
+                    lifelineProp.Name = lifeline.Name;
+                    collaboration.OwnedAttribute.Add(lifelineProp);
+                    var lifelineElement = ResolveElementByObject((MutableObjectBase)lifeline, null);
+                    var classifierId = lifelineElement?.Elements(_whiteStarUmlNamespace + "REF")?.Where(e => e.Attribute("name")?.Value == "Classifier")?.FirstOrDefault()?.Value;
+                    if (classifierId != null)
+                    {
+                        var classifier = ResolveObjectById(lifelineElement, classifierId) as ClassifierBuilder;
+                        if (classifier != null)
+                        {
+                            lifelineProp.Type = classifier;
+                            lifelineProp.Aggregation = AggregationKind.Composite;
+                            lifeline.Represents = lifelineProp;
+                        }
+                    }
+                }
+                inter.NestedClassifier.Add(collaboration);
             }
         }
 
@@ -161,6 +323,22 @@ namespace MetaDslx.Languages.Uml.Serialization
                             string id = guidAttribute.Value;
                             this.RegisterObjectById(guidAttribute, id, obj);
                         }
+                        foreach (var nameProp in obj.MAllProperties.Where(p => p.IsName))
+                        {
+                            var nameAttr = element.Elements(_whiteStarUmlNamespace + "ATTR").Where(e => e.Attribute("name")?.Value == nameProp.Name).FirstOrDefault();
+                            if (nameAttr != null)
+                            {
+                                string name = nameAttr.Value;
+                                try
+                                {
+                                    obj.MAdd(nameProp, name);
+                                }
+                                catch (ModelException mex)
+                                {
+                                    this.AddError(element, mex);
+                                }
+                            }
+                        }
                     }
                 }
                 if (parent != null)
@@ -180,22 +358,6 @@ namespace MetaDslx.Languages.Uml.Serialization
                                 catch (ModelException mex)
                                 {
                                     this.AddError(element, mex);
-                                }
-                                foreach (var nameProp in obj.MAllProperties.Where(p => p.IsName))
-                                {
-                                    var nameAttr = element.Elements(_whiteStarUmlNamespace + "ATTR").Where(e => e.Attribute("name")?.Value == nameProp.Name).FirstOrDefault();
-                                    if (nameAttr != null)
-                                    {
-                                        string name = nameAttr.Value;
-                                        try
-                                        {
-                                            obj.MAdd(nameProp, name);
-                                        }
-                                        catch (ModelException mex)
-                                        {
-                                            this.AddError(element, mex);
-                                        }
-                                    }
                                 }
                             }
                             else
@@ -318,7 +480,16 @@ namespace MetaDslx.Languages.Uml.Serialization
             {
                 _objectsByPosition.Add(pos, mobj);
             }
-            return true;
+            if (_elementsByObject.TryGetValue(mobj, out var existingElem) && existingElem != location)
+            {
+                this.AddError(location, string.Format("The element is already registered for another model object.", pos));
+                return false;
+            }
+            else
+            {
+                _elementsByObject.Add(mobj, location);
+                return true;
+            }
         }
 
         private bool RegisterObjectById(XObject location, string id, MutableObjectBase mobj)
@@ -388,6 +559,16 @@ namespace MetaDslx.Languages.Uml.Serialization
             return null;
         }
 
+        public XElement ResolveElementByObject(MutableObjectBase mobj, XObject location, bool reportError = true)
+        {
+            if (_elementsByObject.TryGetValue(mobj, out var result))
+            {
+                return result;
+            }
+            if (reportError) this.AddError(location, $"Element cannot be resolved based on the model object.");
+            return null;
+        }
+
         private void AssignProperty(XObject location, MutableObjectBase obj, ModelProperty property, string propertyValue)
         {
             if (property.IsName) return;
@@ -420,19 +601,32 @@ namespace MetaDslx.Languages.Uml.Serialization
                         interaction.Name = nameElement.Value;
                     }
                 }
+                if (parent is PackageBuilder package) package.PackagedElement.Add(interaction);
                 return true;
             }
             if (parent is MessageBuilder message && parentPropertyName == "Action")
             {
                 var element = (XElement)location;
                 var typeAttribute = element.Attribute("type");
-                if (typeAttribute?.Value == "UMLCallAction")
+                switch (typeAttribute?.Value)
                 {
-                    message.MessageSort = MessageSort.SynchCall;
-                }
-                if (typeAttribute?.Value == "UMLReturnAction")
-                {
-                    message.MessageSort = MessageSort.Reply;
+                    case "UMLCallAction":
+                        message.MessageSort = MessageSort.SynchCall;
+                        break;
+                    case "UMLReturnAction":
+                        message.MessageSort = MessageSort.Reply;
+                        break;
+                    case "UMLSendAction":
+                        message.MessageSort = MessageSort.AsynchCall;
+                        break;
+                    case "UMLCreateAction":
+                        message.MessageSort = MessageSort.CreateMessage;
+                        break;
+                    case "UMLDestroyAction":
+                        message.MessageSort = MessageSort.DeleteMessage;
+                        break;
+                    default:
+                        break;
                 }
                 return true;
             }
@@ -539,9 +733,9 @@ namespace MetaDslx.Languages.Uml.Serialization
                     var lifeline = ResolveValue(location, typeof(IModelObject), propertyValue) as LifelineBuilder;
                     if (lifeline != null)
                     {
-                        lifeline.Interaction = interaction;
+                        //lifeline.Interaction = interaction;
                         var startEvent = _factory.MessageOccurrenceSpecification();
-                        interaction.Fragment.Add(startEvent);
+                        // interaction.Fragment.Add(startEvent);
                         startEvent.Covered = lifeline;
                         startEvent.Message = message;
                         message.SendEvent = startEvent;
@@ -554,9 +748,9 @@ namespace MetaDslx.Languages.Uml.Serialization
                     var lifeline = ResolveValue(location, typeof(IModelObject), propertyValue) as LifelineBuilder;
                     if (lifeline != null)
                     {
-                        lifeline.Interaction = interaction;
+                        //lifeline.Interaction = interaction;
                         var endEvent = _factory.MessageOccurrenceSpecification();
-                        interaction.Fragment.Add(endEvent);
+                        // interaction.Fragment.Add(endEvent);
                         endEvent.Covered = lifeline;
                         endEvent.Message = message;
                         message.ReceiveEvent = endEvent;
@@ -700,7 +894,7 @@ namespace MetaDslx.Languages.Uml.Serialization
 
         private static readonly HashSet<string> UmlSkippedTypes = new HashSet<string>()
         {
-            "CollaborationInstanceSet", "CallAction", "ReturnAction", "Frame", "CallAction", "ReturnAction"
+            "CollaborationInstanceSet", "Frame", "CallAction", "ReturnAction", "CreateAction", "DestroyAction", "SendAction"
         };
         private static readonly HashSet<string> UmlIgnoredTypes = new HashSet<string>()
         {
@@ -734,7 +928,11 @@ namespace MetaDslx.Languages.Uml.Serialization
             "CombinedFragment.EnclosingInteractionInstanceSet",
             "Interaction.InteractionInstanceSet",
             "Interaction.FrameKind",
+            "Interaction.OwnedFrames",
+            "Interaction.Fragments",
+            "Interaction.ParticipatingInstances",
             "Message.InteractionInstanceSet",
+            "Lifeline.Classifier",
             "Lifeline.SendingStimuli",
             "Lifeline.ReceivingStimuli",
             "Lifeline.CollaborationInstanceSet",
@@ -763,13 +961,14 @@ namespace MetaDslx.Languages.Uml.Serialization
             { "Property.Qualifiers", "Qualifier" },
             { "Operation.Parameters", "OwnedParameter" },
             { "Parameter.Type_", "Type" },
-            { "Interaction.ParticipatingInstances", "Lifeline" },
             { "Interaction.ParticipatingStimuli", "Message" },
-            { "Interaction.OwnedFrames", "Fragment" },
-            { "Interaction.Fragments", "Fragment" },
+            //{ "Interaction.ParticipatingInstances", "Lifeline" },
+            //{ "Interaction.OwnedFrames", "Fragment" },
+            //{ "Interaction.Fragments", "Fragment" },
             { "Message.Operation", "Signature" },
             { "CombinedFragment.Operands", "Operand" },
-            { "Lifeline.Classifier", "Classifier" },
         };
+
+
     }
 }
