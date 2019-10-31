@@ -1,8 +1,12 @@
 title Authentication Sequence
 
-A->B: Authentication Request
+participant A
+participant B
+participant C
+
+"A:A"->"B:B": Authentication Request
 note right of B: B thinks about it
-B->A: Authentication Response
+"B:B"->"A:A": Authentication Response
 
 A->*B: textACreatesB
 B->A: textASyncB

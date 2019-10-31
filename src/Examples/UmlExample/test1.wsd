@@ -1,4 +1,4 @@
 title Authentication Sequence
 
-B->A: text1
-A-->>B: text2
+"b:B"->"a:A": text1
+"a:A"-->>"b:B": text2

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xmi:XMI xmlns:uml="http://www.omg.org/spec/UML" xmlns:xmi="http://www.omg.org/spec/XMI">
+  <uml:Model xmi:type="uml:Model" xmi:id="d8fe2b92-2588-4bd7-878b-a25a8207efd4">
+    <packagedElement xmi:type="uml:Package" xmi:id="7c268bed-c5a6-469a-af92-6249b3773348" name="Use Case View" />
+    <packagedElement xmi:type="uml:Package" xmi:id="ec6617bb-f6d9-49fd-bfb4-a4f7ff1f8e79" name="Logical View">
+      <packagedElement xmi:type="uml:Interaction" xmi:id="c3a5ea0f-c30a-463c-9e3a-b2d08fb06b86" name="InteractionInstanceSet1">
+        <message xmi:type="uml:Message" xmi:id="dcc4ae24-e873-410f-8aac-b3fb2a7eeea2" messageSort="asynchCall" receiveEvent="9ce89113-cdec-4822-9153-b196ada29818" sendEvent="50b2d90a-7373-4f31-9396-caaa5add7f13" />
+        <message xmi:type="uml:Message" xmi:id="92dd1664-702f-48bc-ac5c-b656bd75748e" receiveEvent="fb3a2482-c707-46c3-b860-eaa55345b9d3" sendEvent="25709515-092b-4c9e-9ffc-3a037530bdb0" />
+        <message xmi:type="uml:Message" xmi:id="73b8bb40-3a4f-4a82-a460-7eaecbf40d64" messageSort="deleteMessage" receiveEvent="123db1cc-144c-4156-a171-05e1d0576670" sendEvent="f6825e2c-14ce-4709-91dc-7aea7b20e6df" />
+        <lifeline xmi:type="uml:Lifeline" xmi:id="51cc9916-6700-4d65-a40b-d0df9ef8c8e4" name="Object1">
+          <coveredBy xmi:idref="50b2d90a-7373-4f31-9396-caaa5add7f13" />
+          <coveredBy xmi:idref="25709515-092b-4c9e-9ffc-3a037530bdb0" />
+          <coveredBy xmi:idref="fb3a2482-c707-46c3-b860-eaa55345b9d3" />
+          <coveredBy xmi:idref="f6825e2c-14ce-4709-91dc-7aea7b20e6df" />
+        </lifeline>
+        <lifeline xmi:type="uml:Lifeline" xmi:id="35b695c1-f40d-4200-b6fd-c2d7ef2bd9f5" name="Object2">
+          <coveredBy xmi:idref="9ce89113-cdec-4822-9153-b196ada29818" />
+          <coveredBy xmi:idref="123db1cc-144c-4156-a171-05e1d0576670" />
+        </lifeline>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="50b2d90a-7373-4f31-9396-caaa5add7f13" covered="51cc9916-6700-4d65-a40b-d0df9ef8c8e4" message="dcc4ae24-e873-410f-8aac-b3fb2a7eeea2" />
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="9ce89113-cdec-4822-9153-b196ada29818" covered="35b695c1-f40d-4200-b6fd-c2d7ef2bd9f5" message="dcc4ae24-e873-410f-8aac-b3fb2a7eeea2" />
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="25709515-092b-4c9e-9ffc-3a037530bdb0" covered="51cc9916-6700-4d65-a40b-d0df9ef8c8e4" message="92dd1664-702f-48bc-ac5c-b656bd75748e" />
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="fb3a2482-c707-46c3-b860-eaa55345b9d3" covered="51cc9916-6700-4d65-a40b-d0df9ef8c8e4" message="92dd1664-702f-48bc-ac5c-b656bd75748e" />
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="f6825e2c-14ce-4709-91dc-7aea7b20e6df" covered="51cc9916-6700-4d65-a40b-d0df9ef8c8e4" message="73b8bb40-3a4f-4a82-a460-7eaecbf40d64" />
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="123db1cc-144c-4156-a171-05e1d0576670" covered="35b695c1-f40d-4200-b6fd-c2d7ef2bd9f5" message="73b8bb40-3a4f-4a82-a460-7eaecbf40d64" />
+        <nestedClassifier xmi:type="uml:Collaboration" xmi:id="cbc91284-5e33-4fa2-b525-2b4d9d81edb2" name="locals">
+          <ownedAttribute xmi:type="uml:Property" xmi:id="aeb001df-7388-431d-8a9b-b6d3c329f7a2" name="Object1" featuringClassifier="cbc91284-5e33-4fa2-b525-2b4d9d81edb2" />
+          <ownedAttribute xmi:type="uml:Property" xmi:id="71829e78-0e12-4fc4-ab14-d7b32cd3bcf6" name="Object2" featuringClassifier="cbc91284-5e33-4fa2-b525-2b4d9d81edb2" />
+        </nestedClassifier>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="c0e98960-bf1f-4405-b5fd-eaf91802440b" name="Component View" />
+    <packagedElement xmi:type="uml:Package" xmi:id="5d901d55-1d8f-4b60-8e54-1534e1c2d87b" name="Deployment View" />
+  </uml:Model>
+</xmi:XMI>

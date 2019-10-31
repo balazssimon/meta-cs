@@ -1,0 +1,42 @@
+﻿lexer grammar WebSequenceDiagramsLexer;
+
+options {
+	generateCompiler=false;
+	generateLanguageService=false;
+	ignoreRoslynRules=true;
+}
+
+channels {
+	COMMENT
+}
+
+TCreate : ('->' | '->>' | '-->>' | '-->') WhiteSpaceChar* '*' WhiteSpaceChar* ('+' | '-')?;
+TSync: '->' WhiteSpaceChar* ('+' | '-')?;
+TAsync: '->>' WhiteSpaceChar* ('+' | '-')?;
+TReturn: ('-->>' | '-->') WhiteSpaceChar* ('+' | '-')?;
+TMinus : '-' -> type(LIdentifier);
+TColon : ':';
+TComma : ',';
+TOpenParen : '(';
+TCloseParen : ')';
+
+LWhiteSpace : WhiteSpaceChar+;
+LSingleLineComment : '#' ~[\r\n]* -> channel(COMMENT);
+
+LString : '"' DoubleQuoteTextCharacter* '"';
+
+fragment DoubleQuoteTextCharacter 
+    : DoubleQuoteTextSimple | CharacterEscapeSimple | CharacterEscapeUnicode;
+fragment DoubleQuoteTextSimple 
+    : ~('"' | '\\' | '\u000A' | '\u000D' | '\u0085' | '\u2028' | '\u2029');
+fragment CharacterEscapeSimple : '\\' CharacterEscapeSimpleCharacter;
+fragment CharacterEscapeSimpleCharacter 
+    : '\'' | '"' | '\\' | '0' | 'a' | 'b' | 'f' | 'n' | 'r' | 't' | 'v'; 
+fragment CharacterEscapeUnicode
+    : '\\u' HexDigit HexDigit HexDigit HexDigit
+    | '\\U' HexDigit HexDigit HexDigit HexDigit HexDigit HexDigit HexDigit HexDigit;
+fragment HexDigit : [0-9a-fA-F];
+
+LIdentifier : ~[\-\u003A\u002C\u0028\u0029\r\n\u0020\u0009\u000B\u000C\u00A0\u001A]+;
+
+fragment WhiteSpaceChar : [\u0020\u0009\u000B\u000C\u00A0\u001A];

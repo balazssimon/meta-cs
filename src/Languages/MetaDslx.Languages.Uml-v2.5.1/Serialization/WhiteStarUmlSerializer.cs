@@ -102,12 +102,12 @@ namespace MetaDslx.Languages.Uml.Serialization
 
         internal void AddError(XObject location, string message)
         {
-            _diagnostics.Add(ModelErrorCode.ERR_XmiError.ToDiagnostic(GetLocation(location), message));
+            _diagnostics.Add(ModelErrorCode.ERR_ImportError.ToDiagnostic(GetLocation(location), message));
         }
 
         internal void AddError(XObject location, ModelException mex)
         {
-            _diagnostics.Add(ModelErrorCode.ERR_XmiError.ToDiagnostic(GetLocation(location), mex.Diagnostic.GetMessage()));
+            _diagnostics.Add(ModelErrorCode.ERR_ImportError.ToDiagnostic(GetLocation(location), mex.Diagnostic.GetMessage()));
         }
 
         public void ReadModel()
@@ -925,6 +925,8 @@ namespace MetaDslx.Languages.Uml.Serialization
             "Parameter.BehavioralFeature",
             "Package.ParticipatingInstances",
             "Package.RepresentedClassifier",
+            "Package.StereotypeProfile",
+            "Package.StereotypeName",
             "CombinedFragment.EnclosingInteractionInstanceSet",
             "Interaction.InteractionInstanceSet",
             "Interaction.FrameKind",

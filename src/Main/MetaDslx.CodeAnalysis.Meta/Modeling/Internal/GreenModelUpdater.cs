@@ -843,11 +843,6 @@ namespace MetaDslx.Modeling.Internal
                     this.MakeException(Location.None, ModelErrorCode.ERR_CannotReassignReadOnlyProperty, slot, objectRef.Id);
                     return false;
                 }
-                if (oldValue is LazyValue)
-                {
-                    this.MakeException(Location.None, ModelErrorCode.ERR_CannotReassignLazyValuedProperty, slot, objectRef.Id);
-                    return false;
-                }
             }
             return true;
         }
