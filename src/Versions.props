@@ -9,10 +9,10 @@
   -->
   <PropertyGroup>
 	<OfficialBuild>true</OfficialBuild>
-    <VersionPrefix>0.10.213</VersionPrefix>
-	<MetaDslxLanguagesPackageVersion>0.2.2</MetaDslxLanguagesPackageVersion>
+    <VersionPrefix>0.10.214</VersionPrefix>
+	<MetaDslxLanguagesPackageVersion>0.2.3</MetaDslxLanguagesPackageVersion>
     <VersionSuffix Condition="'$(OfficialBuild)' != 'true' and '$(DotNetUseShippingVersions)' != 'true'">alpha1</VersionSuffix>
-    <BootstrapVersion>0.10.212</BootstrapVersion>
+    <BootstrapVersion>0.10.213</BootstrapVersion>
     <SemanticVersioningV1>true</SemanticVersioningV1>
     <!-- 
       By default the assembly version in official builds is "$(VersionPrefix).0".
@@ -22,6 +22,10 @@
     -->
 	<MetaDslxVersion Condition="'$(OfficialBuild)' == 'true' or '$(DotNetUseShippingVersions)' == 'true'">$(VersionPrefix).0</MetaDslxVersion>
 	<MetaDslxVersion Condition="'$(OfficialBuild)' != 'true' and '$(DotNetUseShippingVersions)' != 'true'">$(VersionPrefix)-$(VersionSuffix)</MetaDslxVersion>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
   <!-- 
     Dependency versions

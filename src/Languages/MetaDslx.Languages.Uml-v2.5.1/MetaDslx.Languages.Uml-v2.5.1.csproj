@@ -28,21 +28,21 @@
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <!-- Optional: Embed source files that are not tracked by the source control manager to the PDB -->
     <!-- This is useful if you generate files during the build -->
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>	
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="MetaDslx.BuildTasks" Version="$(BootstrapVersion)" PrivateAssets="all" />
-    <!-->PackageReference Include="MetaDslx.CodeAnalysis" Version="$(BootstrapVersion)" /-->
+    <PackageReference Include="MetaDslx.CodeAnalysis" Version="$(BootstrapVersion)" />
   </ItemGroup>
 
 
-  <ItemGroup>
+  <!--ItemGroup>
     <ProjectReference Include="..\..\Main\MetaDslx.CodeAnalysis.Antlr4\MetaDslx.CodeAnalysis.Antlr4.csproj" />
     <ProjectReference Include="..\..\Main\MetaDslx.CodeAnalysis.Common\MetaDslx.CodeAnalysis.Common.csproj" />
     <ProjectReference Include="..\..\Main\MetaDslx.CodeAnalysis.CSharp\MetaDslx.CodeAnalysis.CSharp.csproj" />
     <ProjectReference Include="..\..\Main\MetaDslx.CodeAnalysis.Meta\MetaDslx.CodeAnalysis.Meta.csproj" />
-  </ItemGroup>
+  </ItemGroup-->
 
 
 </Project>

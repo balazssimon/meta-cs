@@ -843,15 +843,18 @@ namespace MetaDslx.Languages.Uml.Serialization
                     {
                         propertyValue = propertyValue.Substring(0, assignIndex).Trim();
                     }
-                    var type = _model.Objects.OfType<TypeBuilder>().Where(t => t.Name == propertyValue).FirstOrDefault();
-                    if (type != null)
+                    if (typedElement.Type == null)
                     {
-                        typedElement.Type = type;
-                    }
-                    else
-                    {
-                        typedElement.Type = CreatePrimitiveType(propertyValue);
-                        // this.AddError(location, string.Format("Cannot resolve type name: {0}", propertyValue));
+                        var type = _model.Objects.OfType<TypeBuilder>().Where(t => t.Name == propertyValue).FirstOrDefault();
+                        if (type != null)
+                        {
+                            typedElement.Type = type;
+                        }
+                        else
+                        {
+                            typedElement.Type = CreatePrimitiveType(propertyValue);
+                            // this.AddError(location, string.Format("Cannot resolve type name: {0}", propertyValue));
+                        }
                     }
                     return true;
                 }
@@ -1099,10 +1102,8 @@ namespace MetaDslx.Languages.Uml.Serialization
             "Interface.StereotypeName",
             "Interface.Specializations",
             "Interface.TypedFeatures",
-            "Property.Type_",
             "Operation.CallActions",
             "Parameter.BehavioralFeature",
-            "Parameter.Type_",
             "Package.ParticipatingInstances",
             "Package.RepresentedClassifier",
             "Package.StereotypeProfile",
@@ -1154,8 +1155,9 @@ namespace MetaDslx.Languages.Uml.Serialization
             { "Class.Generalizations", "Generalization" },
             { "Property.Participant", "Type" },
             { "Property.Qualifiers", "Qualifier" },
+            { "Property.Type_", "Type" },
             { "Operation.Parameters", "OwnedParameter" },
-            //{ "Parameter.Type_", "Type" },
+            { "Parameter.Type_", "Type" },
             { "Interaction.ParticipatingStimuli", "Message" },
             //{ "Interaction.ParticipatingInstances", "Lifeline" },
             //{ "Interaction.OwnedFrames", "Fragment" },
