@@ -759,13 +759,43 @@ namespace MetaDslx.Languages.Uml.Serialization
                 }
                 else if (propertyName == "Arguments")
                 {
-                    var argStrings = propertyValue.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                    foreach (var argString in argStrings)
+                    var argValue = new StringBuilder();
+                    bool inString = false;
+                    foreach (var ch in propertyValue)
+                    {
+                        switch (ch)
+                        {
+                            case ',':
+                                if (!inString)
+                                {
+                                    var arg = _factory.LiteralString();
+                                    arg.Value = argValue.ToString();
+                                    message.Argument.Add(arg);
+                                    argValue.Clear();
+                                }
+                                break;
+                            case '"':
+                                argValue.Append(ch);
+                                inString = !inString;
+                                break;
+                            default:
+                                argValue.Append(ch);
+                                break;
+                        }
+                    }
+                    if (message.Argument.Count > 0 || !string.IsNullOrWhiteSpace(argValue.ToString()))
                     {
                         var arg = _factory.LiteralString();
-                        arg.Value = argString;
+                        arg.Value = argValue.ToString();
                         message.Argument.Add(arg);
                     }
+                    return true;
+                }
+                else if (propertyName == "Return")
+                {
+                    var comment = _factory.Comment();
+                    comment.Body = "result:" + propertyValue;
+                    message.OwnedComment.Add(comment);
                     return true;
                 }
             }

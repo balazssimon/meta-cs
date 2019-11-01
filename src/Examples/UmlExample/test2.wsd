@@ -4,9 +4,13 @@ participant A
 participant B
 participant C
 
-"A:A"->"B:B": Authentication Request
+"a:A"->"b:B": Authentication Request
 note right of B: B thinks about it
-"B:B"->"A:A": Authentication Response
+"b:B"->"a:A": Authentication Response
+
+"b:B"->"a:A": text1
+"a:A"-->>"b:B": text2
+"a:A"->"b:B": text3(a,b)
 
 A->*B: textACreatesB
 B->A: textASyncB

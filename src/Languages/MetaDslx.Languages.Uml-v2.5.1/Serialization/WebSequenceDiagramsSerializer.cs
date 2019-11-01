@@ -48,6 +48,7 @@ namespace MetaDslx.Languages.Uml.Serialization
         private PackageBuilder _mainPackage;
         private CollaborationBuilder _collaboration;
         private string _currentFile;
+        private Dictionary<InteractionUseBuilder, string> _crossReferences;
 
         public WebSequenceDiagramsReader(IEnumerable<(string, string)> fileAndCode, ImmutableModel classDiagram)
         {
@@ -67,6 +68,7 @@ namespace MetaDslx.Languages.Uml.Serialization
                 _mainPackage = _factory.Model();
             }
             _diagnostics = new DiagnosticBag();
+            _crossReferences = new Dictionary<InteractionUseBuilder, string>();
         }
 
         public MutableModel Model => _model;
@@ -119,12 +121,16 @@ namespace MetaDslx.Languages.Uml.Serialization
             var targetSb = new StringBuilder();
             var textSb = new StringBuilder();
             var operationNameSb = new StringBuilder();
+            var refTextSb = new StringBuilder();
+            var refLifelineNameSb = new StringBuilder();
+            var argNameSb = new StringBuilder();
             var stream = new AntlrInputStream();
             var lexer = new WebSequenceDiagramsLexer(stream);
             lexer.RemoveErrorListeners();
             var lifelines = new Dictionary<string, LifelineBuilder>();
             var combinedFragments = new Stack<CombinedFragmentBuilder>();
             var interactionOperands = new Stack<InteractionOperandBuilder>();
+            InteractionUseBuilder reference = null;
             for (int i = 0; i < lines.Count; ++i)
             {
                 var currentFragment = combinedFragments.Count > 0 ? combinedFragments.Peek() : null;
@@ -138,7 +144,15 @@ namespace MetaDslx.Languages.Uml.Serialization
                     sb.Append(token.Text);
                 }
                 line = sb.ToString();
-                if (line.StartsWith("#") || string.IsNullOrWhiteSpace(line) || (currentInteraction == null && (line.StartsWith(" ") || line.StartsWith("\t"))))
+                if (line.StartsWith("#"))
+                {
+                    // skip comment
+                }
+                else if (reference != null && !line.StartsWith("end ref"))
+                {
+                    refTextSb.Append(GetText(line));
+                }
+                else if (string.IsNullOrWhiteSpace(line) || (currentInteraction == null && (line.StartsWith(" ") || line.StartsWith("\t"))))
                 {
                     // skip comment
                 }
@@ -255,6 +269,16 @@ namespace MetaDslx.Languages.Uml.Serialization
                     interactionOperands.Pop();
                     interactionOperands.Push(body);
                 }
+                else if (line.Trim() == "end ref")
+                {
+                    if (reference == null)
+                    {
+                        this.AddError(i, 0, "End reference without a reference.");
+                        continue;
+                    }
+                    _crossReferences.Add(reference, refTextSb.ToString());
+                    reference = null;
+                }
                 else if (line.Trim() == "end")
                 {
                     if (currentFragment == null)
@@ -265,6 +289,32 @@ namespace MetaDslx.Languages.Uml.Serialization
                     combinedFragments.Pop();
                     interactionOperands.Pop();
                 }
+                else if (line.StartsWith("ref "))
+                {
+                    var text = GetText(line.Substring(4));
+                    refTextSb.Clear();
+                    reference = _factory.InteractionUse();
+                    if (currentInteraction != null) currentInteraction.Fragment.Add(reference);
+                    else interaction.Fragment.Add(reference);
+                    if (text.StartsWith("over "))
+                    {
+                        refLifelineNameSb.Clear();
+                        for (int j = 4; j < tokens.Count; j++)
+                        {
+                            var token = tokens[j];
+                            if (token.Type == WebSequenceDiagramsLexer.TColon || token.Type == WebSequenceDiagramsLexer.TComma)
+                            {
+                                var covered = GetLifeline(GetText(refLifelineNameSb.ToString()), lifelines, interaction, i);
+                                reference.Covered.Add(covered);
+                                if (token.Type == WebSequenceDiagramsLexer.TColon) break;
+                            }
+                            else
+                            {
+                                refLifelineNameSb.Append(token.Text);
+                            }
+                        }
+                    }
+                }
                 else
                 {
                     sourceSb.Clear();
@@ -273,10 +323,13 @@ namespace MetaDslx.Languages.Uml.Serialization
                     textSb.Clear();
                     var messageSort = MessageSort.SynchCall;
                     int state = 0;
-                    int paramCount = 0;
+                    int targetStartIndex = 0;
+                    string resultVariable = null;
+                    List<string> argNames = new List<string>();
                     lexer.Reset();
-                    foreach (var token in tokens)
+                    for (int j = 0; j < tokens.Count; ++j)
                     {
+                        var token = tokens[j];
                         if (token.Channel != WebSequenceDiagramsLexer.DefaultTokenChannel) continue;
                         switch (state)
                         {
@@ -302,6 +355,7 @@ namespace MetaDslx.Languages.Uml.Serialization
                                             break;
                                     }
                                     state = 1;
+                                    targetStartIndex = j + 1;
                                 }
                                 else
                                 {
@@ -319,9 +373,16 @@ namespace MetaDslx.Languages.Uml.Serialization
                                 }
                                 break;
                             case 2:
-                                if (token.Type == WebSequenceDiagramsLexer.TOpenParen)
+                                if (token.Type == WebSequenceDiagramsLexer.TAssign)
                                 {
                                     state = 3;
+                                    resultVariable = GetText(operationNameSb.ToString());
+                                    operationNameSb.Clear();
+                                }
+                                else if(token.Type == WebSequenceDiagramsLexer.TOpenParen)
+                                {
+                                    state = 4;
+                                    argNameSb.Clear();
                                 }
                                 else
                                 {
@@ -330,26 +391,41 @@ namespace MetaDslx.Languages.Uml.Serialization
                                 textSb.Append(GetText(token.Text));
                                 break;
                             case 3:
-                                if (token.Type == WebSequenceDiagramsLexer.TComma)
+                                if (token.Type == WebSequenceDiagramsLexer.TOpenParen)
                                 {
                                     state = 4;
-                                    ++paramCount;
+                                    argNameSb.Clear();
+                                }
+                                else
+                                {
+                                    operationNameSb.Append(GetText(token.Text));
+                                }
+                                textSb.Append(GetText(token.Text));
+                                argNameSb.Clear();
+                                break;
+                            case 4:
+                                if (token.Type == WebSequenceDiagramsLexer.TComma)
+                                {
+                                    argNames.Add(GetText(argNameSb.ToString()));
+                                    argNameSb.Clear();
                                 }
                                 else if (token.Type == WebSequenceDiagramsLexer.TCloseParen)
                                 {
                                     state = 5;
+                                    var argName = GetText(argNameSb.ToString());
+                                    if (argNames.Count > 0 || !string.IsNullOrWhiteSpace(argName))
+                                    {
+                                        argNames.Add(argName);
+                                    }
+                                    argNameSb.Clear();
                                 }
                                 else
                                 {
-                                    if (paramCount == 0 && !string.IsNullOrWhiteSpace(token.Text)) paramCount = 1;
+                                    argNameSb.Append(token.Text);
                                 }
                                 textSb.Append(GetText(token.Text));
                                 break;
-                            case 4:
-                                if (token.Type == WebSequenceDiagramsLexer.TCloseParen)
-                                {
-                                    state = 5;
-                                }
+                            case 5:
                                 textSb.Append(GetText(token.Text));
                                 break;
                             default:
@@ -358,65 +434,137 @@ namespace MetaDslx.Languages.Uml.Serialization
                     }
                     if (state >= 2)
                     {
-                        var source = GetLifeline(sourceSb.ToString().Trim(), lifelines, interaction, i);
-                        var target = GetLifeline(targetSb.ToString().Trim(), lifelines, interaction, i);
-                        var message = _factory.Message();
-                        interaction.Message.Add(message);
-                        message.MessageSort = messageSort;
-                        var sendEvent = _factory.MessageOccurrenceSpecification();
-                        message.SendEvent = sendEvent;
-                        sendEvent.Covered = source;
-                        sendEvent.Message = message;
-                        var receiveEvent = _factory.MessageOccurrenceSpecification();
-                        message.ReceiveEvent = receiveEvent;
-                        receiveEvent.Covered = target;
-                        receiveEvent.Message = message;
-                        if (currentInteraction != null)
+                        var sourceName = sourceSb.ToString().Trim();
+                        var targetName = targetSb.ToString().Trim();
+                        if (targetName.StartsWith("ref "))
                         {
-                            currentInteraction.Fragment.Add(sendEvent);
-                            currentInteraction.Fragment.Add(receiveEvent);
+                            refTextSb.Clear();
+                            reference = _factory.InteractionUse();
+                            if (currentInteraction != null) currentInteraction.Fragment.Add(reference);
+                            else interaction.Fragment.Add(reference);
+                            targetName = targetName.Substring(4).Trim();
+                            if (targetName.StartsWith("over "))
+                            {
+                                refLifelineNameSb.Clear();
+                                for (int j = targetStartIndex+4; j < tokens.Count; j++)
+                                {
+                                    var token = tokens[j];
+                                    if (token.Type == WebSequenceDiagramsLexer.TColon || token.Type == WebSequenceDiagramsLexer.TComma)
+                                    {
+                                        var covered = GetLifeline(GetText(refLifelineNameSb.ToString()), lifelines, interaction, i);
+                                        reference.Covered.Add(covered);
+                                        if (token.Type == WebSequenceDiagramsLexer.TColon) break;
+                                    }
+                                    else
+                                    {
+                                        refLifelineNameSb.Append(token.Text);
+                                    }
+                                }
+                            }
+                            continue;
+                        }
+                        else if (sourceName == "end ref")
+                        {
+                            if (reference == null)
+                            {
+                                this.AddError(i, 0, "End reference without a reference.");
+                                continue;
+                            }
+                            _crossReferences.Add(reference, refTextSb.ToString());
+                            reference = null;
                         }
                         else
                         {
-                            interaction.Fragment.Add(sendEvent);
-                            interaction.Fragment.Add(receiveEvent);
-                        }
-                        var targetProperty = _collaboration.OwnedAttribute.FirstOrDefault(a => a.Name == target.Name);
-                        var targetClassifier = targetProperty?.Type as ClassifierBuilder;
-                        if (targetClassifier != null)
-                        {
-                            var callText = textSb.ToString().Trim();
-                            var openIndex = callText.IndexOf('(');
-                            var operationName = callText;
-                            if (openIndex >= 0)
+                            var source = GetLifeline(sourceName, lifelines, interaction, i);
+                            var target = GetLifeline(targetName, lifelines, interaction, i);
+                            var message = _factory.Message();
+                            interaction.Message.Add(message);
+                            message.MessageSort = messageSort;
+                            foreach (var argName in argNames)
                             {
-                                operationName = callText.Substring(0, openIndex);
+                                var arg = _factory.LiteralString();
+                                arg.Value = argName ?? string.Empty;
+                                message.Argument.Add(arg);
                             }
-                            List<OperationBuilder> operations = null;
-                            if (targetClassifier is InterfaceBuilder intf) operations = intf.OwnedOperation.Where(op => op.Name == operationName).ToList();
-                            else if (targetClassifier is ClassBuilder cls) operations = cls.OwnedOperation.Where(op => op.Name == operationName).ToList();
-                            if (operations != null && operations.Count > 0)
+                            if (!string.IsNullOrWhiteSpace(resultVariable))
                             {
-                                if (operations.Count > 1)
-                                {
-                                    operations = operations.Where(op => op.OwnedParameter.Count == paramCount).ToList();
-                                }
-                                if (operations.Count == 0)
-                                {
-                                    this.AddError(i, 0, string.Format("Type '{0}' has no operations called '{1}' of {2} parameters.", targetClassifier.Name, operationName, paramCount));
-                                }
-                                else if (operations.Count > 1)
-                                {
-                                    this.AddError(i, 0, string.Format("Multiple valid operations: {0}", operationName));
-                                }
-                                else
-                                {
-                                    message.Signature = operations[0];
-                                }
+                                var comment = _factory.Comment();
+                                comment.Body = "result:"+resultVariable;
+                                message.OwnedComment.Add(comment);
+                            }
+                            var sendEvent = _factory.MessageOccurrenceSpecification();
+                            message.SendEvent = sendEvent;
+                            sendEvent.Covered = source;
+                            sendEvent.Message = message;
+                            var receiveEvent = _factory.MessageOccurrenceSpecification();
+                            message.ReceiveEvent = receiveEvent;
+                            receiveEvent.Covered = target;
+                            receiveEvent.Message = message;
+                            if (currentInteraction != null)
+                            {
+                                currentInteraction.Fragment.Add(sendEvent);
+                                currentInteraction.Fragment.Add(receiveEvent);
                             }
                             else
                             {
-                                this.AddError(i, 0, string.Format("Type '{0}' has no operation called '{1}'.", targetClassifier.Name, operationName));
+                                interaction.Fragment.Add(sendEvent);
+                                interaction.Fragment.Add(receiveEvent);
+                            }
+                            var targetProperty = _collaboration.OwnedAttribute.FirstOrDefault(a => a.Name == target.Name);
+                            var targetClassifier = targetProperty?.Type as ClassifierBuilder;
+                            if (targetClassifier != null)
+                            {
+                                var callText = textSb.ToString().Trim();
+                                var openIndex = callText.IndexOf('(');
+                                var operationName = callText;
+                                if (openIndex >= 0)
+                                {
+                                    operationName = callText.Substring(0, openIndex);
+                                }
+                                List<OperationBuilder> operations = null;
+                                if (targetClassifier is InterfaceBuilder intf)
+                                {
+                                    operations = intf.OwnedOperation.Where(op => op.Name == operationName).ToList();
+                                    if (operations.Count == 0)
+                                    {
+                                        operations = intf.OwnedOperation.Where(op => operationName.Equals(op.Name, StringComparison.InvariantCultureIgnoreCase)).ToList();
+                                    }
+                                }
+                                else if (targetClassifier is ClassBuilder cls)
+                                {
+                                    operations = cls.OwnedOperation.Where(op => op.Name == operationName).ToList();
+                                    if (operations.Count == 0)
+                                    {
+                                        operations = cls.OwnedOperation.Where(op => operationName.Equals(op.Name, StringComparison.InvariantCultureIgnoreCase)).ToList();
+                                    }
+                                }
+                                if (operations != null && operations.Count > 0)
+                                {
+                                    if (operations.Count > 1)
+                                    {
+                                        operations = operations.Where(op => op.OwnedParameter.Where(p => p.Direction != ParameterDirectionKind.Return).Count() == argNames.Count).ToList();
+                                    }
+                                    if (operations.Count == 0)
+                                    {
+                                        this.AddError(i, 0, string.Format("Type '{0}' has no operations called '{1}' of {2} parameters.", targetClassifier.Name, operationName, argNames.Count));
+                                    }
+                                    else 
+                                    {
+                                        message.Signature = operations[0];
+                                        if (operations.Count > 1)
+                                        {
+                                            this.AddError(i, 0, string.Format("Multiple valid operations: {0}", operationName));
+                                        }
+                                        else if (operations[0].OwnedParameter.Where(p => p.Direction != ParameterDirectionKind.Return).Count() != argNames.Count)
+                                        {
+                                            this.AddError(i, 0, string.Format("Type '{0}' has no operations called '{1}' of {2} parameters.", targetClassifier.Name, operationName, argNames.Count));
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    this.AddError(i, 0, string.Format("Type '{0}' has no operation called '{1}'.", targetClassifier.Name, operationName));
+                                }
                             }
                         }
                     }
@@ -457,6 +605,10 @@ namespace MetaDslx.Languages.Uml.Serialization
                 interaction.Lifeline.Add(lifeline);
                 lifelines.Add(name, lifeline);
                 var type = !string.IsNullOrWhiteSpace(typeName) ? _model.Objects.OfType<TypeBuilder>().Where(t => t.Name == typeName).FirstOrDefault() : null;
+                if (type == null && !string.IsNullOrWhiteSpace(typeName))
+                {
+                    type = _model.Objects.OfType<TypeBuilder>().Where(t => typeName.Equals(t.Name, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+                }
                 var lifelineProp = _factory.Property();
                 lifelineProp.Name = lifeline.Name;
                 _collaboration.OwnedAttribute.Add(lifelineProp);
@@ -474,5 +626,6 @@ namespace MetaDslx.Languages.Uml.Serialization
             }
             return lifeline;
         }
+
     }
 }

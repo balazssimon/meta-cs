@@ -19,6 +19,7 @@ TColon : ':';
 TComma : ',';
 TOpenParen : '(';
 TCloseParen : ')';
+TAssign : '=';
 
 LWhiteSpace : WhiteSpaceChar+;
 LSingleLineComment : '#' ~[\r\n]* -> channel(COMMENT);
@@ -37,6 +38,6 @@ fragment CharacterEscapeUnicode
     | '\\U' HexDigit HexDigit HexDigit HexDigit HexDigit HexDigit HexDigit HexDigit;
 fragment HexDigit : [0-9a-fA-F];
 
-LIdentifier : ~[\-\u003A\u002C\u0028\u0029\r\n\u0020\u0009\u000B\u000C\u00A0\u001A]+;
+LIdentifier : ~[\-\u003D\u003A\u002C\u0028\u0029\r\n\u0020\u0009\u000B\u000C\u00A0\u001A]+;
 
 fragment WhiteSpaceChar : [\u0020\u0009\u000B\u000C\u00A0\u001A];

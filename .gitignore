@@ -196,3 +196,7 @@ FakesAssemblies/
 *.opt
 *.vsix
 /install
+
+# Temporary files
+*.~*
+*.bak
