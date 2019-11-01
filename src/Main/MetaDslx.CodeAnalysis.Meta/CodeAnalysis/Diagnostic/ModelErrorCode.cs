@@ -87,6 +87,7 @@ namespace MetaDslx.Modeling
         public static readonly ModelErrorCode ERR_ModelObjectDescriptorNotFound = new ModelErrorCode(42, "Object descriptor not found", "Could not find descriptor for model object type '{0}'. Try initializing the model descriptor by calling [ModelName]Descriptor.Initialize().", DiagnosticSeverity.Error);
         public static readonly ModelErrorCode ERR_XmiError = new ModelErrorCode(43, "XMI error", "XMI error: {0}", DiagnosticSeverity.Error);
         public static readonly ModelErrorCode ERR_ImportError = new ModelErrorCode(44, "Import error", "{0}", DiagnosticSeverity.Error);
-        public static readonly ModelErrorCode ERR_ModelConversionError = new ModelErrorCode(45, "Model conversion error", "Model conversion error: {0}", DiagnosticSeverity.Error);
+        public static readonly ModelErrorCode WRN_ImportWarning = new ModelErrorCode(45, "Import warning", "{0}", DiagnosticSeverity.Warning);
+        public static readonly ModelErrorCode ERR_ModelConversionError = new ModelErrorCode(46, "Model conversion error", "Model conversion error: {0}", DiagnosticSeverity.Error);
     }
 }

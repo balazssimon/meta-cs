@@ -33,7 +33,7 @@
 
   <ItemGroup>
     <PackageReference Include="MetaDslx.BuildTasks" Version="$(BootstrapVersion)" PrivateAssets="all" />
-    <!--PackageReference Include="MetaDslx.CodeAnalysis" Version="$(BootstrapVersion)" /-->
+    <!-->PackageReference Include="MetaDslx.CodeAnalysis" Version="$(BootstrapVersion)" /-->
   </ItemGroup>
 
 

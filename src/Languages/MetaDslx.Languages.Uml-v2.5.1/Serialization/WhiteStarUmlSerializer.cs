@@ -74,6 +74,8 @@ namespace MetaDslx.Languages.Uml.Serialization
         private Dictionary<(int, int), MutableObjectBase> _objectsByPosition;
         private Dictionary<MutableObjectBase, XElement> _elementsByObject;
         private Dictionary<string, PrimitiveTypeBuilder> _primitiveTypes;
+        private Dictionary<MessageOccurrenceSpecificationBuilder, LifelineBuilder> _mosToLifeline;
+        private HashSet<string> _invisible;
 
         public WhiteStarUmlReader(string fileUri, string umlCode)
         {
@@ -87,6 +89,8 @@ namespace MetaDslx.Languages.Uml.Serialization
             _objectsByPosition = new Dictionary<(int, int), MutableObjectBase>();
             _elementsByObject = new Dictionary<MutableObjectBase, XElement>();
             _primitiveTypes = new Dictionary<string, PrimitiveTypeBuilder>();
+            _mosToLifeline = new Dictionary<MessageOccurrenceSpecificationBuilder, LifelineBuilder>();
+            _invisible = new HashSet<string>();
         }
 
         public MutableModel Model => _model;
@@ -108,6 +112,16 @@ namespace MetaDslx.Languages.Uml.Serialization
         internal void AddError(XObject location, ModelException mex)
         {
             _diagnostics.Add(ModelErrorCode.ERR_ImportError.ToDiagnostic(GetLocation(location), mex.Diagnostic.GetMessage()));
+        }
+
+        internal void AddWarning(XObject location, string message)
+        {
+            _diagnostics.Add(ModelErrorCode.WRN_ImportWarning.ToDiagnostic(GetLocation(location), message));
+        }
+
+        internal void AddWarning(XObject location, ModelException mex)
+        {
+            _diagnostics.Add(ModelErrorCode.WRN_ImportWarning.ToDiagnostic(GetLocation(location), mex.Diagnostic.GetMessage()));
         }
 
         public void ReadModel()
@@ -182,11 +196,17 @@ namespace MetaDslx.Languages.Uml.Serialization
                                             var pointItems = points.Split(new char[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries);
                                             if (pointItems.Length >= 4)
                                             {
-                                                if (int.TryParse(pointItems[1], out int start) && int.TryParse(pointItems[3], out int end))
+                                                int.TryParse(pointItems[1], out int value);
+                                                int start = value;
+                                                int end = value;
+                                                for (int i = 3; i < pointItems.Length; i += 2)
                                                 {
-                                                    sequenceViews.Add((MutableObjectBase)message.SendEvent, (start, start));
-                                                    sequenceViews.Add((MutableObjectBase)message.ReceiveEvent, (end, end));
+                                                    int.TryParse(pointItems[i], out value);
+                                                    if (value < start) start = value;
+                                                    if (value > end) end = value;
                                                 }
+                                                sequenceViews.Add((MutableObjectBase)message.SendEvent, (start, start));
+                                                sequenceViews.Add((MutableObjectBase)message.ReceiveEvent, (end, end));
                                             }
                                         }
                                     }
@@ -204,15 +224,46 @@ namespace MetaDslx.Languages.Uml.Serialization
                                 }
                             }
                         }
+                        foreach (var view in sequenceViews.Where(v => v.Key is CombinedFragmentBuilder).ToList())
+                        {
+                            var cf = (CombinedFragmentBuilder)view.Key;
+                            if (cf.Operand.Count > 0)
+                            {
+                                var firstOp = cf.Operand[0];
+                                if (sequenceViews.TryGetValue((MutableObjectBase)firstOp, out var range))
+                                {
+                                    int top = Math.Min(view.Value.Item1, range.Item1);
+                                    sequenceViews[(MutableObjectBase)firstOp] = (top, range.Item2);
+                                }
+                            }
+                        }
                         var orderedViews = sequenceViews.OrderBy(entry => entry.Value.Item1).ThenByDescending(entry => entry.Value.Item2).ToList();
                         var fragmentStack = new Stack<KeyValuePair<MutableObjectBase, (int, int)>>();
+                        var lifelineMap = new Dictionary<LifelineBuilder, LifelineBuilder>();
                         foreach (var view in orderedViews)
                         {
                             if (view.Key is LifelineBuilder lifeline)
                             {
-                                interaction.Lifeline.Add(lifeline);
+                                if (lifeline.MParent != null)
+                                {
+                                    var replacement = _factory.Lifeline();
+                                    replacement.Name = lifeline.Name;
+                                    interaction.Lifeline.Add(replacement);
+                                    lifelineMap.Add(lifeline, replacement);
+                                    if (_elementsByObject.TryGetValue((MutableObjectBase)lifeline, out var lifelineElement))
+                                    {
+                                        _elementsByObject.Add((MutableObjectBase)replacement, lifelineElement);
+                                    }
+                                }
+                                else
+                                {
+                                    interaction.Lifeline.Add(lifeline);
+                                }
                             }
-                            else
+                        }
+                        foreach (var view in orderedViews)
+                        {
+                            if (!(view.Key is LifelineBuilder))
                             {
                                 InteractionOperandBuilder currentFragment = null;
                                 while (fragmentStack.Count > 0)
@@ -252,6 +303,14 @@ namespace MetaDslx.Languages.Uml.Serialization
                                     else
                                     {
                                         interaction.Fragment.Add(messageEnd);
+                                    }
+                                    if (_mosToLifeline.TryGetValue(messageEnd, out var messageEndLifeline) && messageEndLifeline != null)
+                                    {
+                                        if (!lifelineMap.TryGetValue(messageEndLifeline, out var finalLifeline))
+                                        {
+                                            finalLifeline = messageEndLifeline;
+                                        }
+                                        messageEnd.Covered = finalLifeline;
                                     }
                                 }
                             }
@@ -307,13 +366,26 @@ namespace MetaDslx.Languages.Uml.Serialization
                 var typeName = GetTypeName(element);
                 if (!SkipTypeName(typeName))
                 {
-                    try
+                    if (!IsVisible(element, typeName) || !IsVisible(element, GetWhiteStarUmlTypeName(element)))
                     {
-                        obj = (MutableObjectBase)_factory.Create(typeName);
+                        var nameAttr = element.Elements(_whiteStarUmlNamespace + "ATTR").Where(e => e.Attribute("name") != null).FirstOrDefault();
+                        this.AddWarning(element, $"Model object '{nameAttr?.Value}' ({typeName}) is not visible in any diagrams.");
+                        var id = guidAttribute?.Value;
+                        if (id != null)
+                        {
+                            _invisible.Add(id);
+                        }
                     }
-                    catch (ModelException mex)
+                    else
                     {
-                        this.AddError(element, mex);
+                        try
+                        {
+                            obj = (MutableObjectBase)_factory.Create(typeName);
+                        }
+                        catch (ModelException mex)
+                        {
+                            this.AddError(element, mex);
+                        }
                     }
                     if (obj != null)
                     {
@@ -362,7 +434,7 @@ namespace MetaDslx.Languages.Uml.Serialization
                             }
                             else
                             {
-                                this.AddError(element, $"Model object '{parent.MName}' ({parent.MMetaClass.Name}) has no '{parentPropertyName}' property.");
+                                this.AddWarning(element, $"Model object '{parent.MName}' ({parent.MMetaClass.Name}) has no '{parentPropertyName}' property.");
                             }
                         }
                     }
@@ -401,6 +473,21 @@ namespace MetaDslx.Languages.Uml.Serialization
                 }
             }
             return typeName;
+        }
+
+        private string GetWhiteStarUmlTypeName(XElement element)
+        {
+            XAttribute typeAttribute = element.Attribute("type");
+            var typeName = typeAttribute?.Value;
+            return typeName;
+        }
+
+        private bool IsVisible(XElement element, string typeName)
+        {
+            if (typeName == null) return false;
+            if (!UmlTypeMustHaveView.Contains(typeName) && !WhiteStarUmlTypeMustHaveView.Contains(typeName)) return true;
+            var view0 = element.Elements(_whiteStarUmlNamespace + "REF").Where(e => e.Attribute("name")?.Value == "Views[0]");
+            return view0.Count() > 0;
         }
 
         private bool HasStereotype(XElement element, string stereotypeName)
@@ -525,7 +612,7 @@ namespace MetaDslx.Languages.Uml.Serialization
                         }
                         else
                         {
-                            this.AddError(element, $"Model object '{parent.MName}' ({parent.MMetaClass.Name}) has no '{parentPropertyName}' property.");
+                            this.AddWarning(element, $"Model object '{parent.MName}' ({parent.MMetaClass.Name}) has no '{parentPropertyName}' property.");
                         }
                     }
                 }
@@ -543,7 +630,7 @@ namespace MetaDslx.Languages.Uml.Serialization
             {
                 return result;
             }
-            if (reportError) this.AddError(location, $"Model object referenced by identifier '{id}' cannot be resolved.");
+            if (reportError && !_invisible.Contains(id)) this.AddError(location, $"Model object referenced by identifier '{id}' cannot be resolved.");
             return null;
         }
 
@@ -586,6 +673,14 @@ namespace MetaDslx.Languages.Uml.Serialization
         private bool HandleSpecialChild(XObject location, MutableObjectBase parent, string parentPropertyName, MutableObjectBase child)
         {
             if (parent is PackageBuilder && child is GeneralizationBuilder generalization && parentPropertyName == "PackagedElement")
+            {
+                return true;
+            }
+            if (parent is PackageBuilder && child is IncludeBuilder include && parentPropertyName == "PackagedElement")
+            {
+                return true;
+            }
+            if (parent is PackageBuilder && child is ExtendBuilder extend && parentPropertyName == "PackagedElement")
             {
                 return true;
             }
@@ -695,6 +790,7 @@ namespace MetaDslx.Languages.Uml.Serialization
                 }
                 if (propertyName == "Aggregation")
                 {
+                    if (propertyValue == "akAggregate") propertyValue = "akShared";
                     prop.Aggregation = CreateEnumValue<AggregationKind>(location, propertyValue, 2);
                     return true;
                 }
@@ -703,6 +799,50 @@ namespace MetaDslx.Languages.Uml.Serialization
             {
                 if (propertyName == "TypeExpression")
                 {
+                    int openBracketIndex = propertyValue.IndexOf('[');
+                    if (openBracketIndex >= 0)
+                    {
+                        string multiplicity = propertyValue.Substring(openBracketIndex + 1);
+                        propertyValue = propertyValue.Substring(0, openBracketIndex).Trim();
+                        int closeBracketIndex = multiplicity.IndexOf(']');
+                        if (closeBracketIndex >= 0)
+                        {
+                            multiplicity = multiplicity.Substring(0, closeBracketIndex);
+                            int lower = 0;
+                            int upper = 1;
+                            if (string.IsNullOrWhiteSpace(multiplicity))
+                            {
+                                upper = -1;
+                            }
+                            else
+                            {
+                                string[] parts = multiplicity.Split(new string[] { ".." }, StringSplitOptions.RemoveEmptyEntries);
+                                if (parts.Length >= 2)
+                                {
+                                    if (!int.TryParse(parts[0], out lower)) lower = 0;
+                                    if (!int.TryParse(parts[1], out upper))
+                                    {
+                                        if (parts[1] == "*") upper = -1;
+                                        else upper = 1;
+                                    }
+                                }
+                            }
+                            if (typedElement is MultiplicityElementBuilder multiplicityElement1)
+                            {
+                                var lowerValue = _factory.LiteralInteger();
+                                lowerValue.Value = lower;
+                                var upperValue = _factory.LiteralUnlimitedNatural();
+                                upperValue.Value = upper;
+                                multiplicityElement1.LowerValue = lowerValue;
+                                multiplicityElement1.UpperValue = upperValue;
+                            }
+                        }
+                    }
+                    int assignIndex = propertyValue.IndexOf('=');
+                    if (assignIndex >= 0)
+                    {
+                        propertyValue = propertyValue.Substring(0, assignIndex).Trim();
+                    }
                     var type = _model.Objects.OfType<TypeBuilder>().Where(t => t.Name == propertyValue).FirstOrDefault();
                     if (type != null)
                     {
@@ -710,7 +850,6 @@ namespace MetaDslx.Languages.Uml.Serialization
                     }
                     else
                     {
-                        
                         typedElement.Type = CreatePrimitiveType(propertyValue);
                         // this.AddError(location, string.Format("Cannot resolve type name: {0}", propertyValue));
                     }
@@ -730,31 +869,21 @@ namespace MetaDslx.Languages.Uml.Serialization
                 else if (propertyName == "Sender")
                 {
                     var interaction = message.Interaction;
+                    var startEvent = _factory.MessageOccurrenceSpecification();
+                    startEvent.Message = message;
+                    message.SendEvent = startEvent;
                     var lifeline = ResolveValue(location, typeof(IModelObject), propertyValue) as LifelineBuilder;
-                    if (lifeline != null)
-                    {
-                        //lifeline.Interaction = interaction;
-                        var startEvent = _factory.MessageOccurrenceSpecification();
-                        // interaction.Fragment.Add(startEvent);
-                        startEvent.Covered = lifeline;
-                        startEvent.Message = message;
-                        message.SendEvent = startEvent;
-                    }
+                    _mosToLifeline.Add(startEvent, lifeline);
                     return true;
                 }
                 else if (propertyName == "Receiver")
                 {
                     var interaction = message.Interaction;
+                    var endEvent = _factory.MessageOccurrenceSpecification();
+                    endEvent.Message = message;
+                    message.ReceiveEvent = endEvent;
                     var lifeline = ResolveValue(location, typeof(IModelObject), propertyValue) as LifelineBuilder;
-                    if (lifeline != null)
-                    {
-                        //lifeline.Interaction = interaction;
-                        var endEvent = _factory.MessageOccurrenceSpecification();
-                        // interaction.Fragment.Add(endEvent);
-                        endEvent.Covered = lifeline;
-                        endEvent.Message = message;
-                        message.ReceiveEvent = endEvent;
-                    }
+                    _mosToLifeline.Add(endEvent, lifeline);
                     return true;
                 }
                 else if (propertyName == "Arguments")
@@ -928,7 +1057,15 @@ namespace MetaDslx.Languages.Uml.Serialization
         };
         private static readonly HashSet<string> UmlIgnoredTypes = new HashSet<string>()
         {
-            "UseCaseDiagram", "ClassDiagram", "DeploymentDiagram", "SequenceDiagram", "ComponentDiagram"
+            "UseCaseDiagram", "ClassDiagram", "DeploymentDiagram", "SequenceDiagram", "ComponentDiagram", "StatechartDiagram", "StateMachine"
+        };
+        private static readonly HashSet<string> WhiteStarUmlTypeMustHaveView = new HashSet<string>()
+        {
+            "UMLAssociationEnd"
+        };
+        private static readonly HashSet<string> UmlTypeMustHaveView = new HashSet<string>()
+        {
+            "UseCase", "Actor", "Class", "Interface", "Enumeration", "Lifeline", "Message", "CombinedFragment", "Include", "Association", "Generalization"
         };
         private static readonly Dictionary<string, string> UmlTypeMap = new Dictionary<string, string>()
         {
@@ -946,29 +1083,48 @@ namespace MetaDslx.Languages.Uml.Serialization
         };
         private static readonly HashSet<string> UmlIgnoredQualifiedProperties = new HashSet<string>()
         {
-            "Interaction.Context",
+            "UseCase.Includers",
+            "UseCase.Extenders",
+            "UseCase.StereotypeName",
+            "UseCase.Specializations",
+            "Actor.StereotypeName",
+            "Actor.Specializations",
+            "Include.Namespace",
+            "Extend.Namespace",
             "Generalization.Namespace",
             "Class.Specializations",
             "Class.StereotypeName",
+            "Class.TypedFeatures",
+            "Class.CreateActions",
             "Interface.StereotypeName",
+            "Interface.Specializations",
+            "Interface.TypedFeatures",
+            "Property.Type_",
             "Operation.CallActions",
             "Parameter.BehavioralFeature",
+            "Parameter.Type_",
             "Package.ParticipatingInstances",
             "Package.RepresentedClassifier",
             "Package.StereotypeProfile",
             "Package.StereotypeName",
             "CombinedFragment.EnclosingInteractionInstanceSet",
+            "CombinedFragment.StereotypeName",
+            "Interaction.Context",
             "Interaction.InteractionInstanceSet",
             "Interaction.FrameKind",
             "Interaction.OwnedFrames",
             "Interaction.Fragments",
             "Interaction.ParticipatingInstances",
-            "Message.InteractionInstanceSet",
+            "InteractionOperand.Fragments",
             "Lifeline.Classifier",
             "Lifeline.SendingStimuli",
             "Lifeline.ReceivingStimuli",
             "Lifeline.CollaborationInstanceSet",
-            "Message.Stimulus"
+            "Lifeline.IsMultiInstance",
+            "Message.InteractionInstanceSet",
+            "Message.Stimulus",
+            "Message.IsSpecification",
+            "Message.Instantiation",
         };
         private static readonly Dictionary<string, string> UmlPropertyMap = new Dictionary<string, string>()
         {
@@ -976,6 +1132,12 @@ namespace MetaDslx.Languages.Uml.Serialization
             { "Model.OwnedElements", "PackagedElement" },
             { "Package.OwnedElements", "PackagedElement" },
             { "Package.InteractionInstanceSets", "PackagedElement" },
+            { "Actor.Generalizations", "Generalization" },
+            { "UseCase.Includes", "Include" },
+            { "UseCase.Extends", "Extend" },
+            { "UseCase.Generalizations", "Generalization" },
+            { "Include.Base", "IncludingCase" },
+            { "Extend.Base", "ExtendedCase" },
             { "Association.Namespace", "Package" },
             { "Association.Connections", "MemberEnd" },
             { "Enumeration.Namespace", "Package" },
@@ -985,6 +1147,7 @@ namespace MetaDslx.Languages.Uml.Serialization
             { "Interface.Namespace", "Package" },
             { "Interface.Attributes", "OwnedAttribute" },
             { "Interface.Operations", "OwnedOperation" },
+            { "Interface.Generalizations", "Generalization" },
             { "Class.Namespace", "Package" },
             { "Class.Attributes", "OwnedAttribute" },
             { "Class.Operations", "OwnedOperation" },
@@ -992,7 +1155,7 @@ namespace MetaDslx.Languages.Uml.Serialization
             { "Property.Participant", "Type" },
             { "Property.Qualifiers", "Qualifier" },
             { "Operation.Parameters", "OwnedParameter" },
-            { "Parameter.Type_", "Type" },
+            //{ "Parameter.Type_", "Type" },
             { "Interaction.ParticipatingStimuli", "Message" },
             //{ "Interaction.ParticipatingInstances", "Lifeline" },
             //{ "Interaction.OwnedFrames", "Fragment" },
