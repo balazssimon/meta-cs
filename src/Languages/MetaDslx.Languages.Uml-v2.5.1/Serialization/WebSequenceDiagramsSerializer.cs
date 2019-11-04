@@ -521,23 +521,7 @@ namespace MetaDslx.Languages.Uml.Serialization
                                 {
                                     operationName = callText.Substring(0, openIndex);
                                 }
-                                List<OperationBuilder> operations = null;
-                                if (targetClassifier is InterfaceBuilder intf)
-                                {
-                                    operations = intf.OwnedOperation.Where(op => op.Name == operationName).ToList();
-                                    if (operations.Count == 0)
-                                    {
-                                        operations = intf.OwnedOperation.Where(op => operationName.Equals(op.Name, StringComparison.InvariantCultureIgnoreCase)).ToList();
-                                    }
-                                }
-                                else if (targetClassifier is ClassBuilder cls)
-                                {
-                                    operations = cls.OwnedOperation.Where(op => op.Name == operationName).ToList();
-                                    if (operations.Count == 0)
-                                    {
-                                        operations = cls.OwnedOperation.Where(op => operationName.Equals(op.Name, StringComparison.InvariantCultureIgnoreCase)).ToList();
-                                    }
-                                }
+                                List<OperationBuilder> operations = targetClassifier.MAllOperations().Where(op => operationName.Equals(op.Name, StringComparison.InvariantCultureIgnoreCase)).ToList();
                                 if (operations != null && operations.Count > 0)
                                 {
                                     if (operations.Count > 1)

@@ -230,10 +230,16 @@ namespace MetaDslx.Languages.Uml.Serialization
                             if (cf.Operand.Count > 0)
                             {
                                 var firstOp = cf.Operand[0];
-                                if (sequenceViews.TryGetValue((MutableObjectBase)firstOp, out var range))
+                                if (sequenceViews.TryGetValue((MutableObjectBase)firstOp, out var firstRange))
                                 {
-                                    int top = Math.Min(view.Value.Item1, range.Item1);
-                                    sequenceViews[(MutableObjectBase)firstOp] = (top, range.Item2);
+                                    int top = Math.Min(view.Value.Item1, firstRange.Item1);
+                                    sequenceViews[(MutableObjectBase)firstOp] = (top, firstRange.Item2);
+                                }
+                                var lastOp = cf.Operand[cf.Operand.Count - 1];
+                                if (sequenceViews.TryGetValue((MutableObjectBase)lastOp, out var lastRange))
+                                {
+                                    int bottom = Math.Max(view.Value.Item2, lastRange.Item2);
+                                    sequenceViews[(MutableObjectBase)lastOp] = (lastRange.Item1, bottom);
                                 }
                             }
                         }
@@ -339,15 +345,50 @@ namespace MetaDslx.Languages.Uml.Serialization
                     lifelineProp.Name = lifeline.Name;
                     collaboration.OwnedAttribute.Add(lifelineProp);
                     var lifelineElement = ResolveElementByObject((MutableObjectBase)lifeline, null);
+                    ClassifierBuilder classifier = null;
                     var classifierId = lifelineElement?.Elements(_whiteStarUmlNamespace + "REF")?.Where(e => e.Attribute("name")?.Value == "Classifier")?.FirstOrDefault()?.Value;
                     if (classifierId != null)
                     {
-                        var classifier = ResolveObjectById(lifelineElement, classifierId) as ClassifierBuilder;
-                        if (classifier != null)
+                        classifier = ResolveObjectById(lifelineElement, classifierId) as ClassifierBuilder;
+                    }
+                    else
+                    {
+                        classifier = _model.Objects.MOfType<ClassBuilder>().Where(c => c.Name == lifeline.Name).FirstOrDefault();
+                        if (classifier == null)
                         {
-                            lifelineProp.Type = classifier;
-                            lifelineProp.Aggregation = AggregationKind.Composite;
-                            lifeline.Represents = lifelineProp;
+                            classifier = _model.Objects.MOfType<InterfaceBuilder>().Where(c => c.Name == lifeline.Name).FirstOrDefault();
+                        }
+                    }
+                    if (classifier != null)
+                    {
+                        lifelineProp.Type = classifier;
+                        lifelineProp.Aggregation = AggregationKind.Composite;
+                        lifeline.Represents = lifelineProp;
+                    }
+                }
+                foreach (var message in inter.Message)
+                {
+                    if (message.Signature == null)
+                    {
+                        bool hasOperation = false;
+                        var messageElement = ResolveElementByObject((MutableObjectBase)message, null);
+                        var actionElement = messageElement.Elements(_whiteStarUmlNamespace + "OBJ").Where(e => e.Attribute("name")?.Value == "Action").FirstOrDefault();
+                        if (actionElement != null)
+                        {
+                            var operationElement = actionElement.Elements(_whiteStarUmlNamespace + "REF").Where(e => e.Attribute("name")?.Value == "Operation").FirstOrDefault();
+                            if (operationElement != null)
+                            {
+                                hasOperation = true;
+                            }
+                        }
+                        var target = ((message.ReceiveEvent as MessageOccurrenceSpecificationBuilder)?.Covered?.Represents as PropertyBuilder)?.Type as ClassifierBuilder;
+                        if (!hasOperation && target != null)
+                        {
+                            message.Signature = target.MResolveOperationBySignature(message.Name);
+                            if (message.Signature != null)
+                            {
+                                message.Name = message.Signature.Name;
+                            }
                         }
                     }
                 }
@@ -690,7 +731,16 @@ namespace MetaDslx.Languages.Uml.Serialization
                 var frame = element.Elements(_whiteStarUmlNamespace + "OBJ").Where(e => e.Attribute("type")?.Value == "UMLFrame").FirstOrDefault();
                 if (frame != null)
                 {
-                    var nameElement = frame.Elements(_whiteStarUmlNamespace + "ATTR").Where(e => e.Attribute("name")?.Value == "Name").FirstOrDefault();
+                    var nameElement = frame.Elements(_whiteStarUmlNamespace + "ATTR").Where(e => e.Attribute("name")?.Value == "Name" && !string.IsNullOrWhiteSpace(e.Value)).FirstOrDefault();
+                    if (nameElement != null && (string.IsNullOrWhiteSpace(interaction.Name) || interaction.Name.StartsWith("InteractionInstanceSet") || interaction.Name.StartsWith("Frame")))
+                    {
+                        interaction.Name = nameElement.Value;
+                    }
+                }
+                var seqDiagram = element.Elements(_whiteStarUmlNamespace + "OBJ").Where(e => e.Attribute("type")?.Value == "UMLSequenceDiagram").FirstOrDefault();
+                if (seqDiagram != null && (string.IsNullOrWhiteSpace(interaction.Name) || interaction.Name.StartsWith("InteractionInstanceSet") || interaction.Name.StartsWith("Frame")))
+                {
+                    var nameElement = seqDiagram.Elements(_whiteStarUmlNamespace + "ATTR").Where(e => e.Attribute("name")?.Value == "Name" && !string.IsNullOrWhiteSpace(e.Value)).FirstOrDefault();
                     if (nameElement != null)
                     {
                         interaction.Name = nameElement.Value;
