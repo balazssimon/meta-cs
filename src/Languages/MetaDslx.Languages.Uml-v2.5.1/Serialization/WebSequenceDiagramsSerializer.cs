@@ -47,7 +47,7 @@ namespace MetaDslx.Languages.Uml.Serialization
         private DiagnosticBag _diagnostics;
         private PackageBuilder _mainPackage;
         private CollaborationBuilder _collaboration;
-        private string _currentFile;
+        private string _currentFileName;
         private Dictionary<InteractionUseBuilder, string> _crossReferences;
 
         public WebSequenceDiagramsReader(IEnumerable<(string, string)> fileAndCode, ImmutableModel classDiagram)
@@ -76,12 +76,12 @@ namespace MetaDslx.Languages.Uml.Serialization
 
         internal void AddError(int line, int column, string message)
         {
-            _diagnostics.Add(ModelErrorCode.ERR_ImportError.ToDiagnostic(new ExternalFileLocation(_currentFile, new TextSpan(), new LinePositionSpan(new LinePosition(line, column), new LinePosition(line, column))), message));
+            _diagnostics.Add(ModelErrorCode.ERR_ImportError.ToDiagnostic(new ExternalFileLocation(_currentFileName, new TextSpan(), new LinePositionSpan(new LinePosition(line, column), new LinePosition(line, column))), message));
         }
 
         internal void AddError(int line, int column, ModelException mex)
         {
-            _diagnostics.Add(ModelErrorCode.ERR_ImportError.ToDiagnostic(new ExternalFileLocation(_currentFile, new TextSpan(), new LinePositionSpan(new LinePosition(line, column), new LinePosition(line, column))), mex.Diagnostic.GetMessage()));
+            _diagnostics.Add(ModelErrorCode.ERR_ImportError.ToDiagnostic(new ExternalFileLocation(_currentFileName, new TextSpan(), new LinePositionSpan(new LinePosition(line, column), new LinePosition(line, column))), mex.Diagnostic.GetMessage()));
         }
 
         public void ReadModel()
@@ -94,9 +94,9 @@ namespace MetaDslx.Languages.Uml.Serialization
 
         private void ReadFile(string filePath, string code)
         {
-            _currentFile = filePath;
+            _currentFileName = Path.GetFileName(filePath);
             var interaction = _factory.Interaction();
-            interaction.Name = filePath;
+            interaction.Name = _currentFileName;
             _mainPackage.PackagedElement.Add(interaction);
             _collaboration = _factory.Collaboration();
             _collaboration.Name = "locals";
@@ -143,26 +143,26 @@ namespace MetaDslx.Languages.Uml.Serialization
                 {
                     sb.Append(token.Text);
                 }
-                line = sb.ToString();
+                line = sb.ToString().Trim();
                 if (line.StartsWith("#"))
                 {
                     // skip comment
                 }
-                else if (reference != null && !line.StartsWith("end ref"))
+                else if (reference != null && line != "end ref")
                 {
                     refTextSb.Append(GetText(line));
                 }
-                else if (string.IsNullOrWhiteSpace(line) || (currentInteraction == null && (line.StartsWith(" ") || line.StartsWith("\t"))))
+                else if (string.IsNullOrWhiteSpace(line))
                 {
                     // skip comment
                 }
-                else if (line.StartsWith("activate ") || line.StartsWith("deactivate "))
+                else if (line.StartsWith("activate ") || line == "activate" || line.StartsWith("deactivate ") || line == "deactivate")
                 {
                     // skip
                 }
-                else if (line.StartsWith("note "))
+                else if (line.StartsWith("note ") || line == "note")
                 {
-                    var text = line.Substring(5).Trim();
+                    var text = line.Substring(4).Trim();
                     if (tokens.Any(t => t.Type == WebSequenceDiagramsLexer.TColon))
                     {
                         // skip single line note
@@ -179,26 +179,26 @@ namespace MetaDslx.Languages.Uml.Serialization
                         }
                     }
                 }
-                else if (line.StartsWith("title "))
+                else if (line.StartsWith("title ") || line == "title")
                 {
-                    string title = GetText(line.Substring(6));
+                    string title = GetText(line.Substring(5).Trim());
                     interaction.Name = title;
                 }
-                else if (line.StartsWith("participant "))
+                else if (line.StartsWith("participant ") || line == "participant")
                 {
-                    string name = GetText(line.Substring(12));
+                    string name = GetText(line.Substring(11).Trim());
                     GetLifeline(name, lifelines, interaction, i);
                 }
-                else if (line.StartsWith("destroy "))
+                else if (line.StartsWith("destroy ") || line == "destroy")
                 {
-                    string name = GetText(line.Substring(8));
+                    string name = GetText(line.Substring(7).Trim());
                     var lifeline = GetLifeline(name, lifelines, interaction, i);
                     var destroy = _factory.DestructionOccurrenceSpecification();
                     destroy.Covered = lifeline;
                     if (currentInteraction != null) currentInteraction.Fragment.Add(destroy);
                     else interaction.Fragment.Add(destroy);
                 }
-                else if (line.StartsWith("loop "))
+                else if (line.StartsWith("loop ") || line == "loop")
                 {
                     var loop = _factory.CombinedFragment();
                     loop.InteractionOperator = InteractionOperatorKind.Loop;
@@ -207,14 +207,14 @@ namespace MetaDslx.Languages.Uml.Serialization
                     var body = _factory.InteractionOperand();
                     loop.Operand.Add(body);
                     var guard = _factory.LiteralString();
-                    guard.Value = GetText(line.Substring(5));
+                    guard.Value = GetText(line.Substring(4).Trim());
                     var constraint = _factory.InteractionConstraint();
                     constraint.Specification = guard;
                     body.Guard = constraint;
                     combinedFragments.Push(loop);
                     interactionOperands.Push(body);
                 }
-                else if (line.StartsWith("opt "))
+                else if (line.StartsWith("opt ") || line == "opt")
                 {
                     var opt = _factory.CombinedFragment();
                     opt.InteractionOperator = InteractionOperatorKind.Opt;
@@ -223,14 +223,14 @@ namespace MetaDslx.Languages.Uml.Serialization
                     var body = _factory.InteractionOperand();
                     opt.Operand.Add(body);
                     var guard = _factory.LiteralString();
-                    guard.Value = GetText(line.Substring(4));
+                    guard.Value = GetText(line.Substring(3).Trim());
                     var constraint = _factory.InteractionConstraint();
                     constraint.Specification = guard;
                     body.Guard = constraint;
                     combinedFragments.Push(opt);
                     interactionOperands.Push(body);
                 }
-                else if (line.StartsWith("alt "))
+                else if (line.StartsWith("alt ") || line == "alt")
                 {
                     var alt = _factory.CombinedFragment();
                     alt.InteractionOperator = InteractionOperatorKind.Alt;
@@ -239,14 +239,14 @@ namespace MetaDslx.Languages.Uml.Serialization
                     var body = _factory.InteractionOperand();
                     alt.Operand.Add(body);
                     var guard = _factory.LiteralString();
-                    guard.Value = GetText(line.Substring(4));
+                    guard.Value = GetText(line.Substring(3).Trim());
                     var constraint = _factory.InteractionConstraint();
                     constraint.Specification = guard;
                     body.Guard = constraint;
                     combinedFragments.Push(alt);
                     interactionOperands.Push(body);
                 }
-                else if (line.StartsWith("else "))
+                else if (line.StartsWith("else ") || line == "else")
                 {
                     var alt = currentFragment;
                     if (currentFragment == null)
@@ -261,7 +261,7 @@ namespace MetaDslx.Languages.Uml.Serialization
                     var body = _factory.InteractionOperand();
                     alt.Operand.Add(body);
                     var guard = _factory.LiteralString();
-                    guard.Value = GetText(line.Substring(5));
+                    guard.Value = GetText(line.Substring(4).Trim());
                     var constraint = _factory.InteractionConstraint();
                     constraint.Specification = guard;
                     body.Guard = constraint;
@@ -269,7 +269,7 @@ namespace MetaDslx.Languages.Uml.Serialization
                     interactionOperands.Pop();
                     interactionOperands.Push(body);
                 }
-                else if (line.Trim() == "end ref")
+                else if (line == "end ref")
                 {
                     if (reference == null)
                     {
@@ -279,19 +279,46 @@ namespace MetaDslx.Languages.Uml.Serialization
                     _crossReferences.Add(reference, refTextSb.ToString());
                     reference = null;
                 }
-                else if (line.Trim() == "end")
+                else if (line.StartsWith("end ") || line == "end")
                 {
                     if (currentFragment == null)
                     {
                         this.AddError(i, 0, "End without a combined fragment.");
                         continue;
                     }
+                    var endKind = line.Substring(3).Trim();
+                    if (!string.IsNullOrEmpty(endKind))
+                    {
+                        switch (endKind)
+                        {
+                            case "alt":
+                                if (currentFragment.InteractionOperator != InteractionOperatorKind.Alt)
+                                {
+                                    this.AddError(i, 0, string.Format("'{0}' should be 'end alt'.", line));
+                                }
+                                break;
+                            case "opt":
+                                if (currentFragment.InteractionOperator != InteractionOperatorKind.Opt)
+                                {
+                                    this.AddError(i, 0, string.Format("'{0}' should be 'end opt'.", line));
+                                }
+                                break;
+                            case "loop":
+                                if (currentFragment.InteractionOperator != InteractionOperatorKind.Loop)
+                                {
+                                    this.AddError(i, 0, string.Format("'{0}' should be 'end loop'.", line));
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                    }
                     combinedFragments.Pop();
                     interactionOperands.Pop();
                 }
-                else if (line.StartsWith("ref "))
+                else if (line.StartsWith("ref ") || line == "ref")
                 {
-                    var text = GetText(line.Substring(4));
+                    var text = GetText(line.Substring(3).Trim());
                     refTextSb.Clear();
                     reference = _factory.InteractionUse();
                     if (currentInteraction != null) currentInteraction.Fragment.Add(reference);
@@ -323,6 +350,7 @@ namespace MetaDslx.Languages.Uml.Serialization
                     textSb.Clear();
                     var messageSort = MessageSort.SynchCall;
                     int state = 0;
+                    int parenCount = 0;
                     int targetStartIndex = 0;
                     string resultVariable = null;
                     List<string> argNames = new List<string>();
@@ -383,6 +411,7 @@ namespace MetaDslx.Languages.Uml.Serialization
                                 {
                                     state = 4;
                                     argNameSb.Clear();
+                                    ++parenCount;
                                 }
                                 else
                                 {
@@ -395,6 +424,7 @@ namespace MetaDslx.Languages.Uml.Serialization
                                 {
                                     state = 4;
                                     argNameSb.Clear();
+                                    ++parenCount;
                                 }
                                 else
                                 {
@@ -411,13 +441,17 @@ namespace MetaDslx.Languages.Uml.Serialization
                                 }
                                 else if (token.Type == WebSequenceDiagramsLexer.TCloseParen)
                                 {
-                                    state = 5;
-                                    var argName = GetText(argNameSb.ToString());
-                                    if (argNames.Count > 0 || !string.IsNullOrWhiteSpace(argName))
+                                    --parenCount;
+                                    if (parenCount == 0)
                                     {
-                                        argNames.Add(argName);
+                                        state = 5;
+                                        var argName = GetText(argNameSb.ToString());
+                                        if (argNames.Count > 0 || !string.IsNullOrWhiteSpace(argName))
+                                        {
+                                            argNames.Add(argName);
+                                        }
+                                        argNameSb.Clear();
                                     }
-                                    argNameSb.Clear();
                                 }
                                 else
                                 {
@@ -480,6 +514,7 @@ namespace MetaDslx.Languages.Uml.Serialization
                             var message = _factory.Message();
                             interaction.Message.Add(message);
                             message.MessageSort = messageSort;
+                            message.Name = textSb.ToString().Trim();
                             foreach (var argName in argNames)
                             {
                                 var arg = _factory.LiteralString();
@@ -512,7 +547,7 @@ namespace MetaDslx.Languages.Uml.Serialization
                             }
                             var targetProperty = _collaboration.OwnedAttribute.FirstOrDefault(a => a.Name == target.Name);
                             var targetClassifier = targetProperty?.Type as ClassifierBuilder;
-                            if (targetClassifier != null)
+                            if (targetClassifier != null && (message.MessageSort == MessageSort.SynchCall || message.MessageSort == MessageSort.AsynchCall))
                             {
                                 var callText = textSb.ToString().Trim();
                                 var openIndex = callText.IndexOf('(');
@@ -583,6 +618,11 @@ namespace MetaDslx.Languages.Uml.Serialization
                 {
                     objectName = name.Substring(0, colonIndex).Trim();
                     typeName = name.Substring(colonIndex + 1, name.Length - colonIndex - 1).Trim();
+                }
+                else
+                {
+                    objectName = name;
+                    typeName = name;
                 }
                 lifeline = _factory.Lifeline();
                 lifeline.Name = objectName;

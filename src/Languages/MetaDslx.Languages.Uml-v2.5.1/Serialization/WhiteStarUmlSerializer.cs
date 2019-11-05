@@ -976,9 +976,12 @@ namespace MetaDslx.Languages.Uml.Serialization
             {
                 if (propertyName == "IsNavigable")
                 {
-                    if (propertyValue.ToLower() == "true" && prop.Association != null && prop.Class == null)
+                    var participantElement = ((XElement)location).Parent.Elements(_whiteStarUmlNamespace + "REF").Where(e => e.Attribute("name")?.Value == "Participant").FirstOrDefault();
+                    if (participantElement != null)
                     {
-                        prop.Association.NavigableOwnedEnd.Add(prop);
+                        var participant = ResolveObjectById(location, participantElement.Value) as ClassifierBuilder;
+                        if (participant is ClassBuilder cls) cls.OwnedAttribute.Add(prop);
+                        else if (participant is InterfaceBuilder intf) intf.OwnedAttribute.Add(prop);
                     }
                     return true;
                 }
