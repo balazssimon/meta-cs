@@ -76,6 +76,7 @@ namespace MetaDslx.Languages.Uml.Serialization
         private Dictionary<string, PrimitiveTypeBuilder> _primitiveTypes;
         private Dictionary<MessageOccurrenceSpecificationBuilder, LifelineBuilder> _mosToLifeline;
         private HashSet<string> _invisible;
+        private Dictionary<MessageBuilder, string> _messageLabels;
 
         public WhiteStarUmlReader(string fileUri, string umlCode)
         {
@@ -91,6 +92,7 @@ namespace MetaDslx.Languages.Uml.Serialization
             _primitiveTypes = new Dictionary<string, PrimitiveTypeBuilder>();
             _mosToLifeline = new Dictionary<MessageOccurrenceSpecificationBuilder, LifelineBuilder>();
             _invisible = new HashSet<string>();
+            _messageLabels = new Dictionary<MessageBuilder, string>();
         }
 
         public MutableModel Model => _model;
@@ -207,6 +209,15 @@ namespace MetaDslx.Languages.Uml.Serialization
                                                 }
                                                 sequenceViews.Add((MutableObjectBase)message.SendEvent, (start, start));
                                                 sequenceViews.Add((MutableObjectBase)message.ReceiveEvent, (end, end));
+                                            }
+                                        }
+                                        var labelElement = view.Elements(_whiteStarUmlNamespace + "OBJ").Where(e => e.Attribute("name")?.Value == "NameLabel" && e.Attribute("type")?.Value == "EdgeLabelView").FirstOrDefault();
+                                        if (labelElement != null)
+                                        {
+                                            var textElement = labelElement.Elements(_whiteStarUmlNamespace + "ATTR").Where(e => e.Attribute("name")?.Value == "Text").FirstOrDefault();
+                                            if (textElement != null && !string.IsNullOrWhiteSpace(textElement.Value))
+                                            {
+                                                _messageLabels.Add(message, textElement.Value);
                                             }
                                         }
                                     }
@@ -368,10 +379,14 @@ namespace MetaDslx.Languages.Uml.Serialization
                 }
                 foreach (var message in inter.Message)
                 {
+                    var messageElement = ResolveElementByObject((MutableObjectBase)message, null);
+                    var argumentsElement = messageElement.Elements(_whiteStarUmlNamespace + "ATTR").Where(e => e.Attribute("name")?.Value == "Arguments" && !string.IsNullOrWhiteSpace(e.Value)).FirstOrDefault();
+                    var returnElement = messageElement.Elements(_whiteStarUmlNamespace + "ATTR").Where(e => e.Attribute("name")?.Value == "Return" && !string.IsNullOrWhiteSpace(e.Value)).FirstOrDefault();
+                    var signature = ParseMessageArguments(message, argumentsElement, returnElement);
+                    message.Name = signature;
                     if (message.Signature == null)
                     {
                         bool hasOperation = false;
-                        var messageElement = ResolveElementByObject((MutableObjectBase)message, null);
                         var actionElement = messageElement.Elements(_whiteStarUmlNamespace + "OBJ").Where(e => e.Attribute("name")?.Value == "Action").FirstOrDefault();
                         if (actionElement != null)
                         {
@@ -384,15 +399,144 @@ namespace MetaDslx.Languages.Uml.Serialization
                         var target = ((message.ReceiveEvent as MessageOccurrenceSpecificationBuilder)?.Covered?.Represents as PropertyBuilder)?.Type as ClassifierBuilder;
                         if (!hasOperation && target != null)
                         {
-                            message.Signature = target.MResolveOperationBySignature(message.Name);
-                            if (message.Signature != null)
-                            {
-                                message.Name = message.Signature.Name;
-                            }
+                            message.Signature = target.MResolveOperationBySignature(signature);
                         }
                     }
                 }
                 inter.NestedClassifier.Add(collaboration);
+            }
+        }
+
+        private string ParseMessageArguments(MessageBuilder message, XElement argumentsElement, XElement returnElement)
+        {
+            string operationName = message.Signature?.Name;
+            bool inString = false;
+            var argList = string.Empty;
+            var ret = string.Empty;
+            if (_messageLabels.TryGetValue(message, out var label))
+            {
+                int colonIndex = label.IndexOf(':');
+                if (colonIndex >= 0)
+                {
+                    string messageNumberStr = label.Substring(0, colonIndex);
+                    if (int.TryParse(messageNumberStr, out var messageNumber))
+                    {
+                        label = label.Substring(colonIndex + 1).Trim();
+                    }
+                }
+                else if(int.TryParse(label, out var messageNumber))
+                {
+                    label = string.Empty;
+                }
+            }
+            else
+            {
+                label = message.Name;
+            }
+            if (argumentsElement != null)
+            {
+                argList = argumentsElement.Value;
+            }
+            if ((message.Signature == null || argumentsElement == null) && label != null)
+            {
+                int assignIndex = label.IndexOf(":=");
+                if (assignIndex < 0) assignIndex = label.IndexOf('=');
+                int openParenIndex = label.IndexOf("(");
+                if (assignIndex >= 0 && (openParenIndex < 0 || assignIndex < openParenIndex))
+                {
+                    var labelRet = label.Substring(0, assignIndex).Trim();
+                    if (returnElement != null)
+                    {
+                        ret = returnElement.Value;
+                    }
+                    else
+                    {
+                        ret = labelRet;
+                    }
+                    label = label.Substring(assignIndex + (label[assignIndex] == ':' ? 2 : 1)).Trim();
+                }
+                openParenIndex = label.IndexOf("(");
+                operationName = label;
+                if (openParenIndex >= 0)
+                {
+                    int parenCount = 1;
+                    operationName = label.Substring(0, openParenIndex).Trim();
+                    int endIndex = 0;
+                    inString = false;
+                    var labelArgs = label.Substring(openParenIndex + 1).Trim();
+                    foreach (var ch in labelArgs)
+                    {
+                        if (ch == '"') inString = !inString;
+                        else if (!inString)
+                        {
+                            if (ch == ')')
+                            {
+                                --parenCount;
+                                if (parenCount == 0) break;
+                            }
+                            else if (ch == '(')
+                            {
+                                ++parenCount;
+                            }
+                        }
+                        ++endIndex;
+                    }
+                    argList = labelArgs.Substring(0, endIndex).Trim();
+                }
+            }
+            if (message.MessageSort != MessageSort.Reply)
+            {
+                if (!string.IsNullOrWhiteSpace(argList))
+                {
+                    int parenCount = 0;
+                    int index = 0;
+                    int lastIndex = 0;
+                    string argValue = null;
+                    foreach (var ch in argList)
+                    {
+                        if (ch == '"') inString = !inString;
+                        else if (!inString)
+                        {
+                            if (ch == '(')
+                            {
+                                ++parenCount;
+                            }
+                            else if (ch == ')')
+                            {
+                                --parenCount;
+                            }
+                            else if (ch == ',' && parenCount == 0)
+                            {
+                                var arg = _factory.LiteralString();
+                                argValue = argList.Substring(lastIndex, index - lastIndex).Trim();
+                                arg.Value = argValue;
+                                message.Argument.Add(arg);
+                                lastIndex = index + 1;
+                            }
+                        }
+                        ++index;
+                    }
+                    argValue = argList.Substring(lastIndex, index - lastIndex).Trim();
+                    if (message.Argument.Count > 0 || !string.IsNullOrEmpty(argValue))
+                    {
+                        var arg = _factory.LiteralString();
+                        arg.Value = argValue;
+                        message.Argument.Add(arg);
+                    }
+                }
+                if (!string.IsNullOrWhiteSpace(ret))
+                {
+                    var comment = _factory.Comment();
+                    comment.Body = "result:" + ret;
+                    message.OwnedComment.Add(comment);
+                }
+                if (!string.IsNullOrWhiteSpace(operationName)) return $"{operationName}({argList})";
+                else return null;
+            }
+            else
+            {
+                if (!string.IsNullOrWhiteSpace(operationName)) return operationName;
+                else return null;
             }
         }
 
@@ -939,47 +1083,6 @@ namespace MetaDslx.Languages.Uml.Serialization
                     _mosToLifeline.Add(endEvent, lifeline);
                     return true;
                 }
-                else if (propertyName == "Arguments")
-                {
-                    var argValue = new StringBuilder();
-                    bool inString = false;
-                    foreach (var ch in propertyValue)
-                    {
-                        switch (ch)
-                        {
-                            case ',':
-                                if (!inString)
-                                {
-                                    var arg = _factory.LiteralString();
-                                    arg.Value = argValue.ToString();
-                                    message.Argument.Add(arg);
-                                    argValue.Clear();
-                                }
-                                break;
-                            case '"':
-                                argValue.Append(ch);
-                                inString = !inString;
-                                break;
-                            default:
-                                argValue.Append(ch);
-                                break;
-                        }
-                    }
-                    if (message.Argument.Count > 0 || !string.IsNullOrWhiteSpace(argValue.ToString()))
-                    {
-                        var arg = _factory.LiteralString();
-                        arg.Value = argValue.ToString();
-                        message.Argument.Add(arg);
-                    }
-                    return true;
-                }
-                else if (propertyName == "Return")
-                {
-                    var comment = _factory.Comment();
-                    comment.Body = "result:" + propertyValue;
-                    message.OwnedComment.Add(comment);
-                    return true;
-                }
             }
             if (obj is CombinedFragmentBuilder combinedFragment)
             {
@@ -1174,6 +1277,8 @@ namespace MetaDslx.Languages.Uml.Serialization
             "Lifeline.IsMultiInstance",
             "Message.InteractionInstanceSet",
             "Message.Stimulus",
+            "Message.Arguments",
+            "Message.Return",
             "Message.IsSpecification",
             "Message.Instantiation",
         };

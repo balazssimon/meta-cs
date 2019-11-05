@@ -308,7 +308,7 @@ namespace MetaDslx.Modeling
             ImmutableModel result;
             if (this.group != null)
             {
-                ImmutableModelGroup immutableGroup = this.group.ToImmutable(evaluateLazyValues);
+                ImmutableModelGroup immutableGroup = this.group.ToImmutable(evaluateLazyValues, cancellationToken);
                 if (immutableGroup != null)
                 {
                     if (this.readOnly)
