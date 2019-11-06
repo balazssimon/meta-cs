@@ -339,11 +339,26 @@ namespace MetaDslx.Languages.Uml.Serialization
 
         private void PostProcessObjects()
         {
-            foreach (var prop in _model.Objects.OfType<PropertyBuilder>())
+            foreach (var assoc in _model.Objects.OfType<AssociationBuilder>())
             {
-                if (prop.Class == null && prop.Association != null)
+                if (assoc.MemberEnd.Count == 2)
                 {
-                    prop.Association.OwnedEnd.Add(prop);
+                    var firstEnd = assoc.MemberEnd[0];
+                    var secondEnd = assoc.MemberEnd[1];
+                    var firstNavigable = !assoc.OwnedEnd.Contains(firstEnd);
+                    var secondNavigable = !assoc.OwnedEnd.Contains(secondEnd);
+                    if (firstNavigable)
+                    {
+                        var type = secondEnd.Type;
+                        if (type is ClassBuilder cls) cls.OwnedAttribute.Add(firstEnd);
+                        else if (type is InterfaceBuilder intf) intf.OwnedAttribute.Add(firstEnd);
+                    }
+                    if (secondNavigable)
+                    {
+                        var type = firstEnd.Type;
+                        if (type is ClassBuilder cls) cls.OwnedAttribute.Add(secondEnd);
+                        else if (type is InterfaceBuilder intf) intf.OwnedAttribute.Add(secondEnd);
+                    }
                 }
             }
             foreach (var inter in _model.Objects.OfType<InteractionBuilder>())
@@ -437,7 +452,11 @@ namespace MetaDslx.Languages.Uml.Serialization
             {
                 argList = argumentsElement.Value;
             }
-            if ((message.Signature == null || argumentsElement == null) && label != null)
+            if (returnElement != null)
+            {
+                ret = returnElement.Value;
+            }
+            if (message.Signature == null && label != null)
             {
                 int assignIndex = label.IndexOf(":=");
                 if (assignIndex < 0) assignIndex = label.IndexOf('=');
@@ -445,11 +464,7 @@ namespace MetaDslx.Languages.Uml.Serialization
                 if (assignIndex >= 0 && (openParenIndex < 0 || assignIndex < openParenIndex))
                 {
                     var labelRet = label.Substring(0, assignIndex).Trim();
-                    if (returnElement != null)
-                    {
-                        ret = returnElement.Value;
-                    }
-                    else
+                    if (returnElement == null)
                     {
                         ret = labelRet;
                     }
@@ -459,29 +474,32 @@ namespace MetaDslx.Languages.Uml.Serialization
                 operationName = label;
                 if (openParenIndex >= 0)
                 {
-                    int parenCount = 1;
                     operationName = label.Substring(0, openParenIndex).Trim();
-                    int endIndex = 0;
-                    inString = false;
-                    var labelArgs = label.Substring(openParenIndex + 1).Trim();
-                    foreach (var ch in labelArgs)
+                    if (argumentsElement == null)
                     {
-                        if (ch == '"') inString = !inString;
-                        else if (!inString)
+                        int parenCount = 1;
+                        int endIndex = 0;
+                        inString = false;
+                        var labelArgs = label.Substring(openParenIndex + 1).Trim();
+                        foreach (var ch in labelArgs)
                         {
-                            if (ch == ')')
+                            if (ch == '"') inString = !inString;
+                            else if (!inString)
                             {
-                                --parenCount;
-                                if (parenCount == 0) break;
+                                if (ch == ')')
+                                {
+                                    --parenCount;
+                                    if (parenCount == 0) break;
+                                }
+                                else if (ch == '(')
+                                {
+                                    ++parenCount;
+                                }
                             }
-                            else if (ch == '(')
-                            {
-                                ++parenCount;
-                            }
+                            ++endIndex;
                         }
-                        ++endIndex;
+                        argList = labelArgs.Substring(0, endIndex).Trim();
                     }
-                    argList = labelArgs.Substring(0, endIndex).Trim();
                 }
             }
             if (message.MessageSort != MessageSort.Reply)
@@ -976,12 +994,9 @@ namespace MetaDslx.Languages.Uml.Serialization
             {
                 if (propertyName == "IsNavigable")
                 {
-                    var participantElement = ((XElement)location).Parent.Elements(_whiteStarUmlNamespace + "REF").Where(e => e.Attribute("name")?.Value == "Participant").FirstOrDefault();
-                    if (participantElement != null)
+                    if (propertyValue.ToLower() == "false" && prop.Association != null && prop.Class == null)
                     {
-                        var participant = ResolveObjectById(location, participantElement.Value) as ClassifierBuilder;
-                        if (participant is ClassBuilder cls) cls.OwnedAttribute.Add(prop);
-                        else if (participant is InterfaceBuilder intf) intf.OwnedAttribute.Add(prop);
+                        prop.Association.OwnedEnd.Add(prop);
                     }
                     return true;
                 }
