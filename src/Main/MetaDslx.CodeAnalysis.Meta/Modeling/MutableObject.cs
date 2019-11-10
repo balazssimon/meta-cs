@@ -3,6 +3,7 @@ using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 
 namespace MetaDslx.Modeling
 {
@@ -25,13 +26,10 @@ namespace MetaDslx.Modeling
         void MAdd(ModelProperty property, object value);
         void MAddLazy(ModelProperty property, LazyValue value);
         void MAddRange(ModelProperty property, IEnumerable<object> value);
-        void MAddRangeLazy(ModelProperty property, LazyValue value);
         void MAddRangeLazy(ModelProperty property, IEnumerable<LazyValue> value);
-        void MSetOrAdd(ModelProperty property, object value);
-        void MSetOrAddLazy(ModelProperty property, LazyValue value);
         void MMakeCreated();
 
-        void MValidate(DiagnosticBag diagnostics);
+        void MValidate(DiagnosticBag diagnostics, CancellationToken cancellationToken = default);
 
         ImmutableObject ToImmutable();
         ImmutableObject ToImmutable(ImmutableModel immutableModel);

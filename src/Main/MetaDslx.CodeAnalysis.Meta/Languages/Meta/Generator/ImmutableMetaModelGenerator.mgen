@@ -45,7 +45,6 @@ extern function string GetImmBldCallParameterNames(MetaModel mmodel, MetaOperati
 extern function string GetImmBldReturn(MetaModel mmodel, MetaOperation operation, ClassKind kind)
 extern function MetaOperation GetFinalOperation(MetaClass cls, MetaOperation operation)
 
-
 template GenerateDocumentation(MetaDocumentedElement elem)
 [var lines = elem.GetDocumentationLines()]
 [if (lines.Count > 0)]
@@ -708,7 +707,7 @@ internal abstract class [model.CSharpName(ModelKind.ImplementationBase)]
 		[end if]
 	[end loop]
 	^
-	public virtual void [cls.CSharpName(model, ClassKind.Immutable)]_MValidate([cls.CSharpName(model, ClassKind.Builder)] _this, global::Microsoft.CodeAnalysis.DiagnosticBag diagnostics)
+	public virtual void [cls.CSharpName(model, ClassKind.Immutable)]_MValidate([cls.CSharpName(model, ClassKind.Builder)] _this, global::Microsoft.CodeAnalysis.DiagnosticBag diagnostics, global::System.Threading.CancellationToken cancellationToken = default)
 	{
 	}
 	^
@@ -1140,9 +1139,9 @@ internal class [cls.CSharpName(model, ClassKind.BuilderImpl)] : [Properties.Core
 		[model.CSharpName(ModelKind.ImplementationProvider)].Implementation.[cls.CSharpName(model, ClassKind.Immutable)](this);
 	}
 	^
-	public override void MValidate(global::Microsoft.CodeAnalysis.DiagnosticBag diagnostics)
+	public override void MValidate(global::Microsoft.CodeAnalysis.DiagnosticBag diagnostics, global::System.Threading.CancellationToken cancellationToken = default)
 	{
-		[model.CSharpName(ModelKind.ImplementationProvider)].Implementation.[cls.CSharpName(model, ClassKind.Immutable)]_MValidate(this, diagnostics);
+		[model.CSharpName(ModelKind.ImplementationProvider)].Implementation.[cls.CSharpName(model, ClassKind.Immutable)]_MValidate(this, diagnostics, cancellationToken);
 	}
 	^
 	public override [Properties.CoreNs].IMetaModel MMetaModel

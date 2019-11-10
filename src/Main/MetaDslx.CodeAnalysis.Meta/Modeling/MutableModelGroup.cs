@@ -375,7 +375,7 @@ namespace MetaDslx.Modeling
             return model;
         }
 
-        public void ExecuteTransaction(Action transaction)
+        public void ExecuteTransaction(Action<CancellationToken> transaction, CancellationToken cancellationToken = default)
         {
             if (transaction == null) throw new ArgumentNullException(nameof(transaction));
             GreenModelUpdateContext ctx = null;
@@ -383,8 +383,9 @@ namespace MetaDslx.Modeling
             {
                 do
                 {
+                    if (cancellationToken.IsCancellationRequested) return;
                     ctx = this.BeginUpdate();
-                    transaction();
+                    transaction(cancellationToken);
                 } while (!this.EndUpdate(ctx));
             }
             finally
@@ -393,11 +394,12 @@ namespace MetaDslx.Modeling
             }
         }
 
-        public void Validate(DiagnosticBag diagnostics)
+        public void Validate(DiagnosticBag diagnostics, CancellationToken cancellationToken = default)
         {
             foreach (var model in this.Models)
             {
-                model.Validate(diagnostics);
+                if (cancellationToken.IsCancellationRequested) return;
+                model.Validate(diagnostics, cancellationToken);
             }
         }
 

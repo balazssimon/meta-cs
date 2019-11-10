@@ -7,6 +7,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace MetaDslx.Languages.Meta.Generator
 {
@@ -787,6 +788,7 @@ namespace MetaDslx.Languages.Meta.Generator
             }
             return property;
         }
+
     }
     //*/
 }

@@ -83,7 +83,7 @@ namespace MetaDslx.Modeling
             get
             {
                 ModelProperty nameProperty = this.id.Descriptor.NameProperty;
-                if (nameProperty != null)
+                if (nameProperty != null && this.model.MHasConcreteValue(this.id, nameProperty))
                 {
                     object nameObj = this.MGet(nameProperty);
                     if (nameObj == null) return null;
@@ -105,7 +105,7 @@ namespace MetaDslx.Modeling
             get
             {
                 ModelProperty typeProperty = this.id.Descriptor.TypeProperty;
-                if (typeProperty != null)
+                if (typeProperty != null && this.model.MHasConcreteValue(this.id, typeProperty))
                 {
                     object typeObj = this.MGet(typeProperty);
                     return typeObj as MutableObject;
@@ -138,7 +138,7 @@ namespace MetaDslx.Modeling
 
         protected abstract void MInit();
 
-        public virtual void MValidate(DiagnosticBag diagnostics) { }
+        public virtual void MValidate(DiagnosticBag diagnostics, CancellationToken cancellationToken = default) { }
 
         internal void MCallInit()
         {
@@ -212,40 +212,10 @@ namespace MetaDslx.Modeling
             this.model.AddItems(this.id, property, values, this.creating);
         }
 
-        public void MAddRangeLazy(ModelProperty property, LazyValue values)
-        {
-            if (!property.IsCollection) throw new ModelException(ModelErrorCode.ERR_CannotAddMultipleValuesToNonCollectionProperty.ToDiagnostic(values.Location, property, this));
-            this.model.AddLazyItems(this.id, property, values, this.creating);
-        }
-
         public void MAddRangeLazy(ModelProperty property, IEnumerable<LazyValue> values)
         {
             if (!property.IsCollection) throw new ModelException(ModelErrorCode.ERR_CannotAddMultipleValuesToNonCollectionProperty.ToDiagnosticWithNoLocation(property, this));
             this.model.AddLazyItems(this.id, property, values, this.creating);
-        }
-
-        public void MSetOrAdd(ModelProperty property, object value)
-        {
-            if (property.IsCollection)
-            {
-                this.model.AddItem(this.id, property, value, this.creating);
-            }
-            else
-            {
-                this.model.SetValue(this.id, property, value, this.creating);
-            }
-        }
-
-        public void MSetOrAddLazy(ModelProperty property, LazyValue value)
-        {
-            if (property.IsCollection)
-            {
-                this.model.AddLazyItem(this.id, property, value, this.creating);
-            }
-            else
-            {
-                this.model.SetLazyValue(this.id, property, value, this.creating);
-            }
         }
 
         public T MGetValue<T>(ModelProperty property) where T : struct
@@ -419,13 +389,12 @@ namespace MetaDslx.Modeling
 
         public override string ToString()
         {
-            string result = this.id.DisplayTypeName;
+            string metaType = this.id.DisplayTypeName;
             string name = this.MName;
-            if (name != null)
-            {
-                result = name + " (" + result + ")";
-            }
-            return result;
+            string type = this.MType?.MName;
+            if (type != null) return $"[{metaType}] {name}: {type}";
+            else if (name != null) return $"[{metaType}] {name}";
+            else return $"[{metaType}]";
         }
     }
 

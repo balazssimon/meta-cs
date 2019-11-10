@@ -59,30 +59,6 @@ namespace MetaDslx.Languages.Meta.Model.Internal
             return _this.Namespace != null ? _this.Namespace.FullName + "." + _this.Name : _this.Name;
         }
 
-        public override IReadOnlyList<string> MetaDocumentedElement_GetDocumentationLines(MetaDocumentedElementBuilder _this)
-        {
-            if (_this.Documentation == null) return ImmutableList<string>.Empty;
-            List<string> result = new List<string>();
-            MemoryStream stream = new MemoryStream();
-            StreamWriter writer = new StreamWriter(stream);
-            writer.Write(_this.Documentation);
-            writer.Flush();
-            stream.Position = 0;
-            StringBuilder sb = new StringBuilder();
-            using (StreamReader reader = new StreamReader(stream))
-            {
-                while (!reader.EndOfStream)
-                {
-                    string line = reader.ReadLine();
-                    if (line != null)
-                    {
-                        result.Add(line);
-                    }
-                }
-            }
-            return result;
-        }
-
         public override IReadOnlyList<MetaClassBuilder> MetaClass_GetAllSuperClasses(MetaClassBuilder _this, bool includeSelf)
         {
             var result = new List<MetaClassBuilder>();

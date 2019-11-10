@@ -34,7 +34,6 @@
 	abstract class MetaDocumentedElement : MetaElement
 	{
 		string Documentation;
-		list<string> GetDocumentationLines();
 	}
 
 	abstract class MetaNamedElement : MetaDocumentedElement

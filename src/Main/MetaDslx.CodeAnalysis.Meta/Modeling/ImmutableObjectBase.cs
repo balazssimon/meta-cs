@@ -73,7 +73,7 @@ namespace MetaDslx.Modeling
             get
             {
                 ModelProperty nameProperty = this.id.Descriptor.NameProperty;
-                if (nameProperty != null)
+                if (nameProperty != null && this.model.MHasConcreteValue(this.id, nameProperty))
                 {
                     object nameObj = this.MGet(nameProperty);
                     if (nameObj == null) return null;
@@ -87,7 +87,7 @@ namespace MetaDslx.Modeling
             get
             {
                 ModelProperty typeProperty = this.id.Descriptor.TypeProperty;
-                if (typeProperty != null)
+                if (typeProperty != null && this.model.MHasConcreteValue(this.id, typeProperty))
                 {
                     object typeObj = this.MGet(typeProperty);
                     return typeObj as ImmutableObject;
@@ -199,13 +199,12 @@ namespace MetaDslx.Modeling
 
         public override string ToString()
         {
-            string result = this.id.DisplayTypeName;
+            string metaType = this.id.DisplayTypeName;
             string name = this.MName;
-            if (name != null)
-            {
-                result = name + " (" + result + ")";
-            }
-            return result;
+            string type = this.MType?.MName;
+            if (type != null) return $"[{metaType}] {name}: {type}";
+            else if (name != null) return $"[{metaType}] {name}";
+            else return $"[{metaType}]";
         }
 
     }
