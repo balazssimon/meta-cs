@@ -725,7 +725,7 @@ namespace MetaDslx.Languages.Meta.Generator
 
         public string GetImmBldCallParameterNames(MetaModel mmodel, MetaOperation operation, ClassKind kind)
         {
-            string result = "_this" + GetImmBldConversion(mmodel, operation.Parent, kind);
+            string result = "_this" + GetImmBldConversion(mmodel, operation.Class, kind);
             foreach (var param in operation.Parameters)
             {
                 result += ", " + param.Name + this.GetImmBldConversion(mmodel, param.Type, kind);

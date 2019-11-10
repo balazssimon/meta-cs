@@ -200,7 +200,8 @@ namespace MetaDslx.Languages.Meta.Model.Internal
             if (operation == null) return false;
             if (_this.Name != operation.Name) return false;
             if (_this.Parameters.Count != operation.Parameters.Count) return false;
-            if (!_this.Parent.ConformsTo(operation.Parent)) return false;
+            if (_this.Class != null && !_this.Class.ConformsTo(operation.Class)) return false;
+            if (_this.Enum != null && !_this.Enum.ConformsTo(operation.Enum)) return false;
             if (!_this.ReturnType.ConformsTo(operation.ReturnType)) return false;
             for (int i = 0; i < _this.Parameters.Count; i++)
             {

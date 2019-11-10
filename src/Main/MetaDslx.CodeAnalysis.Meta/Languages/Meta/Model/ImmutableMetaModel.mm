@@ -54,7 +54,7 @@
 		bool ConformsTo(MetaType type);
 	}
 
-	class MetaNamedType : MetaType, MetaNamedElement
+	class MetaNamedType : MetaType, MetaDeclaration
 	{
 	}
 
@@ -108,13 +108,13 @@
 		bool ConformsTo(MetaType type);
 	}
 
-	class MetaPrimitiveType : MetaDeclaration, MetaType
+	class MetaPrimitiveType : MetaNamedType
 	{
 		bool ConformsTo(MetaType type);
 	}
 
 	[Scope]
-	class MetaEnum : MetaDeclaration, MetaType
+	class MetaEnum : MetaNamedType
 	{
 		containment list<MetaEnumLiteral> EnumLiterals;
 		containment list<MetaOperation> Operations;
@@ -127,7 +127,7 @@
 
 	association MetaEnumLiteral.Enum with MetaEnum.EnumLiterals;
 
-	class MetaConstant : MetaDeclaration, MetaTypedElement, MetaType
+	class MetaConstant : MetaNamedType, MetaTypedElement
 	{
 		string DotNetName;
 		readonly ModelObject Value;
@@ -135,7 +135,7 @@
 	}
 
 	[Scope]
-	class MetaClass : MetaDeclaration, MetaType
+	class MetaClass : MetaNamedType
 	{
 		bool IsAbstract;
 		[BaseScope]
@@ -155,7 +155,8 @@
 	[LocalScope]
 	class MetaOperation : MetaNamedElement
 	{
-		MetaType Parent;
+		MetaClass Class;
+		MetaEnum Enum;
 		bool IsBuilder;
 		bool IsReadonly;
 		containment list<MetaParameter> Parameters;
@@ -163,8 +164,8 @@
 		bool ConformsTo(MetaOperation operation);
 	}
 
-	association MetaOperation.Parent with MetaClass.Operations;
-	association MetaOperation.Parent with MetaEnum.Operations;
+	association MetaOperation.Class with MetaClass.Operations;
+	association MetaOperation.Enum with MetaEnum.Operations;
 
 	class MetaParameter : MetaNamedElement, MetaTypedElement
 	{

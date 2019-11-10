@@ -719,7 +719,7 @@ internal abstract class [model.CSharpName(ModelKind.ImplementationBase)]
 	/// </summary>
 	public virtual [op.ReturnType.CSharpName(model, ClassKind.ImmutableOperation, true)] [cls.CSharpName(model, ClassKind.Immutable)]_[op.Name]([GetImplParameters(model, cls, op, ClassKind.ImmutableOperation)])
 	{
-		[GetReturn(model, op, ClassKind.ImmutableOperation)]this.[op.Parent.CSharpName(model, ClassKind.Immutable)]_[op.Name]([GetImmBldCallParameterNames(model, op, ClassKind.BuilderOperation)])[GetImmBldReturn(model, op, ClassKind.ImmutableOperation)];
+		[GetReturn(model, op, ClassKind.ImmutableOperation)]this.[op.Class.CSharpName(model, ClassKind.Immutable)]_[op.Name]([GetImmBldCallParameterNames(model, op, ClassKind.BuilderOperation)])[GetImmBldReturn(model, op, ClassKind.ImmutableOperation)];
 	}
 		[end if]
 	^
@@ -778,7 +778,7 @@ public static class [enm.Name]Extensions
 	[loop(enm->op:Operations)]
 	public static [op.ReturnType.CSharpName(model, ClassKind.ImmutableOperation)] [op.Name]([GetEnumImplParameters(model, enm, op, ClassKind.ImmutableOperation)])
 	{
-		[GetReturn(model, op, ClassKind.ImmutableOperation)][model.CSharpName(ModelKind.ImplementationProvider)].Implementation.[op.Parent.CSharpName(model, ClassKind.Immutable)]_[op.Name]([GetEnumImplCallParameterNames(model, op, ClassKind.ImmutableOperation)]);
+		[GetReturn(model, op, ClassKind.ImmutableOperation)][model.CSharpName(ModelKind.ImplementationProvider)].Implementation.[op.Enum.CSharpName(model, ClassKind.Immutable)]_[op.Name]([GetEnumImplCallParameterNames(model, op, ClassKind.ImmutableOperation)]);
 	}
 	[end loop]
 }
@@ -1113,10 +1113,10 @@ end template
 
 template GenerateImmutableOperationImpl(MetaModel model, MetaClass cls, MetaOperation op)
 ^
-[op.ReturnType.CSharpName(model, ClassKind.ImmutableOperation, true)] [op.Parent.CSharpName(model, ClassKind.Immutable, true)].[op.Name]([GetClassParameters(model, (MetaClass)op.Parent, op, ClassKind.ImmutableOperation)])
+[op.ReturnType.CSharpName(model, ClassKind.ImmutableOperation, true)] [op.Class.CSharpName(model, ClassKind.Immutable, true)].[op.Name]([GetClassParameters(model, op.Class, op, ClassKind.ImmutableOperation)])
 {
 [var finalOp = GetFinalOperation(cls, op)]
-    [GetReturn(model, finalOp, ClassKind.ImmutableOperation)][model.CSharpName(ModelKind.ImplementationProvider)].Implementation.[finalOp.Parent.CSharpName(model, ClassKind.Immutable)]_[finalOp.Name]([GetClassImplCallParameterNames(model, finalOp, ClassKind.ImmutableOperation)]);
+    [GetReturn(model, finalOp, ClassKind.ImmutableOperation)][model.CSharpName(ModelKind.ImplementationProvider)].Implementation.[finalOp.Class.CSharpName(model, ClassKind.Immutable)]_[finalOp.Name]([GetClassImplCallParameterNames(model, finalOp, ClassKind.ImmutableOperation)]);
 }
 end template
 
@@ -1267,9 +1267,9 @@ end template
 
 template GenerateBuilderOperationImpl(MetaModel model, MetaClass cls, MetaOperation op)
 ^
-[op.ReturnType.CSharpName(model, ClassKind.BuilderOperation, true)] [op.Parent.CSharpName(model, ClassKind.Builder, true)].[op.Name]([GetClassParameters(model, (MetaClass)op.Parent, op, ClassKind.BuilderOperation)])
+[op.ReturnType.CSharpName(model, ClassKind.BuilderOperation, true)] [op.Class.CSharpName(model, ClassKind.Builder, true)].[op.Name]([GetClassParameters(model, op.Class, op, ClassKind.BuilderOperation)])
 {
 [var finalOp = GetFinalOperation(cls, op)]
-    [GetReturn(model, finalOp, ClassKind.BuilderOperation)][model.CSharpName(ModelKind.ImplementationProvider)].Implementation.[finalOp.Parent.CSharpName(model, ClassKind.Immutable)]_[finalOp.Name]([GetClassImplCallParameterNames(model, finalOp, ClassKind.BuilderOperation)]);
+    [GetReturn(model, finalOp, ClassKind.BuilderOperation)][model.CSharpName(ModelKind.ImplementationProvider)].Implementation.[finalOp.Class.CSharpName(model, ClassKind.Immutable)]_[finalOp.Name]([GetClassImplCallParameterNames(model, finalOp, ClassKind.BuilderOperation)]);
 }
 end template

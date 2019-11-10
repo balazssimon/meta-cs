@@ -23,6 +23,7 @@
     <PackageOutputPath>..\..\..\..\..\nuget\</PackageOutputPath>
     <RepositoryUrl>https://github.com/balazssimon/meta-cs.git</RepositoryUrl>
     <IncludeSymbols>true</IncludeSymbols>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <!-- Optional: Declare that the Repository URL can be published to NuSpec -->
     <PublishRepositoryUrl>true</PublishRepositoryUrl>

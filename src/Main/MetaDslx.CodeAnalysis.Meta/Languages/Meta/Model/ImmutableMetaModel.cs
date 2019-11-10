@@ -110,7 +110,8 @@ namespace MetaDslx.Languages.Meta.Model
 		public static readonly MetaProperty MetaClass_Properties;
 		public static readonly MetaProperty MetaClass_Operations;
 		public static readonly MetaClass MetaOperation;
-		public static readonly MetaProperty MetaOperation_Parent;
+		public static readonly MetaProperty MetaOperation_Class;
+		public static readonly MetaProperty MetaOperation_Enum;
 		public static readonly MetaProperty MetaOperation_IsBuilder;
 		public static readonly MetaProperty MetaOperation_IsReadonly;
 		public static readonly MetaProperty MetaOperation_Parameters;
@@ -193,7 +194,8 @@ namespace MetaDslx.Languages.Meta.Model
 			MetaClass_Properties = MetaBuilderInstance.instance.MetaClass_Properties.ToImmutable(MModel);
 			MetaClass_Operations = MetaBuilderInstance.instance.MetaClass_Operations.ToImmutable(MModel);
 			MetaOperation = MetaBuilderInstance.instance.MetaOperation.ToImmutable(MModel);
-			MetaOperation_Parent = MetaBuilderInstance.instance.MetaOperation_Parent.ToImmutable(MModel);
+			MetaOperation_Class = MetaBuilderInstance.instance.MetaOperation_Class.ToImmutable(MModel);
+			MetaOperation_Enum = MetaBuilderInstance.instance.MetaOperation_Enum.ToImmutable(MModel);
 			MetaOperation_IsBuilder = MetaBuilderInstance.instance.MetaOperation_IsBuilder.ToImmutable(MModel);
 			MetaOperation_IsReadonly = MetaBuilderInstance.instance.MetaOperation_IsReadonly.ToImmutable(MModel);
 			MetaOperation_Parameters = MetaBuilderInstance.instance.MetaOperation_Parameters.ToImmutable(MModel);
@@ -650,7 +652,7 @@ namespace MetaDslx.Languages.Meta.Model
 		new MetaType ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
 	
-	public interface MetaNamedType : MetaType, MetaNamedElement
+	public interface MetaNamedType : MetaType, MetaDeclaration
 	{
 	
 	
@@ -666,7 +668,7 @@ namespace MetaDslx.Languages.Meta.Model
 		new MetaNamedTypeBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
 	}
 	
-	public interface MetaNamedTypeBuilder : MetaTypeBuilder, MetaNamedElementBuilder
+	public interface MetaNamedTypeBuilder : MetaTypeBuilder, MetaDeclarationBuilder
 	{
 	
 	
@@ -938,7 +940,7 @@ namespace MetaDslx.Languages.Meta.Model
 		new MetaNullableType ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
 	
-	public interface MetaPrimitiveType : MetaDeclaration, MetaType
+	public interface MetaPrimitiveType : MetaNamedType
 	{
 	
 		bool ConformsTo(MetaType type);
@@ -955,7 +957,7 @@ namespace MetaDslx.Languages.Meta.Model
 		new MetaPrimitiveTypeBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
 	}
 	
-	public interface MetaPrimitiveTypeBuilder : MetaDeclarationBuilder, MetaTypeBuilder
+	public interface MetaPrimitiveTypeBuilder : MetaNamedTypeBuilder
 	{
 	
 		bool ConformsTo(MetaTypeBuilder type);
@@ -972,7 +974,7 @@ namespace MetaDslx.Languages.Meta.Model
 		new MetaPrimitiveType ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
 	
-	public interface MetaEnum : MetaDeclaration, MetaType
+	public interface MetaEnum : MetaNamedType
 	{
 		global::MetaDslx.Modeling.ImmutableModelList<MetaEnumLiteral> EnumLiterals { get; }
 		global::MetaDslx.Modeling.ImmutableModelList<MetaOperation> Operations { get; }
@@ -990,7 +992,7 @@ namespace MetaDslx.Languages.Meta.Model
 		new MetaEnumBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
 	}
 	
-	public interface MetaEnumBuilder : MetaDeclarationBuilder, MetaTypeBuilder
+	public interface MetaEnumBuilder : MetaNamedTypeBuilder
 	{
 		global::MetaDslx.Modeling.MutableModelList<MetaEnumLiteralBuilder> EnumLiterals { get; }
 		global::MetaDslx.Modeling.MutableModelList<MetaOperationBuilder> Operations { get; }
@@ -1045,7 +1047,7 @@ namespace MetaDslx.Languages.Meta.Model
 		new MetaEnumLiteral ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
 	
-	public interface MetaConstant : MetaDeclaration, MetaTypedElement, MetaType
+	public interface MetaConstant : MetaNamedType, MetaTypedElement
 	{
 		string DotNetName { get; }
 		global::MetaDslx.Modeling.IModelObject Value { get; }
@@ -1064,7 +1066,7 @@ namespace MetaDslx.Languages.Meta.Model
 		new MetaConstantBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
 	}
 	
-	public interface MetaConstantBuilder : MetaDeclarationBuilder, MetaTypedElementBuilder, MetaTypeBuilder
+	public interface MetaConstantBuilder : MetaNamedTypeBuilder, MetaTypedElementBuilder
 	{
 		string DotNetName { get; set; }
 		void SetDotNetNameLazy(global::System.Func<string> lazy);
@@ -1089,7 +1091,7 @@ namespace MetaDslx.Languages.Meta.Model
 		new MetaConstant ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
 	}
 	
-	public interface MetaClass : MetaDeclaration, MetaType
+	public interface MetaClass : MetaNamedType
 	{
 		bool IsAbstract { get; }
 		global::MetaDslx.Modeling.ImmutableModelList<MetaClass> SuperClasses { get; }
@@ -1117,7 +1119,7 @@ namespace MetaDslx.Languages.Meta.Model
 		new MetaClassBuilder ToMutable(global::MetaDslx.Modeling.MutableModel model);
 	}
 	
-	public interface MetaClassBuilder : MetaDeclarationBuilder, MetaTypeBuilder
+	public interface MetaClassBuilder : MetaNamedTypeBuilder
 	{
 		bool IsAbstract { get; set; }
 		void SetIsAbstractLazy(global::System.Func<bool> lazy);
@@ -1150,7 +1152,8 @@ namespace MetaDslx.Languages.Meta.Model
 	
 	public interface MetaOperation : MetaNamedElement
 	{
-		MetaType Parent { get; }
+		MetaClass Class { get; }
+		MetaEnum Enum { get; }
 		bool IsBuilder { get; }
 		bool IsReadonly { get; }
 		global::MetaDslx.Modeling.ImmutableModelList<MetaParameter> Parameters { get; }
@@ -1172,10 +1175,14 @@ namespace MetaDslx.Languages.Meta.Model
 	
 	public interface MetaOperationBuilder : MetaNamedElementBuilder
 	{
-		MetaTypeBuilder Parent { get; set; }
-		void SetParentLazy(global::System.Func<MetaTypeBuilder> lazy);
-		void SetParentLazy(global::System.Func<MetaOperationBuilder, MetaTypeBuilder> lazy);
-		void SetParentLazy(global::System.Func<MetaOperation, MetaType> immutableLazy, global::System.Func<MetaOperationBuilder, MetaTypeBuilder> mutableLazy);
+		MetaClassBuilder Class { get; set; }
+		void SetClassLazy(global::System.Func<MetaClassBuilder> lazy);
+		void SetClassLazy(global::System.Func<MetaOperationBuilder, MetaClassBuilder> lazy);
+		void SetClassLazy(global::System.Func<MetaOperation, MetaClass> immutableLazy, global::System.Func<MetaOperationBuilder, MetaClassBuilder> mutableLazy);
+		MetaEnumBuilder Enum { get; set; }
+		void SetEnumLazy(global::System.Func<MetaEnumBuilder> lazy);
+		void SetEnumLazy(global::System.Func<MetaOperationBuilder, MetaEnumBuilder> lazy);
+		void SetEnumLazy(global::System.Func<MetaOperation, MetaEnum> immutableLazy, global::System.Func<MetaOperationBuilder, MetaEnumBuilder> mutableLazy);
 		bool IsBuilder { get; set; }
 		void SetIsBuilderLazy(global::System.Func<bool> lazy);
 		void SetIsBuilderLazy(global::System.Func<MetaOperationBuilder, bool> lazy);
@@ -1356,7 +1363,8 @@ namespace MetaDslx.Languages.Meta.Model
 			properties.Add(MetaDescriptor.MetaClass.SuperClassesProperty);
 			properties.Add(MetaDescriptor.MetaClass.PropertiesProperty);
 			properties.Add(MetaDescriptor.MetaClass.OperationsProperty);
-			properties.Add(MetaDescriptor.MetaOperation.ParentProperty);
+			properties.Add(MetaDescriptor.MetaOperation.ClassProperty);
+			properties.Add(MetaDescriptor.MetaOperation.EnumProperty);
 			properties.Add(MetaDescriptor.MetaOperation.IsBuilderProperty);
 			properties.Add(MetaDescriptor.MetaOperation.IsReadonlyProperty);
 			properties.Add(MetaDescriptor.MetaOperation.ParametersProperty);
@@ -1541,7 +1549,7 @@ namespace MetaDslx.Languages.Meta.Model
 			}
 		}
 	
-		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Model.Internal.MetaNamedTypeId), typeof(global::MetaDslx.Languages.Meta.Model.MetaNamedType), typeof(global::MetaDslx.Languages.Meta.Model.MetaNamedTypeBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaType), typeof(MetaDescriptor.MetaNamedElement) })]
+		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Model.Internal.MetaNamedTypeId), typeof(global::MetaDslx.Languages.Meta.Model.MetaNamedType), typeof(global::MetaDslx.Languages.Meta.Model.MetaNamedTypeBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaType), typeof(MetaDescriptor.MetaDeclaration) })]
 		public static class MetaNamedType
 		{
 			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
@@ -1806,7 +1814,7 @@ namespace MetaDslx.Languages.Meta.Model
 					defaultValue: null);
 		}
 	
-		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Model.Internal.MetaPrimitiveTypeId), typeof(global::MetaDslx.Languages.Meta.Model.MetaPrimitiveType), typeof(global::MetaDslx.Languages.Meta.Model.MetaPrimitiveTypeBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaDeclaration), typeof(MetaDescriptor.MetaType) })]
+		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Model.Internal.MetaPrimitiveTypeId), typeof(global::MetaDslx.Languages.Meta.Model.MetaPrimitiveType), typeof(global::MetaDslx.Languages.Meta.Model.MetaPrimitiveTypeBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedType) })]
 		public static class MetaPrimitiveType
 		{
 			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
@@ -1832,7 +1840,7 @@ namespace MetaDslx.Languages.Meta.Model
 		}
 	
 		[global::MetaDslx.Modeling.ScopeAttribute]
-		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Model.Internal.MetaEnumId), typeof(global::MetaDslx.Languages.Meta.Model.MetaEnum), typeof(global::MetaDslx.Languages.Meta.Model.MetaEnumBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaDeclaration), typeof(MetaDescriptor.MetaType) })]
+		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Model.Internal.MetaEnumId), typeof(global::MetaDslx.Languages.Meta.Model.MetaEnum), typeof(global::MetaDslx.Languages.Meta.Model.MetaEnumBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedType) })]
 		public static class MetaEnum
 		{
 			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
@@ -1870,7 +1878,7 @@ namespace MetaDslx.Languages.Meta.Model
 			[global::MetaDslx.Modeling.CollectionAttribute]
 			[global::MetaDslx.Modeling.OrderedAttribute]
 			[global::MetaDslx.Modeling.ContainmentAttribute]
-			[global::MetaDslx.Modeling.OppositeAttribute(typeof(MetaDescriptor.MetaOperation), "Parent")]
+			[global::MetaDslx.Modeling.OppositeAttribute(typeof(MetaDescriptor.MetaOperation), "Enum")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty OperationsProperty =
 			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaEnum), name: "Operations",
 			        immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaOperation),
@@ -1913,7 +1921,7 @@ namespace MetaDslx.Languages.Meta.Model
 					defaultValue: null);
 		}
 	
-		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Model.Internal.MetaConstantId), typeof(global::MetaDslx.Languages.Meta.Model.MetaConstant), typeof(global::MetaDslx.Languages.Meta.Model.MetaConstantBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaDeclaration), typeof(MetaDescriptor.MetaTypedElement), typeof(MetaDescriptor.MetaType) })]
+		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Model.Internal.MetaConstantId), typeof(global::MetaDslx.Languages.Meta.Model.MetaConstant), typeof(global::MetaDslx.Languages.Meta.Model.MetaConstantBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedType), typeof(MetaDescriptor.MetaTypedElement) })]
 		public static class MetaConstant
 		{
 			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
@@ -1954,7 +1962,7 @@ namespace MetaDslx.Languages.Meta.Model
 		}
 	
 		[global::MetaDslx.Modeling.ScopeAttribute]
-		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Model.Internal.MetaClassId), typeof(global::MetaDslx.Languages.Meta.Model.MetaClass), typeof(global::MetaDslx.Languages.Meta.Model.MetaClassBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaDeclaration), typeof(MetaDescriptor.MetaType) })]
+		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Model.Internal.MetaClassId), typeof(global::MetaDslx.Languages.Meta.Model.MetaClass), typeof(global::MetaDslx.Languages.Meta.Model.MetaClassBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedType) })]
 		public static class MetaClass
 		{
 			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
@@ -2009,7 +2017,7 @@ namespace MetaDslx.Languages.Meta.Model
 			[global::MetaDslx.Modeling.CollectionAttribute]
 			[global::MetaDslx.Modeling.OrderedAttribute]
 			[global::MetaDslx.Modeling.ContainmentAttribute]
-			[global::MetaDslx.Modeling.OppositeAttribute(typeof(MetaDescriptor.MetaOperation), "Parent")]
+			[global::MetaDslx.Modeling.OppositeAttribute(typeof(MetaDescriptor.MetaOperation), "Class")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty OperationsProperty =
 			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaClass), name: "Operations",
 			        immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaOperation),
@@ -2044,12 +2052,19 @@ namespace MetaDslx.Languages.Meta.Model
 			}
 			
 			[global::MetaDslx.Modeling.OppositeAttribute(typeof(MetaDescriptor.MetaClass), "Operations")]
+			public static readonly global::MetaDslx.Modeling.ModelProperty ClassProperty =
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaOperation), name: "Class",
+			        immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaClass),
+			        mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaClassBuilder),
+					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaOperation_Class,
+					defaultValue: null);
+			
 			[global::MetaDslx.Modeling.OppositeAttribute(typeof(MetaDescriptor.MetaEnum), "Operations")]
-			public static readonly global::MetaDslx.Modeling.ModelProperty ParentProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaOperation), name: "Parent",
-			        immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaType),
-			        mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaTypeBuilder),
-					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaOperation_Parent,
+			public static readonly global::MetaDslx.Modeling.ModelProperty EnumProperty =
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaOperation), name: "Enum",
+			        immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaEnum),
+			        mutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaEnumBuilder),
+					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaOperation_Enum,
 					defaultValue: null);
 			
 			public static readonly global::MetaDslx.Modeling.ModelProperty IsBuilderProperty =
@@ -2937,6 +2952,12 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		private string documentation0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string name0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private MetaNamespace namespace0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private MetaModel metaModel0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string fullName0;
 	
 		internal MetaNamedTypeImpl(global::MetaDslx.Modeling.ObjectId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
@@ -2993,6 +3014,16 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			return this.ToMutable(model);
 		}
 	
+		MetaDeclarationBuilder MetaDeclaration.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		MetaDeclarationBuilder MetaDeclaration.ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
 		MetaTypeBuilder MetaType.ToMutable()
 		{
 			return this.ToMutable();
@@ -3019,6 +3050,24 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		public string Name
 		{
 		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
+		}
+	
+		
+		public MetaNamespace Namespace
+		{
+		    get { return this.GetReference<MetaNamespace>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.NamespaceProperty, ref namespace0); }
+		}
+	
+		
+		public MetaModel MetaModel
+		{
+		    get { return this.GetReference<MetaModel>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.MetaModelProperty, ref metaModel0); }
+		}
+	
+		
+		public string FullName
+		{
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty, ref fullName0); }
 		}
 	
 		
@@ -3097,6 +3146,16 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			return this.ToImmutable(model);
 		}
 	
+		MetaDeclaration MetaDeclarationBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		MetaDeclaration MetaDeclarationBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
 		MetaType MetaTypeBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
@@ -3155,6 +3214,70 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		void MetaNamedElementBuilder.SetNameLazy(global::System.Func<MetaNamedElement, string> immutableLazy, global::System.Func<MetaNamedElementBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, immutableLazy, mutableLazy);
+		}
+	
+		
+		public MetaNamespaceBuilder Namespace
+		{
+			get { return this.GetReference<MetaNamespaceBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.NamespaceProperty); }
+			set { this.SetReference<MetaNamespaceBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.NamespaceProperty, value); }
+		}
+		
+		void MetaDeclarationBuilder.SetNamespaceLazy(global::System.Func<MetaNamespaceBuilder> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaDeclaration.NamespaceProperty, lazy);
+		}
+		
+		void MetaDeclarationBuilder.SetNamespaceLazy(global::System.Func<MetaDeclarationBuilder, MetaNamespaceBuilder> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaDeclaration.NamespaceProperty, lazy);
+		}
+		
+		void MetaDeclarationBuilder.SetNamespaceLazy(global::System.Func<MetaDeclaration, MetaNamespace> immutableLazy, global::System.Func<MetaDeclarationBuilder, MetaNamespaceBuilder> mutableLazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaDeclaration.NamespaceProperty, immutableLazy, mutableLazy);
+		}
+	
+		
+		public MetaModelBuilder MetaModel
+		{
+			get { return this.GetReference<MetaModelBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.MetaModelProperty); }
+		}
+		
+		void MetaDeclarationBuilder.SetMetaModelLazy(global::System.Func<MetaModelBuilder> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaDeclaration.MetaModelProperty, lazy);
+		}
+		
+		void MetaDeclarationBuilder.SetMetaModelLazy(global::System.Func<MetaDeclarationBuilder, MetaModelBuilder> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaDeclaration.MetaModelProperty, lazy);
+		}
+		
+		void MetaDeclarationBuilder.SetMetaModelLazy(global::System.Func<MetaDeclaration, MetaModel> immutableLazy, global::System.Func<MetaDeclarationBuilder, MetaModelBuilder> mutableLazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaDeclaration.MetaModelProperty, immutableLazy, mutableLazy);
+		}
+	
+		
+		public string FullName
+		{
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty); }
+		}
+		
+		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<string> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, lazy);
+		}
+		
+		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclarationBuilder, string> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, lazy);
+		}
+		
+		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclaration, string> immutableLazy, global::System.Func<MetaDeclarationBuilder, string> mutableLazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, immutableLazy, mutableLazy);
 		}
 	
 		
@@ -4823,6 +4946,16 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			return this.ToMutable(model);
 		}
 	
+		MetaDeclarationBuilder MetaDeclaration.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		MetaDeclarationBuilder MetaDeclaration.ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
 		MetaTypeBuilder MetaType.ToMutable()
 		{
 			return this.ToMutable();
@@ -4833,12 +4966,12 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			return this.ToMutable(model);
 		}
 	
-		MetaDeclarationBuilder MetaDeclaration.ToMutable()
+		MetaNamedTypeBuilder MetaNamedType.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		MetaDeclarationBuilder MetaDeclaration.ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		MetaNamedTypeBuilder MetaNamedType.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
@@ -4961,6 +5094,16 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			return this.ToImmutable(model);
 		}
 	
+		MetaDeclaration MetaDeclarationBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		MetaDeclaration MetaDeclarationBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
 		MetaType MetaTypeBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
@@ -4971,12 +5114,12 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			return this.ToImmutable(model);
 		}
 	
-		MetaDeclaration MetaDeclarationBuilder.ToImmutable()
+		MetaNamedType MetaNamedTypeBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		MetaDeclaration MetaDeclarationBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		MetaNamedType MetaNamedTypeBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
@@ -5197,6 +5340,16 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			return this.ToMutable(model);
 		}
 	
+		MetaDeclarationBuilder MetaDeclaration.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		MetaDeclarationBuilder MetaDeclaration.ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
 		MetaTypeBuilder MetaType.ToMutable()
 		{
 			return this.ToMutable();
@@ -5207,12 +5360,12 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			return this.ToMutable(model);
 		}
 	
-		MetaDeclarationBuilder MetaDeclaration.ToMutable()
+		MetaNamedTypeBuilder MetaNamedType.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		MetaDeclarationBuilder MetaDeclaration.ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		MetaNamedTypeBuilder MetaNamedType.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
@@ -5343,6 +5496,16 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			return this.ToImmutable(model);
 		}
 	
+		MetaDeclaration MetaDeclarationBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		MetaDeclaration MetaDeclarationBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
 		MetaType MetaTypeBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
@@ -5353,12 +5516,12 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			return this.ToImmutable(model);
 		}
 	
-		MetaDeclaration MetaDeclarationBuilder.ToImmutable()
+		MetaNamedType MetaNamedTypeBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		MetaDeclaration MetaDeclarationBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		MetaNamedType MetaNamedTypeBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
@@ -5814,17 +5977,17 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string documentation0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> attributes0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private MetaType type0;
+		private global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> attributes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaNamespace namespace0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaModel metaModel0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string fullName0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private MetaType type0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string dotNetName0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -5865,6 +6028,16 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			return this.ToMutable(model);
 		}
 	
+		MetaNamedElementBuilder MetaNamedElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		MetaNamedElementBuilder MetaNamedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
 		MetaElementBuilder MetaElement.ToMutable()
 		{
 			return this.ToMutable();
@@ -5875,12 +6048,12 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			return this.ToMutable(model);
 		}
 	
-		MetaNamedElementBuilder MetaNamedElement.ToMutable()
+		MetaDeclarationBuilder MetaDeclaration.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		MetaNamedElementBuilder MetaNamedElement.ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		MetaDeclarationBuilder MetaDeclaration.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
@@ -5905,12 +6078,12 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			return this.ToMutable(model);
 		}
 	
-		MetaDeclarationBuilder MetaDeclaration.ToMutable()
+		MetaNamedTypeBuilder MetaNamedType.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		MetaDeclarationBuilder MetaDeclaration.ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		MetaNamedTypeBuilder MetaNamedType.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
@@ -5922,21 +6095,15 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> Attributes
-		{
-		    get { return this.GetList<MetaAttribute>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
-		}
-	
-		
 		public string Name
 		{
 		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
 		}
 	
 		
-		public MetaType Type
+		public global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> Attributes
 		{
-		    get { return this.GetReference<MetaType>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaTypedElement.TypeProperty, ref type0); }
+		    get { return this.GetList<MetaAttribute>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
 	
 		
@@ -5955,6 +6122,12 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		public string FullName
 		{
 		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaDeclaration.FullNameProperty, ref fullName0); }
+		}
+	
+		
+		public MetaType Type
+		{
+		    get { return this.GetReference<MetaType>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaTypedElement.TypeProperty, ref type0); }
 		}
 	
 		
@@ -6031,6 +6204,16 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			return this.ToImmutable(model);
 		}
 	
+		MetaNamedElement MetaNamedElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		MetaNamedElement MetaNamedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
 		MetaElement MetaElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
@@ -6041,12 +6224,12 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			return this.ToImmutable(model);
 		}
 	
-		MetaNamedElement MetaNamedElementBuilder.ToImmutable()
+		MetaDeclaration MetaDeclarationBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		MetaNamedElement MetaNamedElementBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		MetaDeclaration MetaDeclarationBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
@@ -6071,12 +6254,12 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			return this.ToImmutable(model);
 		}
 	
-		MetaDeclaration MetaDeclarationBuilder.ToImmutable()
+		MetaNamedType MetaNamedTypeBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		MetaDeclaration MetaDeclarationBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		MetaNamedType MetaNamedTypeBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
@@ -6104,12 +6287,6 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public global::MetaDslx.Modeling.MutableModelList<MetaAttributeBuilder> Attributes
-		{
-			get { return this.GetList<MetaAttributeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
-		}
-	
-		
 		public string Name
 		{
 			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaNamedElement.NameProperty); }
@@ -6132,25 +6309,9 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public MetaTypeBuilder Type
+		public global::MetaDslx.Modeling.MutableModelList<MetaAttributeBuilder> Attributes
 		{
-			get { return this.GetReference<MetaTypeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaTypedElement.TypeProperty); }
-			set { this.SetReference<MetaTypeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
-		}
-		
-		void MetaTypedElementBuilder.SetTypeLazy(global::System.Func<MetaTypeBuilder> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaTypedElement.TypeProperty, lazy);
-		}
-		
-		void MetaTypedElementBuilder.SetTypeLazy(global::System.Func<MetaTypedElementBuilder, MetaTypeBuilder> lazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaTypedElement.TypeProperty, lazy);
-		}
-		
-		void MetaTypedElementBuilder.SetTypeLazy(global::System.Func<MetaTypedElement, MetaType> immutableLazy, global::System.Func<MetaTypedElementBuilder, MetaTypeBuilder> mutableLazy)
-		{
-			this.SetLazyReference(MetaDescriptor.MetaTypedElement.TypeProperty, immutableLazy, mutableLazy);
+			get { return this.GetList<MetaAttributeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaElement.AttributesProperty, ref attributes0); }
 		}
 	
 		
@@ -6215,6 +6376,28 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		void MetaDeclarationBuilder.SetFullNameLazy(global::System.Func<MetaDeclaration, string> immutableLazy, global::System.Func<MetaDeclarationBuilder, string> mutableLazy)
 		{
 			this.SetLazyReference(MetaDescriptor.MetaDeclaration.FullNameProperty, immutableLazy, mutableLazy);
+		}
+	
+		
+		public MetaTypeBuilder Type
+		{
+			get { return this.GetReference<MetaTypeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaTypedElement.TypeProperty); }
+			set { this.SetReference<MetaTypeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+		}
+		
+		void MetaTypedElementBuilder.SetTypeLazy(global::System.Func<MetaTypeBuilder> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaTypedElement.TypeProperty, lazy);
+		}
+		
+		void MetaTypedElementBuilder.SetTypeLazy(global::System.Func<MetaTypedElementBuilder, MetaTypeBuilder> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaTypedElement.TypeProperty, lazy);
+		}
+		
+		void MetaTypedElementBuilder.SetTypeLazy(global::System.Func<MetaTypedElement, MetaType> immutableLazy, global::System.Func<MetaTypedElementBuilder, MetaTypeBuilder> mutableLazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaTypedElement.TypeProperty, immutableLazy, mutableLazy);
 		}
 	
 		
@@ -6366,6 +6549,16 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			return this.ToMutable(model);
 		}
 	
+		MetaDeclarationBuilder MetaDeclaration.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		MetaDeclarationBuilder MetaDeclaration.ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
 		MetaTypeBuilder MetaType.ToMutable()
 		{
 			return this.ToMutable();
@@ -6376,12 +6569,12 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			return this.ToMutable(model);
 		}
 	
-		MetaDeclarationBuilder MetaDeclaration.ToMutable()
+		MetaNamedTypeBuilder MetaNamedType.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		MetaDeclarationBuilder MetaDeclaration.ToMutable(global::MetaDslx.Modeling.MutableModel model)
+		MetaNamedTypeBuilder MetaNamedType.ToMutable(global::MetaDslx.Modeling.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
@@ -6573,6 +6766,16 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			return this.ToImmutable(model);
 		}
 	
+		MetaDeclaration MetaDeclarationBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		MetaDeclaration MetaDeclarationBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
 		MetaType MetaTypeBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
@@ -6583,12 +6786,12 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			return this.ToImmutable(model);
 		}
 	
-		MetaDeclaration MetaDeclarationBuilder.ToImmutable()
+		MetaNamedType MetaNamedTypeBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		MetaDeclaration MetaDeclarationBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
+		MetaNamedType MetaNamedTypeBuilder.ToImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
@@ -6826,7 +7029,9 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private MetaType parent0;
+		private MetaClass class0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private MetaEnum enum0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private bool isBuilder0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -6910,9 +7115,15 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public MetaType Parent
+		public MetaClass Class
 		{
-		    get { return this.GetReference<MetaType>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaOperation.ParentProperty, ref parent0); }
+		    get { return this.GetReference<MetaClass>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaOperation.ClassProperty, ref class0); }
+		}
+	
+		
+		public MetaEnum Enum
+		{
+		    get { return this.GetReference<MetaEnum>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaOperation.EnumProperty, ref enum0); }
 		}
 	
 		
@@ -7067,25 +7278,47 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	
 		
-		public MetaTypeBuilder Parent
+		public MetaClassBuilder Class
 		{
-			get { return this.GetReference<MetaTypeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaOperation.ParentProperty); }
-			set { this.SetReference<MetaTypeBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaOperation.ParentProperty, value); }
+			get { return this.GetReference<MetaClassBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaOperation.ClassProperty); }
+			set { this.SetReference<MetaClassBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaOperation.ClassProperty, value); }
 		}
 		
-		void MetaOperationBuilder.SetParentLazy(global::System.Func<MetaTypeBuilder> lazy)
+		void MetaOperationBuilder.SetClassLazy(global::System.Func<MetaClassBuilder> lazy)
 		{
-			this.SetLazyReference(MetaDescriptor.MetaOperation.ParentProperty, lazy);
+			this.SetLazyReference(MetaDescriptor.MetaOperation.ClassProperty, lazy);
 		}
 		
-		void MetaOperationBuilder.SetParentLazy(global::System.Func<MetaOperationBuilder, MetaTypeBuilder> lazy)
+		void MetaOperationBuilder.SetClassLazy(global::System.Func<MetaOperationBuilder, MetaClassBuilder> lazy)
 		{
-			this.SetLazyReference(MetaDescriptor.MetaOperation.ParentProperty, lazy);
+			this.SetLazyReference(MetaDescriptor.MetaOperation.ClassProperty, lazy);
 		}
 		
-		void MetaOperationBuilder.SetParentLazy(global::System.Func<MetaOperation, MetaType> immutableLazy, global::System.Func<MetaOperationBuilder, MetaTypeBuilder> mutableLazy)
+		void MetaOperationBuilder.SetClassLazy(global::System.Func<MetaOperation, MetaClass> immutableLazy, global::System.Func<MetaOperationBuilder, MetaClassBuilder> mutableLazy)
 		{
-			this.SetLazyReference(MetaDescriptor.MetaOperation.ParentProperty, immutableLazy, mutableLazy);
+			this.SetLazyReference(MetaDescriptor.MetaOperation.ClassProperty, immutableLazy, mutableLazy);
+		}
+	
+		
+		public MetaEnumBuilder Enum
+		{
+			get { return this.GetReference<MetaEnumBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaOperation.EnumProperty); }
+			set { this.SetReference<MetaEnumBuilder>(global::MetaDslx.Languages.Meta.Model.MetaDescriptor.MetaOperation.EnumProperty, value); }
+		}
+		
+		void MetaOperationBuilder.SetEnumLazy(global::System.Func<MetaEnumBuilder> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaOperation.EnumProperty, lazy);
+		}
+		
+		void MetaOperationBuilder.SetEnumLazy(global::System.Func<MetaOperationBuilder, MetaEnumBuilder> lazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaOperation.EnumProperty, lazy);
+		}
+		
+		void MetaOperationBuilder.SetEnumLazy(global::System.Func<MetaOperation, MetaEnum> immutableLazy, global::System.Func<MetaOperationBuilder, MetaEnumBuilder> mutableLazy)
+		{
+			this.SetLazyReference(MetaDescriptor.MetaOperation.EnumProperty, immutableLazy, mutableLazy);
 		}
 	
 		
@@ -7992,7 +8225,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		internal MetaClassBuilder MetaTypedElement;
 		internal MetaPropertyBuilder MetaTypedElement_Type;
 		internal MetaClassBuilder MetaType;
-		private MetaOperationBuilder __tmp21;
+		private MetaOperationBuilder __tmp22;
 		private MetaParameterBuilder __tmp27;
 		internal MetaClassBuilder MetaNamedType;
 		internal MetaClassBuilder MetaAttribute;
@@ -8008,10 +8241,10 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		internal MetaPropertyBuilder MetaModel_Prefix;
 		internal MetaPropertyBuilder MetaModel_Namespace;
 		internal MetaEnumBuilder MetaCollectionKind;
-		private MetaEnumLiteralBuilder __tmp22;
 		private MetaEnumLiteralBuilder __tmp23;
 		private MetaEnumLiteralBuilder __tmp24;
 		private MetaEnumLiteralBuilder __tmp25;
+		private MetaEnumLiteralBuilder __tmp26;
 		internal MetaClassBuilder MetaCollectionType;
 		internal MetaPropertyBuilder MetaCollectionType_Kind;
 		internal MetaPropertyBuilder MetaCollectionType_InnerType;
@@ -8019,7 +8252,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		private MetaParameterBuilder __tmp44;
 		internal MetaClassBuilder MetaNullableType;
 		internal MetaPropertyBuilder MetaNullableType_InnerType;
-		private MetaOperationBuilder __tmp26;
+		private MetaOperationBuilder __tmp21;
 		private MetaParameterBuilder __tmp43;
 		internal MetaClassBuilder MetaPrimitiveType;
 		private MetaOperationBuilder __tmp31;
@@ -8033,7 +8266,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		internal MetaPropertyBuilder MetaConstant_DotNetName;
 		internal MetaPropertyBuilder MetaConstant_Value;
 		private MetaOperationBuilder __tmp33;
-		private MetaParameterBuilder __tmp45;
+		private MetaParameterBuilder __tmp47;
 		internal MetaClassBuilder MetaClass;
 		internal MetaPropertyBuilder MetaClass_IsAbstract;
 		internal MetaPropertyBuilder MetaClass_SuperClasses;
@@ -8052,7 +8285,8 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		private MetaOperationBuilder __tmp60;
 		private MetaOperationBuilder __tmp61;
 		internal MetaClassBuilder MetaOperation;
-		internal MetaPropertyBuilder MetaOperation_Parent;
+		internal MetaPropertyBuilder MetaOperation_Class;
+		internal MetaPropertyBuilder MetaOperation_Enum;
 		internal MetaPropertyBuilder MetaOperation_IsBuilder;
 		internal MetaPropertyBuilder MetaOperation_IsReadonly;
 		internal MetaPropertyBuilder MetaOperation_Parameters;
@@ -8065,8 +8299,8 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		private MetaEnumLiteralBuilder __tmp35;
 		private MetaEnumLiteralBuilder __tmp36;
 		private MetaEnumLiteralBuilder __tmp37;
-		private MetaEnumLiteralBuilder __tmp38;
-		private MetaEnumLiteralBuilder __tmp39;
+		private MetaEnumLiteralBuilder __tmp40;
+		private MetaEnumLiteralBuilder __tmp41;
 		internal MetaClassBuilder MetaProperty;
 		internal MetaPropertyBuilder MetaProperty_Kind;
 		internal MetaPropertyBuilder MetaProperty_Class;
@@ -8077,15 +8311,15 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		internal MetaPropertyBuilder MetaProperty_SubsettingProperties;
 		internal MetaPropertyBuilder MetaProperty_RedefinedProperties;
 		internal MetaPropertyBuilder MetaProperty_RedefiningProperties;
-		private MetaOperationBuilder __tmp40;
+		private MetaOperationBuilder __tmp42;
 		private MetaParameterBuilder __tmp53;
 		private MetaModelBuilder __tmp20;
 		private MetaCollectionTypeBuilder __tmp28;
 		private MetaCollectionTypeBuilder __tmp29;
-		private MetaCollectionTypeBuilder __tmp41;
-		private MetaCollectionTypeBuilder __tmp42;
+		private MetaCollectionTypeBuilder __tmp38;
+		private MetaCollectionTypeBuilder __tmp39;
+		private MetaCollectionTypeBuilder __tmp45;
 		private MetaCollectionTypeBuilder __tmp46;
-		private MetaCollectionTypeBuilder __tmp47;
 		private MetaCollectionTypeBuilder __tmp48;
 		private MetaCollectionTypeBuilder __tmp49;
 		private MetaCollectionTypeBuilder __tmp51;
@@ -8194,7 +8428,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			MetaTypedElement = factory.MetaClass();
 			MetaTypedElement_Type = factory.MetaProperty();
 			MetaType = factory.MetaClass();
-			__tmp21 = factory.MetaOperation();
+			__tmp22 = factory.MetaOperation();
 			__tmp27 = factory.MetaParameter();
 			MetaNamedType = factory.MetaClass();
 			MetaAttribute = factory.MetaClass();
@@ -8210,10 +8444,10 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			MetaModel_Prefix = factory.MetaProperty();
 			MetaModel_Namespace = factory.MetaProperty();
 			MetaCollectionKind = factory.MetaEnum();
-			__tmp22 = factory.MetaEnumLiteral();
 			__tmp23 = factory.MetaEnumLiteral();
 			__tmp24 = factory.MetaEnumLiteral();
 			__tmp25 = factory.MetaEnumLiteral();
+			__tmp26 = factory.MetaEnumLiteral();
 			MetaCollectionType = factory.MetaClass();
 			MetaCollectionType_Kind = factory.MetaProperty();
 			MetaCollectionType_InnerType = factory.MetaProperty();
@@ -8221,7 +8455,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			__tmp44 = factory.MetaParameter();
 			MetaNullableType = factory.MetaClass();
 			MetaNullableType_InnerType = factory.MetaProperty();
-			__tmp26 = factory.MetaOperation();
+			__tmp21 = factory.MetaOperation();
 			__tmp43 = factory.MetaParameter();
 			MetaPrimitiveType = factory.MetaClass();
 			__tmp31 = factory.MetaOperation();
@@ -8235,7 +8469,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			MetaConstant_DotNetName = factory.MetaProperty();
 			MetaConstant_Value = factory.MetaProperty();
 			__tmp33 = factory.MetaOperation();
-			__tmp45 = factory.MetaParameter();
+			__tmp47 = factory.MetaParameter();
 			MetaClass = factory.MetaClass();
 			MetaClass_IsAbstract = factory.MetaProperty();
 			MetaClass_SuperClasses = factory.MetaProperty();
@@ -8254,7 +8488,8 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			__tmp60 = factory.MetaOperation();
 			__tmp61 = factory.MetaOperation();
 			MetaOperation = factory.MetaClass();
-			MetaOperation_Parent = factory.MetaProperty();
+			MetaOperation_Class = factory.MetaProperty();
+			MetaOperation_Enum = factory.MetaProperty();
 			MetaOperation_IsBuilder = factory.MetaProperty();
 			MetaOperation_IsReadonly = factory.MetaProperty();
 			MetaOperation_Parameters = factory.MetaProperty();
@@ -8267,8 +8502,8 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			__tmp35 = factory.MetaEnumLiteral();
 			__tmp36 = factory.MetaEnumLiteral();
 			__tmp37 = factory.MetaEnumLiteral();
-			__tmp38 = factory.MetaEnumLiteral();
-			__tmp39 = factory.MetaEnumLiteral();
+			__tmp40 = factory.MetaEnumLiteral();
+			__tmp41 = factory.MetaEnumLiteral();
 			MetaProperty = factory.MetaClass();
 			MetaProperty_Kind = factory.MetaProperty();
 			MetaProperty_Class = factory.MetaProperty();
@@ -8279,15 +8514,15 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			MetaProperty_SubsettingProperties = factory.MetaProperty();
 			MetaProperty_RedefinedProperties = factory.MetaProperty();
 			MetaProperty_RedefiningProperties = factory.MetaProperty();
-			__tmp40 = factory.MetaOperation();
+			__tmp42 = factory.MetaOperation();
 			__tmp53 = factory.MetaParameter();
 			__tmp20 = factory.MetaModel();
 			__tmp28 = factory.MetaCollectionType();
 			__tmp29 = factory.MetaCollectionType();
-			__tmp41 = factory.MetaCollectionType();
-			__tmp42 = factory.MetaCollectionType();
+			__tmp38 = factory.MetaCollectionType();
+			__tmp39 = factory.MetaCollectionType();
+			__tmp45 = factory.MetaCollectionType();
 			__tmp46 = factory.MetaCollectionType();
-			__tmp47 = factory.MetaCollectionType();
 			__tmp48 = factory.MetaCollectionType();
 			__tmp49 = factory.MetaCollectionType();
 			__tmp51 = factory.MetaCollectionType();
@@ -8454,7 +8689,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			MetaElement.SetNamespaceLazy(() => __tmp4);
 			// MetaElement.IsAbstract = null;
 			MetaElement.Properties.AddLazy(() => MetaElement_Attributes);
-			MetaElement_Attributes.SetTypeLazy(() => __tmp29);
+			MetaElement_Attributes.SetTypeLazy(() => __tmp28);
 			MetaElement_Attributes.Documentation = "";
 			MetaElement_Attributes.Name = "Attributes";
 			// MetaElement_Attributes.Kind = null;
@@ -8508,24 +8743,24 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			MetaType.Name = "MetaType";
 			MetaType.SetNamespaceLazy(() => __tmp4);
 			// MetaType.IsAbstract = null;
-			MetaType.Operations.AddLazy(() => __tmp21);
-			__tmp21.Documentation = "";
-			__tmp21.Name = "ConformsTo";
-			__tmp21.SetParentLazy(() => MetaType);
-			// __tmp21.IsBuilder = null;
-			// __tmp21.IsReadonly = null;
-			__tmp21.Parameters.AddLazy(() => __tmp27);
-			__tmp21.SetReturnTypeLazy(() => Bool);
+			MetaType.Operations.AddLazy(() => __tmp22);
+			__tmp22.Documentation = "";
+			__tmp22.Name = "ConformsTo";
+			__tmp22.SetClassLazy(() => MetaType);
+			// __tmp22.IsBuilder = null;
+			// __tmp22.IsReadonly = null;
+			__tmp22.Parameters.AddLazy(() => __tmp27);
+			__tmp22.SetReturnTypeLazy(() => Bool);
 			__tmp27.SetTypeLazy(() => MetaType);
 			__tmp27.Documentation = null;
 			__tmp27.Name = "type";
-			__tmp27.SetOperationLazy(() => __tmp21);
+			__tmp27.SetOperationLazy(() => __tmp22);
 			MetaNamedType.Documentation = "";
 			MetaNamedType.Name = "MetaNamedType";
 			MetaNamedType.SetNamespaceLazy(() => __tmp4);
 			// MetaNamedType.IsAbstract = null;
 			MetaNamedType.SuperClasses.AddLazy(() => MetaType);
-			MetaNamedType.SuperClasses.AddLazy(() => MetaNamedElement);
+			MetaNamedType.SuperClasses.AddLazy(() => MetaDeclaration);
 			MetaAttribute.Documentation = "";
 			MetaAttribute.Name = "MetaAttribute";
 			MetaAttribute.SetNamespaceLazy(() => __tmp4);
@@ -8577,7 +8812,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			MetaNamespace_DefinedMetaModel.DefaultValue = null;
 			MetaNamespace_DefinedMetaModel.IsContainment = true;
 			MetaNamespace_DefinedMetaModel.OppositeProperties.AddLazy(() => MetaModel_Namespace);
-			MetaNamespace_Declarations.SetTypeLazy(() => __tmp41);
+			MetaNamespace_Declarations.SetTypeLazy(() => __tmp39);
 			MetaNamespace_Declarations.Documentation = "";
 			MetaNamespace_Declarations.Name = "Declarations";
 			// MetaNamespace_Declarations.Kind = null;
@@ -8618,22 +8853,22 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			MetaCollectionKind.Documentation = "";
 			MetaCollectionKind.Name = "MetaCollectionKind";
 			MetaCollectionKind.SetNamespaceLazy(() => __tmp4);
-			MetaCollectionKind.EnumLiterals.AddLazy(() => __tmp22);
 			MetaCollectionKind.EnumLiterals.AddLazy(() => __tmp23);
 			MetaCollectionKind.EnumLiterals.AddLazy(() => __tmp24);
 			MetaCollectionKind.EnumLiterals.AddLazy(() => __tmp25);
-			__tmp22.Documentation = "";
-			__tmp22.Name = "List";
-			__tmp22.SetEnumLazy(() => MetaCollectionKind);
+			MetaCollectionKind.EnumLiterals.AddLazy(() => __tmp26);
 			__tmp23.Documentation = "";
-			__tmp23.Name = "Set";
+			__tmp23.Name = "List";
 			__tmp23.SetEnumLazy(() => MetaCollectionKind);
 			__tmp24.Documentation = "";
-			__tmp24.Name = "MultiList";
+			__tmp24.Name = "Set";
 			__tmp24.SetEnumLazy(() => MetaCollectionKind);
 			__tmp25.Documentation = "";
-			__tmp25.Name = "MultiSet";
+			__tmp25.Name = "MultiList";
 			__tmp25.SetEnumLazy(() => MetaCollectionKind);
+			__tmp26.Documentation = "";
+			__tmp26.Name = "MultiSet";
+			__tmp26.SetEnumLazy(() => MetaCollectionKind);
 			MetaCollectionType.Documentation = "";
 			MetaCollectionType.Name = "MetaCollectionType";
 			MetaCollectionType.SetNamespaceLazy(() => __tmp4);
@@ -8658,7 +8893,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			// MetaCollectionType_InnerType.IsContainment = null;
 			__tmp30.Documentation = "";
 			__tmp30.Name = "ConformsTo";
-			__tmp30.SetParentLazy(() => MetaCollectionType);
+			__tmp30.SetClassLazy(() => MetaCollectionType);
 			// __tmp30.IsBuilder = null;
 			// __tmp30.IsReadonly = null;
 			__tmp30.Parameters.AddLazy(() => __tmp44);
@@ -8673,7 +8908,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			// MetaNullableType.IsAbstract = null;
 			MetaNullableType.SuperClasses.AddLazy(() => MetaType);
 			MetaNullableType.Properties.AddLazy(() => MetaNullableType_InnerType);
-			MetaNullableType.Operations.AddLazy(() => __tmp26);
+			MetaNullableType.Operations.AddLazy(() => __tmp21);
 			MetaNullableType_InnerType.SetTypeLazy(() => MetaType);
 			MetaNullableType_InnerType.Documentation = "";
 			MetaNullableType_InnerType.Name = "InnerType";
@@ -8681,27 +8916,26 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			MetaNullableType_InnerType.SetClassLazy(() => MetaNullableType);
 			MetaNullableType_InnerType.DefaultValue = null;
 			// MetaNullableType_InnerType.IsContainment = null;
-			__tmp26.Documentation = "";
-			__tmp26.Name = "ConformsTo";
-			__tmp26.SetParentLazy(() => MetaNullableType);
-			// __tmp26.IsBuilder = null;
-			// __tmp26.IsReadonly = null;
-			__tmp26.Parameters.AddLazy(() => __tmp43);
-			__tmp26.SetReturnTypeLazy(() => Bool);
+			__tmp21.Documentation = "";
+			__tmp21.Name = "ConformsTo";
+			__tmp21.SetClassLazy(() => MetaNullableType);
+			// __tmp21.IsBuilder = null;
+			// __tmp21.IsReadonly = null;
+			__tmp21.Parameters.AddLazy(() => __tmp43);
+			__tmp21.SetReturnTypeLazy(() => Bool);
 			__tmp43.SetTypeLazy(() => MetaType);
 			__tmp43.Documentation = null;
 			__tmp43.Name = "type";
-			__tmp43.SetOperationLazy(() => __tmp26);
+			__tmp43.SetOperationLazy(() => __tmp21);
 			MetaPrimitiveType.Documentation = "";
 			MetaPrimitiveType.Name = "MetaPrimitiveType";
 			MetaPrimitiveType.SetNamespaceLazy(() => __tmp4);
 			// MetaPrimitiveType.IsAbstract = null;
-			MetaPrimitiveType.SuperClasses.AddLazy(() => MetaDeclaration);
-			MetaPrimitiveType.SuperClasses.AddLazy(() => MetaType);
+			MetaPrimitiveType.SuperClasses.AddLazy(() => MetaNamedType);
 			MetaPrimitiveType.Operations.AddLazy(() => __tmp31);
 			__tmp31.Documentation = "";
 			__tmp31.Name = "ConformsTo";
-			__tmp31.SetParentLazy(() => MetaPrimitiveType);
+			__tmp31.SetClassLazy(() => MetaPrimitiveType);
 			// __tmp31.IsBuilder = null;
 			// __tmp31.IsReadonly = null;
 			__tmp31.Parameters.AddLazy(() => __tmp32);
@@ -8715,11 +8949,10 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			MetaEnum.Name = "MetaEnum";
 			MetaEnum.SetNamespaceLazy(() => __tmp4);
 			// MetaEnum.IsAbstract = null;
-			MetaEnum.SuperClasses.AddLazy(() => MetaDeclaration);
-			MetaEnum.SuperClasses.AddLazy(() => MetaType);
+			MetaEnum.SuperClasses.AddLazy(() => MetaNamedType);
 			MetaEnum.Properties.AddLazy(() => MetaEnum_EnumLiterals);
 			MetaEnum.Properties.AddLazy(() => MetaEnum_Operations);
-			MetaEnum_EnumLiterals.SetTypeLazy(() => __tmp28);
+			MetaEnum_EnumLiterals.SetTypeLazy(() => __tmp29);
 			MetaEnum_EnumLiterals.Documentation = "";
 			MetaEnum_EnumLiterals.Name = "EnumLiterals";
 			// MetaEnum_EnumLiterals.Kind = null;
@@ -8727,14 +8960,14 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			MetaEnum_EnumLiterals.DefaultValue = null;
 			MetaEnum_EnumLiterals.IsContainment = true;
 			MetaEnum_EnumLiterals.OppositeProperties.AddLazy(() => MetaEnumLiteral_Enum);
-			MetaEnum_Operations.SetTypeLazy(() => __tmp42);
+			MetaEnum_Operations.SetTypeLazy(() => __tmp38);
 			MetaEnum_Operations.Documentation = "";
 			MetaEnum_Operations.Name = "Operations";
 			// MetaEnum_Operations.Kind = null;
 			MetaEnum_Operations.SetClassLazy(() => MetaEnum);
 			MetaEnum_Operations.DefaultValue = null;
 			MetaEnum_Operations.IsContainment = true;
-			MetaEnum_Operations.OppositeProperties.AddLazy(() => MetaOperation_Parent);
+			MetaEnum_Operations.OppositeProperties.AddLazy(() => MetaOperation_Enum);
 			MetaEnumLiteral.Documentation = "";
 			MetaEnumLiteral.Name = "MetaEnumLiteral";
 			MetaEnumLiteral.SetNamespaceLazy(() => __tmp4);
@@ -8755,9 +8988,8 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			MetaConstant.Name = "MetaConstant";
 			MetaConstant.SetNamespaceLazy(() => __tmp4);
 			// MetaConstant.IsAbstract = null;
-			MetaConstant.SuperClasses.AddLazy(() => MetaDeclaration);
+			MetaConstant.SuperClasses.AddLazy(() => MetaNamedType);
 			MetaConstant.SuperClasses.AddLazy(() => MetaTypedElement);
-			MetaConstant.SuperClasses.AddLazy(() => MetaType);
 			MetaConstant.Properties.AddLazy(() => MetaConstant_DotNetName);
 			MetaConstant.Properties.AddLazy(() => MetaConstant_Value);
 			MetaConstant.Operations.AddLazy(() => __tmp33);
@@ -8777,22 +9009,21 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			// MetaConstant_Value.IsContainment = null;
 			__tmp33.Documentation = "";
 			__tmp33.Name = "ConformsTo";
-			__tmp33.SetParentLazy(() => MetaConstant);
+			__tmp33.SetClassLazy(() => MetaConstant);
 			// __tmp33.IsBuilder = null;
 			// __tmp33.IsReadonly = null;
-			__tmp33.Parameters.AddLazy(() => __tmp45);
+			__tmp33.Parameters.AddLazy(() => __tmp47);
 			__tmp33.SetReturnTypeLazy(() => Bool);
-			__tmp45.SetTypeLazy(() => MetaType);
-			__tmp45.Documentation = null;
-			__tmp45.Name = "type";
-			__tmp45.SetOperationLazy(() => __tmp33);
+			__tmp47.SetTypeLazy(() => MetaType);
+			__tmp47.Documentation = null;
+			__tmp47.Name = "type";
+			__tmp47.SetOperationLazy(() => __tmp33);
 			MetaClass.Attributes.Add(ScopeAttribute);
 			MetaClass.Documentation = "";
 			MetaClass.Name = "MetaClass";
 			MetaClass.SetNamespaceLazy(() => __tmp4);
 			// MetaClass.IsAbstract = null;
-			MetaClass.SuperClasses.AddLazy(() => MetaDeclaration);
-			MetaClass.SuperClasses.AddLazy(() => MetaType);
+			MetaClass.SuperClasses.AddLazy(() => MetaNamedType);
 			MetaClass.Properties.AddLazy(() => MetaClass_IsAbstract);
 			MetaClass.Properties.AddLazy(() => MetaClass_SuperClasses);
 			MetaClass.Properties.AddLazy(() => MetaClass_Properties);
@@ -8835,10 +9066,10 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			MetaClass_Operations.SetClassLazy(() => MetaClass);
 			MetaClass_Operations.DefaultValue = null;
 			MetaClass_Operations.IsContainment = true;
-			MetaClass_Operations.OppositeProperties.AddLazy(() => MetaOperation_Parent);
+			MetaClass_Operations.OppositeProperties.AddLazy(() => MetaOperation_Class);
 			__tmp54.Documentation = "";
 			__tmp54.Name = "ConformsTo";
-			__tmp54.SetParentLazy(() => MetaClass);
+			__tmp54.SetClassLazy(() => MetaClass);
 			// __tmp54.IsBuilder = null;
 			// __tmp54.IsReadonly = null;
 			__tmp54.Parameters.AddLazy(() => __tmp65);
@@ -8849,7 +9080,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			__tmp65.SetOperationLazy(() => __tmp54);
 			__tmp55.Documentation = "";
 			__tmp55.Name = "GetAllSuperClasses";
-			__tmp55.SetParentLazy(() => MetaClass);
+			__tmp55.SetClassLazy(() => MetaClass);
 			// __tmp55.IsBuilder = null;
 			// __tmp55.IsReadonly = null;
 			__tmp55.Parameters.AddLazy(() => __tmp67);
@@ -8860,7 +9091,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			__tmp67.SetOperationLazy(() => __tmp55);
 			__tmp56.Documentation = "";
 			__tmp56.Name = "GetAllSuperProperties";
-			__tmp56.SetParentLazy(() => MetaClass);
+			__tmp56.SetClassLazy(() => MetaClass);
 			// __tmp56.IsBuilder = null;
 			// __tmp56.IsReadonly = null;
 			__tmp56.Parameters.AddLazy(() => __tmp69);
@@ -8871,7 +9102,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			__tmp69.SetOperationLazy(() => __tmp56);
 			__tmp57.Documentation = "";
 			__tmp57.Name = "GetAllSuperOperations";
-			__tmp57.SetParentLazy(() => MetaClass);
+			__tmp57.SetClassLazy(() => MetaClass);
 			// __tmp57.IsBuilder = null;
 			// __tmp57.IsReadonly = null;
 			__tmp57.Parameters.AddLazy(() => __tmp71);
@@ -8882,25 +9113,25 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			__tmp71.SetOperationLazy(() => __tmp57);
 			__tmp58.Documentation = "";
 			__tmp58.Name = "GetAllProperties";
-			__tmp58.SetParentLazy(() => MetaClass);
+			__tmp58.SetClassLazy(() => MetaClass);
 			// __tmp58.IsBuilder = null;
 			// __tmp58.IsReadonly = null;
 			__tmp58.SetReturnTypeLazy(() => __tmp72);
 			__tmp59.Documentation = "";
 			__tmp59.Name = "GetAllOperations";
-			__tmp59.SetParentLazy(() => MetaClass);
+			__tmp59.SetClassLazy(() => MetaClass);
 			// __tmp59.IsBuilder = null;
 			// __tmp59.IsReadonly = null;
 			__tmp59.SetReturnTypeLazy(() => __tmp73);
 			__tmp60.Documentation = "";
 			__tmp60.Name = "GetAllFinalProperties";
-			__tmp60.SetParentLazy(() => MetaClass);
+			__tmp60.SetClassLazy(() => MetaClass);
 			// __tmp60.IsBuilder = null;
 			// __tmp60.IsReadonly = null;
 			__tmp60.SetReturnTypeLazy(() => __tmp74);
 			__tmp61.Documentation = "";
 			__tmp61.Name = "GetAllFinalOperations";
-			__tmp61.SetParentLazy(() => MetaClass);
+			__tmp61.SetClassLazy(() => MetaClass);
 			// __tmp61.IsBuilder = null;
 			// __tmp61.IsReadonly = null;
 			__tmp61.SetReturnTypeLazy(() => __tmp75);
@@ -8910,21 +9141,29 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			MetaOperation.SetNamespaceLazy(() => __tmp4);
 			// MetaOperation.IsAbstract = null;
 			MetaOperation.SuperClasses.AddLazy(() => MetaNamedElement);
-			MetaOperation.Properties.AddLazy(() => MetaOperation_Parent);
+			MetaOperation.Properties.AddLazy(() => MetaOperation_Class);
+			MetaOperation.Properties.AddLazy(() => MetaOperation_Enum);
 			MetaOperation.Properties.AddLazy(() => MetaOperation_IsBuilder);
 			MetaOperation.Properties.AddLazy(() => MetaOperation_IsReadonly);
 			MetaOperation.Properties.AddLazy(() => MetaOperation_Parameters);
 			MetaOperation.Properties.AddLazy(() => MetaOperation_ReturnType);
 			MetaOperation.Operations.AddLazy(() => __tmp34);
-			MetaOperation_Parent.SetTypeLazy(() => MetaType);
-			MetaOperation_Parent.Documentation = "";
-			MetaOperation_Parent.Name = "Parent";
-			// MetaOperation_Parent.Kind = null;
-			MetaOperation_Parent.SetClassLazy(() => MetaOperation);
-			MetaOperation_Parent.DefaultValue = null;
-			// MetaOperation_Parent.IsContainment = null;
-			MetaOperation_Parent.OppositeProperties.AddLazy(() => MetaClass_Operations);
-			MetaOperation_Parent.OppositeProperties.AddLazy(() => MetaEnum_Operations);
+			MetaOperation_Class.SetTypeLazy(() => MetaClass);
+			MetaOperation_Class.Documentation = "";
+			MetaOperation_Class.Name = "Class";
+			// MetaOperation_Class.Kind = null;
+			MetaOperation_Class.SetClassLazy(() => MetaOperation);
+			MetaOperation_Class.DefaultValue = null;
+			// MetaOperation_Class.IsContainment = null;
+			MetaOperation_Class.OppositeProperties.AddLazy(() => MetaClass_Operations);
+			MetaOperation_Enum.SetTypeLazy(() => MetaEnum);
+			MetaOperation_Enum.Documentation = "";
+			MetaOperation_Enum.Name = "Enum";
+			// MetaOperation_Enum.Kind = null;
+			MetaOperation_Enum.SetClassLazy(() => MetaOperation);
+			MetaOperation_Enum.DefaultValue = null;
+			// MetaOperation_Enum.IsContainment = null;
+			MetaOperation_Enum.OppositeProperties.AddLazy(() => MetaEnum_Operations);
 			MetaOperation_IsBuilder.SetTypeLazy(() => Bool);
 			MetaOperation_IsBuilder.Documentation = "";
 			MetaOperation_IsBuilder.Name = "IsBuilder";
@@ -8939,7 +9178,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			MetaOperation_IsReadonly.SetClassLazy(() => MetaOperation);
 			MetaOperation_IsReadonly.DefaultValue = null;
 			// MetaOperation_IsReadonly.IsContainment = null;
-			MetaOperation_Parameters.SetTypeLazy(() => __tmp47);
+			MetaOperation_Parameters.SetTypeLazy(() => __tmp46);
 			MetaOperation_Parameters.Documentation = "";
 			MetaOperation_Parameters.Name = "Parameters";
 			// MetaOperation_Parameters.Kind = null;
@@ -8956,7 +9195,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			// MetaOperation_ReturnType.IsContainment = null;
 			__tmp34.Documentation = "";
 			__tmp34.Name = "ConformsTo";
-			__tmp34.SetParentLazy(() => MetaOperation);
+			__tmp34.SetClassLazy(() => MetaOperation);
 			// __tmp34.IsBuilder = null;
 			// __tmp34.IsReadonly = null;
 			__tmp34.Parameters.AddLazy(() => __tmp50);
@@ -8986,8 +9225,8 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			MetaPropertyKind.EnumLiterals.AddLazy(() => __tmp35);
 			MetaPropertyKind.EnumLiterals.AddLazy(() => __tmp36);
 			MetaPropertyKind.EnumLiterals.AddLazy(() => __tmp37);
-			MetaPropertyKind.EnumLiterals.AddLazy(() => __tmp38);
-			MetaPropertyKind.EnumLiterals.AddLazy(() => __tmp39);
+			MetaPropertyKind.EnumLiterals.AddLazy(() => __tmp40);
+			MetaPropertyKind.EnumLiterals.AddLazy(() => __tmp41);
 			__tmp35.Documentation = "";
 			__tmp35.Name = "Normal";
 			__tmp35.SetEnumLazy(() => MetaPropertyKind);
@@ -8997,12 +9236,12 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			__tmp37.Documentation = "";
 			__tmp37.Name = "Lazy";
 			__tmp37.SetEnumLazy(() => MetaPropertyKind);
-			__tmp38.Documentation = "";
-			__tmp38.Name = "Derived";
-			__tmp38.SetEnumLazy(() => MetaPropertyKind);
-			__tmp39.Documentation = "";
-			__tmp39.Name = "DerivedUnion";
-			__tmp39.SetEnumLazy(() => MetaPropertyKind);
+			__tmp40.Documentation = "";
+			__tmp40.Name = "Derived";
+			__tmp40.SetEnumLazy(() => MetaPropertyKind);
+			__tmp41.Documentation = "";
+			__tmp41.Name = "DerivedUnion";
+			__tmp41.SetEnumLazy(() => MetaPropertyKind);
 			MetaProperty.Documentation = "";
 			MetaProperty.Name = "MetaProperty";
 			MetaProperty.SetNamespaceLazy(() => __tmp4);
@@ -9018,7 +9257,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			MetaProperty.Properties.AddLazy(() => MetaProperty_SubsettingProperties);
 			MetaProperty.Properties.AddLazy(() => MetaProperty_RedefinedProperties);
 			MetaProperty.Properties.AddLazy(() => MetaProperty_RedefiningProperties);
-			MetaProperty.Operations.AddLazy(() => __tmp40);
+			MetaProperty.Operations.AddLazy(() => __tmp42);
 			MetaProperty_Kind.SetTypeLazy(() => MetaPropertyKind);
 			MetaProperty_Kind.Documentation = "";
 			MetaProperty_Kind.Name = "Kind";
@@ -9048,7 +9287,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			MetaProperty_IsContainment.SetClassLazy(() => MetaProperty);
 			MetaProperty_IsContainment.DefaultValue = null;
 			// MetaProperty_IsContainment.IsContainment = null;
-			MetaProperty_OppositeProperties.SetTypeLazy(() => __tmp46);
+			MetaProperty_OppositeProperties.SetTypeLazy(() => __tmp45);
 			MetaProperty_OppositeProperties.Documentation = "";
 			MetaProperty_OppositeProperties.Name = "OppositeProperties";
 			// MetaProperty_OppositeProperties.Kind = null;
@@ -9088,34 +9327,34 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			MetaProperty_RedefiningProperties.DefaultValue = null;
 			// MetaProperty_RedefiningProperties.IsContainment = null;
 			MetaProperty_RedefiningProperties.OppositeProperties.AddLazy(() => MetaProperty_RedefinedProperties);
-			__tmp40.Documentation = "";
-			__tmp40.Name = "ConformsTo";
-			__tmp40.SetParentLazy(() => MetaProperty);
-			// __tmp40.IsBuilder = null;
-			// __tmp40.IsReadonly = null;
-			__tmp40.Parameters.AddLazy(() => __tmp53);
-			__tmp40.SetReturnTypeLazy(() => Bool);
+			__tmp42.Documentation = "";
+			__tmp42.Name = "ConformsTo";
+			__tmp42.SetClassLazy(() => MetaProperty);
+			// __tmp42.IsBuilder = null;
+			// __tmp42.IsReadonly = null;
+			__tmp42.Parameters.AddLazy(() => __tmp53);
+			__tmp42.SetReturnTypeLazy(() => Bool);
 			__tmp53.SetTypeLazy(() => MetaProperty);
 			__tmp53.Documentation = null;
 			__tmp53.Name = "property";
-			__tmp53.SetOperationLazy(() => __tmp40);
+			__tmp53.SetOperationLazy(() => __tmp42);
 			__tmp20.Documentation = "\n\tRepresents the MetaModel.\n\t\r\n";
 			__tmp20.Name = "Meta";
 			__tmp20.Uri = "http://metadslx.core/1.0";
 			__tmp20.Prefix = null;
 			__tmp20.SetNamespaceLazy(() => __tmp4);
 			__tmp28.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp28.SetInnerTypeLazy(() => MetaEnumLiteral);
+			__tmp28.SetInnerTypeLazy(() => MetaAttribute);
 			__tmp29.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp29.SetInnerTypeLazy(() => MetaAttribute);
-			__tmp41.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp41.SetInnerTypeLazy(() => MetaDeclaration);
-			__tmp42.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp42.SetInnerTypeLazy(() => MetaOperation);
+			__tmp29.SetInnerTypeLazy(() => MetaEnumLiteral);
+			__tmp38.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
+			__tmp38.SetInnerTypeLazy(() => MetaOperation);
+			__tmp39.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
+			__tmp39.SetInnerTypeLazy(() => MetaDeclaration);
+			__tmp45.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
+			__tmp45.SetInnerTypeLazy(() => MetaProperty);
 			__tmp46.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp46.SetInnerTypeLazy(() => MetaProperty);
-			__tmp47.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp47.SetInnerTypeLazy(() => MetaParameter);
+			__tmp46.SetInnerTypeLazy(() => MetaParameter);
 			__tmp48.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
 			__tmp48.SetInnerTypeLazy(() => MetaProperty);
 			__tmp49.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
@@ -9319,18 +9558,21 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		/// Direct superclasses: 
 		/// <ul>
 		///     <li>MetaType</li>
-		///     <li>MetaNamedElement</li>
+		///     <li>MetaDeclaration</li>
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
 		///     <li>MetaElement</li>
 		///     <li>MetaDocumentedElement</li>
 		///     <li>MetaNamedElement</li>
+		///     <li>MetaDeclaration</li>
 		///     <li>MetaType</li>
 		/// </ul>
 		public virtual void MetaNamedType(MetaNamedTypeBuilder _this)
 		{
 			this.CallMetaNamedTypeSuperConstructors(_this);
+			_this.SetFullNameLazy(this.MetaDeclaration_ComputeProperty_FullName);
+			_this.SetMetaModelLazy(this.MetaDeclaration_ComputeProperty_MetaModel);
 		}
 	
 		/// <summary>
@@ -9341,6 +9583,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			this.MetaElement(_this);
 			this.MetaDocumentedElement(_this);
 			this.MetaNamedElement(_this);
+			this.MetaDeclaration(_this);
 			this.MetaType(_this);
 		}
 	
@@ -9603,16 +9846,16 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		/// </summary>
 		/// Direct superclasses: 
 		/// <ul>
-		///     <li>MetaDeclaration</li>
-		///     <li>MetaType</li>
+		///     <li>MetaNamedType</li>
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
 		///     <li>MetaElement</li>
 		///     <li>MetaDocumentedElement</li>
 		///     <li>MetaNamedElement</li>
-		///     <li>MetaType</li>
 		///     <li>MetaDeclaration</li>
+		///     <li>MetaType</li>
+		///     <li>MetaNamedType</li>
 		/// </ul>
 		public virtual void MetaPrimitiveType(MetaPrimitiveTypeBuilder _this)
 		{
@@ -9629,8 +9872,9 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			this.MetaElement(_this);
 			this.MetaDocumentedElement(_this);
 			this.MetaNamedElement(_this);
-			this.MetaType(_this);
 			this.MetaDeclaration(_this);
+			this.MetaType(_this);
+			this.MetaNamedType(_this);
 		}
 	
 	
@@ -9658,16 +9902,16 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		/// </summary>
 		/// Direct superclasses: 
 		/// <ul>
-		///     <li>MetaDeclaration</li>
-		///     <li>MetaType</li>
+		///     <li>MetaNamedType</li>
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
 		///     <li>MetaElement</li>
 		///     <li>MetaDocumentedElement</li>
 		///     <li>MetaNamedElement</li>
-		///     <li>MetaType</li>
 		///     <li>MetaDeclaration</li>
+		///     <li>MetaType</li>
+		///     <li>MetaNamedType</li>
 		/// </ul>
 		public virtual void MetaEnum(MetaEnumBuilder _this)
 		{
@@ -9684,8 +9928,9 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			this.MetaElement(_this);
 			this.MetaDocumentedElement(_this);
 			this.MetaNamedElement(_this);
-			this.MetaType(_this);
 			this.MetaDeclaration(_this);
+			this.MetaType(_this);
+			this.MetaNamedType(_this);
 		}
 	
 	
@@ -9738,18 +9983,18 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		/// </summary>
 		/// Direct superclasses: 
 		/// <ul>
-		///     <li>MetaDeclaration</li>
+		///     <li>MetaNamedType</li>
 		///     <li>MetaTypedElement</li>
-		///     <li>MetaType</li>
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
 		///     <li>MetaDocumentedElement</li>
-		///     <li>MetaElement</li>
 		///     <li>MetaNamedElement</li>
+		///     <li>MetaElement</li>
+		///     <li>MetaDeclaration</li>
 		///     <li>MetaType</li>
 		///     <li>MetaTypedElement</li>
-		///     <li>MetaDeclaration</li>
+		///     <li>MetaNamedType</li>
 		/// </ul>
 		/// Initializes the following readonly properties:
 		/// <ul>
@@ -9768,11 +10013,12 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		protected virtual void CallMetaConstantSuperConstructors(MetaConstantBuilder _this)
 		{
 			this.MetaDocumentedElement(_this);
-			this.MetaElement(_this);
 			this.MetaNamedElement(_this);
+			this.MetaElement(_this);
+			this.MetaDeclaration(_this);
 			this.MetaType(_this);
 			this.MetaTypedElement(_this);
-			this.MetaDeclaration(_this);
+			this.MetaNamedType(_this);
 		}
 	
 	
@@ -9800,16 +10046,16 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		/// </summary>
 		/// Direct superclasses: 
 		/// <ul>
-		///     <li>MetaDeclaration</li>
-		///     <li>MetaType</li>
+		///     <li>MetaNamedType</li>
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
 		///     <li>MetaElement</li>
 		///     <li>MetaDocumentedElement</li>
 		///     <li>MetaNamedElement</li>
-		///     <li>MetaType</li>
 		///     <li>MetaDeclaration</li>
+		///     <li>MetaType</li>
+		///     <li>MetaNamedType</li>
 		/// </ul>
 		public virtual void MetaClass(MetaClassBuilder _this)
 		{
@@ -9826,8 +10072,9 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			this.MetaElement(_this);
 			this.MetaDocumentedElement(_this);
 			this.MetaNamedElement(_this);
-			this.MetaType(_this);
 			this.MetaDeclaration(_this);
+			this.MetaType(_this);
+			this.MetaNamedType(_this);
 		}
 	
 	

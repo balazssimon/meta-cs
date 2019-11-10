@@ -11,6 +11,7 @@
     <ApplyNgenOptimization>partial</ApplyNgenOptimization>
     <LangVersion>preview</LangVersion>
     <IsPackable>false</IsPackable>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <ApplicationIcon />
     <Win32Resource />
   </PropertyGroup>
