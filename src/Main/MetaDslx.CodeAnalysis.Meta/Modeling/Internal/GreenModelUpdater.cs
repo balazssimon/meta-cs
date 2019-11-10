@@ -883,7 +883,7 @@ namespace MetaDslx.Modeling.Internal
                     this.MakeException(Location.None, ModelErrorCode.ERR_CannotChangeDerivedProperty, slot, objectRef.Id);
                     return false;
                 }
-                if (slot.IsReadonly && !slot.IsDerivedUnion)
+                if (slot.IsReadonly)
                 {
                     this.MakeException(Location.None, ModelErrorCode.ERR_CannotChangeReadOnlyProperty, slot, objectRef.Id);
                     return false;
@@ -1127,7 +1127,7 @@ namespace MetaDslx.Modeling.Internal
                 {
                     this.MakeException(Location.None, ModelErrorCode.ERR_CannotChangeDerivedProperty, slot, oid);
                 }
-                if (slot.IsReadonly && !slot.IsDerivedUnion)
+                if (slot.IsReadonly)
                 {
                     this.MakeException(Location.None, ModelErrorCode.ERR_CannotChangeReadOnlyProperty, slot, oid);
                 }
@@ -1253,7 +1253,7 @@ namespace MetaDslx.Modeling.Internal
                 {
                     this.MakeException(Location.None, ModelErrorCode.ERR_CannotChangeDerivedProperty, slot, oid);
                 }
-                if (slot.IsReadonly && !slot.IsDerivedUnion)
+                if (slot.IsReadonly)
                 {
                     this.MakeException(Location.None, ModelErrorCode.ERR_CannotChangeReadOnlyProperty, slot, oid);
                 }
@@ -1296,12 +1296,12 @@ namespace MetaDslx.Modeling.Internal
                 {
                     if (!subsettingSlot.IsDerived)
                     {
-                        this.SlowRemoveValueCore(mid, oid, subsettingSlot, true, reassign, -1, removeAll, value, valueRemovedFromSelf, valueRemovedFromOpposite);
+                        this.SlowRemoveValueCore(mid, oid, subsettingSlot, true, reassign || subsettingSlot.IsDerivedUnion, -1, removeAll, value, valueRemovedFromSelf, valueRemovedFromOpposite);
                     }
                 }
                 foreach (var subsettedSlot in slot.DerivedUnionSlots)
                 {
-                    this.SlowRemoveValueCore(mid, oid, subsettedSlot, false, reassign, -1, removeAll, value, valueRemovedFromSelf, valueRemovedFromOpposite);
+                    this.SlowRemoveValueCore(mid, oid, subsettedSlot, false, true, -1, removeAll, value, valueRemovedFromSelf, valueRemovedFromOpposite);
                 }
             }
             // Updating opposite properties:
