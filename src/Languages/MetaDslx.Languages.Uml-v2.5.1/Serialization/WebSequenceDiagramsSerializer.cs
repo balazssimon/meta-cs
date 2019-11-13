@@ -128,6 +128,7 @@ namespace MetaDslx.Languages.Uml.Serialization
             var lexer = new WebSequenceDiagramsLexer(stream);
             lexer.RemoveErrorListeners();
             var lifelines = new Dictionary<string, LifelineBuilder>();
+            var lifelineAliases = new Dictionary<string, string>();
             var combinedFragments = new Stack<CombinedFragmentBuilder>();
             var interactionOperands = new Stack<InteractionOperandBuilder>();
             InteractionUseBuilder reference = null;
@@ -187,12 +188,12 @@ namespace MetaDslx.Languages.Uml.Serialization
                 else if (line.StartsWith("participant ") || line == "participant")
                 {
                     string name = GetText(line.Substring(11).Trim());
-                    GetLifeline(name, lifelines, interaction, i);
+                    GetLifeline(name, true, lifelines, lifelineAliases, interaction, i);
                 }
                 else if (line.StartsWith("destroy ") || line == "destroy")
                 {
                     string name = GetText(line.Substring(7).Trim());
-                    var lifeline = GetLifeline(name, lifelines, interaction, i);
+                    var lifeline = GetLifeline(name, false, lifelines, lifelineAliases, interaction, i);
                     var destroy = _factory.DestructionOccurrenceSpecification();
                     destroy.Covered = lifeline;
                     if (currentInteraction != null) currentInteraction.Fragment.Add(destroy);
@@ -331,7 +332,7 @@ namespace MetaDslx.Languages.Uml.Serialization
                             var token = tokens[j];
                             if (token.Type == WebSequenceDiagramsLexer.TColon || token.Type == WebSequenceDiagramsLexer.TComma)
                             {
-                                var covered = GetLifeline(GetText(refLifelineNameSb.ToString()), lifelines, interaction, i);
+                                var covered = GetLifeline(GetText(refLifelineNameSb.ToString()), false, lifelines, lifelineAliases, interaction, i);
                                 reference.Covered.Add(covered);
                                 if (token.Type == WebSequenceDiagramsLexer.TColon) break;
                             }
@@ -485,7 +486,7 @@ namespace MetaDslx.Languages.Uml.Serialization
                                     var token = tokens[j];
                                     if (token.Type == WebSequenceDiagramsLexer.TColon || token.Type == WebSequenceDiagramsLexer.TComma)
                                     {
-                                        var covered = GetLifeline(GetText(refLifelineNameSb.ToString()), lifelines, interaction, i);
+                                        var covered = GetLifeline(GetText(refLifelineNameSb.ToString()), false, lifelines, lifelineAliases, interaction, i);
                                         reference.Covered.Add(covered);
                                         if (token.Type == WebSequenceDiagramsLexer.TColon) break;
                                     }
@@ -509,8 +510,8 @@ namespace MetaDslx.Languages.Uml.Serialization
                         }
                         else
                         {
-                            var source = GetLifeline(sourceName, lifelines, interaction, i);
-                            var target = GetLifeline(targetName, lifelines, interaction, i);
+                            var source = GetLifeline(sourceName, false, lifelines, lifelineAliases, interaction, i);
+                            var target = GetLifeline(targetName, false, lifelines, lifelineAliases, interaction, i);
                             var message = _factory.Message();
                             interaction.Message.Add(message);
                             message.MessageSort = messageSort;
@@ -607,12 +608,30 @@ namespace MetaDslx.Languages.Uml.Serialization
             return text.Substring(startIndex, endIndex - startIndex);
         }
 
-        private LifelineBuilder GetLifeline(string name, Dictionary<string, LifelineBuilder> lifelines, InteractionBuilder interaction, int lineIndex)
+        private LifelineBuilder GetLifeline(string name, bool participantLine, Dictionary<string, LifelineBuilder> lifelines, Dictionary<string, string> lifelineAliases, InteractionBuilder interaction, int lineIndex)
         {
+            string objectName = name;
+            string typeName = null;
+            string id = null;
+            int asIndex = name.IndexOf(" as ");
+            if (participantLine && asIndex >= 0)
+            {
+                id = GetText(name.Substring(asIndex + 4));
+                name = GetText(name.Substring(0, asIndex));
+                if (lifelineAliases.TryGetValue(id, out var idToName))
+                {
+                    if (name != idToName)
+                    {
+                        AddError(lineIndex, 0, $"Lifeline alias '{id}' is already registered for lifeline '{idToName}'.");
+                    }
+                }
+            }
+            else if (lifelineAliases.TryGetValue(name, out var existingName))
+            {
+                name = existingName;
+            }
             if (!lifelines.TryGetValue(name, out var lifeline))
             {
-                string objectName = name;
-                string typeName = null;
                 int colonIndex = name.IndexOf(':');
                 if (colonIndex >= 0)
                 {
@@ -625,7 +644,8 @@ namespace MetaDslx.Languages.Uml.Serialization
                     typeName = name;
                 }
                 lifeline = _factory.Lifeline();
-                lifeline.Name = objectName;
+                if (!string.IsNullOrWhiteSpace(objectName)) lifeline.Name = objectName;
+                else lifeline.Name = name;
                 interaction.Lifeline.Add(lifeline);
                 lifelines.Add(name, lifeline);
                 var type = !string.IsNullOrWhiteSpace(typeName) ? _model.Objects.OfType<TypeBuilder>().Where(t => t.Name == typeName).FirstOrDefault() : null;
@@ -646,6 +666,10 @@ namespace MetaDslx.Languages.Uml.Serialization
                 else if (type == null)
                 {
                     this.AddError(lineIndex, 0, string.Format("Type '{0}' does not exist in the Class Diagram.", typeName));
+                }
+                if (id != null)
+                {
+                    lifelineAliases.Add(id, name);
                 }
             }
             return lifeline;

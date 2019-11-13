@@ -2,6 +2,7 @@
 using MetaDslx.Languages.Uml.Serialization;
 using Microsoft.CodeAnalysis;
 using System;
+using System.Collections.Immutable;
 using System.Linq;
 
 namespace UmlExample
@@ -19,21 +20,30 @@ namespace UmlExample
             xmiSerializer.WriteModelToFile("../../../PrimitiveTypes2.xmi", model);*/
             UmlDescriptor.Initialize();
             var umlSerializer = new WhiteStarUmlSerializer();
-            var model = umlSerializer.ReadModelFromFile("../../../Potyogos.uml", out var diagnostics);
+            var model = umlSerializer.ReadModelFromFile("../../../potyogos.uml", out var diagnostics);
             //var model = umlSerializer.ReadModelFromFile("../../../Async.uml", out var diagnostics);
             DiagnosticFormatter df = new DiagnosticFormatter();
+            if (diagnostics.Any(d => d.Severity == DiagnosticSeverity.Error))
+            {
+                diagnostics = diagnostics.Where(d => d.Severity == DiagnosticSeverity.Error).ToImmutableArray();
+            }
             for (int i = 0; i < 10 && i < diagnostics.Length; i++)
             {
                 Console.WriteLine(df.Format(diagnostics[i]));
             }
             Console.WriteLine(model);
-            /*var wsdSerializer = new WebSequenceDiagramsSerializer();
-            var wsdModel = wsdSerializer.ReadModelFromFile(new string[] { "../../../test2.wsd" }, model, out diagnostics);
+            var wsdSerializer = new WebSequenceDiagramsSerializer();
+            var wsdModel = wsdSerializer.ReadModelFromFile(new string[] { "../../../5.1.2.txt" }, model, out diagnostics);
+            if (diagnostics.Any(d => d.Severity == DiagnosticSeverity.Error))
+            {
+                diagnostics = diagnostics.Where(d => d.Severity == DiagnosticSeverity.Error).ToImmutableArray();
+            }
             for (int i = 0; i < 10 && i < diagnostics.Length; i++)
             {
                 Console.WriteLine(df.Format(diagnostics[i]));
             }
-            Console.WriteLine(wsdModel);*/
+            Console.WriteLine(wsdModel);
+            model = wsdModel;
             var xmiSerializer = new UmlXmiSerializer();
             //xmiSerializer.WriteModelToFile("../../../pacman.xmi", model);
             //xmiSerializer.WriteModelToFile("../../../Async.xmi", model);

@@ -129,6 +129,7 @@ namespace MetaDslx.Languages.Uml.Serialization
         public void ReadModel()
         {
             this.CreateObjects();
+            if (_body == null) return;
             this.ReadObjects();
             this.ReadSequenceViews();
             this.PostProcessObjects();
@@ -140,13 +141,21 @@ namespace MetaDslx.Languages.Uml.Serialization
 
         private void CreateObjects()
         {
-            var document = XDocument.Parse(_umlCode, LoadOptions.SetBaseUri | LoadOptions.SetLineInfo);
-            var root = document.Root;
-            if (root.Name.LocalName != "PROJECT" || root.Name.Namespace != _whiteStarUmlNamespace)
+            XElement root = null;
+            try
             {
-                this.AddError(root, "The root must be an xpd:PROJECT tag.");
+                var document = XDocument.Parse(_umlCode, LoadOptions.SetBaseUri | LoadOptions.SetLineInfo);
+                root = document.Root;
+                if (root.Name.LocalName != "PROJECT" || root.Name.Namespace != _whiteStarUmlNamespace)
+                {
+                    this.AddError(root, "The root must be an xpd:PROJECT tag.");
+                }
+                _body = root.Element(_whiteStarUmlNamespace + "BODY");
             }
-            _body = root.Element(_whiteStarUmlNamespace + "BODY");
+            catch(XmlException ex)
+            {
+                this.AddError(root, "Invalid XML file: "+ ex.Message);
+            }
             if (_body != null)
             {
                 this.CreateObject(_body, null);
@@ -159,14 +168,13 @@ namespace MetaDslx.Languages.Uml.Serialization
 
         private void ReadObjects()
         {
-            if (_body != null)
-            {
-                this.ReadObject(_body, null);
-            }
+            if (_body == null) return;
+            this.ReadObject(_body, null);
         }
 
         private void ReadSequenceViews()
         {
+            if (_body == null) return;
             var viewTypes = new HashSet<string>() { "UMLSeqStimulusView", "UMLSeqObjectView", "UMLCombinedFragmentView", "UMLInteractionOperandView" };
             var interactionElements = _body.Descendants(_whiteStarUmlNamespace + "OBJ").Where(e => e.Attribute("type")?.Value == "UMLInteractionInstanceSet");
             foreach (var interactionElement in interactionElements)
@@ -229,7 +237,21 @@ namespace MetaDslx.Languages.Uml.Serialization
                                         var heightString = heightElement?.Value;
                                         if (topString != null && heightString != null && int.TryParse(topString, out int top) && int.TryParse(heightString, out int height))
                                         {
-                                            sequenceViews.Add(seqObj, (top, top + height));
+                                            if (sequenceViews.ContainsKey(seqObj))
+                                            {
+                                                if (seqObj is LifelineBuilder)
+                                                {
+                                                    AddError(seqIdElement, "Duplicate lifeline '"+seqObj.MName+"' in interaction '"+ interaction.Name + "'");
+                                                }
+                                                else
+                                                {
+                                                    AddError(seqIdElement, "Duplicate element '" + seqObj.MName + "' in interaction '" + interaction.Name + "'");
+                                                }
+                                            }
+                                            else
+                                            {
+                                                sequenceViews.Add(seqObj, (top, top + height));
+                                            }
                                         }
                                     }
                                 }
@@ -298,13 +320,21 @@ namespace MetaDslx.Languages.Uml.Serialization
                                 }
                                 if (view.Key is CombinedFragmentBuilder combinedFragment)
                                 {
-                                    if (currentFragment != null)
+                                    if (combinedFragment.MParent == null)
                                     {
-                                        currentFragment.Fragment.Add(combinedFragment);
+                                        if (currentFragment != null)
+                                        {
+                                            currentFragment.Fragment.Add(combinedFragment);
+                                        }
+                                        else
+                                        {
+                                            interaction.Fragment.Add(combinedFragment);
+                                        }
                                     }
                                     else
                                     {
-                                        interaction.Fragment.Add(combinedFragment);
+                                        var location = ResolveElementByObject((MutableObjectBase)combinedFragment, null);
+                                        AddError(location, "Error importing combined fragments in the interaction called '"+interaction.Name+"'. The combined fragments are not properly nested.");
                                     }
                                 }
                                 else if (view.Key is InteractionOperandBuilder interactionOperand)
@@ -1239,7 +1269,8 @@ namespace MetaDslx.Languages.Uml.Serialization
         };
         private static readonly HashSet<string> UmlTypeMustHaveView = new HashSet<string>()
         {
-            "UseCase", "Actor", "Class", "Interface", "Enumeration", "Lifeline", "Message", "CombinedFragment", "Include", "Association", "Generalization"
+            "UseCase", "Actor", "Class", "Interface", "Enumeration", "Lifeline", "Message", "CombinedFragment", "Include", "Extend",
+            "Association", "Generalization", "Realization", "Dependency"
         };
         private static readonly Dictionary<string, string> UmlTypeMap = new Dictionary<string, string>()
         {
@@ -1281,6 +1312,7 @@ namespace MetaDslx.Languages.Uml.Serialization
             "Package.StereotypeName",
             "CombinedFragment.EnclosingInteractionInstanceSet",
             "CombinedFragment.StereotypeName",
+            "CombinedFragment.EnclosingOperand",
             "Interaction.Context",
             "Interaction.InteractionInstanceSet",
             "Interaction.FrameKind",
@@ -1288,6 +1320,7 @@ namespace MetaDslx.Languages.Uml.Serialization
             "Interaction.Fragments",
             "Interaction.ParticipatingInstances",
             "InteractionOperand.Fragments",
+            "InteractionOperand.CombinedFragment",
             "Lifeline.Classifier",
             "Lifeline.SendingStimuli",
             "Lifeline.ReceivingStimuli",
