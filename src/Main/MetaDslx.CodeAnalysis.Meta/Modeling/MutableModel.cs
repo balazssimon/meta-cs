@@ -1111,13 +1111,14 @@ namespace MetaDslx.Modeling
             }
         }
 
-        public void Validate(DiagnosticBag diagnostics, CancellationToken cancellationToken = default)
+        public bool Validate(DiagnosticBag diagnostics, CancellationToken cancellationToken = default)
         {
             foreach (var obj in this.Objects)
             {
-                if (cancellationToken.IsCancellationRequested) return;
+                if (cancellationToken.IsCancellationRequested) return false;
                 obj.MValidate(diagnostics, cancellationToken);
             }
+            return !diagnostics.HasAnyErrors();
         }
 
         public void PurgeWeakObjects()
