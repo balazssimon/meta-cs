@@ -603,8 +603,11 @@ namespace MetaDslx.Languages.Uml.Serialization
             text = text.Trim();
             int startIndex = 0;
             int endIndex = text.Length;
-            if (text.StartsWith("\"")) startIndex = 1;
-            if (text.EndsWith("\"")) endIndex = text.Length - 1;
+            if (text.StartsWith("\"") && text.EndsWith("\""))
+            {
+                startIndex = 1;
+                endIndex = text.Length - 1;
+            }
             return text.Substring(startIndex, endIndex - startIndex);
         }
 
@@ -648,11 +651,9 @@ namespace MetaDslx.Languages.Uml.Serialization
                 else lifeline.Name = name;
                 interaction.Lifeline.Add(lifeline);
                 lifelines.Add(name, lifeline);
-                var type = !string.IsNullOrWhiteSpace(typeName) ? _model.Objects.OfType<TypeBuilder>().Where(t => t.Name == typeName).FirstOrDefault() : null;
-                if (type == null && !string.IsNullOrWhiteSpace(typeName))
-                {
-                    type = _model.Objects.OfType<TypeBuilder>().Where(t => typeName.Equals(t.Name, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
-                }
+                TypeBuilder type = this.GetType<ClassBuilder>(typeName);
+                if (type == null) type = this.GetType<InterfaceBuilder>(typeName);
+                if (type == null) type = this.GetType<EnumerationBuilder>(typeName);
                 var lifelineProp = _factory.Property();
                 lifelineProp.Name = lifeline.Name;
                 _collaboration.OwnedAttribute.Add(lifelineProp);
@@ -675,5 +676,15 @@ namespace MetaDslx.Languages.Uml.Serialization
             return lifeline;
         }
 
+        private TypeBuilder GetType<TType>(string typeName)
+            where TType: class, TypeBuilder
+        {
+            var type = !string.IsNullOrWhiteSpace(typeName) ? _model.Objects.OfType<TType>().Where(t => t.Name == typeName).FirstOrDefault() : null;
+            if (type == null && !string.IsNullOrWhiteSpace(typeName))
+            {
+                type = _model.Objects.OfType<TType>().Where(t => typeName.Equals(t.Name, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+            }
+            return type;
+        }
     }
 }
