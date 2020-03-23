@@ -1,0 +1,63 @@
+﻿<Window x:Class="WpfDiagramDesigner.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfDiagramDesigner"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800" Loaded="Window_Loaded" PreviewMouseRightButtonDown="Window_PreviewMouseRightButtonDown" MouseMove="Window_MouseMove" MouseRightButtonUp="Window_MouseRightButtonUp" LostMouseCapture="Window_LostMouseCapture" PreviewMouseWheel="Window_PreviewMouseWheel" SizeChanged="Window_SizeChanged" >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Ribbon x:Name="Ribbon" Title="Ribbon Title" Margin="0,-22,0,0">
+            <Ribbon.HelpPaneContent>
+                <RibbonButton x:Name="Help" />
+            </Ribbon.HelpPaneContent>
+            <Ribbon.QuickAccessToolBar>
+                <RibbonQuickAccessToolBar >
+                    <RibbonButton x:Name="QATButton1" />
+                    <RibbonButton x:Name="QATButton2" />
+                </RibbonQuickAccessToolBar>
+            </Ribbon.QuickAccessToolBar>
+            <Ribbon.ApplicationMenu>
+                <RibbonApplicationMenu >
+                    <RibbonApplicationMenuItem Header="Hello _Ribbon"
+                                                      x:Name="MenuItem1"/>
+                </RibbonApplicationMenu>
+            </Ribbon.ApplicationMenu>
+            <RibbonTab x:Name="HomeTab" 
+                              Header="Home">
+                <RibbonGroup x:Name="Group1" 
+                                    Header="Group1">
+                    <RibbonButton x:Name="Button1"
+                                         Label="Button1" SmallImageSource="c:\Users\Balazs\source\repos\meta-cs\src\Experiments\WpfDiagramDesigner\Images\ic_folder_open_black_24dp.png"/>
+                    <RibbonButton x:Name="Button2"
+                                         Label="Button2" SmallImageSource="c:\Users\Balazs\source\repos\meta-cs\src\Experiments\WpfDiagramDesigner\Images\ic_folder_open_black_24dp.png"/>
+                    <RibbonButton x:Name="Button3"
+                                         Label="Button3" SmallImageSource="c:\Users\Balazs\source\repos\meta-cs\src\Experiments\WpfDiagramDesigner\Images\ic_folder_open_black_24dp.png"/>
+                    <RibbonButton x:Name="Button4"
+                                         Label="Button4" SmallImageSource="c:\Users\Balazs\source\repos\meta-cs\src\Experiments\WpfDiagramDesigner\Images\ic_folder_open_black_24dp.png"/>
+                </RibbonGroup>
+            </RibbonTab>
+            <RibbonTab x:Name="FormatTab" 
+                              Header="Format">
+                <RibbonGroup x:Name="Group2" 
+                                    Header="Group2">
+                    <RibbonButton x:Name="Button5"
+                                         Label="Button1" SmallImageSource="c:\Users\Balazs\source\repos\meta-cs\src\Experiments\WpfDiagramDesigner\Images\ic_folder_open_black_24dp.png"/>
+                    <RibbonButton x:Name="Button6"
+                                         Label="Button2" SmallImageSource="c:\Users\Balazs\source\repos\meta-cs\src\Experiments\WpfDiagramDesigner\Images\ic_folder_open_black_24dp.png"/>
+                    <RibbonButton x:Name="Button7"
+                                         Label="Button3" SmallImageSource="c:\Users\Balazs\source\repos\meta-cs\src\Experiments\WpfDiagramDesigner\Images\ic_folder_open_black_24dp.png"/>
+                    <RibbonButton x:Name="Button8"
+                                         Label="Button4" SmallImageSource="c:\Users\Balazs\source\repos\meta-cs\src\Experiments\WpfDiagramDesigner\Images\ic_folder_open_black_24dp.png"/>
+                </RibbonGroup>
+            </RibbonTab>
+        </Ribbon>
+        <ScrollViewer x:Name="ScrollViewer" Grid.Row="1" Background="#FDFDF5"  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" >
+            <local:DiagramVisualHost x:Name="Graph" />
+        </ScrollViewer>        
+    </Grid>
+</Window>

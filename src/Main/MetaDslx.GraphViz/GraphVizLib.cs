@@ -73,6 +73,15 @@ namespace MetaDslx.GraphViz
         [DllImport(CGraphDll, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.StdCall)]
         public static extern Agraph_t agsubg(Agraph_t g, string name, bool cflag);
 
+        [DllImport(CGraphDll, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.StdCall)]
+        public static extern long agdelsubg(Agraph_t g, Agraph_t sub);
+
+        [DllImport(CGraphDll, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.StdCall)]
+        public static extern int agdelnode(Agraph_t g, Agnode_t arg_n);
+
+        [DllImport(CGraphDll, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.StdCall)]
+        public static extern int agdeledge(Agraph_t g, Agedge_t arg_e);
+
     }
 
     internal class GraphVizLib : IDisposable
