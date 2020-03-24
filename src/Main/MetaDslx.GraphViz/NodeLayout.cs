@@ -1,16 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Text;
 
 namespace MetaDslx.GraphViz
 {
     public class NodeLayout
     {
+        private static int SubGraphCounter = 0;
+
         private GraphLayout _graph;
         private NodeLayout _parentNode;
         private bool _isSubGraph;
         private object _nodeObject;
         private IntPtr _graphVizNode;
+        private IntPtr _graphVizSubGraph;
         private Point2D? _preferredPosition;
         private Point2D? _preferredSize;
         private List<NodeLayout> _nodes;
@@ -22,13 +27,24 @@ namespace MetaDslx.GraphViz
             _parentNode = parent;
             if (parent != null)
             {
+                Debug.Assert(parent.IsSubGraph);
                 _graph = parent.Graph;
-                if (_isSubGraph) _graphVizNode = CGraphLib.agsubg(parent.GraphVizNode, null, true);
-                else _graphVizNode = CGraphLib.agnode(parent.GraphVizNode, null, true);
+                if (_isSubGraph) _graphVizSubGraph = CGraphLib.agsubg(parent.GraphVizSubGraph, "cluster"+(++SubGraphCounter), true);
+                else _graphVizSubGraph = parent.GraphVizSubGraph;
+                if (!_isSubGraph) _graphVizNode = CGraphLib.agnode(_graphVizSubGraph, null, true);
+                //else _graphVizNode = _graphVizSubGraph;
+                /*if (_isSubGraph)
+                {
+                    CGraphLib.agxset(_graphVizNode, _graph._nodeWidthAttribute, "0");
+                    CGraphLib.agxset(_graphVizNode, _graph._nodeHeightAttribute, "0");
+                    CGraphLib.agxset(_graphVizNode, _graph._nodeStyleAttribute, "invis");
+                }*/
             }
             else
             {
                 _graph = (GraphLayout)this;
+                _graphVizSubGraph = CGraphLib.agopen(null, Agdesc_t.none, IntPtr.Zero);
+                _graphVizNode = CGraphLib.agnode(_graphVizSubGraph, null, true);
             }
         }
 
@@ -37,7 +53,8 @@ namespace MetaDslx.GraphViz
         public bool IsSubGraph => _isSubGraph;
         public object NodeObject => _nodeObject;
         internal virtual IntPtr GraphVizNode => _graphVizNode;
-        public IEnumerable<NodeLayout> Nodes => _nodes;
+        internal virtual IntPtr GraphVizSubGraph => _graphVizSubGraph;
+        public IEnumerable<NodeLayout> Nodes => (IEnumerable<NodeLayout>)_nodes ?? ImmutableArray<NodeLayout>.Empty;
 
         public Point2D? PreferredPosition
         {

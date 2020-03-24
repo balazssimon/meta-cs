@@ -162,13 +162,38 @@ namespace MetaDslx.GraphViz
         [DllImport(GvcDll, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.StdCall)]
         private static extern int gvFreeContext(GVC_t gvc);
 
-        public void Layout(Agraph_t graph, string engine)
+        [DllImport(GvcDll, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.StdCall)]
+        private static extern int gvRenderData(GVC_t gvc, Agraph_t g, string format, ref IntPtr result, ref uint length);
+
+        [DllImport(GvcDll, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.StdCall)]
+        private static extern int gvFreeRenderData(IntPtr data);
+
+        public string Layout(Agraph_t graph, string engine)
         {
             lock (LockObject)
             {
                 gvLayout(gvc, graph, engine);
                 attach_attrs(graph);
+                IntPtr data = IntPtr.Zero;
+                uint length = 0;
+                gvRenderData(gvc, graph, "dot", ref data, ref length);
+                var result = Marshal.PtrToStringAnsi(data);
+                gvFreeRenderData(data);
                 gvFreeLayout(gvc, graph);
+                return result;
+            }
+        }
+
+        public string ToString(Agraph_t graph, string format)
+        {
+            lock (LockObject)
+            {
+                IntPtr data = IntPtr.Zero;
+                uint length = 0;
+                gvRenderData(gvc, graph, format, ref data, ref length);
+                var result = Marshal.PtrToStringAnsi(data);
+                gvFreeRenderData(data);
+                return result;
             }
         }
     }

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfDiagramDesigner"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" Loaded="Window_Loaded" PreviewMouseRightButtonDown="Window_PreviewMouseRightButtonDown" MouseMove="Window_MouseMove" MouseRightButtonUp="Window_MouseRightButtonUp" LostMouseCapture="Window_LostMouseCapture" PreviewMouseWheel="Window_PreviewMouseWheel" SizeChanged="Window_SizeChanged" >
+        Title="MainWindow" Height="450" Width="800" >
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -56,8 +56,6 @@
                 </RibbonGroup>
             </RibbonTab>
         </Ribbon>
-        <ScrollViewer x:Name="ScrollViewer" Grid.Row="1" Background="#FDFDF5"  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" >
-            <local:DiagramVisualHost x:Name="Graph" />
-        </ScrollViewer>        
+        <local:DiagramView x:Name="DiagramView" Grid.Row="1" />
     </Grid>
 </Window>

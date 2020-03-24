@@ -8,7 +8,7 @@ namespace MetaDslx.GraphViz
 {
     public class GraphLayout : NodeLayout, IDisposable
     {
-        public const double DefaultDpi = 18;
+        public const double DefaultDpi = 72;
 
         private string _engine;
         private object _graphObject;
@@ -17,42 +17,53 @@ namespace MetaDslx.GraphViz
 
         private IntPtr _graph;
 
-        private IntPtr _graphDpiAttribute;
-        private IntPtr _graphBbAttribute;
+        //private IntPtr _graphDpiAttribute;
+        internal IntPtr _graphBbAttribute;
+        internal IntPtr _graphRankSepAttribute;
+        internal IntPtr _graphNodeSepAttribute;
+        internal IntPtr _graphLenAttribute;
 
-        private IntPtr _nodeWidthAttribute;
-        private IntPtr _nodeHeightAttribute;
-        private IntPtr _nodeShapeAttribute;
-        private IntPtr _nodePosAttribute;
+        internal IntPtr _nodeWidthAttribute;
+        internal IntPtr _nodeHeightAttribute;
+        internal IntPtr _nodeShapeAttribute;
+        internal IntPtr _nodePosAttribute;
+        internal IntPtr _nodeStyleAttribute;
 
-        private IntPtr _edgePosAttribute;
+        internal IntPtr _edgePosAttribute;
+        internal IntPtr _edgeDirAttribute;
 
         private bool _dirty;
+
+        private string _dot;
 
         public GraphLayout(string engine, object graphObject = null) 
             : base(null, graphObject, true)
         {
+            _graph = this.GraphVizSubGraph;
             _dirty = true;
             _engine = engine;
             _graphObject = graphObject;
             _objectToNodeMap = new Dictionary<object, NodeLayout>();
             _objectToEdgeMap = new Dictionary<object, EdgeLayout>();
-            _graph = CGraphLib.agopen(null, Agdesc_t.directed, IntPtr.Zero);
 
+            //_graphDpiAttribute = CGraphLib.agattr(_graph, CGraphLib.AGRAPH, "dpi", "72");
             _graphBbAttribute = CGraphLib.agattr(_graph, CGraphLib.AGRAPH, "bb", "");
-            _graphDpiAttribute = CGraphLib.agattr(_graph, CGraphLib.AGRAPH, "dpi", "1");
+            _graphRankSepAttribute = CGraphLib.agattr(_graph, CGraphLib.AGRAPH, "ranksep", "2");
+            _graphNodeSepAttribute = CGraphLib.agattr(_graph, CGraphLib.AGRAPH, "nodesep", "1");
+            _graphLenAttribute = CGraphLib.agattr(_graph, CGraphLib.AGRAPH, "len", "3");
 
             _nodeWidthAttribute = CGraphLib.agattr(_graph, CGraphLib.AGNODE, "width", "0");
             _nodeHeightAttribute = CGraphLib.agattr(_graph, CGraphLib.AGNODE, "height", "0");
             _nodeShapeAttribute = CGraphLib.agattr(_graph, CGraphLib.AGNODE, "shape", "rectangle");
             _nodePosAttribute = CGraphLib.agattr(_graph, CGraphLib.AGNODE, "pos", "");
+            _nodeStyleAttribute = CGraphLib.agattr(_graph, CGraphLib.AGNODE, "style", "");
 
             _edgePosAttribute = CGraphLib.agattr(_graph, CGraphLib.AGEDGE, "pos", "");
+            _edgeDirAttribute = CGraphLib.agattr(_graph, CGraphLib.AGEDGE, "dir", "none");
         }
 
         internal IntPtr GraphVizGraph => _graph;
         public object GraphObject => _graphObject;
-        internal override IntPtr GraphVizNode => _graph;
 
         public IEnumerable<NodeLayout> AllNodes => _objectToNodeMap.Values;
         public IEnumerable<EdgeLayout> AllEdges => _objectToEdgeMap.Values;
@@ -86,6 +97,7 @@ namespace MetaDslx.GraphViz
         {
             _dirty = true;
             var e = new EdgeLayout(this, source, target, edgeObject);
+            CGraphLib.agxset(e.GraphVizEdge, _edgeDirAttribute, "none");
             _objectToEdgeMap.Add(edgeObject, e);
             return e;
         }
@@ -103,26 +115,29 @@ namespace MetaDslx.GraphViz
             if (!_dirty) return;
             foreach (var node in _objectToNodeMap.Values)
             {
-                if (node.PreferredPosition != null)
+                if (!node.IsSubGraph)
                 {
-                    CGraphLib.agxset(node.GraphVizNode, _nodePosAttribute, node.PreferredPosition.ToString());
-                }
-                else
-                {
-                    CGraphLib.agxset(node.GraphVizNode, _nodePosAttribute, "");
-                }
-                if (node.PreferredSize != null)
-                {
-                    CGraphLib.agxset(node.GraphVizNode, _nodeWidthAttribute, node.PreferredSize?.X.ToString());
-                    CGraphLib.agxset(node.GraphVizNode, _nodeHeightAttribute, node.PreferredSize?.Y.ToString());
-                }
-                else
-                {
-                    CGraphLib.agxset(node.GraphVizNode, _nodeWidthAttribute, "");
-                    CGraphLib.agxset(node.GraphVizNode, _nodeHeightAttribute, "");
+                    if (node.PreferredPosition != null)
+                    {
+                        CGraphLib.agxset(node.GraphVizNode, _nodePosAttribute, node.PreferredPosition.ToString());
+                    }
+                    else
+                    {
+                        CGraphLib.agxset(node.GraphVizNode, _nodePosAttribute, "");
+                    }
+                    if (node.PreferredSize != null)
+                    {
+                        CGraphLib.agxset(node.GraphVizNode, _nodeWidthAttribute, node.PreferredSize?.X.ToString());
+                        CGraphLib.agxset(node.GraphVizNode, _nodeHeightAttribute, node.PreferredSize?.Y.ToString());
+                    }
+                    else
+                    {
+                        CGraphLib.agxset(node.GraphVizNode, _nodeWidthAttribute, "");
+                        CGraphLib.agxset(node.GraphVizNode, _nodeHeightAttribute, "");
+                    }
                 }
             }
-            GraphVizLib.Instance.Layout(_graph, _engine);
+            _dot = GraphVizLib.Instance.Layout(_graph, _engine);
             var graphBb = Marshal.PtrToStringAnsi(CGraphLib.agxget(_graph, _graphBbAttribute));
             if (!string.IsNullOrEmpty(graphBb))
             {
@@ -145,24 +160,9 @@ namespace MetaDslx.GraphViz
             }
             foreach (var node in _objectToNodeMap.Values)
             {
-                var gvPos = Marshal.PtrToStringAnsi(CGraphLib.agxget(node.GraphVizNode, _nodePosAttribute));
-                if (!string.IsNullOrEmpty(gvPos))
+                if (node.IsSubGraph)
                 {
-                    node.Position = new Point2D(gvPos, GraphLayout.DefaultDpi);
-                    CGraphLib.agxset(node.GraphVizNode, _nodePosAttribute, "");
-                }
-                var gvWidth = Marshal.PtrToStringAnsi(CGraphLib.agxget(node.GraphVizNode, _nodeWidthAttribute));
-                var gvHeight = Marshal.PtrToStringAnsi(CGraphLib.agxget(node.GraphVizNode, _nodeHeightAttribute));
-                if (!string.IsNullOrEmpty(gvWidth) && !string.IsNullOrEmpty(gvHeight))
-                {
-                    if (double.TryParse(gvWidth, out var width) && double.TryParse(gvHeight, out var height))
-                    {
-                        node.Size = new Point2D(width, height);
-                    }
-                }
-                else if (node.IsSubGraph)
-                {
-                    var gvBb = Marshal.PtrToStringAnsi(CGraphLib.agxget(node.GraphVizNode, _graphBbAttribute));
+                    var gvBb = Marshal.PtrToStringAnsi(CGraphLib.agxget(node.GraphVizSubGraph, _graphBbAttribute));
                     if (!string.IsNullOrEmpty(gvBb))
                     {
                         var parts = gvBb.Trim().Split(',');
@@ -180,7 +180,7 @@ namespace MetaDslx.GraphViz
                                 node.Size = new Point2D(x2 - x1, y2 - y1);
                             }
                         }
-                        CGraphLib.agxset(node.GraphVizNode, _graphBbAttribute, "");
+                        CGraphLib.agxset(node.GraphVizSubGraph, _graphBbAttribute, "");
                     }
                     else
                     {
@@ -189,7 +189,25 @@ namespace MetaDslx.GraphViz
                 }
                 else
                 {
-                    if (node.PreferredSize != null) node.Size = node.PreferredSize.Value;
+                    var gvPos = Marshal.PtrToStringAnsi(CGraphLib.agxget(node.GraphVizNode, _nodePosAttribute));
+                    if (!string.IsNullOrEmpty(gvPos))
+                    {
+                        node.Position = new Point2D(gvPos, GraphLayout.DefaultDpi);
+                        CGraphLib.agxset(node.GraphVizNode, _nodePosAttribute, "");
+                    }
+                    var gvWidth = Marshal.PtrToStringAnsi(CGraphLib.agxget(node.GraphVizNode, _nodeWidthAttribute));
+                    var gvHeight = Marshal.PtrToStringAnsi(CGraphLib.agxget(node.GraphVizNode, _nodeHeightAttribute));
+                    if (!string.IsNullOrEmpty(gvWidth) && !string.IsNullOrEmpty(gvHeight))
+                    {
+                        if (double.TryParse(gvWidth, out var width) && double.TryParse(gvHeight, out var height))
+                        {
+                            node.Size = new Point2D(width, height);
+                        }
+                    }
+                    else
+                    {
+                        if (node.PreferredSize != null) node.Size = node.PreferredSize.Value;
+                    }
                 }
             }
             foreach (var edge in _objectToEdgeMap.Values)
@@ -241,5 +259,9 @@ namespace MetaDslx.GraphViz
         }
         #endregion
 
+        public string ToDot()
+        {
+            return _dot;
+        }
     }
 }

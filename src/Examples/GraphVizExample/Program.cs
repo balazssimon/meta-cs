@@ -9,16 +9,16 @@ namespace GraphVizExample
 
         static void Main(string[] args)
         {
-            var g = new GraphLayout("neato");
+            var g = new GraphLayout("dot");
             var n1 = g.AddNode("n1");
             var n2 = g.AddNode("n2");
             var n3 = g.AddSubGraph("n3");
             var n4 = n3.AddNode("n4");
-            n1.PreferredSize = new Point2D(5, 5);
-            n2.PreferredSize = new Point2D(5, 5);
-            n4.PreferredSize = new Point2D(5, 5);
+            n1.PreferredSize = new Point2D(0.5, 0.5);
+            n2.PreferredSize = new Point2D(0.5, 0.5);
+            n4.PreferredSize = new Point2D(0.5, 0.5);
             var e1 = g.AddEdge(n1.NodeObject, n2.NodeObject, "e1");
-            var e2 = g.AddEdge(n1.NodeObject, n4.NodeObject, "e2");
+            var e2 = g.AddEdge(n1.NodeObject, n3.NodeObject, "e2");
             var e3 = g.AddEdge(n2.NodeObject, n4.NodeObject, "e3");
             g.ComputeLayout();
             Console.WriteLine(g.Position+" "+g.Size);
@@ -29,6 +29,8 @@ namespace GraphVizExample
             Console.WriteLine(e1.EdgeObject + " " + e1.Splines.Length);
             Console.WriteLine(e2.EdgeObject + " " + e2.Splines.Length);
             Console.WriteLine(e3.EdgeObject + " " + e3.Splines.Length);
+            Console.WriteLine("----");
+            Console.WriteLine(g.ToDot());
         }
     }
 }
