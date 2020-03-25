@@ -84,6 +84,10 @@ namespace MetaDslx.GraphViz
 
         public Point2D Position { get; internal set; }
         public Point2D Size { get; internal set; }
+        public double Left => this.Position.X - this.Size.X / 2;
+        public double Top => this.Position.Y - this.Size.Y / 2;
+        public double Width => this.Size.X;
+        public double Height => this.Size.Y;
 
         public NodeLayout AddNode(object nodeObject)
         {

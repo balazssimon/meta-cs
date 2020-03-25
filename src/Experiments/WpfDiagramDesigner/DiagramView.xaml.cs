@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MetaDslx.GraphViz;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -13,6 +14,19 @@ using System.Windows.Shapes;
 
 namespace WpfDiagramDesigner
 {
+    public class DrawNodeEventArgs
+    {
+        public DrawNodeEventArgs(NodeLayout nodeLayout, DrawingContext drawingContext)
+        {
+            NodeLayout = nodeLayout;
+            DrawingContext = drawingContext;
+        }
+        public NodeLayout NodeLayout { get; }
+        public DrawingContext DrawingContext { get; }
+    }
+
+    public delegate void DrawNodeEventHandler(object sender, DrawNodeEventArgs args);
+
     /// <summary>
     /// Interaction logic for DiagramView.xaml
     /// </summary>
@@ -36,9 +50,50 @@ namespace WpfDiagramDesigner
             LostMouseCapture += DiagramView_LostMouseCapture;
             PreviewMouseWheel += DiagramView_PreviewMouseWheel;
 
-            _host = new DiagramVisualHost();
-            _scrollViewer.Content = _host;
-            _scrollViewer.Background = Brushes.LightYellow;
+            _host = new DiagramVisualHost(this);
+            _hostCanvas.Children.Add(_host);
+        }
+
+        public event DrawNodeEventHandler DrawNode;
+
+        public static DependencyProperty GraphLayoutProperty =
+            DependencyProperty.Register("GraphLayout", typeof(GraphLayout), typeof(DiagramView), new PropertyMetadata(GraphLayoutChanged));
+        public GraphLayout GraphLayout
+        {
+            get { return (GraphLayout)GetValue(GraphLayoutProperty); }
+            set { SetValue(GraphLayoutProperty, value); }
+        }
+
+        private static void GraphLayoutChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        {
+            DiagramView dv = sender as DiagramView;
+            if (dv == null)
+                return;
+            dv.OnItemsSourceChanged(e);
+        }
+
+        protected virtual void OnItemsSourceChanged(DependencyPropertyChangedEventArgs e)
+        {
+            if (e.NewValue != null)
+            {
+                BindItems((GraphLayout)e.NewValue);
+            }
+        }
+
+        public static readonly DependencyProperty NodeTemplateProperty =
+            DependencyProperty.Register("NodeTemplate", typeof(DataTemplate), typeof(DiagramView), new UIPropertyMetadata(null));
+        public DataTemplate NodeTemplate
+        {
+            get { return (DataTemplate)GetValue(NodeTemplateProperty); }
+            set { SetValue(NodeTemplateProperty, value); }
+        }
+
+        public static readonly DependencyProperty EdgeTemplateProperty =
+            DependencyProperty.Register("EdgeTemplate", typeof(DataTemplate), typeof(DiagramView), new UIPropertyMetadata(null));
+        public DataTemplate EdgeTemplate
+        {
+            get { return (DataTemplate)GetValue(EdgeTemplateProperty); }
+            set { SetValue(EdgeTemplateProperty, value); }
         }
 
         private void DiagramView_Loaded(object sender, System.Windows.RoutedEventArgs e)
@@ -123,5 +178,25 @@ namespace WpfDiagramDesigner
             base.OnLostMouseCapture(e);
         }
 
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+            if (GraphLayout != null) BindItems(GraphLayout);
+        }
+
+        private void BindItems(GraphLayout graphLayout)
+        {
+            _host.BindGraphLayout(graphLayout);
+        }
+
+        internal bool OnDrawNode(NodeLayout nodeLayout, DrawingContext drawingContext)
+        {
+            if (DrawNode != null)
+            {
+                DrawNode(this, new DrawNodeEventArgs(nodeLayout, drawingContext));
+                return true;
+            }
+            return false;
+        }
     }
 }

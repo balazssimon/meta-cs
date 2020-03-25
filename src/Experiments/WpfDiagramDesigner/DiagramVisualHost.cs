@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,34 +13,22 @@ namespace WpfDiagramDesigner
 {
     public class DiagramVisualHost : FrameworkElement
     {
+        private DiagramView _view;
         private DrawingVisual _visuals;
         private GraphLayout _layout;
         private DrawingVisual _mouseOverVisual;
+        private FrameworkElement _mouseOverContent;
+        private Dictionary<NodeLayout, FrameworkElement>  _nodeContents;
 
         private const double paddingX = 1;
         private const double paddingY = 1;
 
         private double _zoom = 1;
 
-        public DiagramVisualHost()
+        public DiagramVisualHost(DiagramView view)
         {
-            var g = new GraphLayout("dot");
-            var n1 = g.AddNode("n1");
-            var n2 = g.AddNode("n2");
-            var n3 = g.AddSubGraph("n3");
-            var n4 = n3.AddNode("n4");
-            n1.PreferredSize = new Point2D(0.5, 0.5);
-            n2.PreferredSize = new Point2D(0.5, 0.5);
-            n4.PreferredSize = new Point2D(0.5, 0.5);
-            var e1 = g.AddEdge(n1.NodeObject, n2.NodeObject, "e1");
-            var e2 = g.AddEdge(n1.NodeObject, n4.NodeObject, "e2");
-            var e3 = g.AddEdge(n2.NodeObject, n4.NodeObject, "e3");
-            g.ComputeLayout();
-            _layout = g;
-
-            _visuals = new DrawingVisual();
-            CreateDrawingVisuals();
-            AddVisualChild(_visuals);
+            _view = view;
+            _nodeContents = new Dictionary<NodeLayout, FrameworkElement>();
 
             ClipToBounds = true;
 
@@ -60,7 +49,7 @@ namespace WpfDiagramDesigner
         {
             Point pt = e.GetPosition((UIElement)sender);
             var visual = VisualTreeHelper.HitTest(this, pt).VisualHit as DrawingVisual;
-            if (visual != _mouseOverVisual)
+            if (!object.ReferenceEquals(visual, _mouseOverVisual))
             {
                 if (_mouseOverVisual != null) _mouseOverVisual.Opacity = 1.0;
                 _mouseOverVisual = visual;
@@ -73,11 +62,10 @@ namespace WpfDiagramDesigner
             if (e.ChangedButton == MouseButton.Middle)
             {
                 e.Handled = true;
-                var parent = (Control)VisualTreeHelper.GetParent(VisualTreeHelper.GetParent(this));
                 var parentEvent = new MouseButtonEventArgs(e.MouseDevice, e.Timestamp, e.ChangedButton, e.StylusDevice);
                 parentEvent.Source = sender;
                 parentEvent.RoutedEvent = Control.PreviewMouseDownEvent;
-                parent.RaiseEvent(parentEvent);
+                _view.RaiseEvent(parentEvent);
             }
         }
 
@@ -93,15 +81,36 @@ namespace WpfDiagramDesigner
         }
 
         // Create a DrawingVisual that contains the graph.
-        private void CreateDrawingVisuals()
+        internal void BindGraphLayout(GraphLayout layout)
         {
-            /*var visual = new DrawingVisual();
-            DrawingContext drawingContext = visual.RenderOpen();
-            Rect rect = new Rect(GraphSize);
-            drawingContext.DrawRectangle(Brushes.LightGray, null, rect);
-            drawingContext.Close();
-            _visuals.Children.Add(visual);*/
+            if (_layout == layout) return;
+            if (_visuals != null) RemoveVisualChild(_visuals);
+            foreach (var content in _nodeContents.Values)
+            {
+                content.MouseMove -= NodeContent_MouseMove;
+                content.MouseLeave -= NodeContent_MouseLeave;
+            }
+            _nodeContents.Clear();
+            _layout = layout;
+            if (_layout == null) return;
 
+            _visuals = new DrawingVisual();
+            if (_view.NodeTemplate != null)
+            {
+                foreach (var node in _layout.AllNodes)
+                {
+                    if (!node.IsSubGraph)
+                    {
+                        FrameworkElement nodeContent = _view.NodeTemplate.LoadContent() as FrameworkElement;
+                        _nodeContents.Add(node, nodeContent);
+                        nodeContent.DataContext = node.NodeObject;
+                        nodeContent.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                        nodeContent.Arrange(new Rect(nodeContent.DesiredSize));
+                        node.PreferredSize = new Point2D(nodeContent.DesiredSize.Width, nodeContent.DesiredSize.Height);
+                    }
+                }
+            }
+            layout.ComputeLayout();
             brushCounter = 0;
             foreach (var node in _layout.Nodes)
             {
@@ -111,6 +120,8 @@ namespace WpfDiagramDesigner
             {
                 this.DrawEdge(edge);
             }
+
+            AddVisualChild(_visuals);
         }
 
         private readonly Brush[] brushes = new Brush[] { Brushes.LightBlue, Brushes.LightCoral, Brushes.LightCyan, Brushes.LightGreen, Brushes.LightPink, Brushes.LightYellow };
@@ -118,22 +129,32 @@ namespace WpfDiagramDesigner
 
         private void DrawNode(NodeLayout node)
         {
-            var myPen = new Pen
+            if (_nodeContents.TryGetValue(node, out var nodeContent))
             {
-                Thickness = 0.05,
-                Brush = Brushes.Black
-            };
-            myPen.Freeze();
-
+                //nodeContent.SetValue(Canvas.LeftProperty, node.Position.X - node.Size.X / 2);
+                //nodeContent.SetValue(Canvas.TopProperty, node.Position.Y - node.Size.Y / 2);
+                nodeContent.SetValue(FrameworkElement.TagProperty, node);
+                _view._hostCanvas.Children.Add(nodeContent);
+                nodeContent.MouseMove += NodeContent_MouseMove;
+                nodeContent.MouseLeave += NodeContent_MouseLeave;
+                return;
+            }
             var visual = new DrawingVisual();
             DrawingContext drawingContext = visual.RenderOpen();
-
-            // Create a rectangle and draw it in the DrawingContext.
-            Rect rect = new Rect(new Point(node.Position.X - node.Size.X / 2, node.Position.Y - node.Size.Y / 2), new Size(node.Size.X, node.Size.Y));
-            drawingContext.DrawRectangle(brushes[brushCounter], node.IsSubGraph ? myPen : null, rect);
-            ++brushCounter;
-            if (brushCounter >= brushes.Length) brushCounter = 0;
-
+            if (!_view.OnDrawNode(node, drawingContext))
+            {
+                var myPen = new Pen
+                {
+                    Thickness = 0.05,
+                    Brush = Brushes.Black
+                };
+                myPen.Freeze();
+                // Create a rectangle and draw it in the DrawingContext.
+                Rect rect = new Rect(new Point(node.Position.X - node.Size.X / 2, node.Position.Y - node.Size.Y / 2), new Size(node.Size.X, node.Size.Y));
+                drawingContext.DrawRectangle(brushes[brushCounter], node.IsSubGraph ? myPen : null, rect);
+                ++brushCounter;
+                if (brushCounter >= brushes.Length) brushCounter = 0;
+            }
             drawingContext.Close();
             visual.SetValue(FrameworkElement.TagProperty, node);
             _visuals.Children.Add(visual);
@@ -144,6 +165,23 @@ namespace WpfDiagramDesigner
                 {
                     this.DrawNode(childNode);
                 }
+            }
+        }
+
+        private void NodeContent_MouseLeave(object sender, MouseEventArgs e)
+        {
+            if (_mouseOverContent != null) _mouseOverContent.Opacity = 1.0;
+            _mouseOverContent = null;
+        }
+
+        private void NodeContent_MouseMove(object sender, MouseEventArgs e)
+        {
+            var content = sender as FrameworkElement;
+            if (!object.ReferenceEquals(content, _mouseOverContent))
+            {
+                if (_mouseOverContent != null) _mouseOverContent.Opacity = 1.0;
+                _mouseOverContent = content;
+                if (_mouseOverContent != null) _mouseOverContent.Opacity = 0.4;
             }
         }
 
@@ -200,7 +238,7 @@ namespace WpfDiagramDesigner
         // Provide a required override for the VisualChildCount property.
         protected override int VisualChildrenCount
         {
-            get { return 1; }
+            get { return _visuals != null ? 1 : 0; }
         }
 
         // Provide a required override for the GetVisualChild method.
@@ -227,15 +265,26 @@ namespace WpfDiagramDesigner
 
         protected override Size MeasureOverride(Size availableSize)
         {
+            if (_layout == null || _visuals == null || _layout.Size.X == 0 || _layout.Size.Y == 0) return new Size(8, 8); 
             Rect bounds = new Rect(_layout.Position.X - _layout.Size.X / 2, _layout.Position.Y - _layout.Size.Y / 2, _layout.Size.X, _layout.Size.Y);
-            if (_layout.Size.X == 0 || _layout.Size.Y == 0) return new Size(8, 8); // if the graph is empty
-
             Matrix m = new Matrix();
             m.Translate(-bounds.Left + paddingX, -bounds.Top + paddingY);
             m.Scale(_zoom, _zoom);
             _visuals.Transform = new MatrixTransform(m);
-
-            return new Size(GraphSize.Width * _zoom, GraphSize.Height * _zoom);
+            var size = new Size(GraphSize.Width * _zoom, GraphSize.Height * _zoom);
+            _view._hostCanvas.Width = size.Width;
+            _view._hostCanvas.Height = size.Height;
+            foreach (var nc in _nodeContents)
+            {
+                var node = nc.Key;
+                var nodeContent = nc.Value;
+                m = new Matrix();
+                m.Translate(node.Left + paddingX, node.Top + paddingY);
+                m.Scale(_zoom, _zoom);
+                nodeContent.RenderTransform = new MatrixTransform(m);
+            }
+            //_view._hostCanvas.RenderTransform = new MatrixTransform(m);
+            return size;
         }
 
     }

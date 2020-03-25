@@ -56,6 +56,15 @@
                 </RibbonGroup>
             </RibbonTab>
         </Ribbon>
-        <local:DiagramView x:Name="DiagramView" Grid.Row="1" />
+        <local:DiagramView x:Name="DiagramView" Grid.Row="1" DrawNode="DiagramView_DrawNode">
+            <local:DiagramView.NodeTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Rectangle Height="50" Width="50" Fill="LightBlue"/>
+                        <TextBlock Text="{Binding}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                    </Grid>
+                </DataTemplate>
+            </local:DiagramView.NodeTemplate>
+        </local:DiagramView>
     </Grid>
 </Window>

@@ -22,12 +22,14 @@ namespace MetaDslx.GraphViz
         internal IntPtr _graphRankSepAttribute;
         internal IntPtr _graphNodeSepAttribute;
         internal IntPtr _graphLenAttribute;
+        internal IntPtr _graphMarginAttribute;
 
         internal IntPtr _nodeWidthAttribute;
         internal IntPtr _nodeHeightAttribute;
         internal IntPtr _nodeShapeAttribute;
         internal IntPtr _nodePosAttribute;
         internal IntPtr _nodeStyleAttribute;
+        internal IntPtr _nodeMarginAttribute;
 
         internal IntPtr _edgePosAttribute;
         internal IntPtr _edgeDirAttribute;
@@ -51,12 +53,14 @@ namespace MetaDslx.GraphViz
             _graphRankSepAttribute = CGraphLib.agattr(_graph, CGraphLib.AGRAPH, "ranksep", "2");
             _graphNodeSepAttribute = CGraphLib.agattr(_graph, CGraphLib.AGRAPH, "nodesep", "1");
             _graphLenAttribute = CGraphLib.agattr(_graph, CGraphLib.AGRAPH, "len", "3");
+            _graphMarginAttribute = CGraphLib.agattr(_graph, CGraphLib.AGRAPH, "margin", "10");
 
             _nodeWidthAttribute = CGraphLib.agattr(_graph, CGraphLib.AGNODE, "width", "0");
             _nodeHeightAttribute = CGraphLib.agattr(_graph, CGraphLib.AGNODE, "height", "0");
             _nodeShapeAttribute = CGraphLib.agattr(_graph, CGraphLib.AGNODE, "shape", "rectangle");
             _nodePosAttribute = CGraphLib.agattr(_graph, CGraphLib.AGNODE, "pos", "");
             _nodeStyleAttribute = CGraphLib.agattr(_graph, CGraphLib.AGNODE, "style", "");
+            _nodeMarginAttribute = CGraphLib.agattr(_graph, CGraphLib.AGNODE, "margin", "0");
 
             _edgePosAttribute = CGraphLib.agattr(_graph, CGraphLib.AGEDGE, "pos", "");
             _edgeDirAttribute = CGraphLib.agattr(_graph, CGraphLib.AGEDGE, "dir", "none");
@@ -67,6 +71,11 @@ namespace MetaDslx.GraphViz
 
         public IEnumerable<NodeLayout> AllNodes => _objectToNodeMap.Values;
         public IEnumerable<EdgeLayout> AllEdges => _objectToEdgeMap.Values;
+
+        public double NodeSeparation { get; set; }
+        public double RankSeparation { get; set; }
+        public double EdgeLength { get; set; }
+        public double NodeMargin { get; set; }
 
         internal void SetDirty()
         {
@@ -136,7 +145,18 @@ namespace MetaDslx.GraphViz
                         CGraphLib.agxset(node.GraphVizNode, _nodeHeightAttribute, "");
                     }
                 }
+                else
+                {
+                    //CGraphLib.agxset(node.GraphVizSubGraph, _nodePosAttribute, "");
+                    //CGraphLib.agxset(node.GraphVizSubGraph, _nodeWidthAttribute, "");
+                    //CGraphLib.agxset(node.GraphVizSubGraph, _nodeHeightAttribute, "");
+                    CGraphLib.agxset(node.GraphVizSubGraph, _graphMarginAttribute, (this.NodeMargin*DefaultDpi).ToString());
+                }
             }
+            CGraphLib.agxset(_graph, _graphNodeSepAttribute, this.NodeSeparation.ToString());
+            CGraphLib.agxset(_graph, _graphRankSepAttribute, this.RankSeparation.ToString());
+            CGraphLib.agxset(_graph, _graphLenAttribute, this.EdgeLength.ToString());
+            //CGraphLib.agxset(_graph, _graphMarginAttribute, this.NodeMargin.ToString());
             _dot = GraphVizLib.Instance.Layout(_graph, _engine);
             var graphBb = Marshal.PtrToStringAnsi(CGraphLib.agxget(_graph, _graphBbAttribute));
             if (!string.IsNullOrEmpty(graphBb))
