@@ -18,7 +18,7 @@ namespace WpfDiagramDesigner
         private GraphLayout _layout;
         private DrawingVisual _mouseOverVisual;
         private FrameworkElement _mouseOverContent;
-        private Dictionary<NodeLayout, FrameworkElement>  _nodeContents;
+        private Dictionary<NodeLayout, FrameworkElement> _nodeContents;
 
         private const double paddingX = 1;
         private const double paddingY = 1;
@@ -95,18 +95,25 @@ namespace WpfDiagramDesigner
             if (_layout == null) return;
 
             _visuals = new DrawingVisual();
-            if (_view.NodeTemplate != null)
+            if (_view.NodeTemplate.Count > 0)
             {
                 foreach (var node in _layout.AllNodes)
                 {
-                    if (!node.IsSubGraph)
+                    foreach (var nodeTemplate in _view.NodeTemplate)
                     {
-                        FrameworkElement nodeContent = _view.NodeTemplate.LoadContent() as FrameworkElement;
-                        _nodeContents.Add(node, nodeContent);
-                        nodeContent.DataContext = node.NodeObject;
-                        nodeContent.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-                        nodeContent.Arrange(new Rect(nodeContent.DesiredSize));
-                        node.PreferredSize = new Point2D(nodeContent.DesiredSize.Width, nodeContent.DesiredSize.Height);
+                        if (nodeTemplate.DataType == null || nodeTemplate.DataType is Type type && type.IsAssignableFrom(node.NodeObject.GetType()))
+                        {
+                            FrameworkElement nodeContent = nodeTemplate.LoadContent() as FrameworkElement;
+                            _nodeContents.Add(node, nodeContent);
+                            nodeContent.DataContext = node.NodeObject;
+                            if (!node.IsSubGraph)
+                            {
+                                nodeContent.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                                nodeContent.Arrange(new Rect(nodeContent.DesiredSize));
+                            }
+                            node.PreferredSize = new Point2D(nodeContent.DesiredSize.Width, nodeContent.DesiredSize.Height);
+                            break;
+                        }
                     }
                 }
             }
@@ -131,33 +138,32 @@ namespace WpfDiagramDesigner
         {
             if (_nodeContents.TryGetValue(node, out var nodeContent))
             {
-                //nodeContent.SetValue(Canvas.LeftProperty, node.Position.X - node.Size.X / 2);
-                //nodeContent.SetValue(Canvas.TopProperty, node.Position.Y - node.Size.Y / 2);
+                if (node.IsSubGraph)
+                {
+                    nodeContent.Arrange(new Rect(node.Left, node.Top, node.Width, node.Height));
+                    nodeContent.Width = node.Width;
+                    nodeContent.Height = node.Height;
+                }
                 nodeContent.SetValue(FrameworkElement.TagProperty, node);
                 _view._hostCanvas.Children.Add(nodeContent);
                 nodeContent.MouseMove += NodeContent_MouseMove;
                 nodeContent.MouseLeave += NodeContent_MouseLeave;
-                return;
             }
-            var visual = new DrawingVisual();
-            DrawingContext drawingContext = visual.RenderOpen();
-            if (!_view.OnDrawNode(node, drawingContext))
+            else
             {
-                var myPen = new Pen
+                var visual = new DrawingVisual();
+                DrawingContext drawingContext = visual.RenderOpen();
+                if (!_view.OnDrawNode(node, drawingContext))
                 {
-                    Thickness = 0.05,
-                    Brush = Brushes.Black
-                };
-                myPen.Freeze();
-                // Create a rectangle and draw it in the DrawingContext.
-                Rect rect = new Rect(new Point(node.Position.X - node.Size.X / 2, node.Position.Y - node.Size.Y / 2), new Size(node.Size.X, node.Size.Y));
-                drawingContext.DrawRectangle(brushes[brushCounter], node.IsSubGraph ? myPen : null, rect);
-                ++brushCounter;
-                if (brushCounter >= brushes.Length) brushCounter = 0;
+                    Rect rect = new Rect(new Point(node.Position.X - node.Size.X / 2, node.Position.Y - node.Size.Y / 2), new Size(node.Size.X, node.Size.Y));
+                    drawingContext.DrawRectangle(brushes[brushCounter], node.IsSubGraph ? EdgeTemplate.DefaultPen : null, rect);
+                    ++brushCounter;
+                    if (brushCounter >= brushes.Length) brushCounter = 0;
+                }
+                drawingContext.Close();
+                visual.SetValue(FrameworkElement.TagProperty, node);
+                _visuals.Children.Add(visual);
             }
-            drawingContext.Close();
-            visual.SetValue(FrameworkElement.TagProperty, node);
-            _visuals.Children.Add(visual);
 
             if (node.IsSubGraph)
             {
@@ -187,49 +193,37 @@ namespace WpfDiagramDesigner
 
         private void DrawEdge(EdgeLayout edge)
         {
-            var myPen = new Pen
+            Pen pen = EdgeTemplate.DefaultPen;
+            if (_view.EdgeTemplate.Count > 0)
             {
-                Thickness = 0.05,
-                Brush = Brushes.Black
-            };
-            myPen.Freeze();
-
+                foreach (var edgeTemplate in _view.EdgeTemplate)
+                {
+                    if (edgeTemplate.EdgeType == null || edgeTemplate.EdgeType is Type type && type.IsAssignableFrom(edge.EdgeObject.GetType()))
+                    {
+                        pen = edgeTemplate.Pen;
+                        break;
+                    }
+                }
+            }
             var visual = new DrawingVisual();
             DrawingContext drawingContext = visual.RenderOpen();
-
-            var path = new PathGeometry();
-            
-            //var pathFigure = new PathFigure();
-            //pathFigure.IsClosed = false;
-            //pathFigure.StartPoint = new Point(edge.Source.Position.X, edge.Source.Position.Y);
-            /*var ls = new LineSegment();
-            ls.Point = new Point(edge.Splines[0][0].X, edge.Splines[0][0].Y);
-            pathFigure.Segments.Add(ls);
-            path.Figures.Add(pathFigure);*/
-
-            foreach (var spline in edge.Splines)
+            if (!_view.OnDrawEdge(edge, drawingContext))
             {
-                var pathFigure = new PathFigure();
-                pathFigure.IsClosed = false;
-                pathFigure.StartPoint = new Point(spline[0].X, spline[0].Y);
-                for (int i = 1; i < spline.Length; i += 3)
+                var path = new PathGeometry();
+                foreach (var spline in edge.Splines)
                 {
-                    var segment = new BezierSegment(new Point(spline[i].X, spline[i].Y), new Point(spline[i+1].X, spline[i + 1].Y), new Point(spline[i + 2].X, spline[i + 2].Y), true);
-                    pathFigure.Segments.Add(segment);
+                    var pathFigure = new PathFigure();
+                    pathFigure.IsClosed = false;
+                    pathFigure.StartPoint = new Point(spline[0].X, spline[0].Y);
+                    for (int i = 1; i < spline.Length; i += 3)
+                    {
+                        var segment = new BezierSegment(new Point(spline[i].X, spline[i].Y), new Point(spline[i + 1].X, spline[i + 1].Y), new Point(spline[i + 2].X, spline[i + 2].Y), true);
+                        pathFigure.Segments.Add(segment);
+                    }
+                    path.Figures.Add(pathFigure);
                 }
-                path.Figures.Add(pathFigure);
+                drawingContext.DrawGeometry(null, pen, path);
             }
-
-            //pathFigure = new PathFigure();
-            //pathFigure.IsClosed = false;
-            //pathFigure.StartPoint = new Point(edge.Splines[edge.Splines.Length - 1][edge.Splines[edge.Splines.Length - 1].Length - 1].X, edge.Splines[edge.Splines.Length - 1][edge.Splines[edge.Splines.Length - 1].Length - 1].Y);
-            /*ls = new LineSegment();
-            ls.Point = new Point(edge.Target.Position.X, edge.Target.Position.Y); 
-            pathFigure.Segments.Add(ls);
-            path.Figures.Add(pathFigure);*/
-
-            drawingContext.DrawGeometry(null, myPen, path);
-
             drawingContext.Close();
             visual.SetValue(FrameworkElement.TagProperty, edge);
             _visuals.Children.Add(visual);

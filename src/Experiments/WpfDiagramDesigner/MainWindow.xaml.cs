@@ -29,18 +29,18 @@ namespace WpfDiagramDesigner
             var g = new GraphLayout("dot");
             var n1 = g.AddNode("n1");
             var n2 = g.AddNode("n2");
-            var n3 = g.AddSubGraph("n3");
+            var n3 = g.AddSubGraph(10);
             var n4 = n3.AddNode("n4");
             n1.PreferredSize = new Point2D(50, 50);
             n2.PreferredSize = new Point2D(50, 50);
             n4.PreferredSize = new Point2D(50, 50);
             var e1 = g.AddEdge(n1.NodeObject, n2.NodeObject, "e1");
             var e2 = g.AddEdge(n1.NodeObject, n4.NodeObject, "e2");
-            var e3 = g.AddEdge(n2.NodeObject, n4.NodeObject, "e3");
+            var e3 = g.AddEdge(n2.NodeObject, n4.NodeObject, 5);
             g.NodeSeparation = 10;
             g.RankSeparation = 50;
             g.EdgeLength = 30;
-            g.NodeMargin = 5;
+            g.NodeMargin = 20;
             g.ComputeLayout();
             DiagramView.GraphLayout = g;
         }

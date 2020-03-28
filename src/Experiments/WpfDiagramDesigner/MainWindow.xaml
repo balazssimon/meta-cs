@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:WpfDiagramDesigner"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" >
@@ -58,13 +59,31 @@
         </Ribbon>
         <local:DiagramView x:Name="DiagramView" Grid.Row="1" DrawNode="DiagramView_DrawNode">
             <local:DiagramView.NodeTemplate>
-                <DataTemplate>
+                <DataTemplate DataType="{x:Type system:String}">
                     <Grid>
                         <Rectangle Height="50" Width="50" Fill="LightBlue"/>
                         <TextBlock Text="{Binding}" VerticalAlignment="Center" HorizontalAlignment="Center" />
                     </Grid>
                 </DataTemplate>
+                <DataTemplate DataType="{x:Type system:Int32}">
+                    <Grid>
+                        <Rectangle Fill="LightGreen"/>
+                        <TextBlock Text="{Binding}" VerticalAlignment="Top" HorizontalAlignment="Center" />
+                    </Grid>
+                </DataTemplate>
             </local:DiagramView.NodeTemplate>
+            <local:DiagramView.EdgeTemplate>
+                <local:EdgeTemplate EdgeType="{x:Type system:String}">
+                    <local:EdgeTemplate.Pen>
+                        <Pen Brush="Red" Thickness="5.0"/>
+                    </local:EdgeTemplate.Pen>
+                </local:EdgeTemplate>
+                <local:EdgeTemplate EdgeType="{x:Type system:Int32}">
+                    <local:EdgeTemplate.Pen>
+                        <Pen Brush="Green" Thickness="5.0"/>
+                    </local:EdgeTemplate.Pen>
+                </local:EdgeTemplate>
+            </local:DiagramView.EdgeTemplate>
         </local:DiagramView>
     </Grid>
 </Window>

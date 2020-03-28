@@ -1,6 +1,7 @@
 ﻿using MetaDslx.GraphViz;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -25,7 +26,19 @@ namespace WpfDiagramDesigner
         public DrawingContext DrawingContext { get; }
     }
 
+    public class DrawEdgeEventArgs
+    {
+        public DrawEdgeEventArgs(EdgeLayout edgeLayout, DrawingContext drawingContext)
+        {
+            EdgeLayout = edgeLayout;
+            DrawingContext = drawingContext;
+        }
+        public EdgeLayout EdgeLayout { get; }
+        public DrawingContext DrawingContext { get; }
+    }
+
     public delegate void DrawNodeEventHandler(object sender, DrawNodeEventArgs args);
+    public delegate void DrawEdgeEventHandler(object sender, DrawEdgeEventArgs args);
 
     /// <summary>
     /// Interaction logic for DiagramView.xaml
@@ -41,6 +54,9 @@ namespace WpfDiagramDesigner
 
         public DiagramView()
         {
+            SetValue(NodeTemplateProperty, new ObservableCollection<DataTemplate>());
+            SetValue(EdgeTemplateProperty, new ObservableCollection<EdgeTemplate>());
+
             InitializeComponent();
 
             Loaded += DiagramView_Loaded;
@@ -55,6 +71,7 @@ namespace WpfDiagramDesigner
         }
 
         public event DrawNodeEventHandler DrawNode;
+        public event DrawEdgeEventHandler DrawEdge;
 
         public static DependencyProperty GraphLayoutProperty =
             DependencyProperty.Register("GraphLayout", typeof(GraphLayout), typeof(DiagramView), new PropertyMetadata(GraphLayoutChanged));
@@ -81,19 +98,17 @@ namespace WpfDiagramDesigner
         }
 
         public static readonly DependencyProperty NodeTemplateProperty =
-            DependencyProperty.Register("NodeTemplate", typeof(DataTemplate), typeof(DiagramView), new UIPropertyMetadata(null));
-        public DataTemplate NodeTemplate
+            DependencyProperty.Register("NodeTemplate", typeof(ObservableCollection<DataTemplate>), typeof(DiagramView), new UIPropertyMetadata(null));
+        public ObservableCollection<DataTemplate> NodeTemplate
         {
-            get { return (DataTemplate)GetValue(NodeTemplateProperty); }
-            set { SetValue(NodeTemplateProperty, value); }
+            get { return (ObservableCollection<DataTemplate>)GetValue(NodeTemplateProperty); }
         }
 
         public static readonly DependencyProperty EdgeTemplateProperty =
-            DependencyProperty.Register("EdgeTemplate", typeof(DataTemplate), typeof(DiagramView), new UIPropertyMetadata(null));
-        public DataTemplate EdgeTemplate
+            DependencyProperty.Register("EdgeTemplate", typeof(ObservableCollection<EdgeTemplate>), typeof(DiagramView), new UIPropertyMetadata(null));
+        public ObservableCollection<EdgeTemplate> EdgeTemplate
         {
-            get { return (DataTemplate)GetValue(EdgeTemplateProperty); }
-            set { SetValue(EdgeTemplateProperty, value); }
+            get { return (ObservableCollection<EdgeTemplate>)GetValue(EdgeTemplateProperty); }
         }
 
         private void DiagramView_Loaded(object sender, System.Windows.RoutedEventArgs e)
@@ -194,6 +209,16 @@ namespace WpfDiagramDesigner
             if (DrawNode != null)
             {
                 DrawNode(this, new DrawNodeEventArgs(nodeLayout, drawingContext));
+                return true;
+            }
+            return false;
+        }
+
+        internal bool OnDrawEdge(EdgeLayout edgeLayout, DrawingContext drawingContext)
+        {
+            if (DrawEdge != null)
+            {
+                DrawEdge(this, new DrawEdgeEventArgs(edgeLayout, drawingContext));
                 return true;
             }
             return false;
