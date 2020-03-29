@@ -634,6 +634,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// A set of ExceptionHandlers that are examined if an exception propagates out of the ExceptionNode.
     	/// </summary>
     	containment set<ExceptionHandler> Handler subsets Element.OwnedElement;
+    	SequenceNode SequenceNode subsets ActivityNode.InStructuredNode;
     }
 
     /// <summary>
@@ -817,6 +818,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// Refers to the Duration denoting the minimum value of the range.
     	/// </summary>
     	Duration Min redefines Interval.Min;
+    	DurationConstraint DurationConstraint;
     }
 
     /// <summary>
@@ -862,6 +864,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// Refers to the ValueSpecification denoting the minimum value of the range.
     	/// </summary>
     	ValueSpecification Min;
+    	IntervalConstraint IntervalConstraint;
     }
 
     /// <summary>
@@ -1050,6 +1053,7 @@ namespace MetaDslx.Languages.Uml.Model
     	//     	behavior.ownedParameter->first()
     	//     endif)
     	derived Parameter Result;
+    	Abstraction Abstraction subsets Element.Owner;
     	/// <summary>
     	/// The query isIntegral() tells whether an expression is intended to produce an Integer.
     	/// </summary>
@@ -1095,6 +1099,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// The StringExpressions that constitute this StringExpression.
     	/// </summary>
     	containment list<StringExpression> SubExpression subsets Element.OwnedElement;
+    	NamedElement NamedElement subsets Element.Owner;
     	/// <summary>
     	/// The query stringValue() returns the String resulting from concatenating, in order, all the component String values of all the operands or subExpressions that are part of the StringExpression.
     	/// </summary>
@@ -1134,6 +1139,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// Refers to the Observations that are involved in the computation of the TimeExpression value.
     	/// </summary>
     	set<Observation> Observation;
+    	TimeEvent TimeEvent subsets Element.Owner;
     }
 
     /// <summary>
@@ -1149,6 +1155,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// Refers to the TimeExpression denoting the minimum value of the range.
     	/// </summary>
     	TimeExpression Min redefines Interval.Min;
+    	TimeConstraint TimeConstraint;
     }
 
     /// <summary>
@@ -1171,6 +1178,26 @@ namespace MetaDslx.Languages.Uml.Model
     /// </summary>
     abstract class ValueSpecification : TypedElement, PackageableElement
     {
+    	ObjectNode ObjectNode subsets Element.Owner;
+    	JoinNode JoinNode subsets Element.Owner;
+    	ActivityEdge ActivityEdge subsets Element.Owner;
+    	TimeExpression TimeExpression subsets Element.Owner;
+    	Expression Expression subsets Element.Owner;
+    	Duration Duration subsets Element.Owner;
+    	Message Message subsets Element.Owner;
+    	Lifeline Lifeline subsets Element.Owner;
+    	InteractionUse InteractionUse subsets Element.Owner;
+    	InteractionConstraint InteractionConstraint subsets Element.Owner;
+    	MultiplicityElement OwningLower subsets Element.Owner;
+    	MultiplicityElement OwningUpper subsets Element.Owner;
+    	Constraint OwningConstraint subsets Element.Owner;
+    	ChangeEvent ChangeEvent subsets Element.Owner;
+    	Slot OwningSlot subsets Element.Owner;
+    	Property OwningProperty subsets Element.Owner;
+    	Parameter OwningParameter subsets Element.Owner;
+    	InstanceSpecification OwningInstanceSpec subsets Element.Owner;
+    	ValuePin ValuePin subsets Element.Owner;
+    	ValueSpecificationAction ValueSpecificationAction subsets Element.Owner;
     	/// <summary>
     	/// The query booleanValue() gives a single Boolean value when one can be computed.
     	/// </summary>
@@ -1299,6 +1326,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// The subjects to which this UseCase applies. Each subject or its parts realize all the UseCases that apply to it.
     	/// </summary>
     	set<Classifier> Subject;
+    	Classifier Classifier subsets NamedElement.Namespace;
     	/// <summary>
     	/// The query allIncludedUseCases() returns the transitive closure of all UseCases (directly or indirectly) included by this UseCase.
     	/// </summary>
@@ -1412,6 +1440,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// The Collaboration which is used in this CollaborationUse. The Collaboration defines the cooperation between its roles which are mapped to ConnectableElements relating to the Classifier owning the CollaborationUse.
     	/// </summary>
     	Collaboration Type;
+    	Classifier Classifier subsets Element.Owner;
     }
 
     /// <summary>
@@ -1534,6 +1563,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// An optional Association that classifies links corresponding to this Connector.
     	/// </summary>
     	Association Type;
+    	StructuredClassifier StructuredClassifier subsets Feature.FeaturingClassifier, NamedElement.Namespace, RedefinableElement.RedefinitionContext;
     }
 
     /// <summary>
@@ -1561,6 +1591,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// The ConnectableElement attached at this ConnectorEnd. When an instance of the containing Classifier is created, a link may (depending on the multiplicities) be created to an instance of the Classifier that types this ConnectableElement.
     	/// </summary>
     	ConnectableElement Role;
+    	Connector Connector subsets Element.Owner;
     }
 
     /// <summary>
@@ -1613,6 +1644,7 @@ namespace MetaDslx.Languages.Uml.Model
     	// spec:
     	//     result = (if isConjugated then basicProvided() else basicRequired() endif)
     	derived set<Interface> Required;
+    	EncapsulatedClassifier EncapsulatedClassifier;
     	/// <summary>
     	/// The union of the sets of Interfaces realized by the type of the Port and its supertypes, or directly the type of the Port if the Port is typed by an Interface.
     	/// </summary>
@@ -1727,6 +1759,10 @@ namespace MetaDslx.Languages.Uml.Model
     	/// Conformance between ProtocolStateMachine 
     	/// </summary>
     	containment set<ProtocolConformance> Conformance subsets Element.OwnedElement;
+    	/// <summary>
+    	/// Specifies the namespace in which the protocol state machine is defined.
+    	/// </summary>
+    	Interface Interface subsets NamedElement.Namespace;
     }
 
     /// <summary>
@@ -2305,6 +2341,8 @@ namespace MetaDslx.Languages.Uml.Model
     	/// The Signal that this Reception handles.
     	/// </summary>
     	Signal Signal;
+    	Class Class subsets Feature.FeaturingClassifier, NamedElement.Namespace;
+    	Interface Interface subsets Feature.FeaturingClassifier, NamedElement.Namespace;
     }
 
     /// <summary>
@@ -2361,6 +2399,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// References the type of the ExtensionEnd. Note that this association restricts the possible types of an ExtensionEnd to only be Stereotypes.
     	/// </summary>
     	Stereotype Type redefines TypedElement.Type;
+    	Extension Extension subsets Property.OwningAssociation;
     	/// <summary>
     	/// The query lowerBound() returns the lower bound of the multiplicity as an Integer. This is a redefinition of the default lower bound, which normally, for MultiplicityElements, evaluates to 1 if empty.
     	/// </summary>
@@ -2386,6 +2425,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// This contains a location that can be used by a tool to locate the image as an alternative to embedding it in the stereotype.
     	/// </summary>
     	string Location;
+    	Stereotype Stereotype subsets Element.Owner;
     }
 
     /// <summary>
@@ -2550,6 +2590,7 @@ namespace MetaDslx.Languages.Uml.Model
     	// spec:
     	//     result = (self.containingProfile())
     	derived Profile Profile;
+    	Package OwningPackage;
     	/// <summary>
     	/// The query containingProfile returns the closest profile directly or indirectly containing this stereotype.
     	/// </summary>
@@ -2659,6 +2700,9 @@ namespace MetaDslx.Languages.Uml.Model
     /// </summary>
     class Gate : MessageEnd
     {
+    	InteractionUse InteractionUse subsets Element.Owner;
+    	Interaction Interaction subsets NamedElement.Namespace;
+    	CombinedFragment CombinedFragment subsets Element.Owner;
     	/// <summary>
     	/// This query returns true if this Gate is attached to the boundary of a CombinedFragment, and its other end (if present)  is outside of the same CombinedFragment.
     	/// </summary>
@@ -2772,6 +2816,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// The OccurrenceSpecification referenced comes before the OccurrenceSpecification referenced by after.
     	/// </summary>
     	OccurrenceSpecification Before;
+    	InteractionFragment InteractionFragment subsets Element.Owner;
     }
 
     /// <summary>
@@ -2814,6 +2859,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// The minimum number of iterations of a loop
     	/// </summary>
     	containment ValueSpecification Minint subsets Element.OwnedElement;
+    	InteractionOperand InteractionOperand subsets Element.Owner;
     }
 
     /// <summary>
@@ -2852,6 +2898,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// Constraint of the operand.
     	/// </summary>
     	containment InteractionConstraint Guard subsets Element.OwnedElement;
+    	CombinedFragment CombinedFragment subsets Element.Owner;
     }
 
     /// <summary>
@@ -3147,6 +3194,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// The Operations defined for the Artifact. The association is a specialization of the ownedMember association.
     	/// </summary>
     	containment list<Operation> OwnedOperation subsets Classifier.Feature, Namespace.OwnedMember;
+    	Artifact Artifact subsets NamedElement.Namespace;
     }
 
     /// <summary>
@@ -3242,6 +3290,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// The model element that is utilized in the manifestation in an Artifact.
     	/// </summary>
     	PackageableElement UtilizedElement subsets Dependency.Supplier;
+    	Artifact Artifact subsets Dependency.Client, Element.Owner;
     }
 
     /// <summary>
@@ -3253,6 +3302,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// The Nodes that are defined (nested) within the Node.
     	/// </summary>
     	containment set<Node> NestedNode subsets Namespace.OwnedMember;
+    	Node Node subsets NamedElement.Namespace;
     }
 
     /// <summary>
@@ -3279,6 +3329,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// Specifies a string that is the comment.
     	/// </summary>
     	string Body;
+    	Element OwningElement subsets Element.Owner;
     }
 
     /// <summary>
@@ -3298,6 +3349,18 @@ namespace MetaDslx.Languages.Uml.Model
     	/// A condition that must be true when evaluated in order for the Constraint to be satisfied.
     	/// </summary>
     	containment ValueSpecification Specification subsets Element.OwnedElement;
+    	Extend Extend subsets Element.Owner;
+    	Transition Transition subsets Constraint.Context;
+    	State OwningState subsets Constraint.Context;
+    	ProtocolTransition ProtocolTransition;
+    	ProtocolTransition OwningTransition subsets Constraint.Context;
+    	StateInvariant StateInvariant subsets Element.Owner;
+    	Behavior Behavior subsets Constraint.Context;
+    	ParameterSet ParameterSet subsets Element.Owner;
+    	Operation BodyContext subsets Constraint.Context;
+    	Operation PostContext subsets Constraint.Context;
+    	Operation PreContext subsets Constraint.Context;
+    	Action Action subsets Element.Owner;
     }
 
     /// <summary>
@@ -3313,6 +3376,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// The Element(s) on which the client Element(s) depend in some respect. The modeler may stipulate a sense of Dependency direction suitable for their domain.
     	/// </summary>
     	set<NamedElement> Supplier subsets DirectedRelationship.Target;
+    	CollaborationUse CollaborationUse subsets Element.Owner;
     }
 
     /// <summary>
@@ -3382,6 +3446,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// Specifies the visibility of the imported PackageableElement within the importingNamespace, i.e., whether the  importedElement will in turn be visible to other Namespaces. If the ElementImport is public, the importedElement will be visible outside the importingNamespace while, if the ElementImport is private, it will not.
     	/// </summary>
     	VisibilityKind Visibility = "VisibilityKind.Public";
+    	Profile Profile subsets ElementImport.ImportingNamespace;
     	/// <summary>
     	/// The query getName() returns the name under which the imported PackageableElement will be known in the importing namespace.
     	/// </summary>
@@ -3629,6 +3694,8 @@ namespace MetaDslx.Languages.Uml.Model
     	/// A PackageableElement must have a visibility specified if it is owned by a Namespace. The default visibility is public.
     	/// </summary>
     	VisibilityKind Visibility = "VisibilityKind.Public" redefines NamedElement.Visibility;
+    	Component Component subsets NamedElement.Namespace;
+    	Package OwningPackage subsets NamedElement.Namespace;
     }
 
     /// <summary>
@@ -3648,6 +3715,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// Specifies the visibility of the imported PackageableElements within the importingNamespace, i.e., whether imported Elements will in turn be visible to other Namespaces. If the PackageImport is public, the imported Elements will be visible outside the importingNamespace, while, if the PackageImport is private, they will not.
     	/// </summary>
     	VisibilityKind Visibility = "VisibilityKind.Public";
+    	Profile Profile subsets PackageImport.ImportingNamespace;
     }
 
     /// <summary>
@@ -3663,6 +3731,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// The TemplateParameter that exposes this ParameterableElement as a formal parameter.
     	/// </summary>
     	TemplateParameter TemplateParameter;
+    	TemplateParameterSubstitution OwningTemplateParameterSubstitution subsets Element.Owner;
     	/// <summary>
     	/// The query isCompatibleWith() determines if this ParameterableElement is compatible with the specified ParameterableElement. By default, this ParameterableElement is compatible with another ParameterableElement p if the kind of this ParameterableElement is the same as or a subtype of the kind of p. Subclasses of ParameterableElement should override this operation to specify different compatibility constraints.
     	/// </summary>
@@ -3901,6 +3970,9 @@ namespace MetaDslx.Languages.Uml.Model
     	/// References the Behavior that this Behavior redefines. A subtype of Behavior may redefine any other subtype of Behavior. If the Behavior implements a BehavioralFeature, it replaces the redefined Behavior. If the Behavior is a classifierBehavior, it extends the redefined Behavior.
     	/// </summary>
     	set<Behavior> RedefinedBehavior subsets Classifier.RedefinedClassifier;
+    	Transition Transition subsets Element.Owner;
+    	State State subsets Element.Owner;
+    	BehavioredClassifier BehavioredClassifier subsets NamedElement.Namespace;
     	/// <summary>
     	/// The first BehavioredClassifier reached by following the chain of owner relationships from the Behavior, if any.
     	/// </summary>
@@ -4034,6 +4106,9 @@ namespace MetaDslx.Languages.Uml.Model
     	/// A optional Port of through which the given effect is detected.
     	/// </summary>
     	set<Port> Port;
+    	Transition Transition subsets Element.Owner;
+    	State State subsets Element.Owner;
+    	AcceptEventAction AcceptEventAction subsets Element.Owner;
     }
 
     /// <summary>
@@ -4177,6 +4252,8 @@ namespace MetaDslx.Languages.Uml.Model
     	/// The set of UseCases for which this Classifier is the subject.
     	/// </summary>
     	set<UseCase> UseCase;
+    	Class NestingClass subsets NamedElement.Namespace, RedefinableElement.RedefinitionContext;
+    	Interface Interface subsets NamedElement.Namespace, RedefinableElement.RedefinitionContext;
     	/// <summary>
     	/// The query allFeatures() gives all of the Features in the namespace of the Classifier. In general, through mechanisms such as inheritance, this will be a larger set than feature.
     	/// </summary>
@@ -4481,6 +4558,7 @@ namespace MetaDslx.Languages.Uml.Model
     	// spec:
     	//     result = (if returnResult()->notEmpty() then returnResult()->any(true).upper else null endif)
     	derived long Upper;
+    	Artifact Artifact subsets Feature.FeaturingClassifier, NamedElement.Namespace, RedefinableElement.RedefinitionContext;
     	/// <summary>
     	/// The query isConsistentWith() specifies, for any two Operations in a context in which redefinition is possible, whether redefinition would be consistent. A redefining operation is consistent with a redefined operation if
     	/// it has the same number of owned parameters, and for each parameter the following holds:
@@ -4571,6 +4649,8 @@ namespace MetaDslx.Languages.Uml.Model
     	/// The ParameterSets containing the parameter. See ParameterSet.
     	/// </summary>
     	set<ParameterSet> ParameterSet;
+    	Behavior Behavior subsets NamedElement.Namespace;
+    	BehavioralFeature OwnerFormalParam subsets NamedElement.Namespace;
     }
 
     /// <summary>
@@ -4586,6 +4666,8 @@ namespace MetaDslx.Languages.Uml.Model
     	/// Parameters in the ParameterSet.
     	/// </summary>
     	set<Parameter> Parameter;
+    	Behavior Behavior subsets NamedElement.Namespace;
+    	BehavioralFeature BehavioralFeature subsets NamedElement.Namespace;
     }
 
     /// <summary>
@@ -4666,6 +4748,9 @@ namespace MetaDslx.Languages.Uml.Model
     	/// The properties of which this Property is constrained to be a subset, if any.
     	/// </summary>
     	set<Property> SubsettedProperty;
+    	StructuredClassifier StructuredClassifier subsets NamedElement.Namespace;
+    	Signal OwningSignal subsets NamedElement.Namespace;
+    	Artifact Artifact subsets NamedElement.Namespace;
     	/// <summary>
     	/// The query isAttribute() is true if the Property is defined as an attribute of some Classifier.
     	/// </summary>
@@ -4930,6 +5015,8 @@ namespace MetaDslx.Languages.Uml.Model
     	/// The ordered set of OutputPins representing outputs from the Action.
     	/// </summary>
     	containment union list<OutputPin> Output subsets Element.OwnedElement;
+    	Interaction Interaction subsets Element.Owner;
+    	ActionInputPin ActionInputPin subsets Element.Owner;
     	/// <summary>
     	/// Return this Action and all Actions contained directly or indirectly in it. By default only the Action itself is returned, but the operation is overridden for StructuredActivityNodes.
     	/// </summary>
@@ -5106,6 +5193,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// The set of ExecutableNodes that are executed in order to provide a test result for the Clause.
     	/// </summary>
     	set<ExecutableNode> Test;
+    	ConditionalNode ConditionalNode subsets Element.Owner;
     }
 
     /// <summary>
@@ -5276,6 +5364,35 @@ namespace MetaDslx.Languages.Uml.Model
     /// </summary>
     class InputPin : Pin
     {
+    	UnmarshallAction UnmarshallAction;
+    	TestIdentityAction TestIdentityAction;
+    	StructuredActivityNode StructuredActivityNode;
+    	StructuralFeatureAction StructuralFeatureAction;
+    	StartObjectBehaviorAction StartObjectBehaviorAction;
+    	StartClassifierBehaviorAction StartClassifierBehaviorAction;
+    	SendSignalAction SendSignalAction;
+    	SendObjectAction SendObjectAction;
+    	ReplyAction ReplyAction;
+    	RemoveVariableValueAction RemoveVariableValueAction;
+    	RemoveStructuralFeatureValueAction RemoveStructuralFeatureValueAction;
+    	ReduceAction ReduceAction;
+    	ReclassifyObjectAction ReclassifyObjectAction;
+    	ReadLinkObjectEndQualifierAction ReadLinkObjectEndQualifierAction;
+    	ReadLinkObjectEndAction ReadLinkObjectEndAction;
+    	ReadIsClassifiedObjectAction ReadIsClassifiedObjectAction;
+    	RaiseExceptionAction RaiseExceptionAction;
+    	OpaqueAction OpaqueAction;
+    	LoopNode LoopNode;
+    	LinkAction LinkAction;
+    	InvocationAction InvocationAction;
+    	DestroyObjectAction DestroyObjectAction;
+    	ClearAssociationAction ClearAssociationAction;
+    	CallOperationAction CallOperationAction;
+    	AddVariableValueAction AddVariableValueAction;
+    	AddStructuralFeatureValueAction AddStructuralFeatureValueAction;
+    	Action Action subsets Element.Owner;
+    	WriteVariableAction WriteVariableAction;
+    	WriteStructuralFeatureAction WriteStructuralFeatureAction;
     }
 
     /// <summary>
@@ -5327,6 +5444,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// Specifies whether the existing links emanating from the object on this end should be destroyed before creating a new link.
     	/// </summary>
     	bool IsReplaceAll = "false";
+    	CreateLinkAction CreateLinkAction;
     	/// <summary>
     	/// Adds the insertAt InputPin (if any) to the set of all Pins.
     	/// </summary>
@@ -5352,6 +5470,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// The InputPin that provides the specified value for the given end. This InputPin is omitted if the LinkEndData specifies the &quot;open&quot; end for a ReadLinkAction.
     	/// </summary>
     	InputPin Value;
+    	LinkAction LinkAction subsets Element.Owner;
     	/// <summary>
     	/// Returns all the InputPins referenced by this LinkEndData. By default this includes the value and qualifier InputPins, but subclasses may override the operation to add other InputPins.
     	/// </summary>
@@ -5373,6 +5492,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// Specifies whether to destroy duplicates of the value in nonunique Association ends.
     	/// </summary>
     	bool IsDestroyDuplicates = "false";
+    	DestroyLinkAction DestroyLinkAction;
     	/// <summary>
     	/// Adds the destroyAt InputPin (if any) to the set of all Pins.
     	/// </summary>
@@ -5464,6 +5584,30 @@ namespace MetaDslx.Languages.Uml.Model
     /// </summary>
     class OutputPin : Pin
     {
+    	UnmarshallAction UnmarshallAction;
+    	TestIdentityAction TestIdentityAction;
+    	StructuredActivityNode StructuredActivityNode;
+    	ReduceAction ReduceAction;
+    	ReadVariableAction ReadVariableAction;
+    	ReadStructuralFeatureAction ReadStructuralFeatureAction;
+    	ReadSelfAction ReadSelfAction;
+    	ReadLinkObjectEndQualifierAction ReadLinkObjectEndQualifierAction;
+    	ReadLinkObjectEndAction ReadLinkObjectEndAction;
+    	ReadLinkAction ReadLinkAction;
+    	ReadIsClassifiedObjectAction ReadIsClassifiedObjectAction;
+    	ReadExtentAction ReadExtentAction;
+    	OpaqueAction OpaqueAction;
+    	LoopNode LoopNode subsets Element.Owner;
+    	CreateObjectAction CreateObjectAction;
+    	CreateLinkObjectAction CreateLinkObjectAction;
+    	ConditionalNode ConditionalNode;
+    	ClearStructuralFeatureAction ClearStructuralFeatureAction;
+    	CallAction CallAction;
+    	Action Action subsets Element.Owner;
+    	AcceptEventAction AcceptEventAction;
+    	AcceptCallAction AcceptCallAction;
+    	WriteStructuralFeatureAction WriteStructuralFeatureAction;
+    	ValueSpecificationAction ValueSpecificationAction;
     }
 
     /// <summary>
@@ -5490,6 +5634,7 @@ namespace MetaDslx.Languages.Uml.Model
     	/// The InputPin from which the specified value for the qualifier is taken.
     	/// </summary>
     	InputPin Value;
+    	LinkEndData LinkEndData subsets Element.Owner;
     }
 
     /// <summary>
@@ -5943,196 +6088,196 @@ namespace MetaDslx.Languages.Uml.Model
     	containment ValueSpecification Value subsets Element.OwnedElement;
     }
 
-    // association ObjectNode.Selection with Behavior.ObjectNode;
-    // association ObjectNode.InState with State.ObjectNode;
-    // association ObjectNode.UpperBound with ValueSpecification.ObjectNode;
-    // association ObjectFlow.Transformation with Behavior.ObjectFlow;
-    // association ObjectFlow.Selection with Behavior.ObjectFlow;
-    // association JoinNode.JoinSpec with ValueSpecification.JoinNode;
+    association ObjectNode.Selection with Behavior.ObjectNode;
+    association ObjectNode.InState with State.ObjectNode;
+    association ObjectNode.UpperBound with ValueSpecification.ObjectNode;
+    association ObjectFlow.Transformation with Behavior.ObjectFlow;
+    association ObjectFlow.Selection with Behavior.ObjectFlow;
+    association JoinNode.JoinSpec with ValueSpecification.JoinNode;
     association ActivityEdge.Interrupts with InterruptibleActivityRegion.InterruptingEdge;
     association ExceptionHandler.ProtectedNode with ExecutableNode.Handler;
-    // association ExceptionHandler.HandlerBody with ExecutableNode.ExceptionHandler;
-    // association ExceptionHandler.ExceptionType with Classifier.ExceptionHandler;
-    // association ExceptionHandler.ExceptionInput with ObjectNode.ExceptionHandler;
-    // association DecisionNode.DecisionInput with Behavior.DecisionNode;
-    // association DecisionNode.DecisionInputFlow with ObjectFlow.DecisionNode;
-    // association ActivityPartition.Represents with Element.ActivityPartition;
+    association ExceptionHandler.HandlerBody with ExecutableNode.ExceptionHandler;
+    association ExceptionHandler.ExceptionType with Classifier.ExceptionHandler;
+    association ExceptionHandler.ExceptionInput with ObjectNode.ExceptionHandler;
+    association DecisionNode.DecisionInput with Behavior.DecisionNode;
+    association DecisionNode.DecisionInputFlow with ObjectFlow.DecisionNode;
+    association ActivityPartition.Represents with Element.ActivityPartition;
     association ActivityPartition.Subpartition with ActivityPartition.SuperPartition;
     association ActivityEdge.InPartition with ActivityPartition.Edge;
-    // association ActivityParameterNode.Parameter with Parameter.ActivityParameterNode;
+    association ActivityParameterNode.Parameter with Parameter.ActivityParameterNode;
     association ActivityNode.InInterruptibleRegion with InterruptibleActivityRegion.Node;
     association ActivityNode.InPartition with ActivityPartition.Node;
     association ActivityEdge.Target with ActivityNode.Incoming;
     association ActivityEdge.Source with ActivityNode.Outgoing;
-    // association ActivityNode.RedefinedNode with ActivityNode.ActivityNode;
+    association ActivityNode.RedefinedNode with ActivityNode.ActivityNode;
     association ActivityEdge.InGroup with ActivityGroup.ContainedEdge;
     association ActivityGroup.ContainedNode with ActivityNode.InGroup;
     association ActivityGroup.Subgroup with ActivityGroup.SuperGroup;
-    // association ActivityEdge.RedefinedEdge with ActivityEdge.ActivityEdge;
-    // association ActivityEdge.Weight with ValueSpecification.ActivityEdge;
-    // association ActivityEdge.Guard with ValueSpecification.ActivityEdge;
+    association ActivityEdge.RedefinedEdge with ActivityEdge.ActivityEdge;
+    association ActivityEdge.Weight with ValueSpecification.ActivityEdge;
+    association ActivityEdge.Guard with ValueSpecification.ActivityEdge;
     association Activity.StructuredNode with StructuredActivityNode.Activity;
     association Activity.Group with ActivityGroup.InActivity;
     association Activity.Node with ActivityNode.Activity;
     association Activity.Variable with Variable.ActivityScope;
     association Activity.Edge with ActivityEdge.Activity;
-    // association Activity.Partition with ActivityPartition.Activity;
-    // association TimeObservation.Event with NamedElement.TimeObservation;
-    // association TimeInterval.Max with TimeExpression.TimeInterval;
-    // association TimeInterval.Min with TimeExpression.TimeInterval;
-    // association TimeExpression.Expr with ValueSpecification.TimeExpression;
-    // association TimeExpression.Observation with Observation.TimeExpression;
-    // association TimeConstraint.Specification with TimeInterval.TimeConstraint;
+    association Activity.Partition with ActivityPartition.Activity;
+    association TimeObservation.Event with NamedElement.TimeObservation;
+    association TimeInterval.Max with TimeExpression.TimeInterval;
+    association TimeInterval.Min with TimeExpression.TimeInterval;
+    association TimeExpression.Expr with ValueSpecification.TimeExpression;
+    association TimeExpression.Observation with Observation.TimeExpression;
+    association TimeConstraint.Specification with TimeInterval.TimeConstraint;
     association StringExpression.OwningExpression with StringExpression.SubExpression;
-    // association OpaqueExpression.Result with Parameter.OpaqueExpression;
-    // association OpaqueExpression.Behavior with Behavior.OpaqueExpression;
-    // association IntervalConstraint.Specification with Interval.IntervalConstraint;
-    // association Interval.Max with ValueSpecification.Interval;
-    // association Interval.Min with ValueSpecification.Interval;
-    // association Expression.Operand with ValueSpecification.Expression;
-    // association DurationObservation.Event with NamedElement.DurationObservation;
-    // association DurationInterval.Max with Duration.DurationInterval;
-    // association DurationInterval.Min with Duration.DurationInterval;
-    // association DurationConstraint.Specification with DurationInterval.DurationConstraint;
-    // association Duration.Expr with ValueSpecification.Duration;
-    // association Duration.Observation with Observation.Duration;
+    association OpaqueExpression.Result with Parameter.OpaqueExpression;
+    association OpaqueExpression.Behavior with Behavior.OpaqueExpression;
+    association IntervalConstraint.Specification with Interval.IntervalConstraint;
+    association Interval.Max with ValueSpecification.Interval;
+    association Interval.Min with ValueSpecification.Interval;
+    association Expression.Operand with ValueSpecification.Expression;
+    association DurationObservation.Event with NamedElement.DurationObservation;
+    association DurationInterval.Max with Duration.DurationInterval;
+    association DurationInterval.Min with Duration.DurationInterval;
+    association DurationConstraint.Specification with DurationInterval.DurationConstraint;
+    association Duration.Expr with ValueSpecification.Duration;
+    association Duration.Observation with Observation.Duration;
     association ExtensionPoint.UseCase with UseCase.ExtensionPoint;
     association Include.IncludingCase with UseCase.Include;
     association UseCase.Subject with Classifier.UseCase;
     association Extend.Extension with UseCase.Extend;
-    // association Include.Addition with UseCase.Include;
-    // association Extend.ExtensionLocation with ExtensionPoint.Extension;
-    // association Extend.Condition with Constraint.Extend;
-    // association Extend.ExtendedCase with UseCase.Extend;
-    // association StructuredClassifier.Part with Property.StructuredClassifier;
-    // association StructuredClassifier.OwnedConnector with Connector.StructuredClassifier;
-    // association StructuredClassifier.OwnedAttribute with Property.StructuredClassifier;
-    // association StructuredClassifier.Role with ConnectableElement.StructuredClassifier;
-    // association Port.Protocol with ProtocolStateMachine.Port;
-    // association Port.Required with Interface.Port;
-    // association Port.RedefinedPort with Port.Port;
-    // association Port.Provided with Interface.Port;
-    // association EncapsulatedClassifier.OwnedPort with Port.EncapsulatedClassifier;
-    // association ConnectorEnd.PartWithPort with Property.ConnectorEnd;
-    // association ConnectorEnd.DefiningEnd with Property.ConnectorEnd;
-    // association Connector.End with ConnectorEnd.Connector;
-    // association Connector.RedefinedConnector with Connector.Connector;
-    // association Connector.Contract with Behavior.Connector;
-    // association Connector.Type with Association.Connector;
+    association Include.Addition with UseCase.Include;
+    association Extend.ExtensionLocation with ExtensionPoint.Extension;
+    association Extend.Condition with Constraint.Extend;
+    association Extend.ExtendedCase with UseCase.Extend;
+    association StructuredClassifier.Part with Property.StructuredClassifier;
+    association StructuredClassifier.OwnedConnector with Connector.StructuredClassifier;
+    association StructuredClassifier.OwnedAttribute with Property.StructuredClassifier;
+    association StructuredClassifier.Role with ConnectableElement.StructuredClassifier;
+    association Port.Protocol with ProtocolStateMachine.Port;
+    association Port.Required with Interface.Port;
+    association Port.RedefinedPort with Port.Port;
+    association Port.Provided with Interface.Port;
+    association EncapsulatedClassifier.OwnedPort with Port.EncapsulatedClassifier;
+    association ConnectorEnd.PartWithPort with Property.ConnectorEnd;
+    association ConnectorEnd.DefiningEnd with Property.ConnectorEnd;
+    association Connector.End with ConnectorEnd.Connector;
+    association Connector.RedefinedConnector with Connector.Connector;
+    association Connector.Contract with Behavior.Connector;
+    association Connector.Type with Association.Connector;
     association ConnectableElement.TemplateParameter with ConnectableElementTemplateParameter.ParameteredElement;
     association ConnectableElement.End with ConnectorEnd.Role;
-    // association ComponentRealization.RealizingClassifier with Classifier.ComponentRealization;
-    // association Component.Required with Interface.Component;
-    // association Component.PackagedElement with PackageableElement.Component;
+    association ComponentRealization.RealizingClassifier with Classifier.ComponentRealization;
+    association Component.Required with Interface.Component;
+    association Component.PackagedElement with PackageableElement.Component;
     association Component.Realization with ComponentRealization.Abstraction;
-    // association Component.Provided with Interface.Component;
-    // association CollaborationUse.Type with Collaboration.CollaborationUse;
-    // association CollaborationUse.RoleBinding with Dependency.CollaborationUse;
-    // association Collaboration.CollaborationRole with ConnectableElement.Collaboration;
+    association Component.Provided with Interface.Component;
+    association CollaborationUse.Type with Collaboration.CollaborationUse;
+    association CollaborationUse.RoleBinding with Dependency.CollaborationUse;
+    association Collaboration.CollaborationRole with ConnectableElement.Collaboration;
     association Class.OwnedOperation with Operation.Class;
-    // association Class.SuperClass with Class.Class;
+    association Class.SuperClass with Class.Class;
     association Class.Extension with Extension.Metaclass;
     association Class.OwnedAttribute with Property.Class;
-    // association Class.NestedClassifier with Classifier.NestingClass;
-    // association Class.OwnedReception with Reception.Class;
+    association Class.NestedClassifier with Classifier.NestingClass;
+    association Class.OwnedReception with Reception.Class;
     association Association.MemberEnd with Property.Association;
-    // association Association.EndType with Type.Association;
+    association Association.EndType with Type.Association;
     association Association.OwnedEnd with Property.OwningAssociation;
-    // association Association.NavigableOwnedEnd with Property.Association;
+    association Association.NavigableOwnedEnd with Property.Association;
     association Transition.Target with Vertex.Incoming;
     association Transition.Source with Vertex.Outgoing;
-    // association Transition.Trigger with Trigger.Transition;
-    // association Transition.Guard with Constraint.Transition;
-    // association Transition.RedefinedTransition with Transition.Transition;
-    // association Transition.RedefinitionContext with Classifier.Transition;
-    // association Transition.Effect with Behavior.Transition;
+    association Transition.Trigger with Trigger.Transition;
+    association Transition.Guard with Constraint.Transition;
+    association Transition.RedefinedTransition with Transition.Transition;
+    association Transition.RedefinitionContext with Classifier.Transition;
+    association Transition.Effect with Behavior.Transition;
     association State.Submachine with StateMachine.SubmachineState;
     association Pseudostate.StateMachine with StateMachine.ConnectionPoint;
     association Region.StateMachine with StateMachine.Region;
-    // association StateMachine.ExtendedStateMachine with StateMachine.StateMachine;
-    // association Vertex.RedefinitionContext with Classifier.Vertex;
+    association StateMachine.ExtendedStateMachine with StateMachine.StateMachine;
+    association Vertex.RedefinitionContext with Classifier.Vertex;
     association Region.State with State.Region;
-    // association State.StateInvariant with Constraint.OwningState;
-    // association Vertex.RedefinedVertex with Vertex.Vertex;
-    // association State.DeferrableTrigger with Trigger.State;
+    association State.StateInvariant with Constraint.OwningState;
+    association Vertex.RedefinedVertex with Vertex.Vertex;
+    association State.DeferrableTrigger with Trigger.State;
     association ConnectionPointReference.State with State.Connection;
-    // association State.Entry with Behavior.State;
+    association State.Entry with Behavior.State;
     association Pseudostate.State with State.ConnectionPoint;
-    // association State.DoActivity with Behavior.State;
-    // association State.Exit with Behavior.State;
-    // association Region.ExtendedRegion with Region.Region;
+    association State.DoActivity with Behavior.State;
+    association State.Exit with Behavior.State;
+    association Region.ExtendedRegion with Region.Region;
     association Region.Subvertex with Vertex.Container;
-    // association Region.RedefinitionContext with Classifier.Region;
+    association Region.RedefinitionContext with Classifier.Region;
     association Region.Transition with Transition.Container;
-    // association ProtocolTransition.Referred with Operation.ProtocolTransition;
-    // association ProtocolTransition.PreCondition with Constraint.ProtocolTransition;
-    // association ProtocolTransition.PostCondition with Constraint.OwningTransition;
+    association ProtocolTransition.Referred with Operation.ProtocolTransition;
+    association ProtocolTransition.PreCondition with Constraint.ProtocolTransition;
+    association ProtocolTransition.PostCondition with Constraint.OwningTransition;
     association ProtocolConformance.SpecificMachine with ProtocolStateMachine.Conformance;
-    // association ProtocolConformance.GeneralMachine with ProtocolStateMachine.ProtocolConformance;
-    // association ConnectionPointReference.Entry with Pseudostate.ConnectionPointReference;
-    // association ConnectionPointReference.Exit with Pseudostate.ConnectionPointReference;
-    // association Signal.OwnedAttribute with Property.OwningSignal;
-    // association Reception.Signal with Signal.Reception;
-    // association InterfaceRealization.Contract with Interface.InterfaceRealization;
-    // association Interface.Protocol with ProtocolStateMachine.Interface;
-    // association Interface.OwnedReception with Reception.Interface;
-    // association Interface.RedefinedInterface with Interface.Interface;
-    // association Interface.NestedClassifier with Classifier.Interface;
+    association ProtocolConformance.GeneralMachine with ProtocolStateMachine.ProtocolConformance;
+    association ConnectionPointReference.Entry with Pseudostate.ConnectionPointReference;
+    association ConnectionPointReference.Exit with Pseudostate.ConnectionPointReference;
+    association Signal.OwnedAttribute with Property.OwningSignal;
+    association Reception.Signal with Signal.Reception;
+    association InterfaceRealization.Contract with Interface.InterfaceRealization;
+    association Interface.Protocol with ProtocolStateMachine.Interface;
+    association Interface.OwnedReception with Reception.Interface;
+    association Interface.RedefinedInterface with Interface.Interface;
+    association Interface.NestedClassifier with Classifier.Interface;
     association Interface.OwnedOperation with Operation.Interface;
     association Interface.OwnedAttribute with Property.Interface;
-    // association EnumerationLiteral.Classifier with Enumeration.EnumerationLiteral;
+    association EnumerationLiteral.Classifier with Enumeration.EnumerationLiteral;
     association Enumeration.OwnedLiteral with EnumerationLiteral.Enumeration;
     association DataType.OwnedAttribute with Property.Datatype;
     association DataType.OwnedOperation with Operation.Datatype;
-    // association BehavioredClassifier.OwnedBehavior with Behavior.BehavioredClassifier;
-    // association BehavioredClassifier.ClassifierBehavior with Behavior.BehavioredClassifier;
+    association BehavioredClassifier.OwnedBehavior with Behavior.BehavioredClassifier;
+    association BehavioredClassifier.ClassifierBehavior with Behavior.BehavioredClassifier;
     association BehavioredClassifier.InterfaceRealization with InterfaceRealization.ImplementingClassifier;
-    // association Stereotype.Profile with Profile.Stereotype;
-    // association Stereotype.Icon with Image.Stereotype;
-    // association ProfileApplication.AppliedProfile with Profile.ProfileApplication;
-    // association Profile.MetaclassReference with ElementImport.Profile;
-    // association Profile.MetamodelReference with PackageImport.Profile;
-    // association PackageMerge.MergedPackage with Package.PackageMerge;
-    // association Package.PackagedElement with PackageableElement.OwningPackage;
+    association Stereotype.Profile with Profile.Stereotype;
+    association Stereotype.Icon with Image.Stereotype;
+    association ProfileApplication.AppliedProfile with Profile.ProfileApplication;
+    association Profile.MetaclassReference with ElementImport.Profile;
+    association Profile.MetamodelReference with PackageImport.Profile;
+    association PackageMerge.MergedPackage with Package.PackageMerge;
+    association Package.PackagedElement with PackageableElement.OwningPackage;
     association Package.PackageMerge with PackageMerge.ReceivingPackage;
     association Package.NestedPackage with Package.NestingPackage;
     association Package.ProfileApplication with ProfileApplication.ApplyingPackage;
     association Package.OwnedType with Type.Package;
-    // association Package.OwnedStereotype with Stereotype.OwningPackage;
-    // association ExtensionEnd.Type with Stereotype.ExtensionEnd;
-    // association Extension.OwnedEnd with ExtensionEnd.Extension;
-    // association StateInvariant.Invariant with Constraint.StateInvariant;
-    // association StateInvariant.Covered with Lifeline.StateInvariant;
-    // association OccurrenceSpecification.Covered with Lifeline.Events;
+    association Package.OwnedStereotype with Stereotype.OwningPackage;
+    association ExtensionEnd.Type with Stereotype.ExtensionEnd;
+    association Extension.OwnedEnd with ExtensionEnd.Extension;
+    association StateInvariant.Invariant with Constraint.StateInvariant;
+    association StateInvariant.Covered with Lifeline.StateInvariant;
+    association OccurrenceSpecification.Covered with Lifeline.Events;
     association GeneralOrdering.After with OccurrenceSpecification.ToBefore;
-    // association MessageEnd.Message with Message.MessageEnd;
-    // association Message.Signature with NamedElement.Message;
-    // association Message.Connector with Connector.Message;
-    // association Message.ReceiveEvent with MessageEnd.EndMessage;
-    // association Message.SendEvent with MessageEnd.EndMessage;
-    // association Message.Argument with ValueSpecification.Message;
-    // association Lifeline.Selector with ValueSpecification.Lifeline;
-    // association Lifeline.DecomposedAs with PartDecomposition.Lifeline;
+    association MessageEnd.Message with Message.MessageEnd;
+    association Message.Signature with NamedElement.Message;
+    association Message.Connector with Connector.Message;
+    association Message.ReceiveEvent with MessageEnd.EndMessage;
+    association Message.SendEvent with MessageEnd.EndMessage;
+    association Message.Argument with ValueSpecification.Message;
+    association Lifeline.Selector with ValueSpecification.Lifeline;
+    association Lifeline.DecomposedAs with PartDecomposition.Lifeline;
     /// <summary>
     /// If a Part has multiplicity, multiple lifelines might be used to show it.
     /// </summary>
-    // association Lifeline.Represents with ConnectableElement.Lifeline;
-    // association InteractionUse.ReturnValueRecipient with Property.InteractionUse;
-    // association InteractionUse.RefersTo with Interaction.InteractionUse;
-    // association InteractionUse.ReturnValue with ValueSpecification.InteractionUse;
-    // association InteractionUse.Argument with ValueSpecification.InteractionUse;
-    // association InteractionUse.ActualGate with Gate.InteractionUse;
+    association Lifeline.Represents with ConnectableElement.Lifeline;
+    association InteractionUse.ReturnValueRecipient with Property.InteractionUse;
+    association InteractionUse.RefersTo with Interaction.InteractionUse;
+    association InteractionUse.ReturnValue with ValueSpecification.InteractionUse;
+    association InteractionUse.Argument with ValueSpecification.InteractionUse;
+    association InteractionUse.ActualGate with Gate.InteractionUse;
     association InteractionFragment.EnclosingOperand with InteractionOperand.Fragment;
-    // association InteractionOperand.Guard with InteractionConstraint.InteractionOperand;
-    // association InteractionFragment.GeneralOrdering with GeneralOrdering.InteractionFragment;
+    association InteractionOperand.Guard with InteractionConstraint.InteractionOperand;
+    association InteractionFragment.GeneralOrdering with GeneralOrdering.InteractionFragment;
     /// <summary>
     /// This association shows the lifelines that make up an interaction. A lifeline may be part of more than one interaction use.
     /// </summary>
     association InteractionFragment.Covered with Lifeline.CoveredBy;
-    // association InteractionConstraint.Minint with ValueSpecification.InteractionConstraint;
-    // association InteractionConstraint.Maxint with ValueSpecification.InteractionConstraint;
-    // association Interaction.Action with Action.Interaction;
-    // association Interaction.FormalGate with Gate.Interaction;
+    association InteractionConstraint.Minint with ValueSpecification.InteractionConstraint;
+    association InteractionConstraint.Maxint with ValueSpecification.InteractionConstraint;
+    association Interaction.Action with Action.Interaction;
+    association Interaction.FormalGate with Gate.Interaction;
     association Interaction.Lifeline with Lifeline.Interaction;
     association Interaction.Fragment with InteractionFragment.EnclosingInteraction;
     association Interaction.Message with Message.Interaction;
@@ -6140,237 +6285,237 @@ namespace MetaDslx.Languages.Uml.Model
     /// <summary>
     /// The event shows the time point at which the action completes execution.
     /// </summary>
-    // association ExecutionSpecification.Finish with OccurrenceSpecification.ExecutionSpecification;
+    association ExecutionSpecification.Finish with OccurrenceSpecification.ExecutionSpecification;
     /// <summary>
     /// The event shows the time point at which the action begins execution.
     /// </summary>
-    // association ExecutionSpecification.Start with OccurrenceSpecification.ExecutionSpecification;
-    // association ExecutionOccurrenceSpecification.Execution with ExecutionSpecification.ExecutionOccurrenceSpecification;
-    // association ConsiderIgnoreFragment.Message with NamedElement.ConsiderIgnoreFragment;
-    // association CombinedFragment.CfragmentGate with Gate.CombinedFragment;
-    // association CombinedFragment.Operand with InteractionOperand.CombinedFragment;
-    // association BehaviorExecutionSpecification.Behavior with Behavior.BehaviorExecutionSpecification;
-    // association ActionExecutionSpecification.Action with Action.ActionExecutionSpecification;
-    // association InformationItem.Represented with Classifier.Representation;
-    // association InformationFlow.Conveyed with Classifier.ConveyingFlow;
-    // association InformationFlow.RealizingActivityEdge with ActivityEdge.InformationFlow;
-    // association InformationFlow.RealizingMessage with Message.InformationFlow;
-    // association InformationFlow.InformationSource with NamedElement.InformationFlow;
-    // association InformationFlow.Realization with Relationship.Abstraction;
-    // association InformationFlow.RealizingConnector with Connector.InformationFlow;
-    // association InformationFlow.InformationTarget with NamedElement.InformationFlow;
-    // association Node.NestedNode with Node.Node;
-    // association Manifestation.UtilizedElement with PackageableElement.Manifestation;
-    // association DeploymentTarget.DeployedElement with PackageableElement.DeploymentTarget;
+    association ExecutionSpecification.Start with OccurrenceSpecification.ExecutionSpecification;
+    association ExecutionOccurrenceSpecification.Execution with ExecutionSpecification.ExecutionOccurrenceSpecification;
+    association ConsiderIgnoreFragment.Message with NamedElement.ConsiderIgnoreFragment;
+    association CombinedFragment.CfragmentGate with Gate.CombinedFragment;
+    association CombinedFragment.Operand with InteractionOperand.CombinedFragment;
+    association BehaviorExecutionSpecification.Behavior with Behavior.BehaviorExecutionSpecification;
+    association ActionExecutionSpecification.Action with Action.ActionExecutionSpecification;
+    association InformationItem.Represented with Classifier.Representation;
+    association InformationFlow.Conveyed with Classifier.ConveyingFlow;
+    association InformationFlow.RealizingActivityEdge with ActivityEdge.InformationFlow;
+    association InformationFlow.RealizingMessage with Message.InformationFlow;
+    association InformationFlow.InformationSource with NamedElement.InformationFlow;
+    association InformationFlow.Realization with Relationship.Abstraction;
+    association InformationFlow.RealizingConnector with Connector.InformationFlow;
+    association InformationFlow.InformationTarget with NamedElement.InformationFlow;
+    association Node.NestedNode with Node.Node;
+    association Manifestation.UtilizedElement with PackageableElement.Manifestation;
+    association DeploymentTarget.DeployedElement with PackageableElement.DeploymentTarget;
     association Deployment.Location with DeploymentTarget.Deployment;
-    // association Deployment.DeployedArtifact with DeployedArtifact.DeploymentForArtifact;
+    association Deployment.DeployedArtifact with DeployedArtifact.DeploymentForArtifact;
     association Deployment.Configuration with DeploymentSpecification.Deployment;
-    // association Artifact.OwnedAttribute with Property.Artifact;
-    // association Artifact.OwnedOperation with Operation.Artifact;
-    // association Artifact.NestedArtifact with Artifact.Artifact;
-    // association Artifact.Manifestation with Manifestation.Artifact;
-    // association TypedElement.Type with Type.TypedElement;
+    association Artifact.OwnedAttribute with Property.Artifact;
+    association Artifact.OwnedOperation with Operation.Artifact;
+    association Artifact.NestedArtifact with Artifact.Artifact;
+    association Artifact.Manifestation with Manifestation.Artifact;
+    association TypedElement.Type with Type.TypedElement;
     association TemplateParameter.Signature with TemplateSignature.OwnedParameter;
-    // association TemplateSignature.Parameter with TemplateParameter.TemplateSignature;
-    // association TemplateParameterSubstitution.Actual with ParameterableElement.TemplateParameterSubstitution;
-    // association TemplateParameterSubstitution.OwnedActual with ParameterableElement.OwningTemplateParameterSubstitution;
-    // association TemplateParameterSubstitution.Formal with TemplateParameter.TemplateParameterSubstitution;
-    // association TemplateParameter.OwnedDefault with ParameterableElement.TemplateParameter;
+    association TemplateSignature.Parameter with TemplateParameter.TemplateSignature;
+    association TemplateParameterSubstitution.Actual with ParameterableElement.TemplateParameterSubstitution;
+    association TemplateParameterSubstitution.OwnedActual with ParameterableElement.OwningTemplateParameterSubstitution;
+    association TemplateParameterSubstitution.Formal with TemplateParameter.TemplateParameterSubstitution;
+    association TemplateParameter.OwnedDefault with ParameterableElement.TemplateParameter;
     association ParameterableElement.OwningTemplateParameter with TemplateParameter.OwnedParameteredElement;
-    // association TemplateParameter.Default with ParameterableElement.TemplateParameter;
+    association TemplateParameter.Default with ParameterableElement.TemplateParameter;
     association ParameterableElement.TemplateParameter with TemplateParameter.ParameteredElement;
-    // association TemplateBinding.Signature with TemplateSignature.TemplateBinding;
+    association TemplateBinding.Signature with TemplateSignature.TemplateBinding;
     association TemplateBinding.ParameterSubstitution with TemplateParameterSubstitution.TemplateBinding;
     association TemplateableElement.TemplateBinding with TemplateBinding.BoundElement;
     association TemplateableElement.OwnedTemplateSignature with TemplateSignature.Template;
-    // association Relationship.RelatedElement with Element.Relationship;
-    // association PackageImport.ImportedPackage with Package.PackageImport;
+    association Relationship.RelatedElement with Element.Relationship;
+    association PackageImport.ImportedPackage with Package.PackageImport;
     association ElementImport.ImportingNamespace with Namespace.ElementImport;
     association NamedElement.Namespace with Namespace.OwnedMember;
     association Constraint.Context with Namespace.OwnedRule;
     association Namespace.PackageImport with PackageImport.ImportingNamespace;
-    // association Namespace.Member with NamedElement.MemberNamespace;
-    // association Namespace.ImportedMember with PackageableElement.Namespace;
-    // association NamedElement.NameExpression with StringExpression.NamedElement;
+    association Namespace.Member with NamedElement.MemberNamespace;
+    association Namespace.ImportedMember with PackageableElement.Namespace;
+    association NamedElement.NameExpression with StringExpression.NamedElement;
     association Dependency.Client with NamedElement.ClientDependency;
-    // association MultiplicityElement.LowerValue with ValueSpecification.OwningLower;
-    // association MultiplicityElement.UpperValue with ValueSpecification.OwningUpper;
-    // association ElementImport.ImportedElement with PackageableElement.Import;
+    association MultiplicityElement.LowerValue with ValueSpecification.OwningLower;
+    association MultiplicityElement.UpperValue with ValueSpecification.OwningUpper;
+    association ElementImport.ImportedElement with PackageableElement.Import;
     association Element.OwnedElement with Element.Owner;
-    // association Element.OwnedComment with Comment.OwningElement;
-    // association DirectedRelationship.Source with Element.DirectedRelationship;
-    // association DirectedRelationship.Target with Element.DirectedRelationship;
-    // association Dependency.Supplier with NamedElement.SupplierDependency;
-    // association Constraint.ConstrainedElement with Element.Constraint;
-    // association Constraint.Specification with ValueSpecification.OwningConstraint;
-    // association Comment.AnnotatedElement with Element.Comment;
-    // association Abstraction.Mapping with OpaqueExpression.Abstraction;
-    // association Trigger.Event with Event.Trigger;
-    // association Trigger.Port with Port.Trigger;
-    // association TimeEvent.When with TimeExpression.TimeEvent;
-    // association SignalEvent.Signal with Signal.SignalEvent;
-    // association ChangeEvent.ChangeExpression with ValueSpecification.ChangeEvent;
-    // association CallEvent.Operation with Operation.CallEvent;
-    // association Behavior.OwnedParameterSet with ParameterSet.Behavior;
-    // association Behavior.Context with BehavioredClassifier.Behavior;
-    // association Behavior.Precondition with Constraint.Behavior;
-    // association Behavior.Postcondition with Constraint.Behavior;
-    // association Behavior.RedefinedBehavior with Behavior.Behavior;
-    // association Behavior.OwnedParameter with Parameter.Behavior;
-    // association Slot.DefiningFeature with StructuralFeature.Slot;
-    // association Slot.Value with ValueSpecification.OwningSlot;
-    // association RedefinableTemplateSignature.ExtendedSignature with RedefinableTemplateSignature.RedefinableTemplateSignature;
-    // association RedefinableTemplateSignature.InheritedParameter with TemplateParameter.RedefinableTemplateSignature;
-    // association RedefinableElement.RedefinitionContext with Classifier.RedefinableElement;
-    // association RedefinableElement.RedefinedElement with RedefinableElement.RedefinableElement;
+    association Element.OwnedComment with Comment.OwningElement;
+    association DirectedRelationship.Source with Element.DirectedRelationship;
+    association DirectedRelationship.Target with Element.DirectedRelationship;
+    association Dependency.Supplier with NamedElement.SupplierDependency;
+    association Constraint.ConstrainedElement with Element.Constraint;
+    association Constraint.Specification with ValueSpecification.OwningConstraint;
+    association Comment.AnnotatedElement with Element.Comment;
+    association Abstraction.Mapping with OpaqueExpression.Abstraction;
+    association Trigger.Event with Event.Trigger;
+    association Trigger.Port with Port.Trigger;
+    association TimeEvent.When with TimeExpression.TimeEvent;
+    association SignalEvent.Signal with Signal.SignalEvent;
+    association ChangeEvent.ChangeExpression with ValueSpecification.ChangeEvent;
+    association CallEvent.Operation with Operation.CallEvent;
+    association Behavior.OwnedParameterSet with ParameterSet.Behavior;
+    association Behavior.Context with BehavioredClassifier.Behavior;
+    association Behavior.Precondition with Constraint.Behavior;
+    association Behavior.Postcondition with Constraint.Behavior;
+    association Behavior.RedefinedBehavior with Behavior.Behavior;
+    association Behavior.OwnedParameter with Parameter.Behavior;
+    association Slot.DefiningFeature with StructuralFeature.Slot;
+    association Slot.Value with ValueSpecification.OwningSlot;
+    association RedefinableTemplateSignature.ExtendedSignature with RedefinableTemplateSignature.RedefinableTemplateSignature;
+    association RedefinableTemplateSignature.InheritedParameter with TemplateParameter.RedefinableTemplateSignature;
+    association RedefinableElement.RedefinitionContext with Classifier.RedefinableElement;
+    association RedefinableElement.RedefinedElement with RedefinableElement.RedefinableElement;
     association Property.AssociationEnd with Property.Qualifier;
-    // association Property.RedefinedProperty with Property.Property;
-    // association Property.DefaultValue with ValueSpecification.OwningProperty;
-    // association Property.Opposite with Property.Property;
-    // association Property.SubsettedProperty with Property.Property;
-    // association ParameterSet.Condition with Constraint.ParameterSet;
+    association Property.RedefinedProperty with Property.Property;
+    association Property.DefaultValue with ValueSpecification.OwningProperty;
+    association Property.Opposite with Property.Property;
+    association Property.SubsettedProperty with Property.Property;
+    association ParameterSet.Condition with Constraint.ParameterSet;
     association Parameter.ParameterSet with ParameterSet.Parameter;
-    // association Parameter.DefaultValue with ValueSpecification.OwningParameter;
-    // association Operation.Type with Type.Operation;
+    association Parameter.DefaultValue with ValueSpecification.OwningParameter;
+    association Operation.Type with Type.Operation;
     association Operation.TemplateParameter with OperationTemplateParameter.ParameteredElement;
-    // association Operation.BodyCondition with Constraint.BodyContext;
-    // association Operation.Postcondition with Constraint.PostContext;
-    // association Operation.RedefinedOperation with Operation.Operation;
-    // association Operation.RaisedException with Type.Operation;
-    // association Operation.Precondition with Constraint.PreContext;
+    association Operation.BodyCondition with Constraint.BodyContext;
+    association Operation.Postcondition with Constraint.PostContext;
+    association Operation.RedefinedOperation with Operation.Operation;
+    association Operation.RaisedException with Type.Operation;
+    association Operation.Precondition with Constraint.PreContext;
     association Operation.OwnedParameter with Parameter.Operation;
-    // association InstanceValue.Instance with InstanceSpecification.InstanceValue;
-    // association InstanceSpecification.Classifier with Classifier.InstanceSpecification;
+    association InstanceValue.Instance with InstanceSpecification.InstanceValue;
+    association InstanceSpecification.Classifier with Classifier.InstanceSpecification;
     association InstanceSpecification.Slot with Slot.OwningInstance;
-    // association InstanceSpecification.Specification with ValueSpecification.OwningInstanceSpec;
+    association InstanceSpecification.Specification with ValueSpecification.OwningInstanceSpec;
     association Generalization.GeneralizationSet with GeneralizationSet.Generalization;
-    // association Generalization.General with Classifier.Generalization;
-    // association ClassifierTemplateParameter.ConstrainingClassifier with Classifier.ClassifierTemplateParameter;
+    association Generalization.General with Classifier.Generalization;
+    association ClassifierTemplateParameter.ConstrainingClassifier with Classifier.ClassifierTemplateParameter;
     association Classifier.TemplateParameter with ClassifierTemplateParameter.ParameteredElement;
     association Classifier.PowertypeExtent with GeneralizationSet.Powertype;
     association Classifier.Generalization with Generalization.Specific;
-    // association Classifier.General with Classifier.Classifier;
+    association Classifier.General with Classifier.Classifier;
     association Classifier.Feature with Feature.FeaturingClassifier;
     association Substitution.SubstitutingClassifier with Classifier.Substitution;
-    // association Classifier.Representation with CollaborationUse.Classifier;
+    association Classifier.Representation with CollaborationUse.Classifier;
     association Classifier.OwnedTemplateSignature with RedefinableTemplateSignature.Classifier;
-    // association Classifier.InheritedMember with NamedElement.InheritingClassifier;
-    // association Classifier.RedefinedClassifier with Classifier.Classifier;
-    // association Classifier.CollaborationUse with CollaborationUse.Classifier;
-    // association Classifier.Attribute with Property.Classifier;
-    // association Classifier.OwnedUseCase with UseCase.Classifier;
-    // association BehavioralFeature.OwnedParameter with Parameter.OwnerFormalParam;
-    // association BehavioralFeature.RaisedException with Type.BehavioralFeature;
-    // association BehavioralFeature.OwnedParameterSet with ParameterSet.BehavioralFeature;
+    association Classifier.InheritedMember with NamedElement.InheritingClassifier;
+    association Classifier.RedefinedClassifier with Classifier.Classifier;
+    association Classifier.CollaborationUse with CollaborationUse.Classifier;
+    association Classifier.Attribute with Property.Classifier;
+    association Classifier.OwnedUseCase with UseCase.Classifier;
+    association BehavioralFeature.OwnedParameter with Parameter.OwnerFormalParam;
+    association BehavioralFeature.RaisedException with Type.BehavioralFeature;
+    association BehavioralFeature.OwnedParameterSet with ParameterSet.BehavioralFeature;
     association Behavior.Specification with BehavioralFeature.Method;
-    // association Substitution.Contract with Classifier.Substitution;
-    // association ValuePin.Value with ValueSpecification.ValuePin;
-    // association UnmarshallAction.Result with OutputPin.UnmarshallAction;
-    // association UnmarshallAction.UnmarshallType with Classifier.UnmarshallAction;
-    // association UnmarshallAction.Object with InputPin.UnmarshallAction;
-    // association TestIdentityAction.First with InputPin.TestIdentityAction;
-    // association TestIdentityAction.Second with InputPin.TestIdentityAction;
-    // association TestIdentityAction.Result with OutputPin.TestIdentityAction;
-    // association StructuredActivityNode.StructuredNodeOutput with OutputPin.StructuredActivityNode;
-    // association StructuredActivityNode.StructuredNodeInput with InputPin.StructuredActivityNode;
+    association Substitution.Contract with Classifier.Substitution;
+    association ValuePin.Value with ValueSpecification.ValuePin;
+    association UnmarshallAction.Result with OutputPin.UnmarshallAction;
+    association UnmarshallAction.UnmarshallType with Classifier.UnmarshallAction;
+    association UnmarshallAction.Object with InputPin.UnmarshallAction;
+    association TestIdentityAction.First with InputPin.TestIdentityAction;
+    association TestIdentityAction.Second with InputPin.TestIdentityAction;
+    association TestIdentityAction.Result with OutputPin.TestIdentityAction;
+    association StructuredActivityNode.StructuredNodeOutput with OutputPin.StructuredActivityNode;
+    association StructuredActivityNode.StructuredNodeInput with InputPin.StructuredActivityNode;
     association ActivityEdge.InStructuredNode with StructuredActivityNode.Edge;
     association ActivityNode.InStructuredNode with StructuredActivityNode.Node;
     association Variable.Scope with StructuredActivityNode.Variable;
-    // association StructuralFeatureAction.Object with InputPin.StructuralFeatureAction;
-    // association StructuralFeatureAction.StructuralFeature with StructuralFeature.StructuralFeatureAction;
-    // association StartObjectBehaviorAction.Object with InputPin.StartObjectBehaviorAction;
-    // association StartClassifierBehaviorAction.Object with InputPin.StartClassifierBehaviorAction;
-    // association SequenceNode.ExecutableNode with ExecutableNode.SequenceNode;
-    // association SendSignalAction.Signal with Signal.SendSignalAction;
-    // association SendSignalAction.Target with InputPin.SendSignalAction;
-    // association SendObjectAction.Request with InputPin.SendObjectAction;
-    // association SendObjectAction.Target with InputPin.SendObjectAction;
-    // association ReplyAction.ReturnInformation with InputPin.ReplyAction;
-    // association ReplyAction.ReplyToCall with Trigger.ReplyAction;
-    // association ReplyAction.ReplyValue with InputPin.ReplyAction;
-    // association RemoveVariableValueAction.RemoveAt with InputPin.RemoveVariableValueAction;
-    // association RemoveStructuralFeatureValueAction.RemoveAt with InputPin.RemoveStructuralFeatureValueAction;
-    // association ReduceAction.Collection with InputPin.ReduceAction;
-    // association ReduceAction.Reducer with Behavior.ReduceAction;
-    // association ReduceAction.Result with OutputPin.ReduceAction;
-    // association ReclassifyObjectAction.Object with InputPin.ReclassifyObjectAction;
-    // association ReclassifyObjectAction.NewClassifier with Classifier.ReclassifyObjectAction;
-    // association ReclassifyObjectAction.OldClassifier with Classifier.ReclassifyObjectAction;
-    // association ReadVariableAction.Result with OutputPin.ReadVariableAction;
-    // association ReadStructuralFeatureAction.Result with OutputPin.ReadStructuralFeatureAction;
-    // association ReadSelfAction.Result with OutputPin.ReadSelfAction;
-    // association ReadLinkObjectEndQualifierAction.Qualifier with Property.ReadLinkObjectEndQualifierAction;
-    // association ReadLinkObjectEndQualifierAction.Object with InputPin.ReadLinkObjectEndQualifierAction;
-    // association ReadLinkObjectEndQualifierAction.Result with OutputPin.ReadLinkObjectEndQualifierAction;
-    // association ReadLinkObjectEndAction.Object with InputPin.ReadLinkObjectEndAction;
-    // association ReadLinkObjectEndAction.End with Property.ReadLinkObjectEndAction;
-    // association ReadLinkObjectEndAction.Result with OutputPin.ReadLinkObjectEndAction;
-    // association ReadLinkAction.Result with OutputPin.ReadLinkAction;
-    // association ReadIsClassifiedObjectAction.Classifier with Classifier.ReadIsClassifiedObjectAction;
-    // association ReadIsClassifiedObjectAction.Result with OutputPin.ReadIsClassifiedObjectAction;
-    // association ReadIsClassifiedObjectAction.Object with InputPin.ReadIsClassifiedObjectAction;
-    // association ReadExtentAction.Result with OutputPin.ReadExtentAction;
-    // association ReadExtentAction.Classifier with Classifier.ReadExtentAction;
-    // association RaiseExceptionAction.Exception with InputPin.RaiseExceptionAction;
-    // association QualifierValue.Qualifier with Property.QualifierValue;
-    // association QualifierValue.Value with InputPin.QualifierValue;
-    // association OpaqueAction.OutputValue with OutputPin.OpaqueAction;
-    // association OpaqueAction.InputValue with InputPin.OpaqueAction;
-    // association LoopNode.SetupPart with ExecutableNode.LoopNode;
-    // association LoopNode.BodyPart with ExecutableNode.LoopNode;
-    // association LoopNode.LoopVariable with OutputPin.LoopNode;
-    // association LoopNode.Result with OutputPin.LoopNode;
-    // association LoopNode.BodyOutput with OutputPin.LoopNode;
-    // association LoopNode.LoopVariableInput with InputPin.LoopNode;
-    // association LoopNode.Test with ExecutableNode.LoopNode;
-    // association LoopNode.Decider with OutputPin.LoopNode;
-    // association LinkEndDestructionData.DestroyAt with InputPin.LinkEndDestructionData;
-    // association LinkEndData.Value with InputPin.LinkEndData;
-    // association LinkEndData.End with Property.LinkEndData;
-    // association LinkEndData.Qualifier with QualifierValue.LinkEndData;
-    // association LinkEndCreationData.InsertAt with InputPin.LinkEndCreationData;
-    // association LinkAction.InputValue with InputPin.LinkAction;
-    // association LinkAction.EndData with LinkEndData.LinkAction;
-    // association InvocationAction.Argument with InputPin.InvocationAction;
-    // association InvocationAction.OnPort with Port.InvocationAction;
+    association StructuralFeatureAction.Object with InputPin.StructuralFeatureAction;
+    association StructuralFeatureAction.StructuralFeature with StructuralFeature.StructuralFeatureAction;
+    association StartObjectBehaviorAction.Object with InputPin.StartObjectBehaviorAction;
+    association StartClassifierBehaviorAction.Object with InputPin.StartClassifierBehaviorAction;
+    association SequenceNode.ExecutableNode with ExecutableNode.SequenceNode;
+    association SendSignalAction.Signal with Signal.SendSignalAction;
+    association SendSignalAction.Target with InputPin.SendSignalAction;
+    association SendObjectAction.Request with InputPin.SendObjectAction;
+    association SendObjectAction.Target with InputPin.SendObjectAction;
+    association ReplyAction.ReturnInformation with InputPin.ReplyAction;
+    association ReplyAction.ReplyToCall with Trigger.ReplyAction;
+    association ReplyAction.ReplyValue with InputPin.ReplyAction;
+    association RemoveVariableValueAction.RemoveAt with InputPin.RemoveVariableValueAction;
+    association RemoveStructuralFeatureValueAction.RemoveAt with InputPin.RemoveStructuralFeatureValueAction;
+    association ReduceAction.Collection with InputPin.ReduceAction;
+    association ReduceAction.Reducer with Behavior.ReduceAction;
+    association ReduceAction.Result with OutputPin.ReduceAction;
+    association ReclassifyObjectAction.Object with InputPin.ReclassifyObjectAction;
+    association ReclassifyObjectAction.NewClassifier with Classifier.ReclassifyObjectAction;
+    association ReclassifyObjectAction.OldClassifier with Classifier.ReclassifyObjectAction;
+    association ReadVariableAction.Result with OutputPin.ReadVariableAction;
+    association ReadStructuralFeatureAction.Result with OutputPin.ReadStructuralFeatureAction;
+    association ReadSelfAction.Result with OutputPin.ReadSelfAction;
+    association ReadLinkObjectEndQualifierAction.Qualifier with Property.ReadLinkObjectEndQualifierAction;
+    association ReadLinkObjectEndQualifierAction.Object with InputPin.ReadLinkObjectEndQualifierAction;
+    association ReadLinkObjectEndQualifierAction.Result with OutputPin.ReadLinkObjectEndQualifierAction;
+    association ReadLinkObjectEndAction.Object with InputPin.ReadLinkObjectEndAction;
+    association ReadLinkObjectEndAction.End with Property.ReadLinkObjectEndAction;
+    association ReadLinkObjectEndAction.Result with OutputPin.ReadLinkObjectEndAction;
+    association ReadLinkAction.Result with OutputPin.ReadLinkAction;
+    association ReadIsClassifiedObjectAction.Classifier with Classifier.ReadIsClassifiedObjectAction;
+    association ReadIsClassifiedObjectAction.Result with OutputPin.ReadIsClassifiedObjectAction;
+    association ReadIsClassifiedObjectAction.Object with InputPin.ReadIsClassifiedObjectAction;
+    association ReadExtentAction.Result with OutputPin.ReadExtentAction;
+    association ReadExtentAction.Classifier with Classifier.ReadExtentAction;
+    association RaiseExceptionAction.Exception with InputPin.RaiseExceptionAction;
+    association QualifierValue.Qualifier with Property.QualifierValue;
+    association QualifierValue.Value with InputPin.QualifierValue;
+    association OpaqueAction.OutputValue with OutputPin.OpaqueAction;
+    association OpaqueAction.InputValue with InputPin.OpaqueAction;
+    association LoopNode.SetupPart with ExecutableNode.LoopNode;
+    association LoopNode.BodyPart with ExecutableNode.LoopNode;
+    association LoopNode.LoopVariable with OutputPin.LoopNode;
+    association LoopNode.Result with OutputPin.LoopNode;
+    association LoopNode.BodyOutput with OutputPin.LoopNode;
+    association LoopNode.LoopVariableInput with InputPin.LoopNode;
+    association LoopNode.Test with ExecutableNode.LoopNode;
+    association LoopNode.Decider with OutputPin.LoopNode;
+    association LinkEndDestructionData.DestroyAt with InputPin.LinkEndDestructionData;
+    association LinkEndData.Value with InputPin.LinkEndData;
+    association LinkEndData.End with Property.LinkEndData;
+    association LinkEndData.Qualifier with QualifierValue.LinkEndData;
+    association LinkEndCreationData.InsertAt with InputPin.LinkEndCreationData;
+    association LinkAction.InputValue with InputPin.LinkAction;
+    association LinkAction.EndData with LinkEndData.LinkAction;
+    association InvocationAction.Argument with InputPin.InvocationAction;
+    association InvocationAction.OnPort with Port.InvocationAction;
     association ExpansionNode.RegionAsInput with ExpansionRegion.InputElement;
     association ExpansionNode.RegionAsOutput with ExpansionRegion.OutputElement;
-    // association DestroyObjectAction.Target with InputPin.DestroyObjectAction;
-    // association DestroyLinkAction.EndData with LinkEndDestructionData.DestroyLinkAction;
-    // association CreateObjectAction.Classifier with Classifier.CreateObjectAction;
-    // association CreateObjectAction.Result with OutputPin.CreateObjectAction;
-    // association CreateLinkObjectAction.Result with OutputPin.CreateLinkObjectAction;
-    // association CreateLinkAction.EndData with LinkEndCreationData.CreateLinkAction;
-    // association ConditionalNode.Clause with Clause.ConditionalNode;
-    // association ConditionalNode.Result with OutputPin.ConditionalNode;
-    // association ClearStructuralFeatureAction.Result with OutputPin.ClearStructuralFeatureAction;
-    // association ClearAssociationAction.Object with InputPin.ClearAssociationAction;
-    // association ClearAssociationAction.Association with Association.ClearAssociationAction;
-    // association Clause.Decider with OutputPin.Clause;
-    // association Clause.BodyOutput with OutputPin.Clause;
-    // association Clause.Test with ExecutableNode.Clause;
-    // association Clause.Body with ExecutableNode.Clause;
+    association DestroyObjectAction.Target with InputPin.DestroyObjectAction;
+    association DestroyLinkAction.EndData with LinkEndDestructionData.DestroyLinkAction;
+    association CreateObjectAction.Classifier with Classifier.CreateObjectAction;
+    association CreateObjectAction.Result with OutputPin.CreateObjectAction;
+    association CreateLinkObjectAction.Result with OutputPin.CreateLinkObjectAction;
+    association CreateLinkAction.EndData with LinkEndCreationData.CreateLinkAction;
+    association ConditionalNode.Clause with Clause.ConditionalNode;
+    association ConditionalNode.Result with OutputPin.ConditionalNode;
+    association ClearStructuralFeatureAction.Result with OutputPin.ClearStructuralFeatureAction;
+    association ClearAssociationAction.Object with InputPin.ClearAssociationAction;
+    association ClearAssociationAction.Association with Association.ClearAssociationAction;
+    association Clause.Decider with OutputPin.Clause;
+    association Clause.BodyOutput with OutputPin.Clause;
+    association Clause.Test with ExecutableNode.Clause;
+    association Clause.Body with ExecutableNode.Clause;
     association Clause.PredecessorClause with Clause.SuccessorClause;
-    // association CallOperationAction.Target with InputPin.CallOperationAction;
-    // association CallOperationAction.Operation with Operation.CallOperationAction;
-    // association CallBehaviorAction.Behavior with Behavior.CallBehaviorAction;
-    // association CallAction.Result with OutputPin.CallAction;
-    // association BroadcastSignalAction.Signal with Signal.BroadcastSignalAction;
-    // association AddVariableValueAction.InsertAt with InputPin.AddVariableValueAction;
-    // association AddStructuralFeatureValueAction.InsertAt with InputPin.AddStructuralFeatureValueAction;
-    // association ActionInputPin.FromAction with Action.ActionInputPin;
-    // association Action.Output with OutputPin.Action;
-    // association Action.Context with Classifier.Action;
-    // association Action.Input with InputPin.Action;
-    // association Action.LocalPrecondition with Constraint.Action;
-    // association Action.LocalPostcondition with Constraint.Action;
-    // association AcceptEventAction.Trigger with Trigger.AcceptEventAction;
-    // association AcceptEventAction.Result with OutputPin.AcceptEventAction;
-    // association AcceptCallAction.ReturnInformation with OutputPin.AcceptCallAction;
-    // association WriteVariableAction.Value with InputPin.WriteVariableAction;
-    // association WriteStructuralFeatureAction.Result with OutputPin.WriteStructuralFeatureAction;
-    // association WriteStructuralFeatureAction.Value with InputPin.WriteStructuralFeatureAction;
-    // association VariableAction.Variable with Variable.VariableAction;
-    // association ValueSpecificationAction.Result with OutputPin.ValueSpecificationAction;
-    // association ValueSpecificationAction.Value with ValueSpecification.ValueSpecificationAction;
+    association CallOperationAction.Target with InputPin.CallOperationAction;
+    association CallOperationAction.Operation with Operation.CallOperationAction;
+    association CallBehaviorAction.Behavior with Behavior.CallBehaviorAction;
+    association CallAction.Result with OutputPin.CallAction;
+    association BroadcastSignalAction.Signal with Signal.BroadcastSignalAction;
+    association AddVariableValueAction.InsertAt with InputPin.AddVariableValueAction;
+    association AddStructuralFeatureValueAction.InsertAt with InputPin.AddStructuralFeatureValueAction;
+    association ActionInputPin.FromAction with Action.ActionInputPin;
+    association Action.Output with OutputPin.Action;
+    association Action.Context with Classifier.Action;
+    association Action.Input with InputPin.Action;
+    association Action.LocalPrecondition with Constraint.Action;
+    association Action.LocalPostcondition with Constraint.Action;
+    association AcceptEventAction.Trigger with Trigger.AcceptEventAction;
+    association AcceptEventAction.Result with OutputPin.AcceptEventAction;
+    association AcceptCallAction.ReturnInformation with OutputPin.AcceptCallAction;
+    association WriteVariableAction.Value with InputPin.WriteVariableAction;
+    association WriteStructuralFeatureAction.Result with OutputPin.WriteStructuralFeatureAction;
+    association WriteStructuralFeatureAction.Value with InputPin.WriteStructuralFeatureAction;
+    association VariableAction.Variable with Variable.VariableAction;
+    association ValueSpecificationAction.Result with OutputPin.ValueSpecificationAction;
+    association ValueSpecificationAction.Value with ValueSpecification.ValueSpecificationAction;
 }

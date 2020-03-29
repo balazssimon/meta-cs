@@ -369,6 +369,38 @@ namespace MetaDslx.Languages.Uml.Serialization
 
         private void PostProcessObjects()
         {
+            foreach (var dep in _model.Objects.OfType<DependencyBuilder>())
+            {
+                if (dep is InterfaceRealizationBuilder intfReal)
+                {
+                    foreach (var client in intfReal.Client)
+                    {
+                        if (client is ClassBuilder clientClass)
+                        {
+                            intfReal.Owner = null;
+                            clientClass.InterfaceRealization.Add(intfReal);
+                        }
+                    }
+                }
+            }
+            foreach (var prop in _model.Objects.OfType<PropertyBuilder>())
+            {
+                var propElement = ResolveElementByObject((MutableObjectBase)prop, null);
+                var defaultValueElement = propElement.Elements(_whiteStarUmlNamespace + "ATTR").Where(e => e.Attribute("name")?.Value == "InitialValue" && !string.IsNullOrWhiteSpace(e.Value)).FirstOrDefault();
+                if (defaultValueElement != null)
+                {
+                    prop.DefaultValue = ParseDefaultValue(prop.Type, defaultValueElement.Value);
+                }
+            }
+            foreach (var param in _model.Objects.OfType<ParameterBuilder>())
+            {
+                var paramElement = ResolveElementByObject((MutableObjectBase)param, null);
+                var defaultValueElement = paramElement.Elements(_whiteStarUmlNamespace + "ATTR").Where(e => e.Attribute("name")?.Value == "DefaultValue" && !string.IsNullOrWhiteSpace(e.Value)).FirstOrDefault();
+                if (defaultValueElement != null)
+                {
+                    param.DefaultValue = ParseDefaultValue(param.Type, defaultValueElement.Value);
+                }
+            }
             foreach (var assoc in _model.Objects.OfType<AssociationBuilder>())
             {
                 if (assoc.MemberEnd.Count == 2)
@@ -450,6 +482,47 @@ namespace MetaDslx.Languages.Uml.Serialization
                 }
                 inter.NestedClassifier.Add(collaboration);
             }
+        }
+
+        private ValueSpecificationBuilder ParseDefaultValue(TypeBuilder type, string value)
+        {
+            if (value.ToLower() == "null")
+            {
+                return _factory.LiteralNull();
+            }
+            if (value.ToLower() == "true" || value.ToLower() == "false")
+            {
+                var result = _factory.LiteralBoolean();
+                result.Value = value == "true";
+                return result;
+            }
+            if (int.TryParse(value, out var intValue))
+            {
+                var result = _factory.LiteralInteger();
+                result.Value = intValue;
+                return result;
+            }
+            if (double.TryParse(value, out var doubleValue))
+            {
+                var result = _factory.LiteralReal();
+                result.Value = doubleValue;
+                return result;
+            }
+            if (type is EnumerationBuilder enumType)
+            {
+                foreach (var enumLit in enumType.OwnedLiteral)
+                {
+                    if (value == enumLit.Name || value == enumType.Name+"."+enumLit.Name || value == enumType.Name + "::" + enumLit.Name)
+                    {
+                        var result = _factory.InstanceValue();
+                        result.Instance = enumLit;
+                        return result;
+                    }
+                }
+            }
+            var defaultResult = _factory.LiteralString();
+            defaultResult.Value = value;
+            return defaultResult;
         }
 
         private string ParseMessageArguments(MessageBuilder message, XElement argumentsElement, XElement returnElement)
@@ -1281,6 +1354,7 @@ namespace MetaDslx.Languages.Uml.Serialization
             { "InteractionInstanceSet", "Interaction" },
             { "Stimulus", "Message" },
             { "Object", "Lifeline" },
+            { "Realization", "InterfaceRealization" },
         };
         private static readonly HashSet<string> UmlIgnoredProperties = new HashSet<string>()
         {
@@ -1304,8 +1378,11 @@ namespace MetaDslx.Languages.Uml.Serialization
             "Interface.StereotypeName",
             "Interface.Specializations",
             "Interface.TypedFeatures",
+            "Enumeration.TypedFeatures",
+            "Property.InitialValue",
             "Operation.CallActions",
             "Parameter.BehavioralFeature",
+            "Parameter.DefaultValue",
             "Package.ParticipatingInstances",
             "Package.RepresentedClassifier",
             "Package.StereotypeProfile",

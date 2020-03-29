@@ -8,8 +8,8 @@ using MetaDslx.Languages.Meta.Binding;
 using MetaDslx.Languages.Meta.Generator;
 using MetaDslx.Languages.Meta.Model;
 using MetaDslx.Languages.Meta.Symbols;
-//using MetaDslx.Languages.Mof.Generator;
-//using MetaDslx.Languages.Mof.Model;
+using MetaDslx.Languages.Mof.Generator;
+using MetaDslx.Languages.Mof.Model;
 //using MetaDslx.Languages.Uml.Generator;
 //using MetaDslx.Languages.Uml.Model;
 //using MetaDslx.Languages.Ecore;
@@ -245,12 +245,12 @@ namespace MetaDslx.Bootstrap
             WebSequenceDiagramsTest();
             //*/
 
-            /*/
+            //*/
             //MetaXmiTest();
             //XmiTest();
-            //MofXmiTest();
+            MofXmiTest();
             //UmlXmiTest();
-            EcoreXmiTest();
+            //EcoreXmiTest();
             //MetaDslxXmiTest();
             //*/
         }
@@ -396,7 +396,7 @@ namespace MetaDslx.Bootstrap
         }
         //*/
 
-        /*/
+        //*/
         public static void MofXmiTest()
         {
             MofDescriptor.Initialize();
