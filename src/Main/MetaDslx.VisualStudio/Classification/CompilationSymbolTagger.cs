@@ -1,4 +1,6 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using MetaDslx.VisualStudio.Compilation;
+using MetaDslx.VisualStudio.Editor;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
@@ -14,8 +16,8 @@ namespace MetaDslx.VisualStudio.Classification
 {
     internal class CompilationSymbolTagger : CompilationTagger, ITagger<IClassificationTag>
     {
-        public CompilationSymbolTagger(CompilationTaggerProvider taggerProvider, BackgroundCompilation backgroundCompilation)
-            : base(taggerProvider, backgroundCompilation)
+        public CompilationSymbolTagger(CompilationTaggerProvider taggerProvider, ITextView textView)
+            : base(taggerProvider, textView)
         {
 
         }
@@ -24,7 +26,7 @@ namespace MetaDslx.VisualStudio.Classification
         {
             this.BackgroundCompilation.CheckCompilationVersion();
             var compilationSnapshot = this.BackgroundCompilation.CompilationSnapshot;
-            var symbolTokens = compilationSnapshot?.SymbolTokens;
+            var symbolTokens = (Dictionary<SyntaxToken, IClassificationTag>)compilationSnapshot?.GetCompilationStepResult(CollectSymbolsStep.Key);
             if (symbolTokens == null) return ImmutableArray<ITagSpan<IClassificationTag>>.Empty;
             ITextSnapshot textSnapshot = compilationSnapshot.Text;
             if (textSnapshot == null || spans.Count == 0 || spans.First().Snapshot.Version != textSnapshot.Version) return ImmutableArray<ITagSpan<IClassificationTag>>.Empty;

@@ -1,4 +1,6 @@
 ﻿using MetaDslx.CodeAnalysis;
+using MetaDslx.VisualStudio.Compilation;
+using MetaDslx.VisualStudio.Editor;
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Shell.TableControl;
@@ -17,6 +19,8 @@ namespace MetaDslx.VisualStudio.Classification
 {
     internal class CompilationErrorsSnapshot : WpfTableEntriesSnapshotBase
     {
+        public static readonly CompilationErrorsSnapshot Default = new CompilationErrorsSnapshot(null, 0, CompilationSnapshot.Default);
+
         private readonly string filePath;
         private readonly int versionNumber;
         private readonly CompilationSnapshot compilationSnapshot;
@@ -58,7 +62,6 @@ namespace MetaDslx.VisualStudio.Classification
 
         public CompilationErrorsSnapshot Update(string filePath, CompilationSnapshot compilationSnapshot)
         {
-            Debug.Assert(this.NextSnapshot == null);
             Interlocked.CompareExchange(ref this.NextSnapshot, new CompilationErrorsSnapshot(filePath, this.versionNumber + 1, compilationSnapshot), null);
             return this.NextSnapshot;
         }

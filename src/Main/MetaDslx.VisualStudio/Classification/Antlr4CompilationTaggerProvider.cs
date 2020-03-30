@@ -20,9 +20,5 @@ namespace MetaDslx.VisualStudio.Classification
         {
         }
 
-        public override Dictionary<SyntaxToken, IClassificationTag> GetSymbolTokens(ICompilation compilation, CancellationToken cancellationToken)
-        {
-            return null;
-        }
     }
 }

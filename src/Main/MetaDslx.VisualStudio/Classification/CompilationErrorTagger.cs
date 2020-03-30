@@ -1,4 +1,6 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using MetaDslx.VisualStudio.Compilation;
+using MetaDslx.VisualStudio.Editor;
+using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.Shell.TableControl;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Adornments;
@@ -17,10 +19,10 @@ namespace MetaDslx.VisualStudio.Classification
     {
         internal readonly CompilationErrorsFactory Factory;
 
-        public CompilationErrorTagger(CompilationTaggerProvider taggerProvider, BackgroundCompilation backgroundCompilation)
-            : base(taggerProvider, backgroundCompilation)
+        public CompilationErrorTagger(CompilationTaggerProvider taggerProvider, ITextView textView)
+            : base(taggerProvider, textView)
         {
-            this.Factory = new CompilationErrorsFactory(this, new CompilationErrorsSnapshot(backgroundCompilation.FilePath, 0, backgroundCompilation.CompilationSnapshot));
+            this.Factory = new CompilationErrorsFactory(this);
             taggerProvider.AddCompilationErrorsFactory(this.Factory);
         }
 

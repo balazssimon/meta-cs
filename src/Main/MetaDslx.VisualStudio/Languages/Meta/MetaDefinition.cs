@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.Utilities;
+﻿using MetaDslx.VisualStudio.Editor;
+using Microsoft.VisualStudio.Utilities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
@@ -22,7 +23,7 @@ namespace MetaDslx.VisualStudio.Languages.Meta
         /// </summary>
         [Export(typeof(ContentTypeDefinition))]
         [Name(MetaDefinition.ContentType)]
-        [BaseDefinition("code")]
+        [BaseDefinition(MetaDslxDefinition.ContentType)]
         public ContentTypeDefinition MetaContentType { get; set; }
 
         /// <summary>

@@ -36,6 +36,7 @@
     <WarningLevel>4</WarningLevel>
     <IncludeDebugSymbolsInVSIXContainer>true</IncludeDebugSymbolsInVSIXContainer>
     <IncludeDebugSymbolsInLocalVSIXDeployment>true</IncludeDebugSymbolsInLocalVSIXDeployment>
+    <RegisterForComInterop>false</RegisterForComInterop>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -50,16 +51,29 @@
   <ItemGroup>
     <Compile Include="Classification\Antlr4CompilationTaggerProvider.cs" />
     <Compile Include="Classification\Antlr4LexerClassifier.cs" />
-    <Compile Include="Classification\BackgroundCompilation.cs" />
+    <Compile Include="Compilation\CollectSymbolsStep.cs" />
     <Compile Include="Classification\CompilationErrorsFactory.cs" />
     <Compile Include="Classification\CompilationErrorsSnapshot.cs" />
     <Compile Include="Classification\CompilationErrorTagger.cs" />
-    <Compile Include="Classification\CompilationSnapshot.cs" />
+    <Compile Include="Compilation\CompilationChangedEventArgs.cs" />
+    <Compile Include="Compilation\CompilationSnapshot.cs" />
     <Compile Include="Classification\CompilationSymbolTagger.cs" />
     <Compile Include="Classification\CompilationTagger.cs" />
     <Compile Include="Classification\CompilationTaggerProvider.cs" />
-    <Compile Include="Classification\LanguageCompilationTaggerProvider.cs" />
     <Compile Include="Classification\SinkManager.cs" />
+    <Compile Include="Commands\FindAllReferencesCommand.cs" />
+    <Compile Include="Commands\GoToDefinitionCommand.cs" />
+    <Compile Include="Commands\MetaDslxTextViewCommandFilter.cs" />
+    <Compile Include="Commands\MetaDslxVsCommand.cs" />
+    <Compile Include="Compilation\BackgroundCompilation.cs" />
+    <Compile Include="Compilation\IBackgroundCompilationFactory.cs" />
+    <Compile Include="Compilation\IBackgroundCompilationStep.cs" />
+    <Compile Include="Editor\MetaDslxTextViewConnectionListener.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="Editor\MetaDslxDefinition.cs" />
+    <Compile Include="Languages\Meta\Compilation\MetaBackgroundCompilationFactory.cs" />
+    <Compile Include="Utilities\MetaDslxMefServices.cs" />
+    <Compile Include="Editor\MetaDslxTextViewCreationListener.cs" />
     <Compile Include="Languages\Antlr4Roslyn\Antlr4RoslynDefinition.cs" />
     <Compile Include="Languages\Antlr4Roslyn\Classification\Antlr4RoslynClassificationDefinitions.cs" />
     <Compile Include="Languages\Antlr4Roslyn\Classification\Antlr4RoslynClassificationProvider.cs" />
@@ -76,6 +90,7 @@
     <Compile Include="Languages\Meta\Classification\MetaClassifier.cs" />
     <Compile Include="Languages\Meta\Classification\MetaTaggerProvider.cs" />
     <Compile Include="Languages\Meta\MetaDefinition.cs" />
+    <Compile Include="Languages\Meta\MetaTextViewCreationListener.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MetaDslx.VisualStudioPackage.cs" />
   </ItemGroup>
@@ -85,9 +100,15 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="PresentationCore" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.Collections.Immutable" Version="$(SystemCollectionsImmutableVersion)" />
@@ -115,6 +136,7 @@
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Target Name="IncludeNETStandardFacadeInVSIX" AfterTargets="ImplicitlyExpandNETStandardFacades">
     <ItemGroup>
       <Content Include="@(_NETStandardLibraryNETFrameworkLib)" Condition="%(Filename) == 'netstandard'">

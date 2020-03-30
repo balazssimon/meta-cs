@@ -26,7 +26,7 @@ namespace MetaDslx.VisualStudio.Languages.Meta.Classification
     [TagType(typeof(IErrorTag))]
     [TagType(typeof(IClassificationTag))]
     [ContentType(MetaDefinition.ContentType)]
-    public class MetaTaggerProvider : LanguageCompilationTaggerProvider
+    public class MetaTaggerProvider : CompilationTaggerProvider
     {
         public readonly IClassificationTag TypeClassificationTag;
 
@@ -34,7 +34,7 @@ namespace MetaDslx.VisualStudio.Languages.Meta.Classification
 
         [ImportingConstructor]
         internal MetaTaggerProvider([Import] ITableManagerProvider provider, [Import] ITextDocumentFactoryService textDocumentFactoryService, [Import] IClassificationTypeRegistryService classificationRegistryService) 
-            : base(provider, textDocumentFactoryService, classificationRegistryService, MetaLanguage.Instance)
+            : base(provider, textDocumentFactoryService, classificationRegistryService)
         {
             this.TypeClassificationTag = new ClassificationTag(this.ClassificationRegistryService.GetClassificationType(MetaClassificationTypes.Type));
             _syntaxFacts = MetaLanguage.Instance.SyntaxFacts;
@@ -42,21 +42,7 @@ namespace MetaDslx.VisualStudio.Languages.Meta.Classification
 
         public override string DisplayName => "MetaModel";
 
-        protected override ICompilation CreateCompilation(string filePath, string sourceText, CancellationToken cancellationToken)
-        {
-            var metaModelReference = ModelReference.CreateFromModel(MetaInstance.MModel);
-            var tree = MetaSyntaxTree.ParseText(sourceText, path: filePath, cancellationToken: cancellationToken);
-            BinderFlags binderFlags = BinderFlags.IgnoreAccessibility;
-            BinderFlags binderFlags2 = BinderFlags.IgnoreMetaLibraryDuplicatedTypes;
-            binderFlags = binderFlags.UnionWith(binderFlags2);
-            MetaCompilationOptions options = new MetaCompilationOptions(MetaLanguage.Instance, OutputKind.NetModule, 
-                deterministic: true, concurrentBuild: true,
-                topLevelBinderFlags: binderFlags);
-            var compilation = MetaCompilation.Create("Tagger").AddReferences(metaModelReference).AddSyntaxTrees(tree).WithOptions(options);
-            return compilation;
-        }
-
-        protected override IClassificationTag GetSymbolClassificationTag(SyntaxNode node, SemanticModel semanticModel, CancellationToken cancellationToken)
+        public override IClassificationTag GetSymbolClassificationTag(SyntaxNode node, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
             var ti = semanticModel.GetTypeInfo(node, cancellationToken);
             if (ti.Type != null && !(ti.Type is IErrorTypeSymbol)) return TypeClassificationTag;
@@ -64,6 +50,5 @@ namespace MetaDslx.VisualStudio.Languages.Meta.Classification
             if (si.Symbol is MetaAttribute) return TypeClassificationTag;
             return null;
         }
-
     }
 }

@@ -1,4 +1,7 @@
 ﻿using MetaDslx.CodeAnalysis;
+using MetaDslx.VisualStudio.Compilation;
+using MetaDslx.VisualStudio.Editor;
+using MetaDslx.VisualStudio.Utilities;
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.Shell.TableControl;
 using Microsoft.VisualStudio.Shell.TableManager;
@@ -23,6 +26,9 @@ namespace MetaDslx.VisualStudio.Classification
     /// </summary>
     public abstract class CompilationTaggerProvider : IViewTaggerProvider, ITableDataSource
     {
+        [Import]
+        private MetaDslxMefServices _mefServices;
+
         public readonly ITableManager ErrorTableManager;
         public readonly ITextDocumentFactoryService TextDocumentFactoryService;
         public readonly IClassificationTypeRegistryService ClassificationRegistryService;
@@ -44,21 +50,21 @@ namespace MetaDslx.VisualStudio.Classification
                                                    StandardTableColumnDefinitions.Text, StandardTableColumnDefinitions.DocumentName, StandardTableColumnDefinitions.Line, StandardTableColumnDefinitions.Column);
         }
 
+        public MetaDslxMefServices MefServices => _mefServices;
+
         public ITagger<T> CreateTagger<T>(ITextView textView, ITextBuffer buffer) where T : ITag
         {
             if (textView == null) throw new ArgumentNullException("textView");
             if (buffer == null) throw new ArgumentNullException("buffer");
             if (buffer != textView.TextBuffer) return null;
             ITagger<T> tagger = null;
-            BackgroundCompilation compilation = buffer.Properties.GetOrCreateSingletonProperty(typeof(BackgroundCompilation), () => new BackgroundCompilation(this, buffer));
-            compilation.CompilationChanged += CompilationChanged;
             if (typeof(T) == typeof(IErrorTag))
             {
-                tagger = (ITagger<T>)buffer.Properties.GetOrCreateSingletonProperty(typeof(CompilationErrorTagger), () => new CompilationErrorTagger(this, compilation));
+                tagger = (ITagger<T>)buffer.Properties.GetOrCreateSingletonProperty(typeof(CompilationErrorTagger), () => new CompilationErrorTagger(this, textView));
             }
             else if (typeof(T) == typeof(IClassificationTag))
             {
-                tagger = (ITagger<T>)buffer.Properties.GetOrCreateSingletonProperty(typeof(CompilationSymbolTagger), () => new CompilationSymbolTagger(this, compilation));
+                tagger = (ITagger<T>)buffer.Properties.GetOrCreateSingletonProperty(typeof(CompilationSymbolTagger), () => new CompilationSymbolTagger(this, textView));
             }
             return tagger;
         }
@@ -68,23 +74,7 @@ namespace MetaDslx.VisualStudio.Classification
             this.UpdateAllSinks();
         }
 
-        internal ICompilation Compile(string filePath, string sourceText, CancellationToken cancellationToken)
-        {
-            var compilation = this.CreateCompilation(filePath, sourceText, cancellationToken);
-            compilation.ForceComplete(cancellationToken);
-            if (!cancellationToken.IsCancellationRequested)
-            {
-                return compilation;
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        protected abstract ICompilation CreateCompilation(string filePath, string sourceText, CancellationToken cancellationToken);
-
-        public abstract Dictionary<SyntaxToken, IClassificationTag> GetSymbolTokens(ICompilation compilation, CancellationToken cancellationToken);
+        public abstract IClassificationTag GetSymbolClassificationTag(SyntaxNode node, SemanticModel semanticModel, CancellationToken cancellationToken);
 
         #region ITableDataSource members
         public abstract string DisplayName

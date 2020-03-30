@@ -1,7 +1,11 @@
-﻿using Microsoft.VisualStudio.Text;
+﻿using MetaDslx.VisualStudio.Compilation;
+using MetaDslx.VisualStudio.Editor;
+using MetaDslx.VisualStudio.Utilities;
+using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -11,14 +15,14 @@ namespace MetaDslx.VisualStudio.Classification
 {
     internal abstract class CompilationTagger : IDisposable
     {
+        private ITextView textView;
         private CompilationTaggerProvider taggerProvider;
         private BackgroundCompilation backgroundCompilation;
 
-        public CompilationTagger(CompilationTaggerProvider taggerProvider, BackgroundCompilation backgroundCompilation)
+        public CompilationTagger(CompilationTaggerProvider taggerProvider, ITextView textView)
         {
             this.taggerProvider = taggerProvider;
-            this.backgroundCompilation = backgroundCompilation;
-            this.backgroundCompilation.CompilationChanged += CompilationChanged;
+            this.textView = textView;
         }
 
         protected virtual void CompilationChanged(object sender, CompilationChangedEventArgs e)
@@ -38,7 +42,15 @@ namespace MetaDslx.VisualStudio.Classification
 
         public BackgroundCompilation BackgroundCompilation
         {
-            get { return this.backgroundCompilation; }
+            get 
+            {
+                if (this.backgroundCompilation == null)
+                {
+                    this.backgroundCompilation = BackgroundCompilation.GetOrCreate(taggerProvider.MefServices, textView);
+                    this.backgroundCompilation.CompilationChanged += CompilationChanged;
+                }
+                return this.backgroundCompilation; 
+            }
         }
 
         public event EventHandler<SnapshotSpanEventArgs> TagsChanged;

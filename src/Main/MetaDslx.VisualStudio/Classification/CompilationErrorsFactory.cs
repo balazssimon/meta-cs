@@ -1,4 +1,6 @@
-﻿using Microsoft.VisualStudio.Shell.TableManager;
+﻿using MetaDslx.VisualStudio.Compilation;
+using MetaDslx.VisualStudio.Editor;
+using Microsoft.VisualStudio.Shell.TableManager;
 using Microsoft.VisualStudio.Text;
 using System;
 using System.Collections.Generic;
@@ -14,9 +16,9 @@ namespace MetaDslx.VisualStudio.Classification
     {
         private CompilationErrorsSnapshot currentSnapshot;
 
-        public CompilationErrorsFactory(CompilationErrorTagger errorTagger, CompilationErrorsSnapshot compilationErrors)
+        public CompilationErrorsFactory(CompilationErrorTagger errorTagger)
         {
-            this.currentSnapshot = compilationErrors;
+            this.currentSnapshot = CompilationErrorsSnapshot.Default;
         }
 
         internal void UpdateErrors(string filePath, CompilationSnapshot compilationSnapshot)

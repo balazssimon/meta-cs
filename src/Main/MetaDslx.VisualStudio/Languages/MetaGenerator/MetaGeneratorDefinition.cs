@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.Utilities;
+﻿using MetaDslx.VisualStudio.Editor;
+using Microsoft.VisualStudio.Utilities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
