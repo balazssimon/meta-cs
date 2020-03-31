@@ -1,4 +1,6 @@
-﻿using Microsoft.VisualStudio.Text.Editor;
+﻿using MetaDslx.VisualStudio.Utilities;
+using Microsoft.VisualStudio.Text.Editor;
+using Microsoft.VisualStudio.TextManager.Interop;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,15 +12,18 @@ namespace MetaDslx.VisualStudio.Commands
     internal class MetaDslxVsCommand
     {
         private readonly ITextView _textView;
-        private readonly IServiceProvider _serviceProvider;
+        private readonly IVsTextView _vsTextView;
+        private readonly MetaDslxMefServices _mefServices;
 
-        public MetaDslxVsCommand(ITextView textView, IServiceProvider serviceProvider)
+        public MetaDslxVsCommand(ITextView textView, IVsTextView vsTextView, MetaDslxMefServices mefServices)
         {
             _textView = textView;
-            _serviceProvider = serviceProvider;
+            _vsTextView = vsTextView;
+            _mefServices = mefServices;
         }
 
         public ITextView TextView => _textView;
-        public IServiceProvider ServiceProvider => _serviceProvider;
+        public IVsTextView VsTextView => _vsTextView;
+        public MetaDslxMefServices MefServices => _mefServices;
     }
 }

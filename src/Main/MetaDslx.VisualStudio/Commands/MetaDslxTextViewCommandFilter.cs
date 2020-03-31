@@ -17,23 +17,21 @@ namespace MetaDslx.VisualStudio.Commands
 {
     internal class MetaDslxTextViewCommandFilter : IOleCommandTarget
     {
+        private readonly MetaDslxMefServices _mefServices;
         private readonly IVsTextView _vsTextView;
         private readonly ITextView _textView;
-        private readonly IServiceProvider _serviceProvider;
-        private readonly IComponentModel _componentModel;
         private readonly IEditorOperations _editorOps;
         private readonly IOleCommandTarget _next;
 
         private readonly GoToDefinitionCommand _goToDefinitionCommand;
         private readonly FindAllReferencesCommand _findAllReferencesCommand;
 
-        private MetaDslxTextViewCommandFilter(IVsTextView vsTextView, ITextView textView, IEditorOperations editorOps, IServiceProvider serviceProvider, IOleCommandTarget next)
+        private MetaDslxTextViewCommandFilter(IVsTextView vsTextView, ITextView textView, IEditorOperations editorOps, MetaDslxMefServices mefServices, IOleCommandTarget next)
         {
+            _mefServices = mefServices;
             _vsTextView = vsTextView;
             _textView = textView;
             _editorOps = editorOps;
-            _serviceProvider = serviceProvider;
-            _componentModel = _serviceProvider.GetComponentModel();
             _next = next;
 
             if (_next == null && vsTextView != null)
@@ -41,8 +39,8 @@ namespace MetaDslx.VisualStudio.Commands
                 ErrorHandler.ThrowOnFailure(vsTextView.AddCommandFilter(this, out _next));
             }
 
-            _goToDefinitionCommand = new GoToDefinitionCommand(_textView, _serviceProvider);
-            _findAllReferencesCommand = new FindAllReferencesCommand(_textView, _serviceProvider);
+            _goToDefinitionCommand = new GoToDefinitionCommand(_textView, _vsTextView, mefServices);
+            _findAllReferencesCommand = new FindAllReferencesCommand(_textView, _vsTextView, mefServices);
         }
 
         public static MetaDslxTextViewCommandFilter GetOrCreate(MetaDslxMefServices mefServices, ITextView textView, IOleCommandTarget next = null)
@@ -54,7 +52,7 @@ namespace MetaDslx.VisualStudio.Commands
                 vsTextView,
                 textView,
                 opsFactory.GetEditorOperations(textView),
-                mefServices.ServiceProvider,
+                mefServices,
                 next
             ));
         }

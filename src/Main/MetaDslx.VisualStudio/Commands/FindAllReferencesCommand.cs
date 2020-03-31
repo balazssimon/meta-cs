@@ -1,4 +1,6 @@
-﻿using Microsoft.VisualStudio.Text.Editor;
+﻿using MetaDslx.VisualStudio.Utilities;
+using Microsoft.VisualStudio.Text.Editor;
+using Microsoft.VisualStudio.TextManager.Interop;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +11,8 @@ namespace MetaDslx.VisualStudio.Commands
 {
     internal class FindAllReferencesCommand : MetaDslxVsCommand
     {
-        public FindAllReferencesCommand(ITextView textView, IServiceProvider serviceProvider) 
-            : base(textView, serviceProvider)
+        public FindAllReferencesCommand(ITextView textView, IVsTextView vsTextView, MetaDslxMefServices mefServices) 
+            : base(textView, vsTextView, mefServices)
         {
         }
 
