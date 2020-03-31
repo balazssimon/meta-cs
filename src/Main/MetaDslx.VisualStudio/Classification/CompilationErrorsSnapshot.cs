@@ -19,24 +19,24 @@ namespace MetaDslx.VisualStudio.Classification
 {
     internal class CompilationErrorsSnapshot : WpfTableEntriesSnapshotBase
     {
-        public static readonly CompilationErrorsSnapshot Default = new CompilationErrorsSnapshot(null, 0, CompilationSnapshot.Default);
+        public static readonly CompilationErrorsSnapshot Default = new CompilationErrorsSnapshot(null, 0, null);
 
         private readonly string filePath;
         private readonly int versionNumber;
-        private readonly CompilationSnapshot compilationSnapshot;
+        private readonly ICompilation compilation;
 
         internal CompilationErrorsSnapshot NextSnapshot;
 
-        internal CompilationErrorsSnapshot(string filePath, int versionNumber, CompilationSnapshot compilationSnapshot)
+        internal CompilationErrorsSnapshot(string filePath, int versionNumber, ICompilation compilation)
         {
             this.filePath = filePath;
             this.versionNumber = versionNumber;
-            this.compilationSnapshot = compilationSnapshot;
+            this.compilation = compilation;
         }
 
         private ICompilation Compilation
         {
-            get { return this.compilationSnapshot.Compilation; }
+            get { return this.compilation; }
         }
 
         private ImmutableArray<Diagnostic> Diagnostics
@@ -60,9 +60,9 @@ namespace MetaDslx.VisualStudio.Classification
             }
         }
 
-        public CompilationErrorsSnapshot Update(string filePath, CompilationSnapshot compilationSnapshot)
+        public CompilationErrorsSnapshot Update(string filePath, ICompilation compilation)
         {
-            Interlocked.CompareExchange(ref this.NextSnapshot, new CompilationErrorsSnapshot(filePath, this.versionNumber + 1, compilationSnapshot), null);
+            Interlocked.CompareExchange(ref this.NextSnapshot, new CompilationErrorsSnapshot(filePath, this.versionNumber + 1, compilation), null);
             return this.NextSnapshot;
         }
 

@@ -1,4 +1,5 @@
-﻿using MetaDslx.VisualStudio.Compilation;
+﻿using MetaDslx.CodeAnalysis;
+using MetaDslx.VisualStudio.Compilation;
 using MetaDslx.VisualStudio.Editor;
 using Microsoft.VisualStudio.Shell.TableManager;
 using Microsoft.VisualStudio.Text;
@@ -21,9 +22,9 @@ namespace MetaDslx.VisualStudio.Classification
             this.currentSnapshot = CompilationErrorsSnapshot.Default;
         }
 
-        internal void UpdateErrors(string filePath, CompilationSnapshot compilationSnapshot)
+        internal void UpdateErrors(string filePath, ICompilation compilation)
         {
-            Interlocked.Exchange(ref this.currentSnapshot, this.currentSnapshot.Update(filePath, compilationSnapshot));
+            Interlocked.Exchange(ref this.currentSnapshot, this.currentSnapshot.Update(filePath, compilation));
         }
 
         public CompilationErrorsSnapshot CurrentSnapshot

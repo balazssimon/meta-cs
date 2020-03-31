@@ -58,23 +58,19 @@ namespace MetaDslx.VisualStudio.Classification
             if (buffer == null) throw new ArgumentNullException("buffer");
             if (buffer != textView.TextBuffer) return null;
             ITagger<T> tagger = null;
+            var compilation = BackgroundCompilation.GetOrCreate(_mefServices, textView);
             if (typeof(T) == typeof(IErrorTag))
             {
-                tagger = (ITagger<T>)buffer.Properties.GetOrCreateSingletonProperty(typeof(CompilationErrorTagger), () => new CompilationErrorTagger(this, textView));
+                tagger = (ITagger<T>)buffer.Properties.GetOrCreateSingletonProperty(typeof(CompilationErrorTagger), () => new CompilationErrorTagger(this, textView, compilation));
             }
             else if (typeof(T) == typeof(IClassificationTag))
             {
-                tagger = (ITagger<T>)buffer.Properties.GetOrCreateSingletonProperty(typeof(CompilationSymbolTagger), () => new CompilationSymbolTagger(this, textView));
+                tagger = (ITagger<T>)buffer.Properties.GetOrCreateSingletonProperty(typeof(CompilationSymbolTagger), () => new CompilationSymbolTagger(this, textView, compilation));
             }
             return tagger;
         }
 
-        private void CompilationChanged(object sender, CompilationChangedEventArgs e)
-        {
-            this.UpdateAllSinks();
-        }
-
-        public abstract IClassificationTag GetSymbolClassificationTag(SyntaxNode node, SemanticModel semanticModel, CancellationToken cancellationToken);
+        public abstract IClassificationTag GetSymbolClassificationTag(ISymbol symbol, SyntaxToken token, SemanticModel semanticModel, CancellationToken cancellationToken);
 
         #region ITableDataSource members
         public abstract string DisplayName
@@ -113,6 +109,10 @@ namespace MetaDslx.VisualStudio.Classification
             lock (_managers)
             {
                 _managers.Add(manager);
+                foreach (var factory in _factories)
+                {
+                    manager.AddCompilationErrorsFactory(factory);
+                }
             }
         }
 
@@ -123,11 +123,9 @@ namespace MetaDslx.VisualStudio.Classification
             lock (_managers)
             {
                 _managers.Remove(manager);
-
-                // Add the pre-existing spell checkers to the manager.
                 foreach (var factory in _factories)
                 {
-                    manager.AddCompilationErrorsFactory(factory);
+                    manager.RemoveCompilationErrorsFactory(factory);
                 }
             }
         }
@@ -138,8 +136,6 @@ namespace MetaDslx.VisualStudio.Classification
             lock (_managers)
             {
                 _factories.Add(factory);
-
-                // Tell the preexisting managers about the new spell checker
                 foreach (var manager in _managers)
                 {
                     manager.AddCompilationErrorsFactory(factory);
@@ -153,7 +149,6 @@ namespace MetaDslx.VisualStudio.Classification
             lock (_managers)
             {
                 _factories.Remove(factory);
-
                 foreach (var manager in _managers)
                 {
                     manager.RemoveCompilationErrorsFactory(factory);

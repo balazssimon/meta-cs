@@ -32,9 +32,10 @@ namespace MetaDslx.VisualStudio.Compilation
 
         public ImmutableDictionary<object, object> CompilationStepResults => compilationStepResults;
 
-        public object GetCompilationStepResult(object key)
+        public T GetCompilationStepResult<T>(object key)
+            where T: class
         {
-            if (this.compilationStepResults.TryGetValue(key, out var value)) return value;
+            if (this.compilationStepResults.TryGetValue(key, out var value) && value is T tValue) return tValue;
             else return null;
         }
 

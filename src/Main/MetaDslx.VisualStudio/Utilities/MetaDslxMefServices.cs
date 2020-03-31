@@ -67,11 +67,11 @@ namespace MetaDslx.VisualStudio.Utilities
             var extensions = this.ComponentModel.GetExtensions<T>().ToList();
             foreach (var ext in extensions)
             {
-                var contentTypeAttributes = (ContentTypeAttribute[])ext.GetType().GetCustomAttributes(typeof(ContentTypeAttribute), true);
+                var contentTypeAttributes = (ContentTypeAttribute[])ext.GetType().GetCustomAttributes(typeof(ContentTypeAttribute), false);
                 foreach (var cta in contentTypeAttributes)
                 {
                     var extContentType = this.ContentTypeRegistry.GetContentType(cta.ContentTypes);
-                    if (extContentType == contentType || contentType.BaseTypes.Contains(extContentType))
+                    if (extContentType == contentType || (inherited && contentType.BaseTypes.Contains(extContentType)))
                     {
                         yield return ext;
                     }

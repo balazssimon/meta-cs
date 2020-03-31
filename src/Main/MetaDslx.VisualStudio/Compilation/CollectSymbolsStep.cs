@@ -1,4 +1,5 @@
 ﻿using MetaDslx.CodeAnalysis;
+using MetaDslx.Languages.Meta.Model;
 using MetaDslx.VisualStudio.Classification;
 using MetaDslx.VisualStudio.Editor;
 using MetaDslx.VisualStudio.Utilities;
@@ -33,7 +34,7 @@ namespace MetaDslx.VisualStudio.Compilation
 
         public object Execute(ICompilation compilation, CancellationToken cancellationToken)
         {
-            var result = new Dictionary<SyntaxToken, IClassificationTag>();
+            var result = new CollectSymbolsResult();
             var languageCompilation = (LanguageCompilation)compilation;
             SyntaxTree syntaxTree = languageCompilation.SyntaxTrees.FirstOrDefault();
             if (syntaxTree == null || _taggers.Count == 0) return result;
@@ -46,10 +47,11 @@ namespace MetaDslx.VisualStudio.Compilation
                     if (cancellationToken.IsCancellationRequested) return null;
                     if (languageCompilation.Language.SyntaxFacts.IsIdentifier(token.GetKind()))
                     {
-                        var tag = this.GetSymbolClassificationTag(token, semanticModel, cancellationToken);
-                        if (tag != null)
+                        var symbol = this.GetSymbol(token, semanticModel, cancellationToken);
+                        if (symbol != null)
                         {
-                            result.Add(token, tag);
+                            var tag = this.GetSymbolClassificationTag(symbol, token, semanticModel, cancellationToken);
+                            result.Add(token, new SymbolData(symbol, tag));
                         }
                     }
                 }
@@ -57,21 +59,71 @@ namespace MetaDslx.VisualStudio.Compilation
             return result;
         }
 
-        private IClassificationTag GetSymbolClassificationTag(SyntaxToken token, SemanticModel semanticModel, CancellationToken cancellationToken)
+        private ISymbol GetSymbol(SyntaxToken token, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
             SyntaxNode node = token.Parent;
             while (node != null && node.SlotCount == 1)
             {
                 if (cancellationToken.IsCancellationRequested) return null;
-                foreach (var tagger in _taggers)
-                {
-                    var tag = tagger.GetSymbolClassificationTag(node, semanticModel, cancellationToken);
-                    if (tag != null) return tag;
-                }
+                var ti = semanticModel.GetTypeInfo(node, cancellationToken);
+                if (ti.Type != null) return ti.Type;
+                var si = semanticModel.GetSymbolInfo(node, cancellationToken);
+                if (si.Symbol != null) return si.Symbol;
                 node = node.Parent;
             }
             return null;
         }
 
+        private IClassificationTag GetSymbolClassificationTag(ISymbol symbol, SyntaxToken token, SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            foreach (var tagger in _taggers)
+            {
+                if (cancellationToken.IsCancellationRequested) return null;
+                var tag = tagger.GetSymbolClassificationTag(symbol, token, semanticModel, cancellationToken);
+                if (tag != null) return tag;
+            }
+            return null;
+        }
+    }
+
+    public class CollectSymbolsResult
+    {
+        private Dictionary<SyntaxToken, SymbolData> _symbols;
+
+        public CollectSymbolsResult()
+        {
+            _symbols = new Dictionary<SyntaxToken, SymbolData>();
+        }
+
+        internal void Add(SyntaxToken token, SymbolData data)
+        {
+            _symbols.Add(token, data);
+        }
+
+        public IEnumerable<SyntaxToken> TokensWithSymbols => _symbols.Keys;
+
+        public IClassificationTag GetClassificationTag(SyntaxToken token)
+        {
+            if (_symbols.TryGetValue(token, out var result)) return result.ClassificationTag;
+            else return null;
+        }
+
+        public ISymbol GetSymbol(SyntaxToken token)
+        {
+            if (_symbols.TryGetValue(token, out var result)) return result.Symbol;
+            else return null;
+        }
+    }
+
+    public struct SymbolData
+    {
+        public SymbolData(ISymbol symbol, IClassificationTag classificationTag)
+        {
+            Symbol = symbol;
+            ClassificationTag = classificationTag;
+        }
+
+        public ISymbol Symbol { get; }
+        public IClassificationTag ClassificationTag { get; }
     }
 }

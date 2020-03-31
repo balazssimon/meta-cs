@@ -16,8 +16,8 @@ namespace MetaDslx.VisualStudio.Classification
 {
     internal class CompilationSymbolTagger : CompilationTagger, ITagger<IClassificationTag>
     {
-        public CompilationSymbolTagger(CompilationTaggerProvider taggerProvider, ITextView textView)
-            : base(taggerProvider, textView)
+        public CompilationSymbolTagger(CompilationTaggerProvider taggerProvider, ITextView textView, BackgroundCompilation backgroundCompilation)
+            : base(taggerProvider, textView, backgroundCompilation)
         {
 
         }
@@ -26,11 +26,22 @@ namespace MetaDslx.VisualStudio.Classification
         {
             this.BackgroundCompilation.CheckCompilationVersion();
             var compilationSnapshot = this.BackgroundCompilation.CompilationSnapshot;
-            var symbolTokens = (Dictionary<SyntaxToken, IClassificationTag>)compilationSnapshot?.GetCompilationStepResult(CollectSymbolsStep.Key);
-            if (symbolTokens == null) return ImmutableArray<ITagSpan<IClassificationTag>>.Empty;
+            var symbols = compilationSnapshot?.GetCompilationStepResult<CollectSymbolsResult>(CollectSymbolsStep.Key);
+            if (symbols == null) yield break;
             ITextSnapshot textSnapshot = compilationSnapshot.Text;
-            if (textSnapshot == null || spans.Count == 0 || spans.First().Snapshot.Version != textSnapshot.Version) return ImmutableArray<ITagSpan<IClassificationTag>>.Empty;
-            return symbolTokens.Select(t => new TagSpan<IClassificationTag>(new SnapshotSpan(textSnapshot, new Span(t.Key.Span.Start, t.Key.Span.Length)), t.Value));
+            if (textSnapshot == null || spans.Count == 0 || spans.First().Snapshot.Version != textSnapshot.Version) yield break;
+            foreach (var token in symbols.TokensWithSymbols)
+            {
+                var tokenSpan = new SnapshotSpan(textSnapshot, new Span(token.Span.Start, token.Span.Length));
+                if (spans.IntersectsWith(tokenSpan))
+                {
+                    var tag = symbols.GetClassificationTag(token);
+                    if (tag != null)
+                    {
+                        yield return new TagSpan<IClassificationTag>(tokenSpan, tag);
+                    }
+                }
+            }
         }
 
 

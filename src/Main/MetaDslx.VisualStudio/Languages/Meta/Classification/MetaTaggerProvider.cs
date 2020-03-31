@@ -42,12 +42,10 @@ namespace MetaDslx.VisualStudio.Languages.Meta.Classification
 
         public override string DisplayName => "MetaModel";
 
-        public override IClassificationTag GetSymbolClassificationTag(SyntaxNode node, SemanticModel semanticModel, CancellationToken cancellationToken)
+        public override IClassificationTag GetSymbolClassificationTag(ISymbol symbol, SyntaxToken token, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
-            var ti = semanticModel.GetTypeInfo(node, cancellationToken);
-            if (ti.Type != null && !(ti.Type is IErrorTypeSymbol)) return TypeClassificationTag;
-            var si = semanticModel.GetSymbolInfo(node, cancellationToken);
-            if (si.Symbol is MetaAttribute) return TypeClassificationTag;
+            if (symbol is ITypeSymbol && !(symbol is IErrorTypeSymbol)) return TypeClassificationTag;
+            if (symbol is MetaAttribute) return TypeClassificationTag;
             return null;
         }
     }

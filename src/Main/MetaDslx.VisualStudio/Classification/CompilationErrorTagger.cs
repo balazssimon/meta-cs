@@ -19,8 +19,8 @@ namespace MetaDslx.VisualStudio.Classification
     {
         internal readonly CompilationErrorsFactory Factory;
 
-        public CompilationErrorTagger(CompilationTaggerProvider taggerProvider, ITextView textView)
-            : base(taggerProvider, textView)
+        public CompilationErrorTagger(CompilationTaggerProvider taggerProvider, ITextView textView, BackgroundCompilation backgroundCompilation)
+            : base(taggerProvider, textView, backgroundCompilation)
         {
             this.Factory = new CompilationErrorsFactory(this);
             taggerProvider.AddCompilationErrorsFactory(this.Factory);
@@ -35,7 +35,8 @@ namespace MetaDslx.VisualStudio.Classification
         protected override void CompilationChanged(object sender, CompilationChangedEventArgs e)
         {
             base.CompilationChanged(sender, e);
-            this.Factory.UpdateErrors(this.BackgroundCompilation.FilePath, this.BackgroundCompilation.CompilationSnapshot);
+            this.Factory.UpdateErrors(this.BackgroundCompilation.FilePath, this.BackgroundCompilation.CompilationSnapshot.Compilation);
+            this.TaggerProvider.UpdateAllSinks();
         }
 
         public IEnumerable<ITagSpan<IErrorTag>> GetTags(NormalizedSnapshotSpanCollection spans)
