@@ -8,6 +8,7 @@ using Microsoft.VisualStudio.Shell.TableManager;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Text.Editor;
+using Microsoft.VisualStudio.Text.Operations;
 using Microsoft.VisualStudio.Text.Tagging;
 using System;
 using System.Collections.Generic;
@@ -28,6 +29,13 @@ namespace MetaDslx.VisualStudio.Classification
     {
         [Import]
         private MetaDslxMefServices _mefServices;
+
+        [Import]
+        private ITextSearchService _textSearchService;
+
+        [Import]
+        private ITextStructureNavigatorSelectorService _textStructureNavigatorSelector;
+
 
         public readonly ITableManager ErrorTableManager;
         public readonly ITextDocumentFactoryService TextDocumentFactoryService;
@@ -66,6 +74,11 @@ namespace MetaDslx.VisualStudio.Classification
             else if (typeof(T) == typeof(IClassificationTag))
             {
                 tagger = (ITagger<T>)buffer.Properties.GetOrCreateSingletonProperty(typeof(CompilationSymbolTagger), () => new CompilationSymbolTagger(this, textView, compilation));
+            }
+            else if (typeof(T) == typeof(ITextMarkerTag))
+            {
+                ITextStructureNavigator textStructureNavigator = _textStructureNavigatorSelector.GetTextStructureNavigator(buffer);
+                tagger = (ITagger<T>)buffer.Properties.GetOrCreateSingletonProperty(typeof(HighlightWordTagger), () => new HighlightWordTagger(textView, buffer, _textSearchService, textStructureNavigator));
             }
             return tagger;
         }

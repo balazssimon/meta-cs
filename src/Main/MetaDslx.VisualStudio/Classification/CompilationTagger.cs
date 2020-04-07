@@ -30,7 +30,7 @@ namespace MetaDslx.VisualStudio.Classification
 
         protected virtual void CompilationChanged(object sender, CompilationChangedEventArgs e)
         {
-            var symbols = e.NewCompilation.GetCompilationStepResult<CollectSymbolsResult>(CollectSymbolsStep.Key);
+            var symbols = e.NewCompilation.GetCompilationStepResult<CollectSymbolsResult>();
             if (_symbols != symbols)
             {
                 Interlocked.Exchange(ref _symbols, symbols);

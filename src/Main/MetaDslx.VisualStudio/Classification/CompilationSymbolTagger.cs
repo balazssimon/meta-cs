@@ -26,7 +26,7 @@ namespace MetaDslx.VisualStudio.Classification
         {
             this.BackgroundCompilation.CheckCompilationVersion();
             var compilationSnapshot = this.BackgroundCompilation.CompilationSnapshot;
-            var symbols = compilationSnapshot?.GetCompilationStepResult<CollectSymbolsResult>(CollectSymbolsStep.Key);
+            var symbols = compilationSnapshot?.GetCompilationStepResult<CollectSymbolsResult>();
             if (symbols == null) yield break;
             ITextSnapshot textSnapshot = compilationSnapshot.Text;
             if (textSnapshot == null || spans.Count == 0 || spans.First().Snapshot.Version != textSnapshot.Version) yield break;

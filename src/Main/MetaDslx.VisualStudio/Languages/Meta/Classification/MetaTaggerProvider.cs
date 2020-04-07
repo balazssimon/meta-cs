@@ -25,6 +25,7 @@ namespace MetaDslx.VisualStudio.Languages.Meta.Classification
     [Export(typeof(IViewTaggerProvider))]
     [TagType(typeof(IErrorTag))]
     [TagType(typeof(IClassificationTag))]
+    [TagType(typeof(ITextMarkerTag))]
     [ContentType(MetaDefinition.ContentType)]
     public class MetaTaggerProvider : CompilationTaggerProvider
     {

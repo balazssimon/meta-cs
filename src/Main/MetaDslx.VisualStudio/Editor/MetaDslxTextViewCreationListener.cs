@@ -14,7 +14,11 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.VisualStudio.Editor
 {
-	public abstract class MetaDslxTextViewCreationListener : IWpfTextViewCreationListener
+	[Export(typeof(IWpfTextViewCreationListener))]
+	[ContentType(MetaDslxDefinition.ContentType)]
+	[TextViewRole(PredefinedTextViewRoles.PrimaryDocument)]
+	[TextViewRole(PredefinedTextViewRoles.EmbeddedPeekTextView)]
+	public class MetaDslxTextViewCreationListener : IWpfTextViewCreationListener
 	{
 		[Import]
 		private MetaDslxMefServices _mefServices = null;

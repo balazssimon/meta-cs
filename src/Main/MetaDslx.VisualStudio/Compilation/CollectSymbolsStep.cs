@@ -19,8 +19,6 @@ namespace MetaDslx.VisualStudio.Compilation
 {
     public sealed class CollectSymbolsStep : IBackgroundCompilationStep
     {
-        public const string Key = "MetaDslx.CollectSymbols";
-
         private BackgroundCompilation _backgroundCompilation;
         private List<CompilationTaggerProvider> _taggers;
 
@@ -30,7 +28,7 @@ namespace MetaDslx.VisualStudio.Compilation
             _taggers = _backgroundCompilation.MefServices.GetExtensions<IViewTaggerProvider>(_backgroundCompilation.TextBuffer.ContentType).OfType<CompilationTaggerProvider>().ToList();
         }
 
-        public object ResultKey => Key;
+        public object ResultKey => typeof(CollectSymbolsResult);
 
         public object Execute(ICompilation compilation, CancellationToken cancellationToken)
         {

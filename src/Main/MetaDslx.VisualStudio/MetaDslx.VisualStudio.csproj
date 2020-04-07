@@ -51,6 +51,11 @@
   <ItemGroup>
     <Compile Include="Classification\Antlr4CompilationTaggerProvider.cs" />
     <Compile Include="Classification\Antlr4LexerClassifier.cs" />
+    <Compile Include="Classification\HighlightWordTag.cs" />
+    <Compile Include="Classification\HighlightWordTagger.cs" />
+    <Compile Include="Classification\MetaDslxTagDefinitions.cs" />
+    <Compile Include="Classification\MetaDslxTagTypes.cs" />
+    <Compile Include="Commands\MetaDslxMouseProcessor.cs" />
     <Compile Include="Compilation\CollectSymbolsStep.cs" />
     <Compile Include="Classification\CompilationErrorsFactory.cs" />
     <Compile Include="Classification\CompilationErrorsSnapshot.cs" />
@@ -68,10 +73,13 @@
     <Compile Include="Compilation\BackgroundCompilation.cs" />
     <Compile Include="Compilation\IBackgroundCompilationFactory.cs" />
     <Compile Include="Compilation\IBackgroundCompilationStep.cs" />
+    <Compile Include="Editor\MetaDslxMouseProcessorProvider.cs" />
     <Compile Include="Editor\MetaDslxTextViewConnectionListener.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Editor\MetaDslxDefinition.cs" />
     <Compile Include="Languages\Meta\Compilation\MetaBackgroundCompilationFactory.cs" />
+    <Compile Include="Languages\Meta\MetaMouseProcessorProvider.cs" />
+    <Compile Include="Languages\Meta\MetaTextViewCreationListener.cs" />
     <Compile Include="Utilities\MetaDslxMefServices.cs" />
     <Compile Include="Editor\MetaDslxTextViewCreationListener.cs" />
     <Compile Include="Languages\Antlr4Roslyn\Antlr4RoslynDefinition.cs" />
@@ -90,7 +98,6 @@
     <Compile Include="Languages\Meta\Classification\MetaClassifier.cs" />
     <Compile Include="Languages\Meta\Classification\MetaTaggerProvider.cs" />
     <Compile Include="Languages\Meta\MetaDefinition.cs" />
-    <Compile Include="Languages\Meta\MetaTextViewCreationListener.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MetaDslx.VisualStudioPackage.cs" />
   </ItemGroup>
@@ -118,6 +125,9 @@
     <PackageReference Include="System.Threading.Tasks.Extensions" Version="$(SystemThreadingTasksExtensionsVersion)" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="$(SystemTextEncodingCodePagesVersion)" />
     <PackageReference Include="Antlr4.Runtime" Version="$(Antlr4Version)" />
+    <PackageReference Include="WindowsBase">
+      <Version>4.6.1055</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MetaDslx.CodeAnalysis.Common\MetaDslx.CodeAnalysis.Common.csproj" />

@@ -20,12 +20,12 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.VisualStudio.Languages.Meta
 {
-    [Export(typeof(IWpfTextViewCreationListener))]
+    /*[Export(typeof(IWpfTextViewCreationListener))]
     [ContentType(MetaDefinition.ContentType)]
     [TextViewRole(PredefinedTextViewRoles.PrimaryDocument)]
     [TextViewRole(PredefinedTextViewRoles.EmbeddedPeekTextView)]
     internal sealed class MetaTextViewCreationListener : MetaDslxTextViewCreationListener
     {
 
-    }
+    }*/
 }

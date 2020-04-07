@@ -12,7 +12,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Ribbon x:Name="Ribbon" Title="Ribbon Title" Margin="0,-22,0,0">
+        <Ribbon x:Name="Ribbon" Title="Ribbon Title" Margin="0,-22,0,0" Grid.Row="0">
             <Ribbon.HelpPaneContent>
                 <RibbonButton x:Name="Help" />
             </Ribbon.HelpPaneContent>

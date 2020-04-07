@@ -25,8 +25,7 @@ namespace MetaDslx.VisualStudio.Commands
         public void Execute()
         {
             var position = TextView.Caret.Position.BufferPosition.Position;
-            var buffer = TextView.TextBuffer;
-            var symbols = _backgroundCompilation.CompilationSnapshot.GetCompilationStepResult<CollectSymbolsResult>(CollectSymbolsStep.Key);
+            var symbols = _backgroundCompilation.CompilationSnapshot.GetCompilationStepResult<CollectSymbolsResult>();
             if (symbols != null)
             {
                 foreach (var token in symbols.TokensWithSymbols)
@@ -48,67 +47,6 @@ namespace MetaDslx.VisualStudio.Commands
                     }
                 }
             }
-            /*BackgroundCompilation compilation = buffer.Properties.GetOrCreateSingletonProperty(() => new BackgroundCompilation(this, buffer));
-            var analysis = TextView.GetAnalysisAtCaret(_editorServices.Site);
-            if (analysis != null && caret != null)
-            {
-                var defs = await analysis.Analyzer.AnalyzeExpressionAsync(analysis, caret.Value, ExpressionAtPointPurpose.FindDefinition);
-                if (defs == null)
-                {
-                    return;
-                }
-                Dictionary<LocationInfo, SimpleLocationInfo> references, definitions, values;
-                GetDefsRefsAndValues(analysis.Analyzer, _editorServices.Site, defs.Expression, defs.Variables, out definitions, out references, out values);
-
-                if ((values.Count + definitions.Count) == 1)
-                {
-                    if (values.Count != 0)
-                    {
-                        foreach (var location in values.Keys)
-                        {
-                            GotoLocation(location);
-                            break;
-                        }
-                    }
-                    else
-                    {
-                        foreach (var location in definitions.Keys)
-                        {
-                            GotoLocation(location);
-                            break;
-                        }
-                    }
-                }
-                else if (values.Count + definitions.Count == 0)
-                {
-                    if (String.IsNullOrWhiteSpace(defs.Expression))
-                    {
-                        MessageBox.Show(Strings.CannotGoToDefn, Strings.ProductTitle);
-                    }
-                    else
-                    {
-                        MessageBox.Show(Strings.CannotGoToDefn_Name.FormatUI(defs.Expression), Strings.ProductTitle);
-                    }
-                }
-                else if (definitions.Count == 0)
-                {
-                    ShowFindSymbolsDialog(defs.Expression, new SymbolList(Strings.SymbolListValues, StandardGlyphGroup.GlyphForwardType, values.Values));
-                }
-                else if (values.Count == 0)
-                {
-                    ShowFindSymbolsDialog(defs.Expression, new SymbolList(Strings.SymbolListDefinitions, StandardGlyphGroup.GlyphLibrary, definitions.Values));
-                }
-                else
-                {
-                    ShowFindSymbolsDialog(defs.Expression,
-                        new LocationCategory(
-                            new SymbolList(Strings.SymbolListDefinitions, StandardGlyphGroup.GlyphLibrary, definitions.Values),
-                            new SymbolList(Strings.SymbolListValues, StandardGlyphGroup.GlyphForwardType, values.Values)
-                        )
-                    );
-                }
-            }
-            */
         }
     }
 }
