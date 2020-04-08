@@ -43,6 +43,9 @@ namespace MetaDslx.VisualStudio.Commands
             _findAllReferencesCommand = new FindAllReferencesCommand(_textView, _vsTextView, mefServices);
         }
 
+        public GoToDefinitionCommand GoToDefinitionCommand => _goToDefinitionCommand;
+        public FindAllReferencesCommand FindAllReferencesCommand => _findAllReferencesCommand;
+
         public static MetaDslxTextViewCommandFilter GetOrCreate(MetaDslxMefServices mefServices, ITextView textView, IOleCommandTarget next = null)
         {
             var editorFactory = mefServices.ComponentModel.GetService<IVsEditorAdaptersFactoryService>();

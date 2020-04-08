@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.Text;
+﻿using MetaDslx.VisualStudio.Utilities;
+using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Text.Operations;
 using Microsoft.VisualStudio.Text.Tagging;
@@ -15,9 +16,9 @@ namespace MetaDslx.VisualStudio.Classification
     {
         private object updateLock = new object();
 
-        public HighlightWordTagger(ITextView view, ITextBuffer sourceBuffer, ITextSearchService textSearchService, ITextStructureNavigator textStructureNavigator)
+        public HighlightWordTagger(MetaDslxMefServices mefServices, CompilationTaggerProvider taggerProvider, IWpfTextView wpfTextView, ITextBuffer sourceBuffer, ITextSearchService textSearchService, ITextStructureNavigator textStructureNavigator)
         {
-            this.View = view;
+            this.View = wpfTextView;
             this.SourceBuffer = sourceBuffer;
             this.TextSearchService = textSearchService;
             this.TextStructureNavigator = textStructureNavigator;
@@ -27,7 +28,19 @@ namespace MetaDslx.VisualStudio.Classification
             this.View.LayoutChanged += ViewLayoutChanged;
         }
 
-        public ITextView View { get; set; }
+        public static HighlightWordTagger GetOrCreate(MetaDslxMefServices mefServices, CompilationTaggerProvider taggerProvider, IWpfTextView wpfTextView, ITextSearchService textSearchService, ITextStructureNavigator textStructureNavigator)
+        {
+            return wpfTextView.Properties.GetOrCreateSingletonProperty(() => new HighlightWordTagger(
+                mefServices,
+                taggerProvider,
+                wpfTextView,
+                wpfTextView.TextBuffer,
+                textSearchService,
+                textStructureNavigator
+            ));
+        }
+
+        public IWpfTextView View { get; set; }
         public ITextBuffer SourceBuffer { get; set; }
         public ITextSearchService TextSearchService { get; set; }
         public ITextStructureNavigator TextStructureNavigator { get; set; }

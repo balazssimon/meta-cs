@@ -1,5 +1,6 @@
 ﻿using MetaDslx.VisualStudio.Compilation;
 using MetaDslx.VisualStudio.Editor;
+using MetaDslx.VisualStudio.Utilities;
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.Shell.TableControl;
 using Microsoft.VisualStudio.Text;
@@ -19,11 +20,20 @@ namespace MetaDslx.VisualStudio.Classification
     {
         internal readonly CompilationErrorsFactory Factory;
 
-        public CompilationErrorTagger(CompilationTaggerProvider taggerProvider, ITextView textView, BackgroundCompilation backgroundCompilation)
-            : base(taggerProvider, textView, backgroundCompilation)
+        public CompilationErrorTagger(MetaDslxMefServices mefServices, CompilationTaggerProvider taggerProvider, IWpfTextView wpfTextView)
+            : base(mefServices, taggerProvider, wpfTextView)
         {
             this.Factory = new CompilationErrorsFactory(this);
             taggerProvider.AddCompilationErrorsFactory(this.Factory);
+        }
+
+        public static CompilationErrorTagger GetOrCreate(MetaDslxMefServices mefServices, CompilationTaggerProvider taggerProvider, IWpfTextView wpfTextView)
+        {
+            return wpfTextView.Properties.GetOrCreateSingletonProperty(() => new CompilationErrorTagger(
+                mefServices,
+                taggerProvider,
+                wpfTextView
+            ));
         }
 
         public override void Dispose()

@@ -1,8 +1,12 @@
-﻿using MetaDslx.VisualStudio.Compilation;
+﻿using MetaDslx.VisualStudio.Commands;
+using MetaDslx.VisualStudio.Compilation;
 using MetaDslx.VisualStudio.Editor;
+using MetaDslx.VisualStudio.Utilities;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.PooledObjects;
 using Microsoft.CodeAnalysis.Text;
 using Microsoft.VisualStudio.Text;
+using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Text.Tagging;
 using System;
@@ -16,10 +20,96 @@ namespace MetaDslx.VisualStudio.Classification
 {
     internal class CompilationSymbolTagger : CompilationTagger, ITagger<IClassificationTag>
     {
-        public CompilationSymbolTagger(CompilationTaggerProvider taggerProvider, ITextView textView, BackgroundCompilation backgroundCompilation)
-            : base(taggerProvider, textView, backgroundCompilation)
-        {
+        private MetaDslxMouseProcessor _mouseProcessor;
+        private MetaDslxKeyProcessor _keyProcessor;
+        private int _mousePosition;
+        private bool _ctrlDown;
+        private SnapshotSpan? _goToDefinitionLinkSpan;
+        private IClassificationTag _goToDefinitionLinkTag;
+        private SyntaxToken? _goToDefinitionToken;
 
+        public CompilationSymbolTagger(MetaDslxMefServices mefServices, CompilationTaggerProvider taggerProvider, IWpfTextView wpfTextView)
+            : base(mefServices, taggerProvider, wpfTextView)
+        {
+            _mouseProcessor = MetaDslxMouseProcessor.GetOrCreate(mefServices, wpfTextView);
+            _mouseProcessor.MousePositionInTextChanged += MousePositionInTextChanged;
+            _keyProcessor = MetaDslxKeyProcessor.GetOrCreate(mefServices, wpfTextView);
+            _keyProcessor.CtrlKeyChanged += CtrlKeyChanged;
+            var classificationRegistry = mefServices.ComponentModel.GetService<IClassificationTypeRegistryService>();
+            if (classificationRegistry != null)
+            {
+                _goToDefinitionLinkTag = new ClassificationTag(classificationRegistry.GetClassificationType(MetaDslxTagTypes.GoToDefinitionLink));
+            }
+        }
+
+        public SyntaxToken? GoToDefinitionToken => _goToDefinitionToken;
+
+        private void CtrlKeyChanged(object sender, CtrlKeyChangedEventArgs e)
+        {
+            if (e.IsDown != _ctrlDown)
+            {
+                _ctrlDown = e.IsDown;
+                this.UpdateGoToDefinitionLink();
+            }
+        }
+
+        private void MousePositionInTextChanged(object sender, MousePositionChangedEventArgs e)
+        {
+            if (e.NewPosition != _mousePosition)
+            {
+                _mousePosition = e.NewPosition;
+                this.UpdateGoToDefinitionLink();
+            }
+        }
+
+        private void UpdateGoToDefinitionLink()
+        {
+            if (!_ctrlDown && _mousePosition < 0 && _goToDefinitionLinkSpan == null) return;
+            var updatedSpans = ArrayBuilder<SnapshotSpan>.GetInstance();
+            if (_goToDefinitionLinkSpan != null) updatedSpans.Add(_goToDefinitionLinkSpan.Value);
+            var foundNew = false;
+            if (_ctrlDown && _mousePosition >= 0)
+            {
+                this.BackgroundCompilation.CheckCompilationVersion();
+                var compilationSnapshot = this.BackgroundCompilation.CompilationSnapshot;
+                var symbols = compilationSnapshot?.GetCompilationStepResult<CollectSymbolsResult>();
+                ITextSnapshot textSnapshot = compilationSnapshot.Text;
+                if (symbols != null && textSnapshot != null)
+                {
+                    foreach (var token in symbols.TokensWithSymbols)
+                    {
+                        if (token.Span.Contains(_mousePosition))
+                        {
+                            var tokenSpan = new SnapshotSpan(textSnapshot, new Span(token.Span.Start, token.Span.Length));
+                            if (tokenSpan == _goToDefinitionLinkSpan)
+                            {
+                                updatedSpans.Free();
+                                return;
+                            }
+                            updatedSpans.Add(tokenSpan);
+                            _goToDefinitionToken = token;
+                            _goToDefinitionLinkSpan = tokenSpan;
+                            foundNew = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            if (!foundNew)
+            {
+                _goToDefinitionToken = null;
+                _goToDefinitionLinkSpan = null;
+            }
+            this.OnTagsChanged(updatedSpans.ToArrayAndFree());
+        }
+
+        public static CompilationSymbolTagger GetOrCreate(MetaDslxMefServices mefServices, CompilationTaggerProvider taggerProvider, IWpfTextView wpfTextView)
+        {
+            return wpfTextView.Properties.GetOrCreateSingletonProperty(() => new CompilationSymbolTagger(
+                mefServices,
+                taggerProvider,
+                wpfTextView
+            ));
         }
 
         public IEnumerable<ITagSpan<IClassificationTag>> GetTags(NormalizedSnapshotSpanCollection spans)
@@ -35,10 +125,14 @@ namespace MetaDslx.VisualStudio.Classification
                 var tokenSpan = new SnapshotSpan(textSnapshot, new Span(token.Span.Start, token.Span.Length));
                 if (spans.IntersectsWith(tokenSpan))
                 {
-                    var tag = symbols.GetClassificationTag(token);
-                    if (tag != null)
+                    if (tokenSpan == _goToDefinitionLinkSpan)
                     {
-                        yield return new TagSpan<IClassificationTag>(tokenSpan, tag);
+                        yield return new TagSpan<IClassificationTag>(tokenSpan, _goToDefinitionLinkTag);
+                    }
+                    else
+                    {
+                        var tag = symbols.GetClassificationTag(token);
+                        if (tag != null) yield return new TagSpan<IClassificationTag>(tokenSpan, tag);
                     }
                 }
             }

@@ -15,16 +15,16 @@ namespace MetaDslx.VisualStudio.Classification
 {
     internal abstract class CompilationTagger : IDisposable
     {
-        private ITextView _textView;
+        private IWpfTextView _textView;
         private CompilationTaggerProvider _taggerProvider;
         private BackgroundCompilation _backgroundCompilation;
         private CollectSymbolsResult _symbols;
 
-        public CompilationTagger(CompilationTaggerProvider taggerProvider, ITextView textView, BackgroundCompilation backgroundCompilation)
+        public CompilationTagger(MetaDslxMefServices mefServices, CompilationTaggerProvider taggerProvider, IWpfTextView wpfTextView)
         {
             _taggerProvider = taggerProvider;
-            _textView = textView;
-            _backgroundCompilation = backgroundCompilation;
+            _textView = wpfTextView;
+            _backgroundCompilation = BackgroundCompilation.GetOrCreate(mefServices, wpfTextView);
             _backgroundCompilation.CompilationChanged += CompilationChanged;
         }
 
@@ -36,6 +36,15 @@ namespace MetaDslx.VisualStudio.Classification
                 Interlocked.Exchange(ref _symbols, symbols);
                 ITextSnapshot textSnapshot = e.NewCompilation.Text;
                 this.TagsChanged?.Invoke(this, new SnapshotSpanEventArgs(new SnapshotSpan(textSnapshot, Span.FromBounds(0, textSnapshot.Length))));
+            }
+        }
+
+        protected virtual void OnTagsChanged(IEnumerable<SnapshotSpan> spans)
+        {
+            var tempEvent = this.TagsChanged;
+            foreach (var span in spans)
+            {
+                tempEvent?.Invoke(this, new SnapshotSpanEventArgs(span));
             }
         }
 

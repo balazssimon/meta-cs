@@ -171,7 +171,8 @@ namespace MetaDslx.VisualStudio.Compilation
             if (_compilationSnapshot != oldCompilation)
             {
                 Interlocked.Exchange(ref _compilationSnapshot, _backgroundCompilationSnapshot);
-                this.CompilationChanged?.Invoke(this, new CompilationChangedEventArgs(oldCompilation, _compilationSnapshot));
+                var tempEvent = this.CompilationChanged;
+                tempEvent?.Invoke(this, new CompilationChangedEventArgs(oldCompilation, _compilationSnapshot));
             }
             if (e.Result != null)
             {

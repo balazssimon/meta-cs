@@ -67,18 +67,19 @@ namespace MetaDslx.VisualStudio.Classification
             if (buffer != textView.TextBuffer) return null;
             ITagger<T> tagger = null;
             var compilation = BackgroundCompilation.GetOrCreate(_mefServices, textView);
+            var wpfTextView = (IWpfTextView)textView;
             if (typeof(T) == typeof(IErrorTag))
             {
-                tagger = (ITagger<T>)buffer.Properties.GetOrCreateSingletonProperty(typeof(CompilationErrorTagger), () => new CompilationErrorTagger(this, textView, compilation));
+                tagger = (ITagger<T>)CompilationErrorTagger.GetOrCreate(_mefServices, this, wpfTextView);
             }
             else if (typeof(T) == typeof(IClassificationTag))
             {
-                tagger = (ITagger<T>)buffer.Properties.GetOrCreateSingletonProperty(typeof(CompilationSymbolTagger), () => new CompilationSymbolTagger(this, textView, compilation));
+                tagger = (ITagger<T>)CompilationSymbolTagger.GetOrCreate(_mefServices, this, wpfTextView);
             }
             else if (typeof(T) == typeof(ITextMarkerTag))
             {
                 ITextStructureNavigator textStructureNavigator = _textStructureNavigatorSelector.GetTextStructureNavigator(buffer);
-                tagger = (ITagger<T>)buffer.Properties.GetOrCreateSingletonProperty(typeof(HighlightWordTagger), () => new HighlightWordTagger(textView, buffer, _textSearchService, textStructureNavigator));
+                tagger = (ITagger<T>)HighlightWordTagger.GetOrCreate(_mefServices, this, wpfTextView, _textSearchService, textStructureNavigator);
             }
             return tagger;
         }

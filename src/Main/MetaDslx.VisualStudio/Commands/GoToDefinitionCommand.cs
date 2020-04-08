@@ -2,6 +2,7 @@
 using MetaDslx.VisualStudio.Compilation;
 using MetaDslx.VisualStudio.Utilities;
 using Microsoft.CodeAnalysis;
+using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.TextManager.Interop;
 using System;
@@ -32,20 +33,40 @@ namespace MetaDslx.VisualStudio.Commands
                 {
                     if (token.Span.Contains(position))
                     {
-                        var symbol = symbols.GetSymbol(token);
-                        if (symbol != null)
-                        {
-                            var location = symbol.Locations.FirstOrDefault();
-                            if (location != null)
-                            {
-                                var mappedSpan = location.GetMappedLineSpan();
-                                VsTextView.SetCaretPos(mappedSpan.EndLinePosition.Line, mappedSpan.EndLinePosition.Character);
-                                VsTextView.CenterLines(mappedSpan.EndLinePosition.Line, 1);
-                                VsTextView.SetSelection(mappedSpan.StartLinePosition.Line, mappedSpan.StartLinePosition.Character, mappedSpan.EndLinePosition.Line, mappedSpan.EndLinePosition.Character);
-                            }
-                        }
+                        this.GoToDefinition(token);
+                        return;
                     }
                 }
+            }
+        }
+
+        public void GoToDefinition(SyntaxToken tokenWithSymbol, CollectSymbolsResult symbols = null)
+        {
+            if (tokenWithSymbol == null) return;
+            if (symbols == null) symbols = _backgroundCompilation.CompilationSnapshot.GetCompilationStepResult<CollectSymbolsResult>();
+            if (symbols != null)
+            {
+                var symbol = symbols.GetSymbol(tokenWithSymbol);
+                SnapshotSpan extent;
+                if (symbol != null)
+                {
+                    var location = symbol.Locations.FirstOrDefault();
+                    if (location != null)
+                    {
+                        extent = new SnapshotSpan(TextView.TextSnapshot, location.SourceSpan.Start, location.SourceSpan.Length);
+                    }
+                    else
+                    {
+                        extent = new SnapshotSpan(TextView.TextSnapshot, tokenWithSymbol.Span.Start, tokenWithSymbol.Span.Length);
+                    }
+                }
+                else
+                {
+                    extent = new SnapshotSpan(TextView.TextSnapshot, tokenWithSymbol.Span.Start, tokenWithSymbol.Span.Length);
+                }
+                TextView.Selection.Select(extent, false);
+                TextView.Caret.MoveTo(TextView.Selection.ActivePoint);
+                TextView.ViewScroller.EnsureSpanVisible(extent);
             }
         }
     }

@@ -1,5 +1,7 @@
-﻿using MetaDslx.VisualStudio.Compilation;
+﻿using MetaDslx.VisualStudio.Classification;
+using MetaDslx.VisualStudio.Compilation;
 using MetaDslx.VisualStudio.Utilities;
+using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 using System;
@@ -12,17 +14,28 @@ using System.Windows.Input;
 
 namespace MetaDslx.VisualStudio.Commands
 {
+    public class MousePositionChangedEventArgs
+    {
+        public MousePositionChangedEventArgs(int oldPosition, int newPosition)
+        {
+            this.OldPosition = oldPosition;
+            this.NewPosition = newPosition;
+        }
+
+        public int OldPosition { get; }
+        public int NewPosition { get; }
+    }
+
     public class MetaDslxMouseProcessor : IMouseProcessor
     {
         private IWpfTextView _wpfTextView;
-        private BackgroundCompilation _backgroundCompilation;
 
         private int _mousePositionInText;
+        private SyntaxToken? _goToDefinitionTokenMouseDown;
 
         public MetaDslxMouseProcessor(IWpfTextView wpfTextView, MetaDslxMefServices mefServices)
         {
             _wpfTextView = wpfTextView;
-            _backgroundCompilation = BackgroundCompilation.GetOrCreate(mefServices, wpfTextView);
         }
 
         public static MetaDslxMouseProcessor GetOrCreate(MetaDslxMefServices mefServices, IWpfTextView wpfTextView)
@@ -34,6 +47,8 @@ namespace MetaDslx.VisualStudio.Commands
         }
 
         public int MousePositionInText => _mousePositionInText;
+
+        public event EventHandler<MousePositionChangedEventArgs> MousePositionInTextChanged;
 
         public void PreprocessDragEnter(DragEventArgs e)
         {
@@ -69,10 +84,30 @@ namespace MetaDslx.VisualStudio.Commands
 
         public void PreprocessMouseLeftButtonDown(MouseButtonEventArgs e)
         {
+            if (_wpfTextView.Properties.TryGetProperty<CompilationSymbolTagger>(typeof(CompilationSymbolTagger), out var compilationSymbolTagger))
+            {
+                _goToDefinitionTokenMouseDown = compilationSymbolTagger.GoToDefinitionToken;
+            }
+            else
+            {
+                _goToDefinitionTokenMouseDown = null;
+            }
         }
 
         public void PreprocessMouseLeftButtonUp(MouseButtonEventArgs e)
         {
+            if (_wpfTextView.Properties.TryGetProperty<CompilationSymbolTagger>(typeof(CompilationSymbolTagger), out var compilationSymbolTagger) &&
+                _wpfTextView.Properties.TryGetProperty<MetaDslxTextViewCommandFilter>(typeof(MetaDslxTextViewCommandFilter), out var commandFilter))
+            {
+                var goToDefinitionToken = compilationSymbolTagger.GoToDefinitionToken;
+                var goToDefinitionCommand = commandFilter.GoToDefinitionCommand;
+                if (goToDefinitionToken != null && goToDefinitionToken == _goToDefinitionTokenMouseDown && goToDefinitionCommand != null)
+                {
+                    _goToDefinitionTokenMouseDown = null;
+                    e.Handled = true;
+                    goToDefinitionCommand.GoToDefinition(goToDefinitionToken.Value);
+                }
+            }
         }
 
         public void PreprocessMouseMove(MouseEventArgs e)
@@ -141,16 +176,26 @@ namespace MetaDslx.VisualStudio.Commands
 
         public void PostprocessMouseMove(MouseEventArgs e)
         {
-            var mousePosition = e.GetPosition(_wpfTextView as UIElement);
+            var mousePosition = RelativeToView(e.GetPosition(_wpfTextView.VisualElement));
+            var oldPosition = _mousePositionInText;
+            var newPosition = -1;
             var line = _wpfTextView.TextViewLines.GetTextViewLineContainingYCoordinate(mousePosition.Y);
             if (line != null)
             {
                 var element = line.GetBufferPositionFromXCoordinate(mousePosition.X);
-                if (element != null)
-                {
-                    _mousePositionInText = element.Value.Position;
-                }
+                if (element != null) newPosition = element.Value.Position;
             }
+            if (newPosition != oldPosition)
+            {
+                _mousePositionInText = newPosition;
+                var tempEvent = this.MousePositionInTextChanged;
+                tempEvent?.Invoke(this, new MousePositionChangedEventArgs(oldPosition, newPosition));
+            }
+        }
+
+        private Point RelativeToView(Point position)
+        {
+            return new Point(position.X + _wpfTextView.ViewportLeft, position.Y + _wpfTextView.ViewportTop);
         }
 
         public void PostprocessMouseRightButtonDown(MouseButtonEventArgs e)

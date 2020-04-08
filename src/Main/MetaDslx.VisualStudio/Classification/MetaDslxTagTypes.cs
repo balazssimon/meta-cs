@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.VisualStudio.Classification
 {
-    internal static class MetaDslxTagTypes
+    public static class MetaDslxTagTypes
     {
-        internal const string HighlightWord = "HighlightWord";
+        public const string HighlightWord = "MetaDslxHighlightWord";
+
+        public const string GoToDefinitionLink = "MetaDslxGoToDefinitionLink";
     }
 }
