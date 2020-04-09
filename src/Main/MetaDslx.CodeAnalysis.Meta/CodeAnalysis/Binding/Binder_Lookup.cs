@@ -852,7 +852,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                 diagInfo = diagnose ? new LanguageDiagnosticInfo(InternalErrorCode.ERR_LabelNotFound, unwrappedSymbol.Name) : null;
                 return LookupResult.NotLabel(symbol, diagInfo);
             }*/
-            else if (constraints.Kinds.Length > 0 && !constraints.Kinds.Any(st => st.ImmutableType.IsAssignableFrom(symbol.ModelSymbolInfo.ImmutableType)))
+            else if (!constraints.Kinds.IsDefault && !constraints.Kinds.IsEmpty && !constraints.Kinds.Any(st => st.ImmutableType.IsAssignableFrom(symbol.ModelSymbolInfo.ImmutableType)))
             {
                 return LookupResult.WrongSymbol(symbol, symbol, constraints.Kinds, true);
             }
@@ -1192,7 +1192,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                 AddMemberLookupSymbolsInfoWithoutInheritance(result, constraints.WithQualifier(baseInterface));
             }
 
-            this.AddMemberLookupSymbolsInfoInTypeCore(result, constraints.WithQualifier(Compilation.GetSpecialType(SpecialType.System_Object)));
+            //this.AddMemberLookupSymbolsInfoInTypeCore(result, constraints.WithQualifier(Compilation.GetSpecialType(SpecialType.System_Object))); // TODO:MetaDslx
         }
 
         protected virtual LookupConstraints AdjustConstraints(LookupConstraints constraints)

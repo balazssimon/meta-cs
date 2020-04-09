@@ -114,10 +114,10 @@ namespace MetaDslx.VisualStudio.Commands
                                 if (_session == null) StartSession();
                                 Filter();
                             }
-                            else
+                            else 
                             {
                                 if (_session != null) Complete(false);
-                                StartSession();
+                                if (ch == ' ' || ch == '.') StartSession();
                             }
                             break;
                         case VSConstants.VSStd2KCmdID.BACKSPACE:

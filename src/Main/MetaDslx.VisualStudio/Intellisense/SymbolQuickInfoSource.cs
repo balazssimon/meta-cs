@@ -25,10 +25,6 @@ namespace MetaDslx.VisualStudio.Intellisense
 {
     public class SymbolQuickInfoSource : IAsyncQuickInfoSource
     {
-        private static readonly ImageId _classIcon = KnownMonikers.Class.ToImageId();
-        private static readonly ImageId _namespaceIcon = KnownMonikers.Namespace.ToImageId();
-        private static readonly ImageId _propertyIcon = KnownMonikers.Property.ToImageId();
-
         private readonly MetaDslxMefServices _mefServices;
         private readonly MetaDslxQuickInfoSourceProvider _provider; 
         private readonly ITextBuffer _textBuffer;
@@ -124,7 +120,7 @@ namespace MetaDslx.VisualStudio.Intellisense
 
                 var elm = new ContainerElement(
                     ContainerElementStyle.Wrapped,
-                    new ImageElement(symbol.Kind == LanguageSymbolKind.Namespace ? _namespaceIcon : symbol.Kind == LanguageSymbolKind.NamedType ? _classIcon : _propertyIcon),
+                    new ImageElement(symbol.Kind == LanguageSymbolKind.Namespace ? StandardIcons.NamespaceIcon : symbol.Kind == LanguageSymbolKind.NamedType ? StandardIcons.ClassIcon : StandardIcons.PropertyIcon),
                     new ClassifiedTextElement(header));
 
                 var docComment = symbol.GetDocumentationCommentXml(cancellationToken: cancellationToken);

@@ -55,8 +55,8 @@ namespace MetaDslx.CodeAnalysis.Binding
                     // The symbol is no longer unique. So clear the
                     // UniqueSymbol field and record the unique name
                     // before adding the new name value.
+                    Debug.Assert(_uniqueSymbolOrMultiNames is Tuple<string, TSymbol>);
                     var (uniqueName, _) = (Tuple<string,TSymbol>)_uniqueSymbolOrMultiNames;
-                    Debug.Assert(_uniqueSymbolOrMultiNames is TSymbol);
                     _uniqueSymbolOrMultiNames = new ConsList<string>(uniqueName, ConsList<string>.Empty);
                 }
                 AddMultiName(multiName);
@@ -104,11 +104,16 @@ namespace MetaDslx.CodeAnalysis.Binding
                 if (this.HasUniqueSymbol)
                 {
                     multiNames = null;
-                    uniqueSymbol = (TSymbol)_uniqueSymbolOrMultiNames;
+                    (_, uniqueSymbol) = (Tuple<string, TSymbol>)_uniqueSymbolOrMultiNames;
                 }
-                else
+                else if (_uniqueSymbolOrMultiNames is ConsList<string>)
                 {
                     multiNames = (ConsList<string>)_uniqueSymbolOrMultiNames;
+                    uniqueSymbol = null;
+                }
+                else 
+                {
+                    multiNames = (HashSet<string>)_uniqueSymbolOrMultiNames;
                     uniqueSymbol = null;
                 }
             }
@@ -116,7 +121,8 @@ namespace MetaDslx.CodeAnalysis.Binding
             public IEnumerator<string> GetEnumerator()
             {
                 Debug.Assert(!this.HasUniqueSymbol);
-                return ((ConsList<string>)_uniqueSymbolOrMultiNames).GetEnumerator();
+                if (_uniqueSymbolOrMultiNames is ConsList<string>) return ((ConsList<string>)_uniqueSymbolOrMultiNames).GetEnumerator();
+                else return ((HashSet<string>)_uniqueSymbolOrMultiNames).GetEnumerator();
             }
 
             public int Count
@@ -124,8 +130,15 @@ namespace MetaDslx.CodeAnalysis.Binding
                 get
                 {
                     Debug.Assert(!this.HasUniqueSymbol);
-                    int count = ((ConsList<string>)_uniqueSymbolOrMultiNames).Count();
-                    return count;
+                    if (_uniqueSymbolOrMultiNames is ConsList<string>)
+                    {
+                        int count = ((ConsList<string>)_uniqueSymbolOrMultiNames).Count();
+                        return count;
+                    }
+                    else
+                    {
+                        return ((HashSet<string>)_uniqueSymbolOrMultiNames).Count;
+                    }
                 }
             }
 
