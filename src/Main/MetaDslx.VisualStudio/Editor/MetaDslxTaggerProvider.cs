@@ -26,8 +26,9 @@ namespace MetaDslx.VisualStudio.Classification
     /// 
     /// It is also the <see cref="ITableDataSource"/> that reports errors in comments.
     /// </summary>
-    public abstract class MetaDslxTaggerProvider : IViewTaggerProvider, ITableDataSource
+    public abstract class MetaDslxTaggerProvider : IViewTaggerProvider, ITaggerProvider, ITableDataSource
     {
+#pragma warning disable 649 // "field never assigned to" -- field is set by MEF.
         [Import]
         private MetaDslxMefServices _mefServices;
 
@@ -39,6 +40,10 @@ namespace MetaDslx.VisualStudio.Classification
 
         [Import]
         private ITableManagerProvider _tableManagerProvider;
+
+        [Import]
+        private IBufferTagAggregatorFactoryService _bufferTagAggregatorFactoryService;
+#pragma warning restore 649
 
         private readonly List<SinkManager> _managers = new List<SinkManager>();      // Also used for locks
         private readonly List<CompilationErrorsFactory> _factories = new List<CompilationErrorsFactory>();
@@ -53,6 +58,17 @@ namespace MetaDslx.VisualStudio.Classification
         public IClassificationTypeRegistryService ClassificationRegistryService => _classificationRegistryService;
         public IStandardClassificationService StandardClassificationService => _standardClassificationService;
 
+
+        public ITagger<T> CreateTagger<T>(ITextBuffer buffer) where T : ITag
+        {
+            if (buffer == null) throw new ArgumentNullException("buffer");
+            ITagger<T> tagger = null;
+            if (typeof(T) == typeof(ReferencesTag))
+            {
+                tagger = (ITagger<T>)ReferencesTagger.GetOrCreate(_mefServices, this, buffer);
+            }
+            return tagger;
+        }
 
         public ITagger<T> CreateTagger<T>(ITextView textView, ITextBuffer buffer) where T : ITag
         {
@@ -83,6 +99,11 @@ namespace MetaDslx.VisualStudio.Classification
             else if (typeof(T) == typeof(ITextMarkerTag))
             {
                 tagger = (ITagger<T>)HighlightSymbolTagger.GetOrCreate(_mefServices, this, wpfTextView);
+            }
+            else if (typeof(T) == typeof(IntraTextAdornmentTag))
+            {
+                tagger = (ITagger<T>)ReferencesAdornmentTagger.GetOrCreate(_mefServices, this, wpfTextView, 
+                    new Lazy<ITagAggregator<ReferencesTag>>(() => _bufferTagAggregatorFactoryService.CreateTagAggregator<ReferencesTag>(textView.TextBuffer)));
             }
             return tagger;
         }

@@ -25,10 +25,13 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.VisualStudio.Languages.Meta.Classification
 {
+    //[Export(typeof(ITaggerProvider))]
     [Export(typeof(IViewTaggerProvider))]
     [TagType(typeof(IErrorTag))]
     [TagType(typeof(IClassificationTag))]
     [TagType(typeof(ITextMarkerTag))]
+    //[TagType(typeof(ReferencesTag))]
+    //[TagType(typeof(IntraTextAdornmentTag))]
     [ContentType(MetaDefinition.ContentType)]
     public class MetaTaggerProvider : MetaDslxTaggerProvider
     {

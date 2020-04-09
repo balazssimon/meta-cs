@@ -44,6 +44,15 @@ namespace MetaDslx.VisualStudio.Classification
             _tagsByType = new Dictionary<IClassificationType, IClassificationTag>();
         }
 
+        public static SymbolTagger GetOrCreate(MetaDslxMefServices mefServices, MetaDslxTaggerProvider taggerProvider, IWpfTextView wpfTextView)
+        {
+            return wpfTextView.Properties.GetOrCreateSingletonProperty(() => new SymbolTagger(
+                mefServices,
+                taggerProvider,
+                wpfTextView
+            ));
+        }
+
         public SyntaxToken? GoToDefinitionToken => _goToDefinitionToken;
 
         private void CtrlKeyChanged(object sender, CtrlKeyChangedEventArgs e)
@@ -105,14 +114,6 @@ namespace MetaDslx.VisualStudio.Classification
             this.OnTagsChanged(updatedSpans.ToArrayAndFree());
         }
 
-        public static SymbolTagger GetOrCreate(MetaDslxMefServices mefServices, MetaDslxTaggerProvider taggerProvider, IWpfTextView wpfTextView)
-        {
-            return wpfTextView.Properties.GetOrCreateSingletonProperty(() => new SymbolTagger(
-                mefServices,
-                taggerProvider,
-                wpfTextView
-            ));
-        }
 
         public IEnumerable<ITagSpan<IClassificationTag>> GetTags(NormalizedSnapshotSpanCollection spans)
         {

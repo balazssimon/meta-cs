@@ -36,6 +36,7 @@ namespace MetaDslx.VisualStudio.Languages.Meta.Compilation
         public IEnumerable<IBackgroundCompilationStep> CreateCompilationSteps(BackgroundCompilation backgroundCompilation)
         {
             yield return new CollectSymbolsStep(backgroundCompilation);
+            yield return new SymbolReferencesStep(backgroundCompilation);
         }
     }
 }
