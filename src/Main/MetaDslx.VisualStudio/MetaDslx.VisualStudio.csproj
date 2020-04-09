@@ -51,6 +51,11 @@
   <ItemGroup>
     <Compile Include="Classification\Antlr4LexerClassifier.cs" />
     <Compile Include="Classification\HighlightSymbolTagger.cs" />
+    <Compile Include="Classification\IntraTextAdornmentTagger.cs" />
+    <Compile Include="Classification\ReferencesAdornment.cs" />
+    <Compile Include="Classification\ReferencesTag.cs" />
+    <Compile Include="Classification\ReferencesAdornmentTagger.cs" />
+    <Compile Include="Classification\ReferencesTagger.cs" />
     <Compile Include="Classification\StandardClassificationTypeNames.cs" />
     <Compile Include="Commands\MetaDslxCompletionCommandHandler.cs" />
     <Compile Include="Commands\MetaDslxKeyProcessor.cs" />
@@ -63,6 +68,7 @@
     <Compile Include="Compilation\CompilationSnapshot.cs" />
     <Compile Include="Classification\SymbolTagger.cs" />
     <Compile Include="Classification\CompilationTagger.cs" />
+    <Compile Include="Compilation\SymbolReferencesStep.cs" />
     <Compile Include="Editor\MetaDslxCompletionSourceProvider.cs" />
     <Compile Include="Editor\MetaDslxIntellisenseControllerProvider.cs" />
     <Compile Include="Editor\MetaDslxQuickInfoSourceProvider.cs" />

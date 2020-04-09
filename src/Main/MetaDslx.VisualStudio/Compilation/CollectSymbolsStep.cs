@@ -50,7 +50,7 @@ namespace MetaDslx.VisualStudio.Compilation
                         if (symbol != null)
                         {
                             var tagType = this.GetSymbolClassificationType(symbol, token, semanticModel, cancellationToken);
-                            result.Add(token, new SymbolData(symbol, tagType));
+                            result.Add(token, new CollectSymbolsResult.SymbolData(symbol, tagType));
                         }
                     }
                 }
@@ -112,17 +112,18 @@ namespace MetaDslx.VisualStudio.Compilation
             if (_symbols.TryGetValue(token, out var result)) return result.Symbol;
             else return null;
         }
-    }
 
-    public struct SymbolData
-    {
-        public SymbolData(ISymbol symbol, IClassificationType classificationType)
+        internal struct SymbolData
         {
-            Symbol = symbol;
-            ClassificationType = classificationType;
-        }
+            public SymbolData(ISymbol symbol, IClassificationType classificationType)
+            {
+                Symbol = symbol;
+                ClassificationType = classificationType;
+            }
 
-        public ISymbol Symbol { get; }
-        public IClassificationType ClassificationType { get; }
+            public ISymbol Symbol { get; }
+            public IClassificationType ClassificationType { get; }
+        }
     }
+
 }
