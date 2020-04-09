@@ -39,7 +39,7 @@ namespace MetaDslx.VisualStudio.Classification
             var classificationRegistry = mefServices.ComponentModel.GetService<IClassificationTypeRegistryService>();
             if (classificationRegistry != null)
             {
-                _goToDefinitionLinkTag = new ClassificationTag(classificationRegistry.GetClassificationType(MetaDslxTagTypes.GoToDefinitionLink));
+                _goToDefinitionLinkTag = new ClassificationTag(classificationRegistry.GetClassificationType(StandardClassificationTypeNames.UrlHyperlink));
             }
             _tagsByType = new Dictionary<IClassificationType, IClassificationTag>();
         }

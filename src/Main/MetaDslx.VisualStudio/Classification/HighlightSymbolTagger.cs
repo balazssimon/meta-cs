@@ -1,4 +1,7 @@
-﻿using MetaDslx.VisualStudio.Utilities;
+﻿using MetaDslx.VisualStudio.Compilation;
+using MetaDslx.VisualStudio.Utilities;
+using Microsoft.CodeAnalysis;
+using Microsoft.VisualStudio.Language.StandardClassification;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Text.Operations;
@@ -12,9 +15,12 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.VisualStudio.Classification
 {
-    internal class HighlightSymbolTagger : ITagger<HighlightWordTag>
+    internal class HighlightSymbolTagger : ITagger<ITextMarkerTag>
     {
         private object updateLock = new object();
+        private readonly BackgroundCompilation _backgroundCompilation;
+        private readonly TextMarkerTag _symbolDefinition;
+        private readonly TextMarkerTag _symbolReference;
 
         public HighlightSymbolTagger(MetaDslxMefServices mefServices, CompilationTaggerProvider taggerProvider, IWpfTextView wpfTextView, ITextBuffer sourceBuffer, ITextSearchService textSearchService, ITextStructureNavigator textStructureNavigator)
         {
@@ -22,10 +28,14 @@ namespace MetaDslx.VisualStudio.Classification
             this.SourceBuffer = sourceBuffer;
             this.TextSearchService = textSearchService;
             this.TextStructureNavigator = textStructureNavigator;
-            this.WordSpans = new NormalizedSnapshotSpanCollection();
+            this.SymbolDefinitionSpans = new NormalizedSnapshotSpanCollection();
+            this.SymbolReferenceSpans = new NormalizedSnapshotSpanCollection();
             this.CurrentWord = null;
             this.View.Caret.PositionChanged += CaretPositionChanged;
             this.View.LayoutChanged += ViewLayoutChanged;
+            _backgroundCompilation = BackgroundCompilation.GetOrCreate(mefServices, wpfTextView);
+            _symbolDefinition = new TextMarkerTag("MarkerFormatDefinition/HighlightedDefinition");
+            _symbolReference = new TextMarkerTag("MarkerFormatDefinition/HighlightedReference");
         }
 
         public static HighlightSymbolTagger GetOrCreate(MetaDslxMefServices mefServices, CompilationTaggerProvider taggerProvider, IWpfTextView wpfTextView, ITextSearchService textSearchService, ITextStructureNavigator textStructureNavigator)
@@ -44,7 +54,8 @@ namespace MetaDslx.VisualStudio.Classification
         public ITextBuffer SourceBuffer { get; set; }
         public ITextSearchService TextSearchService { get; set; }
         public ITextStructureNavigator TextStructureNavigator { get; set; }
-        public NormalizedSnapshotSpanCollection WordSpans { get; set; }
+        public NormalizedSnapshotSpanCollection SymbolDefinitionSpans { get; set; }
+        public NormalizedSnapshotSpanCollection SymbolReferenceSpans { get; set; }
         public SnapshotSpan? CurrentWord { get; set; }
         public SnapshotPoint RequestedPoint { get; set; }
 
@@ -87,53 +98,60 @@ namespace MetaDslx.VisualStudio.Classification
         private void UpdateWordAdornments()
         {
             SnapshotPoint currentRequest = RequestedPoint;
-            List<SnapshotSpan> wordSpans = new List<SnapshotSpan>();
-            //Find all words in the buffer like the one the caret is on
-            TextExtent word = TextStructureNavigator.GetExtentOfWord(currentRequest);
-            bool foundWord = true;
-            //If we've selected something not worth highlighting, we might have missed a "word" by a little bit
-            if (!WordExtentIsValid(currentRequest, word))
-            {
-                //Before we retry, make sure it is worthwhile 
-                if (word.Span.Start != currentRequest
-                     || currentRequest == currentRequest.GetContainingLine().Start
-                     || char.IsWhiteSpace((currentRequest - 1).GetChar()))
-                {
-                    foundWord = false;
-                }
-                else
-                {
-                    // Try again, one character previous.  
-                    //If the caret is at the end of a word, pick up the word.
-                    word = TextStructureNavigator.GetExtentOfWord(currentRequest - 1);
+            List<SnapshotSpan> referenceSpans = new List<SnapshotSpan>();
+            List<SnapshotSpan> definitionSpans = new List<SnapshotSpan>();
+            SnapshotSpan? currentWord = null;
+            ISymbol currentSymbol = null;
 
-                    //If the word still isn't valid, we're done 
-                    if (!WordExtentIsValid(currentRequest, word))
-                        foundWord = false;
+            _backgroundCompilation.CheckCompilationVersion();
+            var compilationSnapshot = _backgroundCompilation.CompilationSnapshot;
+            var symbols = compilationSnapshot?.GetCompilationStepResult<CollectSymbolsResult>();
+            ITextSnapshot textSnapshot = compilationSnapshot.Text;
+            if (symbols != null && textSnapshot != null)
+            {
+                foreach (var token in symbols.TokensWithSymbols)
+                {
+                    if (token.Span.Contains(currentRequest.Position))
+                    {
+                        currentWord = new SnapshotSpan(textSnapshot, new Span(token.Span.Start, token.Span.Length));
+                        currentSymbol = symbols.GetSymbol(token);
+                        break;
+                    }
                 }
             }
 
-            if (!foundWord)
+            if (currentWord == null || currentSymbol == null || currentSymbol is IErrorTypeSymbol)
             {
                 //If we couldn't find a word, clear out the existing markers
-                SynchronousUpdate(currentRequest, new NormalizedSnapshotSpanCollection(), null);
+                SynchronousUpdate(currentRequest, null, null, null);
                 return;
             }
 
-            SnapshotSpan currentWord = word.Span;
             //If this is the current word, and the caret moved within a word, we're done. 
             if (CurrentWord.HasValue && currentWord == CurrentWord)
                 return;
 
             //Find the new spans
-            FindData findData = new FindData(currentWord.GetText(), currentWord.Snapshot);
-            findData.FindOptions = FindOptions.WholeWord | FindOptions.MatchCase;
-
-            wordSpans.AddRange(TextSearchService.FindAll(findData));
+            foreach (var token in symbols.TokensWithSymbols)
+            {
+                var symbol = symbols.GetSymbol(token);
+                if (object.Equals(symbol, currentSymbol))
+                {
+                    var span = new SnapshotSpan(textSnapshot, new Span(token.Span.Start, token.Span.Length));
+                    if (symbol.Locations.Any(loc => loc.SourceSpan == token.Span))
+                    {
+                        definitionSpans.Add(span);
+                    }
+                    else
+                    {
+                        referenceSpans.Add(span);
+                    }
+                }
+            }
 
             //If another change hasn't happened, do a real update 
             if (currentRequest == RequestedPoint)
-                SynchronousUpdate(currentRequest, new NormalizedSnapshotSpanCollection(wordSpans), currentWord);
+                SynchronousUpdate(currentRequest, definitionSpans, referenceSpans, currentWord);
         }
 
         private static bool WordExtentIsValid(SnapshotPoint currentRequest, TextExtent word)
@@ -142,23 +160,26 @@ namespace MetaDslx.VisualStudio.Classification
                 && currentRequest.Snapshot.GetText(word.Span).Any(c => char.IsLetter(c));
         }
 
-        private void SynchronousUpdate(SnapshotPoint currentRequest, NormalizedSnapshotSpanCollection newSpans, SnapshotSpan? newCurrentWord)
+        private void SynchronousUpdate(SnapshotPoint currentRequest, List<SnapshotSpan> symbolDefinitionSpans, List<SnapshotSpan> symbolReferenceSpans, SnapshotSpan? newCurrentWord)
         {
             lock (updateLock)
             {
                 if (currentRequest != RequestedPoint)
                     return;
 
-                WordSpans = newSpans;
+                SymbolDefinitionSpans = symbolDefinitionSpans != null && symbolDefinitionSpans.Count > 0 ? new NormalizedSnapshotSpanCollection(symbolDefinitionSpans) : new NormalizedSnapshotSpanCollection();
+                SymbolReferenceSpans = symbolReferenceSpans != null && symbolReferenceSpans.Count > 0 ? new NormalizedSnapshotSpanCollection(symbolReferenceSpans) : new NormalizedSnapshotSpanCollection(); 
                 CurrentWord = newCurrentWord;
 
                 var tempEvent = TagsChanged;
                 if (tempEvent != null)
+                {
                     tempEvent(this, new SnapshotSpanEventArgs(new SnapshotSpan(SourceBuffer.CurrentSnapshot, 0, SourceBuffer.CurrentSnapshot.Length)));
+                }
             }
         }
 
-        public IEnumerable<ITagSpan<HighlightWordTag>> GetTags(NormalizedSnapshotSpanCollection spans)
+        public IEnumerable<ITagSpan<ITextMarkerTag>> GetTags(NormalizedSnapshotSpanCollection spans)
         {
             if (CurrentWord == null)
                 yield break;
@@ -166,30 +187,28 @@ namespace MetaDslx.VisualStudio.Classification
             // Hold on to a "snapshot" of the word spans and current word, so that we maintain the same
             // collection throughout
             SnapshotSpan currentWord = CurrentWord.Value;
-            NormalizedSnapshotSpanCollection wordSpans = WordSpans;
+            NormalizedSnapshotSpanCollection definitionSpans = SymbolDefinitionSpans;
+            NormalizedSnapshotSpanCollection referenceSpans = SymbolReferenceSpans;
 
-            if (spans.Count == 0 || wordSpans.Count == 0)
+            if (spans.Count == 0 || (definitionSpans.Count == 0 && referenceSpans.Count == 0))
                 yield break;
 
             // If the requested snapshot isn't the same as the one our words are on, translate our spans to the expected snapshot 
-            if (spans[0].Snapshot != wordSpans[0].Snapshot)
+            if (spans[0].Snapshot != currentWord.Snapshot)
             {
-                wordSpans = new NormalizedSnapshotSpanCollection(
-                    wordSpans.Select(span => span.TranslateTo(spans[0].Snapshot, SpanTrackingMode.EdgeExclusive)));
-
-                currentWord = currentWord.TranslateTo(spans[0].Snapshot, SpanTrackingMode.EdgeExclusive);
+                definitionSpans = new NormalizedSnapshotSpanCollection(
+                    definitionSpans.Select(span => span.TranslateTo(spans[0].Snapshot, SpanTrackingMode.EdgeExclusive)));
+                referenceSpans = new NormalizedSnapshotSpanCollection(
+                    referenceSpans.Select(span => span.TranslateTo(spans[0].Snapshot, SpanTrackingMode.EdgeExclusive)));
             }
 
-            // First, yield back the word the cursor is under (if it overlaps) 
-            // Note that we'll yield back the same word again in the wordspans collection; 
-            // the duplication here is expected. 
-            if (spans.OverlapsWith(new NormalizedSnapshotSpanCollection(currentWord)))
-                yield return new TagSpan<HighlightWordTag>(currentWord, new HighlightWordTag());
-
-            // Second, yield all the other words in the file 
-            foreach (SnapshotSpan span in NormalizedSnapshotSpanCollection.Overlap(spans, wordSpans))
+            foreach (SnapshotSpan span in NormalizedSnapshotSpanCollection.Overlap(spans, definitionSpans))
             {
-                yield return new TagSpan<HighlightWordTag>(span, new HighlightWordTag());
+                yield return new TagSpan<ITextMarkerTag>(span, _symbolDefinition);
+            }
+            foreach (SnapshotSpan span in NormalizedSnapshotSpanCollection.Overlap(spans, referenceSpans))
+            {
+                yield return new TagSpan<ITextMarkerTag>(span, _symbolReference);
             }
         }
     }

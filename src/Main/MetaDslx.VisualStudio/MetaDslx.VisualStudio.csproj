@@ -51,8 +51,7 @@
   <ItemGroup>
     <Compile Include="Classification\Antlr4LexerClassifier.cs" />
     <Compile Include="Classification\HighlightSymbolTagger.cs" />
-    <Compile Include="Classification\MetaDslxTagDefinitions.cs" />
-    <Compile Include="Classification\MetaDslxTagTypes.cs" />
+    <Compile Include="Classification\StandardClassificationTypeNames.cs" />
     <Compile Include="Commands\MetaDslxKeyProcessor.cs" />
     <Compile Include="Commands\MetaDslxMouseProcessor.cs" />
     <Compile Include="Compilation\CollectSymbolsStep.cs" />
