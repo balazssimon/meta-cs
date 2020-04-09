@@ -11,7 +11,7 @@ namespace MetaDslx.VisualStudio.Commands
 {
     internal class FindAllReferencesCommand : MetaDslxVsCommand
     {
-        public FindAllReferencesCommand(ITextView textView, IVsTextView vsTextView, MetaDslxMefServices mefServices) 
+        public FindAllReferencesCommand(IWpfTextView textView, IVsTextView vsTextView, MetaDslxMefServices mefServices) 
             : base(textView, vsTextView, mefServices)
         {
         }

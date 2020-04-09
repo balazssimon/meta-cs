@@ -16,20 +16,20 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.VisualStudio.Classification
 {
-    internal class CompilationErrorTagger : CompilationTagger, ITagger<IErrorTag>
+    internal class ErrorTagger : CompilationTagger, ITagger<IErrorTag>
     {
         internal readonly CompilationErrorsFactory Factory;
 
-        public CompilationErrorTagger(MetaDslxMefServices mefServices, CompilationTaggerProvider taggerProvider, IWpfTextView wpfTextView)
+        public ErrorTagger(MetaDslxMefServices mefServices, MetaDslxTaggerProvider taggerProvider, IWpfTextView wpfTextView)
             : base(mefServices, taggerProvider, wpfTextView)
         {
             this.Factory = new CompilationErrorsFactory(this);
             taggerProvider.AddCompilationErrorsFactory(this.Factory);
         }
 
-        public static CompilationErrorTagger GetOrCreate(MetaDslxMefServices mefServices, CompilationTaggerProvider taggerProvider, IWpfTextView wpfTextView)
+        public static ErrorTagger GetOrCreate(MetaDslxMefServices mefServices, MetaDslxTaggerProvider taggerProvider, IWpfTextView wpfTextView)
         {
-            return wpfTextView.Properties.GetOrCreateSingletonProperty(() => new CompilationErrorTagger(
+            return wpfTextView.Properties.GetOrCreateSingletonProperty(() => new ErrorTagger(
                 mefServices,
                 taggerProvider,
                 wpfTextView

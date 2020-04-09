@@ -13,10 +13,10 @@ namespace MetaDslx.VisualStudio.Classification
     /// </summary>
     internal class SinkManager : IDisposable
     {
-        private readonly CompilationTaggerProvider _compilationTaggerProvider;
+        private readonly MetaDslxTaggerProvider _compilationTaggerProvider;
         private readonly ITableDataSink _sink;
 
-        internal SinkManager(CompilationTaggerProvider compilationTaggerProvider, ITableDataSink sink)
+        internal SinkManager(MetaDslxTaggerProvider compilationTaggerProvider, ITableDataSink sink)
         {
             _compilationTaggerProvider = compilationTaggerProvider;
             _sink = sink;

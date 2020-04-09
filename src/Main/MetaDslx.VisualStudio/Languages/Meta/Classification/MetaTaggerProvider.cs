@@ -30,7 +30,7 @@ namespace MetaDslx.VisualStudio.Languages.Meta.Classification
     [TagType(typeof(IClassificationTag))]
     [TagType(typeof(ITextMarkerTag))]
     [ContentType(MetaDefinition.ContentType)]
-    public class MetaTaggerProvider : CompilationTaggerProvider
+    public class MetaTaggerProvider : MetaDslxTaggerProvider
     {
         private MetaSyntaxFacts _syntaxFacts;
 

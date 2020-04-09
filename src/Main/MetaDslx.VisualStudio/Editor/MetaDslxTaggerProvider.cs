@@ -26,16 +26,10 @@ namespace MetaDslx.VisualStudio.Classification
     /// 
     /// It is also the <see cref="ITableDataSource"/> that reports errors in comments.
     /// </summary>
-    public abstract class CompilationTaggerProvider : IViewTaggerProvider, ITableDataSource
+    public abstract class MetaDslxTaggerProvider : IViewTaggerProvider, ITableDataSource
     {
         [Import]
         private MetaDslxMefServices _mefServices;
-
-        [Import]
-        private ITextSearchService _textSearchService;
-
-        [Import]
-        private ITextStructureNavigatorSelectorService _textStructureNavigatorSelector;
 
         [Import]
         private IClassificationTypeRegistryService _classificationRegistryService;
@@ -50,7 +44,7 @@ namespace MetaDslx.VisualStudio.Classification
         private readonly List<CompilationErrorsFactory> _factories = new List<CompilationErrorsFactory>();
         private ITableManager _errorTableManager;
 
-        protected CompilationTaggerProvider()
+        protected MetaDslxTaggerProvider()
         {
         }
 
@@ -76,20 +70,19 @@ namespace MetaDslx.VisualStudio.Classification
 
             }
             ITagger<T> tagger = null;
-            var compilation = BackgroundCompilation.GetOrCreate(_mefServices, textView);
+            var compilation = BackgroundCompilation.GetOrCreate(_mefServices, buffer);
             var wpfTextView = (IWpfTextView)textView;
             if (typeof(T) == typeof(IErrorTag))
             {
-                tagger = (ITagger<T>)CompilationErrorTagger.GetOrCreate(_mefServices, this, wpfTextView);
+                tagger = (ITagger<T>)ErrorTagger.GetOrCreate(_mefServices, this, wpfTextView);
             }
             else if (typeof(T) == typeof(IClassificationTag))
             {
-                tagger = (ITagger<T>)CompilationSymbolTagger.GetOrCreate(_mefServices, this, wpfTextView);
+                tagger = (ITagger<T>)SymbolTagger.GetOrCreate(_mefServices, this, wpfTextView);
             }
             else if (typeof(T) == typeof(ITextMarkerTag))
             {
-                ITextStructureNavigator textStructureNavigator = _textStructureNavigatorSelector.GetTextStructureNavigator(buffer);
-                tagger = (ITagger<T>)HighlightSymbolTagger.GetOrCreate(_mefServices, this, wpfTextView, _textSearchService, textStructureNavigator);
+                tagger = (ITagger<T>)HighlightSymbolTagger.GetOrCreate(_mefServices, this, wpfTextView);
             }
             return tagger;
         }

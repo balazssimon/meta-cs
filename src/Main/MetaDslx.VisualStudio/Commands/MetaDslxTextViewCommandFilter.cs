@@ -19,34 +19,30 @@ namespace MetaDslx.VisualStudio.Commands
     {
         private readonly MetaDslxMefServices _mefServices;
         private readonly IVsTextView _vsTextView;
-        private readonly ITextView _textView;
+        private readonly IWpfTextView _textView;
         private readonly IEditorOperations _editorOps;
-        private readonly IOleCommandTarget _next;
+        private readonly IOleCommandTarget _nextCommandHandler;
 
         private readonly GoToDefinitionCommand _goToDefinitionCommand;
         private readonly FindAllReferencesCommand _findAllReferencesCommand;
 
-        private MetaDslxTextViewCommandFilter(IVsTextView vsTextView, ITextView textView, IEditorOperations editorOps, MetaDslxMefServices mefServices, IOleCommandTarget next)
+        private MetaDslxTextViewCommandFilter(IVsTextView vsTextView, IWpfTextView textView, IEditorOperations editorOps, MetaDslxMefServices mefServices)
         {
             _mefServices = mefServices;
             _vsTextView = vsTextView;
             _textView = textView;
             _editorOps = editorOps;
-            _next = next;
-
-            if (_next == null && vsTextView != null)
-            {
-                ErrorHandler.ThrowOnFailure(vsTextView.AddCommandFilter(this, out _next));
-            }
 
             _goToDefinitionCommand = new GoToDefinitionCommand(_textView, _vsTextView, mefServices);
             _findAllReferencesCommand = new FindAllReferencesCommand(_textView, _vsTextView, mefServices);
+
+            ErrorHandler.ThrowOnFailure(vsTextView.AddCommandFilter(this, out _nextCommandHandler));
         }
 
         public GoToDefinitionCommand GoToDefinitionCommand => _goToDefinitionCommand;
         public FindAllReferencesCommand FindAllReferencesCommand => _findAllReferencesCommand;
 
-        public static MetaDslxTextViewCommandFilter GetOrCreate(MetaDslxMefServices mefServices, ITextView textView, IOleCommandTarget next = null)
+        public static MetaDslxTextViewCommandFilter GetOrCreate(MetaDslxMefServices mefServices, IWpfTextView textView)
         {
             var editorFactory = mefServices.ComponentModel.GetService<IVsEditorAdaptersFactoryService>();
             var opsFactory = mefServices.ComponentModel.GetService<IEditorOperationsFactoryService>();
@@ -55,8 +51,7 @@ namespace MetaDslx.VisualStudio.Commands
                 vsTextView,
                 textView,
                 opsFactory.GetEditorOperations(textView),
-                mefServices,
-                next
+                mefServices
             ));
         }
 
@@ -77,7 +72,7 @@ namespace MetaDslx.VisualStudio.Commands
                     }
                 }
             }
-            return _next.QueryStatus(ref pguidCmdGroup, cCmds, prgCmds, pCmdText);
+            return _nextCommandHandler.QueryStatus(ref pguidCmdGroup, cCmds, prgCmds, pCmdText);
         }
 
         public int Exec(ref Guid pguidCmdGroup, uint nCmdID, uint nCmdexecopt, IntPtr pvaIn, IntPtr pvaOut)
@@ -103,7 +98,7 @@ namespace MetaDslx.VisualStudio.Commands
                     case VSConstants.VSStd97CmdID.FindReferences: _findAllReferencesCommand.Execute(); return VSConstants.S_OK;
                 }
             }
-            return _next.Exec(pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
+            return _nextCommandHandler.Exec(pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
         }
     }
 }

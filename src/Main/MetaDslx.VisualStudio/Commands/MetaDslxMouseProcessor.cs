@@ -84,7 +84,7 @@ namespace MetaDslx.VisualStudio.Commands
 
         public void PreprocessMouseLeftButtonDown(MouseButtonEventArgs e)
         {
-            if (_wpfTextView.Properties.TryGetProperty<CompilationSymbolTagger>(typeof(CompilationSymbolTagger), out var compilationSymbolTagger))
+            if (_wpfTextView.Properties.TryGetProperty<SymbolTagger>(typeof(SymbolTagger), out var compilationSymbolTagger))
             {
                 _goToDefinitionTokenMouseDown = compilationSymbolTagger.GoToDefinitionToken;
             }
@@ -96,10 +96,10 @@ namespace MetaDslx.VisualStudio.Commands
 
         public void PreprocessMouseLeftButtonUp(MouseButtonEventArgs e)
         {
-            if (_wpfTextView.Properties.TryGetProperty<CompilationSymbolTagger>(typeof(CompilationSymbolTagger), out var compilationSymbolTagger) &&
+            if (_wpfTextView.Properties.TryGetProperty<SymbolTagger>(typeof(SymbolTagger), out var symbolTagger) &&
                 _wpfTextView.Properties.TryGetProperty<MetaDslxTextViewCommandFilter>(typeof(MetaDslxTextViewCommandFilter), out var commandFilter))
             {
-                var goToDefinitionToken = compilationSymbolTagger.GoToDefinitionToken;
+                var goToDefinitionToken = symbolTagger.GoToDefinitionToken;
                 var goToDefinitionCommand = commandFilter.GoToDefinitionCommand;
                 if (goToDefinitionToken != null && goToDefinitionToken == _goToDefinitionTokenMouseDown && goToDefinitionCommand != null)
                 {

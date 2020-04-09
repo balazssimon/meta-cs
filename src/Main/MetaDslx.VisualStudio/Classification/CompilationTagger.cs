@@ -16,15 +16,15 @@ namespace MetaDslx.VisualStudio.Classification
     internal abstract class CompilationTagger : IDisposable
     {
         private IWpfTextView _textView;
-        private CompilationTaggerProvider _taggerProvider;
+        private MetaDslxTaggerProvider _taggerProvider;
         private BackgroundCompilation _backgroundCompilation;
         private CollectSymbolsResult _symbols;
 
-        public CompilationTagger(MetaDslxMefServices mefServices, CompilationTaggerProvider taggerProvider, IWpfTextView wpfTextView)
+        public CompilationTagger(MetaDslxMefServices mefServices, MetaDslxTaggerProvider taggerProvider, IWpfTextView wpfTextView)
         {
             _taggerProvider = taggerProvider;
             _textView = wpfTextView;
-            _backgroundCompilation = BackgroundCompilation.GetOrCreate(mefServices, wpfTextView);
+            _backgroundCompilation = BackgroundCompilation.GetOrCreate(mefServices, wpfTextView.TextBuffer);
             _backgroundCompilation.CompilationChanged += CompilationChanged;
         }
 
@@ -52,7 +52,7 @@ namespace MetaDslx.VisualStudio.Classification
         {
         }
 
-        public CompilationTaggerProvider TaggerProvider => _taggerProvider;
+        public MetaDslxTaggerProvider TaggerProvider => _taggerProvider;
 
         public BackgroundCompilation BackgroundCompilation => _backgroundCompilation;
 

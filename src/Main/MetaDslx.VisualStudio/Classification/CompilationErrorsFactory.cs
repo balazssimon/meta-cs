@@ -17,7 +17,7 @@ namespace MetaDslx.VisualStudio.Classification
     {
         private CompilationErrorsSnapshot currentSnapshot;
 
-        public CompilationErrorsFactory(CompilationErrorTagger errorTagger)
+        public CompilationErrorsFactory(ErrorTagger errorTagger)
         {
             this.currentSnapshot = CompilationErrorsSnapshot.Default;
         }

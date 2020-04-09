@@ -21,7 +21,7 @@ namespace MetaDslx.VisualStudio.Compilation
 {
     public sealed class BackgroundCompilation : IDisposable
     {
-        private readonly ITextView _textView;
+        private readonly ITextBuffer _textBuffer;
         private readonly MetaDslxMefServices _mefServices;
 
         private CompilationSnapshot _compilationSnapshot;
@@ -34,9 +34,9 @@ namespace MetaDslx.VisualStudio.Compilation
         private IBackgroundCompilationFactory _compilationFactory;
         private List<IBackgroundCompilationStep> _compilationSteps;
 
-        private BackgroundCompilation(MetaDslxMefServices mefServices, ITextView textView)
+        private BackgroundCompilation(MetaDslxMefServices mefServices, ITextBuffer textBuffer)
         {
-            _textView = textView;
+            _textBuffer = textBuffer;
             _mefServices = mefServices;
 
             _cancellationTokenSource = new CancellationTokenSource();
@@ -44,9 +44,9 @@ namespace MetaDslx.VisualStudio.Compilation
             _backgroundCompilationSnapshot = CompilationSnapshot.Default;
         }
 
-        public static BackgroundCompilation GetOrCreate(MetaDslxMefServices mefServices, ITextView textView)
+        public static BackgroundCompilation GetOrCreate(MetaDslxMefServices mefServices, ITextBuffer textBuffer)
         {
-            return textView.Properties.GetOrCreateSingletonProperty(typeof(BackgroundCompilation), () => new BackgroundCompilation(mefServices, textView));
+            return textBuffer.Properties.GetOrCreateSingletonProperty(typeof(BackgroundCompilation), () => new BackgroundCompilation(mefServices, textBuffer));
         }
 
         public MetaDslxMefServices MefServices => _mefServices;
@@ -55,7 +55,7 @@ namespace MetaDslx.VisualStudio.Compilation
 
         public CompilationSnapshot CompilationSnapshot => _compilationSnapshot;
 
-        public ITextBuffer TextBuffer => _textView.TextBuffer;
+        public ITextBuffer TextBuffer => _textBuffer;
 
         public ITextDocument TextDocument
         {
@@ -82,7 +82,7 @@ namespace MetaDslx.VisualStudio.Compilation
         {
             if (_compilationFactory == null)
             {
-                var factory = _mefServices.GetService<IBackgroundCompilationFactory>(_textView.TextBuffer.ContentType);
+                var factory = _mefServices.GetService<IBackgroundCompilationFactory>(_textBuffer.ContentType);
                 Interlocked.CompareExchange(ref _compilationFactory, factory, null);
             }
             return _compilationFactory;

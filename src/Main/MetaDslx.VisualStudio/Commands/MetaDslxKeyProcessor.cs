@@ -30,7 +30,7 @@ namespace MetaDslx.VisualStudio.Commands
         public MetaDslxKeyProcessor(IWpfTextView wpfTextView, MetaDslxMefServices mefServices)
         {
             _wpfTextView = wpfTextView;
-            _backgroundCompilation = BackgroundCompilation.GetOrCreate(mefServices, wpfTextView);
+            _backgroundCompilation = BackgroundCompilation.GetOrCreate(mefServices, wpfTextView.TextBuffer);
         }
 
         public static MetaDslxKeyProcessor GetOrCreate(MetaDslxMefServices mefServices, IWpfTextView wpfTextView)

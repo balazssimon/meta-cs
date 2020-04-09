@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.VisualStudio.Classification
 {
-    internal class CompilationSymbolTagger : CompilationTagger, ITagger<IClassificationTag>
+    internal class SymbolTagger : CompilationTagger, ITagger<IClassificationTag>
     {
         private readonly MetaDslxMouseProcessor _mouseProcessor;
         private readonly MetaDslxKeyProcessor _keyProcessor;
@@ -29,7 +29,7 @@ namespace MetaDslx.VisualStudio.Classification
         private SnapshotSpan? _goToDefinitionLinkSpan;
         private SyntaxToken? _goToDefinitionToken;
 
-        public CompilationSymbolTagger(MetaDslxMefServices mefServices, CompilationTaggerProvider taggerProvider, IWpfTextView wpfTextView)
+        public SymbolTagger(MetaDslxMefServices mefServices, MetaDslxTaggerProvider taggerProvider, IWpfTextView wpfTextView)
             : base(mefServices, taggerProvider, wpfTextView)
         {
             _mouseProcessor = MetaDslxMouseProcessor.GetOrCreate(mefServices, wpfTextView);
@@ -89,8 +89,8 @@ namespace MetaDslx.VisualStudio.Classification
                                 return;
                             }
                             updatedSpans.Add(tokenSpan);
-                            _goToDefinitionToken = token;
                             _goToDefinitionLinkSpan = tokenSpan;
+                            _goToDefinitionToken = token;
                             foundNew = true;
                             break;
                         }
@@ -99,15 +99,15 @@ namespace MetaDslx.VisualStudio.Classification
             }
             if (!foundNew)
             {
-                _goToDefinitionToken = null;
                 _goToDefinitionLinkSpan = null;
+                _goToDefinitionToken = null;
             }
             this.OnTagsChanged(updatedSpans.ToArrayAndFree());
         }
 
-        public static CompilationSymbolTagger GetOrCreate(MetaDslxMefServices mefServices, CompilationTaggerProvider taggerProvider, IWpfTextView wpfTextView)
+        public static SymbolTagger GetOrCreate(MetaDslxMefServices mefServices, MetaDslxTaggerProvider taggerProvider, IWpfTextView wpfTextView)
         {
-            return wpfTextView.Properties.GetOrCreateSingletonProperty(() => new CompilationSymbolTagger(
+            return wpfTextView.Properties.GetOrCreateSingletonProperty(() => new SymbolTagger(
                 mefServices,
                 taggerProvider,
                 wpfTextView

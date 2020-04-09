@@ -9,20 +9,20 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.VisualStudio.Commands
 {
-    internal class MetaDslxVsCommand
+    public class MetaDslxVsCommand
     {
-        private readonly ITextView _textView;
+        private readonly IWpfTextView _textView;
         private readonly IVsTextView _vsTextView;
         private readonly MetaDslxMefServices _mefServices;
 
-        public MetaDslxVsCommand(ITextView textView, IVsTextView vsTextView, MetaDslxMefServices mefServices)
+        public MetaDslxVsCommand(IWpfTextView textView, IVsTextView vsTextView, MetaDslxMefServices mefServices)
         {
             _textView = textView;
             _vsTextView = vsTextView;
             _mefServices = mefServices;
         }
 
-        public ITextView TextView => _textView;
+        public IWpfTextView TextView => _textView;
         public IVsTextView VsTextView => _vsTextView;
         public MetaDslxMefServices MefServices => _mefServices;
     }

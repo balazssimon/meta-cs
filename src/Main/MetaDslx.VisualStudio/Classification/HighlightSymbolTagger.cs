@@ -22,31 +22,27 @@ namespace MetaDslx.VisualStudio.Classification
         private readonly TextMarkerTag _symbolDefinition;
         private readonly TextMarkerTag _symbolReference;
 
-        public HighlightSymbolTagger(MetaDslxMefServices mefServices, CompilationTaggerProvider taggerProvider, IWpfTextView wpfTextView, ITextBuffer sourceBuffer, ITextSearchService textSearchService, ITextStructureNavigator textStructureNavigator)
+        public HighlightSymbolTagger(MetaDslxMefServices mefServices, MetaDslxTaggerProvider taggerProvider, IWpfTextView wpfTextView, ITextBuffer sourceBuffer)
         {
             this.View = wpfTextView;
             this.SourceBuffer = sourceBuffer;
-            this.TextSearchService = textSearchService;
-            this.TextStructureNavigator = textStructureNavigator;
             this.SymbolDefinitionSpans = new NormalizedSnapshotSpanCollection();
             this.SymbolReferenceSpans = new NormalizedSnapshotSpanCollection();
             this.CurrentWord = null;
             this.View.Caret.PositionChanged += CaretPositionChanged;
             this.View.LayoutChanged += ViewLayoutChanged;
-            _backgroundCompilation = BackgroundCompilation.GetOrCreate(mefServices, wpfTextView);
+            _backgroundCompilation = BackgroundCompilation.GetOrCreate(mefServices, sourceBuffer);
             _symbolDefinition = new TextMarkerTag("MarkerFormatDefinition/HighlightedDefinition");
             _symbolReference = new TextMarkerTag("MarkerFormatDefinition/HighlightedReference");
         }
 
-        public static HighlightSymbolTagger GetOrCreate(MetaDslxMefServices mefServices, CompilationTaggerProvider taggerProvider, IWpfTextView wpfTextView, ITextSearchService textSearchService, ITextStructureNavigator textStructureNavigator)
+        public static HighlightSymbolTagger GetOrCreate(MetaDslxMefServices mefServices, MetaDslxTaggerProvider taggerProvider, IWpfTextView wpfTextView)
         {
             return wpfTextView.Properties.GetOrCreateSingletonProperty(() => new HighlightSymbolTagger(
                 mefServices,
                 taggerProvider,
                 wpfTextView,
-                wpfTextView.TextBuffer,
-                textSearchService,
-                textStructureNavigator
+                wpfTextView.TextBuffer
             ));
         }
 

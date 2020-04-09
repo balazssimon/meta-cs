@@ -18,6 +18,7 @@ namespace MetaDslx.VisualStudio.Editor
 	[ContentType(MetaDslxDefinition.ContentType)]
 	[TextViewRole(PredefinedTextViewRoles.PrimaryDocument)]
 	[TextViewRole(PredefinedTextViewRoles.EmbeddedPeekTextView)]
+	[TextViewRole(PredefinedTextViewRoles.Editable)]
 	public class MetaDslxTextViewCreationListener : IWpfTextViewCreationListener
 	{
 		[Import]
@@ -29,7 +30,7 @@ namespace MetaDslx.VisualStudio.Editor
 		{
 			_textView = textView;
 			MetaDslxTextViewCommandFilter.GetOrCreate(_mefServices, textView);
-			BackgroundCompilation.GetOrCreate(_mefServices, textView);
+			MetaDslxCompletionCommandHandler.GetOrCreate(_mefServices, textView);
 		}
 
 		protected MetaDslxMefServices MefServices => _mefServices;

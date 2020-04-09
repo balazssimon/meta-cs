@@ -21,12 +21,12 @@ namespace MetaDslx.VisualStudio.Compilation
     public sealed class CollectSymbolsStep : IBackgroundCompilationStep
     {
         private BackgroundCompilation _backgroundCompilation;
-        private List<CompilationTaggerProvider> _taggers;
+        private List<MetaDslxTaggerProvider> _taggers;
 
         public CollectSymbolsStep(BackgroundCompilation backgroundCompilation) 
         {
             _backgroundCompilation = backgroundCompilation;
-            _taggers = _backgroundCompilation.MefServices.GetExtensions<IViewTaggerProvider>(_backgroundCompilation.TextBuffer.ContentType).OfType<CompilationTaggerProvider>().ToList();
+            _taggers = _backgroundCompilation.MefServices.GetExtensions<IViewTaggerProvider>(_backgroundCompilation.TextBuffer.ContentType).OfType<MetaDslxTaggerProvider>().ToList();
         }
 
         public object ResultKey => typeof(CollectSymbolsResult);

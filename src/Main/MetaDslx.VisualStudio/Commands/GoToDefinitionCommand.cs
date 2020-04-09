@@ -17,10 +17,10 @@ namespace MetaDslx.VisualStudio.Commands
     {
         private BackgroundCompilation _backgroundCompilation;
 
-        public GoToDefinitionCommand(ITextView textView, IVsTextView vsTextView, MetaDslxMefServices mefServices) 
+        public GoToDefinitionCommand(IWpfTextView textView, IVsTextView vsTextView, MetaDslxMefServices mefServices) 
             : base(textView, vsTextView, mefServices)
         {
-            _backgroundCompilation = BackgroundCompilation.GetOrCreate(mefServices, textView);
+            _backgroundCompilation = BackgroundCompilation.GetOrCreate(mefServices, textView.TextBuffer);
         }
 
         public void Execute()
