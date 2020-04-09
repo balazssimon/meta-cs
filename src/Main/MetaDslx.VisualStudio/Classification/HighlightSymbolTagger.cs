@@ -12,11 +12,11 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.VisualStudio.Classification
 {
-    internal class HighlightWordTagger : ITagger<HighlightWordTag>
+    internal class HighlightSymbolTagger : ITagger<HighlightWordTag>
     {
         private object updateLock = new object();
 
-        public HighlightWordTagger(MetaDslxMefServices mefServices, CompilationTaggerProvider taggerProvider, IWpfTextView wpfTextView, ITextBuffer sourceBuffer, ITextSearchService textSearchService, ITextStructureNavigator textStructureNavigator)
+        public HighlightSymbolTagger(MetaDslxMefServices mefServices, CompilationTaggerProvider taggerProvider, IWpfTextView wpfTextView, ITextBuffer sourceBuffer, ITextSearchService textSearchService, ITextStructureNavigator textStructureNavigator)
         {
             this.View = wpfTextView;
             this.SourceBuffer = sourceBuffer;
@@ -28,9 +28,9 @@ namespace MetaDslx.VisualStudio.Classification
             this.View.LayoutChanged += ViewLayoutChanged;
         }
 
-        public static HighlightWordTagger GetOrCreate(MetaDslxMefServices mefServices, CompilationTaggerProvider taggerProvider, IWpfTextView wpfTextView, ITextSearchService textSearchService, ITextStructureNavigator textStructureNavigator)
+        public static HighlightSymbolTagger GetOrCreate(MetaDslxMefServices mefServices, CompilationTaggerProvider taggerProvider, IWpfTextView wpfTextView, ITextSearchService textSearchService, ITextStructureNavigator textStructureNavigator)
         {
-            return wpfTextView.Properties.GetOrCreateSingletonProperty(() => new HighlightWordTagger(
+            return wpfTextView.Properties.GetOrCreateSingletonProperty(() => new HighlightSymbolTagger(
                 mefServices,
                 taggerProvider,
                 wpfTextView,

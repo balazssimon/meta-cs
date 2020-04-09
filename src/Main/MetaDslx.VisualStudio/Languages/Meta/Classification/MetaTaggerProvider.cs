@@ -5,11 +5,14 @@ using MetaDslx.Languages.Meta;
 using MetaDslx.Languages.Meta.Model;
 using MetaDslx.Languages.Meta.Syntax;
 using MetaDslx.VisualStudio.Classification;
+using MetaDslx.VisualStudio.Utilities;
 using Microsoft.CodeAnalysis;
+using Microsoft.VisualStudio.Language.StandardClassification;
 using Microsoft.VisualStudio.Shell.TableManager;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Text.Editor;
+using Microsoft.VisualStudio.Text.Operations;
 using Microsoft.VisualStudio.Text.Tagging;
 using Microsoft.VisualStudio.Utilities;
 using System;
@@ -29,24 +32,23 @@ namespace MetaDslx.VisualStudio.Languages.Meta.Classification
     [ContentType(MetaDefinition.ContentType)]
     public class MetaTaggerProvider : CompilationTaggerProvider
     {
-        public readonly IClassificationTag TypeClassificationTag;
-
         private MetaSyntaxFacts _syntaxFacts;
 
-        [ImportingConstructor]
-        internal MetaTaggerProvider([Import] ITableManagerProvider provider, [Import] ITextDocumentFactoryService textDocumentFactoryService, [Import] IClassificationTypeRegistryService classificationRegistryService) 
-            : base(provider, textDocumentFactoryService, classificationRegistryService)
+        internal MetaTaggerProvider() 
         {
-            this.TypeClassificationTag = new ClassificationTag(this.ClassificationRegistryService.GetClassificationType(MetaClassificationTypes.Type));
             _syntaxFacts = MetaLanguage.Instance.SyntaxFacts;
         }
 
         public override string DisplayName => "MetaModel";
 
-        public override IClassificationTag GetSymbolClassificationTag(ISymbol symbol, SyntaxToken token, SemanticModel semanticModel, CancellationToken cancellationToken)
+        public override IClassificationType GetSymbolClassificationType(ISymbol symbol, SyntaxToken token, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
-            if (symbol is ITypeSymbol && !(symbol is IErrorTypeSymbol)) return TypeClassificationTag;
-            if (symbol is MetaAttribute) return TypeClassificationTag;
+            if (symbol is ITypeSymbol && !(symbol is IErrorTypeSymbol))
+            {
+                if (symbol.Locations.Any(loc => loc.SourceSpan == token.Span)) return this.StandardClassificationService.SymbolDefinition;
+                else return this.StandardClassificationService.SymbolDefinition; // this.StandardClassificationService.SymbolReference
+            }
+            if (symbol is MetaAttribute) return this.StandardClassificationService.SymbolDefinition; // this.StandardClassificationService.SymbolReference
             return null;
         }
     }

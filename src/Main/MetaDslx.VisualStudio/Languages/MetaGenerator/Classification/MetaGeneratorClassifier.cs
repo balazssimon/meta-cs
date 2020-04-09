@@ -3,6 +3,7 @@ using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.Languages.MetaGenerator.Syntax;
 using MetaDslx.Languages.MetaGenerator.Syntax.InternalSyntax;
 using MetaDslx.VisualStudio.Classification;
+using MetaDslx.VisualStudio.Utilities;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
 using System;
@@ -17,8 +18,8 @@ namespace MetaDslx.VisualStudio.Languages.MetaGenerator.Classification
     {
         private MetaGeneratorTokensSyntaxFacts _syntaxFacts;
 
-        internal MetaGeneratorClassifier(ITextBuffer textBuffer, IClassificationTypeRegistryService classificationRegistryService)
-            : base(textBuffer, classificationRegistryService, new MetaGeneratorLexer(Antlr4LexerClassifier.EmptyCharStream))
+        internal MetaGeneratorClassifier(ITextBuffer textBuffer, MetaDslxMefServices mefServices)
+            : base(textBuffer, mefServices, new MetaGeneratorLexer(Antlr4LexerClassifier.EmptyCharStream))
         {
             _syntaxFacts = new MetaGeneratorTokensSyntaxFacts();
         }
@@ -36,29 +37,29 @@ namespace MetaDslx.VisualStudio.Languages.MetaGenerator.Classification
                 case MetaGeneratorTokenKind.DocumentationCommentTrivia:
                 case MetaGeneratorTokenKind.GeneralComment:
                 case MetaGeneratorTokenKind.GeneralCommentTrivia:
-                    return classificationRegistryService.GetClassificationType(MetaGeneratorClassificationTypes.Comment);
+                    return StandardClassificationService.Comment;
                 case MetaGeneratorTokenKind.Identifier:
-                    return classificationRegistryService.GetClassificationType(MetaGeneratorClassificationTypes.Identifier);
+                    return StandardClassificationService.Identifier;
                 case MetaGeneratorTokenKind.ReservedKeyword:
                 case MetaGeneratorTokenKind.ContextualKeyword:
-                    return classificationRegistryService.GetClassificationType(MetaGeneratorClassificationTypes.Keyword);
+                    return StandardClassificationService.Keyword;
                 case MetaGeneratorTokenKind.Number:
-                    return classificationRegistryService.GetClassificationType(MetaGeneratorClassificationTypes.Number);
+                    return StandardClassificationService.NumberLiteral;
                 case MetaGeneratorTokenKind.String:
-                    return classificationRegistryService.GetClassificationType(MetaGeneratorClassificationTypes.String);
+                    return StandardClassificationService.StringLiteral;
                 case MetaGeneratorTokenKind.TemplateControl:
-                    return classificationRegistryService.GetClassificationType(MetaGeneratorClassificationTypes.TemplateControl);
+                    return ClassificationTypeRegistryService.GetClassificationType(MetaGeneratorClassificationTypes.TemplateControl);
                 case MetaGeneratorTokenKind.TemplateOutput:
-                    return classificationRegistryService.GetClassificationType(MetaGeneratorClassificationTypes.TemplateOutput);
+                    return ClassificationTypeRegistryService.GetClassificationType(MetaGeneratorClassificationTypes.TemplateOutput);
                 default:
-                    return classificationRegistryService.GetClassificationType(MetaGeneratorClassificationTypes.None);
+                    return StandardClassificationService.Other;
             }
 
         }
 
         protected override LexerState SaveLexerState()
         {
-            return new MetaGeneratorLexerState(this.lexer);
+            return new MetaGeneratorLexerState(this.Lexer);
         }
 
         private class MetaGeneratorLexerState : LexerState

@@ -8,6 +8,7 @@ using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Utilities;
 using System.IO;
 using System.ComponentModel.Composition;
+using MetaDslx.VisualStudio.Utilities;
 
 namespace MetaDslx.VisualStudio.Languages.MetaGenerator.Classification
 {
@@ -16,12 +17,11 @@ namespace MetaDslx.VisualStudio.Languages.MetaGenerator.Classification
     internal class MetaGeneratorClassificationProvider : IClassifierProvider
     {
         [Import]
-        IClassificationTypeRegistryService classificationRegistryService { get; set; }
+        private MetaDslxMefServices _mefServices;
 
         IClassifier IClassifierProvider.GetClassifier(ITextBuffer textBuffer)
         {
-            // Creates the MetaGenerator classifier
-            return new MetaGeneratorClassifier(textBuffer, classificationRegistryService);
+            return textBuffer.Properties.GetOrCreateSingletonProperty(() => new MetaGeneratorClassifier(textBuffer, _mefServices));
         }
 
     }

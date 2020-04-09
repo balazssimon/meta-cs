@@ -8,6 +8,7 @@ using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Utilities;
 using System.IO;
 using System.ComponentModel.Composition;
+using MetaDslx.VisualStudio.Utilities;
 
 namespace MetaDslx.VisualStudio.Languages.Antlr4Roslyn.Classification
 {
@@ -16,12 +17,11 @@ namespace MetaDslx.VisualStudio.Languages.Antlr4Roslyn.Classification
     internal class Antlr4RoslynClassificationProvider : IClassifierProvider
     {
         [Import]
-        IClassificationTypeRegistryService classificationRegistryService { get; set; }
+        private MetaDslxMefServices _mefServices;
 
         IClassifier IClassifierProvider.GetClassifier(ITextBuffer textBuffer)
         {
-            // Creates the Antlr4Roslyn classifier
-            return new Antlr4RoslynClassifier(textBuffer, classificationRegistryService);
+            return textBuffer.Properties.GetOrCreateSingletonProperty(() => new Antlr4RoslynClassifier(textBuffer, _mefServices));
         }
 
     }

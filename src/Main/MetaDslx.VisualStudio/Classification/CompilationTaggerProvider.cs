@@ -3,6 +3,7 @@ using MetaDslx.VisualStudio.Compilation;
 using MetaDslx.VisualStudio.Editor;
 using MetaDslx.VisualStudio.Utilities;
 using Microsoft.CodeAnalysis;
+using Microsoft.VisualStudio.Language.StandardClassification;
 using Microsoft.VisualStudio.Shell.TableControl;
 using Microsoft.VisualStudio.Shell.TableManager;
 using Microsoft.VisualStudio.Text;
@@ -36,35 +37,44 @@ namespace MetaDslx.VisualStudio.Classification
         [Import]
         private ITextStructureNavigatorSelectorService _textStructureNavigatorSelector;
 
+        [Import]
+        private IClassificationTypeRegistryService _classificationRegistryService;
 
-        public readonly ITableManager ErrorTableManager;
-        public readonly ITextDocumentFactoryService TextDocumentFactoryService;
-        public readonly IClassificationTypeRegistryService ClassificationRegistryService;
+        [Import]
+        private IStandardClassificationService _standardClassificationService;
+
+        [Import]
+        private ITableManagerProvider _tableManagerProvider;
 
         private readonly List<SinkManager> _managers = new List<SinkManager>();      // Also used for locks
         private readonly List<CompilationErrorsFactory> _factories = new List<CompilationErrorsFactory>();
+        private ITableManager _errorTableManager;
 
-        protected CompilationTaggerProvider(ITableManagerProvider provider, ITextDocumentFactoryService textDocumentFactoryService,
-            IClassificationTypeRegistryService classificationRegistryService)
+        protected CompilationTaggerProvider()
         {
-            this.ErrorTableManager = provider.GetTableManager(StandardTables.ErrorsTable);
-            this.TextDocumentFactoryService = textDocumentFactoryService;
-            this.ClassificationRegistryService = classificationRegistryService;
-
-            this.ErrorTableManager.AddSource(this, StandardTableColumnDefinitions.DetailsExpander,
-                                                   StandardTableColumnDefinitions.ErrorSeverity, StandardTableColumnDefinitions.ErrorCode,
-                                                   StandardTableColumnDefinitions.ErrorSource, StandardTableColumnDefinitions.BuildTool,
-                                                   StandardTableColumnDefinitions.ErrorSource, StandardTableColumnDefinitions.ErrorCategory,
-                                                   StandardTableColumnDefinitions.Text, StandardTableColumnDefinitions.DocumentName, StandardTableColumnDefinitions.Line, StandardTableColumnDefinitions.Column);
         }
 
         public MetaDslxMefServices MefServices => _mefServices;
+        public ITableManager ErrorTableManager => _errorTableManager;
+        public IClassificationTypeRegistryService ClassificationRegistryService => _classificationRegistryService;
+        public IStandardClassificationService StandardClassificationService => _standardClassificationService;
+
 
         public ITagger<T> CreateTagger<T>(ITextView textView, ITextBuffer buffer) where T : ITag
         {
             if (textView == null) throw new ArgumentNullException("textView");
             if (buffer == null) throw new ArgumentNullException("buffer");
             if (buffer != textView.TextBuffer) return null;
+            if (_errorTableManager == null)
+            {
+                _errorTableManager = _tableManagerProvider.GetTableManager(StandardTables.ErrorsTable);
+                _errorTableManager.AddSource(this, StandardTableColumnDefinitions.DetailsExpander,
+                                                       StandardTableColumnDefinitions.ErrorSeverity, StandardTableColumnDefinitions.ErrorCode,
+                                                       StandardTableColumnDefinitions.ErrorSource, StandardTableColumnDefinitions.BuildTool,
+                                                       StandardTableColumnDefinitions.ErrorSource, StandardTableColumnDefinitions.ErrorCategory,
+                                                       StandardTableColumnDefinitions.Text, StandardTableColumnDefinitions.DocumentName, StandardTableColumnDefinitions.Line, StandardTableColumnDefinitions.Column);
+
+            }
             ITagger<T> tagger = null;
             var compilation = BackgroundCompilation.GetOrCreate(_mefServices, textView);
             var wpfTextView = (IWpfTextView)textView;
@@ -79,12 +89,12 @@ namespace MetaDslx.VisualStudio.Classification
             else if (typeof(T) == typeof(ITextMarkerTag))
             {
                 ITextStructureNavigator textStructureNavigator = _textStructureNavigatorSelector.GetTextStructureNavigator(buffer);
-                tagger = (ITagger<T>)HighlightWordTagger.GetOrCreate(_mefServices, this, wpfTextView, _textSearchService, textStructureNavigator);
+                tagger = (ITagger<T>)HighlightSymbolTagger.GetOrCreate(_mefServices, this, wpfTextView, _textSearchService, textStructureNavigator);
             }
             return tagger;
         }
 
-        public abstract IClassificationTag GetSymbolClassificationTag(ISymbol symbol, SyntaxToken token, SemanticModel semanticModel, CancellationToken cancellationToken);
+        public abstract IClassificationType GetSymbolClassificationType(ISymbol symbol, SyntaxToken token, SemanticModel semanticModel, CancellationToken cancellationToken);
 
         #region ITableDataSource members
         public abstract string DisplayName

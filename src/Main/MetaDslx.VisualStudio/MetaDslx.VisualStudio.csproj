@@ -49,9 +49,8 @@
     <IncludeDebugSymbolsInLocalVSIXDeployment>false</IncludeDebugSymbolsInLocalVSIXDeployment>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Classification\Antlr4CompilationTaggerProvider.cs" />
     <Compile Include="Classification\Antlr4LexerClassifier.cs" />
-    <Compile Include="Classification\HighlightWordTagger.cs" />
+    <Compile Include="Classification\HighlightSymbolTagger.cs" />
     <Compile Include="Classification\MetaDslxTagDefinitions.cs" />
     <Compile Include="Classification\MetaDslxTagTypes.cs" />
     <Compile Include="Commands\MetaDslxKeyProcessor.cs" />
@@ -79,8 +78,6 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="Editor\MetaDslxDefinition.cs" />
     <Compile Include="Languages\Meta\Compilation\MetaBackgroundCompilationFactory.cs" />
-    <Compile Include="Languages\Meta\MetaMouseProcessorProvider.cs" />
-    <Compile Include="Languages\Meta\MetaTextViewCreationListener.cs" />
     <Compile Include="Utilities\MetaDslxMefServices.cs" />
     <Compile Include="Editor\MetaDslxTextViewCreationListener.cs" />
     <Compile Include="Languages\Antlr4Roslyn\Antlr4RoslynDefinition.cs" />
@@ -93,9 +90,7 @@
     <Compile Include="Languages\MetaGenerator\Classification\MetaGeneratorClassificationTypes.cs" />
     <Compile Include="Languages\MetaGenerator\Classification\MetaGeneratorClassifier.cs" />
     <Compile Include="Languages\MetaGenerator\MetaGeneratorDefinition.cs" />
-    <Compile Include="Languages\Meta\Classification\MetaClassificationDefinitions.cs" />
     <Compile Include="Languages\Meta\Classification\MetaClassificationProvider.cs" />
-    <Compile Include="Languages\Meta\Classification\MetaClassificationTypes.cs" />
     <Compile Include="Languages\Meta\Classification\MetaClassifier.cs" />
     <Compile Include="Languages\Meta\Classification\MetaTaggerProvider.cs" />
     <Compile Include="Languages\Meta\MetaDefinition.cs" />

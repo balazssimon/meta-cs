@@ -3,6 +3,7 @@ using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.Languages.Antlr4Roslyn.Syntax;
 using MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax;
 using MetaDslx.VisualStudio.Classification;
+using MetaDslx.VisualStudio.Utilities;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
 using System;
@@ -17,8 +18,8 @@ namespace MetaDslx.VisualStudio.Languages.Antlr4Roslyn.Classification
     {
         private Antlr4RoslynTokensSyntaxFacts _syntaxFacts;
 
-        internal Antlr4RoslynClassifier(ITextBuffer textBuffer, IClassificationTypeRegistryService classificationRegistryService)
-            : base(textBuffer, classificationRegistryService, new Antlr4RoslynLexer(Antlr4LexerClassifier.EmptyCharStream))
+        internal Antlr4RoslynClassifier(ITextBuffer textBuffer, MetaDslxMefServices mefServices)
+            : base(textBuffer, mefServices, new Antlr4RoslynLexer(Antlr4LexerClassifier.EmptyCharStream))
         {
             _syntaxFacts = new Antlr4RoslynTokensSyntaxFacts();
         }
@@ -38,26 +39,26 @@ namespace MetaDslx.VisualStudio.Languages.Antlr4Roslyn.Classification
                 case Antlr4RoslynTokenKind.DocumentationCommentTrivia:
                 case Antlr4RoslynTokenKind.GeneralComment:
                 case Antlr4RoslynTokenKind.GeneralCommentTrivia:
-                    return classificationRegistryService.GetClassificationType(Antlr4RoslynClassificationTypes.Comment);
+                    return StandardClassificationService.Comment;
                 case Antlr4RoslynTokenKind.Identifier:
-                    return classificationRegistryService.GetClassificationType(Antlr4RoslynClassificationTypes.Identifier);
+                    return StandardClassificationService.Identifier;
                 case Antlr4RoslynTokenKind.ReservedKeyword:
                 case Antlr4RoslynTokenKind.ContextualKeyword:
-                    return classificationRegistryService.GetClassificationType(Antlr4RoslynClassificationTypes.Keyword);
+                    return StandardClassificationService.Keyword;
                 case Antlr4RoslynTokenKind.Number:
-                    return classificationRegistryService.GetClassificationType(Antlr4RoslynClassificationTypes.Number);
+                    return StandardClassificationService.NumberLiteral;
                 case Antlr4RoslynTokenKind.String:
-                    return classificationRegistryService.GetClassificationType(Antlr4RoslynClassificationTypes.String);
+                    return StandardClassificationService.StringLiteral;
                 case Antlr4RoslynTokenKind.Antlr4Action:
-                    return classificationRegistryService.GetClassificationType(Antlr4RoslynClassificationTypes.Action);
+                    return ClassificationTypeRegistryService.GetClassificationType(Antlr4RoslynClassificationTypes.Action);
                 case Antlr4RoslynTokenKind.Antlr4Options:
-                    return classificationRegistryService.GetClassificationType(Antlr4RoslynClassificationTypes.Options);
+                    return ClassificationTypeRegistryService.GetClassificationType(Antlr4RoslynClassificationTypes.Options);
                 case Antlr4RoslynTokenKind.Antlr4Rule:
-                    return classificationRegistryService.GetClassificationType(Antlr4RoslynClassificationTypes.Rule);
+                    return ClassificationTypeRegistryService.GetClassificationType(Antlr4RoslynClassificationTypes.Rule);
                 case Antlr4RoslynTokenKind.Antlr4Token:
-                    return classificationRegistryService.GetClassificationType(Antlr4RoslynClassificationTypes.Token);
+                    return ClassificationTypeRegistryService.GetClassificationType(Antlr4RoslynClassificationTypes.Token);
                 default:
-                    return classificationRegistryService.GetClassificationType(Antlr4RoslynClassificationTypes.None);
+                    return StandardClassificationService.Other;
             }
 
         }

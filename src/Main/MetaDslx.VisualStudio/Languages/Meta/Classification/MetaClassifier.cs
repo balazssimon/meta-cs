@@ -4,8 +4,11 @@ using MetaDslx.Languages.Meta;
 using MetaDslx.Languages.Meta.Syntax;
 using MetaDslx.Languages.Meta.Syntax.InternalSyntax;
 using MetaDslx.VisualStudio.Classification;
+using MetaDslx.VisualStudio.Utilities;
+using Microsoft.VisualStudio.Language.StandardClassification;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
+using Microsoft.VisualStudio.Text.Tagging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,10 +19,10 @@ namespace MetaDslx.VisualStudio.Languages.Meta.Classification
 {
     internal class MetaClassifier : Antlr4LexerClassifier
     {
-        private MetaSyntaxFacts _syntaxFacts;
+        private readonly MetaSyntaxFacts _syntaxFacts;
 
-        internal MetaClassifier(ITextBuffer textBuffer, IClassificationTypeRegistryService classificationRegistryService)
-            : base(textBuffer, classificationRegistryService, new MetaLexer(Antlr4LexerClassifier.EmptyCharStream))
+        internal MetaClassifier(ITextBuffer textBuffer, MetaDslxMefServices mefServices)
+            : base(textBuffer, mefServices, new MetaLexer(Antlr4LexerClassifier.EmptyCharStream))
         {
             _syntaxFacts = MetaLanguage.Instance.SyntaxFacts;
         }
@@ -37,18 +40,18 @@ namespace MetaDslx.VisualStudio.Languages.Meta.Classification
                 case MetaTokenKind.GeneralComment:
                 case MetaTokenKind.DocumentationCommentTrivia:
                 case MetaTokenKind.GeneralCommentTrivia:
-                    return classificationRegistryService.GetClassificationType(MetaClassificationTypes.Comment);
+                    return StandardClassificationService.Comment;
                 case MetaTokenKind.Identifier:
-                    return classificationRegistryService.GetClassificationType(MetaClassificationTypes.Identifier);
+                    return StandardClassificationService.Identifier;
                 case MetaTokenKind.ReservedKeyword:
                 case MetaTokenKind.ContextualKeyword:
-                    return classificationRegistryService.GetClassificationType(MetaClassificationTypes.Keyword);
+                    return StandardClassificationService.Keyword;
                 case MetaTokenKind.Number:
-                    return classificationRegistryService.GetClassificationType(MetaClassificationTypes.Number);
+                    return StandardClassificationService.NumberLiteral;
                 case MetaTokenKind.String:
-                    return classificationRegistryService.GetClassificationType(MetaClassificationTypes.String);
+                    return StandardClassificationService.StringLiteral;
                 default:
-                    return classificationRegistryService.GetClassificationType(MetaClassificationTypes.None);
+                    return StandardClassificationService.Other;
             }
 
         }

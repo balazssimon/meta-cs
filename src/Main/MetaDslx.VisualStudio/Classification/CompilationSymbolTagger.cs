@@ -20,12 +20,13 @@ namespace MetaDslx.VisualStudio.Classification
 {
     internal class CompilationSymbolTagger : CompilationTagger, ITagger<IClassificationTag>
     {
-        private MetaDslxMouseProcessor _mouseProcessor;
-        private MetaDslxKeyProcessor _keyProcessor;
+        private readonly MetaDslxMouseProcessor _mouseProcessor;
+        private readonly MetaDslxKeyProcessor _keyProcessor;
+        private readonly IClassificationTag _goToDefinitionLinkTag;
+        private readonly Dictionary<IClassificationType, IClassificationTag> _tagsByType;
         private int _mousePosition;
         private bool _ctrlDown;
         private SnapshotSpan? _goToDefinitionLinkSpan;
-        private IClassificationTag _goToDefinitionLinkTag;
         private SyntaxToken? _goToDefinitionToken;
 
         public CompilationSymbolTagger(MetaDslxMefServices mefServices, CompilationTaggerProvider taggerProvider, IWpfTextView wpfTextView)
@@ -40,6 +41,7 @@ namespace MetaDslx.VisualStudio.Classification
             {
                 _goToDefinitionLinkTag = new ClassificationTag(classificationRegistry.GetClassificationType(MetaDslxTagTypes.GoToDefinitionLink));
             }
+            _tagsByType = new Dictionary<IClassificationType, IClassificationTag>();
         }
 
         public SyntaxToken? GoToDefinitionToken => _goToDefinitionToken;
@@ -131,13 +133,22 @@ namespace MetaDslx.VisualStudio.Classification
                     }
                     else
                     {
-                        var tag = symbols.GetClassificationTag(token);
-                        if (tag != null) yield return new TagSpan<IClassificationTag>(tokenSpan, tag);
+                        var tagType = symbols.GetClassificationType(token);
+                        if (tagType != null) yield return new TagSpan<IClassificationTag>(tokenSpan, this.GetTag(tagType));
                     }
                 }
             }
         }
 
-
+        private IClassificationTag GetTag(IClassificationType tagType)
+        {
+            if (tagType == null) throw new ArgumentNullException(nameof(tagType));
+            if (!_tagsByType.TryGetValue(tagType, out var tag))
+            {
+                tag = new ClassificationTag(tagType);
+                _tagsByType.Add(tagType, tag);
+            }
+            return tag;
+        }
     }
 }

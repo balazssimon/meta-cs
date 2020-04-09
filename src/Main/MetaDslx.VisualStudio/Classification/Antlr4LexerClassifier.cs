@@ -1,9 +1,12 @@
 ﻿using Antlr4.Runtime;
+using MetaDslx.VisualStudio.Utilities;
+using Microsoft.VisualStudio.Language.StandardClassification;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
 using Roslyn.Utilities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -88,20 +91,29 @@ namespace MetaDslx.VisualStudio.Classification
         private const int BlockSize = 256;
         public static readonly ICharStream EmptyCharStream = new AntlrInputStream();
 
-        public event EventHandler<ClassificationChangedEventArgs> ClassificationChanged;
-        protected ITextBuffer textBuffer;
-        protected IClassificationTypeRegistryService classificationRegistryService;
-        protected Lexer lexer;
+        private IClassificationTypeRegistryService classificationRegistryService;
+        private IStandardClassificationService standardClassificationService;
+
+        private ITextBuffer textBuffer;
+        private Lexer lexer;
         private List<TrackedBlock> trackedBlocks = new List<TrackedBlock>();
         private List<TrackedBlock> cachedBlocks = new List<TrackedBlock>();
 
-        internal Antlr4LexerClassifier(ITextBuffer textBuffer, IClassificationTypeRegistryService classificationRegistryService, Lexer lexer)
+        internal Antlr4LexerClassifier(ITextBuffer textBuffer, MetaDslxMefServices mefServices, Lexer lexer)
         {
             this.textBuffer = textBuffer;
-            this.classificationRegistryService = classificationRegistryService;
             this.lexer = lexer;
+            this.classificationRegistryService = mefServices.GetService<IClassificationTypeRegistryService>();
+            this.standardClassificationService = mefServices.GetService<IStandardClassificationService>();
             this.UpdateBlocks(new SnapshotSpan(this.textBuffer.CurrentSnapshot, 0, this.textBuffer.CurrentSnapshot.Length), false);
         }
+
+        public event EventHandler<ClassificationChangedEventArgs> ClassificationChanged;
+        public IClassificationTypeRegistryService ClassificationTypeRegistryService => this.classificationRegistryService;
+        public IStandardClassificationService StandardClassificationService => this.standardClassificationService;
+
+        public ITextBuffer TextBuffer => this.textBuffer;
+        public Lexer Lexer => this.lexer;
 
         //Invoke ClassificationChanged that cause editor to re-classify specified span 
         protected void Invalidate(SnapshotSpan span)

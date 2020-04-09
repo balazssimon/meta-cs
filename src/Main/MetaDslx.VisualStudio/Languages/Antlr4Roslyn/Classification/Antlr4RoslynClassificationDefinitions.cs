@@ -12,138 +12,13 @@ namespace MetaDslx.VisualStudio.Languages.Antlr4Roslyn.Classification
 {
     internal class Antlr4RoslynClassificationDefinitions
     {
-        [Name(Antlr4RoslynClassificationTypes.None), Export]
-        internal ClassificationTypeDefinition Antlr4RoslynNoneClassificationType { get; set; }
-
-        [Export(typeof(EditorFormatDefinition))]
-        [UserVisible(true)]
-        [ClassificationType(ClassificationTypeNames = Antlr4RoslynClassificationTypes.None)]
-        [Name("Antlr4RoslynNoneFormatDefinition")]
-        [Order]
-        internal sealed class Antlr4RoslynNoneClassificationFormat : ClassificationFormatDefinition
-        {
-            internal Antlr4RoslynNoneClassificationFormat()
-            {
-                ForegroundColor = Colors.Black;
-                this.DisplayName = "Antlr4Roslyn None";
-            }
-        }
-
-
-        [Name(Antlr4RoslynClassificationTypes.Whitespace), Export]
-        internal ClassificationTypeDefinition Antlr4RoslynWhitespaceClassificationType { get; set; }
-
-        [Export(typeof(EditorFormatDefinition))]
-        [UserVisible(true)]
-        [ClassificationType(ClassificationTypeNames = Antlr4RoslynClassificationTypes.Whitespace)]
-        [Name("Antlr4RoslynWhitespaceFormatDefinition")]
-        [Order]
-        internal sealed class Antlr4RoslynWhitespaceClassificationFormat : ClassificationFormatDefinition
-        {
-            internal Antlr4RoslynWhitespaceClassificationFormat()
-            {
-                ForegroundColor = Colors.Black;
-                this.DisplayName = "Antlr4Roslyn Whitespace";
-            }
-        }
-
-
-        [Name(Antlr4RoslynClassificationTypes.Identifier), Export]
-        internal ClassificationTypeDefinition Antlr4RoslynIdentifierClassificationType { get; set; }
-
-        [Export(typeof(EditorFormatDefinition))]
-        [UserVisible(true)]
-        [ClassificationType(ClassificationTypeNames = Antlr4RoslynClassificationTypes.Identifier)]
-        [Name("Antlr4RoslynIdentifierFormatDefinition")]
-        [Order]
-        internal sealed class Antlr4RoslynIdentifierClassificationFormat : ClassificationFormatDefinition
-        {
-            internal Antlr4RoslynIdentifierClassificationFormat()
-            {
-                ForegroundColor = Colors.Black;
-                this.DisplayName = "Antlr4Roslyn Identifier";
-            }
-        }
-
-
-        [Name(Antlr4RoslynClassificationTypes.Keyword), Export]
-        internal ClassificationTypeDefinition Antlr4RoslynKeywordClassificationType { get; set; }
-
-        [Export(typeof(EditorFormatDefinition))]
-        [UserVisible(true)]
-        [ClassificationType(ClassificationTypeNames = Antlr4RoslynClassificationTypes.Keyword)]
-        [Name("Antlr4RoslynKeywordFormatDefinition")]
-        [Order]
-        internal sealed class Antlr4RoslynKeywordClassificationFormat : ClassificationFormatDefinition
-        {
-            internal Antlr4RoslynKeywordClassificationFormat()
-            {
-                ForegroundColor = Colors.Blue;
-                this.DisplayName = "Antlr4Roslyn Keyword";
-            }
-        }
-
-
-        [Name(Antlr4RoslynClassificationTypes.Number), Export]
-        internal ClassificationTypeDefinition Antlr4RoslynNumberClassificationType { get; set; }
-
-        [Export(typeof(EditorFormatDefinition))]
-        [UserVisible(true)]
-        [ClassificationType(ClassificationTypeNames = Antlr4RoslynClassificationTypes.Number)]
-        [Name("Antlr4RoslynNumberFormatDefinition")]
-        [Order]
-        internal sealed class Antlr4RoslynNumberClassificationFormat : ClassificationFormatDefinition
-        {
-            internal Antlr4RoslynNumberClassificationFormat()
-            {
-                ForegroundColor = Colors.Purple;
-                this.DisplayName = "Antlr4Roslyn Number";
-            }
-        }
-
-
-        [Name(Antlr4RoslynClassificationTypes.String), Export]
-        internal ClassificationTypeDefinition Antlr4RoslynStringClassificationType { get; set; }
-
-        [Export(typeof(EditorFormatDefinition))]
-        [UserVisible(true)]
-        [ClassificationType(ClassificationTypeNames = Antlr4RoslynClassificationTypes.String)]
-        [Name("Antlr4RoslynStringFormatDefinition")]
-        [Order]
-        internal sealed class Antlr4RoslynStringClassificationFormat : ClassificationFormatDefinition
-        {
-            internal Antlr4RoslynStringClassificationFormat()
-            {
-                ForegroundColor = Color.FromRgb(163, 21, 21);
-                this.DisplayName = "Antlr4Roslyn String";
-            }
-        }
-
-        [Name(Antlr4RoslynClassificationTypes.Comment), Export]
-        internal ClassificationTypeDefinition Antlr4RoslynCommentClassificationType { get; set; }
-
-        [Export(typeof(EditorFormatDefinition))]
-        [UserVisible(true)]
-        [ClassificationType(ClassificationTypeNames = Antlr4RoslynClassificationTypes.Comment)]
-        [Name("Antlr4RoslynCommentFormatDefinition")]
-        [Order]
-        internal sealed class Antlr4RoslynCommentClassificationFormat : ClassificationFormatDefinition
-        {
-            internal Antlr4RoslynCommentClassificationFormat()
-            {
-                ForegroundColor = Colors.Green;
-                this.DisplayName = "Antlr4Roslyn Comment";
-            }
-        }
-
-
         [Name(Antlr4RoslynClassificationTypes.Action), Export]
         internal ClassificationTypeDefinition Antlr4RoslynActionClassificationType { get; set; }
 
         [Export(typeof(EditorFormatDefinition))]
         [UserVisible(true)]
         [ClassificationType(ClassificationTypeNames = Antlr4RoslynClassificationTypes.Action)]
-        [Name("Antlr4RoslynActionFormatDefinition")]
+        [Name("Antlr4Roslyn/ActionFormatDefinition")]
         [Order]
         internal sealed class Antlr4RoslynActionClassificationFormat : ClassificationFormatDefinition
         {
@@ -161,7 +36,7 @@ namespace MetaDslx.VisualStudio.Languages.Antlr4Roslyn.Classification
         [Export(typeof(EditorFormatDefinition))]
         [UserVisible(true)]
         [ClassificationType(ClassificationTypeNames = Antlr4RoslynClassificationTypes.Options)]
-        [Name("Antlr4RoslynOptionsFormatDefinition")]
+        [Name("Antlr4Roslyn/OptionsFormatDefinition")]
         [Order]
         internal sealed class Antlr4RoslynOptionsClassificationFormat : ClassificationFormatDefinition
         {
@@ -179,7 +54,7 @@ namespace MetaDslx.VisualStudio.Languages.Antlr4Roslyn.Classification
         [Export(typeof(EditorFormatDefinition))]
         [UserVisible(true)]
         [ClassificationType(ClassificationTypeNames = Antlr4RoslynClassificationTypes.Rule)]
-        [Name("Antlr4RoslynRuleFormatDefinition")]
+        [Name("Antlr4Roslyn/RuleFormatDefinition")]
         [Order]
         internal sealed class Antlr4RoslynRuleClassificationFormat : ClassificationFormatDefinition
         {
@@ -197,7 +72,7 @@ namespace MetaDslx.VisualStudio.Languages.Antlr4Roslyn.Classification
         [Export(typeof(EditorFormatDefinition))]
         [UserVisible(true)]
         [ClassificationType(ClassificationTypeNames = Antlr4RoslynClassificationTypes.Token)]
-        [Name("Antlr4RoslynTokenFormatDefinition")]
+        [Name("Antlr4Roslyn/TokenFormatDefinition")]
         [Order]
         internal sealed class Antlr4RoslynTokenClassificationFormat : ClassificationFormatDefinition
         {
@@ -215,7 +90,7 @@ namespace MetaDslx.VisualStudio.Languages.Antlr4Roslyn.Classification
         [Export(typeof(EditorFormatDefinition))]
         [UserVisible(true)]
         [ClassificationType(ClassificationTypeNames = Antlr4RoslynClassificationTypes.Annotation)]
-        [Name("Antlr4RoslynAnnotationFormatDefinition")]
+        [Name("Antlr4Roslyn/AnnotationFormatDefinition")]
         [Order]
         internal sealed class Antlr4RoslynAnnotationClassificationFormat : ClassificationFormatDefinition
         {
