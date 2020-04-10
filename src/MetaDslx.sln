@@ -45,7 +45,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.GraphViz.Test", "T
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphVizExample", "Examples\GraphVizExample\GraphVizExample.csproj", "{776CEBC3-DA8D-42CC-BBD3-F6B88BD9FE25}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfDiagramDesigner", "Experiments\WpfDiagramDesigner\WpfDiagramDesigner.csproj", "{D4374883-0B86-4CC1-AB62-DBB90FD0470D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfDiagramDesigner", "Experiments\WpfDiagramDesigner\WpfDiagramDesigner.csproj", "{D4374883-0B86-4CC1-AB62-DBB90FD0470D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr4Intellisense", "Experiments\Antlr4Intellisense\Antlr4Intellisense.csproj", "{9273912C-6FBB-4545-8CEF-17B186F97FD5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -141,6 +143,10 @@ Global
 		{D4374883-0B86-4CC1-AB62-DBB90FD0470D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D4374883-0B86-4CC1-AB62-DBB90FD0470D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D4374883-0B86-4CC1-AB62-DBB90FD0470D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9273912C-6FBB-4545-8CEF-17B186F97FD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9273912C-6FBB-4545-8CEF-17B186F97FD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9273912C-6FBB-4545-8CEF-17B186F97FD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9273912C-6FBB-4545-8CEF-17B186F97FD5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
