@@ -20,7 +20,7 @@ using MetaDslx.CodeAnalysis.Syntax;
 
 namespace MetaDslx.Languages.Antlr4Roslyn.Parser
 {
-    public abstract class Antlr4SyntaxParser<TLexer, TParser> : SyntaxParser, IAntlrErrorListener<int>, IAntlrErrorListener<IToken>
+    public abstract class Antlr4SyntaxParser<TLexer, TParser> : SyntaxParser, IAntlr4SyntaxParser, IAntlrErrorListener<int>, IAntlrErrorListener<IToken>
         where TLexer : Antlr4.Runtime.Lexer
         where TParser : Antlr4.Runtime.Parser
     {
@@ -48,6 +48,11 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Parser
         public TParser Parser { get; private set; }
         public CommonTokenStream CommonTokenStream { get; private set; }
         public Dictionary<int, string> Antlr4Errors { get; private set; }
+
+        Language IAntlr4SyntaxParser.Language => this.Language;
+        IReadOnlyList<IToken> IAntlr4SyntaxParser.Tokens => (IReadOnlyList<IToken>)tokens;
+        Lexer IAntlr4SyntaxParser.Lexer => this.Lexer;
+        Antlr4.Runtime.Parser IAntlr4SyntaxParser.Parser => this.Parser;
 
         protected abstract TLexer CreateLexer(AntlrInputStream inputStream);
         protected abstract TParser CreateParser(CommonTokenStream tokenStream);

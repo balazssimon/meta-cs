@@ -49,6 +49,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             get { return this.options; }
         }
 
+        public SourceText SourceText => text;
+
         public bool IsScript
         {
             get { return Options.Kind == SourceCodeKind.Script; }

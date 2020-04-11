@@ -83,8 +83,9 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             foreach (var identifier in identifiers)
             {
                 var symbol = containerSymbol?.GetSourceMember(identifier.Syntax);
-                Debug.Assert(symbol != null);
-                result.Add(symbol);
+                // Debug.Assert(symbol != null); // TODO:MetaDslx
+                if (symbol != null) result.Add(symbol);
+                else result.Add(Compilation.CreateErrorTypeSymbol(containerSymbol as INamespaceOrTypeSymbol, Language.SyntaxFacts.ExtractName(identifier.Syntax), 0));
                 containerSymbol = symbol;
             }
             qualifier.InitializeValues(identifiers, result.ToImmutableAndFree());

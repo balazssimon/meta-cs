@@ -22,7 +22,7 @@ namespace MetaDslx.VisualStudio.Languages.Meta.Classification
 
         IClassifier IClassifierProvider.GetClassifier(ITextBuffer textBuffer)
         {
-            return textBuffer.Properties.GetOrCreateSingletonProperty(() => new MetaClassifier(textBuffer, _mefServices));
+            return textBuffer.Properties.GetOrCreateSingletonProperty(typeof(IClassifier), () => new MetaClassifier(textBuffer, _mefServices));
         }
 
     }

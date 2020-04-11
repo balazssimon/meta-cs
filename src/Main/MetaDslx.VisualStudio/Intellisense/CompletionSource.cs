@@ -1,13 +1,17 @@
 ﻿using MetaDslx.CodeAnalysis;
+using MetaDslx.VisualStudio.Classification;
 using MetaDslx.VisualStudio.Compilation;
 using MetaDslx.VisualStudio.Editor;
 using MetaDslx.VisualStudio.Utilities;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.PooledObjects;
 using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Text;
+using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Text.Operations;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,6 +37,7 @@ namespace MetaDslx.VisualStudio.Intellisense
 
         public static CompletionSource GetOrCreate(MetaDslxMefServices mefServices, MetaDslxCompletionSourceProvider provider, ITextBuffer textBuffer)
         {
+            textBuffer.Properties.TryGetProperty<Antlr4LexerClassifier>(typeof(IClassifier), out var classifier);
             return textBuffer.Properties.GetOrCreateSingletonProperty(() => new CompletionSource(
                 mefServices,
                 provider,
@@ -57,48 +62,58 @@ namespace MetaDslx.VisualStudio.Intellisense
             SyntaxNode root;
             if (syntaxTree.TryGetRoot(out root))
             {
-                SemanticModel semanticModel = compilation.GetSemanticModel(syntaxTree);
+                var completions = ArrayBuilder<Completion>.GetInstance();
 
-                INamespaceOrTypeSymbol container = null;
+                var antlr4CompletionSource = new Antlr4CompletionSource(_backgroundCompilation, triggerPoint.Position);
+                var antlr4Suggestions = antlr4CompletionSource.GetTokenSuggestions();
+                var syntaxFacts = compilation.Language.SyntaxFacts;
+                var hasIdentifier = antlr4Suggestions.Any(kind => syntaxFacts.IsIdentifier(kind));
+                var fixedTokens = antlr4Suggestions.Where(kind => syntaxFacts.IsFixedToken(kind)).Select(kind => syntaxFacts.GetText(kind));
+                completions.AddRange(fixedTokens.Select(name => new Completion(name, name, null, null, null)));
 
-                var characterAtCaret = this.GetCharacterAtCaret(triggerPoint);
-                if (characterAtCaret.GetChar() == '.')
+                if (hasIdentifier || !antlr4Suggestions.Any())
                 {
-                    var wordBeforeDot = GetWordAtPosition(characterAtCaret - 1);
-                    if (wordBeforeDot.Span.Length > 0)
+                    SemanticModel semanticModel = compilation.GetSemanticModel(syntaxTree);
+                    INamespaceOrTypeSymbol container = null;
+                    var characterAtCaret = this.GetCharacterAtCaret(triggerPoint);
+                    if (characterAtCaret.GetChar() == '.')
                     {
-                        var tokenBeforeDot = root.FindToken(wordBeforeDot.Span.Start.Position);
-                        if (tokenBeforeDot != null)
+                        var wordBeforeDot = GetWordAtPosition(characterAtCaret - 1);
+                        if (wordBeforeDot.Span.Length > 0)
                         {
-                            var typeInfo = semanticModel.GetTypeInfo(tokenBeforeDot.Parent);
-                            if (typeInfo.Type != null && !(typeInfo.Type is IErrorTypeSymbol))
+                            var tokenBeforeDot = root.FindToken(wordBeforeDot.Span.Start.Position);
+                            if (tokenBeforeDot != null)
                             {
-                                container = typeInfo.Type;
-                            }
-                            else
-                            {
-                                var symbolInfo = semanticModel.GetSymbolInfo(tokenBeforeDot.Parent);
-                                if (symbolInfo.Symbol != null)
+                                var typeInfo = semanticModel.GetTypeInfo(tokenBeforeDot.Parent);
+                                if (typeInfo.Type != null && !(typeInfo.Type is IErrorTypeSymbol))
                                 {
-                                    container = symbolInfo.Symbol as INamespaceOrTypeSymbol;
+                                    container = typeInfo.Type;
+                                }
+                                else
+                                {
+                                    var symbolInfo = semanticModel.GetSymbolInfo(tokenBeforeDot.Parent);
+                                    if (symbolInfo.Symbol != null)
+                                    {
+                                        container = symbolInfo.Symbol as INamespaceOrTypeSymbol;
+                                    }
                                 }
                             }
                         }
                     }
+                    var symbols = semanticModel.LookupSymbols(triggerPoint.Position, container);
+                    completions.AddRange(symbols.Where(symbol => !string.IsNullOrWhiteSpace(symbol.Name)).Select(symbol => new Completion(symbol.Name, symbol.Name, null, null, null)));
                 }
-
-                var symbols = semanticModel.LookupSymbols(triggerPoint.Position, container);
-                var completions = symbols.Where(symbol => !string.IsNullOrWhiteSpace(symbol.Name)).OrderBy(symbol => symbol.Name).Select(symbol => new Completion(symbol.Name, symbol.Name, null, null, null));
-                
                 SnapshotPoint start = triggerPoint;
                 var applicableTo = FindTokenSpanAtPosition(triggerPoint, session);
-                completionSets.Add(new CompletionSet("All", "All", applicableTo, completions, Enumerable.Empty<Completion>()));
+                completionSets.Add(new CompletionSet("All", "All", applicableTo, completions.OrderBy(compl => compl.DisplayText), Enumerable.Empty<Completion>()));
+                completions.Free();
             }
         }
 
         private ITrackingSpan FindTokenSpanAtPosition(SnapshotPoint triggerPoint, ICompletionSession session)
         {
-            SnapshotPoint currentPoint = (session.TextView.Caret.Position.BufferPosition) - 1;
+            var bufferPosition = session.TextView.Caret.Position.BufferPosition;
+            SnapshotPoint currentPoint = bufferPosition.Position > 0 ? bufferPosition - 1 : bufferPosition;
             var wordAtCaret = GetWordAtPosition(currentPoint);
             var word = wordAtCaret.Span.GetText();
             if (word.Length > 0 && char.IsLetterOrDigit(word[word.Length - 1]))

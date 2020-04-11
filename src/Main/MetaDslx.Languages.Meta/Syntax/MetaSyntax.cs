@@ -7755,7 +7755,7 @@ namespace MetaDslx.Languages.Meta
 		/// </summary>
 		public MetaSyntaxTree SyntaxTree(SyntaxNode root, MetaParseOptions options = null, string path = "", Encoding encoding = null)
 		{
-			return MetaSyntaxTree.Create((MetaSyntaxNode)root, (MetaParseOptions)options, path, encoding);
+			return MetaSyntaxTree.Create((MetaSyntaxNode)root, (MetaParseOptions)options, path, null, encoding);
 		}
 		/// <summary>
 		/// Produces a syntax tree by parsing the source text.
@@ -7811,8 +7811,18 @@ namespace MetaDslx.Languages.Meta
 		{
 		    return new MetaSyntaxParser(SourceText.From(text, Encoding.UTF8), MetaParseOptions.Default, null, null);
 		}
-	
-	    public override SyntaxNode CreateStructure(SyntaxTrivia trivia)
+
+		public override LanguageSyntaxTree MakeSyntaxTree(LanguageSyntaxNode root, ParseOptions options = null, string path = "", Encoding encoding = null)
+		{
+			return MetaSyntaxTree.Create((MetaSyntaxNode)root, (MetaParseOptions)options, path, null, encoding);
+		}
+
+		public override LanguageSyntaxTree MakeSyntaxTree(SyntaxParser parser, string path = "", CancellationToken cancellationToken = default)
+		{
+			return MetaSyntaxTree.Create((MetaSyntaxParser)parser, path, cancellationToken);
+		}
+
+		public override SyntaxNode CreateStructure(SyntaxTrivia trivia)
 	    {
 	        throw new NotImplementedException();
 	    }

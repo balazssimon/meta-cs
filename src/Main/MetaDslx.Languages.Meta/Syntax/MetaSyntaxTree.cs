@@ -85,19 +85,19 @@ namespace MetaDslx.Languages.Meta
         /// <summary>
         /// Creates a new syntax tree from a syntax node.
         /// </summary>
-        public static MetaSyntaxTree Create(MetaSyntaxNode root, MetaParseOptions options = null, string path = "", Encoding encoding = null)
+        public static MetaSyntaxTree Create(MetaSyntaxNode root, MetaParseOptions options = null, string path = "", SourceText text = null, Encoding encoding = null, SourceHashAlgorithm checksumAlgorithm = SourceHashAlgorithm.Sha1)
         {
             if (root == null)
             {
                 throw new ArgumentNullException(nameof(root));
             }
-            var directives = root.Kind == MetaSyntaxKind.Main ?
-                ((ICompilationUnitRootSyntax)root).GetConditionalDirectivesStack() :
+            var directives = root.Kind == MetaSyntaxKind.Main && root is ICompilationUnitRootSyntax compilationUnitRoot ?
+                compilationUnitRoot.GetConditionalDirectivesStack() :
                 DirectiveStack.Empty;
             return new ParsedSyntaxTree(
-                textOpt: null,
+                textOpt: text,
                 encodingOpt: encoding,
-                checksumAlgorithm: SourceHashAlgorithm.Sha1,
+                checksumAlgorithm: checksumAlgorithm,
                 path: path,
                 options: options ?? MetaParseOptions.Default,
                 root: root,
@@ -161,11 +161,25 @@ namespace MetaDslx.Languages.Meta
             options = options ?? MetaParseOptions.Default;
             using (var parser = new MetaSyntaxParser(text, options, oldTree: null, changes: null, cancellationToken: cancellationToken))
             {
-                var compilationUnit = (MainSyntax)parser.ParseMain().CreateRed();
-                var tree = new ParsedSyntaxTree(text, text.Encoding, text.ChecksumAlgorithm, path, options, compilationUnit, parser.Directives);
-                tree.VerifySource();
-                return tree;
+                return Create(parser, path, cancellationToken);
             }
+        }
+        /// <summary>
+        /// Produces a syntax tree by calling a parser.
+        /// </summary>
+        public static MetaSyntaxTree Create(
+            MetaSyntaxParser parser,
+            string path = "",
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (parser == null)
+            {
+                throw new ArgumentNullException(nameof(parser));
+            }
+            var root = (MainSyntax)parser.ParseMain().CreateRed();
+            var tree = MetaSyntaxTree.Create(root, (MetaParseOptions)parser.Options, path, parser.SourceText, parser.SourceText.Encoding, parser.SourceText.ChecksumAlgorithm);
+            tree.VerifySource();
+            return tree;
         }
         #endregion
         #region Changes

@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 namespace MetaDslx.VisualStudio.Editor
 {
     [Export(typeof(ICompletionSourceProvider))]
-    [Name("MetaDslx Intellisence")]
+    [Name("MetaDslx Intellisense")]
     [ContentType(MetaDslxDefinition.ContentType)]
     [TextViewRole(PredefinedTextViewRoles.PrimaryDocument)]
     [TextViewRole(PredefinedTextViewRoles.EmbeddedPeekTextView)]

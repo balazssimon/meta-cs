@@ -6,41 +6,35 @@ using System.Text;
 using Antlr4.Runtime;
 using Antlr4.Runtime.Atn;
 using Antlr4.Runtime.Misc;
-using Antlr4Intellisense.Syntax.InternalSyntax;
+using MetaDslx.CodeAnalysis.Syntax;
+using MetaDslx.Languages.Antlr4Roslyn.Parser;
+using MetaDslx.VisualStudio.Classification;
+using MetaDslx.VisualStudio.Compilation;
 
-namespace Antlr4Intellisense
+namespace MetaDslx.VisualStudio.Intellisense
 {
     public class Antlr4CompletionSource
     {
-        private string _code;
-        private int _position;
-        private SandyLexer _lexer;
-        private string[] _ruleNames;
-        private IVocabulary _vocabulary;
+        private readonly CompilationSnapshot _compilation;
+        private readonly int _position;
+        private string[] _parserRules;
+        private IVocabulary _lexerVocabulary;
 
-        public Antlr4CompletionSource(string code, int position)
+        public Antlr4CompletionSource(BackgroundCompilation compilation, int position)
         {
-            _code = code;
+            _compilation = compilation.CompilationSnapshot;
             _position = position;
         }
 
-        public HashSet<int> GetTokenSuggestions()
+        public IEnumerable<SyntaxKind> GetTokenSuggestions()
         {
-            var tokens = GetTokens();
+            var antlr4Parser = _compilation.Parser as IAntlr4SyntaxParser;
+            _lexerVocabulary = antlr4Parser.Lexer.Vocabulary;
+            _parserRules = antlr4Parser.Parser.RuleNames;
+            var tokens = antlr4Parser.Tokens.Where(t => t.Channel == 0 && t.Type >= 0).ToList();
             var suggestions = new HashSet<int>();
-            Process(SandyParser._ATN.states[0], new CompletionTokenStream(tokens, _position), new ParserStack(), ImmutableHashSet<int>.Empty, ImmutableList.Create("start"), suggestions);
-            return suggestions;
-        }
-
-        private List<IToken> GetTokens()
-        {
-            if (_lexer == null)
-            {
-                _lexer = new SandyLexer(new AntlrInputStream(_code));
-                _vocabulary = _lexer.Vocabulary;
-                _ruleNames = _lexer.RuleNames;
-            }
-            return _lexer.GetAllTokens().Where(t => t.Channel == 0 && t.Type >= 0/* && t.StartIndex < _position*/).ToList();
+            Process(antlr4Parser.Parser.Atn.states[0], new CompletionTokenStream(tokens, _position), new ParserStack(), ImmutableHashSet<int>.Empty, ImmutableList.Create("start"), suggestions);
+            return suggestions.Select(kind => kind.FromAntlr4(_compilation.Parser.Language.SyntaxFacts.SyntaxKindType));
         }
 
         /// <summary>
@@ -94,7 +88,7 @@ namespace Antlr4Intellisense
                             }
                             else
                             {
-                                if (atomTransition.label == nextToken.Type)
+                                if (nextToken != null && atomTransition.label == nextToken.Type)
                                 {
                                     Process(transition.target, stream.Move(), nextParserStack, ImmutableHashSet<int>.Empty, history.Add(desc), suggestions);
                                 }
@@ -112,7 +106,7 @@ namespace Antlr4Intellisense
                                 }
                                 else
                                 {
-                                    if (label == nextToken.Type)
+                                    if (nextToken != null && label == nextToken.Type)
                                     {
                                         Process(setTransition.target, stream.Move(), nextParserStack, ImmutableHashSet<int>.Empty, history.Add(desc), suggestions);
                                     }
@@ -124,6 +118,7 @@ namespace Antlr4Intellisense
                     }
                 }
             }
+
         }
 
         private string Describe(ATNState state, Transition transition)
@@ -144,24 +139,22 @@ namespace Antlr4Intellisense
             }
         }
 
-        private static string StateName(ATNState state)
+        private string StateName(ATNState state)
         {
-            var vocabulary = SandyLexer.DefaultVocabulary;
             var result = state.stateNumber.ToString();
             if (state.ruleIndex >= 0)
             {
-                result += $"({state.ruleIndex})";
+                result += $"({state.ruleIndex}:{_parserRules[state.ruleIndex]})";
             }
             return result;
         }
 
-        private static string LabelName(int label)
+        private string LabelName(int label)
         {
-            var vocabulary = SandyParser.DefaultVocabulary;
-            return $"{label}({vocabulary.GetSymbolicName(label)})";
+            return $"{label}:{_lexerVocabulary.GetSymbolicName(label)}";
         }
 
-        private static string Concat(IntervalSet intervalSet)
+        private string Concat(IntervalSet intervalSet)
         {
             if (intervalSet == null) return string.Empty;
             var result = new StringBuilder();

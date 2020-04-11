@@ -36,7 +36,7 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
                         var binder = this.GetBinder<SymbolDefBinder>();
                         var containerSymbol = binder?.Next.GetParentDeclarationSymbol();
                         var symbol = containerSymbol?.GetSourceMember(this.Syntax);
-                        Debug.Assert(symbol != null);
+                        // Debug.Assert(symbol != null); // TODO:MetaDslx
                         if (symbol != null)
                         {
                             ImmutableInterlocked.InterlockedInitialize(ref _lazySymbols, ImmutableArray.Create<Symbol>(symbol));
@@ -54,7 +54,7 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
                             foreach (var qualifier in boundName.GetChildQualifiers())
                             {
                                 var symbol = qualifier.Value as DeclaredSymbol;
-                                Debug.Assert(symbol != null);
+                                // Debug.Assert(symbol != null); // TODO:MetaDslx
                                 if (symbol != null)
                                 {
                                     symbols.Add(symbol);
@@ -81,6 +81,7 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
             foreach (var symbol in this.Symbols)
             {
                 var declaration = ((DeclaredSymbol)symbol).MergedDeclaration;
+                if (declaration == null) continue;
                 foreach (var decl in declaration.Declarations)
                 {
                     if (cancellationToken.IsCancellationRequested) return;

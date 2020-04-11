@@ -39,7 +39,7 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
                             Interlocked.CompareExchange(ref _isInitialized, 2, 1);
                         }
                     }
-                    Debug.Assert(this.IsInitialized());
+                    // Debug.Assert(this.IsInitialized()); // TODO:MetaDslx
                     if (!this.IsInitialized())
                     {
                         if (Interlocked.CompareExchange(ref _isInitialized, 1, 0) == 0)

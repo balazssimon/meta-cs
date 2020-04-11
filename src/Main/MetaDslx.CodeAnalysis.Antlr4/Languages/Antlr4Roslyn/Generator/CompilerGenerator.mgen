@@ -1328,21 +1328,21 @@ namespace [Properties.DefaultNamespace]
         /// <summary>
         /// Creates a new syntax tree from a syntax node.
         /// </summary>
-        public static [lang]SyntaxTree Create([lang]SyntaxNode root, [lang]ParseOptions options = null, string path = "", Encoding encoding = null)
+        public static [lang]SyntaxTree Create([lang]SyntaxNode root, [lang]ParseOptions options = null, string path = "", SourceText text = null, Encoding encoding = null, SourceHashAlgorithm checksumAlgorithm = SourceHashAlgorithm.Sha1)
         {
             if (root == null)
             {
                 throw new ArgumentNullException(nameof(root));
             }
 
-            var directives = root.Kind == [lang]SyntaxKind.[Instances.MainRule().PlainName()] ?
+            var directives = root.Kind == [lang]SyntaxKind.[Instances.MainRule().PlainName()] && root is ICompilationUnitRootSyntax compilationUnitRoot ?
                 ((ICompilationUnitRootSyntax)root).GetConditionalDirectivesStack() :
                 DirectiveStack.Empty;
 
             return new ParsedSyntaxTree(
-                textOpt: null,
+                textOpt: text,
                 encodingOpt: encoding,
-                checksumAlgorithm: SourceHashAlgorithm.Sha1,
+                checksumAlgorithm: checksumAlgorithm,
                 path: path,
                 options: options ?? [lang]ParseOptions.Default,
                 root: root,
@@ -1421,6 +1421,23 @@ namespace [Properties.DefaultNamespace]
             }
         }
 
+        /// <summary>
+        /// Creates a new syntax tree from a syntax parser.
+        /// </summary>
+        public static [lang]SyntaxTree Create(
+            [lang]SyntaxParser parser,
+            string path = "",
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (parser == null)
+            {
+                throw new ArgumentNullException(nameof(parser));
+            }
+            var root = ([Instances.MainRule().RedName()])parser.Parse[Instances.MainRule().PlainName()]().CreateRed();
+            var tree = [lang]SyntaxTree.Create(root, ([lang]ParseOptions)parser.Options, path, parser.SourceText, parser.SourceText.Encoding, parser.SourceText.ChecksumAlgorithm);
+            tree.VerifySource();
+            return tree;
+        }
         #endregion
 
         #region Changes
@@ -3393,7 +3410,7 @@ public class [Properties.LanguageName]SyntaxFactory : SyntaxFactory
 	/// </summary>
 	public [lang]SyntaxTree SyntaxTree(SyntaxNode root, [lang]ParseOptions options = null, string path = "", Encoding encoding = null)
 	{
-		return [lang]SyntaxTree.Create(([lang]SyntaxNode)root, ([lang]ParseOptions)options, path, encoding);
+		return [lang]SyntaxTree.Create(([lang]SyntaxNode)root, ([lang]ParseOptions)options, path, null, encoding);
 	}
 	
 	/// <summary>
@@ -3451,6 +3468,16 @@ public class [Properties.LanguageName]SyntaxFactory : SyntaxFactory
 	public override SyntaxParser MakeParser(string text)
 	{
 	    return new [lang]SyntaxParser(SourceText.From(text, Encoding.UTF8), [lang]ParseOptions.Default, null, null);
+	}
+^
+	public override LanguageSyntaxTree MakeSyntaxTree(LanguageSyntaxNode root, ParseOptions options = null, string path = "", Encoding encoding = null)
+	{
+		return [lang]SyntaxTree.Create(([lang]SyntaxNode)root, ([lang]ParseOptions)options, path, null, encoding);
+	}
+^
+	public override LanguageSyntaxTree MakeSyntaxTree(SyntaxParser parser, string path = "", CancellationToken cancellationToken = default)
+	{
+		return [lang]SyntaxTree.Create(([lang]SyntaxParser)parser, path, cancellationToken);
 	}
 ^
     public override SyntaxNode CreateStructure(SyntaxTrivia trivia)

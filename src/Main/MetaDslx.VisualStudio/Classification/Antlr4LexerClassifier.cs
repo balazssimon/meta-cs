@@ -34,7 +34,7 @@ namespace MetaDslx.VisualStudio.Classification
         }
     }
 
-    internal class LexerState : IEquatable<LexerState>
+    public class LexerState : IEquatable<LexerState>
     {
         public LexerState(Lexer lexer)
         {
@@ -86,7 +86,7 @@ namespace MetaDslx.VisualStudio.Classification
 
     }
 
-    internal abstract class Antlr4LexerClassifier : IClassifier
+    public abstract class Antlr4LexerClassifier : IClassifier
     {
         private const int BlockSize = 256;
         public static readonly ICharStream EmptyCharStream = new AntlrInputStream();
@@ -99,7 +99,7 @@ namespace MetaDslx.VisualStudio.Classification
         private List<TrackedBlock> trackedBlocks = new List<TrackedBlock>();
         private List<TrackedBlock> cachedBlocks = new List<TrackedBlock>();
 
-        internal Antlr4LexerClassifier(ITextBuffer textBuffer, MetaDslxMefServices mefServices, Lexer lexer)
+        public Antlr4LexerClassifier(ITextBuffer textBuffer, MetaDslxMefServices mefServices, Lexer lexer)
         {
             this.textBuffer = textBuffer;
             this.lexer = lexer;
