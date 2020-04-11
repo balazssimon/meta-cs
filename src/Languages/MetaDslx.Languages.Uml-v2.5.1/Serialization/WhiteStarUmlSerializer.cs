@@ -369,7 +369,7 @@ namespace MetaDslx.Languages.Uml.Serialization
 
         private void PostProcessObjects()
         {
-            foreach (var dep in _model.Objects.OfType<DependencyBuilder>())
+            /*foreach (var dep in _model.Objects.OfType<DependencyBuilder>())
             {
                 if (dep is InterfaceRealizationBuilder intfReal)
                 {
@@ -382,7 +382,7 @@ namespace MetaDslx.Languages.Uml.Serialization
                         }
                     }
                 }
-            }
+            }*/
             foreach (var prop in _model.Objects.OfType<PropertyBuilder>())
             {
                 var propElement = ResolveElementByObject((MutableObjectBase)prop, null);
@@ -1174,6 +1174,16 @@ namespace MetaDslx.Languages.Uml.Serialization
                     return true;
                 }
             }
+            if (obj is InterfaceRealizationBuilder interfaceRealization)
+            {
+                if (propertyName == "Client")
+                {
+                    interfaceRealization.Owner = null;
+                    var cls = ResolveValue(location, typeof(IModelObject), propertyValue) as BehavioredClassifierBuilder;
+                    cls.InterfaceRealization.Add(interfaceRealization);
+                    return true;
+                }
+            }
             if (obj is MessageBuilder message)
             {
                 if (propertyName == "StereotypeName")
@@ -1371,6 +1381,7 @@ namespace MetaDslx.Languages.Uml.Serialization
             "Include.Namespace",
             "Extend.Namespace",
             "Generalization.Namespace",
+            "InterfaceRealization.Namespace",
             "Class.Specializations",
             "Class.StereotypeName",
             "Class.TypedFeatures",
@@ -1428,6 +1439,8 @@ namespace MetaDslx.Languages.Uml.Serialization
             { "Enumeration.Literals", "OwnedLiteral" },
             { "Generalization.Parent", "General" },
             { "Generalization.Child", "Specific" },
+            //{ "InterfaceRealization.Client", "ImplementingClassifier" },
+            { "InterfaceRealization.Supplier", "Contract" },
             { "Interface.Namespace", "Package" },
             { "Interface.Attributes", "OwnedAttribute" },
             { "Interface.Operations", "OwnedOperation" },

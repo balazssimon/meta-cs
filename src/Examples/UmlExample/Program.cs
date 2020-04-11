@@ -20,8 +20,8 @@ namespace UmlExample
             xmiSerializer.WriteModelToFile("../../../PrimitiveTypes2.xmi", model);*/
             UmlDescriptor.Initialize();
             var umlSerializer = new WhiteStarUmlSerializer();
-            var model = umlSerializer.ReadModelFromFile("../../../DefaultValues.uml", out var diagnostics);
-            //var model = umlSerializer.ReadModelFromFile("../../../Pacman.uml", out var diagnostics);
+            //var model = umlSerializer.ReadModelFromFile("../../../DefaultValues.uml", out var diagnostics);
+            var model = umlSerializer.ReadModelFromFile("../../../Pacman.uml", out var diagnostics);
             //var model = umlSerializer.ReadModelFromFile("../../../Class diagram.uml", out var diagnostics);
             //var model = umlSerializer.ReadModelFromFile("../../../Async.uml", out var diagnostics);
             DiagnosticFormatter df = new DiagnosticFormatter();
@@ -34,6 +34,10 @@ namespace UmlExample
                 Console.WriteLine(df.Format(diagnostics[i]));
             }
             Console.WriteLine(model);
+            foreach (var ir in model.Objects.OfType<InterfaceRealization>())
+            {
+                Console.WriteLine(ir.Client.FirstOrDefault() + " --> " + ir.Supplier.FirstOrDefault());
+            }
             /*var wsdSerializer = new WebSequenceDiagramsSerializer();
             var wsdModel = wsdSerializer.ReadModelFromFile(new string[] { "../../../Pull luggage.txt" }, model, out diagnostics);
             if (diagnostics.Any(d => d.Severity == DiagnosticSeverity.Error))
