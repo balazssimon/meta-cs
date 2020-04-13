@@ -7,7 +7,7 @@ using Antlr4.Runtime;
 using Antlr4.Runtime.Atn;
 using Antlr4.Runtime.Misc;
 using MetaDslx.CodeAnalysis.Syntax;
-using MetaDslx.Languages.Antlr4Roslyn.Parser;
+using MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax;
 using MetaDslx.VisualStudio.Classification;
 using MetaDslx.VisualStudio.Compilation;
 

@@ -18,7 +18,7 @@ using MetaDslx.CodeAnalysis;
 using MetaDslx.Languages.Antlr4Roslyn.Syntax;
 using MetaDslx.CodeAnalysis.Syntax;
 
-namespace MetaDslx.Languages.Antlr4Roslyn.Parser
+namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 {
     public abstract class Antlr4SyntaxParser<TLexer, TParser> : SyntaxParser, IAntlr4SyntaxParser, IAntlrErrorListener<int>, IAntlrErrorListener<IToken>
         where TLexer : Antlr4.Runtime.Lexer
@@ -51,7 +51,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Parser
 
         Language IAntlr4SyntaxParser.Language => this.Language;
         IReadOnlyList<IToken> IAntlr4SyntaxParser.Tokens => (IReadOnlyList<IToken>)tokens;
-        Lexer IAntlr4SyntaxParser.Lexer => this.Lexer;
+        Antlr4.Runtime.Lexer IAntlr4SyntaxParser.Lexer => this.Lexer;
         Antlr4.Runtime.Parser IAntlr4SyntaxParser.Parser => this.Parser;
 
         protected abstract TLexer CreateLexer(AntlrInputStream inputStream);

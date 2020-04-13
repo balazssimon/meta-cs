@@ -14,7 +14,7 @@ using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Syntax.InternalSyntax;
 using Microsoft.CodeAnalysis.Text;
-using MetaDslx.Languages.Antlr4Roslyn.Parser;
+using MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax;
 namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 {
     public class MetaSyntaxParser : Antlr4SyntaxParser<MetaLexer, MetaParser>

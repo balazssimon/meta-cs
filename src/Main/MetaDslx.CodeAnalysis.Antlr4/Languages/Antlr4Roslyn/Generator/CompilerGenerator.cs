@@ -10059,8 +10059,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             __out.AppendLine(false); //1007:52
             __out.Append("using Microsoft.CodeAnalysis.Text;"); //1008:1
             __out.AppendLine(false); //1008:35
-            __out.Append("using MetaDslx.Languages.Antlr4Roslyn.Parser;"); //1009:1
-            __out.AppendLine(false); //1009:46
+            __out.Append("using MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax;"); //1009:1
+            __out.AppendLine(false); //1009:61
             bool __tmp2_outputWritten = false;
             string __tmp3_line = "namespace "; //1011:1
             if (!string.IsNullOrEmpty(__tmp3_line))

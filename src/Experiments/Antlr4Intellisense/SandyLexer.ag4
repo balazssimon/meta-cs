@@ -2,13 +2,15 @@
 
 options
 {
-	generateCompiler=false;
-    ignoreRoslynRules=true;
+	generateCompiler=true;
+    ignoreRoslynRules=false;
 }
 
 // Whitespace
-NEWLINE            : '\r\n' | 'r' | '\n' ;
-WS                 : [\t ]+ -> skip ;
+$Token(defaultEndOfLine=true)
+NEWLINE            : ('\r\n' | 'r' | '\n');
+$Token(defaultWhitespace=true)
+WS                 : [\t ]+ -> channel(HIDDEN);
 
 // Keywords
 VAR                : 'var' ;
@@ -29,6 +31,9 @@ DIVISION           : '/' ;
 ASSIGN             : '=' ;
 LPAREN             : '(' ;
 RPAREN             : ')' ;
+$Token(defaultSeparator=true)
+COMMA              : ',' ;
 
 // Identifiers
+$Token(defaultIdentifier=true)
 ID                 : [_]*[a-z][A-Za-z0-9_]* ;
