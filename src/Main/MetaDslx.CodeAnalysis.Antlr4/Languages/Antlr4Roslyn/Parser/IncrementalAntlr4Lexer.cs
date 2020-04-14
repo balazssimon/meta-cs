@@ -286,7 +286,9 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 
         IToken ITokenStream.Lt(int k)
         {
-            return ((ITokenStream)this).Get(_index + k);
+            if (k > 0) return ((ITokenStream)this).Get(_index + k - 1);
+            else if (k < 0) return ((ITokenStream)this).Get(_index + k);
+            else return null;
         }
 
         IToken ITokenStream.Get(int i)
@@ -336,7 +338,9 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 
         int IIntStream.La(int i)
         {
-            return ((ITokenStream)this).Get(_index + i)?.Type ?? -1;
+            if (i > 0) return ((ITokenStream)this).Get(_index + i - 1)?.Type ?? -1;
+            else if (i < 0) return ((ITokenStream)this).Get(_index + i)?.Type ?? -1;
+            else return -1;
         }
 
         int IIntStream.Mark()

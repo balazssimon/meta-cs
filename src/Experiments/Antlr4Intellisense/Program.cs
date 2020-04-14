@@ -25,6 +25,11 @@ namespace Antlr4Intellisense
             lexer = Lex("var a = 3+4 + 2", ImmutableArray.Create(new TextChangeRange(TextSpan.FromBounds(9, 9), 1)), lexer);
             Console.WriteLine("----");
 
+            lexer.Seek(0);
+            var parser = new SandyParser(lexer);
+            var tree = parser.sandyFile();
+            Console.WriteLine(tree);
+
             EmptyFile();
             AfterVar();
             AfterEquals();
