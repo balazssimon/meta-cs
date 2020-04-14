@@ -22,14 +22,14 @@ varDeclaration : VAR assignment ;
 
 assignment : ID ASSIGN expression ;
 
-expression : left=expression operator=(DIVISION|ASTERISK) right=expression # binaryMulOperation
-           | left=expression operator=(PLUS|MINUS) right=expression        # binaryAddOperation
+expression : left=expression op=(DIVISION|ASTERISK) right=expression # binaryMulOperation
+           | left=expression op=(PLUS|MINUS) right=expression        # binaryAddOperation
            | value=expression AS targetType=type                           # typeConversion
            | LPAREN expression RPAREN                                      # parenExpression
            | ID                                                            # varReference
            | MINUS expression                                              # minusExpression
            | INTLIT                                                        # intLiteral
            | DECLIT                                                        # decimalLiteral ;
-
+           
 type : INT     
      | DECIMAL ;

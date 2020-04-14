@@ -12,7 +12,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         private readonly ImmutableArray<TextChangeRange> _changes;
 
         public IncrementalLexer(Language language, SourceText text, IncrementalLexer oldLexer, ImmutableArray<TextChangeRange> changes) 
-            : base(language, text)
+            : base(text, language)
         {
             _oldLexer = oldLexer;
             _changes = changes;

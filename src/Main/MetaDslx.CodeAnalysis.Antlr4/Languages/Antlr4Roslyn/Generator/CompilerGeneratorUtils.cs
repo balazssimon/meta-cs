@@ -1,5 +1,6 @@
 ﻿using MetaDslx.Languages.Antlr4Roslyn.Compilation;
 using MetaDslx.Languages.Meta;
+using Roslyn.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,22 +17,6 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator
 
     internal static class CompilerGeneratorUtils
     {
-        public static string ToCamelCase(this string identifier)
-        {
-            if (string.IsNullOrEmpty(identifier)) return identifier;
-            if (identifier.ToCharArray().All(c => char.IsUpper(c))) identifier = identifier.ToLower();
-            string result = identifier[0].ToString().ToLower() + identifier.Substring(1);
-            if (reservedNames.Contains(result)) result = "_" + result;
-            return result;
-        }
-
-        public static string ToPascalCase(this string identifier)
-        {
-            if (string.IsNullOrEmpty(identifier)) return identifier;
-            //else if (identifier.ToCharArray().All(c => char.IsUpper(c))) return identifier[0].ToString().ToUpper() + identifier.Substring(1).ToLower();
-            else return identifier[0].ToString().ToUpper() + identifier.Substring(1);
-        }
-
         public static List<int> Range(int n)
         {
             List<int> result = new List<int>();

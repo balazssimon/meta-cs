@@ -49,7 +49,7 @@ namespace Antlr4Intellisense
                 Console.WriteLine(token);
             }
             while (token != null && token.Kind != SyntaxKind.Eof);
-            var stream = (IncrementalInputStream)lexer.Antlr4Lexer.InputStream;
+            var stream = (IncrementalAntlr4InputStream)lexer.Antlr4Lexer.InputStream;
             Console.WriteLine("Lookahead range: " + stream.OverallMinMaxLookahead);
             return lexer;
         }

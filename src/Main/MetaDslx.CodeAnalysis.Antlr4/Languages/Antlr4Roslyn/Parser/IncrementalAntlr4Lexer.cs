@@ -6,30 +6,33 @@ using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
 using Microsoft.CodeAnalysis.Text;
+using Roslyn.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Text;
+using System.Threading;
 
 namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 {
     public class IncrementalAntlr4Lexer : IncrementalLexer, IAntlr4Lexer, ITokenStream
     {
-        private const int SaveStateWindow = 1;
-
-        private readonly IncrementalInputStream _stream;
+        private readonly IncrementalAntlr4InputStream _stream;
         private readonly SourceText _text;
         private readonly Antlr4.Runtime.Lexer _lexer;
         private readonly IncrementalAntlr4Lexer _oldLexer;
+        private readonly CancellationToken _cancellationToken;
         private readonly RangeEdgeState _beforeChange;
         private readonly RangeEdgeState _afterChange;
+        private readonly Interval _affectedOldTokenRange;
 
         private readonly SyntaxFacts _syntaxFacts;
         private readonly InternalSyntaxFactory _syntaxFactory;
         private readonly List<(IToken Antlr4Token, InternalSyntaxToken RoslynToken)> _tokens;
         private readonly List<(int position, int index, Antlr4LexerState state)> _states;
         private readonly bool _isIncremental;
+
         private IToken _lastToken;
         private int _lastFetchedPosition;
         private bool _fetchedEof;
@@ -37,10 +40,14 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         private int _position;
         private Antlr4LexerState _currentState;
 
-        public IncrementalAntlr4Lexer(Language language, SourceText text, ImmutableArray<TextChangeRange> changes, IncrementalAntlr4Lexer oldLexer)
+        private Stack<Interval> _minMaxStack = new Stack<Interval>();
+        private int _lastMinMaxPosition = -1;
+        private int _lastMinMaxK = -1;
+
+        public IncrementalAntlr4Lexer(Language language, SourceText text, ImmutableArray<TextChangeRange> changes, IncrementalAntlr4Lexer oldLexer, CancellationToken cancellationToken = default)
             : base(language, text, oldLexer, changes)
         {
-            _stream = oldLexer != null ? new IncrementalInputStream(text, oldLexer._stream.OverallMinMaxLookahead) : new IncrementalInputStream(text);
+            _stream = oldLexer != null ? new IncrementalAntlr4InputStream(text, oldLexer._stream.OverallMinMaxLookahead) : new IncrementalAntlr4InputStream(text);
             _text = text;
             _lexer = ((IAntlr4SyntaxFactory)language.InternalSyntaxFactory).CreateAntlr4Lexer(_stream);
             _syntaxFacts = language.SyntaxFacts;
@@ -71,7 +78,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
                 // extend the change to its affected range. This will make it easier 
                 // to filter out affected nodes since we will be able simply check 
                 // if node intersects with a change.
-                (_beforeChange, _afterChange) = ComputeChange(oldLexer, collapsed);
+                (_beforeChange, _afterChange, _affectedOldTokenRange) = ComputeChange(oldLexer, collapsed);
 
                 _isIncremental = true;
             }
@@ -95,6 +102,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         int IIntStream.Size => this.Count;
 
         string IIntStream.SourceName => _lexer.SourceName;
+
+        public Interval AffectedOldTokenRange => _affectedOldTokenRange;
 
         public override InternalSyntaxToken Lex()
         {
@@ -153,6 +162,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 
         private void Fetch()
         {
+            _cancellationToken.ThrowIfCancellationRequested();
             if (_position == 0) SaveState(_oldLexer?._currentState);
             if (_isIncremental)
             {
@@ -187,11 +197,11 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         private void FetchFromNewLexer()
         {
             if (_fetchedEof) return;
-            Console.WriteLine("NewLexer:");
             var token = _lastToken ?? _lexer.NextToken();
             var leadingTriviaBuilder = ArrayBuilder<InternalSyntaxTrivia>.GetInstance();
             while (token != null && token.Type >= 0 && (token.Channel != 0 || string.IsNullOrWhiteSpace(token.Text)))
             {
+                _cancellationToken.ThrowIfCancellationRequested();
                 var triviaKind = token.Type.FromAntlr4(_syntaxFacts.SyntaxKindType);
                 var trivia = _syntaxFactory.Trivia(triviaKind, token.Text);
                 leadingTriviaBuilder.Add(trivia);
@@ -214,6 +224,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
                 _lastToken = _lexer.NextToken();
                 while (_lastToken != null && _lastToken.Type >= 0 && (_lastToken.Channel != 0 || string.IsNullOrWhiteSpace(_lastToken.Text)) && !reachedLineEnd)
                 {
+                    _cancellationToken.ThrowIfCancellationRequested();
                     if (EndsWithLineEnd(_lastToken)) reachedLineEnd = true;
                     var triviaKind = _lastToken.Type.FromAntlr4(_syntaxFacts.SyntaxKindType);
                     var trivia = _syntaxFactory.Trivia(triviaKind, _lastToken.Text);
@@ -268,9 +279,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         private void FetchFromOldLexer()
         {
             if (_fetchedEof) return;
-            Console.WriteLine("OldLexer:");
             var token = _oldLexer.ReadNextToken();
-            _tokens.Add(token); // TODO: update ANTLR4 index and position
+            _tokens.Add(token); 
             if (token.RoslynToken.Kind == SyntaxKind.Eof) _fetchedEof = true;
             _lastToken = null;
             _lastFetchedPosition += token.RoslynToken?.FullWidth ?? 0;
@@ -295,9 +305,22 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 
         IToken ITokenStream.Lt(int k)
         {
-            if (k > 0) return ((ITokenStream)this).Get(_index + k - 1);
-            else if (k < 0) return ((ITokenStream)this).Get(_index + k);
-            else return null;
+            int resultIndex;
+            if (k > 0) resultIndex = _index + k - 1;
+            else if (k < 0) resultIndex = _index + k;
+            else resultIndex = -1;
+            var result = ((ITokenStream)this).Get(resultIndex);
+            if (resultIndex >= 0 && resultIndex < _tokens.Count)
+            {
+                if (_minMaxStack.Count > 0 && (_lastMinMaxPosition != _position || _lastMinMaxK != k))
+                {
+                    var stackItem = _minMaxStack.Pop();
+                    _minMaxStack.Push(stackItem.Union(Interval.Of(resultIndex, resultIndex)));
+                    _lastMinMaxPosition = _position;
+                    _lastMinMaxK = k;
+                }
+            }
+            return result;
         }
 
         IToken ITokenStream.Get(int i)
@@ -310,8 +333,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 
         string ITokenStream.GetText(Interval interval)
         {
-            var start = ((ITokenStream)this).Get(interval.a)?.StartIndex ?? -1;
-            var stop = ((ITokenStream)this).Get(interval.b)?.StopIndex ?? -1;
+            var start = interval.a;
+            var stop = interval.b;
             return GetText(start, stop);
         }
 
@@ -322,15 +345,15 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 
         string ITokenStream.GetText(RuleContext ctx)
         {
-            var start = ((ITokenStream)this).Get(ctx.SourceInterval.a)?.StartIndex ?? -1;
-            var stop = ((ITokenStream)this).Get(ctx.SourceInterval.b)?.StopIndex ?? -1;
+            var start = ctx.SourceInterval.a;
+            var stop = ctx.SourceInterval.b;
             return GetText(start, stop);
         }
 
         string ITokenStream.GetText(IToken startToken, IToken stopToken)
         {
-            var start = startToken?.StartIndex ?? -1;
-            var stop = stopToken?.StartIndex ?? -1;
+            var start = _tokens.FindIndex(t => t.Antlr4Token == startToken);
+            var stop = _tokens.FindIndex(t => t.Antlr4Token == stopToken);
             return GetText(start, stop);
         }
 
@@ -373,7 +396,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         /// and cannot be reused. Because of lookahead effective range of a change is larger than
         /// the change itself.
         /// </summary>
-        private static (RangeEdgeState, RangeEdgeState) ComputeChange(IncrementalAntlr4Lexer oldLexer, TextChangeRange changeRange)
+        private static (RangeEdgeState, RangeEdgeState, Interval) ComputeChange(IncrementalAntlr4Lexer oldLexer, TextChangeRange changeRange)
         {
             var oldStream = oldLexer._stream;
             var minMaxLookahead = oldStream.OverallMinMaxLookahead;
@@ -398,7 +421,9 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             if (firstTokenAfterChange.Antlr4Token != null) afterChange = new RangeEdgeState(endIndex, startPosition + finalLength, oldLexer.GetState(endIndex));
             else afterChange = new RangeEdgeState(oldLexer.Count, oldLexer.SourceText.Length, oldLexer.GetState(oldLexer.Count));
 
-            return (beforeChange, afterChange);
+            var affectedOldTokenRange = Interval.Of(startIndex, endIndex);
+
+            return (beforeChange, afterChange, affectedOldTokenRange);
         }
 
         private int GetPositionAtIndex(int index)
@@ -410,6 +435,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             var currentPosition = state.position;
             while (currentIndex < index && currentIndex < _tokens.Count)
             {
+                _cancellationToken.ThrowIfCancellationRequested();
                 currentPosition += _tokens[currentIndex].RoslynToken.FullWidth;
                 ++currentIndex;
             }
@@ -426,6 +452,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             var currentPosition = state.position;
             while (currentPosition < position && currentIndex < _tokens.Count)
             {
+                _cancellationToken.ThrowIfCancellationRequested();
                 currentPosition += _tokens[currentIndex].RoslynToken.FullWidth;
                 if (currentPosition > position) return currentIndex;
                 ++currentIndex;
@@ -442,6 +469,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             int high = _states.Count - 1;
             while (low <= high)
             {
+                _cancellationToken.ThrowIfCancellationRequested();
                 var middle = (low + high) / 2;
                 var middleState = _states[middle];
                 if (middleState.position < position)
@@ -472,6 +500,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             int high = _states.Count - 1;
             while (low <= high)
             {
+                _cancellationToken.ThrowIfCancellationRequested();
                 var middle = (low + high) / 2;
                 var middleState = _states[middle];
                 if (middleState.index < index)
@@ -492,6 +521,22 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             if (low >= 0 && low < _states.Count && _states[low].index <= index) return _states[low];
             else return (-1, -1, null);
         }
+
+        public void PushMinMax()
+        {
+            _minMaxStack.Push(Interval.Of(_index, _index));
+        }
+
+        public Interval PopMinMax()
+        {
+            if (_minMaxStack.Count == 0)
+            {
+                throw new IndexOutOfRangeException("Can't pop the min max state when there are 0 states");
+            }
+            return _minMaxStack.Pop();
+        }
+
+        public int MinMaxCount => _minMaxStack.Count;
 
         private struct RangeEdgeState
         {

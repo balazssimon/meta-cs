@@ -8,8 +8,8 @@ using MetaDslx.Languages.Meta.Binding;
 using MetaDslx.Languages.Meta.Generator;
 using MetaDslx.Languages.Meta.Model;
 using MetaDslx.Languages.Meta.Symbols;
-using MetaDslx.Languages.Mof.Generator;
-using MetaDslx.Languages.Mof.Model;
+//using MetaDslx.Languages.Mof.Generator;
+//using MetaDslx.Languages.Mof.Model;
 //using MetaDslx.Languages.Uml.Generator;
 //using MetaDslx.Languages.Uml.Model;
 //using MetaDslx.Languages.Ecore;
@@ -57,10 +57,10 @@ namespace MetaDslx.Bootstrap
             //a4l.Compile();
             //Antlr4RoslynBootstrap a4p = new Antlr4RoslynBootstrap(@"..\..\..\..\..\Test\WebSequenceDiagramsModel\Syntax\InternalSyntax\SequenceParser.ag4", "WebSequenceDiagramsModel");
             //a4p.Compile();
-            //Antlr4RoslynBootstrap a4l = new Antlr4RoslynBootstrap(@"..\..\..\..\..\Test\MetaDslx.CodeAnalysis.Antlr4.Test\Languages\TestLangOne\Syntax\TestLangOneLexer.ag4", "MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne");
-            //a4l.Compile();
-            //Antlr4RoslynBootstrap a4p = new Antlr4RoslynBootstrap(@"..\..\..\..\..\Test\MetaDslx.CodeAnalysis.Antlr4.Test\Languages\TestLangOne\Syntax\TestLangOneParser.ag4", "MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne");
-            //a4p.Compile();
+            Antlr4RoslynBootstrap a4l = new Antlr4RoslynBootstrap(@"..\..\..\..\..\Test\MetaDslx.CodeAnalysis.Antlr4.Test\Languages\TestLangOne\Syntax\TestLangOneLexer.ag4", "MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne");
+            a4l.Compile();
+            Antlr4RoslynBootstrap a4p = new Antlr4RoslynBootstrap(@"..\..\..\..\..\Test\MetaDslx.CodeAnalysis.Antlr4.Test\Languages\TestLangOne\Syntax\TestLangOneParser.ag4", "MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne");
+            a4p.Compile();
             //Antlr4RoslynBootstrap a4l = new Antlr4RoslynBootstrap(@"..\..\..\..\..\Languages\MetaDslx.Languages.Uml-v2.5.1\Serialization\Syntax\InternalSyntax\WebSequenceDiagramsLexer.ag4", "MetaDslx.Languages.Uml.Serialization");
             //a4l.Compile();
             //*/
@@ -248,7 +248,7 @@ namespace MetaDslx.Bootstrap
             //*/
             //MetaXmiTest();
             //XmiTest();
-            MofXmiTest();
+            //MofXmiTest();
             //UmlXmiTest();
             //EcoreXmiTest();
             //MetaDslxXmiTest();
@@ -396,7 +396,7 @@ namespace MetaDslx.Bootstrap
         }
         //*/
 
-        //*/
+        /*/
         public static void MofXmiTest()
         {
             MofDescriptor.Initialize();
@@ -491,7 +491,7 @@ namespace MetaDslx.Bootstrap
         }
         //*/
 
-        //*/
+        /*/
         public static void MetaDslxXmiTest()
         {
             MetaDescriptor.Initialize();

@@ -170,6 +170,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                 }
                 else
                 {
+                    IncrementalParserFix(Path.Combine(this.InternalSyntaxDirectory, Path.ChangeExtension(this.FileName, ".cs")));
                     foreach (var filePath in _antlr4Tool.GeneratedCodeFiles)
                     {
                         this.RegisterGeneratedFile(filePath);
@@ -177,6 +178,28 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                 }
             }
             return true;
+        }
+
+        private void IncrementalParserFix(string parserFilePath)
+        {
+            StringBuilder sb = new StringBuilder();
+            using(StreamReader reader = new StreamReader(parserFilePath))
+            { 
+                while(!reader.EndOfStream)
+                {
+                    var line = reader.ReadLine();
+                    line = line.Replace("Context : ParserRuleContext {", "Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {");
+                    if (line.Contains("Context _localctx = new "))
+                    {
+                        var contextTypeName = line.Substring(0, line.IndexOf("_localctx")).Trim();
+                        var indent = line.Substring(0, line.IndexOf(contextTypeName));
+                        var ruleName = contextTypeName.Substring(0, contextTypeName.Length - 7);
+                        sb.AppendLine($"{indent}if (this.TryGetIncrementalContext(_ctx, State, RULE_{ruleName.ToCamelCase()}, out {contextTypeName} existingContext)) return existingContext;");
+                    }
+                    sb.AppendLine(line);
+                }
+            }
+            File.WriteAllText(parserFilePath, sb.ToString());
         }
 
         protected override void DoCompile()

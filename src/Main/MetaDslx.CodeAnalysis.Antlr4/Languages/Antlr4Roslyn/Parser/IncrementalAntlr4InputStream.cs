@@ -7,17 +7,15 @@ using System.Text;
 
 namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 {
-    public class IncrementalInputStream : ICharStream, IIntStream
+    public class IncrementalAntlr4InputStream : ICharStream, IIntStream
     {
-        private const int DefaultWindowLength = 2048;
-
         private readonly SlidingTextWindow _textWindow;                 
 
         private Interval _minMaxLookahead;
         private Interval _overallMinMaxLookahead;
         private int _lastLA = 0;
 
-        public IncrementalInputStream(SourceText text, Interval minMaxLookahead = default)
+        public IncrementalAntlr4InputStream(SourceText text, Interval minMaxLookahead = default)
         {
             _minMaxLookahead = minMaxLookahead;
             _overallMinMaxLookahead = minMaxLookahead;

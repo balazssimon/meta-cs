@@ -13,7 +13,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         private int _index;
         private List<SyntaxDiagnosticInfo> _errors;
 
-        public Lexer(Language language, SourceText text)
+        public Lexer(SourceText text, Language language)
         {
             _language = language;
             _text = text;
