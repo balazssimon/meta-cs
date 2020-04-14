@@ -13,13 +13,14 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 
         private readonly SlidingTextWindow _textWindow;                 
 
-        private Interval _minMaxLookahead = Interval.Of(0, 0);
-        private Interval _overallMinMaxLookahead = Interval.Of(0, 0);
+        private Interval _minMaxLookahead;
+        private Interval _overallMinMaxLookahead;
         private int _lastLA = 0;
-        private bool _first = true;
 
-        public IncrementalInputStream(SourceText text)
+        public IncrementalInputStream(SourceText text, Interval minMaxLookahead = default)
         {
+            _minMaxLookahead = minMaxLookahead;
+            _overallMinMaxLookahead = minMaxLookahead;
             _textWindow = new SlidingTextWindow(text);
         }
 
@@ -31,7 +32,10 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
                 _minMaxLookahead = _minMaxLookahead.Union(Interval.Of(i, i));
                 _overallMinMaxLookahead = _overallMinMaxLookahead.Union(this._minMaxLookahead);
             }
-            var pch = _textWindow.PeekChar(i-1);
+            char pch;
+            if (i > 0) pch = _textWindow.PeekChar(i - 1);
+            else if (i < 0) pch = _textWindow.PeekChar(i);
+            else pch = SlidingTextWindow.InvalidCharacter;
             if (pch == SlidingTextWindow.InvalidCharacter) return -1;
             else return pch;
         }

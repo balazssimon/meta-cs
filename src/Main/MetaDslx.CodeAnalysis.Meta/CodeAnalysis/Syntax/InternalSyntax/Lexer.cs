@@ -10,7 +10,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
     {
         private readonly SourceText _text;
         private readonly Language _language;
-        private int _position;
+        private int _index;
         private List<SyntaxDiagnosticInfo> _errors;
 
         public Lexer(Language language, SourceText text)
@@ -23,23 +23,13 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         public SourceText SourceText => _text;
 
-        public int Position => _position;
-
-        public abstract object GetState();
-        public abstract void RestoreState(object state);
-        
-        public void Reset(int position, object state)
-        {
-            _position = position;
-            _errors = null;
-            this.RestoreState(state);
-        }
+        public int Index => _index;
 
         protected void Start()
         {
-            _position = 0;
+            _index = 0;
             _errors = null;
-            this.RestoreState(default);
+            // this.RestoreState(default); // TODO:MetaDslx
         }
 
         public abstract InternalSyntaxToken Lex();

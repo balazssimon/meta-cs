@@ -11,8 +11,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
     {
         public Antlr4LexerState(IAntlr4Lexer lexer)
         {
-            this.Mode = lexer.Lexer._mode;
-            this.ModeStack = lexer.Lexer._modeStack.ToImmutableArray();
+            this.Mode = lexer.Antlr4Lexer._mode;
+            this.ModeStack = lexer.Antlr4Lexer._modeStack.ToImmutableArray();
         }
         public int Mode { get; private set; }
         public ImmutableArray<int> ModeStack { get; private set; }
@@ -42,12 +42,20 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             return Hash.Combine(this.Mode, this.ModeStack.GetHashCode());
         }
 
-        public virtual void Restore(IAntlr4Lexer lexer)
+        public virtual bool HasChanged(IAntlr4Lexer lexer)
         {
-            lexer.Lexer._mode = this.Mode;
-            lexer.Lexer._modeStack.Clear();
-            lexer.Lexer._modeStack.AddRange(this.ModeStack);
+            var antlr4Lexer = lexer?.Antlr4Lexer;
+            if (antlr4Lexer == null)
+            {
+                return this.Mode == 0 && this.ModeStack.Length == 0;
+            }
+            if (this.Mode != antlr4Lexer._mode) return false;
+            if (this.ModeStack.Length != antlr4Lexer._modeStack.Count) return false;
+            for (int i = 0; i < this.ModeStack.Length; i++)
+            {
+                if (this.ModeStack[i] != antlr4Lexer._modeStack[i]) return false;
+            }
+            return true;
         }
-
     }
 }

@@ -7,6 +7,6 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 {
     public interface IAntlr4Lexer
     {
-        Lexer Lexer { get; }
+        Lexer Antlr4Lexer { get; }
     }
 }

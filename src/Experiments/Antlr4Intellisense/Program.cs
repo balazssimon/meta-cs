@@ -10,36 +10,20 @@ using System.Collections.Immutable;
 
 namespace Antlr4Intellisense
 {
-    class IncrementalSandyLexer : IncrementalAntlr4Lexer<SandyLexer>
-    {
-        public IncrementalSandyLexer(Language language, SourceText text, IncrementalSandyLexer oldLexer, ImmutableArray<TextChangeRange> changes)
-            : base(language, text, oldLexer, changes)
-        {
-        }
-
-        protected override SandyLexer CreateLexer(IncrementalInputStream inputStream)
-        {
-            return new SandyLexer(inputStream);
-        }
-    }
-
     public class Program
     {
         public static void Main(string[] args)
         {
-            var text = SourceText.From("var a = 1 + 2");
-            var lexer = new IncrementalSandyLexer(SandyLanguage.Instance, text, null, ImmutableArray<TextChangeRange>.Empty);
-            InternalSyntaxToken token = null;
-            do
-            {
-                token = lexer.Lex();
-                Console.WriteLine(token);
-            }
-            while (token.Kind != SyntaxKind.Eof);
-            var stream = (IncrementalInputStream)lexer.Lexer.InputStream;
-            Console.WriteLine("Lookahead range: "+stream.OverallMinMaxLookahead);
-
-            Console.WriteLine();
+            var lexer = Lex("var a = 1 + 2", ImmutableArray<TextChangeRange>.Empty, null);
+            Console.WriteLine("----");
+            lexer = Lex("var a = 13 + 2", ImmutableArray.Create(new TextChangeRange(TextSpan.FromBounds(9, 9), 1)), lexer);
+            Console.WriteLine("----");
+            lexer = Lex("var a = 3 + 2", ImmutableArray.Create(new TextChangeRange(TextSpan.FromBounds(8, 9), 0)), lexer);
+            Console.WriteLine("----");
+            lexer = Lex("var a = 34 + 2", ImmutableArray.Create(new TextChangeRange(TextSpan.FromBounds(9, 9), 1)), lexer);
+            Console.WriteLine("----");
+            lexer = Lex("var a = 3+4 + 2", ImmutableArray.Create(new TextChangeRange(TextSpan.FromBounds(9, 9), 1)), lexer);
+            Console.WriteLine("----");
 
             EmptyFile();
             AfterVar();
@@ -47,6 +31,22 @@ namespace Antlr4Intellisense
             AfterLiteral();
             AfterAddition();
 
+        }
+
+        private static IncrementalAntlr4Lexer Lex(string text, ImmutableArray<TextChangeRange>  changes, IncrementalAntlr4Lexer oldLexer)
+        {
+            var sourceText = SourceText.From(text);
+            var lexer = new IncrementalAntlr4Lexer(SandyLanguage.Instance, sourceText, changes, oldLexer);
+            InternalSyntaxToken token = null;
+            do
+            {
+                token = lexer.Lex();
+                Console.WriteLine(token);
+            }
+            while (token != null && token.Kind != SyntaxKind.Eof);
+            var stream = (IncrementalInputStream)lexer.Antlr4Lexer.InputStream;
+            Console.WriteLine("Lookahead range: " + stream.OverallMinMaxLookahead);
+            return lexer;
         }
 
         private static void EmptyFile()

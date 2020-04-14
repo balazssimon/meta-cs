@@ -25,7 +25,7 @@ using [Properties.DefaultNamespace].Syntax.InternalSyntax;
 [var lang = Properties.LanguageName]
 namespace [Properties.DefaultNamespace]
 {
-    public sealed class [lang]Language : Language
+    public sealed class [lang]Language : Language, IAntlr4RoslynLanguage
     {
         public static readonly [lang]Language Instance = new [lang]Language();
 ^
@@ -2314,12 +2314,22 @@ end template
 
 template GenerateInternalSyntaxFactory()
 [var lang = Properties.LanguageName]
-internal class [lang]InternalSyntaxFactory : InternalSyntaxFactory
+internal class [lang]InternalSyntaxFactory : InternalSyntaxFactory, MetaDslx.Languages.Antlr4Roslyn.IAntlr4SyntaxFactory
 {
 	public [lang]InternalSyntaxFactory([lang]SyntaxFacts syntaxFacts) 
 	    : base(syntaxFacts)
 	{
 	}
+^
+    public Antlr4.Runtime.Lexer CreateAntlr4Lexer(Antlr4.Runtime.ICharStream input)
+    {
+        return new [lang]Lexer(input);
+    }
+^
+    public Antlr4.Runtime.Parser CreateAntlr4Parser(Antlr4.Runtime.ITokenStream input)
+    {
+        return new [lang]Parser(input);
+    }
 ^
     public override Language Language => [lang]Language.Instance;
 ^
