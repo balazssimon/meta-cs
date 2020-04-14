@@ -128,6 +128,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             if (state == null) throw new ArgumentNullException(nameof(state));
             if (state is Antlr4LexerState antlr4LexerState)
             {
+                _currentState = antlr4LexerState;
                 _lexer._mode = antlr4LexerState.Mode;
                 _lexer._modeStack.Clear();
                 _lexer._modeStack.AddRange(antlr4LexerState.ModeStack);
@@ -152,7 +153,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 
         private void Fetch()
         {
-            if (_position == 0) SaveState();
+            if (_position == 0) SaveState(_oldLexer?._currentState);
             if (_isIncremental)
             {
                 if (_position < _beforeChange.Position || _position >= _afterChange.Position)
@@ -181,7 +182,6 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             {
                 this.FetchFromNewLexer();
             }
-            SaveState();
         }
 
         private void FetchFromNewLexer()
@@ -236,18 +236,24 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             }
             _tokens.Add((token, result));
             _lastFetchedPosition += result.FullWidth;
+            SaveState();
         }
 
         private int LastSaveIndex => _states.Count > 0 ? _states[_states.Count - 1].index : 0;
 
-        private void SaveState(bool force = false)
+        private void SaveState(Antlr4LexerState state = null, bool force = false)
         {
             if (_currentState == null)
             {
-                _currentState = CreateState();
+                _currentState = state ?? CreateState();
                 _states.Add((_index, _lastFetchedPosition, _currentState));
             }
-            else if (!_currentState.HasChanged(this))
+            else if (state != null && !_currentState.Equals(state))
+            {
+                _currentState = state;
+                _states.Add((_index, _lastFetchedPosition, _currentState));
+            }
+            else if (_currentState.HasChanged(this))
             {
                 _currentState = CreateState();
                 _states.Add((_index, _lastFetchedPosition, _currentState));
@@ -268,6 +274,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             if (token.RoslynToken.Kind == SyntaxKind.Eof) _fetchedEof = true;
             _lastToken = null;
             _lastFetchedPosition += token.RoslynToken?.FullWidth ?? 0;
+            SaveState(_oldLexer._currentState);
         }
 
         private (IToken Antlr4Token, InternalSyntaxToken RoslynToken) GetToken(int index)
@@ -282,6 +289,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             EnsureTokensFetchedAtIndex(index);
             _index = index;
             _position = GetPositionAtIndex(index);
+            var state = GetState(index);
+            this.RestoreState(state);
         }
 
         IToken ITokenStream.Lt(int k)

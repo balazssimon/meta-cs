@@ -47,15 +47,15 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             var antlr4Lexer = lexer?.Antlr4Lexer;
             if (antlr4Lexer == null)
             {
-                return this.Mode == 0 && this.ModeStack.Length == 0;
+                return this.Mode != 0 || this.ModeStack.Length != 0;
             }
-            if (this.Mode != antlr4Lexer._mode) return false;
-            if (this.ModeStack.Length != antlr4Lexer._modeStack.Count) return false;
+            if (this.Mode != antlr4Lexer._mode) return true;
+            if (this.ModeStack.Length != antlr4Lexer._modeStack.Count) return true;
             for (int i = 0; i < this.ModeStack.Length; i++)
             {
-                if (this.ModeStack[i] != antlr4Lexer._modeStack[i]) return false;
+                if (this.ModeStack[i] != antlr4Lexer._modeStack[i]) return true;
             }
-            return true;
+            return false;
         }
     }
 }
