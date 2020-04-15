@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using MetaDslx.CodeAnalysis;
 using Microsoft.CodeAnalysis;
 
-namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne
+namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne
 {
     public class TestLangOneErrorCode : ErrorCode
     {

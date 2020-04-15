@@ -15,7 +15,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Syntax.InternalSyntax;
 using Microsoft.CodeAnalysis.Text;
 using MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax;
-namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax
+namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax
 {
     public class TestLangOneSyntaxParser : Antlr4SyntaxParser<TestLangOneLexer, TestLangOneParser>
     {

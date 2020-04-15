@@ -11,14 +11,14 @@ using MetaDslx.CodeAnalysis.Declarations;
 using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Symbols.Source;
 using MetaDslx.CodeAnalysis.Symbols.Metadata;
-using MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne;
-using MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax;
-using MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Binding;
-using MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Symbols;
+using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne;
+using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax;
+using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Binding;
+using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Symbols;
 
 using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Model;
 
-namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne
+namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne
 {
     public class TestLangOneCompilationFactory : CompilationFactory
     {

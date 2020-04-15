@@ -57,9 +57,9 @@ namespace MetaDslx.Bootstrap
             //a4l.Compile();
             //Antlr4RoslynBootstrap a4p = new Antlr4RoslynBootstrap(@"..\..\..\..\..\Test\WebSequenceDiagramsModel\Syntax\InternalSyntax\SequenceParser.ag4", "WebSequenceDiagramsModel");
             //a4p.Compile();
-            Antlr4RoslynBootstrap a4l = new Antlr4RoslynBootstrap(@"..\..\..\..\..\Test\MetaDslx.CodeAnalysis.Antlr4.Test\Languages\TestLangOne\Syntax\TestLangOneLexer.ag4", "MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne");
+            Antlr4RoslynBootstrap a4l = new Antlr4RoslynBootstrap(@"..\..\..\..\..\Test\MetaDslx.CodeAnalysis.Antlr4.Test\Languages\TestLangOne\Syntax\TestLangOneLexer.ag4", "MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax");
             a4l.Compile();
-            Antlr4RoslynBootstrap a4p = new Antlr4RoslynBootstrap(@"..\..\..\..\..\Test\MetaDslx.CodeAnalysis.Antlr4.Test\Languages\TestLangOne\Syntax\TestLangOneParser.ag4", "MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne");
+            Antlr4RoslynBootstrap a4p = new Antlr4RoslynBootstrap(@"..\..\..\..\..\Test\MetaDslx.CodeAnalysis.Antlr4.Test\Languages\TestLangOne\Syntax\TestLangOneParser.ag4", "MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax");
             a4p.Compile();
             //Antlr4RoslynBootstrap a4l = new Antlr4RoslynBootstrap(@"..\..\..\..\..\Languages\MetaDslx.Languages.Uml-v2.5.1\Serialization\Syntax\InternalSyntax\WebSequenceDiagramsLexer.ag4", "MetaDslx.Languages.Uml.Serialization");
             //a4l.Compile();

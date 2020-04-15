@@ -113,17 +113,17 @@ namespace MetaDslx.Languages.Meta.Syntax
 			return this.Update(NamespaceDeclaration, this.EndOfFileToken);
 		}
 	
-	    public MainSyntax WithEndOfFileToken(SyntaxToken eof)
+	    public MainSyntax WithEndOfFileToken(SyntaxToken eOF)
 		{
 			return this.Update(this.NamespaceDeclaration, EndOfFileToken);
 		}
 	
-	    public MainSyntax Update(NamespaceDeclarationSyntax namespaceDeclaration, SyntaxToken eof)
+	    public MainSyntax Update(NamespaceDeclarationSyntax namespaceDeclaration, SyntaxToken eOF)
 	    {
 	        if (this.NamespaceDeclaration != namespaceDeclaration ||
-				this.EndOfFileToken != eof)
+				this.EndOfFileToken != eOF)
 	        {
-	            var newNode = MetaLanguage.Instance.SyntaxFactory.Main(namespaceDeclaration, eof);
+	            var newNode = MetaLanguage.Instance.SyntaxFactory.Main(namespaceDeclaration, eOF);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -7169,8 +7169,8 @@ namespace MetaDslx.Languages.Meta
 		public virtual SyntaxNode VisitMain(MainSyntax node)
 		{
 		    var namespaceDeclaration = (NamespaceDeclarationSyntax)this.Visit(node.NamespaceDeclaration);
-		    var eof = this.VisitToken(node.EndOfFileToken);
-			return node.Update(namespaceDeclaration, eof);
+		    var eOF = this.VisitToken(node.EndOfFileToken);
+			return node.Update(namespaceDeclaration, eOF);
 		}
 		
 		public virtual SyntaxNode VisitName(NameSyntax node)
@@ -7811,18 +7811,18 @@ namespace MetaDslx.Languages.Meta
 		{
 		    return new MetaSyntaxParser(SourceText.From(text, Encoding.UTF8), MetaParseOptions.Default, null, null);
 		}
-
+	
 		public override LanguageSyntaxTree MakeSyntaxTree(LanguageSyntaxNode root, ParseOptions options = null, string path = "", Encoding encoding = null)
 		{
 			return MetaSyntaxTree.Create((MetaSyntaxNode)root, (MetaParseOptions)options, path, null, encoding);
 		}
-
+	
 		public override LanguageSyntaxTree MakeSyntaxTree(SyntaxParser parser, string path = "", CancellationToken cancellationToken = default)
 		{
 			return MetaSyntaxTree.Create((MetaSyntaxParser)parser, path, cancellationToken);
 		}
-
-		public override SyntaxNode CreateStructure(SyntaxTrivia trivia)
+	
+	    public override SyntaxNode CreateStructure(SyntaxTrivia trivia)
 	    {
 	        throw new NotImplementedException();
 	    }
@@ -8008,12 +8008,12 @@ namespace MetaDslx.Languages.Meta
 	        return new SyntaxToken(MetaLanguage.Instance.InternalSyntaxFactory.LComment(text, value));
 	    }
 		
-		public MainSyntax Main(NamespaceDeclarationSyntax namespaceDeclaration, SyntaxToken eof)
+		public MainSyntax Main(NamespaceDeclarationSyntax namespaceDeclaration, SyntaxToken eOF)
 		{
 		    if (namespaceDeclaration == null) throw new ArgumentNullException(nameof(namespaceDeclaration));
-		    if (eof == null) throw new ArgumentNullException(nameof(eof));
-		    if (eof.GetKind() != MetaSyntaxKind.Eof) throw new ArgumentException(nameof(eof));
-		    return (MainSyntax)MetaLanguage.Instance.InternalSyntaxFactory.Main((Syntax.InternalSyntax.NamespaceDeclarationGreen)namespaceDeclaration.Green, (InternalSyntaxToken)eof.Node).CreateRed();
+		    if (eOF == null) throw new ArgumentNullException(nameof(eOF));
+		    if (eOF.GetKind() != MetaSyntaxKind.Eof) throw new ArgumentException(nameof(eOF));
+		    return (MainSyntax)MetaLanguage.Instance.InternalSyntaxFactory.Main((Syntax.InternalSyntax.NamespaceDeclarationGreen)namespaceDeclaration.Green, (InternalSyntaxToken)eOF.Node).CreateRed();
 		}
 		
 		public NameSyntax Name(IdentifierSyntax identifier)

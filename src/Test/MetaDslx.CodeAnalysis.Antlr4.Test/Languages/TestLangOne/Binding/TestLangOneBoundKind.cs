@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using MetaDslx.CodeAnalysis.Binding;
 using Roslyn.Utilities;
 
-namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Binding
+namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Binding
 {
     public class TestLangOneBoundKind : BoundKind
     {

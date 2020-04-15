@@ -26,7 +26,7 @@ using [Properties.DefaultNamespace].Syntax.InternalSyntax;
 [var lang = Properties.LanguageName]
 namespace [Properties.DefaultNamespace]
 {
-    public sealed class [lang]Language : Language, IAntlr4RoslynLanguage
+    public sealed class [lang]Language : Language
     {
         public static readonly [lang]Language Instance = new [lang]Language();
 ^

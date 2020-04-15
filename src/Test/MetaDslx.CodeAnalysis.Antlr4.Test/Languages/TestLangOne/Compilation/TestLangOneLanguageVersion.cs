@@ -4,7 +4,7 @@ using MetaDslx.CodeAnalysis;
 using Microsoft.CodeAnalysis;
 using Roslyn.Utilities;
 
-namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne
+namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne
 {
     /// <summary>
     /// Specifies the language version.

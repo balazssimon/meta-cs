@@ -19,7 +19,7 @@
 // Ambiguous reference in cref attribute
 #pragma warning disable 419
 
-namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax {
+namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax {
 
 using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Model;
 
@@ -994,4 +994,4 @@ public partial class TestLangOneParserBaseVisitor<Result> : AbstractParseTreeVis
 	/// <return>The visitor result.</return>
 	public virtual Result VisitStringLiteral([NotNull] TestLangOneParser.StringLiteralContext context) { return VisitChildren(context); }
 }
-} // namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax
+} // namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax

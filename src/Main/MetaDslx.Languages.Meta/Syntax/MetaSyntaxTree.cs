@@ -92,7 +92,7 @@ namespace MetaDslx.Languages.Meta
                 throw new ArgumentNullException(nameof(root));
             }
             var directives = root.Kind == MetaSyntaxKind.Main && root is ICompilationUnitRootSyntax compilationUnitRoot ?
-                compilationUnitRoot.GetConditionalDirectivesStack() :
+                ((ICompilationUnitRootSyntax)root).GetConditionalDirectivesStack() :
                 DirectiveStack.Empty;
             return new ParsedSyntaxTree(
                 textOpt: text,
@@ -161,11 +161,14 @@ namespace MetaDslx.Languages.Meta
             options = options ?? MetaParseOptions.Default;
             using (var parser = new MetaSyntaxParser(text, options, oldTree: null, changes: null, cancellationToken: cancellationToken))
             {
-                return Create(parser, path, cancellationToken);
+                var compilationUnit = (MainSyntax)parser.ParseMain().CreateRed();
+                var tree = new ParsedSyntaxTree(text, text.Encoding, text.ChecksumAlgorithm, path, options, compilationUnit, parser.Directives);
+                tree.VerifySource();
+                return tree;
             }
         }
         /// <summary>
-        /// Produces a syntax tree by calling a parser.
+        /// Creates a new syntax tree from a syntax parser.
         /// </summary>
         public static MetaSyntaxTree Create(
             MetaSyntaxParser parser,

@@ -3,12 +3,10 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-
     <IsPackable>false</IsPackable>
-
     <AssemblyName>MetaDslx.CodeAnalysis.Antlr4.Test</AssemblyName>
-
     <RootNamespace>MetaDslx.CodeAnalysis.Antlr4Test</RootNamespace>
+    <MetaDslxDisableAntlr4RoslynGenerator>true</MetaDslxDisableAntlr4RoslynGenerator>
   </PropertyGroup>
   
   <ItemGroup>
@@ -38,9 +36,11 @@
   <ItemGroup>
     <Antlr4Roslyn Update="Languages\TestLangOne\Syntax\TestLangOneLexer.ag4">
       <CustomToolNamespace>MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax</CustomToolNamespace>
+      <OutputLocation>CurrentDirectory</OutputLocation>
     </Antlr4Roslyn>
     <Antlr4Roslyn Update="Languages\TestLangOne\Syntax\TestLangOneParser.ag4">
       <CustomToolNamespace>MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax</CustomToolNamespace>
+      <OutputLocation>CurrentDirectory</OutputLocation>
     </Antlr4Roslyn>
   </ItemGroup>
 </Project>

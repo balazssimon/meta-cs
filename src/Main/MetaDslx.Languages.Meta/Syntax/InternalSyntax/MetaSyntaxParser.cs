@@ -100,8 +100,8 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				{
 					namespaceDeclaration = NamespaceDeclarationGreen.__Missing;
 				}
-				InternalSyntaxToken eof = (InternalSyntaxToken)this.VisitTerminal(context.Eof(), MetaSyntaxKind.Eof);
-				return this.factory.Main(namespaceDeclaration, eof);
+				InternalSyntaxToken eOF = (InternalSyntaxToken)this.VisitTerminal(context.Eof(), MetaSyntaxKind.Eof);
+				return this.factory.Main(namespaceDeclaration, eOF);
 			}
 			
 			public override GreenNode VisitName(MetaParser.NameContext context)

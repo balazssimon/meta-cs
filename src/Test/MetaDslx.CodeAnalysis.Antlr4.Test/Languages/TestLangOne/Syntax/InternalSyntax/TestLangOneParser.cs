@@ -19,7 +19,7 @@
 // Ambiguous reference in cref attribute
 #pragma warning disable 419
 
-namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax {
+namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax {
 
 using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Model;
 
@@ -4585,4 +4585,4 @@ public partial class TestLangOneParser : Parser {
 	public static readonly ATN _ATN =
 		new ATNDeserializer().Deserialize(_serializedATN.ToCharArray());
 }
-} // namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax
+} // namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax

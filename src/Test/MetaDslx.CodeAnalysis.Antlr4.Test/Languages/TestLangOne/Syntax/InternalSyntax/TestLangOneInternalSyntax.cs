@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax
+namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax
 {
     using MetaDslx.CodeAnalysis;
     using MetaDslx.CodeAnalysis.Syntax;
@@ -992,7 +992,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.MainSyntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.MainSyntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -1194,7 +1194,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.TestSyntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.TestSyntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -1456,7 +1456,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Test01Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Test01Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -1562,7 +1562,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.NamespaceDeclaration01Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.NamespaceDeclaration01Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -1670,7 +1670,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.NamespaceBody01Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.NamespaceBody01Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -1766,7 +1766,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Declaration01Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Declaration01Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -1887,7 +1887,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Vertex01Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Vertex01Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -2019,7 +2019,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Arrow01Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Arrow01Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -2119,7 +2119,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Test02Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Test02Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -2225,7 +2225,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.NamespaceDeclaration02Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.NamespaceDeclaration02Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -2333,7 +2333,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.NamespaceBody02Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.NamespaceBody02Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -2429,7 +2429,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Declaration02Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Declaration02Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -2550,7 +2550,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Vertex02Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Vertex02Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -2682,7 +2682,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Arrow02Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Arrow02Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -2770,7 +2770,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Source02Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Source02Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -2850,7 +2850,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Target02Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Target02Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -2942,7 +2942,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Test03Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Test03Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -3048,7 +3048,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.NamespaceDeclaration03Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.NamespaceDeclaration03Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -3156,7 +3156,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.NamespaceBody03Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.NamespaceBody03Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -3252,7 +3252,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Declaration03Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Declaration03Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -3373,7 +3373,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Vertex03Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Vertex03Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -3505,7 +3505,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Arrow03Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Arrow03Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -3593,7 +3593,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Source03Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Source03Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -3673,7 +3673,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Target03Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Target03Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -3765,7 +3765,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Test04Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Test04Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -3871,7 +3871,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.NamespaceDeclaration04Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.NamespaceDeclaration04Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -3979,7 +3979,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.NamespaceBody04Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.NamespaceBody04Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -4075,7 +4075,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Declaration04Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Declaration04Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -4196,7 +4196,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Vertex04Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Vertex04Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -4328,7 +4328,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Arrow04Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Arrow04Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -4428,7 +4428,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Test05Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Test05Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -4534,7 +4534,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.NamespaceDeclaration05Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.NamespaceDeclaration05Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -4642,7 +4642,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.NamespaceBody05Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.NamespaceBody05Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -4738,7 +4738,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Declaration05Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Declaration05Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -4859,7 +4859,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Vertex05Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Vertex05Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -4991,7 +4991,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Arrow05Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Arrow05Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -5091,7 +5091,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Test06Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Test06Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -5197,7 +5197,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.NamespaceDeclaration06Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.NamespaceDeclaration06Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -5305,7 +5305,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.NamespaceBody06Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.NamespaceBody06Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -5401,7 +5401,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Declaration06Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Declaration06Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -5522,7 +5522,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Vertex06Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Vertex06Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -5654,7 +5654,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Arrow06Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Arrow06Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -5754,7 +5754,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Test07Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Test07Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -5860,7 +5860,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.NamespaceDeclaration07Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.NamespaceDeclaration07Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -5968,7 +5968,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.NamespaceBody07Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.NamespaceBody07Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -6064,7 +6064,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Declaration07Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Declaration07Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -6185,7 +6185,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Vertex07Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Vertex07Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -6317,7 +6317,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Arrow07Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Arrow07Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -6405,7 +6405,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Source07Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Source07Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -6485,7 +6485,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Target07Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Target07Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -6577,7 +6577,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Test08Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Test08Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -6683,7 +6683,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.NamespaceDeclaration08Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.NamespaceDeclaration08Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -6791,7 +6791,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.NamespaceBody08Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.NamespaceBody08Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -6887,7 +6887,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Declaration08Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Declaration08Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -7008,7 +7008,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Vertex08Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Vertex08Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -7140,7 +7140,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Arrow08Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Arrow08Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -7228,7 +7228,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Source08Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Source08Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -7308,7 +7308,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Target08Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Target08Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -7400,7 +7400,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Test09Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Test09Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -7506,7 +7506,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.NamespaceDeclaration09Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.NamespaceDeclaration09Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -7614,7 +7614,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.NamespaceBody09Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.NamespaceBody09Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -7710,7 +7710,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Declaration09Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Declaration09Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -7831,7 +7831,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Vertex09Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Vertex09Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -7963,7 +7963,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Arrow09Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Arrow09Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -8063,7 +8063,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Test10Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Test10Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -8169,7 +8169,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.NamespaceDeclaration10Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.NamespaceDeclaration10Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -8277,7 +8277,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.NamespaceBody10Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.NamespaceBody10Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -8373,7 +8373,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Declaration10Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Declaration10Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -8494,7 +8494,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Vertex10Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Vertex10Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -8626,7 +8626,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Arrow10Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Arrow10Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -8726,7 +8726,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Test11Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Test11Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -8832,7 +8832,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.NamespaceDeclaration11Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.NamespaceDeclaration11Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -8940,7 +8940,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.NamespaceBody11Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.NamespaceBody11Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -9036,7 +9036,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Declaration11Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Declaration11Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -9157,7 +9157,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Vertex11Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Vertex11Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -9289,7 +9289,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Arrow11Syntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Arrow11Syntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -9377,7 +9377,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.NameSyntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.NameSyntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -9457,7 +9457,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.QualifiedNameSyntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.QualifiedNameSyntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -9537,7 +9537,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.QualifierSyntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.QualifierSyntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -9617,7 +9617,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.IdentifierSyntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.IdentifierSyntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -9757,7 +9757,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.LiteralSyntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.LiteralSyntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -9922,7 +9922,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.NullLiteralSyntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.NullLiteralSyntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -10002,7 +10002,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.BooleanLiteralSyntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.BooleanLiteralSyntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -10082,7 +10082,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.IntegerLiteralSyntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.IntegerLiteralSyntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -10162,7 +10162,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.DecimalLiteralSyntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.DecimalLiteralSyntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -10242,7 +10242,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.ScientificLiteralSyntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.ScientificLiteralSyntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -10322,7 +10322,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.StringLiteralSyntax(this, (TestLangOneSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.StringLiteralSyntax(this, (TestLangOneSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -10558,7 +10558,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.Inte
         /// Guard a rule's previous context from being reused.
         /// </summary>
         /// <returns></returns>
-        public bool TryGetIncrementalContext<TContext>(IncrementalParserRuleContext parentContext, int state, int ruleIndex, out TContext existingContext)
+        public bool TryGetIncrementalContext<TContext>(global::Antlr4.Runtime.ParserRuleContext parentContext, int state, int ruleIndex, out TContext existingContext)
             where TContext : IncrementalParserRuleContext
         {
             existingContext = null;

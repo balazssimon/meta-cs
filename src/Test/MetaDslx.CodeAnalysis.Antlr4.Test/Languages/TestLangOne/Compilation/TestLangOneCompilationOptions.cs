@@ -8,7 +8,7 @@ using MetaDslx.CodeAnalysis.Binding;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
 
-namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne
+namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne
 {
     public class TestLangOneCompilationOptions : LanguageCompilationOptions, IEquatable<LanguageCompilationOptions>
     {

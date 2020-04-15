@@ -5,16 +5,16 @@ using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
-using MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne;
-using MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Symbols;
-using MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax;
-using MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax;
+using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne;
+using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Symbols;
+using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax;
+using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax;
 
 using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Model;
 
-namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne
+namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne
 {
-    public sealed class TestLangOneLanguage : Language, IAntlr4RoslynLanguage
+    public sealed class TestLangOneLanguage : Language
     {
         public static readonly TestLangOneLanguage Instance = new TestLangOneLanguage();
 

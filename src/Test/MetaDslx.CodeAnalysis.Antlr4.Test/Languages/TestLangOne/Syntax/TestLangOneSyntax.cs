@@ -13,7 +13,7 @@ using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
 
-namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
+namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax
 {
     public abstract class TestLangOneSyntaxNode : LanguageSyntaxNode
     {
@@ -89,7 +89,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.MainGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.MainGreen)this.Green;
 				var greenToken = green.EndOfFileToken;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
 			}
@@ -497,7 +497,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Test01Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Test01Green)this.Green;
 				var greenToken = green.KTest01;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -584,7 +584,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.NamespaceDeclaration01Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.NamespaceDeclaration01Green)this.Green;
 				var greenToken = green.KNamespace;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -682,7 +682,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.NamespaceBody01Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.NamespaceBody01Green)this.Green;
 				var greenToken = green.TOpenBrace;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -700,7 +700,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.NamespaceBody01Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.NamespaceBody01Green)this.Green;
 				var greenToken = green.TCloseBrace;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
@@ -889,7 +889,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Vertex01Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Vertex01Green)this.Green;
 				var greenToken = green.KVertex;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -902,7 +902,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Vertex01Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Vertex01Green)this.Green;
 				var greenToken = green.TSemicolon;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
@@ -991,7 +991,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Arrow01Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Arrow01Green)this.Green;
 				var greenToken = green.KArrow;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -1004,7 +1004,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Arrow01Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Arrow01Green)this.Green;
 				var greenToken = green.TArrow;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
@@ -1017,7 +1017,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Arrow01Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Arrow01Green)this.Green;
 				var greenToken = green.TSemicolon;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(4), this.GetChildIndex(4));
 			}
@@ -1119,7 +1119,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Test02Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Test02Green)this.Green;
 				var greenToken = green.KTest02;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -1206,7 +1206,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.NamespaceDeclaration02Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.NamespaceDeclaration02Green)this.Green;
 				var greenToken = green.KNamespace;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -1304,7 +1304,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.NamespaceBody02Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.NamespaceBody02Green)this.Green;
 				var greenToken = green.TOpenBrace;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -1322,7 +1322,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.NamespaceBody02Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.NamespaceBody02Green)this.Green;
 				var greenToken = green.TCloseBrace;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
@@ -1511,7 +1511,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Vertex02Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Vertex02Green)this.Green;
 				var greenToken = green.KVertex;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -1524,7 +1524,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Vertex02Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Vertex02Green)this.Green;
 				var greenToken = green.TSemicolon;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
@@ -1613,7 +1613,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Arrow02Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Arrow02Green)this.Green;
 				var greenToken = green.KArrow;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -1626,7 +1626,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Arrow02Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Arrow02Green)this.Green;
 				var greenToken = green.TArrow;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
@@ -1639,7 +1639,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Arrow02Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Arrow02Green)this.Green;
 				var greenToken = green.TSemicolon;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(4), this.GetChildIndex(4));
 			}
@@ -1883,7 +1883,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Test03Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Test03Green)this.Green;
 				var greenToken = green.KTest03;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -1970,7 +1970,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.NamespaceDeclaration03Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.NamespaceDeclaration03Green)this.Green;
 				var greenToken = green.KNamespace;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -2068,7 +2068,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.NamespaceBody03Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.NamespaceBody03Green)this.Green;
 				var greenToken = green.TOpenBrace;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -2086,7 +2086,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.NamespaceBody03Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.NamespaceBody03Green)this.Green;
 				var greenToken = green.TCloseBrace;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
@@ -2275,7 +2275,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Vertex03Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Vertex03Green)this.Green;
 				var greenToken = green.KVertex;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -2288,7 +2288,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Vertex03Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Vertex03Green)this.Green;
 				var greenToken = green.TSemicolon;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
@@ -2377,7 +2377,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Arrow03Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Arrow03Green)this.Green;
 				var greenToken = green.KArrow;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -2390,7 +2390,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Arrow03Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Arrow03Green)this.Green;
 				var greenToken = green.TArrow;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
@@ -2403,7 +2403,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Arrow03Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Arrow03Green)this.Green;
 				var greenToken = green.TSemicolon;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(4), this.GetChildIndex(4));
 			}
@@ -2647,7 +2647,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Test04Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Test04Green)this.Green;
 				var greenToken = green.KTest04;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -2734,7 +2734,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.NamespaceDeclaration04Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.NamespaceDeclaration04Green)this.Green;
 				var greenToken = green.KNamespace;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -2832,7 +2832,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.NamespaceBody04Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.NamespaceBody04Green)this.Green;
 				var greenToken = green.TOpenBrace;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -2850,7 +2850,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.NamespaceBody04Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.NamespaceBody04Green)this.Green;
 				var greenToken = green.TCloseBrace;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
@@ -3039,7 +3039,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Vertex04Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Vertex04Green)this.Green;
 				var greenToken = green.KVertex;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -3052,7 +3052,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Vertex04Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Vertex04Green)this.Green;
 				var greenToken = green.TSemicolon;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
@@ -3141,7 +3141,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Arrow04Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Arrow04Green)this.Green;
 				var greenToken = green.KArrow;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -3154,7 +3154,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Arrow04Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Arrow04Green)this.Green;
 				var greenToken = green.TArrow;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
@@ -3167,7 +3167,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Arrow04Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Arrow04Green)this.Green;
 				var greenToken = green.TSemicolon;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(4), this.GetChildIndex(4));
 			}
@@ -3269,7 +3269,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Test05Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Test05Green)this.Green;
 				var greenToken = green.KTest05;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -3356,7 +3356,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.NamespaceDeclaration05Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.NamespaceDeclaration05Green)this.Green;
 				var greenToken = green.KNamespace;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -3454,7 +3454,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.NamespaceBody05Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.NamespaceBody05Green)this.Green;
 				var greenToken = green.TOpenBrace;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -3472,7 +3472,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.NamespaceBody05Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.NamespaceBody05Green)this.Green;
 				var greenToken = green.TCloseBrace;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
@@ -3661,7 +3661,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Vertex05Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Vertex05Green)this.Green;
 				var greenToken = green.KVertex;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -3674,7 +3674,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Vertex05Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Vertex05Green)this.Green;
 				var greenToken = green.TSemicolon;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
@@ -3763,7 +3763,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Arrow05Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Arrow05Green)this.Green;
 				var greenToken = green.KArrow;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -3776,7 +3776,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Arrow05Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Arrow05Green)this.Green;
 				var greenToken = green.TArrow;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
@@ -3789,7 +3789,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Arrow05Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Arrow05Green)this.Green;
 				var greenToken = green.TSemicolon;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(4), this.GetChildIndex(4));
 			}
@@ -3891,7 +3891,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Test06Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Test06Green)this.Green;
 				var greenToken = green.KTest06;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -3978,7 +3978,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.NamespaceDeclaration06Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.NamespaceDeclaration06Green)this.Green;
 				var greenToken = green.KNamespace;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -4076,7 +4076,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.NamespaceBody06Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.NamespaceBody06Green)this.Green;
 				var greenToken = green.TOpenBrace;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -4094,7 +4094,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.NamespaceBody06Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.NamespaceBody06Green)this.Green;
 				var greenToken = green.TCloseBrace;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
@@ -4283,7 +4283,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Vertex06Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Vertex06Green)this.Green;
 				var greenToken = green.KVertex;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -4296,7 +4296,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Vertex06Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Vertex06Green)this.Green;
 				var greenToken = green.TSemicolon;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
@@ -4385,7 +4385,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Arrow06Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Arrow06Green)this.Green;
 				var greenToken = green.KArrow;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -4398,7 +4398,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Arrow06Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Arrow06Green)this.Green;
 				var greenToken = green.TArrow;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
@@ -4411,7 +4411,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Arrow06Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Arrow06Green)this.Green;
 				var greenToken = green.TSemicolon;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(4), this.GetChildIndex(4));
 			}
@@ -4513,7 +4513,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Test07Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Test07Green)this.Green;
 				var greenToken = green.KTest07;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -4600,7 +4600,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.NamespaceDeclaration07Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.NamespaceDeclaration07Green)this.Green;
 				var greenToken = green.KNamespace;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -4698,7 +4698,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.NamespaceBody07Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.NamespaceBody07Green)this.Green;
 				var greenToken = green.TOpenBrace;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -4716,7 +4716,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.NamespaceBody07Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.NamespaceBody07Green)this.Green;
 				var greenToken = green.TCloseBrace;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
@@ -4905,7 +4905,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Vertex07Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Vertex07Green)this.Green;
 				var greenToken = green.KVertex;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -4918,7 +4918,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Vertex07Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Vertex07Green)this.Green;
 				var greenToken = green.TSemicolon;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
@@ -5007,7 +5007,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Arrow07Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Arrow07Green)this.Green;
 				var greenToken = green.KArrow;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -5020,7 +5020,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Arrow07Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Arrow07Green)this.Green;
 				var greenToken = green.TArrow;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
@@ -5033,7 +5033,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Arrow07Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Arrow07Green)this.Green;
 				var greenToken = green.TSemicolon;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(4), this.GetChildIndex(4));
 			}
@@ -5277,7 +5277,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Test08Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Test08Green)this.Green;
 				var greenToken = green.KTest08;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -5364,7 +5364,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.NamespaceDeclaration08Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.NamespaceDeclaration08Green)this.Green;
 				var greenToken = green.KNamespace;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -5462,7 +5462,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.NamespaceBody08Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.NamespaceBody08Green)this.Green;
 				var greenToken = green.TOpenBrace;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -5480,7 +5480,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.NamespaceBody08Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.NamespaceBody08Green)this.Green;
 				var greenToken = green.TCloseBrace;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
@@ -5669,7 +5669,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Vertex08Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Vertex08Green)this.Green;
 				var greenToken = green.KVertex;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -5682,7 +5682,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Vertex08Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Vertex08Green)this.Green;
 				var greenToken = green.TSemicolon;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
@@ -5771,7 +5771,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Arrow08Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Arrow08Green)this.Green;
 				var greenToken = green.KArrow;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -5784,7 +5784,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Arrow08Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Arrow08Green)this.Green;
 				var greenToken = green.TArrow;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
@@ -5797,7 +5797,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Arrow08Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Arrow08Green)this.Green;
 				var greenToken = green.TSemicolon;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(4), this.GetChildIndex(4));
 			}
@@ -6041,7 +6041,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Test09Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Test09Green)this.Green;
 				var greenToken = green.KTest09;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -6128,7 +6128,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.NamespaceDeclaration09Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.NamespaceDeclaration09Green)this.Green;
 				var greenToken = green.KNamespace;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -6226,7 +6226,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.NamespaceBody09Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.NamespaceBody09Green)this.Green;
 				var greenToken = green.TOpenBrace;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -6244,7 +6244,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.NamespaceBody09Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.NamespaceBody09Green)this.Green;
 				var greenToken = green.TCloseBrace;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
@@ -6433,7 +6433,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Vertex09Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Vertex09Green)this.Green;
 				var greenToken = green.KVertex;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -6446,7 +6446,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Vertex09Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Vertex09Green)this.Green;
 				var greenToken = green.TSemicolon;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
@@ -6535,7 +6535,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Arrow09Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Arrow09Green)this.Green;
 				var greenToken = green.KArrow;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -6548,7 +6548,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Arrow09Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Arrow09Green)this.Green;
 				var greenToken = green.TArrow;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
@@ -6561,7 +6561,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Arrow09Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Arrow09Green)this.Green;
 				var greenToken = green.TSemicolon;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(4), this.GetChildIndex(4));
 			}
@@ -6663,7 +6663,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Test10Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Test10Green)this.Green;
 				var greenToken = green.KTest10;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -6750,7 +6750,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.NamespaceDeclaration10Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.NamespaceDeclaration10Green)this.Green;
 				var greenToken = green.KNamespace;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -6848,7 +6848,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.NamespaceBody10Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.NamespaceBody10Green)this.Green;
 				var greenToken = green.TOpenBrace;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -6866,7 +6866,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.NamespaceBody10Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.NamespaceBody10Green)this.Green;
 				var greenToken = green.TCloseBrace;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
@@ -7055,7 +7055,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Vertex10Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Vertex10Green)this.Green;
 				var greenToken = green.KVertex;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -7068,7 +7068,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Vertex10Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Vertex10Green)this.Green;
 				var greenToken = green.TSemicolon;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
@@ -7157,7 +7157,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Arrow10Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Arrow10Green)this.Green;
 				var greenToken = green.KArrow;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -7170,7 +7170,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Arrow10Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Arrow10Green)this.Green;
 				var greenToken = green.TArrow;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
@@ -7183,7 +7183,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Arrow10Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Arrow10Green)this.Green;
 				var greenToken = green.TSemicolon;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(4), this.GetChildIndex(4));
 			}
@@ -7285,7 +7285,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Test11Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Test11Green)this.Green;
 				var greenToken = green.KTest11;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -7382,7 +7382,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.NamespaceDeclaration11Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.NamespaceDeclaration11Green)this.Green;
 				var greenToken = green.KNamespace;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -7480,7 +7480,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.NamespaceBody11Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.NamespaceBody11Green)this.Green;
 				var greenToken = green.TOpenBrace;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -7498,7 +7498,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.NamespaceBody11Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.NamespaceBody11Green)this.Green;
 				var greenToken = green.TCloseBrace;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
@@ -7687,7 +7687,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Vertex11Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Vertex11Green)this.Green;
 				var greenToken = green.KVertex;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -7700,7 +7700,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Vertex11Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Vertex11Green)this.Green;
 				var greenToken = green.TSemicolon;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
@@ -7789,7 +7789,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Arrow11Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Arrow11Green)this.Green;
 				var greenToken = green.KArrow;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -7802,7 +7802,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Arrow11Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Arrow11Green)this.Green;
 				var greenToken = green.TArrow;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
@@ -7815,7 +7815,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.Arrow11Green)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.Arrow11Green)this.Green;
 				var greenToken = green.TSemicolon;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(4), this.GetChildIndex(4));
 			}
@@ -8142,7 +8142,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.IdentifierGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.IdentifierGreen)this.Green;
 				var greenToken = green.Identifier;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -8411,7 +8411,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.NullLiteralGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.NullLiteralGreen)this.Green;
 				var greenToken = green.KNull;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -8484,7 +8484,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.BooleanLiteralGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.BooleanLiteralGreen)this.Green;
 				var greenToken = green.BooleanLiteral;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -8557,7 +8557,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.IntegerLiteralGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.IntegerLiteralGreen)this.Green;
 				var greenToken = green.LInteger;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -8630,7 +8630,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.DecimalLiteralGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.DecimalLiteralGreen)this.Green;
 				var greenToken = green.LDecimal;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -8703,7 +8703,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.ScientificLiteralGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.ScientificLiteralGreen)this.Green;
 				var greenToken = green.LScientific;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -8776,7 +8776,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax.StringLiteralGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax.StringLiteralGreen)this.Green;
 				var greenToken = green.LRegularString;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -8833,12 +8833,12 @@ namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
 	}
 }
 
-namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne
+namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne
 {
     using System.Threading;
     using Microsoft.CodeAnalysis.Text;
-	using MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax;
-    using MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax;
+	using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax;
+    using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax;
 
 	public interface ITestLangOneSyntaxVisitor
 	{

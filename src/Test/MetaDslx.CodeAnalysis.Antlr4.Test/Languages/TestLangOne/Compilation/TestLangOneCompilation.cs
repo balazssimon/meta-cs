@@ -11,7 +11,7 @@ using MetaDslx.CodeAnalysis.Declarations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne
+namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne
 {
     public class TestLangOneCompilation : LanguageCompilation
     {

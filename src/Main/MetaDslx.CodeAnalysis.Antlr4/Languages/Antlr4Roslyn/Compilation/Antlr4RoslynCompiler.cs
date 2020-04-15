@@ -170,7 +170,6 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                 }
                 else
                 {
-                    IncrementalParserFix(Path.Combine(this.InternalSyntaxDirectory, Path.ChangeExtension(this.FileName, ".cs")));
                     foreach (var filePath in _antlr4Tool.GeneratedCodeFiles)
                     {
                         this.RegisterGeneratedFile(filePath);
@@ -395,6 +394,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             CompilerGenerator generator = new CompilerGenerator(this.Grammar);
             generator.Properties.DefaultNamespace = this.DefaultNamespace;
             generator.Properties.LanguageName = this.LanguageName;
+
+            IncrementalParserFix(Path.Combine(this.InternalSyntaxDirectory, this.LanguageName + "Parser.cs"));
 
             this.GeneratedSyntaxKind = generator.GenerateSyntaxKind(true, this.LanguageName + "SyntaxKind", this.LanguageName + "TokensSyntaxKind");
             this.GeneratedNodeSyntaxFacts = generator.GenerateNodeSyntaxFacts();

@@ -7,13 +7,13 @@ using System.Text;
 using System.Threading.Tasks;
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Declarations;
-using MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne;
-using MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax;
-using MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Symbols;
+using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne;
+using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax;
+using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Symbols;
 
 using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Model;
 
-namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Binding
+namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Binding
 {
 	public class TestLangOneDeclarationTreeBuilderVisitor : DeclarationTreeBuilderVisitor, ITestLangOneSyntaxVisitor
 	{

@@ -300,7 +300,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp31_last) __out.AppendLine(true);
                 }
             }
-            string __tmp32_line = "Language : Language, IAntlr4RoslynLanguage"; //29:31
+            string __tmp32_line = "Language : Language"; //29:31
             if (!string.IsNullOrEmpty(__tmp32_line))
             {
                 __out.Append(__tmp32_line);
@@ -309,7 +309,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             if (__tmp29_outputWritten) __out.AppendLine(true);
             if (__tmp29_outputWritten)
             {
-                __out.AppendLine(false); //29:73
+                __out.AppendLine(false); //29:50
             }
             __out.Append("    {"); //30:1
             __out.AppendLine(false); //30:6

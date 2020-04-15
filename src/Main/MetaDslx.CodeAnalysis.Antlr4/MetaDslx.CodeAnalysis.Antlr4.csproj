@@ -6,6 +6,7 @@
     <RootNamespace>MetaDslx</RootNamespace>
     <IsPackable>false</IsPackable>
     <MetaDslxDisableMetaGeneratorGenerator>false</MetaDslxDisableMetaGeneratorGenerator>
+    <MetaDslxDisableAntlr4RoslynGenerator>false</MetaDslxDisableAntlr4RoslynGenerator>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using MetaDslx.CodeAnalysis.Syntax;
 using Roslyn.Utilities;
 
-namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
+namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax
 {
 	public class TestLangOneSyntaxKind : TestLangOneTokensSyntaxKind
 	{

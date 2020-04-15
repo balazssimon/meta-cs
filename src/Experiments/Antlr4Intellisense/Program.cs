@@ -50,6 +50,7 @@ namespace Antlr4Intellisense
             }
             while (token != null && token.Kind != SyntaxKind.Eof);
             var stream = (IncrementalAntlr4InputStream)lexer.Antlr4Lexer.InputStream;
+            Console.WriteLine("Affected old token range: " + lexer.AffectedOldTokenRange.a + ".." + lexer.AffectedOldTokenRange.b);
             Console.WriteLine("Lookahead range: " + stream.OverallMinMaxLookahead);
             return lexer;
         }

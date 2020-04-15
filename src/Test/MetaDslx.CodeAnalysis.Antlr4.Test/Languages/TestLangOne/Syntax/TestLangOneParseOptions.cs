@@ -13,7 +13,7 @@ using Roslyn.Utilities;
 
 using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Model;
 
-namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax
+namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax
 {
     /// <summary>
     /// This class stores several source parsing related options and offers access to their values.

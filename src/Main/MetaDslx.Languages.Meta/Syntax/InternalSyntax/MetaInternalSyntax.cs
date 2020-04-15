@@ -18,6 +18,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.Syntax.InternalSyntax;
     using Roslyn.Utilities;
+    using MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax;
 
 	internal abstract class GreenSyntaxNode : InternalSyntaxNode
     {
@@ -946,9 +947,9 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	{
 	    internal static readonly MainGreen __Missing = new MainGreen();
 	    private NamespaceDeclarationGreen namespaceDeclaration;
-	    private InternalSyntaxToken eof;
+	    private InternalSyntaxToken eOF;
 	
-	    public MainGreen(MetaSyntaxKind kind, NamespaceDeclarationGreen namespaceDeclaration, InternalSyntaxToken eof)
+	    public MainGreen(MetaSyntaxKind kind, NamespaceDeclarationGreen namespaceDeclaration, InternalSyntaxToken eOF)
 	        : base(kind, null, null)
 	    {
 			this.SlotCount = 2;
@@ -957,14 +958,14 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.AdjustFlagsAndWidth(namespaceDeclaration);
 				this.namespaceDeclaration = namespaceDeclaration;
 			}
-			if (eof != null)
+			if (eOF != null)
 			{
-				this.AdjustFlagsAndWidth(eof);
-				this.eof = eof;
+				this.AdjustFlagsAndWidth(eOF);
+				this.eOF = eOF;
 			}
 	    }
 	
-	    public MainGreen(MetaSyntaxKind kind, NamespaceDeclarationGreen namespaceDeclaration, InternalSyntaxToken eof, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	    public MainGreen(MetaSyntaxKind kind, NamespaceDeclarationGreen namespaceDeclaration, InternalSyntaxToken eOF, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
 	        : base(kind, diagnostics, annotations)
 	    {
 			this.SlotCount = 2;
@@ -973,10 +974,10 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.AdjustFlagsAndWidth(namespaceDeclaration);
 				this.namespaceDeclaration = namespaceDeclaration;
 			}
-			if (eof != null)
+			if (eOF != null)
 			{
-				this.AdjustFlagsAndWidth(eof);
-				this.eof = eof;
+				this.AdjustFlagsAndWidth(eOF);
+				this.eOF = eOF;
 			}
 	    }
 	
@@ -987,7 +988,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		}
 	
 	    public NamespaceDeclarationGreen NamespaceDeclaration { get { return this.namespaceDeclaration; } }
-	    public InternalSyntaxToken EndOfFileToken { get { return this.eof; } }
+	    public InternalSyntaxToken EndOfFileToken { get { return this.eOF; } }
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
@@ -999,7 +1000,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	        switch (index)
 	        {
 	            case 0: return this.namespaceDeclaration;
-	            case 1: return this.eof;
+	            case 1: return this.eOF;
 	            default: return null;
 	        }
 	    }
@@ -1010,20 +1011,20 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
 	    {
-	        return new MainGreen(this.Kind, this.namespaceDeclaration, this.eof, diagnostics, this.GetAnnotations());
+	        return new MainGreen(this.Kind, this.namespaceDeclaration, this.eOF, diagnostics, this.GetAnnotations());
 	    }
 	
 	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
 	    {
-	        return new MainGreen(this.Kind, this.namespaceDeclaration, this.eof, this.GetDiagnostics(), annotations);
+	        return new MainGreen(this.Kind, this.namespaceDeclaration, this.eOF, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public MainGreen Update(NamespaceDeclarationGreen namespaceDeclaration, InternalSyntaxToken eof)
+	    public MainGreen Update(NamespaceDeclarationGreen namespaceDeclaration, InternalSyntaxToken eOF)
 	    {
 	        if (this.NamespaceDeclaration != namespaceDeclaration ||
-				this.EndOfFileToken != eof)
+				this.EndOfFileToken != eOF)
 	        {
-	            InternalSyntaxNode newNode = MetaLanguage.Instance.InternalSyntaxFactory.Main(namespaceDeclaration, eof);
+	            InternalSyntaxNode newNode = MetaLanguage.Instance.InternalSyntaxFactory.Main(namespaceDeclaration, eOF);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
@@ -7232,12 +7233,65 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		public virtual TResult VisitScientificLiteralGreen(ScientificLiteralGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitStringLiteralGreen(StringLiteralGreen node) => this.DefaultVisit(node);
 	}
-	internal class MetaInternalSyntaxFactory : InternalSyntaxFactory
+    public partial class MetaParser
+    {
+        private IncrementalAntlr4Parser _incrementalParser;
+        public MetaParser(IncrementalAntlr4Parser incrementalParser)
+            : base(incrementalParser.Lexer)
+        {
+            _incrementalParser = incrementalParser;
+        }
+        /// <summary>
+        /// Guard a rule's previous context from being reused.
+        /// </summary>
+        /// <returns></returns>
+        public bool TryGetIncrementalContext<TContext>(global::Antlr4.Runtime.ParserRuleContext parentContext, int state, int ruleIndex, out TContext existingContext)
+            where TContext : IncrementalParserRuleContext
+        {
+            existingContext = null;
+            // If we have no previous parse data, the rule needs to be run.
+            if (_incrementalParser == null) return false;
+            // See if we have seen this state before at this starting point.
+            // If we haven't seen it, we need to rerun this rule.
+            var parentDepth = parentContext?.Depth() ?? 0;
+            if (!_incrementalParser.TryGetContext(parentDepth + 1, state, ruleIndex, _incrementalParser.CurrentTokenIndex, out existingContext)) return false;
+            // We have seen it, see if it was affected by the parse
+            if (_incrementalParser.IsAffected(existingContext)) return false;
+            // Everything checked out, reuse the rule context - we add it to the
+            // parent context as enterRule would have
+            var parent = _ctx as IncrementalParserRuleContext;
+            // add current context to parent if we have a parent
+            if (parent != null) parent.AddChild(existingContext);
+            return true;
+        }
+        #region Regular parser API
+        //The new recursion context reparents the relationship between the contexts,
+        //so we need to merge intervals here.
+        public override void PushNewRecursionContext(global::Antlr4.Runtime.ParserRuleContext localctx, int state, int ruleIndex)
+        {
+            var previous = _ctx as IncrementalParserRuleContext;
+            var incLocalCtx = localctx as IncrementalParserRuleContext;
+            incLocalCtx.MinMaxTokenIndex = incLocalCtx.MinMaxTokenIndex.Union(previous.MinMaxTokenIndex);
+            base.PushNewRecursionContext(localctx, state, ruleIndex);
+        }
+        #endregion
+    }
+	internal class MetaInternalSyntaxFactory : InternalSyntaxFactory, MetaDslx.Languages.Antlr4Roslyn.IAntlr4SyntaxFactory
 	{
 		public MetaInternalSyntaxFactory(MetaSyntaxFacts syntaxFacts) 
 		    : base(syntaxFacts)
 		{
 		}
+	
+	    public Antlr4.Runtime.Lexer CreateAntlr4Lexer(Antlr4.Runtime.ICharStream input)
+	    {
+	        return new MetaLexer(input);
+	    }
+	
+	    public Antlr4.Runtime.Parser CreateAntlr4Parser(Antlr4.Runtime.ITokenStream input)
+	    {
+	        return new MetaParser(input);
+	    }
 	
 	    public override Language Language => MetaLanguage.Instance;
 	
@@ -7507,17 +7561,17 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	        return Token(null, MetaSyntaxKind.LComment, text, value, null);
 	    }
 	
-		public MainGreen Main(NamespaceDeclarationGreen namespaceDeclaration, InternalSyntaxToken eof)
+		public MainGreen Main(NamespaceDeclarationGreen namespaceDeclaration, InternalSyntaxToken eOF)
 	    {
 	#if DEBUG
 			if (namespaceDeclaration == null) throw new ArgumentNullException(nameof(namespaceDeclaration));
-			if (eof == null) throw new ArgumentNullException(nameof(eof));
-			if (eof.Kind != MetaSyntaxKind.Eof) throw new ArgumentException(nameof(eof));
+			if (eOF == null) throw new ArgumentNullException(nameof(eOF));
+			if (eOF.Kind != MetaSyntaxKind.Eof) throw new ArgumentException(nameof(eOF));
 	#endif
 			int hash;
-			var cached = SyntaxNodeCache.TryGetNode((int)(MetaSyntaxKind)MetaSyntaxKind.Main, namespaceDeclaration, eof, out hash);
+			var cached = SyntaxNodeCache.TryGetNode((int)(MetaSyntaxKind)MetaSyntaxKind.Main, namespaceDeclaration, eOF, out hash);
 			if (cached != null) return (MainGreen)cached;
-			var result = new MainGreen(MetaSyntaxKind.Main, namespaceDeclaration, eof);
+			var result = new MainGreen(MetaSyntaxKind.Main, namespaceDeclaration, eOF);
 			if (hash >= 0)
 			{
 				SyntaxNodeCache.AddNode(result, hash);

@@ -12,10 +12,10 @@ using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using Microsoft.CodeAnalysis;
-using MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne;
-using MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax;
-using MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne.Syntax.InternalSyntax;
-namespace MetaDslx.CodeAnalysis.Antlr4.Test.Language.TestLanguageOne
+using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne;
+using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax;
+using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax;
+namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne
 {
     /// <summary>
     /// The parsed representation of a C# source document.
