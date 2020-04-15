@@ -19,42 +19,54 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         private readonly IncrementalAntlr4Lexer _lexer;
         private readonly Parser _parser;
         private readonly bool _isIncremental;
+        private readonly IncrementalAntlr4Parser _oldParser;
+        private readonly int _version;
         private SyntaxNode _syntaxTree;
         private Dictionary<(int depth, int state, int ruleIndex, int currentTokenIndex), IncrementalParserRuleContext> _ruleStartMap;
 
         public IncrementalAntlr4Parser(Language language, SourceText text, LanguageParseOptions options, ImmutableArray<TextChangeRange> changes, IncrementalAntlr4Parser oldParser, CancellationToken cancellationToken = default)
-            : base(text, language, options, oldParser._syntaxTree, changes, cancellationToken)
+            : base(text, language, options, oldParser?._syntaxTree, changes, cancellationToken)
         {
             _isIncremental = changes.Length > 0 && oldParser != null;
+            _version = _isIncremental ? oldParser._version + 1 : 1;
+            _oldParser = oldParser;
             _lexer = new IncrementalAntlr4Lexer(language, text, changes, oldParser?.Lexer, cancellationToken);
             _parser = ((IAntlr4SyntaxFactory)language.InternalSyntaxFactory).CreateAntlr4Parser(_lexer);
+            ((IncrementalParser)_parser)._incrementalParser = this;
             _parser.AddParseListener(this);
             _ruleStartMap = new Dictionary<(int depth, int state, int ruleIndex, int currentTokenIndex), IncrementalParserRuleContext>();
         }
 
         public IncrementalAntlr4Lexer Lexer => _lexer;
 
+        public Parser Antlr4Parser => _parser;
+
         public int CurrentTokenIndex => _lexer.Index;
+
+        public override DirectiveStack Directives => DirectiveStack.Empty;
 
         public bool TryGetContext<TContext>(int depth, int state, int ruleIndex, int currentTokenIndex, out TContext existingContext)
             where TContext : IncrementalParserRuleContext
         {
-            var key = (depth, state, ruleIndex, currentTokenIndex);
-            if (_ruleStartMap.TryGetValue(key, out var ctx))
+            if (_oldParser != null)
             {
-                if (ctx is TContext typedCtx)
+                var key = (depth, state, ruleIndex, currentTokenIndex);
+                if (_oldParser._ruleStartMap.TryGetValue(key, out var ctx))
                 {
-                    existingContext = typedCtx;
-                    return true;
+                    if (ctx is TContext typedCtx)
+                    {
+                        existingContext = typedCtx;
+                        return true;
+                    }
                 }
             }
             existingContext = null;
             return false;
         }
 
-        public bool IsAffected(IncrementalParserRuleContext existingContext)
+        public bool IsAffected(int start, int length)
         {
-            return _lexer.AffectedOldTokenRange.Intersection(existingContext.MinMaxTokenIndex).Length > 0;
+            return _lexer.AffectedOldTokenRange.Intersection(Interval.Of(start, start + length - 1)).Length > 0;
         }
 
         #region ParseTreeListener API
@@ -70,22 +82,32 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         void IParseTreeListener.EnterEveryRule(ParserRuleContext ctx)
         {
             // During rule entry, we push a new min/max token state.
-            Lexer.PushMinMax();
+            Lexer.PushIncrementalRuleInfo();
         }
 
         void IParseTreeListener.ExitEveryRule(ParserRuleContext ctx)
         {
             // On exit, we need to merge the min max into the current context,
             // and then merge the current context interval into our parent.
+            var incrementalRuleInfo = Lexer.PopIncrementalRuleInfo();
 
             // First merge with the interval on the top of the stack.
             var incCtx = ctx as IncrementalParserRuleContext;
-            var interval = Lexer.PopMinMax();
-            incCtx.MinMaxTokenIndex = incCtx.MinMaxTokenIndex.Union(interval);
+            if (incCtx._version == 0)
+            {
+                incCtx._version = _version;
+
+                incCtx.MinMaxTokenIndex = incCtx.MinMaxTokenIndex.Union(incrementalRuleInfo.minMaxTokens);
+                incCtx._tokenCount = incrementalRuleInfo.startEndTokens.Length;
+            }
+            else
+            {
+                incCtx.MinMaxTokenIndex = Interval.Of(Lexer.GetNewTokenIndex(incCtx.MinMaxTokenIndex.a), Lexer.GetNewTokenIndex(incCtx.MinMaxTokenIndex.b));
+            }
 
             // Popped interval is wrong because there may have been child
             // intervals already merged into this ctx.
-            interval = incCtx.MinMaxTokenIndex;
+            var interval = incCtx.MinMaxTokenIndex;
 
             // Now merge with our parent interval.
             if (incCtx.parent != null)
@@ -93,6 +115,9 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
                 var parentIncCtx = incCtx.parent as IncrementalParserRuleContext;
                 parentIncCtx.MinMaxTokenIndex = parentIncCtx.MinMaxTokenIndex.Union(interval);
             }
+
+            var key = (ctx.Depth(), ctx.invokingState, ctx.RuleIndex, incrementalRuleInfo.startEndTokens.a);
+            _ruleStartMap[key] = incCtx;
         }
 
         #endregion

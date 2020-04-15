@@ -39,8 +39,9 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         private int _index;
         private int _position;
         private Antlr4LexerState _currentState;
+        private int _newIndexAfterChange = -1;
 
-        private Stack<Interval> _minMaxStack = new Stack<Interval>();
+        private Stack<(Interval minMaxTokens, Interval startEndTokens)> _minMaxStack = new Stack<(Interval, Interval)>();
         private int _lastMinMaxPosition = -1;
         private int _lastMinMaxK = -1;
 
@@ -97,13 +98,15 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 
         ITokenSource ITokenStream.TokenSource => _lexer;
 
-        int IIntStream.Index => _index;
+        int IIntStream.Index => this.Index;
 
         int IIntStream.Size => this.Count;
 
         string IIntStream.SourceName => _lexer.SourceName;
 
         public Interval AffectedOldTokenRange => _affectedOldTokenRange;
+
+        public override int Index => _index;
 
         public override InternalSyntaxToken Lex()
         {
@@ -174,6 +177,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
                     }
                     if (_position == _afterChange.Position)
                     {
+                        _newIndexAfterChange = _index;
                         _oldLexer.Seek(_afterChange.Index);
                     }
                     this.FetchFromOldLexer();
@@ -315,7 +319,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
                 if (_minMaxStack.Count > 0 && (_lastMinMaxPosition != _position || _lastMinMaxK != k))
                 {
                     var stackItem = _minMaxStack.Pop();
-                    _minMaxStack.Push(stackItem.Union(Interval.Of(resultIndex, resultIndex)));
+                    _minMaxStack.Push((stackItem.minMaxTokens.Union(Interval.Of(resultIndex, resultIndex)), stackItem.startEndTokens));
                     _lastMinMaxPosition = _position;
                     _lastMinMaxK = k;
                 }
@@ -522,21 +526,36 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             else return (-1, -1, null);
         }
 
-        public void PushMinMax()
+        public void PushIncrementalRuleInfo()
         {
-            _minMaxStack.Push(Interval.Of(_index, _index));
+            _minMaxStack.Push((Interval.Of(_index, _index), Interval.Of(_index, _index)));
         }
 
-        public Interval PopMinMax()
+        public (Interval minMaxTokens, Interval startEndTokens) PopIncrementalRuleInfo()
         {
             if (_minMaxStack.Count == 0)
             {
                 throw new IndexOutOfRangeException("Can't pop the min max state when there are 0 states");
             }
-            return _minMaxStack.Pop();
+            var result = _minMaxStack.Pop();
+            return (result.minMaxTokens, Interval.Of(result.startEndTokens.a, _index-1));
         }
 
         public int MinMaxCount => _minMaxStack.Count;
+
+        public int GetOldTokenIndex(int index)
+        {
+            if (index <= _beforeChange.Index) return index;
+            if (_newIndexAfterChange >= 0 && index >= _newIndexAfterChange) return index - _newIndexAfterChange + _afterChange.Index;
+            return -1;
+        }
+
+        public int GetNewTokenIndex(int index)
+        {
+            if (index <= _beforeChange.Index) return index;
+            if (_newIndexAfterChange >= 0 && index >= _afterChange.Index) return index - _afterChange.Index + _newIndexAfterChange;
+            return -1;
+        }
 
         private struct RangeEdgeState
         {

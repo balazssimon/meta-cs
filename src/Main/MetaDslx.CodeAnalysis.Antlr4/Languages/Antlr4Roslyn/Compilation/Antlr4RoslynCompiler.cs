@@ -187,7 +187,14 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                 while(!reader.EndOfStream)
                 {
                     var line = reader.ReadLine();
-                    line = line.Replace("Context : ParserRuleContext {", "Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {");
+                    if (line.Contains(": Parser {"))
+                    {
+                        line = line.Replace(": Parser {", ": global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParser {");
+                    }
+                    if (line.Contains("Context : ParserRuleContext {"))
+                    {
+                        line = line.Replace("Context : ParserRuleContext {", "Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {");
+                    }
                     if (line.Contains("Context _localctx = new "))
                     {
                         var contextTypeName = line.Substring(0, line.IndexOf("_localctx")).Trim();

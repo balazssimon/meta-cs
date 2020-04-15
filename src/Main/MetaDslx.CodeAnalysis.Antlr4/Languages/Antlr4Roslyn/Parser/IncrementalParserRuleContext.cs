@@ -11,8 +11,10 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         // Avoid having to recompute depth on every single depth call
         private int _cachedDepth = -1;
         private RuleContext _cachedParent = null;
+        internal int _version;
+        internal int _tokenCount;
 
-        private Interval _minMaxTokenIndex = Interval.Of(int.MinValue, int.MaxValue);
+        private Interval _minMaxTokenIndex = Interval.Of(int.MaxValue, int.MinValue);
 
         public IncrementalParserRuleContext()
         {
@@ -23,6 +25,10 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             : base(parent, invokingState)
         {
         }
+
+        public int Version => _version;
+
+        public int TokenCount => _tokenCount;
 
         /// <summary>
         /// Get the minimum token index this rule touched.

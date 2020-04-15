@@ -10,7 +10,6 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
     {
         private readonly SourceText _text;
         private readonly Language _language;
-        private int _index;
         private List<SyntaxDiagnosticInfo> _errors;
 
         public Lexer(SourceText text, Language language)
@@ -23,14 +22,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         public SourceText SourceText => _text;
 
-        public int Index => _index;
-
-        protected void Start()
-        {
-            _index = 0;
-            _errors = null;
-            // this.RestoreState(default); // TODO:MetaDslx
-        }
+        public abstract int Index { get; }
 
         public abstract InternalSyntaxToken Lex();
 

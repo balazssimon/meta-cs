@@ -32,7 +32,7 @@ using DFA = Antlr4.Runtime.Dfa.DFA;
 
 [System.CodeDom.Compiler.GeneratedCode("ANTLR", "4.6.6")]
 [System.CLSCompliant(false)]
-public partial class MetaParser : Parser {
+public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParser {
 	public const int
 		KNamespace=1, KUsing=2, KMetamodel=3, KExtern=4, KTypeDef=5, KAbstract=6, 
 		KClass=7, KStruct=8, KEnum=9, KAssociation=10, KContainment=11, KWith=12, 
