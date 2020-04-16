@@ -26,6 +26,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         {
             existingContext = null;
 
+            if (state < 0) state = 0;
+
             // If we have no previous parse data, the rule needs to be run.
             if (_incrementalParser == null) return false;
 

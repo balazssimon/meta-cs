@@ -42,13 +42,24 @@ namespace Antlr4Intellisense
     {
         public static void Main(string[] args)
         {
-            //*/
+            //*/        0123456789012
             var text = "var a = 1 + 2\r\nvar b = a+1\r\n";
             var change = ImmutableArray<TextChangeRange>.Empty;
             
             var lexer = Lex(text, change, null);
             Console.WriteLine("----");
             var parser = Parse(text, change, null);
+            Console.WriteLine("====");
+            Intellisense(parser, 0);
+            Intellisense(parser, 3);
+            Intellisense(parser, 4);
+            Intellisense(parser, 5);
+            Intellisense(parser, 6);
+            Intellisense(parser, 7);
+            Intellisense(parser, 8);
+            Intellisense(parser, 9);
+            Intellisense(parser, 10);
+            Intellisense(parser, 11);
             Console.WriteLine("====");
 
             text = "var a = 13 + 2\r\nvar b = a+1\r\n";
@@ -147,6 +158,19 @@ namespace Antlr4Intellisense
             else
             {
                 buf.AppendLine();
+            }
+        }
+
+        private static void Intellisense(IncrementalSandyParser parser, int position)
+        {
+            var completion = parser.GetCompletionTokensAt(position);
+            Console.WriteLine("Position: "+position);
+            foreach (var item in completion)
+            {
+                if (item >= 0)
+                {
+                    Console.WriteLine("  " + item + " (" + parser.Antlr4Parser.TokenNames[item] + ")");
+                }
             }
         }
 

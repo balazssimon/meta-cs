@@ -327,6 +327,14 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             return result;
         }
 
+        internal int GetTokenTypeAt(int index)
+        {
+            if (index < 0) return -1;
+            EnsureTokensFetchedAtIndex(index);
+            if (index < _tokens.Count) return _tokens[index].Antlr4Token.Type;
+            else return -1;
+        }
+
         IToken ITokenStream.Get(int i)
         {
             if (i < 0) return null;
@@ -430,7 +438,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             return (beforeChange, afterChange, affectedOldTokenRange);
         }
 
-        private int GetPositionAtIndex(int index)
+        public int GetPositionAtIndex(int index)
         {
             EnsureTokensFetchedAtIndex(index);
             var state = FindStateAtIndex(index);
@@ -447,7 +455,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             else return currentPosition;
         }
 
-        private int GetIndexAtPosition(int position)
+        public int GetIndexAtPosition(int position)
         {
             EnsureTokensFetchedAtPosition(position);
             var state = FindStateAtPosition(position);
