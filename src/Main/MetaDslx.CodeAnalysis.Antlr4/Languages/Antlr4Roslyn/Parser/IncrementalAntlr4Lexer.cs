@@ -29,9 +29,11 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 
         private readonly SyntaxFacts _syntaxFacts;
         private readonly InternalSyntaxFactory _syntaxFactory;
-        private readonly List<(IToken Antlr4Token, InternalSyntaxToken RoslynToken)> _tokens;
+        private readonly List<IToken> _tokens;
         private readonly List<(int position, int index, Antlr4LexerState state)> _states;
         private readonly bool _isIncremental;
+
+        private readonly List<InternalSyntaxToken> _roslynTokens;
 
         private IToken _lastToken;
         private int _lastFetchedPosition;
@@ -41,7 +43,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         private Antlr4LexerState _currentState;
         private int _newIndexAfterChange = -1;
 
-        private Stack<(Interval minMaxTokens, Interval startEndTokens)> _minMaxStack = new Stack<(Interval, Interval)>();
+        private Stack<(Interval minMaxTokens, Interval startEndTokens)> _minMaxStack;
         private int _lastMinMaxPosition = -1;
         private int _lastMinMaxK = -1;
 
@@ -53,12 +55,14 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             _lexer = ((IAntlr4SyntaxFactory)language.InternalSyntaxFactory).CreateAntlr4Lexer(_stream);
             _syntaxFacts = language.SyntaxFacts;
             _syntaxFactory = language.InternalSyntaxFactory;
-            _tokens = new List<(IToken, InternalSyntaxToken)>();
+            _tokens = new List<IToken>();
+            _roslynTokens = new List<InternalSyntaxToken>();
             _index = 0;
             _position = 0;
             _fetchedEof = false;
             _oldLexer = oldLexer;
             _states = new List<(int, int, Antlr4LexerState)>();
+            _minMaxStack = new Stack<(Interval, Interval)>();
 
             if (changes != null && oldLexer != null)
             {
@@ -94,7 +98,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             }
         }
 
-        public Antlr4.Runtime.Lexer Antlr4Lexer => _lexer;
+        Antlr4.Runtime.Lexer IAntlr4Lexer.Antlr4Lexer => _lexer;
 
         ITokenSource ITokenStream.TokenSource => _lexer;
 
@@ -108,17 +112,39 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 
         public override int Index => _index;
 
-        public override InternalSyntaxToken Lex()
+        public InternalSyntaxToken CurrentToken
         {
-            return ReadNextToken().RoslynToken;
+            get
+            {
+                EnsureTokensFetchedAtIndex(_index);
+                if (_index >= 0 && _index < _roslynTokens.Count) return _roslynTokens[_index];
+                else return null;
+            }
         }
 
-        private (IToken Antlr4Token, InternalSyntaxToken RoslynToken) ReadNextToken()
+        public IToken CurrentAntlr4Token
+        {
+            get
+            {
+                EnsureTokensFetchedAtIndex(_index);
+                if (_index >= 0 && _index < _tokens.Count) return _tokens[_index];
+                else return null;
+            }
+        }
+
+        public override InternalSyntaxToken Lex()
+        {
+            var result = this.CurrentToken;
+            ReadNextToken();
+            return result;
+        }
+
+        private IToken ReadNextToken()
         {
             EnsureTokensFetchedAtIndex(_index);
-            if (_index < 0 || _index >= _tokens.Count) return (null, null);
+            if (_index < 0 || _index >= _tokens.Count) return null;
             var result = _tokens[_index];
-            _position += result.RoslynToken?.FullWidth ?? 0;
+            _position += _roslynTokens[_index].FullWidth;
             ++_index;
             return result;
         }
@@ -129,13 +155,13 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             return text != null && (text.EndsWith("\r") || text.EndsWith("\n"));
         }
 
-        public object GetState(int index)
+        internal object GetState(int index)
         {
             var state = FindStateAtIndex(index);
             return state.state;
         }
 
-        public void RestoreState(object state)
+        internal void RestoreState(object state)
         {
             if (state == null) throw new ArgumentNullException(nameof(state));
             if (state is Antlr4LexerState antlr4LexerState)
@@ -213,12 +239,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             }
             var leadingTriviaArray = leadingTriviaBuilder.ToArrayAndFree();
             var leadingTrivia = leadingTriviaArray.Length > 0 ? _syntaxFactory.List(leadingTriviaArray).Node : null;
-            InternalSyntaxToken result;
+            InternalSyntaxToken roslynToken;
             if (token == null || token.Type < 0)
             {
-                result = _syntaxFactory.EndOfFile;
+                roslynToken = _syntaxFactory.EndOfFile;
                 _fetchedEof = true;
-                if (leadingTrivia != null) result = (InternalSyntaxToken)result.WithLeadingTrivia(leadingTrivia);
+                if (leadingTrivia != null) roslynToken = (InternalSyntaxToken)roslynToken.WithLeadingTrivia(leadingTrivia);
             }
             else
             {
@@ -240,17 +266,18 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
                 var kind = token.Type.FromAntlr4(_syntaxFacts.SyntaxKindType);
                 if (this.Language.SyntaxFacts.IsFixedToken(kind))
                 {
-                    result = _syntaxFactory.Token(leadingTrivia, kind, trailingTrivia);
+                    roslynToken = _syntaxFactory.Token(leadingTrivia, kind, trailingTrivia);
                 }
                 else
                 {
                     string text = token.Text;
                     var value = this.Language.SyntaxFacts.ExtractValue(text);
-                    result = _syntaxFactory.Token(leadingTrivia, kind, text, value, trailingTrivia);
+                    roslynToken = _syntaxFactory.Token(leadingTrivia, kind, text, value, trailingTrivia);
                 }
             }
-            _tokens.Add((token, result));
-            _lastFetchedPosition += result.FullWidth;
+            _tokens.Add(token);
+            _roslynTokens.Add(roslynToken);
+            _lastFetchedPosition += roslynToken.FullWidth;
             SaveState();
         }
 
@@ -284,17 +311,19 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         {
             if (_fetchedEof) return;
             var token = _oldLexer.ReadNextToken();
-            _tokens.Add(token); 
-            if (token.RoslynToken.Kind == SyntaxKind.Eof) _fetchedEof = true;
+            _tokens.Add(token);
+            var roslynToken = _oldLexer._roslynTokens[_oldLexer._index - 1];
+            _roslynTokens.Add(roslynToken);
+            if (roslynToken.Kind == SyntaxKind.Eof) _fetchedEof = true;
             _lastToken = null;
-            _lastFetchedPosition += token.RoslynToken?.FullWidth ?? 0;
+            _lastFetchedPosition += roslynToken.FullWidth;
             SaveState(_oldLexer._currentState);
         }
 
-        private (IToken Antlr4Token, InternalSyntaxToken RoslynToken) GetToken(int index)
+        private IToken GetToken(int index)
         {
             EnsureTokensFetchedAtIndex(index);
-            if (index < 0 || index >= _tokens.Count) return (null, null);
+            if (index < 0 || index >= _tokens.Count) return null;
             return _tokens[index];
         }
 
@@ -331,7 +360,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         {
             if (index < 0) return -1;
             EnsureTokensFetchedAtIndex(index);
-            if (index < _tokens.Count) return _tokens[index].Antlr4Token.Type;
+            if (index < _tokens.Count) return _tokens[index].Type;
             else return -1;
         }
 
@@ -339,7 +368,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         {
             if (i < 0) return null;
             EnsureTokensFetchedAtIndex(i);
-            if (i < _tokens.Count) return _tokens[i].Antlr4Token;
+            if (i < _tokens.Count) return _tokens[i];
             else return null;
         }
 
@@ -364,8 +393,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 
         string ITokenStream.GetText(IToken startToken, IToken stopToken)
         {
-            var start = _tokens.FindIndex(t => t.Antlr4Token == startToken);
-            var stop = _tokens.FindIndex(t => t.Antlr4Token == stopToken);
+            var start = _tokens.IndexOf(startToken);
+            var stop = _tokens.IndexOf(stopToken);
             return GetText(start, stop);
         }
 
@@ -428,9 +457,9 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 
             RangeEdgeState beforeChange;
             RangeEdgeState afterChange;
-            if (lastTokenBeforeChange.Antlr4Token != null) beforeChange = new RangeEdgeState(startIndex, startPosition, oldLexer.GetState(startIndex));
+            if (lastTokenBeforeChange != null) beforeChange = new RangeEdgeState(startIndex, startPosition, oldLexer.GetState(startIndex));
             else beforeChange = new RangeEdgeState(0, 0, oldLexer.GetState(0));
-            if (firstTokenAfterChange.Antlr4Token != null) afterChange = new RangeEdgeState(endIndex, startPosition + finalLength, oldLexer.GetState(endIndex));
+            if (firstTokenAfterChange != null) afterChange = new RangeEdgeState(endIndex, startPosition + finalLength, oldLexer.GetState(endIndex));
             else afterChange = new RangeEdgeState(oldLexer.Count, oldLexer.SourceText.Length, oldLexer.GetState(oldLexer.Count));
 
             var affectedOldTokenRange = Interval.Of(startIndex, endIndex);
@@ -448,7 +477,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             while (currentIndex < index && currentIndex < _tokens.Count)
             {
                 _cancellationToken.ThrowIfCancellationRequested();
-                currentPosition += _tokens[currentIndex].RoslynToken.FullWidth;
+                currentPosition += _roslynTokens[currentIndex].FullWidth;
                 ++currentIndex;
             }
             if (currentIndex < index) return -1;
@@ -465,11 +494,34 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             while (currentPosition < position && currentIndex < _tokens.Count)
             {
                 _cancellationToken.ThrowIfCancellationRequested();
-                currentPosition += _tokens[currentIndex].RoslynToken.FullWidth;
+                var token = _roslynTokens[currentIndex];
+                currentPosition += token.FullWidth;
                 if (currentPosition > position) return currentIndex;
                 ++currentIndex;
             }
             return currentIndex;
+        }
+
+        public (int, int) GetNeighboringIndicesAtPosition(int position)
+        {
+            EnsureTokensFetchedAtPosition(position);
+            var state = FindStateAtPosition(position);
+            var currentIndex = state.index;
+            if (currentIndex < 0) return (-1, -1);
+            var currentPosition = state.position;
+            while (currentPosition < position && currentIndex < _tokens.Count)
+            {
+                _cancellationToken.ThrowIfCancellationRequested();
+                var token = _roslynTokens[currentIndex];
+                currentPosition += token.GetLeadingTriviaWidth();
+                if (currentPosition > position) return (currentIndex - 1, currentIndex);
+                currentPosition += token.Width;
+                if (currentPosition > position) return (currentIndex, currentIndex);
+                currentPosition += token.GetTrailingTriviaWidth();
+                if (currentPosition > position) return (currentIndex, currentIndex + 1);
+                ++currentIndex;
+            }
+            return (currentIndex, currentIndex);
         }
 
         private (int position, int index, Antlr4LexerState state) FindStateAtPosition(int position)
@@ -534,31 +586,31 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             else return (-1, -1, null);
         }
 
-        public void PushIncrementalRuleInfo()
+        internal void PushIncrementalRuleInfo()
         {
             _minMaxStack.Push((Interval.Of(_index, _index), Interval.Of(_index, _index)));
         }
 
-        public (Interval minMaxTokens, Interval startEndTokens) PopIncrementalRuleInfo()
+        internal (Interval minMaxTokens, Interval startEndTokens) PopIncrementalRuleInfo()
         {
             if (_minMaxStack.Count == 0)
             {
                 throw new IndexOutOfRangeException("Can't pop the min max state when there are 0 states");
             }
             var result = _minMaxStack.Pop();
-            return (result.minMaxTokens, Interval.Of(result.startEndTokens.a, _index-1));
+            return (result.minMaxTokens, Interval.Of(result.startEndTokens.a, _index - 1));
         }
 
-        public int MinMaxCount => _minMaxStack.Count;
+        internal int MinMaxCount => _minMaxStack.Count;
 
-        public int GetOldTokenIndex(int index)
+        internal int GetOldTokenIndex(int index)
         {
             if (index <= _beforeChange.Index) return index;
             if (_newIndexAfterChange >= 0 && index >= _newIndexAfterChange) return index - _newIndexAfterChange + _afterChange.Index;
             return -1;
         }
 
-        public int GetNewTokenIndex(int index)
+        internal int GetNewTokenIndex(int index)
         {
             if (index <= _beforeChange.Index) return index;
             if (_newIndexAfterChange >= 0 && index >= _afterChange.Index) return index - _afterChange.Index + _newIndexAfterChange;

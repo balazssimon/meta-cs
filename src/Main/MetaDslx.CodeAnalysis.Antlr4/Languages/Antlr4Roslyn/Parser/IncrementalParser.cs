@@ -1,4 +1,5 @@
 ﻿using Antlr4.Runtime;
+using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
 using System;
 using System.Collections.Generic;
@@ -55,6 +56,9 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 
             // add current context to parent if we have a parent
             if (parent != null) parent.AddChild(existingContext);
+
+            var oldMinMax = existingContext.MinMaxTokenIndex;
+            existingContext.MinMaxTokenIndex = Interval.Of(_incrementalParser.Lexer.GetNewTokenIndex(oldMinMax.a), _incrementalParser.Lexer.GetNewTokenIndex(oldMinMax.b));
 
             ((IParseTreeListener)_incrementalParser).ExitEveryRule(existingContext);
             return true;

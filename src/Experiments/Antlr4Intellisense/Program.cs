@@ -51,6 +51,7 @@ namespace Antlr4Intellisense
             var parser = Parse(text, change, null);
             Console.WriteLine("====");
             Intellisense(parser, 0);
+            Intellisense(parser, 1);
             Intellisense(parser, 3);
             Intellisense(parser, 4);
             Intellisense(parser, 5);
@@ -60,6 +61,8 @@ namespace Antlr4Intellisense
             Intellisense(parser, 9);
             Intellisense(parser, 10);
             Intellisense(parser, 11);
+            Intellisense(parser, 12);
+            Intellisense(parser, 13);
             Console.WriteLine("====");
 
             text = "var a = 13 + 2\r\nvar b = a+1\r\n";
@@ -114,9 +117,9 @@ namespace Antlr4Intellisense
                 Console.WriteLine(token);
             }
             while (token != null && token.Kind != SyntaxKind.Eof);
-            var stream = (IncrementalAntlr4InputStream)lexer.Antlr4Lexer.InputStream;
+            //var stream = (IncrementalAntlr4InputStream)lexer.Antlr4Lexer.InputStream;
             Console.WriteLine("Affected old token range: " + lexer.AffectedOldTokenRange.a + ".." + lexer.AffectedOldTokenRange.b);
-            Console.WriteLine("Lookahead range: " + stream.OverallMinMaxLookahead);
+            //Console.WriteLine("Lookahead range: " + stream.OverallMinMaxLookahead);
             return lexer;
         }
 
@@ -169,7 +172,7 @@ namespace Antlr4Intellisense
             {
                 if (item >= 0)
                 {
-                    Console.WriteLine("  " + item + " (" + parser.Antlr4Parser.TokenNames[item] + ")");
+                    Console.WriteLine("  " + item + " (" + parser.Antlr4Parser.Vocabulary.GetSymbolicName(item) + ")");
                 }
             }
         }

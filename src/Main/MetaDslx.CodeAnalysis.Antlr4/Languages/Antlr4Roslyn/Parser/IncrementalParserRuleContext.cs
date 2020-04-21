@@ -10,10 +10,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
     {
         // Avoid having to recompute depth on every single depth call
         private int _cachedDepth = -1;
-        private RuleContext _cachedParent = null;
-        internal int _version;
-        internal int _tokenCount;
-
+        private int _version;
+        private int _tokenCount;
         private Interval _minMaxTokenIndex = Interval.Of(int.MaxValue, int.MinValue);
 
         public IncrementalParserRuleContext()
@@ -26,9 +24,21 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         {
         }
 
-        public int Version => _version;
+#if DEBUG
+        public int Version
+        {
+            get { return _version; }
+            internal set { _version = value; }
+        }
+#endif
 
-        public int TokenCount => _tokenCount;
+        public bool IsNew => _minMaxTokenIndex.a == int.MaxValue && _minMaxTokenIndex.b == int.MinValue;
+
+        public int TokenCount
+        {
+            get { return _tokenCount; }
+            internal set { _tokenCount = value; }
+        }
 
         /// <summary>
         /// Get the minimum token index this rule touched.
@@ -46,7 +56,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         public Interval MinMaxTokenIndex
         {
             get { return _minMaxTokenIndex; }
-            set { _minMaxTokenIndex = value; }
+            internal set { _minMaxTokenIndex = value; }
         }
 
         /// <summary>
@@ -54,11 +64,10 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         /// </summary>
         public override int Depth()
         {
-            if (_cachedParent != null && _cachedParent == this.parent) return _cachedDepth;
+            if (_cachedDepth >= 0) return _cachedDepth;
             if (this.parent != null)
             {
                 var parentDepth = this.parent.Depth();
-                _cachedParent = parent;
                 _cachedDepth = parentDepth + 1;
             }
             else
