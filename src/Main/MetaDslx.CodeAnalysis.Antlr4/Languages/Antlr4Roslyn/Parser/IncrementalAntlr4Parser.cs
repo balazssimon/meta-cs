@@ -11,6 +11,10 @@ using Microsoft.CodeAnalysis.Text;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Data;
+using System.Diagnostics;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 
@@ -18,59 +22,181 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 {
     public abstract class IncrementalAntlr4Parser : SyntaxParser, IParseTreeListener
     {
+        private static ConditionalWeakTable<GreenNode, IncrementalAntlr4Parser> _treeParsers = new ConditionalWeakTable<GreenNode, IncrementalAntlr4Parser>();
+
         private readonly IncrementalAntlr4Lexer _lexer;
-        private readonly Parser _parser;
+        private readonly Parser _antlr4Parser;
         private readonly bool _isIncremental;
         private readonly IncrementalAntlr4Parser _oldParser;
-        private SyntaxNode _syntaxTree;
-        private Dictionary<(int depth, int state, int ruleIndex, int currentTokenIndex), IncrementalParserRuleContext> _ruleStartMap;
+        private GreenNode _syntaxTree;
+        private int _lastVisitedTokenIndex;
+        private Dictionary<(int currentTokenIndex, int ruleIndex, int state, int depth), ParserRuleContext> _ruleStartMap;
 #if DEBUG
+        private static ConditionalWeakTable<GreenNode, object> _greenVersion = new ConditionalWeakTable<GreenNode, object>();
+        private Dictionary<ParserRuleContext, (GreenNode greenNode, Interval minMaxTokens, int tokenCount, int version)> _ruleMap;
         private readonly int _version;
+#else
+        private Dictionary<ParserRuleContext, (GreenNode greenNode, Interval minMaxTokens, int tokenCount)> _ruleMap;
 #endif
 
-        public IncrementalAntlr4Parser(Language language, SourceText text, LanguageParseOptions options, ImmutableArray<TextChangeRange> changes, IncrementalAntlr4Parser oldParser, CancellationToken cancellationToken = default)
-            : base(text, language, options, oldParser?._syntaxTree, changes, cancellationToken)
+        public IncrementalAntlr4Parser(Language language, SourceText text, LanguageParseOptions options, SyntaxNode oldTree, IEnumerable<TextChangeRange> changes, CancellationToken cancellationToken = default)
+            : base(language, text, options, oldTree, changes, cancellationToken)
         {
-            _isIncremental = changes.Length > 0 && oldParser != null;
+
+            if (oldTree != null && oldTree.Green != null) _treeParsers.TryGetValue(oldTree.Green, out _oldParser);
+            _isIncremental = changes != null && changes.Any() && _oldParser != null;
 #if DEBUG
-            _version = _isIncremental ? oldParser._version + 1 : 1;
+            _ruleMap = new Dictionary<ParserRuleContext, (GreenNode greenNode, Interval minMaxTokens, int tokenCount, int version)>();
+            _version = _isIncremental ? _oldParser._version + 1 : 1;
+#else
+            _ruleMap = new Dictionary<ParserRuleContext, (GreenNode greenNode, Interval minMaxTokens, int tokenCount)>();
 #endif
-            _oldParser = oldParser;
-            _lexer = new IncrementalAntlr4Lexer(language, text, changes, oldParser?.Lexer, cancellationToken);
-            _parser = ((IAntlr4SyntaxFactory)language.InternalSyntaxFactory).CreateAntlr4Parser(_lexer);
-            ((IncrementalParser)_parser)._incrementalParser = this;
-            _parser.AddParseListener(this);
-            _ruleStartMap = new Dictionary<(int depth, int state, int ruleIndex, int currentTokenIndex), IncrementalParserRuleContext>();
+            _lexer = new IncrementalAntlr4Lexer(language, text, changes, _oldParser?.Lexer, cancellationToken);
+            _antlr4Parser = ((IAntlr4SyntaxFactory)language.InternalSyntaxFactory).CreateAntlr4Parser(_lexer);
+            ((IncrementalParser)_antlr4Parser)._incrementalParser = this;
+            _antlr4Parser.AddParseListener(this);
+            _ruleStartMap = new Dictionary<(int currentTokenIndex, int ruleIndex, int state, int depth), ParserRuleContext>();
+            _lastVisitedTokenIndex = -1;
         }
 
         public IncrementalAntlr4Lexer Lexer => _lexer;
 
-        public Parser Antlr4Parser => _parser;
+        public Parser Antlr4Parser => _antlr4Parser;
 
         public int CurrentTokenIndex => _lexer.Index;
 
         public override DirectiveStack Directives => DirectiveStack.Empty;
 
-        public bool TryGetContext<TContext>(int depth, int state, int ruleIndex, int currentTokenIndex, out TContext existingContext)
-            where TContext : IncrementalParserRuleContext
+        public sealed override GreenNode Parse()
         {
-            if (_oldParser != null)
+            if (_syntaxTree == null)
             {
-                var key = (depth, state, ruleIndex, currentTokenIndex);
-                if (_oldParser._ruleStartMap.TryGetValue(key, out var ctx))
+                var antlr4Root = this.Antlr4ParseMainRule();
+                _syntaxTree = GetOrCreateGreenNode(antlr4Root);
+                _treeParsers.Add(_syntaxTree, this);
+            }
+            return _syntaxTree;
+        }
+
+        protected abstract GreenNode GetOrCreateGreenNode(ParserRuleContext context);
+
+        protected abstract ParserRuleContext Antlr4ParseMainRule();
+
+        public static bool TryGetParser(SyntaxNode syntaxTree, out IncrementalAntlr4Parser parser)
+        {
+            var root = syntaxTree?.Green;
+            if (root == null)
+            {
+                parser = null;
+                return false;
+            }
+            else
+            {
+                return _treeParsers.TryGetValue(root, out parser);
+            }
+        }
+
+        protected bool TryGetGreenNode(ParserRuleContext context, out GreenNode greenNode)
+        {
+            if (context != null && _ruleMap.TryGetValue(context, out var ruleInfo) && ruleInfo.greenNode != null) 
+            {
+                greenNode = ruleInfo.greenNode;
+                return true;
+            }
+            else
+            {
+                greenNode = null;
+                return false;
+            }
+        }
+
+        public void CacheGreenNode(ParserRuleContext context, GreenNode greenNode)
+        {
+            if (context != null)
+            {
+                if (_ruleMap.TryGetValue(context, out var ruleInfo))
                 {
-                    if (ctx is TContext typedCtx)
+                    if (ruleInfo.greenNode == null)
                     {
-                        existingContext = typedCtx;
-                        return true;
+                        ruleInfo.greenNode = greenNode;
+                        _ruleMap[context] = ruleInfo;
+                        if (!_greenVersion.TryGetValue(greenNode, out var oldVersion))
+                        {
+                            _greenVersion.Add(greenNode, _version);
+                        }
                     }
                 }
             }
-            existingContext = null;
-            return false;
         }
 
-        public bool IsAffected(int start, int length)
+        protected GreenNode VisitTerminal(ITerminalNode node, SyntaxKind expectedKind)
+        {
+            return this.VisitTerminal(node?.Symbol, expectedKind);
+        }
+
+        protected GreenNode VisitTerminal(IToken token, SyntaxKind expectedKind)
+        {
+            if (token == null)
+            {
+                if ((object)expectedKind == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    var missing = this.factory.MissingToken(expectedKind);
+                    return missing;
+                }
+            }
+            var startIndex = _lastVisitedTokenIndex + 1;
+            var endIndex = startIndex;
+            while (endIndex <= Lexer.Index)
+            {
+                var lexerToken = Lexer.GetAntlr4TokenAt(endIndex);
+                if (object.ReferenceEquals(token, lexerToken))
+                {
+                    var result = Lexer.GetTokenAt(endIndex);
+                    /*if (startIndex < endIndex)
+                    {
+                        var skippedTokens = ArrayBuilder<InternalSyntaxTrivia>.GetInstance();
+                        for (int i = startIndex; i < endIndex; i++)
+                        {
+                            var skippedToken = Lexer.GetTokenAt(i);
+                            var trivia = this.factory.Trivia(skippedToken.Kind, skippedToken.ToFullString());
+                            skippedTokens.Add(trivia);
+                        }
+                        result = (InternalSyntaxToken)result.WithLeadingTrivia(this.factory.List(skippedTokens.ToArrayAndFree()).Node);
+                    }*/
+                    _lastVisitedTokenIndex = endIndex;
+                    return result;
+                }
+                ++endIndex;
+            }
+            if (expectedKind == null) return null;
+            else return this.factory.MissingToken(expectedKind);
+        }
+
+#if DEBUG
+        public int GetVersion(GreenNode greenNode)
+        {
+            if (_greenVersion.TryGetValue(greenNode, out var versionInfo))
+            {
+                return (int)versionInfo;
+            }
+            return 0;
+        }
+
+        public int GetVersion(ParserRuleContext context)
+        {
+            if (_ruleMap.TryGetValue(context, out var ruleInfo))
+            {
+                return ruleInfo.version;
+            }
+            return 0;
+        }
+#endif
+
+        private bool IsAffected(int start, int length)
         {
             return _lexer.AffectedOldTokenRange.Intersection(Interval.Of(start, start + length - 1)).Length > 0;
         }
@@ -178,83 +304,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
                     depth = state.depth;
                 }
             }
-            if (stateIndex >= 0) return (_parser.Atn.states[stateIndex], ruleStartIndex, secondTokenIndex);
+            if (stateIndex >= 0) return (_antlr4Parser.Atn.states[stateIndex], ruleStartIndex, secondTokenIndex);
             else return (null, -1, -1);
-        }
-
-        private void StateTransition(HashSet<ATNState> states, int token, HashSet<int> alreadyPassed, HashSet<ATNState> nextStates)
-        {
-            foreach (var state in states)
-            {
-                StateTransition(state, token, alreadyPassed, nextStates);
-            }
-        }
-
-        private void StateTransition(ATNState state, int token, HashSet<int> alreadyPassed, HashSet<ATNState> nextStates)
-        {
-            foreach (var transition in state.Transitions)
-            {
-                if (transition.IsEpsilon)
-                {
-                    if (alreadyPassed.Add(transition.target.stateNumber))
-                    {
-                        StateTransition(transition.target, token, alreadyPassed, nextStates);
-                    }
-                }
-                else
-                {
-                    switch (transition)
-                    {
-                        case AtomTransition atomTransition:
-                            if (atomTransition.label == token) nextStates.Add(transition.target);
-                            break;
-                        case SetTransition setTransition:
-                            if (setTransition.Label.Contains(token)) nextStates.Add(transition.target);
-                            break;
-                        default:
-                            throw new NotImplementedException("Unsupported ATN transition type: " + transition.GetType());
-                    }
-                }
-            }
-        }
-
-        private void FindCandidateTokens(HashSet<ATNState> states, HashSet<int> alreadyPassed, HashSet<int> suggestions)
-        {
-            foreach (var state in states)
-            {
-                FindCandidateTokens(state, alreadyPassed, suggestions);
-            }
-        }
-        
-        private void FindCandidateTokens(ATNState state, HashSet<int> alreadyPassed, HashSet<int> suggestions)
-        {
-            foreach (var transition in state.Transitions)
-            {
-                if (transition.IsEpsilon)
-                {
-                    if (alreadyPassed.Add(transition.target.stateNumber))
-                    {
-                        FindCandidateTokens(transition.target, alreadyPassed, suggestions);
-                    }
-                }
-                else
-                {
-                    switch (transition)
-                    {
-                        case AtomTransition atomTransition:
-                            suggestions.Add(atomTransition.label);
-                            break;
-                        case SetTransition setTransition:
-                            foreach (var label in setTransition.Label.ToIntegerList())
-                            {
-                                suggestions.Add(label);
-                            }
-                            break;
-                        default:
-                            throw new NotImplementedException("Unsupported ATN transition type: " + transition.GetType());
-                    }
-                }
-            }
         }
 
         #region ParseTreeListener API
@@ -269,42 +320,122 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 
         void IParseTreeListener.EnterEveryRule(ParserRuleContext ctx)
         {
+            cancellationToken.ThrowIfCancellationRequested();
             // During rule entry, we push a new min/max token state.
             Lexer.PushIncrementalRuleInfo();
         }
 
         void IParseTreeListener.ExitEveryRule(ParserRuleContext ctx)
         {
-            // On exit, we need to merge the min max into the current context,
-            // and then merge the current context interval into our parent.
+            // On exit, we need to merge the min max into the current context
             var incrementalRuleInfo = Lexer.PopIncrementalRuleInfo();
 
-            // First merge with the interval on the top of the stack.
-            var incCtx = ctx as IncrementalParserRuleContext;
+            GreenNode greenNode = null;
+            int tokenCount = incrementalRuleInfo.startEndTokens.b - incrementalRuleInfo.startEndTokens.a + 1;
+            int depth = Lexer.MinMaxCount;
 #if DEBUG
-            if (incCtx.Version == 0)
-            {
-                incCtx.Version = _version;
-            }
+            int version = _version;
 #endif
-            incCtx.MinMaxTokenIndex = incCtx.MinMaxTokenIndex.Union(incrementalRuleInfo.minMaxTokens);
-            incCtx.TokenCount = incrementalRuleInfo.startEndTokens.b - incrementalRuleInfo.startEndTokens.a + 1;
 
-            // Popped interval is wrong because there may have been child
-            // intervals already merged into this ctx.
-            var interval = incCtx.MinMaxTokenIndex;
-
-            // Now merge with our parent interval.
-            if (incCtx.parent != null)
+            Interval minMaxTokens = incrementalRuleInfo.minMaxTokens;
+            foreach (var child in ctx.children)
             {
-                var parentIncCtx = incCtx.parent as IncrementalParserRuleContext;
-                parentIncCtx.MinMaxTokenIndex = parentIncCtx.MinMaxTokenIndex.Union(interval);
+                var childRule = child as ParserRuleContext;
+                if (childRule != null)
+                {
+                    var childRuleInfo = _ruleMap[childRule];
+                    minMaxTokens = minMaxTokens.Union(childRuleInfo.minMaxTokens);
+                }
             }
 
-            var key = (ctx.Depth(), ctx.invokingState >= 0 ? ctx.invokingState : 0, ctx.RuleIndex, incrementalRuleInfo.startEndTokens.a);
-            _ruleStartMap[key] = incCtx;
+            _ruleStartMap[(incrementalRuleInfo.startEndTokens.a, ctx.RuleIndex, ctx.invokingState >= 0 ? ctx.invokingState : 0, depth)] = ctx;
+#if DEBUG
+            _ruleMap[ctx] = (greenNode, minMaxTokens, tokenCount, version);
+#else
+            _ruleMap[ctx] = (greenNode, minMaxTokens, tokenCount);
+#endif
         }
 
         #endregion
+
+        /// <summary>
+        /// Guard a rule's previous context from being reused.
+        /// </summary>
+        /// <returns></returns>
+        internal bool TryGetIncrementalContext<TContext>(ParserRuleContext parentContext, int state, int ruleIndex, out TContext existingContext)
+            where TContext : ParserRuleContext
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            existingContext = null;
+            if (state < 0) state = 0;
+
+            // If we have no previous parse data, the rule needs to be run.
+            if (!_isIncremental) return false;
+
+            // See if we have seen this state before at this starting point.
+            // If we haven't seen it, we need to rerun this rule.
+            var depth = Lexer.MinMaxCount;
+            var oldTokenIndex = Lexer.GetOldTokenIndex(Lexer.Index);
+            if (_oldParser._ruleStartMap.TryGetValue((oldTokenIndex, ruleIndex, state, depth), out var oldCtx))
+            {
+                if (oldCtx is TContext typedCtx)
+                {
+                    existingContext = typedCtx;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+
+            var oldRuleInfo = _oldParser._ruleMap[existingContext];
+
+            // We have seen it, see if it was affected by the parse
+            if (this.IsAffected(oldTokenIndex, oldRuleInfo.tokenCount)) return false;
+
+            // Everything checked out, reuse the rule context
+
+            // At first, skip the old tokens in the new lexer
+            for (int i = 0; i < oldRuleInfo.tokenCount; i++)
+            {
+                Lexer.Lex();
+            }
+
+            // add current context to parent if we have a parent
+            if (parentContext != null) parentContext.AddChild(existingContext);
+
+            // Store the old node and all its children
+            foreach (var ruleStart in _oldParser._ruleStartMap)
+            {
+                var ruleStartInfo = ruleStart.Key;
+                var context = ruleStart.Value;
+                if (ruleStartInfo.currentTokenIndex >= oldTokenIndex && ruleStartInfo.currentTokenIndex < oldTokenIndex + oldRuleInfo.tokenCount)
+                {
+                    var ruleInfo = _oldParser._ruleMap[ruleStart.Value];
+                    var minMaxTokens = Interval.Of(Lexer.GetNewTokenIndex(ruleInfo.minMaxTokens.a), Lexer.GetNewTokenIndex(ruleInfo.minMaxTokens.b));
+                    _ruleStartMap.Add((Lexer.GetNewTokenIndex(ruleStartInfo.currentTokenIndex), ruleStartInfo.ruleIndex, ruleStartInfo.state, ruleStartInfo.depth), context);
+#if DEBUG
+                    _ruleMap[context] = (ruleInfo.greenNode, minMaxTokens, ruleInfo.tokenCount, ruleInfo.version);
+#else
+                    _ruleMap[context] = (ruleInfo.greenNode, minMaxTokens, ruleInfo.tokenCount);
+#endif
+                }
+            }
+
+            return true;
+        }
+
+        internal void PushNewRecursionContext(ParserRuleContext previousContext, ParserRuleContext localContext, int state, int ruleIndex)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            // TODO:MetaDslx
+            //The new recursion context reparents the relationship between the contexts,
+            //so we need to merge intervals here.
+            // Do we? Now we are updating every parent based on their children in ExitEveryRule
+        }
     }
 }

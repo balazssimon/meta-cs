@@ -28,7 +28,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         private SyntaxFacts _syntaxFacts;
 
         public Antlr4SyntaxParser(SourceText text, Language language, LanguageParseOptions options, SyntaxNode oldTree, IEnumerable<TextChangeRange> changes, CancellationToken cancellationToken = default(CancellationToken))
-            : base(text, language, options, oldTree, changes, cancellationToken)
+            : base(language, text, options, oldTree, changes, cancellationToken)
         {
             this.Antlr4Errors = new Dictionary<int, string>();
             AntlrInputStream inputStream = new AntlrInputStream(text.ToString());

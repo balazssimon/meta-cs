@@ -47,7 +47,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         private int _lastMinMaxPosition = -1;
         private int _lastMinMaxK = -1;
 
-        public IncrementalAntlr4Lexer(Language language, SourceText text, ImmutableArray<TextChangeRange> changes, IncrementalAntlr4Lexer oldLexer, CancellationToken cancellationToken = default)
+        public IncrementalAntlr4Lexer(Language language, SourceText text, IEnumerable<TextChangeRange> changes, IncrementalAntlr4Lexer oldLexer, CancellationToken cancellationToken = default)
             : base(language, text, oldLexer, changes)
         {
             _stream = oldLexer != null ? new IncrementalAntlr4InputStream(text, oldLexer._stream.OverallMinMaxLookahead) : new IncrementalAntlr4InputStream(text);
@@ -137,6 +137,20 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             var result = this.CurrentToken;
             ReadNextToken();
             return result;
+        }
+
+        public InternalSyntaxToken GetTokenAt(int index)
+        {
+            EnsureTokensFetchedAtIndex(index);
+            if (index < 0 || index >= _roslynTokens.Count) return null;
+            return _roslynTokens[index];
+        }
+
+        public IToken GetAntlr4TokenAt(int index)
+        {
+            EnsureTokensFetchedAtIndex(index);
+            if (index < 0 || index >= _tokens.Count) return null;
+            return _tokens[index];
         }
 
         private IToken ReadNextToken()
@@ -320,13 +334,6 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             SaveState(_oldLexer._currentState);
         }
 
-        private IToken GetToken(int index)
-        {
-            EnsureTokensFetchedAtIndex(index);
-            if (index < 0 || index >= _tokens.Count) return null;
-            return _tokens[index];
-        }
-
         public void Seek(int index)
         {
             EnsureTokensFetchedAtIndex(index);
@@ -356,20 +363,9 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             return result;
         }
 
-        internal int GetTokenTypeAt(int index)
-        {
-            if (index < 0) return -1;
-            EnsureTokensFetchedAtIndex(index);
-            if (index < _tokens.Count) return _tokens[index].Type;
-            else return -1;
-        }
-
         IToken ITokenStream.Get(int i)
         {
-            if (i < 0) return null;
-            EnsureTokensFetchedAtIndex(i);
-            if (i < _tokens.Count) return _tokens[i];
-            else return null;
+            return GetAntlr4TokenAt(i);
         }
 
         string ITokenStream.GetText(Interval interval)
@@ -450,8 +446,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             var endIndex = oldLexer.GetIndexAtPosition(end) + 1;
             var startPosition = oldLexer.GetPositionAtIndex(startIndex);
             var endPosition = oldLexer.GetPositionAtIndex(endIndex);
-            var lastTokenBeforeChange = oldLexer.GetToken(startIndex);
-            var firstTokenAfterChange = oldLexer.GetToken(endIndex);
+            var lastTokenBeforeChange = oldLexer.GetAntlr4TokenAt(startIndex);
+            var firstTokenAfterChange = oldLexer.GetAntlr4TokenAt(endIndex);
 
             var finalLength = changeRange.NewLength + (changeRange.Span.Start - startPosition) + (endPosition - changeRange.Span.End);
 

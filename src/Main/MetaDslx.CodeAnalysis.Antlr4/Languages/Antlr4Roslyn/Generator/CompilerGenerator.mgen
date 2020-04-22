@@ -1011,16 +1011,19 @@ using MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax;
 
 namespace [Properties.DefaultNamespace].Syntax.InternalSyntax
 {
-    public class [Properties.LanguageName]SyntaxParser : Antlr4SyntaxParser<[Properties.LanguageName]Lexer, [Properties.LanguageName]Parser>
+    public class [Properties.LanguageName]SyntaxParser : IncrementalAntlr4Parser
     {
+        private Antlr4ToRoslynVisitor _visitor;
+
         public [Properties.LanguageName]SyntaxParser(
             SourceText text,
             [Properties.LanguageName]ParseOptions options,
             SyntaxNode oldTree, 
             IEnumerable<TextChangeRange> changes,
             CancellationToken cancellationToken = default(CancellationToken))
-            : base(text, [Properties.LanguageName]Language.Instance, options, oldTree, changes, cancellationToken)
+            : base([Properties.LanguageName]Language.Instance, text, options, oldTree, changes, cancellationToken)
         {
+            _visitor = new Antlr4ToRoslynVisitor(this);
         }
 
         public override DirectiveStack Directives
@@ -1031,26 +1034,14 @@ namespace [Properties.DefaultNamespace].Syntax.InternalSyntax
             }
         }
 
-        protected override [Properties.LanguageName]Lexer CreateLexer(AntlrInputStream inputStream)
+        protected override ParserRuleContext Antlr4ParseMainRule()
         {
-            return new [Properties.LanguageName]Lexer(inputStream);
+            return (([Properties.LanguageName]Parser)this.Antlr4Parser).[Instances.MainRule().PlainName().ToCamelCase()]();
         }
 
-        protected override [Properties.LanguageName]Parser CreateParser(CommonTokenStream tokenStream)
+        protected override GreenNode GetOrCreateGreenNode(ParserRuleContext context)
         {
-            return new [Properties.LanguageName]Parser(tokenStream);
-        }
-
-        public override GreenNode Parse()
-        {
-            return this.Parse[Instances.MainRule().PlainName()]();
-        }
-
-        internal [Instances.MainRule().GreenName()] Parse[Instances.MainRule().PlainName()]()
-        {
-            Antlr4ToRoslynVisitor visitor = new Antlr4ToRoslynVisitor(this);
-            var tree = this.Parser.[Instances.MainRule().PlainName().ToCamelCase()]();
-            return ([Instances.MainRule().GreenName()])visitor.Visit(tree);
+            return _visitor.Visit(context);
         }
 
         private class Antlr4ToRoslynVisitor : [Properties.LanguageName]ParserBaseVisitor<GreenNode>
@@ -1058,25 +1049,20 @@ namespace [Properties.DefaultNamespace].Syntax.InternalSyntax
 			// list pools - allocators for lists that are used to build sequences of nodes. The lists
 			// can be reused (hence pooled) since the syntax factory methods don't keep references to
 			// them
-
-			private readonly SyntaxListPool _pool = new SyntaxListPool(); // Don't need to reset this.            private [Properties.LanguageName]Language language;
+			private readonly SyntaxListPool _pool = new SyntaxListPool(); // Don't need to reset this.
 			
 			private [Properties.LanguageName]InternalSyntaxFactory factory;
             private [Properties.LanguageName]SyntaxParser syntaxParser;
-			private IList<IToken> tokens;
-            private IToken lastTokenOrTrivia;
 
             public Antlr4ToRoslynVisitor([Properties.LanguageName]SyntaxParser syntaxParser)
             {
 				this.factory = ([Properties.LanguageName]InternalSyntaxFactory)syntaxParser.Language.InternalSyntaxFactory;
                 this.syntaxParser = syntaxParser;
-				this.tokens = this.syntaxParser.CommonTokenStream.GetTokens();
-                this.lastTokenOrTrivia = null;
             }
 			
             private GreenNode VisitTerminal(IToken token, [Properties.LanguageName]SyntaxKind kind)
             {
-                return this.syntaxParser.VisitTerminal(token, kind, ref this.lastTokenOrTrivia);
+                return this.syntaxParser.VisitTerminal(token, kind);
             }
 
             public GreenNode VisitTerminal(IToken token)
@@ -1086,14 +1072,29 @@ namespace [Properties.DefaultNamespace].Syntax.InternalSyntax
 			
             private GreenNode VisitTerminal(ITerminalNode node, [Properties.LanguageName]SyntaxKind kind)
             {
-                return this.syntaxParser.VisitTerminal(node, kind, ref this.lastTokenOrTrivia);
+                return this.syntaxParser.VisitTerminal(node, kind);
             }
 
             public override GreenNode VisitTerminal(ITerminalNode node)
             {
                 return this.VisitTerminal(node, null);
             }
-			[loop(rule:Instances.ParserRules)]
+
+			public override GreenNode Visit(IParseTree tree)
+			{
+				if (tree is ParserRuleContext context)
+                {
+                    if (this.syntaxParser.TryGetGreenNode(context, out var existingGreenNode)) return existingGreenNode;
+    				var greenNode = base.Visit(tree);
+                    this.syntaxParser.CacheGreenNode(context, greenNode);
+    				return greenNode;
+                }
+                else
+                {
+                    return base.Visit(tree);
+                }
+			}
+            [loop(rule:Instances.ParserRules)]
 			[GenerateAntlr4ToRoslynVisitorRule(rule, null)]
 			[end loop]
         }
@@ -1415,7 +1416,7 @@ namespace [Properties.DefaultNamespace]
 
             using (var parser = new [lang]SyntaxParser(text, options, oldTree: null, changes: null, cancellationToken: cancellationToken))
             {
-                var compilationUnit = ([Instances.MainRule().RedName()])parser.Parse[Instances.MainRule().PlainName()]().CreateRed();
+                var compilationUnit = ([Instances.MainRule().RedName()])parser.Parse().CreateRed();
                 var tree = new ParsedSyntaxTree(text, text.Encoding, text.ChecksumAlgorithm, path, options, compilationUnit, parser.Directives);
                 tree.VerifySource();
                 return tree;
@@ -1434,7 +1435,7 @@ namespace [Properties.DefaultNamespace]
             {
                 throw new ArgumentNullException(nameof(parser));
             }
-            var root = ([Instances.MainRule().RedName()])parser.Parse[Instances.MainRule().PlainName()]().CreateRed();
+            var root = ([Instances.MainRule().RedName()])parser.Parse().CreateRed();
             var tree = [lang]SyntaxTree.Create(root, ([lang]ParseOptions)parser.Options, path, parser.SourceText, parser.SourceText.Encoding, parser.SourceText.ChecksumAlgorithm);
             tree.VerifySource();
             return tree;
@@ -1490,7 +1491,7 @@ namespace [Properties.DefaultNamespace]
 
             using (var parser = new [lang]SyntaxParser(newText, this.Options, oldTree?.GetRoot(), changes))
             {
-                var compilationUnit = ([Instances.MainRule().RedName()])parser.Parse[Instances.MainRule().PlainName()]().CreateRed();
+                var compilationUnit = ([Instances.MainRule().RedName()])parser.Parse().CreateRed();
                 var tree = new ParsedSyntaxTree(newText, newText.Encoding, newText.ChecksumAlgorithm, this.FilePath, this.Options, compilationUnit, parser.Directives);
                 tree.VerifySource(changes);
                 return tree;

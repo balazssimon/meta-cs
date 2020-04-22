@@ -1,5 +1,6 @@
 ﻿using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
+using Antlr4Intellisense.Syntax;
 using Antlr4Intellisense.Syntax.InternalSyntax;
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Syntax;
@@ -16,27 +17,38 @@ using System.Threading;
 
 namespace Antlr4Intellisense
 {
-    public class IncrementalSandyParser : IncrementalAntlr4Parser
+    /*public class IncrementalSandyParser : IncrementalAntlr4Parser
     {
-        public IncrementalSandyParser(Language language, SourceText text, LanguageParseOptions options, ImmutableArray<TextChangeRange> changes, IncrementalAntlr4Parser oldParser, CancellationToken cancellationToken = default) 
-            : base(language, text, options, changes, oldParser, cancellationToken)
+        public IncrementalSandyParser(Language language, SourceText text, LanguageParseOptions options, ImmutableArray<TextChangeRange> changes, SyntaxNode oldTree, CancellationToken cancellationToken = default) 
+            : base(language, text, options, oldTree, changes, cancellationToken)
         {
         }
 
-        public override GreenNode Parse()
-        {
-            var parser = (SandyParser)this.Antlr4Parser;
-            var sandyFile = parser.sandyFile();
-            return null;
-        }
-
-        public IParseTree ParseTree()
+        protected override ParserRuleContext Antlr4ParseMainRule()
         {
             var parser = (SandyParser)this.Antlr4Parser;
             var sandyFile = parser.sandyFile();
             return sandyFile;
         }
-    }
+
+        public IParseTree ParseTree()
+        {
+            return Antlr4ParseMainRule();
+        }
+
+        protected override GreenNode GetOrCreateGreenNode(ParserRuleContext context)
+        {
+            return null;
+        }
+
+        private class A
+        {
+            private void Foo(IncrementalSandyParser p)
+            {
+                p.cancellationToken.ThrowIfCancellationRequested();
+            }
+        }
+    }*/
 
     public class Program
     {
@@ -48,21 +60,21 @@ namespace Antlr4Intellisense
             
             var lexer = Lex(text, change, null);
             Console.WriteLine("----");
-            var parser = Parse(text, change, null);
+            var tree = Parse(text, change, null);
             Console.WriteLine("====");
-            Intellisense(parser, 0);
-            Intellisense(parser, 1);
-            Intellisense(parser, 3);
-            Intellisense(parser, 4);
-            Intellisense(parser, 5);
-            Intellisense(parser, 6);
-            Intellisense(parser, 7);
-            Intellisense(parser, 8);
-            Intellisense(parser, 9);
-            Intellisense(parser, 10);
-            Intellisense(parser, 11);
-            Intellisense(parser, 12);
-            Intellisense(parser, 13);
+            Intellisense(tree, 0);
+            Intellisense(tree, 1);
+            Intellisense(tree, 3);
+            Intellisense(tree, 4);
+            Intellisense(tree, 5);
+            Intellisense(tree, 6);
+            Intellisense(tree, 7);
+            Intellisense(tree, 8);
+            Intellisense(tree, 9);
+            Intellisense(tree, 10);
+            Intellisense(tree, 11);
+            Intellisense(tree, 12);
+            Intellisense(tree, 13);
             Console.WriteLine("====");
 
             text = "var a = 13 + 2\r\nvar b = a+1\r\n";
@@ -70,7 +82,7 @@ namespace Antlr4Intellisense
 
             lexer = Lex(text, change, lexer);
             Console.WriteLine("----");
-            parser = Parse(text, change, parser);
+            tree = Parse(text, change, tree);
             Console.WriteLine("====");
 
             text = "var a = 3 + 2\r\nvar b = a+1\r\n";
@@ -78,7 +90,7 @@ namespace Antlr4Intellisense
 
             lexer = Lex(text, change, lexer);
             Console.WriteLine("----");
-            parser = Parse(text, change, parser);
+            tree = Parse(text, change, tree);
             Console.WriteLine("====");
 
             text = "var a = 34 + 2\r\nvar b = a+1\r\n";
@@ -86,7 +98,7 @@ namespace Antlr4Intellisense
 
             lexer = Lex(text, change, lexer);
             Console.WriteLine("----");
-            parser = Parse(text, change, parser);
+            tree = Parse(text, change, tree);
             Console.WriteLine("====");
 
             text = "var a = 3+4 + 2\r\nvar b = a+1\r\n";
@@ -94,7 +106,7 @@ namespace Antlr4Intellisense
 
             lexer = Lex(text, change, lexer);
             Console.WriteLine("----");
-            parser = Parse(text, change, parser);
+            tree = Parse(text, change, tree);
             Console.WriteLine("====");
             //*/
 
@@ -123,38 +135,72 @@ namespace Antlr4Intellisense
             return lexer;
         }
 
-        private static IncrementalSandyParser Parse(string text, ImmutableArray<TextChangeRange> changes, IncrementalSandyParser oldParser)
+        private static SandySyntaxTree Parse(string text, ImmutableArray<TextChangeRange> changes, SandySyntaxTree oldTree)
         {
             var sourceText = SourceText.From(text);
-            var parser = new IncrementalSandyParser(SandyLanguage.Instance, sourceText, null, changes, oldParser);
-            var tree = parser.ParseTree();
-            var treeAsString = PrintSyntaxTree(parser.Antlr4Parser, tree);
-            Console.WriteLine(treeAsString);
-            return parser;
+            var oldRoot = oldTree?.GetRoot();
+            var parser = new SandySyntaxParser(sourceText, null, oldRoot, changes);
+            var tree = SandySyntaxTree.Create(parser);
+            Console.WriteLine(PrintSyntaxTree(tree, parser));
+            return tree;
         }
 
-        public static string PrintSyntaxTree(Parser parser, IParseTree root)
+        public static string PrintSyntaxTree(SandySyntaxTree tree, SandySyntaxParser parser)
         {
             StringBuilder buf = new StringBuilder();
-            Recursive(root, buf, 0, parser.RuleNames.ToList());
+            Recursive(parser, tree.GetRoot(), buf, 0, parser.Antlr4Parser.RuleNames.ToList());
             return buf.ToString();
         }
 
-        private static void Recursive(IParseTree root, StringBuilder buf, int offset, List<string> ruleNames)
+        private static void Recursive(SandySyntaxParser parser, SandySyntaxNode node, StringBuilder buf, int offset, List<string> ruleNames)
+        {
+            for (int i = 0; i < offset; i++)
+            {
+                buf.Append("  ");
+            }
+            buf.Append(node.Kind);
+            buf.Append($" ({parser.GetVersion(node.Green)})").AppendLine();
+            foreach (var child in node.ChildNodesAndTokens())
+            {
+                if (child.IsToken)
+                {
+                    for (int i = 0; i < offset+1; i++)
+                    {
+                        buf.Append("  ");
+                    }
+                    buf.Append((SandySyntaxKind)child.GetKind());
+                    buf.Append(": " + child.AsToken().Text);
+                    buf.AppendLine();
+                }
+                else
+                {
+                    Recursive(parser, (SandySyntaxNode)child.AsNode(), buf, offset + 1, ruleNames);
+                }
+            }
+        }
+
+        public static string PrintSyntaxTree(IncrementalAntlr4Parser parser, IParseTree root)
+        {
+            StringBuilder buf = new StringBuilder();
+            Recursive(parser, root, buf, 0, parser.Antlr4Parser.RuleNames.ToList());
+            return buf.ToString();
+        }
+
+        private static void Recursive(IncrementalAntlr4Parser parser, IParseTree root, StringBuilder buf, int offset, List<string> ruleNames)
         {
             for (int i = 0; i < offset; i++)
             {
                 buf.Append("  ");
             }
             buf.Append(Trees.GetNodeText(root, ruleNames));
-            if (root is IncrementalParserRuleContext prc) 
+            if (root is ParserRuleContext prc) 
             {
-                buf.Append($" ({prc.Version})").AppendLine();
+                buf.Append($" ({parser.GetVersion(prc)})").AppendLine();
                 if (prc.children != null)
                 {
                     foreach (IParseTree child in prc.children)
                     {
-                        Recursive(child, buf, offset + 1, ruleNames);
+                        Recursive(parser, child, buf, offset + 1, ruleNames);
                     }
                 }
             }
@@ -164,8 +210,9 @@ namespace Antlr4Intellisense
             }
         }
 
-        private static void Intellisense(IncrementalSandyParser parser, int position)
+        private static void Intellisense(SandySyntaxTree tree, int position)
         {
+            if (!IncrementalAntlr4Parser.TryGetParser(tree.GetRoot(), out var parser)) return;
             var completion = parser.GetCompletionTokensAt(position);
             Console.WriteLine("Position: "+position);
             foreach (var item in completion)

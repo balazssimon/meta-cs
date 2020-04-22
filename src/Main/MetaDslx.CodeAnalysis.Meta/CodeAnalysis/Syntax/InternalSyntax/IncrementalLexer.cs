@@ -9,9 +9,9 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
     public abstract class IncrementalLexer : Lexer
     {
         private readonly IncrementalLexer _oldLexer;
-        private readonly ImmutableArray<TextChangeRange> _changes;
+        private readonly IEnumerable<TextChangeRange> _changes;
 
-        public IncrementalLexer(Language language, SourceText text, IncrementalLexer oldLexer, ImmutableArray<TextChangeRange> changes) 
+        public IncrementalLexer(Language language, SourceText text, IncrementalLexer oldLexer, IEnumerable<TextChangeRange> changes) 
             : base(text, language)
         {
             _oldLexer = oldLexer;

@@ -19,8 +19,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         protected readonly InternalSyntaxFactory factory;
 
         protected SyntaxParser(
-            SourceText text,
             Language language,
+            SourceText text,
             LanguageParseOptions options,
             SyntaxNode oldTree,
             IEnumerable<TextChangeRange> changes,
