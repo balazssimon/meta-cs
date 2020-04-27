@@ -61,6 +61,10 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         protected virtual SyntaxKind KindCore => EnumObject.FromIntUnsafe<SyntaxKind>(this.RawKind);
 
+        public SyntaxKind ContextualKind => this.ContextualKindCore;
+
+        protected virtual SyntaxKind ContextualKindCore => EnumObject.FromIntUnsafe<SyntaxKind>(this.RawContextualKind);
+
         public override string KindText => Kind.GetName();
 
         internal override GreenNode GetSlot(int index)
