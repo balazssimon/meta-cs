@@ -14,11 +14,12 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 {
     public abstract partial class IncrementalParser : IDisposable
     {
-        private static ConditionalWeakTable<LanguageSyntaxNode, IncrementalSyntaxNode> s_incrementalSyntaxTree = new ConditionalWeakTable<LanguageSyntaxNode, IncrementalSyntaxNode>();
+        private static ConditionalWeakTable<LanguageSyntaxNode, IncrementalSyntaxTree> s_incrementalSyntaxTree = new ConditionalWeakTable<LanguageSyntaxNode, IncrementalSyntaxTree>();
 
         protected readonly Language Language;
         protected readonly IncrementalLexer _lexer;
         private readonly bool _isIncremental;
+        private readonly IncrementalSyntaxTree _oldIncrementalTree;
         protected readonly CancellationToken cancellationToken;
 
         private Blender _firstBlender;
@@ -57,15 +58,15 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             this.cancellationToken = cancellationToken;
             _currentNode = default;
             _incrementalStack = new Stack<object>();
-            var incrementalTree = oldTree != null ? GetIncrementalSyntaxTree(oldTree) : null;
-            _isIncremental = incrementalTree != null;
+            _oldIncrementalTree = oldTree != null ? GetIncrementalSyntaxTree(oldTree) : null;
+            _isIncremental = _oldIncrementalTree != null;
 
             if (this.IsIncremental)
             {
-                _firstBlender = new Blender(lexer, oldTree, incrementalTree, changes);
+                _firstBlender = new Blender(lexer, oldTree, _oldIncrementalTree, changes);
                 _blendedTokens = s_blendedNodesPool.Allocate();
 #if DEBUG
-                _version = incrementalTree.Version;
+                _version = _oldIncrementalTree.Version + 1;
 #endif
             }
             else
@@ -150,7 +151,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             }
         }
 
-        private static IncrementalSyntaxNode GetIncrementalSyntaxTree(LanguageSyntaxNode syntaxTree)
+        private static IncrementalSyntaxTree GetIncrementalSyntaxTree(LanguageSyntaxNode syntaxTree)
         {
             if (s_incrementalSyntaxTree.TryGetValue(syntaxTree, out var result))
             {
@@ -203,7 +204,9 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         protected void EndRoot(LanguageSyntaxNode root)
         {
-            s_incrementalSyntaxTree.Add(root, _previousIncrementalNode);
+            var minLookahead = Math.Min(_oldIncrementalTree.MinLexerLookahead, _lexer.MinLookahead);
+            var maxLookahead = Math.Max(_oldIncrementalTree.MaxLexerLookahead, _lexer.MaxLookahead);
+            s_incrementalSyntaxTree.Add(root, new IncrementalSyntaxTree(_previousIncrementalNode, minLookahead, maxLookahead, _version));
         }
 
         protected void BeginNode(ParserState state)
@@ -410,6 +413,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
             _blendedTokens[_tokenOffset++] = _currentNode;
             _tokenCount = _tokenOffset; // forget anything after this slot
+
+            // store incremental data
             var incrementalNode = _incrementalStack.Pop();
             Debug.Assert(incrementalNode is IncrementalSyntaxNodeBuilder);
             _incrementalStack.Push(_currentNode.Blender.IncrementalSyntaxNode);
@@ -417,7 +422,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             // erase current state
             _currentNode = default;
             _currentToken = default;
-            RestoreParserState(_currentNode.Blender.State);
+            RestoreParserState(_currentNode.Blender.IncrementalSyntaxNode.StateAfter);
 
             return result;
         }
@@ -474,6 +479,15 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             else
             {
                 this.AddLexedToken(_lexer.Lex(ref _mode));
+            }
+            var incrementalNode = _incrementalStack.Peek();
+            if (incrementalNode is IncrementalSyntaxNodeBuilder incrementalNodeBuilder)
+            {
+                incrementalNodeBuilder.Children.Add(null);
+            }
+            else
+            {
+                Debug.Assert(incrementalNode is IncrementalSyntaxNodeBuilder);
             }
         }
 

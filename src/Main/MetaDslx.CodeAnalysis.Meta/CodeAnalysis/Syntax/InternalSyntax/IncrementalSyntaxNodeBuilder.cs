@@ -8,7 +8,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
     internal class IncrementalSyntaxNodeBuilder
     {
         private readonly ParserState _stateBefore;
-        private readonly ArrayBuilder<IncrementalSyntaxNode> _children;
+        private readonly ArrayBuilder<object> _children;
 
 #if DEBUG
         private int _version;
@@ -21,7 +21,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 #endif
         {
             _stateBefore = stateBefore;
-            _children = ArrayBuilder<IncrementalSyntaxNode>.GetInstance();
+            _children = ArrayBuilder<object>.GetInstance();
             _version = version;
             LookaheadBefore = int.MaxValue;
             LookaheadAfter = int.MinValue;
@@ -30,7 +30,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         public int LookaheadBefore { get; set; }
         public int LookaheadAfter { get; set; }
         public ParserState StateBefore => _stateBefore;
-        public ArrayBuilder<IncrementalSyntaxNode> Children => _children;
+        public ArrayBuilder<object> Children => _children;
 #if DEBUG
         public int Version => _version;
 #endif
