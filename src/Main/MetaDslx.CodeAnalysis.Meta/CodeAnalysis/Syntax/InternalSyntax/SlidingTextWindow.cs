@@ -45,6 +45,11 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         private int _lexemeStart;                          // Start of current lexeme relative to the window start.
 
+        private int _minLexemeLookahead;
+        private int _maxLexemeLookahead;
+        private int _minLookahead;
+        private int _maxLookahead;
+
         // Example for the above variables:
         // The text starts at 0.
         // The window onto the text starts at basis.
@@ -65,6 +70,10 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             _strings = StringTable.GetInstance();
             _characterWindow = s_windowPool.Allocate();
             _lexemeStart = 0;
+            _minLookahead = int.MaxValue;
+            _maxLookahead = int.MinValue;
+            _minLexemeLookahead = int.MaxValue;
+            _maxLexemeLookahead = int.MinValue;
         }
 
         public void Dispose()
@@ -157,12 +166,19 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             }
         }
 
+        public int MinLookahead => _minLookahead;
+        public int MaxLookahead => _maxLookahead;
+        public int MinLexemeLookahead => _minLexemeLookahead;
+        public int MaxLexemeLookahead => _maxLexemeLookahead;
+
         /// <summary>
         /// Start parsing a new lexeme.
         /// </summary>
         public void Start()
         {
             _lexemeStart = _offset;
+            _minLexemeLookahead = int.MaxValue;
+            _maxLexemeLookahead = int.MinValue;
         }
 
         public void Reset(int position)
@@ -293,6 +309,11 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         /// </returns>
         public char PeekChar()
         {
+            _minLexemeLookahead = Math.Min(_minLexemeLookahead, 1);
+            _maxLexemeLookahead = Math.Max(_maxLexemeLookahead, 1);
+            _minLookahead = Math.Min(_minLookahead, _minLexemeLookahead);
+            _maxLookahead = Math.Max(_maxLookahead, _maxLexemeLookahead);
+
             if (_offset >= _characterWindowCount
                 && !MoreChars())
             {
@@ -312,6 +333,11 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         /// </returns>
         public char PeekChar(int delta)
         {
+            _minLexemeLookahead = Math.Min(_minLexemeLookahead, delta);
+            _maxLexemeLookahead = Math.Max(_maxLexemeLookahead, delta);
+            _minLookahead = Math.Min(_minLookahead, _minLexemeLookahead);
+            _maxLookahead = Math.Max(_maxLookahead, _maxLexemeLookahead);
+
             int position = this.Position;
             this.AdvanceChar(delta);
 

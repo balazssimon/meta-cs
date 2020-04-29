@@ -21,6 +21,9 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             this.TextWindow = new SlidingTextWindow(text);
         }
 
+        public int MinLookahead => TextWindow.MinLookahead;
+        public int MaxLookahead => TextWindow.MaxLookahead;
+
         public virtual void Dispose()
         {
             this.TextWindow.Dispose();

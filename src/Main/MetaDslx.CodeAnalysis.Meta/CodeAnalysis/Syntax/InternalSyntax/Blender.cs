@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Symbols;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
@@ -32,9 +33,10 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         private readonly LexerMode _mode;
         private readonly ParserState _state;
 
-        public Blender(IncrementalLexer lexer, LanguageSyntaxNode oldTree, IncrementalSyntaxNode oldIncrementalTree, IEnumerable<TextChangeRange> changes)
+        public Blender(IncrementalLexer lexer, LanguageSyntaxNode oldTree, IncrementalSyntaxTree oldIncrementalTree, IEnumerable<TextChangeRange> changes)
         {
             Debug.Assert(lexer != null);
+            Debug.Assert((oldTree == null && oldIncrementalTree == null && changes == null) || (oldTree != null && oldIncrementalTree != null && changes != null));
             _lexer = lexer;
             _changes = ImmutableStack.Create<TextChangeRange>();
 
@@ -70,7 +72,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             }
             else
             {
-                _oldTreeCursor = Cursor.FromRoot(oldTree, oldIncrementalTree).MoveToFirstChild();
+                _oldTreeCursor = Cursor.FromRoot(oldTree, oldIncrementalTree.Root).MoveToFirstChild();
                 _newPosition = 0;
             }
 
@@ -106,7 +108,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             _state = state;
         }
 
-        internal IncrementalSyntaxNode IncrementalSyntaxNode => _oldTreeCursor.CurrentIncrementalNode;
+        internal IncrementalSyntaxNode IncrementalSyntaxNode => _oldTreeCursor.CurrentIncrementalNode as IncrementalSyntaxNode;
 
         /// <summary>
         /// Affected range of a change is the range within which nodes can be affected by a change
@@ -115,43 +117,116 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         /// </summary>
         private static TextChangeRange ExtendToAffectedRange(
             LanguageSyntaxNode oldTree,
-            IncrementalSyntaxNode oldIncrementalTree,
+            IncrementalSyntaxTree oldIncrementalTree,
             TextChangeRange changeRange)
         {
-            // we will increase affected range of the change by the number of lookahead tokens
-            // original code in Blender seem to imply the lookahead at the end of a node is 1 token
-            // max. TODO: 1 token lookahead seems a bit too optimistic. Increase if needed. 
-            const int maxLookahead = 1;
+            int minLexerLookahead = oldIncrementalTree.MinLexerLookahead;
+            int maxLexerLookahead = oldIncrementalTree.MaxLexerLookahead;
 
             // check if change is not after the end. TODO: there should be an assert somewhere about
             // changes starting at least at the End of old tree
             var lastCharIndex = oldTree.FullWidth - 1;
 
-            // Move the start of the change range so that it is contained within oldTree.
-            var start = Math.Max(Math.Min(changeRange.Span.Start, lastCharIndex), 0);
+            // Move the start and end of the change range so that it is contained within oldTree.
+            var start = Math.Max(Math.Min(changeRange.Span.Start - maxLexerLookahead, lastCharIndex), 0);
+            var end = Math.Max(Math.Min(changeRange.Span.End - Math.Min(minLexerLookahead, 0), lastCharIndex), 0);
 
-            // the first iteration aligns us with the change start. subsequent iteration move us to
-            // the left by maxLookahead tokens.  We only need to do this as long as we're not at the
-            // start of the tree.  Also, the tokens we get back may be zero width.  In that case we
-            // need to keep on looking backward.
-            for (var i = 0; start > 0 && i <= maxLookahead;)
+            // The first iteration aligns us with the change start. Subsequent iteration move us to
+            // the left until we find a token of non-zero width.  We only need to do this as long as 
+            // we're not at the start of the tree.
+            while (start > 0)
             {
                 var token = oldTree.FindToken(start, findInsideTrivia: false);
                 Debug.Assert(token.GetKind() != SyntaxKind.None, "how could we not get a real token back?");
 
                 start = Math.Max(0, token.Position - 1);
 
-                // Only increment i if we got a non-zero width token.  Otherwise, we want to just do
+                // Only stop if we got a non-zero width token.  Otherwise, we want to just do
                 // this again having moved back one space.
-                if (token.FullWidth > 0)
+                if (token.FullWidth > 0) break;
+            }
+
+            // The first iteration aligns us with the change end. Subsequent iteration move us to
+            // the right until we find a token of non-zero width.  We only need to do this as long as 
+            // we're not at the end of the tree.
+            while (end < lastCharIndex)
+            {
+                var token = oldTree.FindToken(end, findInsideTrivia: false);
+                Debug.Assert(token.GetKind() != SyntaxKind.None, "how could we not get a real token back?");
+
+                end = Math.Min(lastCharIndex, token.Position + Math.Max(token.FullWidth, 1));
+
+                // Only stop if we got a non-zero width token.  Otherwise, we want to just do
+                // this again having moved forward one space.
+                if (token.FullWidth > 0) break;
+            }
+
+            start = FindLastReusableNodeBefore(start, oldTree, oldIncrementalTree.Root)?.FullSpan.End ?? 0;
+            end = FindFirstReusableNodeAfter(end, oldTree, oldIncrementalTree.Root)?.FullSpan.Start ?? oldTree.FullWidth;
+
+            var finalSpan = TextSpan.FromBounds(start, end);
+            var finalLength = changeRange.NewLength + (changeRange.Span.Start - start) + (end - changeRange.Span.End);
+            return new TextChangeRange(finalSpan, finalLength);
+        }
+
+        private static LanguageSyntaxNode FindLastReusableNodeBefore(
+            int position,
+            LanguageSyntaxNode oldNode,
+            IncrementalSyntaxNode oldIncrementalNode)
+        {
+            if (oldNode.FullSpan.End <= position) return oldNode;
+            if (oldNode.FullSpan.Start >= position) return null;
+            var children = oldNode.Parent.ChildNodesAndTokens();
+            LanguageSyntaxNode prevChild = null;
+            for (int i = 0; i < children.Count; i++)
+            {
+                var child = children[i];
+                if (child.FullSpan.Contains(position))
                 {
-                    i++;
+                    if (child.IsToken) return prevChild;
+                    else return FindLastReusableNodeBefore(position, (LanguageSyntaxNode)child.AsNode(), (IncrementalSyntaxNode)oldIncrementalNode.Children[i]);
+                }
+                else if (child.FullSpan.End <= position)
+                {
+                    if (child.IsNode) prevChild = (LanguageSyntaxNode)child.AsNode();
+                }
+                else
+                {
+                    Debug.Assert(false);
+                    return null;
                 }
             }
-            // TODO:MetaDslx: adjust tokens based on lookahead in the incremental tree
-            var finalSpan = TextSpan.FromBounds(start, changeRange.Span.End);
-            var finalLength = changeRange.NewLength + (changeRange.Span.Start - start);
-            return new TextChangeRange(finalSpan, finalLength);
+            return prevChild;
+        }
+
+        private static LanguageSyntaxNode FindFirstReusableNodeAfter(
+            int position,
+            LanguageSyntaxNode oldNode,
+            IncrementalSyntaxNode oldIncrementalNode)
+        {
+            if (oldNode.FullSpan.Start >= position) return oldNode;
+            if (oldNode.FullSpan.End <= position) return null;
+            var children = oldNode.Parent.ChildNodesAndTokens();
+            LanguageSyntaxNode nextChild = null;
+            for (int i = children.Count - 1; i >= 0; i--)
+            {
+                var child = children[i];
+                if (child.FullSpan.Contains(position))
+                {
+                    if (child.IsToken) return nextChild;
+                    else return FindFirstReusableNodeAfter(position, (LanguageSyntaxNode)child.AsNode(), (IncrementalSyntaxNode)oldIncrementalNode.Children[i]);
+                }
+                else if (child.FullSpan.Start >= position)
+                {
+                    if (child.IsNode) nextChild = (LanguageSyntaxNode)child.AsNode();
+                }
+                else
+                {
+                    Debug.Assert(false);
+                    return null;
+                }
+            }
+            return nextChild;
         }
 
         public BlendedNode ReadNode()
