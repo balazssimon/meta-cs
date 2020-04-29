@@ -24,19 +24,21 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         private struct Cursor
         {
             public readonly SyntaxNodeOrToken CurrentNodeOrToken;
-            private readonly Language Language;
+            public readonly IncrementalSyntaxNode CurrentIncrementalNode;
+            private readonly Cursor? _parentCursor;
             private readonly int _indexInParent;
 
-            private Cursor(Language language, SyntaxNodeOrToken node, int indexInParent)
+            private Cursor(Cursor? parent, SyntaxNodeOrToken node, IncrementalSyntaxNode incrementalSyntaxNode, int indexInParent)
             {
-                this.Language = language;
                 this.CurrentNodeOrToken = node;
+                this.CurrentIncrementalNode = incrementalSyntaxNode;
+                _parentCursor = parent;
                 _indexInParent = indexInParent;
             }
 
-            public static Cursor FromRoot(LanguageSyntaxNode node)
+            public static Cursor FromRoot(LanguageSyntaxNode node, IncrementalSyntaxNode incrementalSyntaxNode)
             {
-                return new Cursor(node.Language, node, indexInParent: 0);
+                return new Cursor(null, node, incrementalSyntaxNode, indexInParent: 0);
             }
 
             public bool IsFinished
@@ -66,7 +68,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                         var sibling = siblings[i];
                         if (IsNonZeroWidthOrIsEndOfFile(sibling))
                         {
-                            return new Cursor(Language, sibling, i);
+                            var incrementalSiblings = _parentCursor.Value.CurrentIncrementalNode.Children;
+                            return new Cursor(this, sibling, incrementalSiblings[i], i);
                         }
                     }
 
@@ -75,14 +78,14 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                     return MoveToParent().MoveToNextSibling();
                 }
 
-                return default(Cursor);
+                return default;
             }
 
             private Cursor MoveToParent()
             {
                 var parent = this.CurrentNodeOrToken.Parent;
                 var index = IndexOfNodeInParent(parent);
-                return new Cursor(Language, parent, index);
+                return new Cursor(this, parent, _parentCursor.Value.CurrentIncrementalNode, index);
             }
 
             private static int IndexOfNodeInParent(SyntaxNode node)
@@ -122,7 +125,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                     var child = Microsoft.CodeAnalysis.ChildSyntaxList.ItemInternal(node, 0);
                     if (IsNonZeroWidthOrIsEndOfFile(child))
                     {
-                        return new Cursor(Language, child, 0);
+                        return new Cursor(this, child, CurrentIncrementalNode.Children[0], 0);
                     }
                 }
 
@@ -132,7 +135,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 {
                     if (IsNonZeroWidthOrIsEndOfFile(child))
                     {
-                        return new Cursor(Language, child, index);
+                        return new Cursor(this, child, CurrentIncrementalNode.Children[index], index);
                     }
 
                     index++;
@@ -154,6 +157,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
                 return cursor;
             }
+
+            private Language Language => ((InternalSyntaxNode)CurrentNodeOrToken.NodeOrParent.Green).Language;
         }
     }
 }

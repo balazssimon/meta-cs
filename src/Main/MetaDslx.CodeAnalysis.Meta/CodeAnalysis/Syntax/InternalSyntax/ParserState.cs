@@ -7,14 +7,10 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
     public class ParserState
     {
         public readonly LexerMode Mode;
-        public readonly int Position;
-        public readonly GreenNode PrevTokenTrailingTrivia;
 
-        public ParserState(LexerMode mode, int position, GreenNode prevTokenTrailingTrivia)
+        public ParserState(LexerMode mode)
         {
             this.Mode = mode;
-            this.Position = position;
-            this.PrevTokenTrailingTrivia = prevTokenTrailingTrivia;
         }
     }
 }

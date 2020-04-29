@@ -29,9 +29,10 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         private readonly int _changeDelta;
         private readonly DirectiveStack _newDirectives;
         private readonly DirectiveStack _oldDirectives;
-        private readonly LexerMode _newLexerDrivenMode;
+        private readonly LexerMode _mode;
+        private readonly ParserState _state;
 
-        public Blender(IncrementalLexer lexer, LanguageSyntaxNode oldTree, IEnumerable<TextChangeRange> changes)
+        public Blender(IncrementalLexer lexer, LanguageSyntaxNode oldTree, IncrementalSyntaxNode oldIncrementalTree, IEnumerable<TextChangeRange> changes)
         {
             Debug.Assert(lexer != null);
             _lexer = lexer;
@@ -57,7 +58,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 // extend the change to its affected range. This will make it easier 
                 // to filter out affected nodes since we will be able simply check 
                 // if node intersects with a change.
-                var affectedRange = ExtendToAffectedRange(oldTree, collapsed);
+                var affectedRange = ExtendToAffectedRange(oldTree, oldIncrementalTree, collapsed);
                 _changes = _changes.Push(affectedRange);
             }
 
@@ -69,14 +70,15 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             }
             else
             {
-                _oldTreeCursor = Cursor.FromRoot(oldTree).MoveToFirstChild();
+                _oldTreeCursor = Cursor.FromRoot(oldTree, oldIncrementalTree).MoveToFirstChild();
                 _newPosition = 0;
             }
 
             _changeDelta = 0;
             _newDirectives = default;
             _oldDirectives = default;
-            _newLexerDrivenMode = null;
+            _mode = null;
+            _state = null;
         }
 
         private Blender(
@@ -87,7 +89,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             int changeDelta,
             DirectiveStack newDirectives,
             DirectiveStack oldDirectives,
-            LexerMode newLexerDrivenMode)
+            LexerMode mode,
+            ParserState state)
         {
             Debug.Assert(lexer != null);
             Debug.Assert(changes != null);
@@ -99,8 +102,11 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             _changeDelta = changeDelta;
             _newDirectives = newDirectives;
             _oldDirectives = oldDirectives;
-            _newLexerDrivenMode = newLexerDrivenMode;
+            _mode = mode;
+            _state = state;
         }
+
+        internal IncrementalSyntaxNode IncrementalSyntaxNode => _oldTreeCursor.CurrentIncrementalNode;
 
         /// <summary>
         /// Affected range of a change is the range within which nodes can be affected by a change
@@ -109,6 +115,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         /// </summary>
         private static TextChangeRange ExtendToAffectedRange(
             LanguageSyntaxNode oldTree,
+            IncrementalSyntaxNode oldIncrementalTree,
             TextChangeRange changeRange)
         {
             // we will increase affected range of the change by the number of lookahead tokens
@@ -141,26 +148,29 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                     i++;
                 }
             }
-
+            // TODO:MetaDslx: adjust tokens based on lookahead in the incremental tree
             var finalSpan = TextSpan.FromBounds(start, changeRange.Span.End);
             var finalLength = changeRange.NewLength + (changeRange.Span.Start - start);
             return new TextChangeRange(finalSpan, finalLength);
         }
 
-        public BlendedNode ReadNode(LexerMode mode)
+        public BlendedNode ReadNode()
         {
-            return ReadNodeOrToken(mode, asToken: false);
+            return ReadNodeOrToken(asToken: false);
         }
 
-        public BlendedNode ReadToken(LexerMode mode)
+        public BlendedNode ReadToken()
         {
-            return ReadNodeOrToken(mode, asToken: true);
+            return ReadNodeOrToken(asToken: true);
         }
 
-        private BlendedNode ReadNodeOrToken(LexerMode mode, bool asToken)
+        private BlendedNode ReadNodeOrToken(bool asToken)
         {
             var reader = new Reader(this);
-            return reader.ReadNodeOrToken(mode, asToken);
+            return reader.ReadNodeOrToken(asToken);
         }
+
+        public LexerMode Mode => _mode;
+        public ParserState State => _state;
     }
 }
