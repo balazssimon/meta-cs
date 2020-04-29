@@ -46,7 +46,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         public InternalSyntaxToken Lex(ref LexerMode mode)
         {
             var result = Lex(mode);
-            mode = this.SaveLexerMode();
+            _mode = mode = this.SaveLexerMode();
             return result;
         }
 
@@ -65,11 +65,13 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             _mode = mode;
         }
 
+        public LexerMode Mode => _mode;
+
 #if DEBUG
         internal static int TokensLexed;
 #endif
 
-        public InternalSyntaxToken Lex(LexerMode mode)
+        private InternalSyntaxToken Lex(LexerMode mode)
         {
 #if DEBUG
             TokensLexed++;

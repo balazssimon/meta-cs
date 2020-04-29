@@ -6,20 +6,21 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 
 namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 {
-    public partial class IncrementalParser : IDisposable
+    public abstract partial class IncrementalParser : IDisposable
     {
+        private static ConditionalWeakTable<LanguageSyntaxNode, IncrementalSyntaxNode> s_incrementalSyntaxTree = new ConditionalWeakTable<LanguageSyntaxNode, IncrementalSyntaxNode>();
+
         protected readonly Language Language;
-        protected readonly IncrementalLexer lexer;
+        protected readonly IncrementalLexer _lexer;
         private readonly bool _isIncremental;
-        private readonly bool _allowModeReset;
         protected readonly CancellationToken cancellationToken;
 
-        private LexerMode _mode;
         private Blender _firstBlender;
         private BlendedNode _currentNode;
         private InternalSyntaxToken _currentToken;
@@ -28,6 +29,15 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         private int _firstToken; // The position of _lexedTokens[0] (or _blendedTokens[0]).
         private int _tokenOffset; // The index of the current token within _lexedTokens or _blendedTokens.
         private int _tokenCount;
+        private int _resetCount;
+        private int _resetStart;
+        private LexerMode _mode;
+        private ParserState _state;
+        private Stack<object> _incrementalStack;
+        private IncrementalSyntaxNode _previousIncrementalNode;
+#if DEBUG
+        private readonly int _version;
+#endif
 
         private static readonly ObjectPool<BlendedNode[]> s_blendedNodesPool = new ObjectPool<BlendedNode[]>(() => new BlendedNode[32], 2);
 
@@ -36,31 +46,38 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         protected IncrementalParser(
             Language language,
             IncrementalLexer lexer,
-            LexerMode mode,
+            ParserState state,
             LanguageSyntaxNode oldTree,
             IEnumerable<TextChangeRange> changes,
-            bool allowModeReset,
             bool preLexIfNotIncremental = false,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             Language = language;
-            this.lexer = lexer;
-            _mode = mode;
-            _allowModeReset = allowModeReset;
+            _lexer = lexer;
             this.cancellationToken = cancellationToken;
             _currentNode = default;
-            _isIncremental = oldTree != null;
+            _incrementalStack = new Stack<object>();
+            var incrementalTree = oldTree != null ? GetIncrementalSyntaxTree(oldTree) : null;
+            _isIncremental = incrementalTree != null;
 
-            if (this.IsIncremental || allowModeReset)
+            if (this.IsIncremental)
             {
-                _firstBlender = new Blender(lexer, oldTree, changes);
+                _firstBlender = new Blender(lexer, oldTree, incrementalTree, changes);
                 _blendedTokens = s_blendedNodesPool.Allocate();
+#if DEBUG
+                _version = incrementalTree.Version;
+#endif
             }
             else
             {
                 _firstBlender = default;
                 _lexedTokens = new ArrayElement<InternalSyntaxToken>[32];
+#if DEBUG
+                _version = 1;
+#endif
             }
+
+            RestoreParserState(state);
 
             // PreLex is not cancellable. 
             //      If we may cancel why would we aggressively lex ahead?
@@ -96,12 +113,15 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             _firstToken = 0;
             _tokenOffset = 0;
             _tokenCount = 0;
+            _resetCount = 0;
+            _resetStart = 0;
             _currentToken = null;
             _prevTokenTrailingTrivia = null;
-            if (this.IsIncremental || _allowModeReset)
+            if (this.IsIncremental)
             {
-                _firstBlender = new Blender(this.lexer, null, null);
+                _firstBlender = new Blender(_lexer, null, null, null);
             }
+            RestoreParserState(null);
         }
 
         protected bool IsIncremental
@@ -115,14 +135,13 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         private void PreLex()
         {
             // NOTE: Do not cancel in this method. It is called from the constructor.
-            var size = Math.Min(4096, Math.Max(32, this.lexer.TextWindow.Text.Length / 2));
+            var size = Math.Min(4096, Math.Max(32, _lexer.TextWindow.Text.Length / 2));
             _lexedTokens = new ArrayElement<InternalSyntaxToken>[size];
-            var lexer = this.lexer;
-            var mode = _mode;
+            var lexer = _lexer;
 
             for (int i = 0; i < size; i++)
             {
-                var token = lexer.Lex(mode);
+                var token = lexer.Lex(ref _mode);
                 this.AddLexedToken(token);
                 if (token.Kind == SyntaxKind.Eof)
                 {
@@ -131,25 +150,128 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             }
         }
 
-        protected ParserState SaveParserState()
+        private static IncrementalSyntaxNode GetIncrementalSyntaxTree(LanguageSyntaxNode syntaxTree)
         {
-            return SaveParserState(_mode, CurrentTokenPosition, _prevTokenTrailingTrivia);
+            if (s_incrementalSyntaxTree.TryGetValue(syntaxTree, out var result))
+            {
+                return result;
+            }
+            else
+            {
+                Debug.Assert(false);
+                return null;
+            }
         }
 
-        protected virtual ParserState SaveParserState(LexerMode mode, int position, GreenNode prevTokenTrailingTrivia)
+        public LanguageSyntaxNode ParseRoot(ref ParserState state)
         {
-            return new ParserState(mode, position, prevTokenTrailingTrivia);
+            BeginRoot();
+            var green = this.ParseNode(ref state);
+            var red = (LanguageSyntaxNode)green.CreateRed();
+            EndRoot(red);
+            return red;
+        }
+
+        public GreenNode ParseNode(ref ParserState state)
+        {
+            BeginNode(state);
+            try
+            {
+                if (IsIncremental && CanReuseNode(CurrentNode)) return EatNode();
+                else return ParseNode();
+            }
+            finally
+            {
+                state = EndNode();
+            }
+        }
+
+        protected bool CanReuseNode(LanguageSyntaxNode node)
+        {
+            return true;
+        }
+
+        protected GreenNode ParseNode()
+        {
+            return null;
+        }
+
+        protected void BeginRoot()
+        {
+
+        }
+
+        protected void EndRoot(LanguageSyntaxNode root)
+        {
+            s_incrementalSyntaxTree.Add(root, _previousIncrementalNode);
+        }
+
+        protected void BeginNode(ParserState state)
+        {
+            RestoreParserState(state);
+#if DEBUG
+            _incrementalStack.Push(new IncrementalSyntaxNodeBuilder(_state, _version));
+#else
+            _incrementalStack.Push(new IncrementalSyntaxNodeBuilder(_state));
+#endif
+        }
+
+        protected ParserState EndNode()
+        {
+            _state = this.SaveParserState();
+            var incrementalNode = _incrementalStack.Pop();
+            if (incrementalNode is IncrementalSyntaxNode incrementalSyntaxNode)
+            {
+                _previousIncrementalNode = incrementalSyntaxNode;
+            }
+            else if (incrementalNode is IncrementalSyntaxNodeBuilder incrementalSyntaxNodeBuilder)
+            {
+                _previousIncrementalNode = incrementalSyntaxNodeBuilder.ToImmutable(_state);
+            }
+            else
+            {
+                _previousIncrementalNode = null;
+                Debug.Assert(false);
+            }
+            if (_incrementalStack.Count > 0)
+            {
+                var incrementalParent = _incrementalStack.Peek() as IncrementalSyntaxNodeBuilder;
+                Debug.Assert(incrementalParent != null);
+                incrementalParent.Children.Add(_previousIncrementalNode);
+                incrementalParent.LookaheadBefore = Math.Min(incrementalParent.LookaheadBefore, _previousIncrementalNode.LookaheadBefore);
+                incrementalParent.LookaheadAfter = Math.Max(incrementalParent.LookaheadAfter, _previousIncrementalNode.LookaheadAfter);
+            }
+            return _state;
+        }
+
+        protected ParserState SaveParserState()
+        {
+            return SaveParserState(_state);
+        }
+
+        protected virtual ParserState SaveParserState(ParserState previousState)
+        {
+            return _state;
         }
 
         protected virtual void RestoreParserState(ParserState state)
         {
-            _mode = state.Mode;
-            var offset = state.Position - _firstToken;
-            Debug.Assert(offset >= 0 && offset < _tokenCount);
-            _tokenOffset = offset;
-            _currentToken = default;
-            _currentNode = default;
-            _prevTokenTrailingTrivia = state.PrevTokenTrailingTrivia;
+            if (_state != state)
+            {
+                if (_mode != state?.Mode)
+                {
+                    _mode = state?.Mode;
+                    _tokenCount = _tokenOffset;
+                    _currentToken = default;
+                    _currentNode = default;
+                    ResetCurrentToken();
+                }
+                _state = state;
+            }
+        }
+
+        private void ResetCurrentToken()
+        {
             if (_blendedTokens != null)
             {
                 // look forward for slots not holding a token
@@ -169,9 +291,42 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             }
         }
 
+        protected ResetPoint GetResetPoint()
+        {
+            var pos = CurrentTokenPosition;
+            if (_resetCount == 0)
+            {
+                _resetStart = pos; // low water mark
+            }
+
+            _resetCount++;
+            return new ResetPoint(_resetCount, SaveParserState(), pos, _prevTokenTrailingTrivia);
+        }
+
+        protected void Reset(ref ResetPoint point)
+        {
+            var offset = point.Position - _firstToken;
+            Debug.Assert(offset >= 0 && offset < _tokenCount);
+            _tokenOffset = offset;
+            _currentToken = default;
+            _currentNode = default;
+            _prevTokenTrailingTrivia = point.PrevTokenTrailingTrivia;
+            RestoreParserState(point.State);
+        }
+
+        protected void Release(ref ResetPoint point)
+        {
+            Debug.Assert(_resetCount == point.ResetCount);
+            _resetCount--;
+            if (_resetCount == 0)
+            {
+                _resetStart = -1;
+            }
+        }
+
         public LanguageParseOptions Options
         {
-            get { return this.lexer.Options; }
+            get { return _lexer.Options; }
         }
 
         public bool IsScript
@@ -179,23 +334,20 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             get { return Options.Kind == SourceCodeKind.Script; }
         }
 
-        protected LexerMode Mode
+        protected LexerMode Mode => _mode;
+
+        protected ParserState State
         {
             get
             {
-                return _mode;
+                return _state;
             }
 
             set
             {
-                if (_mode != value)
+                if (_state != value)
                 {
-                    Debug.Assert(_allowModeReset);
-
-                    _mode = value;
-                    _currentToken = default;
-                    _currentNode = default;
-                    _tokenCount = _tokenOffset;
+                    RestoreParserState(value);
                 }
             }
         }
@@ -234,11 +386,11 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         {
             if (_tokenOffset == 0)
             {
-                _currentNode = _firstBlender.ReadNode(_mode);
+                _currentNode = _firstBlender.ReadNode();
             }
             else
             {
-                _currentNode = _blendedTokens[_tokenOffset - 1].Blender.ReadNode(_mode);
+                _currentNode = _blendedTokens[_tokenOffset - 1].Blender.ReadNode();
             }
         }
 
@@ -258,10 +410,14 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
             _blendedTokens[_tokenOffset++] = _currentNode;
             _tokenCount = _tokenOffset; // forget anything after this slot
+            var incrementalNode = _incrementalStack.Pop();
+            Debug.Assert(incrementalNode is IncrementalSyntaxNodeBuilder);
+            _incrementalStack.Push(_currentNode.Blender.IncrementalSyntaxNode);
 
             // erase current state
             _currentNode = default;
             _currentToken = default;
+            RestoreParserState(_currentNode.Blender.State);
 
             return result;
         }
@@ -295,25 +451,29 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         {
             if (_blendedTokens != null)
             {
+                BlendedNode oldToken;
                 if (_tokenCount > 0)
                 {
-                    this.AddToken(_blendedTokens[_tokenCount - 1].Blender.ReadToken(_mode));
+                    oldToken = _blendedTokens[_tokenCount - 1].Blender.ReadToken();
                 }
                 else
                 {
                     if (_currentNode.Token != null)
                     {
-                        this.AddToken(_currentNode);
+                        oldToken = _currentNode;
                     }
                     else
                     {
-                        this.AddToken(_firstBlender.ReadToken(_mode));
+                        oldToken = _firstBlender.ReadToken();
                     }
                 }
+                this.AddToken(oldToken);
+                _mode = oldToken.Blender.Mode;
+                //RestoreParserState(oldToken.Blender.State);
             }
             else
             {
-                this.AddLexedToken(this.lexer.Lex(_mode));
+                this.AddLexedToken(_lexer.Lex(ref _mode));
             }
         }
 
@@ -346,9 +506,10 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         {
             // shift tokens to left if we are far to the right
             // don't shift if reset points have fixed locked tge starting point at the token in the window
-            if (_tokenOffset > (_blendedTokens.Length >> 1))
+            if (_tokenOffset > (_blendedTokens.Length >> 1)
+                && (_resetStart == -1 || _resetStart > _firstToken))
             {
-                int shiftOffset = _tokenOffset;
+                int shiftOffset = (_resetStart == -1) ? _tokenOffset : _resetStart - _firstToken;
                 int shiftCount = _tokenCount - shiftOffset;
                 Debug.Assert(shiftOffset > 0);
                 _firstBlender = _blendedTokens[shiftOffset - 1].Blender;
@@ -373,9 +534,10 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         {
             // shift tokens to left if we are far to the right
             // don't shift if reset points have fixed locked tge starting point at the token in the window
-            if (_tokenOffset > (_lexedTokens.Length >> 1))
+            if (_tokenOffset > (_lexedTokens.Length >> 1)
+                && (_resetStart == -1 || _resetStart > _firstToken))
             {
-                int shiftOffset = _tokenOffset;
+                int shiftOffset = (_resetStart == -1) ? _tokenOffset : _resetStart - _firstToken;
                 int shiftCount = _tokenCount - shiftOffset;
                 Debug.Assert(shiftOffset > 0);
                 if (shiftCount > 0)
@@ -397,10 +559,23 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         protected InternalSyntaxToken PeekToken(int n)
         {
-            Debug.Assert(n >= 0);
+            //Debug.Assert(n >= 0);
+            if (_tokenOffset + n < 0) return null;
+
             while (_tokenOffset + n >= _tokenCount)
             {
                 this.AddNewToken();
+            }
+
+            var incrementalNode = _incrementalStack.Peek();
+            if (incrementalNode is IncrementalSyntaxNodeBuilder builder)
+            {
+                builder.LookaheadBefore = Math.Min(n, builder.LookaheadBefore);
+                builder.LookaheadAfter = Math.Max(n, builder.LookaheadAfter);
+            }
+            else
+            {
+                Debug.Assert(false);
             }
 
             if (_blendedTokens != null)
@@ -1016,7 +1191,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         internal DirectiveStack Directives
         {
-            get { return lexer.Directives; }
+            get { return _lexer.Directives; }
         }
 
         /// <summary>

@@ -21,7 +21,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             private int _changeDelta;
             private DirectiveStack _newDirectives;
             private DirectiveStack _oldDirectives;
-            private LexerMode _newLexerDrivenMode;
+            private LexerMode _mode;
+            private ParserState _state;
 
             public Reader(Blender blender)
             {
@@ -32,11 +33,14 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 _changeDelta = blender._changeDelta;
                 _newDirectives = blender._newDirectives;
                 _oldDirectives = blender._oldDirectives;
-                _newLexerDrivenMode = blender._newLexerDrivenMode;
+                _mode = blender._mode;
+                _state = blender._state;
             }
 
-            internal BlendedNode ReadNodeOrToken(LexerMode mode, bool asToken)
+            internal BlendedNode ReadNodeOrToken(bool asToken)
             {
+                LexerMode mode = _mode;
+
                 // This is the core driver of the blender.  It just sits in a loop trying to keep our
                 // positions in the old and new text in sync.  When they're out of sync it will try
                 // to match them back up, and it will appropriately determine which nodes or tokens
@@ -169,7 +173,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
                 var token = _lexer.Lex(ref mode);
                 _newDirectives = _lexer.Directives;
-                _newLexerDrivenMode = mode;
+                _mode = mode;
                 return token;
             }
 
@@ -189,7 +193,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 var currentNodeOrToken = _oldTreeCursor.CurrentNodeOrToken;
                 if (!CanReuse(currentNodeOrToken))
                 {
-                    blendedNode = default(BlendedNode);
+                    blendedNode = default;
                     return false;
                 }
 
@@ -303,7 +307,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             private BlendedNode CreateBlendedNode(LanguageSyntaxNode node, InternalSyntaxToken token)
             {
                 return new BlendedNode(node, token,
-                    new Blender(_lexer, _oldTreeCursor, _changes, _newPosition, _changeDelta, _newDirectives, _oldDirectives, _newLexerDrivenMode));
+                    new Blender(_lexer, _oldTreeCursor, _changes, _newPosition, _changeDelta, _newDirectives, _oldDirectives, _mode, _state));
             }
         }
     }
