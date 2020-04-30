@@ -550,7 +550,11 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             }
 
             //Debug.Assert(n >= 0);
-            if (_tokenOffset + n < 0) return null;
+            if (_tokenOffset + n < 0)
+            {
+                Debug.Assert(false);
+                return null;
+            }
 
             while (_tokenOffset + n >= _tokenCount)
             {
