@@ -19,8 +19,10 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
     using Microsoft.CodeAnalysis.Syntax.InternalSyntax;
     using Roslyn.Utilities;
     using MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax;
+	using Microsoft.CodeAnalysis.Text;
+    using System.Threading;
 
-	internal abstract class GreenSyntaxNode : InternalSyntaxNode
+    internal abstract class GreenSyntaxNode : InternalSyntaxNode
     {
         protected GreenSyntaxNode(SyntaxKind kind)
             : base(kind)
@@ -129,7 +131,55 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
             return new SyntaxTrivia(default, trivia, position: 0, index: 0);
         }
     }
+	internal class GreenStructuredSyntaxTrivia : GreenSyntaxTrivia
+	{
+		private readonly GreenNode _structure;
 
+		internal GreenStructuredSyntaxTrivia(MetaSyntaxKind kind, GreenNode structure, DiagnosticInfo[] diagnostics = null, SyntaxAnnotation[] annotations = null)
+			: base(kind, structure?.ToFullString(), diagnostics, annotations)
+		{
+			this.Initialize();
+			_structure = structure;
+		}
+
+        internal GreenStructuredSyntaxTrivia(ObjectReader reader)
+			: base(reader)
+		{
+			this.Initialize();
+		}
+
+        static GreenStructuredSyntaxTrivia()
+		{
+			ObjectBinder.RegisterTypeReader(typeof(GreenStructuredSyntaxTrivia), r => new GreenStructuredSyntaxTrivia(r));
+		}
+
+        private void Initialize()
+		{
+			this.flags |= NodeFlags.ContainsStructuredTrivia;
+
+			if (this.Kind == SyntaxKind.SkippedTokensTrivia)
+			{
+				this.flags |= NodeFlags.ContainsSkippedText;
+			}
+		}
+
+        public GreenNode Structure => _structure;
+
+        internal static GreenStructuredSyntaxTrivia Create(MetaSyntaxKind kind, GreenNode structure)
+		{
+			return new GreenStructuredSyntaxTrivia(kind, structure);
+		}
+
+        public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
+		{
+			return new GreenStructuredSyntaxTrivia(this.Kind, this.Structure, diagnostics, GetAnnotations());
+		}
+
+        public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
+		{
+			return new GreenStructuredSyntaxTrivia(this.Kind, this.Structure, GetDiagnostics(), annotations);
+		}
+	}
 	internal partial class GreenSyntaxToken : InternalSyntaxToken
 	{
 	    //====================
@@ -7249,8 +7299,20 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	    {
 	        return new MetaParser(input);
 	    }
-	
-	    public override Language Language => MetaLanguage.Instance;
+
+		public override IncrementalLexer CreateLexer(SourceText text, LanguageParseOptions options, IEnumerable<TextChangeRange> changes)
+		{
+			throw new NotImplementedException();
+			//return new MetaSyntaxLexer(text, (MetaParseOptions)options, changes);
+		}
+
+		public override CodeAnalysis.Syntax.InternalSyntax.IncrementalParser CreateParser(SourceText text, LanguageParseOptions options, LanguageSyntaxNode oldTree, IEnumerable<TextChangeRange> changes, CancellationToken cancellationToken = default)
+		{
+			throw new NotImplementedException();
+			//return new MetaSyntaxParser(text, (MetaParseOptions)options, (MetaSyntaxNode)oldTree, changes, cancellationToken);
+		}
+
+		public override Language Language => MetaLanguage.Instance;
 	
 		private MetaSyntaxKind ToMetaSyntaxKind(SyntaxKind kind)
 	    {
@@ -7276,8 +7338,13 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	    {
 	        return GreenSyntaxTrivia.Create(ToMetaSyntaxKind(SyntaxKind.DisabledTextTrivia), text);
 	    }
-	
-	    public override InternalSyntaxToken Token(SyntaxKind kind)
+
+		public override InternalSyntaxTrivia SkippedToken(GreenNode token)
+		{
+			return GreenStructuredSyntaxTrivia.Create(ToMetaSyntaxKind(SyntaxKind.SkippedTokensTrivia), token);
+		}
+
+		public override InternalSyntaxToken Token(SyntaxKind kind)
 	    {
 	        return GreenSyntaxToken.Create(ToMetaSyntaxKind(kind));
 	    }

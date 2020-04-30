@@ -1,4 +1,5 @@
 ﻿using Antlr4.Runtime;
+using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
 using Roslyn.Utilities;
 using System;
 using System.Collections.Generic;
@@ -7,22 +8,23 @@ using System.Text;
 
 namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 {
-    public class Antlr4LexerState
+    public class Antlr4LexerMode : LexerMode
     {
-        public Antlr4LexerState(IAntlr4Lexer lexer)
+        public Antlr4LexerMode(IAntlr4Lexer lexer)
         {
             this.Mode = lexer.Antlr4Lexer._mode;
             this.ModeStack = lexer.Antlr4Lexer._modeStack.ToImmutableArray();
         }
+
         public int Mode { get; private set; }
         public ImmutableArray<int> ModeStack { get; private set; }
 
         public override bool Equals(object obj)
         {
-            return this.Equals(obj as Antlr4LexerState);
+            return this.Equals(obj as Antlr4LexerMode);
         }
 
-        public virtual bool Equals(Antlr4LexerState other)
+        public virtual bool Equals(Antlr4LexerMode other)
         {
             if (other == null)
             {

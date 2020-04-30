@@ -8,7 +8,9 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 {
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.PooledObjects;
+    using Microsoft.CodeAnalysis.Text;
     using Roslyn.Utilities;
+    using System.Threading;
     using Internal = Microsoft.CodeAnalysis.Syntax.InternalSyntax;
 
     public abstract class InternalSyntaxFactory
@@ -241,5 +243,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         }
 
         public abstract IEnumerable<InternalSyntaxToken> GetWellKnownTokens();
+
+        public abstract IncrementalLexer CreateLexer(SourceText text, LanguageParseOptions options, IEnumerable<TextChangeRange> changes);
+        public abstract IncrementalParser CreateParser(SourceText text, LanguageParseOptions options, LanguageSyntaxNode oldTree, IEnumerable<TextChangeRange> changes, CancellationToken cancellationToken = default);
     }
 }

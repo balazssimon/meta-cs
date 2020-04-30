@@ -51,7 +51,7 @@ namespace Microsoft.CodeAnalysis
         /// </summary>
         public SyntaxToken Token { get; }
 
-        internal GreenNode UnderlyingNode { get; }
+        public GreenNode UnderlyingNode { get; }
 
         internal int Position { get; }
 

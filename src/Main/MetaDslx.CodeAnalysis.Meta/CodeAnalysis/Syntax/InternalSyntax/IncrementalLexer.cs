@@ -13,7 +13,6 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
     public abstract class IncrementalLexer : AbstractLexer
     {
         private readonly InternalSyntaxFactory InternalSyntaxFactory;
-        private readonly IncrementalLexer _oldLexer;
         private readonly IEnumerable<TextChangeRange> _changes;
         private readonly LanguageParseOptions _options;
         private readonly LexerCache _cache;
@@ -22,11 +21,10 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         private DirectiveStack _directives;
         private LexerMode _mode;
 
-        public IncrementalLexer(Language language, SourceText text, LanguageParseOptions options, IncrementalLexer oldLexer, IEnumerable<TextChangeRange> changes)
+        public IncrementalLexer(Language language, SourceText text, LanguageParseOptions options, IEnumerable<TextChangeRange> changes)
             : base(language, text)
         {
             InternalSyntaxFactory = language.InternalSyntaxFactory;
-            _oldLexer = oldLexer;
             _changes = changes;
             _cache = new LexerCache(language);
             _createCachedTokenFunction = this.CreateCachedToken;
@@ -106,6 +104,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
             this.Start();
             var kind = this.ScanSyntaxToken();
+            if (kind == SyntaxKind.None) return null;
             var errors = this.GetErrors(GetFullWidth(leading));
 
             _trailingTriviaCache.Clear();
@@ -115,7 +114,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             return Create(kind, leading.ToListNode(), trailing.ToListNode(), errors);
         }
 
-        protected InternalSyntaxToken CachedSyntaxToken()
+        private InternalSyntaxToken CachedSyntaxToken()
         {
             InternalSyntaxToken token = null;
             if (this.QuickScanSyntaxToken())
@@ -147,27 +146,13 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             return false;
         }
 
-        internal GreenNode LexSyntaxLeadingTrivia()
-        {
-            _leadingTriviaCache.Clear();
-            this.LexSyntaxTrivia(afterFirstToken: TextWindow.Position > 0, isTrailing: false, triviaList: _leadingTriviaCache);
-            return _leadingTriviaCache.ToListNode();
-        }
-
-        internal GreenNode LexSyntaxTrailingTrivia()
-        {
-            _trailingTriviaCache.Clear();
-            this.LexSyntaxTrivia(afterFirstToken: true, isTrailing: true, triviaList: _trailingTriviaCache);
-            return _trailingTriviaCache.ToListNode();
-        }
-
         private InternalSyntaxToken Create(SyntaxKind kind, GreenNode leadingTrivia, GreenNode trailingTrivia, SyntaxDiagnosticInfo[] errors)
         {
             InternalSyntaxToken token;
             switch (kind.Switch())
             {
                 case SyntaxKind.Eof:
-                    token = InternalSyntaxFactory.Token(leadingTrivia, kind, trailingTrivia);
+                    token = leadingTrivia != null ? (InternalSyntaxToken)InternalSyntaxFactory.EndOfFile.WithLeadingTrivia(leadingTrivia) : InternalSyntaxFactory.EndOfFile;
                     break;
                 case SyntaxKind.None:
                     token = InternalSyntaxFactory.BadToken(leadingTrivia, TextWindow.GetText(intern: false), trailingTrivia);
@@ -196,17 +181,19 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             return token;
         }
 
-        protected void LexSyntaxTrivia(bool afterFirstToken, bool isTrailing, SyntaxListBuilder triviaList)
+        private void LexSyntaxTrivia(bool afterFirstToken, bool isTrailing, SyntaxListBuilder triviaList)
         {
             while (true)
             {
                 this.Start();
                 var kind = this.ScanSyntaxTrivia(afterFirstToken, isTrailing);
-                this.AddTrivia(kind, triviaList);
+                if (kind == SyntaxKind.None) return;
+                var trivia = this.AddTrivia(kind, triviaList);
+                if (isTrailing && (trivia.Text.EndsWith("\r") || trivia.Text.EndsWith("\n"))) return;
             }
         }
 
-        protected void AddTrivia(SyntaxKind kind, SyntaxListBuilder list)
+        private InternalSyntaxTrivia AddTrivia(SyntaxKind kind, SyntaxListBuilder list)
         {
             if (_createWhitespaceTriviaFunction == null)
             {
@@ -231,7 +218,6 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                         goto case ' ';
 
                     case ' ':
-                        TextWindow.AdvanceChar();
                         hashCode = Hash.CombineFNVHash(hashCode, ch);
                         break;
 
@@ -285,9 +271,10 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 trivia = trivia.WithDiagnosticsGreen(this.GetErrors(leadingTriviaWidth: 0));
             }
             list.Add(trivia);
+            return trivia;
         }
 
-        protected virtual InternalSyntaxTrivia CreateWhitespaceTrivia()
+        private InternalSyntaxTrivia CreateWhitespaceTrivia()
         {
             return InternalSyntaxFactory.Whitespace(TextWindow.GetText(intern: true));
         }
