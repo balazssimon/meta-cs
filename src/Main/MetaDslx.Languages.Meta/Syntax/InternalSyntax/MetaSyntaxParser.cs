@@ -15,6 +15,8 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Syntax.InternalSyntax;
 using Microsoft.CodeAnalysis.Text;
 using MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax;
+using MetaDslx.CodeAnalysis;
+
 namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 {
     public class MetaSyntaxParser : Antlr4SyntaxParser<MetaLexer, MetaParser>
@@ -43,9 +45,9 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
         {
             return new MetaParser(tokenStream);
         }
-        public override GreenNode Parse()
+        public override LanguageSyntaxNode Parse()
         {
-            return this.ParseMain();
+            return (LanguageSyntaxNode)this.ParseMain().CreateRed();
         }
         internal MainGreen ParseMain()
         {

@@ -12,7 +12,7 @@ using System.Threading;
 
 namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 {
-    public abstract partial class IncrementalParser : IDisposable
+    public abstract partial class IncrementalParser : SyntaxParser, IDisposable
     {
         private static ConditionalWeakTable<LanguageSyntaxNode, IncrementalSyntaxTree> s_incrementalSyntaxTree = new ConditionalWeakTable<LanguageSyntaxNode, IncrementalSyntaxTree>();
 
@@ -46,15 +46,15 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         protected IncrementalParser(
             Language language,
-            IncrementalLexer lexer,
-            ParserState state,
+            SourceText text,
+            LanguageParseOptions options,
             LanguageSyntaxNode oldTree,
             IEnumerable<TextChangeRange> changes,
-            bool preLexIfNotIncremental = false,
             CancellationToken cancellationToken = default)
+            : base(language, text, options, oldTree, changes, cancellationToken)
         {
             Language = language;
-            _lexer = lexer;
+            _lexer = language.InternalSyntaxFactory.CreateLexer(text, options, changes);
             this.cancellationToken = cancellationToken;
             _currentNode = default;
             _incrementalStack = new Stack<object>();
@@ -63,7 +63,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
             if (this.IsIncremental)
             {
-                _firstBlender = new Blender(lexer, oldTree, _oldIncrementalTree, changes);
+                _firstBlender = new Blender(_lexer, oldTree, _oldIncrementalTree, changes);
                 _blendedTokens = s_blendedNodesPool.Allocate();
 #if DEBUG
                 _version = _oldIncrementalTree.Version + 1;
@@ -77,19 +77,21 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 _version = 1;
 #endif
             }
-
-            RestoreParserState(state);
-
-            // PreLex is not cancellable. 
-            //      If we may cancel why would we aggressively lex ahead?
-            //      Cancellations in a constructor make disposing complicated
-            //
-            // So, if we have a real cancellation token, do not do prelexing.
-            if (preLexIfNotIncremental && !this.IsIncremental && !cancellationToken.CanBeCanceled)
-            {
-                this.PreLex();
-            }
         }
+
+        //public abstract LanguageSyntaxNode Parse();
+
+        public ParseOptions Options => _lexer.Options;
+
+        public SourceText SourceText => _lexer.TextWindow.Text;
+
+        public bool IsScript => Options.Kind == SourceCodeKind.Script;
+
+        public override DirectiveStack Directives => _lexer.Directives;
+
+        protected int TokenOffset => _tokenOffset;
+
+        protected int TokenCount => _tokenCount;
 
         public void Dispose()
         {
@@ -133,24 +135,6 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             }
         }
 
-        private void PreLex()
-        {
-            // NOTE: Do not cancel in this method. It is called from the constructor.
-            var size = Math.Min(4096, Math.Max(32, _lexer.TextWindow.Text.Length / 2));
-            _lexedTokens = new ArrayElement<InternalSyntaxToken>[size];
-            var lexer = _lexer;
-
-            for (int i = 0; i < size; i++)
-            {
-                var token = lexer.Lex(ref _mode);
-                this.AddLexedToken(token);
-                if (token.Kind == SyntaxKind.Eof)
-                {
-                    break;
-                }
-            }
-        }
-
         private static IncrementalSyntaxTree GetIncrementalSyntaxTree(LanguageSyntaxNode syntaxTree)
         {
             if (s_incrementalSyntaxTree.TryGetValue(syntaxTree, out var result))
@@ -162,39 +146,6 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 Debug.Assert(false);
                 return null;
             }
-        }
-
-        public LanguageSyntaxNode ParseRoot(ref ParserState state)
-        {
-            BeginRoot();
-            var green = this.ParseNode(ref state);
-            var red = (LanguageSyntaxNode)green.CreateRed();
-            EndRoot(red);
-            return red;
-        }
-
-        public GreenNode ParseNode(ref ParserState state)
-        {
-            BeginNode(state);
-            try
-            {
-                if (IsIncremental && CanReuseNode(CurrentNode)) return EatNode();
-                else return ParseNode();
-            }
-            finally
-            {
-                state = EndNode();
-            }
-        }
-
-        protected bool CanReuseNode(LanguageSyntaxNode node)
-        {
-            return true;
-        }
-
-        protected GreenNode ParseNode()
-        {
-            return null;
         }
 
         protected void BeginRoot()
@@ -325,16 +276,6 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             {
                 _resetStart = -1;
             }
-        }
-
-        public LanguageParseOptions Options
-        {
-            get { return _lexer.Options; }
-        }
-
-        public bool IsScript
-        {
-            get { return Options.Kind == SourceCodeKind.Script; }
         }
 
         protected LexerMode Mode => _mode;
@@ -1201,11 +1142,6 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             }
 
             return token;
-        }
-
-        internal DirectiveStack Directives
-        {
-            get { return _lexer.Directives; }
         }
 
         /// <summary>

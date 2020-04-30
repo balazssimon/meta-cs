@@ -55,6 +55,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         public string GeneratedSyntaxTree { get; private set; }
         public string GeneratedLanguage { get; private set; }
         public string GeneratedErrorCode { get; private set; }
+        public string GeneratedSyntaxLexer { get; private set; }
         public string GeneratedSyntaxParser { get; private set; }
         public string GeneratedLanguageVersion { get; private set; }
         public string GeneratedParseOptions { get; private set; }
@@ -412,6 +413,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             this.GeneratedSyntaxTree = generator.GenerateSyntaxTree();
             this.GeneratedErrorCode = generator.GenerateErrorCode();
             this.GeneratedSymbolFacts = generator.GenerateSymbolFacts();
+            this.GeneratedSyntaxLexer = generator.GenerateSyntaxLexer();
             this.GeneratedSyntaxParser = generator.GenerateSyntaxParser();
             this.GeneratedLanguage = generator.GenerateLanguage();
             this.GeneratedLanguageVersion = generator.GenerateLanguageVersion();
@@ -444,6 +446,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                 this.GenerateOutputFile(Path.Combine(this.SyntaxDirectory, this.LanguageName + "Syntax.cs"), this.GeneratedSyntax);
                 this.GenerateOutputFile(Path.Combine(this.SyntaxDirectory, this.LanguageName + "SyntaxTree.cs"), this.GeneratedSyntaxTree);
                 this.GenerateOutputFile(Path.Combine(this.SyntaxDirectory, this.LanguageName + @"ParseOptions.cs"), this.GeneratedParseOptions);
+                this.GenerateOutputFile(Path.Combine(this.InternalSyntaxDirectory, this.LanguageName + @"SyntaxLexer.cs"), this.GeneratedSyntaxLexer);
                 this.GenerateOutputFile(Path.Combine(this.InternalSyntaxDirectory, this.LanguageName + @"SyntaxParser.cs"), this.GeneratedSyntaxParser);
                 this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Compilation\" + this.LanguageName + @"LanguageVersion.cs"), this.GeneratedLanguageVersion, false);
                 this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Errors\" + this.LanguageName + @"ErrorCode.cs"), this.GeneratedErrorCode, false);
