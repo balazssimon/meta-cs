@@ -1032,8 +1032,10 @@ namespace [Properties.DefaultNamespace].Syntax.InternalSyntax
 end template
 
 template GenerateSyntaxParser()
+[var lang = Properties.LanguageName]
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -1050,98 +1052,113 @@ using MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax;
 
 namespace [Properties.DefaultNamespace].Syntax.InternalSyntax
 {
-    public class [Properties.LanguageName]SyntaxParser : IncrementalAntlr4Parser
+    public class [lang]SyntaxParser : IncrementalAntlr4Parser
     {
-        private Antlr4ToRoslynVisitor _visitor;
+        private readonly Antlr4ToRoslynVisitor _visitor;
 
-        public [Properties.LanguageName]SyntaxParser(
+        public [lang]SyntaxParser(
             SourceText text,
-            [Properties.LanguageName]ParseOptions options,
-            [Properties.LanguageName]SyntaxNode oldTree, 
+            [lang]ParseOptions options,
+            [lang]SyntaxNode oldTree, 
             IEnumerable<TextChangeRange> changes,
             CancellationToken cancellationToken = default)
-            : base([Properties.LanguageName]Language.Instance, text, options, oldTree, changes, cancellationToken)
+            : base([lang]Language.Instance, text, options, oldTree, changes, cancellationToken)
         {
             _visitor = new Antlr4ToRoslynVisitor(this);
         }
+
+        protected [lang]Parser Antlr4Parser => ([lang]Parser)this.Parser;
+
+		protected override ParserRuleContext GetIncrementalContext(ParserRuleContext parent, int invokingState, int ruleIndex)
+		{
+			switch (ruleIndex)
+			{
+                [loop(rule:Instances.ParserRules)]
+		        [GenerateAntlr4ToRoslynGetIncrementalContext(rule, null)]
+		        [end loop]				
+				default:
+                    Debug.Assert(false);
+					return null;
+			}
+		}
 
 		public override LanguageSyntaxNode Parse()
 		{
 			BeginRoot();
             ParserState state = null;
 			var green = this.Parse[Instances.MainRule().PlainName()](ref state);
-			var red = ([Properties.LanguageName]SyntaxNode)green.CreateRed();
+			var red = ([lang]SyntaxNode)green.CreateRed();
 			EndRoot(red);
 			return red;
 		}
 
         [loop(rule:Instances.ParserRules)]
-		[GenerateAntlr4ToRoslynParseRule(rule, null)]
+		[GenerateAntlr4ToRoslynSyntaxParseRule(rule, null)]
 		[end loop]
 
-        private void CacheGreenNode(ParserRuleContext context, GreenNode greenNode)
-		{
-			throw new NotImplementedException();
-		}
+        internal void BeginParserRuleContext()
+        {
+            BeginNode(State);
+        }
 
-		private bool TryGetGreenNode(ParserRuleContext context, out GreenNode existingGreenNode)
-		{
-			throw new NotImplementedException();
-		}
+        internal void EndParserRuleContext()
+        {
+            EndNode();
+        }
 
-		private GreenNode VisitTerminal(IToken token, SandySyntaxKind kind)
-		{
-			throw new NotImplementedException();
-		}
+        internal void MakeGreenNode(ParserRuleContext context)
+        {
+	        _visitor.Visit(context);
+        }
 
-		private GreenNode VisitTerminal(ITerminalNode node, SandySyntaxKind kind)
-		{
-			throw new NotImplementedException();
-		}
-
-        private class Antlr4ToRoslynVisitor : [Properties.LanguageName]ParserBaseVisitor<GreenNode>
+        private class Antlr4ToRoslynVisitor : [lang]ParserBaseVisitor<GreenNode>
         {
 			// list pools - allocators for lists that are used to build sequences of nodes. The lists
 			// can be reused (hence pooled) since the syntax factory methods don't keep references to
 			// them
 			private readonly SyntaxListPool _pool = new SyntaxListPool(); // Don't need to reset this.
 			
-			private [Properties.LanguageName]InternalSyntaxFactory factory;
-            private [Properties.LanguageName]SyntaxParser syntaxParser;
+			private readonly [lang]InternalSyntaxFactory _factory;
+            private readonly [lang]SyntaxParser _syntaxParser;
 
-            public Antlr4ToRoslynVisitor([Properties.LanguageName]SyntaxParser syntaxParser)
+            public Antlr4ToRoslynVisitor([lang]SyntaxParser syntaxParser)
             {
-				this.factory = ([Properties.LanguageName]InternalSyntaxFactory)syntaxParser.Language.InternalSyntaxFactory;
-                this.syntaxParser = syntaxParser;
+				_factory = ([lang]InternalSyntaxFactory)syntaxParser.Language.InternalSyntaxFactory;
+                _syntaxParser = syntaxParser;
             }
 			
-            private GreenNode VisitTerminal(IToken token, [Properties.LanguageName]SyntaxKind kind)
+            private GreenNode VisitTerminal(IToken token, [lang]SyntaxKind kind)
             {
-                return this.syntaxParser.VisitTerminal(token, kind);
+				var green = ((IncrementalToken)token).GreenToken;
+				Debug.Assert(kind == null || green.Kind == kind);
+				return green;
             }
-
             public GreenNode VisitTerminal(IToken token)
             {
-                return this.VisitTerminal(token, null);
+				return VisitTerminal(token, null);
             }
-			
-            private GreenNode VisitTerminal(ITerminalNode node, [Properties.LanguageName]SyntaxKind kind)
+            private GreenNode VisitTerminal(ITerminalNode node, [lang]SyntaxKind kind)
             {
-                return this.syntaxParser.VisitTerminal(node, kind);
-            }
-
+				var green = ((IncrementalToken)node.Symbol).GreenToken;
+				Debug.Assert(kind == null || green.Kind == kind);
+				return green;
+			}
             public override GreenNode VisitTerminal(ITerminalNode node)
             {
-                return this.VisitTerminal(node, null);
+                return VisitTerminal(node, null);
             }
 
 			public override GreenNode Visit(IParseTree tree)
 			{
-				if (tree is ParserRuleContext context)
+                if (tree is ICachedRuleContext cached)
                 {
-                    if (this.syntaxParser.TryGetGreenNode(context, out var existingGreenNode)) return existingGreenNode;
+                    return cached.CachedNode;
+                }
+				else if (tree is IncrementalParserRuleContext context)
+                {
+                    if (_syntaxParser.TryGetGreenNode(context, out var existingGreenNode)) return existingGreenNode;
     				var greenNode = base.Visit(tree);
-                    this.syntaxParser.CacheGreenNode(context, greenNode);
+                    _syntaxParser.CacheGreenNode(context, greenNode);
     				return greenNode;
                 }
                 else
@@ -1155,27 +1172,41 @@ namespace [Properties.DefaultNamespace].Syntax.InternalSyntax
         }
     }
 
+    public partial class [lang]Parser
+    {
+        [loop(rule:Instances.ParserRules)]
+		[GenerateAntlr4ToRoslynCachedParserRuleContext(rule, null)]
+		[end loop]
+    }
 }
 end template
 
-template GenerateAntlr4ToRoslynParseRule(Antlr4ParserRule rule, Antlr4ParserRule superRule)
+template GenerateAntlr4ToRoslynGetIncrementalContext(Antlr4ParserRule rule, Antlr4ParserRule superRule)
 [var lang = Properties.LanguageName]
 [if (rule.Alternatives.Count > 0)]
 	[loop(alt:rule.Alternatives)]
-[GenerateAntlr4ToRoslynParseRule(alt, rule)]
+[GenerateAntlr4ToRoslynGetIncrementalContext(alt, rule)]
 	[end loop]
 [else]
+    [if (superRule == null)]
+case [lang]Parser.RULE_[rule.Name]:
+	return CanReuse[rule.PlainName()](CurrentNode as [rule.RedName()]) ? new [lang]Parser.[rule.PlainName()]Context_Cached(parent, invokingState, EatNode()) : null;
+    [end if]
+[end if]
+end template
+
+template GenerateAntlr4ToRoslynSyntaxParseRule(Antlr4ParserRule rule, Antlr4ParserRule superRule)
+[var lang = Properties.LanguageName]
 public GreenNode Parse[rule.PlainName()](ref ParserState state)
 {
-	BeginNode(state);
+	RestoreParserState(state);
 	try
 	{
-		if (IsIncremental && CanReuse[rule.PlainName()](CurrentNode as [rule.RedName()])) return EatNode();
-		else return Parse[rule.PlainName()]();
+		return Parse[rule.PlainName()]();
 	}
 	finally
 	{
-		state = EndNode();
+		state = this.State;
 	}
 }
 
@@ -1184,11 +1215,29 @@ protected virtual bool CanReuse[rule.PlainName()]([rule.RedName()] node)
 	return node != null;
 }
 
-protected virtual GreenNode Parse[rule.PlainName()]()
+protected GreenNode Parse[rule.PlainName()]()
 {
-	return null;
+	var context = this.Antlr4Parser.[rule.Name]();
+	var green = _visitor.Visit(context);
+	return green;
 }
-[end if]
+end template
+
+template GenerateAntlr4ToRoslynCachedParserRuleContext(Antlr4ParserRule rule, Antlr4ParserRule superRule)
+[var lang = Properties.LanguageName]
+^
+internal class [rule.PlainName()]Context_Cached : [rule.PlainName()]Context, ICachedRuleContext
+{
+    private GreenNode _cachedNode;
+
+    public [rule.PlainName()]Context_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+		: base(parent, invokingState)
+    {
+        _cachedNode = cachedNode;
+    }
+
+    public GreenNode CachedNode => _cachedNode;
+}
 end template
 
 template GenerateAntlr4ToRoslynVisitorRule(Antlr4ParserRule rule, Antlr4ParserRule superRule)
@@ -1208,12 +1257,12 @@ public override GreenNode Visit[rule.PlainName()]([lang]Parser.[rule.PlainName()
 			[if (elem.IsSimplified && elem.IsList && elem.IsSeparated)]
 	if ([elem.FieldName()]Context != null) 
 	{
-		return this.factory.[rule.PlainName()]((([elem.GreenType(TypeKind.Public, false)])this.Visit([elem.FieldName()]Context))?.[elem.Grammar.FindParserRule(elem.OriginalType).Elements[0].GreenName()]);
+		return _factory.[rule.PlainName()]((([elem.GreenType(TypeKind.Public, false)])this.Visit([elem.FieldName()]Context))?.[elem.Grammar.FindParserRule(elem.OriginalType).Elements[0].GreenName()]);
 	}
 			[else]
 	if ([elem.FieldName()]Context != null) 
 	{
-		return this.factory.[rule.PlainName()](([elem.GreenType(TypeKind.Public, false)])this.Visit([elem.FieldName()]Context));
+		return _factory.[rule.PlainName()](([elem.GreenType(TypeKind.Public, false)])this.Visit([elem.FieldName()]Context));
 	}
 			[end if]
 		[end loop]
@@ -1246,10 +1295,10 @@ public override GreenNode Visit[rule.PlainName()]([lang]Parser.[rule.PlainName()
 					[if (hasloop(item:elem.BlockItems))]
 	else
 	{
-		[elem.FieldName()] = this.factory.MissingToken(SyntaxKind.MissingToken);
+		[elem.FieldName()] = _factory.MissingToken(SyntaxKind.MissingToken);
 	}
 					[else]
-	[elem.FieldName()] = this.factory.MissingToken(SyntaxKind.MissingToken);
+	[elem.FieldName()] = _factory.MissingToken(SyntaxKind.MissingToken);
 					[end if]
 				[end if]
 			[else]
@@ -1315,7 +1364,7 @@ public override GreenNode Visit[rule.PlainName()]([lang]Parser.[rule.PlainName()
 		[end if]
 		[end if]
 	[end loop]
-	return this.factory.[rule.PlainName()]([GetRoslynVisitorElemParamList(rule, false, false)]);
+	return _factory.[rule.PlainName()]([GetRoslynVisitorElemParamList(rule, false, false)]);
 	[end if]
 }
 [end if]

@@ -12,7 +12,8 @@ namespace MetaDslx.CodeAnalysis.Syntax
     {
         public static int ToAntlr4(this SyntaxKind kind)
         {
-            return kind.GetValue() - SyntaxKind.__LastPredefinedSyntaxKindValue;
+            if (kind == SyntaxKind.Eof) return -1;
+            else return kind.GetValue() - SyntaxKind.__LastPredefinedSyntaxKindValue;
         }
 
         public static SyntaxKind FromAntlr4(this int token, Type syntaxKindType)

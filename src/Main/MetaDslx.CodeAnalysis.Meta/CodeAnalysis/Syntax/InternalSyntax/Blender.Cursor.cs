@@ -7,6 +7,9 @@ using Microsoft.CodeAnalysis.Text;
 using Roslyn.Utilities;
 using System;
 using Microsoft.CodeAnalysis;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 
 namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 {
@@ -25,20 +28,20 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         {
             public readonly SyntaxNodeOrToken CurrentNodeOrToken;
             public readonly object CurrentIncrementalNode;
-            private readonly Cursor? _parentCursor;
+            private readonly ImmutableStack<IncrementalSyntaxNode> _incrementalNodeStack;
             private readonly int _indexInParent;
 
-            private Cursor(Cursor? parent, SyntaxNodeOrToken node, object incrementalSyntaxNode, int indexInParent)
+            private Cursor(SyntaxNodeOrToken node, object incrementalNode, int indexInParent, ImmutableStack<IncrementalSyntaxNode> incrementalNodeStack)
             {
-                this.CurrentNodeOrToken = node;
-                this.CurrentIncrementalNode = incrementalSyntaxNode;
-                _parentCursor = parent;
+                CurrentNodeOrToken = node;
+                CurrentIncrementalNode = incrementalNode;
+                _incrementalNodeStack = incrementalNodeStack;
                 _indexInParent = indexInParent;
             }
 
             public static Cursor FromRoot(LanguageSyntaxNode node, object incrementalSyntaxNode)
             {
-                return new Cursor(null, node, incrementalSyntaxNode, indexInParent: 0);
+                return new Cursor(node, incrementalSyntaxNode, 0, ImmutableStack<IncrementalSyntaxNode>.Empty);
             }
 
             public bool IsFinished
@@ -70,12 +73,12 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                         {
                             if (CurrentIncrementalNode != null)
                             {
-                                var incrementalSiblings = ((IncrementalSyntaxNode)_parentCursor.Value.CurrentIncrementalNode).Children;
-                                return new Cursor(this, sibling, incrementalSiblings[i], i);
+                                var incrementalSiblings = _incrementalNodeStack.Peek().Children;
+                                return new Cursor(sibling, incrementalSiblings[i], i, _incrementalNodeStack.Push((IncrementalSyntaxNode)CurrentIncrementalNode));
                             }
                             else
                             {
-                                return new Cursor(this, sibling, null, i);
+                                return new Cursor(sibling, null, i, _incrementalNodeStack.Push((IncrementalSyntaxNode)CurrentIncrementalNode));
                             }
                         }
                     }
@@ -92,7 +95,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             {
                 var parent = this.CurrentNodeOrToken.Parent;
                 var index = IndexOfNodeInParent(parent);
-                return new Cursor(this, parent, _parentCursor.Value.CurrentIncrementalNode, index);
+                var incrementalNode = _incrementalNodeStack.Peek();
+                return new Cursor(parent, incrementalNode, index, _incrementalNodeStack.Pop());
             }
 
             private static int IndexOfNodeInParent(SyntaxNode node)
@@ -132,7 +136,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                     var child = Microsoft.CodeAnalysis.ChildSyntaxList.ItemInternal(node, 0);
                     if (IsNonZeroWidthOrIsEndOfFile(child))
                     {
-                        return new Cursor(this, child, CurrentIncrementalNode != null ? ((IncrementalSyntaxNode)CurrentIncrementalNode).Children[0] : null, 0);
+                        return new Cursor(child, CurrentIncrementalNode != null ? ((IncrementalSyntaxNode)CurrentIncrementalNode).Children[0] : null, 0, _incrementalNodeStack.Push((IncrementalSyntaxNode)CurrentIncrementalNode));
                     }
                 }
 
@@ -142,7 +146,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 {
                     if (IsNonZeroWidthOrIsEndOfFile(child))
                     {
-                        return new Cursor(this, child, CurrentIncrementalNode != null ? ((IncrementalSyntaxNode)CurrentIncrementalNode).Children[index] : null, index);
+                        return new Cursor(child, CurrentIncrementalNode != null ? ((IncrementalSyntaxNode)CurrentIncrementalNode).Children[index] : null, index, _incrementalNodeStack.Push((IncrementalSyntaxNode)CurrentIncrementalNode));
                     }
 
                     index++;
