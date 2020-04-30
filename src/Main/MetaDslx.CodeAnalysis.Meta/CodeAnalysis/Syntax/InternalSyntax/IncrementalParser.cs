@@ -93,6 +93,10 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         protected int TokenCount => _tokenCount;
 
+        protected int TokenIndex => _firstToken + _tokenOffset;
+
+        protected int FirstTokenIndex => _firstToken;
+
         public void Dispose()
         {
             var blendedTokens = _blendedTokens;
@@ -155,8 +159,14 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         protected void EndRoot(LanguageSyntaxNode root)
         {
-            var minLookahead = Math.Min(_oldIncrementalTree.MinLexerLookahead, _lexer.MinLookahead);
-            var maxLookahead = Math.Max(_oldIncrementalTree.MaxLexerLookahead, _lexer.MaxLookahead);
+
+            int minLookahead = _lexer.MinLookahead;
+            int maxLookahead = _lexer.MaxLookahead;
+            if (_oldIncrementalTree != null)
+            {
+                minLookahead = Math.Min(_oldIncrementalTree.MinLexerLookahead, minLookahead);
+                maxLookahead = Math.Max(_oldIncrementalTree.MaxLexerLookahead, maxLookahead);
+            }
             s_incrementalSyntaxTree.Add(root, new IncrementalSyntaxTree(_previousIncrementalNode, minLookahead, maxLookahead, _version));
         }
 
@@ -443,6 +453,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
             _blendedTokens[_tokenCount] = tokenResult;
             _tokenCount++;
+            this.TokenAdded(tokenResult.Token, true);
         }
 
         private void AddLexedToken(InternalSyntaxToken token)
@@ -455,6 +466,11 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
             _lexedTokens[_tokenCount].Value = token;
             _tokenCount++;
+            this.TokenAdded(token, false);
+        }
+
+        protected virtual void TokenAdded(InternalSyntaxToken token, bool incremental)
+        {
         }
 
         private void AddTokenSlot()
@@ -512,16 +528,16 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             }
         }
 
+        protected void Seek(int index)
+        {
+            Debug.Assert(index >= _firstToken && index < _firstToken + _tokenCount);
+            _tokenOffset = index - _firstToken;
+            _currentNode = default;
+            _currentToken = default;
+        }
+
         protected InternalSyntaxToken PeekToken(int n)
         {
-            //Debug.Assert(n >= 0);
-            if (_tokenOffset + n < 0) return null;
-
-            while (_tokenOffset + n >= _tokenCount)
-            {
-                this.AddNewToken();
-            }
-
             var incrementalNode = _incrementalStack.Peek();
             if (incrementalNode is IncrementalSyntaxNodeBuilder builder)
             {
@@ -531,6 +547,16 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             else
             {
                 Debug.Assert(false);
+            }
+
+            //Debug.Assert(n >= 0);
+            if (_tokenOffset + n < 0) return null;
+
+            while (_tokenOffset + n >= _tokenCount)
+            {
+                var prevTokenCount = _tokenCount;
+                this.AddNewToken();
+                if (_tokenCount == prevTokenCount) return null; // no more tokens
             }
 
             if (_blendedTokens != null)

@@ -35,8 +35,8 @@ namespace Antlr4Intellisense
             } while (token.Kind != SandySyntaxKind.Eof);
             Console.WriteLine("Lookahead: {0}..{1}", lexer.MinLookahead, lexer.MaxLookahead);*/
 
-            var parser = new SandyParser((IncrementalAntlr4Lexer)lexer);
-            var tree = parser.sandyFile();
+            var parser = SandyLanguage.Instance.InternalSyntaxFactory.CreateParser(SourceText.From(text), null, null, null);
+            var tree = parser.Parse();
             Console.WriteLine(tree);
 
             /*

@@ -16,6 +16,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         {
         }
 
+        protected IncrementalAntlr4Parser IncrementalAntlr4Parser => _incrementalParser;
+
         /// <summary>
         /// Guard a rule's previous context from being reused.
         /// </summary>
@@ -23,8 +25,15 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         public bool TryGetIncrementalContext<TContext>(ParserRuleContext parentContext, int state, int ruleIndex, out TContext existingContext)
             where TContext : ParserRuleContext
         {
-            existingContext = null;
-            return false;
+            if (_incrementalParser != null)
+            {
+                return _incrementalParser.TryGetIncrementalContext(parentContext, state, ruleIndex, out existingContext);
+            }
+            else
+            {
+                existingContext = null;
+                return false;
+            }
         }
 
     }

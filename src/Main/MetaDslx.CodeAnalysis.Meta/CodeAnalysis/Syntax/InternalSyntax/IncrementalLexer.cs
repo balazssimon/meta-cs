@@ -102,16 +102,16 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             this.LexSyntaxTrivia(afterFirstToken: TextWindow.Position > 0, isTrailing: false, triviaList: _leadingTriviaCache);
             var leading = _leadingTriviaCache;
 
-            this.Start();
             var kind = this.ScanSyntaxToken();
             if (kind == SyntaxKind.None) return null;
             var errors = this.GetErrors(GetFullWidth(leading));
+            var text = TextWindow.GetText(intern: false);
 
             _trailingTriviaCache.Clear();
             this.LexSyntaxTrivia(afterFirstToken: true, isTrailing: true, triviaList: _trailingTriviaCache);
             var trailing = _trailingTriviaCache;
 
-            return Create(kind, leading.ToListNode(), trailing.ToListNode(), errors);
+            return Create(kind, text, leading.ToListNode(), trailing.ToListNode(), errors);
         }
 
         private InternalSyntaxToken CachedSyntaxToken()
@@ -146,7 +146,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             return false;
         }
 
-        private InternalSyntaxToken Create(SyntaxKind kind, GreenNode leadingTrivia, GreenNode trailingTrivia, SyntaxDiagnosticInfo[] errors)
+        private InternalSyntaxToken Create(SyntaxKind kind, string text, GreenNode leadingTrivia, GreenNode trailingTrivia, SyntaxDiagnosticInfo[] errors)
         {
             InternalSyntaxToken token;
             switch (kind.Switch())
@@ -155,10 +155,10 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                     token = leadingTrivia != null ? (InternalSyntaxToken)InternalSyntaxFactory.EndOfFile.WithLeadingTrivia(leadingTrivia) : InternalSyntaxFactory.EndOfFile;
                     break;
                 case SyntaxKind.None:
-                    token = InternalSyntaxFactory.BadToken(leadingTrivia, TextWindow.GetText(intern: false), trailingTrivia);
+                    token = InternalSyntaxFactory.BadToken(leadingTrivia, text, trailingTrivia);
                     break;
                 default:
-                    token = CreateToken(leadingTrivia, kind, TextWindow.GetText(intern: false), trailingTrivia);
+                    token = CreateToken(leadingTrivia, kind, text, trailingTrivia);
                     break;
             }
             if (errors != null)
@@ -185,7 +185,6 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         {
             while (true)
             {
-                this.Start();
                 var kind = this.ScanSyntaxTrivia(afterFirstToken, isTrailing);
                 if (kind == SyntaxKind.None) return;
                 var trivia = this.AddTrivia(kind, triviaList);

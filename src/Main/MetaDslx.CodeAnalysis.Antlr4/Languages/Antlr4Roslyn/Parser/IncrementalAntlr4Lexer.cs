@@ -25,17 +25,21 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         private readonly SyntaxFacts _syntaxFacts;
         private bool _fetchedEof;
         private int _index;
+        private bool _readNextToken;
 
         public IncrementalAntlr4Lexer(Language language, SourceText text, LanguageParseOptions options, IEnumerable<TextChangeRange> changes) 
             : base(language, text, options, changes)
         {
             _stream = new IncrementalAntlr4InputStream(this.TextWindow);
             _lexer = ((IAntlr4SyntaxFactory)language.InternalSyntaxFactory).CreateAntlr4Lexer(_stream);
+            _lexer.TokenFactory = new IncrementalTokenFactory();
             _tokens = new List<IToken>();
             _roslynTokens = new List<InternalSyntaxToken>();
             _index = 0;
             _fetchedEof = false;
             _syntaxFacts = Language.SyntaxFacts;
+            _readNextToken = true;
+            ITokenFactory tf;
         }
 
         Antlr4.Runtime.Lexer IAntlr4Lexer.Antlr4Lexer => _lexer;
@@ -85,6 +89,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
                 {
                     _lexer._mode = 0;
                 }
+                _readNextToken = true;
             }
             base.RestoreLexerMode(mode);
         }
@@ -105,6 +110,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             var mode = this.Mode;
             var token = this.Lex(ref mode);
             _roslynTokens.Add(token);
+            ((IncrementalToken)_tokens[_roslynTokens.Count - 1]).SetGreenToken(token);
         }
 
         private InternalSyntaxToken GetRoslynTokenAt(int index)
@@ -124,8 +130,16 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         protected override SyntaxKind ScanSyntaxToken()
         {
             if (_fetchedEof) return SyntaxKind.None;
-            var token = _lexer.Token;
-            if (token == null) token = _lexer.NextToken();
+            IToken token;
+            if (_readNextToken)
+            {
+                this.Start();
+                token = _lexer.NextToken();
+            }
+            else
+            {
+                token = _lexer.Token;
+            }
             if (token == null) return SyntaxKind.None;
             if (token.Type == -1)
             {
@@ -137,25 +151,41 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             if (token.Channel == 0)
             {
                 _tokens.Add(token);
-                _lexer.NextToken();
+                _readNextToken = true;
                 return kind;
             }
-            return SyntaxKind.None;
+            else
+            {
+                _readNextToken = false;
+                return SyntaxKind.None;
+            }
         }
 
         protected override SyntaxKind ScanSyntaxTrivia(bool afterFirstToken, bool isTrailing)
         {
             if (_fetchedEof) return SyntaxKind.None;
-            var token = _lexer.Token;
-            if (token == null) token = _lexer.NextToken();
+            IToken token;
+            if (_readNextToken)
+            {
+                this.Start();
+                token = _lexer.NextToken();
+            }
+            else
+            {
+                token = _lexer.Token;
+            }
             if (token == null || token.Type == -1) return SyntaxKind.None;
             var kind = token.Type.FromAntlr4(_syntaxFacts.SyntaxKindType);
             if (token.Channel != 0)
             {
-                _lexer.NextToken();
+                _readNextToken = true;
                 return kind;
             }
-            return SyntaxKind.None;
+            else
+            {
+                _readNextToken = false;
+                return SyntaxKind.None;
+            }
         }
 
         void IIntStream.Consume()

@@ -190,7 +190,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                     var line = reader.ReadLine();
                     if (line.Contains(": Parser {"))
                     {
-                        line = line.Replace(": Parser {", ": global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParser {");
+                        line = line.Replace(": Parser {", $": global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParser {{\r\n    private {LanguageName}SyntaxParser SyntaxParser => ({LanguageName}SyntaxParser)this.IncrementalAntlr4Parser;");
                     }
                     /*if (line.Contains("Context : ParserRuleContext {"))
                     {
@@ -201,9 +201,16 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                         var contextTypeName = line.Substring(0, line.IndexOf("_localctx")).Trim();
                         var indent = line.Substring(0, line.IndexOf(contextTypeName));
                         var ruleName = contextTypeName.Substring(0, contextTypeName.Length - 7);
+                        sb.AppendLine($"{indent}SyntaxParser.BeginParserRuleContext();");
                         sb.AppendLine($"{indent}if (this.TryGetIncrementalContext(_ctx, State, RULE_{ruleName.ToCamelCase()}, out {contextTypeName} existingContext)) return existingContext;");
                     }
                     sb.AppendLine(line);
+                    var trimmedLine = line.Trim();
+                    if (trimmedLine == "ExitRule();" || trimmedLine == "UnrollRecursionContexts(_parentctx);")
+                    {
+                        sb.AppendLine("			SyntaxParser.MakeGreenNode(_localctx);");
+                        sb.AppendLine("			SyntaxParser.EndParserRuleContext();");
+                    }
                 }
             }
             File.WriteAllText(parserFilePath, sb.ToString());
