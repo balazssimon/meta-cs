@@ -17,39 +17,6 @@ using System.Threading;
 
 namespace Antlr4Intellisense
 {
-    /*public class IncrementalSandyParser : IncrementalAntlr4Parser
-    {
-        public IncrementalSandyParser(Language language, SourceText text, LanguageParseOptions options, ImmutableArray<TextChangeRange> changes, SyntaxNode oldTree, CancellationToken cancellationToken = default) 
-            : base(language, text, options, oldTree, changes, cancellationToken)
-        {
-        }
-
-        protected override ParserRuleContext Antlr4ParseMainRule()
-        {
-            var parser = (SandyParser)this.Antlr4Parser;
-            var sandyFile = parser.sandyFile();
-            return sandyFile;
-        }
-
-        public IParseTree ParseTree()
-        {
-            return Antlr4ParseMainRule();
-        }
-
-        protected override GreenNode GetOrCreateGreenNode(ParserRuleContext context)
-        {
-            return null;
-        }
-
-        private class A
-        {
-            private void Foo(IncrementalSandyParser p)
-            {
-                p.cancellationToken.ThrowIfCancellationRequested();
-            }
-        }
-    }*/
-
     public class Program
     {
         public static void Main(string[] args)
