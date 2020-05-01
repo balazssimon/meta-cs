@@ -993,7 +993,7 @@ namespace [Properties.DefaultNamespace]
 }
 end template
 
-template GenerateSyntaxParser()
+template GenerateSyntaxLexer()
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -1011,82 +1011,154 @@ using MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax;
 
 namespace [Properties.DefaultNamespace].Syntax.InternalSyntax
 {
-    public class [Properties.LanguageName]SyntaxParser : IncrementalAntlr4Parser
+    public class [Properties.LanguageName]SyntaxLexer : IncrementalAntlr4Lexer
     {
-        private Antlr4ToRoslynVisitor _visitor;
+        public [Properties.LanguageName]SyntaxLexer(SourceText text, [Properties.LanguageName]ParseOptions options, IEnumerable<TextChangeRange> changes) 
+            : base(SandyLanguage.Instance, text, options, changes)
+        {
+        }
 
-        public [Properties.LanguageName]SyntaxParser(
+        protected override InternalSyntaxToken CreateToken(GreenNode leadingTrivia, SyntaxKind kind, string text, GreenNode trailingTrivia)
+        {
+            return [Properties.LanguageName]Language.Instance.InternalSyntaxFactory.Token(leadingTrivia, kind, text, trailingTrivia);
+        }
+
+        protected override InternalSyntaxTrivia CreateTrivia(SyntaxKind kind, string text)
+        {
+            return [Properties.LanguageName]Language.Instance.InternalSyntaxFactory.Trivia(kind, text);
+        }
+    }
+}
+end template
+
+template GenerateSyntaxParser()
+[var lang = Properties.LanguageName]
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using Antlr4.Runtime;
+using Antlr4.Runtime.Tree;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Syntax;
+using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Syntax.InternalSyntax;
+using Microsoft.CodeAnalysis.Text;
+using MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax;
+
+namespace [Properties.DefaultNamespace].Syntax.InternalSyntax
+{
+    public class [lang]SyntaxParser : IncrementalAntlr4Parser
+    {
+        private readonly Antlr4ToRoslynVisitor _visitor;
+
+        public [lang]SyntaxParser(
             SourceText text,
-            [Properties.LanguageName]ParseOptions options,
-            SyntaxNode oldTree, 
+            [lang]ParseOptions options,
+            [lang]SyntaxNode oldTree, 
             IEnumerable<TextChangeRange> changes,
-            CancellationToken cancellationToken = default(CancellationToken))
-            : base([Properties.LanguageName]Language.Instance, text, options, oldTree, changes, cancellationToken)
+            CancellationToken cancellationToken = default)
+            : base([lang]Language.Instance, text, options, oldTree, changes, cancellationToken)
         {
             _visitor = new Antlr4ToRoslynVisitor(this);
         }
 
-        public override DirectiveStack Directives
+        protected [lang]Parser Antlr4Parser => ([lang]Parser)this.Parser;
+
+		protected override ParserRuleContext GetIncrementalContext(ParserRuleContext parent, int invokingState, int ruleIndex)
+		{
+			switch (ruleIndex)
+			{
+                [loop(rule:Instances.ParserRules)]
+		        [GenerateAntlr4ToRoslynGetIncrementalContext(rule, null)]
+		        [end loop]				
+				default:
+                    Debug.Assert(false);
+					return null;
+			}
+		}
+
+		public override LanguageSyntaxNode Parse()
+		{
+			BeginRoot();
+            ParserState state = null;
+			var green = this.Parse[Instances.MainRule().PlainName()](ref state);
+			var red = ([lang]SyntaxNode)green.CreateRed();
+			EndRoot(red);
+			return red;
+		}
+
+        [loop(rule:Instances.ParserRules)]
+		[GenerateAntlr4ToRoslynSyntaxParseRule(rule, null)]
+		[end loop]
+
+        internal void BeginParserRuleContext()
         {
-            get
-            {
-                return DirectiveStack.Empty;
-            }
+            BeginNode(State);
         }
 
-        protected override ParserRuleContext Antlr4ParseMainRule()
+        internal void EndParserRuleContext()
         {
-            return (([Properties.LanguageName]Parser)this.Antlr4Parser).[Instances.MainRule().PlainName().ToCamelCase()]();
+            EndNode();
         }
 
-        protected override GreenNode GetOrCreateGreenNode(ParserRuleContext context)
+        internal void MakeGreenNode(ParserRuleContext context)
         {
-            return _visitor.Visit(context);
+	        _visitor.Visit(context);
         }
 
-        private class Antlr4ToRoslynVisitor : [Properties.LanguageName]ParserBaseVisitor<GreenNode>
+        private class Antlr4ToRoslynVisitor : [lang]ParserBaseVisitor<GreenNode>
         {
 			// list pools - allocators for lists that are used to build sequences of nodes. The lists
 			// can be reused (hence pooled) since the syntax factory methods don't keep references to
 			// them
 			private readonly SyntaxListPool _pool = new SyntaxListPool(); // Don't need to reset this.
 			
-			private [Properties.LanguageName]InternalSyntaxFactory factory;
-            private [Properties.LanguageName]SyntaxParser syntaxParser;
+			private readonly [lang]InternalSyntaxFactory _factory;
+            private readonly [lang]SyntaxParser _syntaxParser;
 
-            public Antlr4ToRoslynVisitor([Properties.LanguageName]SyntaxParser syntaxParser)
+            public Antlr4ToRoslynVisitor([lang]SyntaxParser syntaxParser)
             {
-				this.factory = ([Properties.LanguageName]InternalSyntaxFactory)syntaxParser.Language.InternalSyntaxFactory;
-                this.syntaxParser = syntaxParser;
+				_factory = ([lang]InternalSyntaxFactory)syntaxParser.Language.InternalSyntaxFactory;
+                _syntaxParser = syntaxParser;
             }
 			
-            private GreenNode VisitTerminal(IToken token, [Properties.LanguageName]SyntaxKind kind)
+            private GreenNode VisitTerminal(IToken token, [lang]SyntaxKind kind)
             {
-                return this.syntaxParser.VisitTerminal(token, kind);
+				var green = ((IncrementalToken)token).GreenToken;
+				Debug.Assert(kind == null || green.Kind == kind);
+				return green;
             }
-
             public GreenNode VisitTerminal(IToken token)
             {
-                return this.VisitTerminal(token, null);
+				return VisitTerminal(token, null);
             }
-			
-            private GreenNode VisitTerminal(ITerminalNode node, [Properties.LanguageName]SyntaxKind kind)
+            private GreenNode VisitTerminal(ITerminalNode node, [lang]SyntaxKind kind)
             {
-                return this.syntaxParser.VisitTerminal(node, kind);
-            }
-
+				var green = ((IncrementalToken)node.Symbol).GreenToken;
+				Debug.Assert(kind == null || green.Kind == kind);
+				return green;
+			}
             public override GreenNode VisitTerminal(ITerminalNode node)
             {
-                return this.VisitTerminal(node, null);
+                return VisitTerminal(node, null);
             }
 
 			public override GreenNode Visit(IParseTree tree)
 			{
-				if (tree is ParserRuleContext context)
+                if (tree is ICachedRuleContext cached)
                 {
-                    if (this.syntaxParser.TryGetGreenNode(context, out var existingGreenNode)) return existingGreenNode;
+                    return cached.CachedNode;
+                }
+				else if (tree is IncrementalParserRuleContext context)
+                {
+                    if (_syntaxParser.TryGetGreenNode(context, out var existingGreenNode)) return existingGreenNode;
     				var greenNode = base.Visit(tree);
-                    this.syntaxParser.CacheGreenNode(context, greenNode);
+                    _syntaxParser.CacheGreenNode(context, greenNode);
     				return greenNode;
                 }
                 else
@@ -1100,6 +1172,71 @@ namespace [Properties.DefaultNamespace].Syntax.InternalSyntax
         }
     }
 
+    public partial class [lang]Parser
+    {
+        [loop(rule:Instances.ParserRules)]
+		[GenerateAntlr4ToRoslynCachedParserRuleContext(rule, null)]
+		[end loop]
+    }
+}
+end template
+
+template GenerateAntlr4ToRoslynGetIncrementalContext(Antlr4ParserRule rule, Antlr4ParserRule superRule)
+[var lang = Properties.LanguageName]
+[if (rule.Alternatives.Count > 0)]
+	[loop(alt:rule.Alternatives)]
+[GenerateAntlr4ToRoslynGetIncrementalContext(alt, rule)]
+	[end loop]
+[else]
+    [if (superRule == null)]
+case [lang]Parser.RULE_[rule.Name]:
+	return CanReuse[rule.PlainName()](CurrentNode as [rule.RedName()]) ? new [lang]Parser.[rule.PlainName()]Context_Cached(parent, invokingState, EatNode()) : null;
+    [end if]
+[end if]
+end template
+
+template GenerateAntlr4ToRoslynSyntaxParseRule(Antlr4ParserRule rule, Antlr4ParserRule superRule)
+[var lang = Properties.LanguageName]
+public GreenNode Parse[rule.PlainName()](ref ParserState state)
+{
+	RestoreParserState(state);
+	try
+	{
+		return Parse[rule.PlainName()]();
+	}
+	finally
+	{
+		state = this.State;
+	}
+}
+
+protected virtual bool CanReuse[rule.PlainName()]([rule.RedName()] node)
+{
+	return node != null;
+}
+
+protected GreenNode Parse[rule.PlainName()]()
+{
+	var context = this.Antlr4Parser.[rule.Name]();
+	var green = _visitor.Visit(context);
+	return green;
+}
+end template
+
+template GenerateAntlr4ToRoslynCachedParserRuleContext(Antlr4ParserRule rule, Antlr4ParserRule superRule)
+[var lang = Properties.LanguageName]
+^
+internal class [rule.PlainName()]Context_Cached : [rule.PlainName()]Context, ICachedRuleContext
+{
+    private GreenNode _cachedNode;
+
+    public [rule.PlainName()]Context_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+		: base(parent, invokingState)
+    {
+        _cachedNode = cachedNode;
+    }
+
+    public GreenNode CachedNode => _cachedNode;
 }
 end template
 
@@ -1120,12 +1257,12 @@ public override GreenNode Visit[rule.PlainName()]([lang]Parser.[rule.PlainName()
 			[if (elem.IsSimplified && elem.IsList && elem.IsSeparated)]
 	if ([elem.FieldName()]Context != null) 
 	{
-		return this.factory.[rule.PlainName()]((([elem.GreenType(TypeKind.Public, false)])this.Visit([elem.FieldName()]Context))?.[elem.Grammar.FindParserRule(elem.OriginalType).Elements[0].GreenName()]);
+		return _factory.[rule.PlainName()]((([elem.GreenType(TypeKind.Public, false)])this.Visit([elem.FieldName()]Context))?.[elem.Grammar.FindParserRule(elem.OriginalType).Elements[0].GreenName()]);
 	}
 			[else]
 	if ([elem.FieldName()]Context != null) 
 	{
-		return this.factory.[rule.PlainName()](([elem.GreenType(TypeKind.Public, false)])this.Visit([elem.FieldName()]Context));
+		return _factory.[rule.PlainName()](([elem.GreenType(TypeKind.Public, false)])this.Visit([elem.FieldName()]Context));
 	}
 			[end if]
 		[end loop]
@@ -1158,10 +1295,10 @@ public override GreenNode Visit[rule.PlainName()]([lang]Parser.[rule.PlainName()
 					[if (hasloop(item:elem.BlockItems))]
 	else
 	{
-		[elem.FieldName()] = this.factory.MissingToken(SyntaxKind.MissingToken);
+		[elem.FieldName()] = _factory.MissingToken(SyntaxKind.MissingToken);
 	}
 					[else]
-	[elem.FieldName()] = this.factory.MissingToken(SyntaxKind.MissingToken);
+	[elem.FieldName()] = _factory.MissingToken(SyntaxKind.MissingToken);
 					[end if]
 				[end if]
 			[else]
@@ -1227,7 +1364,7 @@ public override GreenNode Visit[rule.PlainName()]([lang]Parser.[rule.PlainName()
 		[end if]
 		[end if]
 	[end loop]
-	return this.factory.[rule.PlainName()]([GetRoslynVisitorElemParamList(rule, false, false)]);
+	return _factory.[rule.PlainName()]([GetRoslynVisitorElemParamList(rule, false, false)]);
 	[end if]
 }
 [end if]
@@ -1416,30 +1553,13 @@ namespace [Properties.DefaultNamespace]
 
             using (var parser = new [lang]SyntaxParser(text, options, oldTree: null, changes: null, cancellationToken: cancellationToken))
             {
-                var compilationUnit = ([Instances.MainRule().RedName()])parser.Parse().CreateRed();
+                var compilationUnit = ([Instances.MainRule().RedName()])parser.Parse();
                 var tree = new ParsedSyntaxTree(text, text.Encoding, text.ChecksumAlgorithm, path, options, compilationUnit, parser.Directives);
                 tree.VerifySource();
                 return tree;
             }
         }
 
-        /// <summary>
-        /// Creates a new syntax tree from a syntax parser.
-        /// </summary>
-        public static [lang]SyntaxTree Create(
-            [lang]SyntaxParser parser,
-            string path = "",
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            if (parser == null)
-            {
-                throw new ArgumentNullException(nameof(parser));
-            }
-            var root = ([Instances.MainRule().RedName()])parser.Parse().CreateRed();
-            var tree = [lang]SyntaxTree.Create(root, ([lang]ParseOptions)parser.Options, path, parser.SourceText, parser.SourceText.Encoding, parser.SourceText.ChecksumAlgorithm);
-            tree.VerifySource();
-            return tree;
-        }
         #endregion
 
         #region Changes
@@ -1491,7 +1611,7 @@ namespace [Properties.DefaultNamespace]
 
             using (var parser = new [lang]SyntaxParser(newText, this.Options, oldTree?.GetRoot(), changes))
             {
-                var compilationUnit = ([Instances.MainRule().RedName()])parser.Parse().CreateRed();
+                var compilationUnit = ([Instances.MainRule().RedName()])parser.Parse();
                 var tree = new ParsedSyntaxTree(newText, newText.Encoding, newText.ChecksumAlgorithm, this.FilePath, this.Options, compilationUnit, parser.Directives);
                 tree.VerifySource(changes);
                 return tree;
@@ -1768,6 +1888,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 ^
 [var lang = Properties.LanguageName]
@@ -1778,6 +1899,7 @@ namespace [Properties.DefaultNamespace].Syntax.InternalSyntax
     using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.Syntax.InternalSyntax;
+    using Microsoft.CodeAnalysis.Text;
     using Roslyn.Utilities;
     using MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax;
 ^	
@@ -1888,6 +2010,56 @@ namespace [Properties.DefaultNamespace].Syntax.InternalSyntax
         public static implicit operator SyntaxTrivia(GreenSyntaxTrivia trivia)
         {
             return new SyntaxTrivia(default, trivia, position: 0, index: 0);
+        }
+    }
+^
+    internal class GreenStructuredSyntaxTrivia : GreenSyntaxTrivia
+    {
+        private readonly GreenNode _structure;
+
+        internal GreenStructuredSyntaxTrivia([lang]SyntaxKind kind, GreenNode structure, DiagnosticInfo["[]"] diagnostics = null, SyntaxAnnotation["[]"] annotations = null)
+            : base(kind, structure?.ToFullString(), diagnostics, annotations)
+        {
+            this.Initialize();
+            _structure = structure;
+        }
+^
+        internal GreenStructuredSyntaxTrivia(ObjectReader reader)
+            : base(reader)
+        {
+            this.Initialize();
+        }
+^
+        static GreenStructuredSyntaxTrivia()
+        {
+            ObjectBinder.RegisterTypeReader(typeof(GreenStructuredSyntaxTrivia), r => new GreenStructuredSyntaxTrivia(r));
+        }
+^
+        private void Initialize()
+        {
+            this.flags |= NodeFlags.ContainsStructuredTrivia;
+^
+            if (this.Kind == SyntaxKind.SkippedTokensTrivia)
+            {
+                this.flags |= NodeFlags.ContainsSkippedText;
+            }
+        }
+^
+        public GreenNode Structure => _structure;
+^
+        internal static GreenStructuredSyntaxTrivia Create([lang]SyntaxKind kind, GreenNode structure)
+        {
+            return new GreenStructuredSyntaxTrivia(kind, structure);
+        }
+^
+        public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo["[]"] diagnostics)
+        {
+            return new GreenStructuredSyntaxTrivia(this.Kind, this.Structure, diagnostics, GetAnnotations());
+        }
+^
+        public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation["[]"] annotations)
+        {
+            return new GreenStructuredSyntaxTrivia(this.Kind, this.Structure, GetDiagnostics(), annotations);
         }
     }
 ^
@@ -2335,16 +2507,26 @@ internal class [lang]InternalSyntaxFactory : InternalSyntaxFactory, MetaDslx.Lan
         return new [lang]Parser(input);
     }
 ^
+	public override IncrementalLexer CreateLexer(SourceText text, LanguageParseOptions options, IEnumerable<TextChangeRange> changes)
+	{
+		return new [lang]SyntaxLexer(text, ([lang]ParseOptions)options, changes);
+	}
+^
+    public override global::MetaDslx.CodeAnalysis.Syntax.InternalSyntax.IncrementalParser CreateParser(SourceText text, LanguageParseOptions options, LanguageSyntaxNode oldTree, IEnumerable<TextChangeRange> changes, CancellationToken cancellationToken = default)
+	{
+		return new [lang]SyntaxParser(text, ([lang]ParseOptions)options, ([lang]SyntaxNode)oldTree, changes, cancellationToken);
+	}
+^
     public override Language Language => [lang]Language.Instance;
 ^
-	private [lang]SyntaxKind ToMetaSyntaxKind(SyntaxKind kind)
+	private [lang]SyntaxKind To[lang]SyntaxKind(SyntaxKind kind)
     {
         return kind.CastUnsafe<[lang]SyntaxKind>();
     }
 ^
     public override InternalSyntaxTrivia Trivia(SyntaxKind kind, string text, bool elastic = false)
     {
-        var trivia = GreenSyntaxTrivia.Create(ToMetaSyntaxKind(kind), text);
+        var trivia = GreenSyntaxTrivia.Create(To[lang]SyntaxKind(kind), text);
         if (!elastic)
         {
             return trivia;
@@ -2354,27 +2536,32 @@ internal class [lang]InternalSyntaxFactory : InternalSyntaxFactory, MetaDslx.Lan
 ^
     public override InternalSyntaxTrivia ConflictMarker(string text)
     {
-        return GreenSyntaxTrivia.Create(ToMetaSyntaxKind(SyntaxKind.ConflictMarkerTrivia), text);
+        return GreenSyntaxTrivia.Create(To[lang]SyntaxKind(SyntaxKind.ConflictMarkerTrivia), text);
     }
 ^
     public override InternalSyntaxTrivia DisabledText(string text)
     {
-        return GreenSyntaxTrivia.Create(ToMetaSyntaxKind(SyntaxKind.DisabledTextTrivia), text);
+        return GreenSyntaxTrivia.Create(To[lang]SyntaxKind(SyntaxKind.DisabledTextTrivia), text);
     }
+^
+	public override InternalSyntaxTrivia SkippedToken(GreenNode token)
+	{
+		return GreenStructuredSyntaxTrivia.Create(To[lang]SyntaxKind(SyntaxKind.SkippedTokensTrivia), token);
+	}
 ^
     public override InternalSyntaxToken Token(SyntaxKind kind)
     {
-        return GreenSyntaxToken.Create(ToMetaSyntaxKind(kind));
+        return GreenSyntaxToken.Create(To[lang]SyntaxKind(kind));
     }
 ^
     public override InternalSyntaxToken Token(GreenNode leading, SyntaxKind kind, GreenNode trailing)
     {
-        return GreenSyntaxToken.Create(ToMetaSyntaxKind(kind), leading, trailing);
+        return GreenSyntaxToken.Create(To[lang]SyntaxKind(kind), leading, trailing);
     }
 ^
     public override InternalSyntaxToken Token(GreenNode leading, SyntaxKind kind, string text, GreenNode trailing)
     {
-		[lang]SyntaxKind typedKind = ToMetaSyntaxKind(kind);
+		[lang]SyntaxKind typedKind = To[lang]SyntaxKind(kind);
         Debug.Assert([lang]Language.Instance.SyntaxFacts.IsToken(typedKind));
         string defaultText = [lang]Language.Instance.SyntaxFacts.GetText(typedKind);
         return typedKind >= GreenSyntaxToken.FirstTokenWithWellKnownText && typedKind <= GreenSyntaxToken.LastTokenWithWellKnownText && text == defaultText
@@ -2384,7 +2571,7 @@ internal class [lang]InternalSyntaxFactory : InternalSyntaxFactory, MetaDslx.Lan
 ^
     public override InternalSyntaxToken Token(GreenNode leading, SyntaxKind kind, string text, string valueText, GreenNode trailing)
     {
-		[lang]SyntaxKind typedKind = ToMetaSyntaxKind(kind);
+		[lang]SyntaxKind typedKind = To[lang]SyntaxKind(kind);
         Debug.Assert([lang]Language.Instance.SyntaxFacts.IsToken(typedKind));
         string defaultText = [lang]Language.Instance.SyntaxFacts.GetText(typedKind);
         return typedKind >= GreenSyntaxToken.FirstTokenWithWellKnownText && typedKind <= GreenSyntaxToken.LastTokenWithWellKnownText && text == defaultText && valueText == defaultText
@@ -2394,7 +2581,7 @@ internal class [lang]InternalSyntaxFactory : InternalSyntaxFactory, MetaDslx.Lan
 ^
     public override InternalSyntaxToken Token(GreenNode leading, SyntaxKind kind, string text, object value, GreenNode trailing)
     {
-		[lang]SyntaxKind typedKind = ToMetaSyntaxKind(kind);
+		[lang]SyntaxKind typedKind = To[lang]SyntaxKind(kind);
         Debug.Assert([lang]Language.Instance.SyntaxFacts.IsToken(typedKind));
         string defaultText = [lang]Language.Instance.SyntaxFacts.GetText(typedKind);
         return typedKind >= GreenSyntaxToken.FirstTokenWithWellKnownText && typedKind <= GreenSyntaxToken.LastTokenWithWellKnownText && text == defaultText && defaultText.Equals(value)
@@ -2404,17 +2591,17 @@ internal class [lang]InternalSyntaxFactory : InternalSyntaxFactory, MetaDslx.Lan
 ^
     public override InternalSyntaxToken MissingToken(SyntaxKind kind)
     {
-        return GreenSyntaxToken.CreateMissing(ToMetaSyntaxKind(kind), null, null);
+        return GreenSyntaxToken.CreateMissing(To[lang]SyntaxKind(kind), null, null);
     }
 ^
     public override InternalSyntaxToken MissingToken(GreenNode leading, SyntaxKind kind, GreenNode trailing)
     {
-        return GreenSyntaxToken.CreateMissing(ToMetaSyntaxKind(kind), leading, trailing);
+        return GreenSyntaxToken.CreateMissing(To[lang]SyntaxKind(kind), leading, trailing);
     }
 ^
     public override InternalSyntaxToken BadToken(GreenNode leading, string text, GreenNode trailing)
     {
-        return GreenSyntaxToken.WithValue(ToMetaSyntaxKind(SyntaxKind.BadToken), leading, text, text, trailing);
+        return GreenSyntaxToken.WithValue(To[lang]SyntaxKind(SyntaxKind.BadToken), leading, text, text, trailing);
     }
 ^
     public override IEnumerable<InternalSyntaxToken> GetWellKnownTokens()
@@ -3470,18 +3657,18 @@ public class [Properties.LanguageName]SyntaxFactory : SyntaxFactory
             var node = parser.Parse();
             if (node == null) return null;
             // if (consumeFullText) node = parser.ConsumeUnexpectedTokens(node);
-            return ([Instances.MainRule().RedName()])node.CreateRed();
+            return ([Instances.MainRule().RedName()])node;
         }
     }
-^
+^	
 	public override SyntaxParser MakeParser(SourceText text, ParseOptions options, SyntaxNode oldTree, IReadOnlyList<TextChangeRange> changes)
 	{
-	    return new [lang]SyntaxParser(text, ([lang]ParseOptions)options, oldTree, changes);
+		return [lang]Language.Instance.InternalSyntaxFactory.CreateParser(text, ([lang]ParseOptions)options, ([lang]SyntaxNode)oldTree, changes);
 	}
-^
+^	
 	public override SyntaxParser MakeParser(string text)
 	{
-	    return new [lang]SyntaxParser(SourceText.From(text, Encoding.UTF8), [lang]ParseOptions.Default, null, null);
+		return [lang]Language.Instance.InternalSyntaxFactory.CreateParser(SourceText.From(text, Encoding.UTF8), [lang]ParseOptions.Default, null, null);
 	}
 ^
 	public override LanguageSyntaxTree MakeSyntaxTree(LanguageSyntaxNode root, ParseOptions options = null, string path = "", Encoding encoding = null)
@@ -3489,14 +3676,16 @@ public class [Properties.LanguageName]SyntaxFactory : SyntaxFactory
 		return [lang]SyntaxTree.Create(([lang]SyntaxNode)root, ([lang]ParseOptions)options, path, null, encoding);
 	}
 ^
-	public override LanguageSyntaxTree MakeSyntaxTree(SyntaxParser parser, string path = "", CancellationToken cancellationToken = default)
-	{
-		return [lang]SyntaxTree.Create(([lang]SyntaxParser)parser, path, cancellationToken);
-	}
-^
     public override SyntaxNode CreateStructure(SyntaxTrivia trivia)
     {
-        throw new NotImplementedException();
+        if (trivia != null && trivia.UnderlyingNode is GreenStructuredSyntaxTrivia structuredTrivia)
+        {
+            return structuredTrivia.Structure.CreateRed();
+        }
+        else
+        {
+            return null;
+        }
     }
 ^
 [loop(rule:Instances.LexerRules)]
