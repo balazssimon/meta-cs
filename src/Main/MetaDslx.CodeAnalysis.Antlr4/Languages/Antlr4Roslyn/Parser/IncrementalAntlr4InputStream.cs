@@ -1,6 +1,5 @@
 ﻿using Antlr4.Runtime;
 using Antlr4.Runtime.Misc;
-using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
 using Microsoft.CodeAnalysis.Text;
 using System;
 using System.Collections.Generic;
@@ -12,13 +11,25 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
     {
         private readonly SlidingTextWindow _textWindow;                 
 
-        public IncrementalAntlr4InputStream(SlidingTextWindow textWindow)
+        private Interval _minMaxLookahead;
+        private Interval _overallMinMaxLookahead;
+        private int _lastLA = 0;
+
+        public IncrementalAntlr4InputStream(SourceText text, Interval minMaxLookahead = default)
         {
-            _textWindow = textWindow;
+            _minMaxLookahead = minMaxLookahead;
+            _overallMinMaxLookahead = minMaxLookahead;
+            _textWindow = new SlidingTextWindow(text);
         }
 
         public int La(int i)
         {
+            if (i != _lastLA)
+            {
+                _lastLA = i;
+                _minMaxLookahead = _minMaxLookahead.Union(Interval.Of(i, i));
+                _overallMinMaxLookahead = _overallMinMaxLookahead.Union(this._minMaxLookahead);
+            }
             char pch;
             if (i > 0) pch = _textWindow.PeekChar(i - 1);
             else if (i < 0) pch = _textWindow.PeekChar(i);
@@ -27,9 +38,17 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             else return pch;
         }
 
+
+        public Interval OverallMinMaxLookahead => _overallMinMaxLookahead;
+        public Interval MinMaxLookahead => _minMaxLookahead;
         public int Index => _textWindow.Position;
         public int Size => _textWindow.Text.Length;
         public string SourceName => "<unknown>";
+
+        public void ResetMinMaxLookahead() {
+            _minMaxLookahead = Interval.Of(0, 0);
+            _lastLA = 0;
+        }
 
         [return: NotNull]
         public string GetText([NotNull] Interval interval)

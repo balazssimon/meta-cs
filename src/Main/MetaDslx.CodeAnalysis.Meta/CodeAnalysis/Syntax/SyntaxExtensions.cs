@@ -61,36 +61,6 @@ namespace MetaDslx.CodeAnalysis
             return ((Syntax.InternalSyntax.InternalSyntaxNode)node).Kind;
         }
 
-        public static SyntaxKind GetContextualKind(this SyntaxNode node)
-        {
-            if (node == null || (object)node.Green == null) return SyntaxKind.None;
-            return ((Syntax.InternalSyntax.InternalSyntaxNode)node.Green).ContextualKind;
-        }
-
-        public static SyntaxKind GetContextualKind(this SyntaxToken token)
-        {
-            if ((object)token.Node == null) return SyntaxKind.None;
-            return ((Syntax.InternalSyntax.InternalSyntaxNode)token.Node).ContextualKind;
-        }
-
-        public static SyntaxKind GetContextualKind(this SyntaxNodeOrToken token)
-        {
-            if ((object)token.UnderlyingNode == null) return SyntaxKind.None;
-            return ((Syntax.InternalSyntax.InternalSyntaxNode)token.UnderlyingNode).ContextualKind;
-        }
-
-        public static SyntaxKind GetContextualKind(this SyntaxTrivia trivia)
-        {
-            if ((object)trivia.UnderlyingNode == null) return SyntaxKind.None;
-            return ((Syntax.InternalSyntax.InternalSyntaxNode)trivia.UnderlyingNode).ContextualKind;
-        }
-
-        public static SyntaxKind GetContextualKind(this GreenNode node)
-        {
-            if ((object)node == null) return SyntaxKind.None;
-            return ((Syntax.InternalSyntax.InternalSyntaxNode)node).ContextualKind;
-        }
-
         public static bool IsExpression(this LanguageSyntaxNode node)
         {
             return node.Language.SyntaxFacts.IsExpression(node);

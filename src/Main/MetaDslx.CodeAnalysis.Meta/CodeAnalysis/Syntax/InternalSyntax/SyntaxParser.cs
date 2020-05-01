@@ -33,7 +33,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             this.cancellationToken = cancellationToken;
         }
 
-        public abstract LanguageSyntaxNode Parse();
+        public abstract GreenNode Parse();
 
         public void Dispose()
         {

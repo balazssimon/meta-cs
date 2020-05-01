@@ -59,11 +59,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         public SyntaxKind Kind => this.KindCore;
 
-        protected virtual SyntaxKind KindCore => (SyntaxKind)EnumObject.FromIntUnsafe(LanguageCore.SyntaxFacts.SyntaxKindType, this.RawKind);
-
-        public SyntaxKind ContextualKind => this.ContextualKindCore;
-
-        protected virtual SyntaxKind ContextualKindCore => (SyntaxKind)EnumObject.FromIntUnsafe(LanguageCore.SyntaxFacts.SyntaxKindType, this.RawContextualKind);
+        protected virtual SyntaxKind KindCore => EnumObject.FromIntUnsafe<SyntaxKind>(this.RawKind);
 
         public override string KindText => Kind.GetName();
 
