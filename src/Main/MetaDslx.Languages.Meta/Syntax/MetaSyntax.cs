@@ -7789,19 +7789,6 @@ namespace MetaDslx.Languages.Meta
 			return MetaSyntaxTree.ParseText(text, (MetaParseOptions)options, path, cancellationToken);
 		}
 	
-	    public MainSyntax ParseMain(string text)
-	    {
-	        // note that we do not need a "consumeFullText" parameter, because parsing a compilation unit always must
-	        // consume input until the end-of-file
-	        using (var parser = MakeParser(text))
-	        {
-	            var node = parser.Parse();
-	            if (node == null) return null;
-	            // if (consumeFullText) node = parser.ConsumeUnexpectedTokens(node);
-	            return (MainSyntax)node;
-	        }
-	    }
-	
 		public override SyntaxParser MakeParser(SourceText text, ParseOptions options, SyntaxNode oldTree, IReadOnlyList<TextChangeRange> changes)
 		{
 		    return new MetaSyntaxParser(text, (MetaParseOptions)options, oldTree, changes);

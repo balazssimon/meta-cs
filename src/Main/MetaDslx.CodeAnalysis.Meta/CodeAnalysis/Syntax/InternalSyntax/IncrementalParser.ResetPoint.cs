@@ -8,10 +8,10 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
     {
         protected struct ResetPoint
         {
-            internal readonly int ResetCount;
-            internal readonly ParserState State;
-            internal readonly int Position;
-            internal readonly GreenNode PrevTokenTrailingTrivia;
+            public readonly int ResetCount;
+            public readonly ParserState State;
+            public readonly int Position;
+            public readonly GreenNode PrevTokenTrailingTrivia;
 
             internal ResetPoint(int resetCount, ParserState state, int position, GreenNode prevTokenTrailingTrivia)
             {

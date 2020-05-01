@@ -14,7 +14,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 {
     public abstract partial class IncrementalParser : SyntaxParser, IDisposable
     {
-        private static ConditionalWeakTable<LanguageSyntaxNode, IncrementalSyntaxTree> s_incrementalSyntaxTree = new ConditionalWeakTable<LanguageSyntaxNode, IncrementalSyntaxTree>();
+        private static ConditionalWeakTable<GreenNode, IncrementalSyntaxTree> s_incrementalSyntaxTree = new ConditionalWeakTable<GreenNode, IncrementalSyntaxTree>();
 
         protected readonly Language Language;
         protected readonly IncrementalLexer _lexer;
@@ -35,7 +35,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         private LexerMode _mode;
         private ParserState _state;
         private Stack<object> _incrementalStack;
-        private IncrementalSyntaxNode _previousIncrementalNode;
+        private IncrementalSyntaxNode _latestIncrementalNode;
 #if DEBUG
         private readonly int _version;
 #endif
@@ -84,8 +84,6 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         public ParseOptions Options => _lexer.Options;
 
         public SourceText SourceText => _lexer.TextWindow.Text;
-
-        public bool IsScript => Options.Kind == SourceCodeKind.Script;
 
         public override DirectiveStack Directives => _lexer.Directives;
 
@@ -139,9 +137,9 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             }
         }
 
-        private static IncrementalSyntaxTree GetIncrementalSyntaxTree(LanguageSyntaxNode syntaxTree)
+        private static IncrementalSyntaxTree GetIncrementalSyntaxTree(LanguageSyntaxNode root)
         {
-            if (s_incrementalSyntaxTree.TryGetValue(syntaxTree, out var result))
+            if (s_incrementalSyntaxTree.TryGetValue(root.Green, out var result))
             {
                 return result;
             }
@@ -167,45 +165,71 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 minLookahead = Math.Min(_oldIncrementalTree.MinLexerLookahead, minLookahead);
                 maxLookahead = Math.Max(_oldIncrementalTree.MaxLexerLookahead, maxLookahead);
             }
-            s_incrementalSyntaxTree.Add(root, new IncrementalSyntaxTree(_previousIncrementalNode, minLookahead, maxLookahead, _version));
+            s_incrementalSyntaxTree.Add(root.Green, new IncrementalSyntaxTree(_latestIncrementalNode, minLookahead, maxLookahead, _version));
         }
 
-        protected void BeginNode(ParserState state)
+        protected void BeginNode(ParserState state, bool swap = false)
         {
+            Console.WriteLine("BEGIN");
             RestoreParserState(state);
+            object swapped = null;
+            if (swap) swapped = _incrementalStack.Pop();
 #if DEBUG
             _incrementalStack.Push(new IncrementalSyntaxNodeBuilder(_state, _version));
 #else
             _incrementalStack.Push(new IncrementalSyntaxNodeBuilder(_state));
 #endif
+            if (swap) _incrementalStack.Push(swapped);
         }
 
         protected ParserState EndNode()
         {
+            Console.WriteLine("END");
             _state = this.SaveParserState();
             var incrementalNode = _incrementalStack.Pop();
-            if (incrementalNode is IncrementalSyntaxNode incrementalSyntaxNode)
+            if (incrementalNode is IncrementalSyntaxNodeBuilder incrementalSyntaxNodeBuilder)
             {
-                _previousIncrementalNode = incrementalSyntaxNode;
-            }
-            else if (incrementalNode is IncrementalSyntaxNodeBuilder incrementalSyntaxNodeBuilder)
-            {
-                _previousIncrementalNode = incrementalSyntaxNodeBuilder.ToImmutable(_state);
+                var immutableNode = incrementalSyntaxNodeBuilder.ToImmutable(_state);
+                AddToIncrementalParent(immutableNode);
             }
             else
             {
-                _previousIncrementalNode = null;
                 Debug.Assert(false);
             }
+            return _state;
+        }
+
+#if DEBUG
+        protected ParserState EndNode(GreenNode green)
+        {
+            Console.WriteLine("END:"+green.KindText);
+            _state = this.SaveParserState();
+            var incrementalNode = _incrementalStack.Pop();
+            if (incrementalNode is IncrementalSyntaxNodeBuilder incrementalSyntaxNodeBuilder)
+            {
+                var immutableNode = incrementalSyntaxNodeBuilder.ToImmutable(_state);
+                immutableNode.GreenNode = green;
+                AddToIncrementalParent(immutableNode);
+            }
+            else
+            {
+                Debug.Assert(false);
+            }
+            return _state;
+        }
+#endif
+
+        private void AddToIncrementalParent(IncrementalSyntaxNode node)
+        {
+            _latestIncrementalNode = node;
             if (_incrementalStack.Count > 0)
             {
                 var incrementalParent = _incrementalStack.Peek() as IncrementalSyntaxNodeBuilder;
                 Debug.Assert(incrementalParent != null);
-                incrementalParent.Children.Add(_previousIncrementalNode);
-                incrementalParent.LookaheadBefore = Math.Min(incrementalParent.LookaheadBefore, _previousIncrementalNode.LookaheadBefore);
-                incrementalParent.LookaheadAfter = Math.Max(incrementalParent.LookaheadAfter, _previousIncrementalNode.LookaheadAfter);
+                incrementalParent.Children.Add(node);
+                incrementalParent.LookaheadBefore = Math.Min(incrementalParent.LookaheadBefore, node.LookaheadBefore);
+                incrementalParent.LookaheadAfter = Math.Max(incrementalParent.LookaheadAfter, node.LookaheadAfter);
             }
-            return _state;
         }
 
         protected ParserState SaveParserState()
@@ -366,9 +390,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             _tokenCount = _tokenOffset; // forget anything after this slot
 
             // store incremental data
-            var incrementalNode = _incrementalStack.Pop();
-            Debug.Assert(incrementalNode is IncrementalSyntaxNodeBuilder);
-            _incrementalStack.Push(_currentNode.Blender.IncrementalSyntaxNode);
+            var incrementalNode = _currentNode.Blender.IncrementalSyntaxNode;
+            AddToIncrementalParent(incrementalNode);
 
             // erase current state
             _currentNode = default;
@@ -430,15 +453,6 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             else
             {
                 this.AddLexedToken(_lexer.Lex(ref _mode));
-            }
-            var incrementalNode = _incrementalStack.Peek();
-            if (incrementalNode is IncrementalSyntaxNodeBuilder incrementalNodeBuilder)
-            {
-                incrementalNodeBuilder.Children.Add(null);
-            }
-            else
-            {
-                Debug.Assert(incrementalNode is IncrementalSyntaxNodeBuilder);
             }
         }
 
@@ -528,25 +542,20 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             }
         }
 
-        protected void Seek(int index)
-        {
-            Debug.Assert(index >= _firstToken && index < _firstToken + _tokenCount);
-            _tokenOffset = index - _firstToken;
-            _currentNode = default;
-            _currentToken = default;
-        }
-
         protected InternalSyntaxToken PeekToken(int n)
         {
-            var incrementalNode = _incrementalStack.Peek();
-            if (incrementalNode is IncrementalSyntaxNodeBuilder builder)
+            if (n != 0)
             {
-                builder.LookaheadBefore = Math.Min(n, builder.LookaheadBefore);
-                builder.LookaheadAfter = Math.Max(n, builder.LookaheadAfter);
-            }
-            else
-            {
-                Debug.Assert(false);
+                var incrementalNode = _incrementalStack.Peek();
+                if (incrementalNode is IncrementalSyntaxNodeBuilder builder)
+                {
+                    builder.LookaheadBefore = Math.Min(n, builder.LookaheadBefore);
+                    builder.LookaheadAfter = Math.Max(n, builder.LookaheadAfter);
+                }
+                else
+                {
+                    Debug.Assert(false);
+                }
             }
 
             //Debug.Assert(n >= 0);

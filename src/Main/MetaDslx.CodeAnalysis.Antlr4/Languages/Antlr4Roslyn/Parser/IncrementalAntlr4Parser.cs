@@ -25,22 +25,20 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
     {
         private readonly IncrementalAntlr4Lexer _lexer;
         private readonly IncrementalParser _parser;
-        private readonly Dictionary<IncrementalParserRuleContext, GreenNode> _nodeCache;
-        private int _currentState;
-        private bool _disableIncrementalContext;
+        private readonly Dictionary<ParserRuleContext, GreenNode> _nodeCache;
         private List<IToken> _tokens;
         private Stack<ResetPoint> _resetPoints;
+        private string indent = string.Empty;
 
         public IncrementalAntlr4Parser(Language language, SourceText text, LanguageParseOptions options, LanguageSyntaxNode oldTree, IEnumerable<TextChangeRange> changes, CancellationToken cancellationToken = default) 
             : base(language, text, options, oldTree, changes, cancellationToken)
         {
-            _nodeCache = new Dictionary<IncrementalParserRuleContext, GreenNode>();
+            _nodeCache = new Dictionary<ParserRuleContext, GreenNode>();
             _lexer = (IncrementalAntlr4Lexer)language.InternalSyntaxFactory.CreateLexer(text, options, changes);
             _parser = (IncrementalParser)((IAntlr4SyntaxFactory)language.InternalSyntaxFactory).CreateAntlr4Parser(this);
             _parser._incrementalParser = this;
             //_parser.RemoveErrorListeners();
             _parser.AddParseListener(this);
-            _currentState = -1;
             _tokens = new List<IToken>();
             _resetPoints = new Stack<ResetPoint>();
         }
@@ -50,7 +48,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         protected override ParserState SaveParserState(ParserState previousState)
         {
             var oldState = previousState as Antlr4ParserState;
-            if (oldState == null || oldState.Mode != Mode || oldState.State != _currentState) return new Antlr4ParserState(Mode, _currentState);
+            if (oldState == null || oldState.Mode != Mode || oldState.State != _parser.State) return new Antlr4ParserState(Mode, _parser.State);
             else return previousState;
         }
 
@@ -60,62 +58,18 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             var newState = state as Antlr4ParserState;
             if (newState != null)
             {
-                _currentState = newState.State;
+                _parser.State = newState.State;
             }
         }
 
-        public bool TryGetIncrementalContext<TContext>(ParserRuleContext parentContext, int state, int ruleIndex, out TContext existingContext)
-            where TContext : ParserRuleContext
-        {
-            if (!IsIncremental || state != _currentState)
-            {
-                existingContext = null;
-                return false;
-            }
-            else
-            {
-                var incrementalContext = (TContext)GetIncrementalContext(parentContext, state, ruleIndex);
-                if (incrementalContext != null)
-                {
-                    existingContext = incrementalContext;
-                    return true;
-                }
-                else
-                {
-                    existingContext = null;
-                    return false;
-                }
-            }
-        }
-
-        protected abstract ParserRuleContext GetIncrementalContext(ParserRuleContext parent, int invokingState, int ruleIndex);
-
-        protected void CacheGreenNode(IncrementalParserRuleContext context, GreenNode greenNode)
+        protected void CacheGreenNode(ParserRuleContext context, GreenNode greenNode)
         {
             _nodeCache.Add(context, greenNode);
         }
 
-        protected bool TryGetGreenNode(IncrementalParserRuleContext context, out GreenNode existingGreenNode)
+        protected bool TryGetGreenNode(ParserRuleContext context, out GreenNode existingGreenNode)
         {
             return _nodeCache.TryGetValue(context, out existingGreenNode);
-        }
-
-        protected override void TokenAdded(InternalSyntaxToken token, bool incremental)
-        {
-            var index = this.TokenCount - 1;
-            if (incremental) _tokens.Add(null);
-            else _tokens.Add(((ITokenStream)_lexer).Get(index));
-        }
-
-        protected IToken GetAntlr4TokenAt(int index)
-        {
-            var result = _tokens[index];
-            if (result == null)
-            {
-                result = ((ITokenStream)_lexer).Get(index);
-                _tokens[index] = result;
-            }
-            return result;
         }
 
         #region ITokenSource
@@ -126,12 +80,10 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         {
             if (k > 0)
             {
-                this.PeekToken(k - 1);
                 return ((ITokenStream)this).Get(this.TokenIndex + k - 1);
             }
             else if (k < 0)
             {
-                this.PeekToken(k);
                 return ((ITokenStream)this).Get(this.TokenIndex + k);
             }
             else
@@ -142,7 +94,11 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 
         IToken ITokenStream.Get(int i)
         {
-            return GetAntlr4TokenAt(i);
+            var green = this.PeekToken(i - this.TokenIndex);
+            if (green == null) return null;
+            var token = new IncrementalToken(green.Kind.ToAntlr4(), green.Text);
+            token.SetGreenToken(green);
+            return token;
         }
 
         string ITokenStream.GetText(Interval interval)
@@ -204,7 +160,16 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 
         void IIntStream.Seek(int index)
         {
-            this.Seek(index);
+            if (_resetPoints.Count > 0)
+            {
+                var rp = _resetPoints.Peek();
+                Debug.Assert(rp.Position == index);
+                this.Reset(ref rp);
+            }
+            else
+            {
+                Debug.Assert(false);
+            }
         }
 
         void IParseTreeListener.VisitTerminal(ITerminalNode node)
@@ -219,13 +184,26 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 
         void IParseTreeListener.EnterEveryRule(ParserRuleContext ctx)
         {
-            _currentState = ctx.invokingState;
+            Console.WriteLine(indent + "ENTER:" + _parser.RuleNames[ctx.RuleIndex]);
+            indent += " ";
         }
 
         void IParseTreeListener.ExitEveryRule(ParserRuleContext ctx)
         {
+            if (indent.Length > 0) indent = indent.Substring(1);
+            Console.WriteLine(indent + "EXIT:" + _parser.RuleNames[ctx.RuleIndex]);
         }
 
         #endregion
+
+        internal void BeginRecursiveRule()
+        {
+            this.BeginNode(State, true);
+        }
+
+        internal void EndRecursiveRule()
+        {
+            this.EndNode();
+        }
     }
 }

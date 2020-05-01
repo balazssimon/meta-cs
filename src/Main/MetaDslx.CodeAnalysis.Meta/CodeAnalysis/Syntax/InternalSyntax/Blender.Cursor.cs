@@ -27,21 +27,30 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         private struct Cursor
         {
             public readonly SyntaxNodeOrToken CurrentNodeOrToken;
-            public readonly object CurrentIncrementalNode;
             private readonly ImmutableStack<IncrementalSyntaxNode> _incrementalNodeStack;
             private readonly int _indexInParent;
+            private readonly int _incrementalIndexInParent;
 
-            private Cursor(SyntaxNodeOrToken node, object incrementalNode, int indexInParent, ImmutableStack<IncrementalSyntaxNode> incrementalNodeStack)
+            private Cursor(SyntaxNodeOrToken node, int indexInParent, int incrementalIndexInParent, ImmutableStack<IncrementalSyntaxNode> incrementalNodeStack)
             {
                 CurrentNodeOrToken = node;
-                CurrentIncrementalNode = incrementalNode;
+                _incrementalIndexInParent = incrementalIndexInParent;
                 _incrementalNodeStack = incrementalNodeStack;
                 _indexInParent = indexInParent;
             }
 
-            public static Cursor FromRoot(LanguageSyntaxNode node, object incrementalSyntaxNode)
+            public static Cursor FromRoot(LanguageSyntaxNode node, IncrementalSyntaxNode incrementalSyntaxNode)
             {
-                return new Cursor(node, incrementalSyntaxNode, 0, ImmutableStack<IncrementalSyntaxNode>.Empty);
+                return new Cursor(node, 0, 0, ImmutableStack.Create(incrementalSyntaxNode));
+            }
+
+            public IncrementalSyntaxNode CurrentIncrementalNode
+            {
+                get
+                {
+                    if (!_incrementalNodeStack.IsEmpty) return _incrementalNodeStack.Peek();
+                    else return null;
+                }
             }
 
             public bool IsFinished
@@ -66,21 +75,26 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                     // First, look to the nodes to the right of this one in our parent's child list
                     // to get the next sibling.
                     var siblings = this.CurrentNodeOrToken.Parent.ChildNodesAndTokens();
+                    var incrementalStack = _incrementalNodeStack.Pop();
+                    var incrementalParent = incrementalStack.Peek();
+                    var incrementalSiblings = incrementalParent.Children;
+                    var incrementalIndex = _incrementalIndexInParent;
+                    if (this.CurrentNodeOrToken.IsNode) ++incrementalIndex;
                     for (int i = _indexInParent + 1, n = siblings.Count; i < n; i++)
                     {
                         var sibling = siblings[i];
                         if (IsNonZeroWidthOrIsEndOfFile(sibling))
                         {
-                            if (CurrentIncrementalNode != null)
+                            if (sibling.IsNode)
                             {
-                                var incrementalSiblings = _incrementalNodeStack.Peek().Children;
-                                return new Cursor(sibling, incrementalSiblings[i], i, _incrementalNodeStack.Push((IncrementalSyntaxNode)CurrentIncrementalNode));
+                                return new Cursor(sibling, i, incrementalIndex, _incrementalNodeStack.Push(incrementalSiblings[incrementalIndex]));
                             }
                             else
                             {
-                                return new Cursor(sibling, null, i, _incrementalNodeStack.Push((IncrementalSyntaxNode)CurrentIncrementalNode));
+                                return new Cursor(sibling, i, -1, _incrementalNodeStack.Push(null));
                             }
                         }
+                        if (sibling.IsNode) ++incrementalIndex;
                     }
 
                     // We're at the end of this sibling chain.  Walk up to the parent and see who is
@@ -95,8 +109,12 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             {
                 var parent = this.CurrentNodeOrToken.Parent;
                 var index = IndexOfNodeInParent(parent);
-                var incrementalNode = _incrementalNodeStack.Peek();
-                return new Cursor(parent, incrementalNode, index, _incrementalNodeStack.Pop());
+                var incrementalStack = _incrementalNodeStack.Pop();
+                var incrementalParentStack = incrementalStack.Pop();
+                var incrementalNode = incrementalStack.Peek();
+                var incrementalParent = incrementalParentStack.Peek();
+                var incrementalIndex = incrementalParent.Children.IndexOf(incrementalNode);
+                return new Cursor(parent, index, incrementalIndex, incrementalStack);
             }
 
             private static int IndexOfNodeInParent(SyntaxNode node)
@@ -136,20 +154,22 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                     var child = Microsoft.CodeAnalysis.ChildSyntaxList.ItemInternal(node, 0);
                     if (IsNonZeroWidthOrIsEndOfFile(child))
                     {
-                        return new Cursor(child, CurrentIncrementalNode != null ? ((IncrementalSyntaxNode)CurrentIncrementalNode).Children[0] : null, 0, _incrementalNodeStack.Push((IncrementalSyntaxNode)CurrentIncrementalNode));
+                        return new Cursor(child, 0, 0, _incrementalNodeStack.Push(child.IsNode ? CurrentIncrementalNode.Children[0] : null));
                     }
                 }
 
                 // Fallback to enumerating all children.
                 int index = 0;
+                int nodeIndex = 0;
                 foreach (var child in this.CurrentNodeOrToken.ChildNodesAndTokens())
                 {
                     if (IsNonZeroWidthOrIsEndOfFile(child))
                     {
-                        return new Cursor(child, CurrentIncrementalNode != null ? ((IncrementalSyntaxNode)CurrentIncrementalNode).Children[index] : null, index, _incrementalNodeStack.Push((IncrementalSyntaxNode)CurrentIncrementalNode));
+                        return new Cursor(child, index, nodeIndex, _incrementalNodeStack.Push(child.IsNode ? CurrentIncrementalNode.Children[nodeIndex] : null));
                     }
 
                     index++;
+                    if (child.IsNode) ++nodeIndex;
                 }
 
                 return new Cursor();

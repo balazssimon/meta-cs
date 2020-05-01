@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Symbols;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -116,7 +117,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         /// the change itself.
         /// </summary>
         private static TextChangeRange ExtendToAffectedRange(
-            LanguageSyntaxNode oldTree,
+            LanguageSyntaxNode oldRoot,
             IncrementalSyntaxTree oldIncrementalTree,
             TextChangeRange changeRange)
         {
@@ -125,7 +126,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
             // check if change is not after the end. TODO: there should be an assert somewhere about
             // changes starting at least at the End of old tree
-            var lastCharIndex = oldTree.FullWidth - 1;
+            var lastCharIndex = oldRoot.FullWidth - 1;
 
             // Move the start and end of the change range so that it is contained within oldTree.
             var start = Math.Max(Math.Min(changeRange.Span.Start - maxLexerLookahead, lastCharIndex), 0);
@@ -136,14 +137,14 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             // we're not at the start of the tree.
             while (start > 0)
             {
-                var token = oldTree.FindToken(start, findInsideTrivia: false);
+                var token = oldRoot.FindToken(start, findInsideTrivia: false);
                 Debug.Assert(token.GetKind() != SyntaxKind.None, "how could we not get a real token back?");
-
-                start = Math.Max(0, token.Position - 1);
 
                 // Only stop if we got a non-zero width token.  Otherwise, we want to just do
                 // this again having moved back one space.
                 if (token.FullWidth > 0) break;
+
+                start = Math.Max(0, token.Position - 1);
             }
 
             // The first iteration aligns us with the change end. Subsequent iteration move us to
@@ -151,18 +152,18 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             // we're not at the end of the tree.
             while (end < lastCharIndex)
             {
-                var token = oldTree.FindToken(end, findInsideTrivia: false);
+                var token = oldRoot.FindToken(end, findInsideTrivia: false);
                 Debug.Assert(token.GetKind() != SyntaxKind.None, "how could we not get a real token back?");
-
-                end = Math.Min(lastCharIndex, token.Position + Math.Max(token.FullWidth, 1));
 
                 // Only stop if we got a non-zero width token.  Otherwise, we want to just do
                 // this again having moved forward one space.
                 if (token.FullWidth > 0) break;
+
+                end = Math.Min(lastCharIndex, token.Position + Math.Max(token.FullWidth, 1));
             }
 
-            start = FindLastReusableNodeBefore(start, oldTree, oldIncrementalTree.Root)?.FullSpan.End ?? 0;
-            end = FindFirstReusableNodeAfter(end, oldTree, oldIncrementalTree.Root)?.FullSpan.Start ?? oldTree.FullWidth;
+            start = FindLastReusableNodeBefore(start, oldRoot, oldIncrementalTree.Root)?.FullSpan.End ?? 0;
+            end = FindFirstReusableNodeAfter(end, oldRoot, oldIncrementalTree.Root)?.FullSpan.Start ?? oldRoot.FullWidth;
 
             var finalSpan = TextSpan.FromBounds(start, end);
             var finalLength = changeRange.NewLength + (changeRange.Span.Start - start) + (end - changeRange.Span.End);
@@ -175,26 +176,27 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             IncrementalSyntaxNode oldIncrementalNode)
         {
             if (oldNode.FullSpan.End <= position) return oldNode;
-            if (oldNode.FullSpan.Start >= position) return null;
-            var children = oldNode.Parent.ChildNodesAndTokens();
+            if (oldNode.FullSpan.Start > position) return null;
+            var children = oldNode.ChildNodes().ToArray();
             LanguageSyntaxNode prevChild = null;
-            for (int i = 0; i < children.Count; i++)
+            int i = 0;
+            foreach (var child in children)
             {
-                var child = children[i];
                 if (child.FullSpan.Contains(position))
                 {
-                    if (child.IsToken) return prevChild;
-                    else return FindLastReusableNodeBefore(position, (LanguageSyntaxNode)child.AsNode(), (IncrementalSyntaxNode)oldIncrementalNode.Children[i]);
+                    var result = FindLastReusableNodeBefore(position, (LanguageSyntaxNode)child, oldIncrementalNode.Children[i]);
+                    if (result != null) return result;
+                    else return prevChild;
                 }
                 else if (child.FullSpan.End <= position)
                 {
-                    if (child.IsNode) prevChild = (LanguageSyntaxNode)child.AsNode();
+                    prevChild = (LanguageSyntaxNode)child;
                 }
                 else
                 {
-                    Debug.Assert(false);
-                    return null;
+                    return prevChild;
                 }
+                ++i;
             }
             return prevChild;
         }
@@ -205,26 +207,27 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             IncrementalSyntaxNode oldIncrementalNode)
         {
             if (oldNode.FullSpan.Start >= position) return oldNode;
-            if (oldNode.FullSpan.End <= position) return null;
-            var children = oldNode.Parent.ChildNodesAndTokens();
+            if (oldNode.FullSpan.End < position) return null;
+            var children = oldNode.ChildNodes().Reverse().ToArray();
             LanguageSyntaxNode nextChild = null;
-            for (int i = children.Count - 1; i >= 0; i--)
+            int i = 0;
+            foreach (var child in children)
             {
-                var child = children[i];
                 if (child.FullSpan.Contains(position))
                 {
-                    if (child.IsToken) return nextChild;
-                    else return FindFirstReusableNodeAfter(position, (LanguageSyntaxNode)child.AsNode(), (IncrementalSyntaxNode)oldIncrementalNode.Children[i]);
+                    var result = FindFirstReusableNodeAfter(position, (LanguageSyntaxNode)child, oldIncrementalNode.Children[oldIncrementalNode.Children.Length - i - 1]);
+                    if (result != null) return result;
+                    else return nextChild;
                 }
-                else if (child.FullSpan.Start >= position)
+                else if (child.FullSpan.Start > position)
                 {
-                    if (child.IsNode) nextChild = (LanguageSyntaxNode)child.AsNode();
+                    nextChild = (LanguageSyntaxNode)child;
                 }
                 else
                 {
-                    Debug.Assert(false);
-                    return null;
+                    return nextChild;
                 }
+                ++i;
             }
             return nextChild;
         }

@@ -184,7 +184,10 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         {
             StringBuilder sb = new StringBuilder();
             using(StreamReader reader = new StreamReader(parserFilePath))
-            { 
+            {
+                string prevLine1 = null;
+                string prevLine2 = null;
+                string prevLine3 = null;
                 while(!reader.EndOfStream)
                 {
                     var line = reader.ReadLine();
@@ -192,26 +195,61 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                     {
                         line = line.Replace(": Parser {", $": global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParser {{\r\n    private {LanguageName}SyntaxParser SyntaxParser => ({LanguageName}SyntaxParser)this.IncrementalAntlr4Parser;");
                     }
-                    /*if (line.Contains("Context : ParserRuleContext {"))
-                    {
-                        line = line.Replace("Context : ParserRuleContext {", "Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {");
-                    }*/
                     if (line.Contains("Context _localctx = new "))
                     {
                         var contextTypeName = line.Substring(0, line.IndexOf("_localctx")).Trim();
                         var indent = line.Substring(0, line.IndexOf(contextTypeName));
+                        var smallIndent = indent.Length >= 1 ? indent.Substring(1) : indent;
                         var ruleName = contextTypeName.Substring(0, contextTypeName.Length - 7);
-                        sb.AppendLine($"{indent}SyntaxParser.BeginParserRuleContext();");
-                        sb.AppendLine($"{indent}if (this.TryGetIncrementalContext(_ctx, State, RULE_{ruleName.ToCamelCase()}, out {contextTypeName} existingContext)) return existingContext;");
+                        bool recursive = false;
+                        if (prevLine1 != null && prevLine1.Contains(") {"))
+                        {
+                            if (prevLine3 != null)
+                            {
+                                sb.AppendLine(prevLine3);
+                                prevLine3 = null;
+                            }
+                            if (prevLine2 != null)
+                            {
+                                sb.AppendLine(prevLine2);
+                                prevLine2 = null;
+                            }
+                            sb.AppendLine(prevLine1);
+                            prevLine1 = null;
+                        }
+                        else if (prevLine3 != null && prevLine3.Contains(") {"))
+                        {
+                            sb.AppendLine(prevLine3);
+                            prevLine3 = null;
+                            recursive = true;
+                            var findRuleName = ruleName.ToCamelCase();
+                            foreach (var rule in this.Grammar.ParserRules)
+                            {
+                                if (rule.Name == findRuleName)
+                                {
+                                    rule.IsRecursive = true;
+                                    break;
+                                }
+                            }
+                        }
+                        //sb.AppendLine($"{indent}BeginRuleContext();");
+                        //sb.AppendLine($"{indent}if (this.TryGetIncrementalContext(_ctx, State, RULE_{ruleName.ToCamelCase()}, out {contextTypeName} existingContext)) return existingContext;");
+                        if (recursive) sb.AppendLine($"{indent}return this.SyntaxParser._Antlr4Parse{ruleName}(_p);");
+                        else sb.AppendLine($"{indent}return this.SyntaxParser._Antlr4Parse{ruleName}();");
+                        //sb.AppendLine($"{indent}EndRuleContext();");
+                        sb.AppendLine($"{smallIndent}}}");
+                        sb.AppendLine();
+                        if (recursive) sb.AppendLine($"{smallIndent}internal {contextTypeName} _DoParse{ruleName}(int _p) {{");
+                        else sb.AppendLine($"{smallIndent}internal {contextTypeName} _DoParse{ruleName}() {{");
                     }
-                    sb.AppendLine(line);
-                    var trimmedLine = line.Trim();
-                    if (trimmedLine == "ExitRule();" || trimmedLine == "UnrollRecursionContexts(_parentctx);")
-                    {
-                        sb.AppendLine("			SyntaxParser.MakeGreenNode(_localctx);");
-                        sb.AppendLine("			SyntaxParser.EndParserRuleContext();");
-                    }
+                    if (prevLine3 != null) sb.AppendLine(prevLine3);
+                    prevLine3 = prevLine2;
+                    prevLine2 = prevLine1;
+                    prevLine1 = line;
                 }
+                if (prevLine3 != null) sb.AppendLine(prevLine3);
+                if (prevLine2 != null) sb.AppendLine(prevLine2);
+                if (prevLine1 != null) sb.AppendLine(prevLine1);
             }
             File.WriteAllText(parserFilePath, sb.ToString());
         }
@@ -1927,6 +1965,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         public List<Antlr4ParserRule> Alternatives { get; private set; }
         public Antlr4ParserRule FirstNonAbstractAlternative { get; internal set; }
         public bool IsSimpleAlt { get; internal set; }
+        public bool IsRecursive { get; internal set; }
         public List<Antlr4ParserRuleElement> AllElements
         {
             get
