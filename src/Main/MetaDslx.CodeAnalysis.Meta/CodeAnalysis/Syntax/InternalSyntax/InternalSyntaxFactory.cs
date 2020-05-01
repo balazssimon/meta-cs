@@ -7,12 +7,18 @@ using System.Diagnostics;
 namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 {
     using Microsoft.CodeAnalysis;
+    using Microsoft.CodeAnalysis.PooledObjects;
+    using Microsoft.CodeAnalysis.Text;
     using Roslyn.Utilities;
+    using System.Threading;
     using Internal = Microsoft.CodeAnalysis.Syntax.InternalSyntax;
 
     public abstract class InternalSyntaxFactory
     {
+        internal readonly ObjectPool<CachingIdentityFactory<string, SyntaxKind>> KeywordKindPool;
+
         private const string CrLf = "\r\n";
+        private SyntaxFacts _syntaxFacts;
         private Type _syntaxKind;
         private SyntaxKind DefaultSeparatorKind;
         private SyntaxKind DefaultEndOfLineKind;
@@ -37,6 +43,18 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         protected InternalSyntaxFactory(SyntaxFacts syntaxFacts)
         {
             _syntaxKind = syntaxFacts.SyntaxKindType;
+            KeywordKindPool =
+                CachingIdentityFactory<string, SyntaxKind>.CreatePool(
+                            512,
+                            (key) =>
+                            {
+                                var kind = syntaxFacts.GetReservedKeywordKind(key);
+                                if (kind == SyntaxKind.None)
+                                {
+                                    kind = syntaxFacts.GetContextualKeywordKind(key);
+                                }
+                                return kind;
+                            });
             DefaultSeparatorKind = ToLanguageSyntaxKind(syntaxFacts.DefaultSeparatorKind);
             DefaultEndOfLineKind = ToLanguageSyntaxKind(syntaxFacts.DefaultEndOfLineKind); 
             DefaultWhitespaceKind = ToLanguageSyntaxKind(syntaxFacts.DefaultWhitespaceKind);
@@ -127,6 +145,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         public abstract InternalSyntaxTrivia Trivia(SyntaxKind kind, string text, bool elastic = false);
         public abstract InternalSyntaxTrivia ConflictMarker(string text);
         public abstract InternalSyntaxTrivia DisabledText(string text);
+        public abstract InternalSyntaxTrivia SkippedToken(GreenNode token);
         public abstract InternalSyntaxToken Token(SyntaxKind kind);
         public abstract InternalSyntaxToken Token(GreenNode leading, SyntaxKind kind, GreenNode trailing);
         public abstract InternalSyntaxToken Token(GreenNode leading, SyntaxKind kind, string text, GreenNode trailing);
@@ -224,5 +243,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         }
 
         public abstract IEnumerable<InternalSyntaxToken> GetWellKnownTokens();
+
+        public abstract IncrementalLexer CreateLexer(SourceText text, LanguageParseOptions options, IEnumerable<TextChangeRange> changes);
+        public abstract IncrementalParser CreateParser(SourceText text, LanguageParseOptions options, LanguageSyntaxNode oldTree, IEnumerable<TextChangeRange> changes, CancellationToken cancellationToken = default);
     }
 }

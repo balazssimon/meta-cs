@@ -7798,7 +7798,7 @@ namespace MetaDslx.Languages.Meta
 	            var node = parser.Parse();
 	            if (node == null) return null;
 	            // if (consumeFullText) node = parser.ConsumeUnexpectedTokens(node);
-	            return (MainSyntax)node.CreateRed();
+	            return (MainSyntax)node;
 	        }
 	    }
 	
@@ -7815,11 +7815,6 @@ namespace MetaDslx.Languages.Meta
 		public override LanguageSyntaxTree MakeSyntaxTree(LanguageSyntaxNode root, ParseOptions options = null, string path = "", Encoding encoding = null)
 		{
 			return MetaSyntaxTree.Create((MetaSyntaxNode)root, (MetaParseOptions)options, path, null, encoding);
-		}
-	
-		public override LanguageSyntaxTree MakeSyntaxTree(SyntaxParser parser, string path = "", CancellationToken cancellationToken = default)
-		{
-			return MetaSyntaxTree.Create((MetaSyntaxParser)parser, path, cancellationToken);
 		}
 	
 	    public override SyntaxNode CreateStructure(SyntaxTrivia trivia)
