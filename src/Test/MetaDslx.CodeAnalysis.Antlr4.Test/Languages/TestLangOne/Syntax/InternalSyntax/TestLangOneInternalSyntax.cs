@@ -10567,7 +10567,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Inte
             // See if we have seen this state before at this starting point.
             // If we haven't seen it, we need to rerun this rule.
             var parentDepth = parentContext?.Depth() ?? 0;
-            if (!_incrementalParser.TryGetContext(parentDepth + 1, state, ruleIndex, _incrementalParser.CurrentTokenIndex, out existingContext)) return false;
+            if (!_incrementalParser.TryGetContext(parentDepth + 1, state, ruleIndex, _incrementalParser.TokenIndex, out existingContext)) return false;
             // We have seen it, see if it was affected by the parse
             if (_incrementalParser.IsAffected(existingContext)) return false;
             // Everything checked out, reuse the rule context - we add it to the

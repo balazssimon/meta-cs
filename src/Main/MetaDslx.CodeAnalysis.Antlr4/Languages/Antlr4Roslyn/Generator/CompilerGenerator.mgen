@@ -1074,8 +1074,8 @@ namespace [Properties.DefaultNamespace].Syntax.InternalSyntax
 			BeginRoot();
             ParserState state = null;
 			var green = this.Parse[Instances.MainRule().PlainName()](ref state);
+			EndRoot(ref green);
 			var red = ([lang]SyntaxNode)green.CreateRed();
-			EndRoot(red);
 			return red;
 		}
 
@@ -1129,9 +1129,7 @@ namespace [Properties.DefaultNamespace].Syntax.InternalSyntax
 				else if (tree is ParserRuleContext context)
                 {
                     if (_syntaxParser.TryGetGreenNode(context, out var existingGreenNode)) return existingGreenNode;
-    				var greenNode = base.Visit(tree);
-                    _syntaxParser.CacheGreenNode(context, greenNode);
-    				return greenNode;
+    				return base.Visit(tree);
                 }
                 else
                 {
@@ -1163,11 +1161,12 @@ template GenerateAntlr4ToRoslynSyntaxParseRule(Antlr4ParserRule rule, Antlr4Pars
 [var lang = Properties.LanguageName]
 public GreenNode Parse[rule.PlainName()](ref ParserState state)
 {
+    RestoreParserState(state);
 	try
 	{
 		var context = this.Antlr4Parser.[rule.Name]();
-        var green = _visitor.Visit[rule.PlainName()](context);
-        return green;
+        if (TryGetGreenNode(context, out var green)) return green;
+        else return null;
 	}
 	finally
 	{
@@ -1182,23 +1181,21 @@ protected virtual bool CanReuse[rule.PlainName()]([rule.RedName()] node)
 ^
 internal [lang]Parser.[rule.PlainName()]Context _Antlr4Parse[rule.PlainName()]([rule.IsRecursive ? "int precedence" : ""])
 {
-	BeginNode(State);
+	BeginNode();
+    [lang]Parser.[rule.PlainName()]Context context = null;
     GreenNode green = null;
     try
     {
         if (IsIncremental && CanReuse[rule.PlainName()](CurrentNode as [rule.RedName()])) return new [lang]Parser.[rule.PlainName()]Context_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, EatNode());
-	    var context = this.Antlr4Parser._DoParse[rule.PlainName()]([rule.IsRecursive ? "precedence" : ""]);
+	    context = this.Antlr4Parser._DoParse[rule.PlainName()]([rule.IsRecursive ? "precedence" : ""]);
         green = _visitor.Visit[rule.PlainName()](context);
-	    return context;
     }
     finally
     {
-        #if DEBUG
-        EndNode(green);
-        #else
-        EndNode();
-        #endif
+        EndNode(ref green);
+        CacheGreenNode(context, green);
     }
+    return context;
 }
 ^
 end template

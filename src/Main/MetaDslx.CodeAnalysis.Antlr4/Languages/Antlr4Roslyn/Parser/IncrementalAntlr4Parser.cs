@@ -21,7 +21,7 @@ using System.Threading;
 
 namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 {
-    public abstract class IncrementalAntlr4Parser : MetaDslx.CodeAnalysis.Syntax.InternalSyntax.IncrementalParser, ITokenStream, IParseTreeListener
+    public abstract class IncrementalAntlr4Parser : MetaDslx.CodeAnalysis.Syntax.InternalSyntax.IncrementalParser, ITokenStream
     {
         private readonly IncrementalAntlr4Lexer _lexer;
         private readonly IncrementalParser _parser;
@@ -38,7 +38,6 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             _parser = (IncrementalParser)((IAntlr4SyntaxFactory)language.InternalSyntaxFactory).CreateAntlr4Parser(this);
             _parser._incrementalParser = this;
             //_parser.RemoveErrorListeners();
-            _parser.AddParseListener(this);
             _tokens = new List<IToken>();
             _resetPoints = new Stack<ResetPoint>();
         }
@@ -48,7 +47,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         protected override ParserState SaveParserState(ParserState previousState)
         {
             var oldState = previousState as Antlr4ParserState;
-            if (oldState == null || oldState.Mode != Mode || oldState.State != _parser.State) return new Antlr4ParserState(Mode, _parser.State);
+            if (oldState == null || oldState.State != _parser.State) return new Antlr4ParserState(_parser.State);
             else return previousState;
         }
 
@@ -125,7 +124,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 
         #region IIntStream
 
-        int IIntStream.Index => this.TokenOffset;
+        int IIntStream.Index => this.TokenIndex;
 
         int IIntStream.Size => this.TokenCount;
 
@@ -172,38 +171,6 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             }
         }
 
-        void IParseTreeListener.VisitTerminal(ITerminalNode node)
-        {
-            
-        }
-
-        void IParseTreeListener.VisitErrorNode(IErrorNode node)
-        {
-            
-        }
-
-        void IParseTreeListener.EnterEveryRule(ParserRuleContext ctx)
-        {
-            Console.WriteLine(indent + "ENTER:" + _parser.RuleNames[ctx.RuleIndex]);
-            indent += " ";
-        }
-
-        void IParseTreeListener.ExitEveryRule(ParserRuleContext ctx)
-        {
-            if (indent.Length > 0) indent = indent.Substring(1);
-            Console.WriteLine(indent + "EXIT:" + _parser.RuleNames[ctx.RuleIndex]);
-        }
-
         #endregion
-
-        internal void BeginRecursiveRule()
-        {
-            this.BeginNode(State, true);
-        }
-
-        internal void EndRecursiveRule()
-        {
-            this.EndNode();
-        }
     }
 }

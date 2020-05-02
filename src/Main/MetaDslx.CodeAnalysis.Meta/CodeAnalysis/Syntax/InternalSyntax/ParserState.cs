@@ -6,11 +6,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 {
     public class ParserState
     {
-        public readonly LexerMode Mode;
-
-        public ParserState(LexerMode mode)
+        public ParserState()
         {
-            this.Mode = mode;
         }
     }
 }

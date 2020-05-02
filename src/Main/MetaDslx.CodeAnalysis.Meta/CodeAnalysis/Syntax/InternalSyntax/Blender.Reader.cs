@@ -3,8 +3,6 @@
 using System.Collections.Immutable;
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Symbols;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using Roslyn.Utilities;
 
@@ -40,7 +38,6 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             internal BlendedNode ReadNodeOrToken(bool asToken)
             {
                 LexerMode mode = _mode;
-
                 // This is the core driver of the blender.  It just sits in a loop trying to keep our
                 // positions in the old and new text in sync.  When they're out of sync it will try
                 // to match them back up, and it will appropriately determine which nodes or tokens
@@ -218,14 +215,6 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 // NOTE: this is slightly different from IsMissing because of omitted type arguments
                 // and array size expressions.
                 if (nodeOrToken.FullWidth == 0)
-                {
-                    return false;
-                }
-
-                // As of 2013/03/14, the compiler never attempts to incrementally parse a tree containing
-                // annotations.  Our goal in instituting this restriction is to prevent API clients from
-                // taking a dependency on the survival of annotations.
-                if (nodeOrToken.ContainsAnnotations)
                 {
                     return false;
                 }

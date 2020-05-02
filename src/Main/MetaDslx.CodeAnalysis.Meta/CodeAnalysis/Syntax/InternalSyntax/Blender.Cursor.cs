@@ -1,15 +1,10 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Diagnostics;
-using Microsoft.CodeAnalysis.CSharp.Symbols;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using Roslyn.Utilities;
 using System;
 using Microsoft.CodeAnalysis;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.Immutable;
 
 namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 {
@@ -27,30 +22,17 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         private struct Cursor
         {
             public readonly SyntaxNodeOrToken CurrentNodeOrToken;
-            private readonly ImmutableStack<IncrementalSyntaxNode> _incrementalNodeStack;
             private readonly int _indexInParent;
-            private readonly int _incrementalIndexInParent;
 
-            private Cursor(SyntaxNodeOrToken node, int indexInParent, int incrementalIndexInParent, ImmutableStack<IncrementalSyntaxNode> incrementalNodeStack)
+            private Cursor(SyntaxNodeOrToken node, int indexInParent)
             {
-                CurrentNodeOrToken = node;
-                _incrementalIndexInParent = incrementalIndexInParent;
-                _incrementalNodeStack = incrementalNodeStack;
+                this.CurrentNodeOrToken = node;
                 _indexInParent = indexInParent;
             }
 
-            public static Cursor FromRoot(LanguageSyntaxNode node, IncrementalSyntaxNode incrementalSyntaxNode)
+            public static Cursor FromRoot(LanguageSyntaxNode node)
             {
-                return new Cursor(node, 0, 0, ImmutableStack.Create(incrementalSyntaxNode));
-            }
-
-            public IncrementalSyntaxNode CurrentIncrementalNode
-            {
-                get
-                {
-                    if (!_incrementalNodeStack.IsEmpty) return _incrementalNodeStack.Peek();
-                    else return null;
-                }
+                return new Cursor(node, indexInParent: 0);
             }
 
             public bool IsFinished
@@ -75,26 +57,13 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                     // First, look to the nodes to the right of this one in our parent's child list
                     // to get the next sibling.
                     var siblings = this.CurrentNodeOrToken.Parent.ChildNodesAndTokens();
-                    var incrementalStack = _incrementalNodeStack.Pop();
-                    var incrementalParent = incrementalStack.Peek();
-                    var incrementalSiblings = incrementalParent.Children;
-                    var incrementalIndex = _incrementalIndexInParent;
-                    if (this.CurrentNodeOrToken.IsNode) ++incrementalIndex;
                     for (int i = _indexInParent + 1, n = siblings.Count; i < n; i++)
                     {
                         var sibling = siblings[i];
                         if (IsNonZeroWidthOrIsEndOfFile(sibling))
                         {
-                            if (sibling.IsNode)
-                            {
-                                return new Cursor(sibling, i, incrementalIndex, _incrementalNodeStack.Push(incrementalSiblings[incrementalIndex]));
-                            }
-                            else
-                            {
-                                return new Cursor(sibling, i, -1, _incrementalNodeStack.Push(null));
-                            }
+                            return new Cursor(sibling, i);
                         }
-                        if (sibling.IsNode) ++incrementalIndex;
                     }
 
                     // We're at the end of this sibling chain.  Walk up to the parent and see who is
@@ -102,19 +71,14 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                     return MoveToParent().MoveToNextSibling();
                 }
 
-                return default;
+                return default(Cursor);
             }
 
             private Cursor MoveToParent()
             {
                 var parent = this.CurrentNodeOrToken.Parent;
                 var index = IndexOfNodeInParent(parent);
-                var incrementalStack = _incrementalNodeStack.Pop();
-                var incrementalParentStack = incrementalStack.Pop();
-                var incrementalNode = incrementalStack.Peek();
-                var incrementalParent = incrementalParentStack.Peek();
-                var incrementalIndex = incrementalParent.Children.IndexOf(incrementalNode);
-                return new Cursor(parent, index, incrementalIndex, incrementalStack);
+                return new Cursor(parent, index);
             }
 
             private static int IndexOfNodeInParent(SyntaxNode node)
@@ -154,22 +118,20 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                     var child = Microsoft.CodeAnalysis.ChildSyntaxList.ItemInternal(node, 0);
                     if (IsNonZeroWidthOrIsEndOfFile(child))
                     {
-                        return new Cursor(child, 0, 0, _incrementalNodeStack.Push(child.IsNode ? CurrentIncrementalNode.Children[0] : null));
+                        return new Cursor(child, 0);
                     }
                 }
 
                 // Fallback to enumerating all children.
                 int index = 0;
-                int nodeIndex = 0;
                 foreach (var child in this.CurrentNodeOrToken.ChildNodesAndTokens())
                 {
                     if (IsNonZeroWidthOrIsEndOfFile(child))
                     {
-                        return new Cursor(child, index, nodeIndex, _incrementalNodeStack.Push(child.IsNode ? CurrentIncrementalNode.Children[nodeIndex] : null));
+                        return new Cursor(child, index);
                     }
 
                     index++;
-                    if (child.IsNode) ++nodeIndex;
                 }
 
                 return new Cursor();
@@ -180,16 +142,14 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 var cursor = this;
                 if (!cursor.IsFinished)
                 {
-                    for (var node = cursor.CurrentNodeOrToken; node.GetKind() != SyntaxKind.None && !Language.SyntaxFacts.IsToken(node.GetKind()); node = cursor.CurrentNodeOrToken)
+                    var syntaxFacts = ((LanguageSyntaxNode)cursor.CurrentNodeOrToken.NodeOrParent).Language.SyntaxFacts;
+                    for (var node = cursor.CurrentNodeOrToken; node.GetKind() != SyntaxKind.None && !syntaxFacts.IsToken(node.GetKind()); node = cursor.CurrentNodeOrToken)
                     {
                         cursor = cursor.MoveToFirstChild();
                     }
                 }
-
                 return cursor;
             }
-
-            private Language Language => ((InternalSyntaxNode)CurrentNodeOrToken.NodeOrParent.Green).Language;
         }
     }
 }

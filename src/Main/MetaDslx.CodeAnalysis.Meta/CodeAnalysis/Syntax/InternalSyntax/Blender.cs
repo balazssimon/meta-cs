@@ -6,8 +6,6 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Symbols;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using Roslyn.Utilities;
 
@@ -34,14 +32,14 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         private readonly LexerMode _mode;
         private readonly ParserState _state;
 
-        public Blender(IncrementalLexer lexer, LanguageSyntaxNode oldTree, IncrementalSyntaxTree oldIncrementalTree, IEnumerable<TextChangeRange> changes)
+        public Blender(IncrementalLexer lexer, LanguageSyntaxNode oldTree, IEnumerable<TextChangeRange> changes)
         {
             Debug.Assert(lexer != null);
-            Debug.Assert((oldTree == null && oldIncrementalTree == null && changes == null) || (oldTree != null && oldIncrementalTree != null && changes != null));
+            //Debug.Assert((oldTree == null && changes == null) || (oldTree != null && changes != null));
             _lexer = lexer;
             _changes = ImmutableStack.Create<TextChangeRange>();
 
-            if (changes != null)
+            if (changes != null && oldTree != null)
             {
                 // TODO: Consider implementing NormalizedChangeCollection for TextSpan. the real
                 // reason why we are collapsing is because we want to extend change ranges and
@@ -61,7 +59,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 // extend the change to its affected range. This will make it easier 
                 // to filter out affected nodes since we will be able simply check 
                 // if node intersects with a change.
-                var affectedRange = ExtendToAffectedRange(oldTree, oldIncrementalTree, collapsed);
+                var affectedRange = ExtendToAffectedRange(oldTree, collapsed);
                 _changes = _changes.Push(affectedRange);
             }
 
@@ -73,7 +71,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             }
             else
             {
-                _oldTreeCursor = Cursor.FromRoot(oldTree, oldIncrementalTree.Root).MoveToFirstChild();
+                _oldTreeCursor = Cursor.FromRoot(oldTree).MoveToFirstChild();
                 _newPosition = 0;
             }
 
@@ -109,7 +107,22 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             _state = state;
         }
 
-        internal IncrementalSyntaxNode IncrementalSyntaxNode => _oldTreeCursor.CurrentIncrementalNode as IncrementalSyntaxNode;
+        public LexerMode Mode => _mode;
+        public ParserState State => _state;
+
+        internal static (int minLexerLookahead, int maxLexerLookahead) GetLexerLookahead(LanguageSyntaxNode treeRoot)
+        {
+            if (treeRoot == null) return (int.MaxValue, int.MinValue);
+            var treeAnnot = IncrementalParser.GetTreeAnnotation(treeRoot.Green);
+            int minLexerLookahead = int.MaxValue;
+            int maxLexerLookahead = int.MinValue;
+            if (treeAnnot != null)
+            {
+                minLexerLookahead = treeAnnot.MinLexerLookahead;
+                maxLexerLookahead = treeAnnot.MaxLexerLookahead;
+            }
+            return (minLexerLookahead, maxLexerLookahead);
+        }
 
         /// <summary>
         /// Affected range of a change is the range within which nodes can be affected by a change
@@ -118,11 +131,9 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         /// </summary>
         private static TextChangeRange ExtendToAffectedRange(
             LanguageSyntaxNode oldRoot,
-            IncrementalSyntaxTree oldIncrementalTree,
             TextChangeRange changeRange)
         {
-            int minLexerLookahead = oldIncrementalTree.MinLexerLookahead;
-            int maxLexerLookahead = oldIncrementalTree.MaxLexerLookahead;
+            (int minLexerLookahead, int maxLexerLookahead) = GetLexerLookahead(oldRoot);
 
             // check if change is not after the end. TODO: there should be an assert somewhere about
             // changes starting at least at the End of old tree
@@ -162,8 +173,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 end = Math.Min(lastCharIndex, token.Position + Math.Max(token.FullWidth, 1));
             }
 
-            start = FindLastReusableNodeBefore(start, oldRoot, oldIncrementalTree.Root)?.FullSpan.End ?? 0;
-            end = FindFirstReusableNodeAfter(end, oldRoot, oldIncrementalTree.Root)?.FullSpan.Start ?? oldRoot.FullWidth;
+            start = FindLastReusableNodeBefore(start, oldRoot)?.FullSpan.End ?? 0;
+            end = FindFirstReusableNodeAfter(end, oldRoot)?.FullSpan.Start ?? oldRoot.FullWidth;
 
             var finalSpan = TextSpan.FromBounds(start, end);
             var finalLength = changeRange.NewLength + (changeRange.Span.Start - start) + (end - changeRange.Span.End);
@@ -172,19 +183,18 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         private static LanguageSyntaxNode FindLastReusableNodeBefore(
             int position,
-            LanguageSyntaxNode oldNode,
-            IncrementalSyntaxNode oldIncrementalNode)
+            LanguageSyntaxNode oldNode)
         {
             if (oldNode.FullSpan.End <= position) return oldNode;
             if (oldNode.FullSpan.Start > position) return null;
-            var children = oldNode.ChildNodes().ToArray();
+            var children = oldNode.ChildNodes();
             LanguageSyntaxNode prevChild = null;
             int i = 0;
             foreach (var child in children)
             {
                 if (child.FullSpan.Contains(position))
                 {
-                    var result = FindLastReusableNodeBefore(position, (LanguageSyntaxNode)child, oldIncrementalNode.Children[i]);
+                    var result = FindLastReusableNodeBefore(position, (LanguageSyntaxNode)child);
                     if (result != null) return result;
                     else return prevChild;
                 }
@@ -203,19 +213,18 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         private static LanguageSyntaxNode FindFirstReusableNodeAfter(
             int position,
-            LanguageSyntaxNode oldNode,
-            IncrementalSyntaxNode oldIncrementalNode)
+            LanguageSyntaxNode oldNode)
         {
             if (oldNode.FullSpan.Start >= position) return oldNode;
             if (oldNode.FullSpan.End < position) return null;
-            var children = oldNode.ChildNodes().Reverse().ToArray();
+            var children = oldNode.ChildNodes().Reverse();
             LanguageSyntaxNode nextChild = null;
             int i = 0;
             foreach (var child in children)
             {
                 if (child.FullSpan.Contains(position))
                 {
-                    var result = FindFirstReusableNodeAfter(position, (LanguageSyntaxNode)child, oldIncrementalNode.Children[oldIncrementalNode.Children.Length - i - 1]);
+                    var result = FindFirstReusableNodeAfter(position, (LanguageSyntaxNode)child);
                     if (result != null) return result;
                     else return nextChild;
                 }
@@ -247,8 +256,5 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             var reader = new Reader(this);
             return reader.ReadNodeOrToken(asToken);
         }
-
-        public LexerMode Mode => _mode;
-        public ParserState State => _state;
     }
 }

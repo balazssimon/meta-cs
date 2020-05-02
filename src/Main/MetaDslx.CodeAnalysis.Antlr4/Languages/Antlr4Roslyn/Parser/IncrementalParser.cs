@@ -10,7 +10,6 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
     public abstract class IncrementalParser : Parser
     {
         internal IncrementalAntlr4Parser _incrementalParser;
-        private int _recursionDepth;
 
         public IncrementalParser(ITokenStream input) 
             : base(input)
@@ -28,13 +27,6 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         {
             existingContext = null;
             return false;
-        }
-
-        public override void PushNewRecursionContext(ParserRuleContext localctx, int state, int ruleIndex)
-        {
-            ++_recursionDepth;
-            _incrementalParser.BeginRecursiveRule();
-            base.PushNewRecursionContext(localctx, state, ruleIndex);
         }
 
     }
