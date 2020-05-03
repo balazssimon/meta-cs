@@ -9,10 +9,10 @@ using Microsoft.CodeAnalysis.Text;
 namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 {
     // separate out text windowing implementation (keeps scanning & lexing functions from abusing details)
-    public class AbstractLexer : IDisposable
+    public abstract class AbstractLexer : IDisposable
     {
         internal protected readonly Language Language;
-        internal protected readonly SlidingTextWindow TextWindow;
+        protected readonly SlidingTextWindow TextWindow;
         private List<SyntaxDiagnosticInfo> _errors;
 
         protected AbstractLexer(Language language, SourceText text)
@@ -21,6 +21,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             this.TextWindow = new SlidingTextWindow(text);
         }
 
+        public abstract int Position { get; }
         public int MinLookahead => TextWindow.MinLookahead;
         public int MaxLookahead => TextWindow.MaxLookahead;
 

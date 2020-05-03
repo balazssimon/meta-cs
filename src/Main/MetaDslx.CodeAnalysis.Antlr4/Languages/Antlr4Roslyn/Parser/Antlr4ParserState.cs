@@ -9,8 +9,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
     {
         public readonly int State;
 
-        public Antlr4ParserState(LexerMode mode, int state)
-            : base(mode)
+        public Antlr4ParserState(int state)
         {
             State = state;
         }

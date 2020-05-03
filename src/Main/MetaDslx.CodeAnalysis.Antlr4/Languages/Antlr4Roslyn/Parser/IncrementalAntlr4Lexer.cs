@@ -16,16 +16,13 @@ using System.Threading;
 
 namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 {
-    public abstract class IncrementalAntlr4Lexer : IncrementalLexer, IAntlr4Lexer, ITokenStream
+    public abstract class IncrementalAntlr4Lexer : IncrementalLexer, IAntlr4Lexer
     {
         private readonly IncrementalAntlr4InputStream _stream;
         private readonly Antlr4.Runtime.Lexer _lexer;
-        private readonly List<IToken> _tokens;
-        private readonly List<InternalSyntaxToken> _roslynTokens;
         private readonly SyntaxFacts _syntaxFacts;
-        private bool _fetchedEof;
-        private int _index;
         private bool _readNextToken;
+        private int _position;
 
         public IncrementalAntlr4Lexer(Language language, SourceText text, LanguageParseOptions options, IEnumerable<TextChangeRange> changes) 
             : base(language, text, options, changes)
@@ -33,31 +30,22 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             _stream = new IncrementalAntlr4InputStream(this.TextWindow);
             _lexer = ((IAntlr4SyntaxFactory)language.InternalSyntaxFactory).CreateAntlr4Lexer(_stream);
             _lexer.TokenFactory = new IncrementalTokenFactory();
-            _tokens = new List<IToken>();
-            _roslynTokens = new List<InternalSyntaxToken>();
-            _index = 0;
-            _fetchedEof = false;
             _syntaxFacts = Language.SyntaxFacts;
             _readNextToken = true;
-            ITokenFactory tf;
         }
 
         Antlr4.Runtime.Lexer IAntlr4Lexer.Antlr4Lexer => _lexer;
 
-        ITokenSource ITokenStream.TokenSource => _lexer;
+        public override int Position => _position;
 
-        int IIntStream.Index => _index;
-
-        int IIntStream.Size
+        public override void Reset(int position, DirectiveStack directives)
         {
-            get
-            {
-                FetchAllTokens();
-                return _tokens.Count;
-            }
+            base.Reset(position, directives);
+            _lexer.InputStream.Seek(position);
+            _position = position;
+            _readNextToken = true;
+            _lexer._hitEOF = false;
         }
-
-        string IIntStream.SourceName => _lexer.SourceName;
 
         protected override LexerMode SaveLexerMode(LexerMode previousMode)
         {
@@ -89,84 +77,36 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
                 {
                     _lexer._mode = 0;
                 }
-                _readNextToken = true;
             }
             base.RestoreLexerMode(mode);
         }
 
-        private void EnsureTokensFetchedAtIndex(int index)
-        {
-            while (!_fetchedEof && index >= _tokens.Count) Fetch();
-        }
-
-        private void FetchAllTokens()
-        {
-            while (!_fetchedEof) Fetch();
-        }
-
-        private void Fetch()
-        {
-            if (_fetchedEof) return;
-            var mode = this.Mode;
-            var token = this.Lex(ref mode);
-            _roslynTokens.Add(token);
-            ((IncrementalToken)_tokens[_roslynTokens.Count - 1]).SetGreenToken(token);
-        }
-
-        private InternalSyntaxToken GetRoslynTokenAt(int index)
-        {
-            EnsureTokensFetchedAtIndex(index);
-            if (index < 0 || index >= _roslynTokens.Count) return null;
-            return _roslynTokens[index];
-        }
-
-        private IToken GetAntlr4TokenAt(int index)
-        {
-            EnsureTokensFetchedAtIndex(index);
-            if (index < 0 || index >= _tokens.Count) return null;
-            return _tokens[index];
-        }
-
         protected override SyntaxKind ScanSyntaxToken()
         {
-            if (_fetchedEof) return SyntaxKind.None;
-            IToken token;
-            if (_readNextToken)
-            {
-                this.Start();
-                token = _lexer.NextToken();
-            }
-            else
-            {
-                token = _lexer.Token;
-            }
+            IToken token = ReadNextToken(false);
             if (token == null) return SyntaxKind.None;
             if (token.Type == -1)
             {
-                _tokens.Add(token);
-                _fetchedEof = true;
                 return SyntaxKind.Eof;
             }
             var kind = token.Type.FromAntlr4(_syntaxFacts.SyntaxKindType);
-            if (token.Channel == 0)
-            {
-                _tokens.Add(token);
-                _readNextToken = true;
-                return kind;
-            }
-            else
-            {
-                _readNextToken = false;
-                return SyntaxKind.None;
-            }
+            return kind;
         }
 
         protected override SyntaxKind ScanSyntaxTrivia(bool afterFirstToken, bool isTrailing)
         {
-            if (_fetchedEof) return SyntaxKind.None;
+            IToken token = ReadNextToken(true);
+            if (token == null || token.Type == -1) return SyntaxKind.None;
+            var kind = token.Type.FromAntlr4(_syntaxFacts.SyntaxKindType);
+            return kind;
+        }
+
+        private IToken ReadNextToken(bool readTrivia)
+        {
             IToken token;
             if (_readNextToken)
             {
+                _readNextToken = false;
                 this.Start();
                 token = _lexer.NextToken();
             }
@@ -174,90 +114,15 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             {
                 token = _lexer.Token;
             }
-            if (token == null || token.Type == -1) return SyntaxKind.None;
-            var kind = token.Type.FromAntlr4(_syntaxFacts.SyntaxKindType);
-            if (token.Channel != 0)
+            if (token == null) return null;
+            if ((readTrivia && token.Channel != 0) || (!readTrivia && token.Channel == 0))
             {
                 _readNextToken = true;
-                return kind;
+                _position = _lexer.InputStream.Index;
+                return token;
             }
-            else
-            {
-                _readNextToken = false;
-                return SyntaxKind.None;
-            }
-        }
-
-        void IIntStream.Consume()
-        {
-            ++_index;
-        }
-
-        int IIntStream.La(int i)
-        {
-            if (i > 0) return ((ITokenStream)this).Get(_index + i - 1)?.Type ?? -1;
-            else if (i < 0) return ((ITokenStream)this).Get(_index + i)?.Type ?? -1;
-            else return -1;
-        }
-
-        int IIntStream.Mark()
-        {
-            // do nothing: we have buffering
-            return -1;
-        }
-
-        void IIntStream.Release(int marker)
-        {
-            // do nothing: we have buffering
-        }
-
-        void IIntStream.Seek(int index)
-        {
-            _index = index;
-        }
-
-        IToken ITokenStream.Lt(int k)
-        {
-            if (k > 0) return ((ITokenStream)this).Get(_index + k - 1);
-            else if (k < 0) return ((ITokenStream)this).Get(_index + k);
-            else return null;
-        }
-
-        IToken ITokenStream.Get(int i)
-        {
-            return GetAntlr4TokenAt(i);
-        }
-
-        string ITokenStream.GetText(Interval interval)
-        {
-            var start = interval.a;
-            var stop = interval.b;
-            return GetText(start, stop);
-        }
-
-        string ITokenStream.GetText()
-        {
-            return this.TextWindow.Text.ToString();
-        }
-
-        string ITokenStream.GetText(RuleContext ctx)
-        {
-            var start = ctx.SourceInterval.a;
-            var stop = ctx.SourceInterval.b;
-            return GetText(start, stop);
-        }
-
-        string ITokenStream.GetText(IToken startToken, IToken stopToken)
-        {
-            var start = _tokens.IndexOf(startToken);
-            var stop = _tokens.IndexOf(stopToken);
-            return GetText(start, stop);
-        }
-
-        private string GetText(int start, int stop)
-        {
-            if (start >= 0 && start <= stop) return this.TextWindow.Text.GetSubText(new TextSpan(start, stop - start + 1)).ToString();
-            else return null;
+            _readNextToken = false;
+            return null;
         }
     }
 }

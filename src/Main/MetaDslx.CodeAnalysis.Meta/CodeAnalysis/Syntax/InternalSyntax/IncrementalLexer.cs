@@ -6,12 +6,15 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 {
     public abstract class IncrementalLexer : AbstractLexer
     {
+        public const string IncrementalTokenAnnotationKind = "MetaDslx.IncementalToken";
+
         private readonly InternalSyntaxFactory InternalSyntaxFactory;
         private readonly IEnumerable<TextChangeRange> _changes;
         private readonly LanguageParseOptions _options;
@@ -35,7 +38,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         public LanguageParseOptions Options => _options;
 
-        public void Reset(int position, DirectiveStack directives)
+        public virtual void Reset(int position, DirectiveStack directives)
         {
             this.TextWindow.Reset(position);
             _directives = directives;
@@ -98,8 +101,10 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         private InternalSyntaxToken LexSyntaxToken()
         {
+            var startMode = _mode;
+
             _leadingTriviaCache.Clear();
-            this.LexSyntaxTrivia(afterFirstToken: TextWindow.Position > 0, isTrailing: false, triviaList: _leadingTriviaCache);
+            this.LexSyntaxTrivia(afterFirstToken: this.Position > 0, isTrailing: false, triviaList: _leadingTriviaCache);
             var leading = _leadingTriviaCache;
 
             var kind = this.ScanSyntaxToken();
@@ -111,7 +116,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             this.LexSyntaxTrivia(afterFirstToken: true, isTrailing: true, triviaList: _trailingTriviaCache);
             var trailing = _trailingTriviaCache;
 
-            return Create(kind, text, leading.ToListNode(), trailing.ToListNode(), errors);
+            return Create(kind, text, leading.ToListNode(), trailing.ToListNode(), startMode, errors);
         }
 
         private InternalSyntaxToken CachedSyntaxToken()
@@ -146,7 +151,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             return false;
         }
 
-        private InternalSyntaxToken Create(SyntaxKind kind, string text, GreenNode leadingTrivia, GreenNode trailingTrivia, SyntaxDiagnosticInfo[] errors)
+        private InternalSyntaxToken Create(SyntaxKind kind, string text, GreenNode leadingTrivia, GreenNode trailingTrivia, LexerMode mode, SyntaxDiagnosticInfo[] errors)
         {
             InternalSyntaxToken token;
             switch (kind.Switch())
@@ -165,6 +170,10 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             {
                 token = token.WithDiagnosticsGreen(errors);
             }
+            if (mode != null)
+            {
+                token = token.WithAdditionalAnnotationsGreen(new SyntaxAnnotation(IncrementalTokenAnnotationKind, new IncrementalTokenAnnotation(mode)));
+            }
             return token;
         }
 
@@ -173,7 +182,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 #if DEBUG
             var quickWidth = TextWindow.Width;
 #endif
-            TextWindow.Reset(TextWindow.LexemeStartPosition);
+            this.Reset(TextWindow.LexemeStartPosition, this.Directives);
             var token = this.LexSyntaxToken();
 #if DEBUG
             Debug.Assert(quickWidth == token.FullWidth);
@@ -293,5 +302,12 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         protected abstract SyntaxKind ScanSyntaxTrivia(bool afterFirstToken, bool isTrailing);
 
         protected abstract InternalSyntaxTrivia CreateTrivia(SyntaxKind kind, string text);
+
+        public static IncrementalTokenAnnotation GetTokenAnnotation(GreenNode node)
+        {
+            if (node == null) return null;
+            var annot = node.GetAnnotations(IncrementalLexer.IncrementalTokenAnnotationKind).FirstOrDefault();
+            return annot?.ObjectData as IncrementalTokenAnnotation;
+        }
     }
 }

@@ -9,6 +9,11 @@ namespace Microsoft.CodeAnalysis
 {
     public static class GreenNodeExtensions
     {
+        public static TNode WithAnnotationsGreen<TNode>(this TNode node, params SyntaxAnnotation[] annotations) where TNode : GreenNode
+        {
+            return WithAnnotationsGreen(node, (IEnumerable<SyntaxAnnotation>)annotations);
+        }
+
         public static TNode WithAnnotationsGreen<TNode>(this TNode node, IEnumerable<SyntaxAnnotation> annotations) where TNode : GreenNode
         {
             var newAnnotations = ArrayBuilder<SyntaxAnnotation>.GetInstance();
@@ -37,6 +42,11 @@ namespace Microsoft.CodeAnalysis
             {
                 return (TNode)node.SetAnnotations(newAnnotations.ToArrayAndFree());
             }
+        }
+
+        public static TNode WithAdditionalAnnotationsGreen<TNode>(this TNode node, params SyntaxAnnotation[] annotations) where TNode : GreenNode
+        {
+            return WithAdditionalAnnotationsGreen(node, (IEnumerable<SyntaxAnnotation>)annotations);
         }
 
         public static TNode WithAdditionalAnnotationsGreen<TNode>(this TNode node, IEnumerable<SyntaxAnnotation> annotations) where TNode : GreenNode
@@ -68,6 +78,11 @@ namespace Microsoft.CodeAnalysis
             {
                 return (TNode)node.SetAnnotations(newAnnotations.ToArrayAndFree());
             }
+        }
+
+        public static TNode WithoutAnnotationsGreen<TNode>(this TNode node, params SyntaxAnnotation[] annotations) where TNode : GreenNode
+        {
+            return WithoutAnnotationsGreen(node, (IEnumerable<SyntaxAnnotation>)annotations);
         }
 
         public static TNode WithoutAnnotationsGreen<TNode>(this TNode node, IEnumerable<SyntaxAnnotation> annotations) where TNode : GreenNode

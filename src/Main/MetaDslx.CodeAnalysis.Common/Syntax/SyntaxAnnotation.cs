@@ -27,11 +27,13 @@ namespace Microsoft.CodeAnalysis
 
         // use a value identity instead of object identity so a deserialized instance matches the original instance.
         private readonly long _id;
+        private readonly object _data;
         private static long s_nextId;
 
         // use a value identity instead of object identity so a deserialized instance matches the original instance.
         public string Kind { get; }
-        public string Data { get; }
+        public string Data => _data is string ? (string)_data : _data.ToString();
+        public object ObjectData => _data;
 
         public SyntaxAnnotation()
         {
@@ -47,14 +49,20 @@ namespace Microsoft.CodeAnalysis
         public SyntaxAnnotation(string kind, string data)
             : this(kind)
         {
-            this.Data = data;
+            _data = data;
+        }
+
+        public SyntaxAnnotation(string kind, object data)
+            : this(kind)
+        {
+            _data = data;
         }
 
         private SyntaxAnnotation(ObjectReader reader)
         {
             _id = reader.ReadInt64();
             this.Kind = reader.ReadString();
-            this.Data = reader.ReadString();
+            _data = reader.ReadValue();
         }
 
         bool IObjectWritable.ShouldReuseInSerialization => true;
@@ -63,7 +71,7 @@ namespace Microsoft.CodeAnalysis
         {
             writer.WriteInt64(_id);
             writer.WriteString(this.Kind);
-            writer.WriteString(this.Data);
+            writer.WriteValue(_data);
         }
 
         private string GetDebuggerDisplay()

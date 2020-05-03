@@ -1069,47 +1069,19 @@ namespace [Properties.DefaultNamespace].Syntax.InternalSyntax
 
         protected [lang]Parser Antlr4Parser => ([lang]Parser)this.Parser;
 
-		protected override ParserRuleContext GetIncrementalContext(ParserRuleContext parent, int invokingState, int ruleIndex)
-		{
-			switch (ruleIndex)
-			{
-                [loop(rule:Instances.ParserRules)]
-		        [GenerateAntlr4ToRoslynGetIncrementalContext(rule, null)]
-		        [end loop]				
-				default:
-                    Debug.Assert(false);
-					return null;
-			}
-		}
-
 		public override LanguageSyntaxNode Parse()
 		{
 			BeginRoot();
             ParserState state = null;
 			var green = this.Parse[Instances.MainRule().PlainName()](ref state);
+			EndRoot(ref green);
 			var red = ([lang]SyntaxNode)green.CreateRed();
-			EndRoot(red);
 			return red;
 		}
 
         [loop(rule:Instances.ParserRules)]
 		[GenerateAntlr4ToRoslynSyntaxParseRule(rule, null)]
 		[end loop]
-
-        internal void BeginParserRuleContext()
-        {
-            BeginNode(State);
-        }
-
-        internal void EndParserRuleContext()
-        {
-            EndNode();
-        }
-
-        internal void MakeGreenNode(ParserRuleContext context)
-        {
-	        _visitor.Visit(context);
-        }
 
         private class Antlr4ToRoslynVisitor : [lang]ParserBaseVisitor<GreenNode>
         {
@@ -1129,6 +1101,7 @@ namespace [Properties.DefaultNamespace].Syntax.InternalSyntax
 			
             private GreenNode VisitTerminal(IToken token, [lang]SyntaxKind kind)
             {
+                if (token == null) return null;
 				var green = ((IncrementalToken)token).GreenToken;
 				Debug.Assert(kind == null || green.Kind == kind);
 				return green;
@@ -1139,6 +1112,7 @@ namespace [Properties.DefaultNamespace].Syntax.InternalSyntax
             }
             private GreenNode VisitTerminal(ITerminalNode node, [lang]SyntaxKind kind)
             {
+                if (node == null || node.Symbol == null) return null;
 				var green = ((IncrementalToken)node.Symbol).GreenToken;
 				Debug.Assert(kind == null || green.Kind == kind);
 				return green;
@@ -1154,12 +1128,10 @@ namespace [Properties.DefaultNamespace].Syntax.InternalSyntax
                 {
                     return cached.CachedNode;
                 }
-				else if (tree is IncrementalParserRuleContext context)
+				else if (tree is ParserRuleContext context)
                 {
                     if (_syntaxParser.TryGetGreenNode(context, out var existingGreenNode)) return existingGreenNode;
-    				var greenNode = base.Visit(tree);
-                    _syntaxParser.CacheGreenNode(context, greenNode);
-    				return greenNode;
+    				return base.Visit(tree);
                 }
                 else
                 {
@@ -1183,44 +1155,59 @@ end template
 
 template GenerateAntlr4ToRoslynGetIncrementalContext(Antlr4ParserRule rule, Antlr4ParserRule superRule)
 [var lang = Properties.LanguageName]
-[if (rule.Alternatives.Count > 0)]
-	[loop(alt:rule.Alternatives)]
-[GenerateAntlr4ToRoslynGetIncrementalContext(alt, rule)]
-	[end loop]
-[else]
-    [if (superRule == null)]
 case [lang]Parser.RULE_[rule.Name]:
 	return CanReuse[rule.PlainName()](CurrentNode as [rule.RedName()]) ? new [lang]Parser.[rule.PlainName()]Context_Cached(parent, invokingState, EatNode()) : null;
-    [end if]
-[end if]
 end template
 
 template GenerateAntlr4ToRoslynSyntaxParseRule(Antlr4ParserRule rule, Antlr4ParserRule superRule)
 [var lang = Properties.LanguageName]
 public GreenNode Parse[rule.PlainName()](ref ParserState state)
 {
-	RestoreParserState(state);
+    RestoreParserState(state);
 	try
 	{
-		return Parse[rule.PlainName()]();
+		var context = this.Antlr4Parser.[rule.Name]();
+        if (TryGetGreenNode(context, out var green)) return green;
+        else return null;
 	}
 	finally
 	{
 		state = this.State;
 	}
 }
-
+^
 protected virtual bool CanReuse[rule.PlainName()]([rule.RedName()] node)
 {
 	return node != null;
 }
-
-protected GreenNode Parse[rule.PlainName()]()
+^
+internal [lang]Parser.[rule.PlainName()]Context _Antlr4Parse[rule.PlainName()]([rule.IsRecursive ? "int precedence" : ""])
 {
-	var context = this.Antlr4Parser.[rule.Name]();
-	var green = _visitor.Visit(context);
-	return green;
+	BeginNode();
+    [lang]Parser.[rule.PlainName()]Context context = null;
+    GreenNode green = null;
+    try
+    {
+		if (IsIncremental && CanReuse[rule.PlainName()](CurrentNode as [rule.RedName()]))
+		{
+			green = EatNode();
+			context = new [lang]Parser.[rule.PlainName()]Context_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+			this.Antlr4Parser.Context.AddChild(context);
+		}
+		else
+		{
+			context = this.Antlr4Parser._DoParse[rule.PlainName()]([rule.IsRecursive ? "precedence" : ""]);
+			green = _visitor.Visit(context);
+		}
+    }
+    finally
+    {
+        EndNode(ref green);
+        CacheGreenNode(context, green);
+    }
+    return context;
 }
+^
 end template
 
 template GenerateAntlr4ToRoslynCachedParserRuleContext(Antlr4ParserRule rule, Antlr4ParserRule superRule)
@@ -3647,19 +3634,6 @@ public class [Properties.LanguageName]SyntaxFactory : SyntaxFactory
 	{
 		return [lang]SyntaxTree.ParseText(text, ([lang]ParseOptions)options, path, cancellationToken);
 	}
-^
-    public [Instances.MainRule().RedName()] Parse[Instances.MainRule().PlainName()](string text)
-    {
-        // note that we do not need a "consumeFullText" parameter, because parsing a compilation unit always must
-        // consume input until the end-of-file
-        using (var parser = MakeParser(text))
-        {
-            var node = parser.Parse();
-            if (node == null) return null;
-            // if (consumeFullText) node = parser.ConsumeUnexpectedTokens(node);
-            return ([Instances.MainRule().RedName()])node;
-        }
-    }
 ^	
 	public override SyntaxParser MakeParser(SourceText text, ParseOptions options, SyntaxNode oldTree, IReadOnlyList<TextChangeRange> changes)
 	{

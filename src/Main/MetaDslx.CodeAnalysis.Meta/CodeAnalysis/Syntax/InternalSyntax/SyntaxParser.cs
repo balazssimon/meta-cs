@@ -53,7 +53,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         public bool IsScript
         {
-            get { return Options.Kind == SourceCodeKind.Script; }
+            get { return Options != null && Options.Kind == SourceCodeKind.Script; }
         }
 
         public abstract DirectiveStack Directives { get; }

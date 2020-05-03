@@ -14,14 +14,18 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 {
     public abstract partial class IncrementalParser : SyntaxParser, IDisposable
     {
-        private static ConditionalWeakTable<LanguageSyntaxNode, IncrementalSyntaxTree> s_incrementalSyntaxTree = new ConditionalWeakTable<LanguageSyntaxNode, IncrementalSyntaxTree>();
+        public const string IncrementalTreeAnnotationKind = "MetaDslx.IncementalTree";
+        public const string IncrementalNodeAnnotationKind = "MetaDslx.IncementalNode";
 
         protected readonly Language Language;
-        protected readonly IncrementalLexer _lexer;
-        private readonly bool _isIncremental;
-        private readonly IncrementalSyntaxTree _oldIncrementalTree;
-        protected readonly CancellationToken cancellationToken;
+        protected readonly IncrementalLexer Lexer;
+        protected readonly bool IsIncremental;
 
+        protected readonly CancellationToken _cancellationToken;
+
+        private LexerMode _mode;
+        private ParserState _state;
+        private LanguageSyntaxNode _oldRoot;
         private Blender _firstBlender;
         private BlendedNode _currentNode;
         private InternalSyntaxToken _currentToken;
@@ -32,17 +36,18 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         private int _tokenCount;
         private int _resetCount;
         private int _resetStart;
-        private LexerMode _mode;
-        private ParserState _state;
-        private Stack<object> _incrementalStack;
-        private IncrementalSyntaxNode _previousIncrementalNode;
-#if DEBUG
-        private readonly int _version;
-#endif
 
         private static readonly ObjectPool<BlendedNode[]> s_blendedNodesPool = new ObjectPool<BlendedNode[]>(() => new BlendedNode[32], 2);
 
         private BlendedNode[] _blendedTokens;
+
+#if DEBUG
+        private int _version;
+#endif
+        private Stack<(int minLookahead, int maxLookahead, ParserState state)> _incrementalStateStack = new Stack<(int minLookahead, int maxLookahead, ParserState state)>();
+        private int _minLookahead;
+        private int _maxLookahead;
+        private bool _hitEof;
 
         protected IncrementalParser(
             Language language,
@@ -54,48 +59,33 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             : base(language, text, options, oldTree, changes, cancellationToken)
         {
             Language = language;
-            _lexer = language.InternalSyntaxFactory.CreateLexer(text, options, changes);
-            this.cancellationToken = cancellationToken;
+            Lexer = language.InternalSyntaxFactory.CreateLexer(text, options, changes);
+            IsIncremental = true;
+            _cancellationToken = cancellationToken;
             _currentNode = default;
-            _incrementalStack = new Stack<object>();
-            _oldIncrementalTree = oldTree != null ? GetIncrementalSyntaxTree(oldTree) : null;
-            _isIncremental = _oldIncrementalTree != null;
-
-            if (this.IsIncremental)
-            {
-                _firstBlender = new Blender(_lexer, oldTree, _oldIncrementalTree, changes);
-                _blendedTokens = s_blendedNodesPool.Allocate();
 #if DEBUG
-                _version = _oldIncrementalTree.Version + 1;
+            _version = 1;
+#endif
+
+            if (IsIncremental)
+            {
+                _firstBlender = new Blender(Lexer, oldTree, changes);
+                _blendedTokens = s_blendedNodesPool.Allocate();
+                _oldRoot = oldTree;
+#if DEBUG
+                var oldRootAnnot = GetNodeAnnotation(oldTree?.Green);
+                if (oldRootAnnot != null)
+                {
+                    _version = oldRootAnnot.Version + 1;
+                }
 #endif
             }
             else
             {
                 _firstBlender = default;
                 _lexedTokens = new ArrayElement<InternalSyntaxToken>[32];
-#if DEBUG
-                _version = 1;
-#endif
             }
         }
-
-        //public abstract LanguageSyntaxNode Parse();
-
-        public ParseOptions Options => _lexer.Options;
-
-        public SourceText SourceText => _lexer.TextWindow.Text;
-
-        public bool IsScript => Options.Kind == SourceCodeKind.Script;
-
-        public override DirectiveStack Directives => _lexer.Directives;
-
-        protected int TokenOffset => _tokenOffset;
-
-        protected int TokenCount => _tokenCount;
-
-        protected int TokenIndex => _firstToken + _tokenOffset;
-
-        protected int FirstTokenIndex => _firstToken;
 
         public void Dispose()
         {
@@ -124,31 +114,28 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             _resetStart = 0;
             _currentToken = null;
             _prevTokenTrailingTrivia = null;
-            if (this.IsIncremental)
+            if (IsIncremental)
             {
-                _firstBlender = new Blender(_lexer, null, null, null);
-            }
-            RestoreParserState(null);
-        }
-
-        protected bool IsIncremental
-        {
-            get
-            {
-                return _isIncremental;
+                _firstBlender = new Blender(Lexer, null, null);
             }
         }
 
-        private static IncrementalSyntaxTree GetIncrementalSyntaxTree(LanguageSyntaxNode syntaxTree)
+        private void PreLex()
         {
-            if (s_incrementalSyntaxTree.TryGetValue(syntaxTree, out var result))
+            // NOTE: Do not cancel in this method. It is called from the constructor.
+            var size = Math.Min(4096, Math.Max(32, this.SourceText.Length / 2));
+            _lexedTokens = new ArrayElement<InternalSyntaxToken>[size];
+            var lexer = Lexer;
+            LexerMode mode = null;
+
+            for (int i = 0; i < size; i++)
             {
-                return result;
-            }
-            else
-            {
-                Debug.Assert(false);
-                return null;
+                var token = lexer.Lex(ref mode);
+                this.AddLexedToken(token);
+                if (token.Kind == SyntaxKind.Eof)
+                {
+                    break;
+                }
             }
         }
 
@@ -157,53 +144,52 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         }
 
-        protected void EndRoot(LanguageSyntaxNode root)
+        protected void EndRoot(ref GreenNode root)
         {
+            (int minLookahead, int maxLookahead) = Blender.GetLexerLookahead(_oldRoot);
+            minLookahead = Math.Min(Lexer.MinLookahead, minLookahead);
+            maxLookahead = Math.Max(Lexer.MaxLookahead, maxLookahead);
+            root = root.WithAdditionalAnnotationsGreen(new SyntaxAnnotation(IncrementalTreeAnnotationKind, new IncrementalTreeAnnotation(minLookahead, maxLookahead)));
+        }
 
-            int minLookahead = _lexer.MinLookahead;
-            int maxLookahead = _lexer.MaxLookahead;
-            if (_oldIncrementalTree != null)
-            {
-                minLookahead = Math.Min(_oldIncrementalTree.MinLexerLookahead, minLookahead);
-                maxLookahead = Math.Max(_oldIncrementalTree.MaxLexerLookahead, maxLookahead);
-            }
-            s_incrementalSyntaxTree.Add(root, new IncrementalSyntaxTree(_previousIncrementalNode, minLookahead, maxLookahead, _version));
+        protected void BeginNode()
+        {
+            _minLookahead = int.MaxValue;
+            _maxLookahead = int.MinValue;
+            _incrementalStateStack.Push((_minLookahead, _maxLookahead, _state));
         }
 
         protected void BeginNode(ParserState state)
         {
             RestoreParserState(state);
-#if DEBUG
-            _incrementalStack.Push(new IncrementalSyntaxNodeBuilder(_state, _version));
-#else
-            _incrementalStack.Push(new IncrementalSyntaxNodeBuilder(_state));
-#endif
+            _minLookahead = int.MaxValue;
+            _maxLookahead = int.MinValue;
+            _incrementalStateStack.Push((_minLookahead, _maxLookahead, state));
         }
 
-        protected ParserState EndNode()
+        protected ParserState EndNode(ref GreenNode green)
         {
-            _state = this.SaveParserState();
-            var incrementalNode = _incrementalStack.Pop();
-            if (incrementalNode is IncrementalSyntaxNode incrementalSyntaxNode)
-            {
-                _previousIncrementalNode = incrementalSyntaxNode;
+            if (green == null) return null;
+
+            var incrementalState = _incrementalStateStack.Pop();
+            var minLookahead = Math.Min(incrementalState.minLookahead, _minLookahead);
+            var maxLookahead = Math.Max(incrementalState.maxLookahead, _maxLookahead);
+
+            var nodeAnnot = GetNodeAnnotation(green);
+            if (nodeAnnot == null)
+            { 
+#if DEBUG
+                green = green.WithAdditionalAnnotationsGreen(new SyntaxAnnotation(IncrementalNodeAnnotationKind, new IncrementalNodeAnnotation(incrementalState.state, minLookahead, maxLookahead, _version)));
+#else
+                green = green.WithAdditionalAnnotationsGreen(new SyntaxAnnotation(IncrementalNodeAnnotationKind, new IncrementalNodeAnnotation(incrementalState.state, minLookahead, maxLookahead)));
+#endif
             }
-            else if (incrementalNode is IncrementalSyntaxNodeBuilder incrementalSyntaxNodeBuilder)
+            if (_incrementalStateStack.Count > 0)
             {
-                _previousIncrementalNode = incrementalSyntaxNodeBuilder.ToImmutable(_state);
-            }
-            else
-            {
-                _previousIncrementalNode = null;
-                Debug.Assert(false);
-            }
-            if (_incrementalStack.Count > 0)
-            {
-                var incrementalParent = _incrementalStack.Peek() as IncrementalSyntaxNodeBuilder;
-                Debug.Assert(incrementalParent != null);
-                incrementalParent.Children.Add(_previousIncrementalNode);
-                incrementalParent.LookaheadBefore = Math.Min(incrementalParent.LookaheadBefore, _previousIncrementalNode.LookaheadBefore);
-                incrementalParent.LookaheadAfter = Math.Max(incrementalParent.LookaheadAfter, _previousIncrementalNode.LookaheadAfter);
+                var parentState = _incrementalStateStack.Pop();
+                var parentMinLookahead = Math.Min(minLookahead, parentState.minLookahead);
+                var parentMaxLookahead = Math.Max(maxLookahead, parentState.maxLookahead);
+                _incrementalStateStack.Push((parentMinLookahead, parentMaxLookahead, parentState.state));
             }
             return _state;
         }
@@ -222,20 +208,34 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         {
             if (_state != state)
             {
-                if (_mode != state?.Mode)
-                {
-                    _mode = state?.Mode;
-                    _tokenCount = _tokenOffset;
-                    _currentToken = default;
-                    _currentNode = default;
-                    ResetCurrentToken();
-                }
+                _tokenCount = _tokenOffset;
+                _currentToken = default;
+                _currentNode = default;
                 _state = state;
             }
         }
 
-        private void ResetCurrentToken()
+        protected ResetPoint GetResetPoint()
         {
+            var pos = TokenIndex;
+            if (_resetCount == 0)
+            {
+                _resetStart = pos; // low water mark
+            }
+
+            _resetCount++;
+            return new ResetPoint(_resetCount, _state, pos, _prevTokenTrailingTrivia);
+        }
+
+        protected void Reset(ref ResetPoint point)
+        {
+            RestoreParserState(point.State);
+            var offset = point.Position - _firstToken;
+            Debug.Assert(offset >= 0 && offset < _tokenCount);
+            _tokenOffset = offset;
+            _currentToken = default;
+            _currentNode = default;
+            _prevTokenTrailingTrivia = point.PrevTokenTrailingTrivia;
             if (_blendedTokens != null)
             {
                 // look forward for slots not holding a token
@@ -255,29 +255,6 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             }
         }
 
-        protected ResetPoint GetResetPoint()
-        {
-            var pos = CurrentTokenPosition;
-            if (_resetCount == 0)
-            {
-                _resetStart = pos; // low water mark
-            }
-
-            _resetCount++;
-            return new ResetPoint(_resetCount, SaveParserState(), pos, _prevTokenTrailingTrivia);
-        }
-
-        protected void Reset(ref ResetPoint point)
-        {
-            var offset = point.Position - _firstToken;
-            Debug.Assert(offset >= 0 && offset < _tokenCount);
-            _tokenOffset = offset;
-            _currentToken = default;
-            _currentNode = default;
-            _prevTokenTrailingTrivia = point.PrevTokenTrailingTrivia;
-            RestoreParserState(point.State);
-        }
-
         protected void Release(ref ResetPoint point)
         {
             Debug.Assert(_resetCount == point.ResetCount);
@@ -288,7 +265,15 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             }
         }
 
-        protected LexerMode Mode => _mode;
+        public LanguageParseOptions Options
+        {
+            get { return Lexer.Options; }
+        }
+
+        public bool IsScript
+        {
+            get { return Options.Kind == SourceCodeKind.Script; }
+        }
 
         protected ParserState State
         {
@@ -301,6 +286,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             {
                 if (_state != value)
                 {
+                    Debug.Assert(IsIncremental);
                     RestoreParserState(value);
                 }
             }
@@ -365,15 +351,9 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             _blendedTokens[_tokenOffset++] = _currentNode;
             _tokenCount = _tokenOffset; // forget anything after this slot
 
-            // store incremental data
-            var incrementalNode = _incrementalStack.Pop();
-            Debug.Assert(incrementalNode is IncrementalSyntaxNodeBuilder);
-            _incrementalStack.Push(_currentNode.Blender.IncrementalSyntaxNode);
-
             // erase current state
             _currentNode = default;
             _currentToken = default;
-            RestoreParserState(_currentNode.Blender.IncrementalSyntaxNode.StateAfter);
 
             return result;
         }
@@ -407,39 +387,28 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         {
             if (_blendedTokens != null)
             {
-                BlendedNode oldToken;
                 if (_tokenCount > 0)
                 {
-                    oldToken = _blendedTokens[_tokenCount - 1].Blender.ReadToken();
+                    this.AddToken(_blendedTokens[_tokenCount - 1].Blender.ReadToken());
                 }
                 else
                 {
                     if (_currentNode.Token != null)
                     {
-                        oldToken = _currentNode;
+                        this.AddToken(_currentNode);
                     }
                     else
                     {
-                        oldToken = _firstBlender.ReadToken();
+                        this.AddToken(_firstBlender.ReadToken());
                     }
                 }
-                this.AddToken(oldToken);
-                _mode = oldToken.Blender.Mode;
-                //RestoreParserState(oldToken.Blender.State);
             }
             else
             {
-                this.AddLexedToken(_lexer.Lex(ref _mode));
+                this.AddLexedToken(Lexer.Lex(ref _mode));
             }
-            var incrementalNode = _incrementalStack.Peek();
-            if (incrementalNode is IncrementalSyntaxNodeBuilder incrementalNodeBuilder)
-            {
-                incrementalNodeBuilder.Children.Add(null);
-            }
-            else
-            {
-                Debug.Assert(incrementalNode is IncrementalSyntaxNodeBuilder);
-            }
+            var lastToken = _blendedTokens != null ? _blendedTokens[_tokenCount - 1].Token : _lexedTokens[_tokenCount - 1];
+            if (lastToken.Kind == SyntaxKind.Eof) _hitEof = true;
         }
 
         // adds token to end of current token array
@@ -453,7 +422,6 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
             _blendedTokens[_tokenCount] = tokenResult;
             _tokenCount++;
-            this.TokenAdded(tokenResult.Token, true);
         }
 
         private void AddLexedToken(InternalSyntaxToken token)
@@ -466,11 +434,6 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
             _lexedTokens[_tokenCount].Value = token;
             _tokenCount++;
-            this.TokenAdded(token, false);
-        }
-
-        protected virtual void TokenAdded(InternalSyntaxToken token, bool incremental)
-        {
         }
 
         private void AddTokenSlot()
@@ -528,26 +491,15 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             }
         }
 
-        protected void Seek(int index)
+        protected void RegisterLookahead(int n)
         {
-            Debug.Assert(index >= _firstToken && index < _firstToken + _tokenCount);
-            _tokenOffset = index - _firstToken;
-            _currentNode = default;
-            _currentToken = default;
+            _minLookahead = Math.Min(n, _minLookahead);
+            _maxLookahead = Math.Max(n, _maxLookahead);
         }
 
         protected InternalSyntaxToken PeekToken(int n)
         {
-            var incrementalNode = _incrementalStack.Peek();
-            if (incrementalNode is IncrementalSyntaxNodeBuilder builder)
-            {
-                builder.LookaheadBefore = Math.Min(n, builder.LookaheadBefore);
-                builder.LookaheadAfter = Math.Max(n, builder.LookaheadAfter);
-            }
-            else
-            {
-                Debug.Assert(false);
-            }
+            RegisterLookahead(n);
 
             //Debug.Assert(n >= 0);
             if (_tokenOffset + n < 0)
@@ -555,13 +507,13 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 Debug.Assert(false);
                 return null;
             }
-
-            while (_tokenOffset + n >= _tokenCount)
+            
+            while (!_hitEof && _tokenOffset + n >= _tokenCount)
             {
-                var prevTokenCount = _tokenCount;
                 this.AddNewToken();
-                if (_tokenCount == prevTokenCount) return null; // no more tokens
             }
+
+            if (_hitEof && _tokenOffset + n >= _tokenCount) return null;
 
             if (_blendedTokens != null)
             {
@@ -582,22 +534,15 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             return ct;
         }
 
-        /// <summary>
-        /// Returns and consumes the current token if it has the requested <paramref name="kind"/>.
-        /// Otherwise, returns <see langword="null"/>.
-        /// </summary>
-        protected InternalSyntaxToken TryEatToken(SyntaxKind kind)
-            => this.CurrentToken.Kind == kind ? this.EatToken() : null;
-
         private void MoveToNextToken()
         {
             _prevTokenTrailingTrivia = _currentToken.GetTrailingTrivia();
 
-            _currentToken = default;
+            _currentToken = default(InternalSyntaxToken);
 
             if (_blendedTokens != null)
             {
-                _currentNode = default;
+                _currentNode = default(BlendedNode);
             }
 
             _tokenOffset++;
@@ -605,7 +550,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         protected void ForceEndOfFile()
         {
-            _currentToken = Language.InternalSyntaxFactory.Token(SyntaxKind.Eof);
+            _currentToken = Language.InternalSyntaxFactory.EndOfFile;
         }
 
         //this method is called very frequently
@@ -771,14 +716,14 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         {
             if (Language.SyntaxFacts.IsIdentifier(expected))
             {
-                if (Language.SyntaxFacts.IsReservedKeyword(actual))
-                {
-                    return InternalErrorCode.ERR_IdentifierExpectedKW;   // A keyword -- use special message.
-                }
-                else
-                {
-                    return InternalErrorCode.ERR_IdentifierExpected;
-                }
+                    if (Language.SyntaxFacts.IsReservedKeyword(actual))
+                    {
+                        return InternalErrorCode.ERR_IdentifierExpectedKW;   // A keyword -- use special message.
+                    }
+                    else
+                    {
+                        return InternalErrorCode.ERR_IdentifierExpected;
+                    }
             }
             else
             {
@@ -1174,6 +1119,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             return token;
         }
 
+        public override DirectiveStack Directives => Lexer.Directives;
+
         /// <summary>
         /// Whenever parsing in a <c>while (true)</c> loop and a bug could prevent the loop from making progress,
         /// this method can prevent the parsing from hanging.
@@ -1182,12 +1129,12 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         ///     while (IsMakingProgress(ref tokenProgress))
         /// It should be used as a guardrail, not as a crutch, so it asserts if no progress was made.
         /// </summary>
-        protected bool IsMakingProgress(ref int lastTokenPosition)
+        protected bool IsMakingProgress(ref int lastTokenIndex)
         {
-            var pos = CurrentTokenPosition;
-            if (pos > lastTokenPosition)
+            var index = TokenIndex;
+            if (index > lastTokenIndex)
             {
-                lastTokenPosition = pos;
+                lastTokenIndex = index;
                 return true;
             }
 
@@ -1195,7 +1142,22 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             return false;
         }
 
-        private int CurrentTokenPosition => _firstToken + _tokenOffset;
+        protected int TokenIndex => _firstToken + _tokenOffset;
+        protected int TokenCount => _tokenCount;
+
+        public static IncrementalTreeAnnotation GetTreeAnnotation(GreenNode node)
+        {
+            if (node == null) return null;
+            var annot = node.GetAnnotations(IncrementalParser.IncrementalTreeAnnotationKind).FirstOrDefault();
+            return annot?.ObjectData as IncrementalTreeAnnotation;
+        }
+
+        public static IncrementalNodeAnnotation GetNodeAnnotation(GreenNode node)
+        {
+            if (node == null) return null;
+            var annot = node.GetAnnotations(IncrementalParser.IncrementalNodeAnnotationKind).FirstOrDefault();
+            return annot?.ObjectData as IncrementalNodeAnnotation;
+        }
     }
 
 }
