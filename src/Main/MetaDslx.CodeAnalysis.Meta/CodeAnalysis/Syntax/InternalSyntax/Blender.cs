@@ -67,11 +67,11 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             {
                 // start at lexer current position if no nodes specified
                 _oldTreeCursor = new Cursor();
-                _newPosition = lexer.TextWindow.Position;
+                _newPosition = lexer.Position;
             }
             else
             {
-                _oldTreeCursor = Cursor.FromRoot(oldTree).MoveToFirstChild();
+                _oldTreeCursor = Cursor.FromRoot(oldTree);
                 _newPosition = 0;
             }
 
@@ -173,8 +173,11 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 end = Math.Min(lastCharIndex, token.Position + Math.Max(token.FullWidth, 1));
             }
 
-            start = FindLastReusableNodeBefore(start, oldRoot)?.FullSpan.End ?? 0;
-            end = FindFirstReusableNodeAfter(end, oldRoot)?.FullSpan.Start ?? oldRoot.FullWidth;
+            var startNode = FindLastReusableNodeBefore(start, oldRoot);
+            var endNode = FindFirstReusableNodeAfter(end, oldRoot);
+
+            start = startNode?.FullSpan.End ?? 0;
+            end = endNode?.FullSpan.Start ?? oldRoot.FullWidth;
 
             var finalSpan = TextSpan.FromBounds(start, end);
             var finalLength = changeRange.NewLength + (changeRange.Span.Start - start) + (end - changeRange.Span.End);

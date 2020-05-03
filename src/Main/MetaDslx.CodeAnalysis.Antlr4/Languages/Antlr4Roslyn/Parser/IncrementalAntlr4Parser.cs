@@ -21,7 +21,7 @@ using System.Threading;
 
 namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 {
-    public abstract class IncrementalAntlr4Parser : MetaDslx.CodeAnalysis.Syntax.InternalSyntax.IncrementalParser, ITokenStream
+    public abstract class IncrementalAntlr4Parser : MetaDslx.CodeAnalysis.Syntax.InternalSyntax.IncrementalParser, ITokenStream/*, ITokenSource, ITokenFactory*/
     {
         private readonly IncrementalAntlr4Lexer _lexer;
         private readonly IncrementalParser _parser;
@@ -63,11 +63,16 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 
         protected void CacheGreenNode(ParserRuleContext context, GreenNode greenNode)
         {
-            _nodeCache.Add(context, greenNode);
+            if (context != null) _nodeCache.Add(context, greenNode);
         }
 
         protected bool TryGetGreenNode(ParserRuleContext context, out GreenNode existingGreenNode)
         {
+            if (context == null)
+            {
+                existingGreenNode = null;
+                return false;
+            }
             return _nodeCache.TryGetValue(context, out existingGreenNode);
         }
 
@@ -172,5 +177,75 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         }
 
         #endregion
+
+        /*
+
+        #region ITokenSource
+
+        int ITokenSource.Line => ((IAntlr4Lexer)_lexer).Antlr4Lexer.Line;
+
+        int ITokenSource.Column => ((IAntlr4Lexer)_lexer).Antlr4Lexer.Column;
+
+        ICharStream ITokenSource.InputStream => (ICharStream)((IAntlr4Lexer)_lexer).Antlr4Lexer.InputStream;
+
+        string ITokenSource.SourceName => ((IAntlr4Lexer)_lexer).Antlr4Lexer.SourceName;
+
+        ITokenFactory ITokenSource.TokenFactory { get => this; set => throw new NotImplementedException(); }
+
+        IToken ITokenSource.NextToken()
+        {
+            var green = this.EatToken();
+            if (green == null) return null;
+            var token = new IncrementalToken(green.Kind.ToAntlr4(), green.Text);
+            token.SetGreenToken(green);
+            return token;
+        }
+
+        #endregion
+
+        #region ITokenFactory
+
+        IToken ITokenFactory.Create(Tuple<ITokenSource, ICharStream> source, int type, string text, int channel, int start, int stop, int line, int charPositionInLine)
+        {
+            throw new NotImplementedException();
+        }
+
+        IToken ITokenFactory.Create(int type, string text)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        private class TokenSource : BufferedTokenStream
+        {
+            private IncrementalAntlr4Parser _parser;
+
+            public TokenSource(IncrementalAntlr4Parser parser) 
+                : base(parser)
+            {
+                _parser = parser;
+            }
+
+            public override void Consume()
+            {
+                _parser.EatToken();
+                base.Consume();
+            }
+
+            public override int La(int i)
+            {
+                if (i > 0) _parser.RegisterLookahead(i-1);
+                else _parser.RegisterLookahead(i);
+                return base.La(i);
+            }
+
+            public override IToken Lt(int k)
+            {
+                if (k > 0) _parser.RegisterLookahead(k - 1);
+                else _parser.RegisterLookahead(k);
+                return base.Lt(k);
+            }
+        }*/
     }
 }

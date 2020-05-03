@@ -47,6 +47,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         private Stack<(int minLookahead, int maxLookahead, ParserState state)> _incrementalStateStack = new Stack<(int minLookahead, int maxLookahead, ParserState state)>();
         private int _minLookahead;
         private int _maxLookahead;
+        private bool _hitEof;
 
         protected IncrementalParser(
             Language language,
@@ -122,7 +123,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         private void PreLex()
         {
             // NOTE: Do not cancel in this method. It is called from the constructor.
-            var size = Math.Min(4096, Math.Max(32, Lexer.TextWindow.Text.Length / 2));
+            var size = Math.Min(4096, Math.Max(32, this.SourceText.Length / 2));
             _lexedTokens = new ArrayElement<InternalSyntaxToken>[size];
             var lexer = Lexer;
             LexerMode mode = null;
@@ -168,17 +169,26 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         protected ParserState EndNode(ref GreenNode green)
         {
+            if (green == null) return null;
+
             var incrementalState = _incrementalStateStack.Pop();
+            var minLookahead = Math.Min(incrementalState.minLookahead, _minLookahead);
+            var maxLookahead = Math.Max(incrementalState.maxLookahead, _maxLookahead);
+
+            var nodeAnnot = GetNodeAnnotation(green);
+            if (nodeAnnot == null)
+            { 
 #if DEBUG
-            green = green.WithAdditionalAnnotationsGreen(new SyntaxAnnotation(IncrementalTreeAnnotationKind, new IncrementalNodeAnnotation(incrementalState.state, incrementalState.minLookahead, incrementalState.maxLookahead, _version)));
+                green = green.WithAdditionalAnnotationsGreen(new SyntaxAnnotation(IncrementalNodeAnnotationKind, new IncrementalNodeAnnotation(incrementalState.state, minLookahead, maxLookahead, _version)));
 #else
-            green = green.WithAdditionalAnnotationsGreen(new SyntaxAnnotation(IncrementalTreeAnnotationKind, new IncrementalNodeAnnotation(incrementalState.state, incrementalState.minLookahead, incrementalState.maxLookahead)));
+                green = green.WithAdditionalAnnotationsGreen(new SyntaxAnnotation(IncrementalNodeAnnotationKind, new IncrementalNodeAnnotation(incrementalState.state, minLookahead, maxLookahead)));
 #endif
+            }
             if (_incrementalStateStack.Count > 0)
             {
                 var parentState = _incrementalStateStack.Pop();
-                var parentMinLookahead = Math.Min(incrementalState.minLookahead, parentState.minLookahead);
-                var parentMaxLookahead = Math.Max(incrementalState.maxLookahead, parentState.maxLookahead);
+                var parentMinLookahead = Math.Min(minLookahead, parentState.minLookahead);
+                var parentMaxLookahead = Math.Max(maxLookahead, parentState.maxLookahead);
                 _incrementalStateStack.Push((parentMinLookahead, parentMaxLookahead, parentState.state));
             }
             return _state;
@@ -397,6 +407,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             {
                 this.AddLexedToken(Lexer.Lex(ref _mode));
             }
+            var lastToken = _blendedTokens != null ? _blendedTokens[_tokenCount - 1].Token : _lexedTokens[_tokenCount - 1];
+            if (lastToken.Kind == SyntaxKind.Eof) _hitEof = true;
         }
 
         // adds token to end of current token array
@@ -479,10 +491,15 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             }
         }
 
-        protected InternalSyntaxToken PeekToken(int n)
+        protected void RegisterLookahead(int n)
         {
             _minLookahead = Math.Min(n, _minLookahead);
             _maxLookahead = Math.Max(n, _maxLookahead);
+        }
+
+        protected InternalSyntaxToken PeekToken(int n)
+        {
+            RegisterLookahead(n);
 
             //Debug.Assert(n >= 0);
             if (_tokenOffset + n < 0)
@@ -490,10 +507,13 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 Debug.Assert(false);
                 return null;
             }
-            while (_tokenOffset + n >= _tokenCount)
+            
+            while (!_hitEof && _tokenOffset + n >= _tokenCount)
             {
                 this.AddNewToken();
             }
+
+            if (_hitEof && _tokenOffset + n >= _tokenCount) return null;
 
             if (_blendedTokens != null)
             {

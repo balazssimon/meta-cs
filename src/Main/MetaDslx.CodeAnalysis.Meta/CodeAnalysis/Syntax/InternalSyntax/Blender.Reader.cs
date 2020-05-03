@@ -163,7 +163,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
             private InternalSyntaxToken LexNewToken(LexerMode mode)
             {
-                if (_lexer.TextWindow.Position != _newPosition)
+                if (_lexer.Position != _newPosition)
                 {
                     _lexer.Reset(_newPosition, _newDirectives);
                 }

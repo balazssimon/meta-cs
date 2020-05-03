@@ -1101,6 +1101,7 @@ namespace [Properties.DefaultNamespace].Syntax.InternalSyntax
 			
             private GreenNode VisitTerminal(IToken token, [lang]SyntaxKind kind)
             {
+                if (token == null) return null;
 				var green = ((IncrementalToken)token).GreenToken;
 				Debug.Assert(kind == null || green.Kind == kind);
 				return green;
@@ -1111,6 +1112,7 @@ namespace [Properties.DefaultNamespace].Syntax.InternalSyntax
             }
             private GreenNode VisitTerminal(ITerminalNode node, [lang]SyntaxKind kind)
             {
+                if (node == null || node.Symbol == null) return null;
 				var green = ((IncrementalToken)node.Symbol).GreenToken;
 				Debug.Assert(kind == null || green.Kind == kind);
 				return green;
@@ -1186,9 +1188,17 @@ internal [lang]Parser.[rule.PlainName()]Context _Antlr4Parse[rule.PlainName()]([
     GreenNode green = null;
     try
     {
-        if (IsIncremental && CanReuse[rule.PlainName()](CurrentNode as [rule.RedName()])) return new [lang]Parser.[rule.PlainName()]Context_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, EatNode());
-	    context = this.Antlr4Parser._DoParse[rule.PlainName()]([rule.IsRecursive ? "precedence" : ""]);
-        green = _visitor.Visit[rule.PlainName()](context);
+		if (IsIncremental && CanReuse[rule.PlainName()](CurrentNode as [rule.RedName()]))
+		{
+			green = EatNode();
+			context = new [lang]Parser.[rule.PlainName()]Context_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+			this.Antlr4Parser.Context.AddChild(context);
+		}
+		else
+		{
+			context = this.Antlr4Parser._DoParse[rule.PlainName()]([rule.IsRecursive ? "precedence" : ""]);
+			green = _visitor.Visit(context);
+		}
     }
     finally
     {

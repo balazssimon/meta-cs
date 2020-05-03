@@ -21,11 +21,12 @@ namespace Antlr4Intellisense
     {
         public static void Main(string[] args)
         {
-            //*/        0123456789012
+            //*/        01234567890123 4 567890123456 7
             var text = "var a = 1 + 2\r\nvar b = a+1\r\n";
             var change = ImmutableArray<TextChangeRange>.Empty;
 
-            var lexer = Lex(text, change, null);
+            IncrementalAntlr4Lexer lexer = null;
+            lexer = Lex(text, change, null);
             Console.WriteLine("----");
             var tree = Parse(text, change, null);
             Console.WriteLine("====");
@@ -126,6 +127,11 @@ namespace Antlr4Intellisense
             for (int i = 0; i < indent; i++)
             {
                 buf.Append("  ");
+            }
+            var annot = MetaDslx.CodeAnalysis.Syntax.InternalSyntax.IncrementalParser.GetNodeAnnotation(node.Green);
+            if (annot != null)
+            {
+                buf.Append($"[{annot.Version}({annot.LookaheadBefore},{annot.LookaheadAfter})]");
             }
             buf.Append(node.Kind);
             //buf.Append($" ({parser.GetVersion(node.Green)})");

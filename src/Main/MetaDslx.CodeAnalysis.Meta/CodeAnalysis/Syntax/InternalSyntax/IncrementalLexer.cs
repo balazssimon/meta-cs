@@ -38,7 +38,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         public LanguageParseOptions Options => _options;
 
-        public void Reset(int position, DirectiveStack directives)
+        public virtual void Reset(int position, DirectiveStack directives)
         {
             this.TextWindow.Reset(position);
             _directives = directives;
@@ -104,7 +104,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             var startMode = _mode;
 
             _leadingTriviaCache.Clear();
-            this.LexSyntaxTrivia(afterFirstToken: TextWindow.Position > 0, isTrailing: false, triviaList: _leadingTriviaCache);
+            this.LexSyntaxTrivia(afterFirstToken: this.Position > 0, isTrailing: false, triviaList: _leadingTriviaCache);
             var leading = _leadingTriviaCache;
 
             var kind = this.ScanSyntaxToken();
@@ -182,7 +182,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 #if DEBUG
             var quickWidth = TextWindow.Width;
 #endif
-            TextWindow.Reset(TextWindow.LexemeStartPosition);
+            this.Reset(TextWindow.LexemeStartPosition, this.Directives);
             var token = this.LexSyntaxToken();
 #if DEBUG
             Debug.Assert(quickWidth == token.FullWidth);
