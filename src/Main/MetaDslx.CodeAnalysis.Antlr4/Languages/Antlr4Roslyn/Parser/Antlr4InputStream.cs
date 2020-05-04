@@ -8,11 +8,11 @@ using System.Text;
 
 namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 {
-    public class IncrementalAntlr4InputStream : ICharStream, IIntStream
+    public class Antlr4InputStream : ICharStream, IIntStream
     {
         private readonly SlidingTextWindow _textWindow;                 
 
-        public IncrementalAntlr4InputStream(SlidingTextWindow textWindow)
+        public Antlr4InputStream(SlidingTextWindow textWindow)
         {
             _textWindow = textWindow;
         }

@@ -34,6 +34,12 @@ namespace MetaDslx.CodeAnalysis.Syntax
         /// </summary>
         public LanguageVersion SpecifiedLanguageVersion { get; protected set; }
 
+        /// <summary>
+        /// Gets whether the syntax tree is parsed incrementally. If there is no previous parse tree,
+        /// the tree is prepared for incremental parsing.
+        /// </summary>
+        public bool Incremental { get; protected set; }
+
         public ImmutableArray<string> PreprocessorSymbols { get; protected set; }
 
         /// <summary>
@@ -48,10 +54,12 @@ namespace MetaDslx.CodeAnalysis.Syntax
             LanguageVersion languageVersion = null,
             DocumentationMode documentationMode = DocumentationMode.Parse,
             SourceCodeKind kind = SourceCodeKind.Regular,
+            bool incremental = false,
             IEnumerable<string> preprocessorSymbols = null)
             : this(languageVersion,
                   documentationMode,
                   kind,
+                  incremental,
                   preprocessorSymbols.ToImmutableArrayOrEmpty(),
                   ImmutableDictionary<string, string>.Empty)
         {
@@ -61,12 +69,14 @@ namespace MetaDslx.CodeAnalysis.Syntax
             LanguageVersion languageVersion,
             DocumentationMode documentationMode,
             SourceCodeKind kind,
+            bool incremental,
             ImmutableArray<string> preprocessorSymbols,
             IReadOnlyDictionary<string, string> features)
             : base(kind, documentationMode)
         {
             this.SpecifiedLanguageVersion = languageVersion ?? LanguageVersion.Default;
             this.LanguageVersion = languageVersion;
+            this.Incremental = true;
             this.PreprocessorSymbols = preprocessorSymbols.ToImmutableArrayOrEmpty();
             _features = features?.ToImmutableDictionary() ?? ImmutableDictionary<string, string>.Empty;
         }

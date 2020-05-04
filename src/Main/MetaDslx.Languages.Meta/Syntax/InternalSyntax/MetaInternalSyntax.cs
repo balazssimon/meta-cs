@@ -7300,16 +7300,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	        return new MetaParser(input);
 	    }
 
-		public override IncrementalLexer CreateLexer(SourceText text, LanguageParseOptions options, IEnumerable<TextChangeRange> changes)
+		public override SyntaxLexer CreateLexer(SourceText text, LanguageParseOptions options)
 		{
-			throw new NotImplementedException();
-			//return new MetaSyntaxLexer(text, (MetaParseOptions)options, changes);
+			return null;
+			//return new MetaSyntaxLexer(text, (MetaParseOptions)options);
 		}
 
-		public override CodeAnalysis.Syntax.InternalSyntax.IncrementalParser CreateParser(SourceText text, LanguageParseOptions options, LanguageSyntaxNode oldTree, IEnumerable<TextChangeRange> changes, CancellationToken cancellationToken = default)
+		public override SyntaxParser CreateParser(SourceText text, LanguageParseOptions options, LanguageSyntaxNode oldTree, IEnumerable<TextChangeRange> changes, CancellationToken cancellationToken = default)
 		{
-			throw new NotImplementedException();
-			//return new MetaSyntaxParser(text, (MetaParseOptions)options, (MetaSyntaxNode)oldTree, changes, cancellationToken);
+			return new MetaSyntaxParser(text, (MetaParseOptions)options, (MetaSyntaxNode)oldTree, changes, cancellationToken);
 		}
 
 		public override Language Language => MetaLanguage.Instance;

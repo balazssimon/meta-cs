@@ -12,7 +12,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
     {
         private struct Reader
         {
-            private readonly IncrementalLexer _lexer;
+            private readonly SyntaxLexer _lexer;
             private Cursor _oldTreeCursor;
             private ImmutableStack<TextChangeRange> _changes;
             private int _newPosition;

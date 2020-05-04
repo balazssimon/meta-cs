@@ -19,15 +19,15 @@ using MetaDslx.CodeAnalysis;
 
 namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 {
-    public class MetaSyntaxParser : Antlr4SyntaxParser<MetaLexer, MetaParser>
+    public class MetaSyntaxParser : Antlr4SyntaxParser
     {
         public MetaSyntaxParser(
             SourceText text,
             MetaParseOptions options,
-            SyntaxNode oldTree, 
+            LanguageSyntaxNode oldTree, 
             IEnumerable<TextChangeRange> changes,
             CancellationToken cancellationToken = default(CancellationToken))
-            : base(text, MetaLanguage.Instance, options, oldTree, changes, cancellationToken)
+            : base(MetaLanguage.Instance, text, options, oldTree, changes, cancellationToken)
         {
         }
         public override DirectiveStack Directives
@@ -37,14 +37,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
                 return DirectiveStack.Empty;
             }
         }
-        protected override MetaLexer CreateLexer(AntlrInputStream inputStream)
-        {
-            return new MetaLexer(inputStream);
-        }
-        protected override MetaParser CreateParser(CommonTokenStream tokenStream)
-        {
-            return new MetaParser(tokenStream);
-        }
         public override LanguageSyntaxNode Parse()
         {
             return (LanguageSyntaxNode)this.ParseMain().CreateRed();
@@ -52,8 +44,9 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
         internal MainGreen ParseMain()
         {
             Antlr4ToRoslynVisitor visitor = new Antlr4ToRoslynVisitor(this);
-            var tree = this.Parser.main();
-            return (MainGreen)visitor.Visit(tree);
+			//var tree = null;// this.Parser.main();
+			//return (MainGreen)visitor.Visit(tree);
+			return null;
         }
         private class Antlr4ToRoslynVisitor : MetaParserBaseVisitor<GreenNode>
         {
@@ -69,12 +62,13 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
             {
 				this.factory = (MetaInternalSyntaxFactory)syntaxParser.Language.InternalSyntaxFactory;
                 this.syntaxParser = syntaxParser;
-				this.tokens = this.syntaxParser.CommonTokenStream.GetTokens();
+				//this.tokens = this.syntaxParser.CommonTokenStream.GetTokens();
                 this.lastTokenOrTrivia = null;
             }
             private GreenNode VisitTerminal(IToken token, MetaSyntaxKind kind)
             {
-                return this.syntaxParser.VisitTerminal(token, kind, ref this.lastTokenOrTrivia);
+				return null;
+                //return this.syntaxParser.VisitTerminal(token, kind, ref this.lastTokenOrTrivia);
             }
             public GreenNode VisitTerminal(IToken token)
             {
@@ -82,7 +76,8 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
             }
             private GreenNode VisitTerminal(ITerminalNode node, MetaSyntaxKind kind)
             {
-                return this.syntaxParser.VisitTerminal(node, kind, ref this.lastTokenOrTrivia);
+				return null;
+                //return this.syntaxParser.VisitTerminal(node, kind, ref this.lastTokenOrTrivia);
             }
             public override GreenNode VisitTerminal(ITerminalNode node)
             {

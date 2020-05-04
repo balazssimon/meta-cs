@@ -1,275 +1,231 @@
 ﻿using Antlr4.Runtime;
+using Antlr4.Runtime.Atn;
+using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Syntax;
-using Microsoft.CodeAnalysis.Text;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Syntax;
+using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
 using MetaDslx.Languages.Antlr4Roslyn.Compilation;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.PooledObjects;
+using Microsoft.CodeAnalysis.Text;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Data;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Http.Headers;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using System.IO;
-using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.Languages.Antlr4Roslyn.Syntax;
-using MetaDslx.CodeAnalysis.Syntax;
 
 namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 {
-    public abstract class Antlr4SyntaxParser<TLexer, TParser> : SyntaxParser, IAntlr4SyntaxParser, IAntlrErrorListener<int>, IAntlrErrorListener<IToken>
-        where TLexer : Antlr4.Runtime.Lexer
-        where TParser : Antlr4.Runtime.Parser
+    public abstract class Antlr4SyntaxParser : SyntaxParser, ITokenStream, ITokenSource, ITokenFactory, IAntlrErrorListener<IToken>
     {
-        private IList<IToken> tokens;
-        private SyntaxFacts _syntaxFacts;
+        private readonly Antlr4SyntaxLexer _lexer;
+        private readonly IncrementalParser _parser;
+        private readonly Dictionary<ParserRuleContext, GreenNode> _nodeCache;
+        private Stack<ResetPoint> _resetPoints;
 
-        public Antlr4SyntaxParser(SourceText text, Language language, LanguageParseOptions options, SyntaxNode oldTree, IEnumerable<TextChangeRange> changes, CancellationToken cancellationToken = default(CancellationToken))
+        public Antlr4SyntaxParser(Language language, SourceText text, LanguageParseOptions options, LanguageSyntaxNode oldTree, IEnumerable<TextChangeRange> changes, CancellationToken cancellationToken = default) 
             : base(language, text, options, oldTree, changes, cancellationToken)
         {
-            this.Antlr4Errors = new Dictionary<int, string>();
-            AntlrInputStream inputStream = new AntlrInputStream(text.ToString());
-            this.Lexer = this.CreateLexer(inputStream);
-            this.CommonTokenStream = new CommonTokenStream(this.Lexer);
-            this.Parser = this.CreateParser(this.CommonTokenStream);
-            this.Lexer.RemoveErrorListeners();
-            this.Parser.RemoveErrorListeners();
-            this.Lexer.AddErrorListener(this);
-            this.Parser.AddErrorListener(this);
-            this.tokens = this.CommonTokenStream.GetTokens();
-            _syntaxFacts = language.SyntaxFacts;
+            _nodeCache = new Dictionary<ParserRuleContext, GreenNode>();
+            _lexer = (Antlr4SyntaxLexer)this.Lexer;
+            _parser = (IncrementalParser)((IAntlr4SyntaxFactory)language.InternalSyntaxFactory).CreateAntlr4Parser(this);
+            _parser._incrementalParser = this;
+            _parser.RemoveErrorListeners();
+            _parser.AddErrorListener(this);
+            _resetPoints = new Stack<ResetPoint>();
         }
 
-        public AntlrInputStream InputStream { get; private set; }
-        public TLexer Lexer { get; private set; }
-        public TParser Parser { get; private set; }
-        public CommonTokenStream CommonTokenStream { get; private set; }
-        public Dictionary<int, string> Antlr4Errors { get; private set; }
+        protected IncrementalParser Parser => _parser;
 
-        Language IAntlr4SyntaxParser.Language => this.Language;
-        IReadOnlyList<IToken> IAntlr4SyntaxParser.Tokens => (IReadOnlyList<IToken>)tokens;
-        Antlr4.Runtime.Lexer IAntlr4SyntaxParser.Lexer => this.Lexer;
-        Antlr4.Runtime.Parser IAntlr4SyntaxParser.Parser => this.Parser;
-
-        protected abstract TLexer CreateLexer(AntlrInputStream inputStream);
-        protected abstract TParser CreateParser(CommonTokenStream tokenStream);
-
-        private int GetLeadingTriviaTokenStartIndex(IToken token, IToken previousToken)
+        protected override ParserState SaveParserState(ParserState previousState)
         {
-            return previousToken != null ? previousToken.TokenIndex + 1 : 0;
-            /*int lastNewLine = -1;
-            int i = token.TokenIndex - 1;
-            int lastTriviaToken = token.TokenIndex;
-            int lastTriviaTokenBeforeNewLine = lastTriviaToken;
-            int startIndex = previousToken != null ? previousToken.TokenIndex + 1 : 0;
-            while (i >= startIndex)
+            var oldState = previousState as Antlr4ParserState;
+            if (oldState == null || oldState.State != _parser.State) return new Antlr4ParserState(_parser.State);
+            else return previousState;
+        }
+
+        protected override void RestoreParserState(ParserState state)
+        {
+            base.RestoreParserState(state);
+            var newState = state as Antlr4ParserState;
+            if (newState != null)
             {
-                IToken t = tokens[i];
-                int kind = t.Type;
-                if (this.Language.SyntaxFacts.IsTriviaWithEndOfLine(kind))
-                {
-                    lastTriviaTokenBeforeNewLine = lastTriviaToken;
-                    lastNewLine = i;
-                }
-                lastTriviaToken = i;
-                --i;
+                _parser.State = newState.State;
             }
-            if (lastNewLine < 0 || previousToken == null) return lastTriviaToken;
-            else return lastTriviaTokenBeforeNewLine;*/
         }
 
-        private int GetTrailingTriviaTokenEndIndex(IToken token, IToken nextToken)
+        protected void CacheGreenNode(ParserRuleContext context, GreenNode greenNode)
         {
-            int i = token.TokenIndex + 1;
-            int lastTriviaToken = token.TokenIndex;
-            int endIndex = nextToken != null ? nextToken.TokenIndex - 1 : tokens.Count - 1;
-            while (i <= endIndex)
+            if (context != null) _nodeCache.Add(context, greenNode);
+        }
+
+        protected bool TryGetGreenNode(ParserRuleContext context, out GreenNode existingGreenNode)
+        {
+            if (context == null)
             {
-                IToken t = tokens[i];
-                int type = t.Type;
-                SyntaxKind kind = type.FromAntlr4(_syntaxFacts.SyntaxKindType);
-                if (t.Channel == 0)
-                {
-                    return token.TokenIndex;
-                }
-                else if (this.Language.SyntaxFacts.IsTrivia(kind))
-                {
-                    return i;
-                }
-                ++i;
+                existingGreenNode = null;
+                return false;
             }
-            return lastTriviaToken;
+            return _nodeCache.TryGetValue(context, out existingGreenNode);
         }
 
-        private GreenNode GetLeadingTrivia(IToken token, IToken previousToken)
+        #region ITokenSource
+
+        ITokenSource ITokenStream.TokenSource => (ITokenSource)this;
+
+        IToken ITokenStream.Lt(int k)
         {
-            int startIndex = this.GetLeadingTriviaTokenStartIndex(token, previousToken);
-            int endIndex = token.TokenIndex - 1;
-            if (startIndex >= 0 && startIndex <= endIndex)
+            if (k > 0)
             {
-                InternalSyntaxTrivia[] triviaArray = new InternalSyntaxTrivia[endIndex - startIndex + 1];
-                for (int i = startIndex; i <= endIndex; i++)
-                {
-                    IToken t = this.tokens[i];
-                    int type = t.Type;
-                    SyntaxKind kind = type.FromAntlr4(_syntaxFacts.SyntaxKindType);
-                    InternalSyntaxTrivia trivia = this.factory.Trivia(kind, t.Text);
-                    trivia = this.AddDiagnostic(trivia, i);
-                    triviaArray[i - startIndex] = trivia;
-                }
-                return this.factory.List(triviaArray).Node;
+                return ((ITokenStream)this).Get(this.TokenIndex + k - 1);
             }
-            return null;
-        }
-
-        private GreenNode GetTrailingTrivia(IToken token, ref IToken lastTokenOrTrivia)
-        {
-            int startIndex = token.TokenIndex + 1;
-            int endIndex = GetTrailingTriviaTokenEndIndex(token, null);
-            if (startIndex >= 0 && startIndex <= endIndex)
+            else if (k < 0)
             {
-                InternalSyntaxTrivia[] triviaArray = new InternalSyntaxTrivia[endIndex - startIndex + 1];
-                for (int i = startIndex; i <= endIndex; i++)
-                {
-                    IToken t = this.tokens[i];
-                    int type = t.Type;
-                    SyntaxKind kind = type.FromAntlr4(_syntaxFacts.SyntaxKindType);
-                    InternalSyntaxTrivia trivia = this.factory.Trivia(kind, t.Text);
-                    trivia = this.AddDiagnostic(trivia, i);
-                    triviaArray[i - startIndex] = trivia;
-                }
-                lastTokenOrTrivia = this.tokens[endIndex];
-                return this.factory.List(triviaArray).Node;
-            }
-            return null;
-        }
-
-        private InternalSyntaxToken AddDiagnostic(InternalSyntaxToken token, int tokenIndex)
-        {
-            string errorMessage;
-            if (this.Antlr4Errors.TryGetValue(tokenIndex, out errorMessage))
-            {
-                SyntaxDiagnosticInfo diagnosticInfo = this.MakeError(token.GetLeadingTriviaWidth(), token.Width, Antlr4RoslynErrorCode.ERR_SyntaxError, errorMessage);
-                return (InternalSyntaxToken)token.WithDiagnostics(new DiagnosticInfo[] { diagnosticInfo });
-            }
-            return token;
-        }
-
-        private InternalSyntaxTrivia AddDiagnostic(InternalSyntaxTrivia token, int tokenIndex)
-        {
-            string errorMessage;
-            if (this.Antlr4Errors.TryGetValue(tokenIndex, out errorMessage))
-            {
-                SyntaxDiagnosticInfo diagnosticInfo = this.MakeError(token.GetLeadingTriviaWidth(), token.Width, Antlr4RoslynErrorCode.ERR_SyntaxError, errorMessage);
-                return (InternalSyntaxTrivia)token.WithDiagnostics(new DiagnosticInfo[] { diagnosticInfo });
-            }
-            return token;
-        }
-
-        protected GreenNode VisitTerminal(ITerminalNode node, ref IToken previousTokenOrTrivia)
-        {
-            return this.VisitTerminal(node?.Symbol, null, ref previousTokenOrTrivia);
-        }
-
-        protected GreenNode VisitTerminal(ITerminalNode node, SyntaxKind expectedKind, ref IToken previousTokenOrTrivia)
-        {
-            return this.VisitTerminal(node?.Symbol, expectedKind, ref previousTokenOrTrivia);
-        }
-
-        protected GreenNode VisitTerminal(IToken token, ref IToken previousTokenOrTrivia)
-        {
-            return this.VisitTerminal(token, null, ref previousTokenOrTrivia);
-        }
-
-        protected GreenNode VisitTerminal(IToken token, SyntaxKind expectedKind, ref IToken previousTokenOrTrivia)
-        {
-            if (token == null)
-            {
-                if ((object)expectedKind == null)
-                {
-                    return null;
-                }
-                else
-                {
-                    var missing = this.factory.MissingToken(expectedKind);
-                    return missing; // TODO:MetaDslx is adding diagnostics necessary? this.AddDiagnostic(result, token.TokenIndex);
-                }
-            }
-            InternalSyntaxToken result = null;
-            bool addTrivia = true;
-            bool updatePreviousTokenOrTrivia = true;
-            if (token.Type >= 0)
-            {
-                int type = token.Type;
-                SyntaxKind kind = type.FromAntlr4(_syntaxFacts.SyntaxKindType);
-                Debug.Assert((object)expectedKind == null || kind == expectedKind);
-                if (token.StartIndex < 0 || token.StopIndex < token.StartIndex)
-                {
-                    result = this.factory.MissingToken(kind);
-                    return this.AddDiagnostic(result, token.TokenIndex);
-                }
-                if (this.Language.SyntaxFacts.IsFixedToken(kind))
-                {
-                    result = this.factory.Token(kind);
-                }
-                else
-                {
-                    string text = token.Text;
-                    GreenNode leadingTrivia = this.GetLeadingTrivia(token, previousTokenOrTrivia);
-                    previousTokenOrTrivia = token;
-                    GreenNode trailingTrivia = this.GetTrailingTrivia(token, ref previousTokenOrTrivia);
-                    var value = this.Language.SyntaxFacts.ExtractValue(text);
-                    result = this.factory.Token(leadingTrivia, kind, text, value, trailingTrivia);
-                    addTrivia = false;
-                    updatePreviousTokenOrTrivia = false;
-                }
+                return ((ITokenStream)this).Get(this.TokenIndex + k);
             }
             else
             {
-                result = this.factory.EndOfFile;
-            }
-            if (result == null)
-            {
                 return null;
             }
-            if (addTrivia)
-            {
-                GreenNode leadingTrivia = this.GetLeadingTrivia(token, previousTokenOrTrivia);
-                if (leadingTrivia != null) result = (InternalSyntaxToken)result.WithLeadingTrivia(leadingTrivia);
-                previousTokenOrTrivia = token;
-                GreenNode trailingTrivia = this.GetTrailingTrivia(token, ref previousTokenOrTrivia);
-                if (trailingTrivia != null) result = (InternalSyntaxToken)result.WithTrailingTrivia(trailingTrivia);
-                updatePreviousTokenOrTrivia = false;
-            }
-            if (updatePreviousTokenOrTrivia)
-            {
-                previousTokenOrTrivia = token;
-            }
-            return this.AddDiagnostic(result, token.TokenIndex);
         }
 
-        protected InternalSyntaxToken VisitErrorNode(IErrorNode node)
+        IToken ITokenStream.Get(int i)
         {
-            int type = node.Symbol.Type;
-            SyntaxKind kind = type.FromAntlr4(_syntaxFacts.SyntaxKindType);
-            InternalSyntaxToken result = this.factory.MissingToken(kind);
-            return this.AddDiagnostic(result, node.Symbol.TokenIndex);
+            var green = this.PeekToken(i - this.TokenIndex);
+            if (green == null) return null;
+            var token = new IncrementalToken(green.Kind.ToAntlr4(), green.Text);
+            token.SetGreenToken(green);
+            return token;
         }
 
-        public void SyntaxError(IRecognizer recognizer, int offendingSymbol, int line, int charPositionInLine, string msg, RecognitionException e)
+        string ITokenStream.GetText(Interval interval)
         {
-            this.Antlr4Errors[offendingSymbol] = msg;
+            return ((ITokenStream)_lexer).GetText(interval);
         }
 
-        public void SyntaxError(IRecognizer recognizer, IToken offendingSymbol, int line, int charPositionInLine, string msg, RecognitionException e)
+        string ITokenStream.GetText()
         {
-            if (offendingSymbol != null)
+            return ((ITokenStream)_lexer).GetText();
+        }
+
+        string ITokenStream.GetText(RuleContext ctx)
+        {
+            return ((ITokenStream)_lexer).GetText(ctx);
+        }
+
+        string ITokenStream.GetText(IToken start, IToken stop)
+        {
+            return ((ITokenStream)_lexer).GetText(start, stop);
+        }
+
+        #endregion
+
+        #region IIntStream
+
+        int IIntStream.Index => this.TokenIndex;
+
+        int IIntStream.Size => this.TokenCount;
+
+        string IIntStream.SourceName => ((ITokenStream)_lexer).SourceName;
+
+        void IIntStream.Consume()
+        {
+            this.EatToken();
+        }
+
+        int IIntStream.La(int i)
+        {
+            if (i > 0) return this.PeekToken(i - 1).Kind.ToAntlr4();
+            else if (i < 0) return this.PeekToken(i).Kind.ToAntlr4();
+            else return -1;
+        }
+
+        int IIntStream.Mark()
+        {
+            var result = _resetPoints.Count;
+            _resetPoints.Push(this.GetResetPoint());
+            return result;
+        }
+
+        void IIntStream.Release(int marker)
+        {
+            var index = _resetPoints.Count - 1;
+            Debug.Assert(marker == index);
+            var rp = _resetPoints.Pop();
+            this.Release(ref rp);
+        }
+
+        void IIntStream.Seek(int index)
+        {
+            if (_resetPoints.Count > 0)
             {
-                this.Antlr4Errors[offendingSymbol.TokenIndex] = msg;
+                var rp = _resetPoints.Peek();
+                Debug.Assert(rp.Position == index);
+                this.Reset(ref rp);
+            }
+            else
+            {
+                Debug.Assert(false);
             }
         }
+
+        #endregion
+
+        #region ITokenSource
+
+
+        int ITokenSource.Line => throw new NotImplementedException();
+
+        int ITokenSource.Column => throw new NotImplementedException();
+
+        ICharStream ITokenSource.InputStream => throw new NotImplementedException();
+
+        string ITokenSource.SourceName => throw new NotImplementedException();
+
+        ITokenFactory ITokenSource.TokenFactory { get => (ITokenFactory)this; set => throw new NotImplementedException(); }
+
+        IToken ITokenSource.NextToken()
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IAntlrErrorListener
+
+        void IAntlrErrorListener<IToken>.SyntaxError(IRecognizer recognizer, IToken offendingSymbol, int line, int charPositionInLine, string msg, RecognitionException e)
+        {
+            this.AddErrorToCurrentToken(Antlr4RoslynErrorCode.ERR_SyntaxError, msg);
+        }
+
+        #endregion
+
+        #region ITokenFactory
+
+        IToken ITokenFactory.Create(Tuple<ITokenSource, ICharStream> source, int type, string text, int channel, int start, int stop, int line, int charPositionInLine)
+        {
+            var green = CreateMissingToken(type.FromAntlr4(Language.SyntaxFacts.SyntaxKindType), Antlr4RoslynErrorCode.ERR_SyntaxError, false);
+            if (green == null) return null;
+            var token = new IncrementalToken(source, type, channel, start, stop);
+            token.SetGreenToken(green);
+            return token;
+        }
+
+        IToken ITokenFactory.Create(int type, string text)
+        {
+            var green = CreateMissingToken(type.FromAntlr4(Language.SyntaxFacts.SyntaxKindType), Antlr4RoslynErrorCode.ERR_SyntaxError, false);
+            if (green == null) return null;
+            var token = new IncrementalToken(type, green.Text);
+            token.SetGreenToken(green);
+            return token;
+        }
+
+        #endregion
     }
 }

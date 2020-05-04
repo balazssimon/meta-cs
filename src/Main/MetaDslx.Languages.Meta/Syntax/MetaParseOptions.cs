@@ -42,7 +42,7 @@ namespace MetaDslx.Languages.Meta.Syntax
             SourceCodeKind kind,
             ImmutableArray<string> preprocessorSymbols,
             IReadOnlyDictionary<string, string> features)
-            : base(languageVersion, documentationMode, kind, preprocessorSymbols, features)
+            : base(languageVersion, documentationMode, kind, false, preprocessorSymbols, features)
         {
         }
         private MetaParseOptions(MetaParseOptions other) : this(

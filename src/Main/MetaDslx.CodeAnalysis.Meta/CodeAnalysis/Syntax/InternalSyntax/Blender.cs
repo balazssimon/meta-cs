@@ -13,7 +13,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 {
     internal readonly partial struct Blender
     {
-        private readonly IncrementalLexer _lexer;
+        private readonly SyntaxLexer _lexer;
         private readonly Cursor _oldTreeCursor;
         private readonly ImmutableStack<TextChangeRange> _changes;
 
@@ -32,7 +32,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         private readonly LexerMode _mode;
         private readonly ParserState _state;
 
-        public Blender(IncrementalLexer lexer, LanguageSyntaxNode oldTree, IEnumerable<TextChangeRange> changes)
+        public Blender(SyntaxLexer lexer, LanguageSyntaxNode oldTree, IEnumerable<TextChangeRange> changes)
         {
             Debug.Assert(lexer != null);
             //Debug.Assert((oldTree == null && changes == null) || (oldTree != null && changes != null));
@@ -83,7 +83,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         }
 
         private Blender(
-            IncrementalLexer lexer,
+            SyntaxLexer lexer,
             Cursor oldTreeCursor,
             ImmutableStack<TextChangeRange> changes,
             int newPosition,
@@ -113,7 +113,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         internal static (int minLexerLookahead, int maxLexerLookahead) GetLexerLookahead(LanguageSyntaxNode treeRoot)
         {
             if (treeRoot == null) return (int.MaxValue, int.MinValue);
-            var treeAnnot = IncrementalParser.GetTreeAnnotation(treeRoot.Green);
+            var treeAnnot = SyntaxParser.GetTreeAnnotation(treeRoot.Green);
             int minLexerLookahead = int.MaxValue;
             int maxLexerLookahead = int.MinValue;
             if (treeAnnot != null)

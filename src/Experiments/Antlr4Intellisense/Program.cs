@@ -25,7 +25,7 @@ namespace Antlr4Intellisense
             var text = "var a = 1 + 2\r\nvar b = a+1\r\n";
             var change = ImmutableArray<TextChangeRange>.Empty;
 
-            IncrementalAntlr4Lexer lexer = null;
+            Antlr4SyntaxLexer lexer = null;
             lexer = Lex(text, change, null);
             Console.WriteLine("----");
             var tree = Parse(text, change, null);
@@ -45,7 +45,7 @@ namespace Antlr4Intellisense
             Intellisense(tree, 13);*/
             Console.WriteLine("====");
 
-            text = "var a = 13 + 2\r\nvar b = a+1\r\n";
+            /*text = "var a = 13 + 2\r\nvar b = a+1\r\n";
             change = ImmutableArray.Create(new TextChangeRange(TextSpan.FromBounds(9, 9), 1));
 
             lexer = Lex(text, change, lexer);
@@ -75,7 +75,7 @@ namespace Antlr4Intellisense
             lexer = Lex(text, change, lexer);
             Console.WriteLine("----");
             tree = Parse(text, change, tree);
-            Console.WriteLine("====");
+            Console.WriteLine("====");*/
 
             //*/
 
@@ -86,10 +86,10 @@ namespace Antlr4Intellisense
             AfterAddition();
         }
 
-        private static IncrementalAntlr4Lexer Lex(string text, ImmutableArray<TextChangeRange>  changes, IncrementalAntlr4Lexer oldLexer)
+        private static Antlr4SyntaxLexer Lex(string text, ImmutableArray<TextChangeRange>  changes, Antlr4SyntaxLexer oldLexer)
         {
             var sourceText = SourceText.From(text);
-            var lexer = (SandySyntaxLexer)SandyLanguage.Instance.InternalSyntaxFactory.CreateLexer(sourceText, SandyParseOptions.Default, changes);
+            var lexer = (SandySyntaxLexer)SandyLanguage.Instance.InternalSyntaxFactory.CreateLexer(sourceText, SandyParseOptions.Default);
             InternalSyntaxToken token = null;
             LexerMode mode = null;
             do
@@ -109,7 +109,7 @@ namespace Antlr4Intellisense
             var sourceText = SourceText.From(text);
             var oldRoot = oldTree?.GetRoot();
 
-            var parser = (SandySyntaxParser)SandyLanguage.Instance.InternalSyntaxFactory.CreateParser(sourceText, SandyParseOptions.Default, oldRoot, changes);
+            var parser = (SandySyntaxParser)SandyLanguage.Instance.InternalSyntaxFactory.CreateParser(sourceText, SandyParseOptions.Default.WithIncremental(false), oldRoot, changes);
             var newRoot = (SandySyntaxNode)parser.Parse();
             Console.WriteLine(PrintSyntaxTree(newRoot, parser));
             return SandySyntaxTree.Create(newRoot);
@@ -128,7 +128,7 @@ namespace Antlr4Intellisense
             {
                 buf.Append("  ");
             }
-            var annot = MetaDslx.CodeAnalysis.Syntax.InternalSyntax.IncrementalParser.GetNodeAnnotation(node.Green);
+            var annot = SyntaxParser.GetNodeAnnotation(node.Green);
             if (annot != null)
             {
                 buf.Append($"[{annot.Version}({annot.LookaheadBefore},{annot.LookaheadAfter})]");

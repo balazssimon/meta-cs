@@ -22,6 +22,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         }
 
         public abstract int Position { get; }
+        public SourceText Text => TextWindow.Text;
         public int MinLookahead => TextWindow.MinLookahead;
         public int MaxLookahead => TextWindow.MaxLookahead;
 

@@ -3,6 +3,7 @@ using Antlr4.Runtime.Misc;
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
+using MetaDslx.Languages.Antlr4Roslyn.Compilation;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
 using Microsoft.CodeAnalysis.Text;
@@ -16,20 +17,22 @@ using System.Threading;
 
 namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 {
-    public abstract class IncrementalAntlr4Lexer : IncrementalLexer, IAntlr4Lexer
+    public abstract class Antlr4SyntaxLexer : SyntaxLexer, IAntlr4Lexer, IAntlrErrorListener<int>
     {
-        private readonly IncrementalAntlr4InputStream _stream;
+        private readonly Antlr4InputStream _stream;
         private readonly Antlr4.Runtime.Lexer _lexer;
         private readonly SyntaxFacts _syntaxFacts;
         private bool _readNextToken;
         private int _position;
 
-        public IncrementalAntlr4Lexer(Language language, SourceText text, LanguageParseOptions options, IEnumerable<TextChangeRange> changes) 
-            : base(language, text, options, changes)
+        public Antlr4SyntaxLexer(Language language, SourceText text, LanguageParseOptions options) 
+            : base(language, text, options)
         {
-            _stream = new IncrementalAntlr4InputStream(this.TextWindow);
+            _stream = new Antlr4InputStream(this.TextWindow);
             _lexer = ((IAntlr4SyntaxFactory)language.InternalSyntaxFactory).CreateAntlr4Lexer(_stream);
             _lexer.TokenFactory = new IncrementalTokenFactory();
+            _lexer.RemoveErrorListeners();
+            _lexer.AddErrorListener(this);
             _syntaxFacts = Language.SyntaxFacts;
             _readNextToken = true;
         }
@@ -85,10 +88,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         {
             IToken token = ReadNextToken(false);
             if (token == null) return SyntaxKind.None;
-            if (token.Type == -1)
-            {
-                return SyntaxKind.Eof;
-            }
+            if (token.Type == -1) return SyntaxKind.Eof;
             var kind = token.Type.FromAntlr4(_syntaxFacts.SyntaxKindType);
             return kind;
         }
@@ -123,6 +123,11 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             }
             _readNextToken = false;
             return null;
+        }
+
+        public void SyntaxError([NotNull] IRecognizer recognizer, [Nullable] int offendingSymbol, int line, int charPositionInLine, [NotNull] string msg, [Nullable] RecognitionException e)
+        {
+            this.AddError(Antlr4RoslynErrorCode.ERR_SyntaxError, msg);
         }
     }
 }

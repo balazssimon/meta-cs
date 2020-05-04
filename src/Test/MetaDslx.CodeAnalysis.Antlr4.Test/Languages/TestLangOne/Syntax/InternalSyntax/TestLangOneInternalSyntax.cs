@@ -10548,8 +10548,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Inte
 	}
     public partial class TestLangOneParser
     {
-        private IncrementalAntlr4Parser _incrementalParser;
-        public TestLangOneParser(IncrementalAntlr4Parser incrementalParser)
+        private Antlr4SyntaxParser _incrementalParser;
+        public TestLangOneParser(Antlr4SyntaxParser incrementalParser)
             : base(incrementalParser.Lexer)
         {
             _incrementalParser = incrementalParser;

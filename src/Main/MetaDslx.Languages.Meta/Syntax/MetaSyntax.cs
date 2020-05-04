@@ -7791,7 +7791,7 @@ namespace MetaDslx.Languages.Meta
 	
 		public override SyntaxParser MakeParser(SourceText text, ParseOptions options, SyntaxNode oldTree, IReadOnlyList<TextChangeRange> changes)
 		{
-		    return new MetaSyntaxParser(text, (MetaParseOptions)options, oldTree, changes);
+		    return new MetaSyntaxParser(text, (MetaParseOptions)options, (MetaSyntaxNode)oldTree, changes);
 		}
 	
 		public override SyntaxParser MakeParser(string text)

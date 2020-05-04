@@ -94,10 +94,12 @@ namespace [Properties.DefaultNamespace].Syntax
             [lang]LanguageVersion languageVersion = null,
             DocumentationMode documentationMode = DocumentationMode.Parse,
             SourceCodeKind kind = SourceCodeKind.Regular,
+            bool incremental = false,
             IEnumerable<string> preprocessorSymbols = null)
             : this(languageVersion ?? [lang]LanguageVersion.[lang]1,
                   documentationMode,
                   kind,
+                  incremental,
                   preprocessorSymbols.ToImmutableArrayOrEmpty(),
                   ImmutableDictionary<string, string>.Empty)
         {
@@ -107,9 +109,10 @@ namespace [Properties.DefaultNamespace].Syntax
             [lang]LanguageVersion languageVersion,
             DocumentationMode documentationMode,
             SourceCodeKind kind,
+            bool incremental,
             ImmutableArray<string> preprocessorSymbols,
             IReadOnlyDictionary<string, string> features)
-            : base(languageVersion, documentationMode, kind, preprocessorSymbols, features)
+            : base(languageVersion, documentationMode, kind, incremental, preprocessorSymbols, features)
         {
         }
 
@@ -117,6 +120,7 @@ namespace [Properties.DefaultNamespace].Syntax
             languageVersion: ([lang]LanguageVersion)other.LanguageVersion,
             documentationMode: other.DocumentationMode,
             kind: other.Kind,
+            incremental: other.Incremental,
             preprocessorSymbols: other.PreprocessorSymbols,
             features: other.Features)
         {
@@ -133,6 +137,16 @@ namespace [Properties.DefaultNamespace].Syntax
 
             var effectiveKind = kind.MapSpecifiedToEffectiveKind();
             return new [lang]ParseOptions(this) { SpecifiedKind = kind, Kind = effectiveKind };
+        }
+
+        public new [lang]ParseOptions WithIncremental(bool incremental)
+        {
+            if (incremental == this.Incremental)
+            {
+                return this;
+            }
+
+            return new [lang]ParseOptions(this) { Incremental = incremental };
         }
 
         public [lang]ParseOptions WithLanguageVersion([lang]LanguageVersion version)
@@ -1011,10 +1025,10 @@ using MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax;
 
 namespace [Properties.DefaultNamespace].Syntax.InternalSyntax
 {
-    public class [Properties.LanguageName]SyntaxLexer : IncrementalAntlr4Lexer
+    public class [Properties.LanguageName]SyntaxLexer : Antlr4SyntaxLexer
     {
-        public [Properties.LanguageName]SyntaxLexer(SourceText text, [Properties.LanguageName]ParseOptions options, IEnumerable<TextChangeRange> changes) 
-            : base(SandyLanguage.Instance, text, options, changes)
+        public [Properties.LanguageName]SyntaxLexer(SourceText text, [Properties.LanguageName]ParseOptions options) 
+            : base(SandyLanguage.Instance, text, options)
         {
         }
 
@@ -1052,7 +1066,7 @@ using MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax;
 
 namespace [Properties.DefaultNamespace].Syntax.InternalSyntax
 {
-    public class [lang]SyntaxParser : IncrementalAntlr4Parser
+    public class [lang]SyntaxParser : Antlr4SyntaxParser
     {
         private readonly Antlr4ToRoslynVisitor _visitor;
 
@@ -2494,14 +2508,14 @@ internal class [lang]InternalSyntaxFactory : InternalSyntaxFactory, MetaDslx.Lan
         return new [lang]Parser(input);
     }
 ^
-	public override IncrementalLexer CreateLexer(SourceText text, LanguageParseOptions options, IEnumerable<TextChangeRange> changes)
+	public override SyntaxLexer CreateLexer(SourceText text, LanguageParseOptions options)
 	{
-		return new [lang]SyntaxLexer(text, ([lang]ParseOptions)options, changes);
+		return new [lang]SyntaxLexer(text, ([lang]ParseOptions)options ?? [lang]ParseOptions.Default);
 	}
 ^
-    public override global::MetaDslx.CodeAnalysis.Syntax.InternalSyntax.IncrementalParser CreateParser(SourceText text, LanguageParseOptions options, LanguageSyntaxNode oldTree, IEnumerable<TextChangeRange> changes, CancellationToken cancellationToken = default)
+    public override SyntaxParser CreateParser(SourceText text, LanguageParseOptions options, LanguageSyntaxNode oldTree, IEnumerable<TextChangeRange> changes, CancellationToken cancellationToken = default)
 	{
-		return new [lang]SyntaxParser(text, ([lang]ParseOptions)options, ([lang]SyntaxNode)oldTree, changes, cancellationToken);
+		return new [lang]SyntaxParser(text, ([lang]ParseOptions)options ?? [lang]ParseOptions.Default, ([lang]SyntaxNode)oldTree, changes, cancellationToken);
 	}
 ^
     public override Language Language => [lang]Language.Instance;
