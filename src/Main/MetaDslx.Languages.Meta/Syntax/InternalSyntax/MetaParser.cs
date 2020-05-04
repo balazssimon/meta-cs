@@ -33,6 +33,7 @@ using DFA = Antlr4.Runtime.Dfa.DFA;
 [System.CodeDom.Compiler.GeneratedCode("ANTLR", "4.6.6")]
 [System.CLSCompliant(false)]
 public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParser {
+    private MetaSyntaxParser SyntaxParser => (MetaSyntaxParser)this.IncrementalAntlr4Parser;
 	public const int
 		KNamespace=1, KUsing=2, KMetamodel=3, KExtern=4, KTypeDef=5, KAbstract=6, 
 		KClass=7, KStruct=8, KEnum=9, KAssociation=10, KContainment=11, KWith=12, 
@@ -183,7 +184,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 	{
 		_interp = new ParserATNSimulator(this,_ATN);
 	}
-	public partial class MainContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class MainContext : ParserRuleContext {
 		public NamespaceDeclarationContext namespaceDeclaration() {
 			return GetRuleContext<NamespaceDeclarationContext>(0);
 		}
@@ -210,7 +211,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public MainContext main() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_main, out MainContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseMain();
+	}
+
+	internal MainContext _DoParseMain() {
 		MainContext _localctx = new MainContext(_ctx, State);
 		EnterRule(_localctx, 0, RULE_main);
 		try {
@@ -231,7 +235,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		return _localctx;
 	}
 
-	public partial class NameContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class NameContext : ParserRuleContext {
 		public IdentifierContext identifier() {
 			return GetRuleContext<IdentifierContext>(0);
 		}
@@ -257,7 +261,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public NameContext name() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_name, out NameContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseName();
+	}
+
+	internal NameContext _DoParseName() {
 		NameContext _localctx = new NameContext(_ctx, State);
 		EnterRule(_localctx, 2, RULE_name);
 		try {
@@ -277,7 +284,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		return _localctx;
 	}
 
-	public partial class QualifiedNameContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class QualifiedNameContext : ParserRuleContext {
 		public QualifierContext qualifier() {
 			return GetRuleContext<QualifierContext>(0);
 		}
@@ -303,7 +310,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public QualifiedNameContext qualifiedName() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_qualifiedName, out QualifiedNameContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseQualifiedName();
+	}
+
+	internal QualifiedNameContext _DoParseQualifiedName() {
 		QualifiedNameContext _localctx = new QualifiedNameContext(_ctx, State);
 		EnterRule(_localctx, 4, RULE_qualifiedName);
 		try {
@@ -323,7 +333,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		return _localctx;
 	}
 
-	public partial class QualifierContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class QualifierContext : ParserRuleContext {
 		public IdentifierContext[] identifier() {
 			return GetRuleContexts<IdentifierContext>();
 		}
@@ -356,7 +366,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public QualifierContext qualifier() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_qualifier, out QualifierContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseQualifier();
+	}
+
+	internal QualifierContext _DoParseQualifier() {
 		QualifierContext _localctx = new QualifierContext(_ctx, State);
 		EnterRule(_localctx, 6, RULE_qualifier);
 		int _la;
@@ -391,7 +404,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		return _localctx;
 	}
 
-	public partial class AttributeContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class AttributeContext : ParserRuleContext {
 		public ITerminalNode TOpenBracket() { return GetToken(MetaParser.TOpenBracket, 0); }
 		public QualifierContext qualifier() {
 			return GetRuleContext<QualifierContext>(0);
@@ -419,7 +432,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public AttributeContext attribute() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_attribute, out AttributeContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseAttribute();
+	}
+
+	internal AttributeContext _DoParseAttribute() {
 		AttributeContext _localctx = new AttributeContext(_ctx, State);
 		EnterRule(_localctx, 8, RULE_attribute);
 		try {
@@ -441,7 +457,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		return _localctx;
 	}
 
-	public partial class NamespaceDeclarationContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class NamespaceDeclarationContext : ParserRuleContext {
 		public ITerminalNode KNamespace() { return GetToken(MetaParser.KNamespace, 0); }
 		public QualifiedNameContext qualifiedName() {
 			return GetRuleContext<QualifiedNameContext>(0);
@@ -477,7 +493,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public NamespaceDeclarationContext namespaceDeclaration() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_namespaceDeclaration, out NamespaceDeclarationContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseNamespaceDeclaration();
+	}
+
+	internal NamespaceDeclarationContext _DoParseNamespaceDeclaration() {
 		NamespaceDeclarationContext _localctx = new NamespaceDeclarationContext(_ctx, State);
 		EnterRule(_localctx, 10, RULE_namespaceDeclaration);
 		int _la;
@@ -513,7 +532,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		return _localctx;
 	}
 
-	public partial class NamespaceBodyContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class NamespaceBodyContext : ParserRuleContext {
 		public ITerminalNode TOpenBrace() { return GetToken(MetaParser.TOpenBrace, 0); }
 		public MetamodelDeclarationContext metamodelDeclaration() {
 			return GetRuleContext<MetamodelDeclarationContext>(0);
@@ -547,7 +566,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public NamespaceBodyContext namespaceBody() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_namespaceBody, out NamespaceBodyContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseNamespaceBody();
+	}
+
+	internal NamespaceBodyContext _DoParseNamespaceBody() {
 		NamespaceBodyContext _localctx = new NamespaceBodyContext(_ctx, State);
 		EnterRule(_localctx, 12, RULE_namespaceBody);
 		int _la;
@@ -583,7 +605,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		return _localctx;
 	}
 
-	public partial class MetamodelDeclarationContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class MetamodelDeclarationContext : ParserRuleContext {
 		public ITerminalNode KMetamodel() { return GetToken(MetaParser.KMetamodel, 0); }
 		public NameContext name() {
 			return GetRuleContext<NameContext>(0);
@@ -622,7 +644,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public MetamodelDeclarationContext metamodelDeclaration() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_metamodelDeclaration, out MetamodelDeclarationContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseMetamodelDeclaration();
+	}
+
+	internal MetamodelDeclarationContext _DoParseMetamodelDeclaration() {
 		MetamodelDeclarationContext _localctx = new MetamodelDeclarationContext(_ctx, State);
 		EnterRule(_localctx, 14, RULE_metamodelDeclaration);
 		int _la;
@@ -677,7 +702,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		return _localctx;
 	}
 
-	public partial class MetamodelPropertyListContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class MetamodelPropertyListContext : ParserRuleContext {
 		public MetamodelPropertyContext[] metamodelProperty() {
 			return GetRuleContexts<MetamodelPropertyContext>();
 		}
@@ -710,7 +735,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public MetamodelPropertyListContext metamodelPropertyList() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_metamodelPropertyList, out MetamodelPropertyListContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseMetamodelPropertyList();
+	}
+
+	internal MetamodelPropertyListContext _DoParseMetamodelPropertyList() {
 		MetamodelPropertyListContext _localctx = new MetamodelPropertyListContext(_ctx, State);
 		EnterRule(_localctx, 16, RULE_metamodelPropertyList);
 		int _la;
@@ -745,7 +773,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		return _localctx;
 	}
 
-	public partial class MetamodelPropertyContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class MetamodelPropertyContext : ParserRuleContext {
 		public MetamodelUriPropertyContext metamodelUriProperty() {
 			return GetRuleContext<MetamodelUriPropertyContext>(0);
 		}
@@ -774,7 +802,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public MetamodelPropertyContext metamodelProperty() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_metamodelProperty, out MetamodelPropertyContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseMetamodelProperty();
+	}
+
+	internal MetamodelPropertyContext _DoParseMetamodelProperty() {
 		MetamodelPropertyContext _localctx = new MetamodelPropertyContext(_ctx, State);
 		EnterRule(_localctx, 18, RULE_metamodelProperty);
 		try {
@@ -808,7 +839,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		return _localctx;
 	}
 
-	public partial class MetamodelUriPropertyContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class MetamodelUriPropertyContext : ParserRuleContext {
 		public ITerminalNode IUri() { return GetToken(MetaParser.IUri, 0); }
 		public ITerminalNode TAssign() { return GetToken(MetaParser.TAssign, 0); }
 		public StringLiteralContext stringLiteral() {
@@ -836,7 +867,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public MetamodelUriPropertyContext metamodelUriProperty() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_metamodelUriProperty, out MetamodelUriPropertyContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseMetamodelUriProperty();
+	}
+
+	internal MetamodelUriPropertyContext _DoParseMetamodelUriProperty() {
 		MetamodelUriPropertyContext _localctx = new MetamodelUriPropertyContext(_ctx, State);
 		EnterRule(_localctx, 20, RULE_metamodelUriProperty);
 		try {
@@ -858,7 +892,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		return _localctx;
 	}
 
-	public partial class MetamodelPrefixPropertyContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class MetamodelPrefixPropertyContext : ParserRuleContext {
 		public ITerminalNode IPrefix() { return GetToken(MetaParser.IPrefix, 0); }
 		public ITerminalNode TAssign() { return GetToken(MetaParser.TAssign, 0); }
 		public StringLiteralContext stringLiteral() {
@@ -886,7 +920,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public MetamodelPrefixPropertyContext metamodelPrefixProperty() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_metamodelPrefixProperty, out MetamodelPrefixPropertyContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseMetamodelPrefixProperty();
+	}
+
+	internal MetamodelPrefixPropertyContext _DoParseMetamodelPrefixProperty() {
 		MetamodelPrefixPropertyContext _localctx = new MetamodelPrefixPropertyContext(_ctx, State);
 		EnterRule(_localctx, 22, RULE_metamodelPrefixProperty);
 		try {
@@ -908,7 +945,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		return _localctx;
 	}
 
-	public partial class DeclarationContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class DeclarationContext : ParserRuleContext {
 		public EnumDeclarationContext enumDeclaration() {
 			return GetRuleContext<EnumDeclarationContext>(0);
 		}
@@ -943,7 +980,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public DeclarationContext declaration() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_declaration, out DeclarationContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseDeclaration();
+	}
+
+	internal DeclarationContext _DoParseDeclaration() {
 		DeclarationContext _localctx = new DeclarationContext(_ctx, State);
 		EnterRule(_localctx, 24, RULE_declaration);
 		try {
@@ -990,7 +1030,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		return _localctx;
 	}
 
-	public partial class EnumDeclarationContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class EnumDeclarationContext : ParserRuleContext {
 		public ITerminalNode KEnum() { return GetToken(MetaParser.KEnum, 0); }
 		public NameContext name() {
 			return GetRuleContext<NameContext>(0);
@@ -1026,7 +1066,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public EnumDeclarationContext enumDeclaration() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_enumDeclaration, out EnumDeclarationContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseEnumDeclaration();
+	}
+
+	internal EnumDeclarationContext _DoParseEnumDeclaration() {
 		EnumDeclarationContext _localctx = new EnumDeclarationContext(_ctx, State);
 		EnterRule(_localctx, 26, RULE_enumDeclaration);
 		int _la;
@@ -1062,7 +1105,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		return _localctx;
 	}
 
-	public partial class EnumBodyContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class EnumBodyContext : ParserRuleContext {
 		public ITerminalNode TOpenBrace() { return GetToken(MetaParser.TOpenBrace, 0); }
 		public EnumValuesContext enumValues() {
 			return GetRuleContext<EnumValuesContext>(0);
@@ -1097,7 +1140,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public EnumBodyContext enumBody() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_enumBody, out EnumBodyContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseEnumBody();
+	}
+
+	internal EnumBodyContext _DoParseEnumBody() {
 		EnumBodyContext _localctx = new EnumBodyContext(_ctx, State);
 		EnterRule(_localctx, 28, RULE_enumBody);
 		int _la;
@@ -1142,7 +1188,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		return _localctx;
 	}
 
-	public partial class EnumValuesContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class EnumValuesContext : ParserRuleContext {
 		public EnumValueContext[] enumValue() {
 			return GetRuleContexts<EnumValueContext>();
 		}
@@ -1175,7 +1221,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public EnumValuesContext enumValues() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_enumValues, out EnumValuesContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseEnumValues();
+	}
+
+	internal EnumValuesContext _DoParseEnumValues() {
 		EnumValuesContext _localctx = new EnumValuesContext(_ctx, State);
 		EnterRule(_localctx, 30, RULE_enumValues);
 		int _la;
@@ -1210,7 +1259,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		return _localctx;
 	}
 
-	public partial class EnumValueContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class EnumValueContext : ParserRuleContext {
 		public NameContext name() {
 			return GetRuleContext<NameContext>(0);
 		}
@@ -1242,7 +1291,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public EnumValueContext enumValue() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_enumValue, out EnumValueContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseEnumValue();
+	}
+
+	internal EnumValueContext _DoParseEnumValue() {
 		EnumValueContext _localctx = new EnumValueContext(_ctx, State);
 		EnterRule(_localctx, 32, RULE_enumValue);
 		int _la;
@@ -1276,7 +1328,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		return _localctx;
 	}
 
-	public partial class EnumMemberDeclarationContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class EnumMemberDeclarationContext : ParserRuleContext {
 		public OperationDeclarationContext operationDeclaration() {
 			return GetRuleContext<OperationDeclarationContext>(0);
 		}
@@ -1302,7 +1354,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public EnumMemberDeclarationContext enumMemberDeclaration() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_enumMemberDeclaration, out EnumMemberDeclarationContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseEnumMemberDeclaration();
+	}
+
+	internal EnumMemberDeclarationContext _DoParseEnumMemberDeclaration() {
 		EnumMemberDeclarationContext _localctx = new EnumMemberDeclarationContext(_ctx, State);
 		EnterRule(_localctx, 34, RULE_enumMemberDeclaration);
 		try {
@@ -1322,7 +1377,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		return _localctx;
 	}
 
-	public partial class ClassDeclarationContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class ClassDeclarationContext : ParserRuleContext {
 		public ITerminalNode KClass() { return GetToken(MetaParser.KClass, 0); }
 		public NameContext name() {
 			return GetRuleContext<NameContext>(0);
@@ -1363,7 +1418,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public ClassDeclarationContext classDeclaration() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_classDeclaration, out ClassDeclarationContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseClassDeclaration();
+	}
+
+	internal ClassDeclarationContext _DoParseClassDeclaration() {
 		ClassDeclarationContext _localctx = new ClassDeclarationContext(_ctx, State);
 		EnterRule(_localctx, 36, RULE_classDeclaration);
 		int _la;
@@ -1418,7 +1476,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		return _localctx;
 	}
 
-	public partial class ClassBodyContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class ClassBodyContext : ParserRuleContext {
 		public ITerminalNode TOpenBrace() { return GetToken(MetaParser.TOpenBrace, 0); }
 		public ITerminalNode TCloseBrace() { return GetToken(MetaParser.TCloseBrace, 0); }
 		public ClassMemberDeclarationContext[] classMemberDeclaration() {
@@ -1449,7 +1507,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public ClassBodyContext classBody() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_classBody, out ClassBodyContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseClassBody();
+	}
+
+	internal ClassBodyContext _DoParseClassBody() {
 		ClassBodyContext _localctx = new ClassBodyContext(_ctx, State);
 		EnterRule(_localctx, 38, RULE_classBody);
 		int _la;
@@ -1484,7 +1545,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		return _localctx;
 	}
 
-	public partial class ClassAncestorsContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class ClassAncestorsContext : ParserRuleContext {
 		public ClassAncestorContext[] classAncestor() {
 			return GetRuleContexts<ClassAncestorContext>();
 		}
@@ -1517,7 +1578,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public ClassAncestorsContext classAncestors() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_classAncestors, out ClassAncestorsContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseClassAncestors();
+	}
+
+	internal ClassAncestorsContext _DoParseClassAncestors() {
 		ClassAncestorsContext _localctx = new ClassAncestorsContext(_ctx, State);
 		EnterRule(_localctx, 40, RULE_classAncestors);
 		int _la;
@@ -1552,7 +1616,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		return _localctx;
 	}
 
-	public partial class ClassAncestorContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class ClassAncestorContext : ParserRuleContext {
 		public QualifierContext qualifier() {
 			return GetRuleContext<QualifierContext>(0);
 		}
@@ -1578,7 +1642,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public ClassAncestorContext classAncestor() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_classAncestor, out ClassAncestorContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseClassAncestor();
+	}
+
+	internal ClassAncestorContext _DoParseClassAncestor() {
 		ClassAncestorContext _localctx = new ClassAncestorContext(_ctx, State);
 		EnterRule(_localctx, 42, RULE_classAncestor);
 		try {
@@ -1598,7 +1665,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		return _localctx;
 	}
 
-	public partial class ClassMemberDeclarationContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class ClassMemberDeclarationContext : ParserRuleContext {
 		public FieldDeclarationContext fieldDeclaration() {
 			return GetRuleContext<FieldDeclarationContext>(0);
 		}
@@ -1627,7 +1694,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public ClassMemberDeclarationContext classMemberDeclaration() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_classMemberDeclaration, out ClassMemberDeclarationContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseClassMemberDeclaration();
+	}
+
+	internal ClassMemberDeclarationContext _DoParseClassMemberDeclaration() {
 		ClassMemberDeclarationContext _localctx = new ClassMemberDeclarationContext(_ctx, State);
 		EnterRule(_localctx, 44, RULE_classMemberDeclaration);
 		try {
@@ -1660,7 +1730,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		return _localctx;
 	}
 
-	public partial class FieldDeclarationContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class FieldDeclarationContext : ParserRuleContext {
 		public TypeReferenceContext typeReference() {
 			return GetRuleContext<TypeReferenceContext>(0);
 		}
@@ -1711,7 +1781,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public FieldDeclarationContext fieldDeclaration() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_fieldDeclaration, out FieldDeclarationContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseFieldDeclaration();
+	}
+
+	internal FieldDeclarationContext _DoParseFieldDeclaration() {
 		FieldDeclarationContext _localctx = new FieldDeclarationContext(_ctx, State);
 		EnterRule(_localctx, 46, RULE_fieldDeclaration);
 		int _la;
@@ -1787,7 +1860,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		return _localctx;
 	}
 
-	public partial class FieldContainmentContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class FieldContainmentContext : ParserRuleContext {
 		public ITerminalNode KContainment() { return GetToken(MetaParser.KContainment, 0); }
 		public FieldContainmentContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -1811,7 +1884,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public FieldContainmentContext fieldContainment() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_fieldContainment, out FieldContainmentContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseFieldContainment();
+	}
+
+	internal FieldContainmentContext _DoParseFieldContainment() {
 		FieldContainmentContext _localctx = new FieldContainmentContext(_ctx, State);
 		EnterRule(_localctx, 48, RULE_fieldContainment);
 		try {
@@ -1831,7 +1907,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		return _localctx;
 	}
 
-	public partial class FieldModifierContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class FieldModifierContext : ParserRuleContext {
 		public ITerminalNode KReadonly() { return GetToken(MetaParser.KReadonly, 0); }
 		public ITerminalNode KLazy() { return GetToken(MetaParser.KLazy, 0); }
 		public ITerminalNode KDerived() { return GetToken(MetaParser.KDerived, 0); }
@@ -1858,7 +1934,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public FieldModifierContext fieldModifier() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_fieldModifier, out FieldModifierContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseFieldModifier();
+	}
+
+	internal FieldModifierContext _DoParseFieldModifier() {
 		FieldModifierContext _localctx = new FieldModifierContext(_ctx, State);
 		EnterRule(_localctx, 50, RULE_fieldModifier);
 		int _la;
@@ -1890,7 +1969,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		return _localctx;
 	}
 
-	public partial class DefaultValueContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class DefaultValueContext : ParserRuleContext {
 		public ITerminalNode TAssign() { return GetToken(MetaParser.TAssign, 0); }
 		public StringLiteralContext stringLiteral() {
 			return GetRuleContext<StringLiteralContext>(0);
@@ -1917,7 +1996,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public DefaultValueContext defaultValue() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_defaultValue, out DefaultValueContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseDefaultValue();
+	}
+
+	internal DefaultValueContext _DoParseDefaultValue() {
 		DefaultValueContext _localctx = new DefaultValueContext(_ctx, State);
 		EnterRule(_localctx, 52, RULE_defaultValue);
 		try {
@@ -1938,7 +2020,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		return _localctx;
 	}
 
-	public partial class RedefinitionsOrSubsettingsContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class RedefinitionsOrSubsettingsContext : ParserRuleContext {
 		public RedefinitionsContext redefinitions() {
 			return GetRuleContext<RedefinitionsContext>(0);
 		}
@@ -1967,7 +2049,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public RedefinitionsOrSubsettingsContext redefinitionsOrSubsettings() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_redefinitionsOrSubsettings, out RedefinitionsOrSubsettingsContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseRedefinitionsOrSubsettings();
+	}
+
+	internal RedefinitionsOrSubsettingsContext _DoParseRedefinitionsOrSubsettings() {
 		RedefinitionsOrSubsettingsContext _localctx = new RedefinitionsOrSubsettingsContext(_ctx, State);
 		EnterRule(_localctx, 54, RULE_redefinitionsOrSubsettings);
 		try {
@@ -2001,7 +2086,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		return _localctx;
 	}
 
-	public partial class RedefinitionsContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class RedefinitionsContext : ParserRuleContext {
 		public ITerminalNode KRedefines() { return GetToken(MetaParser.KRedefines, 0); }
 		public NameUseListContext nameUseList() {
 			return GetRuleContext<NameUseListContext>(0);
@@ -2028,7 +2113,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public RedefinitionsContext redefinitions() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_redefinitions, out RedefinitionsContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseRedefinitions();
+	}
+
+	internal RedefinitionsContext _DoParseRedefinitions() {
 		RedefinitionsContext _localctx = new RedefinitionsContext(_ctx, State);
 		EnterRule(_localctx, 56, RULE_redefinitions);
 		int _la;
@@ -2058,7 +2146,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		return _localctx;
 	}
 
-	public partial class SubsettingsContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class SubsettingsContext : ParserRuleContext {
 		public ITerminalNode KSubsets() { return GetToken(MetaParser.KSubsets, 0); }
 		public NameUseListContext nameUseList() {
 			return GetRuleContext<NameUseListContext>(0);
@@ -2085,7 +2173,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public SubsettingsContext subsettings() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_subsettings, out SubsettingsContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseSubsettings();
+	}
+
+	internal SubsettingsContext _DoParseSubsettings() {
 		SubsettingsContext _localctx = new SubsettingsContext(_ctx, State);
 		EnterRule(_localctx, 58, RULE_subsettings);
 		int _la;
@@ -2115,7 +2206,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		return _localctx;
 	}
 
-	public partial class NameUseListContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class NameUseListContext : ParserRuleContext {
 		public QualifierContext[] qualifier() {
 			return GetRuleContexts<QualifierContext>();
 		}
@@ -2148,7 +2239,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public NameUseListContext nameUseList() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_nameUseList, out NameUseListContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseNameUseList();
+	}
+
+	internal NameUseListContext _DoParseNameUseList() {
 		NameUseListContext _localctx = new NameUseListContext(_ctx, State);
 		EnterRule(_localctx, 60, RULE_nameUseList);
 		int _la;
@@ -2183,7 +2277,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		return _localctx;
 	}
 
-	public partial class ConstDeclarationContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class ConstDeclarationContext : ParserRuleContext {
 		public ITerminalNode KConst() { return GetToken(MetaParser.KConst, 0); }
 		public TypeReferenceContext typeReference() {
 			return GetRuleContext<TypeReferenceContext>(0);
@@ -2217,7 +2311,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public ConstDeclarationContext constDeclaration() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_constDeclaration, out ConstDeclarationContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseConstDeclaration();
+	}
+
+	internal ConstDeclarationContext _DoParseConstDeclaration() {
 		ConstDeclarationContext _localctx = new ConstDeclarationContext(_ctx, State);
 		EnterRule(_localctx, 62, RULE_constDeclaration);
 		int _la;
@@ -2250,7 +2347,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		return _localctx;
 	}
 
-	public partial class ConstValueContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class ConstValueContext : ParserRuleContext {
 		public ITerminalNode TAssign() { return GetToken(MetaParser.TAssign, 0); }
 		public StringLiteralContext stringLiteral() {
 			return GetRuleContext<StringLiteralContext>(0);
@@ -2277,7 +2374,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public ConstValueContext constValue() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_constValue, out ConstValueContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseConstValue();
+	}
+
+	internal ConstValueContext _DoParseConstValue() {
 		ConstValueContext _localctx = new ConstValueContext(_ctx, State);
 		EnterRule(_localctx, 64, RULE_constValue);
 		try {
@@ -2298,7 +2398,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		return _localctx;
 	}
 
-	public partial class ReturnTypeContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class ReturnTypeContext : ParserRuleContext {
 		public TypeReferenceContext typeReference() {
 			return GetRuleContext<TypeReferenceContext>(0);
 		}
@@ -2327,7 +2427,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public ReturnTypeContext returnType() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_returnType, out ReturnTypeContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseReturnType();
+	}
+
+	internal ReturnTypeContext _DoParseReturnType() {
 		ReturnTypeContext _localctx = new ReturnTypeContext(_ctx, State);
 		EnterRule(_localctx, 66, RULE_returnType);
 		try {
@@ -2377,7 +2480,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		return _localctx;
 	}
 
-	public partial class TypeOfReferenceContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class TypeOfReferenceContext : ParserRuleContext {
 		public TypeReferenceContext typeReference() {
 			return GetRuleContext<TypeReferenceContext>(0);
 		}
@@ -2403,7 +2506,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public TypeOfReferenceContext typeOfReference() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_typeOfReference, out TypeOfReferenceContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseTypeOfReference();
+	}
+
+	internal TypeOfReferenceContext _DoParseTypeOfReference() {
 		TypeOfReferenceContext _localctx = new TypeOfReferenceContext(_ctx, State);
 		EnterRule(_localctx, 68, RULE_typeOfReference);
 		try {
@@ -2423,7 +2529,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		return _localctx;
 	}
 
-	public partial class TypeReferenceContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class TypeReferenceContext : ParserRuleContext {
 		public CollectionTypeContext collectionType() {
 			return GetRuleContext<CollectionTypeContext>(0);
 		}
@@ -2452,7 +2558,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public TypeReferenceContext typeReference() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_typeReference, out TypeReferenceContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseTypeReference();
+	}
+
+	internal TypeReferenceContext _DoParseTypeReference() {
 		TypeReferenceContext _localctx = new TypeReferenceContext(_ctx, State);
 		EnterRule(_localctx, 70, RULE_typeReference);
 		try {
@@ -2501,7 +2610,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		return _localctx;
 	}
 
-	public partial class SimpleTypeContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class SimpleTypeContext : ParserRuleContext {
 		public PrimitiveTypeContext primitiveType() {
 			return GetRuleContext<PrimitiveTypeContext>(0);
 		}
@@ -2536,7 +2645,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public SimpleTypeContext simpleType() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_simpleType, out SimpleTypeContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseSimpleType();
+	}
+
+	internal SimpleTypeContext _DoParseSimpleType() {
 		SimpleTypeContext _localctx = new SimpleTypeContext(_ctx, State);
 		EnterRule(_localctx, 72, RULE_simpleType);
 		try {
@@ -2583,7 +2695,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		return _localctx;
 	}
 
-	public partial class ClassTypeContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class ClassTypeContext : ParserRuleContext {
 		public QualifierContext qualifier() {
 			return GetRuleContext<QualifierContext>(0);
 		}
@@ -2609,7 +2721,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public ClassTypeContext classType() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_classType, out ClassTypeContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseClassType();
+	}
+
+	internal ClassTypeContext _DoParseClassType() {
 		ClassTypeContext _localctx = new ClassTypeContext(_ctx, State);
 		EnterRule(_localctx, 74, RULE_classType);
 		try {
@@ -2629,7 +2744,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		return _localctx;
 	}
 
-	public partial class ObjectTypeContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class ObjectTypeContext : ParserRuleContext {
 		public ITerminalNode KObject() { return GetToken(MetaParser.KObject, 0); }
 		public ITerminalNode KSymbol() { return GetToken(MetaParser.KSymbol, 0); }
 		public ITerminalNode KString() { return GetToken(MetaParser.KString, 0); }
@@ -2655,7 +2770,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public ObjectTypeContext objectType() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_objectType, out ObjectTypeContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseObjectType();
+	}
+
+	internal ObjectTypeContext _DoParseObjectType() {
 		ObjectTypeContext _localctx = new ObjectTypeContext(_ctx, State);
 		EnterRule(_localctx, 76, RULE_objectType);
 		int _la;
@@ -2687,7 +2805,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		return _localctx;
 	}
 
-	public partial class PrimitiveTypeContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class PrimitiveTypeContext : ParserRuleContext {
 		public ITerminalNode KInt() { return GetToken(MetaParser.KInt, 0); }
 		public ITerminalNode KLong() { return GetToken(MetaParser.KLong, 0); }
 		public ITerminalNode KFloat() { return GetToken(MetaParser.KFloat, 0); }
@@ -2716,7 +2834,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public PrimitiveTypeContext primitiveType() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_primitiveType, out PrimitiveTypeContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParsePrimitiveType();
+	}
+
+	internal PrimitiveTypeContext _DoParsePrimitiveType() {
 		PrimitiveTypeContext _localctx = new PrimitiveTypeContext(_ctx, State);
 		EnterRule(_localctx, 78, RULE_primitiveType);
 		int _la;
@@ -2748,7 +2869,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		return _localctx;
 	}
 
-	public partial class VoidTypeContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class VoidTypeContext : ParserRuleContext {
 		public ITerminalNode KVoid() { return GetToken(MetaParser.KVoid, 0); }
 		public VoidTypeContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -2772,7 +2893,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public VoidTypeContext voidType() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_voidType, out VoidTypeContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseVoidType();
+	}
+
+	internal VoidTypeContext _DoParseVoidType() {
 		VoidTypeContext _localctx = new VoidTypeContext(_ctx, State);
 		EnterRule(_localctx, 80, RULE_voidType);
 		try {
@@ -2792,7 +2916,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		return _localctx;
 	}
 
-	public partial class NullableTypeContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class NullableTypeContext : ParserRuleContext {
 		public PrimitiveTypeContext primitiveType() {
 			return GetRuleContext<PrimitiveTypeContext>(0);
 		}
@@ -2819,7 +2943,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public NullableTypeContext nullableType() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_nullableType, out NullableTypeContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseNullableType();
+	}
+
+	internal NullableTypeContext _DoParseNullableType() {
 		NullableTypeContext _localctx = new NullableTypeContext(_ctx, State);
 		EnterRule(_localctx, 82, RULE_nullableType);
 		try {
@@ -2840,7 +2967,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		return _localctx;
 	}
 
-	public partial class CollectionTypeContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class CollectionTypeContext : ParserRuleContext {
 		public CollectionKindContext collectionKind() {
 			return GetRuleContext<CollectionKindContext>(0);
 		}
@@ -2871,7 +2998,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public CollectionTypeContext collectionType() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_collectionType, out CollectionTypeContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseCollectionType();
+	}
+
+	internal CollectionTypeContext _DoParseCollectionType() {
 		CollectionTypeContext _localctx = new CollectionTypeContext(_ctx, State);
 		EnterRule(_localctx, 84, RULE_collectionType);
 		try {
@@ -2894,7 +3024,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		return _localctx;
 	}
 
-	public partial class CollectionKindContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class CollectionKindContext : ParserRuleContext {
 		public ITerminalNode KSet() { return GetToken(MetaParser.KSet, 0); }
 		public ITerminalNode KList() { return GetToken(MetaParser.KList, 0); }
 		public ITerminalNode KMultiSet() { return GetToken(MetaParser.KMultiSet, 0); }
@@ -2921,7 +3051,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public CollectionKindContext collectionKind() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_collectionKind, out CollectionKindContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseCollectionKind();
+	}
+
+	internal CollectionKindContext _DoParseCollectionKind() {
 		CollectionKindContext _localctx = new CollectionKindContext(_ctx, State);
 		EnterRule(_localctx, 86, RULE_collectionKind);
 		int _la;
@@ -2953,7 +3086,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		return _localctx;
 	}
 
-	public partial class OperationDeclarationContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class OperationDeclarationContext : ParserRuleContext {
 		public ReturnTypeContext returnType() {
 			return GetRuleContext<ReturnTypeContext>(0);
 		}
@@ -3000,7 +3133,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public OperationDeclarationContext operationDeclaration() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_operationDeclaration, out OperationDeclarationContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseOperationDeclaration();
+	}
+
+	internal OperationDeclarationContext _DoParseOperationDeclaration() {
 		OperationDeclarationContext _localctx = new OperationDeclarationContext(_ctx, State);
 		EnterRule(_localctx, 88, RULE_operationDeclaration);
 		int _la;
@@ -3060,7 +3196,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		return _localctx;
 	}
 
-	public partial class OperationModifierContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class OperationModifierContext : ParserRuleContext {
 		public OperationModifierBuilderContext operationModifierBuilder() {
 			return GetRuleContext<OperationModifierBuilderContext>(0);
 		}
@@ -3089,7 +3225,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public OperationModifierContext operationModifier() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_operationModifier, out OperationModifierContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseOperationModifier();
+	}
+
+	internal OperationModifierContext _DoParseOperationModifier() {
 		OperationModifierContext _localctx = new OperationModifierContext(_ctx, State);
 		EnterRule(_localctx, 90, RULE_operationModifier);
 		try {
@@ -3123,7 +3262,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		return _localctx;
 	}
 
-	public partial class OperationModifierBuilderContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class OperationModifierBuilderContext : ParserRuleContext {
 		public ITerminalNode KBuilder() { return GetToken(MetaParser.KBuilder, 0); }
 		public OperationModifierBuilderContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -3147,7 +3286,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public OperationModifierBuilderContext operationModifierBuilder() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_operationModifierBuilder, out OperationModifierBuilderContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseOperationModifierBuilder();
+	}
+
+	internal OperationModifierBuilderContext _DoParseOperationModifierBuilder() {
 		OperationModifierBuilderContext _localctx = new OperationModifierBuilderContext(_ctx, State);
 		EnterRule(_localctx, 92, RULE_operationModifierBuilder);
 		try {
@@ -3167,7 +3309,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		return _localctx;
 	}
 
-	public partial class OperationModifierReadonlyContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class OperationModifierReadonlyContext : ParserRuleContext {
 		public ITerminalNode KReadonly() { return GetToken(MetaParser.KReadonly, 0); }
 		public OperationModifierReadonlyContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -3191,7 +3333,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public OperationModifierReadonlyContext operationModifierReadonly() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_operationModifierReadonly, out OperationModifierReadonlyContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseOperationModifierReadonly();
+	}
+
+	internal OperationModifierReadonlyContext _DoParseOperationModifierReadonly() {
 		OperationModifierReadonlyContext _localctx = new OperationModifierReadonlyContext(_ctx, State);
 		EnterRule(_localctx, 94, RULE_operationModifierReadonly);
 		try {
@@ -3211,7 +3356,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		return _localctx;
 	}
 
-	public partial class ParameterListContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class ParameterListContext : ParserRuleContext {
 		public ParameterContext[] parameter() {
 			return GetRuleContexts<ParameterContext>();
 		}
@@ -3244,7 +3389,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public ParameterListContext parameterList() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_parameterList, out ParameterListContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseParameterList();
+	}
+
+	internal ParameterListContext _DoParseParameterList() {
 		ParameterListContext _localctx = new ParameterListContext(_ctx, State);
 		EnterRule(_localctx, 96, RULE_parameterList);
 		int _la;
@@ -3279,7 +3427,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		return _localctx;
 	}
 
-	public partial class ParameterContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class ParameterContext : ParserRuleContext {
 		public TypeReferenceContext typeReference() {
 			return GetRuleContext<TypeReferenceContext>(0);
 		}
@@ -3314,7 +3462,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public ParameterContext parameter() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_parameter, out ParameterContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseParameter();
+	}
+
+	internal ParameterContext _DoParseParameter() {
 		ParameterContext _localctx = new ParameterContext(_ctx, State);
 		EnterRule(_localctx, 98, RULE_parameter);
 		int _la;
@@ -3349,7 +3500,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		return _localctx;
 	}
 
-	public partial class AssociationDeclarationContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class AssociationDeclarationContext : ParserRuleContext {
 		public QualifierContext source;
 		public QualifierContext target;
 		public ITerminalNode KAssociation() { return GetToken(MetaParser.KAssociation, 0); }
@@ -3389,7 +3540,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public AssociationDeclarationContext associationDeclaration() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_associationDeclaration, out AssociationDeclarationContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseAssociationDeclaration();
+	}
+
+	internal AssociationDeclarationContext _DoParseAssociationDeclaration() {
 		AssociationDeclarationContext _localctx = new AssociationDeclarationContext(_ctx, State);
 		EnterRule(_localctx, 100, RULE_associationDeclaration);
 		int _la;
@@ -3427,7 +3581,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		return _localctx;
 	}
 
-	public partial class IdentifierContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class IdentifierContext : ParserRuleContext {
 		public ITerminalNode IdentifierNormal() { return GetToken(MetaParser.IdentifierNormal, 0); }
 		public ITerminalNode IdentifierVerbatim() { return GetToken(MetaParser.IdentifierVerbatim, 0); }
 		public ITerminalNode IUri() { return GetToken(MetaParser.IUri, 0); }
@@ -3454,7 +3608,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public IdentifierContext identifier() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_identifier, out IdentifierContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseIdentifier();
+	}
+
+	internal IdentifierContext _DoParseIdentifier() {
 		IdentifierContext _localctx = new IdentifierContext(_ctx, State);
 		EnterRule(_localctx, 102, RULE_identifier);
 		int _la;
@@ -3486,7 +3643,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		return _localctx;
 	}
 
-	public partial class LiteralContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class LiteralContext : ParserRuleContext {
 		public NullLiteralContext nullLiteral() {
 			return GetRuleContext<NullLiteralContext>(0);
 		}
@@ -3527,7 +3684,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public LiteralContext literal() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_literal, out LiteralContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseLiteral();
+	}
+
+	internal LiteralContext _DoParseLiteral() {
 		LiteralContext _localctx = new LiteralContext(_ctx, State);
 		EnterRule(_localctx, 104, RULE_literal);
 		try {
@@ -3586,7 +3746,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		return _localctx;
 	}
 
-	public partial class NullLiteralContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class NullLiteralContext : ParserRuleContext {
 		public ITerminalNode KNull() { return GetToken(MetaParser.KNull, 0); }
 		public NullLiteralContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -3610,7 +3770,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public NullLiteralContext nullLiteral() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_nullLiteral, out NullLiteralContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseNullLiteral();
+	}
+
+	internal NullLiteralContext _DoParseNullLiteral() {
 		NullLiteralContext _localctx = new NullLiteralContext(_ctx, State);
 		EnterRule(_localctx, 106, RULE_nullLiteral);
 		try {
@@ -3630,7 +3793,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		return _localctx;
 	}
 
-	public partial class BooleanLiteralContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class BooleanLiteralContext : ParserRuleContext {
 		public ITerminalNode KTrue() { return GetToken(MetaParser.KTrue, 0); }
 		public ITerminalNode KFalse() { return GetToken(MetaParser.KFalse, 0); }
 		public BooleanLiteralContext(ParserRuleContext parent, int invokingState)
@@ -3655,7 +3818,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public BooleanLiteralContext booleanLiteral() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_booleanLiteral, out BooleanLiteralContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseBooleanLiteral();
+	}
+
+	internal BooleanLiteralContext _DoParseBooleanLiteral() {
 		BooleanLiteralContext _localctx = new BooleanLiteralContext(_ctx, State);
 		EnterRule(_localctx, 108, RULE_booleanLiteral);
 		int _la;
@@ -3687,7 +3853,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		return _localctx;
 	}
 
-	public partial class IntegerLiteralContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class IntegerLiteralContext : ParserRuleContext {
 		public ITerminalNode LInteger() { return GetToken(MetaParser.LInteger, 0); }
 		public IntegerLiteralContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -3711,7 +3877,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public IntegerLiteralContext integerLiteral() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_integerLiteral, out IntegerLiteralContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseIntegerLiteral();
+	}
+
+	internal IntegerLiteralContext _DoParseIntegerLiteral() {
 		IntegerLiteralContext _localctx = new IntegerLiteralContext(_ctx, State);
 		EnterRule(_localctx, 110, RULE_integerLiteral);
 		try {
@@ -3731,7 +3900,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		return _localctx;
 	}
 
-	public partial class DecimalLiteralContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class DecimalLiteralContext : ParserRuleContext {
 		public ITerminalNode LDecimal() { return GetToken(MetaParser.LDecimal, 0); }
 		public DecimalLiteralContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -3755,7 +3924,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public DecimalLiteralContext decimalLiteral() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_decimalLiteral, out DecimalLiteralContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseDecimalLiteral();
+	}
+
+	internal DecimalLiteralContext _DoParseDecimalLiteral() {
 		DecimalLiteralContext _localctx = new DecimalLiteralContext(_ctx, State);
 		EnterRule(_localctx, 112, RULE_decimalLiteral);
 		try {
@@ -3775,7 +3947,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		return _localctx;
 	}
 
-	public partial class ScientificLiteralContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class ScientificLiteralContext : ParserRuleContext {
 		public ITerminalNode LScientific() { return GetToken(MetaParser.LScientific, 0); }
 		public ScientificLiteralContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -3799,7 +3971,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public ScientificLiteralContext scientificLiteral() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_scientificLiteral, out ScientificLiteralContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseScientificLiteral();
+	}
+
+	internal ScientificLiteralContext _DoParseScientificLiteral() {
 		ScientificLiteralContext _localctx = new ScientificLiteralContext(_ctx, State);
 		EnterRule(_localctx, 114, RULE_scientificLiteral);
 		try {
@@ -3819,7 +3994,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 		return _localctx;
 	}
 
-	public partial class StringLiteralContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class StringLiteralContext : ParserRuleContext {
 		public ITerminalNode LRegularString() { return GetToken(MetaParser.LRegularString, 0); }
 		public StringLiteralContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -3843,7 +4018,10 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public StringLiteralContext stringLiteral() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_stringLiteral, out StringLiteralContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseStringLiteral();
+	}
+
+	internal StringLiteralContext _DoParseStringLiteral() {
 		StringLiteralContext _localctx = new StringLiteralContext(_ctx, State);
 		EnterRule(_localctx, 116, RULE_stringLiteral);
 		try {

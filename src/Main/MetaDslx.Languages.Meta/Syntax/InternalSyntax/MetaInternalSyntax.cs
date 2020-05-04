@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
@@ -17,12 +18,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
     using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.Syntax.InternalSyntax;
+    using Microsoft.CodeAnalysis.Text;
     using Roslyn.Utilities;
     using MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax;
-	using Microsoft.CodeAnalysis.Text;
-    using System.Threading;
 
-    internal abstract class GreenSyntaxNode : InternalSyntaxNode
+	internal abstract class GreenSyntaxNode : InternalSyntaxNode
     {
         protected GreenSyntaxNode(SyntaxKind kind)
             : base(kind)
@@ -131,55 +131,56 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
             return new SyntaxTrivia(default, trivia, position: 0, index: 0);
         }
     }
-	internal class GreenStructuredSyntaxTrivia : GreenSyntaxTrivia
-	{
-		private readonly GreenNode _structure;
 
-		internal GreenStructuredSyntaxTrivia(MetaSyntaxKind kind, GreenNode structure, DiagnosticInfo[] diagnostics = null, SyntaxAnnotation[] annotations = null)
-			: base(kind, structure?.ToFullString(), diagnostics, annotations)
-		{
-			this.Initialize();
-			_structure = structure;
-		}
+    internal class GreenStructuredSyntaxTrivia : GreenSyntaxTrivia
+    {
+        private readonly GreenNode _structure;
+        internal GreenStructuredSyntaxTrivia(MetaSyntaxKind kind, GreenNode structure, DiagnosticInfo[] diagnostics = null, SyntaxAnnotation[] annotations = null)
+            : base(kind, structure?.ToFullString(), diagnostics, annotations)
+        {
+            this.Initialize();
+            _structure = structure;
+        }
 
         internal GreenStructuredSyntaxTrivia(ObjectReader reader)
-			: base(reader)
-		{
-			this.Initialize();
-		}
+            : base(reader)
+        {
+            this.Initialize();
+        }
 
         static GreenStructuredSyntaxTrivia()
-		{
-			ObjectBinder.RegisterTypeReader(typeof(GreenStructuredSyntaxTrivia), r => new GreenStructuredSyntaxTrivia(r));
-		}
+        {
+            ObjectBinder.RegisterTypeReader(typeof(GreenStructuredSyntaxTrivia), r => new GreenStructuredSyntaxTrivia(r));
+        }
 
         private void Initialize()
-		{
-			this.flags |= NodeFlags.ContainsStructuredTrivia;
+        {
+            this.flags |= NodeFlags.ContainsStructuredTrivia;
 
-			if (this.Kind == SyntaxKind.SkippedTokensTrivia)
-			{
-				this.flags |= NodeFlags.ContainsSkippedText;
-			}
-		}
+            if (this.Kind == SyntaxKind.SkippedTokensTrivia)
+            {
+                this.flags |= NodeFlags.ContainsSkippedText;
+            }
+        }
 
         public GreenNode Structure => _structure;
 
         internal static GreenStructuredSyntaxTrivia Create(MetaSyntaxKind kind, GreenNode structure)
-		{
-			return new GreenStructuredSyntaxTrivia(kind, structure);
-		}
+        {
+            return new GreenStructuredSyntaxTrivia(kind, structure);
+        }
 
         public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
-		{
-			return new GreenStructuredSyntaxTrivia(this.Kind, this.Structure, diagnostics, GetAnnotations());
-		}
+        {
+            return new GreenStructuredSyntaxTrivia(this.Kind, this.Structure, diagnostics, GetAnnotations());
+        }
 
         public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
-		{
-			return new GreenStructuredSyntaxTrivia(this.Kind, this.Structure, GetDiagnostics(), annotations);
-		}
-	}
+        {
+            return new GreenStructuredSyntaxTrivia(this.Kind, this.Structure, GetDiagnostics(), annotations);
+        }
+    }
+
 	internal partial class GreenSyntaxToken : InternalSyntaxToken
 	{
 	    //====================
@@ -7299,19 +7300,18 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	    {
 	        return new MetaParser(input);
 	    }
-
+	
 		public override SyntaxLexer CreateLexer(SourceText text, LanguageParseOptions options)
 		{
-			return null;
-			//return new MetaSyntaxLexer(text, (MetaParseOptions)options);
+			return new MetaSyntaxLexer(text, (MetaParseOptions)options ?? MetaParseOptions.Default);
 		}
-
-		public override SyntaxParser CreateParser(SourceText text, LanguageParseOptions options, LanguageSyntaxNode oldTree, IEnumerable<TextChangeRange> changes, CancellationToken cancellationToken = default)
+	
+	    public override SyntaxParser CreateParser(SourceText text, LanguageParseOptions options, LanguageSyntaxNode oldTree, IEnumerable<TextChangeRange> changes, CancellationToken cancellationToken = default)
 		{
-			return new MetaSyntaxParser(text, (MetaParseOptions)options, (MetaSyntaxNode)oldTree, changes, cancellationToken);
+			return new MetaSyntaxParser(text, (MetaParseOptions)options ?? MetaParseOptions.Default, (MetaSyntaxNode)oldTree, changes, cancellationToken);
 		}
-
-		public override Language Language => MetaLanguage.Instance;
+	
+	    public override Language Language => MetaLanguage.Instance;
 	
 		private MetaSyntaxKind ToMetaSyntaxKind(SyntaxKind kind)
 	    {
@@ -7337,13 +7337,13 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	    {
 	        return GreenSyntaxTrivia.Create(ToMetaSyntaxKind(SyntaxKind.DisabledTextTrivia), text);
 	    }
-
+	
 		public override InternalSyntaxTrivia SkippedToken(GreenNode token)
 		{
 			return GreenStructuredSyntaxTrivia.Create(ToMetaSyntaxKind(SyntaxKind.SkippedTokensTrivia), token);
 		}
-
-		public override InternalSyntaxToken Token(SyntaxKind kind)
+	
+	    public override InternalSyntaxToken Token(SyntaxKind kind)
 	    {
 	        return GreenSyntaxToken.Create(ToMetaSyntaxKind(kind));
 	    }

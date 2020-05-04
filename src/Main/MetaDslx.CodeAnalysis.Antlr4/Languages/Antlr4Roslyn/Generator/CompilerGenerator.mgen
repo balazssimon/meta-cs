@@ -1028,7 +1028,7 @@ namespace [Properties.DefaultNamespace].Syntax.InternalSyntax
     public class [Properties.LanguageName]SyntaxLexer : Antlr4SyntaxLexer
     {
         public [Properties.LanguageName]SyntaxLexer(SourceText text, [Properties.LanguageName]ParseOptions options) 
-            : base(SandyLanguage.Instance, text, options)
+            : base([Properties.LanguageName]Language.Instance, text, options)
         {
         }
 

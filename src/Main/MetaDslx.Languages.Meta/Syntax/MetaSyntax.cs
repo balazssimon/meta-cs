@@ -7791,12 +7791,12 @@ namespace MetaDslx.Languages.Meta
 	
 		public override SyntaxParser MakeParser(SourceText text, ParseOptions options, SyntaxNode oldTree, IReadOnlyList<TextChangeRange> changes)
 		{
-		    return new MetaSyntaxParser(text, (MetaParseOptions)options, (MetaSyntaxNode)oldTree, changes);
+			return MetaLanguage.Instance.InternalSyntaxFactory.CreateParser(text, (MetaParseOptions)options, (MetaSyntaxNode)oldTree, changes);
 		}
 	
 		public override SyntaxParser MakeParser(string text)
 		{
-		    return new MetaSyntaxParser(SourceText.From(text, Encoding.UTF8), MetaParseOptions.Default, null, null);
+			return MetaLanguage.Instance.InternalSyntaxFactory.CreateParser(SourceText.From(text, Encoding.UTF8), MetaParseOptions.Default, null, null);
 		}
 	
 		public override LanguageSyntaxTree MakeSyntaxTree(LanguageSyntaxNode root, ParseOptions options = null, string path = "", Encoding encoding = null)
@@ -7806,7 +7806,14 @@ namespace MetaDslx.Languages.Meta
 	
 	    public override SyntaxNode CreateStructure(SyntaxTrivia trivia)
 	    {
-	        throw new NotImplementedException();
+	        if (trivia != null && trivia.UnderlyingNode is GreenStructuredSyntaxTrivia structuredTrivia)
+	        {
+	            return structuredTrivia.Structure.CreateRed();
+	        }
+	        else
+	        {
+	            return null;
+	        }
 	    }
 	
 	

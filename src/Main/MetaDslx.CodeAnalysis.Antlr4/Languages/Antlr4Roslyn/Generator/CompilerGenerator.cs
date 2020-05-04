@@ -10284,18 +10284,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             {
                 __out.AppendLine(false); //1030:117
             }
-            __out.Append("            : base(SandyLanguage.Instance, text, options)"); //1031:1
-            __out.AppendLine(false); //1031:58
-            __out.Append("        {"); //1032:1
-            __out.AppendLine(false); //1032:10
-            __out.Append("        }"); //1033:1
-            __out.AppendLine(false); //1033:10
-            __out.Append("        protected override InternalSyntaxToken CreateToken(GreenNode leadingTrivia, SyntaxKind kind, string text, GreenNode trailingTrivia)"); //1035:1
-            __out.AppendLine(false); //1035:140
-            __out.Append("        {"); //1036:1
-            __out.AppendLine(false); //1036:10
             bool __tmp19_outputWritten = false;
-            string __tmp20_line = "            return "; //1037:1
+            string __tmp20_line = "            : base("; //1031:1
             if (!string.IsNullOrEmpty(__tmp20_line))
             {
                 __out.Append(__tmp20_line);
@@ -10318,7 +10308,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp21_last) __out.AppendLine(true);
                 }
             }
-            string __tmp22_line = "Language.Instance.InternalSyntaxFactory.Token(leadingTrivia, kind, text, trailingTrivia);"; //1037:45
+            string __tmp22_line = "Language.Instance, text, options)"; //1031:45
             if (!string.IsNullOrEmpty(__tmp22_line))
             {
                 __out.Append(__tmp22_line);
@@ -10327,16 +10317,18 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             if (__tmp19_outputWritten) __out.AppendLine(true);
             if (__tmp19_outputWritten)
             {
-                __out.AppendLine(false); //1037:134
+                __out.AppendLine(false); //1031:78
             }
-            __out.Append("        }"); //1038:1
-            __out.AppendLine(false); //1038:10
-            __out.Append("        protected override InternalSyntaxTrivia CreateTrivia(SyntaxKind kind, string text)"); //1040:1
-            __out.AppendLine(false); //1040:91
-            __out.Append("        {"); //1041:1
-            __out.AppendLine(false); //1041:10
+            __out.Append("        {"); //1032:1
+            __out.AppendLine(false); //1032:10
+            __out.Append("        }"); //1033:1
+            __out.AppendLine(false); //1033:10
+            __out.Append("        protected override InternalSyntaxToken CreateToken(GreenNode leadingTrivia, SyntaxKind kind, string text, GreenNode trailingTrivia)"); //1035:1
+            __out.AppendLine(false); //1035:140
+            __out.Append("        {"); //1036:1
+            __out.AppendLine(false); //1036:10
             bool __tmp24_outputWritten = false;
-            string __tmp25_line = "            return "; //1042:1
+            string __tmp25_line = "            return "; //1037:1
             if (!string.IsNullOrEmpty(__tmp25_line))
             {
                 __out.Append(__tmp25_line);
@@ -10359,7 +10351,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp26_last) __out.AppendLine(true);
                 }
             }
-            string __tmp27_line = "Language.Instance.InternalSyntaxFactory.Trivia(kind, text);"; //1042:45
+            string __tmp27_line = "Language.Instance.InternalSyntaxFactory.Token(leadingTrivia, kind, text, trailingTrivia);"; //1037:45
             if (!string.IsNullOrEmpty(__tmp27_line))
             {
                 __out.Append(__tmp27_line);
@@ -10367,6 +10359,47 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             }
             if (__tmp24_outputWritten) __out.AppendLine(true);
             if (__tmp24_outputWritten)
+            {
+                __out.AppendLine(false); //1037:134
+            }
+            __out.Append("        }"); //1038:1
+            __out.AppendLine(false); //1038:10
+            __out.Append("        protected override InternalSyntaxTrivia CreateTrivia(SyntaxKind kind, string text)"); //1040:1
+            __out.AppendLine(false); //1040:91
+            __out.Append("        {"); //1041:1
+            __out.AppendLine(false); //1041:10
+            bool __tmp29_outputWritten = false;
+            string __tmp30_line = "            return "; //1042:1
+            if (!string.IsNullOrEmpty(__tmp30_line))
+            {
+                __out.Append(__tmp30_line);
+                __tmp29_outputWritten = true;
+            }
+            StringBuilder __tmp31 = new StringBuilder();
+            __tmp31.Append(Properties.LanguageName);
+            using(StreamReader __tmp31Reader = new StreamReader(this.__ToStream(__tmp31.ToString())))
+            {
+                bool __tmp31_last = __tmp31Reader.EndOfStream;
+                while(!__tmp31_last)
+                {
+                    string __tmp31_line = __tmp31Reader.ReadLine();
+                    __tmp31_last = __tmp31Reader.EndOfStream;
+                    if ((__tmp31_last && !string.IsNullOrEmpty(__tmp31_line)) || (!__tmp31_last && __tmp31_line != null))
+                    {
+                        __out.Append(__tmp31_line);
+                        __tmp29_outputWritten = true;
+                    }
+                    if (!__tmp31_last) __out.AppendLine(true);
+                }
+            }
+            string __tmp32_line = "Language.Instance.InternalSyntaxFactory.Trivia(kind, text);"; //1042:45
+            if (!string.IsNullOrEmpty(__tmp32_line))
+            {
+                __out.Append(__tmp32_line);
+                __tmp29_outputWritten = true;
+            }
+            if (__tmp29_outputWritten) __out.AppendLine(true);
+            if (__tmp29_outputWritten)
             {
                 __out.AppendLine(false); //1042:104
             }

@@ -28,10 +28,12 @@ namespace MetaDslx.Languages.Meta.Syntax
             MetaLanguageVersion languageVersion = null,
             DocumentationMode documentationMode = DocumentationMode.Parse,
             SourceCodeKind kind = SourceCodeKind.Regular,
+            bool incremental = false,
             IEnumerable<string> preprocessorSymbols = null)
             : this(languageVersion ?? MetaLanguageVersion.Meta1,
                   documentationMode,
                   kind,
+                  incremental,
                   preprocessorSymbols.ToImmutableArrayOrEmpty(),
                   ImmutableDictionary<string, string>.Empty)
         {
@@ -40,15 +42,17 @@ namespace MetaDslx.Languages.Meta.Syntax
             MetaLanguageVersion languageVersion,
             DocumentationMode documentationMode,
             SourceCodeKind kind,
+            bool incremental,
             ImmutableArray<string> preprocessorSymbols,
             IReadOnlyDictionary<string, string> features)
-            : base(languageVersion, documentationMode, kind, false, preprocessorSymbols, features)
+            : base(languageVersion, documentationMode, kind, incremental, preprocessorSymbols, features)
         {
         }
         private MetaParseOptions(MetaParseOptions other) : this(
             languageVersion: (MetaLanguageVersion)other.LanguageVersion,
             documentationMode: other.DocumentationMode,
             kind: other.Kind,
+            incremental: other.Incremental,
             preprocessorSymbols: other.PreprocessorSymbols,
             features: other.Features)
         {
@@ -62,6 +66,14 @@ namespace MetaDslx.Languages.Meta.Syntax
             }
             var effectiveKind = kind.MapSpecifiedToEffectiveKind();
             return new MetaParseOptions(this) { SpecifiedKind = kind, Kind = effectiveKind };
+        }
+        public new MetaParseOptions WithIncremental(bool incremental)
+        {
+            if (incremental == this.Incremental)
+            {
+                return this;
+            }
+            return new MetaParseOptions(this) { Incremental = incremental };
         }
         public MetaParseOptions WithLanguageVersion(MetaLanguageVersion version)
         {
