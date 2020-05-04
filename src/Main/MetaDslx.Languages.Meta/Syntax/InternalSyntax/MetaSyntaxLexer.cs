@@ -20,7 +20,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
     public class MetaSyntaxLexer : Antlr4SyntaxLexer
     {
         public MetaSyntaxLexer(SourceText text, MetaParseOptions options) 
-            : base(SandyLanguage.Instance, text, options)
+            : base(MetaLanguage.Instance, text, options)
         {
         }
         protected override InternalSyntaxToken CreateToken(GreenNode leadingTrivia, SyntaxKind kind, string text, GreenNode trailingTrivia)
