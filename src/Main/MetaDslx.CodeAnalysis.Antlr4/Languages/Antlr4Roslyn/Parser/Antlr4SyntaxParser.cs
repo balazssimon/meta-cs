@@ -38,6 +38,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             _parser._incrementalParser = this;
             _parser.RemoveErrorListeners();
             _parser.AddErrorListener(this);
+            _parser.ErrorHandler = new ErrorStrategy(this);
             _resetPoints = new Stack<ResetPoint>();
         }
 
@@ -227,5 +228,62 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         }
 
         #endregion
+
+        private class ErrorStrategy : DefaultErrorStrategy
+        {
+            private Antlr4SyntaxParser _parser;
+
+            public ErrorStrategy(Antlr4SyntaxParser parser)
+            {
+                _parser = parser;
+            }
+
+            [return: Nullable]
+            protected override IToken SingleTokenDeletion([NotNull] Parser recognizer)
+            {
+                int nextTokenType = ((ITokenStream)recognizer.InputStream).La(2);
+                IntervalSet expecting = GetExpectedTokens(recognizer);
+                if (expecting.Contains(nextTokenType))
+                {
+                    ReportUnwantedToken(recognizer);
+                    // simply delete extra token
+                    var green = _parser.SkipToken();
+                    var matchedSymbol = new IncrementalToken(green.Kind.ToAntlr4(), green.Text);
+                    matchedSymbol.SetGreenToken(green);
+                    // we want to return the token we're actually matching
+                    ReportMatch(recognizer);
+                    // we know current token is correct
+                    return matchedSymbol;
+                }
+                return null;
+            }
+
+            protected override bool SingleTokenInsertion([NotNull] Parser recognizer)
+            {
+                int currentSymbolType = ((ITokenStream)recognizer.InputStream).La(1);
+                // if current token is consistent with what could come after current
+                // ATN state, then we know we're missing a token; error recovery
+                // is free to conjure up and insert the missing token
+                ATNState currentState = recognizer.Interpreter.atn.states[recognizer.State];
+                ATNState next = currentState.Transition(0).target;
+                ATN atn = recognizer.Interpreter.atn;
+                PredictionContext predictionContext = PredictionContext.FromRuleContext(atn, recognizer.RuleContext);
+                IntervalSet expectingAtLL2 = atn.NextTokens(next,  predictionContext);
+                if (expectingAtLL2.Contains(currentSymbolType))
+                {
+                    ReportMissingToken(recognizer);
+                    return true;
+                }
+                return false;
+            }
+
+            protected override IToken ConstructToken(ITokenSource tokenSource, int expectedTokenType, string tokenText, IToken current)
+            {
+                var green = _parser.CreateMissingToken(expectedTokenType.FromAntlr4(_parser.Language.SyntaxFacts.SyntaxKindType), current.Type.FromAntlr4(_parser.Language.SyntaxFacts.SyntaxKindType), true);
+                var missingToken = new IncrementalToken(green.Kind.ToAntlr4(), green.Text);
+                missingToken.SetGreenToken(green);
+                return missingToken;
+            }
+        }
     }
 }

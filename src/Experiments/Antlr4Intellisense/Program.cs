@@ -44,8 +44,8 @@ namespace Antlr4Intellisense
             Intellisense(tree, 12);
             Intellisense(tree, 13);*/
             Console.WriteLine("====");
-
-            /*text = "var a = 13 + 2\r\nvar b = a+1\r\n";
+            
+            text = "var a = 13 + 2\r\nvar b = a+1\r\n";
             change = ImmutableArray.Create(new TextChangeRange(TextSpan.FromBounds(9, 9), 1));
 
             lexer = Lex(text, change, lexer);
@@ -75,7 +75,7 @@ namespace Antlr4Intellisense
             lexer = Lex(text, change, lexer);
             Console.WriteLine("----");
             tree = Parse(text, change, tree);
-            Console.WriteLine("====");*/
+            Console.WriteLine("====");
 
             //*/
 
@@ -109,7 +109,7 @@ namespace Antlr4Intellisense
             var sourceText = SourceText.From(text);
             var oldRoot = oldTree?.GetRoot();
 
-            var parser = (SandySyntaxParser)SandyLanguage.Instance.InternalSyntaxFactory.CreateParser(sourceText, SandyParseOptions.Default.WithIncremental(false), oldRoot, changes);
+            var parser = (SandySyntaxParser)SandyLanguage.Instance.InternalSyntaxFactory.CreateParser(sourceText, SandyParseOptions.Default.WithIncremental(true), oldRoot, changes);
             var newRoot = (SandySyntaxNode)parser.Parse();
             Console.WriteLine(PrintSyntaxTree(newRoot, parser));
             return SandySyntaxTree.Create(newRoot);

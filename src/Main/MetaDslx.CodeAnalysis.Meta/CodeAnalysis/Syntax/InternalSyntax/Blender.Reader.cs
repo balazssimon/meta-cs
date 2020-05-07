@@ -12,7 +12,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
     {
         private struct Reader
         {
-            private readonly SyntaxLexer _lexer;
+            private readonly SyntaxParser _parser;
             private Cursor _oldTreeCursor;
             private ImmutableStack<TextChangeRange> _changes;
             private int _newPosition;
@@ -24,7 +24,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
             public Reader(Blender blender)
             {
-                _lexer = blender._lexer;
+                _parser = blender._parser;
                 _oldTreeCursor = blender._oldTreeCursor;
                 _changes = blender._changes;
                 _newPosition = blender._newPosition;
@@ -163,13 +163,14 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
             private InternalSyntaxToken LexNewToken(LexerMode mode)
             {
-                if (_lexer.Position != _newPosition)
+                var lexer = _parser.Lexer;
+                if (lexer.Position != _newPosition)
                 {
-                    _lexer.Reset(_newPosition, _newDirectives);
+                    lexer.Reset(_newPosition, _newDirectives);
                 }
 
-                var token = _lexer.Lex(ref mode);
-                _newDirectives = _lexer.Directives;
+                var token = lexer.Lex(ref mode);
+                _newDirectives = lexer.Directives;
                 _mode = mode;
                 return token;
             }
@@ -201,6 +202,28 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
                 _newDirectives = currentNodeOrToken.ApplyDirectives(_newDirectives);
                 _oldDirectives = currentNodeOrToken.ApplyDirectives(_oldDirectives);
+
+                if (!_oldTreeCursor.IsFinished)
+                {
+                    if (currentNodeOrToken.IsNode)
+                    {
+                        var nodeAnnot = SyntaxParser.GetNodeAnnotation(currentNodeOrToken.NodeOrParent.Green);
+                        var nextNodeAnnot = SyntaxParser.GetNodeAnnotation(_oldTreeCursor.CurrentNodeOrToken.NodeOrParent.Green);
+                        if (nextNodeAnnot != null) _state = nextNodeAnnot.State;
+                    }
+                    var nextToken = _oldTreeCursor.MoveToFirstToken();
+                    var nextTokenAnnot = SyntaxLexer.GetTokenAnnotation(nextToken.CurrentNodeOrToken.UnderlyingNode);
+                    if (nextTokenAnnot != null) _mode = nextTokenAnnot.Mode;
+                }
+                else
+                {
+                    var treeAnnot = SyntaxParser.GetTreeAnnotation(_parser.OldRoot.Green);
+                    if (treeAnnot != null)
+                    {
+                        _state = treeAnnot.EndState;
+                        _mode = treeAnnot.EndMode;
+                    }
+                }
 
                 blendedNode = CreateBlendedNode(
                     node: (LanguageSyntaxNode)currentNodeOrToken.AsNode(),
@@ -254,6 +277,13 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                     return false;
                 }
 
+                // don't reuse nodes and tokens whit no incremental parsing annotation
+                if (nodeOrToken.IsToken && SyntaxLexer.GetTokenAnnotation(nodeOrToken.Parent.Green) == null ||
+                    nodeOrToken.IsNode && SyntaxParser.GetNodeAnnotation(nodeOrToken.Parent.Green) == null)
+                {
+                    return false;
+                }
+
                 if (!nodeOrToken.ContainsDirectives)
                 {
                     return true;
@@ -289,14 +319,14 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 switch (kind)
                 {
                     default:
-                        return _lexer.Language.SyntaxFacts.IsContextualKeyword(kind);
+                        return _parser.Language.SyntaxFacts.IsContextualKeyword(kind);
                 }
             }
 
             private BlendedNode CreateBlendedNode(LanguageSyntaxNode node, InternalSyntaxToken token)
             {
                 return new BlendedNode(node, token,
-                    new Blender(_lexer, _oldTreeCursor, _changes, _newPosition, _changeDelta, _newDirectives, _oldDirectives, _mode, _state));
+                    new Blender(_parser, _oldTreeCursor, _changes, _newPosition, _changeDelta, _newDirectives, _oldDirectives, _mode, _state));
             }
         }
     }

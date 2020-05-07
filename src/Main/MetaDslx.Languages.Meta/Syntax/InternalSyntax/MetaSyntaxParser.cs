@@ -2830,8 +2830,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
             }
             private GreenNode VisitTerminal(IToken token, MetaSyntaxKind kind)
             {
-                if (token == null) return null;
-				var green = ((IncrementalToken)token).GreenToken;
+				if (token == null)
+				{
+					if (kind != null) return _factory.MissingToken(kind);
+					else return null;
+				}
+                var green = ((IncrementalToken)token).GreenToken;
 				Debug.Assert(kind == null || green.Kind == kind);
 				return green;
             }
@@ -2841,7 +2845,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
             }
             private GreenNode VisitTerminal(ITerminalNode node, MetaSyntaxKind kind)
             {
-                if (node == null || node.Symbol == null) return null;
+                if (node == null || node.Symbol == null)
+				{
+					if (kind != null) return _factory.MissingToken(kind);
+					else return null;
+				}
 				var green = ((IncrementalToken)node.Symbol).GreenToken;
 				Debug.Assert(kind == null || green.Kind == kind);
 				return green;

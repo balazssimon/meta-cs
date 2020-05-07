@@ -13,7 +13,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 {
     internal readonly partial struct Blender
     {
-        private readonly SyntaxLexer _lexer;
+        private readonly SyntaxParser _parser;
         private readonly Cursor _oldTreeCursor;
         private readonly ImmutableStack<TextChangeRange> _changes;
 
@@ -32,11 +32,11 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         private readonly LexerMode _mode;
         private readonly ParserState _state;
 
-        public Blender(SyntaxLexer lexer, LanguageSyntaxNode oldTree, IEnumerable<TextChangeRange> changes)
+        public Blender(SyntaxParser parser, LanguageSyntaxNode oldTree, IEnumerable<TextChangeRange> changes)
         {
-            Debug.Assert(lexer != null);
+            Debug.Assert(parser != null);
             //Debug.Assert((oldTree == null && changes == null) || (oldTree != null && changes != null));
-            _lexer = lexer;
+            _parser = parser;
             _changes = ImmutableStack.Create<TextChangeRange>();
 
             if (changes != null && oldTree != null)
@@ -67,7 +67,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             {
                 // start at lexer current position if no nodes specified
                 _oldTreeCursor = new Cursor();
-                _newPosition = lexer.Position;
+                _newPosition = _parser.Lexer.Position;
             }
             else
             {
@@ -83,7 +83,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         }
 
         private Blender(
-            SyntaxLexer lexer,
+            SyntaxParser parser,
             Cursor oldTreeCursor,
             ImmutableStack<TextChangeRange> changes,
             int newPosition,
@@ -93,10 +93,10 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             LexerMode mode,
             ParserState state)
         {
-            Debug.Assert(lexer != null);
+            Debug.Assert(parser != null);
             Debug.Assert(changes != null);
             Debug.Assert(newPosition >= 0);
-            _lexer = lexer;
+            _parser = parser;
             _oldTreeCursor = oldTreeCursor;
             _changes = changes;
             _newPosition = newPosition;

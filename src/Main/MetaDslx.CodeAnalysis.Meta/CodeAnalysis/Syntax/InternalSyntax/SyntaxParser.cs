@@ -17,8 +17,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         public const string IncrementalTreeAnnotationKind = "MetaDslx.IncementalTree";
         public const string IncrementalNodeAnnotationKind = "MetaDslx.IncementalNode";
 
-        protected readonly SyntaxLexer Lexer;
-        protected readonly bool IsIncremental;
+        public readonly SyntaxLexer Lexer;
+        public readonly bool IsIncremental;
         protected readonly CancellationToken CancellationToken;
 
         private LexerMode _mode;
@@ -67,7 +67,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
             if (IsIncremental)
             {
-                _firstBlender = new Blender(Lexer, oldTree, changes);
+                _firstBlender = new Blender(this, oldTree, changes);
                 _blendedTokens = s_blendedNodesPool.Allocate();
                 _oldRoot = oldTree;
 #if DEBUG
@@ -98,6 +98,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         public virtual DirectiveStack Directives => Lexer.Directives;
 
+        public LanguageSyntaxNode OldRoot => _oldRoot;
 
         public virtual void Dispose()
         {
@@ -128,7 +129,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             _prevTokenTrailingTrivia = null;
             if (IsIncremental)
             {
-                _firstBlender = new Blender(Lexer, null, null);
+                _firstBlender = new Blender(this, null, null);
             }
         }
 
@@ -163,12 +164,13 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 (int minLookahead, int maxLookahead) = Blender.GetLexerLookahead(_oldRoot);
                 minLookahead = Math.Min(Lexer.MinLookahead, minLookahead);
                 maxLookahead = Math.Max(Lexer.MaxLookahead, maxLookahead);
-                root = root.WithAdditionalAnnotationsGreen(new SyntaxAnnotation(IncrementalTreeAnnotationKind, new IncrementalTreeAnnotation(minLookahead, maxLookahead)));
+                root = root.WithAdditionalAnnotationsGreen(new SyntaxAnnotation(IncrementalTreeAnnotationKind, new IncrementalTreeAnnotation(null, null, _mode, _state, minLookahead, maxLookahead)));
             }
         }
 
         protected void BeginNode()
         {
+            _state = SaveParserState();
             if (IsIncremental)
             {
                 _minLookahead = int.MaxValue;
@@ -216,6 +218,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 }
             }
 
+            _state = SaveParserState();
             return _state;
         }
 
@@ -365,6 +368,9 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
             _blendedTokens[_tokenOffset++] = _currentNode;
             _tokenCount = _tokenOffset; // forget anything after this slot
+
+            RestoreParserState(_currentNode.Blender.State);
+            _mode = _currentNode.Blender.Mode;
 
             // erase current state
             _currentNode = default;
@@ -519,7 +525,6 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             //Debug.Assert(n >= 0);
             if (_tokenOffset + n < 0)
             {
-                Debug.Assert(false);
                 return null;
             }
             
@@ -569,6 +574,15 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             _currentTokenErrors = null;
 
             _tokenOffset++;
+
+            if (_blendedTokens != null)
+            {
+                PeekToken(0);
+                if (_tokenOffset < _tokenCount)
+                {
+                    _mode = _blendedTokens[_tokenOffset].Blender.Mode;
+                }
+            }
         }
 
         protected void ForceEndOfFile()
@@ -607,6 +621,16 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
             var replacement = CreateMissingToken(expected, this.CurrentToken.Kind, reportError: true);
             return AddTrailingSkippedSyntax(replacement, this.EatToken());
+        }
+
+        // Consume a token if it is the right kind. Otherwise skip a token and replace it with one of the correct kind.
+        protected InternalSyntaxToken SkipToken()
+        {
+            var ct = this.EatCurrentTokenWithErrors();
+            MoveToNextToken();
+            var replacement = this.PeekToken(0);
+            _currentToken = AddLeadingSkippedSyntax(replacement, ct);
+            return _currentToken;
         }
 
         protected InternalSyntaxToken CreateMissingToken(SyntaxKind expected, SyntaxKind actual, bool reportError)
