@@ -32,7 +32,8 @@ using DFA = Antlr4.Runtime.Dfa.DFA;
 
 [System.CodeDom.Compiler.GeneratedCode("ANTLR", "4.6.6")]
 [System.CLSCompliant(false)]
-public partial class TestLangOneParser : Parser {
+public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParser {
+    private TestLangOneSyntaxParser SyntaxParser => (TestLangOneSyntaxParser)this.IncrementalAntlr4Parser;
 	public const int
 		KNamespace=1, KScope=2, KMember=3, KClass=4, KVertex=5, KOptional=6, KArrow=7, 
 		KStatic=8, KTrue=9, KFalse=10, KTest01=11, KTest02=12, KTest03=13, KTest04=14, 
@@ -183,7 +184,7 @@ public partial class TestLangOneParser : Parser {
 	{
 		_interp = new ParserATNSimulator(this,_ATN);
 	}
-	public partial class MainContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class MainContext : ParserRuleContext {
 		public ITerminalNode Eof() { return GetToken(TestLangOneParser.Eof, 0); }
 		public TestContext[] test() {
 			return GetRuleContexts<TestContext>();
@@ -205,7 +206,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public MainContext main() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_main, out MainContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseMain();
+	}
+
+	internal MainContext _DoParseMain() {
 		MainContext _localctx = new MainContext(_ctx, State);
 		EnterRule(_localctx, 0, RULE_main);
 		int _la;
@@ -239,7 +243,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class TestContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class TestContext : ParserRuleContext {
 		public Test01Context test01() {
 			return GetRuleContext<Test01Context>(0);
 		}
@@ -287,7 +291,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public TestContext test() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_test, out TestContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseTest();
+	}
+
+	internal TestContext _DoParseTest() {
 		TestContext _localctx = new TestContext(_ctx, State);
 		EnterRule(_localctx, 2, RULE_test);
 		try {
@@ -375,7 +382,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class Test01Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class Test01Context : ParserRuleContext {
 		public ITerminalNode KTest01() { return GetToken(TestLangOneParser.KTest01, 0); }
 		public NamespaceDeclaration01Context namespaceDeclaration01() {
 			return GetRuleContext<NamespaceDeclaration01Context>(0);
@@ -394,7 +401,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public Test01Context test01() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_test01, out Test01Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseTest01();
+	}
+
+	internal Test01Context _DoParseTest01() {
 		Test01Context _localctx = new Test01Context(_ctx, State);
 		EnterRule(_localctx, 4, RULE_test01);
 		try {
@@ -415,7 +425,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class NamespaceDeclaration01Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class NamespaceDeclaration01Context : ParserRuleContext {
 		public ITerminalNode KNamespace() { return GetToken(TestLangOneParser.KNamespace, 0); }
 		public QualifiedNameContext qualifiedName() {
 			return GetRuleContext<QualifiedNameContext>(0);
@@ -437,7 +447,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public NamespaceDeclaration01Context namespaceDeclaration01() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_namespaceDeclaration01, out NamespaceDeclaration01Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseNamespaceDeclaration01();
+	}
+
+	internal NamespaceDeclaration01Context _DoParseNamespaceDeclaration01() {
 		NamespaceDeclaration01Context _localctx = new NamespaceDeclaration01Context(_ctx, State);
 		EnterRule(_localctx, 6, RULE_namespaceDeclaration01);
 		try {
@@ -459,7 +472,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class NamespaceBody01Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class NamespaceBody01Context : ParserRuleContext {
 		public ITerminalNode TOpenBrace() { return GetToken(TestLangOneParser.TOpenBrace, 0); }
 		public ITerminalNode TCloseBrace() { return GetToken(TestLangOneParser.TCloseBrace, 0); }
 		public Declaration01Context[] declaration01() {
@@ -482,7 +495,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public NamespaceBody01Context namespaceBody01() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_namespaceBody01, out NamespaceBody01Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseNamespaceBody01();
+	}
+
+	internal NamespaceBody01Context _DoParseNamespaceBody01() {
 		NamespaceBody01Context _localctx = new NamespaceBody01Context(_ctx, State);
 		EnterRule(_localctx, 8, RULE_namespaceBody01);
 		int _la;
@@ -517,7 +533,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class Declaration01Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class Declaration01Context : ParserRuleContext {
 		public Vertex01Context vertex01() {
 			return GetRuleContext<Vertex01Context>(0);
 		}
@@ -538,7 +554,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public Declaration01Context declaration01() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_declaration01, out Declaration01Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseDeclaration01();
+	}
+
+	internal Declaration01Context _DoParseDeclaration01() {
 		Declaration01Context _localctx = new Declaration01Context(_ctx, State);
 		EnterRule(_localctx, 10, RULE_declaration01);
 		try {
@@ -572,7 +591,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class Vertex01Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class Vertex01Context : ParserRuleContext {
 		public ITerminalNode KVertex() { return GetToken(TestLangOneParser.KVertex, 0); }
 		public NameContext name() {
 			return GetRuleContext<NameContext>(0);
@@ -592,7 +611,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public Vertex01Context vertex01() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_vertex01, out Vertex01Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseVertex01();
+	}
+
+	internal Vertex01Context _DoParseVertex01() {
 		Vertex01Context _localctx = new Vertex01Context(_ctx, State);
 		EnterRule(_localctx, 12, RULE_vertex01);
 		try {
@@ -614,7 +636,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class Arrow01Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class Arrow01Context : ParserRuleContext {
 		public QualifierContext source;
 		public QualifierContext target;
 		public ITerminalNode KArrow() { return GetToken(TestLangOneParser.KArrow, 0); }
@@ -640,7 +662,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public Arrow01Context arrow01() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_arrow01, out Arrow01Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseArrow01();
+	}
+
+	internal Arrow01Context _DoParseArrow01() {
 		Arrow01Context _localctx = new Arrow01Context(_ctx, State);
 		EnterRule(_localctx, 14, RULE_arrow01);
 		try {
@@ -664,7 +689,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class Test02Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class Test02Context : ParserRuleContext {
 		public ITerminalNode KTest02() { return GetToken(TestLangOneParser.KTest02, 0); }
 		public NamespaceDeclaration02Context namespaceDeclaration02() {
 			return GetRuleContext<NamespaceDeclaration02Context>(0);
@@ -683,7 +708,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public Test02Context test02() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_test02, out Test02Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseTest02();
+	}
+
+	internal Test02Context _DoParseTest02() {
 		Test02Context _localctx = new Test02Context(_ctx, State);
 		EnterRule(_localctx, 16, RULE_test02);
 		try {
@@ -704,7 +732,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class NamespaceDeclaration02Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class NamespaceDeclaration02Context : ParserRuleContext {
 		public ITerminalNode KNamespace() { return GetToken(TestLangOneParser.KNamespace, 0); }
 		public QualifiedNameContext qualifiedName() {
 			return GetRuleContext<QualifiedNameContext>(0);
@@ -726,7 +754,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public NamespaceDeclaration02Context namespaceDeclaration02() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_namespaceDeclaration02, out NamespaceDeclaration02Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseNamespaceDeclaration02();
+	}
+
+	internal NamespaceDeclaration02Context _DoParseNamespaceDeclaration02() {
 		NamespaceDeclaration02Context _localctx = new NamespaceDeclaration02Context(_ctx, State);
 		EnterRule(_localctx, 18, RULE_namespaceDeclaration02);
 		try {
@@ -748,7 +779,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class NamespaceBody02Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class NamespaceBody02Context : ParserRuleContext {
 		public ITerminalNode TOpenBrace() { return GetToken(TestLangOneParser.TOpenBrace, 0); }
 		public ITerminalNode TCloseBrace() { return GetToken(TestLangOneParser.TCloseBrace, 0); }
 		public Declaration02Context[] declaration02() {
@@ -771,7 +802,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public NamespaceBody02Context namespaceBody02() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_namespaceBody02, out NamespaceBody02Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseNamespaceBody02();
+	}
+
+	internal NamespaceBody02Context _DoParseNamespaceBody02() {
 		NamespaceBody02Context _localctx = new NamespaceBody02Context(_ctx, State);
 		EnterRule(_localctx, 20, RULE_namespaceBody02);
 		int _la;
@@ -806,7 +840,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class Declaration02Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class Declaration02Context : ParserRuleContext {
 		public Vertex02Context vertex02() {
 			return GetRuleContext<Vertex02Context>(0);
 		}
@@ -827,7 +861,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public Declaration02Context declaration02() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_declaration02, out Declaration02Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseDeclaration02();
+	}
+
+	internal Declaration02Context _DoParseDeclaration02() {
 		Declaration02Context _localctx = new Declaration02Context(_ctx, State);
 		EnterRule(_localctx, 22, RULE_declaration02);
 		try {
@@ -861,7 +898,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class Vertex02Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class Vertex02Context : ParserRuleContext {
 		public ITerminalNode KVertex() { return GetToken(TestLangOneParser.KVertex, 0); }
 		public NameContext name() {
 			return GetRuleContext<NameContext>(0);
@@ -881,7 +918,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public Vertex02Context vertex02() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_vertex02, out Vertex02Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseVertex02();
+	}
+
+	internal Vertex02Context _DoParseVertex02() {
 		Vertex02Context _localctx = new Vertex02Context(_ctx, State);
 		EnterRule(_localctx, 24, RULE_vertex02);
 		try {
@@ -903,7 +943,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class Arrow02Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class Arrow02Context : ParserRuleContext {
 		public ITerminalNode KArrow() { return GetToken(TestLangOneParser.KArrow, 0); }
 		public Source02Context source02() {
 			return GetRuleContext<Source02Context>(0);
@@ -927,7 +967,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public Arrow02Context arrow02() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_arrow02, out Arrow02Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseArrow02();
+	}
+
+	internal Arrow02Context _DoParseArrow02() {
 		Arrow02Context _localctx = new Arrow02Context(_ctx, State);
 		EnterRule(_localctx, 26, RULE_arrow02);
 		try {
@@ -951,7 +994,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class Source02Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class Source02Context : ParserRuleContext {
 		public QualifierContext qualifier() {
 			return GetRuleContext<QualifierContext>(0);
 		}
@@ -969,7 +1012,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public Source02Context source02() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_source02, out Source02Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseSource02();
+	}
+
+	internal Source02Context _DoParseSource02() {
 		Source02Context _localctx = new Source02Context(_ctx, State);
 		EnterRule(_localctx, 28, RULE_source02);
 		try {
@@ -989,7 +1035,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class Target02Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class Target02Context : ParserRuleContext {
 		public QualifierContext qualifier() {
 			return GetRuleContext<QualifierContext>(0);
 		}
@@ -1007,7 +1053,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public Target02Context target02() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_target02, out Target02Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseTarget02();
+	}
+
+	internal Target02Context _DoParseTarget02() {
 		Target02Context _localctx = new Target02Context(_ctx, State);
 		EnterRule(_localctx, 30, RULE_target02);
 		try {
@@ -1027,7 +1076,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class Test03Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class Test03Context : ParserRuleContext {
 		public ITerminalNode KTest03() { return GetToken(TestLangOneParser.KTest03, 0); }
 		public NamespaceDeclaration03Context namespaceDeclaration03() {
 			return GetRuleContext<NamespaceDeclaration03Context>(0);
@@ -1046,7 +1095,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public Test03Context test03() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_test03, out Test03Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseTest03();
+	}
+
+	internal Test03Context _DoParseTest03() {
 		Test03Context _localctx = new Test03Context(_ctx, State);
 		EnterRule(_localctx, 32, RULE_test03);
 		try {
@@ -1067,7 +1119,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class NamespaceDeclaration03Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class NamespaceDeclaration03Context : ParserRuleContext {
 		public ITerminalNode KNamespace() { return GetToken(TestLangOneParser.KNamespace, 0); }
 		public QualifiedNameContext qualifiedName() {
 			return GetRuleContext<QualifiedNameContext>(0);
@@ -1089,7 +1141,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public NamespaceDeclaration03Context namespaceDeclaration03() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_namespaceDeclaration03, out NamespaceDeclaration03Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseNamespaceDeclaration03();
+	}
+
+	internal NamespaceDeclaration03Context _DoParseNamespaceDeclaration03() {
 		NamespaceDeclaration03Context _localctx = new NamespaceDeclaration03Context(_ctx, State);
 		EnterRule(_localctx, 34, RULE_namespaceDeclaration03);
 		try {
@@ -1111,7 +1166,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class NamespaceBody03Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class NamespaceBody03Context : ParserRuleContext {
 		public ITerminalNode TOpenBrace() { return GetToken(TestLangOneParser.TOpenBrace, 0); }
 		public ITerminalNode TCloseBrace() { return GetToken(TestLangOneParser.TCloseBrace, 0); }
 		public Declaration03Context[] declaration03() {
@@ -1134,7 +1189,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public NamespaceBody03Context namespaceBody03() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_namespaceBody03, out NamespaceBody03Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseNamespaceBody03();
+	}
+
+	internal NamespaceBody03Context _DoParseNamespaceBody03() {
 		NamespaceBody03Context _localctx = new NamespaceBody03Context(_ctx, State);
 		EnterRule(_localctx, 36, RULE_namespaceBody03);
 		int _la;
@@ -1169,7 +1227,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class Declaration03Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class Declaration03Context : ParserRuleContext {
 		public Vertex03Context vertex03() {
 			return GetRuleContext<Vertex03Context>(0);
 		}
@@ -1190,7 +1248,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public Declaration03Context declaration03() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_declaration03, out Declaration03Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseDeclaration03();
+	}
+
+	internal Declaration03Context _DoParseDeclaration03() {
 		Declaration03Context _localctx = new Declaration03Context(_ctx, State);
 		EnterRule(_localctx, 38, RULE_declaration03);
 		try {
@@ -1224,7 +1285,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class Vertex03Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class Vertex03Context : ParserRuleContext {
 		public ITerminalNode KVertex() { return GetToken(TestLangOneParser.KVertex, 0); }
 		public NameContext name() {
 			return GetRuleContext<NameContext>(0);
@@ -1244,7 +1305,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public Vertex03Context vertex03() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_vertex03, out Vertex03Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseVertex03();
+	}
+
+	internal Vertex03Context _DoParseVertex03() {
 		Vertex03Context _localctx = new Vertex03Context(_ctx, State);
 		EnterRule(_localctx, 40, RULE_vertex03);
 		try {
@@ -1266,7 +1330,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class Arrow03Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class Arrow03Context : ParserRuleContext {
 		public ITerminalNode KArrow() { return GetToken(TestLangOneParser.KArrow, 0); }
 		public Source03Context source03() {
 			return GetRuleContext<Source03Context>(0);
@@ -1290,7 +1354,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public Arrow03Context arrow03() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_arrow03, out Arrow03Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseArrow03();
+	}
+
+	internal Arrow03Context _DoParseArrow03() {
 		Arrow03Context _localctx = new Arrow03Context(_ctx, State);
 		EnterRule(_localctx, 42, RULE_arrow03);
 		try {
@@ -1314,7 +1381,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class Source03Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class Source03Context : ParserRuleContext {
 		public QualifierContext qualifier() {
 			return GetRuleContext<QualifierContext>(0);
 		}
@@ -1332,7 +1399,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public Source03Context source03() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_source03, out Source03Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseSource03();
+	}
+
+	internal Source03Context _DoParseSource03() {
 		Source03Context _localctx = new Source03Context(_ctx, State);
 		EnterRule(_localctx, 44, RULE_source03);
 		try {
@@ -1352,7 +1422,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class Target03Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class Target03Context : ParserRuleContext {
 		public QualifierContext qualifier() {
 			return GetRuleContext<QualifierContext>(0);
 		}
@@ -1370,7 +1440,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public Target03Context target03() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_target03, out Target03Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseTarget03();
+	}
+
+	internal Target03Context _DoParseTarget03() {
 		Target03Context _localctx = new Target03Context(_ctx, State);
 		EnterRule(_localctx, 46, RULE_target03);
 		try {
@@ -1390,7 +1463,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class Test04Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class Test04Context : ParserRuleContext {
 		public ITerminalNode KTest04() { return GetToken(TestLangOneParser.KTest04, 0); }
 		public NamespaceDeclaration04Context namespaceDeclaration04() {
 			return GetRuleContext<NamespaceDeclaration04Context>(0);
@@ -1409,7 +1482,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public Test04Context test04() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_test04, out Test04Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseTest04();
+	}
+
+	internal Test04Context _DoParseTest04() {
 		Test04Context _localctx = new Test04Context(_ctx, State);
 		EnterRule(_localctx, 48, RULE_test04);
 		try {
@@ -1430,7 +1506,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class NamespaceDeclaration04Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class NamespaceDeclaration04Context : ParserRuleContext {
 		public ITerminalNode KNamespace() { return GetToken(TestLangOneParser.KNamespace, 0); }
 		public QualifiedNameContext qualifiedName() {
 			return GetRuleContext<QualifiedNameContext>(0);
@@ -1452,7 +1528,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public NamespaceDeclaration04Context namespaceDeclaration04() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_namespaceDeclaration04, out NamespaceDeclaration04Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseNamespaceDeclaration04();
+	}
+
+	internal NamespaceDeclaration04Context _DoParseNamespaceDeclaration04() {
 		NamespaceDeclaration04Context _localctx = new NamespaceDeclaration04Context(_ctx, State);
 		EnterRule(_localctx, 50, RULE_namespaceDeclaration04);
 		try {
@@ -1474,7 +1553,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class NamespaceBody04Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class NamespaceBody04Context : ParserRuleContext {
 		public ITerminalNode TOpenBrace() { return GetToken(TestLangOneParser.TOpenBrace, 0); }
 		public ITerminalNode TCloseBrace() { return GetToken(TestLangOneParser.TCloseBrace, 0); }
 		public Declaration04Context[] declaration04() {
@@ -1497,7 +1576,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public NamespaceBody04Context namespaceBody04() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_namespaceBody04, out NamespaceBody04Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseNamespaceBody04();
+	}
+
+	internal NamespaceBody04Context _DoParseNamespaceBody04() {
 		NamespaceBody04Context _localctx = new NamespaceBody04Context(_ctx, State);
 		EnterRule(_localctx, 52, RULE_namespaceBody04);
 		int _la;
@@ -1532,7 +1614,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class Declaration04Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class Declaration04Context : ParserRuleContext {
 		public Vertex04Context vertex04() {
 			return GetRuleContext<Vertex04Context>(0);
 		}
@@ -1553,7 +1635,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public Declaration04Context declaration04() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_declaration04, out Declaration04Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseDeclaration04();
+	}
+
+	internal Declaration04Context _DoParseDeclaration04() {
 		Declaration04Context _localctx = new Declaration04Context(_ctx, State);
 		EnterRule(_localctx, 54, RULE_declaration04);
 		try {
@@ -1587,7 +1672,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class Vertex04Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class Vertex04Context : ParserRuleContext {
 		public ITerminalNode KVertex() { return GetToken(TestLangOneParser.KVertex, 0); }
 		public NameContext name() {
 			return GetRuleContext<NameContext>(0);
@@ -1607,7 +1692,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public Vertex04Context vertex04() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_vertex04, out Vertex04Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseVertex04();
+	}
+
+	internal Vertex04Context _DoParseVertex04() {
 		Vertex04Context _localctx = new Vertex04Context(_ctx, State);
 		EnterRule(_localctx, 56, RULE_vertex04);
 		try {
@@ -1629,7 +1717,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class Arrow04Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class Arrow04Context : ParserRuleContext {
 		public QualifierContext source;
 		public QualifierContext target;
 		public ITerminalNode KArrow() { return GetToken(TestLangOneParser.KArrow, 0); }
@@ -1655,7 +1743,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public Arrow04Context arrow04() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_arrow04, out Arrow04Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseArrow04();
+	}
+
+	internal Arrow04Context _DoParseArrow04() {
 		Arrow04Context _localctx = new Arrow04Context(_ctx, State);
 		EnterRule(_localctx, 58, RULE_arrow04);
 		try {
@@ -1679,7 +1770,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class Test05Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class Test05Context : ParserRuleContext {
 		public ITerminalNode KTest05() { return GetToken(TestLangOneParser.KTest05, 0); }
 		public NamespaceDeclaration05Context namespaceDeclaration05() {
 			return GetRuleContext<NamespaceDeclaration05Context>(0);
@@ -1698,7 +1789,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public Test05Context test05() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_test05, out Test05Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseTest05();
+	}
+
+	internal Test05Context _DoParseTest05() {
 		Test05Context _localctx = new Test05Context(_ctx, State);
 		EnterRule(_localctx, 60, RULE_test05);
 		try {
@@ -1719,7 +1813,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class NamespaceDeclaration05Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class NamespaceDeclaration05Context : ParserRuleContext {
 		public ITerminalNode KNamespace() { return GetToken(TestLangOneParser.KNamespace, 0); }
 		public QualifiedNameContext qualifiedName() {
 			return GetRuleContext<QualifiedNameContext>(0);
@@ -1741,7 +1835,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public NamespaceDeclaration05Context namespaceDeclaration05() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_namespaceDeclaration05, out NamespaceDeclaration05Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseNamespaceDeclaration05();
+	}
+
+	internal NamespaceDeclaration05Context _DoParseNamespaceDeclaration05() {
 		NamespaceDeclaration05Context _localctx = new NamespaceDeclaration05Context(_ctx, State);
 		EnterRule(_localctx, 62, RULE_namespaceDeclaration05);
 		try {
@@ -1763,7 +1860,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class NamespaceBody05Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class NamespaceBody05Context : ParserRuleContext {
 		public ITerminalNode TOpenBrace() { return GetToken(TestLangOneParser.TOpenBrace, 0); }
 		public ITerminalNode TCloseBrace() { return GetToken(TestLangOneParser.TCloseBrace, 0); }
 		public Declaration05Context[] declaration05() {
@@ -1786,7 +1883,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public NamespaceBody05Context namespaceBody05() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_namespaceBody05, out NamespaceBody05Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseNamespaceBody05();
+	}
+
+	internal NamespaceBody05Context _DoParseNamespaceBody05() {
 		NamespaceBody05Context _localctx = new NamespaceBody05Context(_ctx, State);
 		EnterRule(_localctx, 64, RULE_namespaceBody05);
 		int _la;
@@ -1821,7 +1921,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class Declaration05Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class Declaration05Context : ParserRuleContext {
 		public Vertex05Context vertex05() {
 			return GetRuleContext<Vertex05Context>(0);
 		}
@@ -1842,7 +1942,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public Declaration05Context declaration05() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_declaration05, out Declaration05Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseDeclaration05();
+	}
+
+	internal Declaration05Context _DoParseDeclaration05() {
 		Declaration05Context _localctx = new Declaration05Context(_ctx, State);
 		EnterRule(_localctx, 66, RULE_declaration05);
 		try {
@@ -1876,7 +1979,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class Vertex05Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class Vertex05Context : ParserRuleContext {
 		public ITerminalNode KVertex() { return GetToken(TestLangOneParser.KVertex, 0); }
 		public NameContext name() {
 			return GetRuleContext<NameContext>(0);
@@ -1896,7 +1999,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public Vertex05Context vertex05() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_vertex05, out Vertex05Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseVertex05();
+	}
+
+	internal Vertex05Context _DoParseVertex05() {
 		Vertex05Context _localctx = new Vertex05Context(_ctx, State);
 		EnterRule(_localctx, 68, RULE_vertex05);
 		try {
@@ -1918,7 +2024,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class Arrow05Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class Arrow05Context : ParserRuleContext {
 		public QualifierContext source;
 		public QualifierContext target;
 		public ITerminalNode KArrow() { return GetToken(TestLangOneParser.KArrow, 0); }
@@ -1944,7 +2050,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public Arrow05Context arrow05() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_arrow05, out Arrow05Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseArrow05();
+	}
+
+	internal Arrow05Context _DoParseArrow05() {
 		Arrow05Context _localctx = new Arrow05Context(_ctx, State);
 		EnterRule(_localctx, 70, RULE_arrow05);
 		try {
@@ -1968,7 +2077,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class Test06Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class Test06Context : ParserRuleContext {
 		public ITerminalNode KTest06() { return GetToken(TestLangOneParser.KTest06, 0); }
 		public NamespaceDeclaration06Context namespaceDeclaration06() {
 			return GetRuleContext<NamespaceDeclaration06Context>(0);
@@ -1987,7 +2096,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public Test06Context test06() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_test06, out Test06Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseTest06();
+	}
+
+	internal Test06Context _DoParseTest06() {
 		Test06Context _localctx = new Test06Context(_ctx, State);
 		EnterRule(_localctx, 72, RULE_test06);
 		try {
@@ -2008,7 +2120,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class NamespaceDeclaration06Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class NamespaceDeclaration06Context : ParserRuleContext {
 		public ITerminalNode KNamespace() { return GetToken(TestLangOneParser.KNamespace, 0); }
 		public QualifiedNameContext qualifiedName() {
 			return GetRuleContext<QualifiedNameContext>(0);
@@ -2030,7 +2142,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public NamespaceDeclaration06Context namespaceDeclaration06() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_namespaceDeclaration06, out NamespaceDeclaration06Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseNamespaceDeclaration06();
+	}
+
+	internal NamespaceDeclaration06Context _DoParseNamespaceDeclaration06() {
 		NamespaceDeclaration06Context _localctx = new NamespaceDeclaration06Context(_ctx, State);
 		EnterRule(_localctx, 74, RULE_namespaceDeclaration06);
 		try {
@@ -2052,7 +2167,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class NamespaceBody06Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class NamespaceBody06Context : ParserRuleContext {
 		public ITerminalNode TOpenBrace() { return GetToken(TestLangOneParser.TOpenBrace, 0); }
 		public ITerminalNode TCloseBrace() { return GetToken(TestLangOneParser.TCloseBrace, 0); }
 		public Declaration06Context[] declaration06() {
@@ -2075,7 +2190,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public NamespaceBody06Context namespaceBody06() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_namespaceBody06, out NamespaceBody06Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseNamespaceBody06();
+	}
+
+	internal NamespaceBody06Context _DoParseNamespaceBody06() {
 		NamespaceBody06Context _localctx = new NamespaceBody06Context(_ctx, State);
 		EnterRule(_localctx, 76, RULE_namespaceBody06);
 		int _la;
@@ -2110,7 +2228,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class Declaration06Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class Declaration06Context : ParserRuleContext {
 		public Vertex06Context vertex06() {
 			return GetRuleContext<Vertex06Context>(0);
 		}
@@ -2131,7 +2249,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public Declaration06Context declaration06() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_declaration06, out Declaration06Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseDeclaration06();
+	}
+
+	internal Declaration06Context _DoParseDeclaration06() {
 		Declaration06Context _localctx = new Declaration06Context(_ctx, State);
 		EnterRule(_localctx, 78, RULE_declaration06);
 		try {
@@ -2165,7 +2286,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class Vertex06Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class Vertex06Context : ParserRuleContext {
 		public ITerminalNode KVertex() { return GetToken(TestLangOneParser.KVertex, 0); }
 		public NameContext name() {
 			return GetRuleContext<NameContext>(0);
@@ -2185,7 +2306,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public Vertex06Context vertex06() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_vertex06, out Vertex06Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseVertex06();
+	}
+
+	internal Vertex06Context _DoParseVertex06() {
 		Vertex06Context _localctx = new Vertex06Context(_ctx, State);
 		EnterRule(_localctx, 80, RULE_vertex06);
 		try {
@@ -2207,7 +2331,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class Arrow06Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class Arrow06Context : ParserRuleContext {
 		public NameContext source;
 		public NameContext target;
 		public ITerminalNode KArrow() { return GetToken(TestLangOneParser.KArrow, 0); }
@@ -2233,7 +2357,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public Arrow06Context arrow06() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_arrow06, out Arrow06Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseArrow06();
+	}
+
+	internal Arrow06Context _DoParseArrow06() {
 		Arrow06Context _localctx = new Arrow06Context(_ctx, State);
 		EnterRule(_localctx, 82, RULE_arrow06);
 		try {
@@ -2257,7 +2384,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class Test07Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class Test07Context : ParserRuleContext {
 		public ITerminalNode KTest07() { return GetToken(TestLangOneParser.KTest07, 0); }
 		public NamespaceDeclaration07Context namespaceDeclaration07() {
 			return GetRuleContext<NamespaceDeclaration07Context>(0);
@@ -2276,7 +2403,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public Test07Context test07() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_test07, out Test07Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseTest07();
+	}
+
+	internal Test07Context _DoParseTest07() {
 		Test07Context _localctx = new Test07Context(_ctx, State);
 		EnterRule(_localctx, 84, RULE_test07);
 		try {
@@ -2297,7 +2427,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class NamespaceDeclaration07Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class NamespaceDeclaration07Context : ParserRuleContext {
 		public ITerminalNode KNamespace() { return GetToken(TestLangOneParser.KNamespace, 0); }
 		public QualifiedNameContext qualifiedName() {
 			return GetRuleContext<QualifiedNameContext>(0);
@@ -2319,7 +2449,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public NamespaceDeclaration07Context namespaceDeclaration07() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_namespaceDeclaration07, out NamespaceDeclaration07Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseNamespaceDeclaration07();
+	}
+
+	internal NamespaceDeclaration07Context _DoParseNamespaceDeclaration07() {
 		NamespaceDeclaration07Context _localctx = new NamespaceDeclaration07Context(_ctx, State);
 		EnterRule(_localctx, 86, RULE_namespaceDeclaration07);
 		try {
@@ -2341,7 +2474,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class NamespaceBody07Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class NamespaceBody07Context : ParserRuleContext {
 		public ITerminalNode TOpenBrace() { return GetToken(TestLangOneParser.TOpenBrace, 0); }
 		public ITerminalNode TCloseBrace() { return GetToken(TestLangOneParser.TCloseBrace, 0); }
 		public Declaration07Context[] declaration07() {
@@ -2364,7 +2497,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public NamespaceBody07Context namespaceBody07() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_namespaceBody07, out NamespaceBody07Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseNamespaceBody07();
+	}
+
+	internal NamespaceBody07Context _DoParseNamespaceBody07() {
 		NamespaceBody07Context _localctx = new NamespaceBody07Context(_ctx, State);
 		EnterRule(_localctx, 88, RULE_namespaceBody07);
 		int _la;
@@ -2399,7 +2535,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class Declaration07Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class Declaration07Context : ParserRuleContext {
 		public Vertex07Context vertex07() {
 			return GetRuleContext<Vertex07Context>(0);
 		}
@@ -2420,7 +2556,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public Declaration07Context declaration07() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_declaration07, out Declaration07Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseDeclaration07();
+	}
+
+	internal Declaration07Context _DoParseDeclaration07() {
 		Declaration07Context _localctx = new Declaration07Context(_ctx, State);
 		EnterRule(_localctx, 90, RULE_declaration07);
 		try {
@@ -2454,7 +2593,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class Vertex07Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class Vertex07Context : ParserRuleContext {
 		public ITerminalNode KVertex() { return GetToken(TestLangOneParser.KVertex, 0); }
 		public NameContext name() {
 			return GetRuleContext<NameContext>(0);
@@ -2474,7 +2613,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public Vertex07Context vertex07() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_vertex07, out Vertex07Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseVertex07();
+	}
+
+	internal Vertex07Context _DoParseVertex07() {
 		Vertex07Context _localctx = new Vertex07Context(_ctx, State);
 		EnterRule(_localctx, 92, RULE_vertex07);
 		try {
@@ -2496,7 +2638,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class Arrow07Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class Arrow07Context : ParserRuleContext {
 		public ITerminalNode KArrow() { return GetToken(TestLangOneParser.KArrow, 0); }
 		public Source07Context source07() {
 			return GetRuleContext<Source07Context>(0);
@@ -2520,7 +2662,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public Arrow07Context arrow07() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_arrow07, out Arrow07Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseArrow07();
+	}
+
+	internal Arrow07Context _DoParseArrow07() {
 		Arrow07Context _localctx = new Arrow07Context(_ctx, State);
 		EnterRule(_localctx, 94, RULE_arrow07);
 		try {
@@ -2544,7 +2689,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class Source07Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class Source07Context : ParserRuleContext {
 		public NameContext name() {
 			return GetRuleContext<NameContext>(0);
 		}
@@ -2562,7 +2707,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public Source07Context source07() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_source07, out Source07Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseSource07();
+	}
+
+	internal Source07Context _DoParseSource07() {
 		Source07Context _localctx = new Source07Context(_ctx, State);
 		EnterRule(_localctx, 96, RULE_source07);
 		try {
@@ -2582,7 +2730,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class Target07Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class Target07Context : ParserRuleContext {
 		public NameContext name() {
 			return GetRuleContext<NameContext>(0);
 		}
@@ -2600,7 +2748,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public Target07Context target07() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_target07, out Target07Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseTarget07();
+	}
+
+	internal Target07Context _DoParseTarget07() {
 		Target07Context _localctx = new Target07Context(_ctx, State);
 		EnterRule(_localctx, 98, RULE_target07);
 		try {
@@ -2620,7 +2771,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class Test08Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class Test08Context : ParserRuleContext {
 		public ITerminalNode KTest08() { return GetToken(TestLangOneParser.KTest08, 0); }
 		public NamespaceDeclaration08Context namespaceDeclaration08() {
 			return GetRuleContext<NamespaceDeclaration08Context>(0);
@@ -2639,7 +2790,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public Test08Context test08() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_test08, out Test08Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseTest08();
+	}
+
+	internal Test08Context _DoParseTest08() {
 		Test08Context _localctx = new Test08Context(_ctx, State);
 		EnterRule(_localctx, 100, RULE_test08);
 		try {
@@ -2660,7 +2814,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class NamespaceDeclaration08Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class NamespaceDeclaration08Context : ParserRuleContext {
 		public ITerminalNode KNamespace() { return GetToken(TestLangOneParser.KNamespace, 0); }
 		public QualifiedNameContext qualifiedName() {
 			return GetRuleContext<QualifiedNameContext>(0);
@@ -2682,7 +2836,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public NamespaceDeclaration08Context namespaceDeclaration08() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_namespaceDeclaration08, out NamespaceDeclaration08Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseNamespaceDeclaration08();
+	}
+
+	internal NamespaceDeclaration08Context _DoParseNamespaceDeclaration08() {
 		NamespaceDeclaration08Context _localctx = new NamespaceDeclaration08Context(_ctx, State);
 		EnterRule(_localctx, 102, RULE_namespaceDeclaration08);
 		try {
@@ -2704,7 +2861,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class NamespaceBody08Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class NamespaceBody08Context : ParserRuleContext {
 		public ITerminalNode TOpenBrace() { return GetToken(TestLangOneParser.TOpenBrace, 0); }
 		public ITerminalNode TCloseBrace() { return GetToken(TestLangOneParser.TCloseBrace, 0); }
 		public Declaration08Context[] declaration08() {
@@ -2727,7 +2884,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public NamespaceBody08Context namespaceBody08() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_namespaceBody08, out NamespaceBody08Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseNamespaceBody08();
+	}
+
+	internal NamespaceBody08Context _DoParseNamespaceBody08() {
 		NamespaceBody08Context _localctx = new NamespaceBody08Context(_ctx, State);
 		EnterRule(_localctx, 104, RULE_namespaceBody08);
 		int _la;
@@ -2762,7 +2922,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class Declaration08Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class Declaration08Context : ParserRuleContext {
 		public Vertex08Context vertex08() {
 			return GetRuleContext<Vertex08Context>(0);
 		}
@@ -2783,7 +2943,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public Declaration08Context declaration08() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_declaration08, out Declaration08Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseDeclaration08();
+	}
+
+	internal Declaration08Context _DoParseDeclaration08() {
 		Declaration08Context _localctx = new Declaration08Context(_ctx, State);
 		EnterRule(_localctx, 106, RULE_declaration08);
 		try {
@@ -2817,7 +2980,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class Vertex08Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class Vertex08Context : ParserRuleContext {
 		public ITerminalNode KVertex() { return GetToken(TestLangOneParser.KVertex, 0); }
 		public NameContext name() {
 			return GetRuleContext<NameContext>(0);
@@ -2837,7 +3000,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public Vertex08Context vertex08() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_vertex08, out Vertex08Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseVertex08();
+	}
+
+	internal Vertex08Context _DoParseVertex08() {
 		Vertex08Context _localctx = new Vertex08Context(_ctx, State);
 		EnterRule(_localctx, 108, RULE_vertex08);
 		try {
@@ -2859,7 +3025,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class Arrow08Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class Arrow08Context : ParserRuleContext {
 		public ITerminalNode KArrow() { return GetToken(TestLangOneParser.KArrow, 0); }
 		public Source08Context source08() {
 			return GetRuleContext<Source08Context>(0);
@@ -2883,7 +3049,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public Arrow08Context arrow08() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_arrow08, out Arrow08Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseArrow08();
+	}
+
+	internal Arrow08Context _DoParseArrow08() {
 		Arrow08Context _localctx = new Arrow08Context(_ctx, State);
 		EnterRule(_localctx, 110, RULE_arrow08);
 		try {
@@ -2907,7 +3076,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class Source08Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class Source08Context : ParserRuleContext {
 		public NameContext name() {
 			return GetRuleContext<NameContext>(0);
 		}
@@ -2925,7 +3094,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public Source08Context source08() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_source08, out Source08Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseSource08();
+	}
+
+	internal Source08Context _DoParseSource08() {
 		Source08Context _localctx = new Source08Context(_ctx, State);
 		EnterRule(_localctx, 112, RULE_source08);
 		try {
@@ -2945,7 +3117,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class Target08Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class Target08Context : ParserRuleContext {
 		public NameContext name() {
 			return GetRuleContext<NameContext>(0);
 		}
@@ -2963,7 +3135,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public Target08Context target08() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_target08, out Target08Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseTarget08();
+	}
+
+	internal Target08Context _DoParseTarget08() {
 		Target08Context _localctx = new Target08Context(_ctx, State);
 		EnterRule(_localctx, 114, RULE_target08);
 		try {
@@ -2983,7 +3158,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class Test09Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class Test09Context : ParserRuleContext {
 		public ITerminalNode KTest09() { return GetToken(TestLangOneParser.KTest09, 0); }
 		public NamespaceDeclaration09Context namespaceDeclaration09() {
 			return GetRuleContext<NamespaceDeclaration09Context>(0);
@@ -3002,7 +3177,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public Test09Context test09() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_test09, out Test09Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseTest09();
+	}
+
+	internal Test09Context _DoParseTest09() {
 		Test09Context _localctx = new Test09Context(_ctx, State);
 		EnterRule(_localctx, 116, RULE_test09);
 		try {
@@ -3023,7 +3201,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class NamespaceDeclaration09Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class NamespaceDeclaration09Context : ParserRuleContext {
 		public ITerminalNode KNamespace() { return GetToken(TestLangOneParser.KNamespace, 0); }
 		public QualifiedNameContext qualifiedName() {
 			return GetRuleContext<QualifiedNameContext>(0);
@@ -3045,7 +3223,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public NamespaceDeclaration09Context namespaceDeclaration09() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_namespaceDeclaration09, out NamespaceDeclaration09Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseNamespaceDeclaration09();
+	}
+
+	internal NamespaceDeclaration09Context _DoParseNamespaceDeclaration09() {
 		NamespaceDeclaration09Context _localctx = new NamespaceDeclaration09Context(_ctx, State);
 		EnterRule(_localctx, 118, RULE_namespaceDeclaration09);
 		try {
@@ -3067,7 +3248,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class NamespaceBody09Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class NamespaceBody09Context : ParserRuleContext {
 		public ITerminalNode TOpenBrace() { return GetToken(TestLangOneParser.TOpenBrace, 0); }
 		public ITerminalNode TCloseBrace() { return GetToken(TestLangOneParser.TCloseBrace, 0); }
 		public Declaration09Context[] declaration09() {
@@ -3090,7 +3271,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public NamespaceBody09Context namespaceBody09() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_namespaceBody09, out NamespaceBody09Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseNamespaceBody09();
+	}
+
+	internal NamespaceBody09Context _DoParseNamespaceBody09() {
 		NamespaceBody09Context _localctx = new NamespaceBody09Context(_ctx, State);
 		EnterRule(_localctx, 120, RULE_namespaceBody09);
 		int _la;
@@ -3125,7 +3309,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class Declaration09Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class Declaration09Context : ParserRuleContext {
 		public Vertex09Context vertex09() {
 			return GetRuleContext<Vertex09Context>(0);
 		}
@@ -3146,7 +3330,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public Declaration09Context declaration09() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_declaration09, out Declaration09Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseDeclaration09();
+	}
+
+	internal Declaration09Context _DoParseDeclaration09() {
 		Declaration09Context _localctx = new Declaration09Context(_ctx, State);
 		EnterRule(_localctx, 122, RULE_declaration09);
 		try {
@@ -3180,7 +3367,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class Vertex09Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class Vertex09Context : ParserRuleContext {
 		public ITerminalNode KVertex() { return GetToken(TestLangOneParser.KVertex, 0); }
 		public NameContext name() {
 			return GetRuleContext<NameContext>(0);
@@ -3200,7 +3387,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public Vertex09Context vertex09() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_vertex09, out Vertex09Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseVertex09();
+	}
+
+	internal Vertex09Context _DoParseVertex09() {
 		Vertex09Context _localctx = new Vertex09Context(_ctx, State);
 		EnterRule(_localctx, 124, RULE_vertex09);
 		try {
@@ -3222,7 +3412,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class Arrow09Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class Arrow09Context : ParserRuleContext {
 		public NameContext source;
 		public NameContext target;
 		public ITerminalNode KArrow() { return GetToken(TestLangOneParser.KArrow, 0); }
@@ -3248,7 +3438,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public Arrow09Context arrow09() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_arrow09, out Arrow09Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseArrow09();
+	}
+
+	internal Arrow09Context _DoParseArrow09() {
 		Arrow09Context _localctx = new Arrow09Context(_ctx, State);
 		EnterRule(_localctx, 126, RULE_arrow09);
 		try {
@@ -3272,7 +3465,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class Test10Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class Test10Context : ParserRuleContext {
 		public ITerminalNode KTest10() { return GetToken(TestLangOneParser.KTest10, 0); }
 		public NamespaceDeclaration10Context namespaceDeclaration10() {
 			return GetRuleContext<NamespaceDeclaration10Context>(0);
@@ -3291,7 +3484,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public Test10Context test10() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_test10, out Test10Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseTest10();
+	}
+
+	internal Test10Context _DoParseTest10() {
 		Test10Context _localctx = new Test10Context(_ctx, State);
 		EnterRule(_localctx, 128, RULE_test10);
 		try {
@@ -3312,7 +3508,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class NamespaceDeclaration10Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class NamespaceDeclaration10Context : ParserRuleContext {
 		public ITerminalNode KNamespace() { return GetToken(TestLangOneParser.KNamespace, 0); }
 		public QualifiedNameContext qualifiedName() {
 			return GetRuleContext<QualifiedNameContext>(0);
@@ -3334,7 +3530,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public NamespaceDeclaration10Context namespaceDeclaration10() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_namespaceDeclaration10, out NamespaceDeclaration10Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseNamespaceDeclaration10();
+	}
+
+	internal NamespaceDeclaration10Context _DoParseNamespaceDeclaration10() {
 		NamespaceDeclaration10Context _localctx = new NamespaceDeclaration10Context(_ctx, State);
 		EnterRule(_localctx, 130, RULE_namespaceDeclaration10);
 		try {
@@ -3356,7 +3555,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class NamespaceBody10Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class NamespaceBody10Context : ParserRuleContext {
 		public ITerminalNode TOpenBrace() { return GetToken(TestLangOneParser.TOpenBrace, 0); }
 		public ITerminalNode TCloseBrace() { return GetToken(TestLangOneParser.TCloseBrace, 0); }
 		public Declaration10Context[] declaration10() {
@@ -3379,7 +3578,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public NamespaceBody10Context namespaceBody10() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_namespaceBody10, out NamespaceBody10Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseNamespaceBody10();
+	}
+
+	internal NamespaceBody10Context _DoParseNamespaceBody10() {
 		NamespaceBody10Context _localctx = new NamespaceBody10Context(_ctx, State);
 		EnterRule(_localctx, 132, RULE_namespaceBody10);
 		int _la;
@@ -3414,7 +3616,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class Declaration10Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class Declaration10Context : ParserRuleContext {
 		public Vertex10Context vertex10() {
 			return GetRuleContext<Vertex10Context>(0);
 		}
@@ -3435,7 +3637,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public Declaration10Context declaration10() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_declaration10, out Declaration10Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseDeclaration10();
+	}
+
+	internal Declaration10Context _DoParseDeclaration10() {
 		Declaration10Context _localctx = new Declaration10Context(_ctx, State);
 		EnterRule(_localctx, 134, RULE_declaration10);
 		try {
@@ -3469,7 +3674,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class Vertex10Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class Vertex10Context : ParserRuleContext {
 		public ITerminalNode KVertex() { return GetToken(TestLangOneParser.KVertex, 0); }
 		public NameContext name() {
 			return GetRuleContext<NameContext>(0);
@@ -3489,7 +3694,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public Vertex10Context vertex10() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_vertex10, out Vertex10Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseVertex10();
+	}
+
+	internal Vertex10Context _DoParseVertex10() {
 		Vertex10Context _localctx = new Vertex10Context(_ctx, State);
 		EnterRule(_localctx, 136, RULE_vertex10);
 		try {
@@ -3511,7 +3719,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class Arrow10Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class Arrow10Context : ParserRuleContext {
 		public NameContext source;
 		public NameContext target;
 		public ITerminalNode KArrow() { return GetToken(TestLangOneParser.KArrow, 0); }
@@ -3537,7 +3745,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public Arrow10Context arrow10() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_arrow10, out Arrow10Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseArrow10();
+	}
+
+	internal Arrow10Context _DoParseArrow10() {
 		Arrow10Context _localctx = new Arrow10Context(_ctx, State);
 		EnterRule(_localctx, 138, RULE_arrow10);
 		try {
@@ -3561,7 +3772,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class Test11Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class Test11Context : ParserRuleContext {
 		public ITerminalNode KTest11() { return GetToken(TestLangOneParser.KTest11, 0); }
 		public NamespaceDeclaration11Context[] namespaceDeclaration11() {
 			return GetRuleContexts<NamespaceDeclaration11Context>();
@@ -3583,7 +3794,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public Test11Context test11() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_test11, out Test11Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseTest11();
+	}
+
+	internal Test11Context _DoParseTest11() {
 		Test11Context _localctx = new Test11Context(_ctx, State);
 		EnterRule(_localctx, 140, RULE_test11);
 		int _la;
@@ -3617,7 +3831,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class NamespaceDeclaration11Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class NamespaceDeclaration11Context : ParserRuleContext {
 		public ITerminalNode KNamespace() { return GetToken(TestLangOneParser.KNamespace, 0); }
 		public QualifiedNameContext qualifiedName() {
 			return GetRuleContext<QualifiedNameContext>(0);
@@ -3639,7 +3853,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public NamespaceDeclaration11Context namespaceDeclaration11() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_namespaceDeclaration11, out NamespaceDeclaration11Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseNamespaceDeclaration11();
+	}
+
+	internal NamespaceDeclaration11Context _DoParseNamespaceDeclaration11() {
 		NamespaceDeclaration11Context _localctx = new NamespaceDeclaration11Context(_ctx, State);
 		EnterRule(_localctx, 142, RULE_namespaceDeclaration11);
 		try {
@@ -3661,7 +3878,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class NamespaceBody11Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class NamespaceBody11Context : ParserRuleContext {
 		public ITerminalNode TOpenBrace() { return GetToken(TestLangOneParser.TOpenBrace, 0); }
 		public ITerminalNode TCloseBrace() { return GetToken(TestLangOneParser.TCloseBrace, 0); }
 		public Declaration11Context[] declaration11() {
@@ -3684,7 +3901,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public NamespaceBody11Context namespaceBody11() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_namespaceBody11, out NamespaceBody11Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseNamespaceBody11();
+	}
+
+	internal NamespaceBody11Context _DoParseNamespaceBody11() {
 		NamespaceBody11Context _localctx = new NamespaceBody11Context(_ctx, State);
 		EnterRule(_localctx, 144, RULE_namespaceBody11);
 		int _la;
@@ -3719,7 +3939,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class Declaration11Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class Declaration11Context : ParserRuleContext {
 		public Vertex11Context vertex11() {
 			return GetRuleContext<Vertex11Context>(0);
 		}
@@ -3740,7 +3960,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public Declaration11Context declaration11() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_declaration11, out Declaration11Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseDeclaration11();
+	}
+
+	internal Declaration11Context _DoParseDeclaration11() {
 		Declaration11Context _localctx = new Declaration11Context(_ctx, State);
 		EnterRule(_localctx, 146, RULE_declaration11);
 		try {
@@ -3774,7 +3997,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class Vertex11Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class Vertex11Context : ParserRuleContext {
 		public ITerminalNode KVertex() { return GetToken(TestLangOneParser.KVertex, 0); }
 		public NameContext name() {
 			return GetRuleContext<NameContext>(0);
@@ -3794,7 +4017,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public Vertex11Context vertex11() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_vertex11, out Vertex11Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseVertex11();
+	}
+
+	internal Vertex11Context _DoParseVertex11() {
 		Vertex11Context _localctx = new Vertex11Context(_ctx, State);
 		EnterRule(_localctx, 148, RULE_vertex11);
 		try {
@@ -3816,7 +4042,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class Arrow11Context : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class Arrow11Context : ParserRuleContext {
 		public QualifiedNameContext source;
 		public QualifiedNameContext target;
 		public ITerminalNode KArrow() { return GetToken(TestLangOneParser.KArrow, 0); }
@@ -3842,7 +4068,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public Arrow11Context arrow11() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_arrow11, out Arrow11Context existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseArrow11();
+	}
+
+	internal Arrow11Context _DoParseArrow11() {
 		Arrow11Context _localctx = new Arrow11Context(_ctx, State);
 		EnterRule(_localctx, 150, RULE_arrow11);
 		try {
@@ -3866,7 +4095,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class NameContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class NameContext : ParserRuleContext {
 		public IdentifierContext identifier() {
 			return GetRuleContext<IdentifierContext>(0);
 		}
@@ -3884,7 +4113,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public NameContext name() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_name, out NameContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseName();
+	}
+
+	internal NameContext _DoParseName() {
 		NameContext _localctx = new NameContext(_ctx, State);
 		EnterRule(_localctx, 152, RULE_name);
 		try {
@@ -3904,7 +4136,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class QualifiedNameContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class QualifiedNameContext : ParserRuleContext {
 		public QualifierContext qualifier() {
 			return GetRuleContext<QualifierContext>(0);
 		}
@@ -3922,7 +4154,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public QualifiedNameContext qualifiedName() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_qualifiedName, out QualifiedNameContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseQualifiedName();
+	}
+
+	internal QualifiedNameContext _DoParseQualifiedName() {
 		QualifiedNameContext _localctx = new QualifiedNameContext(_ctx, State);
 		EnterRule(_localctx, 154, RULE_qualifiedName);
 		try {
@@ -3942,7 +4177,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class QualifierContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class QualifierContext : ParserRuleContext {
 		public IdentifierContext[] identifier() {
 			return GetRuleContexts<IdentifierContext>();
 		}
@@ -3967,7 +4202,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public QualifierContext qualifier() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_qualifier, out QualifierContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseQualifier();
+	}
+
+	internal QualifierContext _DoParseQualifier() {
 		QualifierContext _localctx = new QualifierContext(_ctx, State);
 		EnterRule(_localctx, 156, RULE_qualifier);
 		int _la;
@@ -4002,7 +4240,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class IdentifierContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class IdentifierContext : ParserRuleContext {
 		public ITerminalNode IdentifierNormal() { return GetToken(TestLangOneParser.IdentifierNormal, 0); }
 		public ITerminalNode IdentifierVerbatim() { return GetToken(TestLangOneParser.IdentifierVerbatim, 0); }
 		public ITerminalNode IUri() { return GetToken(TestLangOneParser.IUri, 0); }
@@ -4020,7 +4258,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public IdentifierContext identifier() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_identifier, out IdentifierContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseIdentifier();
+	}
+
+	internal IdentifierContext _DoParseIdentifier() {
 		IdentifierContext _localctx = new IdentifierContext(_ctx, State);
 		EnterRule(_localctx, 158, RULE_identifier);
 		int _la;
@@ -4052,7 +4293,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class LiteralContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class LiteralContext : ParserRuleContext {
 		public NullLiteralContext nullLiteral() {
 			return GetRuleContext<NullLiteralContext>(0);
 		}
@@ -4085,7 +4326,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public LiteralContext literal() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_literal, out LiteralContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseLiteral();
+	}
+
+	internal LiteralContext _DoParseLiteral() {
 		LiteralContext _localctx = new LiteralContext(_ctx, State);
 		EnterRule(_localctx, 160, RULE_literal);
 		try {
@@ -4144,7 +4388,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class NullLiteralContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class NullLiteralContext : ParserRuleContext {
 		public ITerminalNode KNull() { return GetToken(TestLangOneParser.KNull, 0); }
 		public NullLiteralContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -4160,7 +4404,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public NullLiteralContext nullLiteral() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_nullLiteral, out NullLiteralContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseNullLiteral();
+	}
+
+	internal NullLiteralContext _DoParseNullLiteral() {
 		NullLiteralContext _localctx = new NullLiteralContext(_ctx, State);
 		EnterRule(_localctx, 162, RULE_nullLiteral);
 		try {
@@ -4180,7 +4427,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class BooleanLiteralContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class BooleanLiteralContext : ParserRuleContext {
 		public ITerminalNode KTrue() { return GetToken(TestLangOneParser.KTrue, 0); }
 		public ITerminalNode KFalse() { return GetToken(TestLangOneParser.KFalse, 0); }
 		public BooleanLiteralContext(ParserRuleContext parent, int invokingState)
@@ -4197,7 +4444,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public BooleanLiteralContext booleanLiteral() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_booleanLiteral, out BooleanLiteralContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseBooleanLiteral();
+	}
+
+	internal BooleanLiteralContext _DoParseBooleanLiteral() {
 		BooleanLiteralContext _localctx = new BooleanLiteralContext(_ctx, State);
 		EnterRule(_localctx, 164, RULE_booleanLiteral);
 		int _la;
@@ -4229,7 +4479,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class IntegerLiteralContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class IntegerLiteralContext : ParserRuleContext {
 		public ITerminalNode LInteger() { return GetToken(TestLangOneParser.LInteger, 0); }
 		public IntegerLiteralContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -4245,7 +4495,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public IntegerLiteralContext integerLiteral() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_integerLiteral, out IntegerLiteralContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseIntegerLiteral();
+	}
+
+	internal IntegerLiteralContext _DoParseIntegerLiteral() {
 		IntegerLiteralContext _localctx = new IntegerLiteralContext(_ctx, State);
 		EnterRule(_localctx, 166, RULE_integerLiteral);
 		try {
@@ -4265,7 +4518,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class DecimalLiteralContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class DecimalLiteralContext : ParserRuleContext {
 		public ITerminalNode LDecimal() { return GetToken(TestLangOneParser.LDecimal, 0); }
 		public DecimalLiteralContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -4281,7 +4534,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public DecimalLiteralContext decimalLiteral() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_decimalLiteral, out DecimalLiteralContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseDecimalLiteral();
+	}
+
+	internal DecimalLiteralContext _DoParseDecimalLiteral() {
 		DecimalLiteralContext _localctx = new DecimalLiteralContext(_ctx, State);
 		EnterRule(_localctx, 168, RULE_decimalLiteral);
 		try {
@@ -4301,7 +4557,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class ScientificLiteralContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class ScientificLiteralContext : ParserRuleContext {
 		public ITerminalNode LScientific() { return GetToken(TestLangOneParser.LScientific, 0); }
 		public ScientificLiteralContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -4317,7 +4573,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public ScientificLiteralContext scientificLiteral() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_scientificLiteral, out ScientificLiteralContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseScientificLiteral();
+	}
+
+	internal ScientificLiteralContext _DoParseScientificLiteral() {
 		ScientificLiteralContext _localctx = new ScientificLiteralContext(_ctx, State);
 		EnterRule(_localctx, 170, RULE_scientificLiteral);
 		try {
@@ -4337,7 +4596,7 @@ public partial class TestLangOneParser : Parser {
 		return _localctx;
 	}
 
-	public partial class StringLiteralContext : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParserRuleContext {
+	public partial class StringLiteralContext : ParserRuleContext {
 		public ITerminalNode LRegularString() { return GetToken(TestLangOneParser.LRegularString, 0); }
 		public StringLiteralContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -4353,7 +4612,10 @@ public partial class TestLangOneParser : Parser {
 
 	[RuleVersion(0)]
 	public StringLiteralContext stringLiteral() {
-		if (this.TryGetIncrementalContext(_ctx, State, RULE_stringLiteral, out StringLiteralContext existingContext)) return existingContext;
+		return this.SyntaxParser._Antlr4ParseStringLiteral();
+	}
+
+	internal StringLiteralContext _DoParseStringLiteral() {
 		StringLiteralContext _localctx = new StringLiteralContext(_ctx, State);
 		EnterRule(_localctx, 172, RULE_stringLiteral);
 		try {

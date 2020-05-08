@@ -63,7 +63,7 @@ namespace MetaDslx.VisualStudio.Intellisense
             if (syntaxTree.TryGetRoot(out root))
             {
                 var completions = ArrayBuilder<Completion>.GetInstance();
-
+                /*
                 var antlr4CompletionSource = new Antlr4CompletionSource(_backgroundCompilation, triggerPoint.Position);
                 var antlr4Suggestions = antlr4CompletionSource.GetTokenSuggestions();
                 var syntaxFacts = compilation.Language.SyntaxFacts;
@@ -102,7 +102,7 @@ namespace MetaDslx.VisualStudio.Intellisense
                     }
                     var symbols = semanticModel.LookupSymbols(triggerPoint.Position, container);
                     completions.AddRange(symbols.Where(symbol => !string.IsNullOrWhiteSpace(symbol.Name)).Select(symbol => new Completion(symbol.Name, symbol.Name, null, null, null)));
-                }
+                }*/
                 SnapshotPoint start = triggerPoint;
                 var applicableTo = FindTokenSpanAtPosition(triggerPoint, session);
                 completionSets.Add(new CompletionSet("All", "All", applicableTo, completions.OrderBy(compl => compl.DisplayText), Enumerable.Empty<Completion>()));

@@ -7789,16 +7789,6 @@ namespace MetaDslx.Languages.Meta
 			return MetaSyntaxTree.ParseText(text, (MetaParseOptions)options, path, cancellationToken);
 		}
 	
-		public override SyntaxParser MakeParser(SourceText text, ParseOptions options, SyntaxNode oldTree, IReadOnlyList<TextChangeRange> changes)
-		{
-			return MetaLanguage.Instance.InternalSyntaxFactory.CreateParser(text, (MetaParseOptions)options, (MetaSyntaxNode)oldTree, changes);
-		}
-	
-		public override SyntaxParser MakeParser(string text)
-		{
-			return MetaLanguage.Instance.InternalSyntaxFactory.CreateParser(SourceText.From(text, Encoding.UTF8), MetaParseOptions.Default, null, null);
-		}
-	
 		public override LanguageSyntaxTree MakeSyntaxTree(LanguageSyntaxNode root, ParseOptions options = null, string path = "", Encoding encoding = null)
 		{
 			return MetaSyntaxTree.Create((MetaSyntaxNode)root, (MetaParseOptions)options, path, null, encoding);

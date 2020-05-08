@@ -12,7 +12,7 @@ using System.Threading;
 
 namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 {
-    public abstract partial class SyntaxParser : IDisposable
+    public abstract partial class SyntaxParser : IDisposable, ISyntaxParser
     {
         public const string IncrementalTreeAnnotationKind = "MetaDslx.IncementalTree";
         public const string IncrementalNodeAnnotationKind = "MetaDslx.IncementalNode";
@@ -56,7 +56,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             IEnumerable<TextChangeRange> changes,
             CancellationToken cancellationToken = default)
         {
-            Lexer = language.InternalSyntaxFactory.CreateLexer(text, options);
+            Lexer = (SyntaxLexer)language.InternalSyntaxFactory.CreateLexer(text, options);
             IsIncremental = options.Incremental || oldTree != null && changes != null && GetTreeAnnotation(oldTree.Green) != null;
             CancellationToken = cancellationToken;
             _currentNode = default;
@@ -90,9 +90,9 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         public Language Language => Lexer.Language;
 
-        public ParseOptions Options => Lexer.Options;
+        public LanguageParseOptions Options => Lexer.Options;
 
-        public SourceText SourceText => Lexer.Text;
+        public SourceText Text => Lexer.Text;
 
         public bool IsScript => Options != null && Options.Kind == SourceCodeKind.Script;
 
@@ -136,7 +136,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         private void PreLex()
         {
             // NOTE: Do not cancel in this method. It is called from the constructor.
-            var size = Math.Min(4096, Math.Max(32, this.SourceText.Length / 2));
+            var size = Math.Min(4096, Math.Max(32, this.Text.Length / 2));
             _lexedTokens = new ArrayElement<InternalSyntaxToken>[size];
             var lexer = Lexer;
             LexerMode mode = null;
@@ -293,14 +293,14 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             }
         }
 
-        protected ParserState State
+        public ParserState State
         {
             get
             {
                 return _state;
             }
 
-            set
+            protected set
             {
                 if (_state != value)
                 {

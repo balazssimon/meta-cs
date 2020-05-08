@@ -152,6 +152,21 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             _count++;
         }
 
+        public void InsertItem(in T item)
+        {
+            Debug.Assert(item != null);
+            if (_count >= _items.Length)
+            {
+                this.AddSlot();
+            }
+            _count++;
+            for (int i = _count; i > _offset; i--)
+            {
+                _items[i] = _items[i - 1];
+            }
+            _items[_offset] = item;
+        }
+
         private void AddSlot()
         {
             // shift tokens to left if we are far to the right

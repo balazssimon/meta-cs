@@ -11619,27 +11619,14 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne
 			return TestLangOneSyntaxTree.ParseText(text, (TestLangOneParseOptions)options, path, cancellationToken);
 		}
 	
-	    public MainSyntax ParseMain(string text)
-	    {
-	        // note that we do not need a "consumeFullText" parameter, because parsing a compilation unit always must
-	        // consume input until the end-of-file
-	        using (var parser = MakeParser(text))
-	        {
-	            var node = parser.Parse();
-	            if (node == null) return null;
-	            // if (consumeFullText) node = parser.ConsumeUnexpectedTokens(node);
-	            return (MainSyntax)node.CreateRed();
-	        }
-	    }
-	
 		public override SyntaxParser MakeParser(SourceText text, ParseOptions options, SyntaxNode oldTree, IReadOnlyList<TextChangeRange> changes)
 		{
-		    return new TestLangOneSyntaxParser(text, (TestLangOneParseOptions)options, oldTree, changes);
+			return TestLangOneLanguage.Instance.InternalSyntaxFactory.CreateParser(text, (TestLangOneParseOptions)options, (TestLangOneSyntaxNode)oldTree, changes);
 		}
 	
 		public override SyntaxParser MakeParser(string text)
 		{
-		    return new TestLangOneSyntaxParser(SourceText.From(text, Encoding.UTF8), TestLangOneParseOptions.Default, null, null);
+			return TestLangOneLanguage.Instance.InternalSyntaxFactory.CreateParser(SourceText.From(text, Encoding.UTF8), TestLangOneParseOptions.Default, null, null);
 		}
 	
 		public override LanguageSyntaxTree MakeSyntaxTree(LanguageSyntaxNode root, ParseOptions options = null, string path = "", Encoding encoding = null)
@@ -11647,14 +11634,16 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne
 			return TestLangOneSyntaxTree.Create((TestLangOneSyntaxNode)root, (TestLangOneParseOptions)options, path, null, encoding);
 		}
 	
-		public override LanguageSyntaxTree MakeSyntaxTree(SyntaxParser parser, string path = "", CancellationToken cancellationToken = default)
-		{
-			return TestLangOneSyntaxTree.Create((TestLangOneSyntaxParser)parser, path, cancellationToken);
-		}
-	
 	    public override SyntaxNode CreateStructure(SyntaxTrivia trivia)
 	    {
-	        throw new NotImplementedException();
+	        if (trivia != null && trivia.UnderlyingNode is GreenStructuredSyntaxTrivia structuredTrivia)
+	        {
+	            return structuredTrivia.Structure.CreateRed();
+	        }
+	        else
+	        {
+	            return null;
+	        }
 	    }
 	
 	

@@ -41,6 +41,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 
         public override int Position => _position;
 
+        internal Antlr4InputStream InputStream => _stream;
+
         public override void Reset(int position, DirectiveStack directives)
         {
             base.Reset(position, directives);

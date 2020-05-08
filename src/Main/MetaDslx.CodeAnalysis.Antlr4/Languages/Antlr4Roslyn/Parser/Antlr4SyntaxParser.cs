@@ -10,6 +10,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
 using Microsoft.CodeAnalysis.Text;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Data;
@@ -22,12 +23,13 @@ using System.Threading;
 
 namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 {
-    public abstract class Antlr4SyntaxParser : SyntaxParser, ITokenStream, ITokenSource, ITokenFactory, IAntlrErrorListener<IToken>
+    public abstract class Antlr4SyntaxParser : SyntaxParser, ITokenStream, ITokenSource, IAntlrErrorListener<IToken>
     {
         private readonly Antlr4SyntaxLexer _lexer;
         private readonly IncrementalParser _parser;
         private readonly Dictionary<ParserRuleContext, GreenNode> _nodeCache;
-        private Stack<ResetPoint> _resetPoints;
+        private Stack<(ResetPoint, SlidingBufferResetPoint)> _resetPoints;
+        private SlidingBuffer<IncrementalToken> _tokens;
 
         public Antlr4SyntaxParser(Language language, SourceText text, LanguageParseOptions options, LanguageSyntaxNode oldTree, IEnumerable<TextChangeRange> changes, CancellationToken cancellationToken = default) 
             : base(language, text, options, oldTree, changes, cancellationToken)
@@ -39,7 +41,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             _parser.RemoveErrorListeners();
             _parser.AddErrorListener(this);
             _parser.ErrorHandler = new ErrorStrategy(this);
-            _resetPoints = new Stack<ResetPoint>();
+            _resetPoints = new Stack<(ResetPoint, SlidingBufferResetPoint)>();
+            _tokens = new SlidingBuffer<IncrementalToken>(new IncrementalTokenSource(this));
         }
 
         protected IncrementalParser Parser => _parser;
@@ -84,11 +87,11 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         {
             if (k > 0)
             {
-                return ((ITokenStream)this).Get(this.TokenIndex + k - 1);
+                return ((ITokenStream)this).Get(_tokens.Index + k - 1);
             }
             else if (k < 0)
             {
-                return ((ITokenStream)this).Get(this.TokenIndex + k);
+                return ((ITokenStream)this).Get(_tokens.Index + k);
             }
             else
             {
@@ -98,11 +101,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 
         IToken ITokenStream.Get(int i)
         {
-            var green = this.PeekToken(i - this.TokenIndex);
-            if (green == null) return null;
-            var token = new IncrementalToken(green.Kind.ToAntlr4(), green.Text);
-            token.SetGreenToken(green);
-            return token;
+            return _tokens.PeekItem(i - _tokens.Index);
         }
 
         string ITokenStream.GetText(Interval interval)
@@ -137,7 +136,9 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 
         void IIntStream.Consume()
         {
-            this.EatToken();
+            var green = this.EatToken();
+            var token = _tokens.EatItem();
+            token.SetGreenToken(green);
         }
 
         int IIntStream.La(int i)
@@ -150,7 +151,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         int IIntStream.Mark()
         {
             var result = _resetPoints.Count;
-            _resetPoints.Push(this.GetResetPoint());
+            _resetPoints.Push((this.GetResetPoint(), _tokens.GetResetPoint()));
             return result;
         }
 
@@ -159,7 +160,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             var index = _resetPoints.Count - 1;
             Debug.Assert(marker == index);
             var rp = _resetPoints.Pop();
-            this.Release(ref rp);
+            this.Release(ref rp.Item1);
+            _tokens.Release(ref rp.Item2);
         }
 
         void IIntStream.Seek(int index)
@@ -167,8 +169,9 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             if (_resetPoints.Count > 0)
             {
                 var rp = _resetPoints.Peek();
-                Debug.Assert(rp.Position == index);
-                this.Reset(ref rp);
+                Debug.Assert(rp.Item1.Position == index);
+                this.Reset(ref rp.Item1);
+                _tokens.Reset(ref rp.Item2);
             }
             else
             {
@@ -209,7 +212,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 
         #region ITokenFactory
 
-        IToken ITokenFactory.Create(Tuple<ITokenSource, ICharStream> source, int type, string text, int channel, int start, int stop, int line, int charPositionInLine)
+        /*IToken ITokenFactory.Create(Tuple<ITokenSource, ICharStream> source, int type, string text, int channel, int start, int stop, int line, int charPositionInLine)
         {
             var green = CreateMissingToken(type.FromAntlr4(Language.SyntaxFacts.SyntaxKindType), Antlr4RoslynErrorCode.ERR_SyntaxError, false);
             if (green == null) return null;
@@ -225,9 +228,37 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             var token = new IncrementalToken(type, green.Text);
             token.SetGreenToken(green);
             return token;
-        }
+        }*/
 
         #endregion
+
+        private class IncrementalTokenSource : IEnumerable<IncrementalToken>
+        {
+            private Antlr4SyntaxParser _parser;
+            private int _index;
+
+            public IncrementalTokenSource(Antlr4SyntaxParser parser)
+            {
+                _parser = parser;
+                _index = 0;
+            }
+
+            public IEnumerator<IncrementalToken> GetEnumerator()
+            {
+                while (true)
+                {
+                    var green = _parser.PeekToken(_index - _parser.TokenIndex);
+                    if (green == null) yield break;
+                    else yield return new IncrementalToken(green.Kind.ToAntlr4(), green.Text);
+                    ++_index;
+                }
+            }
+
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return this.GetEnumerator();
+            }
+        }
 
         private class ErrorStrategy : DefaultErrorStrategy
         {
@@ -247,9 +278,9 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
                 {
                     ReportUnwantedToken(recognizer);
                     // simply delete extra token
-                    var green = _parser.SkipToken();
-                    var matchedSymbol = new IncrementalToken(green.Kind.ToAntlr4(), green.Text);
-                    matchedSymbol.SetGreenToken(green);
+                    _parser.SkipToken();
+                    _parser._tokens.EatItem();
+                    var matchedSymbol = _parser._tokens.CurrentItem;
                     // we want to return the token we're actually matching
                     ReportMatch(recognizer);
                     // we know current token is correct
@@ -282,7 +313,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
                 var green = _parser.CreateMissingToken(expectedTokenType.FromAntlr4(_parser.Language.SyntaxFacts.SyntaxKindType), current.Type.FromAntlr4(_parser.Language.SyntaxFacts.SyntaxKindType), true);
                 var missingToken = new IncrementalToken(green.Kind.ToAntlr4(), green.Text);
                 missingToken.SetGreenToken(green);
-                return missingToken;
+                _parser._tokens.InsertItem(missingToken);
+                return _parser._tokens.EatItem();
             }
         }
     }

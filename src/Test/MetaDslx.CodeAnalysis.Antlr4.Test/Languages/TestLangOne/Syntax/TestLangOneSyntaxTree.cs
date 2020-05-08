@@ -161,28 +161,11 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne
             options = options ?? TestLangOneParseOptions.Default;
             using (var parser = new TestLangOneSyntaxParser(text, options, oldTree: null, changes: null, cancellationToken: cancellationToken))
             {
-                var compilationUnit = (MainSyntax)parser.ParseMain().CreateRed();
+                var compilationUnit = (MainSyntax)parser.Parse();
                 var tree = new ParsedSyntaxTree(text, text.Encoding, text.ChecksumAlgorithm, path, options, compilationUnit, parser.Directives);
                 tree.VerifySource();
                 return tree;
             }
-        }
-        /// <summary>
-        /// Creates a new syntax tree from a syntax parser.
-        /// </summary>
-        public static TestLangOneSyntaxTree Create(
-            TestLangOneSyntaxParser parser,
-            string path = "",
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            if (parser == null)
-            {
-                throw new ArgumentNullException(nameof(parser));
-            }
-            var root = (MainSyntax)parser.ParseMain().CreateRed();
-            var tree = TestLangOneSyntaxTree.Create(root, (TestLangOneParseOptions)parser.Options, path, parser.SourceText, parser.SourceText.Encoding, parser.SourceText.ChecksumAlgorithm);
-            tree.VerifySource();
-            return tree;
         }
         #endregion
         #region Changes
@@ -226,7 +209,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne
             }
             using (var parser = new TestLangOneSyntaxParser(newText, this.Options, oldTree?.GetRoot(), changes))
             {
-                var compilationUnit = (MainSyntax)parser.ParseMain().CreateRed();
+                var compilationUnit = (MainSyntax)parser.Parse();
                 var tree = new ParsedSyntaxTree(newText, newText.Encoding, newText.ChecksumAlgorithm, this.FilePath, this.Options, compilationUnit, parser.Directives);
                 tree.VerifySource(changes);
                 return tree;

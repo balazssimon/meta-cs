@@ -30,7 +30,7 @@ declaration
 	| alt
 	| opt
 	| loop
-	| ref
+	| reference
 	| note
 	;
 
@@ -74,7 +74,7 @@ optFragment: KOpt $Property(Text) $Value condition=text? LCrLf fragmentBody;
 
 $SymbolDef(RefFragment)
 $Property(name=Kind, value=FragmentKind.Ref)
-ref: simpleRefFragment | messageRefFragment;
+reference: simpleRefFragment | messageRefFragment;
 
 simpleRefFragment: KRef (over=text TColon)? refText=text? LCrLf $Property(Text) $Value simpleBody KEndRef;
 messageRefFragment: refInput $Property(Text) $Value simpleBody refOutput;

@@ -827,8 +827,6 @@ namespace MetaDslx.CodeAnalysis.Syntax
             string path = "",
             CancellationToken cancellationToken = default(CancellationToken));
 
-        public abstract SyntaxParser MakeParser(SourceText text, ParseOptions options, SyntaxNode oldTree, IReadOnlyList<TextChangeRange> changes);
-        public abstract SyntaxParser MakeParser(string text);
         public abstract LanguageSyntaxTree MakeSyntaxTree(LanguageSyntaxNode root, ParseOptions options = null, string path = "", Encoding encoding = null);
 
     }

@@ -217,9 +217,8 @@ namespace MetaDslx.VisualStudio.Compilation
                     var cancellationToken = _cancellationTokenSource.Token;
                     var factory = this.GetCompilationFactory();
                     var language = factory.Language;
-                    var parser = language.SyntaxFactory.MakeParser(SourceText.From(sourceText), null, null, null);
                     if (cancellationToken.IsCancellationRequested) return;
-                    var syntaxTree = language.SyntaxFactory.MakeSyntaxTree(parser, filePath, cancellationToken);
+                    var syntaxTree = language.SyntaxFactory.ParseSyntaxTree(SourceText.From(sourceText), null, filePath, cancellationToken);
                     var compilation = factory.CreateCompilation(this, ImmutableArray.Create(syntaxTree), cancellationToken);
                     if (_backgroundCompilationSnapshot == null || compilation != null)
                     {
@@ -229,7 +228,7 @@ namespace MetaDslx.VisualStudio.Compilation
                         var versionAfter = textSnapshot.Version;
                         if (versionAfter == versionBefore)
                         {
-                            Interlocked.Exchange(ref _backgroundCompilationSnapshot, _backgroundCompilationSnapshot.Update(textSnapshot, parser, compilation, ImmutableDictionary<object, object>.Empty));
+                            Interlocked.Exchange(ref _backgroundCompilationSnapshot, _backgroundCompilationSnapshot.Update(textSnapshot, compilation, ImmutableDictionary<object, object>.Empty));
                             e.Result = 0;
                         }
                     }
@@ -253,7 +252,7 @@ namespace MetaDslx.VisualStudio.Compilation
                         if (cancellationToken.IsCancellationRequested) return;
                         if (!snaphsotBefore.Changed(textSnapshot))
                         {
-                            Interlocked.Exchange(ref _backgroundCompilationSnapshot, _backgroundCompilationSnapshot.Update(snaphsotBefore.Text, snaphsotBefore.Parser, snaphsotBefore.Compilation, snaphsotBefore.CompilationStepResults.Add(step.ResultKey, result)));
+                            Interlocked.Exchange(ref _backgroundCompilationSnapshot, _backgroundCompilationSnapshot.Update(snaphsotBefore.Text, snaphsotBefore.Compilation, snaphsotBefore.CompilationStepResults.Add(step.ResultKey, result)));
                             e.Result = index + 1;
                         }
                     }

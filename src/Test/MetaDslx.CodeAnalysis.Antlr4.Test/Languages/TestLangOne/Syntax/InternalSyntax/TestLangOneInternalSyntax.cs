@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.InternalSyntax
@@ -17,6 +18,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Inte
     using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.Syntax.InternalSyntax;
+    using Microsoft.CodeAnalysis.Text;
     using Roslyn.Utilities;
     using MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax;
 
@@ -127,6 +129,55 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Inte
         public static implicit operator SyntaxTrivia(GreenSyntaxTrivia trivia)
         {
             return new SyntaxTrivia(default, trivia, position: 0, index: 0);
+        }
+    }
+
+    internal class GreenStructuredSyntaxTrivia : GreenSyntaxTrivia
+    {
+        private readonly GreenNode _structure;
+        internal GreenStructuredSyntaxTrivia(TestLangOneSyntaxKind kind, GreenNode structure, DiagnosticInfo[] diagnostics = null, SyntaxAnnotation[] annotations = null)
+            : base(kind, structure?.ToFullString(), diagnostics, annotations)
+        {
+            this.Initialize();
+            _structure = structure;
+        }
+
+        internal GreenStructuredSyntaxTrivia(ObjectReader reader)
+            : base(reader)
+        {
+            this.Initialize();
+        }
+
+        static GreenStructuredSyntaxTrivia()
+        {
+            ObjectBinder.RegisterTypeReader(typeof(GreenStructuredSyntaxTrivia), r => new GreenStructuredSyntaxTrivia(r));
+        }
+
+        private void Initialize()
+        {
+            this.flags |= NodeFlags.ContainsStructuredTrivia;
+
+            if (this.Kind == SyntaxKind.SkippedTokensTrivia)
+            {
+                this.flags |= NodeFlags.ContainsSkippedText;
+            }
+        }
+
+        public GreenNode Structure => _structure;
+
+        internal static GreenStructuredSyntaxTrivia Create(TestLangOneSyntaxKind kind, GreenNode structure)
+        {
+            return new GreenStructuredSyntaxTrivia(kind, structure);
+        }
+
+        public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
+        {
+            return new GreenStructuredSyntaxTrivia(this.Kind, this.Structure, diagnostics, GetAnnotations());
+        }
+
+        public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
+        {
+            return new GreenStructuredSyntaxTrivia(this.Kind, this.Structure, GetDiagnostics(), annotations);
         }
     }
 
@@ -10546,49 +10597,6 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Inte
 		public virtual TResult VisitScientificLiteralGreen(ScientificLiteralGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitStringLiteralGreen(StringLiteralGreen node) => this.DefaultVisit(node);
 	}
-    public partial class TestLangOneParser
-    {
-        private Antlr4SyntaxParser _incrementalParser;
-        public TestLangOneParser(Antlr4SyntaxParser incrementalParser)
-            : base(incrementalParser.Lexer)
-        {
-            _incrementalParser = incrementalParser;
-        }
-        /// <summary>
-        /// Guard a rule's previous context from being reused.
-        /// </summary>
-        /// <returns></returns>
-        public bool TryGetIncrementalContext<TContext>(global::Antlr4.Runtime.ParserRuleContext parentContext, int state, int ruleIndex, out TContext existingContext)
-            where TContext : IncrementalParserRuleContext
-        {
-            existingContext = null;
-            // If we have no previous parse data, the rule needs to be run.
-            if (_incrementalParser == null) return false;
-            // See if we have seen this state before at this starting point.
-            // If we haven't seen it, we need to rerun this rule.
-            var parentDepth = parentContext?.Depth() ?? 0;
-            if (!_incrementalParser.TryGetContext(parentDepth + 1, state, ruleIndex, _incrementalParser.TokenIndex, out existingContext)) return false;
-            // We have seen it, see if it was affected by the parse
-            if (_incrementalParser.IsAffected(existingContext)) return false;
-            // Everything checked out, reuse the rule context - we add it to the
-            // parent context as enterRule would have
-            var parent = _ctx as IncrementalParserRuleContext;
-            // add current context to parent if we have a parent
-            if (parent != null) parent.AddChild(existingContext);
-            return true;
-        }
-        #region Regular parser API
-        //The new recursion context reparents the relationship between the contexts,
-        //so we need to merge intervals here.
-        public override void PushNewRecursionContext(global::Antlr4.Runtime.ParserRuleContext localctx, int state, int ruleIndex)
-        {
-            var previous = _ctx as IncrementalParserRuleContext;
-            var incLocalCtx = localctx as IncrementalParserRuleContext;
-            incLocalCtx.MinMaxTokenIndex = incLocalCtx.MinMaxTokenIndex.Union(previous.MinMaxTokenIndex);
-            base.PushNewRecursionContext(localctx, state, ruleIndex);
-        }
-        #endregion
-    }
 	internal class TestLangOneInternalSyntaxFactory : InternalSyntaxFactory, MetaDslx.Languages.Antlr4Roslyn.IAntlr4SyntaxFactory
 	{
 		public TestLangOneInternalSyntaxFactory(TestLangOneSyntaxFacts syntaxFacts) 
@@ -10606,16 +10614,26 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Inte
 	        return new TestLangOneParser(input);
 	    }
 	
+		public override SyntaxLexer CreateLexer(SourceText text, LanguageParseOptions options)
+		{
+			return new TestLangOneSyntaxLexer(text, (TestLangOneParseOptions)options ?? TestLangOneParseOptions.Default);
+		}
+	
+	    public override SyntaxParser CreateParser(SourceText text, LanguageParseOptions options, LanguageSyntaxNode oldTree, IEnumerable<TextChangeRange> changes, CancellationToken cancellationToken = default)
+		{
+			return new TestLangOneSyntaxParser(text, (TestLangOneParseOptions)options ?? TestLangOneParseOptions.Default, (TestLangOneSyntaxNode)oldTree, changes, cancellationToken);
+		}
+	
 	    public override Language Language => TestLangOneLanguage.Instance;
 	
-		private TestLangOneSyntaxKind ToMetaSyntaxKind(SyntaxKind kind)
+		private TestLangOneSyntaxKind ToTestLangOneSyntaxKind(SyntaxKind kind)
 	    {
 	        return kind.CastUnsafe<TestLangOneSyntaxKind>();
 	    }
 	
 	    public override InternalSyntaxTrivia Trivia(SyntaxKind kind, string text, bool elastic = false)
 	    {
-	        var trivia = GreenSyntaxTrivia.Create(ToMetaSyntaxKind(kind), text);
+	        var trivia = GreenSyntaxTrivia.Create(ToTestLangOneSyntaxKind(kind), text);
 	        if (!elastic)
 	        {
 	            return trivia;
@@ -10625,27 +10643,32 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Inte
 	
 	    public override InternalSyntaxTrivia ConflictMarker(string text)
 	    {
-	        return GreenSyntaxTrivia.Create(ToMetaSyntaxKind(SyntaxKind.ConflictMarkerTrivia), text);
+	        return GreenSyntaxTrivia.Create(ToTestLangOneSyntaxKind(SyntaxKind.ConflictMarkerTrivia), text);
 	    }
 	
 	    public override InternalSyntaxTrivia DisabledText(string text)
 	    {
-	        return GreenSyntaxTrivia.Create(ToMetaSyntaxKind(SyntaxKind.DisabledTextTrivia), text);
+	        return GreenSyntaxTrivia.Create(ToTestLangOneSyntaxKind(SyntaxKind.DisabledTextTrivia), text);
 	    }
+	
+		public override InternalSyntaxTrivia SkippedToken(GreenNode token)
+		{
+			return GreenStructuredSyntaxTrivia.Create(ToTestLangOneSyntaxKind(SyntaxKind.SkippedTokensTrivia), token);
+		}
 	
 	    public override InternalSyntaxToken Token(SyntaxKind kind)
 	    {
-	        return GreenSyntaxToken.Create(ToMetaSyntaxKind(kind));
+	        return GreenSyntaxToken.Create(ToTestLangOneSyntaxKind(kind));
 	    }
 	
 	    public override InternalSyntaxToken Token(GreenNode leading, SyntaxKind kind, GreenNode trailing)
 	    {
-	        return GreenSyntaxToken.Create(ToMetaSyntaxKind(kind), leading, trailing);
+	        return GreenSyntaxToken.Create(ToTestLangOneSyntaxKind(kind), leading, trailing);
 	    }
 	
 	    public override InternalSyntaxToken Token(GreenNode leading, SyntaxKind kind, string text, GreenNode trailing)
 	    {
-			TestLangOneSyntaxKind typedKind = ToMetaSyntaxKind(kind);
+			TestLangOneSyntaxKind typedKind = ToTestLangOneSyntaxKind(kind);
 	        Debug.Assert(TestLangOneLanguage.Instance.SyntaxFacts.IsToken(typedKind));
 	        string defaultText = TestLangOneLanguage.Instance.SyntaxFacts.GetText(typedKind);
 	        return typedKind >= GreenSyntaxToken.FirstTokenWithWellKnownText && typedKind <= GreenSyntaxToken.LastTokenWithWellKnownText && text == defaultText
@@ -10655,7 +10678,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Inte
 	
 	    public override InternalSyntaxToken Token(GreenNode leading, SyntaxKind kind, string text, string valueText, GreenNode trailing)
 	    {
-			TestLangOneSyntaxKind typedKind = ToMetaSyntaxKind(kind);
+			TestLangOneSyntaxKind typedKind = ToTestLangOneSyntaxKind(kind);
 	        Debug.Assert(TestLangOneLanguage.Instance.SyntaxFacts.IsToken(typedKind));
 	        string defaultText = TestLangOneLanguage.Instance.SyntaxFacts.GetText(typedKind);
 	        return typedKind >= GreenSyntaxToken.FirstTokenWithWellKnownText && typedKind <= GreenSyntaxToken.LastTokenWithWellKnownText && text == defaultText && valueText == defaultText
@@ -10665,7 +10688,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Inte
 	
 	    public override InternalSyntaxToken Token(GreenNode leading, SyntaxKind kind, string text, object value, GreenNode trailing)
 	    {
-			TestLangOneSyntaxKind typedKind = ToMetaSyntaxKind(kind);
+			TestLangOneSyntaxKind typedKind = ToTestLangOneSyntaxKind(kind);
 	        Debug.Assert(TestLangOneLanguage.Instance.SyntaxFacts.IsToken(typedKind));
 	        string defaultText = TestLangOneLanguage.Instance.SyntaxFacts.GetText(typedKind);
 	        return typedKind >= GreenSyntaxToken.FirstTokenWithWellKnownText && typedKind <= GreenSyntaxToken.LastTokenWithWellKnownText && text == defaultText && defaultText.Equals(value)
@@ -10675,17 +10698,17 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Inte
 	
 	    public override InternalSyntaxToken MissingToken(SyntaxKind kind)
 	    {
-	        return GreenSyntaxToken.CreateMissing(ToMetaSyntaxKind(kind), null, null);
+	        return GreenSyntaxToken.CreateMissing(ToTestLangOneSyntaxKind(kind), null, null);
 	    }
 	
 	    public override InternalSyntaxToken MissingToken(GreenNode leading, SyntaxKind kind, GreenNode trailing)
 	    {
-	        return GreenSyntaxToken.CreateMissing(ToMetaSyntaxKind(kind), leading, trailing);
+	        return GreenSyntaxToken.CreateMissing(ToTestLangOneSyntaxKind(kind), leading, trailing);
 	    }
 	
 	    public override InternalSyntaxToken BadToken(GreenNode leading, string text, GreenNode trailing)
 	    {
-	        return GreenSyntaxToken.WithValue(ToMetaSyntaxKind(SyntaxKind.BadToken), leading, text, text, trailing);
+	        return GreenSyntaxToken.WithValue(ToTestLangOneSyntaxKind(SyntaxKind.BadToken), leading, text, text, trailing);
 	    }
 	
 	    public override IEnumerable<InternalSyntaxToken> GetWellKnownTokens()

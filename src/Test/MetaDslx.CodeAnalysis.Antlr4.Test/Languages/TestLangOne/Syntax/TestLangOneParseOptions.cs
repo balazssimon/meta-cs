@@ -28,10 +28,12 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax
             TestLangOneLanguageVersion languageVersion = null,
             DocumentationMode documentationMode = DocumentationMode.Parse,
             SourceCodeKind kind = SourceCodeKind.Regular,
+            bool incremental = false,
             IEnumerable<string> preprocessorSymbols = null)
             : this(languageVersion ?? TestLangOneLanguageVersion.TestLangOne1,
                   documentationMode,
                   kind,
+                  incremental,
                   preprocessorSymbols.ToImmutableArrayOrEmpty(),
                   ImmutableDictionary<string, string>.Empty)
         {
@@ -40,15 +42,17 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax
             TestLangOneLanguageVersion languageVersion,
             DocumentationMode documentationMode,
             SourceCodeKind kind,
+            bool incremental,
             ImmutableArray<string> preprocessorSymbols,
             IReadOnlyDictionary<string, string> features)
-            : base(languageVersion, documentationMode, kind, preprocessorSymbols, features)
+            : base(languageVersion, documentationMode, kind, incremental, preprocessorSymbols, features)
         {
         }
         private TestLangOneParseOptions(TestLangOneParseOptions other) : this(
             languageVersion: (TestLangOneLanguageVersion)other.LanguageVersion,
             documentationMode: other.DocumentationMode,
             kind: other.Kind,
+            incremental: other.Incremental,
             preprocessorSymbols: other.PreprocessorSymbols,
             features: other.Features)
         {
@@ -62,6 +66,14 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax
             }
             var effectiveKind = kind.MapSpecifiedToEffectiveKind();
             return new TestLangOneParseOptions(this) { SpecifiedKind = kind, Kind = effectiveKind };
+        }
+        public new TestLangOneParseOptions WithIncremental(bool incremental)
+        {
+            if (incremental == this.Incremental)
+            {
+                return this;
+            }
+            return new TestLangOneParseOptions(this) { Incremental = incremental };
         }
         public TestLangOneParseOptions WithLanguageVersion(TestLangOneLanguageVersion version)
         {

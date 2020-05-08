@@ -131,7 +131,11 @@ namespace Antlr4Intellisense
             var annot = SyntaxParser.GetNodeAnnotation(node.Green);
             if (annot != null)
             {
+#if DEBUG
                 buf.Append($"[{annot.Version}({annot.LookaheadBefore},{annot.LookaheadAfter})]");
+#else
+                buf.Append($"[({annot.LookaheadBefore},{annot.LookaheadAfter})]");
+#endif
             }
             buf.Append(node.Kind);
             //buf.Append($" ({parser.GetVersion(node.Green)})");

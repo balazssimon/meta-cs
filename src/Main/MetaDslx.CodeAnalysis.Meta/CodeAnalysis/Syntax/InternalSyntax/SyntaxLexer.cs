@@ -11,7 +11,7 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 {
-    public abstract class SyntaxLexer : AbstractLexer
+    public abstract class SyntaxLexer : AbstractLexer, ISyntaxLexer
     {
         public const string IncrementalTokenAnnotationKind = "MetaDslx.IncementalToken";
 
@@ -31,6 +31,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             _createCachedTokenFunction = this.CreateCachedToken;
         }
 
+        public Language Language => _options.Language;
 
         public DirectiveStack Directives => _directives;
 
@@ -195,7 +196,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 var kind = this.ScanSyntaxTrivia(afterFirstToken, isTrailing);
                 if (kind == SyntaxKind.None) return;
                 var trivia = this.AddTrivia(kind, triviaList);
-                if (isTrailing && (trivia.Text.EndsWith("\r") || trivia.Text.EndsWith("\n"))) return;
+                if (isTrailing && (Language.SyntaxFacts.IsTriviaWithEndOfLine(kind) || Language.SyntaxFacts.IsTriviaWithEndOfLine(trivia))) return;
             }
         }
 
@@ -229,6 +230,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
                     case '\r':      // Carriage Return
                     case '\n':      // Line-feed
+                        onlySpaces = false;
                         break;
 
                     default:

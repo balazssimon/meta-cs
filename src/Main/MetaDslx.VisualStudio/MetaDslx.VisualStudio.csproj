@@ -86,7 +86,6 @@
     <Compile Include="Editor\MetaDslxTextViewConnectionListener.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Editor\MetaDslxDefinition.cs" />
-    <Compile Include="Intellisense\Antlr4CompletionSource.cs" />
     <Compile Include="Intellisense\CompletionSource.cs" />
     <Compile Include="Intellisense\CompletionTokenStream.cs" />
     <Compile Include="Intellisense\IntellisenseController.cs" />
