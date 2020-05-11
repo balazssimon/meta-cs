@@ -78,6 +78,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				else
 				{
 					context = this.Antlr4Parser._DoParseMain();
+					((ITokenStream)this).Consume(); // Consume EOF, since ANTLR4 does not do that.
 					green = _visitor.Visit(context);
 				}
 		    }

@@ -11,7 +11,7 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 {
-    public abstract class SyntaxLexer : AbstractLexer, ISyntaxLexer
+    public abstract class SyntaxLexer : AbstractLexer
     {
         public const string IncrementalTokenAnnotationKind = "MetaDslx.IncementalToken";
 
@@ -29,9 +29,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             InternalSyntaxFactory = language.InternalSyntaxFactory;
             _cache = new LexerCache(language);
             _createCachedTokenFunction = this.CreateCachedToken;
+            _options = options;
         }
-
-        public Language Language => _options.Language;
 
         public DirectiveStack Directives => _directives;
 

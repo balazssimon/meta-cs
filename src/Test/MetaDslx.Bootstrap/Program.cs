@@ -79,10 +79,10 @@ namespace MetaDslx.Bootstrap
             //string text = File.ReadAllText(@"..\..\..\..\..\..\..\soal-cs\Src\Main\MetaDslx.Languages.Soal\Symbols\Soal.mm");
             //string text = File.ReadAllText(@"..\..\..\..\..\Test\WebSequenceDiagramsModel\Symbols\UmlModel.mm");
             //string text = File.ReadAllText(@"..\..\..\..\..\Main\MetaDslx.Languages.Omg\Mof\Model\Mof.mm");
-            //string text = File.ReadAllText(@"..\..\..\..\..\Languages\MetaDslx.Languages.Uml\Model\Uml.mm");
+            //string text = File.ReadAllText(@"..\..\..\..\..\Languages\MetaDslx.Languages.Uml-v2.5.1\Model\Uml.mm");
             //string text = File.ReadAllText(@"..\..\..\..\..\Languages\MetaDslx.Languages.Ecore\Model\Ecore.mm");
-            string text = File.ReadAllText(@"..\..\..\Error0.mm");
-            //string text = File.ReadAllText(@"..\..\..\Error1.mm");
+            //string text = File.ReadAllText(@"..\..\..\Error0.mm");
+            string text = File.ReadAllText(@"..\..\..\Error1.mm");
             //string text = File.ReadAllText(@"..\..\..\Error2.mm");
             //string text = File.ReadAllText(@"..\..\..\Error3.mm");
 
@@ -92,14 +92,14 @@ namespace MetaDslx.Bootstrap
             //Console.WriteLine(declarations.Dump());
 
             var formatter = new DiagnosticFormatter();
-            foreach (var diag in tree.GetDiagnostics())
-            {
-                Console.WriteLine(formatter.Format(diag));
-            }
-            foreach (var diag in declarations.Diagnostics)
-            {
-                Console.WriteLine(formatter.Format(diag));
-            }
+            //foreach (var diag in tree.GetDiagnostics())
+            //{
+            //    Console.WriteLine(formatter.Format(diag));
+            //}
+            //foreach (var diag in declarations.Diagnostics)
+            //{
+            //    Console.WriteLine(formatter.Format(diag));
+            //}
 
             //MetaCompilationOptions options = new MetaCompilationOptions(MetaLanguage.Instance, OutputKind.NetModule, deterministic: false, concurrentBuild: true);
             BinderFlags binderFlags = BinderFlags.IgnoreAccessibility;

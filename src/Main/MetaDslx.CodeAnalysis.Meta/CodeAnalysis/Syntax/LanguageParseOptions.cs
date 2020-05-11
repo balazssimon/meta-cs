@@ -76,7 +76,7 @@ namespace MetaDslx.CodeAnalysis.Syntax
         {
             this.SpecifiedLanguageVersion = languageVersion ?? LanguageVersion.Default;
             this.LanguageVersion = languageVersion;
-            this.Incremental = true;
+            this.Incremental = incremental;
             this.PreprocessorSymbols = preprocessorSymbols.ToImmutableArrayOrEmpty();
             _features = features?.ToImmutableDictionary() ?? ImmutableDictionary<string, string>.Empty;
         }

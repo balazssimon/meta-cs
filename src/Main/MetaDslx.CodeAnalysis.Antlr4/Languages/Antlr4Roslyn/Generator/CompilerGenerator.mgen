@@ -1219,6 +1219,9 @@ internal [lang]Parser.[rule.PlainName()]Context _Antlr4Parse[rule.PlainName()]([
 		else
 		{
 			context = this.Antlr4Parser._DoParse[rule.PlainName()]([rule.IsRecursive ? "precedence" : ""]);
+            [if (rule == Instances.MainRule())]
+            ((ITokenStream)this).Consume(); // Consume EOF, since ANTLR4 does not do that.
+            [end if]
 			green = _visitor.Visit(context);
 		}
     }

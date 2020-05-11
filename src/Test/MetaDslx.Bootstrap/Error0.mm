@@ -1,5 +1,9 @@
-namespace RailDsl
+namespace MetaDslx.Languages.Meta.Model
 {
-    metamodel RailDsl(Uri="http://www.bme.hu/iit/vke/raildsl",Prefix="railDsl"); 
+	/**
+	Represents the MetaModel.
+	*/
+	metamodel Meta(Uri="http://metadslx.core/1.0"); 
 
+	const MetaPrimitiveType Object = "object";
 }
