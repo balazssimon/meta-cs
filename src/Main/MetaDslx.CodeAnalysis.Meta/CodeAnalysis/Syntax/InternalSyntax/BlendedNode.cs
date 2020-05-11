@@ -7,10 +7,10 @@ using Microsoft.CodeAnalysis.Text;
 
 namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 {
-    internal readonly struct BlendedNode
+    public readonly struct BlendedNode
     {
-        internal readonly LanguageSyntaxNode Node;
-        internal readonly InternalSyntaxToken Token;
+        public readonly LanguageSyntaxNode Node;
+        public readonly InternalSyntaxToken Token;
         internal readonly Blender Blender;
 
         internal BlendedNode(LanguageSyntaxNode node, InternalSyntaxToken token, Blender blender)

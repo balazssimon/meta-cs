@@ -64,6 +64,19 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             base.SlidingBuffer_ForgetFollowingTokens();
         }
 
+        protected override void SlidingBuffer_InsertNode(in BlendedNode node)
+        {
+            if (node.Token != null)
+            {
+                _customTokens.InsertItem(CreateCustomToken(node.Token));
+            }
+            else if (node.Node != null)
+            {
+                var lastToken = node.Node.GetLastToken();
+                _customTokens.InsertItem(CreateCustomToken((InternalSyntaxToken)lastToken.Node));
+            }
+            base.SlidingBuffer_InsertNode(node);
+        }
         /*
         protected override InternalSyntaxToken SlidingBuffer_InsertItem(InternalSyntaxToken token)
         {

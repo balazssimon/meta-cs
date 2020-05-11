@@ -317,7 +317,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         private void ReadCurrentNode()
         {
-            _currentNode = _blendedTokens.LastCreatedItem.Blender.ReadNode();
+            _currentNode = _blendedTokens.PreviousItem.Blender.ReadNode();
         }
 
         protected GreenNode EatNode()
@@ -327,13 +327,24 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
             // remember result
             var result = CurrentNode.Green;
+            var currentNode = _currentNode;
+            SlidingBuffer_InsertNode(currentNode);
+            SlidingBuffer_EatItem();
+
+            // erase current state
+            SlidingBuffer_ForgetFollowingTokens();
+            this.EraseState();
             RestoreParserState(_currentNode.Blender.State);
             _mode = _currentNode.Blender.Mode;
 
-            // erase current state
-            this.EraseState();
+            // TODO:MetaDslx: correct Peek before this position
 
             return result;
+        }
+
+        protected virtual void SlidingBuffer_InsertNode(in BlendedNode node)
+        {
+            _blendedTokens.InsertItem(node);
         }
 
         protected virtual void EraseState()

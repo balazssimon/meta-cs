@@ -21,13 +21,17 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             private bool _hasResetPoint;
             private int _resetPoint;
             private bool _hasCurrentItem;
-            private T _lastCreatedItem;
             private T _currentItem;
+            private T _lastUnbufferedItem;
+            private T _previousItem;
+            private T _lastCreatedItem;
 
-            public SlidingBuffer(SyntaxParser parser, T lastCreatedItem)
+            public SlidingBuffer(SyntaxParser parser, T previousItem)
             {
                 _parser = parser;
-                _lastCreatedItem = lastCreatedItem;
+                _lastUnbufferedItem = previousItem;
+                _previousItem = previousItem;
+                _lastCreatedItem = previousItem;
                 _items = s_itemsPool.Allocate();
                 _hasCurrentItem = false;
                 _currentItem = default;
@@ -56,6 +60,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             public int Index => _firstIndex + _offset;
             public int Count => _firstIndex + _count;
             public T LastCreatedItem => _lastCreatedItem;
+            public T PreviousItem => _previousItem;
             public T CurrentItem => _hasCurrentItem ? _currentItem : (_currentItem = FetchCurrentItem());
 
             internal void Reset()
@@ -67,7 +72,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 _currentItem = default;
                 _hasResetPoint = false;
                 _resetPoint = 0;
-                _lastCreatedItem = default;
+                _previousItem = default;
+                _lastUnbufferedItem = default;
             }
 
             internal void ResetTo(int index)
@@ -77,6 +83,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 _offset = offset;
                 _hasCurrentItem = false;
                 _currentItem = default;
+                if (_count > 0 && _offset > 0) _previousItem = _items[_offset - 1];
+                else _previousItem = _lastUnbufferedItem;
                 // look forward for slots not holding a token
                 for (int i = _offset; i < _count; i++)
                 {
@@ -109,6 +117,15 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 _hasCurrentItem = false;
                 _currentItem = default;
                 _count = _offset;
+                if (_count > 0 && _offset > 0)
+                {
+                    _previousItem = _items[_offset - 1];
+                }
+                else
+                {
+                    _previousItem = _lastUnbufferedItem;
+                }
+                _lastCreatedItem = _previousItem;
             }
 
             //this method is called very frequently
@@ -122,6 +139,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
             private void MoveToNextItem()
             {
+                _previousItem = _currentItem;
                 _hasCurrentItem = false;
                 _currentItem = default;
                 _offset++;
@@ -154,7 +172,6 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 _count++;
             }
 
-            /*
             public void InsertItem(in T item)
             {
                 Debug.Assert(item != null);
@@ -169,7 +186,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 }
                 _items[_offset] = item;
                 if (_offset == _count) _lastCreatedItem = item;
-            }*/
+            }
 
             private void AddSlot()
             {
@@ -181,6 +198,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                     int shiftOffset = (_resetPoint == -1) ? _offset : _resetPoint - _firstIndex;
                     int shiftCount = _count - shiftOffset;
                     Debug.Assert(shiftOffset > 0);
+                    _lastUnbufferedItem = _items[shiftOffset - 1];
                     if (shiftCount > 0)
                     {
                         Array.Copy(_items, shiftOffset, _items, 0, shiftCount);

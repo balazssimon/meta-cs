@@ -9,10 +9,10 @@
   -->
   <PropertyGroup>
 	<OfficialBuild>true</OfficialBuild>
-    <VersionPrefix>0.10.284</VersionPrefix>
+    <VersionPrefix>0.10.285</VersionPrefix>
 	<MetaDslxLanguagesPackageVersion>0.2.35</MetaDslxLanguagesPackageVersion>
     <VersionSuffix Condition="'$(OfficialBuild)' != 'true' and '$(DotNetUseShippingVersions)' != 'true'">alpha1</VersionSuffix>
-    <BootstrapVersion>0.10.283</BootstrapVersion>
+    <BootstrapVersion>0.10.284</BootstrapVersion>
     <SemanticVersioningV1>true</SemanticVersioningV1>
     <!-- 
       By default the assembly version in official builds is "$(VersionPrefix).0".

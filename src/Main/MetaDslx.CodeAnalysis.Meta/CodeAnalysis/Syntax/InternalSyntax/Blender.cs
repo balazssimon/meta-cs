@@ -109,6 +109,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         public LexerMode Mode => _mode;
         public ParserState State => _state;
+        public int Position => _newPosition;
+        public DirectiveStack Directives => _newDirectives;
 
         internal static (int minLexerLookahead, int maxLexerLookahead) GetLexerLookahead(LanguageSyntaxNode treeRoot)
         {
