@@ -11619,16 +11619,6 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne
 			return TestLangOneSyntaxTree.ParseText(text, (TestLangOneParseOptions)options, path, cancellationToken);
 		}
 	
-		public override SyntaxParser MakeParser(SourceText text, ParseOptions options, SyntaxNode oldTree, IReadOnlyList<TextChangeRange> changes)
-		{
-			return TestLangOneLanguage.Instance.InternalSyntaxFactory.CreateParser(text, (TestLangOneParseOptions)options, (TestLangOneSyntaxNode)oldTree, changes);
-		}
-	
-		public override SyntaxParser MakeParser(string text)
-		{
-			return TestLangOneLanguage.Instance.InternalSyntaxFactory.CreateParser(SourceText.From(text, Encoding.UTF8), TestLangOneParseOptions.Default, null, null);
-		}
-	
 		public override LanguageSyntaxTree MakeSyntaxTree(LanguageSyntaxNode root, ParseOptions options = null, string path = "", Encoding encoding = null)
 		{
 			return TestLangOneSyntaxTree.Create((TestLangOneSyntaxNode)root, (TestLangOneParseOptions)options, path, null, encoding);

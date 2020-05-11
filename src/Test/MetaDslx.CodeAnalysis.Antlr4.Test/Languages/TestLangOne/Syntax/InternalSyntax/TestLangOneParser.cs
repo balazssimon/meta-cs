@@ -197,6 +197,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_main; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterMain(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitMain(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitMain(this);
@@ -282,6 +290,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_test; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterTest(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitTest(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitTest(this);
@@ -392,6 +408,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_test01; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterTest01(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitTest01(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitTest01(this);
@@ -438,6 +462,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_namespaceDeclaration01; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterNamespaceDeclaration01(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitNamespaceDeclaration01(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitNamespaceDeclaration01(this);
@@ -486,6 +518,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_namespaceBody01; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterNamespaceBody01(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitNamespaceBody01(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitNamespaceBody01(this);
@@ -545,6 +585,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_declaration01; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterDeclaration01(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitDeclaration01(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitDeclaration01(this);
@@ -602,6 +650,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_vertex01; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterVertex01(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitVertex01(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitVertex01(this);
@@ -653,6 +709,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_arrow01; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterArrow01(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitArrow01(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitArrow01(this);
@@ -699,6 +763,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_test02; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterTest02(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitTest02(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitTest02(this);
@@ -745,6 +817,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_namespaceDeclaration02; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterNamespaceDeclaration02(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitNamespaceDeclaration02(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitNamespaceDeclaration02(this);
@@ -793,6 +873,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_namespaceBody02; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterNamespaceBody02(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitNamespaceBody02(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitNamespaceBody02(this);
@@ -852,6 +940,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_declaration02; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterDeclaration02(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitDeclaration02(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitDeclaration02(this);
@@ -909,6 +1005,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_vertex02; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterVertex02(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitVertex02(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitVertex02(this);
@@ -958,6 +1062,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_arrow02; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterArrow02(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitArrow02(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitArrow02(this);
@@ -1003,6 +1115,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_source02; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterSource02(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitSource02(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitSource02(this);
@@ -1044,6 +1164,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_target02; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterTarget02(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitTarget02(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitTarget02(this);
@@ -1086,6 +1214,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_test03; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterTest03(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitTest03(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitTest03(this);
@@ -1132,6 +1268,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_namespaceDeclaration03; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterNamespaceDeclaration03(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitNamespaceDeclaration03(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitNamespaceDeclaration03(this);
@@ -1180,6 +1324,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_namespaceBody03; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterNamespaceBody03(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitNamespaceBody03(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitNamespaceBody03(this);
@@ -1239,6 +1391,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_declaration03; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterDeclaration03(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitDeclaration03(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitDeclaration03(this);
@@ -1296,6 +1456,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_vertex03; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterVertex03(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitVertex03(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitVertex03(this);
@@ -1345,6 +1513,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_arrow03; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterArrow03(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitArrow03(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitArrow03(this);
@@ -1390,6 +1566,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_source03; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterSource03(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitSource03(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitSource03(this);
@@ -1431,6 +1615,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_target03; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterTarget03(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitTarget03(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitTarget03(this);
@@ -1473,6 +1665,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_test04; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterTest04(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitTest04(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitTest04(this);
@@ -1519,6 +1719,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_namespaceDeclaration04; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterNamespaceDeclaration04(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitNamespaceDeclaration04(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitNamespaceDeclaration04(this);
@@ -1567,6 +1775,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_namespaceBody04; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterNamespaceBody04(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitNamespaceBody04(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitNamespaceBody04(this);
@@ -1626,6 +1842,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_declaration04; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterDeclaration04(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitDeclaration04(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitDeclaration04(this);
@@ -1683,6 +1907,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_vertex04; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterVertex04(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitVertex04(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitVertex04(this);
@@ -1734,6 +1966,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_arrow04; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterArrow04(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitArrow04(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitArrow04(this);
@@ -1780,6 +2020,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_test05; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterTest05(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitTest05(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitTest05(this);
@@ -1826,6 +2074,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_namespaceDeclaration05; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterNamespaceDeclaration05(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitNamespaceDeclaration05(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitNamespaceDeclaration05(this);
@@ -1874,6 +2130,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_namespaceBody05; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterNamespaceBody05(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitNamespaceBody05(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitNamespaceBody05(this);
@@ -1933,6 +2197,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_declaration05; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterDeclaration05(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitDeclaration05(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitDeclaration05(this);
@@ -1990,6 +2262,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_vertex05; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterVertex05(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitVertex05(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitVertex05(this);
@@ -2041,6 +2321,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_arrow05; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterArrow05(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitArrow05(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitArrow05(this);
@@ -2087,6 +2375,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_test06; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterTest06(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitTest06(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitTest06(this);
@@ -2133,6 +2429,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_namespaceDeclaration06; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterNamespaceDeclaration06(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitNamespaceDeclaration06(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitNamespaceDeclaration06(this);
@@ -2181,6 +2485,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_namespaceBody06; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterNamespaceBody06(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitNamespaceBody06(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitNamespaceBody06(this);
@@ -2240,6 +2552,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_declaration06; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterDeclaration06(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitDeclaration06(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitDeclaration06(this);
@@ -2297,6 +2617,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_vertex06; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterVertex06(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitVertex06(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitVertex06(this);
@@ -2348,6 +2676,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_arrow06; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterArrow06(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitArrow06(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitArrow06(this);
@@ -2394,6 +2730,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_test07; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterTest07(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitTest07(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitTest07(this);
@@ -2440,6 +2784,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_namespaceDeclaration07; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterNamespaceDeclaration07(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitNamespaceDeclaration07(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitNamespaceDeclaration07(this);
@@ -2488,6 +2840,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_namespaceBody07; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterNamespaceBody07(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitNamespaceBody07(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitNamespaceBody07(this);
@@ -2547,6 +2907,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_declaration07; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterDeclaration07(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitDeclaration07(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitDeclaration07(this);
@@ -2604,6 +2972,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_vertex07; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterVertex07(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitVertex07(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitVertex07(this);
@@ -2653,6 +3029,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_arrow07; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterArrow07(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitArrow07(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitArrow07(this);
@@ -2698,6 +3082,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_source07; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterSource07(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitSource07(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitSource07(this);
@@ -2739,6 +3131,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_target07; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterTarget07(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitTarget07(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitTarget07(this);
@@ -2781,6 +3181,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_test08; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterTest08(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitTest08(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitTest08(this);
@@ -2827,6 +3235,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_namespaceDeclaration08; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterNamespaceDeclaration08(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitNamespaceDeclaration08(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitNamespaceDeclaration08(this);
@@ -2875,6 +3291,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_namespaceBody08; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterNamespaceBody08(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitNamespaceBody08(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitNamespaceBody08(this);
@@ -2934,6 +3358,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_declaration08; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterDeclaration08(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitDeclaration08(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitDeclaration08(this);
@@ -2991,6 +3423,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_vertex08; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterVertex08(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitVertex08(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitVertex08(this);
@@ -3040,6 +3480,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_arrow08; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterArrow08(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitArrow08(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitArrow08(this);
@@ -3085,6 +3533,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_source08; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterSource08(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitSource08(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitSource08(this);
@@ -3126,6 +3582,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_target08; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterTarget08(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitTarget08(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitTarget08(this);
@@ -3168,6 +3632,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_test09; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterTest09(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitTest09(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitTest09(this);
@@ -3214,6 +3686,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_namespaceDeclaration09; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterNamespaceDeclaration09(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitNamespaceDeclaration09(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitNamespaceDeclaration09(this);
@@ -3262,6 +3742,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_namespaceBody09; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterNamespaceBody09(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitNamespaceBody09(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitNamespaceBody09(this);
@@ -3321,6 +3809,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_declaration09; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterDeclaration09(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitDeclaration09(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitDeclaration09(this);
@@ -3378,6 +3874,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_vertex09; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterVertex09(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitVertex09(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitVertex09(this);
@@ -3429,6 +3933,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_arrow09; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterArrow09(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitArrow09(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitArrow09(this);
@@ -3475,6 +3987,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_test10; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterTest10(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitTest10(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitTest10(this);
@@ -3521,6 +4041,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_namespaceDeclaration10; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterNamespaceDeclaration10(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitNamespaceDeclaration10(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitNamespaceDeclaration10(this);
@@ -3569,6 +4097,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_namespaceBody10; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterNamespaceBody10(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitNamespaceBody10(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitNamespaceBody10(this);
@@ -3628,6 +4164,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_declaration10; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterDeclaration10(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitDeclaration10(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitDeclaration10(this);
@@ -3685,6 +4229,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_vertex10; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterVertex10(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitVertex10(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitVertex10(this);
@@ -3736,6 +4288,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_arrow10; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterArrow10(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitArrow10(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitArrow10(this);
@@ -3785,6 +4345,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_test11; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterTest11(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitTest11(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitTest11(this);
@@ -3844,6 +4412,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_namespaceDeclaration11; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterNamespaceDeclaration11(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitNamespaceDeclaration11(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitNamespaceDeclaration11(this);
@@ -3892,6 +4468,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_namespaceBody11; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterNamespaceBody11(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitNamespaceBody11(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitNamespaceBody11(this);
@@ -3951,6 +4535,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_declaration11; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterDeclaration11(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitDeclaration11(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitDeclaration11(this);
@@ -4008,6 +4600,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_vertex11; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterVertex11(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitVertex11(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitVertex11(this);
@@ -4059,6 +4659,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_arrow11; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterArrow11(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitArrow11(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitArrow11(this);
@@ -4104,6 +4712,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_name; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterName(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitName(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitName(this);
@@ -4145,6 +4761,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_qualifiedName; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterQualifiedName(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitQualifiedName(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitQualifiedName(this);
@@ -4193,6 +4817,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_qualifier; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterQualifier(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitQualifier(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitQualifier(this);
@@ -4249,6 +4881,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_identifier; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterIdentifier(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitIdentifier(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitIdentifier(this);
@@ -4317,6 +4957,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_literal; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterLiteral(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitLiteral(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitLiteral(this);
@@ -4395,6 +5043,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_nullLiteral; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterNullLiteral(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitNullLiteral(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitNullLiteral(this);
@@ -4435,6 +5091,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_booleanLiteral; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterBooleanLiteral(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitBooleanLiteral(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitBooleanLiteral(this);
@@ -4486,6 +5150,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_integerLiteral; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterIntegerLiteral(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitIntegerLiteral(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitIntegerLiteral(this);
@@ -4525,6 +5197,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_decimalLiteral; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterDecimalLiteral(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitDecimalLiteral(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitDecimalLiteral(this);
@@ -4564,6 +5244,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_scientificLiteral; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterScientificLiteral(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitScientificLiteral(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitScientificLiteral(this);
@@ -4603,6 +5291,14 @@ public partial class TestLangOneParser : global::MetaDslx.Languages.Antlr4Roslyn
 		{
 		}
 		public override int RuleIndex { get { return RULE_stringLiteral; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.EnterStringLiteral(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ITestLangOneParserListener typedListener = listener as ITestLangOneParserListener;
+			if (typedListener != null) typedListener.ExitStringLiteral(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLangOneParserVisitor<TResult> typedVisitor = visitor as ITestLangOneParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitStringLiteral(this);

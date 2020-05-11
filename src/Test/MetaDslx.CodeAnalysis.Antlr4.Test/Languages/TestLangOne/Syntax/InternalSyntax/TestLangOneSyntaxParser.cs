@@ -78,6 +78,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax.Inte
 				else
 				{
 					context = this.Antlr4Parser._DoParseMain();
+		            ((ITokenStream)this).Consume(); // Consume EOF, since ANTLR4 does not do that.
 					green = _visitor.Visit(context);
 				}
 		    }

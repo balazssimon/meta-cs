@@ -6,7 +6,7 @@
     <IsPackable>false</IsPackable>
     <AssemblyName>MetaDslx.CodeAnalysis.Antlr4.Test</AssemblyName>
     <RootNamespace>MetaDslx.CodeAnalysis.Antlr4Test</RootNamespace>
-    <MetaDslxDisableAntlr4RoslynGenerator>true</MetaDslxDisableAntlr4RoslynGenerator>
+    <MetaDslxDisableAntlr4RoslynGenerator>false</MetaDslxDisableAntlr4RoslynGenerator>
   </PropertyGroup>
   
   <ItemGroup>
