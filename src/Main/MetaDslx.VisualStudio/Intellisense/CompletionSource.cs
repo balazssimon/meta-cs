@@ -56,22 +56,20 @@ namespace MetaDslx.VisualStudio.Intellisense
             var compilation = (LanguageCompilation)_backgroundCompilation.CompilationSnapshot.Compilation;
             if (compilation == null) return;
 
-            SyntaxTree syntaxTree = compilation.SyntaxTrees.FirstOrDefault();
+            var syntaxTree = (LanguageSyntaxTree)compilation.SyntaxTrees.FirstOrDefault();
             if (syntaxTree == null) return;
 
             SyntaxNode root;
             if (syntaxTree.TryGetRoot(out root))
             {
                 var completions = ArrayBuilder<Completion>.GetInstance();
-                /*
-                var antlr4CompletionSource = new Antlr4CompletionSource(_backgroundCompilation, triggerPoint.Position);
-                var antlr4Suggestions = antlr4CompletionSource.GetTokenSuggestions();
+                var tokenSuggestions = syntaxTree.LookupTokens(triggerPoint.Position);
                 var syntaxFacts = compilation.Language.SyntaxFacts;
-                var hasIdentifier = antlr4Suggestions.Any(kind => syntaxFacts.IsIdentifier(kind));
-                var fixedTokens = antlr4Suggestions.Where(kind => syntaxFacts.IsFixedToken(kind)).Select(kind => syntaxFacts.GetText(kind));
+                var hasIdentifier = tokenSuggestions.Any(kind => syntaxFacts.IsIdentifier(kind));
+                var fixedTokens = tokenSuggestions.Where(kind => syntaxFacts.IsFixedToken(kind)).Select(kind => syntaxFacts.GetText(kind));
                 completions.AddRange(fixedTokens.Select(name => new Completion(name, name, null, null, null)));
 
-                if (hasIdentifier || !antlr4Suggestions.Any())
+                if (hasIdentifier || tokenSuggestions.Length == 0)
                 {
                     SemanticModel semanticModel = compilation.GetSemanticModel(syntaxTree);
                     INamespaceOrTypeSymbol container = null;
@@ -102,7 +100,7 @@ namespace MetaDslx.VisualStudio.Intellisense
                     }
                     var symbols = semanticModel.LookupSymbols(triggerPoint.Position, container);
                     completions.AddRange(symbols.Where(symbol => !string.IsNullOrWhiteSpace(symbol.Name)).Select(symbol => new Completion(symbol.Name, symbol.Name, null, null, null)));
-                }*/
+                }
                 SnapshotPoint start = triggerPoint;
                 var applicableTo = FindTokenSpanAtPosition(triggerPoint, session);
                 completionSets.Add(new CompletionSet("All", "All", applicableTo, completions.OrderBy(compl => compl.DisplayText), Enumerable.Empty<Completion>()));

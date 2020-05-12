@@ -30,7 +30,7 @@ namespace Antlr4Intellisense
             Console.WriteLine("----");
             var tree = Parse(text, change, null);
             Console.WriteLine("====");
-            /*Intellisense(tree, 0);
+            Intellisense(tree, 0);
             Intellisense(tree, 1);
             Intellisense(tree, 3);
             Intellisense(tree, 4);
@@ -42,7 +42,7 @@ namespace Antlr4Intellisense
             Intellisense(tree, 10);
             Intellisense(tree, 11);
             Intellisense(tree, 12);
-            Intellisense(tree, 13);*/
+            Intellisense(tree, 13);
             Console.WriteLine("====");
             
             text = "var a = 13 + 2\r\nvar b = a+1\r\n";
@@ -77,13 +77,15 @@ namespace Antlr4Intellisense
             tree = Parse(text, change, tree);
             Console.WriteLine("====");
 
-            //*/
+            /*/
 
             EmptyFile();
             AfterVar();
             AfterEquals();
             AfterLiteral();
             AfterAddition();
+
+            //*/
         }
 
         private static Antlr4SyntaxLexer Lex(string text, ImmutableArray<TextChangeRange>  changes, Antlr4SyntaxLexer oldLexer)
@@ -159,20 +161,19 @@ namespace Antlr4Intellisense
             }
         }
 
-        /*private static void Intellisense(SandySyntaxTree tree, int position)
+        private static void Intellisense(SandySyntaxTree tree, int position)
         {
-            if (!IncrementalAntlr4Parser.TryGetParser(tree.GetRoot(), out var parser)) return;
-            var completion = parser.GetCompletionTokensAt(position);
+            var completion = tree.LookupTokens(position);
             Console.WriteLine("Position: "+position);
             foreach (var item in completion)
             {
-                if (item >= 0)
+                if (item != SyntaxKind.None)
                 {
-                    Console.WriteLine("  " + item + " (" + parser.Antlr4Parser.Vocabulary.GetSymbolicName(item) + ")");
+                    Console.WriteLine("  " + item.GetValue()+ " ("+item.GetName()+")");
                 }
             }
-        }*/
-
+        }
+        /*
         private static void EmptyFile()
         {
             var code = "var a = 1 + 2";
@@ -217,6 +218,6 @@ namespace Antlr4Intellisense
                 //Console.WriteLine("  "+(char)tokenType);
                 Console.WriteLine("  " + tokenType + " (" + vocabulary.GetDisplayName(tokenType) + ": " + vocabulary.GetSymbolicName(tokenType) + ")");
             }
-        }
+        }*/
     }
 }

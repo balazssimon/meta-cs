@@ -15,6 +15,9 @@ using Microsoft.CodeAnalysis;
 using MetaDslx.Languages.Meta;
 using MetaDslx.Languages.Meta.Syntax;
 using MetaDslx.Languages.Meta.Syntax.InternalSyntax;
+using MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax;
+using System.Linq;
+
 namespace MetaDslx.Languages.Meta
 {
     /// <summary>
@@ -167,6 +170,17 @@ namespace MetaDslx.Languages.Meta
                 return tree;
             }
         }
+
+        protected override ImmutableArray<SyntaxKind> LookupTokensCore(int position, CancellationToken cancellationToken = default)
+        {
+            return new Antlr4CompletionSource(this.GetRoot(cancellationToken), MetaParser._ATN).GetTokenSuggestions(position, cancellationToken);
+        }
+
+        public new ImmutableArray<MetaSyntaxKind> LookupTokens(int position, CancellationToken cancellationToken)
+        {
+            return this.LookupTokensCore(position, cancellationToken).SelectAsArray(kind => (MetaSyntaxKind)kind);
+        }
+
         #endregion
         #region Changes
         /// <summary>

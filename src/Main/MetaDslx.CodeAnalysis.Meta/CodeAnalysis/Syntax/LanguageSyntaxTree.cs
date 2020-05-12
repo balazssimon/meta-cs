@@ -492,5 +492,14 @@ namespace MetaDslx.CodeAnalysis
 
         #endregion
 
+        public ImmutableArray<SyntaxKind> LookupTokens(int position, CancellationToken cancellationToken = default)
+        {
+            return this.LookupTokensCore(position, cancellationToken);
+        }
+
+        protected virtual ImmutableArray<SyntaxKind> LookupTokensCore(int position, CancellationToken cancellationToken = default)
+        {
+            return ImmutableArray<SyntaxKind>.Empty;
+        }
     }
 }

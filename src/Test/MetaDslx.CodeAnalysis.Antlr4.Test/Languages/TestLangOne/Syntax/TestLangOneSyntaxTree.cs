@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -166,6 +167,19 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne
                 tree.VerifySource();
                 return tree;
             }
+        }
+        #endregion
+        #region Completion
+        protected override ImmutableArray<SyntaxKind> LookupTokensCore(int position, CancellationToken cancellationToken = default)
+        {
+            return Microsoft.CodeAnalysis.ImmutableArrayExtensions.Cast<TestLangOneSyntaxKind, SyntaxKind>(this.LookupTokens(position, cancellationToken));
+        }
+        public new ImmutableArray<TestLangOneSyntaxKind> LookupTokens(int position, CancellationToken cancellationToken)
+        {
+            var completionSource = new MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4CompletionSource(this.GetRoot(cancellationToken), position, TestLangOneParser._ATN, cancellationToken);
+            var antlr4Tokens = completionSource.GetTokenSuggestions();
+            var result = antlr4Tokens.Select(kind => (TestLangOneSyntaxKind)kind.FromAntlr4(TestLangOneLanguage.Instance.SyntaxFacts.SyntaxKindType)).ToImmutableArray();
+            return result;
         }
         #endregion
         #region Changes
