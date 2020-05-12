@@ -114,5 +114,14 @@ namespace MetaDslx.CodeAnalysis.Syntax
             }
         }
 
+        /// <summary>
+        /// Enable incremental parsing.
+        /// </summary>
+        public LanguageParseOptions WithIncremental(bool incremental)
+        {
+            return CommonWithIncremental(incremental);
+        }
+
+        protected abstract LanguageParseOptions CommonWithIncremental(bool incremental);
     }
 }

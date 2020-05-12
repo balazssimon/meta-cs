@@ -87,9 +87,7 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="Editor\MetaDslxDefinition.cs" />
     <Compile Include="Intellisense\CompletionSource.cs" />
-    <Compile Include="Intellisense\CompletionTokenStream.cs" />
     <Compile Include="Intellisense\IntellisenseController.cs" />
-    <Compile Include="Intellisense\ParserStack.cs" />
     <Compile Include="Intellisense\StandardIcons.cs" />
     <Compile Include="Intellisense\SymbolQuickInfoSource.cs" />
     <Compile Include="Languages\Meta\Compilation\MetaBackgroundCompilationFactory.cs" />

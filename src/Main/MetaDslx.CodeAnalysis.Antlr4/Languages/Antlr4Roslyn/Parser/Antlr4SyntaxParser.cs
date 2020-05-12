@@ -113,22 +113,22 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 
         string ITokenStream.GetText(Interval interval)
         {
-            return ((ITokenStream)_lexer).GetText(interval);
+            return this.Text.ToString(TextSpan.FromBounds(interval.a, interval.b + 1));
         }
 
         string ITokenStream.GetText()
         {
-            return ((ITokenStream)_lexer).GetText();
+            return this.Text.ToString();
         }
 
         string ITokenStream.GetText(RuleContext ctx)
         {
-            return ((ITokenStream)_lexer).GetText(ctx);
+            return this.Text.ToString(TextSpan.FromBounds(ctx.SourceInterval.a, ctx.SourceInterval.b + 1));
         }
 
         string ITokenStream.GetText(IToken start, IToken stop)
         {
-            return ((ITokenStream)_lexer).GetText(start, stop);
+            return this.Text.ToString(TextSpan.FromBounds(start.StartIndex, stop.StopIndex + 1));
         }
 
         #endregion

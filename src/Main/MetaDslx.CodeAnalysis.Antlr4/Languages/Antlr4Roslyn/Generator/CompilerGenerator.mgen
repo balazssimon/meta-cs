@@ -210,6 +210,11 @@ namespace [Properties.DefaultNamespace].Syntax
             return WithFeatures(features);
         }
 
+        protected override LanguageParseOptions CommonWithIncremental(bool incremental)
+        {
+            return WithIncremental(incremental);
+        }
+
         /// <summary>
         /// Enable some experimental language features for testing.
         /// </summary>
@@ -3624,15 +3629,11 @@ public class [Properties.LanguageName]SyntaxFactory : SyntaxFactory
 	{
 	}
 	
-	public new [lang]Language Language
-	{
-		get { return [lang]Language.Instance; }
-	}
+	public new [lang]Language Language => [lang]Language.Instance;
 	
-	protected override Language LanguageCore
-	{
-		get { return this.Language; }
-	}
+	protected override Language LanguageCore => this.Language;
+
+    public override LanguageParseOptions DefaultParseOptions => [lang]ParseOptions.Default;
 	
 	/// <summary>
 	/// Create a new syntax tree from a syntax node.

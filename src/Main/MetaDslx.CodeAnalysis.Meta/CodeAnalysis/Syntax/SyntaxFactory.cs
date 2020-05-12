@@ -44,6 +44,7 @@ namespace MetaDslx.CodeAnalysis.Syntax
 
         public Language Language => this.LanguageCore;
         protected abstract Language LanguageCore { get; }
+        public abstract LanguageParseOptions DefaultParseOptions { get; }
         public SyntaxToken EndOfFile
         {
             get

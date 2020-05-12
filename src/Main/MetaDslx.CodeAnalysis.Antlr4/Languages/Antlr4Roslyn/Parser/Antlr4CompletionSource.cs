@@ -35,21 +35,21 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             (var node, var annot) = FindInnermostNodeWithAnnotation(position);
             if (annot == null || !(annot.State is Antlr4ParserState)) return ImmutableArray<SyntaxKind>.Empty;
             var startState = _atn.states[((Antlr4ParserState)annot.State).State];
-            var tokens = node.DescendantTokens().ToList();
 
+            var tokens = ArrayBuilder<SyntaxToken>.GetInstance();
             var adjustedPosition = position;
             var tokenStart = string.Empty;
-            for (int i = 0; i < tokens.Count; i++)
+            foreach (var token in node.DescendantTokens())
             {
-                var token = tokens[i];
                 var span = token.Span;
+                tokens.Add(token);
                 if (span.Contains(position))
                 {
                     adjustedPosition = span.Start;
                     tokenStart = token.Text.Substring(0, position - adjustedPosition);
                     break;
                 }
-                else if (span.End < position)
+                else if (token.FullSpan.Start > position)
                 {
                     break;
                 }
@@ -57,6 +57,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 
             var suggestions = new HashSet<int>();
             Process(startState, new CompletionTokenStream(tokens, adjustedPosition), new ParserStack(ImmutableStack<ATNState>.Empty), ImmutableHashSet<int>.Empty, suggestions, cancellationToken);
+            tokens.Free();
+
             var result = ArrayBuilder<SyntaxKind>.GetInstance();
             if (!string.IsNullOrEmpty(tokenStart))
             {
@@ -86,8 +88,14 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 
         private (LanguageSyntaxNode, IncrementalNodeAnnotation) FindInnermostNodeWithAnnotation(int position)
         {
-            var innermost = _root.ChildThatContainsPosition(position);
-            var node = innermost.NodeOrParent;
+            SyntaxNode innermost = _root;
+            var child = innermost.ChildThatContainsPosition(position);
+            while (child != null && child.IsNode)
+            {
+                innermost = child.AsNode();
+                child = innermost.ChildThatContainsPosition(position);
+            }
+            var node = innermost;
             var annot = Antlr4SyntaxParser.GetNodeAnnotation(node.Green);
             while (node.Parent != null && annot == null)
             {
@@ -230,18 +238,18 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 
         private struct CompletionTokenStream
         {
-            private readonly IList<SyntaxToken> _tokens;
+            private readonly ArrayBuilder<SyntaxToken> _tokens;
             private readonly int _index;
             private readonly int _position;
 
-            public CompletionTokenStream(IList<SyntaxToken> tokens, int position)
+            public CompletionTokenStream(ArrayBuilder<SyntaxToken> tokens, int position)
             {
                 _tokens = tokens;
                 _index = 0;
                 _position = position;
             }
 
-            private CompletionTokenStream(IList<SyntaxToken> tokens, int index, int position)
+            private CompletionTokenStream(ArrayBuilder<SyntaxToken> tokens, int index, int position)
             {
                 _tokens = tokens;
                 _index = index;

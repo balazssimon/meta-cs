@@ -7742,14 +7742,9 @@ namespace MetaDslx.Languages.Meta
 			: base(internalSyntaxFactory)
 		{
 		}
-		public new MetaLanguage Language
-		{
-			get { return MetaLanguage.Instance; }
-		}
-		protected override Language LanguageCore
-		{
-			get { return this.Language; }
-		}
+		public new MetaLanguage Language => MetaLanguage.Instance;
+		protected override Language LanguageCore => this.Language;
+	    public override LanguageParseOptions DefaultParseOptions => MetaParseOptions.Default;
 		/// <summary>
 		/// Create a new syntax tree from a syntax node.
 		/// </summary>

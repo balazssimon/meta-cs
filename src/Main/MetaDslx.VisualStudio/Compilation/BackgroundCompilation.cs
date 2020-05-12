@@ -1,4 +1,5 @@
 ﻿using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.VisualStudio.Utilities;
 using Microsoft.CodeAnalysis.Text;
 using Microsoft.VisualStudio.ComponentModelHost;
@@ -13,6 +14,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -204,59 +206,67 @@ namespace MetaDslx.VisualStudio.Compilation
 
         private void BackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            if (e.Argument == null)
+            try
             {
-                ITextBuffer textBuffer = this.TextBuffer;
-                if (textBuffer == null) return;
-                ITextSnapshot textSnapshot = textBuffer.CurrentSnapshot;
-                if (_backgroundCompilationSnapshot.Changed(textSnapshot))
+                if (e.Argument == null)
                 {
-                    string filePath = this.FilePath;
-                    string sourceText = textSnapshot.GetText();
-                    var versionBefore = textSnapshot.Version;
-                    var cancellationToken = _cancellationTokenSource.Token;
-                    var factory = this.GetCompilationFactory();
-                    var language = factory.Language;
-                    if (cancellationToken.IsCancellationRequested) return;
-                    var syntaxTree = language.SyntaxFactory.ParseSyntaxTree(SourceText.From(sourceText), null, filePath, cancellationToken);
-                    var compilation = factory.CreateCompilation(this, ImmutableArray.Create(syntaxTree), cancellationToken);
-                    if (_backgroundCompilationSnapshot == null || compilation != null)
+                    ITextBuffer textBuffer = this.TextBuffer;
+                    if (textBuffer == null) return;
+                    ITextSnapshot textSnapshot = textBuffer.CurrentSnapshot;
+                    if (_backgroundCompilationSnapshot.Changed(textSnapshot))
                     {
-                        compilation.ForceComplete(cancellationToken);
+                        string filePath = this.FilePath;
+                        string sourceText = textSnapshot.GetText();
+                        var versionBefore = textSnapshot.Version;
+                        var cancellationToken = _cancellationTokenSource.Token;
+                        var factory = this.GetCompilationFactory();
+                        var language = factory.Language;
                         if (cancellationToken.IsCancellationRequested) return;
-                        textSnapshot = textBuffer.CurrentSnapshot;
-                        var versionAfter = textSnapshot.Version;
-                        if (versionAfter == versionBefore)
+                        var syntaxTree = language.SyntaxFactory.ParseSyntaxTree(SourceText.From(sourceText), language.SyntaxFactory.DefaultParseOptions.WithIncremental(true), filePath, cancellationToken);
+                        var compilation = factory.CreateCompilation(this, ImmutableArray.Create(syntaxTree), cancellationToken);
+                        if (_backgroundCompilationSnapshot == null || compilation != null)
                         {
-                            Interlocked.Exchange(ref _backgroundCompilationSnapshot, _backgroundCompilationSnapshot.Update(textSnapshot, compilation, ImmutableDictionary<object, object>.Empty));
-                            e.Result = 0;
+                            compilation.ForceComplete(cancellationToken);
+                            if (cancellationToken.IsCancellationRequested) return;
+                            textSnapshot = textBuffer.CurrentSnapshot;
+                            var versionAfter = textSnapshot.Version;
+                            if (versionAfter == versionBefore)
+                            {
+                                Interlocked.Exchange(ref _backgroundCompilationSnapshot, _backgroundCompilationSnapshot.Update(textSnapshot, compilation, ImmutableDictionary<object, object>.Empty));
+                                e.Result = 0;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    int index = (int)e.Argument;
+                    var steps = this.GetCompilationSteps();
+                    if (index < steps.Count)
+                    {
+                        var step = steps[index];
+                        var cancellationToken = _cancellationTokenSource.Token;
+                        ITextBuffer textBuffer = this.TextBuffer;
+                        if (textBuffer == null) return;
+                        ITextSnapshot textSnapshot = textBuffer.CurrentSnapshot;
+                        var snaphsotBefore = _backgroundCompilationSnapshot;
+                        if (!snaphsotBefore.Changed(textSnapshot))
+                        {
+                            var result = step.Execute(snaphsotBefore.Compilation, cancellationToken);
+                            if (cancellationToken.IsCancellationRequested) return;
+                            if (!snaphsotBefore.Changed(textSnapshot))
+                            {
+                                Interlocked.Exchange(ref _backgroundCompilationSnapshot, _backgroundCompilationSnapshot.Update(snaphsotBefore.Text, snaphsotBefore.Compilation, snaphsotBefore.CompilationStepResults.Add(step.ResultKey, result)));
+                                e.Result = index + 1;
+                            }
                         }
                     }
                 }
             }
-            else
+            catch(Exception ex)
             {
-                int index = (int)e.Argument;
-                var steps = this.GetCompilationSteps();
-                if (index < steps.Count)
-                {
-                    var step = steps[index];
-                    var cancellationToken = _cancellationTokenSource.Token;
-                    ITextBuffer textBuffer = this.TextBuffer;
-                    if (textBuffer == null) return;
-                    ITextSnapshot textSnapshot = textBuffer.CurrentSnapshot;
-                    var snaphsotBefore = _backgroundCompilationSnapshot;
-                    if (!snaphsotBefore.Changed(textSnapshot))
-                    {
-                        var result = step.Execute(snaphsotBefore.Compilation, cancellationToken);
-                        if (cancellationToken.IsCancellationRequested) return;
-                        if (!snaphsotBefore.Changed(textSnapshot))
-                        {
-                            Interlocked.Exchange(ref _backgroundCompilationSnapshot, _backgroundCompilationSnapshot.Update(snaphsotBefore.Text, snaphsotBefore.Compilation, snaphsotBefore.CompilationStepResults.Add(step.ResultKey, result)));
-                            e.Result = index + 1;
-                        }
-                    }
-                }
+                Debug.WriteLine(ex.ToString());
+                e.Result = null;
             }
         }
     }

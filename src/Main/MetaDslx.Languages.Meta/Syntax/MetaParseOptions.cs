@@ -124,6 +124,10 @@ namespace MetaDslx.Languages.Meta.Syntax
         {
             return WithFeatures(features);
         }
+        protected override LanguageParseOptions CommonWithIncremental(bool incremental)
+        {
+            return WithIncremental(incremental);
+        }
         /// <summary>
         /// Enable some experimental language features for testing.
         /// </summary>
