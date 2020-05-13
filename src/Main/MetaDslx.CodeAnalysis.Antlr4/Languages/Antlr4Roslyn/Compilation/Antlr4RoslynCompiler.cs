@@ -166,7 +166,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                 }
                 if (!success)
                 {
-                    this.DiagnosticBag.Add(Antlr4RoslynErrorCode.ERR_Antlr4ToolError, "could not generate C# files");
+                    this.AddDiagnostic(Antlr4RoslynErrorCode.ERR_Antlr4ToolError, "could not generate C# files");
                     return false;
                 }
                 else
@@ -234,8 +234,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                         }
                         //sb.AppendLine($"{indent}BeginRuleContext();");
                         //sb.AppendLine($"{indent}if (this.TryGetIncrementalContext(_ctx, State, RULE_{ruleName.ToCamelCase()}, out {contextTypeName} existingContext)) return existingContext;");
-                        if (recursive) sb.AppendLine($"{indent}return this.SyntaxParser._Antlr4Parse{ruleName}(_p);");
-                        else sb.AppendLine($"{indent}return this.SyntaxParser._Antlr4Parse{ruleName}();");
+                        if (recursive) sb.AppendLine($"{indent}return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4Parse{ruleName}() : _DoParse{ruleName}(_p);");
+                        else sb.AppendLine($"{indent}return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4Parse{ruleName}() : _DoParse{ruleName}();");
                         //sb.AppendLine($"{indent}EndRuleContext();");
                         sb.AppendLine($"{smallIndent}}}");
                         sb.AppendLine();
@@ -279,7 +279,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             string antlr4TokensFile = Path.ChangeExtension(this.GeneratedAntlr4GrammarFile, ".tokens");
             if (!File.Exists(antlr4TokensFile))
             {
-                this.DiagnosticBag.Add(Antlr4RoslynErrorCode.ERR_Antlr4ToolError, string.Format("Tokens file '{0}' is missing.", antlr4TokensFile));
+                this.AddDiagnostic(Antlr4RoslynErrorCode.ERR_Antlr4ToolError, string.Format("Tokens file '{0}' is missing.", antlr4TokensFile));
                 return false;
             }
             string antlr4TokensSource = File.ReadAllText(antlr4TokensFile);
@@ -650,13 +650,13 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             if (this.IgnoreRoslynRules) return;
             if (rules.Count == 0)
             {
-                this.DiagnosticBag.Add(Antlr4RoslynErrorCode.ERR_MissingDefaultAnnotation, _noLocation, string.Format("$Token(default{0}=true)", annot));
+                this.AddDiagnostic(Antlr4RoslynErrorCode.ERR_MissingDefaultAnnotation, _noLocation, string.Format("$Token(default{0}=true)", annot));
             }
             else if (rules.Count >= 2)
             {
                 foreach (var rule in rules)
                 {
-                    this.DiagnosticBag.Add(Antlr4RoslynErrorCode.ERR_MultipleDefaultAnnotation, rule.Location, string.Format("$Token(default{0}=true)", annot));
+                    this.AddDiagnostic(Antlr4RoslynErrorCode.ERR_MultipleDefaultAnnotation, rule.Location, string.Format("$Token(default{0}=true)", annot));
                 }
             }
         }

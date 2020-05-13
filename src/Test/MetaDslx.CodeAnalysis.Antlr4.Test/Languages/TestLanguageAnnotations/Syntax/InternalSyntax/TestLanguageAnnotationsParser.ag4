@@ -1,0 +1,297 @@
+﻿parser grammar TestLanguageAnnotationsParser;
+
+@header
+{
+using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Model;
+}
+
+options
+{
+    tokenVocab = TestLanguageAnnotationsLexer; 
+	generateCompiler=true;
+}
+
+main: test* EOF;
+
+test: test01 | test02 | test03 | test04 | test05 | test06 | test07 | test08 | test09 | test10 | test11;
+
+// ===== Test01 =====
+
+test01: KTest01 namespaceDeclaration01;
+
+$SymbolDef(type=Namespace,nestingProperty=Members,merge=true)
+namespaceDeclaration01: KNamespace qualifiedName namespaceBody01;
+
+$Scope
+$Property(Declarations)
+namespaceBody01 : TOpenBrace declaration01* TCloseBrace;
+
+declaration01 : vertex01 | arrow01;
+
+$SymbolDef(Vertex)
+vertex01 : KVertex name TSemicolon;
+
+$SymbolDef(Arrow)
+arrow01 : KArrow $Property(Source) $SymbolUse(Vertex) source=qualifier TArrow $Property(Target) $SymbolUse(Vertex) target=qualifier TSemicolon;
+
+// ===== Test02 =====
+
+test02: KTest02 namespaceDeclaration02;
+
+$SymbolDef(type=Namespace,nestingProperty=Members,merge=true)
+namespaceDeclaration02: KNamespace qualifiedName namespaceBody02;
+
+$Scope
+namespaceBody02 : TOpenBrace declaration02* TCloseBrace;
+
+declaration02 : vertex02 | arrow02;
+
+$Property(Declarations)
+$SymbolDef(Vertex)
+vertex02 : KVertex name TSemicolon;
+
+$Property(Declarations)
+$SymbolDef(Arrow)
+arrow02 : KArrow source02 TArrow target02 TSemicolon;
+
+$Property(Source)
+$SymbolUse(Vertex)
+source02 : qualifier;
+
+$Property(Target)
+$SymbolUse(Vertex)
+target02 : qualifier;
+
+// ===== Test03 =====
+
+test03: KTest03 namespaceDeclaration03;
+
+$SymbolDef(type=Namespace,nestingProperty=Members,merge=true)
+namespaceDeclaration03: KNamespace qualifiedName namespaceBody03;
+
+$Scope
+namespaceBody03 : TOpenBrace declaration03* TCloseBrace;
+
+declaration03 : vertex03 | arrow03;
+
+vertex03 : KVertex $Property(Declarations) $SymbolDef(Vertex) name TSemicolon;
+
+$Property(Declarations)
+$SymbolDef(Arrow)
+arrow03 : KArrow source03 TArrow target03 TSemicolon;
+
+source03 : $Property(Source) $SymbolUse(Vertex) qualifier;
+
+target03 : $Property(Target) $SymbolUse(Vertex) qualifier;
+
+// ===== Test04 =====
+
+test04: KTest04 namespaceDeclaration04;
+
+$SymbolDef(type=Namespace,nestingProperty=Members,merge=true)
+namespaceDeclaration04: KNamespace qualifiedName namespaceBody04;
+
+$Scope
+namespaceBody04 : TOpenBrace declaration04* TCloseBrace;
+
+$Property(Declarations)
+declaration04 : vertex04 | arrow04;
+
+$SymbolDef(Vertex)
+vertex04 : KVertex name TSemicolon;
+
+$SymbolDef(Arrow)
+arrow04 : KArrow $Property(Source) $SymbolUse(Vertex) source=qualifier TArrow $Property(Target) $SymbolUse(Vertex) target=qualifier TSemicolon;
+
+// ===== Test05 =====
+
+test05: KTest05 namespaceDeclaration05;
+
+$SymbolDef(type=Namespace,nestingProperty=Members,merge=true)
+namespaceDeclaration05: KNamespace qualifiedName $Scope $Property(Declarations) namespaceBody05;
+
+namespaceBody05 : TOpenBrace declaration05* TCloseBrace;
+
+declaration05 : vertex05 | arrow05;
+
+$SymbolDef(Vertex)
+vertex05 : KVertex name TSemicolon;
+
+$SymbolDef(Arrow)
+arrow05 : KArrow $Property(Source) $SymbolUse(Vertex) source=qualifier TArrow $Property(Target) $SymbolUse(Vertex) target=qualifier TSemicolon;
+
+// ===== Test06 =====
+
+test06: KTest06 namespaceDeclaration06;
+
+$SymbolDef(type=Namespace,nestingProperty=Members,merge=true)
+namespaceDeclaration06: KNamespace qualifiedName namespaceBody06;
+
+$Scope
+$Property(Declarations)
+namespaceBody06 : TOpenBrace declaration06* TCloseBrace;
+
+declaration06 : vertex06 | arrow06;
+
+$SymbolDef(type=Vertex,merge=true)
+vertex06 : KVertex name TSemicolon;
+
+$SymbolDef(Arrow)
+arrow06 : KArrow $Property(Source) $Property(name=Declarations,owner=CurrentScope) $SymbolDef(type=Vertex,merge=true) source=name TArrow $Property(Target) $Property(name=Declarations,owner=CurrentScope) $SymbolDef(type=Vertex,merge=true) target=name TSemicolon;
+
+// ===== Test07 =====
+
+test07: KTest07 namespaceDeclaration07;
+
+$SymbolDef(type=Namespace,nestingProperty=Members,merge=true)
+namespaceDeclaration07: KNamespace qualifiedName namespaceBody07;
+
+$Scope
+namespaceBody07 : TOpenBrace declaration07* TCloseBrace;
+
+declaration07 : vertex07 | arrow07;
+
+$Property(Declarations)
+$SymbolDef(type=Vertex,merge=true)
+vertex07 : KVertex name TSemicolon;
+
+$Property(Declarations)
+$SymbolDef(Arrow)
+arrow07 : KArrow source07 TArrow target07 TSemicolon;
+
+$Property(Source)
+$Property(name=Declarations,owner=CurrentScope) 
+$SymbolDef(type=Vertex,merge=true)
+source07 : name;
+
+$Property(Target)
+$Property(name=Declarations,owner=CurrentScope) 
+$SymbolDef(type=Vertex,merge=true)
+target07 : name;
+
+// ===== Test08 =====
+
+test08: KTest08 namespaceDeclaration08;
+
+$SymbolDef(type=Namespace,nestingProperty=Members,merge=true)
+namespaceDeclaration08: KNamespace qualifiedName namespaceBody08;
+
+$Scope
+namespaceBody08 : TOpenBrace declaration08* TCloseBrace;
+
+declaration08 : vertex08 | arrow08;
+
+vertex08 : KVertex $Property(Declarations) $SymbolDef(type=Vertex,merge=true) name TSemicolon;
+
+$Property(Declarations)
+$SymbolDef(Arrow)
+arrow08 : KArrow source08 TArrow target08 TSemicolon;
+
+source08 : $Property(Source) $Property(name=Declarations,owner=CurrentScope) $SymbolDef(type=Vertex,merge=true) name;
+
+target08 : $Property(Target) $Property(name=Declarations,owner=CurrentScope) $SymbolDef(type=Vertex,merge=true) name;
+
+// ===== Test09 =====
+
+test09: KTest09 namespaceDeclaration09;
+
+$SymbolDef(type=Namespace,nestingProperty=Members,merge=true)
+namespaceDeclaration09: KNamespace qualifiedName namespaceBody09;
+
+$Scope
+namespaceBody09 : TOpenBrace declaration09* TCloseBrace;
+
+$Property(Declarations)
+declaration09 : vertex09 | arrow09;
+
+$SymbolDef(type=Vertex,merge=true)
+vertex09 : KVertex name TSemicolon;
+
+$SymbolDef(Arrow)
+arrow09 : KArrow $Property(Source) $Property(name=Declarations,owner=CurrentScope) $SymbolDef(type=Vertex,merge=true) source=name TArrow $Property(Target) $Property(name=Declarations,owner=CurrentScope) $SymbolDef(type=Vertex,merge=true) target=name TSemicolon;
+
+// ===== Test10 =====
+
+test10: KTest10 namespaceDeclaration10;
+
+$SymbolDef(type=Namespace,nestingProperty=Members,merge=true)
+namespaceDeclaration10: KNamespace qualifiedName $Scope $Property(Declarations) namespaceBody10;
+
+namespaceBody10 : TOpenBrace declaration10* TCloseBrace;
+
+declaration10 : vertex10 | arrow10;
+
+$SymbolDef(type=Vertex,merge=true)
+vertex10 : KVertex name TSemicolon;
+
+$SymbolDef(Arrow)
+arrow10 : KArrow $Property(Source) $Property(name=Declarations,owner=CurrentScope) $SymbolDef(type=Vertex,merge=true) source=name TArrow $Property(Target) $Property(name=Declarations,owner=CurrentScope) $SymbolDef(type=Vertex,merge=true) target=name TSemicolon;
+
+// ===== Test11 =====
+
+test11: KTest11 namespaceDeclaration11*;
+
+$SymbolDef(type=Namespace,nestingProperty=Members,merge=true)
+namespaceDeclaration11: KNamespace qualifiedName namespaceBody11;
+
+$Scope
+$Property(Declarations)
+namespaceBody11 : TOpenBrace declaration11* TCloseBrace;
+
+declaration11 : vertex11 | arrow11;
+
+$SymbolDef(Vertex)
+vertex11 : KVertex name TSemicolon;
+
+$SymbolDef(Arrow)
+arrow11 : KArrow $Property(Source) $SymbolUse(Vertex) source=qualifiedName TArrow $Property(Target) $SymbolUse(Vertex) target=qualifiedName TSemicolon;
+
+
+// ===== General =====
+
+$Name
+name : identifier;
+
+$Name
+qualifiedName : qualifier;
+
+$Qualifier
+qualifier : identifier (TDot identifier)*;
+
+// Identifiers
+$Identifier
+identifier 
+	: IdentifierNormal 
+	| IdentifierVerbatim
+	| IUri
+	;
+
+// Literals
+literal 
+    : nullLiteral
+	| booleanLiteral
+	| integerLiteral
+	| decimalLiteral
+	| scientificLiteral
+    | stringLiteral
+	;
+
+// Null literal
+$Value
+nullLiteral : KNull;
+
+// Boolean literals
+$Value
+booleanLiteral : KTrue | KFalse;
+
+// Number literals
+$Value
+integerLiteral : LInteger;
+$Value
+decimalLiteral : LDecimal;
+$Value
+scientificLiteral : LScientific;
+
+// String literals
+$Value
+stringLiteral : LRegularString;

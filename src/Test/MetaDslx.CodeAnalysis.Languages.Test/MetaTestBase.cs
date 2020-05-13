@@ -1,6 +1,7 @@
 ﻿using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.Languages.Meta;
 using MetaDslx.Languages.Meta.Model;
+using MetaDslx.Tests;
 using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using Xunit;
 
 namespace MetaDslx.CodeAnalysis.Languages.Test
 {
-    public abstract class MetaTestBase
+    public abstract class MetaTestBase : DebugAssertUnitTest
     {
         protected MetaCompilation Compile(string filePath, bool assertEmptyDiagnostics = true, bool compileMetaModelCore = false)
         {

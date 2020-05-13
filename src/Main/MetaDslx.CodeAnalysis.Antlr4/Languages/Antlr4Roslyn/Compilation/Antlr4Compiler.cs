@@ -214,7 +214,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             }
             else
             {
-                this.DiagnosticBag.Add(errorCode, Location.Create(diagnostic.FilePath ?? string.Empty, new TextSpan(0, 1), new LinePositionSpan(new LinePosition(0, 0), new LinePosition(0, 1))), diagnostic.Message);
+                this.DiagnosticBag.Add(errorCode, Location.Create(originalAG4FilePath ?? string.Empty, new TextSpan(0, 1), new LinePositionSpan(new LinePosition(0, 0), new LinePosition(0, 1))), diagnostic.Message);
             }
         }
 

@@ -10,20 +10,8 @@ using Xunit;
 
 namespace MetaDslx.CodeAnalysis.Languages.Test
 {
-    public abstract class WebSequenceDiagramsTestBase : IDisposable
+    public abstract class WebSequenceDiagramsTestBase : DebugAssertUnitTest
     {
-        protected DebugAssertUnitTestTraceListener DebugAssertListener;
-
-        public WebSequenceDiagramsTestBase()
-        {
-            DebugAssertListener = new DebugAssertUnitTestTraceListener();
-        }
-
-        public void Dispose()
-        {
-            DebugAssertListener.Dispose();
-        }
-
         protected SequenceCompilation Compile(string fileId, bool assertEmptyDiagnostics = true)
         {
             UmlDescriptor.Initialize();

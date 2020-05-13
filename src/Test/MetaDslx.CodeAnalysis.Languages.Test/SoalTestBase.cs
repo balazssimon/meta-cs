@@ -1,6 +1,7 @@
 ﻿using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Languages.Test.Languages.Soal;
 using MetaDslx.CodeAnalysis.Languages.Test.Languages.Soal.Model;
+using MetaDslx.Tests;
 using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using Xunit;
 
 namespace MetaDslx.CodeAnalysis.Languages.Test
 {
-    public abstract class SoalTestBase
+    public abstract class SoalTestBase : DebugAssertUnitTest
     {
         protected SoalCompilation Compile(string fileId, bool assertEmptyDiagnostics = true)
         {

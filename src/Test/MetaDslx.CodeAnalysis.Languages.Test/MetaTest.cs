@@ -27,9 +27,9 @@ namespace MetaDslx.CodeAnalysis.Languages.Test
         }
 
         [Fact]
-        public void TestLangOneTest()
+        public void TestLanguageAnnotationsTest()
         {
-            var comp = Compile(@"..\..\..\..\MetaDslx.CodeAnalysis.Antlr4.Test\Languages\TestLangOne\Model\TestLangOne.mm");
+            var comp = Compile(@"..\..\..\..\MetaDslx.CodeAnalysis.Antlr4.Test\Languages\TestLanguageAnnotations\Model\TestLanguageAnnotations.mm");
             var model = comp.Model;
             var modelSymbols = model.Objects.ToList();
             Assert.Equal(29, modelSymbols.Count);

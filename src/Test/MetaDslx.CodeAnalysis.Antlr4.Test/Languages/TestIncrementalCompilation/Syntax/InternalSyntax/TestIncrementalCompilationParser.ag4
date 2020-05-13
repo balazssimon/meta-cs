@@ -1,0 +1,201 @@
+﻿parser grammar TestIncrementalCompilationParser;
+
+options
+{
+    tokenVocab = TestIncrementalCompilationLexer; 
+	generateCompiler=true;
+}
+
+main: namespaceDeclaration EOF;
+
+$Name
+name : identifier;
+
+$Name
+qualifiedName : qualifier;
+
+$Qualifier
+qualifier : identifier (TDot identifier)*;
+
+$Property(Attributes)
+$SymbolUse(MetaAttribute)
+attribute : TOpenBracket qualifier TCloseBracket;
+
+$SymbolDef(type=MetaNamespace,nestingProperty=Declarations,merge=true)
+namespaceDeclaration: attribute* KNamespace qualifiedName namespaceBody;
+
+$Scope
+namespaceBody : TOpenBrace metamodelDeclaration declaration* TCloseBrace;
+
+$Property(DefinedMetaModel)
+$SymbolDef(MetaModel)
+$Documentation
+metamodelDeclaration: attribute* KMetamodel name (TOpenParen metamodelPropertyList? TCloseParen)? TSemicolon;
+
+metamodelPropertyList : metamodelProperty (TComma metamodelProperty)*;
+
+metamodelProperty : metamodelUriProperty | metamodelPrefixProperty;
+
+$Property(Uri)
+metamodelUriProperty : IUri TAssign $Value stringLiteral;
+$Property(Prefix)
+metamodelPrefixProperty : IPrefix TAssign $Value stringLiteral;
+
+$Property(Declarations) 
+declaration : enumDeclaration | classDeclaration | associationDeclaration | constDeclaration;
+
+$SymbolDef(MetaEnum)
+$Documentation
+enumDeclaration : attribute* KEnum name enumBody;
+$Scope
+enumBody : TOpenBrace $Property(EnumLiterals) enumValues (TSemicolon enumMemberDeclaration*)? TCloseBrace;
+enumValues : enumValue (TComma enumValue)*;
+$SymbolDef(MetaEnumLiteral)
+$Documentation
+enumValue : attribute* name;
+enumMemberDeclaration : $Property(Operations) operationDeclaration;
+
+$SymbolDef(MetaClass)
+$Documentation
+classDeclaration : attribute* $Property(name=IsAbstract,value=true) KAbstract? KClass name (TColon $Property(SuperClasses) classAncestors)? classBody;
+$Scope
+classBody : TOpenBrace classMemberDeclaration* TCloseBrace;
+classAncestors : classAncestor (TComma classAncestor)*;
+classAncestor : $SymbolUse(type=MetaClass) qualifier;
+classMemberDeclaration 
+	: $Property(Properties) fieldDeclaration 
+	| $Property(Operations) operationDeclaration
+	;
+
+$SymbolDef(MetaProperty)
+$Documentation
+fieldDeclaration : attribute* fieldContainment? fieldModifier? $Property(Type) typeReference name defaultValue? redefinitionsOrSubsettings* TSemicolon;
+$Property(name=IsContainment,value=true)
+fieldContainment : KContainment;
+$Property(Kind)
+fieldModifier 
+	: $Value(MetaPropertyKind.Readonly) KReadonly 
+	| $Value(MetaPropertyKind.Lazy) KLazy 
+	| $Value(MetaPropertyKind.Derived) KDerived
+	| $Value(MetaPropertyKind.DerivedUnion) KUnion
+	;
+$Property(DefaultValue)
+defaultValue : TAssign $Value stringLiteral;
+
+redefinitionsOrSubsettings : redefinitions | subsettings;
+redefinitions : KRedefines $Property(RedefinedProperties) nameUseList?;
+subsettings : KSubsets $Property(SubsettedProperties) nameUseList?;
+
+$SymbolUse(MetaProperty)
+nameUseList : qualifier (TComma qualifier)*;
+
+$SymbolDef(MetaConstant)
+constDeclaration : KConst $Property(Type) typeReference name constValue? TSemicolon;
+$Property(DotNetName)
+constValue : TAssign $Value stringLiteral;
+
+$SymbolUse(MetaType)
+returnType : typeReference | voidType;
+$SymbolUse(MetaType)
+typeOfReference : typeReference;
+$SymbolUse(MetaType)
+typeReference : collectionType | simpleType;
+$SymbolUse(MetaType)
+simpleType : primitiveType | objectType | nullableType | classType;
+
+$SymbolUse(types=(MetaClass,MetaEnum,MetaConstant))
+classType : qualifier;
+
+$Identifier
+objectType 
+	: KObject 
+	| KSymbol
+	| KString
+	;
+
+$Identifier
+primitiveType 
+	: KInt 
+	| KLong 
+	| KFloat 
+	| KDouble 
+	| KByte 
+	| KBool
+	;
+
+$Identifier
+voidType 
+	: KVoid
+	;
+
+$SymbolDef(MetaNullableType)
+nullableType : $Property(InnerType) primitiveType TQuestion;
+
+$SymbolDef(MetaCollectionType)
+collectionType : $Property(Kind) collectionKind TLessThan $Property(InnerType) simpleType TGreaterThan;
+collectionKind 
+	: $Value(MetaCollectionKind.Set) KSet 
+	| $Value(MetaCollectionKind.List) KList
+	| $Value(MetaCollectionKind.MultiSet) KMultiSet 
+	| $Value(MetaCollectionKind.MultiList) KMultiList
+	;
+	
+$SymbolDef(MetaOperation)
+$Documentation
+operationDeclaration : attribute* operationModifier* $Property(ReturnType) returnType name TOpenParen $Property(Parameters) parameterList? TCloseParen TSemicolon;
+
+operationModifier : operationModifierBuilder | operationModifierReadonly;
+$Property(name=IsBuilder,value=true) 
+operationModifierBuilder : KBuilder;
+$Property(name=IsReadonly,value=true)
+operationModifierReadonly : KReadonly;
+
+parameterList : parameter (TComma parameter)*;
+
+$SymbolDef(MetaParameter)
+parameter : attribute* $Property(Type) typeReference name;
+
+$Opposite
+associationDeclaration : attribute* KAssociation $SymbolUse(MetaProperty) source=qualifier KWith $SymbolUse(MetaProperty) target=qualifier TSemicolon;
+
+
+// Additional rules for lexer:
+
+// Identifiers
+$Identifier
+identifier 
+	: IdentifierNormal 
+	| IdentifierVerbatim
+	| IUri
+	| IPrefix
+	;
+
+// Literals
+literal 
+    : nullLiteral
+	| booleanLiteral
+	| integerLiteral
+	| decimalLiteral
+	| scientificLiteral
+    | stringLiteral
+	;
+
+// Null literal
+$Value
+nullLiteral : KNull;
+
+// Boolean literals
+$Value
+booleanLiteral : KTrue | KFalse;
+
+// Number literals
+$Value
+integerLiteral : LInteger;
+$Value
+decimalLiteral : LDecimal;
+$Value
+scientificLiteral : LScientific;
+
+// String literals
+$Value
+stringLiteral : LRegularString;

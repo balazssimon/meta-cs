@@ -2,7 +2,7 @@
   <Import Project="..\..\Versions.props" />
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <IsPackable>false</IsPackable>
     <AssemblyName>MetaDslx.CodeAnalysis.Antlr4.Test</AssemblyName>
     <RootNamespace>MetaDslx.CodeAnalysis.Antlr4Test</RootNamespace>
@@ -34,13 +34,33 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Antlr4Roslyn Update="Languages\TestLangOne\Syntax\TestLangOneLexer.ag4">
-      <CustomToolNamespace>MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax</CustomToolNamespace>
+    <Antlr4Roslyn Update="Languages\TestIncrementalCompilation\Syntax\InternalSyntax\TestIncrementalCompilationLexer.ag4">
+      <CustomToolNamespace>MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation.Syntax.InternalSyntax</CustomToolNamespace>
       <OutputLocation>CurrentDirectory</OutputLocation>
     </Antlr4Roslyn>
-    <Antlr4Roslyn Update="Languages\TestLangOne\Syntax\TestLangOneParser.ag4">
-      <CustomToolNamespace>MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Syntax</CustomToolNamespace>
+    <Antlr4Roslyn Update="Languages\TestIncrementalCompilation\Syntax\InternalSyntax\TestIncrementalCompilationParser.ag4">
+      <CustomToolNamespace>MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation.Syntax.InternalSyntax</CustomToolNamespace>
       <OutputLocation>CurrentDirectory</OutputLocation>
     </Antlr4Roslyn>
+    <Antlr4Roslyn Update="Languages\TestLanguageAnnotations\Syntax\InternalSyntax\TestLanguageAnnotationsLexer.ag4">
+      <CustomToolNamespace>MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syntax.InternalSyntax</CustomToolNamespace>
+      <OutputLocation>CurrentDirectory</OutputLocation>
+    </Antlr4Roslyn>
+    <Antlr4Roslyn Update="Languages\TestLanguageAnnotations\Syntax\InternalSyntax\TestLanguageAnnotationsParser.ag4">
+      <CustomToolNamespace>MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syntax.InternalSyntax</CustomToolNamespace>
+      <OutputLocation>CurrentDirectory</OutputLocation>
+    </Antlr4Roslyn>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="InputFiles\IncrementalCompilation\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <MetaModel Update="Languages\TestIncrementalCompilation\Symbols\TestIncrementalCompilation.mm">
+      <DefaultCustomToolNamespace>$([MSBuild]::ValueOrDefault('$(RootNamespace).%(DefaultCustomToolNamespace)', '').TrimEnd('.'))</DefaultCustomToolNamespace>
+      <OutputLocation>CurrentDirectory</OutputLocation>
+      <CustomToolNamespace>$([MSBuild]::ValueOrDefault(%(CustomToolNamespace), %(DefaultCustomToolNamespace)))</CustomToolNamespace>
+    </MetaModel>
   </ItemGroup>
 </Project>

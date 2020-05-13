@@ -1193,9 +1193,13 @@ public GreenNode Parse[rule.PlainName()](ref ParserState state)
     RestoreParserState(state);
 	try
 	{
+        [if (rule == Instances.MainRule())]
+        var context = this.IsIncremental ? this.Antlr4Parser.[rule.Name]() : _Antlr4Parse[rule.PlainName()]();
+        [else]
 		var context = this.Antlr4Parser.[rule.Name]();
+        [end if]
         if (TryGetGreenNode(context, out var green)) return green;
-        else return null;
+        else return _visitor.Visit(context);
 	}
 	finally
 	{
@@ -4007,7 +4011,7 @@ internal partial class GreenSyntaxToken : InternalSyntaxToken
         return new SyntaxTokenWithValueAndTrivia<T>(kind, text, value, leading, trailing);
     }
 
-    public virtual [lang]SyntaxKind ContextualKind => this.Kind;
+    public new virtual [lang]SyntaxKind ContextualKind => this.Kind;
 
     public override int RawContextualKind => (int)this.ContextualKind;
 

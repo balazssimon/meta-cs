@@ -1,5 +1,6 @@
 ﻿using MetaDslx.CodeAnalysis.Meta.Test.Languages.PropertiesTest;
 using MetaDslx.Modeling;
+using MetaDslx.Tests;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,7 +8,7 @@ using Xunit;
 
 namespace MetaDslx.CodeAnalysis.Meta.Test
 {
-    public class ParentChildSetTest
+    public class ParentChildSetTest : DebugAssertUnitTest
     {
         [Fact]
         public void TestChildToParent()
