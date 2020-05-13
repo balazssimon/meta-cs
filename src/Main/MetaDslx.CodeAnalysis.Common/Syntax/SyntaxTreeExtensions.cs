@@ -44,16 +44,18 @@ namespace Microsoft.CodeAnalysis
             int index;
             char found = default;
             char expected = default;
+            string fromText = null;
+            string fromNode = null;
             if (textSpanOpt == null)
             {
                 index = 0;
             }
             else
             {
-                var fromText = text.ToString(textSpanOpt.Value);
-                var fromNode = node.ToFullString();
+                fromText = text.ToString(textSpanOpt.Value);
+                fromNode = node.ToFullString();
                 index = FindFirstDifference(fromText, fromNode);
-                if (index >= 0)
+                if (index >= 0 && index < fromText.Length && index < fromNode.Length)
                 {
                     found = fromNode[index];
                     expected = fromText[index];

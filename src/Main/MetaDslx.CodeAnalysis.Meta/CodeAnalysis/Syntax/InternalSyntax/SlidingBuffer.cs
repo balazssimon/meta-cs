@@ -148,7 +148,10 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             public T PeekItem(int n)
             {
                 int index = _offset + n;
-                Debug.Assert((!_hasResetPoint && index >= 0) || (_hasResetPoint && index >= _resetPoint));
+                if (!_hasResetPoint && index < 0) return default;
+                if (_hasResetPoint && index < _resetPoint) return default;
+                //Debug.Assert(_hasResetPoint || index >= 0, "index must be at least 0");
+                //Debug.Assert(!_hasResetPoint || index >= _resetPoint, $"index must be at least at the reset point {_resetPoint}");
                 while (index >= _count && _parser.SlidingBuffer_ReadNewToken()) { }
                 if (index >= _count) return default;
                 return _items[index];
