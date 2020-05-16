@@ -30,6 +30,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         public static readonly Antlr4RoslynErrorCode ERR_MultipleDefaultAnnotation = new Antlr4RoslynErrorCode(15, DiagnosticSeverity.Error, "Multiple default annotation", "Multiple tokens are annotated with '{0}'. The Roslyn API requires exacly one token with this annotation.");
         public static readonly Antlr4RoslynErrorCode ERR_MissingDefaultAnnotation = new Antlr4RoslynErrorCode(16, DiagnosticSeverity.Error, "Missing default annotation", "There are no tokens annotated with '{0}'. The Roslyn API requires exacly one token with this annotation.");
         public static readonly Antlr4RoslynErrorCode WRN_InvalidWellKnownAnnotationParameter = new Antlr4RoslynErrorCode(17, DiagnosticSeverity.Warning, "Invalid annotation parameter", "Annotation ${0} does not have a parameter '{1}'");
+        public static readonly Antlr4RoslynErrorCode ERR_LabeledListMustUsePlusAssign = new Antlr4RoslynErrorCode(18, DiagnosticSeverity.Error, "Use '+='", "Labeled lists must be assigned using '+=' instead of '='");
         
 
         public Antlr4RoslynErrorCode(int code, DiagnosticSeverity defaultSeverity, string title, string messageFormat, bool isEnabledByDefault = true, string description = null, string helpLinkUri = null, params string[] customTags) 

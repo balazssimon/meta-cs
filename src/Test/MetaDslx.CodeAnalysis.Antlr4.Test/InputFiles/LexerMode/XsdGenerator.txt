@@ -1,0 +1,296 @@
+﻿namespace MetaDslx.Languages.Soal.Generator;
+generator XsdGenerator for object;
+
+using MetaDslx.Languages.Soal.Symbols;
+
+properties Properties
+	bool ImportXsd = true;
+end properties
+
+template Generate(Namespace ns)
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="[ns.Uri]"
+		xmlns:xs="http://www.w3.org/2001/XMLSchema"
+		xmlns:[ns.Prefix]="[ns.Uri]"
+	[if (Properties.ImportXsd)]
+		[loop(ins:ns.GetImportedNamespaces())]
+		xmlns:[ins.Prefix]="[ins.Uri]"
+		[end loop]
+	[end if]
+		elementFormDefault="qualified">
+	[if (Properties.ImportXsd)]
+		[loop(ins:ns.GetImportedNamespaces())]
+	<xs:import namespace="[ins.Uri]" schemaLocation="[ins.FullName].xsd"/>
+		[end loop]
+	[end if]
+	[loop(ns.Declarations->etype:typeof(Symbols.Enum))]
+^
+	<xs:element name="[etype.GetXsdName()]" type="[ns.Prefix]:[etype.GetXsdName()]"/>
+	<xs:simpleType name="[etype.GetXsdName()]">
+		[if (etype.BaseType != null)]
+		<xs:restriction base="[etype.BaseType.GetNamespace(ns).Prefix]:[etype.BaseType.GetXsdName()]">
+		[else]
+		<xs:restriction base="xs:string">
+		[end if]
+			[loop(etype->elit:EnumLiterals)]
+				[if (elit.HasAnnotationProperty(SoalAnnotations.Enum, SoalAnnotationProperties.Name))]
+			<xs:enumeration value="[elit.GetAnnotationPropertyValue(SoalAnnotations.Enum, SoalAnnotationProperties.Name)]"/>
+				[else]
+			<xs:enumeration value="[elit.Name]"/>
+				[end if]
+			[end loop]
+		</xs:restriction>
+	</xs:simpleType>
+	[end loop]
+	[loop(ns.Declarations->stype:typeof(Struct))]
+^
+	<xs:element name="[stype.GetXsdName()]" type="[ns.Prefix]:[stype.GetXsdName()]"/>
+	<xs:complexType name="[stype.GetXsdName()]">
+		[if (stype.BaseType != null)]
+		<xs:complexContent>
+			<xs:extension base="[stype.BaseType.GetNamespace(ns).Prefix]:[stype.BaseType.GetXsdName()]">
+				[GenerateStructBody(ns, stype)]
+			</xs:extension>
+		</xs:complexContent>
+		[else]
+		[GenerateStructBody(ns, stype)]
+		[end if]
+	</xs:complexType>
+	[end loop]
+	[loop(ns.Declarations->intf:typeof(Interface)->op:Operations)]
+		[if (intf.HasAnnotation(SoalAnnotations.Rpc))]
+			[loop(op->param:Parameters where param.Type.IsArrayType() && param.Type.GetCoreType().MId != SoalInstance.Byte.MId)]
+^
+	[GenerateParamType(ns, op.Name + param.Name.ToPascalCase(), param.Type, param)]
+			[end loop]
+			[if (op.Result.Type.IsArrayType() && op.Result.Type.GetCoreType().MId != SoalInstance.Byte.MId)]
+^
+	[GenerateParamType(ns, op.Name + "Response", op.Result.Type, op.Result)]
+			[end if]
+		[else]
+			[if (intf.HasAnnotation(SoalAnnotations.NoWrap))]
+				[loop(op->param:Parameters)]
+	[GenerateElement(ns, op.Name + param.Name.ToPascalCase(), param.Type, param)]
+				[end loop]
+				[if (op.Result.Type.MId != SoalInstance.Void.MId)]
+	[GenerateElement(ns, op.Name + "Response", op.Result.Type, op.Result)]
+				[end if]
+			[else]
+^
+	<xs:element name="[op.Name]" type="[ns.Prefix]:[op.Name]"/>
+	<xs:complexType name="[op.Name]">
+		<xs:sequence>
+				[loop(op->param:Parameters where !param.HasAnnotation(SoalAnnotations.Attribute))]
+			[GenerateElement(ns, param.Name, param.Type, param)]
+				[end loop]
+		</xs:sequence>
+				[loop(op->param:Parameters where param.HasAnnotation(SoalAnnotations.Attribute))]
+		[GenerateElement(ns, param.Name, param.Type, param)]
+				[end loop]
+	</xs:complexType>
+				[if (!op.Result.IsOneway)]
+^
+	<xs:element name="[op.Name]Response" type="[ns.Prefix]:[op.Name]Response"/>
+	<xs:complexType name="[op.Name]Response">
+					[if (op.Result.Type.MId == SoalInstance.Void.MId || op.Result.HasAnnotation(SoalAnnotations.Attribute))]
+		<xs:sequence/>
+					[else]
+		<xs:sequence>
+			[GenerateElement(ns, op.Name+"Result", op.Result.Type, op.Result)]
+		</xs:sequence>
+					[end if]
+					[if (op.Result.HasAnnotation(SoalAnnotations.Attribute))]
+		[GenerateElement(ns, op.Name+"Result", op.Result.Type, op.Result)]
+					[end if]
+	</xs:complexType>
+				[end if]
+			[end if]
+		[end if]
+	[end loop]
+</xs:schema>
+end template
+
+template GenerateStructBody(Namespace ns, Struct stype)
+<xs:[GetStructKind(stype)]>
+	[loop(stype->prop:Properties where !prop.HasAnnotation(SoalAnnotations.Attribute))]
+		[string newName = prop.GetAnnotationPropertyValue(SoalAnnotations.Element, SoalAnnotationProperties.Name) as string]
+	[GenerateElement(ns, newName == null ? prop.Name : newName, prop.Type, prop)]
+	[end loop]
+</xs:[GetStructKind(stype)]>
+[loop(stype->prop:Properties where prop.HasAnnotation(SoalAnnotations.Attribute))]
+	[string newName = prop.GetAnnotationPropertyValue(SoalAnnotations.Attribute, SoalAnnotationProperties.Name) as string]
+[GenerateElement(ns, newName == null ? prop.Name : newName, prop.Type, prop)]
+[end loop]
+end template
+
+template GenerateElement(Namespace ns, string name, SoalType t, AnnotatedElement ae)
+[Annotation restrAnnot = ae.GetAnnotation(SoalAnnotations.Restriction)]
+[if (ae.HasAnnotation(SoalAnnotations.Attribute))]
+<xs:attribute name="[name]" type="[t.GetCoreType().GetNamespace(ns).Prefix]:[t.GetCoreType().GetXsdName()]"[GetAttributeRequired(ae)]/>
+[else]
+	[if (t.IsArrayType())]
+		[ArrayType array = t is NullableType ? (ArrayType)((NullableType)t).InnerType : (ArrayType)t]
+		[object wrapped = ae.GetAnnotationPropertyValue(SoalAnnotations.Element, SoalAnnotationProperties.Wrapped)]
+		[if ((wrapped == null || !(bool)wrapped) && array.InnerType.MId == SoalInstance.Byte.MId)]
+<xs:element name="[name]" type="[t.GetNamespace(ns).Prefix]:[t.GetXsdName()]" nillable="[t.IsNullableXsd()]"[GetElementOptional(ae)]/>
+		[else]
+			[if (wrapped != null && (bool)wrapped)]
+				[string items = ae.GetAnnotationPropertyValue(SoalAnnotations.Element, SoalAnnotationProperties.Items) as string]
+<xs:element name="[name]" nillable="[t.IsNullableXsd()]"[GetElementOptional(ae)]>
+	<xs:complexType>
+				[object sap = ae.GetAnnotationPropertyValue(SoalAnnotations.Element, SoalAnnotationProperties.Sap)]
+				[if (sap != null && (bool)sap)]
+		<xs:all>
+			<xs:element name="item" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:all>
+					[if (restrAnnot != null && array.InnerType.GetCoreType() is PrimitiveType)]
+						[if (items != null)]
+						<xs:element name="[items]" nillable="[array.InnerType.IsNullableXsd()]">
+						[else]
+						<xs:element name="[array.InnerType.GetXsdName()]" nillable="[array.InnerType.IsNullableXsd()]">
+						[end if]
+						[GenerateRestrictions(array.InnerType.GetNamespace(ns).Prefix+":"+array.InnerType.GetXsdName(), restrAnnot)]
+					[else]
+						[if (items != null)]
+						<xs:element name="[items]" type="[array.InnerType.GetNamespace(ns).Prefix]:[array.InnerType.GetXsdName()]" nillable="[array.InnerType.IsNullableXsd()]"/>
+						[else]
+						<xs:element name="[array.InnerType.GetXsdName()]" type="[array.InnerType.GetNamespace(ns).Prefix]:[array.InnerType.GetXsdName()]" nillable="[array.InnerType.IsNullableXsd()]"/>
+						[end if]
+					[end if]
+					</xs:all>
+				</xs:complexType>
+			</xs:element>
+		</xs:all>
+				[else]
+		<xs:sequence>
+					[if (restrAnnot != null && array.InnerType.GetCoreType() is PrimitiveType)]
+						[if (items != null)]
+			<xs:element name="[items]" nillable="[array.InnerType.IsNullableXsd()]" minOccurs="0" maxOccurs="unbounded">
+						[else]
+			<xs:element name="[array.InnerType.GetXsdName()]" nillable="[array.InnerType.IsNullableXsd()]" minOccurs="0" maxOccurs="unbounded">
+						[end if]
+			[GenerateRestrictions(array.InnerType.GetNamespace(ns).Prefix+":"+array.InnerType.GetXsdName(), restrAnnot)]
+					[else]
+						[if (items != null)]
+			<xs:element name="[items]" type="[array.InnerType.GetNamespace(ns).Prefix]:[array.InnerType.GetXsdName()]" nillable="[array.InnerType.IsNullableXsd()]" minOccurs="0" maxOccurs="unbounded"/>
+						[else]
+			<xs:element name="[array.InnerType.GetXsdName()]" type="[array.InnerType.GetNamespace(ns).Prefix]:[array.InnerType.GetXsdName()]" nillable="[array.InnerType.IsNullableXsd()]" minOccurs="0" maxOccurs="unbounded"/>
+						[end if]
+					[end if]
+		</xs:sequence>
+				[end if]
+	</xs:complexType>
+</xs:element>
+			[else]
+				[if (restrAnnot != null && array.InnerType.GetCoreType() is PrimitiveType)]
+<xs:element name="[name]" nillable="[array.InnerType.IsNullableXsd()]" minOccurs="0" maxOccurs="unbounded">
+[GenerateRestrictions(array.InnerType.GetNamespace(ns).Prefix+":"+array.InnerType.GetXsdName(), restrAnnot)]
+				[else]
+<xs:element name="[name]" type="[array.InnerType.GetNamespace(ns).Prefix]:[array.InnerType.GetXsdName()]" nillable="[array.InnerType.IsNullableXsd()]" minOccurs="0" maxOccurs="unbounded"/>
+				[end if]
+			[end if]
+		[end if]
+	[else]
+		[if (restrAnnot != null && t.GetCoreType() is PrimitiveType)]
+<xs:element name="[name]" nillable="[t.IsNullableXsd()]"[GetElementOptional(ae)]>
+[GenerateRestrictions(t.GetNamespace(ns).Prefix+":"+t.GetXsdName(), restrAnnot)]
+		[else]
+<xs:element name="[name]" type="[t.GetNamespace(ns).Prefix]:[t.GetXsdName()]" nillable="[t.IsNullableXsd()]"[GetElementOptional(ae)]/>
+		[end if]
+	[end if]
+[end if]
+end template
+
+template GenerateParamType(Namespace ns, string name, SoalType t, AnnotatedElement ae)
+[Annotation restrAnnot = ae.GetAnnotation(SoalAnnotations.Restriction)]
+[if (t.IsArrayType())]
+	[ArrayType array = t is NullableType ? (ArrayType)((NullableType)t).InnerType : (ArrayType)t]
+	[if (array.InnerType.MId != SoalInstance.Byte.MId)]
+		[string items = ae.GetAnnotationPropertyValue(SoalAnnotations.Element, SoalAnnotationProperties.Items) as string]
+<xs:complexType name="[name]">
+		[object sap = ae.GetAnnotationPropertyValue(SoalAnnotations.Element, SoalAnnotationProperties.Sap)]
+		[if (sap != null && (bool)sap)]
+	<xs:all>
+		<xs:element name="item" minOccurs="0" maxOccurs="unbounded">
+			<xs:complexType>
+				<xs:all>
+			[if (restrAnnot != null && array.InnerType.GetCoreType() is PrimitiveType)]
+				[if (items != null)]
+					<xs:element name="[items]" nillable="[array.InnerType.IsNullableXsd()]">
+				[else]
+					<xs:element name="[array.InnerType.GetXsdName()]" nillable="[array.InnerType.IsNullableXsd()]">
+				[end if]
+					[GenerateRestrictions(array.InnerType.GetNamespace(ns).Prefix+":"+array.InnerType.GetXsdName(), restrAnnot)]
+			[else]
+				[if (items != null)]
+					<xs:element name="[items]" type="[array.InnerType.GetNamespace(ns).Prefix]:[array.InnerType.GetXsdName()]" nillable="[array.InnerType.IsNullableXsd()]"/>
+				[else]
+					<xs:element name="[array.InnerType.GetXsdName()]" type="[array.InnerType.GetNamespace(ns).Prefix]:[array.InnerType.GetXsdName()]" nillable="[array.InnerType.IsNullableXsd()]"/>
+				[end if]
+			[end if]
+				</xs:all>
+			</xs:complexType>
+		</xs:element>
+	</xs:all>
+		[else]
+	<xs:sequence>
+			[if (restrAnnot != null && array.InnerType.GetCoreType() is PrimitiveType)]
+				[if (items != null)]
+		<xs:element name="[items]" nillable="[array.InnerType.IsNullableXsd()]" minOccurs="0" maxOccurs="unbounded">
+				[else]
+		<xs:element name="[array.InnerType.GetXsdName()]" nillable="[array.InnerType.IsNullableXsd()]" minOccurs="0" maxOccurs="unbounded">
+				[end if]
+		[GenerateRestrictions(array.InnerType.GetNamespace(ns).Prefix+":"+array.InnerType.GetXsdName(), restrAnnot)]
+			[else]
+				[if (items != null)]
+		<xs:element name="[items]" type="[array.InnerType.GetNamespace(ns).Prefix]:[array.InnerType.GetXsdName()]" nillable="[array.InnerType.IsNullableXsd()]" minOccurs="0" maxOccurs="unbounded"/>
+				[else]
+		<xs:element name="[array.InnerType.GetXsdName()]" type="[array.InnerType.GetNamespace(ns).Prefix]:[array.InnerType.GetXsdName()]" nillable="[array.InnerType.IsNullableXsd()]" minOccurs="0" maxOccurs="unbounded"/>
+				[end if]
+			[end if]
+	</xs:sequence>
+		[end if]
+</xs:complexType>
+	[end if]
+[end if]
+end template
+
+template GenerateRestrictions(string baseType, Annotation ae)
+	<xs:simpleType>
+		<xs:restriction base="[baseType]">
+			[loop(ae->prop:Properties)]
+			<xs:[prop.Name] value="[prop.Value]"/>
+			[end loop]
+		</xs:restriction>
+	</xs:simpleType>
+</xs:element>
+end template
+
+function string GetStructKind(Struct st)
+	if (st.HasAnnotation(SoalAnnotations.Choice))
+		return "choice";
+	else if (st.HasAnnotation(SoalAnnotations.All))
+		return "all";
+	else
+		return "sequence";
+	end if
+end function
+
+function string GetElementOptional(AnnotatedElement ae)
+	object optional = ae.GetAnnotationPropertyValue(SoalAnnotations.Element, SoalAnnotationProperties.Optional);
+	if (optional != null && (bool)optional) 
+		return " minOccurs=\"0\"";
+	else
+		return "";
+	end if
+end function
+
+function string GetAttributeRequired(AnnotatedElement ae)
+	object required = ae.GetAnnotationPropertyValue(SoalAnnotations.Attribute, SoalAnnotationProperties.Required);
+	if (required != null && (bool)required) 
+		return " use=\"required\"";
+	else
+		return "";
+	end if
+end function

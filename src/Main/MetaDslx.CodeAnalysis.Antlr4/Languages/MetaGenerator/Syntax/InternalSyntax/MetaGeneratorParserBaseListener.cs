@@ -1381,6 +1381,19 @@ public partial class MetaGeneratorParserBaseListener : IMetaGeneratorParserListe
 	public virtual void ExitSwitchBranchHeadStatement([NotNull] MetaGeneratorParser.SwitchBranchHeadStatementContext context) { }
 
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.switchCaseOrTypeIsHeadStatements"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterSwitchCaseOrTypeIsHeadStatements([NotNull] MetaGeneratorParser.SwitchCaseOrTypeIsHeadStatementsContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaGeneratorParser.switchCaseOrTypeIsHeadStatements"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitSwitchCaseOrTypeIsHeadStatements([NotNull] MetaGeneratorParser.SwitchCaseOrTypeIsHeadStatementsContext context) { }
+
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.switchCaseOrTypeIsHeadStatement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>

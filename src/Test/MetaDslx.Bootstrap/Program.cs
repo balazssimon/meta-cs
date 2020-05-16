@@ -63,6 +63,8 @@ namespace MetaDslx.Bootstrap
             //a4p.Compile();
             //Antlr4RoslynBootstrap a4l = new Antlr4RoslynBootstrap(@"..\..\..\..\..\Languages\MetaDslx.Languages.Uml-v2.5.1\Serialization\Syntax\InternalSyntax\WebSequenceDiagramsLexer.ag4", "MetaDslx.Languages.Uml.Serialization");
             //a4l.Compile();
+            Antlr4RoslynBootstrap a4p = new Antlr4RoslynBootstrap(@"..\..\..\..\..\Test\MetaDslx.CodeAnalysis.Antlr4.Test\Languages\TestLexerMode\Syntax\InternalSyntax\TestLexerModeParser.ag4", "MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax");
+            a4p.Compile();
             //*/
 
             /*/
@@ -70,7 +72,7 @@ namespace MetaDslx.Bootstrap
             Console.WriteLine(test.SayHello("me"));
             //*/
 
-            //*/
+            /*/
             ImmutableModel coreModel = MetaInstance.MModel;
             Console.WriteLine(coreModel);
 

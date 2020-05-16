@@ -1301,7 +1301,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                         handled = true;
                     }
                 }
-                if (!reportedError && !handled && this.IsRoslynAltList(context, TokenOrRule.Rule, true, ref reportedError, out rule))
+                if (!reportedError && !handled && this.IsRoslynAltList(context, TokenOrRule.Rule, false, ref reportedError, out rule))
                 {
                     handled = true;
                 }
@@ -1361,6 +1361,15 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                 if (!this.IgnoreRoslynRules) this.compiler.AddDiagnostic(context, Antlr4RoslynErrorCode.ERR_BlockUnhandled);
             }
             return base.VisitRuleBlock(context);
+        }
+
+        public override object VisitElement([NotNull] Antlr4RoslynParser.ElementContext elem)
+        {
+            if (elem.labeledElement() != null && elem.labeledElement().PLUS_ASSIGN() == null && elem.labeledElement().ASSIGN() != null && IsEbnfList(elem.ebnfSuffix()))
+            {
+                if (!this.IgnoreRoslynRules) this.compiler.AddDiagnostic(elem.labeledElement().ASSIGN(), Antlr4RoslynErrorCode.ERR_LabeledListMustUsePlusAssign);
+            }
+            return base.VisitElement(elem);
         }
 
         private bool CheckUniqueElements(Antlr4ParserRule rule, ref bool reportedErrors)
@@ -1582,7 +1591,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             foreach (var alt in alts)
             {
                 Antlr4ParserRuleElement element;
-                if (this.IsRoslynSingleTokenOrRuleElementAlt(alt, kind, allowEbnf, out element))
+                if (this.IsRoslynSingleTokenOrRuleElementAlt(alt, kind, false, out element))
                 {
                     if (blockElem != null)
                     {
@@ -1696,7 +1705,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                 Antlr4RoslynParser.AtomContext atom = null;
                 if (elem.labeledElement() != null)
                 {
-                    if (elem.labeledElement().atom() != null && elem.labeledElement().PLUS_ASSIGN() == null)
+                    if (elem.labeledElement().atom() != null)
                     {
                         name = elem.labeledElement().identifier().GetText();
                         atom = elem.labeledElement().atom();
@@ -2038,7 +2047,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             if ((!this.IsSimplified && this.Name != this.Type) ||
                 (this.IsSimplified && this.Name != this.OriginalType))
             {
-                result = this.Name;
+                if (this.IsList) result = "_" + this.Name;
+                else result = this.Name;
             }
             else
             {
@@ -2050,6 +2060,18 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             if (Antlr4RoslynCompiler.reservedNames.Contains(result)) result = "@"+result;
             if (method) result += "()";
             return result;
+        }
+        public bool IsMappedToIList()
+        {
+            if (this.IsList)
+            {
+                if ((!this.IsSimplified && this.Name != this.Type) ||
+                (this.IsSimplified && this.Name != this.OriginalType))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
     public class Antlr4LexerMode : Antlr4AnnotatedObject

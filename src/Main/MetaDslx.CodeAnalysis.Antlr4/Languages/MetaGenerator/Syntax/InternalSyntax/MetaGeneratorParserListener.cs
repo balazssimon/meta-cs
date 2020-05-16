@@ -1183,6 +1183,17 @@ public interface IMetaGeneratorParserListener : IParseTreeListener {
 	void ExitSwitchBranchHeadStatement([NotNull] MetaGeneratorParser.SwitchBranchHeadStatementContext context);
 
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.switchCaseOrTypeIsHeadStatements"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterSwitchCaseOrTypeIsHeadStatements([NotNull] MetaGeneratorParser.SwitchCaseOrTypeIsHeadStatementsContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaGeneratorParser.switchCaseOrTypeIsHeadStatements"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitSwitchCaseOrTypeIsHeadStatements([NotNull] MetaGeneratorParser.SwitchCaseOrTypeIsHeadStatementsContext context);
+
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.switchCaseOrTypeIsHeadStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

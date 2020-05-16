@@ -172,7 +172,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator
                 }
                 else if (elem.IsList)
                 {
-                    if (elem.IsToken) return "Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<" + elem.Type.ToPascalCase() + "Green>";
+                    if (elem.IsToken) return "Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<InternalSyntaxToken>";
                     else if (elem.IsSeparated) return "Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<" + elem.Type.ToPascalCase() + "Green>";
                     else return "Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<" + elem.Type.ToPascalCase() + "Green>";
                 }

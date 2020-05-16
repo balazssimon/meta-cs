@@ -1144,6 +1144,17 @@ public partial class MetaGeneratorParserBaseVisitor<Result> : AbstractParseTreeV
 	public virtual Result VisitSwitchBranchHeadStatement([NotNull] MetaGeneratorParser.SwitchBranchHeadStatementContext context) { return VisitChildren(context); }
 
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaGeneratorParser.switchCaseOrTypeIsHeadStatements"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitSwitchCaseOrTypeIsHeadStatements([NotNull] MetaGeneratorParser.SwitchCaseOrTypeIsHeadStatementsContext context) { return VisitChildren(context); }
+
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="MetaGeneratorParser.switchCaseOrTypeIsHeadStatement"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>

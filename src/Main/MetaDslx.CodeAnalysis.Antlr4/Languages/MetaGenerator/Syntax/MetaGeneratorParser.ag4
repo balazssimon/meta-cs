@@ -110,7 +110,8 @@ switchStatement : switchStatementBegin switchBranchStatement* switchDefaultState
 switchStatementBegin : KSwitch TOpenParenthesis expression TCloseParenthesis;
 switchStatementEnd : KEnd KSwitch;
 switchBranchStatement : switchBranchHeadStatement body;
-switchBranchHeadStatement : switchCaseOrTypeIsHeadStatement+ | switchTypeAsHeadStatement;
+switchBranchHeadStatement : switchCaseOrTypeIsHeadStatements | switchTypeAsHeadStatement;
+switchCaseOrTypeIsHeadStatements : switchCaseOrTypeIsHeadStatement+;
 switchCaseOrTypeIsHeadStatement : switchCaseHeadStatement | switchTypeIsHeadStatement;
 switchCaseHeadStatement : KCase expressionList TColon;
 switchTypeIsHeadStatement : KType KIs typeReferenceList TColon;
@@ -201,13 +202,13 @@ expression
     | predefinedType TDot identifier typeArgumentList? #predefinedTypeMemberAccessExpression
     | expression TDot identifier typeArgumentList? #memberAccessExpression
     | TOpenParenthesis typeReference TCloseParenthesis expression #typecastExpression
-    | operator=(TPlus | TMinus | TExclamation | TTilde | TPlusPlus | TMinusMinus) expression #unaryExpression
-    | expression operator=(TPlusPlus | TMinusMinus) #postExpression
-    | left=expression operator=(TAsterisk | TSlash | TPercent) right=expression #multiplicationExpression
-    | left=expression operator=(TPlus | TMinus) right=expression #additionExpression
-    | left=expression operator=(TLessThan | TGreaterThan | TLessThanOrEquals | TGreaterThanOrEquals) right=expression #relationalExpression
-    | left=expression operator=(KIs | KAs) typeReference #typecheckExpression
-    | left=expression operator=(TEquals | TNotEquals) right=expression #equalityExpression
+    | op=(TPlus | TMinus | TExclamation | TTilde | TPlusPlus | TMinusMinus) expression #unaryExpression
+    | expression op=(TPlusPlus | TMinusMinus) #postExpression
+    | left=expression op=(TAsterisk | TSlash | TPercent) right=expression #multiplicationExpression
+    | left=expression op=(TPlus | TMinus) right=expression #additionExpression
+    | left=expression op=(TLessThan | TGreaterThan | TLessThanOrEquals | TGreaterThanOrEquals) right=expression #relationalExpression
+    | left=expression op=(KIs | KAs) typeReference #typecheckExpression
+    | left=expression op=(TEquals | TNotEquals) right=expression #equalityExpression
     | left=expression TAmp right=expression #bitwiseAndExpression
     | left=expression THat right=expression #bitwiseXorExpression
     | left=expression TPipe right=expression #bitwiseOrExpression
@@ -215,7 +216,7 @@ expression
     | left=expression TXor right=expression #logicalXorExpression
     | left=expression TOr right=expression #logicalOrExpression
     | condition=expression TQuestion thenBranch=expression TColon elseBranch=expression #conditionalExpression
-    | left=expression operator=(TAssign | TAssignPlus | TAssignMinus | TAssignAsterisk | 
+    | left=expression op=(TAssign | TAssignPlus | TAssignMinus | TAssignAsterisk | 
                   TAssignSlash | TAssignPercent | TAssignAmp | TAssignPipe |
                   TAssignHat | TAssignLeftShift | TAssignRightShift) right=expression #assignmentExpression
     | anonymousFunctionSignature TArrow expression #lambdaExpression;

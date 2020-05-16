@@ -754,6 +754,13 @@ public interface IMetaGeneratorParserVisitor<Result> : IParseTreeVisitor<Result>
 	Result VisitSwitchBranchHeadStatement([NotNull] MetaGeneratorParser.SwitchBranchHeadStatementContext context);
 
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaGeneratorParser.switchCaseOrTypeIsHeadStatements"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitSwitchCaseOrTypeIsHeadStatements([NotNull] MetaGeneratorParser.SwitchCaseOrTypeIsHeadStatementsContext context);
+
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="MetaGeneratorParser.switchCaseOrTypeIsHeadStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

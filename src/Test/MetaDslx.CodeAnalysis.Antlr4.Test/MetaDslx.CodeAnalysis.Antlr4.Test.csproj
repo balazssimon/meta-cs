@@ -50,10 +50,21 @@
       <CustomToolNamespace>MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syntax.InternalSyntax</CustomToolNamespace>
       <OutputLocation>CurrentDirectory</OutputLocation>
     </Antlr4Roslyn>
+    <Antlr4Roslyn Update="Languages\TestLexerMode\Syntax\InternalSyntax\TestLexerModeLexer.ag4">
+      <DefaultCustomToolNamespace>$([MSBuild]::ValueOrDefault('$(RootNamespace).%(DefaultCustomToolNamespace)', '').TrimEnd('.'))</DefaultCustomToolNamespace>
+      <OutputLocation>CurrentDirectory</OutputLocation>
+      <CustomToolNamespace>$([MSBuild]::ValueOrDefault(%(CustomToolNamespace), %(DefaultCustomToolNamespace)))</CustomToolNamespace>
+    </Antlr4Roslyn>
+    <Antlr4Roslyn Update="Languages\TestLexerMode\Syntax\InternalSyntax\TestLexerModeParser.ag4">
+      <DefaultCustomToolNamespace>$([MSBuild]::ValueOrDefault('$(RootNamespace).%(DefaultCustomToolNamespace)', '').TrimEnd('.'))</DefaultCustomToolNamespace>
+      <OutputLocation>CurrentDirectory</OutputLocation>
+      <CustomToolNamespace>$([MSBuild]::ValueOrDefault(%(CustomToolNamespace), %(DefaultCustomToolNamespace)))</CustomToolNamespace>
+    </Antlr4Roslyn>
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="InputFiles\IncrementalCompilation\" />
+    <Folder Include="InputFiles\LexerMode\" />
   </ItemGroup>
 
   <ItemGroup>

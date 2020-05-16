@@ -2025,9 +2025,10 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
             {
                 Write("if (");
                 MetaGeneratorParser.SwitchCaseOrTypeIsHeadStatementContext currentCase = null;
-                for (int i = 0; i < context.switchCaseOrTypeIsHeadStatement().Length; i++)
+                var statements = context.switchCaseOrTypeIsHeadStatements().switchCaseOrTypeIsHeadStatement();
+                for (int i = 0; i < statements.Length; i++)
                 {
-                    currentCase = context.switchCaseOrTypeIsHeadStatement()[i];
+                    currentCase = statements[i];
                     if (i == 0)
                     {
                         IncIndent();
@@ -2037,7 +2038,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
                         WriteIndent();
                     }
                     Visit(currentCase);
-                    if (i == context.switchCaseOrTypeIsHeadStatement().Length - 1)
+                    if (i == statements.Length - 1)
                     {
                         Write(") {0}", currentCase.ToComment());
                         DecIndent();

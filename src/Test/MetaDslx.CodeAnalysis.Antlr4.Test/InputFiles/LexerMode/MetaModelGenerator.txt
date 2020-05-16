@@ -1,0 +1,179 @@
+﻿namespace MetaDslx.Languages.Meta.Generator;
+generator MetaModelGenerator for IEnumerable<ImmutableObject>;
+
+using MetaDslx.Modeling;
+using MetaDslx.Languages.Meta.Model;
+using System.Collections.Immutable;
+using Roslyn.Utilities;
+
+properties Properties
+	string Namespace = "";
+	string ModelName = "";
+end properties
+
+extern function string GenerateDefaultValue(MetaProperty property)
+extern function IEnumerable<ValueTuple<MetaProperty,MetaProperty>> GetAssociations(IEnumerable<ImmutableObject> objects)
+
+template Generate(MetaModel metaModel)
+namespace [metaModel.Namespace.FullName]
+{
+    metamodel [metaModel.Name](Uri="[metaModel.Uri]",Prefix="[metaModel.Prefix]"); 
+^
+	[loop(Instances->cst:typeof(MetaConstant))]
+    [GenerateConstant(cst)]
+	[end loop]
+	[loop(Instances->enm:typeof(MetaEnum))]
+^
+    [GenerateEnum(enm)]
+	[end loop]
+	[loop(Instances->cls:typeof(MetaClass))]
+^
+    [GenerateClass(cls)]
+	[end loop]
+^
+	[loop(assoc:GetAssociations(Instances))]
+    [GenerateAssociation(assoc)]
+	[end loop]
+}
+end template
+
+template GenerateConstant(MetaConstant cst)
+[GenerateComment(cst)]
+const [GenerateType(cst.Type)] [cst.Name] = "[cst.DotNetName]";
+end template
+
+template GenerateEnum(MetaEnum enm)
+[GenerateComment(enm)]
+enum [enm.Name]
+{
+	[loop(enm->lit:EnumLiterals; separator sep = ",")]
+    [GenerateComment(lit)]
+    [lit.Name][sep]
+	[end loop]
+}
+end template
+
+template GenerateClass(MetaClass cls)
+[GenerateComment(cls)]
+[cls.IsAbstract ? "abstract " : ""]class [cls.Name][GenerateBaseClasses(cls)]
+{
+	[loop(cls->prop:Properties)]
+	[GenerateProperty(prop)]
+	[end loop]
+	[loop(cls->op:Operations)]
+	[GenerateOperation(op)]
+	[end loop]
+}
+end template
+
+template GenerateBaseClasses(MetaClass cls)
+[string sep = " : "]
+[loop(cls->gen:SuperClasses)]
+[sep][gen.Name]\
+[sep = ", "]
+[end loop]
+end template
+
+template GenerateProperty(MetaProperty prop)
+[GenerateComment(prop)]
+[GenerateContainment(prop)][GenerateModifiers(prop)][GenerateType(prop.Type)] [prop.Name][prop.GenerateDefaultValue()][GenerateRedefines(prop)][GenerateSubsets(prop)];
+end template
+
+function string GenerateContainment(MetaProperty prop)
+	return prop.IsContainment ? "containment " : "";
+end function
+
+function string GenerateModifiers(MetaProperty prop)
+	switch (prop.Kind)
+	case MetaPropertyKind.Readonly: return "readonly ";
+	case MetaPropertyKind.Lazy: return "lazy ";
+	case MetaPropertyKind.Derived: return "derived ";
+	case MetaPropertyKind.DerivedUnion: return "union ";
+	end switch
+	return "";
+end function
+
+function string GenerateType(MetaType t)
+	if (t is MetaCollectionType)
+		string typeName = GenerateType(((MetaCollectionType)t).InnerType);
+		switch (((MetaCollectionType)t).Kind)
+		case MetaCollectionKind.Set: return "set<"+typeName+">";
+		case MetaCollectionKind.List: return "list<"+typeName+">";
+		case MetaCollectionKind.MultiSet: return "multi_set<"+typeName+">";
+		case MetaCollectionKind.MultiList: return "multi_list<"+typeName+">";
+		default: return typeName;
+		end switch
+	else if (t is MetaNullableType)
+		return GenerateNullableType((MetaNullableType)t);
+	else if (t is MetaPrimitiveType)
+		return GeneratePrimitiveType((MetaPrimitiveType)t);
+	else if (t is MetaClass)
+		return ((MetaClass)t).Name;
+	else if (t is MetaEnum)
+		return ((MetaEnum)t).Name;
+	else
+		return "ERROR";
+	end if
+end function
+
+function string GenerateNullableType(MetaNullableType t)
+	return GenerateType((MetaNullableType)t)+"?";
+end function
+
+function string GeneratePrimitiveType(MetaPrimitiveType t)
+	return t.Name;
+end function
+
+template GenerateRedefines(MetaProperty prop)
+[string sep = " redefines "]
+[loop(prop->rprop:RedefinedProperties)]
+	[if (rprop.Class != null)]
+[sep][rprop.Class.Name].[rprop.Name]\
+[sep = ", "]
+	[end if]
+[end loop]
+end template
+
+template GenerateSubsets(MetaProperty prop)
+[string sep = " subsets "]
+[loop(prop->sprop:SubsettedProperties)]
+	[if (sprop.Class != null)]
+[sep][sprop.Class.Name].[sprop.Name]\
+[sep = ", "]
+	[end if]
+[end loop]
+end template
+
+template GenerateOperation(MetaOperation op)
+[GenerateComment(op)]
+[GenerateReturnType(op)] [op.Name]([GenerateParams(op)]);
+end template
+
+template GenerateReturnType(MetaOperation op)
+[if (op.IsReadonly)]
+readonly \
+[end if]
+[if (op.IsBuilder)]
+builder \
+[end if]
+[GenerateType(op.ReturnType)]
+end template
+
+template GenerateParams(MetaOperation op)
+[loop(op->param:Parameters; separator sep = ", ")]
+[GenerateType(param.Type)] [param.Name][sep]\
+[end loop]
+end template
+
+template GenerateAssociation(ValueTuple<MetaProperty,MetaProperty> assoc)
+[MetaProperty first = assoc.Item1]
+[MetaProperty second = assoc.Item2]
+association [first.Class.Name].[first.Name] with [second.Class.Name].[second.Name];
+end template
+
+template GenerateComment(MetaDocumentedElement elem)
+[loop (elem->line:GetDocumentationLines())]
+/// [line]
+[end loop]
+end template
+
