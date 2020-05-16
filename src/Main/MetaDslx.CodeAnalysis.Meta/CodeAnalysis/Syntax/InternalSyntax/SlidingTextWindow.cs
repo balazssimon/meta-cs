@@ -206,11 +206,11 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             }
         }
 
-        private bool MoreChars()
+        private bool MoreChars(int delta = 0)
         {
-            if (_offset >= _characterWindowCount)
+            if (_offset + delta >= _characterWindowCount)
             {
-                if (this.Position >= _textEnd)
+                if (this.Position + delta >= _textEnd)
                 {
                     return false;
                 }
@@ -338,22 +338,17 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             _minLookahead = Math.Min(_minLookahead, _minLexemeLookahead);
             _maxLookahead = Math.Max(_maxLookahead, _maxLexemeLookahead);
 
-            int position = this.Position;
-            this.AdvanceChar(delta);
-
             char ch;
-            if (_offset >= _characterWindowCount
-                && !MoreChars())
+            if (_offset + delta >= _characterWindowCount && !MoreChars(delta))
             {
                 ch = InvalidCharacter;
             }
             else
             {
                 // N.B. MoreChars may update the offset.
-                ch = _characterWindow[_offset];
+                ch = _characterWindow[_offset + delta];
             }
 
-            this.Reset(position);
             return ch;
         }
 

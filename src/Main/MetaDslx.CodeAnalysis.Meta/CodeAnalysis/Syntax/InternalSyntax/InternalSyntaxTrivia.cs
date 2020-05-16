@@ -101,5 +101,15 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         {
             throw ExceptionUtilities.Unreachable;
         }
+
+        protected static DiagnosticInfo[] ExtractDiagnosticsFromGreenNode(GreenNode node)
+        {
+            return node.GetDiagnostics();
+        }
+
+        protected static SyntaxAnnotation[] ExtractAnnotationsFromGreenNode(GreenNode node)
+        {
+            return node.GetAnnotations();
+        }
     }
 }

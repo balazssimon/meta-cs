@@ -167,7 +167,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation.
 
         internal static GreenStructuredSyntaxTrivia Create(TestIncrementalCompilationSyntaxKind kind, GreenNode structure)
         {
-            return new GreenStructuredSyntaxTrivia(kind, structure);
+            return new GreenStructuredSyntaxTrivia(kind, structure, ExtractDiagnosticsFromGreenNode(structure), ExtractAnnotationsFromGreenNode(structure));
         }
 
         public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)

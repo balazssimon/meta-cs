@@ -23,7 +23,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             if (i > 0) pch = _textWindow.PeekChar(i - 1);
             else if (i < 0) pch = _textWindow.PeekChar(i);
             else pch = SlidingTextWindow.InvalidCharacter;
-            if (pch == SlidingTextWindow.InvalidCharacter) return -1;
+            if (pch == SlidingTextWindow.InvalidCharacter) return IntStreamConstants.Eof;
             else return pch;
         }
 
@@ -34,7 +34,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         [return: NotNull]
         public string GetText([NotNull] Interval interval)
         {
-            return _textWindow.GetText(interval.a, interval.Length, false);
+            return _textWindow.GetText(interval.a, interval.Length - 1, false);
         }
 
         public void Consume()

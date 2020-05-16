@@ -167,7 +167,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 
         internal static GreenStructuredSyntaxTrivia Create(MetaSyntaxKind kind, GreenNode structure)
         {
-            return new GreenStructuredSyntaxTrivia(kind, structure);
+            return new GreenStructuredSyntaxTrivia(kind, structure, ExtractDiagnosticsFromGreenNode(structure), ExtractAnnotationsFromGreenNode(structure));
         }
 
         public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)

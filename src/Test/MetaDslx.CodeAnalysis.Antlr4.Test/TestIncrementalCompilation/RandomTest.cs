@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.CodeAnalysis.Text;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Xunit;
@@ -7,8 +8,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestIncrementalCompilation
 {
     public class RandomTest : TypeTest
     {
-        private const int TestCount = 100;
-        private const int SourceLength = 10;
+        private const int TestCount = 10;
+        private const int SourceLength = 1000;
 
         private RandomSourceGenerator _sourceGenerator = new RandomSourceGenerator();
         private static Random s_random = new Random();
@@ -25,6 +26,22 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestIncrementalCompilation
             }
         }
 
+        [Fact]
+        public void ParseLongSource()
+        {
+            int length = 100000;
+            var source = _sourceGenerator.NextSource(length);
+            Parse(SourceText.From(source), false);
+        }
+
+
+        [Fact]
+        public void ParseVeryLongSource()
+        {
+            int length = 1000000;
+            var source = _sourceGenerator.NextSource(length);
+            Parse(SourceText.From(source), false);
+        }
 
         [Fact]
         public void File01()

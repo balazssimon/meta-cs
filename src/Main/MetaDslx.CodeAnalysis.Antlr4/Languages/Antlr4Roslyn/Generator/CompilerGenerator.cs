@@ -19985,8 +19985,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             }
             __out.Append("        {"); //2088:1
             __out.AppendLine(false); //2088:10
-            __out.Append("            return new GreenStructuredSyntaxTrivia(kind, structure);"); //2089:1
-            __out.AppendLine(false); //2089:69
+            __out.Append("            return new GreenStructuredSyntaxTrivia(kind, structure, ExtractDiagnosticsFromGreenNode(structure), ExtractAnnotationsFromGreenNode(structure));"); //2089:1
+            __out.AppendLine(false); //2089:157
             __out.Append("        }"); //2090:1
             __out.AppendLine(false); //2090:10
             __out.AppendLine(true); //2091:1

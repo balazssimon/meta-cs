@@ -143,6 +143,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 
         void IIntStream.Consume()
         {
+            //Debug.Assert(_matchedToken);
             var token = this.CurrentCustomToken;
             token.TokenIndex = this.TokenIndex;
             var green = _matchedToken ? this.EatToken() : this.SkipToken();
@@ -286,7 +287,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
                 {
                     //System.out.println("consume during recover LA(1)="+getTokenNames()[input.LA(1)]);
                     //			recognizer.getInputStream().consume();
-                    recognizer.Consume();
+                    _parser.SkipToken();
+                    //recognizer.Consume();
                     ttype = ((ITokenStream)recognizer.InputStream).La(1);
                 }
             }
