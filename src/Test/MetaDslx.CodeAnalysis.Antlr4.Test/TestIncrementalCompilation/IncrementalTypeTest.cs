@@ -1,4 +1,5 @@
 ﻿using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation;
+using MetaDslx.Tests;
 using Microsoft.CodeAnalysis.Text;
 using System;
 using System.Collections.Generic;
@@ -15,10 +16,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestIncrementalCompilation
             TestId = "IncrementalTypeTest";
         }
 
-        [Fact]
-        public void File01()
+        protected void Type(string source)
         {
-            string source = @"namespace A { metamodel M; class B { string S; multi_list<object> O; C C; } class C { B B; } association B.C with C.B; }";
             SourceText oldText = null;
             TestIncrementalCompilationSyntaxTree oldTree = null;
             for (int i = 0; i < source.Length; i++)
@@ -33,14 +32,17 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestIncrementalCompilation
                     }
                     else
                     {
-                        (oldText, oldTree) = IncrementalParseWithInsertedText((oldText, oldTree), i - 1, source.Substring(i - 1, 1), false);
+                        (oldText, oldTree) = IncrementalParseWithInsertedText((oldText, oldTree), i - 1, source.Substring(i - 1, 1), assertEmptyDiagnostics: false);
                     }
                 }
                 catch (Exception ex)
                 {
-                    throw new WrappedXunitException($"Typing failed at:\r\n----\r\n{currentSource}\r\n----", ex);
+                    throw new WrappedXunitException($"Typing failed at position {i}:\r\n----\r\n{currentSource}\r\n----\r\nOriginal source is:\r\n----\r\n{source}\r\n----\r\n", ex);
                 }
             }
         }
+
+
+
     }
 }

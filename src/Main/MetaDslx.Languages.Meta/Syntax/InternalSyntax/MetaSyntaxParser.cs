@@ -47,9 +47,9 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    RestoreParserState(state);
 			try
 			{
-				var context = this.Antlr4Parser.main();
+		        var context = this.IsIncremental ? this.Antlr4Parser.main() : _Antlr4ParseMain();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{
@@ -97,7 +97,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				var context = this.Antlr4Parser.name();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{
@@ -144,7 +144,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				var context = this.Antlr4Parser.qualifiedName();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{
@@ -191,7 +191,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				var context = this.Antlr4Parser.qualifier();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{
@@ -238,7 +238,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				var context = this.Antlr4Parser.attribute();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{
@@ -285,7 +285,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				var context = this.Antlr4Parser.namespaceDeclaration();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{
@@ -332,7 +332,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				var context = this.Antlr4Parser.namespaceBody();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{
@@ -379,7 +379,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				var context = this.Antlr4Parser.metamodelDeclaration();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{
@@ -426,7 +426,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				var context = this.Antlr4Parser.metamodelPropertyList();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{
@@ -473,7 +473,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				var context = this.Antlr4Parser.metamodelProperty();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{
@@ -520,7 +520,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				var context = this.Antlr4Parser.metamodelUriProperty();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{
@@ -567,7 +567,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				var context = this.Antlr4Parser.metamodelPrefixProperty();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{
@@ -614,7 +614,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				var context = this.Antlr4Parser.declaration();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{
@@ -661,7 +661,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				var context = this.Antlr4Parser.enumDeclaration();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{
@@ -708,7 +708,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				var context = this.Antlr4Parser.enumBody();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{
@@ -755,7 +755,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				var context = this.Antlr4Parser.enumValues();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{
@@ -802,7 +802,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				var context = this.Antlr4Parser.enumValue();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{
@@ -849,7 +849,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				var context = this.Antlr4Parser.enumMemberDeclaration();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{
@@ -896,7 +896,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				var context = this.Antlr4Parser.classDeclaration();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{
@@ -943,7 +943,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				var context = this.Antlr4Parser.classBody();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{
@@ -990,7 +990,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				var context = this.Antlr4Parser.classAncestors();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{
@@ -1037,7 +1037,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				var context = this.Antlr4Parser.classAncestor();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{
@@ -1084,7 +1084,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				var context = this.Antlr4Parser.classMemberDeclaration();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{
@@ -1131,7 +1131,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				var context = this.Antlr4Parser.fieldDeclaration();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{
@@ -1178,7 +1178,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				var context = this.Antlr4Parser.fieldContainment();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{
@@ -1225,7 +1225,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				var context = this.Antlr4Parser.fieldModifier();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{
@@ -1272,7 +1272,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				var context = this.Antlr4Parser.defaultValue();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{
@@ -1319,7 +1319,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				var context = this.Antlr4Parser.redefinitionsOrSubsettings();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{
@@ -1366,7 +1366,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				var context = this.Antlr4Parser.redefinitions();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{
@@ -1413,7 +1413,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				var context = this.Antlr4Parser.subsettings();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{
@@ -1460,7 +1460,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				var context = this.Antlr4Parser.nameUseList();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{
@@ -1507,7 +1507,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				var context = this.Antlr4Parser.constDeclaration();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{
@@ -1554,7 +1554,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				var context = this.Antlr4Parser.constValue();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{
@@ -1601,7 +1601,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				var context = this.Antlr4Parser.returnType();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{
@@ -1648,7 +1648,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				var context = this.Antlr4Parser.typeOfReference();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{
@@ -1695,7 +1695,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				var context = this.Antlr4Parser.typeReference();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{
@@ -1742,7 +1742,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				var context = this.Antlr4Parser.simpleType();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{
@@ -1789,7 +1789,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				var context = this.Antlr4Parser.classType();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{
@@ -1836,7 +1836,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				var context = this.Antlr4Parser.objectType();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{
@@ -1883,7 +1883,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				var context = this.Antlr4Parser.primitiveType();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{
@@ -1930,7 +1930,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				var context = this.Antlr4Parser.voidType();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{
@@ -1977,7 +1977,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				var context = this.Antlr4Parser.nullableType();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{
@@ -2024,7 +2024,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				var context = this.Antlr4Parser.collectionType();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{
@@ -2071,7 +2071,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				var context = this.Antlr4Parser.collectionKind();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{
@@ -2118,7 +2118,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				var context = this.Antlr4Parser.operationDeclaration();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{
@@ -2165,7 +2165,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				var context = this.Antlr4Parser.operationModifier();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{
@@ -2212,7 +2212,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				var context = this.Antlr4Parser.operationModifierBuilder();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{
@@ -2259,7 +2259,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				var context = this.Antlr4Parser.operationModifierReadonly();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{
@@ -2306,7 +2306,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				var context = this.Antlr4Parser.parameterList();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{
@@ -2353,7 +2353,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				var context = this.Antlr4Parser.parameter();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{
@@ -2400,7 +2400,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				var context = this.Antlr4Parser.associationDeclaration();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{
@@ -2447,7 +2447,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				var context = this.Antlr4Parser.identifier();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{
@@ -2494,7 +2494,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				var context = this.Antlr4Parser.literal();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{
@@ -2541,7 +2541,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				var context = this.Antlr4Parser.nullLiteral();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{
@@ -2588,7 +2588,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				var context = this.Antlr4Parser.booleanLiteral();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{
@@ -2635,7 +2635,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				var context = this.Antlr4Parser.integerLiteral();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{
@@ -2682,7 +2682,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				var context = this.Antlr4Parser.decimalLiteral();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{
@@ -2729,7 +2729,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				var context = this.Antlr4Parser.scientificLiteral();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{
@@ -2776,7 +2776,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				var context = this.Antlr4Parser.stringLiteral();
 		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return null;
+		        else return _visitor.Visit(context);
 			}
 			finally
 			{

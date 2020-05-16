@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Xunit.Sdk;
 
-namespace MetaDslx.CodeAnalysis.Antlr4Test.TestIncrementalCompilation
+namespace MetaDslx.Tests
 {
     public class WrappedXunitException : XunitException
     {

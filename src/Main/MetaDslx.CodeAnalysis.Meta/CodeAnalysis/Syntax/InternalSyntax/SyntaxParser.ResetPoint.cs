@@ -10,14 +10,16 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         {
             public readonly int ResetCount;
             public readonly ParserState State;
-            public readonly int Position;
+            public readonly int Index;
+            public readonly int LastNonSkippedTokenIndex;
             public readonly GreenNode PrevTokenTrailingTrivia;
 
-            internal ResetPoint(int resetCount, ParserState state, int position, GreenNode prevTokenTrailingTrivia)
+            internal ResetPoint(int resetCount, ParserState state, int index, int lastNonSkippedTokenIndex, GreenNode prevTokenTrailingTrivia)
             {
                 this.ResetCount = resetCount;
                 this.State = state;
-                this.Position = position;
+                this.Index = index;
+                this.LastNonSkippedTokenIndex = lastNonSkippedTokenIndex;
                 this.PrevTokenTrailingTrivia = prevTokenTrailingTrivia;
             }
         }

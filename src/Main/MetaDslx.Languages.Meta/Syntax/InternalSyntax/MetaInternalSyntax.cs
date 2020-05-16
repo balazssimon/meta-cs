@@ -366,7 +366,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	    {
 	        return new SyntaxTokenWithValueAndTrivia<T>(kind, text, value, leading, trailing);
 	    }
-	    public virtual MetaSyntaxKind ContextualKind => this.Kind;
+	    public new virtual MetaSyntaxKind ContextualKind => this.Kind;
 	    public override int RawContextualKind => (int)this.ContextualKind;
 	    public override InternalSyntaxToken TokenWithLeadingTrivia(GreenNode trivia)
 	    {

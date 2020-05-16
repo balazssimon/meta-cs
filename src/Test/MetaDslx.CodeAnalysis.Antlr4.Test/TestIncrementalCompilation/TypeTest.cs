@@ -1,4 +1,5 @@
-﻿using Microsoft.CodeAnalysis.Text;
+﻿using MetaDslx.Tests;
+using Microsoft.CodeAnalysis.Text;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,10 +15,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestIncrementalCompilation
             TestId = "TypeTest";
         }
 
-        [Fact]
-        public void File01()
+        protected void Type(string source)
         {
-            string source = @"namespace A { metamodel M; class B { string S; multi_list<object> O; C C; } class C { B B; } association B.C with C.B; }";
             for (int i = 0; i < source.Length; i++)
             {
                 string currentSource = source.Substring(0, i);
@@ -27,9 +26,10 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestIncrementalCompilation
                 }
                 catch (Exception ex)
                 {
-                    throw new WrappedXunitException($"Typing failed at:\r\n----\r\n{currentSource}\r\n----", ex);
+                    throw new WrappedXunitException($"Typing failed at position {i}:\r\n----\r\n{currentSource}\r\n----\r\nOriginal source is:\r\n----\r\n{source}\r\n----\r\n", ex);
                 }
             }
         }
+
     }
 }

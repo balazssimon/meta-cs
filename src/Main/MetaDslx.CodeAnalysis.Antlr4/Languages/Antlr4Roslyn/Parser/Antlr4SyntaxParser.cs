@@ -177,7 +177,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             if (_resetPoints.Count > 0)
             {
                 var rp = _resetPoints.Peek();
-                Debug.Assert(rp.Position == index);
+                Debug.Assert(rp.Index == index);
                 this.Reset(ref rp);
             }
             else

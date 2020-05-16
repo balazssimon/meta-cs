@@ -106,7 +106,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
             private void SkipOldToken()
             {
-                Debug.Assert(!_oldTreeCursor.IsFinished);
+                // Debug.Assert(!_oldTreeCursor.IsFinished);
+                if (_oldTreeCursor.IsFinished) return;
 
                 // First, move down so that we're actually pointing at a token.  If we're already
                 // pointing at a token, then we'll just stay there.

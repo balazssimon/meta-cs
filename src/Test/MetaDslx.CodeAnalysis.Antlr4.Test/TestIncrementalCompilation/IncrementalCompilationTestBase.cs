@@ -47,7 +47,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestIncrementalCompilation
             var diagnostics = tree.GetDiagnostics().ToImmutableArray();
             if (assertEmptyDiagnostics) AssertEmptyDiagnostics(diagnostics);
             var antlr4Diagnostics = Antlr4Parse(text, assertEmptyDiagnostics);
-            Assert.Equal(diagnostics.Length, antlr4Diagnostics.Length);
+            Assert.Equal(antlr4Diagnostics.Length, diagnostics.Length);
             return tree;
         }
 
@@ -58,21 +58,21 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestIncrementalCompilation
             var diagnostics = tree.GetDiagnostics().ToImmutableArray();
             if (assertEmptyDiagnostics) AssertEmptyDiagnostics(diagnostics);
             var antlr4Diagnostics = Antlr4Parse(text, assertEmptyDiagnostics);
-            Assert.Equal(diagnostics.Length, antlr4Diagnostics.Length);
+            Assert.Equal(antlr4Diagnostics.Length, diagnostics.Length);
             return tree;
         }
 
         protected (SourceText, TestIncrementalCompilationSyntaxTree) IncrementalParseWithInsertedText((SourceText oldText, TestIncrementalCompilationSyntaxTree oldTree) old, int position, string insertedText, bool assertEmptyDiagnostics = true)
         {
             var text = old.oldText.WithChanges(new TextChange(TextSpan.FromBounds(position, position), insertedText));
-            var tree = IncrementalParse(text, old.oldTree);
+            var tree = IncrementalParse(text, old.oldTree, assertEmptyDiagnostics);
             return (text, tree);
         }
 
         protected (SourceText, TestIncrementalCompilationSyntaxTree) IncrementalParseWithDeletedText((SourceText oldText, TestIncrementalCompilationSyntaxTree oldTree) old, int position, int length, bool assertEmptyDiagnostics = true)
         {
             var text = old.oldText.WithChanges(new TextChange(TextSpan.FromBounds(position, position + length), string.Empty));
-            var tree = IncrementalParse(text, old.oldTree);
+            var tree = IncrementalParse(text, old.oldTree, assertEmptyDiagnostics);
             return (text, tree);
         }
 

@@ -211,7 +211,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public MainContext main() {
-		return this.SyntaxParser._Antlr4ParseMain();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseMain() : _DoParseMain();
 	}
 
 	internal MainContext _DoParseMain() {
@@ -261,7 +261,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public NameContext name() {
-		return this.SyntaxParser._Antlr4ParseName();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseName() : _DoParseName();
 	}
 
 	internal NameContext _DoParseName() {
@@ -310,7 +310,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public QualifiedNameContext qualifiedName() {
-		return this.SyntaxParser._Antlr4ParseQualifiedName();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseQualifiedName() : _DoParseQualifiedName();
 	}
 
 	internal QualifiedNameContext _DoParseQualifiedName() {
@@ -366,7 +366,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public QualifierContext qualifier() {
-		return this.SyntaxParser._Antlr4ParseQualifier();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseQualifier() : _DoParseQualifier();
 	}
 
 	internal QualifierContext _DoParseQualifier() {
@@ -432,7 +432,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public AttributeContext attribute() {
-		return this.SyntaxParser._Antlr4ParseAttribute();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseAttribute() : _DoParseAttribute();
 	}
 
 	internal AttributeContext _DoParseAttribute() {
@@ -493,7 +493,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public NamespaceDeclarationContext namespaceDeclaration() {
-		return this.SyntaxParser._Antlr4ParseNamespaceDeclaration();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseNamespaceDeclaration() : _DoParseNamespaceDeclaration();
 	}
 
 	internal NamespaceDeclarationContext _DoParseNamespaceDeclaration() {
@@ -566,7 +566,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public NamespaceBodyContext namespaceBody() {
-		return this.SyntaxParser._Antlr4ParseNamespaceBody();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseNamespaceBody() : _DoParseNamespaceBody();
 	}
 
 	internal NamespaceBodyContext _DoParseNamespaceBody() {
@@ -644,7 +644,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public MetamodelDeclarationContext metamodelDeclaration() {
-		return this.SyntaxParser._Antlr4ParseMetamodelDeclaration();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseMetamodelDeclaration() : _DoParseMetamodelDeclaration();
 	}
 
 	internal MetamodelDeclarationContext _DoParseMetamodelDeclaration() {
@@ -735,7 +735,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public MetamodelPropertyListContext metamodelPropertyList() {
-		return this.SyntaxParser._Antlr4ParseMetamodelPropertyList();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseMetamodelPropertyList() : _DoParseMetamodelPropertyList();
 	}
 
 	internal MetamodelPropertyListContext _DoParseMetamodelPropertyList() {
@@ -802,7 +802,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public MetamodelPropertyContext metamodelProperty() {
-		return this.SyntaxParser._Antlr4ParseMetamodelProperty();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseMetamodelProperty() : _DoParseMetamodelProperty();
 	}
 
 	internal MetamodelPropertyContext _DoParseMetamodelProperty() {
@@ -867,7 +867,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public MetamodelUriPropertyContext metamodelUriProperty() {
-		return this.SyntaxParser._Antlr4ParseMetamodelUriProperty();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseMetamodelUriProperty() : _DoParseMetamodelUriProperty();
 	}
 
 	internal MetamodelUriPropertyContext _DoParseMetamodelUriProperty() {
@@ -920,7 +920,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public MetamodelPrefixPropertyContext metamodelPrefixProperty() {
-		return this.SyntaxParser._Antlr4ParseMetamodelPrefixProperty();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseMetamodelPrefixProperty() : _DoParseMetamodelPrefixProperty();
 	}
 
 	internal MetamodelPrefixPropertyContext _DoParseMetamodelPrefixProperty() {
@@ -980,7 +980,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public DeclarationContext declaration() {
-		return this.SyntaxParser._Antlr4ParseDeclaration();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseDeclaration() : _DoParseDeclaration();
 	}
 
 	internal DeclarationContext _DoParseDeclaration() {
@@ -1066,7 +1066,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public EnumDeclarationContext enumDeclaration() {
-		return this.SyntaxParser._Antlr4ParseEnumDeclaration();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseEnumDeclaration() : _DoParseEnumDeclaration();
 	}
 
 	internal EnumDeclarationContext _DoParseEnumDeclaration() {
@@ -1140,7 +1140,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public EnumBodyContext enumBody() {
-		return this.SyntaxParser._Antlr4ParseEnumBody();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseEnumBody() : _DoParseEnumBody();
 	}
 
 	internal EnumBodyContext _DoParseEnumBody() {
@@ -1221,7 +1221,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public EnumValuesContext enumValues() {
-		return this.SyntaxParser._Antlr4ParseEnumValues();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseEnumValues() : _DoParseEnumValues();
 	}
 
 	internal EnumValuesContext _DoParseEnumValues() {
@@ -1291,7 +1291,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public EnumValueContext enumValue() {
-		return this.SyntaxParser._Antlr4ParseEnumValue();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseEnumValue() : _DoParseEnumValue();
 	}
 
 	internal EnumValueContext _DoParseEnumValue() {
@@ -1354,7 +1354,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public EnumMemberDeclarationContext enumMemberDeclaration() {
-		return this.SyntaxParser._Antlr4ParseEnumMemberDeclaration();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseEnumMemberDeclaration() : _DoParseEnumMemberDeclaration();
 	}
 
 	internal EnumMemberDeclarationContext _DoParseEnumMemberDeclaration() {
@@ -1418,7 +1418,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public ClassDeclarationContext classDeclaration() {
-		return this.SyntaxParser._Antlr4ParseClassDeclaration();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseClassDeclaration() : _DoParseClassDeclaration();
 	}
 
 	internal ClassDeclarationContext _DoParseClassDeclaration() {
@@ -1507,7 +1507,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public ClassBodyContext classBody() {
-		return this.SyntaxParser._Antlr4ParseClassBody();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseClassBody() : _DoParseClassBody();
 	}
 
 	internal ClassBodyContext _DoParseClassBody() {
@@ -1578,7 +1578,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public ClassAncestorsContext classAncestors() {
-		return this.SyntaxParser._Antlr4ParseClassAncestors();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseClassAncestors() : _DoParseClassAncestors();
 	}
 
 	internal ClassAncestorsContext _DoParseClassAncestors() {
@@ -1642,7 +1642,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public ClassAncestorContext classAncestor() {
-		return this.SyntaxParser._Antlr4ParseClassAncestor();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseClassAncestor() : _DoParseClassAncestor();
 	}
 
 	internal ClassAncestorContext _DoParseClassAncestor() {
@@ -1694,7 +1694,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public ClassMemberDeclarationContext classMemberDeclaration() {
-		return this.SyntaxParser._Antlr4ParseClassMemberDeclaration();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseClassMemberDeclaration() : _DoParseClassMemberDeclaration();
 	}
 
 	internal ClassMemberDeclarationContext _DoParseClassMemberDeclaration() {
@@ -1781,7 +1781,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public FieldDeclarationContext fieldDeclaration() {
-		return this.SyntaxParser._Antlr4ParseFieldDeclaration();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseFieldDeclaration() : _DoParseFieldDeclaration();
 	}
 
 	internal FieldDeclarationContext _DoParseFieldDeclaration() {
@@ -1884,7 +1884,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public FieldContainmentContext fieldContainment() {
-		return this.SyntaxParser._Antlr4ParseFieldContainment();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseFieldContainment() : _DoParseFieldContainment();
 	}
 
 	internal FieldContainmentContext _DoParseFieldContainment() {
@@ -1934,7 +1934,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public FieldModifierContext fieldModifier() {
-		return this.SyntaxParser._Antlr4ParseFieldModifier();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseFieldModifier() : _DoParseFieldModifier();
 	}
 
 	internal FieldModifierContext _DoParseFieldModifier() {
@@ -1996,7 +1996,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public DefaultValueContext defaultValue() {
-		return this.SyntaxParser._Antlr4ParseDefaultValue();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseDefaultValue() : _DoParseDefaultValue();
 	}
 
 	internal DefaultValueContext _DoParseDefaultValue() {
@@ -2049,7 +2049,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public RedefinitionsOrSubsettingsContext redefinitionsOrSubsettings() {
-		return this.SyntaxParser._Antlr4ParseRedefinitionsOrSubsettings();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseRedefinitionsOrSubsettings() : _DoParseRedefinitionsOrSubsettings();
 	}
 
 	internal RedefinitionsOrSubsettingsContext _DoParseRedefinitionsOrSubsettings() {
@@ -2113,7 +2113,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public RedefinitionsContext redefinitions() {
-		return this.SyntaxParser._Antlr4ParseRedefinitions();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseRedefinitions() : _DoParseRedefinitions();
 	}
 
 	internal RedefinitionsContext _DoParseRedefinitions() {
@@ -2173,7 +2173,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public SubsettingsContext subsettings() {
-		return this.SyntaxParser._Antlr4ParseSubsettings();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseSubsettings() : _DoParseSubsettings();
 	}
 
 	internal SubsettingsContext _DoParseSubsettings() {
@@ -2239,7 +2239,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public NameUseListContext nameUseList() {
-		return this.SyntaxParser._Antlr4ParseNameUseList();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseNameUseList() : _DoParseNameUseList();
 	}
 
 	internal NameUseListContext _DoParseNameUseList() {
@@ -2311,7 +2311,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public ConstDeclarationContext constDeclaration() {
-		return this.SyntaxParser._Antlr4ParseConstDeclaration();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseConstDeclaration() : _DoParseConstDeclaration();
 	}
 
 	internal ConstDeclarationContext _DoParseConstDeclaration() {
@@ -2374,7 +2374,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public ConstValueContext constValue() {
-		return this.SyntaxParser._Antlr4ParseConstValue();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseConstValue() : _DoParseConstValue();
 	}
 
 	internal ConstValueContext _DoParseConstValue() {
@@ -2427,7 +2427,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public ReturnTypeContext returnType() {
-		return this.SyntaxParser._Antlr4ParseReturnType();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseReturnType() : _DoParseReturnType();
 	}
 
 	internal ReturnTypeContext _DoParseReturnType() {
@@ -2506,7 +2506,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public TypeOfReferenceContext typeOfReference() {
-		return this.SyntaxParser._Antlr4ParseTypeOfReference();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseTypeOfReference() : _DoParseTypeOfReference();
 	}
 
 	internal TypeOfReferenceContext _DoParseTypeOfReference() {
@@ -2558,7 +2558,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public TypeReferenceContext typeReference() {
-		return this.SyntaxParser._Antlr4ParseTypeReference();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseTypeReference() : _DoParseTypeReference();
 	}
 
 	internal TypeReferenceContext _DoParseTypeReference() {
@@ -2645,7 +2645,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public SimpleTypeContext simpleType() {
-		return this.SyntaxParser._Antlr4ParseSimpleType();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseSimpleType() : _DoParseSimpleType();
 	}
 
 	internal SimpleTypeContext _DoParseSimpleType() {
@@ -2721,7 +2721,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public ClassTypeContext classType() {
-		return this.SyntaxParser._Antlr4ParseClassType();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseClassType() : _DoParseClassType();
 	}
 
 	internal ClassTypeContext _DoParseClassType() {
@@ -2770,7 +2770,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public ObjectTypeContext objectType() {
-		return this.SyntaxParser._Antlr4ParseObjectType();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseObjectType() : _DoParseObjectType();
 	}
 
 	internal ObjectTypeContext _DoParseObjectType() {
@@ -2834,7 +2834,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public PrimitiveTypeContext primitiveType() {
-		return this.SyntaxParser._Antlr4ParsePrimitiveType();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParsePrimitiveType() : _DoParsePrimitiveType();
 	}
 
 	internal PrimitiveTypeContext _DoParsePrimitiveType() {
@@ -2893,7 +2893,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public VoidTypeContext voidType() {
-		return this.SyntaxParser._Antlr4ParseVoidType();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseVoidType() : _DoParseVoidType();
 	}
 
 	internal VoidTypeContext _DoParseVoidType() {
@@ -2943,7 +2943,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public NullableTypeContext nullableType() {
-		return this.SyntaxParser._Antlr4ParseNullableType();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseNullableType() : _DoParseNullableType();
 	}
 
 	internal NullableTypeContext _DoParseNullableType() {
@@ -2998,7 +2998,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public CollectionTypeContext collectionType() {
-		return this.SyntaxParser._Antlr4ParseCollectionType();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseCollectionType() : _DoParseCollectionType();
 	}
 
 	internal CollectionTypeContext _DoParseCollectionType() {
@@ -3051,7 +3051,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public CollectionKindContext collectionKind() {
-		return this.SyntaxParser._Antlr4ParseCollectionKind();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseCollectionKind() : _DoParseCollectionKind();
 	}
 
 	internal CollectionKindContext _DoParseCollectionKind() {
@@ -3133,7 +3133,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public OperationDeclarationContext operationDeclaration() {
-		return this.SyntaxParser._Antlr4ParseOperationDeclaration();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseOperationDeclaration() : _DoParseOperationDeclaration();
 	}
 
 	internal OperationDeclarationContext _DoParseOperationDeclaration() {
@@ -3225,7 +3225,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public OperationModifierContext operationModifier() {
-		return this.SyntaxParser._Antlr4ParseOperationModifier();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseOperationModifier() : _DoParseOperationModifier();
 	}
 
 	internal OperationModifierContext _DoParseOperationModifier() {
@@ -3286,7 +3286,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public OperationModifierBuilderContext operationModifierBuilder() {
-		return this.SyntaxParser._Antlr4ParseOperationModifierBuilder();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseOperationModifierBuilder() : _DoParseOperationModifierBuilder();
 	}
 
 	internal OperationModifierBuilderContext _DoParseOperationModifierBuilder() {
@@ -3333,7 +3333,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public OperationModifierReadonlyContext operationModifierReadonly() {
-		return this.SyntaxParser._Antlr4ParseOperationModifierReadonly();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseOperationModifierReadonly() : _DoParseOperationModifierReadonly();
 	}
 
 	internal OperationModifierReadonlyContext _DoParseOperationModifierReadonly() {
@@ -3389,7 +3389,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public ParameterListContext parameterList() {
-		return this.SyntaxParser._Antlr4ParseParameterList();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseParameterList() : _DoParseParameterList();
 	}
 
 	internal ParameterListContext _DoParseParameterList() {
@@ -3462,7 +3462,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public ParameterContext parameter() {
-		return this.SyntaxParser._Antlr4ParseParameter();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseParameter() : _DoParseParameter();
 	}
 
 	internal ParameterContext _DoParseParameter() {
@@ -3540,7 +3540,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public AssociationDeclarationContext associationDeclaration() {
-		return this.SyntaxParser._Antlr4ParseAssociationDeclaration();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseAssociationDeclaration() : _DoParseAssociationDeclaration();
 	}
 
 	internal AssociationDeclarationContext _DoParseAssociationDeclaration() {
@@ -3608,7 +3608,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public IdentifierContext identifier() {
-		return this.SyntaxParser._Antlr4ParseIdentifier();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseIdentifier() : _DoParseIdentifier();
 	}
 
 	internal IdentifierContext _DoParseIdentifier() {
@@ -3684,7 +3684,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public LiteralContext literal() {
-		return this.SyntaxParser._Antlr4ParseLiteral();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseLiteral() : _DoParseLiteral();
 	}
 
 	internal LiteralContext _DoParseLiteral() {
@@ -3770,7 +3770,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public NullLiteralContext nullLiteral() {
-		return this.SyntaxParser._Antlr4ParseNullLiteral();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseNullLiteral() : _DoParseNullLiteral();
 	}
 
 	internal NullLiteralContext _DoParseNullLiteral() {
@@ -3818,7 +3818,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public BooleanLiteralContext booleanLiteral() {
-		return this.SyntaxParser._Antlr4ParseBooleanLiteral();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseBooleanLiteral() : _DoParseBooleanLiteral();
 	}
 
 	internal BooleanLiteralContext _DoParseBooleanLiteral() {
@@ -3877,7 +3877,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public IntegerLiteralContext integerLiteral() {
-		return this.SyntaxParser._Antlr4ParseIntegerLiteral();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseIntegerLiteral() : _DoParseIntegerLiteral();
 	}
 
 	internal IntegerLiteralContext _DoParseIntegerLiteral() {
@@ -3924,7 +3924,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public DecimalLiteralContext decimalLiteral() {
-		return this.SyntaxParser._Antlr4ParseDecimalLiteral();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseDecimalLiteral() : _DoParseDecimalLiteral();
 	}
 
 	internal DecimalLiteralContext _DoParseDecimalLiteral() {
@@ -3971,7 +3971,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public ScientificLiteralContext scientificLiteral() {
-		return this.SyntaxParser._Antlr4ParseScientificLiteral();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseScientificLiteral() : _DoParseScientificLiteral();
 	}
 
 	internal ScientificLiteralContext _DoParseScientificLiteral() {
@@ -4018,7 +4018,7 @@ public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	[RuleVersion(0)]
 	public StringLiteralContext stringLiteral() {
-		return this.SyntaxParser._Antlr4ParseStringLiteral();
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseStringLiteral() : _DoParseStringLiteral();
 	}
 
 	internal StringLiteralContext _DoParseStringLiteral() {

@@ -234,7 +234,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                         }
                         //sb.AppendLine($"{indent}BeginRuleContext();");
                         //sb.AppendLine($"{indent}if (this.TryGetIncrementalContext(_ctx, State, RULE_{ruleName.ToCamelCase()}, out {contextTypeName} existingContext)) return existingContext;");
-                        if (recursive) sb.AppendLine($"{indent}return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4Parse{ruleName}() : _DoParse{ruleName}(_p);");
+                        if (recursive) sb.AppendLine($"{indent}return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4Parse{ruleName}(_p) : _DoParse{ruleName}(_p);");
                         else sb.AppendLine($"{indent}return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4Parse{ruleName}() : _DoParse{ruleName}();");
                         //sb.AppendLine($"{indent}EndRuleContext();");
                         sb.AppendLine($"{smallIndent}}}");

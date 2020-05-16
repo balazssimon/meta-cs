@@ -6,6 +6,8 @@ using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
 using MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax;
+using MetaDslx.Languages.Meta;
+using MetaDslx.Languages.Meta.Syntax;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 using System;
@@ -21,7 +23,7 @@ namespace Antlr4Intellisense
     {
         public static void Main(string[] args)
         {
-            //*/        01234567890123 4 567890123456 7
+            /*/        01234567890123 4 567890123456 7
             var text = "var a = 1 + 2\r\nvar b = a+1\r\n";
             var change = ImmutableArray<TextChangeRange>.Empty;
 
@@ -77,6 +79,8 @@ namespace Antlr4Intellisense
             tree = Parse(text, change, tree);
             Console.WriteLine("====");
 
+            //*/
+
             /*/
 
             EmptyFile();
@@ -86,6 +90,33 @@ namespace Antlr4Intellisense
             AfterAddition();
 
             //*/
+
+            //*/
+
+            TypeTest(@"namespace A { metamodel M; class B { string S; multi_list<object> O; C C; } class C { B B; } association B.C with C.B; }");
+
+            //*/
+        }
+
+        private static void TypeTest(string source)
+        {
+            var options = MetaParseOptions.Default.WithIncremental(true);
+            SourceText text = null;
+            MetaSyntaxTree tree = null;
+            for (int i = 0; i < source.Length; i++)
+            {
+                string currentSource = source.Substring(0, i);
+                if (i == 0)
+                {
+                    text = SourceText.From(currentSource);
+                    tree = MetaSyntaxTree.ParseText(text, options);
+                }
+                else
+                {
+                    text = text.WithChanges(new TextChange(new TextSpan(text.Length, 0), source.Substring(i - 1, 1)));
+                    tree = (MetaSyntaxTree)tree.WithChangedText(text);
+                }
+            }
         }
 
         private static Antlr4SyntaxLexer Lex(string text, ImmutableArray<TextChangeRange>  changes, Antlr4SyntaxLexer oldLexer)

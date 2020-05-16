@@ -30,7 +30,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         private int _resetCount;
         private int _resetStart;
         private List<SyntaxDiagnosticInfo> _currentTokenErrors;
-        private SyntaxListBuilder _currentSkippedTokens;
+        private int _lastNonSkippedTokenIndex;
 
         private static readonly ObjectPool<BlendedNode[]> s_blendedNodesPool = new ObjectPool<BlendedNode[]>(() => new BlendedNode[32], 2);
 
@@ -57,7 +57,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             CancellationToken = cancellationToken;
             _currentNode = default;
             _currentTokenErrors = new List<SyntaxDiagnosticInfo>();
-            _currentSkippedTokens = SyntaxListBuilder.Create();
+            _lastNonSkippedTokenIndex = -1;
 #if DEBUG
             _version = 1;
 #endif
@@ -227,15 +227,15 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         protected ResetPoint GetResetPoint()
         {
-            var pos = TokenIndex;
+            var index = TokenIndex;
             if (_resetCount == 0)
             {
-                _resetStart = pos; // low water mark
+                _resetStart = index; // low water mark
                 SlidingBuffer_MarkResetPoint();
             }
 
             _resetCount++;
-            return new ResetPoint(_resetCount, _state, pos, _prevTokenTrailingTrivia);
+            return new ResetPoint(_resetCount, _state, index, _lastNonSkippedTokenIndex, _prevTokenTrailingTrivia);
         }
 
         protected virtual void SlidingBuffer_MarkResetPoint()
@@ -249,7 +249,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             RestoreParserState(point.State);
             EraseState();
             _prevTokenTrailingTrivia = point.PrevTokenTrailingTrivia;
-            SlidingBuffer_ResetTo(point.Position);
+            _lastNonSkippedTokenIndex = point.LastNonSkippedTokenIndex;
+            SlidingBuffer_ResetTo(point.Index);
         }
 
         protected virtual void SlidingBuffer_ResetTo(int position)
@@ -328,14 +329,15 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             // remember result
             var result = CurrentNode.Green;
             var currentNode = _currentNode;
+            _lastNonSkippedTokenIndex = TokenIndex;
             SlidingBuffer_InsertNode(currentNode);
             SlidingBuffer_EatItem();
 
             // erase current state
             SlidingBuffer_ForgetFollowingTokens();
             this.EraseState();
-            RestoreParserState(_currentNode.Blender.State);
-            _mode = _currentNode.Blender.Mode;
+            RestoreParserState(currentNode.Blender.State);
+            _mode = currentNode.Blender.Mode;
 
             // TODO:MetaDslx: correct Peek before this position
 
@@ -351,8 +353,6 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         {
             _currentNode = default;
             _currentToken = default;
-            _currentTokenErrors.Clear();
-            _currentSkippedTokens.Clear();
         }
 
         protected InternalSyntaxToken CurrentToken
@@ -379,11 +379,11 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         {
             if (_blendedTokens != null)
             {
-                if (_currentNode.Token != null)
+                /*if (_currentNode.Token != null)
                 {
                     _blendedTokens.AddItem(_currentNode);
                 }
-                else
+                else*/
                 {
                     var token = _blendedTokens.LastCreatedItem.Blender.ReadToken();
                     if (token.Token == null) return false;
@@ -415,6 +415,30 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         {
             if (_blendedTokens != null)
             {
+#if DEBUG
+                if (n < 0)
+                {
+                    for (int i = 0; i >= n; i--)
+                    {
+                        var index = _blendedTokens.Index + i;
+                        if (index >= _blendedTokens.FirstIndex && index < _blendedTokens.FirstIndex + _blendedTokens.Count)
+                        {
+                            Debug.Assert(_blendedTokens[index].Token != null);
+                        }
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i <= n; i++)
+                    {
+                        var index = _blendedTokens.Index + i;
+                        if (index >= _blendedTokens.FirstIndex && index < _blendedTokens.FirstIndex + _blendedTokens.Count)
+                        {
+                            Debug.Assert(_blendedTokens[index].Token != null);
+                        }
+                    }
+                }
+#endif
                 return _blendedTokens.PeekItem(n).Token;
             }
             else
@@ -435,11 +459,19 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         private InternalSyntaxToken EatCurrentToken()
         {
             var ct = this.CurrentToken;
-            if (_currentSkippedTokens.Count > 0)
+            var index = TokenIndex;
+            var skippedTokenCount = index - _lastNonSkippedTokenIndex - 1;
+            if (skippedTokenCount > 0)
             {
-                ct = AddSkippedSyntax(ct, _currentSkippedTokens.ToListNode(), false);
-                _currentSkippedTokens.Clear();
+                var skippedTokens = SyntaxListBuilder.Create();
+                for (int i = skippedTokenCount; i > 0; i--)
+                {
+                    var token = PeekToken(-i);
+                    skippedTokens.Add(token);
+                }
+                ct = AddSkippedSyntax(ct, skippedTokens.ToListNode(), false);
             }
+            _lastNonSkippedTokenIndex = TokenIndex;
             if (_currentTokenErrors.Count > 0)
             {
                 ct = WithAdditionalDiagnostics(ct, _currentTokenErrors.ToArray());
@@ -512,25 +544,15 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         protected InternalSyntaxToken SkipToken()
         {
             var ct = this.CurrentToken;
-            _currentSkippedTokens.Add(ct);
             MoveToNextToken();
             return ct;
         }
 
-        protected InternalSyntaxToken CreateMissingToken(SyntaxKind expected)
+        private InternalSyntaxToken CreateMissingToken(SyntaxKind expected)
         {
             var token = Language.InternalSyntaxFactory.MissingToken(expected);
-            //SlidingBuffer_InsertItem(token);
             return token;
         }
-
-        /*
-        protected virtual InternalSyntaxToken SlidingBuffer_InsertItem(InternalSyntaxToken token)
-        {
-            if (_blendedTokens != null) _blendedTokens.InsertItem(new BlendedNode(null, token, default));
-            else _lexedTokens.InsertItem(token);
-            return token;
-        }*/
 
         protected InternalSyntaxToken CreateMissingToken(SyntaxKind expected, SyntaxKind actual, bool reportError)
         {
