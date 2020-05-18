@@ -5322,7 +5322,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
             }
             private GreenNode VisitTerminal(IToken token, TestLexerModeSyntaxKind kind)
             {
-				if (token == null)
+				if (token == null || (token.Type == TokenConstants.Eof && kind != SyntaxKind.Eof))
 				{
 					if (kind != null) return _factory.MissingToken(kind);
 					else return null;
@@ -5337,7 +5337,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
             }
             private GreenNode VisitTerminal(ITerminalNode node, TestLexerModeSyntaxKind kind)
             {
-                if (node == null || node.Symbol == null)
+                if (node == null || node.Symbol == null || (node.Symbol.Type == TokenConstants.Eof && kind != SyntaxKind.Eof))
 				{
 					if (kind != null) return _factory.MissingToken(kind);
 					else return null;
@@ -5372,24 +5372,12 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				if (context == null) return MainGreen.__Missing;
 				TestLexerModeParser.NamespaceDeclarationContext namespaceDeclarationContext = context.namespaceDeclaration();
 				NamespaceDeclarationGreen namespaceDeclaration = null;
-				if (namespaceDeclarationContext != null)
-				{
-					namespaceDeclaration = (NamespaceDeclarationGreen)this.Visit(namespaceDeclarationContext);
-				}
-				else
-				{
-					namespaceDeclaration = NamespaceDeclarationGreen.__Missing;
-				}
+				if (namespaceDeclarationContext != null) namespaceDeclaration = (NamespaceDeclarationGreen)this.Visit(namespaceDeclarationContext);
+				if (namespaceDeclaration == null) namespaceDeclaration = NamespaceDeclarationGreen.__Missing;
 				TestLexerModeParser.GeneratorDeclarationContext generatorDeclarationContext = context.generatorDeclaration();
 				GeneratorDeclarationGreen generatorDeclaration = null;
-				if (generatorDeclarationContext != null)
-				{
-					generatorDeclaration = (GeneratorDeclarationGreen)this.Visit(generatorDeclarationContext);
-				}
-				else
-				{
-					generatorDeclaration = GeneratorDeclarationGreen.__Missing;
-				}
+				if (generatorDeclarationContext != null) generatorDeclaration = (GeneratorDeclarationGreen)this.Visit(generatorDeclarationContext);
+				if (generatorDeclaration == null) generatorDeclaration = GeneratorDeclarationGreen.__Missing;
 			    TestLexerModeParser.UsingDeclarationContext[] usingDeclarationContext = context.usingDeclaration();
 			    var usingDeclarationBuilder = _pool.Allocate<UsingDeclarationGreen>();
 			    for (int i = 0; i < usingDeclarationContext.Length; i++)
@@ -5400,14 +5388,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				_pool.Free(usingDeclarationBuilder);
 				TestLexerModeParser.ConfigDeclarationContext configDeclarationContext = context.configDeclaration();
 				ConfigDeclarationGreen configDeclaration = null;
-				if (configDeclarationContext != null)
-				{
-					configDeclaration = (ConfigDeclarationGreen)this.Visit(configDeclarationContext);
-				}
-				else
-				{
-					configDeclaration = ConfigDeclarationGreen.__Missing;
-				}
+				if (configDeclarationContext != null) configDeclaration = (ConfigDeclarationGreen)this.Visit(configDeclarationContext);
 			    TestLexerModeParser.MethodDeclarationContext[] methodDeclarationContext = context.methodDeclaration();
 			    var methodDeclarationBuilder = _pool.Allocate<MethodDeclarationGreen>();
 			    for (int i = 0; i < methodDeclarationContext.Length; i++)
@@ -5426,14 +5407,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				InternalSyntaxToken kNamespace = (InternalSyntaxToken)this.VisitTerminal(context.KNamespace(), TestLexerModeSyntaxKind.KNamespace);
 				TestLexerModeParser.QualifiedNameContext qualifiedNameContext = context.qualifiedName();
 				QualifiedNameGreen qualifiedName = null;
-				if (qualifiedNameContext != null)
-				{
-					qualifiedName = (QualifiedNameGreen)this.Visit(qualifiedNameContext);
-				}
-				else
-				{
-					qualifiedName = QualifiedNameGreen.__Missing;
-				}
+				if (qualifiedNameContext != null) qualifiedName = (QualifiedNameGreen)this.Visit(qualifiedNameContext);
+				if (qualifiedName == null) qualifiedName = QualifiedNameGreen.__Missing;
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), TestLexerModeSyntaxKind.TSemicolon);
 				return _factory.NamespaceDeclaration(kNamespace, qualifiedName, tSemicolon);
 			}
@@ -5444,36 +5419,16 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				InternalSyntaxToken kGenerator = (InternalSyntaxToken)this.VisitTerminal(context.KGenerator(), TestLexerModeSyntaxKind.KGenerator);
 				TestLexerModeParser.IdentifierContext identifierContext = context.identifier();
 				IdentifierGreen identifier = null;
-				if (identifierContext != null)
-				{
-					identifier = (IdentifierGreen)this.Visit(identifierContext);
-				}
-				else
-				{
-					identifier = IdentifierGreen.__Missing;
-				}
+				if (identifierContext != null) identifier = (IdentifierGreen)this.Visit(identifierContext);
+				if (identifier == null) identifier = IdentifierGreen.__Missing;
 				InternalSyntaxToken tColon = (InternalSyntaxToken)this.VisitTerminal(context.TColon());
 				TestLexerModeParser.QualifiedNameContext qualifiedNameContext = context.qualifiedName();
 				QualifiedNameGreen qualifiedName = null;
-				if (qualifiedNameContext != null)
-				{
-					qualifiedName = (QualifiedNameGreen)this.Visit(qualifiedNameContext);
-				}
-				else
-				{
-					qualifiedName = QualifiedNameGreen.__Missing;
-				}
+				if (qualifiedNameContext != null) qualifiedName = (QualifiedNameGreen)this.Visit(qualifiedNameContext);
 				InternalSyntaxToken kFor = (InternalSyntaxToken)this.VisitTerminal(context.KFor());
 				TestLexerModeParser.TypeReferenceContext typeReferenceContext = context.typeReference();
 				TypeReferenceGreen typeReference = null;
-				if (typeReferenceContext != null)
-				{
-					typeReference = (TypeReferenceGreen)this.Visit(typeReferenceContext);
-				}
-				else
-				{
-					typeReference = TypeReferenceGreen.__Missing;
-				}
+				if (typeReferenceContext != null) typeReference = (TypeReferenceGreen)this.Visit(typeReferenceContext);
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), TestLexerModeSyntaxKind.TSemicolon);
 				return _factory.GeneratorDeclaration(kGenerator, identifier, tColon, qualifiedName, kFor, typeReference, tSemicolon);
 			}
@@ -5484,14 +5439,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				InternalSyntaxToken kUsing = (InternalSyntaxToken)this.VisitTerminal(context.KUsing(), TestLexerModeSyntaxKind.KUsing);
 				TestLexerModeParser.QualifiedNameContext qualifiedNameContext = context.qualifiedName();
 				QualifiedNameGreen qualifiedName = null;
-				if (qualifiedNameContext != null)
-				{
-					qualifiedName = (QualifiedNameGreen)this.Visit(qualifiedNameContext);
-				}
-				else
-				{
-					qualifiedName = QualifiedNameGreen.__Missing;
-				}
+				if (qualifiedNameContext != null) qualifiedName = (QualifiedNameGreen)this.Visit(qualifiedNameContext);
+				if (qualifiedName == null) qualifiedName = QualifiedNameGreen.__Missing;
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), TestLexerModeSyntaxKind.TSemicolon);
 				return _factory.UsingNamespaceDeclaration(kUsing, qualifiedName, tSemicolon);
 			}
@@ -5503,24 +5452,11 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				InternalSyntaxToken kGenerator = (InternalSyntaxToken)this.VisitTerminal(context.KGenerator(), TestLexerModeSyntaxKind.KGenerator);
 				TestLexerModeParser.QualifiedNameContext qualifiedNameContext = context.qualifiedName();
 				QualifiedNameGreen qualifiedName = null;
-				if (qualifiedNameContext != null)
-				{
-					qualifiedName = (QualifiedNameGreen)this.Visit(qualifiedNameContext);
-				}
-				else
-				{
-					qualifiedName = QualifiedNameGreen.__Missing;
-				}
+				if (qualifiedNameContext != null) qualifiedName = (QualifiedNameGreen)this.Visit(qualifiedNameContext);
+				if (qualifiedName == null) qualifiedName = QualifiedNameGreen.__Missing;
 				TestLexerModeParser.IdentifierContext identifierContext = context.identifier();
 				IdentifierGreen identifier = null;
-				if (identifierContext != null)
-				{
-					identifier = (IdentifierGreen)this.Visit(identifierContext);
-				}
-				else
-				{
-					identifier = IdentifierGreen.__Missing;
-				}
+				if (identifierContext != null) identifier = (IdentifierGreen)this.Visit(identifierContext);
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), TestLexerModeSyntaxKind.TSemicolon);
 				return _factory.UsingGeneratorDeclaration(kUsing, kGenerator, qualifiedName, identifier, tSemicolon);
 			}
@@ -5531,14 +5467,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				InternalSyntaxToken startProperties = (InternalSyntaxToken)this.VisitTerminal(context.startProperties, TestLexerModeSyntaxKind.KProperties);
 				TestLexerModeParser.IdentifierContext identifierContext = context.identifier();
 				IdentifierGreen identifier = null;
-				if (identifierContext != null)
-				{
-					identifier = (IdentifierGreen)this.Visit(identifierContext);
-				}
-				else
-				{
-					identifier = IdentifierGreen.__Missing;
-				}
+				if (identifierContext != null) identifier = (IdentifierGreen)this.Visit(identifierContext);
 			    TestLexerModeParser.ConfigPropertyContext[] configPropertyContext = context.configProperty();
 			    var configPropertyBuilder = _pool.Allocate<ConfigPropertyGreen>();
 			    for (int i = 0; i < configPropertyContext.Length; i++)
@@ -5557,35 +5486,16 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				if (context == null) return ConfigPropertyDeclarationGreen.__Missing;
 				TestLexerModeParser.TypeReferenceContext typeReferenceContext = context.typeReference();
 				TypeReferenceGreen typeReference = null;
-				if (typeReferenceContext != null)
-				{
-					typeReference = (TypeReferenceGreen)this.Visit(typeReferenceContext);
-				}
-				else
-				{
-					typeReference = TypeReferenceGreen.__Missing;
-				}
+				if (typeReferenceContext != null) typeReference = (TypeReferenceGreen)this.Visit(typeReferenceContext);
+				if (typeReference == null) typeReference = TypeReferenceGreen.__Missing;
 				TestLexerModeParser.IdentifierContext identifierContext = context.identifier();
 				IdentifierGreen identifier = null;
-				if (identifierContext != null)
-				{
-					identifier = (IdentifierGreen)this.Visit(identifierContext);
-				}
-				else
-				{
-					identifier = IdentifierGreen.__Missing;
-				}
+				if (identifierContext != null) identifier = (IdentifierGreen)this.Visit(identifierContext);
+				if (identifier == null) identifier = IdentifierGreen.__Missing;
 				InternalSyntaxToken tAssign = (InternalSyntaxToken)this.VisitTerminal(context.TAssign());
 				TestLexerModeParser.ExpressionContext expressionContext = context.expression();
 				ExpressionGreen expression = null;
-				if (expressionContext != null)
-				{
-					expression = (ExpressionGreen)this.Visit(expressionContext);
-				}
-				else
-				{
-					expression = ExpressionGreen.__Missing;
-				}
+				if (expressionContext != null) expression = (ExpressionGreen)this.Visit(expressionContext);
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), TestLexerModeSyntaxKind.TSemicolon);
 				return _factory.ConfigPropertyDeclaration(typeReference, identifier, tAssign, expression, tSemicolon);
 			}
@@ -5596,14 +5506,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				InternalSyntaxToken startProperties = (InternalSyntaxToken)this.VisitTerminal(context.startProperties, TestLexerModeSyntaxKind.KProperties);
 				TestLexerModeParser.IdentifierContext identifierContext = context.identifier();
 				IdentifierGreen identifier = null;
-				if (identifierContext != null)
-				{
-					identifier = (IdentifierGreen)this.Visit(identifierContext);
-				}
-				else
-				{
-					identifier = IdentifierGreen.__Missing;
-				}
+				if (identifierContext != null) identifier = (IdentifierGreen)this.Visit(identifierContext);
+				if (identifier == null) identifier = IdentifierGreen.__Missing;
 			    TestLexerModeParser.ConfigPropertyContext[] configPropertyContext = context.configProperty();
 			    var configPropertyBuilder = _pool.Allocate<ConfigPropertyGreen>();
 			    for (int i = 0; i < configPropertyContext.Length; i++)
@@ -5644,14 +5548,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				InternalSyntaxToken kExtern = (InternalSyntaxToken)this.VisitTerminal(context.KExtern(), TestLexerModeSyntaxKind.KExtern);
 				TestLexerModeParser.FunctionSignatureContext functionSignatureContext = context.functionSignature();
 				FunctionSignatureGreen functionSignature = null;
-				if (functionSignatureContext != null)
-				{
-					functionSignature = (FunctionSignatureGreen)this.Visit(functionSignatureContext);
-				}
-				else
-				{
-					functionSignature = FunctionSignatureGreen.__Missing;
-				}
+				if (functionSignatureContext != null) functionSignature = (FunctionSignatureGreen)this.Visit(functionSignatureContext);
+				if (functionSignature == null) functionSignature = FunctionSignatureGreen.__Missing;
 				return _factory.ExternFunctionDeclaration(kExtern, functionSignature);
 			}
 			
@@ -5660,24 +5558,12 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				if (context == null) return FunctionDeclarationGreen.__Missing;
 				TestLexerModeParser.FunctionSignatureContext functionSignatureContext = context.functionSignature();
 				FunctionSignatureGreen functionSignature = null;
-				if (functionSignatureContext != null)
-				{
-					functionSignature = (FunctionSignatureGreen)this.Visit(functionSignatureContext);
-				}
-				else
-				{
-					functionSignature = FunctionSignatureGreen.__Missing;
-				}
+				if (functionSignatureContext != null) functionSignature = (FunctionSignatureGreen)this.Visit(functionSignatureContext);
+				if (functionSignature == null) functionSignature = FunctionSignatureGreen.__Missing;
 				TestLexerModeParser.BodyContext bodyContext = context.body();
 				BodyGreen body = null;
-				if (bodyContext != null)
-				{
-					body = (BodyGreen)this.Visit(bodyContext);
-				}
-				else
-				{
-					body = BodyGreen.__Missing;
-				}
+				if (bodyContext != null) body = (BodyGreen)this.Visit(bodyContext);
+				if (body == null) body = BodyGreen.__Missing;
 				InternalSyntaxToken kEnd = (InternalSyntaxToken)this.VisitTerminal(context.KEnd(), TestLexerModeSyntaxKind.KEnd);
 				InternalSyntaxToken kFunction = (InternalSyntaxToken)this.VisitTerminal(context.KFunction(), TestLexerModeSyntaxKind.KFunction);
 				return _factory.FunctionDeclaration(functionSignature, body, kEnd, kFunction);
@@ -5689,45 +5575,19 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				InternalSyntaxToken kFunction = (InternalSyntaxToken)this.VisitTerminal(context.KFunction(), TestLexerModeSyntaxKind.KFunction);
 				TestLexerModeParser.ReturnTypeContext returnTypeContext = context.returnType();
 				ReturnTypeGreen returnType = null;
-				if (returnTypeContext != null)
-				{
-					returnType = (ReturnTypeGreen)this.Visit(returnTypeContext);
-				}
-				else
-				{
-					returnType = ReturnTypeGreen.__Missing;
-				}
+				if (returnTypeContext != null) returnType = (ReturnTypeGreen)this.Visit(returnTypeContext);
+				if (returnType == null) returnType = ReturnTypeGreen.__Missing;
 				TestLexerModeParser.IdentifierContext identifierContext = context.identifier();
 				IdentifierGreen identifier = null;
-				if (identifierContext != null)
-				{
-					identifier = (IdentifierGreen)this.Visit(identifierContext);
-				}
-				else
-				{
-					identifier = IdentifierGreen.__Missing;
-				}
+				if (identifierContext != null) identifier = (IdentifierGreen)this.Visit(identifierContext);
+				if (identifier == null) identifier = IdentifierGreen.__Missing;
 				TestLexerModeParser.TypeArgumentListContext typeArgumentListContext = context.typeArgumentList();
 				TypeArgumentListGreen typeArgumentList = null;
-				if (typeArgumentListContext != null)
-				{
-					typeArgumentList = (TypeArgumentListGreen)this.Visit(typeArgumentListContext);
-				}
-				else
-				{
-					typeArgumentList = TypeArgumentListGreen.__Missing;
-				}
+				if (typeArgumentListContext != null) typeArgumentList = (TypeArgumentListGreen)this.Visit(typeArgumentListContext);
 				InternalSyntaxToken tOpenParenthesis = (InternalSyntaxToken)this.VisitTerminal(context.TOpenParenthesis(), TestLexerModeSyntaxKind.TOpenParenthesis);
 				TestLexerModeParser.ParamListContext paramListContext = context.paramList();
 				ParamListGreen paramList = null;
-				if (paramListContext != null)
-				{
-					paramList = (ParamListGreen)this.Visit(paramListContext);
-				}
-				else
-				{
-					paramList = ParamListGreen.__Missing;
-				}
+				if (paramListContext != null) paramList = (ParamListGreen)this.Visit(paramListContext);
 				InternalSyntaxToken tCloseParenthesis = (InternalSyntaxToken)this.VisitTerminal(context.TCloseParenthesis(), TestLexerModeSyntaxKind.TCloseParenthesis);
 				return _factory.FunctionSignature(kFunction, returnType, identifier, typeArgumentList, tOpenParenthesis, paramList, tCloseParenthesis);
 			}
@@ -5756,35 +5616,16 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				if (context == null) return ParameterGreen.__Missing;
 				TestLexerModeParser.TypeReferenceContext typeReferenceContext = context.typeReference();
 				TypeReferenceGreen typeReference = null;
-				if (typeReferenceContext != null)
-				{
-					typeReference = (TypeReferenceGreen)this.Visit(typeReferenceContext);
-				}
-				else
-				{
-					typeReference = TypeReferenceGreen.__Missing;
-				}
+				if (typeReferenceContext != null) typeReference = (TypeReferenceGreen)this.Visit(typeReferenceContext);
+				if (typeReference == null) typeReference = TypeReferenceGreen.__Missing;
 				TestLexerModeParser.IdentifierContext identifierContext = context.identifier();
 				IdentifierGreen identifier = null;
-				if (identifierContext != null)
-				{
-					identifier = (IdentifierGreen)this.Visit(identifierContext);
-				}
-				else
-				{
-					identifier = IdentifierGreen.__Missing;
-				}
+				if (identifierContext != null) identifier = (IdentifierGreen)this.Visit(identifierContext);
+				if (identifier == null) identifier = IdentifierGreen.__Missing;
 				InternalSyntaxToken tAssign = (InternalSyntaxToken)this.VisitTerminal(context.TAssign());
 				TestLexerModeParser.ExpressionContext expressionContext = context.expression();
 				ExpressionGreen expression = null;
-				if (expressionContext != null)
-				{
-					expression = (ExpressionGreen)this.Visit(expressionContext);
-				}
-				else
-				{
-					expression = ExpressionGreen.__Missing;
-				}
+				if (expressionContext != null) expression = (ExpressionGreen)this.Visit(expressionContext);
 				return _factory.Parameter(typeReference, identifier, tAssign, expression);
 			}
 			
@@ -5869,14 +5710,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				if (context == null) return SingleStatementSemicolonGreen.__Missing;
 				TestLexerModeParser.SingleStatementContext singleStatementContext = context.singleStatement();
 				SingleStatementGreen singleStatement = null;
-				if (singleStatementContext != null)
-				{
-					singleStatement = (SingleStatementGreen)this.Visit(singleStatementContext);
-				}
-				else
-				{
-					singleStatement = SingleStatementGreen.__Missing;
-				}
+				if (singleStatementContext != null) singleStatement = (SingleStatementGreen)this.Visit(singleStatementContext);
+				if (singleStatement == null) singleStatement = SingleStatementGreen.__Missing;
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), TestLexerModeSyntaxKind.TSemicolon);
 				return _factory.SingleStatementSemicolon(singleStatement, tSemicolon);
 			}
@@ -5886,14 +5721,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				if (context == null) return VariableDeclarationStatementGreen.__Missing;
 				TestLexerModeParser.VariableDeclarationExpressionContext variableDeclarationExpressionContext = context.variableDeclarationExpression();
 				VariableDeclarationExpressionGreen variableDeclarationExpression = null;
-				if (variableDeclarationExpressionContext != null)
-				{
-					variableDeclarationExpression = (VariableDeclarationExpressionGreen)this.Visit(variableDeclarationExpressionContext);
-				}
-				else
-				{
-					variableDeclarationExpression = VariableDeclarationExpressionGreen.__Missing;
-				}
+				if (variableDeclarationExpressionContext != null) variableDeclarationExpression = (VariableDeclarationExpressionGreen)this.Visit(variableDeclarationExpressionContext);
+				if (variableDeclarationExpression == null) variableDeclarationExpression = VariableDeclarationExpressionGreen.__Missing;
 				return _factory.VariableDeclarationStatement(variableDeclarationExpression);
 			}
 			
@@ -5902,14 +5731,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				if (context == null) return VariableDeclarationExpressionGreen.__Missing;
 				TestLexerModeParser.TypeReferenceContext typeReferenceContext = context.typeReference();
 				TypeReferenceGreen typeReference = null;
-				if (typeReferenceContext != null)
-				{
-					typeReference = (TypeReferenceGreen)this.Visit(typeReferenceContext);
-				}
-				else
-				{
-					typeReference = TypeReferenceGreen.__Missing;
-				}
+				if (typeReferenceContext != null) typeReference = (TypeReferenceGreen)this.Visit(typeReferenceContext);
+				if (typeReference == null) typeReference = TypeReferenceGreen.__Missing;
 			    TestLexerModeParser.VariableDeclarationItemContext[] variableDeclarationItemContext = context.variableDeclarationItem();
 			    ITerminalNode[] tCommaContext = context.TComma();
 			    var variableDeclarationItemBuilder = _pool.AllocateSeparated<VariableDeclarationItemGreen>();
@@ -5931,25 +5754,12 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				if (context == null) return VariableDeclarationItemGreen.__Missing;
 				TestLexerModeParser.IdentifierContext identifierContext = context.identifier();
 				IdentifierGreen identifier = null;
-				if (identifierContext != null)
-				{
-					identifier = (IdentifierGreen)this.Visit(identifierContext);
-				}
-				else
-				{
-					identifier = IdentifierGreen.__Missing;
-				}
+				if (identifierContext != null) identifier = (IdentifierGreen)this.Visit(identifierContext);
+				if (identifier == null) identifier = IdentifierGreen.__Missing;
 				InternalSyntaxToken tAssign = (InternalSyntaxToken)this.VisitTerminal(context.TAssign());
 				TestLexerModeParser.ExpressionContext expressionContext = context.expression();
 				ExpressionGreen expression = null;
-				if (expressionContext != null)
-				{
-					expression = (ExpressionGreen)this.Visit(expressionContext);
-				}
-				else
-				{
-					expression = ExpressionGreen.__Missing;
-				}
+				if (expressionContext != null) expression = (ExpressionGreen)this.Visit(expressionContext);
 				return _factory.VariableDeclarationItem(identifier, tAssign, expression);
 			}
 			
@@ -5959,14 +5769,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				InternalSyntaxToken kVoid = (InternalSyntaxToken)this.VisitTerminal(context.KVoid(), TestLexerModeSyntaxKind.KVoid);
 				TestLexerModeParser.ExpressionContext expressionContext = context.expression();
 				ExpressionGreen expression = null;
-				if (expressionContext != null)
-				{
-					expression = (ExpressionGreen)this.Visit(expressionContext);
-				}
-				else
-				{
-					expression = ExpressionGreen.__Missing;
-				}
+				if (expressionContext != null) expression = (ExpressionGreen)this.Visit(expressionContext);
+				if (expression == null) expression = ExpressionGreen.__Missing;
 				return _factory.VoidStatement(kVoid, expression);
 			}
 			
@@ -5976,14 +5780,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				InternalSyntaxToken kReturn = (InternalSyntaxToken)this.VisitTerminal(context.KReturn(), TestLexerModeSyntaxKind.KReturn);
 				TestLexerModeParser.ExpressionContext expressionContext = context.expression();
 				ExpressionGreen expression = null;
-				if (expressionContext != null)
-				{
-					expression = (ExpressionGreen)this.Visit(expressionContext);
-				}
-				else
-				{
-					expression = ExpressionGreen.__Missing;
-				}
+				if (expressionContext != null) expression = (ExpressionGreen)this.Visit(expressionContext);
+				if (expression == null) expression = ExpressionGreen.__Missing;
 				return _factory.ReturnStatement(kReturn, expression);
 			}
 			
@@ -5992,14 +5790,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				if (context == null) return ExpressionStatementGreen.__Missing;
 				TestLexerModeParser.ExpressionContext expressionContext = context.expression();
 				ExpressionGreen expression = null;
-				if (expressionContext != null)
-				{
-					expression = (ExpressionGreen)this.Visit(expressionContext);
-				}
-				else
-				{
-					expression = ExpressionGreen.__Missing;
-				}
+				if (expressionContext != null) expression = (ExpressionGreen)this.Visit(expressionContext);
+				if (expression == null) expression = ExpressionGreen.__Missing;
 				return _factory.ExpressionStatement(expression);
 			}
 			
@@ -6008,24 +5800,12 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				if (context == null) return IfStatementGreen.__Missing;
 				TestLexerModeParser.IfStatementBeginContext ifStatementBeginContext = context.ifStatementBegin();
 				IfStatementBeginGreen ifStatementBegin = null;
-				if (ifStatementBeginContext != null)
-				{
-					ifStatementBegin = (IfStatementBeginGreen)this.Visit(ifStatementBeginContext);
-				}
-				else
-				{
-					ifStatementBegin = IfStatementBeginGreen.__Missing;
-				}
+				if (ifStatementBeginContext != null) ifStatementBegin = (IfStatementBeginGreen)this.Visit(ifStatementBeginContext);
+				if (ifStatementBegin == null) ifStatementBegin = IfStatementBeginGreen.__Missing;
 				TestLexerModeParser.BodyContext bodyContext = context.body();
 				BodyGreen body = null;
-				if (bodyContext != null)
-				{
-					body = (BodyGreen)this.Visit(bodyContext);
-				}
-				else
-				{
-					body = BodyGreen.__Missing;
-				}
+				if (bodyContext != null) body = (BodyGreen)this.Visit(bodyContext);
+				if (body == null) body = BodyGreen.__Missing;
 			    TestLexerModeParser.ElseIfStatementBodyContext[] elseIfStatementBodyContext = context.elseIfStatementBody();
 			    var elseIfStatementBodyBuilder = _pool.Allocate<ElseIfStatementBodyGreen>();
 			    for (int i = 0; i < elseIfStatementBodyContext.Length; i++)
@@ -6036,24 +5816,11 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				_pool.Free(elseIfStatementBodyBuilder);
 				TestLexerModeParser.IfStatementElseBodyContext ifStatementElseBodyContext = context.ifStatementElseBody();
 				IfStatementElseBodyGreen ifStatementElseBody = null;
-				if (ifStatementElseBodyContext != null)
-				{
-					ifStatementElseBody = (IfStatementElseBodyGreen)this.Visit(ifStatementElseBodyContext);
-				}
-				else
-				{
-					ifStatementElseBody = IfStatementElseBodyGreen.__Missing;
-				}
+				if (ifStatementElseBodyContext != null) ifStatementElseBody = (IfStatementElseBodyGreen)this.Visit(ifStatementElseBodyContext);
 				TestLexerModeParser.IfStatementEndContext ifStatementEndContext = context.ifStatementEnd();
 				IfStatementEndGreen ifStatementEnd = null;
-				if (ifStatementEndContext != null)
-				{
-					ifStatementEnd = (IfStatementEndGreen)this.Visit(ifStatementEndContext);
-				}
-				else
-				{
-					ifStatementEnd = IfStatementEndGreen.__Missing;
-				}
+				if (ifStatementEndContext != null) ifStatementEnd = (IfStatementEndGreen)this.Visit(ifStatementEndContext);
+				if (ifStatementEnd == null) ifStatementEnd = IfStatementEndGreen.__Missing;
 				return _factory.IfStatement(ifStatementBegin, body, elseIfStatementBody, ifStatementElseBody, ifStatementEnd);
 			}
 			
@@ -6062,24 +5829,12 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				if (context == null) return ElseIfStatementBodyGreen.__Missing;
 				TestLexerModeParser.ElseIfStatementContext elseIfStatementContext = context.elseIfStatement();
 				ElseIfStatementGreen elseIfStatement = null;
-				if (elseIfStatementContext != null)
-				{
-					elseIfStatement = (ElseIfStatementGreen)this.Visit(elseIfStatementContext);
-				}
-				else
-				{
-					elseIfStatement = ElseIfStatementGreen.__Missing;
-				}
+				if (elseIfStatementContext != null) elseIfStatement = (ElseIfStatementGreen)this.Visit(elseIfStatementContext);
+				if (elseIfStatement == null) elseIfStatement = ElseIfStatementGreen.__Missing;
 				TestLexerModeParser.BodyContext bodyContext = context.body();
 				BodyGreen body = null;
-				if (bodyContext != null)
-				{
-					body = (BodyGreen)this.Visit(bodyContext);
-				}
-				else
-				{
-					body = BodyGreen.__Missing;
-				}
+				if (bodyContext != null) body = (BodyGreen)this.Visit(bodyContext);
+				if (body == null) body = BodyGreen.__Missing;
 				return _factory.ElseIfStatementBody(elseIfStatement, body);
 			}
 			
@@ -6088,24 +5843,12 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				if (context == null) return IfStatementElseBodyGreen.__Missing;
 				TestLexerModeParser.IfStatementElseContext ifStatementElseContext = context.ifStatementElse();
 				IfStatementElseGreen ifStatementElse = null;
-				if (ifStatementElseContext != null)
-				{
-					ifStatementElse = (IfStatementElseGreen)this.Visit(ifStatementElseContext);
-				}
-				else
-				{
-					ifStatementElse = IfStatementElseGreen.__Missing;
-				}
+				if (ifStatementElseContext != null) ifStatementElse = (IfStatementElseGreen)this.Visit(ifStatementElseContext);
+				if (ifStatementElse == null) ifStatementElse = IfStatementElseGreen.__Missing;
 				TestLexerModeParser.BodyContext bodyContext = context.body();
 				BodyGreen body = null;
-				if (bodyContext != null)
-				{
-					body = (BodyGreen)this.Visit(bodyContext);
-				}
-				else
-				{
-					body = BodyGreen.__Missing;
-				}
+				if (bodyContext != null) body = (BodyGreen)this.Visit(bodyContext);
+				if (body == null) body = BodyGreen.__Missing;
 				return _factory.IfStatementElseBody(ifStatementElse, body);
 			}
 			
@@ -6116,14 +5859,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				InternalSyntaxToken tOpenParenthesis = (InternalSyntaxToken)this.VisitTerminal(context.TOpenParenthesis(), TestLexerModeSyntaxKind.TOpenParenthesis);
 				TestLexerModeParser.ExpressionContext expressionContext = context.expression();
 				ExpressionGreen expression = null;
-				if (expressionContext != null)
-				{
-					expression = (ExpressionGreen)this.Visit(expressionContext);
-				}
-				else
-				{
-					expression = ExpressionGreen.__Missing;
-				}
+				if (expressionContext != null) expression = (ExpressionGreen)this.Visit(expressionContext);
+				if (expression == null) expression = ExpressionGreen.__Missing;
 				InternalSyntaxToken tCloseParenthesis = (InternalSyntaxToken)this.VisitTerminal(context.TCloseParenthesis(), TestLexerModeSyntaxKind.TCloseParenthesis);
 				return _factory.IfStatementBegin(kIf, tOpenParenthesis, expression, tCloseParenthesis);
 			}
@@ -6136,14 +5873,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				InternalSyntaxToken tOpenParenthesis = (InternalSyntaxToken)this.VisitTerminal(context.TOpenParenthesis(), TestLexerModeSyntaxKind.TOpenParenthesis);
 				TestLexerModeParser.ExpressionContext expressionContext = context.expression();
 				ExpressionGreen expression = null;
-				if (expressionContext != null)
-				{
-					expression = (ExpressionGreen)this.Visit(expressionContext);
-				}
-				else
-				{
-					expression = ExpressionGreen.__Missing;
-				}
+				if (expressionContext != null) expression = (ExpressionGreen)this.Visit(expressionContext);
+				if (expression == null) expression = ExpressionGreen.__Missing;
 				InternalSyntaxToken tCloseParenthesis = (InternalSyntaxToken)this.VisitTerminal(context.TCloseParenthesis(), TestLexerModeSyntaxKind.TCloseParenthesis);
 				return _factory.ElseIfStatement(kElse, kIf, tOpenParenthesis, expression, tCloseParenthesis);
 			}
@@ -6168,34 +5899,16 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				if (context == null) return ForStatementGreen.__Missing;
 				TestLexerModeParser.ForStatementBeginContext forStatementBeginContext = context.forStatementBegin();
 				ForStatementBeginGreen forStatementBegin = null;
-				if (forStatementBeginContext != null)
-				{
-					forStatementBegin = (ForStatementBeginGreen)this.Visit(forStatementBeginContext);
-				}
-				else
-				{
-					forStatementBegin = ForStatementBeginGreen.__Missing;
-				}
+				if (forStatementBeginContext != null) forStatementBegin = (ForStatementBeginGreen)this.Visit(forStatementBeginContext);
+				if (forStatementBegin == null) forStatementBegin = ForStatementBeginGreen.__Missing;
 				TestLexerModeParser.BodyContext bodyContext = context.body();
 				BodyGreen body = null;
-				if (bodyContext != null)
-				{
-					body = (BodyGreen)this.Visit(bodyContext);
-				}
-				else
-				{
-					body = BodyGreen.__Missing;
-				}
+				if (bodyContext != null) body = (BodyGreen)this.Visit(bodyContext);
+				if (body == null) body = BodyGreen.__Missing;
 				TestLexerModeParser.ForStatementEndContext forStatementEndContext = context.forStatementEnd();
 				ForStatementEndGreen forStatementEnd = null;
-				if (forStatementEndContext != null)
-				{
-					forStatementEnd = (ForStatementEndGreen)this.Visit(forStatementEndContext);
-				}
-				else
-				{
-					forStatementEnd = ForStatementEndGreen.__Missing;
-				}
+				if (forStatementEndContext != null) forStatementEnd = (ForStatementEndGreen)this.Visit(forStatementEndContext);
+				if (forStatementEnd == null) forStatementEnd = ForStatementEndGreen.__Missing;
 				return _factory.ForStatement(forStatementBegin, body, forStatementEnd);
 			}
 			
@@ -6206,36 +5919,15 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				InternalSyntaxToken tOpenParenthesis = (InternalSyntaxToken)this.VisitTerminal(context.TOpenParenthesis(), TestLexerModeSyntaxKind.TOpenParenthesis);
 				TestLexerModeParser.ForInitStatementContext forInitStatementContext = context.forInitStatement();
 				ForInitStatementGreen forInitStatement = null;
-				if (forInitStatementContext != null)
-				{
-					forInitStatement = (ForInitStatementGreen)this.Visit(forInitStatementContext);
-				}
-				else
-				{
-					forInitStatement = ForInitStatementGreen.__Missing;
-				}
+				if (forInitStatementContext != null) forInitStatement = (ForInitStatementGreen)this.Visit(forInitStatementContext);
 				InternalSyntaxToken semi1 = (InternalSyntaxToken)this.VisitTerminal(context.semi1, TestLexerModeSyntaxKind.TSemicolon);
 				TestLexerModeParser.ExpressionListContext endExpressionContext = context.endExpression;
 				ExpressionListGreen endExpression = null;
-				if (endExpressionContext != null)
-				{
-					endExpression = (ExpressionListGreen)this.Visit(endExpressionContext);
-				}
-				else
-				{
-					endExpression = ExpressionListGreen.__Missing;
-				}
+				if (endExpressionContext != null) endExpression = (ExpressionListGreen)this.Visit(endExpressionContext);
 				InternalSyntaxToken semi2 = (InternalSyntaxToken)this.VisitTerminal(context.semi2, TestLexerModeSyntaxKind.TSemicolon);
 				TestLexerModeParser.ExpressionListContext stepExpressionContext = context.stepExpression;
 				ExpressionListGreen stepExpression = null;
-				if (stepExpressionContext != null)
-				{
-					stepExpression = (ExpressionListGreen)this.Visit(stepExpressionContext);
-				}
-				else
-				{
-					stepExpression = ExpressionListGreen.__Missing;
-				}
+				if (stepExpressionContext != null) stepExpression = (ExpressionListGreen)this.Visit(stepExpressionContext);
 				InternalSyntaxToken tCloseParenthesis = (InternalSyntaxToken)this.VisitTerminal(context.TCloseParenthesis(), TestLexerModeSyntaxKind.TCloseParenthesis);
 				return _factory.ForStatementBegin(kFor, tOpenParenthesis, forInitStatement, semi1, endExpression, semi2, stepExpression, tCloseParenthesis);
 			}
@@ -6269,34 +5961,16 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				if (context == null) return WhileStatementGreen.__Missing;
 				TestLexerModeParser.WhileStatementBeginContext whileStatementBeginContext = context.whileStatementBegin();
 				WhileStatementBeginGreen whileStatementBegin = null;
-				if (whileStatementBeginContext != null)
-				{
-					whileStatementBegin = (WhileStatementBeginGreen)this.Visit(whileStatementBeginContext);
-				}
-				else
-				{
-					whileStatementBegin = WhileStatementBeginGreen.__Missing;
-				}
+				if (whileStatementBeginContext != null) whileStatementBegin = (WhileStatementBeginGreen)this.Visit(whileStatementBeginContext);
+				if (whileStatementBegin == null) whileStatementBegin = WhileStatementBeginGreen.__Missing;
 				TestLexerModeParser.BodyContext bodyContext = context.body();
 				BodyGreen body = null;
-				if (bodyContext != null)
-				{
-					body = (BodyGreen)this.Visit(bodyContext);
-				}
-				else
-				{
-					body = BodyGreen.__Missing;
-				}
+				if (bodyContext != null) body = (BodyGreen)this.Visit(bodyContext);
+				if (body == null) body = BodyGreen.__Missing;
 				TestLexerModeParser.WhileStatementEndContext whileStatementEndContext = context.whileStatementEnd();
 				WhileStatementEndGreen whileStatementEnd = null;
-				if (whileStatementEndContext != null)
-				{
-					whileStatementEnd = (WhileStatementEndGreen)this.Visit(whileStatementEndContext);
-				}
-				else
-				{
-					whileStatementEnd = WhileStatementEndGreen.__Missing;
-				}
+				if (whileStatementEndContext != null) whileStatementEnd = (WhileStatementEndGreen)this.Visit(whileStatementEndContext);
+				if (whileStatementEnd == null) whileStatementEnd = WhileStatementEndGreen.__Missing;
 				return _factory.WhileStatement(whileStatementBegin, body, whileStatementEnd);
 			}
 			
@@ -6307,14 +5981,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				InternalSyntaxToken tOpenParenthesis = (InternalSyntaxToken)this.VisitTerminal(context.TOpenParenthesis(), TestLexerModeSyntaxKind.TOpenParenthesis);
 				TestLexerModeParser.ExpressionContext expressionContext = context.expression();
 				ExpressionGreen expression = null;
-				if (expressionContext != null)
-				{
-					expression = (ExpressionGreen)this.Visit(expressionContext);
-				}
-				else
-				{
-					expression = ExpressionGreen.__Missing;
-				}
+				if (expressionContext != null) expression = (ExpressionGreen)this.Visit(expressionContext);
+				if (expression == null) expression = ExpressionGreen.__Missing;
 				InternalSyntaxToken tCloseParenthesis = (InternalSyntaxToken)this.VisitTerminal(context.TCloseParenthesis(), TestLexerModeSyntaxKind.TCloseParenthesis);
 				return _factory.WhileStatementBegin(kWhile, tOpenParenthesis, expression, tCloseParenthesis);
 			}
@@ -6332,14 +6000,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				if (context == null) return WhileRunExpressionGreen.__Missing;
 				TestLexerModeParser.SeparatorStatementContext separatorStatementContext = context.separatorStatement();
 				SeparatorStatementGreen separatorStatement = null;
-				if (separatorStatementContext != null)
-				{
-					separatorStatement = (SeparatorStatementGreen)this.Visit(separatorStatementContext);
-				}
-				else
-				{
-					separatorStatement = SeparatorStatementGreen.__Missing;
-				}
+				if (separatorStatementContext != null) separatorStatement = (SeparatorStatementGreen)this.Visit(separatorStatementContext);
+				if (separatorStatement == null) separatorStatement = SeparatorStatementGreen.__Missing;
 				return _factory.WhileRunExpression(separatorStatement);
 			}
 			
@@ -6348,34 +6010,16 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				if (context == null) return RepeatStatementGreen.__Missing;
 				TestLexerModeParser.RepeatStatementBeginContext repeatStatementBeginContext = context.repeatStatementBegin();
 				RepeatStatementBeginGreen repeatStatementBegin = null;
-				if (repeatStatementBeginContext != null)
-				{
-					repeatStatementBegin = (RepeatStatementBeginGreen)this.Visit(repeatStatementBeginContext);
-				}
-				else
-				{
-					repeatStatementBegin = RepeatStatementBeginGreen.__Missing;
-				}
+				if (repeatStatementBeginContext != null) repeatStatementBegin = (RepeatStatementBeginGreen)this.Visit(repeatStatementBeginContext);
+				if (repeatStatementBegin == null) repeatStatementBegin = RepeatStatementBeginGreen.__Missing;
 				TestLexerModeParser.BodyContext bodyContext = context.body();
 				BodyGreen body = null;
-				if (bodyContext != null)
-				{
-					body = (BodyGreen)this.Visit(bodyContext);
-				}
-				else
-				{
-					body = BodyGreen.__Missing;
-				}
+				if (bodyContext != null) body = (BodyGreen)this.Visit(bodyContext);
+				if (body == null) body = BodyGreen.__Missing;
 				TestLexerModeParser.RepeatStatementEndContext repeatStatementEndContext = context.repeatStatementEnd();
 				RepeatStatementEndGreen repeatStatementEnd = null;
-				if (repeatStatementEndContext != null)
-				{
-					repeatStatementEnd = (RepeatStatementEndGreen)this.Visit(repeatStatementEndContext);
-				}
-				else
-				{
-					repeatStatementEnd = RepeatStatementEndGreen.__Missing;
-				}
+				if (repeatStatementEndContext != null) repeatStatementEnd = (RepeatStatementEndGreen)this.Visit(repeatStatementEndContext);
+				if (repeatStatementEnd == null) repeatStatementEnd = RepeatStatementEndGreen.__Missing;
 				return _factory.RepeatStatement(repeatStatementBegin, body, repeatStatementEnd);
 			}
 			
@@ -6393,14 +6037,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				InternalSyntaxToken tOpenParenthesis = (InternalSyntaxToken)this.VisitTerminal(context.TOpenParenthesis(), TestLexerModeSyntaxKind.TOpenParenthesis);
 				TestLexerModeParser.ExpressionContext expressionContext = context.expression();
 				ExpressionGreen expression = null;
-				if (expressionContext != null)
-				{
-					expression = (ExpressionGreen)this.Visit(expressionContext);
-				}
-				else
-				{
-					expression = ExpressionGreen.__Missing;
-				}
+				if (expressionContext != null) expression = (ExpressionGreen)this.Visit(expressionContext);
+				if (expression == null) expression = ExpressionGreen.__Missing;
 				InternalSyntaxToken tCloseParenthesis = (InternalSyntaxToken)this.VisitTerminal(context.TCloseParenthesis(), TestLexerModeSyntaxKind.TCloseParenthesis);
 				return _factory.RepeatStatementEnd(kUntil, tOpenParenthesis, expression, tCloseParenthesis);
 			}
@@ -6410,14 +6048,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				if (context == null) return RepeatRunExpressionGreen.__Missing;
 				TestLexerModeParser.SeparatorStatementContext separatorStatementContext = context.separatorStatement();
 				SeparatorStatementGreen separatorStatement = null;
-				if (separatorStatementContext != null)
-				{
-					separatorStatement = (SeparatorStatementGreen)this.Visit(separatorStatementContext);
-				}
-				else
-				{
-					separatorStatement = SeparatorStatementGreen.__Missing;
-				}
+				if (separatorStatementContext != null) separatorStatement = (SeparatorStatementGreen)this.Visit(separatorStatementContext);
+				if (separatorStatement == null) separatorStatement = SeparatorStatementGreen.__Missing;
 				return _factory.RepeatRunExpression(separatorStatement);
 			}
 			
@@ -6426,34 +6058,16 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				if (context == null) return LoopStatementGreen.__Missing;
 				TestLexerModeParser.LoopStatementBeginContext loopStatementBeginContext = context.loopStatementBegin();
 				LoopStatementBeginGreen loopStatementBegin = null;
-				if (loopStatementBeginContext != null)
-				{
-					loopStatementBegin = (LoopStatementBeginGreen)this.Visit(loopStatementBeginContext);
-				}
-				else
-				{
-					loopStatementBegin = LoopStatementBeginGreen.__Missing;
-				}
+				if (loopStatementBeginContext != null) loopStatementBegin = (LoopStatementBeginGreen)this.Visit(loopStatementBeginContext);
+				if (loopStatementBegin == null) loopStatementBegin = LoopStatementBeginGreen.__Missing;
 				TestLexerModeParser.BodyContext bodyContext = context.body();
 				BodyGreen body = null;
-				if (bodyContext != null)
-				{
-					body = (BodyGreen)this.Visit(bodyContext);
-				}
-				else
-				{
-					body = BodyGreen.__Missing;
-				}
+				if (bodyContext != null) body = (BodyGreen)this.Visit(bodyContext);
+				if (body == null) body = BodyGreen.__Missing;
 				TestLexerModeParser.LoopStatementEndContext loopStatementEndContext = context.loopStatementEnd();
 				LoopStatementEndGreen loopStatementEnd = null;
-				if (loopStatementEndContext != null)
-				{
-					loopStatementEnd = (LoopStatementEndGreen)this.Visit(loopStatementEndContext);
-				}
-				else
-				{
-					loopStatementEnd = LoopStatementEndGreen.__Missing;
-				}
+				if (loopStatementEndContext != null) loopStatementEnd = (LoopStatementEndGreen)this.Visit(loopStatementEndContext);
+				if (loopStatementEnd == null) loopStatementEnd = LoopStatementEndGreen.__Missing;
 				return _factory.LoopStatement(loopStatementBegin, body, loopStatementEnd);
 			}
 			
@@ -6464,34 +6078,14 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				InternalSyntaxToken tOpenParenthesis = (InternalSyntaxToken)this.VisitTerminal(context.TOpenParenthesis(), TestLexerModeSyntaxKind.TOpenParenthesis);
 				TestLexerModeParser.LoopChainContext loopChainContext = context.loopChain();
 				LoopChainGreen loopChain = null;
-				if (loopChainContext != null)
-				{
-					loopChain = (LoopChainGreen)this.Visit(loopChainContext);
-				}
-				else
-				{
-					loopChain = LoopChainGreen.__Missing;
-				}
+				if (loopChainContext != null) loopChain = (LoopChainGreen)this.Visit(loopChainContext);
+				if (loopChain == null) loopChain = LoopChainGreen.__Missing;
 				TestLexerModeParser.LoopWhereExpressionContext loopWhereExpressionContext = context.loopWhereExpression();
 				LoopWhereExpressionGreen loopWhereExpression = null;
-				if (loopWhereExpressionContext != null)
-				{
-					loopWhereExpression = (LoopWhereExpressionGreen)this.Visit(loopWhereExpressionContext);
-				}
-				else
-				{
-					loopWhereExpression = LoopWhereExpressionGreen.__Missing;
-				}
+				if (loopWhereExpressionContext != null) loopWhereExpression = (LoopWhereExpressionGreen)this.Visit(loopWhereExpressionContext);
 				TestLexerModeParser.LoopRunExpressionContext loopRunExpressionContext = context.loopRunExpression();
 				LoopRunExpressionGreen loopRunExpression = null;
-				if (loopRunExpressionContext != null)
-				{
-					loopRunExpression = (LoopRunExpressionGreen)this.Visit(loopRunExpressionContext);
-				}
-				else
-				{
-					loopRunExpression = LoopRunExpressionGreen.__Missing;
-				}
+				if (loopRunExpressionContext != null) loopRunExpression = (LoopRunExpressionGreen)this.Visit(loopRunExpressionContext);
 				InternalSyntaxToken tCloseParenthesis = (InternalSyntaxToken)this.VisitTerminal(context.TCloseParenthesis(), TestLexerModeSyntaxKind.TCloseParenthesis);
 				return _factory.LoopStatementBegin(kLoop, tOpenParenthesis, loopChain, loopWhereExpression, loopRunExpression, tCloseParenthesis);
 			}
@@ -6528,35 +6122,15 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				if (context == null) return LoopChainItemGreen.__Missing;
 				TestLexerModeParser.TypeReferenceContext typeReferenceContext = context.typeReference();
 				TypeReferenceGreen typeReference = null;
-				if (typeReferenceContext != null)
-				{
-					typeReference = (TypeReferenceGreen)this.Visit(typeReferenceContext);
-				}
-				else
-				{
-					typeReference = TypeReferenceGreen.__Missing;
-				}
+				if (typeReferenceContext != null) typeReference = (TypeReferenceGreen)this.Visit(typeReferenceContext);
 				TestLexerModeParser.IdentifierContext identifierContext = context.identifier();
 				IdentifierGreen identifier = null;
-				if (identifierContext != null)
-				{
-					identifier = (IdentifierGreen)this.Visit(identifierContext);
-				}
-				else
-				{
-					identifier = IdentifierGreen.__Missing;
-				}
+				if (identifierContext != null) identifier = (IdentifierGreen)this.Visit(identifierContext);
 				InternalSyntaxToken tColon = (InternalSyntaxToken)this.VisitTerminal(context.TColon());
 				TestLexerModeParser.LoopChainExpressionContext loopChainExpressionContext = context.loopChainExpression();
 				LoopChainExpressionGreen loopChainExpression = null;
-				if (loopChainExpressionContext != null)
-				{
-					loopChainExpression = (LoopChainExpressionGreen)this.Visit(loopChainExpressionContext);
-				}
-				else
-				{
-					loopChainExpression = LoopChainExpressionGreen.__Missing;
-				}
+				if (loopChainExpressionContext != null) loopChainExpression = (LoopChainExpressionGreen)this.Visit(loopChainExpressionContext);
+				if (loopChainExpression == null) loopChainExpression = LoopChainExpressionGreen.__Missing;
 				return _factory.LoopChainItem(typeReference, identifier, tColon, loopChainExpression);
 			}
 			
@@ -6567,14 +6141,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				InternalSyntaxToken tOpenParenthesis = (InternalSyntaxToken)this.VisitTerminal(context.TOpenParenthesis(), TestLexerModeSyntaxKind.TOpenParenthesis);
 				TestLexerModeParser.TypeReferenceContext typeReferenceContext = context.typeReference();
 				TypeReferenceGreen typeReference = null;
-				if (typeReferenceContext != null)
-				{
-					typeReference = (TypeReferenceGreen)this.Visit(typeReferenceContext);
-				}
-				else
-				{
-					typeReference = TypeReferenceGreen.__Missing;
-				}
+				if (typeReferenceContext != null) typeReference = (TypeReferenceGreen)this.Visit(typeReferenceContext);
+				if (typeReference == null) typeReference = TypeReferenceGreen.__Missing;
 				InternalSyntaxToken tCloseParenthesis = (InternalSyntaxToken)this.VisitTerminal(context.TCloseParenthesis(), TestLexerModeSyntaxKind.TCloseParenthesis);
 				return _factory.LoopChainTypeofExpression(kTypeof, tOpenParenthesis, typeReference, tCloseParenthesis);
 			}
@@ -6584,24 +6152,11 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				if (context == null) return LoopChainIdentifierExpressionGreen.__Missing;
 				TestLexerModeParser.IdentifierContext identifierContext = context.identifier();
 				IdentifierGreen identifier = null;
-				if (identifierContext != null)
-				{
-					identifier = (IdentifierGreen)this.Visit(identifierContext);
-				}
-				else
-				{
-					identifier = IdentifierGreen.__Missing;
-				}
+				if (identifierContext != null) identifier = (IdentifierGreen)this.Visit(identifierContext);
+				if (identifier == null) identifier = IdentifierGreen.__Missing;
 				TestLexerModeParser.TypeArgumentListContext typeArgumentListContext = context.typeArgumentList();
 				TypeArgumentListGreen typeArgumentList = null;
-				if (typeArgumentListContext != null)
-				{
-					typeArgumentList = (TypeArgumentListGreen)this.Visit(typeArgumentListContext);
-				}
-				else
-				{
-					typeArgumentList = TypeArgumentListGreen.__Missing;
-				}
+				if (typeArgumentListContext != null) typeArgumentList = (TypeArgumentListGreen)this.Visit(typeArgumentListContext);
 				return _factory.LoopChainIdentifierExpression(identifier, typeArgumentList);
 			}
 			
@@ -6610,35 +6165,16 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				if (context == null) return LoopChainMemberAccessExpressionGreen.__Missing;
 				TestLexerModeParser.LoopChainExpressionContext loopChainExpressionContext = context.loopChainExpression();
 				LoopChainExpressionGreen loopChainExpression = null;
-				if (loopChainExpressionContext != null)
-				{
-					loopChainExpression = (LoopChainExpressionGreen)this.Visit(loopChainExpressionContext);
-				}
-				else
-				{
-					loopChainExpression = LoopChainExpressionGreen.__Missing;
-				}
+				if (loopChainExpressionContext != null) loopChainExpression = (LoopChainExpressionGreen)this.Visit(loopChainExpressionContext);
+				if (loopChainExpression == null) loopChainExpression = LoopChainExpressionGreen.__Missing;
 				InternalSyntaxToken tDot = (InternalSyntaxToken)this.VisitTerminal(context.TDot(), TestLexerModeSyntaxKind.TDot);
 				TestLexerModeParser.IdentifierContext identifierContext = context.identifier();
 				IdentifierGreen identifier = null;
-				if (identifierContext != null)
-				{
-					identifier = (IdentifierGreen)this.Visit(identifierContext);
-				}
-				else
-				{
-					identifier = IdentifierGreen.__Missing;
-				}
+				if (identifierContext != null) identifier = (IdentifierGreen)this.Visit(identifierContext);
+				if (identifier == null) identifier = IdentifierGreen.__Missing;
 				TestLexerModeParser.TypeArgumentListContext typeArgumentListContext = context.typeArgumentList();
 				TypeArgumentListGreen typeArgumentList = null;
-				if (typeArgumentListContext != null)
-				{
-					typeArgumentList = (TypeArgumentListGreen)this.Visit(typeArgumentListContext);
-				}
-				else
-				{
-					typeArgumentList = TypeArgumentListGreen.__Missing;
-				}
+				if (typeArgumentListContext != null) typeArgumentList = (TypeArgumentListGreen)this.Visit(typeArgumentListContext);
 				return _factory.LoopChainMemberAccessExpression(loopChainExpression, tDot, identifier, typeArgumentList);
 			}
 			
@@ -6647,25 +6183,12 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				if (context == null) return LoopChainMethodCallExpressionGreen.__Missing;
 				TestLexerModeParser.LoopChainExpressionContext loopChainExpressionContext = context.loopChainExpression();
 				LoopChainExpressionGreen loopChainExpression = null;
-				if (loopChainExpressionContext != null)
-				{
-					loopChainExpression = (LoopChainExpressionGreen)this.Visit(loopChainExpressionContext);
-				}
-				else
-				{
-					loopChainExpression = LoopChainExpressionGreen.__Missing;
-				}
+				if (loopChainExpressionContext != null) loopChainExpression = (LoopChainExpressionGreen)this.Visit(loopChainExpressionContext);
+				if (loopChainExpression == null) loopChainExpression = LoopChainExpressionGreen.__Missing;
 				InternalSyntaxToken tOpenParenthesis = (InternalSyntaxToken)this.VisitTerminal(context.TOpenParenthesis(), TestLexerModeSyntaxKind.TOpenParenthesis);
 				TestLexerModeParser.ExpressionListContext expressionListContext = context.expressionList();
 				ExpressionListGreen expressionList = null;
-				if (expressionListContext != null)
-				{
-					expressionList = (ExpressionListGreen)this.Visit(expressionListContext);
-				}
-				else
-				{
-					expressionList = ExpressionListGreen.__Missing;
-				}
+				if (expressionListContext != null) expressionList = (ExpressionListGreen)this.Visit(expressionListContext);
 				InternalSyntaxToken tCloseParenthesis = (InternalSyntaxToken)this.VisitTerminal(context.TCloseParenthesis(), TestLexerModeSyntaxKind.TCloseParenthesis);
 				return _factory.LoopChainMethodCallExpression(loopChainExpression, tOpenParenthesis, expressionList, tCloseParenthesis);
 			}
@@ -6676,14 +6199,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				InternalSyntaxToken kWhere = (InternalSyntaxToken)this.VisitTerminal(context.KWhere(), TestLexerModeSyntaxKind.KWhere);
 				TestLexerModeParser.ExpressionContext expressionContext = context.expression();
 				ExpressionGreen expression = null;
-				if (expressionContext != null)
-				{
-					expression = (ExpressionGreen)this.Visit(expressionContext);
-				}
-				else
-				{
-					expression = ExpressionGreen.__Missing;
-				}
+				if (expressionContext != null) expression = (ExpressionGreen)this.Visit(expressionContext);
+				if (expression == null) expression = ExpressionGreen.__Missing;
 				return _factory.LoopWhereExpression(kWhere, expression);
 			}
 			
@@ -6692,14 +6209,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				if (context == null) return LoopRunExpressionGreen.__Missing;
 				TestLexerModeParser.SeparatorStatementContext separatorStatementContext = context.separatorStatement();
 				SeparatorStatementGreen separatorStatement = null;
-				if (separatorStatementContext != null)
-				{
-					separatorStatement = (SeparatorStatementGreen)this.Visit(separatorStatementContext);
-				}
-				else
-				{
-					separatorStatement = SeparatorStatementGreen.__Missing;
-				}
+				if (separatorStatementContext != null) separatorStatement = (SeparatorStatementGreen)this.Visit(separatorStatementContext);
+				if (separatorStatement == null) separatorStatement = SeparatorStatementGreen.__Missing;
 				return _factory.LoopRunExpression(separatorStatement);
 			}
 			
@@ -6710,25 +6221,13 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				InternalSyntaxToken kSeparator = (InternalSyntaxToken)this.VisitTerminal(context.KSeparator(), TestLexerModeSyntaxKind.KSeparator);
 				TestLexerModeParser.IdentifierContext identifierContext = context.identifier();
 				IdentifierGreen identifier = null;
-				if (identifierContext != null)
-				{
-					identifier = (IdentifierGreen)this.Visit(identifierContext);
-				}
-				else
-				{
-					identifier = IdentifierGreen.__Missing;
-				}
+				if (identifierContext != null) identifier = (IdentifierGreen)this.Visit(identifierContext);
+				if (identifier == null) identifier = IdentifierGreen.__Missing;
 				InternalSyntaxToken tAssign = (InternalSyntaxToken)this.VisitTerminal(context.TAssign(), TestLexerModeSyntaxKind.TAssign);
 				TestLexerModeParser.StringLiteralxContext stringLiteralxContext = context.stringLiteralx();
 				StringLiteralxGreen stringLiteralx = null;
-				if (stringLiteralxContext != null)
-				{
-					stringLiteralx = (StringLiteralxGreen)this.Visit(stringLiteralxContext);
-				}
-				else
-				{
-					stringLiteralx = StringLiteralxGreen.__Missing;
-				}
+				if (stringLiteralxContext != null) stringLiteralx = (StringLiteralxGreen)this.Visit(stringLiteralxContext);
+				if (stringLiteralx == null) stringLiteralx = StringLiteralxGreen.__Missing;
 				return _factory.SeparatorStatement(tSemicolon, kSeparator, identifier, tAssign, stringLiteralx);
 			}
 			
@@ -6737,14 +6236,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				if (context == null) return SwitchStatementGreen.__Missing;
 				TestLexerModeParser.SwitchStatementBeginContext switchStatementBeginContext = context.switchStatementBegin();
 				SwitchStatementBeginGreen switchStatementBegin = null;
-				if (switchStatementBeginContext != null)
-				{
-					switchStatementBegin = (SwitchStatementBeginGreen)this.Visit(switchStatementBeginContext);
-				}
-				else
-				{
-					switchStatementBegin = SwitchStatementBeginGreen.__Missing;
-				}
+				if (switchStatementBeginContext != null) switchStatementBegin = (SwitchStatementBeginGreen)this.Visit(switchStatementBeginContext);
+				if (switchStatementBegin == null) switchStatementBegin = SwitchStatementBeginGreen.__Missing;
 			    TestLexerModeParser.SwitchBranchStatementContext[] switchBranchStatementContext = context.switchBranchStatement();
 			    var switchBranchStatementBuilder = _pool.Allocate<SwitchBranchStatementGreen>();
 			    for (int i = 0; i < switchBranchStatementContext.Length; i++)
@@ -6755,24 +6248,11 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				_pool.Free(switchBranchStatementBuilder);
 				TestLexerModeParser.SwitchDefaultStatementContext switchDefaultStatementContext = context.switchDefaultStatement();
 				SwitchDefaultStatementGreen switchDefaultStatement = null;
-				if (switchDefaultStatementContext != null)
-				{
-					switchDefaultStatement = (SwitchDefaultStatementGreen)this.Visit(switchDefaultStatementContext);
-				}
-				else
-				{
-					switchDefaultStatement = SwitchDefaultStatementGreen.__Missing;
-				}
+				if (switchDefaultStatementContext != null) switchDefaultStatement = (SwitchDefaultStatementGreen)this.Visit(switchDefaultStatementContext);
 				TestLexerModeParser.SwitchStatementEndContext switchStatementEndContext = context.switchStatementEnd();
 				SwitchStatementEndGreen switchStatementEnd = null;
-				if (switchStatementEndContext != null)
-				{
-					switchStatementEnd = (SwitchStatementEndGreen)this.Visit(switchStatementEndContext);
-				}
-				else
-				{
-					switchStatementEnd = SwitchStatementEndGreen.__Missing;
-				}
+				if (switchStatementEndContext != null) switchStatementEnd = (SwitchStatementEndGreen)this.Visit(switchStatementEndContext);
+				if (switchStatementEnd == null) switchStatementEnd = SwitchStatementEndGreen.__Missing;
 				return _factory.SwitchStatement(switchStatementBegin, switchBranchStatement, switchDefaultStatement, switchStatementEnd);
 			}
 			
@@ -6783,14 +6263,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				InternalSyntaxToken tOpenParenthesis = (InternalSyntaxToken)this.VisitTerminal(context.TOpenParenthesis(), TestLexerModeSyntaxKind.TOpenParenthesis);
 				TestLexerModeParser.ExpressionContext expressionContext = context.expression();
 				ExpressionGreen expression = null;
-				if (expressionContext != null)
-				{
-					expression = (ExpressionGreen)this.Visit(expressionContext);
-				}
-				else
-				{
-					expression = ExpressionGreen.__Missing;
-				}
+				if (expressionContext != null) expression = (ExpressionGreen)this.Visit(expressionContext);
+				if (expression == null) expression = ExpressionGreen.__Missing;
 				InternalSyntaxToken tCloseParenthesis = (InternalSyntaxToken)this.VisitTerminal(context.TCloseParenthesis(), TestLexerModeSyntaxKind.TCloseParenthesis);
 				return _factory.SwitchStatementBegin(kSwitch, tOpenParenthesis, expression, tCloseParenthesis);
 			}
@@ -6808,24 +6282,12 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				if (context == null) return SwitchBranchStatementGreen.__Missing;
 				TestLexerModeParser.SwitchBranchHeadStatementContext switchBranchHeadStatementContext = context.switchBranchHeadStatement();
 				SwitchBranchHeadStatementGreen switchBranchHeadStatement = null;
-				if (switchBranchHeadStatementContext != null)
-				{
-					switchBranchHeadStatement = (SwitchBranchHeadStatementGreen)this.Visit(switchBranchHeadStatementContext);
-				}
-				else
-				{
-					switchBranchHeadStatement = SwitchBranchHeadStatementGreen.__Missing;
-				}
+				if (switchBranchHeadStatementContext != null) switchBranchHeadStatement = (SwitchBranchHeadStatementGreen)this.Visit(switchBranchHeadStatementContext);
+				if (switchBranchHeadStatement == null) switchBranchHeadStatement = SwitchBranchHeadStatementGreen.__Missing;
 				TestLexerModeParser.BodyContext bodyContext = context.body();
 				BodyGreen body = null;
-				if (bodyContext != null)
-				{
-					body = (BodyGreen)this.Visit(bodyContext);
-				}
-				else
-				{
-					body = BodyGreen.__Missing;
-				}
+				if (bodyContext != null) body = (BodyGreen)this.Visit(bodyContext);
+				if (body == null) body = BodyGreen.__Missing;
 				return _factory.SwitchBranchStatement(switchBranchHeadStatement, body);
 			}
 			
@@ -6881,14 +6343,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				InternalSyntaxToken kCase = (InternalSyntaxToken)this.VisitTerminal(context.KCase(), TestLexerModeSyntaxKind.KCase);
 				TestLexerModeParser.ExpressionListContext expressionListContext = context.expressionList();
 				ExpressionListGreen expressionList = null;
-				if (expressionListContext != null)
-				{
-					expressionList = (ExpressionListGreen)this.Visit(expressionListContext);
-				}
-				else
-				{
-					expressionList = ExpressionListGreen.__Missing;
-				}
+				if (expressionListContext != null) expressionList = (ExpressionListGreen)this.Visit(expressionListContext);
+				if (expressionList == null) expressionList = ExpressionListGreen.__Missing;
 				InternalSyntaxToken tColon = (InternalSyntaxToken)this.VisitTerminal(context.TColon(), TestLexerModeSyntaxKind.TColon);
 				return _factory.SwitchCaseHeadStatement(kCase, expressionList, tColon);
 			}
@@ -6900,14 +6356,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				InternalSyntaxToken kIs = (InternalSyntaxToken)this.VisitTerminal(context.KIs(), TestLexerModeSyntaxKind.KIs);
 				TestLexerModeParser.TypeReferenceListContext typeReferenceListContext = context.typeReferenceList();
 				TypeReferenceListGreen typeReferenceList = null;
-				if (typeReferenceListContext != null)
-				{
-					typeReferenceList = (TypeReferenceListGreen)this.Visit(typeReferenceListContext);
-				}
-				else
-				{
-					typeReferenceList = TypeReferenceListGreen.__Missing;
-				}
+				if (typeReferenceListContext != null) typeReferenceList = (TypeReferenceListGreen)this.Visit(typeReferenceListContext);
+				if (typeReferenceList == null) typeReferenceList = TypeReferenceListGreen.__Missing;
 				InternalSyntaxToken tColon = (InternalSyntaxToken)this.VisitTerminal(context.TColon(), TestLexerModeSyntaxKind.TColon);
 				return _factory.SwitchTypeIsHeadStatement(kType, kIs, typeReferenceList, tColon);
 			}
@@ -6919,14 +6369,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				InternalSyntaxToken kAs = (InternalSyntaxToken)this.VisitTerminal(context.KAs(), TestLexerModeSyntaxKind.KAs);
 				TestLexerModeParser.TypeReferenceContext typeReferenceContext = context.typeReference();
 				TypeReferenceGreen typeReference = null;
-				if (typeReferenceContext != null)
-				{
-					typeReference = (TypeReferenceGreen)this.Visit(typeReferenceContext);
-				}
-				else
-				{
-					typeReference = TypeReferenceGreen.__Missing;
-				}
+				if (typeReferenceContext != null) typeReference = (TypeReferenceGreen)this.Visit(typeReferenceContext);
+				if (typeReference == null) typeReference = TypeReferenceGreen.__Missing;
 				InternalSyntaxToken tColon = (InternalSyntaxToken)this.VisitTerminal(context.TColon(), TestLexerModeSyntaxKind.TColon);
 				return _factory.SwitchTypeAsHeadStatement(kType, kAs, typeReference, tColon);
 			}
@@ -6936,24 +6380,12 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				if (context == null) return SwitchDefaultStatementGreen.__Missing;
 				TestLexerModeParser.SwitchDefaultHeadStatementContext switchDefaultHeadStatementContext = context.switchDefaultHeadStatement();
 				SwitchDefaultHeadStatementGreen switchDefaultHeadStatement = null;
-				if (switchDefaultHeadStatementContext != null)
-				{
-					switchDefaultHeadStatement = (SwitchDefaultHeadStatementGreen)this.Visit(switchDefaultHeadStatementContext);
-				}
-				else
-				{
-					switchDefaultHeadStatement = SwitchDefaultHeadStatementGreen.__Missing;
-				}
+				if (switchDefaultHeadStatementContext != null) switchDefaultHeadStatement = (SwitchDefaultHeadStatementGreen)this.Visit(switchDefaultHeadStatementContext);
+				if (switchDefaultHeadStatement == null) switchDefaultHeadStatement = SwitchDefaultHeadStatementGreen.__Missing;
 				TestLexerModeParser.BodyContext bodyContext = context.body();
 				BodyGreen body = null;
-				if (bodyContext != null)
-				{
-					body = (BodyGreen)this.Visit(bodyContext);
-				}
-				else
-				{
-					body = BodyGreen.__Missing;
-				}
+				if (bodyContext != null) body = (BodyGreen)this.Visit(bodyContext);
+				if (body == null) body = BodyGreen.__Missing;
 				return _factory.SwitchDefaultStatement(switchDefaultHeadStatement, body);
 			}
 			
@@ -6970,24 +6402,12 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				if (context == null) return TemplateDeclarationGreen.__Missing;
 				TestLexerModeParser.TemplateSignatureContext templateSignatureContext = context.templateSignature();
 				TemplateSignatureGreen templateSignature = null;
-				if (templateSignatureContext != null)
-				{
-					templateSignature = (TemplateSignatureGreen)this.Visit(templateSignatureContext);
-				}
-				else
-				{
-					templateSignature = TemplateSignatureGreen.__Missing;
-				}
+				if (templateSignatureContext != null) templateSignature = (TemplateSignatureGreen)this.Visit(templateSignatureContext);
+				if (templateSignature == null) templateSignature = TemplateSignatureGreen.__Missing;
 				TestLexerModeParser.TemplateBodyContext templateBodyContext = context.templateBody();
 				TemplateBodyGreen templateBody = null;
-				if (templateBodyContext != null)
-				{
-					templateBody = (TemplateBodyGreen)this.Visit(templateBodyContext);
-				}
-				else
-				{
-					templateBody = TemplateBodyGreen.__Missing;
-				}
+				if (templateBodyContext != null) templateBody = (TemplateBodyGreen)this.Visit(templateBodyContext);
+				if (templateBody == null) templateBody = TemplateBodyGreen.__Missing;
 				InternalSyntaxToken kEndTemplate = (InternalSyntaxToken)this.VisitTerminal(context.KEndTemplate(), TestLexerModeSyntaxKind.KEndTemplate);
 				return _factory.TemplateDeclaration(templateSignature, templateBody, kEndTemplate);
 			}
@@ -6998,25 +6418,12 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				InternalSyntaxToken kTemplate = (InternalSyntaxToken)this.VisitTerminal(context.KTemplate(), TestLexerModeSyntaxKind.KTemplate);
 				TestLexerModeParser.IdentifierContext identifierContext = context.identifier();
 				IdentifierGreen identifier = null;
-				if (identifierContext != null)
-				{
-					identifier = (IdentifierGreen)this.Visit(identifierContext);
-				}
-				else
-				{
-					identifier = IdentifierGreen.__Missing;
-				}
+				if (identifierContext != null) identifier = (IdentifierGreen)this.Visit(identifierContext);
+				if (identifier == null) identifier = IdentifierGreen.__Missing;
 				InternalSyntaxToken tOpenParenthesis = (InternalSyntaxToken)this.VisitTerminal(context.TOpenParenthesis(), TestLexerModeSyntaxKind.TOpenParenthesis);
 				TestLexerModeParser.ParamListContext paramListContext = context.paramList();
 				ParamListGreen paramList = null;
-				if (paramListContext != null)
-				{
-					paramList = (ParamListGreen)this.Visit(paramListContext);
-				}
-				else
-				{
-					paramList = ParamListGreen.__Missing;
-				}
+				if (paramListContext != null) paramList = (ParamListGreen)this.Visit(paramListContext);
 				InternalSyntaxToken tCloseParenthesis = (InternalSyntaxToken)this.VisitTerminal(context.TCloseParenthesis(), TestLexerModeSyntaxKind.TCloseParenthesis);
 				return _factory.TemplateSignature(kTemplate, identifier, tOpenParenthesis, paramList, tCloseParenthesis);
 			}
@@ -7048,14 +6455,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				_pool.Free(templateContentBuilder);
 				TestLexerModeParser.TemplateLineEndContext templateLineEndContext = context.templateLineEnd();
 				TemplateLineEndGreen templateLineEnd = null;
-				if (templateLineEndContext != null)
-				{
-					templateLineEnd = (TemplateLineEndGreen)this.Visit(templateLineEndContext);
-				}
-				else
-				{
-					templateLineEnd = TemplateLineEndGreen.__Missing;
-				}
+				if (templateLineEndContext != null) templateLineEnd = (TemplateLineEndGreen)this.Visit(templateLineEndContext);
+				if (templateLineEnd == null) templateLineEnd = TemplateLineEndGreen.__Missing;
 				return _factory.TemplateContentLine(templateContent, templateLineEnd);
 			}
 			
@@ -7111,14 +6512,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				InternalSyntaxToken templateStatementStart = (InternalSyntaxToken)this.VisitTerminal(context.TemplateStatementStart(), TestLexerModeSyntaxKind.TemplateStatementStart);
 				TestLexerModeParser.TemplateStatementContext templateStatementContext = context.templateStatement();
 				TemplateStatementGreen templateStatement = null;
-				if (templateStatementContext != null)
-				{
-					templateStatement = (TemplateStatementGreen)this.Visit(templateStatementContext);
-				}
-				else
-				{
-					templateStatement = TemplateStatementGreen.__Missing;
-				}
+				if (templateStatementContext != null) templateStatement = (TemplateStatementGreen)this.Visit(templateStatementContext);
 				InternalSyntaxToken templateStatementEnd = (InternalSyntaxToken)this.VisitTerminal(context.TemplateStatementEnd(), TestLexerModeSyntaxKind.TemplateStatementEnd);
 				return _factory.TemplateStatementStartEnd(templateStatementStart, templateStatement, templateStatementEnd);
 			}
@@ -7230,14 +6624,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				InternalSyntaxToken tLessThan = (InternalSyntaxToken)this.VisitTerminal(context.TLessThan(), TestLexerModeSyntaxKind.TLessThan);
 				TestLexerModeParser.TypeReferenceListContext typeReferenceListContext = context.typeReferenceList();
 				TypeReferenceListGreen typeReferenceList = null;
-				if (typeReferenceListContext != null)
-				{
-					typeReferenceList = (TypeReferenceListGreen)this.Visit(typeReferenceListContext);
-				}
-				else
-				{
-					typeReferenceList = TypeReferenceListGreen.__Missing;
-				}
+				if (typeReferenceListContext != null) typeReferenceList = (TypeReferenceListGreen)this.Visit(typeReferenceListContext);
+				if (typeReferenceList == null) typeReferenceList = TypeReferenceListGreen.__Missing;
 				InternalSyntaxToken tGreaterThan = (InternalSyntaxToken)this.VisitTerminal(context.TGreaterThan(), TestLexerModeSyntaxKind.TGreaterThan);
 				return _factory.TypeArgumentList(tLessThan, typeReferenceList, tGreaterThan);
 			}
@@ -7363,24 +6751,12 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				if (context == null) return ArrayTypeGreen.__Missing;
 				TestLexerModeParser.ArrayItemTypeContext arrayItemTypeContext = context.arrayItemType();
 				ArrayItemTypeGreen arrayItemType = null;
-				if (arrayItemTypeContext != null)
-				{
-					arrayItemType = (ArrayItemTypeGreen)this.Visit(arrayItemTypeContext);
-				}
-				else
-				{
-					arrayItemType = ArrayItemTypeGreen.__Missing;
-				}
+				if (arrayItemTypeContext != null) arrayItemType = (ArrayItemTypeGreen)this.Visit(arrayItemTypeContext);
+				if (arrayItemType == null) arrayItemType = ArrayItemTypeGreen.__Missing;
 				TestLexerModeParser.RankSpecifiersContext rankSpecifiersContext = context.rankSpecifiers();
 				RankSpecifiersGreen rankSpecifiers = null;
-				if (rankSpecifiersContext != null)
-				{
-					rankSpecifiers = (RankSpecifiersGreen)this.Visit(rankSpecifiersContext);
-				}
-				else
-				{
-					rankSpecifiers = RankSpecifiersGreen.__Missing;
-				}
+				if (rankSpecifiersContext != null) rankSpecifiers = (RankSpecifiersGreen)this.Visit(rankSpecifiersContext);
+				if (rankSpecifiers == null) rankSpecifiers = RankSpecifiersGreen.__Missing;
 				return _factory.ArrayType(arrayItemType, rankSpecifiers);
 			}
 			
@@ -7410,14 +6786,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				if (context == null) return NullableTypeGreen.__Missing;
 				TestLexerModeParser.NullableItemTypeContext nullableItemTypeContext = context.nullableItemType();
 				NullableItemTypeGreen nullableItemType = null;
-				if (nullableItemTypeContext != null)
-				{
-					nullableItemType = (NullableItemTypeGreen)this.Visit(nullableItemTypeContext);
-				}
-				else
-				{
-					nullableItemType = NullableItemTypeGreen.__Missing;
-				}
+				if (nullableItemTypeContext != null) nullableItemType = (NullableItemTypeGreen)this.Visit(nullableItemTypeContext);
+				if (nullableItemType == null) nullableItemType = NullableItemTypeGreen.__Missing;
 				InternalSyntaxToken tQuestion = (InternalSyntaxToken)this.VisitTerminal(context.TQuestion(), TestLexerModeSyntaxKind.TQuestion);
 				return _factory.NullableType(nullableItemType, tQuestion);
 			}
@@ -7443,24 +6813,12 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				if (context == null) return GenericTypeGreen.__Missing;
 				TestLexerModeParser.QualifiedNameContext qualifiedNameContext = context.qualifiedName();
 				QualifiedNameGreen qualifiedName = null;
-				if (qualifiedNameContext != null)
-				{
-					qualifiedName = (QualifiedNameGreen)this.Visit(qualifiedNameContext);
-				}
-				else
-				{
-					qualifiedName = QualifiedNameGreen.__Missing;
-				}
+				if (qualifiedNameContext != null) qualifiedName = (QualifiedNameGreen)this.Visit(qualifiedNameContext);
+				if (qualifiedName == null) qualifiedName = QualifiedNameGreen.__Missing;
 				TestLexerModeParser.TypeArgumentListContext typeArgumentListContext = context.typeArgumentList();
 				TypeArgumentListGreen typeArgumentList = null;
-				if (typeArgumentListContext != null)
-				{
-					typeArgumentList = (TypeArgumentListGreen)this.Visit(typeArgumentListContext);
-				}
-				else
-				{
-					typeArgumentList = TypeArgumentListGreen.__Missing;
-				}
+				if (typeArgumentListContext != null) typeArgumentList = (TypeArgumentListGreen)this.Visit(typeArgumentListContext);
+				if (typeArgumentList == null) typeArgumentList = TypeArgumentListGreen.__Missing;
 				return _factory.GenericType(qualifiedName, typeArgumentList);
 			}
 			
@@ -7527,14 +6885,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				if (context == null) return VariableReferenceGreen.__Missing;
 				TestLexerModeParser.ExpressionContext expressionContext = context.expression();
 				ExpressionGreen expression = null;
-				if (expressionContext != null)
-				{
-					expression = (ExpressionGreen)this.Visit(expressionContext);
-				}
-				else
-				{
-					expression = ExpressionGreen.__Missing;
-				}
+				if (expressionContext != null) expression = (ExpressionGreen)this.Visit(expressionContext);
+				if (expression == null) expression = ExpressionGreen.__Missing;
 				return _factory.VariableReference(expression);
 			}
 			
@@ -7592,24 +6944,11 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				if (context == null) return GenericDimensionItemGreen.__Missing;
 				TestLexerModeParser.IdentifierContext identifierContext = context.identifier();
 				IdentifierGreen identifier = null;
-				if (identifierContext != null)
-				{
-					identifier = (IdentifierGreen)this.Visit(identifierContext);
-				}
-				else
-				{
-					identifier = IdentifierGreen.__Missing;
-				}
+				if (identifierContext != null) identifier = (IdentifierGreen)this.Visit(identifierContext);
+				if (identifier == null) identifier = IdentifierGreen.__Missing;
 				TestLexerModeParser.GenericDimensionSpecifierContext genericDimensionSpecifierContext = context.genericDimensionSpecifier();
 				GenericDimensionSpecifierGreen genericDimensionSpecifier = null;
-				if (genericDimensionSpecifierContext != null)
-				{
-					genericDimensionSpecifier = (GenericDimensionSpecifierGreen)this.Visit(genericDimensionSpecifierContext);
-				}
-				else
-				{
-					genericDimensionSpecifier = GenericDimensionSpecifierGreen.__Missing;
-				}
+				if (genericDimensionSpecifierContext != null) genericDimensionSpecifier = (GenericDimensionSpecifierGreen)this.Visit(genericDimensionSpecifierContext);
 				return _factory.GenericDimensionItem(identifier, genericDimensionSpecifier);
 			}
 			
@@ -7676,14 +7015,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				if (context == null) return SingleParamAnonymousFunctionSignatureGreen.__Missing;
 				TestLexerModeParser.ImplicitParameterContext implicitParameterContext = context.implicitParameter();
 				ImplicitParameterGreen implicitParameter = null;
-				if (implicitParameterContext != null)
-				{
-					implicitParameter = (ImplicitParameterGreen)this.Visit(implicitParameterContext);
-				}
-				else
-				{
-					implicitParameter = ImplicitParameterGreen.__Missing;
-				}
+				if (implicitParameterContext != null) implicitParameter = (ImplicitParameterGreen)this.Visit(implicitParameterContext);
+				if (implicitParameter == null) implicitParameter = ImplicitParameterGreen.__Missing;
 				return _factory.SingleParamAnonymousFunctionSignature(implicitParameter);
 			}
 			
@@ -7692,24 +7025,12 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				if (context == null) return ExplicitParameterGreen.__Missing;
 				TestLexerModeParser.TypeReferenceContext typeReferenceContext = context.typeReference();
 				TypeReferenceGreen typeReference = null;
-				if (typeReferenceContext != null)
-				{
-					typeReference = (TypeReferenceGreen)this.Visit(typeReferenceContext);
-				}
-				else
-				{
-					typeReference = TypeReferenceGreen.__Missing;
-				}
+				if (typeReferenceContext != null) typeReference = (TypeReferenceGreen)this.Visit(typeReferenceContext);
+				if (typeReference == null) typeReference = TypeReferenceGreen.__Missing;
 				TestLexerModeParser.IdentifierContext identifierContext = context.identifier();
 				IdentifierGreen identifier = null;
-				if (identifierContext != null)
-				{
-					identifier = (IdentifierGreen)this.Visit(identifierContext);
-				}
-				else
-				{
-					identifier = IdentifierGreen.__Missing;
-				}
+				if (identifierContext != null) identifier = (IdentifierGreen)this.Visit(identifierContext);
+				if (identifier == null) identifier = IdentifierGreen.__Missing;
 				return _factory.ExplicitParameter(typeReference, identifier);
 			}
 			
@@ -7718,14 +7039,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				if (context == null) return ImplicitParameterGreen.__Missing;
 				TestLexerModeParser.IdentifierContext identifierContext = context.identifier();
 				IdentifierGreen identifier = null;
-				if (identifierContext != null)
-				{
-					identifier = (IdentifierGreen)this.Visit(identifierContext);
-				}
-				else
-				{
-					identifier = IdentifierGreen.__Missing;
-				}
+				if (identifierContext != null) identifier = (IdentifierGreen)this.Visit(identifierContext);
+				if (identifier == null) identifier = IdentifierGreen.__Missing;
 				return _factory.ImplicitParameter(identifier);
 			}
 			
@@ -7741,14 +7056,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				if (context == null) return LiteralExpressionGreen.__Missing;
 				TestLexerModeParser.LiteralContext literalContext = context.literal();
 				LiteralGreen literal = null;
-				if (literalContext != null)
-				{
-					literal = (LiteralGreen)this.Visit(literalContext);
-				}
-				else
-				{
-					literal = LiteralGreen.__Missing;
-				}
+				if (literalContext != null) literal = (LiteralGreen)this.Visit(literalContext);
+				if (literal == null) literal = LiteralGreen.__Missing;
 				return _factory.LiteralExpression(literal);
 			}
 			
@@ -7769,14 +7078,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				InternalSyntaxToken tOpenParenthesis = (InternalSyntaxToken)this.VisitTerminal(context.TOpenParenthesis(), TestLexerModeSyntaxKind.TOpenParenthesis);
 				TestLexerModeParser.UnboundTypeNameContext unboundTypeNameContext = context.unboundTypeName();
 				UnboundTypeNameGreen unboundTypeName = null;
-				if (unboundTypeNameContext != null)
-				{
-					unboundTypeName = (UnboundTypeNameGreen)this.Visit(unboundTypeNameContext);
-				}
-				else
-				{
-					unboundTypeName = UnboundTypeNameGreen.__Missing;
-				}
+				if (unboundTypeNameContext != null) unboundTypeName = (UnboundTypeNameGreen)this.Visit(unboundTypeNameContext);
+				if (unboundTypeName == null) unboundTypeName = UnboundTypeNameGreen.__Missing;
 				InternalSyntaxToken tCloseParenthesis = (InternalSyntaxToken)this.VisitTerminal(context.TCloseParenthesis(), TestLexerModeSyntaxKind.TCloseParenthesis);
 				return _factory.TypeofUnboundTypeExpression(kTypeof, tOpenParenthesis, unboundTypeName, tCloseParenthesis);
 			}
@@ -7788,14 +7091,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				InternalSyntaxToken tOpenParenthesis = (InternalSyntaxToken)this.VisitTerminal(context.TOpenParenthesis(), TestLexerModeSyntaxKind.TOpenParenthesis);
 				TestLexerModeParser.TypeReferenceContext typeReferenceContext = context.typeReference();
 				TypeReferenceGreen typeReference = null;
-				if (typeReferenceContext != null)
-				{
-					typeReference = (TypeReferenceGreen)this.Visit(typeReferenceContext);
-				}
-				else
-				{
-					typeReference = TypeReferenceGreen.__Missing;
-				}
+				if (typeReferenceContext != null) typeReference = (TypeReferenceGreen)this.Visit(typeReferenceContext);
+				if (typeReference == null) typeReference = TypeReferenceGreen.__Missing;
 				InternalSyntaxToken tCloseParenthesis = (InternalSyntaxToken)this.VisitTerminal(context.TCloseParenthesis(), TestLexerModeSyntaxKind.TCloseParenthesis);
 				return _factory.TypeofTypeExpression(kTypeof, tOpenParenthesis, typeReference, tCloseParenthesis);
 			}
@@ -7807,14 +7104,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				InternalSyntaxToken tOpenParenthesis = (InternalSyntaxToken)this.VisitTerminal(context.TOpenParenthesis(), TestLexerModeSyntaxKind.TOpenParenthesis);
 				TestLexerModeParser.TypeReferenceContext typeReferenceContext = context.typeReference();
 				TypeReferenceGreen typeReference = null;
-				if (typeReferenceContext != null)
-				{
-					typeReference = (TypeReferenceGreen)this.Visit(typeReferenceContext);
-				}
-				else
-				{
-					typeReference = TypeReferenceGreen.__Missing;
-				}
+				if (typeReferenceContext != null) typeReference = (TypeReferenceGreen)this.Visit(typeReferenceContext);
+				if (typeReference == null) typeReference = TypeReferenceGreen.__Missing;
 				InternalSyntaxToken tCloseParenthesis = (InternalSyntaxToken)this.VisitTerminal(context.TCloseParenthesis(), TestLexerModeSyntaxKind.TCloseParenthesis);
 				return _factory.DefaultValueExpression(kDefault, tOpenParenthesis, typeReference, tCloseParenthesis);
 			}
@@ -7825,25 +7116,12 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				InternalSyntaxToken kNew = (InternalSyntaxToken)this.VisitTerminal(context.KNew(), TestLexerModeSyntaxKind.KNew);
 				TestLexerModeParser.TypeReferenceContext typeReferenceContext = context.typeReference();
 				TypeReferenceGreen typeReference = null;
-				if (typeReferenceContext != null)
-				{
-					typeReference = (TypeReferenceGreen)this.Visit(typeReferenceContext);
-				}
-				else
-				{
-					typeReference = TypeReferenceGreen.__Missing;
-				}
+				if (typeReferenceContext != null) typeReference = (TypeReferenceGreen)this.Visit(typeReferenceContext);
+				if (typeReference == null) typeReference = TypeReferenceGreen.__Missing;
 				InternalSyntaxToken tOpenParenthesis = (InternalSyntaxToken)this.VisitTerminal(context.TOpenParenthesis(), TestLexerModeSyntaxKind.TOpenParenthesis);
 				TestLexerModeParser.ExpressionListContext expressionListContext = context.expressionList();
 				ExpressionListGreen expressionList = null;
-				if (expressionListContext != null)
-				{
-					expressionList = (ExpressionListGreen)this.Visit(expressionListContext);
-				}
-				else
-				{
-					expressionList = ExpressionListGreen.__Missing;
-				}
+				if (expressionListContext != null) expressionList = (ExpressionListGreen)this.Visit(expressionListContext);
 				InternalSyntaxToken tCloseParenthesis = (InternalSyntaxToken)this.VisitTerminal(context.TCloseParenthesis(), TestLexerModeSyntaxKind.TCloseParenthesis);
 				return _factory.NewObjectOrCollectionWithConstructorExpression(kNew, typeReference, tOpenParenthesis, expressionList, tCloseParenthesis);
 			}
@@ -7853,24 +7131,11 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				if (context == null) return IdentifierExpressionGreen.__Missing;
 				TestLexerModeParser.IdentifierContext identifierContext = context.identifier();
 				IdentifierGreen identifier = null;
-				if (identifierContext != null)
-				{
-					identifier = (IdentifierGreen)this.Visit(identifierContext);
-				}
-				else
-				{
-					identifier = IdentifierGreen.__Missing;
-				}
+				if (identifierContext != null) identifier = (IdentifierGreen)this.Visit(identifierContext);
+				if (identifier == null) identifier = IdentifierGreen.__Missing;
 				TestLexerModeParser.TypeArgumentListContext typeArgumentListContext = context.typeArgumentList();
 				TypeArgumentListGreen typeArgumentList = null;
-				if (typeArgumentListContext != null)
-				{
-					typeArgumentList = (TypeArgumentListGreen)this.Visit(typeArgumentListContext);
-				}
-				else
-				{
-					typeArgumentList = TypeArgumentListGreen.__Missing;
-				}
+				if (typeArgumentListContext != null) typeArgumentList = (TypeArgumentListGreen)this.Visit(typeArgumentListContext);
 				return _factory.IdentifierExpression(identifier, typeArgumentList);
 			}
 			
@@ -7881,24 +7146,11 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				InternalSyntaxToken tOpenParenthesis = (InternalSyntaxToken)this.VisitTerminal(context.TOpenParenthesis(), TestLexerModeSyntaxKind.TOpenParenthesis);
 				TestLexerModeParser.LoopChainContext loopChainContext = context.loopChain();
 				LoopChainGreen loopChain = null;
-				if (loopChainContext != null)
-				{
-					loopChain = (LoopChainGreen)this.Visit(loopChainContext);
-				}
-				else
-				{
-					loopChain = LoopChainGreen.__Missing;
-				}
+				if (loopChainContext != null) loopChain = (LoopChainGreen)this.Visit(loopChainContext);
+				if (loopChain == null) loopChain = LoopChainGreen.__Missing;
 				TestLexerModeParser.LoopWhereExpressionContext loopWhereExpressionContext = context.loopWhereExpression();
 				LoopWhereExpressionGreen loopWhereExpression = null;
-				if (loopWhereExpressionContext != null)
-				{
-					loopWhereExpression = (LoopWhereExpressionGreen)this.Visit(loopWhereExpressionContext);
-				}
-				else
-				{
-					loopWhereExpression = LoopWhereExpressionGreen.__Missing;
-				}
+				if (loopWhereExpressionContext != null) loopWhereExpression = (LoopWhereExpressionGreen)this.Visit(loopWhereExpressionContext);
 				InternalSyntaxToken tCloseParenthesis = (InternalSyntaxToken)this.VisitTerminal(context.TCloseParenthesis(), TestLexerModeSyntaxKind.TCloseParenthesis);
 				return _factory.HasLoopExpression(kHasLoop, tOpenParenthesis, loopChain, loopWhereExpression, tCloseParenthesis);
 			}
@@ -7909,14 +7161,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				InternalSyntaxToken tOpenParenthesis = (InternalSyntaxToken)this.VisitTerminal(context.TOpenParenthesis(), TestLexerModeSyntaxKind.TOpenParenthesis);
 				TestLexerModeParser.ExpressionContext expressionContext = context.expression();
 				ExpressionGreen expression = null;
-				if (expressionContext != null)
-				{
-					expression = (ExpressionGreen)this.Visit(expressionContext);
-				}
-				else
-				{
-					expression = ExpressionGreen.__Missing;
-				}
+				if (expressionContext != null) expression = (ExpressionGreen)this.Visit(expressionContext);
+				if (expression == null) expression = ExpressionGreen.__Missing;
 				InternalSyntaxToken tCloseParenthesis = (InternalSyntaxToken)this.VisitTerminal(context.TCloseParenthesis(), TestLexerModeSyntaxKind.TCloseParenthesis);
 				return _factory.ParenthesizedExpression(tOpenParenthesis, expression, tCloseParenthesis);
 			}
@@ -7926,25 +7172,13 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				if (context == null) return ElementAccessExpressionGreen.__Missing;
 				TestLexerModeParser.ExpressionContext expressionContext = context.expression();
 				ExpressionGreen expression = null;
-				if (expressionContext != null)
-				{
-					expression = (ExpressionGreen)this.Visit(expressionContext);
-				}
-				else
-				{
-					expression = ExpressionGreen.__Missing;
-				}
+				if (expressionContext != null) expression = (ExpressionGreen)this.Visit(expressionContext);
+				if (expression == null) expression = ExpressionGreen.__Missing;
 				InternalSyntaxToken tOpenBracket = (InternalSyntaxToken)this.VisitTerminal(context.TOpenBracket(), TestLexerModeSyntaxKind.TOpenBracket);
 				TestLexerModeParser.ExpressionListContext expressionListContext = context.expressionList();
 				ExpressionListGreen expressionList = null;
-				if (expressionListContext != null)
-				{
-					expressionList = (ExpressionListGreen)this.Visit(expressionListContext);
-				}
-				else
-				{
-					expressionList = ExpressionListGreen.__Missing;
-				}
+				if (expressionListContext != null) expressionList = (ExpressionListGreen)this.Visit(expressionListContext);
+				if (expressionList == null) expressionList = ExpressionListGreen.__Missing;
 				InternalSyntaxToken tCloseBracket = (InternalSyntaxToken)this.VisitTerminal(context.TCloseBracket(), TestLexerModeSyntaxKind.TCloseBracket);
 				return _factory.ElementAccessExpression(expression, tOpenBracket, expressionList, tCloseBracket);
 			}
@@ -7954,25 +7188,12 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				if (context == null) return FunctionCallExpressionGreen.__Missing;
 				TestLexerModeParser.ExpressionContext expressionContext = context.expression();
 				ExpressionGreen expression = null;
-				if (expressionContext != null)
-				{
-					expression = (ExpressionGreen)this.Visit(expressionContext);
-				}
-				else
-				{
-					expression = ExpressionGreen.__Missing;
-				}
+				if (expressionContext != null) expression = (ExpressionGreen)this.Visit(expressionContext);
+				if (expression == null) expression = ExpressionGreen.__Missing;
 				InternalSyntaxToken tOpenParenthesis = (InternalSyntaxToken)this.VisitTerminal(context.TOpenParenthesis(), TestLexerModeSyntaxKind.TOpenParenthesis);
 				TestLexerModeParser.ExpressionListContext expressionListContext = context.expressionList();
 				ExpressionListGreen expressionList = null;
-				if (expressionListContext != null)
-				{
-					expressionList = (ExpressionListGreen)this.Visit(expressionListContext);
-				}
-				else
-				{
-					expressionList = ExpressionListGreen.__Missing;
-				}
+				if (expressionListContext != null) expressionList = (ExpressionListGreen)this.Visit(expressionListContext);
 				InternalSyntaxToken tCloseParenthesis = (InternalSyntaxToken)this.VisitTerminal(context.TCloseParenthesis(), TestLexerModeSyntaxKind.TCloseParenthesis);
 				return _factory.FunctionCallExpression(expression, tOpenParenthesis, expressionList, tCloseParenthesis);
 			}
@@ -7982,35 +7203,16 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				if (context == null) return PredefinedTypeMemberAccessExpressionGreen.__Missing;
 				TestLexerModeParser.PredefinedTypeContext predefinedTypeContext = context.predefinedType();
 				PredefinedTypeGreen predefinedType = null;
-				if (predefinedTypeContext != null)
-				{
-					predefinedType = (PredefinedTypeGreen)this.Visit(predefinedTypeContext);
-				}
-				else
-				{
-					predefinedType = PredefinedTypeGreen.__Missing;
-				}
+				if (predefinedTypeContext != null) predefinedType = (PredefinedTypeGreen)this.Visit(predefinedTypeContext);
+				if (predefinedType == null) predefinedType = PredefinedTypeGreen.__Missing;
 				InternalSyntaxToken tDot = (InternalSyntaxToken)this.VisitTerminal(context.TDot(), TestLexerModeSyntaxKind.TDot);
 				TestLexerModeParser.IdentifierContext identifierContext = context.identifier();
 				IdentifierGreen identifier = null;
-				if (identifierContext != null)
-				{
-					identifier = (IdentifierGreen)this.Visit(identifierContext);
-				}
-				else
-				{
-					identifier = IdentifierGreen.__Missing;
-				}
+				if (identifierContext != null) identifier = (IdentifierGreen)this.Visit(identifierContext);
+				if (identifier == null) identifier = IdentifierGreen.__Missing;
 				TestLexerModeParser.TypeArgumentListContext typeArgumentListContext = context.typeArgumentList();
 				TypeArgumentListGreen typeArgumentList = null;
-				if (typeArgumentListContext != null)
-				{
-					typeArgumentList = (TypeArgumentListGreen)this.Visit(typeArgumentListContext);
-				}
-				else
-				{
-					typeArgumentList = TypeArgumentListGreen.__Missing;
-				}
+				if (typeArgumentListContext != null) typeArgumentList = (TypeArgumentListGreen)this.Visit(typeArgumentListContext);
 				return _factory.PredefinedTypeMemberAccessExpression(predefinedType, tDot, identifier, typeArgumentList);
 			}
 			
@@ -8019,35 +7221,16 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				if (context == null) return MemberAccessExpressionGreen.__Missing;
 				TestLexerModeParser.ExpressionContext expressionContext = context.expression();
 				ExpressionGreen expression = null;
-				if (expressionContext != null)
-				{
-					expression = (ExpressionGreen)this.Visit(expressionContext);
-				}
-				else
-				{
-					expression = ExpressionGreen.__Missing;
-				}
+				if (expressionContext != null) expression = (ExpressionGreen)this.Visit(expressionContext);
+				if (expression == null) expression = ExpressionGreen.__Missing;
 				InternalSyntaxToken tDot = (InternalSyntaxToken)this.VisitTerminal(context.TDot(), TestLexerModeSyntaxKind.TDot);
 				TestLexerModeParser.IdentifierContext identifierContext = context.identifier();
 				IdentifierGreen identifier = null;
-				if (identifierContext != null)
-				{
-					identifier = (IdentifierGreen)this.Visit(identifierContext);
-				}
-				else
-				{
-					identifier = IdentifierGreen.__Missing;
-				}
+				if (identifierContext != null) identifier = (IdentifierGreen)this.Visit(identifierContext);
+				if (identifier == null) identifier = IdentifierGreen.__Missing;
 				TestLexerModeParser.TypeArgumentListContext typeArgumentListContext = context.typeArgumentList();
 				TypeArgumentListGreen typeArgumentList = null;
-				if (typeArgumentListContext != null)
-				{
-					typeArgumentList = (TypeArgumentListGreen)this.Visit(typeArgumentListContext);
-				}
-				else
-				{
-					typeArgumentList = TypeArgumentListGreen.__Missing;
-				}
+				if (typeArgumentListContext != null) typeArgumentList = (TypeArgumentListGreen)this.Visit(typeArgumentListContext);
 				return _factory.MemberAccessExpression(expression, tDot, identifier, typeArgumentList);
 			}
 			
@@ -8057,25 +7240,13 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				InternalSyntaxToken tOpenParenthesis = (InternalSyntaxToken)this.VisitTerminal(context.TOpenParenthesis(), TestLexerModeSyntaxKind.TOpenParenthesis);
 				TestLexerModeParser.TypeReferenceContext typeReferenceContext = context.typeReference();
 				TypeReferenceGreen typeReference = null;
-				if (typeReferenceContext != null)
-				{
-					typeReference = (TypeReferenceGreen)this.Visit(typeReferenceContext);
-				}
-				else
-				{
-					typeReference = TypeReferenceGreen.__Missing;
-				}
+				if (typeReferenceContext != null) typeReference = (TypeReferenceGreen)this.Visit(typeReferenceContext);
+				if (typeReference == null) typeReference = TypeReferenceGreen.__Missing;
 				InternalSyntaxToken tCloseParenthesis = (InternalSyntaxToken)this.VisitTerminal(context.TCloseParenthesis(), TestLexerModeSyntaxKind.TCloseParenthesis);
 				TestLexerModeParser.ExpressionContext expressionContext = context.expression();
 				ExpressionGreen expression = null;
-				if (expressionContext != null)
-				{
-					expression = (ExpressionGreen)this.Visit(expressionContext);
-				}
-				else
-				{
-					expression = ExpressionGreen.__Missing;
-				}
+				if (expressionContext != null) expression = (ExpressionGreen)this.Visit(expressionContext);
+				if (expression == null) expression = ExpressionGreen.__Missing;
 				return _factory.TypecastExpression(tOpenParenthesis, typeReference, tCloseParenthesis, expression);
 			}
 			
@@ -8113,14 +7284,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				}
 				TestLexerModeParser.ExpressionContext expressionContext = context.expression();
 				ExpressionGreen expression = null;
-				if (expressionContext != null)
-				{
-					expression = (ExpressionGreen)this.Visit(expressionContext);
-				}
-				else
-				{
-					expression = ExpressionGreen.__Missing;
-				}
+				if (expressionContext != null) expression = (ExpressionGreen)this.Visit(expressionContext);
+				if (expression == null) expression = ExpressionGreen.__Missing;
 				return _factory.UnaryExpression(op, expression);
 			}
 			
@@ -8129,14 +7294,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				if (context == null) return PostExpressionGreen.__Missing;
 				TestLexerModeParser.ExpressionContext expressionContext = context.expression();
 				ExpressionGreen expression = null;
-				if (expressionContext != null)
-				{
-					expression = (ExpressionGreen)this.Visit(expressionContext);
-				}
-				else
-				{
-					expression = ExpressionGreen.__Missing;
-				}
+				if (expressionContext != null) expression = (ExpressionGreen)this.Visit(expressionContext);
+				if (expression == null) expression = ExpressionGreen.__Missing;
 				InternalSyntaxToken op = null;
 				if (context.TPlusPlus() != null)
 				{
@@ -8158,14 +7317,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				if (context == null) return MultiplicationExpressionGreen.__Missing;
 				TestLexerModeParser.ExpressionContext leftContext = context.left;
 				ExpressionGreen left = null;
-				if (leftContext != null)
-				{
-					left = (ExpressionGreen)this.Visit(leftContext);
-				}
-				else
-				{
-					left = ExpressionGreen.__Missing;
-				}
+				if (leftContext != null) left = (ExpressionGreen)this.Visit(leftContext);
+				if (left == null) left = ExpressionGreen.__Missing;
 				InternalSyntaxToken op = null;
 				if (context.TAsterisk() != null)
 				{
@@ -8185,14 +7338,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				}
 				TestLexerModeParser.ExpressionContext rightContext = context.right;
 				ExpressionGreen right = null;
-				if (rightContext != null)
-				{
-					right = (ExpressionGreen)this.Visit(rightContext);
-				}
-				else
-				{
-					right = ExpressionGreen.__Missing;
-				}
+				if (rightContext != null) right = (ExpressionGreen)this.Visit(rightContext);
+				if (right == null) right = ExpressionGreen.__Missing;
 				return _factory.MultiplicationExpression(left, op, right);
 			}
 			
@@ -8201,14 +7348,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				if (context == null) return AdditionExpressionGreen.__Missing;
 				TestLexerModeParser.ExpressionContext leftContext = context.left;
 				ExpressionGreen left = null;
-				if (leftContext != null)
-				{
-					left = (ExpressionGreen)this.Visit(leftContext);
-				}
-				else
-				{
-					left = ExpressionGreen.__Missing;
-				}
+				if (leftContext != null) left = (ExpressionGreen)this.Visit(leftContext);
+				if (left == null) left = ExpressionGreen.__Missing;
 				InternalSyntaxToken op = null;
 				if (context.TPlus() != null)
 				{
@@ -8224,14 +7365,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				}
 				TestLexerModeParser.ExpressionContext rightContext = context.right;
 				ExpressionGreen right = null;
-				if (rightContext != null)
-				{
-					right = (ExpressionGreen)this.Visit(rightContext);
-				}
-				else
-				{
-					right = ExpressionGreen.__Missing;
-				}
+				if (rightContext != null) right = (ExpressionGreen)this.Visit(rightContext);
+				if (right == null) right = ExpressionGreen.__Missing;
 				return _factory.AdditionExpression(left, op, right);
 			}
 			
@@ -8240,14 +7375,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				if (context == null) return RelationalExpressionGreen.__Missing;
 				TestLexerModeParser.ExpressionContext leftContext = context.left;
 				ExpressionGreen left = null;
-				if (leftContext != null)
-				{
-					left = (ExpressionGreen)this.Visit(leftContext);
-				}
-				else
-				{
-					left = ExpressionGreen.__Missing;
-				}
+				if (leftContext != null) left = (ExpressionGreen)this.Visit(leftContext);
+				if (left == null) left = ExpressionGreen.__Missing;
 				InternalSyntaxToken op = null;
 				if (context.TLessThan() != null)
 				{
@@ -8271,14 +7400,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				}
 				TestLexerModeParser.ExpressionContext rightContext = context.right;
 				ExpressionGreen right = null;
-				if (rightContext != null)
-				{
-					right = (ExpressionGreen)this.Visit(rightContext);
-				}
-				else
-				{
-					right = ExpressionGreen.__Missing;
-				}
+				if (rightContext != null) right = (ExpressionGreen)this.Visit(rightContext);
+				if (right == null) right = ExpressionGreen.__Missing;
 				return _factory.RelationalExpression(left, op, right);
 			}
 			
@@ -8287,14 +7410,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				if (context == null) return TypecheckExpressionGreen.__Missing;
 				TestLexerModeParser.ExpressionContext leftContext = context.left;
 				ExpressionGreen left = null;
-				if (leftContext != null)
-				{
-					left = (ExpressionGreen)this.Visit(leftContext);
-				}
-				else
-				{
-					left = ExpressionGreen.__Missing;
-				}
+				if (leftContext != null) left = (ExpressionGreen)this.Visit(leftContext);
+				if (left == null) left = ExpressionGreen.__Missing;
 				InternalSyntaxToken op = null;
 				if (context.KIs() != null)
 				{
@@ -8310,14 +7427,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				}
 				TestLexerModeParser.TypeReferenceContext typeReferenceContext = context.typeReference();
 				TypeReferenceGreen typeReference = null;
-				if (typeReferenceContext != null)
-				{
-					typeReference = (TypeReferenceGreen)this.Visit(typeReferenceContext);
-				}
-				else
-				{
-					typeReference = TypeReferenceGreen.__Missing;
-				}
+				if (typeReferenceContext != null) typeReference = (TypeReferenceGreen)this.Visit(typeReferenceContext);
+				if (typeReference == null) typeReference = TypeReferenceGreen.__Missing;
 				return _factory.TypecheckExpression(left, op, typeReference);
 			}
 			
@@ -8326,14 +7437,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				if (context == null) return EqualityExpressionGreen.__Missing;
 				TestLexerModeParser.ExpressionContext leftContext = context.left;
 				ExpressionGreen left = null;
-				if (leftContext != null)
-				{
-					left = (ExpressionGreen)this.Visit(leftContext);
-				}
-				else
-				{
-					left = ExpressionGreen.__Missing;
-				}
+				if (leftContext != null) left = (ExpressionGreen)this.Visit(leftContext);
+				if (left == null) left = ExpressionGreen.__Missing;
 				InternalSyntaxToken op = null;
 				if (context.TEquals() != null)
 				{
@@ -8349,14 +7454,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				}
 				TestLexerModeParser.ExpressionContext rightContext = context.right;
 				ExpressionGreen right = null;
-				if (rightContext != null)
-				{
-					right = (ExpressionGreen)this.Visit(rightContext);
-				}
-				else
-				{
-					right = ExpressionGreen.__Missing;
-				}
+				if (rightContext != null) right = (ExpressionGreen)this.Visit(rightContext);
+				if (right == null) right = ExpressionGreen.__Missing;
 				return _factory.EqualityExpression(left, op, right);
 			}
 			
@@ -8365,25 +7464,13 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				if (context == null) return BitwiseAndExpressionGreen.__Missing;
 				TestLexerModeParser.ExpressionContext leftContext = context.left;
 				ExpressionGreen left = null;
-				if (leftContext != null)
-				{
-					left = (ExpressionGreen)this.Visit(leftContext);
-				}
-				else
-				{
-					left = ExpressionGreen.__Missing;
-				}
+				if (leftContext != null) left = (ExpressionGreen)this.Visit(leftContext);
+				if (left == null) left = ExpressionGreen.__Missing;
 				InternalSyntaxToken tAmp = (InternalSyntaxToken)this.VisitTerminal(context.TAmp(), TestLexerModeSyntaxKind.TAmp);
 				TestLexerModeParser.ExpressionContext rightContext = context.right;
 				ExpressionGreen right = null;
-				if (rightContext != null)
-				{
-					right = (ExpressionGreen)this.Visit(rightContext);
-				}
-				else
-				{
-					right = ExpressionGreen.__Missing;
-				}
+				if (rightContext != null) right = (ExpressionGreen)this.Visit(rightContext);
+				if (right == null) right = ExpressionGreen.__Missing;
 				return _factory.BitwiseAndExpression(left, tAmp, right);
 			}
 			
@@ -8392,25 +7479,13 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				if (context == null) return BitwiseXorExpressionGreen.__Missing;
 				TestLexerModeParser.ExpressionContext leftContext = context.left;
 				ExpressionGreen left = null;
-				if (leftContext != null)
-				{
-					left = (ExpressionGreen)this.Visit(leftContext);
-				}
-				else
-				{
-					left = ExpressionGreen.__Missing;
-				}
+				if (leftContext != null) left = (ExpressionGreen)this.Visit(leftContext);
+				if (left == null) left = ExpressionGreen.__Missing;
 				InternalSyntaxToken tHat = (InternalSyntaxToken)this.VisitTerminal(context.THat(), TestLexerModeSyntaxKind.THat);
 				TestLexerModeParser.ExpressionContext rightContext = context.right;
 				ExpressionGreen right = null;
-				if (rightContext != null)
-				{
-					right = (ExpressionGreen)this.Visit(rightContext);
-				}
-				else
-				{
-					right = ExpressionGreen.__Missing;
-				}
+				if (rightContext != null) right = (ExpressionGreen)this.Visit(rightContext);
+				if (right == null) right = ExpressionGreen.__Missing;
 				return _factory.BitwiseXorExpression(left, tHat, right);
 			}
 			
@@ -8419,25 +7494,13 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				if (context == null) return BitwiseOrExpressionGreen.__Missing;
 				TestLexerModeParser.ExpressionContext leftContext = context.left;
 				ExpressionGreen left = null;
-				if (leftContext != null)
-				{
-					left = (ExpressionGreen)this.Visit(leftContext);
-				}
-				else
-				{
-					left = ExpressionGreen.__Missing;
-				}
+				if (leftContext != null) left = (ExpressionGreen)this.Visit(leftContext);
+				if (left == null) left = ExpressionGreen.__Missing;
 				InternalSyntaxToken tPipe = (InternalSyntaxToken)this.VisitTerminal(context.TPipe(), TestLexerModeSyntaxKind.TPipe);
 				TestLexerModeParser.ExpressionContext rightContext = context.right;
 				ExpressionGreen right = null;
-				if (rightContext != null)
-				{
-					right = (ExpressionGreen)this.Visit(rightContext);
-				}
-				else
-				{
-					right = ExpressionGreen.__Missing;
-				}
+				if (rightContext != null) right = (ExpressionGreen)this.Visit(rightContext);
+				if (right == null) right = ExpressionGreen.__Missing;
 				return _factory.BitwiseOrExpression(left, tPipe, right);
 			}
 			
@@ -8446,25 +7509,13 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				if (context == null) return LogicalAndExpressionGreen.__Missing;
 				TestLexerModeParser.ExpressionContext leftContext = context.left;
 				ExpressionGreen left = null;
-				if (leftContext != null)
-				{
-					left = (ExpressionGreen)this.Visit(leftContext);
-				}
-				else
-				{
-					left = ExpressionGreen.__Missing;
-				}
+				if (leftContext != null) left = (ExpressionGreen)this.Visit(leftContext);
+				if (left == null) left = ExpressionGreen.__Missing;
 				InternalSyntaxToken tAnd = (InternalSyntaxToken)this.VisitTerminal(context.TAnd(), TestLexerModeSyntaxKind.TAnd);
 				TestLexerModeParser.ExpressionContext rightContext = context.right;
 				ExpressionGreen right = null;
-				if (rightContext != null)
-				{
-					right = (ExpressionGreen)this.Visit(rightContext);
-				}
-				else
-				{
-					right = ExpressionGreen.__Missing;
-				}
+				if (rightContext != null) right = (ExpressionGreen)this.Visit(rightContext);
+				if (right == null) right = ExpressionGreen.__Missing;
 				return _factory.LogicalAndExpression(left, tAnd, right);
 			}
 			
@@ -8473,25 +7524,13 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				if (context == null) return LogicalXorExpressionGreen.__Missing;
 				TestLexerModeParser.ExpressionContext leftContext = context.left;
 				ExpressionGreen left = null;
-				if (leftContext != null)
-				{
-					left = (ExpressionGreen)this.Visit(leftContext);
-				}
-				else
-				{
-					left = ExpressionGreen.__Missing;
-				}
+				if (leftContext != null) left = (ExpressionGreen)this.Visit(leftContext);
+				if (left == null) left = ExpressionGreen.__Missing;
 				InternalSyntaxToken tXor = (InternalSyntaxToken)this.VisitTerminal(context.TXor(), TestLexerModeSyntaxKind.TXor);
 				TestLexerModeParser.ExpressionContext rightContext = context.right;
 				ExpressionGreen right = null;
-				if (rightContext != null)
-				{
-					right = (ExpressionGreen)this.Visit(rightContext);
-				}
-				else
-				{
-					right = ExpressionGreen.__Missing;
-				}
+				if (rightContext != null) right = (ExpressionGreen)this.Visit(rightContext);
+				if (right == null) right = ExpressionGreen.__Missing;
 				return _factory.LogicalXorExpression(left, tXor, right);
 			}
 			
@@ -8500,25 +7539,13 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				if (context == null) return LogicalOrExpressionGreen.__Missing;
 				TestLexerModeParser.ExpressionContext leftContext = context.left;
 				ExpressionGreen left = null;
-				if (leftContext != null)
-				{
-					left = (ExpressionGreen)this.Visit(leftContext);
-				}
-				else
-				{
-					left = ExpressionGreen.__Missing;
-				}
+				if (leftContext != null) left = (ExpressionGreen)this.Visit(leftContext);
+				if (left == null) left = ExpressionGreen.__Missing;
 				InternalSyntaxToken tOr = (InternalSyntaxToken)this.VisitTerminal(context.TOr(), TestLexerModeSyntaxKind.TOr);
 				TestLexerModeParser.ExpressionContext rightContext = context.right;
 				ExpressionGreen right = null;
-				if (rightContext != null)
-				{
-					right = (ExpressionGreen)this.Visit(rightContext);
-				}
-				else
-				{
-					right = ExpressionGreen.__Missing;
-				}
+				if (rightContext != null) right = (ExpressionGreen)this.Visit(rightContext);
+				if (right == null) right = ExpressionGreen.__Missing;
 				return _factory.LogicalOrExpression(left, tOr, right);
 			}
 			
@@ -8527,36 +7554,18 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				if (context == null) return ConditionalExpressionGreen.__Missing;
 				TestLexerModeParser.ExpressionContext conditionContext = context.condition;
 				ExpressionGreen condition = null;
-				if (conditionContext != null)
-				{
-					condition = (ExpressionGreen)this.Visit(conditionContext);
-				}
-				else
-				{
-					condition = ExpressionGreen.__Missing;
-				}
+				if (conditionContext != null) condition = (ExpressionGreen)this.Visit(conditionContext);
+				if (condition == null) condition = ExpressionGreen.__Missing;
 				InternalSyntaxToken tQuestion = (InternalSyntaxToken)this.VisitTerminal(context.TQuestion(), TestLexerModeSyntaxKind.TQuestion);
 				TestLexerModeParser.ExpressionContext thenBranchContext = context.thenBranch;
 				ExpressionGreen thenBranch = null;
-				if (thenBranchContext != null)
-				{
-					thenBranch = (ExpressionGreen)this.Visit(thenBranchContext);
-				}
-				else
-				{
-					thenBranch = ExpressionGreen.__Missing;
-				}
+				if (thenBranchContext != null) thenBranch = (ExpressionGreen)this.Visit(thenBranchContext);
+				if (thenBranch == null) thenBranch = ExpressionGreen.__Missing;
 				InternalSyntaxToken tColon = (InternalSyntaxToken)this.VisitTerminal(context.TColon(), TestLexerModeSyntaxKind.TColon);
 				TestLexerModeParser.ExpressionContext elseBranchContext = context.elseBranch;
 				ExpressionGreen elseBranch = null;
-				if (elseBranchContext != null)
-				{
-					elseBranch = (ExpressionGreen)this.Visit(elseBranchContext);
-				}
-				else
-				{
-					elseBranch = ExpressionGreen.__Missing;
-				}
+				if (elseBranchContext != null) elseBranch = (ExpressionGreen)this.Visit(elseBranchContext);
+				if (elseBranch == null) elseBranch = ExpressionGreen.__Missing;
 				return _factory.ConditionalExpression(condition, tQuestion, thenBranch, tColon, elseBranch);
 			}
 			
@@ -8565,14 +7574,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				if (context == null) return AssignmentExpressionGreen.__Missing;
 				TestLexerModeParser.ExpressionContext leftContext = context.left;
 				ExpressionGreen left = null;
-				if (leftContext != null)
-				{
-					left = (ExpressionGreen)this.Visit(leftContext);
-				}
-				else
-				{
-					left = ExpressionGreen.__Missing;
-				}
+				if (leftContext != null) left = (ExpressionGreen)this.Visit(leftContext);
+				if (left == null) left = ExpressionGreen.__Missing;
 				InternalSyntaxToken op = null;
 				if (context.TAssign() != null)
 				{
@@ -8624,14 +7627,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				}
 				TestLexerModeParser.ExpressionContext rightContext = context.right;
 				ExpressionGreen right = null;
-				if (rightContext != null)
-				{
-					right = (ExpressionGreen)this.Visit(rightContext);
-				}
-				else
-				{
-					right = ExpressionGreen.__Missing;
-				}
+				if (rightContext != null) right = (ExpressionGreen)this.Visit(rightContext);
+				if (right == null) right = ExpressionGreen.__Missing;
 				return _factory.AssignmentExpression(left, op, right);
 			}
 			
@@ -8640,25 +7637,13 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				if (context == null) return LambdaExpressionGreen.__Missing;
 				TestLexerModeParser.AnonymousFunctionSignatureContext anonymousFunctionSignatureContext = context.anonymousFunctionSignature();
 				AnonymousFunctionSignatureGreen anonymousFunctionSignature = null;
-				if (anonymousFunctionSignatureContext != null)
-				{
-					anonymousFunctionSignature = (AnonymousFunctionSignatureGreen)this.Visit(anonymousFunctionSignatureContext);
-				}
-				else
-				{
-					anonymousFunctionSignature = AnonymousFunctionSignatureGreen.__Missing;
-				}
+				if (anonymousFunctionSignatureContext != null) anonymousFunctionSignature = (AnonymousFunctionSignatureGreen)this.Visit(anonymousFunctionSignatureContext);
+				if (anonymousFunctionSignature == null) anonymousFunctionSignature = AnonymousFunctionSignatureGreen.__Missing;
 				InternalSyntaxToken tArrow = (InternalSyntaxToken)this.VisitTerminal(context.TArrow(), TestLexerModeSyntaxKind.TArrow);
 				TestLexerModeParser.ExpressionContext expressionContext = context.expression();
 				ExpressionGreen expression = null;
-				if (expressionContext != null)
-				{
-					expression = (ExpressionGreen)this.Visit(expressionContext);
-				}
-				else
-				{
-					expression = ExpressionGreen.__Missing;
-				}
+				if (expressionContext != null) expression = (ExpressionGreen)this.Visit(expressionContext);
+				if (expression == null) expression = ExpressionGreen.__Missing;
 				return _factory.LambdaExpression(anonymousFunctionSignature, tArrow, expression);
 			}
 			

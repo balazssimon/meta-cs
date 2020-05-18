@@ -9,6 +9,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using MetaDslx.CodeAnalysis.InternalUtilities;
 #if !NETSTANDARD
 using RegistryKey = Microsoft.Win32.RegistryKey;
 using RegistryHive = Microsoft.Win32.RegistryHive;
@@ -204,19 +205,28 @@ namespace MetaDslx.BuildTasks
                 };
 
                 this.AddDiagnostic(DiagnosticSeverity.Info, -1, null, -1, -1, "Executing command: \"" + startInfo.FileName + "\" " + startInfo.Arguments);
+                var joinedArguments = JoinArguments(arguments);
+                var processResult = RedirectedProcess.Execute(executable, joinedArguments, this.TimeoutInSeconds * 1000);
 
-                Process process = new Process();
-                process.StartInfo = startInfo;
-                process.ErrorDataReceived += HandleErrorDataReceived;
-                process.OutputDataReceived += HandleOutputDataReceived;
-                process.Start();
-                process.BeginErrorReadLine();
-                process.BeginOutputReadLine();
-                process.StandardInput.Dispose();
-                if (this.TimeoutInSeconds < 0) process.WaitForExit();
-                else process.WaitForExit(this.TimeoutInSeconds * 1000);
+                using (StringReader sr = new StringReader(processResult.StandardOutput))
+                {
+                    string line;
+                    while ((line = sr.ReadLine()) != null)
+                    {
+                        HandleOutputDataReceived(line);
+                    }
+                }
 
-                return process.ExitCode == 0;
+                using (StringReader sr = new StringReader(processResult.StandardError))
+                {
+                    string line;
+                    while ((line = sr.ReadLine()) != null)
+                    {
+                        HandleErrorDataReceived(line);
+                    }
+                }
+
+                return processResult.ExitCode == 0;
             }
             catch (Exception e)
             {
@@ -260,11 +270,6 @@ namespace MetaDslx.BuildTasks
         private static readonly Regex ErrorMessageFormat = new Regex(@"^(?<SEVERITY>[a-z]+)\((?<ERRORCODE>[0-9]+)\): (?<FILE>.*?):(?<LINE>[0-9]*?):(?<COLUMN>[0-9]*?): (?<MESSAGE>.*?)$", RegexOptions.Compiled);
         private static readonly Regex GeneratedFileMessageFormat = new Regex(@"^Generating file '(?<OUTPUT>.*?)' for grammar '(?<GRAMMAR>.*?)'$", RegexOptions.Compiled);
 
-        private void HandleErrorDataReceived(object sender, DataReceivedEventArgs e)
-        {
-            HandleErrorDataReceived(e.Data);
-        }
-
         private void HandleErrorDataReceived(string data)
         {
             if (string.IsNullOrEmpty(data))
@@ -306,11 +311,6 @@ namespace MetaDslx.BuildTasks
             {
                 this.AddDiagnostic(DiagnosticSeverity.Error, -1, null, -1, -1, ex.ToString().Replace('\r', ' ').Replace('\n', ' '));
             }
-        }
-
-        private void HandleOutputDataReceived(object sender, DataReceivedEventArgs e)
-        {
-            HandleOutputDataReceived(e.Data);
         }
 
         private void HandleOutputDataReceived(string data)

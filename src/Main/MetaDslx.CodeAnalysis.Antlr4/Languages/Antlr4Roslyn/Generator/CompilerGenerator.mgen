@@ -1120,7 +1120,7 @@ namespace [Properties.DefaultNamespace].Syntax.InternalSyntax
 			
             private GreenNode VisitTerminal(IToken token, [lang]SyntaxKind kind)
             {
-				if (token == null)
+				if (token == null || (token.Type == TokenConstants.Eof && kind != SyntaxKind.Eof))
 				{
 					if (kind != null) return _factory.MissingToken(kind);
 					else return null;
@@ -1135,7 +1135,7 @@ namespace [Properties.DefaultNamespace].Syntax.InternalSyntax
             }
             private GreenNode VisitTerminal(ITerminalNode node, [lang]SyntaxKind kind)
             {
-                if (node == null || node.Symbol == null)
+                if (node == null || node.Symbol == null || (node.Symbol.Type == TokenConstants.Eof && kind != SyntaxKind.Eof))
 				{
 					if (kind != null) return _factory.MissingToken(kind);
 					else return null;
@@ -1293,14 +1293,10 @@ public override GreenNode Visit[rule.PlainName()]([lang]Parser.[rule.PlainName()
 		[if(elem.IsSimplified)]
 	[lang]Parser.[elem.PlainType(false)]Context [elem.FieldName()]Context = context.[elem.GetAccessorName()];
 	[elem.GreenType(TypeKind.Public, false)] [elem.FieldName()] = null;
-	if ([elem.FieldName()]Context != null)
-	{
-		[elem.FieldName()] = ([elem.GreenType(TypeKind.Public, false)])this.Visit([elem.FieldName()]Context);
-	}
-	else
-	{
-		[elem.FieldName()] = [elem.GreenType(TypeKind.Public, false)].__Missing;
-	}
+	if ([elem.FieldName()]Context != null) [elem.FieldName()] = ([elem.GreenType(TypeKind.Public, false)])this.Visit([elem.FieldName()]Context);
+            [if (!elem.IsOptional)]
+	if ([elem.FieldName()] == null) [elem.FieldName()] = [elem.GreenType(TypeKind.Public, false)].__Missing;
+            [end if]
 		[else]
 		[if(elem.IsBlock)]
 			[if(elem.IsFixedTokenAltBlock)]
@@ -1401,14 +1397,10 @@ public override GreenNode Visit[rule.PlainName()]([lang]Parser.[rule.PlainName()
 				[else]
 	[lang]Parser.[elem.PlainType()]Context [elem.FieldName()]Context = context.[elem.GetAccessorName()];
 	[elem.GreenType(TypeKind.Field)] [elem.FieldName()] = null;
-	if ([elem.FieldName()]Context != null)
-	{
-		[elem.FieldName()] = ([elem.GreenType(TypeKind.Field)])this.Visit([elem.FieldName()]Context);
-	}
-	else
-	{
-		[elem.FieldName()] = [elem.GreenType(TypeKind.Field)].__Missing;
-	}
+	if ([elem.FieldName()]Context != null) [elem.FieldName()] = ([elem.GreenType(TypeKind.Field)])this.Visit([elem.FieldName()]Context);
+                    [if (!elem.IsOptional)]
+	if ([elem.FieldName()] == null) [elem.FieldName()] = [elem.GreenType(TypeKind.Field)].__Missing;
+                    [end if]
 				[end if]
 			[end if]
 		[end if]

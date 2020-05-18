@@ -148,7 +148,6 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
 
         private LinePositionSpan GetLinePositionSpan(int line, int charPositionInLine)
         {
-            if (line > 0) --line;
             return new LinePositionSpan(new LinePosition(line, charPositionInLine), new LinePosition(line, charPositionInLine));
         }
 
@@ -173,7 +172,6 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         protected IToken FindToken(int line, int column)
         {
             if (line < 0 || column < 0) return null;
-            --line;
             var stream = this.CommonTokenStream;
             int start = 0;
             int end = stream.Size - 1;
@@ -182,7 +180,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                 int index = (start + end) / 2;
                 IToken token = stream.Get(index);
                 if (token == null) return null;
-                if (token.Line == line && column >= token.Column && column <= token.Column + token.StopIndex - token.StartIndex + 1) return token;
+                if (token.Line == line && column >= token.Column && column <= token.Column + token.StopIndex - token.StartIndex) return token;
                 else if (line < token.Line) end = index - 1;
                 else if (line == token.Line && column < token.Column) end = index - 1;
                 else start = index + 1;

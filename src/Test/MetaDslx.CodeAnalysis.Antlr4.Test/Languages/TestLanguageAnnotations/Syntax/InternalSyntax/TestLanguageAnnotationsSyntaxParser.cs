@@ -4147,7 +4147,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
             }
             private GreenNode VisitTerminal(IToken token, TestLanguageAnnotationsSyntaxKind kind)
             {
-				if (token == null)
+				if (token == null || (token.Type == TokenConstants.Eof && kind != SyntaxKind.Eof))
 				{
 					if (kind != null) return _factory.MissingToken(kind);
 					else return null;
@@ -4162,7 +4162,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
             }
             private GreenNode VisitTerminal(ITerminalNode node, TestLanguageAnnotationsSyntaxKind kind)
             {
-                if (node == null || node.Symbol == null)
+                if (node == null || node.Symbol == null || (node.Symbol.Type == TokenConstants.Eof && kind != SyntaxKind.Eof))
 				{
 					if (kind != null) return _factory.MissingToken(kind);
 					else return null;
@@ -4274,14 +4274,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
 				InternalSyntaxToken kTest01 = (InternalSyntaxToken)this.VisitTerminal(context.KTest01(), TestLanguageAnnotationsSyntaxKind.KTest01);
 				TestLanguageAnnotationsParser.NamespaceDeclaration01Context namespaceDeclaration01Context = context.namespaceDeclaration01();
 				NamespaceDeclaration01Green namespaceDeclaration01 = null;
-				if (namespaceDeclaration01Context != null)
-				{
-					namespaceDeclaration01 = (NamespaceDeclaration01Green)this.Visit(namespaceDeclaration01Context);
-				}
-				else
-				{
-					namespaceDeclaration01 = NamespaceDeclaration01Green.__Missing;
-				}
+				if (namespaceDeclaration01Context != null) namespaceDeclaration01 = (NamespaceDeclaration01Green)this.Visit(namespaceDeclaration01Context);
+				if (namespaceDeclaration01 == null) namespaceDeclaration01 = NamespaceDeclaration01Green.__Missing;
 				return _factory.Test01(kTest01, namespaceDeclaration01);
 			}
 			
@@ -4291,24 +4285,12 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
 				InternalSyntaxToken kNamespace = (InternalSyntaxToken)this.VisitTerminal(context.KNamespace(), TestLanguageAnnotationsSyntaxKind.KNamespace);
 				TestLanguageAnnotationsParser.QualifiedNameContext qualifiedNameContext = context.qualifiedName();
 				QualifiedNameGreen qualifiedName = null;
-				if (qualifiedNameContext != null)
-				{
-					qualifiedName = (QualifiedNameGreen)this.Visit(qualifiedNameContext);
-				}
-				else
-				{
-					qualifiedName = QualifiedNameGreen.__Missing;
-				}
+				if (qualifiedNameContext != null) qualifiedName = (QualifiedNameGreen)this.Visit(qualifiedNameContext);
+				if (qualifiedName == null) qualifiedName = QualifiedNameGreen.__Missing;
 				TestLanguageAnnotationsParser.NamespaceBody01Context namespaceBody01Context = context.namespaceBody01();
 				NamespaceBody01Green namespaceBody01 = null;
-				if (namespaceBody01Context != null)
-				{
-					namespaceBody01 = (NamespaceBody01Green)this.Visit(namespaceBody01Context);
-				}
-				else
-				{
-					namespaceBody01 = NamespaceBody01Green.__Missing;
-				}
+				if (namespaceBody01Context != null) namespaceBody01 = (NamespaceBody01Green)this.Visit(namespaceBody01Context);
+				if (namespaceBody01 == null) namespaceBody01 = NamespaceBody01Green.__Missing;
 				return _factory.NamespaceDeclaration01(kNamespace, qualifiedName, namespaceBody01);
 			}
 			
@@ -4350,14 +4332,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
 				InternalSyntaxToken kVertex = (InternalSyntaxToken)this.VisitTerminal(context.KVertex(), TestLanguageAnnotationsSyntaxKind.KVertex);
 				TestLanguageAnnotationsParser.NameContext nameContext = context.name();
 				NameGreen name = null;
-				if (nameContext != null)
-				{
-					name = (NameGreen)this.Visit(nameContext);
-				}
-				else
-				{
-					name = NameGreen.__Missing;
-				}
+				if (nameContext != null) name = (NameGreen)this.Visit(nameContext);
+				if (name == null) name = NameGreen.__Missing;
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), TestLanguageAnnotationsSyntaxKind.TSemicolon);
 				return _factory.Vertex01(kVertex, name, tSemicolon);
 			}
@@ -4368,25 +4344,13 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
 				InternalSyntaxToken kArrow = (InternalSyntaxToken)this.VisitTerminal(context.KArrow(), TestLanguageAnnotationsSyntaxKind.KArrow);
 				TestLanguageAnnotationsParser.QualifierContext sourceContext = context.source;
 				QualifierGreen source = null;
-				if (sourceContext != null)
-				{
-					source = (QualifierGreen)this.Visit(sourceContext);
-				}
-				else
-				{
-					source = QualifierGreen.__Missing;
-				}
+				if (sourceContext != null) source = (QualifierGreen)this.Visit(sourceContext);
+				if (source == null) source = QualifierGreen.__Missing;
 				InternalSyntaxToken tArrow = (InternalSyntaxToken)this.VisitTerminal(context.TArrow(), TestLanguageAnnotationsSyntaxKind.TArrow);
 				TestLanguageAnnotationsParser.QualifierContext targetContext = context.target;
 				QualifierGreen target = null;
-				if (targetContext != null)
-				{
-					target = (QualifierGreen)this.Visit(targetContext);
-				}
-				else
-				{
-					target = QualifierGreen.__Missing;
-				}
+				if (targetContext != null) target = (QualifierGreen)this.Visit(targetContext);
+				if (target == null) target = QualifierGreen.__Missing;
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), TestLanguageAnnotationsSyntaxKind.TSemicolon);
 				return _factory.Arrow01(kArrow, source, tArrow, target, tSemicolon);
 			}
@@ -4397,14 +4361,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
 				InternalSyntaxToken kTest02 = (InternalSyntaxToken)this.VisitTerminal(context.KTest02(), TestLanguageAnnotationsSyntaxKind.KTest02);
 				TestLanguageAnnotationsParser.NamespaceDeclaration02Context namespaceDeclaration02Context = context.namespaceDeclaration02();
 				NamespaceDeclaration02Green namespaceDeclaration02 = null;
-				if (namespaceDeclaration02Context != null)
-				{
-					namespaceDeclaration02 = (NamespaceDeclaration02Green)this.Visit(namespaceDeclaration02Context);
-				}
-				else
-				{
-					namespaceDeclaration02 = NamespaceDeclaration02Green.__Missing;
-				}
+				if (namespaceDeclaration02Context != null) namespaceDeclaration02 = (NamespaceDeclaration02Green)this.Visit(namespaceDeclaration02Context);
+				if (namespaceDeclaration02 == null) namespaceDeclaration02 = NamespaceDeclaration02Green.__Missing;
 				return _factory.Test02(kTest02, namespaceDeclaration02);
 			}
 			
@@ -4414,24 +4372,12 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
 				InternalSyntaxToken kNamespace = (InternalSyntaxToken)this.VisitTerminal(context.KNamespace(), TestLanguageAnnotationsSyntaxKind.KNamespace);
 				TestLanguageAnnotationsParser.QualifiedNameContext qualifiedNameContext = context.qualifiedName();
 				QualifiedNameGreen qualifiedName = null;
-				if (qualifiedNameContext != null)
-				{
-					qualifiedName = (QualifiedNameGreen)this.Visit(qualifiedNameContext);
-				}
-				else
-				{
-					qualifiedName = QualifiedNameGreen.__Missing;
-				}
+				if (qualifiedNameContext != null) qualifiedName = (QualifiedNameGreen)this.Visit(qualifiedNameContext);
+				if (qualifiedName == null) qualifiedName = QualifiedNameGreen.__Missing;
 				TestLanguageAnnotationsParser.NamespaceBody02Context namespaceBody02Context = context.namespaceBody02();
 				NamespaceBody02Green namespaceBody02 = null;
-				if (namespaceBody02Context != null)
-				{
-					namespaceBody02 = (NamespaceBody02Green)this.Visit(namespaceBody02Context);
-				}
-				else
-				{
-					namespaceBody02 = NamespaceBody02Green.__Missing;
-				}
+				if (namespaceBody02Context != null) namespaceBody02 = (NamespaceBody02Green)this.Visit(namespaceBody02Context);
+				if (namespaceBody02 == null) namespaceBody02 = NamespaceBody02Green.__Missing;
 				return _factory.NamespaceDeclaration02(kNamespace, qualifiedName, namespaceBody02);
 			}
 			
@@ -4473,14 +4419,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
 				InternalSyntaxToken kVertex = (InternalSyntaxToken)this.VisitTerminal(context.KVertex(), TestLanguageAnnotationsSyntaxKind.KVertex);
 				TestLanguageAnnotationsParser.NameContext nameContext = context.name();
 				NameGreen name = null;
-				if (nameContext != null)
-				{
-					name = (NameGreen)this.Visit(nameContext);
-				}
-				else
-				{
-					name = NameGreen.__Missing;
-				}
+				if (nameContext != null) name = (NameGreen)this.Visit(nameContext);
+				if (name == null) name = NameGreen.__Missing;
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), TestLanguageAnnotationsSyntaxKind.TSemicolon);
 				return _factory.Vertex02(kVertex, name, tSemicolon);
 			}
@@ -4491,25 +4431,13 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
 				InternalSyntaxToken kArrow = (InternalSyntaxToken)this.VisitTerminal(context.KArrow(), TestLanguageAnnotationsSyntaxKind.KArrow);
 				TestLanguageAnnotationsParser.Source02Context source02Context = context.source02();
 				Source02Green source02 = null;
-				if (source02Context != null)
-				{
-					source02 = (Source02Green)this.Visit(source02Context);
-				}
-				else
-				{
-					source02 = Source02Green.__Missing;
-				}
+				if (source02Context != null) source02 = (Source02Green)this.Visit(source02Context);
+				if (source02 == null) source02 = Source02Green.__Missing;
 				InternalSyntaxToken tArrow = (InternalSyntaxToken)this.VisitTerminal(context.TArrow(), TestLanguageAnnotationsSyntaxKind.TArrow);
 				TestLanguageAnnotationsParser.Target02Context target02Context = context.target02();
 				Target02Green target02 = null;
-				if (target02Context != null)
-				{
-					target02 = (Target02Green)this.Visit(target02Context);
-				}
-				else
-				{
-					target02 = Target02Green.__Missing;
-				}
+				if (target02Context != null) target02 = (Target02Green)this.Visit(target02Context);
+				if (target02 == null) target02 = Target02Green.__Missing;
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), TestLanguageAnnotationsSyntaxKind.TSemicolon);
 				return _factory.Arrow02(kArrow, source02, tArrow, target02, tSemicolon);
 			}
@@ -4519,14 +4447,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
 				if (context == null) return Source02Green.__Missing;
 				TestLanguageAnnotationsParser.QualifierContext qualifierContext = context.qualifier();
 				QualifierGreen qualifier = null;
-				if (qualifierContext != null)
-				{
-					qualifier = (QualifierGreen)this.Visit(qualifierContext);
-				}
-				else
-				{
-					qualifier = QualifierGreen.__Missing;
-				}
+				if (qualifierContext != null) qualifier = (QualifierGreen)this.Visit(qualifierContext);
+				if (qualifier == null) qualifier = QualifierGreen.__Missing;
 				return _factory.Source02(qualifier);
 			}
 			
@@ -4535,14 +4457,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
 				if (context == null) return Target02Green.__Missing;
 				TestLanguageAnnotationsParser.QualifierContext qualifierContext = context.qualifier();
 				QualifierGreen qualifier = null;
-				if (qualifierContext != null)
-				{
-					qualifier = (QualifierGreen)this.Visit(qualifierContext);
-				}
-				else
-				{
-					qualifier = QualifierGreen.__Missing;
-				}
+				if (qualifierContext != null) qualifier = (QualifierGreen)this.Visit(qualifierContext);
+				if (qualifier == null) qualifier = QualifierGreen.__Missing;
 				return _factory.Target02(qualifier);
 			}
 			
@@ -4552,14 +4468,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
 				InternalSyntaxToken kTest03 = (InternalSyntaxToken)this.VisitTerminal(context.KTest03(), TestLanguageAnnotationsSyntaxKind.KTest03);
 				TestLanguageAnnotationsParser.NamespaceDeclaration03Context namespaceDeclaration03Context = context.namespaceDeclaration03();
 				NamespaceDeclaration03Green namespaceDeclaration03 = null;
-				if (namespaceDeclaration03Context != null)
-				{
-					namespaceDeclaration03 = (NamespaceDeclaration03Green)this.Visit(namespaceDeclaration03Context);
-				}
-				else
-				{
-					namespaceDeclaration03 = NamespaceDeclaration03Green.__Missing;
-				}
+				if (namespaceDeclaration03Context != null) namespaceDeclaration03 = (NamespaceDeclaration03Green)this.Visit(namespaceDeclaration03Context);
+				if (namespaceDeclaration03 == null) namespaceDeclaration03 = NamespaceDeclaration03Green.__Missing;
 				return _factory.Test03(kTest03, namespaceDeclaration03);
 			}
 			
@@ -4569,24 +4479,12 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
 				InternalSyntaxToken kNamespace = (InternalSyntaxToken)this.VisitTerminal(context.KNamespace(), TestLanguageAnnotationsSyntaxKind.KNamespace);
 				TestLanguageAnnotationsParser.QualifiedNameContext qualifiedNameContext = context.qualifiedName();
 				QualifiedNameGreen qualifiedName = null;
-				if (qualifiedNameContext != null)
-				{
-					qualifiedName = (QualifiedNameGreen)this.Visit(qualifiedNameContext);
-				}
-				else
-				{
-					qualifiedName = QualifiedNameGreen.__Missing;
-				}
+				if (qualifiedNameContext != null) qualifiedName = (QualifiedNameGreen)this.Visit(qualifiedNameContext);
+				if (qualifiedName == null) qualifiedName = QualifiedNameGreen.__Missing;
 				TestLanguageAnnotationsParser.NamespaceBody03Context namespaceBody03Context = context.namespaceBody03();
 				NamespaceBody03Green namespaceBody03 = null;
-				if (namespaceBody03Context != null)
-				{
-					namespaceBody03 = (NamespaceBody03Green)this.Visit(namespaceBody03Context);
-				}
-				else
-				{
-					namespaceBody03 = NamespaceBody03Green.__Missing;
-				}
+				if (namespaceBody03Context != null) namespaceBody03 = (NamespaceBody03Green)this.Visit(namespaceBody03Context);
+				if (namespaceBody03 == null) namespaceBody03 = NamespaceBody03Green.__Missing;
 				return _factory.NamespaceDeclaration03(kNamespace, qualifiedName, namespaceBody03);
 			}
 			
@@ -4628,14 +4526,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
 				InternalSyntaxToken kVertex = (InternalSyntaxToken)this.VisitTerminal(context.KVertex(), TestLanguageAnnotationsSyntaxKind.KVertex);
 				TestLanguageAnnotationsParser.NameContext nameContext = context.name();
 				NameGreen name = null;
-				if (nameContext != null)
-				{
-					name = (NameGreen)this.Visit(nameContext);
-				}
-				else
-				{
-					name = NameGreen.__Missing;
-				}
+				if (nameContext != null) name = (NameGreen)this.Visit(nameContext);
+				if (name == null) name = NameGreen.__Missing;
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), TestLanguageAnnotationsSyntaxKind.TSemicolon);
 				return _factory.Vertex03(kVertex, name, tSemicolon);
 			}
@@ -4646,25 +4538,13 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
 				InternalSyntaxToken kArrow = (InternalSyntaxToken)this.VisitTerminal(context.KArrow(), TestLanguageAnnotationsSyntaxKind.KArrow);
 				TestLanguageAnnotationsParser.Source03Context source03Context = context.source03();
 				Source03Green source03 = null;
-				if (source03Context != null)
-				{
-					source03 = (Source03Green)this.Visit(source03Context);
-				}
-				else
-				{
-					source03 = Source03Green.__Missing;
-				}
+				if (source03Context != null) source03 = (Source03Green)this.Visit(source03Context);
+				if (source03 == null) source03 = Source03Green.__Missing;
 				InternalSyntaxToken tArrow = (InternalSyntaxToken)this.VisitTerminal(context.TArrow(), TestLanguageAnnotationsSyntaxKind.TArrow);
 				TestLanguageAnnotationsParser.Target03Context target03Context = context.target03();
 				Target03Green target03 = null;
-				if (target03Context != null)
-				{
-					target03 = (Target03Green)this.Visit(target03Context);
-				}
-				else
-				{
-					target03 = Target03Green.__Missing;
-				}
+				if (target03Context != null) target03 = (Target03Green)this.Visit(target03Context);
+				if (target03 == null) target03 = Target03Green.__Missing;
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), TestLanguageAnnotationsSyntaxKind.TSemicolon);
 				return _factory.Arrow03(kArrow, source03, tArrow, target03, tSemicolon);
 			}
@@ -4674,14 +4554,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
 				if (context == null) return Source03Green.__Missing;
 				TestLanguageAnnotationsParser.QualifierContext qualifierContext = context.qualifier();
 				QualifierGreen qualifier = null;
-				if (qualifierContext != null)
-				{
-					qualifier = (QualifierGreen)this.Visit(qualifierContext);
-				}
-				else
-				{
-					qualifier = QualifierGreen.__Missing;
-				}
+				if (qualifierContext != null) qualifier = (QualifierGreen)this.Visit(qualifierContext);
+				if (qualifier == null) qualifier = QualifierGreen.__Missing;
 				return _factory.Source03(qualifier);
 			}
 			
@@ -4690,14 +4564,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
 				if (context == null) return Target03Green.__Missing;
 				TestLanguageAnnotationsParser.QualifierContext qualifierContext = context.qualifier();
 				QualifierGreen qualifier = null;
-				if (qualifierContext != null)
-				{
-					qualifier = (QualifierGreen)this.Visit(qualifierContext);
-				}
-				else
-				{
-					qualifier = QualifierGreen.__Missing;
-				}
+				if (qualifierContext != null) qualifier = (QualifierGreen)this.Visit(qualifierContext);
+				if (qualifier == null) qualifier = QualifierGreen.__Missing;
 				return _factory.Target03(qualifier);
 			}
 			
@@ -4707,14 +4575,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
 				InternalSyntaxToken kTest04 = (InternalSyntaxToken)this.VisitTerminal(context.KTest04(), TestLanguageAnnotationsSyntaxKind.KTest04);
 				TestLanguageAnnotationsParser.NamespaceDeclaration04Context namespaceDeclaration04Context = context.namespaceDeclaration04();
 				NamespaceDeclaration04Green namespaceDeclaration04 = null;
-				if (namespaceDeclaration04Context != null)
-				{
-					namespaceDeclaration04 = (NamespaceDeclaration04Green)this.Visit(namespaceDeclaration04Context);
-				}
-				else
-				{
-					namespaceDeclaration04 = NamespaceDeclaration04Green.__Missing;
-				}
+				if (namespaceDeclaration04Context != null) namespaceDeclaration04 = (NamespaceDeclaration04Green)this.Visit(namespaceDeclaration04Context);
+				if (namespaceDeclaration04 == null) namespaceDeclaration04 = NamespaceDeclaration04Green.__Missing;
 				return _factory.Test04(kTest04, namespaceDeclaration04);
 			}
 			
@@ -4724,24 +4586,12 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
 				InternalSyntaxToken kNamespace = (InternalSyntaxToken)this.VisitTerminal(context.KNamespace(), TestLanguageAnnotationsSyntaxKind.KNamespace);
 				TestLanguageAnnotationsParser.QualifiedNameContext qualifiedNameContext = context.qualifiedName();
 				QualifiedNameGreen qualifiedName = null;
-				if (qualifiedNameContext != null)
-				{
-					qualifiedName = (QualifiedNameGreen)this.Visit(qualifiedNameContext);
-				}
-				else
-				{
-					qualifiedName = QualifiedNameGreen.__Missing;
-				}
+				if (qualifiedNameContext != null) qualifiedName = (QualifiedNameGreen)this.Visit(qualifiedNameContext);
+				if (qualifiedName == null) qualifiedName = QualifiedNameGreen.__Missing;
 				TestLanguageAnnotationsParser.NamespaceBody04Context namespaceBody04Context = context.namespaceBody04();
 				NamespaceBody04Green namespaceBody04 = null;
-				if (namespaceBody04Context != null)
-				{
-					namespaceBody04 = (NamespaceBody04Green)this.Visit(namespaceBody04Context);
-				}
-				else
-				{
-					namespaceBody04 = NamespaceBody04Green.__Missing;
-				}
+				if (namespaceBody04Context != null) namespaceBody04 = (NamespaceBody04Green)this.Visit(namespaceBody04Context);
+				if (namespaceBody04 == null) namespaceBody04 = NamespaceBody04Green.__Missing;
 				return _factory.NamespaceDeclaration04(kNamespace, qualifiedName, namespaceBody04);
 			}
 			
@@ -4783,14 +4633,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
 				InternalSyntaxToken kVertex = (InternalSyntaxToken)this.VisitTerminal(context.KVertex(), TestLanguageAnnotationsSyntaxKind.KVertex);
 				TestLanguageAnnotationsParser.NameContext nameContext = context.name();
 				NameGreen name = null;
-				if (nameContext != null)
-				{
-					name = (NameGreen)this.Visit(nameContext);
-				}
-				else
-				{
-					name = NameGreen.__Missing;
-				}
+				if (nameContext != null) name = (NameGreen)this.Visit(nameContext);
+				if (name == null) name = NameGreen.__Missing;
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), TestLanguageAnnotationsSyntaxKind.TSemicolon);
 				return _factory.Vertex04(kVertex, name, tSemicolon);
 			}
@@ -4801,25 +4645,13 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
 				InternalSyntaxToken kArrow = (InternalSyntaxToken)this.VisitTerminal(context.KArrow(), TestLanguageAnnotationsSyntaxKind.KArrow);
 				TestLanguageAnnotationsParser.QualifierContext sourceContext = context.source;
 				QualifierGreen source = null;
-				if (sourceContext != null)
-				{
-					source = (QualifierGreen)this.Visit(sourceContext);
-				}
-				else
-				{
-					source = QualifierGreen.__Missing;
-				}
+				if (sourceContext != null) source = (QualifierGreen)this.Visit(sourceContext);
+				if (source == null) source = QualifierGreen.__Missing;
 				InternalSyntaxToken tArrow = (InternalSyntaxToken)this.VisitTerminal(context.TArrow(), TestLanguageAnnotationsSyntaxKind.TArrow);
 				TestLanguageAnnotationsParser.QualifierContext targetContext = context.target;
 				QualifierGreen target = null;
-				if (targetContext != null)
-				{
-					target = (QualifierGreen)this.Visit(targetContext);
-				}
-				else
-				{
-					target = QualifierGreen.__Missing;
-				}
+				if (targetContext != null) target = (QualifierGreen)this.Visit(targetContext);
+				if (target == null) target = QualifierGreen.__Missing;
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), TestLanguageAnnotationsSyntaxKind.TSemicolon);
 				return _factory.Arrow04(kArrow, source, tArrow, target, tSemicolon);
 			}
@@ -4830,14 +4662,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
 				InternalSyntaxToken kTest05 = (InternalSyntaxToken)this.VisitTerminal(context.KTest05(), TestLanguageAnnotationsSyntaxKind.KTest05);
 				TestLanguageAnnotationsParser.NamespaceDeclaration05Context namespaceDeclaration05Context = context.namespaceDeclaration05();
 				NamespaceDeclaration05Green namespaceDeclaration05 = null;
-				if (namespaceDeclaration05Context != null)
-				{
-					namespaceDeclaration05 = (NamespaceDeclaration05Green)this.Visit(namespaceDeclaration05Context);
-				}
-				else
-				{
-					namespaceDeclaration05 = NamespaceDeclaration05Green.__Missing;
-				}
+				if (namespaceDeclaration05Context != null) namespaceDeclaration05 = (NamespaceDeclaration05Green)this.Visit(namespaceDeclaration05Context);
+				if (namespaceDeclaration05 == null) namespaceDeclaration05 = NamespaceDeclaration05Green.__Missing;
 				return _factory.Test05(kTest05, namespaceDeclaration05);
 			}
 			
@@ -4847,24 +4673,12 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
 				InternalSyntaxToken kNamespace = (InternalSyntaxToken)this.VisitTerminal(context.KNamespace(), TestLanguageAnnotationsSyntaxKind.KNamespace);
 				TestLanguageAnnotationsParser.QualifiedNameContext qualifiedNameContext = context.qualifiedName();
 				QualifiedNameGreen qualifiedName = null;
-				if (qualifiedNameContext != null)
-				{
-					qualifiedName = (QualifiedNameGreen)this.Visit(qualifiedNameContext);
-				}
-				else
-				{
-					qualifiedName = QualifiedNameGreen.__Missing;
-				}
+				if (qualifiedNameContext != null) qualifiedName = (QualifiedNameGreen)this.Visit(qualifiedNameContext);
+				if (qualifiedName == null) qualifiedName = QualifiedNameGreen.__Missing;
 				TestLanguageAnnotationsParser.NamespaceBody05Context namespaceBody05Context = context.namespaceBody05();
 				NamespaceBody05Green namespaceBody05 = null;
-				if (namespaceBody05Context != null)
-				{
-					namespaceBody05 = (NamespaceBody05Green)this.Visit(namespaceBody05Context);
-				}
-				else
-				{
-					namespaceBody05 = NamespaceBody05Green.__Missing;
-				}
+				if (namespaceBody05Context != null) namespaceBody05 = (NamespaceBody05Green)this.Visit(namespaceBody05Context);
+				if (namespaceBody05 == null) namespaceBody05 = NamespaceBody05Green.__Missing;
 				return _factory.NamespaceDeclaration05(kNamespace, qualifiedName, namespaceBody05);
 			}
 			
@@ -4906,14 +4720,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
 				InternalSyntaxToken kVertex = (InternalSyntaxToken)this.VisitTerminal(context.KVertex(), TestLanguageAnnotationsSyntaxKind.KVertex);
 				TestLanguageAnnotationsParser.NameContext nameContext = context.name();
 				NameGreen name = null;
-				if (nameContext != null)
-				{
-					name = (NameGreen)this.Visit(nameContext);
-				}
-				else
-				{
-					name = NameGreen.__Missing;
-				}
+				if (nameContext != null) name = (NameGreen)this.Visit(nameContext);
+				if (name == null) name = NameGreen.__Missing;
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), TestLanguageAnnotationsSyntaxKind.TSemicolon);
 				return _factory.Vertex05(kVertex, name, tSemicolon);
 			}
@@ -4924,25 +4732,13 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
 				InternalSyntaxToken kArrow = (InternalSyntaxToken)this.VisitTerminal(context.KArrow(), TestLanguageAnnotationsSyntaxKind.KArrow);
 				TestLanguageAnnotationsParser.QualifierContext sourceContext = context.source;
 				QualifierGreen source = null;
-				if (sourceContext != null)
-				{
-					source = (QualifierGreen)this.Visit(sourceContext);
-				}
-				else
-				{
-					source = QualifierGreen.__Missing;
-				}
+				if (sourceContext != null) source = (QualifierGreen)this.Visit(sourceContext);
+				if (source == null) source = QualifierGreen.__Missing;
 				InternalSyntaxToken tArrow = (InternalSyntaxToken)this.VisitTerminal(context.TArrow(), TestLanguageAnnotationsSyntaxKind.TArrow);
 				TestLanguageAnnotationsParser.QualifierContext targetContext = context.target;
 				QualifierGreen target = null;
-				if (targetContext != null)
-				{
-					target = (QualifierGreen)this.Visit(targetContext);
-				}
-				else
-				{
-					target = QualifierGreen.__Missing;
-				}
+				if (targetContext != null) target = (QualifierGreen)this.Visit(targetContext);
+				if (target == null) target = QualifierGreen.__Missing;
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), TestLanguageAnnotationsSyntaxKind.TSemicolon);
 				return _factory.Arrow05(kArrow, source, tArrow, target, tSemicolon);
 			}
@@ -4953,14 +4749,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
 				InternalSyntaxToken kTest06 = (InternalSyntaxToken)this.VisitTerminal(context.KTest06(), TestLanguageAnnotationsSyntaxKind.KTest06);
 				TestLanguageAnnotationsParser.NamespaceDeclaration06Context namespaceDeclaration06Context = context.namespaceDeclaration06();
 				NamespaceDeclaration06Green namespaceDeclaration06 = null;
-				if (namespaceDeclaration06Context != null)
-				{
-					namespaceDeclaration06 = (NamespaceDeclaration06Green)this.Visit(namespaceDeclaration06Context);
-				}
-				else
-				{
-					namespaceDeclaration06 = NamespaceDeclaration06Green.__Missing;
-				}
+				if (namespaceDeclaration06Context != null) namespaceDeclaration06 = (NamespaceDeclaration06Green)this.Visit(namespaceDeclaration06Context);
+				if (namespaceDeclaration06 == null) namespaceDeclaration06 = NamespaceDeclaration06Green.__Missing;
 				return _factory.Test06(kTest06, namespaceDeclaration06);
 			}
 			
@@ -4970,24 +4760,12 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
 				InternalSyntaxToken kNamespace = (InternalSyntaxToken)this.VisitTerminal(context.KNamespace(), TestLanguageAnnotationsSyntaxKind.KNamespace);
 				TestLanguageAnnotationsParser.QualifiedNameContext qualifiedNameContext = context.qualifiedName();
 				QualifiedNameGreen qualifiedName = null;
-				if (qualifiedNameContext != null)
-				{
-					qualifiedName = (QualifiedNameGreen)this.Visit(qualifiedNameContext);
-				}
-				else
-				{
-					qualifiedName = QualifiedNameGreen.__Missing;
-				}
+				if (qualifiedNameContext != null) qualifiedName = (QualifiedNameGreen)this.Visit(qualifiedNameContext);
+				if (qualifiedName == null) qualifiedName = QualifiedNameGreen.__Missing;
 				TestLanguageAnnotationsParser.NamespaceBody06Context namespaceBody06Context = context.namespaceBody06();
 				NamespaceBody06Green namespaceBody06 = null;
-				if (namespaceBody06Context != null)
-				{
-					namespaceBody06 = (NamespaceBody06Green)this.Visit(namespaceBody06Context);
-				}
-				else
-				{
-					namespaceBody06 = NamespaceBody06Green.__Missing;
-				}
+				if (namespaceBody06Context != null) namespaceBody06 = (NamespaceBody06Green)this.Visit(namespaceBody06Context);
+				if (namespaceBody06 == null) namespaceBody06 = NamespaceBody06Green.__Missing;
 				return _factory.NamespaceDeclaration06(kNamespace, qualifiedName, namespaceBody06);
 			}
 			
@@ -5029,14 +4807,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
 				InternalSyntaxToken kVertex = (InternalSyntaxToken)this.VisitTerminal(context.KVertex(), TestLanguageAnnotationsSyntaxKind.KVertex);
 				TestLanguageAnnotationsParser.NameContext nameContext = context.name();
 				NameGreen name = null;
-				if (nameContext != null)
-				{
-					name = (NameGreen)this.Visit(nameContext);
-				}
-				else
-				{
-					name = NameGreen.__Missing;
-				}
+				if (nameContext != null) name = (NameGreen)this.Visit(nameContext);
+				if (name == null) name = NameGreen.__Missing;
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), TestLanguageAnnotationsSyntaxKind.TSemicolon);
 				return _factory.Vertex06(kVertex, name, tSemicolon);
 			}
@@ -5047,25 +4819,13 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
 				InternalSyntaxToken kArrow = (InternalSyntaxToken)this.VisitTerminal(context.KArrow(), TestLanguageAnnotationsSyntaxKind.KArrow);
 				TestLanguageAnnotationsParser.NameContext sourceContext = context.source;
 				NameGreen source = null;
-				if (sourceContext != null)
-				{
-					source = (NameGreen)this.Visit(sourceContext);
-				}
-				else
-				{
-					source = NameGreen.__Missing;
-				}
+				if (sourceContext != null) source = (NameGreen)this.Visit(sourceContext);
+				if (source == null) source = NameGreen.__Missing;
 				InternalSyntaxToken tArrow = (InternalSyntaxToken)this.VisitTerminal(context.TArrow(), TestLanguageAnnotationsSyntaxKind.TArrow);
 				TestLanguageAnnotationsParser.NameContext targetContext = context.target;
 				NameGreen target = null;
-				if (targetContext != null)
-				{
-					target = (NameGreen)this.Visit(targetContext);
-				}
-				else
-				{
-					target = NameGreen.__Missing;
-				}
+				if (targetContext != null) target = (NameGreen)this.Visit(targetContext);
+				if (target == null) target = NameGreen.__Missing;
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), TestLanguageAnnotationsSyntaxKind.TSemicolon);
 				return _factory.Arrow06(kArrow, source, tArrow, target, tSemicolon);
 			}
@@ -5076,14 +4836,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
 				InternalSyntaxToken kTest07 = (InternalSyntaxToken)this.VisitTerminal(context.KTest07(), TestLanguageAnnotationsSyntaxKind.KTest07);
 				TestLanguageAnnotationsParser.NamespaceDeclaration07Context namespaceDeclaration07Context = context.namespaceDeclaration07();
 				NamespaceDeclaration07Green namespaceDeclaration07 = null;
-				if (namespaceDeclaration07Context != null)
-				{
-					namespaceDeclaration07 = (NamespaceDeclaration07Green)this.Visit(namespaceDeclaration07Context);
-				}
-				else
-				{
-					namespaceDeclaration07 = NamespaceDeclaration07Green.__Missing;
-				}
+				if (namespaceDeclaration07Context != null) namespaceDeclaration07 = (NamespaceDeclaration07Green)this.Visit(namespaceDeclaration07Context);
+				if (namespaceDeclaration07 == null) namespaceDeclaration07 = NamespaceDeclaration07Green.__Missing;
 				return _factory.Test07(kTest07, namespaceDeclaration07);
 			}
 			
@@ -5093,24 +4847,12 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
 				InternalSyntaxToken kNamespace = (InternalSyntaxToken)this.VisitTerminal(context.KNamespace(), TestLanguageAnnotationsSyntaxKind.KNamespace);
 				TestLanguageAnnotationsParser.QualifiedNameContext qualifiedNameContext = context.qualifiedName();
 				QualifiedNameGreen qualifiedName = null;
-				if (qualifiedNameContext != null)
-				{
-					qualifiedName = (QualifiedNameGreen)this.Visit(qualifiedNameContext);
-				}
-				else
-				{
-					qualifiedName = QualifiedNameGreen.__Missing;
-				}
+				if (qualifiedNameContext != null) qualifiedName = (QualifiedNameGreen)this.Visit(qualifiedNameContext);
+				if (qualifiedName == null) qualifiedName = QualifiedNameGreen.__Missing;
 				TestLanguageAnnotationsParser.NamespaceBody07Context namespaceBody07Context = context.namespaceBody07();
 				NamespaceBody07Green namespaceBody07 = null;
-				if (namespaceBody07Context != null)
-				{
-					namespaceBody07 = (NamespaceBody07Green)this.Visit(namespaceBody07Context);
-				}
-				else
-				{
-					namespaceBody07 = NamespaceBody07Green.__Missing;
-				}
+				if (namespaceBody07Context != null) namespaceBody07 = (NamespaceBody07Green)this.Visit(namespaceBody07Context);
+				if (namespaceBody07 == null) namespaceBody07 = NamespaceBody07Green.__Missing;
 				return _factory.NamespaceDeclaration07(kNamespace, qualifiedName, namespaceBody07);
 			}
 			
@@ -5152,14 +4894,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
 				InternalSyntaxToken kVertex = (InternalSyntaxToken)this.VisitTerminal(context.KVertex(), TestLanguageAnnotationsSyntaxKind.KVertex);
 				TestLanguageAnnotationsParser.NameContext nameContext = context.name();
 				NameGreen name = null;
-				if (nameContext != null)
-				{
-					name = (NameGreen)this.Visit(nameContext);
-				}
-				else
-				{
-					name = NameGreen.__Missing;
-				}
+				if (nameContext != null) name = (NameGreen)this.Visit(nameContext);
+				if (name == null) name = NameGreen.__Missing;
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), TestLanguageAnnotationsSyntaxKind.TSemicolon);
 				return _factory.Vertex07(kVertex, name, tSemicolon);
 			}
@@ -5170,25 +4906,13 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
 				InternalSyntaxToken kArrow = (InternalSyntaxToken)this.VisitTerminal(context.KArrow(), TestLanguageAnnotationsSyntaxKind.KArrow);
 				TestLanguageAnnotationsParser.Source07Context source07Context = context.source07();
 				Source07Green source07 = null;
-				if (source07Context != null)
-				{
-					source07 = (Source07Green)this.Visit(source07Context);
-				}
-				else
-				{
-					source07 = Source07Green.__Missing;
-				}
+				if (source07Context != null) source07 = (Source07Green)this.Visit(source07Context);
+				if (source07 == null) source07 = Source07Green.__Missing;
 				InternalSyntaxToken tArrow = (InternalSyntaxToken)this.VisitTerminal(context.TArrow(), TestLanguageAnnotationsSyntaxKind.TArrow);
 				TestLanguageAnnotationsParser.Target07Context target07Context = context.target07();
 				Target07Green target07 = null;
-				if (target07Context != null)
-				{
-					target07 = (Target07Green)this.Visit(target07Context);
-				}
-				else
-				{
-					target07 = Target07Green.__Missing;
-				}
+				if (target07Context != null) target07 = (Target07Green)this.Visit(target07Context);
+				if (target07 == null) target07 = Target07Green.__Missing;
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), TestLanguageAnnotationsSyntaxKind.TSemicolon);
 				return _factory.Arrow07(kArrow, source07, tArrow, target07, tSemicolon);
 			}
@@ -5198,14 +4922,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
 				if (context == null) return Source07Green.__Missing;
 				TestLanguageAnnotationsParser.NameContext nameContext = context.name();
 				NameGreen name = null;
-				if (nameContext != null)
-				{
-					name = (NameGreen)this.Visit(nameContext);
-				}
-				else
-				{
-					name = NameGreen.__Missing;
-				}
+				if (nameContext != null) name = (NameGreen)this.Visit(nameContext);
+				if (name == null) name = NameGreen.__Missing;
 				return _factory.Source07(name);
 			}
 			
@@ -5214,14 +4932,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
 				if (context == null) return Target07Green.__Missing;
 				TestLanguageAnnotationsParser.NameContext nameContext = context.name();
 				NameGreen name = null;
-				if (nameContext != null)
-				{
-					name = (NameGreen)this.Visit(nameContext);
-				}
-				else
-				{
-					name = NameGreen.__Missing;
-				}
+				if (nameContext != null) name = (NameGreen)this.Visit(nameContext);
+				if (name == null) name = NameGreen.__Missing;
 				return _factory.Target07(name);
 			}
 			
@@ -5231,14 +4943,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
 				InternalSyntaxToken kTest08 = (InternalSyntaxToken)this.VisitTerminal(context.KTest08(), TestLanguageAnnotationsSyntaxKind.KTest08);
 				TestLanguageAnnotationsParser.NamespaceDeclaration08Context namespaceDeclaration08Context = context.namespaceDeclaration08();
 				NamespaceDeclaration08Green namespaceDeclaration08 = null;
-				if (namespaceDeclaration08Context != null)
-				{
-					namespaceDeclaration08 = (NamespaceDeclaration08Green)this.Visit(namespaceDeclaration08Context);
-				}
-				else
-				{
-					namespaceDeclaration08 = NamespaceDeclaration08Green.__Missing;
-				}
+				if (namespaceDeclaration08Context != null) namespaceDeclaration08 = (NamespaceDeclaration08Green)this.Visit(namespaceDeclaration08Context);
+				if (namespaceDeclaration08 == null) namespaceDeclaration08 = NamespaceDeclaration08Green.__Missing;
 				return _factory.Test08(kTest08, namespaceDeclaration08);
 			}
 			
@@ -5248,24 +4954,12 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
 				InternalSyntaxToken kNamespace = (InternalSyntaxToken)this.VisitTerminal(context.KNamespace(), TestLanguageAnnotationsSyntaxKind.KNamespace);
 				TestLanguageAnnotationsParser.QualifiedNameContext qualifiedNameContext = context.qualifiedName();
 				QualifiedNameGreen qualifiedName = null;
-				if (qualifiedNameContext != null)
-				{
-					qualifiedName = (QualifiedNameGreen)this.Visit(qualifiedNameContext);
-				}
-				else
-				{
-					qualifiedName = QualifiedNameGreen.__Missing;
-				}
+				if (qualifiedNameContext != null) qualifiedName = (QualifiedNameGreen)this.Visit(qualifiedNameContext);
+				if (qualifiedName == null) qualifiedName = QualifiedNameGreen.__Missing;
 				TestLanguageAnnotationsParser.NamespaceBody08Context namespaceBody08Context = context.namespaceBody08();
 				NamespaceBody08Green namespaceBody08 = null;
-				if (namespaceBody08Context != null)
-				{
-					namespaceBody08 = (NamespaceBody08Green)this.Visit(namespaceBody08Context);
-				}
-				else
-				{
-					namespaceBody08 = NamespaceBody08Green.__Missing;
-				}
+				if (namespaceBody08Context != null) namespaceBody08 = (NamespaceBody08Green)this.Visit(namespaceBody08Context);
+				if (namespaceBody08 == null) namespaceBody08 = NamespaceBody08Green.__Missing;
 				return _factory.NamespaceDeclaration08(kNamespace, qualifiedName, namespaceBody08);
 			}
 			
@@ -5307,14 +5001,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
 				InternalSyntaxToken kVertex = (InternalSyntaxToken)this.VisitTerminal(context.KVertex(), TestLanguageAnnotationsSyntaxKind.KVertex);
 				TestLanguageAnnotationsParser.NameContext nameContext = context.name();
 				NameGreen name = null;
-				if (nameContext != null)
-				{
-					name = (NameGreen)this.Visit(nameContext);
-				}
-				else
-				{
-					name = NameGreen.__Missing;
-				}
+				if (nameContext != null) name = (NameGreen)this.Visit(nameContext);
+				if (name == null) name = NameGreen.__Missing;
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), TestLanguageAnnotationsSyntaxKind.TSemicolon);
 				return _factory.Vertex08(kVertex, name, tSemicolon);
 			}
@@ -5325,25 +5013,13 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
 				InternalSyntaxToken kArrow = (InternalSyntaxToken)this.VisitTerminal(context.KArrow(), TestLanguageAnnotationsSyntaxKind.KArrow);
 				TestLanguageAnnotationsParser.Source08Context source08Context = context.source08();
 				Source08Green source08 = null;
-				if (source08Context != null)
-				{
-					source08 = (Source08Green)this.Visit(source08Context);
-				}
-				else
-				{
-					source08 = Source08Green.__Missing;
-				}
+				if (source08Context != null) source08 = (Source08Green)this.Visit(source08Context);
+				if (source08 == null) source08 = Source08Green.__Missing;
 				InternalSyntaxToken tArrow = (InternalSyntaxToken)this.VisitTerminal(context.TArrow(), TestLanguageAnnotationsSyntaxKind.TArrow);
 				TestLanguageAnnotationsParser.Target08Context target08Context = context.target08();
 				Target08Green target08 = null;
-				if (target08Context != null)
-				{
-					target08 = (Target08Green)this.Visit(target08Context);
-				}
-				else
-				{
-					target08 = Target08Green.__Missing;
-				}
+				if (target08Context != null) target08 = (Target08Green)this.Visit(target08Context);
+				if (target08 == null) target08 = Target08Green.__Missing;
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), TestLanguageAnnotationsSyntaxKind.TSemicolon);
 				return _factory.Arrow08(kArrow, source08, tArrow, target08, tSemicolon);
 			}
@@ -5353,14 +5029,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
 				if (context == null) return Source08Green.__Missing;
 				TestLanguageAnnotationsParser.NameContext nameContext = context.name();
 				NameGreen name = null;
-				if (nameContext != null)
-				{
-					name = (NameGreen)this.Visit(nameContext);
-				}
-				else
-				{
-					name = NameGreen.__Missing;
-				}
+				if (nameContext != null) name = (NameGreen)this.Visit(nameContext);
+				if (name == null) name = NameGreen.__Missing;
 				return _factory.Source08(name);
 			}
 			
@@ -5369,14 +5039,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
 				if (context == null) return Target08Green.__Missing;
 				TestLanguageAnnotationsParser.NameContext nameContext = context.name();
 				NameGreen name = null;
-				if (nameContext != null)
-				{
-					name = (NameGreen)this.Visit(nameContext);
-				}
-				else
-				{
-					name = NameGreen.__Missing;
-				}
+				if (nameContext != null) name = (NameGreen)this.Visit(nameContext);
+				if (name == null) name = NameGreen.__Missing;
 				return _factory.Target08(name);
 			}
 			
@@ -5386,14 +5050,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
 				InternalSyntaxToken kTest09 = (InternalSyntaxToken)this.VisitTerminal(context.KTest09(), TestLanguageAnnotationsSyntaxKind.KTest09);
 				TestLanguageAnnotationsParser.NamespaceDeclaration09Context namespaceDeclaration09Context = context.namespaceDeclaration09();
 				NamespaceDeclaration09Green namespaceDeclaration09 = null;
-				if (namespaceDeclaration09Context != null)
-				{
-					namespaceDeclaration09 = (NamespaceDeclaration09Green)this.Visit(namespaceDeclaration09Context);
-				}
-				else
-				{
-					namespaceDeclaration09 = NamespaceDeclaration09Green.__Missing;
-				}
+				if (namespaceDeclaration09Context != null) namespaceDeclaration09 = (NamespaceDeclaration09Green)this.Visit(namespaceDeclaration09Context);
+				if (namespaceDeclaration09 == null) namespaceDeclaration09 = NamespaceDeclaration09Green.__Missing;
 				return _factory.Test09(kTest09, namespaceDeclaration09);
 			}
 			
@@ -5403,24 +5061,12 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
 				InternalSyntaxToken kNamespace = (InternalSyntaxToken)this.VisitTerminal(context.KNamespace(), TestLanguageAnnotationsSyntaxKind.KNamespace);
 				TestLanguageAnnotationsParser.QualifiedNameContext qualifiedNameContext = context.qualifiedName();
 				QualifiedNameGreen qualifiedName = null;
-				if (qualifiedNameContext != null)
-				{
-					qualifiedName = (QualifiedNameGreen)this.Visit(qualifiedNameContext);
-				}
-				else
-				{
-					qualifiedName = QualifiedNameGreen.__Missing;
-				}
+				if (qualifiedNameContext != null) qualifiedName = (QualifiedNameGreen)this.Visit(qualifiedNameContext);
+				if (qualifiedName == null) qualifiedName = QualifiedNameGreen.__Missing;
 				TestLanguageAnnotationsParser.NamespaceBody09Context namespaceBody09Context = context.namespaceBody09();
 				NamespaceBody09Green namespaceBody09 = null;
-				if (namespaceBody09Context != null)
-				{
-					namespaceBody09 = (NamespaceBody09Green)this.Visit(namespaceBody09Context);
-				}
-				else
-				{
-					namespaceBody09 = NamespaceBody09Green.__Missing;
-				}
+				if (namespaceBody09Context != null) namespaceBody09 = (NamespaceBody09Green)this.Visit(namespaceBody09Context);
+				if (namespaceBody09 == null) namespaceBody09 = NamespaceBody09Green.__Missing;
 				return _factory.NamespaceDeclaration09(kNamespace, qualifiedName, namespaceBody09);
 			}
 			
@@ -5462,14 +5108,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
 				InternalSyntaxToken kVertex = (InternalSyntaxToken)this.VisitTerminal(context.KVertex(), TestLanguageAnnotationsSyntaxKind.KVertex);
 				TestLanguageAnnotationsParser.NameContext nameContext = context.name();
 				NameGreen name = null;
-				if (nameContext != null)
-				{
-					name = (NameGreen)this.Visit(nameContext);
-				}
-				else
-				{
-					name = NameGreen.__Missing;
-				}
+				if (nameContext != null) name = (NameGreen)this.Visit(nameContext);
+				if (name == null) name = NameGreen.__Missing;
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), TestLanguageAnnotationsSyntaxKind.TSemicolon);
 				return _factory.Vertex09(kVertex, name, tSemicolon);
 			}
@@ -5480,25 +5120,13 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
 				InternalSyntaxToken kArrow = (InternalSyntaxToken)this.VisitTerminal(context.KArrow(), TestLanguageAnnotationsSyntaxKind.KArrow);
 				TestLanguageAnnotationsParser.NameContext sourceContext = context.source;
 				NameGreen source = null;
-				if (sourceContext != null)
-				{
-					source = (NameGreen)this.Visit(sourceContext);
-				}
-				else
-				{
-					source = NameGreen.__Missing;
-				}
+				if (sourceContext != null) source = (NameGreen)this.Visit(sourceContext);
+				if (source == null) source = NameGreen.__Missing;
 				InternalSyntaxToken tArrow = (InternalSyntaxToken)this.VisitTerminal(context.TArrow(), TestLanguageAnnotationsSyntaxKind.TArrow);
 				TestLanguageAnnotationsParser.NameContext targetContext = context.target;
 				NameGreen target = null;
-				if (targetContext != null)
-				{
-					target = (NameGreen)this.Visit(targetContext);
-				}
-				else
-				{
-					target = NameGreen.__Missing;
-				}
+				if (targetContext != null) target = (NameGreen)this.Visit(targetContext);
+				if (target == null) target = NameGreen.__Missing;
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), TestLanguageAnnotationsSyntaxKind.TSemicolon);
 				return _factory.Arrow09(kArrow, source, tArrow, target, tSemicolon);
 			}
@@ -5509,14 +5137,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
 				InternalSyntaxToken kTest10 = (InternalSyntaxToken)this.VisitTerminal(context.KTest10(), TestLanguageAnnotationsSyntaxKind.KTest10);
 				TestLanguageAnnotationsParser.NamespaceDeclaration10Context namespaceDeclaration10Context = context.namespaceDeclaration10();
 				NamespaceDeclaration10Green namespaceDeclaration10 = null;
-				if (namespaceDeclaration10Context != null)
-				{
-					namespaceDeclaration10 = (NamespaceDeclaration10Green)this.Visit(namespaceDeclaration10Context);
-				}
-				else
-				{
-					namespaceDeclaration10 = NamespaceDeclaration10Green.__Missing;
-				}
+				if (namespaceDeclaration10Context != null) namespaceDeclaration10 = (NamespaceDeclaration10Green)this.Visit(namespaceDeclaration10Context);
+				if (namespaceDeclaration10 == null) namespaceDeclaration10 = NamespaceDeclaration10Green.__Missing;
 				return _factory.Test10(kTest10, namespaceDeclaration10);
 			}
 			
@@ -5526,24 +5148,12 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
 				InternalSyntaxToken kNamespace = (InternalSyntaxToken)this.VisitTerminal(context.KNamespace(), TestLanguageAnnotationsSyntaxKind.KNamespace);
 				TestLanguageAnnotationsParser.QualifiedNameContext qualifiedNameContext = context.qualifiedName();
 				QualifiedNameGreen qualifiedName = null;
-				if (qualifiedNameContext != null)
-				{
-					qualifiedName = (QualifiedNameGreen)this.Visit(qualifiedNameContext);
-				}
-				else
-				{
-					qualifiedName = QualifiedNameGreen.__Missing;
-				}
+				if (qualifiedNameContext != null) qualifiedName = (QualifiedNameGreen)this.Visit(qualifiedNameContext);
+				if (qualifiedName == null) qualifiedName = QualifiedNameGreen.__Missing;
 				TestLanguageAnnotationsParser.NamespaceBody10Context namespaceBody10Context = context.namespaceBody10();
 				NamespaceBody10Green namespaceBody10 = null;
-				if (namespaceBody10Context != null)
-				{
-					namespaceBody10 = (NamespaceBody10Green)this.Visit(namespaceBody10Context);
-				}
-				else
-				{
-					namespaceBody10 = NamespaceBody10Green.__Missing;
-				}
+				if (namespaceBody10Context != null) namespaceBody10 = (NamespaceBody10Green)this.Visit(namespaceBody10Context);
+				if (namespaceBody10 == null) namespaceBody10 = NamespaceBody10Green.__Missing;
 				return _factory.NamespaceDeclaration10(kNamespace, qualifiedName, namespaceBody10);
 			}
 			
@@ -5585,14 +5195,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
 				InternalSyntaxToken kVertex = (InternalSyntaxToken)this.VisitTerminal(context.KVertex(), TestLanguageAnnotationsSyntaxKind.KVertex);
 				TestLanguageAnnotationsParser.NameContext nameContext = context.name();
 				NameGreen name = null;
-				if (nameContext != null)
-				{
-					name = (NameGreen)this.Visit(nameContext);
-				}
-				else
-				{
-					name = NameGreen.__Missing;
-				}
+				if (nameContext != null) name = (NameGreen)this.Visit(nameContext);
+				if (name == null) name = NameGreen.__Missing;
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), TestLanguageAnnotationsSyntaxKind.TSemicolon);
 				return _factory.Vertex10(kVertex, name, tSemicolon);
 			}
@@ -5603,25 +5207,13 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
 				InternalSyntaxToken kArrow = (InternalSyntaxToken)this.VisitTerminal(context.KArrow(), TestLanguageAnnotationsSyntaxKind.KArrow);
 				TestLanguageAnnotationsParser.NameContext sourceContext = context.source;
 				NameGreen source = null;
-				if (sourceContext != null)
-				{
-					source = (NameGreen)this.Visit(sourceContext);
-				}
-				else
-				{
-					source = NameGreen.__Missing;
-				}
+				if (sourceContext != null) source = (NameGreen)this.Visit(sourceContext);
+				if (source == null) source = NameGreen.__Missing;
 				InternalSyntaxToken tArrow = (InternalSyntaxToken)this.VisitTerminal(context.TArrow(), TestLanguageAnnotationsSyntaxKind.TArrow);
 				TestLanguageAnnotationsParser.NameContext targetContext = context.target;
 				NameGreen target = null;
-				if (targetContext != null)
-				{
-					target = (NameGreen)this.Visit(targetContext);
-				}
-				else
-				{
-					target = NameGreen.__Missing;
-				}
+				if (targetContext != null) target = (NameGreen)this.Visit(targetContext);
+				if (target == null) target = NameGreen.__Missing;
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), TestLanguageAnnotationsSyntaxKind.TSemicolon);
 				return _factory.Arrow10(kArrow, source, tArrow, target, tSemicolon);
 			}
@@ -5647,24 +5239,12 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
 				InternalSyntaxToken kNamespace = (InternalSyntaxToken)this.VisitTerminal(context.KNamespace(), TestLanguageAnnotationsSyntaxKind.KNamespace);
 				TestLanguageAnnotationsParser.QualifiedNameContext qualifiedNameContext = context.qualifiedName();
 				QualifiedNameGreen qualifiedName = null;
-				if (qualifiedNameContext != null)
-				{
-					qualifiedName = (QualifiedNameGreen)this.Visit(qualifiedNameContext);
-				}
-				else
-				{
-					qualifiedName = QualifiedNameGreen.__Missing;
-				}
+				if (qualifiedNameContext != null) qualifiedName = (QualifiedNameGreen)this.Visit(qualifiedNameContext);
+				if (qualifiedName == null) qualifiedName = QualifiedNameGreen.__Missing;
 				TestLanguageAnnotationsParser.NamespaceBody11Context namespaceBody11Context = context.namespaceBody11();
 				NamespaceBody11Green namespaceBody11 = null;
-				if (namespaceBody11Context != null)
-				{
-					namespaceBody11 = (NamespaceBody11Green)this.Visit(namespaceBody11Context);
-				}
-				else
-				{
-					namespaceBody11 = NamespaceBody11Green.__Missing;
-				}
+				if (namespaceBody11Context != null) namespaceBody11 = (NamespaceBody11Green)this.Visit(namespaceBody11Context);
+				if (namespaceBody11 == null) namespaceBody11 = NamespaceBody11Green.__Missing;
 				return _factory.NamespaceDeclaration11(kNamespace, qualifiedName, namespaceBody11);
 			}
 			
@@ -5706,14 +5286,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
 				InternalSyntaxToken kVertex = (InternalSyntaxToken)this.VisitTerminal(context.KVertex(), TestLanguageAnnotationsSyntaxKind.KVertex);
 				TestLanguageAnnotationsParser.NameContext nameContext = context.name();
 				NameGreen name = null;
-				if (nameContext != null)
-				{
-					name = (NameGreen)this.Visit(nameContext);
-				}
-				else
-				{
-					name = NameGreen.__Missing;
-				}
+				if (nameContext != null) name = (NameGreen)this.Visit(nameContext);
+				if (name == null) name = NameGreen.__Missing;
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), TestLanguageAnnotationsSyntaxKind.TSemicolon);
 				return _factory.Vertex11(kVertex, name, tSemicolon);
 			}
@@ -5724,25 +5298,13 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
 				InternalSyntaxToken kArrow = (InternalSyntaxToken)this.VisitTerminal(context.KArrow(), TestLanguageAnnotationsSyntaxKind.KArrow);
 				TestLanguageAnnotationsParser.QualifiedNameContext sourceContext = context.source;
 				QualifiedNameGreen source = null;
-				if (sourceContext != null)
-				{
-					source = (QualifiedNameGreen)this.Visit(sourceContext);
-				}
-				else
-				{
-					source = QualifiedNameGreen.__Missing;
-				}
+				if (sourceContext != null) source = (QualifiedNameGreen)this.Visit(sourceContext);
+				if (source == null) source = QualifiedNameGreen.__Missing;
 				InternalSyntaxToken tArrow = (InternalSyntaxToken)this.VisitTerminal(context.TArrow(), TestLanguageAnnotationsSyntaxKind.TArrow);
 				TestLanguageAnnotationsParser.QualifiedNameContext targetContext = context.target;
 				QualifiedNameGreen target = null;
-				if (targetContext != null)
-				{
-					target = (QualifiedNameGreen)this.Visit(targetContext);
-				}
-				else
-				{
-					target = QualifiedNameGreen.__Missing;
-				}
+				if (targetContext != null) target = (QualifiedNameGreen)this.Visit(targetContext);
+				if (target == null) target = QualifiedNameGreen.__Missing;
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), TestLanguageAnnotationsSyntaxKind.TSemicolon);
 				return _factory.Arrow11(kArrow, source, tArrow, target, tSemicolon);
 			}
@@ -5752,14 +5314,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
 				if (context == null) return NameGreen.__Missing;
 				TestLanguageAnnotationsParser.IdentifierContext identifierContext = context.identifier();
 				IdentifierGreen identifier = null;
-				if (identifierContext != null)
-				{
-					identifier = (IdentifierGreen)this.Visit(identifierContext);
-				}
-				else
-				{
-					identifier = IdentifierGreen.__Missing;
-				}
+				if (identifierContext != null) identifier = (IdentifierGreen)this.Visit(identifierContext);
+				if (identifier == null) identifier = IdentifierGreen.__Missing;
 				return _factory.Name(identifier);
 			}
 			
@@ -5768,14 +5324,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
 				if (context == null) return QualifiedNameGreen.__Missing;
 				TestLanguageAnnotationsParser.QualifierContext qualifierContext = context.qualifier();
 				QualifierGreen qualifier = null;
-				if (qualifierContext != null)
-				{
-					qualifier = (QualifierGreen)this.Visit(qualifierContext);
-				}
-				else
-				{
-					qualifier = QualifierGreen.__Missing;
-				}
+				if (qualifierContext != null) qualifier = (QualifierGreen)this.Visit(qualifierContext);
+				if (qualifier == null) qualifier = QualifierGreen.__Missing;
 				return _factory.QualifiedName(qualifier);
 			}
 			

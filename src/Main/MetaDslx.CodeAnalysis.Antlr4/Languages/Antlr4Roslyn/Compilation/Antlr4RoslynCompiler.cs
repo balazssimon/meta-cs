@@ -348,6 +348,14 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                             }
                             rule.Kind = tokenKind;
                         }
+                        if (!this.IgnoreRoslynRules)
+                        {
+                            var collidingRule = this.Grammar.ParserRules.FirstOrDefault(pr => pr.Name?.ToPascalCase() == tokenName);
+                            if (collidingRule != null)
+                            {
+                                this.DiagnosticBag.Add(Antlr4RoslynErrorCode.ERR_RuleNameTokenNameCollision, collidingRule.Location, tokenName, collidingRule.Name);
+                            }
+                        }
                     }
                 }
             }
@@ -1298,6 +1306,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                 {
                     if (!handled && this.IsRoslynRule(context.ruleAltList().labeledAlt()[0], ref reportedError, out rule))
                     {
+                        rule.Location = GetLocation(ruleSpec.RULE_REF());
                         handled = true;
                     }
                 }
@@ -1910,7 +1919,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         public bool HasBinderAnnotations { get; internal set; }
         public bool ContainsBoundNodeAnnotations { get; internal set; }
         public bool HasBoundNodeAnnotations { get; internal set; }
-        public Location Location { get; private set; }
+        public Location Location { get; internal set; }
     }
     public class Antlr4Grammar : Antlr4AnnotatedObject
     {

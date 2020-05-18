@@ -34,7 +34,10 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         [return: NotNull]
         public string GetText([NotNull] Interval interval)
         {
-            return _textWindow.GetText(interval.a, interval.Length - 1, false);
+            var length = interval.Length;
+            if (interval.b >= _textWindow.Text.Length) length = _textWindow.Text.Length - interval.a;
+            if (length < 0 || interval.a >= _textWindow.Text.Length) return string.Empty;
+            return _textWindow.GetText(interval.a, length, false);
         }
 
         public void Consume()

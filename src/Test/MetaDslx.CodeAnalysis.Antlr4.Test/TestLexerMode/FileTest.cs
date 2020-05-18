@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.CodeAnalysis.Text;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -13,6 +14,14 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestLexerMode
         {
             string source = File.ReadAllText($@"..\..\..\InputFiles\LexerMode\MGenTest.txt");
             Type(source);
+        }
+
+        [Fact]
+        public void PropertyTest()
+        {
+            string source = File.ReadAllText($@"..\..\..\InputFiles\LexerMode\PropertyTest.txt");
+            Type(source);
+            //Parse(SourceText.From(source), false);
         }
 
         [Fact]

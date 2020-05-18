@@ -16,6 +16,13 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestLexerMode
         }
 
         [Fact]
+        public void PropertyTest()
+        {
+            string source = File.ReadAllText($@"..\..\..\InputFiles\LexerMode\PropertyTest.txt");
+            Type(source);
+        }
+
+        [Fact]
         public void MetaModelGenerator()
         {
             string source = File.ReadAllText($@"..\..\..\InputFiles\LexerMode\MetaModelGenerator.txt");

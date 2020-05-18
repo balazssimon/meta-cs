@@ -46,12 +46,7 @@ namespace MetaDslx.CodeAnalysis.Syntax
                 int index = text.LastIndexOf('\n');
                 endPosition = text.Length - index;
             }
-            if (startLine > 0 && endLine > 0)
-            {
-                --startLine;
-                --endLine;
-            }
-            return new LinePositionSpan(new LinePosition(startLine, startPosition), new LinePosition(endLine, endPosition));
+            return new LinePositionSpan(new LinePosition(startLine - 1, startPosition), new LinePosition(endLine - 1, endPosition));
         }
 
         public static TextSpan GetTextSpan(this ParserRuleContext rule)
