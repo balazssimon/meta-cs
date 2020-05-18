@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
+namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax
 {
     using MetaDslx.CodeAnalysis;
     using MetaDslx.CodeAnalysis.Syntax;
@@ -1091,7 +1091,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.MainSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.MainSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -1205,7 +1205,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.NamespaceDeclarationSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.NamespaceDeclarationSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -1361,7 +1361,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.GeneratorDeclarationSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.GeneratorDeclarationSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -1488,7 +1488,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.UsingNamespaceDeclarationSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.UsingNamespaceDeclarationSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -1620,7 +1620,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.UsingGeneratorDeclarationSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.UsingGeneratorDeclarationSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -1756,7 +1756,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.ConfigDeclarationSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.ConfigDeclarationSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -1903,7 +1903,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.ConfigPropertyDeclarationSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.ConfigPropertyDeclarationSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -2039,7 +2039,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.ConfigPropertyGroupDeclarationSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.ConfigPropertyGroupDeclarationSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -2151,7 +2151,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.MethodDeclarationSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.MethodDeclarationSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -2277,7 +2277,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.ExternFunctionDeclarationSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.ExternFunctionDeclarationSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -2395,7 +2395,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.FunctionDeclarationSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.FunctionDeclarationSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -2553,7 +2553,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.FunctionSignatureSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.FunctionSignatureSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -2645,7 +2645,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.ParamListSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.ParamListSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -2761,7 +2761,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.ParameterSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.ParameterSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -2847,7 +2847,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.BodySyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.BodySyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -2999,7 +2999,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.StatementSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.StatementSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -3205,7 +3205,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.SingleStatementSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.SingleStatementSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -3331,7 +3331,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.SingleStatementSemicolonSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.SingleStatementSemicolonSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -3413,7 +3413,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.VariableDeclarationStatementSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.VariableDeclarationStatementSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -3505,7 +3505,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.VariableDeclarationExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.VariableDeclarationExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -3611,7 +3611,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.VariableDeclarationItemSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.VariableDeclarationItemSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -3707,7 +3707,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.VoidStatementSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.VoidStatementSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -3801,7 +3801,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.ReturnStatementSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.ReturnStatementSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -3883,7 +3883,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.ExpressionStatementSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.ExpressionStatementSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -4011,7 +4011,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.IfStatementSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.IfStatementSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -4111,7 +4111,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.ElseIfStatementBodySyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.ElseIfStatementBodySyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -4205,7 +4205,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.IfStatementElseBodySyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.IfStatementElseBodySyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -4323,7 +4323,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.IfStatementBeginSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.IfStatementBeginSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -4457,7 +4457,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.ElseIfStatementSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.ElseIfStatementSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -4545,7 +4545,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.IfStatementElseSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.IfStatementElseSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -4637,7 +4637,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.IfStatementEndSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.IfStatementEndSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -4743,7 +4743,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.ForStatementSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.ForStatementSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -4911,7 +4911,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.ForStatementBeginSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.ForStatementBeginSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -5017,7 +5017,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.ForStatementEndSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.ForStatementEndSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -5111,7 +5111,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.ForInitStatementSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.ForInitStatementSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -5232,7 +5232,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.WhileStatementSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.WhileStatementSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -5352,7 +5352,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.WhileStatementBeginSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.WhileStatementBeginSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -5450,7 +5450,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.WhileStatementEndSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.WhileStatementEndSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -5532,7 +5532,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.WhileRunExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.WhileRunExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -5636,7 +5636,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.RepeatStatementSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.RepeatStatementSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -5720,7 +5720,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.RepeatStatementBeginSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.RepeatStatementBeginSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -5836,7 +5836,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.RepeatStatementEndSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.RepeatStatementEndSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -5922,7 +5922,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.RepeatRunExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.RepeatRunExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -6026,7 +6026,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.LoopStatementSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.LoopStatementSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -6170,7 +6170,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.LoopStatementBeginSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.LoopStatementBeginSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -6272,7 +6272,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.LoopStatementEndSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.LoopStatementEndSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -6354,7 +6354,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.LoopChainSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.LoopChainSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -6470,7 +6470,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.LoopChainItemSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.LoopChainItemSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -6603,7 +6603,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.LoopChainTypeofExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.LoopChainTypeofExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -6701,7 +6701,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.LoopChainIdentifierExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.LoopChainIdentifierExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -6819,7 +6819,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.LoopChainMemberAccessExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.LoopChainMemberAccessExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -6941,7 +6941,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.LoopChainMethodCallExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.LoopChainMethodCallExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -7039,7 +7039,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.LoopWhereExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.LoopWhereExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -7121,7 +7121,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.LoopRunExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.LoopRunExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -7171,9 +7171,9 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	    private InternalSyntaxToken kSeparator;
 	    private IdentifierGreen identifier;
 	    private InternalSyntaxToken tAssign;
-	    private StringLiteralxGreen stringLiteralx;
+	    private StringLiteralGreen stringLiteral;
 	
-	    public SeparatorStatementGreen(TestLexerModeSyntaxKind kind, InternalSyntaxToken tSemicolon, InternalSyntaxToken kSeparator, IdentifierGreen identifier, InternalSyntaxToken tAssign, StringLiteralxGreen stringLiteralx)
+	    public SeparatorStatementGreen(TestLexerModeSyntaxKind kind, InternalSyntaxToken tSemicolon, InternalSyntaxToken kSeparator, IdentifierGreen identifier, InternalSyntaxToken tAssign, StringLiteralGreen stringLiteral)
 	        : base(kind, null, null)
 	    {
 			this.SlotCount = 5;
@@ -7197,14 +7197,14 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				this.AdjustFlagsAndWidth(tAssign);
 				this.tAssign = tAssign;
 			}
-			if (stringLiteralx != null)
+			if (stringLiteral != null)
 			{
-				this.AdjustFlagsAndWidth(stringLiteralx);
-				this.stringLiteralx = stringLiteralx;
+				this.AdjustFlagsAndWidth(stringLiteral);
+				this.stringLiteral = stringLiteral;
 			}
 	    }
 	
-	    public SeparatorStatementGreen(TestLexerModeSyntaxKind kind, InternalSyntaxToken tSemicolon, InternalSyntaxToken kSeparator, IdentifierGreen identifier, InternalSyntaxToken tAssign, StringLiteralxGreen stringLiteralx, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	    public SeparatorStatementGreen(TestLexerModeSyntaxKind kind, InternalSyntaxToken tSemicolon, InternalSyntaxToken kSeparator, IdentifierGreen identifier, InternalSyntaxToken tAssign, StringLiteralGreen stringLiteral, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
 	        : base(kind, diagnostics, annotations)
 	    {
 			this.SlotCount = 5;
@@ -7228,10 +7228,10 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				this.AdjustFlagsAndWidth(tAssign);
 				this.tAssign = tAssign;
 			}
-			if (stringLiteralx != null)
+			if (stringLiteral != null)
 			{
-				this.AdjustFlagsAndWidth(stringLiteralx);
-				this.stringLiteralx = stringLiteralx;
+				this.AdjustFlagsAndWidth(stringLiteral);
+				this.stringLiteral = stringLiteral;
 			}
 	    }
 	
@@ -7245,11 +7245,11 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	    public InternalSyntaxToken KSeparator { get { return this.kSeparator; } }
 	    public IdentifierGreen Identifier { get { return this.identifier; } }
 	    public InternalSyntaxToken TAssign { get { return this.tAssign; } }
-	    public StringLiteralxGreen StringLiteralx { get { return this.stringLiteralx; } }
+	    public StringLiteralGreen StringLiteral { get { return this.stringLiteral; } }
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.SeparatorStatementSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.SeparatorStatementSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -7260,7 +7260,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	            case 1: return this.kSeparator;
 	            case 2: return this.identifier;
 	            case 3: return this.tAssign;
-	            case 4: return this.stringLiteralx;
+	            case 4: return this.stringLiteral;
 	            default: return null;
 	        }
 	    }
@@ -7271,23 +7271,23 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
 	    {
-	        return new SeparatorStatementGreen(this.Kind, this.tSemicolon, this.kSeparator, this.identifier, this.tAssign, this.stringLiteralx, diagnostics, this.GetAnnotations());
+	        return new SeparatorStatementGreen(this.Kind, this.tSemicolon, this.kSeparator, this.identifier, this.tAssign, this.stringLiteral, diagnostics, this.GetAnnotations());
 	    }
 	
 	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
 	    {
-	        return new SeparatorStatementGreen(this.Kind, this.tSemicolon, this.kSeparator, this.identifier, this.tAssign, this.stringLiteralx, this.GetDiagnostics(), annotations);
+	        return new SeparatorStatementGreen(this.Kind, this.tSemicolon, this.kSeparator, this.identifier, this.tAssign, this.stringLiteral, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public SeparatorStatementGreen Update(InternalSyntaxToken tSemicolon, InternalSyntaxToken kSeparator, IdentifierGreen identifier, InternalSyntaxToken tAssign, StringLiteralxGreen stringLiteralx)
+	    public SeparatorStatementGreen Update(InternalSyntaxToken tSemicolon, InternalSyntaxToken kSeparator, IdentifierGreen identifier, InternalSyntaxToken tAssign, StringLiteralGreen stringLiteral)
 	    {
 	        if (this.TSemicolon != tSemicolon ||
 				this.KSeparator != kSeparator ||
 				this.Identifier != identifier ||
 				this.TAssign != tAssign ||
-				this.StringLiteralx != stringLiteralx)
+				this.StringLiteral != stringLiteral)
 	        {
-	            InternalSyntaxNode newNode = TestLexerModeLanguage.Instance.InternalSyntaxFactory.SeparatorStatement(tSemicolon, kSeparator, identifier, tAssign, stringLiteralx);
+	            InternalSyntaxNode newNode = TestLexerModeLanguage.Instance.InternalSyntaxFactory.SeparatorStatement(tSemicolon, kSeparator, identifier, tAssign, stringLiteral);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
@@ -7373,7 +7373,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.SwitchStatementSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.SwitchStatementSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -7495,7 +7495,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.SwitchStatementBeginSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.SwitchStatementBeginSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -7593,7 +7593,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.SwitchStatementEndSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.SwitchStatementEndSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -7687,7 +7687,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.SwitchBranchStatementSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.SwitchBranchStatementSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -7781,7 +7781,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.SwitchBranchHeadStatementSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.SwitchBranchHeadStatementSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -7878,7 +7878,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.SwitchCaseOrTypeIsHeadStatementsSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.SwitchCaseOrTypeIsHeadStatementsSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -7970,7 +7970,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.SwitchCaseOrTypeIsHeadStatementSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.SwitchCaseOrTypeIsHeadStatementSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -8091,7 +8091,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.SwitchCaseHeadStatementSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.SwitchCaseHeadStatementSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -8211,7 +8211,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.SwitchTypeIsHeadStatementSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.SwitchTypeIsHeadStatementSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -8333,7 +8333,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.SwitchTypeAsHeadStatementSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.SwitchTypeAsHeadStatementSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -8431,7 +8431,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.SwitchDefaultStatementSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.SwitchDefaultStatementSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -8525,7 +8525,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.SwitchDefaultHeadStatementSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.SwitchDefaultHeadStatementSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -8631,7 +8631,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.TemplateDeclarationSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.TemplateDeclarationSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -8763,7 +8763,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.TemplateSignatureSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.TemplateSignatureSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -8851,7 +8851,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.TemplateBodySyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.TemplateBodySyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -8943,7 +8943,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.TemplateContentLineSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.TemplateContentLineSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -8991,17 +8991,17 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	internal class TemplateContentGreen : GreenSyntaxNode
 	{
 	    internal static readonly TemplateContentGreen __Missing = new TemplateContentGreen();
-	    private TemplateOutputxGreen templateOutputx;
+	    private TemplateOutputGreen templateOutput;
 	    private TemplateStatementStartEndGreen templateStatementStartEnd;
 	
-	    public TemplateContentGreen(TestLexerModeSyntaxKind kind, TemplateOutputxGreen templateOutputx, TemplateStatementStartEndGreen templateStatementStartEnd)
+	    public TemplateContentGreen(TestLexerModeSyntaxKind kind, TemplateOutputGreen templateOutput, TemplateStatementStartEndGreen templateStatementStartEnd)
 	        : base(kind, null, null)
 	    {
 			this.SlotCount = 2;
-			if (templateOutputx != null)
+			if (templateOutput != null)
 			{
-				this.AdjustFlagsAndWidth(templateOutputx);
-				this.templateOutputx = templateOutputx;
+				this.AdjustFlagsAndWidth(templateOutput);
+				this.templateOutput = templateOutput;
 			}
 			if (templateStatementStartEnd != null)
 			{
@@ -9010,14 +9010,14 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 			}
 	    }
 	
-	    public TemplateContentGreen(TestLexerModeSyntaxKind kind, TemplateOutputxGreen templateOutputx, TemplateStatementStartEndGreen templateStatementStartEnd, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	    public TemplateContentGreen(TestLexerModeSyntaxKind kind, TemplateOutputGreen templateOutput, TemplateStatementStartEndGreen templateStatementStartEnd, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
 	        : base(kind, diagnostics, annotations)
 	    {
 			this.SlotCount = 2;
-			if (templateOutputx != null)
+			if (templateOutput != null)
 			{
-				this.AdjustFlagsAndWidth(templateOutputx);
-				this.templateOutputx = templateOutputx;
+				this.AdjustFlagsAndWidth(templateOutput);
+				this.templateOutput = templateOutput;
 			}
 			if (templateStatementStartEnd != null)
 			{
@@ -9032,19 +9032,19 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 			this.flags &= ~NodeFlags.IsNotMissing;
 		}
 	
-	    public TemplateOutputxGreen TemplateOutputx { get { return this.templateOutputx; } }
+	    public TemplateOutputGreen TemplateOutput { get { return this.templateOutput; } }
 	    public TemplateStatementStartEndGreen TemplateStatementStartEnd { get { return this.templateStatementStartEnd; } }
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.TemplateContentSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.TemplateContentSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
 	    {
 	        switch (index)
 	        {
-	            case 0: return this.templateOutputx;
+	            case 0: return this.templateOutput;
 	            case 1: return this.templateStatementStartEnd;
 	            default: return null;
 	        }
@@ -9056,19 +9056,19 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
 	    {
-	        return new TemplateContentGreen(this.Kind, this.templateOutputx, this.templateStatementStartEnd, diagnostics, this.GetAnnotations());
+	        return new TemplateContentGreen(this.Kind, this.templateOutput, this.templateStatementStartEnd, diagnostics, this.GetAnnotations());
 	    }
 	
 	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
 	    {
-	        return new TemplateContentGreen(this.Kind, this.templateOutputx, this.templateStatementStartEnd, this.GetDiagnostics(), annotations);
+	        return new TemplateContentGreen(this.Kind, this.templateOutput, this.templateStatementStartEnd, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public TemplateContentGreen Update(TemplateOutputxGreen templateOutputx)
+	    public TemplateContentGreen Update(TemplateOutputGreen templateOutput)
 	    {
-	        if (this.templateOutputx != templateOutputx)
+	        if (this.templateOutput != templateOutput)
 	        {
-	            InternalSyntaxNode newNode = TestLexerModeLanguage.Instance.InternalSyntaxFactory.TemplateContent(templateOutputx);
+	            InternalSyntaxNode newNode = TestLexerModeLanguage.Instance.InternalSyntaxFactory.TemplateContent(templateOutput);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
@@ -9097,81 +9097,81 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	    }
 	}
 	
-	internal class TemplateOutputxGreen : GreenSyntaxNode
+	internal class TemplateOutputGreen : GreenSyntaxNode
 	{
-	    internal static readonly TemplateOutputxGreen __Missing = new TemplateOutputxGreen();
-	    private InternalSyntaxToken templateOutput;
+	    internal static readonly TemplateOutputGreen __Missing = new TemplateOutputGreen();
+	    private InternalSyntaxToken lTemplateOutput;
 	
-	    public TemplateOutputxGreen(TestLexerModeSyntaxKind kind, InternalSyntaxToken templateOutput)
+	    public TemplateOutputGreen(TestLexerModeSyntaxKind kind, InternalSyntaxToken lTemplateOutput)
 	        : base(kind, null, null)
 	    {
 			this.SlotCount = 1;
-			if (templateOutput != null)
+			if (lTemplateOutput != null)
 			{
-				this.AdjustFlagsAndWidth(templateOutput);
-				this.templateOutput = templateOutput;
+				this.AdjustFlagsAndWidth(lTemplateOutput);
+				this.lTemplateOutput = lTemplateOutput;
 			}
 	    }
 	
-	    public TemplateOutputxGreen(TestLexerModeSyntaxKind kind, InternalSyntaxToken templateOutput, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	    public TemplateOutputGreen(TestLexerModeSyntaxKind kind, InternalSyntaxToken lTemplateOutput, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
 	        : base(kind, diagnostics, annotations)
 	    {
 			this.SlotCount = 1;
-			if (templateOutput != null)
+			if (lTemplateOutput != null)
 			{
-				this.AdjustFlagsAndWidth(templateOutput);
-				this.templateOutput = templateOutput;
+				this.AdjustFlagsAndWidth(lTemplateOutput);
+				this.lTemplateOutput = lTemplateOutput;
 			}
 	    }
 	
-		private TemplateOutputxGreen()
-			: base((TestLexerModeSyntaxKind)TestLexerModeSyntaxKind.TemplateOutputx, null, null)
+		private TemplateOutputGreen()
+			: base((TestLexerModeSyntaxKind)TestLexerModeSyntaxKind.TemplateOutput, null, null)
 		{
 			this.flags &= ~NodeFlags.IsNotMissing;
 		}
 	
-	    public InternalSyntaxToken TemplateOutput { get { return this.templateOutput; } }
+	    public InternalSyntaxToken LTemplateOutput { get { return this.lTemplateOutput; } }
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.TemplateOutputxSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.TemplateOutputSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
 	    {
 	        switch (index)
 	        {
-	            case 0: return this.templateOutput;
+	            case 0: return this.lTemplateOutput;
 	            default: return null;
 	        }
 	    }
 	
-	    public override TResult Accept<TResult>(TestLexerModeSyntaxVisitor<TResult> visitor) => visitor.VisitTemplateOutputxGreen(this);
+	    public override TResult Accept<TResult>(TestLexerModeSyntaxVisitor<TResult> visitor) => visitor.VisitTemplateOutputGreen(this);
 	
-	    public override void Accept(TestLexerModeSyntaxVisitor visitor) => visitor.VisitTemplateOutputxGreen(this);
+	    public override void Accept(TestLexerModeSyntaxVisitor visitor) => visitor.VisitTemplateOutputGreen(this);
 	
 	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
 	    {
-	        return new TemplateOutputxGreen(this.Kind, this.templateOutput, diagnostics, this.GetAnnotations());
+	        return new TemplateOutputGreen(this.Kind, this.lTemplateOutput, diagnostics, this.GetAnnotations());
 	    }
 	
 	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
 	    {
-	        return new TemplateOutputxGreen(this.Kind, this.templateOutput, this.GetDiagnostics(), annotations);
+	        return new TemplateOutputGreen(this.Kind, this.lTemplateOutput, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public TemplateOutputxGreen Update(InternalSyntaxToken templateOutput)
+	    public TemplateOutputGreen Update(InternalSyntaxToken lTemplateOutput)
 	    {
-	        if (this.TemplateOutput != templateOutput)
+	        if (this.LTemplateOutput != lTemplateOutput)
 	        {
-	            InternalSyntaxNode newNode = TestLexerModeLanguage.Instance.InternalSyntaxFactory.TemplateOutputx(templateOutput);
+	            InternalSyntaxNode newNode = TestLexerModeLanguage.Instance.InternalSyntaxFactory.TemplateOutput(lTemplateOutput);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
-				return (TemplateOutputxGreen)newNode;
+				return (TemplateOutputGreen)newNode;
 	        }
 	        return this;
 	    }
@@ -9214,7 +9214,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.TemplateLineEndSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.TemplateLineEndSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -9260,49 +9260,49 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	internal class TemplateStatementStartEndGreen : GreenSyntaxNode
 	{
 	    internal static readonly TemplateStatementStartEndGreen __Missing = new TemplateStatementStartEndGreen();
-	    private InternalSyntaxToken templateStatementStart;
+	    private InternalSyntaxToken tTemplateStatementStart;
 	    private TemplateStatementGreen templateStatement;
-	    private InternalSyntaxToken templateStatementEnd;
+	    private InternalSyntaxToken tTemplateStatementEnd;
 	
-	    public TemplateStatementStartEndGreen(TestLexerModeSyntaxKind kind, InternalSyntaxToken templateStatementStart, TemplateStatementGreen templateStatement, InternalSyntaxToken templateStatementEnd)
+	    public TemplateStatementStartEndGreen(TestLexerModeSyntaxKind kind, InternalSyntaxToken tTemplateStatementStart, TemplateStatementGreen templateStatement, InternalSyntaxToken tTemplateStatementEnd)
 	        : base(kind, null, null)
 	    {
 			this.SlotCount = 3;
-			if (templateStatementStart != null)
+			if (tTemplateStatementStart != null)
 			{
-				this.AdjustFlagsAndWidth(templateStatementStart);
-				this.templateStatementStart = templateStatementStart;
+				this.AdjustFlagsAndWidth(tTemplateStatementStart);
+				this.tTemplateStatementStart = tTemplateStatementStart;
 			}
 			if (templateStatement != null)
 			{
 				this.AdjustFlagsAndWidth(templateStatement);
 				this.templateStatement = templateStatement;
 			}
-			if (templateStatementEnd != null)
+			if (tTemplateStatementEnd != null)
 			{
-				this.AdjustFlagsAndWidth(templateStatementEnd);
-				this.templateStatementEnd = templateStatementEnd;
+				this.AdjustFlagsAndWidth(tTemplateStatementEnd);
+				this.tTemplateStatementEnd = tTemplateStatementEnd;
 			}
 	    }
 	
-	    public TemplateStatementStartEndGreen(TestLexerModeSyntaxKind kind, InternalSyntaxToken templateStatementStart, TemplateStatementGreen templateStatement, InternalSyntaxToken templateStatementEnd, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	    public TemplateStatementStartEndGreen(TestLexerModeSyntaxKind kind, InternalSyntaxToken tTemplateStatementStart, TemplateStatementGreen templateStatement, InternalSyntaxToken tTemplateStatementEnd, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
 	        : base(kind, diagnostics, annotations)
 	    {
 			this.SlotCount = 3;
-			if (templateStatementStart != null)
+			if (tTemplateStatementStart != null)
 			{
-				this.AdjustFlagsAndWidth(templateStatementStart);
-				this.templateStatementStart = templateStatementStart;
+				this.AdjustFlagsAndWidth(tTemplateStatementStart);
+				this.tTemplateStatementStart = tTemplateStatementStart;
 			}
 			if (templateStatement != null)
 			{
 				this.AdjustFlagsAndWidth(templateStatement);
 				this.templateStatement = templateStatement;
 			}
-			if (templateStatementEnd != null)
+			if (tTemplateStatementEnd != null)
 			{
-				this.AdjustFlagsAndWidth(templateStatementEnd);
-				this.templateStatementEnd = templateStatementEnd;
+				this.AdjustFlagsAndWidth(tTemplateStatementEnd);
+				this.tTemplateStatementEnd = tTemplateStatementEnd;
 			}
 	    }
 	
@@ -9312,22 +9312,22 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 			this.flags &= ~NodeFlags.IsNotMissing;
 		}
 	
-	    public InternalSyntaxToken TemplateStatementStart { get { return this.templateStatementStart; } }
+	    public InternalSyntaxToken TTemplateStatementStart { get { return this.tTemplateStatementStart; } }
 	    public TemplateStatementGreen TemplateStatement { get { return this.templateStatement; } }
-	    public InternalSyntaxToken TemplateStatementEnd { get { return this.templateStatementEnd; } }
+	    public InternalSyntaxToken TTemplateStatementEnd { get { return this.tTemplateStatementEnd; } }
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.TemplateStatementStartEndSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.TemplateStatementStartEndSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
 	    {
 	        switch (index)
 	        {
-	            case 0: return this.templateStatementStart;
+	            case 0: return this.tTemplateStatementStart;
 	            case 1: return this.templateStatement;
-	            case 2: return this.templateStatementEnd;
+	            case 2: return this.tTemplateStatementEnd;
 	            default: return null;
 	        }
 	    }
@@ -9338,21 +9338,21 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
 	    {
-	        return new TemplateStatementStartEndGreen(this.Kind, this.templateStatementStart, this.templateStatement, this.templateStatementEnd, diagnostics, this.GetAnnotations());
+	        return new TemplateStatementStartEndGreen(this.Kind, this.tTemplateStatementStart, this.templateStatement, this.tTemplateStatementEnd, diagnostics, this.GetAnnotations());
 	    }
 	
 	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
 	    {
-	        return new TemplateStatementStartEndGreen(this.Kind, this.templateStatementStart, this.templateStatement, this.templateStatementEnd, this.GetDiagnostics(), annotations);
+	        return new TemplateStatementStartEndGreen(this.Kind, this.tTemplateStatementStart, this.templateStatement, this.tTemplateStatementEnd, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public TemplateStatementStartEndGreen Update(InternalSyntaxToken templateStatementStart, TemplateStatementGreen templateStatement, InternalSyntaxToken templateStatementEnd)
+	    public TemplateStatementStartEndGreen Update(InternalSyntaxToken tTemplateStatementStart, TemplateStatementGreen templateStatement, InternalSyntaxToken tTemplateStatementEnd)
 	    {
-	        if (this.TemplateStatementStart != templateStatementStart ||
+	        if (this.TTemplateStatementStart != tTemplateStatementStart ||
 				this.TemplateStatement != templateStatement ||
-				this.TemplateStatementEnd != templateStatementEnd)
+				this.TTemplateStatementEnd != tTemplateStatementEnd)
 	        {
-	            InternalSyntaxNode newNode = TestLexerModeLanguage.Instance.InternalSyntaxFactory.TemplateStatementStartEnd(templateStatementStart, templateStatement, templateStatementEnd);
+	            InternalSyntaxNode newNode = TestLexerModeLanguage.Instance.InternalSyntaxFactory.TemplateStatementStartEnd(tTemplateStatementStart, templateStatement, tTemplateStatementEnd);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
@@ -9618,7 +9618,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.TemplateStatementSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.TemplateStatementSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -10028,7 +10028,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.TypeArgumentListSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.TypeArgumentListSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -10112,7 +10112,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.PredefinedTypeSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.PredefinedTypeSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -10192,7 +10192,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.TypeReferenceListSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.TypeReferenceListSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -10308,7 +10308,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.TypeReferenceSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.TypeReferenceSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -10451,7 +10451,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.ArrayTypeSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.ArrayTypeSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -10557,7 +10557,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.ArrayItemTypeSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.ArrayItemTypeSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -10683,7 +10683,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.NullableTypeSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.NullableTypeSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -10777,7 +10777,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.NullableItemTypeSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.NullableItemTypeSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -10886,7 +10886,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.GenericTypeSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.GenericTypeSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -10980,7 +10980,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.SimpleTypeSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.SimpleTypeSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -11077,7 +11077,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.VoidTypeSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.VoidTypeSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -11169,7 +11169,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.ReturnTypeSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.ReturnTypeSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -11266,7 +11266,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.ExpressionListSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.ExpressionListSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -11346,7 +11346,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.VariableReferenceSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.VariableReferenceSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -11426,7 +11426,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.RankSpecifiersSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.RankSpecifiersSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -11530,7 +11530,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.RankSpecifierSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.RankSpecifierSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -11614,7 +11614,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.UnboundTypeNameSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.UnboundTypeNameSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -11706,7 +11706,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.GenericDimensionItemSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.GenericDimensionItemSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -11812,7 +11812,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.GenericDimensionSpecifierSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.GenericDimensionSpecifierSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -11931,7 +11931,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.ExplicitAnonymousFunctionSignatureSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.ExplicitAnonymousFunctionSignatureSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -12039,7 +12039,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.ImplicitAnonymousFunctionSignatureSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.ImplicitAnonymousFunctionSignatureSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -12123,7 +12123,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.SingleParamAnonymousFunctionSignatureSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.SingleParamAnonymousFunctionSignatureSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -12215,7 +12215,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.ExplicitParameterSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.ExplicitParameterSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -12297,7 +12297,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.ImplicitParameterSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.ImplicitParameterSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -12388,7 +12388,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.ThisExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.ThisExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -12468,7 +12468,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.LiteralExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.LiteralExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -12584,7 +12584,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.TypeofVoidExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.TypeofVoidExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -12706,7 +12706,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.TypeofUnboundTypeExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.TypeofUnboundTypeExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -12828,7 +12828,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.TypeofTypeExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.TypeofTypeExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -12950,7 +12950,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.DefaultValueExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.DefaultValueExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -13084,7 +13084,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.NewObjectOrCollectionWithConstructorExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.NewObjectOrCollectionWithConstructorExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -13184,7 +13184,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.IdentifierExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.IdentifierExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -13314,7 +13314,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.HasLoopExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.HasLoopExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -13426,7 +13426,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.ParenthesizedExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.ParenthesizedExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -13546,7 +13546,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.ElementAccessExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.ElementAccessExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -13668,7 +13668,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.FunctionCallExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.FunctionCallExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -13790,7 +13790,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.PredefinedTypeMemberAccessExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.PredefinedTypeMemberAccessExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -13912,7 +13912,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.MemberAccessExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.MemberAccessExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -14034,7 +14034,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.TypecastExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.TypecastExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -14132,7 +14132,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.UnaryExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.UnaryExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -14226,7 +14226,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.PostExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.PostExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -14332,7 +14332,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.MultiplicationExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.MultiplicationExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -14440,7 +14440,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.AdditionExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.AdditionExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -14548,7 +14548,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.RelationalExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.RelationalExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -14656,7 +14656,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.TypecheckExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.TypecheckExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -14764,7 +14764,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.EqualityExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.EqualityExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -14872,7 +14872,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.BitwiseAndExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.BitwiseAndExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -14980,7 +14980,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.BitwiseXorExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.BitwiseXorExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -15088,7 +15088,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.BitwiseOrExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.BitwiseOrExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -15196,7 +15196,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.LogicalAndExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.LogicalAndExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -15304,7 +15304,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.LogicalXorExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.LogicalXorExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -15412,7 +15412,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.LogicalOrExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.LogicalOrExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -15544,7 +15544,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.ConditionalExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.ConditionalExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -15656,7 +15656,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.AssignmentExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.AssignmentExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -15764,7 +15764,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.LambdaExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.LambdaExpressionSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -15848,7 +15848,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.QualifiedNameSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.QualifiedNameSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -15928,7 +15928,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.IdentifierListSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.IdentifierListSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -16008,7 +16008,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.IdentifierSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.IdentifierSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -16058,11 +16058,11 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	    private BooleanLiteralGreen booleanLiteral;
 	    private NumberLiteralGreen numberLiteral;
 	    private DateOrTimeLiteralGreen dateOrTimeLiteral;
-	    private CharLiteralxGreen charLiteralx;
-	    private StringLiteralxGreen stringLiteralx;
-	    private GuidLiteralxGreen guidLiteralx;
+	    private CharLiteralGreen charLiteral;
+	    private StringLiteralGreen stringLiteral;
+	    private GuidLiteralGreen guidLiteral;
 	
-	    public LiteralGreen(TestLexerModeSyntaxKind kind, NullLiteralGreen nullLiteral, BooleanLiteralGreen booleanLiteral, NumberLiteralGreen numberLiteral, DateOrTimeLiteralGreen dateOrTimeLiteral, CharLiteralxGreen charLiteralx, StringLiteralxGreen stringLiteralx, GuidLiteralxGreen guidLiteralx)
+	    public LiteralGreen(TestLexerModeSyntaxKind kind, NullLiteralGreen nullLiteral, BooleanLiteralGreen booleanLiteral, NumberLiteralGreen numberLiteral, DateOrTimeLiteralGreen dateOrTimeLiteral, CharLiteralGreen charLiteral, StringLiteralGreen stringLiteral, GuidLiteralGreen guidLiteral)
 	        : base(kind, null, null)
 	    {
 			this.SlotCount = 7;
@@ -16086,24 +16086,24 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				this.AdjustFlagsAndWidth(dateOrTimeLiteral);
 				this.dateOrTimeLiteral = dateOrTimeLiteral;
 			}
-			if (charLiteralx != null)
+			if (charLiteral != null)
 			{
-				this.AdjustFlagsAndWidth(charLiteralx);
-				this.charLiteralx = charLiteralx;
+				this.AdjustFlagsAndWidth(charLiteral);
+				this.charLiteral = charLiteral;
 			}
-			if (stringLiteralx != null)
+			if (stringLiteral != null)
 			{
-				this.AdjustFlagsAndWidth(stringLiteralx);
-				this.stringLiteralx = stringLiteralx;
+				this.AdjustFlagsAndWidth(stringLiteral);
+				this.stringLiteral = stringLiteral;
 			}
-			if (guidLiteralx != null)
+			if (guidLiteral != null)
 			{
-				this.AdjustFlagsAndWidth(guidLiteralx);
-				this.guidLiteralx = guidLiteralx;
+				this.AdjustFlagsAndWidth(guidLiteral);
+				this.guidLiteral = guidLiteral;
 			}
 	    }
 	
-	    public LiteralGreen(TestLexerModeSyntaxKind kind, NullLiteralGreen nullLiteral, BooleanLiteralGreen booleanLiteral, NumberLiteralGreen numberLiteral, DateOrTimeLiteralGreen dateOrTimeLiteral, CharLiteralxGreen charLiteralx, StringLiteralxGreen stringLiteralx, GuidLiteralxGreen guidLiteralx, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	    public LiteralGreen(TestLexerModeSyntaxKind kind, NullLiteralGreen nullLiteral, BooleanLiteralGreen booleanLiteral, NumberLiteralGreen numberLiteral, DateOrTimeLiteralGreen dateOrTimeLiteral, CharLiteralGreen charLiteral, StringLiteralGreen stringLiteral, GuidLiteralGreen guidLiteral, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
 	        : base(kind, diagnostics, annotations)
 	    {
 			this.SlotCount = 7;
@@ -16127,20 +16127,20 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				this.AdjustFlagsAndWidth(dateOrTimeLiteral);
 				this.dateOrTimeLiteral = dateOrTimeLiteral;
 			}
-			if (charLiteralx != null)
+			if (charLiteral != null)
 			{
-				this.AdjustFlagsAndWidth(charLiteralx);
-				this.charLiteralx = charLiteralx;
+				this.AdjustFlagsAndWidth(charLiteral);
+				this.charLiteral = charLiteral;
 			}
-			if (stringLiteralx != null)
+			if (stringLiteral != null)
 			{
-				this.AdjustFlagsAndWidth(stringLiteralx);
-				this.stringLiteralx = stringLiteralx;
+				this.AdjustFlagsAndWidth(stringLiteral);
+				this.stringLiteral = stringLiteral;
 			}
-			if (guidLiteralx != null)
+			if (guidLiteral != null)
 			{
-				this.AdjustFlagsAndWidth(guidLiteralx);
-				this.guidLiteralx = guidLiteralx;
+				this.AdjustFlagsAndWidth(guidLiteral);
+				this.guidLiteral = guidLiteral;
 			}
 	    }
 	
@@ -16154,13 +16154,13 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	    public BooleanLiteralGreen BooleanLiteral { get { return this.booleanLiteral; } }
 	    public NumberLiteralGreen NumberLiteral { get { return this.numberLiteral; } }
 	    public DateOrTimeLiteralGreen DateOrTimeLiteral { get { return this.dateOrTimeLiteral; } }
-	    public CharLiteralxGreen CharLiteralx { get { return this.charLiteralx; } }
-	    public StringLiteralxGreen StringLiteralx { get { return this.stringLiteralx; } }
-	    public GuidLiteralxGreen GuidLiteralx { get { return this.guidLiteralx; } }
+	    public CharLiteralGreen CharLiteral { get { return this.charLiteral; } }
+	    public StringLiteralGreen StringLiteral { get { return this.stringLiteral; } }
+	    public GuidLiteralGreen GuidLiteral { get { return this.guidLiteral; } }
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.LiteralSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.LiteralSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -16171,9 +16171,9 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	            case 1: return this.booleanLiteral;
 	            case 2: return this.numberLiteral;
 	            case 3: return this.dateOrTimeLiteral;
-	            case 4: return this.charLiteralx;
-	            case 5: return this.stringLiteralx;
-	            case 6: return this.guidLiteralx;
+	            case 4: return this.charLiteral;
+	            case 5: return this.stringLiteral;
+	            case 6: return this.guidLiteral;
 	            default: return null;
 	        }
 	    }
@@ -16184,12 +16184,12 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
 	    {
-	        return new LiteralGreen(this.Kind, this.nullLiteral, this.booleanLiteral, this.numberLiteral, this.dateOrTimeLiteral, this.charLiteralx, this.stringLiteralx, this.guidLiteralx, diagnostics, this.GetAnnotations());
+	        return new LiteralGreen(this.Kind, this.nullLiteral, this.booleanLiteral, this.numberLiteral, this.dateOrTimeLiteral, this.charLiteral, this.stringLiteral, this.guidLiteral, diagnostics, this.GetAnnotations());
 	    }
 	
 	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
 	    {
-	        return new LiteralGreen(this.Kind, this.nullLiteral, this.booleanLiteral, this.numberLiteral, this.dateOrTimeLiteral, this.charLiteralx, this.stringLiteralx, this.guidLiteralx, this.GetDiagnostics(), annotations);
+	        return new LiteralGreen(this.Kind, this.nullLiteral, this.booleanLiteral, this.numberLiteral, this.dateOrTimeLiteral, this.charLiteral, this.stringLiteral, this.guidLiteral, this.GetDiagnostics(), annotations);
 	    }
 	
 	    public LiteralGreen Update(NullLiteralGreen nullLiteral)
@@ -16256,11 +16256,11 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	        return this;
 	    }
 	
-	    public LiteralGreen Update(CharLiteralxGreen charLiteralx)
+	    public LiteralGreen Update(CharLiteralGreen charLiteral)
 	    {
-	        if (this.charLiteralx != charLiteralx)
+	        if (this.charLiteral != charLiteral)
 	        {
-	            InternalSyntaxNode newNode = TestLexerModeLanguage.Instance.InternalSyntaxFactory.Literal(charLiteralx);
+	            InternalSyntaxNode newNode = TestLexerModeLanguage.Instance.InternalSyntaxFactory.Literal(charLiteral);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
@@ -16272,11 +16272,11 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	        return this;
 	    }
 	
-	    public LiteralGreen Update(StringLiteralxGreen stringLiteralx)
+	    public LiteralGreen Update(StringLiteralGreen stringLiteral)
 	    {
-	        if (this.stringLiteralx != stringLiteralx)
+	        if (this.stringLiteral != stringLiteral)
 	        {
-	            InternalSyntaxNode newNode = TestLexerModeLanguage.Instance.InternalSyntaxFactory.Literal(stringLiteralx);
+	            InternalSyntaxNode newNode = TestLexerModeLanguage.Instance.InternalSyntaxFactory.Literal(stringLiteral);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
@@ -16288,11 +16288,11 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	        return this;
 	    }
 	
-	    public LiteralGreen Update(GuidLiteralxGreen guidLiteralx)
+	    public LiteralGreen Update(GuidLiteralGreen guidLiteral)
 	    {
-	        if (this.guidLiteralx != guidLiteralx)
+	        if (this.guidLiteral != guidLiteral)
 	        {
-	            InternalSyntaxNode newNode = TestLexerModeLanguage.Instance.InternalSyntaxFactory.Literal(guidLiteralx);
+	            InternalSyntaxNode newNode = TestLexerModeLanguage.Instance.InternalSyntaxFactory.Literal(guidLiteral);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
@@ -16342,7 +16342,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.NullLiteralSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.NullLiteralSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -16422,7 +16422,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.BooleanLiteralSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.BooleanLiteralSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -16468,49 +16468,49 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	internal class NumberLiteralGreen : GreenSyntaxNode
 	{
 	    internal static readonly NumberLiteralGreen __Missing = new NumberLiteralGreen();
-	    private IntegerLiteralxGreen integerLiteralx;
-	    private DecimalLiteralxGreen decimalLiteralx;
-	    private ScientificLiteralxGreen scientificLiteralx;
+	    private IntegerLiteralGreen integerLiteral;
+	    private DecimalLiteralGreen decimalLiteral;
+	    private ScientificLiteralGreen scientificLiteral;
 	
-	    public NumberLiteralGreen(TestLexerModeSyntaxKind kind, IntegerLiteralxGreen integerLiteralx, DecimalLiteralxGreen decimalLiteralx, ScientificLiteralxGreen scientificLiteralx)
+	    public NumberLiteralGreen(TestLexerModeSyntaxKind kind, IntegerLiteralGreen integerLiteral, DecimalLiteralGreen decimalLiteral, ScientificLiteralGreen scientificLiteral)
 	        : base(kind, null, null)
 	    {
 			this.SlotCount = 3;
-			if (integerLiteralx != null)
+			if (integerLiteral != null)
 			{
-				this.AdjustFlagsAndWidth(integerLiteralx);
-				this.integerLiteralx = integerLiteralx;
+				this.AdjustFlagsAndWidth(integerLiteral);
+				this.integerLiteral = integerLiteral;
 			}
-			if (decimalLiteralx != null)
+			if (decimalLiteral != null)
 			{
-				this.AdjustFlagsAndWidth(decimalLiteralx);
-				this.decimalLiteralx = decimalLiteralx;
+				this.AdjustFlagsAndWidth(decimalLiteral);
+				this.decimalLiteral = decimalLiteral;
 			}
-			if (scientificLiteralx != null)
+			if (scientificLiteral != null)
 			{
-				this.AdjustFlagsAndWidth(scientificLiteralx);
-				this.scientificLiteralx = scientificLiteralx;
+				this.AdjustFlagsAndWidth(scientificLiteral);
+				this.scientificLiteral = scientificLiteral;
 			}
 	    }
 	
-	    public NumberLiteralGreen(TestLexerModeSyntaxKind kind, IntegerLiteralxGreen integerLiteralx, DecimalLiteralxGreen decimalLiteralx, ScientificLiteralxGreen scientificLiteralx, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	    public NumberLiteralGreen(TestLexerModeSyntaxKind kind, IntegerLiteralGreen integerLiteral, DecimalLiteralGreen decimalLiteral, ScientificLiteralGreen scientificLiteral, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
 	        : base(kind, diagnostics, annotations)
 	    {
 			this.SlotCount = 3;
-			if (integerLiteralx != null)
+			if (integerLiteral != null)
 			{
-				this.AdjustFlagsAndWidth(integerLiteralx);
-				this.integerLiteralx = integerLiteralx;
+				this.AdjustFlagsAndWidth(integerLiteral);
+				this.integerLiteral = integerLiteral;
 			}
-			if (decimalLiteralx != null)
+			if (decimalLiteral != null)
 			{
-				this.AdjustFlagsAndWidth(decimalLiteralx);
-				this.decimalLiteralx = decimalLiteralx;
+				this.AdjustFlagsAndWidth(decimalLiteral);
+				this.decimalLiteral = decimalLiteral;
 			}
-			if (scientificLiteralx != null)
+			if (scientificLiteral != null)
 			{
-				this.AdjustFlagsAndWidth(scientificLiteralx);
-				this.scientificLiteralx = scientificLiteralx;
+				this.AdjustFlagsAndWidth(scientificLiteral);
+				this.scientificLiteral = scientificLiteral;
 			}
 	    }
 	
@@ -16520,22 +16520,22 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 			this.flags &= ~NodeFlags.IsNotMissing;
 		}
 	
-	    public IntegerLiteralxGreen IntegerLiteralx { get { return this.integerLiteralx; } }
-	    public DecimalLiteralxGreen DecimalLiteralx { get { return this.decimalLiteralx; } }
-	    public ScientificLiteralxGreen ScientificLiteralx { get { return this.scientificLiteralx; } }
+	    public IntegerLiteralGreen IntegerLiteral { get { return this.integerLiteral; } }
+	    public DecimalLiteralGreen DecimalLiteral { get { return this.decimalLiteral; } }
+	    public ScientificLiteralGreen ScientificLiteral { get { return this.scientificLiteral; } }
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.NumberLiteralSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.NumberLiteralSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
 	    {
 	        switch (index)
 	        {
-	            case 0: return this.integerLiteralx;
-	            case 1: return this.decimalLiteralx;
-	            case 2: return this.scientificLiteralx;
+	            case 0: return this.integerLiteral;
+	            case 1: return this.decimalLiteral;
+	            case 2: return this.scientificLiteral;
 	            default: return null;
 	        }
 	    }
@@ -16546,19 +16546,19 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
 	    {
-	        return new NumberLiteralGreen(this.Kind, this.integerLiteralx, this.decimalLiteralx, this.scientificLiteralx, diagnostics, this.GetAnnotations());
+	        return new NumberLiteralGreen(this.Kind, this.integerLiteral, this.decimalLiteral, this.scientificLiteral, diagnostics, this.GetAnnotations());
 	    }
 	
 	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
 	    {
-	        return new NumberLiteralGreen(this.Kind, this.integerLiteralx, this.decimalLiteralx, this.scientificLiteralx, this.GetDiagnostics(), annotations);
+	        return new NumberLiteralGreen(this.Kind, this.integerLiteral, this.decimalLiteral, this.scientificLiteral, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public NumberLiteralGreen Update(IntegerLiteralxGreen integerLiteralx)
+	    public NumberLiteralGreen Update(IntegerLiteralGreen integerLiteral)
 	    {
-	        if (this.integerLiteralx != integerLiteralx)
+	        if (this.integerLiteral != integerLiteral)
 	        {
-	            InternalSyntaxNode newNode = TestLexerModeLanguage.Instance.InternalSyntaxFactory.NumberLiteral(integerLiteralx);
+	            InternalSyntaxNode newNode = TestLexerModeLanguage.Instance.InternalSyntaxFactory.NumberLiteral(integerLiteral);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
@@ -16570,11 +16570,11 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	        return this;
 	    }
 	
-	    public NumberLiteralGreen Update(DecimalLiteralxGreen decimalLiteralx)
+	    public NumberLiteralGreen Update(DecimalLiteralGreen decimalLiteral)
 	    {
-	        if (this.decimalLiteralx != decimalLiteralx)
+	        if (this.decimalLiteral != decimalLiteral)
 	        {
-	            InternalSyntaxNode newNode = TestLexerModeLanguage.Instance.InternalSyntaxFactory.NumberLiteral(decimalLiteralx);
+	            InternalSyntaxNode newNode = TestLexerModeLanguage.Instance.InternalSyntaxFactory.NumberLiteral(decimalLiteral);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
@@ -16586,11 +16586,11 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	        return this;
 	    }
 	
-	    public NumberLiteralGreen Update(ScientificLiteralxGreen scientificLiteralx)
+	    public NumberLiteralGreen Update(ScientificLiteralGreen scientificLiteral)
 	    {
-	        if (this.scientificLiteralx != scientificLiteralx)
+	        if (this.scientificLiteral != scientificLiteral)
 	        {
-	            InternalSyntaxNode newNode = TestLexerModeLanguage.Instance.InternalSyntaxFactory.NumberLiteral(scientificLiteralx);
+	            InternalSyntaxNode newNode = TestLexerModeLanguage.Instance.InternalSyntaxFactory.NumberLiteral(scientificLiteral);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
@@ -16603,241 +16603,241 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	    }
 	}
 	
-	internal class IntegerLiteralxGreen : GreenSyntaxNode
+	internal class IntegerLiteralGreen : GreenSyntaxNode
 	{
-	    internal static readonly IntegerLiteralxGreen __Missing = new IntegerLiteralxGreen();
-	    private InternalSyntaxToken integerLiteral;
+	    internal static readonly IntegerLiteralGreen __Missing = new IntegerLiteralGreen();
+	    private InternalSyntaxToken lInteger;
 	
-	    public IntegerLiteralxGreen(TestLexerModeSyntaxKind kind, InternalSyntaxToken integerLiteral)
+	    public IntegerLiteralGreen(TestLexerModeSyntaxKind kind, InternalSyntaxToken lInteger)
 	        : base(kind, null, null)
 	    {
 			this.SlotCount = 1;
-			if (integerLiteral != null)
+			if (lInteger != null)
 			{
-				this.AdjustFlagsAndWidth(integerLiteral);
-				this.integerLiteral = integerLiteral;
+				this.AdjustFlagsAndWidth(lInteger);
+				this.lInteger = lInteger;
 			}
 	    }
 	
-	    public IntegerLiteralxGreen(TestLexerModeSyntaxKind kind, InternalSyntaxToken integerLiteral, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	    public IntegerLiteralGreen(TestLexerModeSyntaxKind kind, InternalSyntaxToken lInteger, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
 	        : base(kind, diagnostics, annotations)
 	    {
 			this.SlotCount = 1;
-			if (integerLiteral != null)
+			if (lInteger != null)
 			{
-				this.AdjustFlagsAndWidth(integerLiteral);
-				this.integerLiteral = integerLiteral;
+				this.AdjustFlagsAndWidth(lInteger);
+				this.lInteger = lInteger;
 			}
 	    }
 	
-		private IntegerLiteralxGreen()
-			: base((TestLexerModeSyntaxKind)TestLexerModeSyntaxKind.IntegerLiteralx, null, null)
+		private IntegerLiteralGreen()
+			: base((TestLexerModeSyntaxKind)TestLexerModeSyntaxKind.IntegerLiteral, null, null)
 		{
 			this.flags &= ~NodeFlags.IsNotMissing;
 		}
 	
-	    public InternalSyntaxToken IntegerLiteral { get { return this.integerLiteral; } }
+	    public InternalSyntaxToken LInteger { get { return this.lInteger; } }
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.IntegerLiteralxSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.IntegerLiteralSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
 	    {
 	        switch (index)
 	        {
-	            case 0: return this.integerLiteral;
+	            case 0: return this.lInteger;
 	            default: return null;
 	        }
 	    }
 	
-	    public override TResult Accept<TResult>(TestLexerModeSyntaxVisitor<TResult> visitor) => visitor.VisitIntegerLiteralxGreen(this);
+	    public override TResult Accept<TResult>(TestLexerModeSyntaxVisitor<TResult> visitor) => visitor.VisitIntegerLiteralGreen(this);
 	
-	    public override void Accept(TestLexerModeSyntaxVisitor visitor) => visitor.VisitIntegerLiteralxGreen(this);
+	    public override void Accept(TestLexerModeSyntaxVisitor visitor) => visitor.VisitIntegerLiteralGreen(this);
 	
 	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
 	    {
-	        return new IntegerLiteralxGreen(this.Kind, this.integerLiteral, diagnostics, this.GetAnnotations());
+	        return new IntegerLiteralGreen(this.Kind, this.lInteger, diagnostics, this.GetAnnotations());
 	    }
 	
 	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
 	    {
-	        return new IntegerLiteralxGreen(this.Kind, this.integerLiteral, this.GetDiagnostics(), annotations);
+	        return new IntegerLiteralGreen(this.Kind, this.lInteger, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public IntegerLiteralxGreen Update(InternalSyntaxToken integerLiteral)
+	    public IntegerLiteralGreen Update(InternalSyntaxToken lInteger)
 	    {
-	        if (this.IntegerLiteral != integerLiteral)
+	        if (this.LInteger != lInteger)
 	        {
-	            InternalSyntaxNode newNode = TestLexerModeLanguage.Instance.InternalSyntaxFactory.IntegerLiteralx(integerLiteral);
+	            InternalSyntaxNode newNode = TestLexerModeLanguage.Instance.InternalSyntaxFactory.IntegerLiteral(lInteger);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
-				return (IntegerLiteralxGreen)newNode;
+				return (IntegerLiteralGreen)newNode;
 	        }
 	        return this;
 	    }
 	}
 	
-	internal class DecimalLiteralxGreen : GreenSyntaxNode
+	internal class DecimalLiteralGreen : GreenSyntaxNode
 	{
-	    internal static readonly DecimalLiteralxGreen __Missing = new DecimalLiteralxGreen();
-	    private InternalSyntaxToken decimalLiteral;
+	    internal static readonly DecimalLiteralGreen __Missing = new DecimalLiteralGreen();
+	    private InternalSyntaxToken lDecimal;
 	
-	    public DecimalLiteralxGreen(TestLexerModeSyntaxKind kind, InternalSyntaxToken decimalLiteral)
+	    public DecimalLiteralGreen(TestLexerModeSyntaxKind kind, InternalSyntaxToken lDecimal)
 	        : base(kind, null, null)
 	    {
 			this.SlotCount = 1;
-			if (decimalLiteral != null)
+			if (lDecimal != null)
 			{
-				this.AdjustFlagsAndWidth(decimalLiteral);
-				this.decimalLiteral = decimalLiteral;
+				this.AdjustFlagsAndWidth(lDecimal);
+				this.lDecimal = lDecimal;
 			}
 	    }
 	
-	    public DecimalLiteralxGreen(TestLexerModeSyntaxKind kind, InternalSyntaxToken decimalLiteral, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	    public DecimalLiteralGreen(TestLexerModeSyntaxKind kind, InternalSyntaxToken lDecimal, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
 	        : base(kind, diagnostics, annotations)
 	    {
 			this.SlotCount = 1;
-			if (decimalLiteral != null)
+			if (lDecimal != null)
 			{
-				this.AdjustFlagsAndWidth(decimalLiteral);
-				this.decimalLiteral = decimalLiteral;
+				this.AdjustFlagsAndWidth(lDecimal);
+				this.lDecimal = lDecimal;
 			}
 	    }
 	
-		private DecimalLiteralxGreen()
-			: base((TestLexerModeSyntaxKind)TestLexerModeSyntaxKind.DecimalLiteralx, null, null)
+		private DecimalLiteralGreen()
+			: base((TestLexerModeSyntaxKind)TestLexerModeSyntaxKind.DecimalLiteral, null, null)
 		{
 			this.flags &= ~NodeFlags.IsNotMissing;
 		}
 	
-	    public InternalSyntaxToken DecimalLiteral { get { return this.decimalLiteral; } }
+	    public InternalSyntaxToken LDecimal { get { return this.lDecimal; } }
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.DecimalLiteralxSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.DecimalLiteralSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
 	    {
 	        switch (index)
 	        {
-	            case 0: return this.decimalLiteral;
+	            case 0: return this.lDecimal;
 	            default: return null;
 	        }
 	    }
 	
-	    public override TResult Accept<TResult>(TestLexerModeSyntaxVisitor<TResult> visitor) => visitor.VisitDecimalLiteralxGreen(this);
+	    public override TResult Accept<TResult>(TestLexerModeSyntaxVisitor<TResult> visitor) => visitor.VisitDecimalLiteralGreen(this);
 	
-	    public override void Accept(TestLexerModeSyntaxVisitor visitor) => visitor.VisitDecimalLiteralxGreen(this);
+	    public override void Accept(TestLexerModeSyntaxVisitor visitor) => visitor.VisitDecimalLiteralGreen(this);
 	
 	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
 	    {
-	        return new DecimalLiteralxGreen(this.Kind, this.decimalLiteral, diagnostics, this.GetAnnotations());
+	        return new DecimalLiteralGreen(this.Kind, this.lDecimal, diagnostics, this.GetAnnotations());
 	    }
 	
 	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
 	    {
-	        return new DecimalLiteralxGreen(this.Kind, this.decimalLiteral, this.GetDiagnostics(), annotations);
+	        return new DecimalLiteralGreen(this.Kind, this.lDecimal, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public DecimalLiteralxGreen Update(InternalSyntaxToken decimalLiteral)
+	    public DecimalLiteralGreen Update(InternalSyntaxToken lDecimal)
 	    {
-	        if (this.DecimalLiteral != decimalLiteral)
+	        if (this.LDecimal != lDecimal)
 	        {
-	            InternalSyntaxNode newNode = TestLexerModeLanguage.Instance.InternalSyntaxFactory.DecimalLiteralx(decimalLiteral);
+	            InternalSyntaxNode newNode = TestLexerModeLanguage.Instance.InternalSyntaxFactory.DecimalLiteral(lDecimal);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
-				return (DecimalLiteralxGreen)newNode;
+				return (DecimalLiteralGreen)newNode;
 	        }
 	        return this;
 	    }
 	}
 	
-	internal class ScientificLiteralxGreen : GreenSyntaxNode
+	internal class ScientificLiteralGreen : GreenSyntaxNode
 	{
-	    internal static readonly ScientificLiteralxGreen __Missing = new ScientificLiteralxGreen();
-	    private InternalSyntaxToken scientificLiteral;
+	    internal static readonly ScientificLiteralGreen __Missing = new ScientificLiteralGreen();
+	    private InternalSyntaxToken lScientific;
 	
-	    public ScientificLiteralxGreen(TestLexerModeSyntaxKind kind, InternalSyntaxToken scientificLiteral)
+	    public ScientificLiteralGreen(TestLexerModeSyntaxKind kind, InternalSyntaxToken lScientific)
 	        : base(kind, null, null)
 	    {
 			this.SlotCount = 1;
-			if (scientificLiteral != null)
+			if (lScientific != null)
 			{
-				this.AdjustFlagsAndWidth(scientificLiteral);
-				this.scientificLiteral = scientificLiteral;
+				this.AdjustFlagsAndWidth(lScientific);
+				this.lScientific = lScientific;
 			}
 	    }
 	
-	    public ScientificLiteralxGreen(TestLexerModeSyntaxKind kind, InternalSyntaxToken scientificLiteral, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	    public ScientificLiteralGreen(TestLexerModeSyntaxKind kind, InternalSyntaxToken lScientific, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
 	        : base(kind, diagnostics, annotations)
 	    {
 			this.SlotCount = 1;
-			if (scientificLiteral != null)
+			if (lScientific != null)
 			{
-				this.AdjustFlagsAndWidth(scientificLiteral);
-				this.scientificLiteral = scientificLiteral;
+				this.AdjustFlagsAndWidth(lScientific);
+				this.lScientific = lScientific;
 			}
 	    }
 	
-		private ScientificLiteralxGreen()
-			: base((TestLexerModeSyntaxKind)TestLexerModeSyntaxKind.ScientificLiteralx, null, null)
+		private ScientificLiteralGreen()
+			: base((TestLexerModeSyntaxKind)TestLexerModeSyntaxKind.ScientificLiteral, null, null)
 		{
 			this.flags &= ~NodeFlags.IsNotMissing;
 		}
 	
-	    public InternalSyntaxToken ScientificLiteral { get { return this.scientificLiteral; } }
+	    public InternalSyntaxToken LScientific { get { return this.lScientific; } }
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.ScientificLiteralxSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.ScientificLiteralSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
 	    {
 	        switch (index)
 	        {
-	            case 0: return this.scientificLiteral;
+	            case 0: return this.lScientific;
 	            default: return null;
 	        }
 	    }
 	
-	    public override TResult Accept<TResult>(TestLexerModeSyntaxVisitor<TResult> visitor) => visitor.VisitScientificLiteralxGreen(this);
+	    public override TResult Accept<TResult>(TestLexerModeSyntaxVisitor<TResult> visitor) => visitor.VisitScientificLiteralGreen(this);
 	
-	    public override void Accept(TestLexerModeSyntaxVisitor visitor) => visitor.VisitScientificLiteralxGreen(this);
+	    public override void Accept(TestLexerModeSyntaxVisitor visitor) => visitor.VisitScientificLiteralGreen(this);
 	
 	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
 	    {
-	        return new ScientificLiteralxGreen(this.Kind, this.scientificLiteral, diagnostics, this.GetAnnotations());
+	        return new ScientificLiteralGreen(this.Kind, this.lScientific, diagnostics, this.GetAnnotations());
 	    }
 	
 	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
 	    {
-	        return new ScientificLiteralxGreen(this.Kind, this.scientificLiteral, this.GetDiagnostics(), annotations);
+	        return new ScientificLiteralGreen(this.Kind, this.lScientific, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public ScientificLiteralxGreen Update(InternalSyntaxToken scientificLiteral)
+	    public ScientificLiteralGreen Update(InternalSyntaxToken lScientific)
 	    {
-	        if (this.ScientificLiteral != scientificLiteral)
+	        if (this.LScientific != lScientific)
 	        {
-	            InternalSyntaxNode newNode = TestLexerModeLanguage.Instance.InternalSyntaxFactory.ScientificLiteralx(scientificLiteral);
+	            InternalSyntaxNode newNode = TestLexerModeLanguage.Instance.InternalSyntaxFactory.ScientificLiteral(lScientific);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
-				return (ScientificLiteralxGreen)newNode;
+				return (ScientificLiteralGreen)newNode;
 	        }
 	        return this;
 	    }
@@ -16846,60 +16846,60 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	internal class DateOrTimeLiteralGreen : GreenSyntaxNode
 	{
 	    internal static readonly DateOrTimeLiteralGreen __Missing = new DateOrTimeLiteralGreen();
-	    private DateTimeLiteralxGreen dateTimeLiteralx;
-	    private DateTimeOffsetLiteralxGreen dateTimeOffsetLiteralx;
-	    private DateLiteralxGreen dateLiteralx;
-	    private TimeLiteralxGreen timeLiteralx;
+	    private DateTimeLiteralGreen dateTimeLiteral;
+	    private DateTimeOffsetLiteralGreen dateTimeOffsetLiteral;
+	    private DateLiteralGreen dateLiteral;
+	    private TimeLiteralGreen timeLiteral;
 	
-	    public DateOrTimeLiteralGreen(TestLexerModeSyntaxKind kind, DateTimeLiteralxGreen dateTimeLiteralx, DateTimeOffsetLiteralxGreen dateTimeOffsetLiteralx, DateLiteralxGreen dateLiteralx, TimeLiteralxGreen timeLiteralx)
+	    public DateOrTimeLiteralGreen(TestLexerModeSyntaxKind kind, DateTimeLiteralGreen dateTimeLiteral, DateTimeOffsetLiteralGreen dateTimeOffsetLiteral, DateLiteralGreen dateLiteral, TimeLiteralGreen timeLiteral)
 	        : base(kind, null, null)
 	    {
 			this.SlotCount = 4;
-			if (dateTimeLiteralx != null)
+			if (dateTimeLiteral != null)
 			{
-				this.AdjustFlagsAndWidth(dateTimeLiteralx);
-				this.dateTimeLiteralx = dateTimeLiteralx;
+				this.AdjustFlagsAndWidth(dateTimeLiteral);
+				this.dateTimeLiteral = dateTimeLiteral;
 			}
-			if (dateTimeOffsetLiteralx != null)
+			if (dateTimeOffsetLiteral != null)
 			{
-				this.AdjustFlagsAndWidth(dateTimeOffsetLiteralx);
-				this.dateTimeOffsetLiteralx = dateTimeOffsetLiteralx;
+				this.AdjustFlagsAndWidth(dateTimeOffsetLiteral);
+				this.dateTimeOffsetLiteral = dateTimeOffsetLiteral;
 			}
-			if (dateLiteralx != null)
+			if (dateLiteral != null)
 			{
-				this.AdjustFlagsAndWidth(dateLiteralx);
-				this.dateLiteralx = dateLiteralx;
+				this.AdjustFlagsAndWidth(dateLiteral);
+				this.dateLiteral = dateLiteral;
 			}
-			if (timeLiteralx != null)
+			if (timeLiteral != null)
 			{
-				this.AdjustFlagsAndWidth(timeLiteralx);
-				this.timeLiteralx = timeLiteralx;
+				this.AdjustFlagsAndWidth(timeLiteral);
+				this.timeLiteral = timeLiteral;
 			}
 	    }
 	
-	    public DateOrTimeLiteralGreen(TestLexerModeSyntaxKind kind, DateTimeLiteralxGreen dateTimeLiteralx, DateTimeOffsetLiteralxGreen dateTimeOffsetLiteralx, DateLiteralxGreen dateLiteralx, TimeLiteralxGreen timeLiteralx, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	    public DateOrTimeLiteralGreen(TestLexerModeSyntaxKind kind, DateTimeLiteralGreen dateTimeLiteral, DateTimeOffsetLiteralGreen dateTimeOffsetLiteral, DateLiteralGreen dateLiteral, TimeLiteralGreen timeLiteral, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
 	        : base(kind, diagnostics, annotations)
 	    {
 			this.SlotCount = 4;
-			if (dateTimeLiteralx != null)
+			if (dateTimeLiteral != null)
 			{
-				this.AdjustFlagsAndWidth(dateTimeLiteralx);
-				this.dateTimeLiteralx = dateTimeLiteralx;
+				this.AdjustFlagsAndWidth(dateTimeLiteral);
+				this.dateTimeLiteral = dateTimeLiteral;
 			}
-			if (dateTimeOffsetLiteralx != null)
+			if (dateTimeOffsetLiteral != null)
 			{
-				this.AdjustFlagsAndWidth(dateTimeOffsetLiteralx);
-				this.dateTimeOffsetLiteralx = dateTimeOffsetLiteralx;
+				this.AdjustFlagsAndWidth(dateTimeOffsetLiteral);
+				this.dateTimeOffsetLiteral = dateTimeOffsetLiteral;
 			}
-			if (dateLiteralx != null)
+			if (dateLiteral != null)
 			{
-				this.AdjustFlagsAndWidth(dateLiteralx);
-				this.dateLiteralx = dateLiteralx;
+				this.AdjustFlagsAndWidth(dateLiteral);
+				this.dateLiteral = dateLiteral;
 			}
-			if (timeLiteralx != null)
+			if (timeLiteral != null)
 			{
-				this.AdjustFlagsAndWidth(timeLiteralx);
-				this.timeLiteralx = timeLiteralx;
+				this.AdjustFlagsAndWidth(timeLiteral);
+				this.timeLiteral = timeLiteral;
 			}
 	    }
 	
@@ -16909,24 +16909,24 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 			this.flags &= ~NodeFlags.IsNotMissing;
 		}
 	
-	    public DateTimeLiteralxGreen DateTimeLiteralx { get { return this.dateTimeLiteralx; } }
-	    public DateTimeOffsetLiteralxGreen DateTimeOffsetLiteralx { get { return this.dateTimeOffsetLiteralx; } }
-	    public DateLiteralxGreen DateLiteralx { get { return this.dateLiteralx; } }
-	    public TimeLiteralxGreen TimeLiteralx { get { return this.timeLiteralx; } }
+	    public DateTimeLiteralGreen DateTimeLiteral { get { return this.dateTimeLiteral; } }
+	    public DateTimeOffsetLiteralGreen DateTimeOffsetLiteral { get { return this.dateTimeOffsetLiteral; } }
+	    public DateLiteralGreen DateLiteral { get { return this.dateLiteral; } }
+	    public TimeLiteralGreen TimeLiteral { get { return this.timeLiteral; } }
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.DateOrTimeLiteralSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.DateOrTimeLiteralSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
 	    {
 	        switch (index)
 	        {
-	            case 0: return this.dateTimeLiteralx;
-	            case 1: return this.dateTimeOffsetLiteralx;
-	            case 2: return this.dateLiteralx;
-	            case 3: return this.timeLiteralx;
+	            case 0: return this.dateTimeLiteral;
+	            case 1: return this.dateTimeOffsetLiteral;
+	            case 2: return this.dateLiteral;
+	            case 3: return this.timeLiteral;
 	            default: return null;
 	        }
 	    }
@@ -16937,19 +16937,19 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	
 	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
 	    {
-	        return new DateOrTimeLiteralGreen(this.Kind, this.dateTimeLiteralx, this.dateTimeOffsetLiteralx, this.dateLiteralx, this.timeLiteralx, diagnostics, this.GetAnnotations());
+	        return new DateOrTimeLiteralGreen(this.Kind, this.dateTimeLiteral, this.dateTimeOffsetLiteral, this.dateLiteral, this.timeLiteral, diagnostics, this.GetAnnotations());
 	    }
 	
 	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
 	    {
-	        return new DateOrTimeLiteralGreen(this.Kind, this.dateTimeLiteralx, this.dateTimeOffsetLiteralx, this.dateLiteralx, this.timeLiteralx, this.GetDiagnostics(), annotations);
+	        return new DateOrTimeLiteralGreen(this.Kind, this.dateTimeLiteral, this.dateTimeOffsetLiteral, this.dateLiteral, this.timeLiteral, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public DateOrTimeLiteralGreen Update(DateTimeLiteralxGreen dateTimeLiteralx)
+	    public DateOrTimeLiteralGreen Update(DateTimeLiteralGreen dateTimeLiteral)
 	    {
-	        if (this.dateTimeLiteralx != dateTimeLiteralx)
+	        if (this.dateTimeLiteral != dateTimeLiteral)
 	        {
-	            InternalSyntaxNode newNode = TestLexerModeLanguage.Instance.InternalSyntaxFactory.DateOrTimeLiteral(dateTimeLiteralx);
+	            InternalSyntaxNode newNode = TestLexerModeLanguage.Instance.InternalSyntaxFactory.DateOrTimeLiteral(dateTimeLiteral);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
@@ -16961,11 +16961,11 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	        return this;
 	    }
 	
-	    public DateOrTimeLiteralGreen Update(DateTimeOffsetLiteralxGreen dateTimeOffsetLiteralx)
+	    public DateOrTimeLiteralGreen Update(DateTimeOffsetLiteralGreen dateTimeOffsetLiteral)
 	    {
-	        if (this.dateTimeOffsetLiteralx != dateTimeOffsetLiteralx)
+	        if (this.dateTimeOffsetLiteral != dateTimeOffsetLiteral)
 	        {
-	            InternalSyntaxNode newNode = TestLexerModeLanguage.Instance.InternalSyntaxFactory.DateOrTimeLiteral(dateTimeOffsetLiteralx);
+	            InternalSyntaxNode newNode = TestLexerModeLanguage.Instance.InternalSyntaxFactory.DateOrTimeLiteral(dateTimeOffsetLiteral);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
@@ -16977,11 +16977,11 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	        return this;
 	    }
 	
-	    public DateOrTimeLiteralGreen Update(DateLiteralxGreen dateLiteralx)
+	    public DateOrTimeLiteralGreen Update(DateLiteralGreen dateLiteral)
 	    {
-	        if (this.dateLiteralx != dateLiteralx)
+	        if (this.dateLiteral != dateLiteral)
 	        {
-	            InternalSyntaxNode newNode = TestLexerModeLanguage.Instance.InternalSyntaxFactory.DateOrTimeLiteral(dateLiteralx);
+	            InternalSyntaxNode newNode = TestLexerModeLanguage.Instance.InternalSyntaxFactory.DateOrTimeLiteral(dateLiteral);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
@@ -16993,11 +16993,11 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	        return this;
 	    }
 	
-	    public DateOrTimeLiteralGreen Update(TimeLiteralxGreen timeLiteralx)
+	    public DateOrTimeLiteralGreen Update(TimeLiteralGreen timeLiteral)
 	    {
-	        if (this.timeLiteralx != timeLiteralx)
+	        if (this.timeLiteral != timeLiteral)
 	        {
-	            InternalSyntaxNode newNode = TestLexerModeLanguage.Instance.InternalSyntaxFactory.DateOrTimeLiteral(timeLiteralx);
+	            InternalSyntaxNode newNode = TestLexerModeLanguage.Instance.InternalSyntaxFactory.DateOrTimeLiteral(timeLiteral);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
@@ -17010,561 +17010,561 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	    }
 	}
 	
-	internal class DateTimeOffsetLiteralxGreen : GreenSyntaxNode
+	internal class DateTimeOffsetLiteralGreen : GreenSyntaxNode
 	{
-	    internal static readonly DateTimeOffsetLiteralxGreen __Missing = new DateTimeOffsetLiteralxGreen();
-	    private InternalSyntaxToken dateTimeOffsetLiteral;
+	    internal static readonly DateTimeOffsetLiteralGreen __Missing = new DateTimeOffsetLiteralGreen();
+	    private InternalSyntaxToken lDateTimeOffset;
 	
-	    public DateTimeOffsetLiteralxGreen(TestLexerModeSyntaxKind kind, InternalSyntaxToken dateTimeOffsetLiteral)
+	    public DateTimeOffsetLiteralGreen(TestLexerModeSyntaxKind kind, InternalSyntaxToken lDateTimeOffset)
 	        : base(kind, null, null)
 	    {
 			this.SlotCount = 1;
-			if (dateTimeOffsetLiteral != null)
+			if (lDateTimeOffset != null)
 			{
-				this.AdjustFlagsAndWidth(dateTimeOffsetLiteral);
-				this.dateTimeOffsetLiteral = dateTimeOffsetLiteral;
+				this.AdjustFlagsAndWidth(lDateTimeOffset);
+				this.lDateTimeOffset = lDateTimeOffset;
 			}
 	    }
 	
-	    public DateTimeOffsetLiteralxGreen(TestLexerModeSyntaxKind kind, InternalSyntaxToken dateTimeOffsetLiteral, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	    public DateTimeOffsetLiteralGreen(TestLexerModeSyntaxKind kind, InternalSyntaxToken lDateTimeOffset, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
 	        : base(kind, diagnostics, annotations)
 	    {
 			this.SlotCount = 1;
-			if (dateTimeOffsetLiteral != null)
+			if (lDateTimeOffset != null)
 			{
-				this.AdjustFlagsAndWidth(dateTimeOffsetLiteral);
-				this.dateTimeOffsetLiteral = dateTimeOffsetLiteral;
+				this.AdjustFlagsAndWidth(lDateTimeOffset);
+				this.lDateTimeOffset = lDateTimeOffset;
 			}
 	    }
 	
-		private DateTimeOffsetLiteralxGreen()
-			: base((TestLexerModeSyntaxKind)TestLexerModeSyntaxKind.DateTimeOffsetLiteralx, null, null)
+		private DateTimeOffsetLiteralGreen()
+			: base((TestLexerModeSyntaxKind)TestLexerModeSyntaxKind.DateTimeOffsetLiteral, null, null)
 		{
 			this.flags &= ~NodeFlags.IsNotMissing;
 		}
 	
-	    public InternalSyntaxToken DateTimeOffsetLiteral { get { return this.dateTimeOffsetLiteral; } }
+	    public InternalSyntaxToken LDateTimeOffset { get { return this.lDateTimeOffset; } }
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.DateTimeOffsetLiteralxSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.DateTimeOffsetLiteralSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
 	    {
 	        switch (index)
 	        {
-	            case 0: return this.dateTimeOffsetLiteral;
+	            case 0: return this.lDateTimeOffset;
 	            default: return null;
 	        }
 	    }
 	
-	    public override TResult Accept<TResult>(TestLexerModeSyntaxVisitor<TResult> visitor) => visitor.VisitDateTimeOffsetLiteralxGreen(this);
+	    public override TResult Accept<TResult>(TestLexerModeSyntaxVisitor<TResult> visitor) => visitor.VisitDateTimeOffsetLiteralGreen(this);
 	
-	    public override void Accept(TestLexerModeSyntaxVisitor visitor) => visitor.VisitDateTimeOffsetLiteralxGreen(this);
+	    public override void Accept(TestLexerModeSyntaxVisitor visitor) => visitor.VisitDateTimeOffsetLiteralGreen(this);
 	
 	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
 	    {
-	        return new DateTimeOffsetLiteralxGreen(this.Kind, this.dateTimeOffsetLiteral, diagnostics, this.GetAnnotations());
+	        return new DateTimeOffsetLiteralGreen(this.Kind, this.lDateTimeOffset, diagnostics, this.GetAnnotations());
 	    }
 	
 	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
 	    {
-	        return new DateTimeOffsetLiteralxGreen(this.Kind, this.dateTimeOffsetLiteral, this.GetDiagnostics(), annotations);
+	        return new DateTimeOffsetLiteralGreen(this.Kind, this.lDateTimeOffset, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public DateTimeOffsetLiteralxGreen Update(InternalSyntaxToken dateTimeOffsetLiteral)
+	    public DateTimeOffsetLiteralGreen Update(InternalSyntaxToken lDateTimeOffset)
 	    {
-	        if (this.DateTimeOffsetLiteral != dateTimeOffsetLiteral)
+	        if (this.LDateTimeOffset != lDateTimeOffset)
 	        {
-	            InternalSyntaxNode newNode = TestLexerModeLanguage.Instance.InternalSyntaxFactory.DateTimeOffsetLiteralx(dateTimeOffsetLiteral);
+	            InternalSyntaxNode newNode = TestLexerModeLanguage.Instance.InternalSyntaxFactory.DateTimeOffsetLiteral(lDateTimeOffset);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
-				return (DateTimeOffsetLiteralxGreen)newNode;
+				return (DateTimeOffsetLiteralGreen)newNode;
 	        }
 	        return this;
 	    }
 	}
 	
-	internal class DateTimeLiteralxGreen : GreenSyntaxNode
+	internal class DateTimeLiteralGreen : GreenSyntaxNode
 	{
-	    internal static readonly DateTimeLiteralxGreen __Missing = new DateTimeLiteralxGreen();
-	    private InternalSyntaxToken dateTimeLiteral;
+	    internal static readonly DateTimeLiteralGreen __Missing = new DateTimeLiteralGreen();
+	    private InternalSyntaxToken lDateTime;
 	
-	    public DateTimeLiteralxGreen(TestLexerModeSyntaxKind kind, InternalSyntaxToken dateTimeLiteral)
+	    public DateTimeLiteralGreen(TestLexerModeSyntaxKind kind, InternalSyntaxToken lDateTime)
 	        : base(kind, null, null)
 	    {
 			this.SlotCount = 1;
-			if (dateTimeLiteral != null)
+			if (lDateTime != null)
 			{
-				this.AdjustFlagsAndWidth(dateTimeLiteral);
-				this.dateTimeLiteral = dateTimeLiteral;
+				this.AdjustFlagsAndWidth(lDateTime);
+				this.lDateTime = lDateTime;
 			}
 	    }
 	
-	    public DateTimeLiteralxGreen(TestLexerModeSyntaxKind kind, InternalSyntaxToken dateTimeLiteral, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	    public DateTimeLiteralGreen(TestLexerModeSyntaxKind kind, InternalSyntaxToken lDateTime, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
 	        : base(kind, diagnostics, annotations)
 	    {
 			this.SlotCount = 1;
-			if (dateTimeLiteral != null)
+			if (lDateTime != null)
 			{
-				this.AdjustFlagsAndWidth(dateTimeLiteral);
-				this.dateTimeLiteral = dateTimeLiteral;
+				this.AdjustFlagsAndWidth(lDateTime);
+				this.lDateTime = lDateTime;
 			}
 	    }
 	
-		private DateTimeLiteralxGreen()
-			: base((TestLexerModeSyntaxKind)TestLexerModeSyntaxKind.DateTimeLiteralx, null, null)
+		private DateTimeLiteralGreen()
+			: base((TestLexerModeSyntaxKind)TestLexerModeSyntaxKind.DateTimeLiteral, null, null)
 		{
 			this.flags &= ~NodeFlags.IsNotMissing;
 		}
 	
-	    public InternalSyntaxToken DateTimeLiteral { get { return this.dateTimeLiteral; } }
+	    public InternalSyntaxToken LDateTime { get { return this.lDateTime; } }
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.DateTimeLiteralxSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.DateTimeLiteralSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
 	    {
 	        switch (index)
 	        {
-	            case 0: return this.dateTimeLiteral;
+	            case 0: return this.lDateTime;
 	            default: return null;
 	        }
 	    }
 	
-	    public override TResult Accept<TResult>(TestLexerModeSyntaxVisitor<TResult> visitor) => visitor.VisitDateTimeLiteralxGreen(this);
+	    public override TResult Accept<TResult>(TestLexerModeSyntaxVisitor<TResult> visitor) => visitor.VisitDateTimeLiteralGreen(this);
 	
-	    public override void Accept(TestLexerModeSyntaxVisitor visitor) => visitor.VisitDateTimeLiteralxGreen(this);
+	    public override void Accept(TestLexerModeSyntaxVisitor visitor) => visitor.VisitDateTimeLiteralGreen(this);
 	
 	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
 	    {
-	        return new DateTimeLiteralxGreen(this.Kind, this.dateTimeLiteral, diagnostics, this.GetAnnotations());
+	        return new DateTimeLiteralGreen(this.Kind, this.lDateTime, diagnostics, this.GetAnnotations());
 	    }
 	
 	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
 	    {
-	        return new DateTimeLiteralxGreen(this.Kind, this.dateTimeLiteral, this.GetDiagnostics(), annotations);
+	        return new DateTimeLiteralGreen(this.Kind, this.lDateTime, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public DateTimeLiteralxGreen Update(InternalSyntaxToken dateTimeLiteral)
+	    public DateTimeLiteralGreen Update(InternalSyntaxToken lDateTime)
 	    {
-	        if (this.DateTimeLiteral != dateTimeLiteral)
+	        if (this.LDateTime != lDateTime)
 	        {
-	            InternalSyntaxNode newNode = TestLexerModeLanguage.Instance.InternalSyntaxFactory.DateTimeLiteralx(dateTimeLiteral);
+	            InternalSyntaxNode newNode = TestLexerModeLanguage.Instance.InternalSyntaxFactory.DateTimeLiteral(lDateTime);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
-				return (DateTimeLiteralxGreen)newNode;
+				return (DateTimeLiteralGreen)newNode;
 	        }
 	        return this;
 	    }
 	}
 	
-	internal class DateLiteralxGreen : GreenSyntaxNode
+	internal class DateLiteralGreen : GreenSyntaxNode
 	{
-	    internal static readonly DateLiteralxGreen __Missing = new DateLiteralxGreen();
-	    private InternalSyntaxToken dateLiteral;
+	    internal static readonly DateLiteralGreen __Missing = new DateLiteralGreen();
+	    private InternalSyntaxToken lDate;
 	
-	    public DateLiteralxGreen(TestLexerModeSyntaxKind kind, InternalSyntaxToken dateLiteral)
+	    public DateLiteralGreen(TestLexerModeSyntaxKind kind, InternalSyntaxToken lDate)
 	        : base(kind, null, null)
 	    {
 			this.SlotCount = 1;
-			if (dateLiteral != null)
+			if (lDate != null)
 			{
-				this.AdjustFlagsAndWidth(dateLiteral);
-				this.dateLiteral = dateLiteral;
+				this.AdjustFlagsAndWidth(lDate);
+				this.lDate = lDate;
 			}
 	    }
 	
-	    public DateLiteralxGreen(TestLexerModeSyntaxKind kind, InternalSyntaxToken dateLiteral, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	    public DateLiteralGreen(TestLexerModeSyntaxKind kind, InternalSyntaxToken lDate, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
 	        : base(kind, diagnostics, annotations)
 	    {
 			this.SlotCount = 1;
-			if (dateLiteral != null)
+			if (lDate != null)
 			{
-				this.AdjustFlagsAndWidth(dateLiteral);
-				this.dateLiteral = dateLiteral;
+				this.AdjustFlagsAndWidth(lDate);
+				this.lDate = lDate;
 			}
 	    }
 	
-		private DateLiteralxGreen()
-			: base((TestLexerModeSyntaxKind)TestLexerModeSyntaxKind.DateLiteralx, null, null)
+		private DateLiteralGreen()
+			: base((TestLexerModeSyntaxKind)TestLexerModeSyntaxKind.DateLiteral, null, null)
 		{
 			this.flags &= ~NodeFlags.IsNotMissing;
 		}
 	
-	    public InternalSyntaxToken DateLiteral { get { return this.dateLiteral; } }
+	    public InternalSyntaxToken LDate { get { return this.lDate; } }
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.DateLiteralxSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.DateLiteralSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
 	    {
 	        switch (index)
 	        {
-	            case 0: return this.dateLiteral;
+	            case 0: return this.lDate;
 	            default: return null;
 	        }
 	    }
 	
-	    public override TResult Accept<TResult>(TestLexerModeSyntaxVisitor<TResult> visitor) => visitor.VisitDateLiteralxGreen(this);
+	    public override TResult Accept<TResult>(TestLexerModeSyntaxVisitor<TResult> visitor) => visitor.VisitDateLiteralGreen(this);
 	
-	    public override void Accept(TestLexerModeSyntaxVisitor visitor) => visitor.VisitDateLiteralxGreen(this);
+	    public override void Accept(TestLexerModeSyntaxVisitor visitor) => visitor.VisitDateLiteralGreen(this);
 	
 	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
 	    {
-	        return new DateLiteralxGreen(this.Kind, this.dateLiteral, diagnostics, this.GetAnnotations());
+	        return new DateLiteralGreen(this.Kind, this.lDate, diagnostics, this.GetAnnotations());
 	    }
 	
 	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
 	    {
-	        return new DateLiteralxGreen(this.Kind, this.dateLiteral, this.GetDiagnostics(), annotations);
+	        return new DateLiteralGreen(this.Kind, this.lDate, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public DateLiteralxGreen Update(InternalSyntaxToken dateLiteral)
+	    public DateLiteralGreen Update(InternalSyntaxToken lDate)
 	    {
-	        if (this.DateLiteral != dateLiteral)
+	        if (this.LDate != lDate)
 	        {
-	            InternalSyntaxNode newNode = TestLexerModeLanguage.Instance.InternalSyntaxFactory.DateLiteralx(dateLiteral);
+	            InternalSyntaxNode newNode = TestLexerModeLanguage.Instance.InternalSyntaxFactory.DateLiteral(lDate);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
-				return (DateLiteralxGreen)newNode;
+				return (DateLiteralGreen)newNode;
 	        }
 	        return this;
 	    }
 	}
 	
-	internal class TimeLiteralxGreen : GreenSyntaxNode
+	internal class TimeLiteralGreen : GreenSyntaxNode
 	{
-	    internal static readonly TimeLiteralxGreen __Missing = new TimeLiteralxGreen();
-	    private InternalSyntaxToken timeLiteral;
+	    internal static readonly TimeLiteralGreen __Missing = new TimeLiteralGreen();
+	    private InternalSyntaxToken lTime;
 	
-	    public TimeLiteralxGreen(TestLexerModeSyntaxKind kind, InternalSyntaxToken timeLiteral)
+	    public TimeLiteralGreen(TestLexerModeSyntaxKind kind, InternalSyntaxToken lTime)
 	        : base(kind, null, null)
 	    {
 			this.SlotCount = 1;
-			if (timeLiteral != null)
+			if (lTime != null)
 			{
-				this.AdjustFlagsAndWidth(timeLiteral);
-				this.timeLiteral = timeLiteral;
+				this.AdjustFlagsAndWidth(lTime);
+				this.lTime = lTime;
 			}
 	    }
 	
-	    public TimeLiteralxGreen(TestLexerModeSyntaxKind kind, InternalSyntaxToken timeLiteral, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	    public TimeLiteralGreen(TestLexerModeSyntaxKind kind, InternalSyntaxToken lTime, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
 	        : base(kind, diagnostics, annotations)
 	    {
 			this.SlotCount = 1;
-			if (timeLiteral != null)
+			if (lTime != null)
 			{
-				this.AdjustFlagsAndWidth(timeLiteral);
-				this.timeLiteral = timeLiteral;
+				this.AdjustFlagsAndWidth(lTime);
+				this.lTime = lTime;
 			}
 	    }
 	
-		private TimeLiteralxGreen()
-			: base((TestLexerModeSyntaxKind)TestLexerModeSyntaxKind.TimeLiteralx, null, null)
+		private TimeLiteralGreen()
+			: base((TestLexerModeSyntaxKind)TestLexerModeSyntaxKind.TimeLiteral, null, null)
 		{
 			this.flags &= ~NodeFlags.IsNotMissing;
 		}
 	
-	    public InternalSyntaxToken TimeLiteral { get { return this.timeLiteral; } }
+	    public InternalSyntaxToken LTime { get { return this.lTime; } }
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.TimeLiteralxSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.TimeLiteralSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
 	    {
 	        switch (index)
 	        {
-	            case 0: return this.timeLiteral;
+	            case 0: return this.lTime;
 	            default: return null;
 	        }
 	    }
 	
-	    public override TResult Accept<TResult>(TestLexerModeSyntaxVisitor<TResult> visitor) => visitor.VisitTimeLiteralxGreen(this);
+	    public override TResult Accept<TResult>(TestLexerModeSyntaxVisitor<TResult> visitor) => visitor.VisitTimeLiteralGreen(this);
 	
-	    public override void Accept(TestLexerModeSyntaxVisitor visitor) => visitor.VisitTimeLiteralxGreen(this);
+	    public override void Accept(TestLexerModeSyntaxVisitor visitor) => visitor.VisitTimeLiteralGreen(this);
 	
 	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
 	    {
-	        return new TimeLiteralxGreen(this.Kind, this.timeLiteral, diagnostics, this.GetAnnotations());
+	        return new TimeLiteralGreen(this.Kind, this.lTime, diagnostics, this.GetAnnotations());
 	    }
 	
 	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
 	    {
-	        return new TimeLiteralxGreen(this.Kind, this.timeLiteral, this.GetDiagnostics(), annotations);
+	        return new TimeLiteralGreen(this.Kind, this.lTime, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public TimeLiteralxGreen Update(InternalSyntaxToken timeLiteral)
+	    public TimeLiteralGreen Update(InternalSyntaxToken lTime)
 	    {
-	        if (this.TimeLiteral != timeLiteral)
+	        if (this.LTime != lTime)
 	        {
-	            InternalSyntaxNode newNode = TestLexerModeLanguage.Instance.InternalSyntaxFactory.TimeLiteralx(timeLiteral);
+	            InternalSyntaxNode newNode = TestLexerModeLanguage.Instance.InternalSyntaxFactory.TimeLiteral(lTime);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
-				return (TimeLiteralxGreen)newNode;
+				return (TimeLiteralGreen)newNode;
 	        }
 	        return this;
 	    }
 	}
 	
-	internal class CharLiteralxGreen : GreenSyntaxNode
+	internal class CharLiteralGreen : GreenSyntaxNode
 	{
-	    internal static readonly CharLiteralxGreen __Missing = new CharLiteralxGreen();
-	    private InternalSyntaxToken charLiteral;
+	    internal static readonly CharLiteralGreen __Missing = new CharLiteralGreen();
+	    private InternalSyntaxToken lChar;
 	
-	    public CharLiteralxGreen(TestLexerModeSyntaxKind kind, InternalSyntaxToken charLiteral)
+	    public CharLiteralGreen(TestLexerModeSyntaxKind kind, InternalSyntaxToken lChar)
 	        : base(kind, null, null)
 	    {
 			this.SlotCount = 1;
-			if (charLiteral != null)
+			if (lChar != null)
 			{
-				this.AdjustFlagsAndWidth(charLiteral);
-				this.charLiteral = charLiteral;
+				this.AdjustFlagsAndWidth(lChar);
+				this.lChar = lChar;
 			}
 	    }
 	
-	    public CharLiteralxGreen(TestLexerModeSyntaxKind kind, InternalSyntaxToken charLiteral, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	    public CharLiteralGreen(TestLexerModeSyntaxKind kind, InternalSyntaxToken lChar, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
 	        : base(kind, diagnostics, annotations)
 	    {
 			this.SlotCount = 1;
-			if (charLiteral != null)
+			if (lChar != null)
 			{
-				this.AdjustFlagsAndWidth(charLiteral);
-				this.charLiteral = charLiteral;
+				this.AdjustFlagsAndWidth(lChar);
+				this.lChar = lChar;
 			}
 	    }
 	
-		private CharLiteralxGreen()
-			: base((TestLexerModeSyntaxKind)TestLexerModeSyntaxKind.CharLiteralx, null, null)
+		private CharLiteralGreen()
+			: base((TestLexerModeSyntaxKind)TestLexerModeSyntaxKind.CharLiteral, null, null)
 		{
 			this.flags &= ~NodeFlags.IsNotMissing;
 		}
 	
-	    public InternalSyntaxToken CharLiteral { get { return this.charLiteral; } }
+	    public InternalSyntaxToken LChar { get { return this.lChar; } }
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.CharLiteralxSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.CharLiteralSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
 	    {
 	        switch (index)
 	        {
-	            case 0: return this.charLiteral;
+	            case 0: return this.lChar;
 	            default: return null;
 	        }
 	    }
 	
-	    public override TResult Accept<TResult>(TestLexerModeSyntaxVisitor<TResult> visitor) => visitor.VisitCharLiteralxGreen(this);
+	    public override TResult Accept<TResult>(TestLexerModeSyntaxVisitor<TResult> visitor) => visitor.VisitCharLiteralGreen(this);
 	
-	    public override void Accept(TestLexerModeSyntaxVisitor visitor) => visitor.VisitCharLiteralxGreen(this);
+	    public override void Accept(TestLexerModeSyntaxVisitor visitor) => visitor.VisitCharLiteralGreen(this);
 	
 	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
 	    {
-	        return new CharLiteralxGreen(this.Kind, this.charLiteral, diagnostics, this.GetAnnotations());
+	        return new CharLiteralGreen(this.Kind, this.lChar, diagnostics, this.GetAnnotations());
 	    }
 	
 	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
 	    {
-	        return new CharLiteralxGreen(this.Kind, this.charLiteral, this.GetDiagnostics(), annotations);
+	        return new CharLiteralGreen(this.Kind, this.lChar, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public CharLiteralxGreen Update(InternalSyntaxToken charLiteral)
+	    public CharLiteralGreen Update(InternalSyntaxToken lChar)
 	    {
-	        if (this.CharLiteral != charLiteral)
+	        if (this.LChar != lChar)
 	        {
-	            InternalSyntaxNode newNode = TestLexerModeLanguage.Instance.InternalSyntaxFactory.CharLiteralx(charLiteral);
+	            InternalSyntaxNode newNode = TestLexerModeLanguage.Instance.InternalSyntaxFactory.CharLiteral(lChar);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
-				return (CharLiteralxGreen)newNode;
+				return (CharLiteralGreen)newNode;
 	        }
 	        return this;
 	    }
 	}
 	
-	internal class StringLiteralxGreen : GreenSyntaxNode
+	internal class StringLiteralGreen : GreenSyntaxNode
 	{
-	    internal static readonly StringLiteralxGreen __Missing = new StringLiteralxGreen();
-	    private InternalSyntaxToken stringLiteralx;
+	    internal static readonly StringLiteralGreen __Missing = new StringLiteralGreen();
+	    private InternalSyntaxToken stringLiteral;
 	
-	    public StringLiteralxGreen(TestLexerModeSyntaxKind kind, InternalSyntaxToken stringLiteralx)
+	    public StringLiteralGreen(TestLexerModeSyntaxKind kind, InternalSyntaxToken stringLiteral)
 	        : base(kind, null, null)
 	    {
 			this.SlotCount = 1;
-			if (stringLiteralx != null)
+			if (stringLiteral != null)
 			{
-				this.AdjustFlagsAndWidth(stringLiteralx);
-				this.stringLiteralx = stringLiteralx;
+				this.AdjustFlagsAndWidth(stringLiteral);
+				this.stringLiteral = stringLiteral;
 			}
 	    }
 	
-	    public StringLiteralxGreen(TestLexerModeSyntaxKind kind, InternalSyntaxToken stringLiteralx, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	    public StringLiteralGreen(TestLexerModeSyntaxKind kind, InternalSyntaxToken stringLiteral, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
 	        : base(kind, diagnostics, annotations)
 	    {
 			this.SlotCount = 1;
-			if (stringLiteralx != null)
+			if (stringLiteral != null)
 			{
-				this.AdjustFlagsAndWidth(stringLiteralx);
-				this.stringLiteralx = stringLiteralx;
+				this.AdjustFlagsAndWidth(stringLiteral);
+				this.stringLiteral = stringLiteral;
 			}
 	    }
 	
-		private StringLiteralxGreen()
-			: base((TestLexerModeSyntaxKind)TestLexerModeSyntaxKind.StringLiteralx, null, null)
+		private StringLiteralGreen()
+			: base((TestLexerModeSyntaxKind)TestLexerModeSyntaxKind.StringLiteral, null, null)
 		{
 			this.flags &= ~NodeFlags.IsNotMissing;
 		}
 	
-	    public InternalSyntaxToken StringLiteralx { get { return this.stringLiteralx; } }
+	    public InternalSyntaxToken StringLiteral { get { return this.stringLiteral; } }
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.StringLiteralxSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.StringLiteralSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
 	    {
 	        switch (index)
 	        {
-	            case 0: return this.stringLiteralx;
+	            case 0: return this.stringLiteral;
 	            default: return null;
 	        }
 	    }
 	
-	    public override TResult Accept<TResult>(TestLexerModeSyntaxVisitor<TResult> visitor) => visitor.VisitStringLiteralxGreen(this);
+	    public override TResult Accept<TResult>(TestLexerModeSyntaxVisitor<TResult> visitor) => visitor.VisitStringLiteralGreen(this);
 	
-	    public override void Accept(TestLexerModeSyntaxVisitor visitor) => visitor.VisitStringLiteralxGreen(this);
+	    public override void Accept(TestLexerModeSyntaxVisitor visitor) => visitor.VisitStringLiteralGreen(this);
 	
 	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
 	    {
-	        return new StringLiteralxGreen(this.Kind, this.stringLiteralx, diagnostics, this.GetAnnotations());
+	        return new StringLiteralGreen(this.Kind, this.stringLiteral, diagnostics, this.GetAnnotations());
 	    }
 	
 	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
 	    {
-	        return new StringLiteralxGreen(this.Kind, this.stringLiteralx, this.GetDiagnostics(), annotations);
+	        return new StringLiteralGreen(this.Kind, this.stringLiteral, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public StringLiteralxGreen Update(InternalSyntaxToken stringLiteralx)
+	    public StringLiteralGreen Update(InternalSyntaxToken stringLiteral)
 	    {
-	        if (this.StringLiteralx != stringLiteralx)
+	        if (this.StringLiteral != stringLiteral)
 	        {
-	            InternalSyntaxNode newNode = TestLexerModeLanguage.Instance.InternalSyntaxFactory.StringLiteralx(stringLiteralx);
+	            InternalSyntaxNode newNode = TestLexerModeLanguage.Instance.InternalSyntaxFactory.StringLiteral(stringLiteral);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
-				return (StringLiteralxGreen)newNode;
+				return (StringLiteralGreen)newNode;
 	        }
 	        return this;
 	    }
 	}
 	
-	internal class GuidLiteralxGreen : GreenSyntaxNode
+	internal class GuidLiteralGreen : GreenSyntaxNode
 	{
-	    internal static readonly GuidLiteralxGreen __Missing = new GuidLiteralxGreen();
-	    private InternalSyntaxToken guidLiteral;
+	    internal static readonly GuidLiteralGreen __Missing = new GuidLiteralGreen();
+	    private InternalSyntaxToken lGuid;
 	
-	    public GuidLiteralxGreen(TestLexerModeSyntaxKind kind, InternalSyntaxToken guidLiteral)
+	    public GuidLiteralGreen(TestLexerModeSyntaxKind kind, InternalSyntaxToken lGuid)
 	        : base(kind, null, null)
 	    {
 			this.SlotCount = 1;
-			if (guidLiteral != null)
+			if (lGuid != null)
 			{
-				this.AdjustFlagsAndWidth(guidLiteral);
-				this.guidLiteral = guidLiteral;
+				this.AdjustFlagsAndWidth(lGuid);
+				this.lGuid = lGuid;
 			}
 	    }
 	
-	    public GuidLiteralxGreen(TestLexerModeSyntaxKind kind, InternalSyntaxToken guidLiteral, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	    public GuidLiteralGreen(TestLexerModeSyntaxKind kind, InternalSyntaxToken lGuid, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
 	        : base(kind, diagnostics, annotations)
 	    {
 			this.SlotCount = 1;
-			if (guidLiteral != null)
+			if (lGuid != null)
 			{
-				this.AdjustFlagsAndWidth(guidLiteral);
-				this.guidLiteral = guidLiteral;
+				this.AdjustFlagsAndWidth(lGuid);
+				this.lGuid = lGuid;
 			}
 	    }
 	
-		private GuidLiteralxGreen()
-			: base((TestLexerModeSyntaxKind)TestLexerModeSyntaxKind.GuidLiteralx, null, null)
+		private GuidLiteralGreen()
+			: base((TestLexerModeSyntaxKind)TestLexerModeSyntaxKind.GuidLiteral, null, null)
 		{
 			this.flags &= ~NodeFlags.IsNotMissing;
 		}
 	
-	    public InternalSyntaxToken GuidLiteral { get { return this.guidLiteral; } }
+	    public InternalSyntaxToken LGuid { get { return this.lGuid; } }
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.GuidLiteralxSyntax(this, (TestLexerModeSyntaxNode)parent, position);
+	        return new global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.GuidLiteralSyntax(this, (TestLexerModeSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
 	    {
 	        switch (index)
 	        {
-	            case 0: return this.guidLiteral;
+	            case 0: return this.lGuid;
 	            default: return null;
 	        }
 	    }
 	
-	    public override TResult Accept<TResult>(TestLexerModeSyntaxVisitor<TResult> visitor) => visitor.VisitGuidLiteralxGreen(this);
+	    public override TResult Accept<TResult>(TestLexerModeSyntaxVisitor<TResult> visitor) => visitor.VisitGuidLiteralGreen(this);
 	
-	    public override void Accept(TestLexerModeSyntaxVisitor visitor) => visitor.VisitGuidLiteralxGreen(this);
+	    public override void Accept(TestLexerModeSyntaxVisitor visitor) => visitor.VisitGuidLiteralGreen(this);
 	
 	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
 	    {
-	        return new GuidLiteralxGreen(this.Kind, this.guidLiteral, diagnostics, this.GetAnnotations());
+	        return new GuidLiteralGreen(this.Kind, this.lGuid, diagnostics, this.GetAnnotations());
 	    }
 	
 	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
 	    {
-	        return new GuidLiteralxGreen(this.Kind, this.guidLiteral, this.GetDiagnostics(), annotations);
+	        return new GuidLiteralGreen(this.Kind, this.lGuid, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public GuidLiteralxGreen Update(InternalSyntaxToken guidLiteral)
+	    public GuidLiteralGreen Update(InternalSyntaxToken lGuid)
 	    {
-	        if (this.GuidLiteral != guidLiteral)
+	        if (this.LGuid != lGuid)
 	        {
-	            InternalSyntaxNode newNode = TestLexerModeLanguage.Instance.InternalSyntaxFactory.GuidLiteralx(guidLiteral);
+	            InternalSyntaxNode newNode = TestLexerModeLanguage.Instance.InternalSyntaxFactory.GuidLiteral(lGuid);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
-				return (GuidLiteralxGreen)newNode;
+				return (GuidLiteralGreen)newNode;
 	        }
 	        return this;
 	    }
@@ -17644,7 +17644,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 		public virtual void VisitTemplateBodyGreen(TemplateBodyGreen node) => this.DefaultVisit(node);
 		public virtual void VisitTemplateContentLineGreen(TemplateContentLineGreen node) => this.DefaultVisit(node);
 		public virtual void VisitTemplateContentGreen(TemplateContentGreen node) => this.DefaultVisit(node);
-		public virtual void VisitTemplateOutputxGreen(TemplateOutputxGreen node) => this.DefaultVisit(node);
+		public virtual void VisitTemplateOutputGreen(TemplateOutputGreen node) => this.DefaultVisit(node);
 		public virtual void VisitTemplateLineEndGreen(TemplateLineEndGreen node) => this.DefaultVisit(node);
 		public virtual void VisitTemplateStatementStartEndGreen(TemplateStatementStartEndGreen node) => this.DefaultVisit(node);
 		public virtual void VisitTemplateStatementGreen(TemplateStatementGreen node) => this.DefaultVisit(node);
@@ -17710,17 +17710,17 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 		public virtual void VisitNullLiteralGreen(NullLiteralGreen node) => this.DefaultVisit(node);
 		public virtual void VisitBooleanLiteralGreen(BooleanLiteralGreen node) => this.DefaultVisit(node);
 		public virtual void VisitNumberLiteralGreen(NumberLiteralGreen node) => this.DefaultVisit(node);
-		public virtual void VisitIntegerLiteralxGreen(IntegerLiteralxGreen node) => this.DefaultVisit(node);
-		public virtual void VisitDecimalLiteralxGreen(DecimalLiteralxGreen node) => this.DefaultVisit(node);
-		public virtual void VisitScientificLiteralxGreen(ScientificLiteralxGreen node) => this.DefaultVisit(node);
+		public virtual void VisitIntegerLiteralGreen(IntegerLiteralGreen node) => this.DefaultVisit(node);
+		public virtual void VisitDecimalLiteralGreen(DecimalLiteralGreen node) => this.DefaultVisit(node);
+		public virtual void VisitScientificLiteralGreen(ScientificLiteralGreen node) => this.DefaultVisit(node);
 		public virtual void VisitDateOrTimeLiteralGreen(DateOrTimeLiteralGreen node) => this.DefaultVisit(node);
-		public virtual void VisitDateTimeOffsetLiteralxGreen(DateTimeOffsetLiteralxGreen node) => this.DefaultVisit(node);
-		public virtual void VisitDateTimeLiteralxGreen(DateTimeLiteralxGreen node) => this.DefaultVisit(node);
-		public virtual void VisitDateLiteralxGreen(DateLiteralxGreen node) => this.DefaultVisit(node);
-		public virtual void VisitTimeLiteralxGreen(TimeLiteralxGreen node) => this.DefaultVisit(node);
-		public virtual void VisitCharLiteralxGreen(CharLiteralxGreen node) => this.DefaultVisit(node);
-		public virtual void VisitStringLiteralxGreen(StringLiteralxGreen node) => this.DefaultVisit(node);
-		public virtual void VisitGuidLiteralxGreen(GuidLiteralxGreen node) => this.DefaultVisit(node);
+		public virtual void VisitDateTimeOffsetLiteralGreen(DateTimeOffsetLiteralGreen node) => this.DefaultVisit(node);
+		public virtual void VisitDateTimeLiteralGreen(DateTimeLiteralGreen node) => this.DefaultVisit(node);
+		public virtual void VisitDateLiteralGreen(DateLiteralGreen node) => this.DefaultVisit(node);
+		public virtual void VisitTimeLiteralGreen(TimeLiteralGreen node) => this.DefaultVisit(node);
+		public virtual void VisitCharLiteralGreen(CharLiteralGreen node) => this.DefaultVisit(node);
+		public virtual void VisitStringLiteralGreen(StringLiteralGreen node) => this.DefaultVisit(node);
+		public virtual void VisitGuidLiteralGreen(GuidLiteralGreen node) => this.DefaultVisit(node);
 	}
 	
 	internal class TestLexerModeSyntaxVisitor<TResult> : InternalSyntaxVisitor<TResult>
@@ -17797,7 +17797,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 		public virtual TResult VisitTemplateBodyGreen(TemplateBodyGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitTemplateContentLineGreen(TemplateContentLineGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitTemplateContentGreen(TemplateContentGreen node) => this.DefaultVisit(node);
-		public virtual TResult VisitTemplateOutputxGreen(TemplateOutputxGreen node) => this.DefaultVisit(node);
+		public virtual TResult VisitTemplateOutputGreen(TemplateOutputGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitTemplateLineEndGreen(TemplateLineEndGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitTemplateStatementStartEndGreen(TemplateStatementStartEndGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitTemplateStatementGreen(TemplateStatementGreen node) => this.DefaultVisit(node);
@@ -17863,17 +17863,17 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 		public virtual TResult VisitNullLiteralGreen(NullLiteralGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitBooleanLiteralGreen(BooleanLiteralGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitNumberLiteralGreen(NumberLiteralGreen node) => this.DefaultVisit(node);
-		public virtual TResult VisitIntegerLiteralxGreen(IntegerLiteralxGreen node) => this.DefaultVisit(node);
-		public virtual TResult VisitDecimalLiteralxGreen(DecimalLiteralxGreen node) => this.DefaultVisit(node);
-		public virtual TResult VisitScientificLiteralxGreen(ScientificLiteralxGreen node) => this.DefaultVisit(node);
+		public virtual TResult VisitIntegerLiteralGreen(IntegerLiteralGreen node) => this.DefaultVisit(node);
+		public virtual TResult VisitDecimalLiteralGreen(DecimalLiteralGreen node) => this.DefaultVisit(node);
+		public virtual TResult VisitScientificLiteralGreen(ScientificLiteralGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitDateOrTimeLiteralGreen(DateOrTimeLiteralGreen node) => this.DefaultVisit(node);
-		public virtual TResult VisitDateTimeOffsetLiteralxGreen(DateTimeOffsetLiteralxGreen node) => this.DefaultVisit(node);
-		public virtual TResult VisitDateTimeLiteralxGreen(DateTimeLiteralxGreen node) => this.DefaultVisit(node);
-		public virtual TResult VisitDateLiteralxGreen(DateLiteralxGreen node) => this.DefaultVisit(node);
-		public virtual TResult VisitTimeLiteralxGreen(TimeLiteralxGreen node) => this.DefaultVisit(node);
-		public virtual TResult VisitCharLiteralxGreen(CharLiteralxGreen node) => this.DefaultVisit(node);
-		public virtual TResult VisitStringLiteralxGreen(StringLiteralxGreen node) => this.DefaultVisit(node);
-		public virtual TResult VisitGuidLiteralxGreen(GuidLiteralxGreen node) => this.DefaultVisit(node);
+		public virtual TResult VisitDateTimeOffsetLiteralGreen(DateTimeOffsetLiteralGreen node) => this.DefaultVisit(node);
+		public virtual TResult VisitDateTimeLiteralGreen(DateTimeLiteralGreen node) => this.DefaultVisit(node);
+		public virtual TResult VisitDateLiteralGreen(DateLiteralGreen node) => this.DefaultVisit(node);
+		public virtual TResult VisitTimeLiteralGreen(TimeLiteralGreen node) => this.DefaultVisit(node);
+		public virtual TResult VisitCharLiteralGreen(CharLiteralGreen node) => this.DefaultVisit(node);
+		public virtual TResult VisitStringLiteralGreen(StringLiteralGreen node) => this.DefaultVisit(node);
+		public virtual TResult VisitGuidLiteralGreen(GuidLiteralGreen node) => this.DefaultVisit(node);
 	}
 	internal class TestLexerModeInternalSyntaxFactory : InternalSyntaxFactory, MetaDslx.Languages.Antlr4Roslyn.IAntlr4SyntaxFactory
 	{
@@ -18025,104 +18025,104 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	        return Token(null, TestLexerModeSyntaxKind.IdentifierNormal, text, value, null);
 	    }
 	
-	    internal InternalSyntaxToken IntegerLiteral(string text)
+	    internal InternalSyntaxToken LInteger(string text)
 	    {
-	        return Token(null, TestLexerModeSyntaxKind.IntegerLiteral, text, null);
+	        return Token(null, TestLexerModeSyntaxKind.LInteger, text, null);
 	    }
 	
-	    internal InternalSyntaxToken IntegerLiteral(string text, object value)
+	    internal InternalSyntaxToken LInteger(string text, object value)
 	    {
-	        return Token(null, TestLexerModeSyntaxKind.IntegerLiteral, text, value, null);
+	        return Token(null, TestLexerModeSyntaxKind.LInteger, text, value, null);
 	    }
 	
-	    internal InternalSyntaxToken DecimalLiteral(string text)
+	    internal InternalSyntaxToken LDecimal(string text)
 	    {
-	        return Token(null, TestLexerModeSyntaxKind.DecimalLiteral, text, null);
+	        return Token(null, TestLexerModeSyntaxKind.LDecimal, text, null);
 	    }
 	
-	    internal InternalSyntaxToken DecimalLiteral(string text, object value)
+	    internal InternalSyntaxToken LDecimal(string text, object value)
 	    {
-	        return Token(null, TestLexerModeSyntaxKind.DecimalLiteral, text, value, null);
+	        return Token(null, TestLexerModeSyntaxKind.LDecimal, text, value, null);
 	    }
 	
-	    internal InternalSyntaxToken ScientificLiteral(string text)
+	    internal InternalSyntaxToken LScientific(string text)
 	    {
-	        return Token(null, TestLexerModeSyntaxKind.ScientificLiteral, text, null);
+	        return Token(null, TestLexerModeSyntaxKind.LScientific, text, null);
 	    }
 	
-	    internal InternalSyntaxToken ScientificLiteral(string text, object value)
+	    internal InternalSyntaxToken LScientific(string text, object value)
 	    {
-	        return Token(null, TestLexerModeSyntaxKind.ScientificLiteral, text, value, null);
+	        return Token(null, TestLexerModeSyntaxKind.LScientific, text, value, null);
 	    }
 	
-	    internal InternalSyntaxToken DateTimeOffsetLiteral(string text)
+	    internal InternalSyntaxToken LDateTimeOffset(string text)
 	    {
-	        return Token(null, TestLexerModeSyntaxKind.DateTimeOffsetLiteral, text, null);
+	        return Token(null, TestLexerModeSyntaxKind.LDateTimeOffset, text, null);
 	    }
 	
-	    internal InternalSyntaxToken DateTimeOffsetLiteral(string text, object value)
+	    internal InternalSyntaxToken LDateTimeOffset(string text, object value)
 	    {
-	        return Token(null, TestLexerModeSyntaxKind.DateTimeOffsetLiteral, text, value, null);
+	        return Token(null, TestLexerModeSyntaxKind.LDateTimeOffset, text, value, null);
 	    }
 	
-	    internal InternalSyntaxToken DateTimeLiteral(string text)
+	    internal InternalSyntaxToken LDateTime(string text)
 	    {
-	        return Token(null, TestLexerModeSyntaxKind.DateTimeLiteral, text, null);
+	        return Token(null, TestLexerModeSyntaxKind.LDateTime, text, null);
 	    }
 	
-	    internal InternalSyntaxToken DateTimeLiteral(string text, object value)
+	    internal InternalSyntaxToken LDateTime(string text, object value)
 	    {
-	        return Token(null, TestLexerModeSyntaxKind.DateTimeLiteral, text, value, null);
+	        return Token(null, TestLexerModeSyntaxKind.LDateTime, text, value, null);
 	    }
 	
-	    internal InternalSyntaxToken DateLiteral(string text)
+	    internal InternalSyntaxToken LDate(string text)
 	    {
-	        return Token(null, TestLexerModeSyntaxKind.DateLiteral, text, null);
+	        return Token(null, TestLexerModeSyntaxKind.LDate, text, null);
 	    }
 	
-	    internal InternalSyntaxToken DateLiteral(string text, object value)
+	    internal InternalSyntaxToken LDate(string text, object value)
 	    {
-	        return Token(null, TestLexerModeSyntaxKind.DateLiteral, text, value, null);
+	        return Token(null, TestLexerModeSyntaxKind.LDate, text, value, null);
 	    }
 	
-	    internal InternalSyntaxToken TimeLiteral(string text)
+	    internal InternalSyntaxToken LTime(string text)
 	    {
-	        return Token(null, TestLexerModeSyntaxKind.TimeLiteral, text, null);
+	        return Token(null, TestLexerModeSyntaxKind.LTime, text, null);
 	    }
 	
-	    internal InternalSyntaxToken TimeLiteral(string text, object value)
+	    internal InternalSyntaxToken LTime(string text, object value)
 	    {
-	        return Token(null, TestLexerModeSyntaxKind.TimeLiteral, text, value, null);
+	        return Token(null, TestLexerModeSyntaxKind.LTime, text, value, null);
 	    }
 	
-	    internal InternalSyntaxToken CharLiteral(string text)
+	    internal InternalSyntaxToken LChar(string text)
 	    {
-	        return Token(null, TestLexerModeSyntaxKind.CharLiteral, text, null);
+	        return Token(null, TestLexerModeSyntaxKind.LChar, text, null);
 	    }
 	
-	    internal InternalSyntaxToken CharLiteral(string text, object value)
+	    internal InternalSyntaxToken LChar(string text, object value)
 	    {
-	        return Token(null, TestLexerModeSyntaxKind.CharLiteral, text, value, null);
+	        return Token(null, TestLexerModeSyntaxKind.LChar, text, value, null);
 	    }
 	
-	    internal InternalSyntaxToken RegularStringLiteral(string text)
+	    internal InternalSyntaxToken LRegularString(string text)
 	    {
-	        return Token(null, TestLexerModeSyntaxKind.RegularStringLiteral, text, null);
+	        return Token(null, TestLexerModeSyntaxKind.LRegularString, text, null);
 	    }
 	
-	    internal InternalSyntaxToken RegularStringLiteral(string text, object value)
+	    internal InternalSyntaxToken LRegularString(string text, object value)
 	    {
-	        return Token(null, TestLexerModeSyntaxKind.RegularStringLiteral, text, value, null);
+	        return Token(null, TestLexerModeSyntaxKind.LRegularString, text, value, null);
 	    }
 	
-	    internal InternalSyntaxToken GuidLiteral(string text)
+	    internal InternalSyntaxToken LGuid(string text)
 	    {
-	        return Token(null, TestLexerModeSyntaxKind.GuidLiteral, text, null);
+	        return Token(null, TestLexerModeSyntaxKind.LGuid, text, null);
 	    }
 	
-	    internal InternalSyntaxToken GuidLiteral(string text, object value)
+	    internal InternalSyntaxToken LGuid(string text, object value)
 	    {
-	        return Token(null, TestLexerModeSyntaxKind.GuidLiteral, text, value, null);
+	        return Token(null, TestLexerModeSyntaxKind.LGuid, text, value, null);
 	    }
 	
 	    internal InternalSyntaxToken LUtf8Bom(string text)
@@ -18215,64 +18215,64 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 	        return Token(null, TestLexerModeSyntaxKind.KEndTemplate, text, value, null);
 	    }
 	
-	    internal InternalSyntaxToken TemplateLineControl(string text)
+	    internal InternalSyntaxToken LTemplateLineControl(string text)
 	    {
-	        return Token(null, TestLexerModeSyntaxKind.TemplateLineControl, text, null);
+	        return Token(null, TestLexerModeSyntaxKind.LTemplateLineControl, text, null);
 	    }
 	
-	    internal InternalSyntaxToken TemplateLineControl(string text, object value)
+	    internal InternalSyntaxToken LTemplateLineControl(string text, object value)
 	    {
-	        return Token(null, TestLexerModeSyntaxKind.TemplateLineControl, text, value, null);
+	        return Token(null, TestLexerModeSyntaxKind.LTemplateLineControl, text, value, null);
 	    }
 	
-	    internal InternalSyntaxToken TemplateOutput(string text)
+	    internal InternalSyntaxToken LTemplateOutput(string text)
 	    {
-	        return Token(null, TestLexerModeSyntaxKind.TemplateOutput, text, null);
+	        return Token(null, TestLexerModeSyntaxKind.LTemplateOutput, text, null);
 	    }
 	
-	    internal InternalSyntaxToken TemplateOutput(string text, object value)
+	    internal InternalSyntaxToken LTemplateOutput(string text, object value)
 	    {
-	        return Token(null, TestLexerModeSyntaxKind.TemplateOutput, text, value, null);
+	        return Token(null, TestLexerModeSyntaxKind.LTemplateOutput, text, value, null);
 	    }
 	
-	    internal InternalSyntaxToken TemplateCrLf(string text)
+	    internal InternalSyntaxToken LTemplateCrLf(string text)
 	    {
-	        return Token(null, TestLexerModeSyntaxKind.TemplateCrLf, text, null);
+	        return Token(null, TestLexerModeSyntaxKind.LTemplateCrLf, text, null);
 	    }
 	
-	    internal InternalSyntaxToken TemplateCrLf(string text, object value)
+	    internal InternalSyntaxToken LTemplateCrLf(string text, object value)
 	    {
-	        return Token(null, TestLexerModeSyntaxKind.TemplateCrLf, text, value, null);
+	        return Token(null, TestLexerModeSyntaxKind.LTemplateCrLf, text, value, null);
 	    }
 	
-	    internal InternalSyntaxToken TemplateLineBreak(string text)
+	    internal InternalSyntaxToken LTemplateLineBreak(string text)
 	    {
-	        return Token(null, TestLexerModeSyntaxKind.TemplateLineBreak, text, null);
+	        return Token(null, TestLexerModeSyntaxKind.LTemplateLineBreak, text, null);
 	    }
 	
-	    internal InternalSyntaxToken TemplateLineBreak(string text, object value)
+	    internal InternalSyntaxToken LTemplateLineBreak(string text, object value)
 	    {
-	        return Token(null, TestLexerModeSyntaxKind.TemplateLineBreak, text, value, null);
+	        return Token(null, TestLexerModeSyntaxKind.LTemplateLineBreak, text, value, null);
 	    }
 	
-	    internal InternalSyntaxToken TemplateStatementStart(string text)
+	    internal InternalSyntaxToken TTemplateStatementStart(string text)
 	    {
-	        return Token(null, TestLexerModeSyntaxKind.TemplateStatementStart, text, null);
+	        return Token(null, TestLexerModeSyntaxKind.TTemplateStatementStart, text, null);
 	    }
 	
-	    internal InternalSyntaxToken TemplateStatementStart(string text, object value)
+	    internal InternalSyntaxToken TTemplateStatementStart(string text, object value)
 	    {
-	        return Token(null, TestLexerModeSyntaxKind.TemplateStatementStart, text, value, null);
+	        return Token(null, TestLexerModeSyntaxKind.TTemplateStatementStart, text, value, null);
 	    }
 	
-	    internal InternalSyntaxToken TemplateStatementEnd(string text)
+	    internal InternalSyntaxToken TTemplateStatementEnd(string text)
 	    {
-	        return Token(null, TestLexerModeSyntaxKind.TemplateStatementEnd, text, null);
+	        return Token(null, TestLexerModeSyntaxKind.TTemplateStatementEnd, text, null);
 	    }
 	
-	    internal InternalSyntaxToken TemplateStatementEnd(string text, object value)
+	    internal InternalSyntaxToken TTemplateStatementEnd(string text, object value)
 	    {
-	        return Token(null, TestLexerModeSyntaxKind.TemplateStatementEnd, text, value, null);
+	        return Token(null, TestLexerModeSyntaxKind.TTemplateStatementEnd, text, value, null);
 	    }
 	
 	    internal InternalSyntaxToken TS_TOpenBracket(string text)
@@ -19270,7 +19270,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 			return result;
 	    }
 	
-		public SeparatorStatementGreen SeparatorStatement(InternalSyntaxToken tSemicolon, InternalSyntaxToken kSeparator, IdentifierGreen identifier, InternalSyntaxToken tAssign, StringLiteralxGreen stringLiteralx)
+		public SeparatorStatementGreen SeparatorStatement(InternalSyntaxToken tSemicolon, InternalSyntaxToken kSeparator, IdentifierGreen identifier, InternalSyntaxToken tAssign, StringLiteralGreen stringLiteral)
 	    {
 	#if DEBUG
 			if (tSemicolon == null) throw new ArgumentNullException(nameof(tSemicolon));
@@ -19280,9 +19280,9 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 			if (identifier == null) throw new ArgumentNullException(nameof(identifier));
 			if (tAssign == null) throw new ArgumentNullException(nameof(tAssign));
 			if (tAssign.Kind != TestLexerModeSyntaxKind.TAssign) throw new ArgumentException(nameof(tAssign));
-			if (stringLiteralx == null) throw new ArgumentNullException(nameof(stringLiteralx));
+			if (stringLiteral == null) throw new ArgumentNullException(nameof(stringLiteral));
 	#endif
-	        return new SeparatorStatementGreen(TestLexerModeSyntaxKind.SeparatorStatement, tSemicolon, kSeparator, identifier, tAssign, stringLiteralx);
+	        return new SeparatorStatementGreen(TestLexerModeSyntaxKind.SeparatorStatement, tSemicolon, kSeparator, identifier, tAssign, stringLiteral);
 	    }
 	
 		public SwitchStatementGreen SwitchStatement(SwitchStatementBeginGreen switchStatementBegin, Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<SwitchBranchStatementGreen> switchBranchStatement, SwitchDefaultStatementGreen switchDefaultStatement, SwitchStatementEndGreen switchStatementEnd)
@@ -19571,15 +19571,15 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 			return result;
 	    }
 	
-		public TemplateContentGreen TemplateContent(TemplateOutputxGreen templateOutputx)
+		public TemplateContentGreen TemplateContent(TemplateOutputGreen templateOutput)
 	    {
 	#if DEBUG
-		    if (templateOutputx == null) throw new ArgumentNullException(nameof(templateOutputx));
+		    if (templateOutput == null) throw new ArgumentNullException(nameof(templateOutput));
 	#endif
 			int hash;
-			var cached = SyntaxNodeCache.TryGetNode((int)(TestLexerModeSyntaxKind)TestLexerModeSyntaxKind.TemplateContent, templateOutputx, out hash);
+			var cached = SyntaxNodeCache.TryGetNode((int)(TestLexerModeSyntaxKind)TestLexerModeSyntaxKind.TemplateContent, templateOutput, out hash);
 			if (cached != null) return (TemplateContentGreen)cached;
-			var result = new TemplateContentGreen(TestLexerModeSyntaxKind.TemplateContent, templateOutputx, null);
+			var result = new TemplateContentGreen(TestLexerModeSyntaxKind.TemplateContent, templateOutput, null);
 			if (hash >= 0)
 			{
 				SyntaxNodeCache.AddNode(result, hash);
@@ -19603,16 +19603,16 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 			return result;
 	    }
 	
-		public TemplateOutputxGreen TemplateOutputx(InternalSyntaxToken templateOutput)
+		public TemplateOutputGreen TemplateOutput(InternalSyntaxToken lTemplateOutput)
 	    {
 	#if DEBUG
-			if (templateOutput == null) throw new ArgumentNullException(nameof(templateOutput));
-			if (templateOutput.Kind != TestLexerModeSyntaxKind.TemplateOutput) throw new ArgumentException(nameof(templateOutput));
+			if (lTemplateOutput == null) throw new ArgumentNullException(nameof(lTemplateOutput));
+			if (lTemplateOutput.Kind != TestLexerModeSyntaxKind.LTemplateOutput) throw new ArgumentException(nameof(lTemplateOutput));
 	#endif
 			int hash;
-			var cached = SyntaxNodeCache.TryGetNode((int)(TestLexerModeSyntaxKind)TestLexerModeSyntaxKind.TemplateOutputx, templateOutput, out hash);
-			if (cached != null) return (TemplateOutputxGreen)cached;
-			var result = new TemplateOutputxGreen(TestLexerModeSyntaxKind.TemplateOutputx, templateOutput);
+			var cached = SyntaxNodeCache.TryGetNode((int)(TestLexerModeSyntaxKind)TestLexerModeSyntaxKind.TemplateOutput, lTemplateOutput, out hash);
+			if (cached != null) return (TemplateOutputGreen)cached;
+			var result = new TemplateOutputGreen(TestLexerModeSyntaxKind.TemplateOutput, lTemplateOutput);
 			if (hash >= 0)
 			{
 				SyntaxNodeCache.AddNode(result, hash);
@@ -19636,18 +19636,18 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 			return result;
 	    }
 	
-		public TemplateStatementStartEndGreen TemplateStatementStartEnd(InternalSyntaxToken templateStatementStart, TemplateStatementGreen templateStatement, InternalSyntaxToken templateStatementEnd)
+		public TemplateStatementStartEndGreen TemplateStatementStartEnd(InternalSyntaxToken tTemplateStatementStart, TemplateStatementGreen templateStatement, InternalSyntaxToken tTemplateStatementEnd)
 	    {
 	#if DEBUG
-			if (templateStatementStart == null) throw new ArgumentNullException(nameof(templateStatementStart));
-			if (templateStatementStart.Kind != TestLexerModeSyntaxKind.TemplateStatementStart) throw new ArgumentException(nameof(templateStatementStart));
-			if (templateStatementEnd == null) throw new ArgumentNullException(nameof(templateStatementEnd));
-			if (templateStatementEnd.Kind != TestLexerModeSyntaxKind.TemplateStatementEnd) throw new ArgumentException(nameof(templateStatementEnd));
+			if (tTemplateStatementStart == null) throw new ArgumentNullException(nameof(tTemplateStatementStart));
+			if (tTemplateStatementStart.Kind != TestLexerModeSyntaxKind.TTemplateStatementStart) throw new ArgumentException(nameof(tTemplateStatementStart));
+			if (tTemplateStatementEnd == null) throw new ArgumentNullException(nameof(tTemplateStatementEnd));
+			if (tTemplateStatementEnd.Kind != TestLexerModeSyntaxKind.TTemplateStatementEnd) throw new ArgumentException(nameof(tTemplateStatementEnd));
 	#endif
 			int hash;
-			var cached = SyntaxNodeCache.TryGetNode((int)(TestLexerModeSyntaxKind)TestLexerModeSyntaxKind.TemplateStatementStartEnd, templateStatementStart, templateStatement, templateStatementEnd, out hash);
+			var cached = SyntaxNodeCache.TryGetNode((int)(TestLexerModeSyntaxKind)TestLexerModeSyntaxKind.TemplateStatementStartEnd, tTemplateStatementStart, templateStatement, tTemplateStatementEnd, out hash);
 			if (cached != null) return (TemplateStatementStartEndGreen)cached;
-			var result = new TemplateStatementStartEndGreen(TestLexerModeSyntaxKind.TemplateStatementStartEnd, templateStatementStart, templateStatement, templateStatementEnd);
+			var result = new TemplateStatementStartEndGreen(TestLexerModeSyntaxKind.TemplateStatementStartEnd, tTemplateStatementStart, templateStatement, tTemplateStatementEnd);
 			if (hash >= 0)
 			{
 				SyntaxNodeCache.AddNode(result, hash);
@@ -20887,28 +20887,28 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 			return new LiteralGreen(TestLexerModeSyntaxKind.Literal, null, null, null, dateOrTimeLiteral, null, null, null);
 	    }
 	
-		public LiteralGreen Literal(CharLiteralxGreen charLiteralx)
+		public LiteralGreen Literal(CharLiteralGreen charLiteral)
 	    {
 	#if DEBUG
-		    if (charLiteralx == null) throw new ArgumentNullException(nameof(charLiteralx));
+		    if (charLiteral == null) throw new ArgumentNullException(nameof(charLiteral));
 	#endif
-			return new LiteralGreen(TestLexerModeSyntaxKind.Literal, null, null, null, null, charLiteralx, null, null);
+			return new LiteralGreen(TestLexerModeSyntaxKind.Literal, null, null, null, null, charLiteral, null, null);
 	    }
 	
-		public LiteralGreen Literal(StringLiteralxGreen stringLiteralx)
+		public LiteralGreen Literal(StringLiteralGreen stringLiteral)
 	    {
 	#if DEBUG
-		    if (stringLiteralx == null) throw new ArgumentNullException(nameof(stringLiteralx));
+		    if (stringLiteral == null) throw new ArgumentNullException(nameof(stringLiteral));
 	#endif
-			return new LiteralGreen(TestLexerModeSyntaxKind.Literal, null, null, null, null, null, stringLiteralx, null);
+			return new LiteralGreen(TestLexerModeSyntaxKind.Literal, null, null, null, null, null, stringLiteral, null);
 	    }
 	
-		public LiteralGreen Literal(GuidLiteralxGreen guidLiteralx)
+		public LiteralGreen Literal(GuidLiteralGreen guidLiteral)
 	    {
 	#if DEBUG
-		    if (guidLiteralx == null) throw new ArgumentNullException(nameof(guidLiteralx));
+		    if (guidLiteral == null) throw new ArgumentNullException(nameof(guidLiteral));
 	#endif
-			return new LiteralGreen(TestLexerModeSyntaxKind.Literal, null, null, null, null, null, null, guidLiteralx);
+			return new LiteralGreen(TestLexerModeSyntaxKind.Literal, null, null, null, null, null, null, guidLiteral);
 	    }
 	
 		public NullLiteralGreen NullLiteral(InternalSyntaxToken kNull)
@@ -20944,15 +20944,15 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 			return result;
 	    }
 	
-		public NumberLiteralGreen NumberLiteral(IntegerLiteralxGreen integerLiteralx)
+		public NumberLiteralGreen NumberLiteral(IntegerLiteralGreen integerLiteral)
 	    {
 	#if DEBUG
-		    if (integerLiteralx == null) throw new ArgumentNullException(nameof(integerLiteralx));
+		    if (integerLiteral == null) throw new ArgumentNullException(nameof(integerLiteral));
 	#endif
 			int hash;
-			var cached = SyntaxNodeCache.TryGetNode((int)(TestLexerModeSyntaxKind)TestLexerModeSyntaxKind.NumberLiteral, integerLiteralx, out hash);
+			var cached = SyntaxNodeCache.TryGetNode((int)(TestLexerModeSyntaxKind)TestLexerModeSyntaxKind.NumberLiteral, integerLiteral, out hash);
 			if (cached != null) return (NumberLiteralGreen)cached;
-			var result = new NumberLiteralGreen(TestLexerModeSyntaxKind.NumberLiteral, integerLiteralx, null, null);
+			var result = new NumberLiteralGreen(TestLexerModeSyntaxKind.NumberLiteral, integerLiteral, null, null);
 			if (hash >= 0)
 			{
 				SyntaxNodeCache.AddNode(result, hash);
@@ -20960,15 +20960,15 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 			return result;
 	    }
 	
-		public NumberLiteralGreen NumberLiteral(DecimalLiteralxGreen decimalLiteralx)
+		public NumberLiteralGreen NumberLiteral(DecimalLiteralGreen decimalLiteral)
 	    {
 	#if DEBUG
-		    if (decimalLiteralx == null) throw new ArgumentNullException(nameof(decimalLiteralx));
+		    if (decimalLiteral == null) throw new ArgumentNullException(nameof(decimalLiteral));
 	#endif
 			int hash;
-			var cached = SyntaxNodeCache.TryGetNode((int)(TestLexerModeSyntaxKind)TestLexerModeSyntaxKind.NumberLiteral, decimalLiteralx, out hash);
+			var cached = SyntaxNodeCache.TryGetNode((int)(TestLexerModeSyntaxKind)TestLexerModeSyntaxKind.NumberLiteral, decimalLiteral, out hash);
 			if (cached != null) return (NumberLiteralGreen)cached;
-			var result = new NumberLiteralGreen(TestLexerModeSyntaxKind.NumberLiteral, null, decimalLiteralx, null);
+			var result = new NumberLiteralGreen(TestLexerModeSyntaxKind.NumberLiteral, null, decimalLiteral, null);
 			if (hash >= 0)
 			{
 				SyntaxNodeCache.AddNode(result, hash);
@@ -20976,15 +20976,15 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 			return result;
 	    }
 	
-		public NumberLiteralGreen NumberLiteral(ScientificLiteralxGreen scientificLiteralx)
+		public NumberLiteralGreen NumberLiteral(ScientificLiteralGreen scientificLiteral)
 	    {
 	#if DEBUG
-		    if (scientificLiteralx == null) throw new ArgumentNullException(nameof(scientificLiteralx));
+		    if (scientificLiteral == null) throw new ArgumentNullException(nameof(scientificLiteral));
 	#endif
 			int hash;
-			var cached = SyntaxNodeCache.TryGetNode((int)(TestLexerModeSyntaxKind)TestLexerModeSyntaxKind.NumberLiteral, scientificLiteralx, out hash);
+			var cached = SyntaxNodeCache.TryGetNode((int)(TestLexerModeSyntaxKind)TestLexerModeSyntaxKind.NumberLiteral, scientificLiteral, out hash);
 			if (cached != null) return (NumberLiteralGreen)cached;
-			var result = new NumberLiteralGreen(TestLexerModeSyntaxKind.NumberLiteral, null, null, scientificLiteralx);
+			var result = new NumberLiteralGreen(TestLexerModeSyntaxKind.NumberLiteral, null, null, scientificLiteral);
 			if (hash >= 0)
 			{
 				SyntaxNodeCache.AddNode(result, hash);
@@ -20992,16 +20992,16 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 			return result;
 	    }
 	
-		public IntegerLiteralxGreen IntegerLiteralx(InternalSyntaxToken integerLiteral)
+		public IntegerLiteralGreen IntegerLiteral(InternalSyntaxToken lInteger)
 	    {
 	#if DEBUG
-			if (integerLiteral == null) throw new ArgumentNullException(nameof(integerLiteral));
-			if (integerLiteral.Kind != TestLexerModeSyntaxKind.IntegerLiteral) throw new ArgumentException(nameof(integerLiteral));
+			if (lInteger == null) throw new ArgumentNullException(nameof(lInteger));
+			if (lInteger.Kind != TestLexerModeSyntaxKind.LInteger) throw new ArgumentException(nameof(lInteger));
 	#endif
 			int hash;
-			var cached = SyntaxNodeCache.TryGetNode((int)(TestLexerModeSyntaxKind)TestLexerModeSyntaxKind.IntegerLiteralx, integerLiteral, out hash);
-			if (cached != null) return (IntegerLiteralxGreen)cached;
-			var result = new IntegerLiteralxGreen(TestLexerModeSyntaxKind.IntegerLiteralx, integerLiteral);
+			var cached = SyntaxNodeCache.TryGetNode((int)(TestLexerModeSyntaxKind)TestLexerModeSyntaxKind.IntegerLiteral, lInteger, out hash);
+			if (cached != null) return (IntegerLiteralGreen)cached;
+			var result = new IntegerLiteralGreen(TestLexerModeSyntaxKind.IntegerLiteral, lInteger);
 			if (hash >= 0)
 			{
 				SyntaxNodeCache.AddNode(result, hash);
@@ -21009,16 +21009,16 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 			return result;
 	    }
 	
-		public DecimalLiteralxGreen DecimalLiteralx(InternalSyntaxToken decimalLiteral)
+		public DecimalLiteralGreen DecimalLiteral(InternalSyntaxToken lDecimal)
 	    {
 	#if DEBUG
-			if (decimalLiteral == null) throw new ArgumentNullException(nameof(decimalLiteral));
-			if (decimalLiteral.Kind != TestLexerModeSyntaxKind.DecimalLiteral) throw new ArgumentException(nameof(decimalLiteral));
+			if (lDecimal == null) throw new ArgumentNullException(nameof(lDecimal));
+			if (lDecimal.Kind != TestLexerModeSyntaxKind.LDecimal) throw new ArgumentException(nameof(lDecimal));
 	#endif
 			int hash;
-			var cached = SyntaxNodeCache.TryGetNode((int)(TestLexerModeSyntaxKind)TestLexerModeSyntaxKind.DecimalLiteralx, decimalLiteral, out hash);
-			if (cached != null) return (DecimalLiteralxGreen)cached;
-			var result = new DecimalLiteralxGreen(TestLexerModeSyntaxKind.DecimalLiteralx, decimalLiteral);
+			var cached = SyntaxNodeCache.TryGetNode((int)(TestLexerModeSyntaxKind)TestLexerModeSyntaxKind.DecimalLiteral, lDecimal, out hash);
+			if (cached != null) return (DecimalLiteralGreen)cached;
+			var result = new DecimalLiteralGreen(TestLexerModeSyntaxKind.DecimalLiteral, lDecimal);
 			if (hash >= 0)
 			{
 				SyntaxNodeCache.AddNode(result, hash);
@@ -21026,16 +21026,16 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 			return result;
 	    }
 	
-		public ScientificLiteralxGreen ScientificLiteralx(InternalSyntaxToken scientificLiteral)
+		public ScientificLiteralGreen ScientificLiteral(InternalSyntaxToken lScientific)
 	    {
 	#if DEBUG
-			if (scientificLiteral == null) throw new ArgumentNullException(nameof(scientificLiteral));
-			if (scientificLiteral.Kind != TestLexerModeSyntaxKind.ScientificLiteral) throw new ArgumentException(nameof(scientificLiteral));
+			if (lScientific == null) throw new ArgumentNullException(nameof(lScientific));
+			if (lScientific.Kind != TestLexerModeSyntaxKind.LScientific) throw new ArgumentException(nameof(lScientific));
 	#endif
 			int hash;
-			var cached = SyntaxNodeCache.TryGetNode((int)(TestLexerModeSyntaxKind)TestLexerModeSyntaxKind.ScientificLiteralx, scientificLiteral, out hash);
-			if (cached != null) return (ScientificLiteralxGreen)cached;
-			var result = new ScientificLiteralxGreen(TestLexerModeSyntaxKind.ScientificLiteralx, scientificLiteral);
+			var cached = SyntaxNodeCache.TryGetNode((int)(TestLexerModeSyntaxKind)TestLexerModeSyntaxKind.ScientificLiteral, lScientific, out hash);
+			if (cached != null) return (ScientificLiteralGreen)cached;
+			var result = new ScientificLiteralGreen(TestLexerModeSyntaxKind.ScientificLiteral, lScientific);
 			if (hash >= 0)
 			{
 				SyntaxNodeCache.AddNode(result, hash);
@@ -21043,48 +21043,48 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 			return result;
 	    }
 	
-		public DateOrTimeLiteralGreen DateOrTimeLiteral(DateTimeLiteralxGreen dateTimeLiteralx)
+		public DateOrTimeLiteralGreen DateOrTimeLiteral(DateTimeLiteralGreen dateTimeLiteral)
 	    {
 	#if DEBUG
-		    if (dateTimeLiteralx == null) throw new ArgumentNullException(nameof(dateTimeLiteralx));
+		    if (dateTimeLiteral == null) throw new ArgumentNullException(nameof(dateTimeLiteral));
 	#endif
-			return new DateOrTimeLiteralGreen(TestLexerModeSyntaxKind.DateOrTimeLiteral, dateTimeLiteralx, null, null, null);
+			return new DateOrTimeLiteralGreen(TestLexerModeSyntaxKind.DateOrTimeLiteral, dateTimeLiteral, null, null, null);
 	    }
 	
-		public DateOrTimeLiteralGreen DateOrTimeLiteral(DateTimeOffsetLiteralxGreen dateTimeOffsetLiteralx)
+		public DateOrTimeLiteralGreen DateOrTimeLiteral(DateTimeOffsetLiteralGreen dateTimeOffsetLiteral)
 	    {
 	#if DEBUG
-		    if (dateTimeOffsetLiteralx == null) throw new ArgumentNullException(nameof(dateTimeOffsetLiteralx));
+		    if (dateTimeOffsetLiteral == null) throw new ArgumentNullException(nameof(dateTimeOffsetLiteral));
 	#endif
-			return new DateOrTimeLiteralGreen(TestLexerModeSyntaxKind.DateOrTimeLiteral, null, dateTimeOffsetLiteralx, null, null);
+			return new DateOrTimeLiteralGreen(TestLexerModeSyntaxKind.DateOrTimeLiteral, null, dateTimeOffsetLiteral, null, null);
 	    }
 	
-		public DateOrTimeLiteralGreen DateOrTimeLiteral(DateLiteralxGreen dateLiteralx)
+		public DateOrTimeLiteralGreen DateOrTimeLiteral(DateLiteralGreen dateLiteral)
 	    {
 	#if DEBUG
-		    if (dateLiteralx == null) throw new ArgumentNullException(nameof(dateLiteralx));
+		    if (dateLiteral == null) throw new ArgumentNullException(nameof(dateLiteral));
 	#endif
-			return new DateOrTimeLiteralGreen(TestLexerModeSyntaxKind.DateOrTimeLiteral, null, null, dateLiteralx, null);
+			return new DateOrTimeLiteralGreen(TestLexerModeSyntaxKind.DateOrTimeLiteral, null, null, dateLiteral, null);
 	    }
 	
-		public DateOrTimeLiteralGreen DateOrTimeLiteral(TimeLiteralxGreen timeLiteralx)
+		public DateOrTimeLiteralGreen DateOrTimeLiteral(TimeLiteralGreen timeLiteral)
 	    {
 	#if DEBUG
-		    if (timeLiteralx == null) throw new ArgumentNullException(nameof(timeLiteralx));
+		    if (timeLiteral == null) throw new ArgumentNullException(nameof(timeLiteral));
 	#endif
-			return new DateOrTimeLiteralGreen(TestLexerModeSyntaxKind.DateOrTimeLiteral, null, null, null, timeLiteralx);
+			return new DateOrTimeLiteralGreen(TestLexerModeSyntaxKind.DateOrTimeLiteral, null, null, null, timeLiteral);
 	    }
 	
-		public DateTimeOffsetLiteralxGreen DateTimeOffsetLiteralx(InternalSyntaxToken dateTimeOffsetLiteral)
+		public DateTimeOffsetLiteralGreen DateTimeOffsetLiteral(InternalSyntaxToken lDateTimeOffset)
 	    {
 	#if DEBUG
-			if (dateTimeOffsetLiteral == null) throw new ArgumentNullException(nameof(dateTimeOffsetLiteral));
-			if (dateTimeOffsetLiteral.Kind != TestLexerModeSyntaxKind.DateTimeOffsetLiteral) throw new ArgumentException(nameof(dateTimeOffsetLiteral));
+			if (lDateTimeOffset == null) throw new ArgumentNullException(nameof(lDateTimeOffset));
+			if (lDateTimeOffset.Kind != TestLexerModeSyntaxKind.LDateTimeOffset) throw new ArgumentException(nameof(lDateTimeOffset));
 	#endif
 			int hash;
-			var cached = SyntaxNodeCache.TryGetNode((int)(TestLexerModeSyntaxKind)TestLexerModeSyntaxKind.DateTimeOffsetLiteralx, dateTimeOffsetLiteral, out hash);
-			if (cached != null) return (DateTimeOffsetLiteralxGreen)cached;
-			var result = new DateTimeOffsetLiteralxGreen(TestLexerModeSyntaxKind.DateTimeOffsetLiteralx, dateTimeOffsetLiteral);
+			var cached = SyntaxNodeCache.TryGetNode((int)(TestLexerModeSyntaxKind)TestLexerModeSyntaxKind.DateTimeOffsetLiteral, lDateTimeOffset, out hash);
+			if (cached != null) return (DateTimeOffsetLiteralGreen)cached;
+			var result = new DateTimeOffsetLiteralGreen(TestLexerModeSyntaxKind.DateTimeOffsetLiteral, lDateTimeOffset);
 			if (hash >= 0)
 			{
 				SyntaxNodeCache.AddNode(result, hash);
@@ -21092,16 +21092,16 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 			return result;
 	    }
 	
-		public DateTimeLiteralxGreen DateTimeLiteralx(InternalSyntaxToken dateTimeLiteral)
+		public DateTimeLiteralGreen DateTimeLiteral(InternalSyntaxToken lDateTime)
 	    {
 	#if DEBUG
-			if (dateTimeLiteral == null) throw new ArgumentNullException(nameof(dateTimeLiteral));
-			if (dateTimeLiteral.Kind != TestLexerModeSyntaxKind.DateTimeLiteral) throw new ArgumentException(nameof(dateTimeLiteral));
+			if (lDateTime == null) throw new ArgumentNullException(nameof(lDateTime));
+			if (lDateTime.Kind != TestLexerModeSyntaxKind.LDateTime) throw new ArgumentException(nameof(lDateTime));
 	#endif
 			int hash;
-			var cached = SyntaxNodeCache.TryGetNode((int)(TestLexerModeSyntaxKind)TestLexerModeSyntaxKind.DateTimeLiteralx, dateTimeLiteral, out hash);
-			if (cached != null) return (DateTimeLiteralxGreen)cached;
-			var result = new DateTimeLiteralxGreen(TestLexerModeSyntaxKind.DateTimeLiteralx, dateTimeLiteral);
+			var cached = SyntaxNodeCache.TryGetNode((int)(TestLexerModeSyntaxKind)TestLexerModeSyntaxKind.DateTimeLiteral, lDateTime, out hash);
+			if (cached != null) return (DateTimeLiteralGreen)cached;
+			var result = new DateTimeLiteralGreen(TestLexerModeSyntaxKind.DateTimeLiteral, lDateTime);
 			if (hash >= 0)
 			{
 				SyntaxNodeCache.AddNode(result, hash);
@@ -21109,16 +21109,16 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 			return result;
 	    }
 	
-		public DateLiteralxGreen DateLiteralx(InternalSyntaxToken dateLiteral)
+		public DateLiteralGreen DateLiteral(InternalSyntaxToken lDate)
 	    {
 	#if DEBUG
-			if (dateLiteral == null) throw new ArgumentNullException(nameof(dateLiteral));
-			if (dateLiteral.Kind != TestLexerModeSyntaxKind.DateLiteral) throw new ArgumentException(nameof(dateLiteral));
+			if (lDate == null) throw new ArgumentNullException(nameof(lDate));
+			if (lDate.Kind != TestLexerModeSyntaxKind.LDate) throw new ArgumentException(nameof(lDate));
 	#endif
 			int hash;
-			var cached = SyntaxNodeCache.TryGetNode((int)(TestLexerModeSyntaxKind)TestLexerModeSyntaxKind.DateLiteralx, dateLiteral, out hash);
-			if (cached != null) return (DateLiteralxGreen)cached;
-			var result = new DateLiteralxGreen(TestLexerModeSyntaxKind.DateLiteralx, dateLiteral);
+			var cached = SyntaxNodeCache.TryGetNode((int)(TestLexerModeSyntaxKind)TestLexerModeSyntaxKind.DateLiteral, lDate, out hash);
+			if (cached != null) return (DateLiteralGreen)cached;
+			var result = new DateLiteralGreen(TestLexerModeSyntaxKind.DateLiteral, lDate);
 			if (hash >= 0)
 			{
 				SyntaxNodeCache.AddNode(result, hash);
@@ -21126,16 +21126,16 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 			return result;
 	    }
 	
-		public TimeLiteralxGreen TimeLiteralx(InternalSyntaxToken timeLiteral)
+		public TimeLiteralGreen TimeLiteral(InternalSyntaxToken lTime)
 	    {
 	#if DEBUG
-			if (timeLiteral == null) throw new ArgumentNullException(nameof(timeLiteral));
-			if (timeLiteral.Kind != TestLexerModeSyntaxKind.TimeLiteral) throw new ArgumentException(nameof(timeLiteral));
+			if (lTime == null) throw new ArgumentNullException(nameof(lTime));
+			if (lTime.Kind != TestLexerModeSyntaxKind.LTime) throw new ArgumentException(nameof(lTime));
 	#endif
 			int hash;
-			var cached = SyntaxNodeCache.TryGetNode((int)(TestLexerModeSyntaxKind)TestLexerModeSyntaxKind.TimeLiteralx, timeLiteral, out hash);
-			if (cached != null) return (TimeLiteralxGreen)cached;
-			var result = new TimeLiteralxGreen(TestLexerModeSyntaxKind.TimeLiteralx, timeLiteral);
+			var cached = SyntaxNodeCache.TryGetNode((int)(TestLexerModeSyntaxKind)TestLexerModeSyntaxKind.TimeLiteral, lTime, out hash);
+			if (cached != null) return (TimeLiteralGreen)cached;
+			var result = new TimeLiteralGreen(TestLexerModeSyntaxKind.TimeLiteral, lTime);
 			if (hash >= 0)
 			{
 				SyntaxNodeCache.AddNode(result, hash);
@@ -21143,16 +21143,16 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 			return result;
 	    }
 	
-		public CharLiteralxGreen CharLiteralx(InternalSyntaxToken charLiteral)
+		public CharLiteralGreen CharLiteral(InternalSyntaxToken lChar)
 	    {
 	#if DEBUG
-			if (charLiteral == null) throw new ArgumentNullException(nameof(charLiteral));
-			if (charLiteral.Kind != TestLexerModeSyntaxKind.CharLiteral) throw new ArgumentException(nameof(charLiteral));
+			if (lChar == null) throw new ArgumentNullException(nameof(lChar));
+			if (lChar.Kind != TestLexerModeSyntaxKind.LChar) throw new ArgumentException(nameof(lChar));
 	#endif
 			int hash;
-			var cached = SyntaxNodeCache.TryGetNode((int)(TestLexerModeSyntaxKind)TestLexerModeSyntaxKind.CharLiteralx, charLiteral, out hash);
-			if (cached != null) return (CharLiteralxGreen)cached;
-			var result = new CharLiteralxGreen(TestLexerModeSyntaxKind.CharLiteralx, charLiteral);
+			var cached = SyntaxNodeCache.TryGetNode((int)(TestLexerModeSyntaxKind)TestLexerModeSyntaxKind.CharLiteral, lChar, out hash);
+			if (cached != null) return (CharLiteralGreen)cached;
+			var result = new CharLiteralGreen(TestLexerModeSyntaxKind.CharLiteral, lChar);
 			if (hash >= 0)
 			{
 				SyntaxNodeCache.AddNode(result, hash);
@@ -21160,15 +21160,15 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 			return result;
 	    }
 	
-		public StringLiteralxGreen StringLiteralx(InternalSyntaxToken stringLiteralx)
+		public StringLiteralGreen StringLiteral(InternalSyntaxToken stringLiteral)
 	    {
 	#if DEBUG
-			if (stringLiteralx == null) throw new ArgumentNullException(nameof(stringLiteralx));
+			if (stringLiteral == null) throw new ArgumentNullException(nameof(stringLiteral));
 	#endif
 			int hash;
-			var cached = SyntaxNodeCache.TryGetNode((int)(TestLexerModeSyntaxKind)TestLexerModeSyntaxKind.StringLiteralx, stringLiteralx, out hash);
-			if (cached != null) return (StringLiteralxGreen)cached;
-			var result = new StringLiteralxGreen(TestLexerModeSyntaxKind.StringLiteralx, stringLiteralx);
+			var cached = SyntaxNodeCache.TryGetNode((int)(TestLexerModeSyntaxKind)TestLexerModeSyntaxKind.StringLiteral, stringLiteral, out hash);
+			if (cached != null) return (StringLiteralGreen)cached;
+			var result = new StringLiteralGreen(TestLexerModeSyntaxKind.StringLiteral, stringLiteral);
 			if (hash >= 0)
 			{
 				SyntaxNodeCache.AddNode(result, hash);
@@ -21176,16 +21176,16 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 			return result;
 	    }
 	
-		public GuidLiteralxGreen GuidLiteralx(InternalSyntaxToken guidLiteral)
+		public GuidLiteralGreen GuidLiteral(InternalSyntaxToken lGuid)
 	    {
 	#if DEBUG
-			if (guidLiteral == null) throw new ArgumentNullException(nameof(guidLiteral));
-			if (guidLiteral.Kind != TestLexerModeSyntaxKind.GuidLiteral) throw new ArgumentException(nameof(guidLiteral));
+			if (lGuid == null) throw new ArgumentNullException(nameof(lGuid));
+			if (lGuid.Kind != TestLexerModeSyntaxKind.LGuid) throw new ArgumentException(nameof(lGuid));
 	#endif
 			int hash;
-			var cached = SyntaxNodeCache.TryGetNode((int)(TestLexerModeSyntaxKind)TestLexerModeSyntaxKind.GuidLiteralx, guidLiteral, out hash);
-			if (cached != null) return (GuidLiteralxGreen)cached;
-			var result = new GuidLiteralxGreen(TestLexerModeSyntaxKind.GuidLiteralx, guidLiteral);
+			var cached = SyntaxNodeCache.TryGetNode((int)(TestLexerModeSyntaxKind)TestLexerModeSyntaxKind.GuidLiteral, lGuid, out hash);
+			if (cached != null) return (GuidLiteralGreen)cached;
+			var result = new GuidLiteralGreen(TestLexerModeSyntaxKind.GuidLiteral, lGuid);
 			if (hash >= 0)
 			{
 				SyntaxNodeCache.AddNode(result, hash);
@@ -21268,7 +21268,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				typeof(TemplateBodyGreen),
 				typeof(TemplateContentLineGreen),
 				typeof(TemplateContentGreen),
-				typeof(TemplateOutputxGreen),
+				typeof(TemplateOutputGreen),
 				typeof(TemplateLineEndGreen),
 				typeof(TemplateStatementStartEndGreen),
 				typeof(TemplateStatementGreen),
@@ -21334,17 +21334,17 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				typeof(NullLiteralGreen),
 				typeof(BooleanLiteralGreen),
 				typeof(NumberLiteralGreen),
-				typeof(IntegerLiteralxGreen),
-				typeof(DecimalLiteralxGreen),
-				typeof(ScientificLiteralxGreen),
+				typeof(IntegerLiteralGreen),
+				typeof(DecimalLiteralGreen),
+				typeof(ScientificLiteralGreen),
 				typeof(DateOrTimeLiteralGreen),
-				typeof(DateTimeOffsetLiteralxGreen),
-				typeof(DateTimeLiteralxGreen),
-				typeof(DateLiteralxGreen),
-				typeof(TimeLiteralxGreen),
-				typeof(CharLiteralxGreen),
-				typeof(StringLiteralxGreen),
-				typeof(GuidLiteralxGreen),
+				typeof(DateTimeOffsetLiteralGreen),
+				typeof(DateTimeLiteralGreen),
+				typeof(DateLiteralGreen),
+				typeof(TimeLiteralGreen),
+				typeof(CharLiteralGreen),
+				typeof(StringLiteralGreen),
+				typeof(GuidLiteralGreen),
 			};
 		}
 	}

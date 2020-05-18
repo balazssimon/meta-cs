@@ -124,9 +124,9 @@ templateSignature : KTemplate identifier TOpenParenthesis paramList? TCloseParen
 templateBody : templateContentLine*;
 templateContentLine : templateContent* templateLineEnd;
 templateContent : templateOutput | templateStatementStartEnd;
-templateOutput : TemplateOutput;
-templateLineEnd : TemplateCrLf | TemplateLineBreak | TemplateLineControl;
-templateStatementStartEnd : TemplateStatementStart templateStatement? TemplateStatementEnd;
+templateOutput : LTemplateOutput;
+templateLineEnd : LTemplateCrLf | LTemplateLineBreak | LTemplateLineControl;
+templateStatementStartEnd : TTemplateStatementStart templateStatement? TTemplateStatementEnd;
 
 templateStatement 
     : voidStatement
@@ -242,28 +242,28 @@ nullLiteral : KNull;
 
 // Boolean literals
 booleanLiteral : KTrue | KFalse;
-
+ 
 // Number literals
 numberLiteral : integerLiteral | decimalLiteral | scientificLiteral;
-integerLiteral : IntegerLiteral;
-decimalLiteral : DecimalLiteral;
-scientificLiteral : ScientificLiteral;
+integerLiteral : LInteger;
+decimalLiteral : LDecimal;
+scientificLiteral : LScientific;
 
 // Date and time literals  
 dateOrTimeLiteral 
     : dateTimeLiteral | dateTimeOffsetLiteral | dateLiteral | timeLiteral;
-dateTimeOffsetLiteral : DateTimeOffsetLiteral;
-dateTimeLiteral : DateTimeLiteral;
-dateLiteral : DateLiteral;
-timeLiteral : TimeLiteral;
+dateTimeOffsetLiteral : LDateTimeOffset;
+dateTimeLiteral : LDateTime;
+dateLiteral : LDate;
+timeLiteral : LTime;
 
 // Char literals
-charLiteral : CharLiteral;
+charLiteral : LChar;
 
 // String literals
-stringLiteral : RegularStringLiteral | DoubleQuoteVerbatimStringLiteral;
+stringLiteral : LRegularString | LDoubleQuoteVerbatimString;
 
 // Guid literal
-guidLiteral : GuidLiteral;
+guidLiteral : LGuid;
 
 

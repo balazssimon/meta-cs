@@ -7,11 +7,11 @@ using System.Text;
 using System.Threading.Tasks;
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Declarations;
-using MetaDslx.CodeAnalysis.Antlr4Test;
-using MetaDslx.CodeAnalysis.Antlr4Test.Syntax;
-using MetaDslx.CodeAnalysis.Antlr4Test.Symbols;
+using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode;
+using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax;
+using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Symbols;
 
-namespace MetaDslx.CodeAnalysis.Antlr4Test.Binding
+namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Binding
 {
 	public class TestLexerModeDeclarationTreeBuilderVisitor : DeclarationTreeBuilderVisitor, ITestLexerModeSyntaxVisitor
 	{
@@ -317,7 +317,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Binding
 		{
 		}
 		
-		public virtual void VisitTemplateOutputx(TemplateOutputxSyntax node)
+		public virtual void VisitTemplateOutput(TemplateOutputSyntax node)
 		{
 		}
 		
@@ -581,15 +581,15 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Binding
 		{
 		}
 		
-		public virtual void VisitIntegerLiteralx(IntegerLiteralxSyntax node)
+		public virtual void VisitIntegerLiteral(IntegerLiteralSyntax node)
 		{
 		}
 		
-		public virtual void VisitDecimalLiteralx(DecimalLiteralxSyntax node)
+		public virtual void VisitDecimalLiteral(DecimalLiteralSyntax node)
 		{
 		}
 		
-		public virtual void VisitScientificLiteralx(ScientificLiteralxSyntax node)
+		public virtual void VisitScientificLiteral(ScientificLiteralSyntax node)
 		{
 		}
 		
@@ -597,31 +597,31 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Binding
 		{
 		}
 		
-		public virtual void VisitDateTimeOffsetLiteralx(DateTimeOffsetLiteralxSyntax node)
+		public virtual void VisitDateTimeOffsetLiteral(DateTimeOffsetLiteralSyntax node)
 		{
 		}
 		
-		public virtual void VisitDateTimeLiteralx(DateTimeLiteralxSyntax node)
+		public virtual void VisitDateTimeLiteral(DateTimeLiteralSyntax node)
 		{
 		}
 		
-		public virtual void VisitDateLiteralx(DateLiteralxSyntax node)
+		public virtual void VisitDateLiteral(DateLiteralSyntax node)
 		{
 		}
 		
-		public virtual void VisitTimeLiteralx(TimeLiteralxSyntax node)
+		public virtual void VisitTimeLiteral(TimeLiteralSyntax node)
 		{
 		}
 		
-		public virtual void VisitCharLiteralx(CharLiteralxSyntax node)
+		public virtual void VisitCharLiteral(CharLiteralSyntax node)
 		{
 		}
 		
-		public virtual void VisitStringLiteralx(StringLiteralxSyntax node)
+		public virtual void VisitStringLiteral(StringLiteralSyntax node)
 		{
 		}
 		
-		public virtual void VisitGuidLiteralx(GuidLiteralxSyntax node)
+		public virtual void VisitGuidLiteral(GuidLiteralSyntax node)
 		{
 		}
 	}

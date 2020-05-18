@@ -11,7 +11,7 @@ using MetaDslx.CodeAnalysis.Declarations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace MetaDslx.CodeAnalysis.Antlr4Test
+namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode
 {
     public class TestLexerModeCompilation : LanguageCompilation
     {

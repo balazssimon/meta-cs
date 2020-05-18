@@ -168,32 +168,32 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 				case MetaGeneratorTokensSyntaxKind.TOr:
 				case MetaGeneratorTokensSyntaxKind.TQuestionQuestion:
 				case MetaGeneratorTokensSyntaxKind.IdentifierNormal:
-				case MetaGeneratorTokensSyntaxKind.IntegerLiteral:
-				case MetaGeneratorTokensSyntaxKind.DecimalLiteral:
-				case MetaGeneratorTokensSyntaxKind.ScientificLiteral:
-				case MetaGeneratorTokensSyntaxKind.DateTimeOffsetLiteral:
-				case MetaGeneratorTokensSyntaxKind.DateTimeLiteral:
-				case MetaGeneratorTokensSyntaxKind.DateLiteral:
-				case MetaGeneratorTokensSyntaxKind.TimeLiteral:
-				case MetaGeneratorTokensSyntaxKind.CharLiteral:
-				case MetaGeneratorTokensSyntaxKind.RegularStringLiteral:
-				case MetaGeneratorTokensSyntaxKind.GuidLiteral:
+				case MetaGeneratorTokensSyntaxKind.LInteger:
+				case MetaGeneratorTokensSyntaxKind.LDecimal:
+				case MetaGeneratorTokensSyntaxKind.LScientific:
+				case MetaGeneratorTokensSyntaxKind.LDateTimeOffset:
+				case MetaGeneratorTokensSyntaxKind.LDateTime:
+				case MetaGeneratorTokensSyntaxKind.LDate:
+				case MetaGeneratorTokensSyntaxKind.LTime:
+				case MetaGeneratorTokensSyntaxKind.LChar:
+				case MetaGeneratorTokensSyntaxKind.LRegularString:
+				case MetaGeneratorTokensSyntaxKind.LGuid:
 				case MetaGeneratorTokensSyntaxKind.LUtf8Bom:
 				case MetaGeneratorTokensSyntaxKind.LWhitespace:
 				case MetaGeneratorTokensSyntaxKind.LCrLf:
 				case MetaGeneratorTokensSyntaxKind.LLineBreak:
 				case MetaGeneratorTokensSyntaxKind.LLineComment:
 				case MetaGeneratorTokensSyntaxKind.LMultiLineComment:
-				case MetaGeneratorTokensSyntaxKind.DoubleQuoteVerbatimStringLiteral:
+				case MetaGeneratorTokensSyntaxKind.LDoubleQuoteVerbatimString:
 				case MetaGeneratorTokensSyntaxKind.TH_TOpenParenthesis:
 				case MetaGeneratorTokensSyntaxKind.TH_TCloseParenthesis:
 				case MetaGeneratorTokensSyntaxKind.KEndTemplate:
-				case MetaGeneratorTokensSyntaxKind.TemplateLineControl:
-				case MetaGeneratorTokensSyntaxKind.TemplateOutput:
-				case MetaGeneratorTokensSyntaxKind.TemplateCrLf:
-				case MetaGeneratorTokensSyntaxKind.TemplateLineBreak:
-				case MetaGeneratorTokensSyntaxKind.TemplateStatementStart:
-				case MetaGeneratorTokensSyntaxKind.TemplateStatementEnd:
+				case MetaGeneratorTokensSyntaxKind.LTemplateLineControl:
+				case MetaGeneratorTokensSyntaxKind.LTemplateOutput:
+				case MetaGeneratorTokensSyntaxKind.LTemplateCrLf:
+				case MetaGeneratorTokensSyntaxKind.LTemplateLineBreak:
+				case MetaGeneratorTokensSyntaxKind.TTemplateStatementStart:
+				case MetaGeneratorTokensSyntaxKind.TTemplateStatementEnd:
 				case MetaGeneratorTokensSyntaxKind.TS_TOpenBracket:
 				case MetaGeneratorTokensSyntaxKind.TS_TCloseBracket:
 				case MetaGeneratorTokensSyntaxKind.DoubleQuoteVerbatimStringLiteralStart:
@@ -306,7 +306,7 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 				case MetaGeneratorTokensSyntaxKind.TOr:
 				case MetaGeneratorTokensSyntaxKind.TQuestionQuestion:
 				case MetaGeneratorTokensSyntaxKind.DoubleQuoteVerbatimStringLiteralStart:
-				case MetaGeneratorTokensSyntaxKind.DoubleQuoteVerbatimStringLiteral:
+				case MetaGeneratorTokensSyntaxKind.LDoubleQuoteVerbatimString:
 					return true;
 				default:
 					return false;
@@ -514,7 +514,7 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 				case "@\"":
 					return MetaGeneratorTokensSyntaxKind.DoubleQuoteVerbatimStringLiteralStart;
 				case "\"":
-					return MetaGeneratorTokensSyntaxKind.DoubleQuoteVerbatimStringLiteral;
+					return MetaGeneratorTokensSyntaxKind.LDoubleQuoteVerbatimString;
 				default:
 					return MetaGeneratorTokensSyntaxKind.None;
 			}
@@ -720,7 +720,7 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 					return "??";
 				case MetaGeneratorTokensSyntaxKind.DoubleQuoteVerbatimStringLiteralStart:
 					return "@\"";
-				case MetaGeneratorTokensSyntaxKind.DoubleQuoteVerbatimStringLiteral:
+				case MetaGeneratorTokensSyntaxKind.LDoubleQuoteVerbatimString:
 					return "\"";
 				default:
 					return string.Empty;
@@ -839,25 +839,25 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 					return MetaGeneratorTokenKind.Operator;
 				case MetaGeneratorTokensSyntaxKind.IdentifierNormal:
 					return MetaGeneratorTokenKind.Identifier;
-				case MetaGeneratorTokensSyntaxKind.IntegerLiteral:
+				case MetaGeneratorTokensSyntaxKind.LInteger:
 					return MetaGeneratorTokenKind.Number;
-				case MetaGeneratorTokensSyntaxKind.DecimalLiteral:
+				case MetaGeneratorTokensSyntaxKind.LDecimal:
 					return MetaGeneratorTokenKind.Number;
-				case MetaGeneratorTokensSyntaxKind.ScientificLiteral:
+				case MetaGeneratorTokensSyntaxKind.LScientific:
 					return MetaGeneratorTokenKind.Number;
-				case MetaGeneratorTokensSyntaxKind.DateTimeOffsetLiteral:
+				case MetaGeneratorTokensSyntaxKind.LDateTimeOffset:
 					return MetaGeneratorTokenKind.Number;
-				case MetaGeneratorTokensSyntaxKind.DateTimeLiteral:
+				case MetaGeneratorTokensSyntaxKind.LDateTime:
 					return MetaGeneratorTokenKind.Number;
-				case MetaGeneratorTokensSyntaxKind.DateLiteral:
+				case MetaGeneratorTokensSyntaxKind.LDate:
 					return MetaGeneratorTokenKind.Number;
-				case MetaGeneratorTokensSyntaxKind.TimeLiteral:
+				case MetaGeneratorTokensSyntaxKind.LTime:
 					return MetaGeneratorTokenKind.Number;
-				case MetaGeneratorTokensSyntaxKind.CharLiteral:
+				case MetaGeneratorTokensSyntaxKind.LChar:
 					return MetaGeneratorTokenKind.String;
-				case MetaGeneratorTokensSyntaxKind.RegularStringLiteral:
+				case MetaGeneratorTokensSyntaxKind.LRegularString:
 					return MetaGeneratorTokenKind.String;
-				case MetaGeneratorTokensSyntaxKind.GuidLiteral:
+				case MetaGeneratorTokensSyntaxKind.LGuid:
 					return MetaGeneratorTokenKind.Number;
 				case MetaGeneratorTokensSyntaxKind.LWhitespace:
 					return MetaGeneratorTokenKind.Whitespace;
@@ -871,17 +871,17 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 					return MetaGeneratorTokenKind.Operator;
 				case MetaGeneratorTokensSyntaxKind.KEndTemplate:
 					return MetaGeneratorTokenKind.ReservedKeyword;
-				case MetaGeneratorTokensSyntaxKind.TemplateLineControl:
+				case MetaGeneratorTokensSyntaxKind.LTemplateLineControl:
 					return MetaGeneratorTokenKind.TemplateControl;
-				case MetaGeneratorTokensSyntaxKind.TemplateOutput:
+				case MetaGeneratorTokensSyntaxKind.LTemplateOutput:
 					return MetaGeneratorTokenKind.TemplateOutput;
-				case MetaGeneratorTokensSyntaxKind.TemplateCrLf:
+				case MetaGeneratorTokensSyntaxKind.LTemplateCrLf:
 					return MetaGeneratorTokenKind.TemplateOutput;
-				case MetaGeneratorTokensSyntaxKind.TemplateLineBreak:
+				case MetaGeneratorTokensSyntaxKind.LTemplateLineBreak:
 					return MetaGeneratorTokenKind.TemplateOutput;
-				case MetaGeneratorTokensSyntaxKind.TemplateStatementStart:
+				case MetaGeneratorTokensSyntaxKind.TTemplateStatementStart:
 					return MetaGeneratorTokenKind.TemplateControl;
-				case MetaGeneratorTokensSyntaxKind.TemplateStatementEnd:
+				case MetaGeneratorTokensSyntaxKind.TTemplateStatementEnd:
 					return MetaGeneratorTokenKind.TemplateControl;
 				default:
 					return MetaGeneratorTokenKind.None;
@@ -1305,21 +1305,21 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 		{
 			switch(kind.Switch())
 			{
-				case MetaGeneratorTokensSyntaxKind.IntegerLiteral:
+				case MetaGeneratorTokensSyntaxKind.LInteger:
 					return true;
-				case MetaGeneratorTokensSyntaxKind.DecimalLiteral:
+				case MetaGeneratorTokensSyntaxKind.LDecimal:
 					return true;
-				case MetaGeneratorTokensSyntaxKind.ScientificLiteral:
+				case MetaGeneratorTokensSyntaxKind.LScientific:
 					return true;
-				case MetaGeneratorTokensSyntaxKind.DateTimeOffsetLiteral:
+				case MetaGeneratorTokensSyntaxKind.LDateTimeOffset:
 					return true;
-				case MetaGeneratorTokensSyntaxKind.DateTimeLiteral:
+				case MetaGeneratorTokensSyntaxKind.LDateTime:
 					return true;
-				case MetaGeneratorTokensSyntaxKind.DateLiteral:
+				case MetaGeneratorTokensSyntaxKind.LDate:
 					return true;
-				case MetaGeneratorTokensSyntaxKind.TimeLiteral:
+				case MetaGeneratorTokensSyntaxKind.LTime:
 					return true;
-				case MetaGeneratorTokensSyntaxKind.GuidLiteral:
+				case MetaGeneratorTokensSyntaxKind.LGuid:
 					return true;
 				default:
 					return false;
@@ -1329,9 +1329,9 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 		{
 			switch(kind.Switch())
 			{
-				case MetaGeneratorTokensSyntaxKind.CharLiteral:
+				case MetaGeneratorTokensSyntaxKind.LChar:
 					return true;
-				case MetaGeneratorTokensSyntaxKind.RegularStringLiteral:
+				case MetaGeneratorTokensSyntaxKind.LRegularString:
 					return true;
 				default:
 					return false;
@@ -1365,11 +1365,11 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 		{
 			switch(kind.Switch())
 			{
-				case MetaGeneratorTokensSyntaxKind.TemplateLineControl:
+				case MetaGeneratorTokensSyntaxKind.LTemplateLineControl:
 					return true;
-				case MetaGeneratorTokensSyntaxKind.TemplateStatementStart:
+				case MetaGeneratorTokensSyntaxKind.TTemplateStatementStart:
 					return true;
-				case MetaGeneratorTokensSyntaxKind.TemplateStatementEnd:
+				case MetaGeneratorTokensSyntaxKind.TTemplateStatementEnd:
 					return true;
 				default:
 					return false;
@@ -1379,11 +1379,11 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 		{
 			switch(kind.Switch())
 			{
-				case MetaGeneratorTokensSyntaxKind.TemplateOutput:
+				case MetaGeneratorTokensSyntaxKind.LTemplateOutput:
 					return true;
-				case MetaGeneratorTokensSyntaxKind.TemplateCrLf:
+				case MetaGeneratorTokensSyntaxKind.LTemplateCrLf:
 					return true;
-				case MetaGeneratorTokensSyntaxKind.TemplateLineBreak:
+				case MetaGeneratorTokensSyntaxKind.LTemplateLineBreak:
 					return true;
 				default:
 					return false;

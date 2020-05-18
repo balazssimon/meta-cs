@@ -5,10 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using MetaDslx.CodeAnalysis.Symbols;
-using MetaDslx.CodeAnalysis.Antlr4Test;
-using MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax;
+using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode;
+using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax;
 
-namespace MetaDslx.CodeAnalysis.Antlr4Test.Symbols
+namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Symbols
 {
     public class TestLexerModeSymbolFacts : SymbolFacts
     {

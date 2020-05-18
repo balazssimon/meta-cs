@@ -1605,11 +1605,11 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
         {
             if (this.processTemplateOutput)
             {
-                WriteLine("{0}.Append(this.ProcessTemplateOutput(\"{1}\")); {2}", output, EscapeText(context.TemplateOutput().GetText()), context.ToComment());
+                WriteLine("{0}.Append(this.ProcessTemplateOutput(\"{1}\")); {2}", output, EscapeText(context.LTemplateOutput().GetText()), context.ToComment());
             }
             else
             {
-                WriteLine("{0}.Append(\"{1}\"); {2}", output, EscapeText(context.TemplateOutput().GetText()), context.ToComment());
+                WriteLine("{0}.Append(\"{1}\"); {2}", output, EscapeText(context.LTemplateOutput().GetText()), context.ToComment());
             }
             return null;
         }
@@ -1621,29 +1621,29 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
 
         public object VisitTemplateLineEnd(MetaGeneratorParser.TemplateLineEndContext context, string output)
         {
-            if (context.TemplateCrLf() != null)
+            if (context.LTemplateCrLf() != null)
             {
-                string lineBreakText = context.TemplateCrLf().GetText();
+                string lineBreakText = context.LTemplateCrLf().GetText();
                 string force = lineBreakText.StartsWith("^") ? "true" : "false";
                 if (!lineBreakText.StartsWith("\\"))
                 {
                     WriteLine("{0}.AppendLine({2}); {1}", output, context.ToComment(), force);
                 }
             }
-            else if (context.TemplateLineBreak() != null)
+            else if (context.LTemplateLineBreak() != null)
             {
-                string lineBreakText = context.TemplateLineBreak().GetText();
+                string lineBreakText = context.LTemplateLineBreak().GetText();
                 string force = lineBreakText.StartsWith("^") ? "true" : "false";
-                if (!context.TemplateLineBreak().GetText().StartsWith("\\"))
+                if (!context.LTemplateLineBreak().GetText().StartsWith("\\"))
                 {
                     WriteLine("{0}.AppendLine({2}); {1}", output, context.ToComment(), force);
                 }
             }
-            else if (context.TemplateLineControl() != null)
+            else if (context.LTemplateLineControl() != null)
             {
-                string lineBreakText = context.TemplateLineControl().GetText();
+                string lineBreakText = context.LTemplateLineControl().GetText();
                 string force = lineBreakText.StartsWith("^") ? "true" : "false";
-                if (!context.TemplateLineControl().GetText().StartsWith("\\"))
+                if (!context.LTemplateLineControl().GetText().StartsWith("\\"))
                 {
                     WriteLine("{0}.AppendLine({2}); {1}", output, context.ToComment(), force);
                 }

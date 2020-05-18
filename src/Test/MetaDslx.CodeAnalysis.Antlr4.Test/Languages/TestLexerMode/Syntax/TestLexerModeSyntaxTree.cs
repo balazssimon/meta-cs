@@ -14,10 +14,10 @@ using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax;
 using Microsoft.CodeAnalysis.Text;
 using Microsoft.CodeAnalysis;
-using MetaDslx.CodeAnalysis.Antlr4Test;
-using MetaDslx.CodeAnalysis.Antlr4Test.Syntax;
-using MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax;
-namespace MetaDslx.CodeAnalysis.Antlr4Test
+using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode;
+using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax;
+using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax;
+namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode
 {
     /// <summary>
     /// The parsed representation of a C# source document.

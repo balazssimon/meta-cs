@@ -19,7 +19,7 @@
 // Ambiguous reference in cref attribute
 #pragma warning disable 419
 
-namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax {
+namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax {
 using Antlr4.Runtime;
 using Antlr4.Runtime.Atn;
 using Antlr4.Runtime.Misc;
@@ -46,15 +46,14 @@ public partial class TestLexerModeLexer : Lexer {
 		TQuestion=82, TPlus=83, TMinus=84, TExclamation=85, TTilde=86, TAsterisk=87, 
 		TSlash=88, TPercent=89, TPlusPlus=90, TMinusMinus=91, TColonColon=92, 
 		TAmp=93, THat=94, TPipe=95, TAnd=96, TXor=97, TOr=98, TQuestionQuestion=99, 
-		IdentifierNormal=100, IntegerLiteral=101, DecimalLiteral=102, ScientificLiteral=103, 
-		DateTimeOffsetLiteral=104, DateTimeLiteral=105, DateLiteral=106, TimeLiteral=107, 
-		CharLiteral=108, RegularStringLiteral=109, GuidLiteral=110, LUtf8Bom=111, 
-		LWhitespace=112, LCrLf=113, LLineBreak=114, LLineComment=115, LMultiLineComment=116, 
-		DoubleQuoteVerbatimStringLiteral=117, TH_TOpenParenthesis=118, TH_TCloseParenthesis=119, 
-		KEndTemplate=120, TemplateLineControl=121, TemplateOutput=122, TemplateCrLf=123, 
-		TemplateLineBreak=124, TemplateStatementStart=125, TemplateStatementEnd=126, 
-		TS_TOpenBracket=127, TS_TCloseBracket=128, DoubleQuoteVerbatimStringLiteralStart=129, 
-		COMMENT_START=130;
+		IdentifierNormal=100, LInteger=101, LDecimal=102, LScientific=103, LDateTimeOffset=104, 
+		LDateTime=105, LDate=106, LTime=107, LChar=108, LRegularString=109, LGuid=110, 
+		LUtf8Bom=111, LWhitespace=112, LCrLf=113, LLineBreak=114, LLineComment=115, 
+		LMultiLineComment=116, LDoubleQuoteVerbatimString=117, TH_TOpenParenthesis=118, 
+		TH_TCloseParenthesis=119, KEndTemplate=120, LTemplateLineControl=121, 
+		LTemplateOutput=122, LTemplateCrLf=123, LTemplateLineBreak=124, TTemplateStatementStart=125, 
+		TTemplateStatementEnd=126, TS_TOpenBracket=127, TS_TCloseBracket=128, 
+		DoubleQuoteVerbatimStringLiteralStart=129, COMMENT_START=130;
 	public const int
 		COMMENT=2, WHITESPACE=3;
 	public const int MULTILINE_COMMENT = 1;
@@ -87,21 +86,20 @@ public partial class TestLexerModeLexer : Lexer {
 		"THat", "TPipe", "TAnd", "TXor", "TOr", "TQuestionQuestion", "IdentifierNormal", 
 		"IdentifierBegin", "IdentifierCharacter", "IdentifierVerbatimCharacter", 
 		"IdentifierVerbatimEscape", "IdentifierGeneralBegin", "IdentifierGeneralCharacter", 
-		"IntegerLiteral", "DecimalLiteral", "ScientificLiteral", "DecimalDigits", 
-		"DecimalDigit", "Sign", "Hexadecimal", "HexDigit", "DateTimeOffsetLiteral", 
-		"DateTimeLiteral", "DateLiteral", "TimeLiteral", "DateDay", "DateMonth", 
-		"DateYear", "TimeZone", "OffsetTimeHour", "OffsetTimeHourMinute", "TimeHour", 
-		"TimeHourMinute", "TimeMinute", "TimeSecond", "TimeSecondDecimalPart", 
-		"CharLiteral", "RegularStringLiteral", "DoubleQuoteVerbatimStringLiteralStart", 
+		"LInteger", "LDecimal", "LScientific", "DecimalDigits", "DecimalDigit", 
+		"Sign", "Hexadecimal", "HexDigit", "LDateTimeOffset", "LDateTime", "LDate", 
+		"LTime", "DateDay", "DateMonth", "DateYear", "TimeZone", "OffsetTimeHour", 
+		"OffsetTimeHourMinute", "TimeHour", "TimeHourMinute", "TimeMinute", "TimeSecond", 
+		"TimeSecondDecimalPart", "LChar", "LRegularString", "DoubleQuoteVerbatimStringLiteralStart", 
 		"SingleQuoteTextCharacter", "SingleQuoteTextSimple", "SingleQuoteTextVerbatimCharacter", 
 		"SingleQuoteTextVerbatimCharacterEscape", "SingleQuoteTextVerbatimCharacters", 
 		"DoubleQuoteTextCharacter", "DoubleQuoteTextSimple", "DoubleQuoteTextVerbatimCharacter", 
 		"DoubleQuoteTextVerbatimCharacterEscape", "DoubleQuoteTextVerbatimCharacters", 
 		"CharacterEscapeSimple", "CharacterEscapeSimpleCharacter", "CharacterEscapeUnicode", 
-		"GuidLiteral", "LUtf8Bom", "LWhitespace", "LCrLf", "LLineBreak", "LLineComment", 
+		"LGuid", "LUtf8Bom", "LWhitespace", "LCrLf", "LLineBreak", "LLineComment", 
 		"COMMENT_START", "COMMENT_CRLF", "COMMENT_LINEBREAK", "COMMENT_TEXT", 
 		"LMultiLineComment", "COMMENT_STAR", "DoubleQuoteVerbatimStringText", 
-		"DoubleQuoteVerbatimStringLiteral", "TH_CRLF", "TH_LINEBREAK", "TH_WHITESPACE", 
+		"LDoubleQuoteVerbatimString", "TH_CRLF", "TH_LINEBREAK", "TH_WHITESPACE", 
 		"TH_KVoid", "TH_KEnd", "TH_KFor", "TH_KForEach", "TH_KIn", "TH_KIf", "TH_KElse", 
 		"TH_KWhile", "TH_KRepeat", "TH_KUntil", "TH_KLoop", "TH_KHasLoop", "TH_KWhere", 
 		"TH_KOrderBy", "TH_KDescending", "TH_KSeparator", "TH_KNull", "TH_KTrue", 
@@ -121,9 +119,9 @@ public partial class TestLexerModeLexer : Lexer {
 		"TH_TAnd", "TH_TXor", "TH_TOr", "TH_TQuestionQuestion", "TH_IdentifierNormal", 
 		"TH_IntegerLiteral", "TH_DecimalLiteral", "TH_ScientificLiteral", "TH_DateTimeOffsetLiteral", 
 		"TH_DateTimeLiteral", "TH_DateLiteral", "TH_TimeLiteral", "TH_CharLiteral", 
-		"TH_RegularStringLiteral", "TH_GuidLiteral", "KEndTemplate", "TemplateLineControl", 
-		"TemplateOutput", "TemplateCrLf", "TemplateLineBreak", "TemplateStatementStart", 
-		"TemplateStatementCrLf", "TemplateStatementLineBreak", "TemplateStatementEnd", 
+		"TH_RegularStringLiteral", "TH_GuidLiteral", "KEndTemplate", "LTemplateLineControl", 
+		"LTemplateOutput", "LTemplateCrLf", "LTemplateLineBreak", "TTemplateStatementStart", 
+		"TemplateStatementCrLf", "TemplateStatementLineBreak", "TTemplateStatementEnd", 
 		"TemplateStatement_COMMENT_START", "TemplateStatement_WHITESPACE", "TS_KVoid", 
 		"TS_KSwitch", "TS_KCase", "TS_KType", "TS_KEnd", "TS_KFor", "TS_KForEach", 
 		"TS_KIn", "TS_KIf", "TS_KElse", "TS_KRepeat", "TS_KUntil", "TS_KWhile", 
@@ -195,13 +193,12 @@ public partial class TestLexerModeLexer : Lexer {
 		"TQuestion", "TPlus", "TMinus", "TExclamation", "TTilde", "TAsterisk", 
 		"TSlash", "TPercent", "TPlusPlus", "TMinusMinus", "TColonColon", "TAmp", 
 		"THat", "TPipe", "TAnd", "TXor", "TOr", "TQuestionQuestion", "IdentifierNormal", 
-		"IntegerLiteral", "DecimalLiteral", "ScientificLiteral", "DateTimeOffsetLiteral", 
-		"DateTimeLiteral", "DateLiteral", "TimeLiteral", "CharLiteral", "RegularStringLiteral", 
-		"GuidLiteral", "LUtf8Bom", "LWhitespace", "LCrLf", "LLineBreak", "LLineComment", 
-		"LMultiLineComment", "DoubleQuoteVerbatimStringLiteral", "TH_TOpenParenthesis", 
-		"TH_TCloseParenthesis", "KEndTemplate", "TemplateLineControl", "TemplateOutput", 
-		"TemplateCrLf", "TemplateLineBreak", "TemplateStatementStart", "TemplateStatementEnd", 
-		"TS_TOpenBracket", "TS_TCloseBracket", "DoubleQuoteVerbatimStringLiteralStart", 
+		"LInteger", "LDecimal", "LScientific", "LDateTimeOffset", "LDateTime", 
+		"LDate", "LTime", "LChar", "LRegularString", "LGuid", "LUtf8Bom", "LWhitespace", 
+		"LCrLf", "LLineBreak", "LLineComment", "LMultiLineComment", "LDoubleQuoteVerbatimString", 
+		"TH_TOpenParenthesis", "TH_TCloseParenthesis", "KEndTemplate", "LTemplateLineControl", 
+		"LTemplateOutput", "LTemplateCrLf", "LTemplateLineBreak", "TTemplateStatementStart", 
+		"TTemplateStatementEnd", "TS_TOpenBracket", "TS_TCloseBracket", "DoubleQuoteVerbatimStringLiteralStart", 
 		"COMMENT_START"
 	};
 	public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);
@@ -259,7 +256,7 @@ public partial class TestLexerModeLexer : Lexer {
 
 		case 218 : TH_TCloseParenthesis_action(_localctx, actionIndex); break;
 
-		case 265 : TemplateStatementStart_action(_localctx, actionIndex); break;
+		case 265 : TTemplateStatementStart_action(_localctx, actionIndex); break;
 
 		case 331 : TS_TOpenBracket_action(_localctx, actionIndex); break;
 
@@ -281,7 +278,7 @@ public partial class TestLexerModeLexer : Lexer {
 		case 2: Type=TCloseParenthesis; _templateParenthesis--; if(_templateParenthesis == 0) Mode(TEMPLATE_OUTPUT);  break;
 		}
 	}
-	private void TemplateStatementStart_action(RuleContext _localctx, int actionIndex) {
+	private void TTemplateStatementStart_action(RuleContext _localctx, int actionIndex) {
 		switch (actionIndex) {
 		case 3: Mode(TEMPLATE_STATEMENT); _templateBrackets=0; break;
 		}
@@ -298,13 +295,13 @@ public partial class TestLexerModeLexer : Lexer {
 	}
 	public override bool Sempred(RuleContext _localctx, int ruleIndex, int predIndex) {
 		switch (ruleIndex) {
-		case 268 : return TemplateStatementEnd_sempred(_localctx, predIndex);
+		case 268 : return TTemplateStatementEnd_sempred(_localctx, predIndex);
 
 		case 332 : return TS_TCloseBracket_sempred(_localctx, predIndex);
 		}
 		return true;
 	}
-	private bool TemplateStatementEnd_sempred(RuleContext _localctx, int predIndex) {
+	private bool TTemplateStatementEnd_sempred(RuleContext _localctx, int predIndex) {
 		switch (predIndex) {
 		case 0: return _templateBrackets == 0;
 		}
@@ -1459,4 +1456,4 @@ public partial class TestLexerModeLexer : Lexer {
 	public static readonly ATN _ATN =
 		new ATNDeserializer().Deserialize(_serializedATN.ToCharArray());
 }
-} // namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
+} // namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax

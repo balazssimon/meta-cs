@@ -51,10 +51,16 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         protected LexerMode SaveLexerMode()
         {
-            return SaveLexerMode(_mode);
+            if (HasLexerModeChanged(_mode)) return CreateLexerModeSnapshot();
+            else return _mode;
         }
 
-        protected virtual LexerMode SaveLexerMode(LexerMode previousMode)
+        protected virtual bool HasLexerModeChanged(LexerMode previousMode)
+        {
+            return false;
+        }
+
+        protected virtual LexerMode CreateLexerModeSnapshot()
         {
             return _mode;
         }

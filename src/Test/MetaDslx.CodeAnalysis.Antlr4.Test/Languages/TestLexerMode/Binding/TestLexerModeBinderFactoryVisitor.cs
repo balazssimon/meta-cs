@@ -12,11 +12,11 @@ using Microsoft.CodeAnalysis;
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Syntax;
-using MetaDslx.CodeAnalysis.Antlr4Test;
-using MetaDslx.CodeAnalysis.Antlr4Test.Syntax;
-using MetaDslx.CodeAnalysis.Antlr4Test.Symbols;
+using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode;
+using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax;
+using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Symbols;
 
-namespace MetaDslx.CodeAnalysis.Antlr4Test.Binding
+namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Binding
 {
     public class TestLexerModeBinderFactoryVisitor : BinderFactoryVisitor, ITestLexerModeSyntaxVisitor<Binder>
     {
@@ -1190,7 +1190,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Binding
 			return resultBinder;
 		}
 		
-		public Binder VisitTemplateOutputx(TemplateOutputxSyntax parent)
+		public Binder VisitTemplateOutput(TemplateOutputSyntax parent)
 		{
 		    if (!parent.FullSpan.Contains(this.Position))
 		    {
@@ -2246,7 +2246,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Binding
 			return resultBinder;
 		}
 		
-		public Binder VisitIntegerLiteralx(IntegerLiteralxSyntax parent)
+		public Binder VisitIntegerLiteral(IntegerLiteralSyntax parent)
 		{
 		    if (!parent.FullSpan.Contains(this.Position))
 		    {
@@ -2262,7 +2262,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Binding
 			return resultBinder;
 		}
 		
-		public Binder VisitDecimalLiteralx(DecimalLiteralxSyntax parent)
+		public Binder VisitDecimalLiteral(DecimalLiteralSyntax parent)
 		{
 		    if (!parent.FullSpan.Contains(this.Position))
 		    {
@@ -2278,7 +2278,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Binding
 			return resultBinder;
 		}
 		
-		public Binder VisitScientificLiteralx(ScientificLiteralxSyntax parent)
+		public Binder VisitScientificLiteral(ScientificLiteralSyntax parent)
 		{
 		    if (!parent.FullSpan.Contains(this.Position))
 		    {
@@ -2310,7 +2310,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Binding
 			return resultBinder;
 		}
 		
-		public Binder VisitDateTimeOffsetLiteralx(DateTimeOffsetLiteralxSyntax parent)
+		public Binder VisitDateTimeOffsetLiteral(DateTimeOffsetLiteralSyntax parent)
 		{
 		    if (!parent.FullSpan.Contains(this.Position))
 		    {
@@ -2326,7 +2326,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Binding
 			return resultBinder;
 		}
 		
-		public Binder VisitDateTimeLiteralx(DateTimeLiteralxSyntax parent)
+		public Binder VisitDateTimeLiteral(DateTimeLiteralSyntax parent)
 		{
 		    if (!parent.FullSpan.Contains(this.Position))
 		    {
@@ -2342,7 +2342,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Binding
 			return resultBinder;
 		}
 		
-		public Binder VisitDateLiteralx(DateLiteralxSyntax parent)
+		public Binder VisitDateLiteral(DateLiteralSyntax parent)
 		{
 		    if (!parent.FullSpan.Contains(this.Position))
 		    {
@@ -2358,7 +2358,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Binding
 			return resultBinder;
 		}
 		
-		public Binder VisitTimeLiteralx(TimeLiteralxSyntax parent)
+		public Binder VisitTimeLiteral(TimeLiteralSyntax parent)
 		{
 		    if (!parent.FullSpan.Contains(this.Position))
 		    {
@@ -2374,7 +2374,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Binding
 			return resultBinder;
 		}
 		
-		public Binder VisitCharLiteralx(CharLiteralxSyntax parent)
+		public Binder VisitCharLiteral(CharLiteralSyntax parent)
 		{
 		    if (!parent.FullSpan.Contains(this.Position))
 		    {
@@ -2390,7 +2390,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Binding
 			return resultBinder;
 		}
 		
-		public Binder VisitStringLiteralx(StringLiteralxSyntax parent)
+		public Binder VisitStringLiteral(StringLiteralSyntax parent)
 		{
 		    if (!parent.FullSpan.Contains(this.Position))
 		    {
@@ -2406,7 +2406,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Binding
 			return resultBinder;
 		}
 		
-		public Binder VisitGuidLiteralx(GuidLiteralxSyntax parent)
+		public Binder VisitGuidLiteral(GuidLiteralSyntax parent)
 		{
 		    if (!parent.FullSpan.Contains(this.Position))
 		    {

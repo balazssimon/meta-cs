@@ -48,15 +48,14 @@ public partial class MetaGeneratorParser : Parser {
 		TQuestion=82, TPlus=83, TMinus=84, TExclamation=85, TTilde=86, TAsterisk=87, 
 		TSlash=88, TPercent=89, TPlusPlus=90, TMinusMinus=91, TColonColon=92, 
 		TAmp=93, THat=94, TPipe=95, TAnd=96, TXor=97, TOr=98, TQuestionQuestion=99, 
-		IdentifierNormal=100, IntegerLiteral=101, DecimalLiteral=102, ScientificLiteral=103, 
-		DateTimeOffsetLiteral=104, DateTimeLiteral=105, DateLiteral=106, TimeLiteral=107, 
-		CharLiteral=108, RegularStringLiteral=109, GuidLiteral=110, LUtf8Bom=111, 
-		LWhitespace=112, LCrLf=113, LLineBreak=114, LLineComment=115, LMultiLineComment=116, 
-		DoubleQuoteVerbatimStringLiteral=117, TH_TOpenParenthesis=118, TH_TCloseParenthesis=119, 
-		KEndTemplate=120, TemplateLineControl=121, TemplateOutput=122, TemplateCrLf=123, 
-		TemplateLineBreak=124, TemplateStatementStart=125, TemplateStatementEnd=126, 
-		TS_TOpenBracket=127, TS_TCloseBracket=128, DoubleQuoteVerbatimStringLiteralStart=129, 
-		COMMENT_START=130;
+		IdentifierNormal=100, LInteger=101, LDecimal=102, LScientific=103, LDateTimeOffset=104, 
+		LDateTime=105, LDate=106, LTime=107, LChar=108, LRegularString=109, LGuid=110, 
+		LUtf8Bom=111, LWhitespace=112, LCrLf=113, LLineBreak=114, LLineComment=115, 
+		LMultiLineComment=116, LDoubleQuoteVerbatimString=117, TH_TOpenParenthesis=118, 
+		TH_TCloseParenthesis=119, KEndTemplate=120, LTemplateLineControl=121, 
+		LTemplateOutput=122, LTemplateCrLf=123, LTemplateLineBreak=124, TTemplateStatementStart=125, 
+		TTemplateStatementEnd=126, TS_TOpenBracket=127, TS_TCloseBracket=128, 
+		DoubleQuoteVerbatimStringLiteralStart=129, COMMENT_START=130;
 	public const int
 		RULE_main = 0, RULE_namespaceDeclaration = 1, RULE_generatorDeclaration = 2, 
 		RULE_usingDeclaration = 3, RULE_configDeclaration = 4, RULE_configProperty = 5, 
@@ -162,13 +161,12 @@ public partial class MetaGeneratorParser : Parser {
 		"TQuestion", "TPlus", "TMinus", "TExclamation", "TTilde", "TAsterisk", 
 		"TSlash", "TPercent", "TPlusPlus", "TMinusMinus", "TColonColon", "TAmp", 
 		"THat", "TPipe", "TAnd", "TXor", "TOr", "TQuestionQuestion", "IdentifierNormal", 
-		"IntegerLiteral", "DecimalLiteral", "ScientificLiteral", "DateTimeOffsetLiteral", 
-		"DateTimeLiteral", "DateLiteral", "TimeLiteral", "CharLiteral", "RegularStringLiteral", 
-		"GuidLiteral", "LUtf8Bom", "LWhitespace", "LCrLf", "LLineBreak", "LLineComment", 
-		"LMultiLineComment", "DoubleQuoteVerbatimStringLiteral", "TH_TOpenParenthesis", 
-		"TH_TCloseParenthesis", "KEndTemplate", "TemplateLineControl", "TemplateOutput", 
-		"TemplateCrLf", "TemplateLineBreak", "TemplateStatementStart", "TemplateStatementEnd", 
-		"TS_TOpenBracket", "TS_TCloseBracket", "DoubleQuoteVerbatimStringLiteralStart", 
+		"LInteger", "LDecimal", "LScientific", "LDateTimeOffset", "LDateTime", 
+		"LDate", "LTime", "LChar", "LRegularString", "LGuid", "LUtf8Bom", "LWhitespace", 
+		"LCrLf", "LLineBreak", "LLineComment", "LMultiLineComment", "LDoubleQuoteVerbatimString", 
+		"TH_TOpenParenthesis", "TH_TCloseParenthesis", "KEndTemplate", "LTemplateLineControl", 
+		"LTemplateOutput", "LTemplateCrLf", "LTemplateLineBreak", "TTemplateStatementStart", 
+		"TTemplateStatementEnd", "TS_TOpenBracket", "TS_TCloseBracket", "DoubleQuoteVerbatimStringLiteralStart", 
 		"COMMENT_START"
 	};
 	public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);
@@ -1323,17 +1321,17 @@ public partial class MetaGeneratorParser : Parser {
 			case TPlusPlus:
 			case TMinusMinus:
 			case IdentifierNormal:
-			case IntegerLiteral:
-			case DecimalLiteral:
-			case ScientificLiteral:
-			case DateTimeOffsetLiteral:
-			case DateTimeLiteral:
-			case DateLiteral:
-			case TimeLiteral:
-			case CharLiteral:
-			case RegularStringLiteral:
-			case GuidLiteral:
-			case DoubleQuoteVerbatimStringLiteral:
+			case LInteger:
+			case LDecimal:
+			case LScientific:
+			case LDateTimeOffset:
+			case LDateTime:
+			case LDate:
+			case LTime:
+			case LChar:
+			case LRegularString:
+			case LGuid:
+			case LDoubleQuoteVerbatimString:
 				EnterOuterAlt(_localctx, 1);
 				{
 				State = 352; singleStatementSemicolon();
@@ -2308,7 +2306,7 @@ public partial class MetaGeneratorParser : Parser {
 			State = 435;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KHasLoop) | (1L << KNull) | (1L << KTrue) | (1L << KFalse) | (1L << KBool) | (1L << KByte) | (1L << KChar) | (1L << KDecimal) | (1L << KDouble) | (1L << KFloat) | (1L << KInt) | (1L << KLong) | (1L << KObject) | (1L << KSByte) | (1L << KShort) | (1L << KString) | (1L << KUInt) | (1L << KULong) | (1L << KUShort) | (1L << KThis) | (1L << KNew) | (1L << KTypeof) | (1L << KDefault))) != 0) || ((((_la - 68)) & ~0x3f) == 0 && ((1L << (_la - 68)) & ((1L << (TOpenParenthesis - 68)) | (1L << (TPlus - 68)) | (1L << (TMinus - 68)) | (1L << (TExclamation - 68)) | (1L << (TTilde - 68)) | (1L << (TPlusPlus - 68)) | (1L << (TMinusMinus - 68)) | (1L << (IdentifierNormal - 68)) | (1L << (IntegerLiteral - 68)) | (1L << (DecimalLiteral - 68)) | (1L << (ScientificLiteral - 68)) | (1L << (DateTimeOffsetLiteral - 68)) | (1L << (DateTimeLiteral - 68)) | (1L << (DateLiteral - 68)) | (1L << (TimeLiteral - 68)) | (1L << (CharLiteral - 68)) | (1L << (RegularStringLiteral - 68)) | (1L << (GuidLiteral - 68)) | (1L << (DoubleQuoteVerbatimStringLiteral - 68)))) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KHasLoop) | (1L << KNull) | (1L << KTrue) | (1L << KFalse) | (1L << KBool) | (1L << KByte) | (1L << KChar) | (1L << KDecimal) | (1L << KDouble) | (1L << KFloat) | (1L << KInt) | (1L << KLong) | (1L << KObject) | (1L << KSByte) | (1L << KShort) | (1L << KString) | (1L << KUInt) | (1L << KULong) | (1L << KUShort) | (1L << KThis) | (1L << KNew) | (1L << KTypeof) | (1L << KDefault))) != 0) || ((((_la - 68)) & ~0x3f) == 0 && ((1L << (_la - 68)) & ((1L << (TOpenParenthesis - 68)) | (1L << (TPlus - 68)) | (1L << (TMinus - 68)) | (1L << (TExclamation - 68)) | (1L << (TTilde - 68)) | (1L << (TPlusPlus - 68)) | (1L << (TMinusMinus - 68)) | (1L << (IdentifierNormal - 68)) | (1L << (LInteger - 68)) | (1L << (LDecimal - 68)) | (1L << (LScientific - 68)) | (1L << (LDateTimeOffset - 68)) | (1L << (LDateTime - 68)) | (1L << (LDate - 68)) | (1L << (LTime - 68)) | (1L << (LChar - 68)) | (1L << (LRegularString - 68)) | (1L << (LGuid - 68)) | (1L << (LDoubleQuoteVerbatimString - 68)))) != 0)) {
 				{
 				State = 434; forInitStatement();
 				}
@@ -2318,7 +2316,7 @@ public partial class MetaGeneratorParser : Parser {
 			State = 439;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KHasLoop) | (1L << KNull) | (1L << KTrue) | (1L << KFalse) | (1L << KBool) | (1L << KByte) | (1L << KChar) | (1L << KDecimal) | (1L << KDouble) | (1L << KFloat) | (1L << KInt) | (1L << KLong) | (1L << KObject) | (1L << KSByte) | (1L << KShort) | (1L << KString) | (1L << KUInt) | (1L << KULong) | (1L << KUShort) | (1L << KThis) | (1L << KNew) | (1L << KTypeof) | (1L << KDefault))) != 0) || ((((_la - 68)) & ~0x3f) == 0 && ((1L << (_la - 68)) & ((1L << (TOpenParenthesis - 68)) | (1L << (TPlus - 68)) | (1L << (TMinus - 68)) | (1L << (TExclamation - 68)) | (1L << (TTilde - 68)) | (1L << (TPlusPlus - 68)) | (1L << (TMinusMinus - 68)) | (1L << (IdentifierNormal - 68)) | (1L << (IntegerLiteral - 68)) | (1L << (DecimalLiteral - 68)) | (1L << (ScientificLiteral - 68)) | (1L << (DateTimeOffsetLiteral - 68)) | (1L << (DateTimeLiteral - 68)) | (1L << (DateLiteral - 68)) | (1L << (TimeLiteral - 68)) | (1L << (CharLiteral - 68)) | (1L << (RegularStringLiteral - 68)) | (1L << (GuidLiteral - 68)) | (1L << (DoubleQuoteVerbatimStringLiteral - 68)))) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KHasLoop) | (1L << KNull) | (1L << KTrue) | (1L << KFalse) | (1L << KBool) | (1L << KByte) | (1L << KChar) | (1L << KDecimal) | (1L << KDouble) | (1L << KFloat) | (1L << KInt) | (1L << KLong) | (1L << KObject) | (1L << KSByte) | (1L << KShort) | (1L << KString) | (1L << KUInt) | (1L << KULong) | (1L << KUShort) | (1L << KThis) | (1L << KNew) | (1L << KTypeof) | (1L << KDefault))) != 0) || ((((_la - 68)) & ~0x3f) == 0 && ((1L << (_la - 68)) & ((1L << (TOpenParenthesis - 68)) | (1L << (TPlus - 68)) | (1L << (TMinus - 68)) | (1L << (TExclamation - 68)) | (1L << (TTilde - 68)) | (1L << (TPlusPlus - 68)) | (1L << (TMinusMinus - 68)) | (1L << (IdentifierNormal - 68)) | (1L << (LInteger - 68)) | (1L << (LDecimal - 68)) | (1L << (LScientific - 68)) | (1L << (LDateTimeOffset - 68)) | (1L << (LDateTime - 68)) | (1L << (LDate - 68)) | (1L << (LTime - 68)) | (1L << (LChar - 68)) | (1L << (LRegularString - 68)) | (1L << (LGuid - 68)) | (1L << (LDoubleQuoteVerbatimString - 68)))) != 0)) {
 				{
 				State = 438; _localctx.endExpression = expressionList();
 				}
@@ -2328,7 +2326,7 @@ public partial class MetaGeneratorParser : Parser {
 			State = 443;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KHasLoop) | (1L << KNull) | (1L << KTrue) | (1L << KFalse) | (1L << KBool) | (1L << KByte) | (1L << KChar) | (1L << KDecimal) | (1L << KDouble) | (1L << KFloat) | (1L << KInt) | (1L << KLong) | (1L << KObject) | (1L << KSByte) | (1L << KShort) | (1L << KString) | (1L << KUInt) | (1L << KULong) | (1L << KUShort) | (1L << KThis) | (1L << KNew) | (1L << KTypeof) | (1L << KDefault))) != 0) || ((((_la - 68)) & ~0x3f) == 0 && ((1L << (_la - 68)) & ((1L << (TOpenParenthesis - 68)) | (1L << (TPlus - 68)) | (1L << (TMinus - 68)) | (1L << (TExclamation - 68)) | (1L << (TTilde - 68)) | (1L << (TPlusPlus - 68)) | (1L << (TMinusMinus - 68)) | (1L << (IdentifierNormal - 68)) | (1L << (IntegerLiteral - 68)) | (1L << (DecimalLiteral - 68)) | (1L << (ScientificLiteral - 68)) | (1L << (DateTimeOffsetLiteral - 68)) | (1L << (DateTimeLiteral - 68)) | (1L << (DateLiteral - 68)) | (1L << (TimeLiteral - 68)) | (1L << (CharLiteral - 68)) | (1L << (RegularStringLiteral - 68)) | (1L << (GuidLiteral - 68)) | (1L << (DoubleQuoteVerbatimStringLiteral - 68)))) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KHasLoop) | (1L << KNull) | (1L << KTrue) | (1L << KFalse) | (1L << KBool) | (1L << KByte) | (1L << KChar) | (1L << KDecimal) | (1L << KDouble) | (1L << KFloat) | (1L << KInt) | (1L << KLong) | (1L << KObject) | (1L << KSByte) | (1L << KShort) | (1L << KString) | (1L << KUInt) | (1L << KULong) | (1L << KUShort) | (1L << KThis) | (1L << KNew) | (1L << KTypeof) | (1L << KDefault))) != 0) || ((((_la - 68)) & ~0x3f) == 0 && ((1L << (_la - 68)) & ((1L << (TOpenParenthesis - 68)) | (1L << (TPlus - 68)) | (1L << (TMinus - 68)) | (1L << (TExclamation - 68)) | (1L << (TTilde - 68)) | (1L << (TPlusPlus - 68)) | (1L << (TMinusMinus - 68)) | (1L << (IdentifierNormal - 68)) | (1L << (LInteger - 68)) | (1L << (LDecimal - 68)) | (1L << (LScientific - 68)) | (1L << (LDateTimeOffset - 68)) | (1L << (LDateTime - 68)) | (1L << (LDate - 68)) | (1L << (LTime - 68)) | (1L << (LChar - 68)) | (1L << (LRegularString - 68)) | (1L << (LGuid - 68)) | (1L << (LDoubleQuoteVerbatimString - 68)))) != 0)) {
 				{
 				State = 442; _localctx.stepExpression = expressionList();
 				}
@@ -3353,7 +3351,7 @@ public partial class MetaGeneratorParser : Parser {
 						State = 538;
 						_errHandler.Sync(this);
 						_la = _input.La(1);
-						if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KHasLoop) | (1L << KNull) | (1L << KTrue) | (1L << KFalse) | (1L << KBool) | (1L << KByte) | (1L << KChar) | (1L << KDecimal) | (1L << KDouble) | (1L << KFloat) | (1L << KInt) | (1L << KLong) | (1L << KObject) | (1L << KSByte) | (1L << KShort) | (1L << KString) | (1L << KUInt) | (1L << KULong) | (1L << KUShort) | (1L << KThis) | (1L << KNew) | (1L << KTypeof) | (1L << KDefault))) != 0) || ((((_la - 68)) & ~0x3f) == 0 && ((1L << (_la - 68)) & ((1L << (TOpenParenthesis - 68)) | (1L << (TPlus - 68)) | (1L << (TMinus - 68)) | (1L << (TExclamation - 68)) | (1L << (TTilde - 68)) | (1L << (TPlusPlus - 68)) | (1L << (TMinusMinus - 68)) | (1L << (IdentifierNormal - 68)) | (1L << (IntegerLiteral - 68)) | (1L << (DecimalLiteral - 68)) | (1L << (ScientificLiteral - 68)) | (1L << (DateTimeOffsetLiteral - 68)) | (1L << (DateTimeLiteral - 68)) | (1L << (DateLiteral - 68)) | (1L << (TimeLiteral - 68)) | (1L << (CharLiteral - 68)) | (1L << (RegularStringLiteral - 68)) | (1L << (GuidLiteral - 68)) | (1L << (DoubleQuoteVerbatimStringLiteral - 68)))) != 0)) {
+						if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KHasLoop) | (1L << KNull) | (1L << KTrue) | (1L << KFalse) | (1L << KBool) | (1L << KByte) | (1L << KChar) | (1L << KDecimal) | (1L << KDouble) | (1L << KFloat) | (1L << KInt) | (1L << KLong) | (1L << KObject) | (1L << KSByte) | (1L << KShort) | (1L << KString) | (1L << KUInt) | (1L << KULong) | (1L << KUShort) | (1L << KThis) | (1L << KNew) | (1L << KTypeof) | (1L << KDefault))) != 0) || ((((_la - 68)) & ~0x3f) == 0 && ((1L << (_la - 68)) & ((1L << (TOpenParenthesis - 68)) | (1L << (TPlus - 68)) | (1L << (TMinus - 68)) | (1L << (TExclamation - 68)) | (1L << (TTilde - 68)) | (1L << (TPlusPlus - 68)) | (1L << (TMinusMinus - 68)) | (1L << (IdentifierNormal - 68)) | (1L << (LInteger - 68)) | (1L << (LDecimal - 68)) | (1L << (LScientific - 68)) | (1L << (LDateTimeOffset - 68)) | (1L << (LDateTime - 68)) | (1L << (LDate - 68)) | (1L << (LTime - 68)) | (1L << (LChar - 68)) | (1L << (LRegularString - 68)) | (1L << (LGuid - 68)) | (1L << (LDoubleQuoteVerbatimString - 68)))) != 0)) {
 							{
 							State = 537; expressionList();
 							}
@@ -4343,7 +4341,7 @@ public partial class MetaGeneratorParser : Parser {
 			State = 628;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
-			while (((((_la - 121)) & ~0x3f) == 0 && ((1L << (_la - 121)) & ((1L << (TemplateLineControl - 121)) | (1L << (TemplateOutput - 121)) | (1L << (TemplateCrLf - 121)) | (1L << (TemplateLineBreak - 121)) | (1L << (TemplateStatementStart - 121)))) != 0)) {
+			while (((((_la - 121)) & ~0x3f) == 0 && ((1L << (_la - 121)) & ((1L << (LTemplateLineControl - 121)) | (1L << (LTemplateOutput - 121)) | (1L << (LTemplateCrLf - 121)) | (1L << (LTemplateLineBreak - 121)) | (1L << (TTemplateStatementStart - 121)))) != 0)) {
 				{
 				{
 				State = 625; templateContentLine();
@@ -4407,7 +4405,7 @@ public partial class MetaGeneratorParser : Parser {
 			State = 634;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
-			while (_la==TemplateOutput || _la==TemplateStatementStart) {
+			while (_la==LTemplateOutput || _la==TTemplateStatementStart) {
 				{
 				{
 				State = 631; templateContent();
@@ -4466,13 +4464,13 @@ public partial class MetaGeneratorParser : Parser {
 			State = 641;
 			_errHandler.Sync(this);
 			switch (_input.La(1)) {
-			case TemplateOutput:
+			case LTemplateOutput:
 				EnterOuterAlt(_localctx, 1);
 				{
 				State = 639; templateOutput();
 				}
 				break;
-			case TemplateStatementStart:
+			case TTemplateStatementStart:
 				EnterOuterAlt(_localctx, 2);
 				{
 				State = 640; templateStatementStartEnd();
@@ -4494,7 +4492,7 @@ public partial class MetaGeneratorParser : Parser {
 	}
 
 	public partial class TemplateOutputContext : ParserRuleContext {
-		public ITerminalNode TemplateOutput() { return GetToken(MetaGeneratorParser.TemplateOutput, 0); }
+		public ITerminalNode LTemplateOutput() { return GetToken(MetaGeneratorParser.LTemplateOutput, 0); }
 		public TemplateOutputContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
@@ -4522,7 +4520,7 @@ public partial class MetaGeneratorParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 643; Match(TemplateOutput);
+			State = 643; Match(LTemplateOutput);
 			}
 		}
 		catch (RecognitionException re) {
@@ -4537,9 +4535,9 @@ public partial class MetaGeneratorParser : Parser {
 	}
 
 	public partial class TemplateLineEndContext : ParserRuleContext {
-		public ITerminalNode TemplateCrLf() { return GetToken(MetaGeneratorParser.TemplateCrLf, 0); }
-		public ITerminalNode TemplateLineBreak() { return GetToken(MetaGeneratorParser.TemplateLineBreak, 0); }
-		public ITerminalNode TemplateLineControl() { return GetToken(MetaGeneratorParser.TemplateLineControl, 0); }
+		public ITerminalNode LTemplateCrLf() { return GetToken(MetaGeneratorParser.LTemplateCrLf, 0); }
+		public ITerminalNode LTemplateLineBreak() { return GetToken(MetaGeneratorParser.LTemplateLineBreak, 0); }
+		public ITerminalNode LTemplateLineControl() { return GetToken(MetaGeneratorParser.LTemplateLineControl, 0); }
 		public TemplateLineEndContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
@@ -4570,7 +4568,7 @@ public partial class MetaGeneratorParser : Parser {
 			{
 			State = 645;
 			_la = _input.La(1);
-			if ( !(((((_la - 121)) & ~0x3f) == 0 && ((1L << (_la - 121)) & ((1L << (TemplateLineControl - 121)) | (1L << (TemplateCrLf - 121)) | (1L << (TemplateLineBreak - 121)))) != 0)) ) {
+			if ( !(((((_la - 121)) & ~0x3f) == 0 && ((1L << (_la - 121)) & ((1L << (LTemplateLineControl - 121)) | (1L << (LTemplateCrLf - 121)) | (1L << (LTemplateLineBreak - 121)))) != 0)) ) {
 			_errHandler.RecoverInline(this);
 			} else {
 				if (_input.La(1) == TokenConstants.Eof) {
@@ -4594,8 +4592,8 @@ public partial class MetaGeneratorParser : Parser {
 	}
 
 	public partial class TemplateStatementStartEndContext : ParserRuleContext {
-		public ITerminalNode TemplateStatementStart() { return GetToken(MetaGeneratorParser.TemplateStatementStart, 0); }
-		public ITerminalNode TemplateStatementEnd() { return GetToken(MetaGeneratorParser.TemplateStatementEnd, 0); }
+		public ITerminalNode TTemplateStatementStart() { return GetToken(MetaGeneratorParser.TTemplateStatementStart, 0); }
+		public ITerminalNode TTemplateStatementEnd() { return GetToken(MetaGeneratorParser.TTemplateStatementEnd, 0); }
 		public TemplateStatementContext templateStatement() {
 			return GetRuleContext<TemplateStatementContext>(0);
 		}
@@ -4627,17 +4625,17 @@ public partial class MetaGeneratorParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 647; Match(TemplateStatementStart);
+			State = 647; Match(TTemplateStatementStart);
 			State = 649;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KSwitch) | (1L << KCase) | (1L << KType) | (1L << KVoid) | (1L << KEnd) | (1L << KFor) | (1L << KIf) | (1L << KElse) | (1L << KRepeat) | (1L << KUntil) | (1L << KWhile) | (1L << KLoop) | (1L << KHasLoop) | (1L << KNull) | (1L << KTrue) | (1L << KFalse) | (1L << KBool) | (1L << KByte) | (1L << KChar) | (1L << KDecimal) | (1L << KDouble) | (1L << KFloat) | (1L << KInt) | (1L << KLong) | (1L << KObject) | (1L << KSByte) | (1L << KShort) | (1L << KString) | (1L << KUInt) | (1L << KULong) | (1L << KUShort) | (1L << KThis) | (1L << KNew) | (1L << KTypeof) | (1L << KDefault))) != 0) || ((((_la - 68)) & ~0x3f) == 0 && ((1L << (_la - 68)) & ((1L << (TOpenParenthesis - 68)) | (1L << (TPlus - 68)) | (1L << (TMinus - 68)) | (1L << (TExclamation - 68)) | (1L << (TTilde - 68)) | (1L << (TPlusPlus - 68)) | (1L << (TMinusMinus - 68)) | (1L << (IdentifierNormal - 68)) | (1L << (IntegerLiteral - 68)) | (1L << (DecimalLiteral - 68)) | (1L << (ScientificLiteral - 68)) | (1L << (DateTimeOffsetLiteral - 68)) | (1L << (DateTimeLiteral - 68)) | (1L << (DateLiteral - 68)) | (1L << (TimeLiteral - 68)) | (1L << (CharLiteral - 68)) | (1L << (RegularStringLiteral - 68)) | (1L << (GuidLiteral - 68)) | (1L << (DoubleQuoteVerbatimStringLiteral - 68)))) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KSwitch) | (1L << KCase) | (1L << KType) | (1L << KVoid) | (1L << KEnd) | (1L << KFor) | (1L << KIf) | (1L << KElse) | (1L << KRepeat) | (1L << KUntil) | (1L << KWhile) | (1L << KLoop) | (1L << KHasLoop) | (1L << KNull) | (1L << KTrue) | (1L << KFalse) | (1L << KBool) | (1L << KByte) | (1L << KChar) | (1L << KDecimal) | (1L << KDouble) | (1L << KFloat) | (1L << KInt) | (1L << KLong) | (1L << KObject) | (1L << KSByte) | (1L << KShort) | (1L << KString) | (1L << KUInt) | (1L << KULong) | (1L << KUShort) | (1L << KThis) | (1L << KNew) | (1L << KTypeof) | (1L << KDefault))) != 0) || ((((_la - 68)) & ~0x3f) == 0 && ((1L << (_la - 68)) & ((1L << (TOpenParenthesis - 68)) | (1L << (TPlus - 68)) | (1L << (TMinus - 68)) | (1L << (TExclamation - 68)) | (1L << (TTilde - 68)) | (1L << (TPlusPlus - 68)) | (1L << (TMinusMinus - 68)) | (1L << (IdentifierNormal - 68)) | (1L << (LInteger - 68)) | (1L << (LDecimal - 68)) | (1L << (LScientific - 68)) | (1L << (LDateTimeOffset - 68)) | (1L << (LDateTime - 68)) | (1L << (LDate - 68)) | (1L << (LTime - 68)) | (1L << (LChar - 68)) | (1L << (LRegularString - 68)) | (1L << (LGuid - 68)) | (1L << (LDoubleQuoteVerbatimString - 68)))) != 0)) {
 				{
 				State = 648; templateStatement();
 				}
 			}
 
-			State = 651; Match(TemplateStatementEnd);
+			State = 651; Match(TTemplateStatementEnd);
 			}
 		}
 		catch (RecognitionException re) {
@@ -7197,7 +7195,7 @@ public partial class MetaGeneratorParser : Parser {
 				State = 825;
 				_errHandler.Sync(this);
 				_la = _input.La(1);
-				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KHasLoop) | (1L << KNull) | (1L << KTrue) | (1L << KFalse) | (1L << KBool) | (1L << KByte) | (1L << KChar) | (1L << KDecimal) | (1L << KDouble) | (1L << KFloat) | (1L << KInt) | (1L << KLong) | (1L << KObject) | (1L << KSByte) | (1L << KShort) | (1L << KString) | (1L << KUInt) | (1L << KULong) | (1L << KUShort) | (1L << KThis) | (1L << KNew) | (1L << KTypeof) | (1L << KDefault))) != 0) || ((((_la - 68)) & ~0x3f) == 0 && ((1L << (_la - 68)) & ((1L << (TOpenParenthesis - 68)) | (1L << (TPlus - 68)) | (1L << (TMinus - 68)) | (1L << (TExclamation - 68)) | (1L << (TTilde - 68)) | (1L << (TPlusPlus - 68)) | (1L << (TMinusMinus - 68)) | (1L << (IdentifierNormal - 68)) | (1L << (IntegerLiteral - 68)) | (1L << (DecimalLiteral - 68)) | (1L << (ScientificLiteral - 68)) | (1L << (DateTimeOffsetLiteral - 68)) | (1L << (DateTimeLiteral - 68)) | (1L << (DateLiteral - 68)) | (1L << (TimeLiteral - 68)) | (1L << (CharLiteral - 68)) | (1L << (RegularStringLiteral - 68)) | (1L << (GuidLiteral - 68)) | (1L << (DoubleQuoteVerbatimStringLiteral - 68)))) != 0)) {
+				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KHasLoop) | (1L << KNull) | (1L << KTrue) | (1L << KFalse) | (1L << KBool) | (1L << KByte) | (1L << KChar) | (1L << KDecimal) | (1L << KDouble) | (1L << KFloat) | (1L << KInt) | (1L << KLong) | (1L << KObject) | (1L << KSByte) | (1L << KShort) | (1L << KString) | (1L << KUInt) | (1L << KULong) | (1L << KUShort) | (1L << KThis) | (1L << KNew) | (1L << KTypeof) | (1L << KDefault))) != 0) || ((((_la - 68)) & ~0x3f) == 0 && ((1L << (_la - 68)) & ((1L << (TOpenParenthesis - 68)) | (1L << (TPlus - 68)) | (1L << (TMinus - 68)) | (1L << (TExclamation - 68)) | (1L << (TTilde - 68)) | (1L << (TPlusPlus - 68)) | (1L << (TMinusMinus - 68)) | (1L << (IdentifierNormal - 68)) | (1L << (LInteger - 68)) | (1L << (LDecimal - 68)) | (1L << (LScientific - 68)) | (1L << (LDateTimeOffset - 68)) | (1L << (LDateTime - 68)) | (1L << (LDate - 68)) | (1L << (LTime - 68)) | (1L << (LChar - 68)) | (1L << (LRegularString - 68)) | (1L << (LGuid - 68)) | (1L << (LDoubleQuoteVerbatimString - 68)))) != 0)) {
 					{
 					State = 824; expressionList();
 					}
@@ -7562,7 +7560,7 @@ public partial class MetaGeneratorParser : Parser {
 						State = 911;
 						_errHandler.Sync(this);
 						_la = _input.La(1);
-						if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KHasLoop) | (1L << KNull) | (1L << KTrue) | (1L << KFalse) | (1L << KBool) | (1L << KByte) | (1L << KChar) | (1L << KDecimal) | (1L << KDouble) | (1L << KFloat) | (1L << KInt) | (1L << KLong) | (1L << KObject) | (1L << KSByte) | (1L << KShort) | (1L << KString) | (1L << KUInt) | (1L << KULong) | (1L << KUShort) | (1L << KThis) | (1L << KNew) | (1L << KTypeof) | (1L << KDefault))) != 0) || ((((_la - 68)) & ~0x3f) == 0 && ((1L << (_la - 68)) & ((1L << (TOpenParenthesis - 68)) | (1L << (TPlus - 68)) | (1L << (TMinus - 68)) | (1L << (TExclamation - 68)) | (1L << (TTilde - 68)) | (1L << (TPlusPlus - 68)) | (1L << (TMinusMinus - 68)) | (1L << (IdentifierNormal - 68)) | (1L << (IntegerLiteral - 68)) | (1L << (DecimalLiteral - 68)) | (1L << (ScientificLiteral - 68)) | (1L << (DateTimeOffsetLiteral - 68)) | (1L << (DateTimeLiteral - 68)) | (1L << (DateLiteral - 68)) | (1L << (TimeLiteral - 68)) | (1L << (CharLiteral - 68)) | (1L << (RegularStringLiteral - 68)) | (1L << (GuidLiteral - 68)) | (1L << (DoubleQuoteVerbatimStringLiteral - 68)))) != 0)) {
+						if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KHasLoop) | (1L << KNull) | (1L << KTrue) | (1L << KFalse) | (1L << KBool) | (1L << KByte) | (1L << KChar) | (1L << KDecimal) | (1L << KDouble) | (1L << KFloat) | (1L << KInt) | (1L << KLong) | (1L << KObject) | (1L << KSByte) | (1L << KShort) | (1L << KString) | (1L << KUInt) | (1L << KULong) | (1L << KUShort) | (1L << KThis) | (1L << KNew) | (1L << KTypeof) | (1L << KDefault))) != 0) || ((((_la - 68)) & ~0x3f) == 0 && ((1L << (_la - 68)) & ((1L << (TOpenParenthesis - 68)) | (1L << (TPlus - 68)) | (1L << (TMinus - 68)) | (1L << (TExclamation - 68)) | (1L << (TTilde - 68)) | (1L << (TPlusPlus - 68)) | (1L << (TMinusMinus - 68)) | (1L << (IdentifierNormal - 68)) | (1L << (LInteger - 68)) | (1L << (LDecimal - 68)) | (1L << (LScientific - 68)) | (1L << (LDateTimeOffset - 68)) | (1L << (LDateTime - 68)) | (1L << (LDate - 68)) | (1L << (LTime - 68)) | (1L << (LChar - 68)) | (1L << (LRegularString - 68)) | (1L << (LGuid - 68)) | (1L << (LDoubleQuoteVerbatimString - 68)))) != 0)) {
 							{
 							State = 910; expressionList();
 							}
@@ -7899,37 +7897,37 @@ public partial class MetaGeneratorParser : Parser {
 				State = 949; booleanLiteral();
 				}
 				break;
-			case IntegerLiteral:
-			case DecimalLiteral:
-			case ScientificLiteral:
+			case LInteger:
+			case LDecimal:
+			case LScientific:
 				EnterOuterAlt(_localctx, 3);
 				{
 				State = 950; numberLiteral();
 				}
 				break;
-			case DateTimeOffsetLiteral:
-			case DateTimeLiteral:
-			case DateLiteral:
-			case TimeLiteral:
+			case LDateTimeOffset:
+			case LDateTime:
+			case LDate:
+			case LTime:
 				EnterOuterAlt(_localctx, 4);
 				{
 				State = 951; dateOrTimeLiteral();
 				}
 				break;
-			case CharLiteral:
+			case LChar:
 				EnterOuterAlt(_localctx, 5);
 				{
 				State = 952; charLiteral();
 				}
 				break;
-			case RegularStringLiteral:
-			case DoubleQuoteVerbatimStringLiteral:
+			case LRegularString:
+			case LDoubleQuoteVerbatimString:
 				EnterOuterAlt(_localctx, 6);
 				{
 				State = 953; stringLiteral();
 				}
 				break;
-			case GuidLiteral:
+			case LGuid:
 				EnterOuterAlt(_localctx, 7);
 				{
 				State = 954; guidLiteral();
@@ -8087,19 +8085,19 @@ public partial class MetaGeneratorParser : Parser {
 			State = 964;
 			_errHandler.Sync(this);
 			switch (_input.La(1)) {
-			case IntegerLiteral:
+			case LInteger:
 				EnterOuterAlt(_localctx, 1);
 				{
 				State = 961; integerLiteral();
 				}
 				break;
-			case DecimalLiteral:
+			case LDecimal:
 				EnterOuterAlt(_localctx, 2);
 				{
 				State = 962; decimalLiteral();
 				}
 				break;
-			case ScientificLiteral:
+			case LScientific:
 				EnterOuterAlt(_localctx, 3);
 				{
 				State = 963; scientificLiteral();
@@ -8121,7 +8119,7 @@ public partial class MetaGeneratorParser : Parser {
 	}
 
 	public partial class IntegerLiteralContext : ParserRuleContext {
-		public ITerminalNode IntegerLiteral() { return GetToken(MetaGeneratorParser.IntegerLiteral, 0); }
+		public ITerminalNode LInteger() { return GetToken(MetaGeneratorParser.LInteger, 0); }
 		public IntegerLiteralContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
@@ -8149,7 +8147,7 @@ public partial class MetaGeneratorParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 966; Match(IntegerLiteral);
+			State = 966; Match(LInteger);
 			}
 		}
 		catch (RecognitionException re) {
@@ -8164,7 +8162,7 @@ public partial class MetaGeneratorParser : Parser {
 	}
 
 	public partial class DecimalLiteralContext : ParserRuleContext {
-		public ITerminalNode DecimalLiteral() { return GetToken(MetaGeneratorParser.DecimalLiteral, 0); }
+		public ITerminalNode LDecimal() { return GetToken(MetaGeneratorParser.LDecimal, 0); }
 		public DecimalLiteralContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
@@ -8192,7 +8190,7 @@ public partial class MetaGeneratorParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 968; Match(DecimalLiteral);
+			State = 968; Match(LDecimal);
 			}
 		}
 		catch (RecognitionException re) {
@@ -8207,7 +8205,7 @@ public partial class MetaGeneratorParser : Parser {
 	}
 
 	public partial class ScientificLiteralContext : ParserRuleContext {
-		public ITerminalNode ScientificLiteral() { return GetToken(MetaGeneratorParser.ScientificLiteral, 0); }
+		public ITerminalNode LScientific() { return GetToken(MetaGeneratorParser.LScientific, 0); }
 		public ScientificLiteralContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
@@ -8235,7 +8233,7 @@ public partial class MetaGeneratorParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 970; Match(ScientificLiteral);
+			State = 970; Match(LScientific);
 			}
 		}
 		catch (RecognitionException re) {
@@ -8290,25 +8288,25 @@ public partial class MetaGeneratorParser : Parser {
 			State = 976;
 			_errHandler.Sync(this);
 			switch (_input.La(1)) {
-			case DateTimeLiteral:
+			case LDateTime:
 				EnterOuterAlt(_localctx, 1);
 				{
 				State = 972; dateTimeLiteral();
 				}
 				break;
-			case DateTimeOffsetLiteral:
+			case LDateTimeOffset:
 				EnterOuterAlt(_localctx, 2);
 				{
 				State = 973; dateTimeOffsetLiteral();
 				}
 				break;
-			case DateLiteral:
+			case LDate:
 				EnterOuterAlt(_localctx, 3);
 				{
 				State = 974; dateLiteral();
 				}
 				break;
-			case TimeLiteral:
+			case LTime:
 				EnterOuterAlt(_localctx, 4);
 				{
 				State = 975; timeLiteral();
@@ -8330,7 +8328,7 @@ public partial class MetaGeneratorParser : Parser {
 	}
 
 	public partial class DateTimeOffsetLiteralContext : ParserRuleContext {
-		public ITerminalNode DateTimeOffsetLiteral() { return GetToken(MetaGeneratorParser.DateTimeOffsetLiteral, 0); }
+		public ITerminalNode LDateTimeOffset() { return GetToken(MetaGeneratorParser.LDateTimeOffset, 0); }
 		public DateTimeOffsetLiteralContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
@@ -8358,7 +8356,7 @@ public partial class MetaGeneratorParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 978; Match(DateTimeOffsetLiteral);
+			State = 978; Match(LDateTimeOffset);
 			}
 		}
 		catch (RecognitionException re) {
@@ -8373,7 +8371,7 @@ public partial class MetaGeneratorParser : Parser {
 	}
 
 	public partial class DateTimeLiteralContext : ParserRuleContext {
-		public ITerminalNode DateTimeLiteral() { return GetToken(MetaGeneratorParser.DateTimeLiteral, 0); }
+		public ITerminalNode LDateTime() { return GetToken(MetaGeneratorParser.LDateTime, 0); }
 		public DateTimeLiteralContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
@@ -8401,7 +8399,7 @@ public partial class MetaGeneratorParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 980; Match(DateTimeLiteral);
+			State = 980; Match(LDateTime);
 			}
 		}
 		catch (RecognitionException re) {
@@ -8416,7 +8414,7 @@ public partial class MetaGeneratorParser : Parser {
 	}
 
 	public partial class DateLiteralContext : ParserRuleContext {
-		public ITerminalNode DateLiteral() { return GetToken(MetaGeneratorParser.DateLiteral, 0); }
+		public ITerminalNode LDate() { return GetToken(MetaGeneratorParser.LDate, 0); }
 		public DateLiteralContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
@@ -8444,7 +8442,7 @@ public partial class MetaGeneratorParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 982; Match(DateLiteral);
+			State = 982; Match(LDate);
 			}
 		}
 		catch (RecognitionException re) {
@@ -8459,7 +8457,7 @@ public partial class MetaGeneratorParser : Parser {
 	}
 
 	public partial class TimeLiteralContext : ParserRuleContext {
-		public ITerminalNode TimeLiteral() { return GetToken(MetaGeneratorParser.TimeLiteral, 0); }
+		public ITerminalNode LTime() { return GetToken(MetaGeneratorParser.LTime, 0); }
 		public TimeLiteralContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
@@ -8487,7 +8485,7 @@ public partial class MetaGeneratorParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 984; Match(TimeLiteral);
+			State = 984; Match(LTime);
 			}
 		}
 		catch (RecognitionException re) {
@@ -8502,7 +8500,7 @@ public partial class MetaGeneratorParser : Parser {
 	}
 
 	public partial class CharLiteralContext : ParserRuleContext {
-		public ITerminalNode CharLiteral() { return GetToken(MetaGeneratorParser.CharLiteral, 0); }
+		public ITerminalNode LChar() { return GetToken(MetaGeneratorParser.LChar, 0); }
 		public CharLiteralContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
@@ -8530,7 +8528,7 @@ public partial class MetaGeneratorParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 986; Match(CharLiteral);
+			State = 986; Match(LChar);
 			}
 		}
 		catch (RecognitionException re) {
@@ -8545,8 +8543,8 @@ public partial class MetaGeneratorParser : Parser {
 	}
 
 	public partial class StringLiteralContext : ParserRuleContext {
-		public ITerminalNode RegularStringLiteral() { return GetToken(MetaGeneratorParser.RegularStringLiteral, 0); }
-		public ITerminalNode DoubleQuoteVerbatimStringLiteral() { return GetToken(MetaGeneratorParser.DoubleQuoteVerbatimStringLiteral, 0); }
+		public ITerminalNode LRegularString() { return GetToken(MetaGeneratorParser.LRegularString, 0); }
+		public ITerminalNode LDoubleQuoteVerbatimString() { return GetToken(MetaGeneratorParser.LDoubleQuoteVerbatimString, 0); }
 		public StringLiteralContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
@@ -8577,7 +8575,7 @@ public partial class MetaGeneratorParser : Parser {
 			{
 			State = 988;
 			_la = _input.La(1);
-			if ( !(_la==RegularStringLiteral || _la==DoubleQuoteVerbatimStringLiteral) ) {
+			if ( !(_la==LRegularString || _la==LDoubleQuoteVerbatimString) ) {
 			_errHandler.RecoverInline(this);
 			} else {
 				if (_input.La(1) == TokenConstants.Eof) {
@@ -8601,7 +8599,7 @@ public partial class MetaGeneratorParser : Parser {
 	}
 
 	public partial class GuidLiteralContext : ParserRuleContext {
-		public ITerminalNode GuidLiteral() { return GetToken(MetaGeneratorParser.GuidLiteral, 0); }
+		public ITerminalNode LGuid() { return GetToken(MetaGeneratorParser.LGuid, 0); }
 		public GuidLiteralContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
@@ -8629,7 +8627,7 @@ public partial class MetaGeneratorParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 990; Match(GuidLiteral);
+			State = 990; Match(LGuid);
 			}
 		}
 		catch (RecognitionException re) {

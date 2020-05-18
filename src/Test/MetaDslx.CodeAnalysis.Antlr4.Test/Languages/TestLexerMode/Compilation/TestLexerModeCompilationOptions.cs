@@ -8,7 +8,7 @@ using MetaDslx.CodeAnalysis.Binding;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
 
-namespace MetaDslx.CodeAnalysis.Antlr4Test
+namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode
 {
     public class TestLexerModeCompilationOptions : LanguageCompilationOptions, IEquatable<LanguageCompilationOptions>
     {

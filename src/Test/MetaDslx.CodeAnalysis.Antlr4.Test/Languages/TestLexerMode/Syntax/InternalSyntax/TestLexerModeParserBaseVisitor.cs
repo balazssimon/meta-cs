@@ -19,7 +19,7 @@
 // Ambiguous reference in cref attribute
 #pragma warning disable 419
 
-namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax {
+namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax {
 using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
 using IToken = Antlr4.Runtime.IToken;
@@ -1276,7 +1276,7 @@ public partial class TestLexerModeParserBaseVisitor<Result> : AbstractParseTreeV
 	public virtual Result VisitTemplateContent([NotNull] TestLexerModeParser.TemplateContentContext context) { return VisitChildren(context); }
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="TestLexerModeParser.templateOutputx"/>.
+	/// Visit a parse tree produced by <see cref="TestLexerModeParser.templateOutput"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -1284,7 +1284,7 @@ public partial class TestLexerModeParserBaseVisitor<Result> : AbstractParseTreeV
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitTemplateOutputx([NotNull] TestLexerModeParser.TemplateOutputxContext context) { return VisitChildren(context); }
+	public virtual Result VisitTemplateOutput([NotNull] TestLexerModeParser.TemplateOutputContext context) { return VisitChildren(context); }
 
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="TestLexerModeParser.templateLineEnd"/>.
@@ -1650,7 +1650,7 @@ public partial class TestLexerModeParserBaseVisitor<Result> : AbstractParseTreeV
 	public virtual Result VisitNumberLiteral([NotNull] TestLexerModeParser.NumberLiteralContext context) { return VisitChildren(context); }
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="TestLexerModeParser.integerLiteralx"/>.
+	/// Visit a parse tree produced by <see cref="TestLexerModeParser.integerLiteral"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -1658,10 +1658,10 @@ public partial class TestLexerModeParserBaseVisitor<Result> : AbstractParseTreeV
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitIntegerLiteralx([NotNull] TestLexerModeParser.IntegerLiteralxContext context) { return VisitChildren(context); }
+	public virtual Result VisitIntegerLiteral([NotNull] TestLexerModeParser.IntegerLiteralContext context) { return VisitChildren(context); }
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="TestLexerModeParser.decimalLiteralx"/>.
+	/// Visit a parse tree produced by <see cref="TestLexerModeParser.decimalLiteral"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -1669,10 +1669,10 @@ public partial class TestLexerModeParserBaseVisitor<Result> : AbstractParseTreeV
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitDecimalLiteralx([NotNull] TestLexerModeParser.DecimalLiteralxContext context) { return VisitChildren(context); }
+	public virtual Result VisitDecimalLiteral([NotNull] TestLexerModeParser.DecimalLiteralContext context) { return VisitChildren(context); }
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="TestLexerModeParser.scientificLiteralx"/>.
+	/// Visit a parse tree produced by <see cref="TestLexerModeParser.scientificLiteral"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -1680,7 +1680,7 @@ public partial class TestLexerModeParserBaseVisitor<Result> : AbstractParseTreeV
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitScientificLiteralx([NotNull] TestLexerModeParser.ScientificLiteralxContext context) { return VisitChildren(context); }
+	public virtual Result VisitScientificLiteral([NotNull] TestLexerModeParser.ScientificLiteralContext context) { return VisitChildren(context); }
 
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="TestLexerModeParser.dateOrTimeLiteral"/>.
@@ -1694,7 +1694,7 @@ public partial class TestLexerModeParserBaseVisitor<Result> : AbstractParseTreeV
 	public virtual Result VisitDateOrTimeLiteral([NotNull] TestLexerModeParser.DateOrTimeLiteralContext context) { return VisitChildren(context); }
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="TestLexerModeParser.dateTimeOffsetLiteralx"/>.
+	/// Visit a parse tree produced by <see cref="TestLexerModeParser.dateTimeOffsetLiteral"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -1702,10 +1702,10 @@ public partial class TestLexerModeParserBaseVisitor<Result> : AbstractParseTreeV
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitDateTimeOffsetLiteralx([NotNull] TestLexerModeParser.DateTimeOffsetLiteralxContext context) { return VisitChildren(context); }
+	public virtual Result VisitDateTimeOffsetLiteral([NotNull] TestLexerModeParser.DateTimeOffsetLiteralContext context) { return VisitChildren(context); }
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="TestLexerModeParser.dateTimeLiteralx"/>.
+	/// Visit a parse tree produced by <see cref="TestLexerModeParser.dateTimeLiteral"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -1713,10 +1713,10 @@ public partial class TestLexerModeParserBaseVisitor<Result> : AbstractParseTreeV
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitDateTimeLiteralx([NotNull] TestLexerModeParser.DateTimeLiteralxContext context) { return VisitChildren(context); }
+	public virtual Result VisitDateTimeLiteral([NotNull] TestLexerModeParser.DateTimeLiteralContext context) { return VisitChildren(context); }
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="TestLexerModeParser.dateLiteralx"/>.
+	/// Visit a parse tree produced by <see cref="TestLexerModeParser.dateLiteral"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -1724,10 +1724,10 @@ public partial class TestLexerModeParserBaseVisitor<Result> : AbstractParseTreeV
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitDateLiteralx([NotNull] TestLexerModeParser.DateLiteralxContext context) { return VisitChildren(context); }
+	public virtual Result VisitDateLiteral([NotNull] TestLexerModeParser.DateLiteralContext context) { return VisitChildren(context); }
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="TestLexerModeParser.timeLiteralx"/>.
+	/// Visit a parse tree produced by <see cref="TestLexerModeParser.timeLiteral"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -1735,10 +1735,10 @@ public partial class TestLexerModeParserBaseVisitor<Result> : AbstractParseTreeV
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitTimeLiteralx([NotNull] TestLexerModeParser.TimeLiteralxContext context) { return VisitChildren(context); }
+	public virtual Result VisitTimeLiteral([NotNull] TestLexerModeParser.TimeLiteralContext context) { return VisitChildren(context); }
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="TestLexerModeParser.charLiteralx"/>.
+	/// Visit a parse tree produced by <see cref="TestLexerModeParser.charLiteral"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -1746,10 +1746,10 @@ public partial class TestLexerModeParserBaseVisitor<Result> : AbstractParseTreeV
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitCharLiteralx([NotNull] TestLexerModeParser.CharLiteralxContext context) { return VisitChildren(context); }
+	public virtual Result VisitCharLiteral([NotNull] TestLexerModeParser.CharLiteralContext context) { return VisitChildren(context); }
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="TestLexerModeParser.stringLiteralx"/>.
+	/// Visit a parse tree produced by <see cref="TestLexerModeParser.stringLiteral"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -1757,10 +1757,10 @@ public partial class TestLexerModeParserBaseVisitor<Result> : AbstractParseTreeV
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitStringLiteralx([NotNull] TestLexerModeParser.StringLiteralxContext context) { return VisitChildren(context); }
+	public virtual Result VisitStringLiteral([NotNull] TestLexerModeParser.StringLiteralContext context) { return VisitChildren(context); }
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="TestLexerModeParser.guidLiteralx"/>.
+	/// Visit a parse tree produced by <see cref="TestLexerModeParser.guidLiteral"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -1768,6 +1768,6 @@ public partial class TestLexerModeParserBaseVisitor<Result> : AbstractParseTreeV
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitGuidLiteralx([NotNull] TestLexerModeParser.GuidLiteralxContext context) { return VisitChildren(context); }
+	public virtual Result VisitGuidLiteral([NotNull] TestLexerModeParser.GuidLiteralContext context) { return VisitChildren(context); }
 }
-} // namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
+} // namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax

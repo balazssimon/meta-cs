@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using MetaDslx.CodeAnalysis;
 using Microsoft.CodeAnalysis;
 
-namespace MetaDslx.CodeAnalysis.Antlr4Test
+namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode
 {
     public class TestLexerModeErrorCode : ErrorCode
     {

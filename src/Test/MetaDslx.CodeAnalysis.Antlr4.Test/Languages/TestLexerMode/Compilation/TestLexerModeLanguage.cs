@@ -5,12 +5,12 @@ using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
-using MetaDslx.CodeAnalysis.Antlr4Test;
-using MetaDslx.CodeAnalysis.Antlr4Test.Symbols;
-using MetaDslx.CodeAnalysis.Antlr4Test.Syntax;
-using MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax;
+using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode;
+using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Symbols;
+using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax;
+using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax;
 
-namespace MetaDslx.CodeAnalysis.Antlr4Test
+namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode
 {
     public sealed class TestLexerModeLanguage : Language
     {
@@ -25,7 +25,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test
 		private TestLexerModeLanguage()
 		{
 			_syntaxFacts = new TestLexerModeSyntaxFacts();
-			_internalSyntaxFactory = new TestLexerModeInternalSyntaxFactory(_syntaxFacts);
+			_internalSyntaxFactory = new CustomTestLexerModeInternalSyntaxFactory(_syntaxFacts);
 			_syntaxFactory = new TestLexerModeSyntaxFactory(_internalSyntaxFactory);
 			_symbolFacts = new TestLexerModeSymbolFacts();
 			_compilationFactory = new TestLexerModeCompilationFactory();

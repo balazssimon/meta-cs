@@ -1,7 +1,8 @@
 ﻿using Antlr4.Runtime;
 using Antlr4.Runtime.Misc;
-using MetaDslx.CodeAnalysis.Antlr4Test.Syntax;
-using MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax;
+using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode;
+using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax;
+using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax;
 using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
 using MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax;

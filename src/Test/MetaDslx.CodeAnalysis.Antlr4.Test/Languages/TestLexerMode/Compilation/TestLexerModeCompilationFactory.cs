@@ -11,12 +11,12 @@ using MetaDslx.CodeAnalysis.Declarations;
 using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Symbols.Source;
 using MetaDslx.CodeAnalysis.Symbols.Metadata;
-using MetaDslx.CodeAnalysis.Antlr4Test;
-using MetaDslx.CodeAnalysis.Antlr4Test.Syntax;
-using MetaDslx.CodeAnalysis.Antlr4Test.Binding;
-using MetaDslx.CodeAnalysis.Antlr4Test.Symbols;
+using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode;
+using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax;
+using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Binding;
+using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Symbols;
 
-namespace MetaDslx.CodeAnalysis.Antlr4Test
+namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode
 {
     public class TestLexerModeCompilationFactory : CompilationFactory
     {

@@ -17,7 +17,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Syntax.InternalSyntax;
 using Microsoft.CodeAnalysis.Text;
 using MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax;
-namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
+namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax
 {
     public class TestLexerModeSyntaxParser : Antlr4SyntaxParser
     {
@@ -3192,12 +3192,12 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 		    return context;
 		}
 		
-		public GreenNode ParseTemplateOutputx(ref ParserState state)
+		public GreenNode ParseTemplateOutput(ref ParserState state)
 		{
 		    RestoreParserState(state);
 			try
 			{
-				var context = this.Antlr4Parser.templateOutputx();
+				var context = this.Antlr4Parser.templateOutput();
 		        if (TryGetGreenNode(context, out var green)) return green;
 		        else return _visitor.Visit(context);
 			}
@@ -3207,27 +3207,27 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 			}
 		}
 		
-		protected virtual bool CanReuseTemplateOutputx(TemplateOutputxSyntax node)
+		protected virtual bool CanReuseTemplateOutput(TemplateOutputSyntax node)
 		{
 			return node != null;
 		}
 		
-		internal TestLexerModeParser.TemplateOutputxContext _Antlr4ParseTemplateOutputx()
+		internal TestLexerModeParser.TemplateOutputContext _Antlr4ParseTemplateOutput()
 		{
 			BeginNode();
-		    TestLexerModeParser.TemplateOutputxContext context = null;
+		    TestLexerModeParser.TemplateOutputContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseTemplateOutputx(CurrentNode as TemplateOutputxSyntax))
+				if (IsIncremental && CanReuseTemplateOutput(CurrentNode as TemplateOutputSyntax))
 				{
 					green = EatNode();
-					context = new TestLexerModeParser.TemplateOutputxContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					context = new TestLexerModeParser.TemplateOutputContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
 					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
-					context = this.Antlr4Parser._DoParseTemplateOutputx();
+					context = this.Antlr4Parser._DoParseTemplateOutput();
 					green = _visitor.Visit(context);
 				}
 		    }
@@ -4790,12 +4790,12 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 		    return context;
 		}
 		
-		public GreenNode ParseIntegerLiteralx(ref ParserState state)
+		public GreenNode ParseIntegerLiteral(ref ParserState state)
 		{
 		    RestoreParserState(state);
 			try
 			{
-				var context = this.Antlr4Parser.integerLiteralx();
+				var context = this.Antlr4Parser.integerLiteral();
 		        if (TryGetGreenNode(context, out var green)) return green;
 		        else return _visitor.Visit(context);
 			}
@@ -4805,27 +4805,27 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 			}
 		}
 		
-		protected virtual bool CanReuseIntegerLiteralx(IntegerLiteralxSyntax node)
+		protected virtual bool CanReuseIntegerLiteral(IntegerLiteralSyntax node)
 		{
 			return node != null;
 		}
 		
-		internal TestLexerModeParser.IntegerLiteralxContext _Antlr4ParseIntegerLiteralx()
+		internal TestLexerModeParser.IntegerLiteralContext _Antlr4ParseIntegerLiteral()
 		{
 			BeginNode();
-		    TestLexerModeParser.IntegerLiteralxContext context = null;
+		    TestLexerModeParser.IntegerLiteralContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseIntegerLiteralx(CurrentNode as IntegerLiteralxSyntax))
+				if (IsIncremental && CanReuseIntegerLiteral(CurrentNode as IntegerLiteralSyntax))
 				{
 					green = EatNode();
-					context = new TestLexerModeParser.IntegerLiteralxContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					context = new TestLexerModeParser.IntegerLiteralContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
 					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
-					context = this.Antlr4Parser._DoParseIntegerLiteralx();
+					context = this.Antlr4Parser._DoParseIntegerLiteral();
 					green = _visitor.Visit(context);
 				}
 		    }
@@ -4837,12 +4837,12 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 		    return context;
 		}
 		
-		public GreenNode ParseDecimalLiteralx(ref ParserState state)
+		public GreenNode ParseDecimalLiteral(ref ParserState state)
 		{
 		    RestoreParserState(state);
 			try
 			{
-				var context = this.Antlr4Parser.decimalLiteralx();
+				var context = this.Antlr4Parser.decimalLiteral();
 		        if (TryGetGreenNode(context, out var green)) return green;
 		        else return _visitor.Visit(context);
 			}
@@ -4852,27 +4852,27 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 			}
 		}
 		
-		protected virtual bool CanReuseDecimalLiteralx(DecimalLiteralxSyntax node)
+		protected virtual bool CanReuseDecimalLiteral(DecimalLiteralSyntax node)
 		{
 			return node != null;
 		}
 		
-		internal TestLexerModeParser.DecimalLiteralxContext _Antlr4ParseDecimalLiteralx()
+		internal TestLexerModeParser.DecimalLiteralContext _Antlr4ParseDecimalLiteral()
 		{
 			BeginNode();
-		    TestLexerModeParser.DecimalLiteralxContext context = null;
+		    TestLexerModeParser.DecimalLiteralContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseDecimalLiteralx(CurrentNode as DecimalLiteralxSyntax))
+				if (IsIncremental && CanReuseDecimalLiteral(CurrentNode as DecimalLiteralSyntax))
 				{
 					green = EatNode();
-					context = new TestLexerModeParser.DecimalLiteralxContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					context = new TestLexerModeParser.DecimalLiteralContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
 					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
-					context = this.Antlr4Parser._DoParseDecimalLiteralx();
+					context = this.Antlr4Parser._DoParseDecimalLiteral();
 					green = _visitor.Visit(context);
 				}
 		    }
@@ -4884,12 +4884,12 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 		    return context;
 		}
 		
-		public GreenNode ParseScientificLiteralx(ref ParserState state)
+		public GreenNode ParseScientificLiteral(ref ParserState state)
 		{
 		    RestoreParserState(state);
 			try
 			{
-				var context = this.Antlr4Parser.scientificLiteralx();
+				var context = this.Antlr4Parser.scientificLiteral();
 		        if (TryGetGreenNode(context, out var green)) return green;
 		        else return _visitor.Visit(context);
 			}
@@ -4899,27 +4899,27 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 			}
 		}
 		
-		protected virtual bool CanReuseScientificLiteralx(ScientificLiteralxSyntax node)
+		protected virtual bool CanReuseScientificLiteral(ScientificLiteralSyntax node)
 		{
 			return node != null;
 		}
 		
-		internal TestLexerModeParser.ScientificLiteralxContext _Antlr4ParseScientificLiteralx()
+		internal TestLexerModeParser.ScientificLiteralContext _Antlr4ParseScientificLiteral()
 		{
 			BeginNode();
-		    TestLexerModeParser.ScientificLiteralxContext context = null;
+		    TestLexerModeParser.ScientificLiteralContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseScientificLiteralx(CurrentNode as ScientificLiteralxSyntax))
+				if (IsIncremental && CanReuseScientificLiteral(CurrentNode as ScientificLiteralSyntax))
 				{
 					green = EatNode();
-					context = new TestLexerModeParser.ScientificLiteralxContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					context = new TestLexerModeParser.ScientificLiteralContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
 					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
-					context = this.Antlr4Parser._DoParseScientificLiteralx();
+					context = this.Antlr4Parser._DoParseScientificLiteral();
 					green = _visitor.Visit(context);
 				}
 		    }
@@ -4978,12 +4978,12 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 		    return context;
 		}
 		
-		public GreenNode ParseDateTimeOffsetLiteralx(ref ParserState state)
+		public GreenNode ParseDateTimeOffsetLiteral(ref ParserState state)
 		{
 		    RestoreParserState(state);
 			try
 			{
-				var context = this.Antlr4Parser.dateTimeOffsetLiteralx();
+				var context = this.Antlr4Parser.dateTimeOffsetLiteral();
 		        if (TryGetGreenNode(context, out var green)) return green;
 		        else return _visitor.Visit(context);
 			}
@@ -4993,27 +4993,27 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 			}
 		}
 		
-		protected virtual bool CanReuseDateTimeOffsetLiteralx(DateTimeOffsetLiteralxSyntax node)
+		protected virtual bool CanReuseDateTimeOffsetLiteral(DateTimeOffsetLiteralSyntax node)
 		{
 			return node != null;
 		}
 		
-		internal TestLexerModeParser.DateTimeOffsetLiteralxContext _Antlr4ParseDateTimeOffsetLiteralx()
+		internal TestLexerModeParser.DateTimeOffsetLiteralContext _Antlr4ParseDateTimeOffsetLiteral()
 		{
 			BeginNode();
-		    TestLexerModeParser.DateTimeOffsetLiteralxContext context = null;
+		    TestLexerModeParser.DateTimeOffsetLiteralContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseDateTimeOffsetLiteralx(CurrentNode as DateTimeOffsetLiteralxSyntax))
+				if (IsIncremental && CanReuseDateTimeOffsetLiteral(CurrentNode as DateTimeOffsetLiteralSyntax))
 				{
 					green = EatNode();
-					context = new TestLexerModeParser.DateTimeOffsetLiteralxContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					context = new TestLexerModeParser.DateTimeOffsetLiteralContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
 					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
-					context = this.Antlr4Parser._DoParseDateTimeOffsetLiteralx();
+					context = this.Antlr4Parser._DoParseDateTimeOffsetLiteral();
 					green = _visitor.Visit(context);
 				}
 		    }
@@ -5025,12 +5025,12 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 		    return context;
 		}
 		
-		public GreenNode ParseDateTimeLiteralx(ref ParserState state)
+		public GreenNode ParseDateTimeLiteral(ref ParserState state)
 		{
 		    RestoreParserState(state);
 			try
 			{
-				var context = this.Antlr4Parser.dateTimeLiteralx();
+				var context = this.Antlr4Parser.dateTimeLiteral();
 		        if (TryGetGreenNode(context, out var green)) return green;
 		        else return _visitor.Visit(context);
 			}
@@ -5040,27 +5040,27 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 			}
 		}
 		
-		protected virtual bool CanReuseDateTimeLiteralx(DateTimeLiteralxSyntax node)
+		protected virtual bool CanReuseDateTimeLiteral(DateTimeLiteralSyntax node)
 		{
 			return node != null;
 		}
 		
-		internal TestLexerModeParser.DateTimeLiteralxContext _Antlr4ParseDateTimeLiteralx()
+		internal TestLexerModeParser.DateTimeLiteralContext _Antlr4ParseDateTimeLiteral()
 		{
 			BeginNode();
-		    TestLexerModeParser.DateTimeLiteralxContext context = null;
+		    TestLexerModeParser.DateTimeLiteralContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseDateTimeLiteralx(CurrentNode as DateTimeLiteralxSyntax))
+				if (IsIncremental && CanReuseDateTimeLiteral(CurrentNode as DateTimeLiteralSyntax))
 				{
 					green = EatNode();
-					context = new TestLexerModeParser.DateTimeLiteralxContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					context = new TestLexerModeParser.DateTimeLiteralContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
 					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
-					context = this.Antlr4Parser._DoParseDateTimeLiteralx();
+					context = this.Antlr4Parser._DoParseDateTimeLiteral();
 					green = _visitor.Visit(context);
 				}
 		    }
@@ -5072,12 +5072,12 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 		    return context;
 		}
 		
-		public GreenNode ParseDateLiteralx(ref ParserState state)
+		public GreenNode ParseDateLiteral(ref ParserState state)
 		{
 		    RestoreParserState(state);
 			try
 			{
-				var context = this.Antlr4Parser.dateLiteralx();
+				var context = this.Antlr4Parser.dateLiteral();
 		        if (TryGetGreenNode(context, out var green)) return green;
 		        else return _visitor.Visit(context);
 			}
@@ -5087,27 +5087,27 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 			}
 		}
 		
-		protected virtual bool CanReuseDateLiteralx(DateLiteralxSyntax node)
+		protected virtual bool CanReuseDateLiteral(DateLiteralSyntax node)
 		{
 			return node != null;
 		}
 		
-		internal TestLexerModeParser.DateLiteralxContext _Antlr4ParseDateLiteralx()
+		internal TestLexerModeParser.DateLiteralContext _Antlr4ParseDateLiteral()
 		{
 			BeginNode();
-		    TestLexerModeParser.DateLiteralxContext context = null;
+		    TestLexerModeParser.DateLiteralContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseDateLiteralx(CurrentNode as DateLiteralxSyntax))
+				if (IsIncremental && CanReuseDateLiteral(CurrentNode as DateLiteralSyntax))
 				{
 					green = EatNode();
-					context = new TestLexerModeParser.DateLiteralxContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					context = new TestLexerModeParser.DateLiteralContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
 					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
-					context = this.Antlr4Parser._DoParseDateLiteralx();
+					context = this.Antlr4Parser._DoParseDateLiteral();
 					green = _visitor.Visit(context);
 				}
 		    }
@@ -5119,12 +5119,12 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 		    return context;
 		}
 		
-		public GreenNode ParseTimeLiteralx(ref ParserState state)
+		public GreenNode ParseTimeLiteral(ref ParserState state)
 		{
 		    RestoreParserState(state);
 			try
 			{
-				var context = this.Antlr4Parser.timeLiteralx();
+				var context = this.Antlr4Parser.timeLiteral();
 		        if (TryGetGreenNode(context, out var green)) return green;
 		        else return _visitor.Visit(context);
 			}
@@ -5134,27 +5134,27 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 			}
 		}
 		
-		protected virtual bool CanReuseTimeLiteralx(TimeLiteralxSyntax node)
+		protected virtual bool CanReuseTimeLiteral(TimeLiteralSyntax node)
 		{
 			return node != null;
 		}
 		
-		internal TestLexerModeParser.TimeLiteralxContext _Antlr4ParseTimeLiteralx()
+		internal TestLexerModeParser.TimeLiteralContext _Antlr4ParseTimeLiteral()
 		{
 			BeginNode();
-		    TestLexerModeParser.TimeLiteralxContext context = null;
+		    TestLexerModeParser.TimeLiteralContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseTimeLiteralx(CurrentNode as TimeLiteralxSyntax))
+				if (IsIncremental && CanReuseTimeLiteral(CurrentNode as TimeLiteralSyntax))
 				{
 					green = EatNode();
-					context = new TestLexerModeParser.TimeLiteralxContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					context = new TestLexerModeParser.TimeLiteralContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
 					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
-					context = this.Antlr4Parser._DoParseTimeLiteralx();
+					context = this.Antlr4Parser._DoParseTimeLiteral();
 					green = _visitor.Visit(context);
 				}
 		    }
@@ -5166,12 +5166,12 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 		    return context;
 		}
 		
-		public GreenNode ParseCharLiteralx(ref ParserState state)
+		public GreenNode ParseCharLiteral(ref ParserState state)
 		{
 		    RestoreParserState(state);
 			try
 			{
-				var context = this.Antlr4Parser.charLiteralx();
+				var context = this.Antlr4Parser.charLiteral();
 		        if (TryGetGreenNode(context, out var green)) return green;
 		        else return _visitor.Visit(context);
 			}
@@ -5181,27 +5181,27 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 			}
 		}
 		
-		protected virtual bool CanReuseCharLiteralx(CharLiteralxSyntax node)
+		protected virtual bool CanReuseCharLiteral(CharLiteralSyntax node)
 		{
 			return node != null;
 		}
 		
-		internal TestLexerModeParser.CharLiteralxContext _Antlr4ParseCharLiteralx()
+		internal TestLexerModeParser.CharLiteralContext _Antlr4ParseCharLiteral()
 		{
 			BeginNode();
-		    TestLexerModeParser.CharLiteralxContext context = null;
+		    TestLexerModeParser.CharLiteralContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseCharLiteralx(CurrentNode as CharLiteralxSyntax))
+				if (IsIncremental && CanReuseCharLiteral(CurrentNode as CharLiteralSyntax))
 				{
 					green = EatNode();
-					context = new TestLexerModeParser.CharLiteralxContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					context = new TestLexerModeParser.CharLiteralContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
 					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
-					context = this.Antlr4Parser._DoParseCharLiteralx();
+					context = this.Antlr4Parser._DoParseCharLiteral();
 					green = _visitor.Visit(context);
 				}
 		    }
@@ -5213,12 +5213,12 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 		    return context;
 		}
 		
-		public GreenNode ParseStringLiteralx(ref ParserState state)
+		public GreenNode ParseStringLiteral(ref ParserState state)
 		{
 		    RestoreParserState(state);
 			try
 			{
-				var context = this.Antlr4Parser.stringLiteralx();
+				var context = this.Antlr4Parser.stringLiteral();
 		        if (TryGetGreenNode(context, out var green)) return green;
 		        else return _visitor.Visit(context);
 			}
@@ -5228,27 +5228,27 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 			}
 		}
 		
-		protected virtual bool CanReuseStringLiteralx(StringLiteralxSyntax node)
+		protected virtual bool CanReuseStringLiteral(StringLiteralSyntax node)
 		{
 			return node != null;
 		}
 		
-		internal TestLexerModeParser.StringLiteralxContext _Antlr4ParseStringLiteralx()
+		internal TestLexerModeParser.StringLiteralContext _Antlr4ParseStringLiteral()
 		{
 			BeginNode();
-		    TestLexerModeParser.StringLiteralxContext context = null;
+		    TestLexerModeParser.StringLiteralContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseStringLiteralx(CurrentNode as StringLiteralxSyntax))
+				if (IsIncremental && CanReuseStringLiteral(CurrentNode as StringLiteralSyntax))
 				{
 					green = EatNode();
-					context = new TestLexerModeParser.StringLiteralxContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					context = new TestLexerModeParser.StringLiteralContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
 					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
-					context = this.Antlr4Parser._DoParseStringLiteralx();
+					context = this.Antlr4Parser._DoParseStringLiteral();
 					green = _visitor.Visit(context);
 				}
 		    }
@@ -5260,12 +5260,12 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 		    return context;
 		}
 		
-		public GreenNode ParseGuidLiteralx(ref ParserState state)
+		public GreenNode ParseGuidLiteral(ref ParserState state)
 		{
 		    RestoreParserState(state);
 			try
 			{
-				var context = this.Antlr4Parser.guidLiteralx();
+				var context = this.Antlr4Parser.guidLiteral();
 		        if (TryGetGreenNode(context, out var green)) return green;
 		        else return _visitor.Visit(context);
 			}
@@ -5275,27 +5275,27 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 			}
 		}
 		
-		protected virtual bool CanReuseGuidLiteralx(GuidLiteralxSyntax node)
+		protected virtual bool CanReuseGuidLiteral(GuidLiteralSyntax node)
 		{
 			return node != null;
 		}
 		
-		internal TestLexerModeParser.GuidLiteralxContext _Antlr4ParseGuidLiteralx()
+		internal TestLexerModeParser.GuidLiteralContext _Antlr4ParseGuidLiteral()
 		{
 			BeginNode();
-		    TestLexerModeParser.GuidLiteralxContext context = null;
+		    TestLexerModeParser.GuidLiteralContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseGuidLiteralx(CurrentNode as GuidLiteralxSyntax))
+				if (IsIncremental && CanReuseGuidLiteral(CurrentNode as GuidLiteralSyntax))
 				{
 					green = EatNode();
-					context = new TestLexerModeParser.GuidLiteralxContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					context = new TestLexerModeParser.GuidLiteralContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
 					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
-					context = this.Antlr4Parser._DoParseGuidLiteralx();
+					context = this.Antlr4Parser._DoParseGuidLiteral();
 					green = _visitor.Visit(context);
 				}
 		    }
@@ -6224,11 +6224,11 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				if (identifierContext != null) identifier = (IdentifierGreen)this.Visit(identifierContext);
 				if (identifier == null) identifier = IdentifierGreen.__Missing;
 				InternalSyntaxToken tAssign = (InternalSyntaxToken)this.VisitTerminal(context.TAssign(), TestLexerModeSyntaxKind.TAssign);
-				TestLexerModeParser.StringLiteralxContext stringLiteralxContext = context.stringLiteralx();
-				StringLiteralxGreen stringLiteralx = null;
-				if (stringLiteralxContext != null) stringLiteralx = (StringLiteralxGreen)this.Visit(stringLiteralxContext);
-				if (stringLiteralx == null) stringLiteralx = StringLiteralxGreen.__Missing;
-				return _factory.SeparatorStatement(tSemicolon, kSeparator, identifier, tAssign, stringLiteralx);
+				TestLexerModeParser.StringLiteralContext stringLiteralContext = context.stringLiteral();
+				StringLiteralGreen stringLiteral = null;
+				if (stringLiteralContext != null) stringLiteral = (StringLiteralGreen)this.Visit(stringLiteralContext);
+				if (stringLiteral == null) stringLiteral = StringLiteralGreen.__Missing;
+				return _factory.SeparatorStatement(tSemicolon, kSeparator, identifier, tAssign, stringLiteral);
 			}
 			
 			public override GreenNode VisitSwitchStatement(TestLexerModeParser.SwitchStatementContext context)
@@ -6463,10 +6463,10 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 			public override GreenNode VisitTemplateContent(TestLexerModeParser.TemplateContentContext context)
 			{
 				if (context == null) return TemplateContentGreen.__Missing;
-				TestLexerModeParser.TemplateOutputxContext templateOutputxContext = context.templateOutputx();
-				if (templateOutputxContext != null) 
+				TestLexerModeParser.TemplateOutputContext templateOutputContext = context.templateOutput();
+				if (templateOutputContext != null) 
 				{
-					return _factory.TemplateContent((TemplateOutputxGreen)this.Visit(templateOutputxContext));
+					return _factory.TemplateContent((TemplateOutputGreen)this.Visit(templateOutputContext));
 				}
 				TestLexerModeParser.TemplateStatementStartEndContext templateStatementStartEndContext = context.templateStatementStartEnd();
 				if (templateStatementStartEndContext != null) 
@@ -6476,28 +6476,28 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				return TemplateContentGreen.__Missing;
 			}
 			
-			public override GreenNode VisitTemplateOutputx(TestLexerModeParser.TemplateOutputxContext context)
+			public override GreenNode VisitTemplateOutput(TestLexerModeParser.TemplateOutputContext context)
 			{
-				if (context == null) return TemplateOutputxGreen.__Missing;
-				InternalSyntaxToken templateOutput = (InternalSyntaxToken)this.VisitTerminal(context.TemplateOutput(), TestLexerModeSyntaxKind.TemplateOutput);
-				return _factory.TemplateOutputx(templateOutput);
+				if (context == null) return TemplateOutputGreen.__Missing;
+				InternalSyntaxToken lTemplateOutput = (InternalSyntaxToken)this.VisitTerminal(context.LTemplateOutput(), TestLexerModeSyntaxKind.LTemplateOutput);
+				return _factory.TemplateOutput(lTemplateOutput);
 			}
 			
 			public override GreenNode VisitTemplateLineEnd(TestLexerModeParser.TemplateLineEndContext context)
 			{
 				if (context == null) return TemplateLineEndGreen.__Missing;
 				InternalSyntaxToken templateLineEnd = null;
-				if (context.TemplateCrLf() != null)
+				if (context.LTemplateCrLf() != null)
 				{
-					templateLineEnd = (InternalSyntaxToken)this.VisitTerminal(context.TemplateCrLf());
+					templateLineEnd = (InternalSyntaxToken)this.VisitTerminal(context.LTemplateCrLf());
 				}
-				else 	if (context.TemplateLineBreak() != null)
+				else 	if (context.LTemplateLineBreak() != null)
 				{
-					templateLineEnd = (InternalSyntaxToken)this.VisitTerminal(context.TemplateLineBreak());
+					templateLineEnd = (InternalSyntaxToken)this.VisitTerminal(context.LTemplateLineBreak());
 				}
-				else 	if (context.TemplateLineControl() != null)
+				else 	if (context.LTemplateLineControl() != null)
 				{
-					templateLineEnd = (InternalSyntaxToken)this.VisitTerminal(context.TemplateLineControl());
+					templateLineEnd = (InternalSyntaxToken)this.VisitTerminal(context.LTemplateLineControl());
 				}
 				else
 				{
@@ -6509,12 +6509,12 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 			public override GreenNode VisitTemplateStatementStartEnd(TestLexerModeParser.TemplateStatementStartEndContext context)
 			{
 				if (context == null) return TemplateStatementStartEndGreen.__Missing;
-				InternalSyntaxToken templateStatementStart = (InternalSyntaxToken)this.VisitTerminal(context.TemplateStatementStart(), TestLexerModeSyntaxKind.TemplateStatementStart);
+				InternalSyntaxToken tTemplateStatementStart = (InternalSyntaxToken)this.VisitTerminal(context.TTemplateStatementStart(), TestLexerModeSyntaxKind.TTemplateStatementStart);
 				TestLexerModeParser.TemplateStatementContext templateStatementContext = context.templateStatement();
 				TemplateStatementGreen templateStatement = null;
 				if (templateStatementContext != null) templateStatement = (TemplateStatementGreen)this.Visit(templateStatementContext);
-				InternalSyntaxToken templateStatementEnd = (InternalSyntaxToken)this.VisitTerminal(context.TemplateStatementEnd(), TestLexerModeSyntaxKind.TemplateStatementEnd);
-				return _factory.TemplateStatementStartEnd(templateStatementStart, templateStatement, templateStatementEnd);
+				InternalSyntaxToken tTemplateStatementEnd = (InternalSyntaxToken)this.VisitTerminal(context.TTemplateStatementEnd(), TestLexerModeSyntaxKind.TTemplateStatementEnd);
+				return _factory.TemplateStatementStartEnd(tTemplateStatementStart, templateStatement, tTemplateStatementEnd);
 			}
 			
 			public override GreenNode VisitTemplateStatement(TestLexerModeParser.TemplateStatementContext context)
@@ -7715,20 +7715,20 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 				{
 					return _factory.Literal((DateOrTimeLiteralGreen)this.Visit(dateOrTimeLiteralContext));
 				}
-				TestLexerModeParser.CharLiteralxContext charLiteralxContext = context.charLiteralx();
-				if (charLiteralxContext != null) 
+				TestLexerModeParser.CharLiteralContext charLiteralContext = context.charLiteral();
+				if (charLiteralContext != null) 
 				{
-					return _factory.Literal((CharLiteralxGreen)this.Visit(charLiteralxContext));
+					return _factory.Literal((CharLiteralGreen)this.Visit(charLiteralContext));
 				}
-				TestLexerModeParser.StringLiteralxContext stringLiteralxContext = context.stringLiteralx();
-				if (stringLiteralxContext != null) 
+				TestLexerModeParser.StringLiteralContext stringLiteralContext = context.stringLiteral();
+				if (stringLiteralContext != null) 
 				{
-					return _factory.Literal((StringLiteralxGreen)this.Visit(stringLiteralxContext));
+					return _factory.Literal((StringLiteralGreen)this.Visit(stringLiteralContext));
 				}
-				TestLexerModeParser.GuidLiteralxContext guidLiteralxContext = context.guidLiteralx();
-				if (guidLiteralxContext != null) 
+				TestLexerModeParser.GuidLiteralContext guidLiteralContext = context.guidLiteral();
+				if (guidLiteralContext != null) 
 				{
-					return _factory.Literal((GuidLiteralxGreen)this.Visit(guidLiteralxContext));
+					return _factory.Literal((GuidLiteralGreen)this.Visit(guidLiteralContext));
 				}
 				return LiteralGreen.__Missing;
 			}
@@ -7762,130 +7762,130 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 			public override GreenNode VisitNumberLiteral(TestLexerModeParser.NumberLiteralContext context)
 			{
 				if (context == null) return NumberLiteralGreen.__Missing;
-				TestLexerModeParser.IntegerLiteralxContext integerLiteralxContext = context.integerLiteralx();
-				if (integerLiteralxContext != null) 
+				TestLexerModeParser.IntegerLiteralContext integerLiteralContext = context.integerLiteral();
+				if (integerLiteralContext != null) 
 				{
-					return _factory.NumberLiteral((IntegerLiteralxGreen)this.Visit(integerLiteralxContext));
+					return _factory.NumberLiteral((IntegerLiteralGreen)this.Visit(integerLiteralContext));
 				}
-				TestLexerModeParser.DecimalLiteralxContext decimalLiteralxContext = context.decimalLiteralx();
-				if (decimalLiteralxContext != null) 
+				TestLexerModeParser.DecimalLiteralContext decimalLiteralContext = context.decimalLiteral();
+				if (decimalLiteralContext != null) 
 				{
-					return _factory.NumberLiteral((DecimalLiteralxGreen)this.Visit(decimalLiteralxContext));
+					return _factory.NumberLiteral((DecimalLiteralGreen)this.Visit(decimalLiteralContext));
 				}
-				TestLexerModeParser.ScientificLiteralxContext scientificLiteralxContext = context.scientificLiteralx();
-				if (scientificLiteralxContext != null) 
+				TestLexerModeParser.ScientificLiteralContext scientificLiteralContext = context.scientificLiteral();
+				if (scientificLiteralContext != null) 
 				{
-					return _factory.NumberLiteral((ScientificLiteralxGreen)this.Visit(scientificLiteralxContext));
+					return _factory.NumberLiteral((ScientificLiteralGreen)this.Visit(scientificLiteralContext));
 				}
 				return NumberLiteralGreen.__Missing;
 			}
 			
-			public override GreenNode VisitIntegerLiteralx(TestLexerModeParser.IntegerLiteralxContext context)
+			public override GreenNode VisitIntegerLiteral(TestLexerModeParser.IntegerLiteralContext context)
 			{
-				if (context == null) return IntegerLiteralxGreen.__Missing;
-				InternalSyntaxToken integerLiteral = (InternalSyntaxToken)this.VisitTerminal(context.IntegerLiteral(), TestLexerModeSyntaxKind.IntegerLiteral);
-				return _factory.IntegerLiteralx(integerLiteral);
+				if (context == null) return IntegerLiteralGreen.__Missing;
+				InternalSyntaxToken lInteger = (InternalSyntaxToken)this.VisitTerminal(context.LInteger(), TestLexerModeSyntaxKind.LInteger);
+				return _factory.IntegerLiteral(lInteger);
 			}
 			
-			public override GreenNode VisitDecimalLiteralx(TestLexerModeParser.DecimalLiteralxContext context)
+			public override GreenNode VisitDecimalLiteral(TestLexerModeParser.DecimalLiteralContext context)
 			{
-				if (context == null) return DecimalLiteralxGreen.__Missing;
-				InternalSyntaxToken decimalLiteral = (InternalSyntaxToken)this.VisitTerminal(context.DecimalLiteral(), TestLexerModeSyntaxKind.DecimalLiteral);
-				return _factory.DecimalLiteralx(decimalLiteral);
+				if (context == null) return DecimalLiteralGreen.__Missing;
+				InternalSyntaxToken lDecimal = (InternalSyntaxToken)this.VisitTerminal(context.LDecimal(), TestLexerModeSyntaxKind.LDecimal);
+				return _factory.DecimalLiteral(lDecimal);
 			}
 			
-			public override GreenNode VisitScientificLiteralx(TestLexerModeParser.ScientificLiteralxContext context)
+			public override GreenNode VisitScientificLiteral(TestLexerModeParser.ScientificLiteralContext context)
 			{
-				if (context == null) return ScientificLiteralxGreen.__Missing;
-				InternalSyntaxToken scientificLiteral = (InternalSyntaxToken)this.VisitTerminal(context.ScientificLiteral(), TestLexerModeSyntaxKind.ScientificLiteral);
-				return _factory.ScientificLiteralx(scientificLiteral);
+				if (context == null) return ScientificLiteralGreen.__Missing;
+				InternalSyntaxToken lScientific = (InternalSyntaxToken)this.VisitTerminal(context.LScientific(), TestLexerModeSyntaxKind.LScientific);
+				return _factory.ScientificLiteral(lScientific);
 			}
 			
 			public override GreenNode VisitDateOrTimeLiteral(TestLexerModeParser.DateOrTimeLiteralContext context)
 			{
 				if (context == null) return DateOrTimeLiteralGreen.__Missing;
-				TestLexerModeParser.DateTimeLiteralxContext dateTimeLiteralxContext = context.dateTimeLiteralx();
-				if (dateTimeLiteralxContext != null) 
+				TestLexerModeParser.DateTimeLiteralContext dateTimeLiteralContext = context.dateTimeLiteral();
+				if (dateTimeLiteralContext != null) 
 				{
-					return _factory.DateOrTimeLiteral((DateTimeLiteralxGreen)this.Visit(dateTimeLiteralxContext));
+					return _factory.DateOrTimeLiteral((DateTimeLiteralGreen)this.Visit(dateTimeLiteralContext));
 				}
-				TestLexerModeParser.DateTimeOffsetLiteralxContext dateTimeOffsetLiteralxContext = context.dateTimeOffsetLiteralx();
-				if (dateTimeOffsetLiteralxContext != null) 
+				TestLexerModeParser.DateTimeOffsetLiteralContext dateTimeOffsetLiteralContext = context.dateTimeOffsetLiteral();
+				if (dateTimeOffsetLiteralContext != null) 
 				{
-					return _factory.DateOrTimeLiteral((DateTimeOffsetLiteralxGreen)this.Visit(dateTimeOffsetLiteralxContext));
+					return _factory.DateOrTimeLiteral((DateTimeOffsetLiteralGreen)this.Visit(dateTimeOffsetLiteralContext));
 				}
-				TestLexerModeParser.DateLiteralxContext dateLiteralxContext = context.dateLiteralx();
-				if (dateLiteralxContext != null) 
+				TestLexerModeParser.DateLiteralContext dateLiteralContext = context.dateLiteral();
+				if (dateLiteralContext != null) 
 				{
-					return _factory.DateOrTimeLiteral((DateLiteralxGreen)this.Visit(dateLiteralxContext));
+					return _factory.DateOrTimeLiteral((DateLiteralGreen)this.Visit(dateLiteralContext));
 				}
-				TestLexerModeParser.TimeLiteralxContext timeLiteralxContext = context.timeLiteralx();
-				if (timeLiteralxContext != null) 
+				TestLexerModeParser.TimeLiteralContext timeLiteralContext = context.timeLiteral();
+				if (timeLiteralContext != null) 
 				{
-					return _factory.DateOrTimeLiteral((TimeLiteralxGreen)this.Visit(timeLiteralxContext));
+					return _factory.DateOrTimeLiteral((TimeLiteralGreen)this.Visit(timeLiteralContext));
 				}
 				return DateOrTimeLiteralGreen.__Missing;
 			}
 			
-			public override GreenNode VisitDateTimeOffsetLiteralx(TestLexerModeParser.DateTimeOffsetLiteralxContext context)
+			public override GreenNode VisitDateTimeOffsetLiteral(TestLexerModeParser.DateTimeOffsetLiteralContext context)
 			{
-				if (context == null) return DateTimeOffsetLiteralxGreen.__Missing;
-				InternalSyntaxToken dateTimeOffsetLiteral = (InternalSyntaxToken)this.VisitTerminal(context.DateTimeOffsetLiteral(), TestLexerModeSyntaxKind.DateTimeOffsetLiteral);
-				return _factory.DateTimeOffsetLiteralx(dateTimeOffsetLiteral);
+				if (context == null) return DateTimeOffsetLiteralGreen.__Missing;
+				InternalSyntaxToken lDateTimeOffset = (InternalSyntaxToken)this.VisitTerminal(context.LDateTimeOffset(), TestLexerModeSyntaxKind.LDateTimeOffset);
+				return _factory.DateTimeOffsetLiteral(lDateTimeOffset);
 			}
 			
-			public override GreenNode VisitDateTimeLiteralx(TestLexerModeParser.DateTimeLiteralxContext context)
+			public override GreenNode VisitDateTimeLiteral(TestLexerModeParser.DateTimeLiteralContext context)
 			{
-				if (context == null) return DateTimeLiteralxGreen.__Missing;
-				InternalSyntaxToken dateTimeLiteral = (InternalSyntaxToken)this.VisitTerminal(context.DateTimeLiteral(), TestLexerModeSyntaxKind.DateTimeLiteral);
-				return _factory.DateTimeLiteralx(dateTimeLiteral);
+				if (context == null) return DateTimeLiteralGreen.__Missing;
+				InternalSyntaxToken lDateTime = (InternalSyntaxToken)this.VisitTerminal(context.LDateTime(), TestLexerModeSyntaxKind.LDateTime);
+				return _factory.DateTimeLiteral(lDateTime);
 			}
 			
-			public override GreenNode VisitDateLiteralx(TestLexerModeParser.DateLiteralxContext context)
+			public override GreenNode VisitDateLiteral(TestLexerModeParser.DateLiteralContext context)
 			{
-				if (context == null) return DateLiteralxGreen.__Missing;
-				InternalSyntaxToken dateLiteral = (InternalSyntaxToken)this.VisitTerminal(context.DateLiteral(), TestLexerModeSyntaxKind.DateLiteral);
-				return _factory.DateLiteralx(dateLiteral);
+				if (context == null) return DateLiteralGreen.__Missing;
+				InternalSyntaxToken lDate = (InternalSyntaxToken)this.VisitTerminal(context.LDate(), TestLexerModeSyntaxKind.LDate);
+				return _factory.DateLiteral(lDate);
 			}
 			
-			public override GreenNode VisitTimeLiteralx(TestLexerModeParser.TimeLiteralxContext context)
+			public override GreenNode VisitTimeLiteral(TestLexerModeParser.TimeLiteralContext context)
 			{
-				if (context == null) return TimeLiteralxGreen.__Missing;
-				InternalSyntaxToken timeLiteral = (InternalSyntaxToken)this.VisitTerminal(context.TimeLiteral(), TestLexerModeSyntaxKind.TimeLiteral);
-				return _factory.TimeLiteralx(timeLiteral);
+				if (context == null) return TimeLiteralGreen.__Missing;
+				InternalSyntaxToken lTime = (InternalSyntaxToken)this.VisitTerminal(context.LTime(), TestLexerModeSyntaxKind.LTime);
+				return _factory.TimeLiteral(lTime);
 			}
 			
-			public override GreenNode VisitCharLiteralx(TestLexerModeParser.CharLiteralxContext context)
+			public override GreenNode VisitCharLiteral(TestLexerModeParser.CharLiteralContext context)
 			{
-				if (context == null) return CharLiteralxGreen.__Missing;
-				InternalSyntaxToken charLiteral = (InternalSyntaxToken)this.VisitTerminal(context.CharLiteral(), TestLexerModeSyntaxKind.CharLiteral);
-				return _factory.CharLiteralx(charLiteral);
+				if (context == null) return CharLiteralGreen.__Missing;
+				InternalSyntaxToken lChar = (InternalSyntaxToken)this.VisitTerminal(context.LChar(), TestLexerModeSyntaxKind.LChar);
+				return _factory.CharLiteral(lChar);
 			}
 			
-			public override GreenNode VisitStringLiteralx(TestLexerModeParser.StringLiteralxContext context)
+			public override GreenNode VisitStringLiteral(TestLexerModeParser.StringLiteralContext context)
 			{
-				if (context == null) return StringLiteralxGreen.__Missing;
-				InternalSyntaxToken stringLiteralx = null;
-				if (context.RegularStringLiteral() != null)
+				if (context == null) return StringLiteralGreen.__Missing;
+				InternalSyntaxToken stringLiteral = null;
+				if (context.LRegularString() != null)
 				{
-					stringLiteralx = (InternalSyntaxToken)this.VisitTerminal(context.RegularStringLiteral());
+					stringLiteral = (InternalSyntaxToken)this.VisitTerminal(context.LRegularString());
 				}
-				else 	if (context.DoubleQuoteVerbatimStringLiteral() != null)
+				else 	if (context.LDoubleQuoteVerbatimString() != null)
 				{
-					stringLiteralx = (InternalSyntaxToken)this.VisitTerminal(context.DoubleQuoteVerbatimStringLiteral());
+					stringLiteral = (InternalSyntaxToken)this.VisitTerminal(context.LDoubleQuoteVerbatimString());
 				}
 				else
 				{
-					stringLiteralx = _factory.MissingToken(SyntaxKind.MissingToken);
+					stringLiteral = _factory.MissingToken(SyntaxKind.MissingToken);
 				}
-				return _factory.StringLiteralx(stringLiteralx);
+				return _factory.StringLiteral(stringLiteral);
 			}
 			
-			public override GreenNode VisitGuidLiteralx(TestLexerModeParser.GuidLiteralxContext context)
+			public override GreenNode VisitGuidLiteral(TestLexerModeParser.GuidLiteralContext context)
 			{
-				if (context == null) return GuidLiteralxGreen.__Missing;
-				InternalSyntaxToken guidLiteral = (InternalSyntaxToken)this.VisitTerminal(context.GuidLiteral(), TestLexerModeSyntaxKind.GuidLiteral);
-				return _factory.GuidLiteralx(guidLiteral);
+				if (context == null) return GuidLiteralGreen.__Missing;
+				InternalSyntaxToken lGuid = (InternalSyntaxToken)this.VisitTerminal(context.LGuid(), TestLexerModeSyntaxKind.LGuid);
+				return _factory.GuidLiteral(lGuid);
 			}
         }
     }
@@ -8629,10 +8629,10 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 		    public GreenNode CachedNode => _cachedNode;
 		}
 		
-		internal class TemplateOutputxContext_Cached : TemplateOutputxContext, ICachedRuleContext
+		internal class TemplateOutputContext_Cached : TemplateOutputContext, ICachedRuleContext
 		{
 		    private GreenNode _cachedNode;
-		    public TemplateOutputxContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+		    public TemplateOutputContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
 				: base(parent, invokingState)
 		    {
 		        _cachedNode = cachedNode;
@@ -9003,10 +9003,10 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 		    public GreenNode CachedNode => _cachedNode;
 		}
 		
-		internal class IntegerLiteralxContext_Cached : IntegerLiteralxContext, ICachedRuleContext
+		internal class IntegerLiteralContext_Cached : IntegerLiteralContext, ICachedRuleContext
 		{
 		    private GreenNode _cachedNode;
-		    public IntegerLiteralxContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+		    public IntegerLiteralContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
 				: base(parent, invokingState)
 		    {
 		        _cachedNode = cachedNode;
@@ -9014,10 +9014,10 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 		    public GreenNode CachedNode => _cachedNode;
 		}
 		
-		internal class DecimalLiteralxContext_Cached : DecimalLiteralxContext, ICachedRuleContext
+		internal class DecimalLiteralContext_Cached : DecimalLiteralContext, ICachedRuleContext
 		{
 		    private GreenNode _cachedNode;
-		    public DecimalLiteralxContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+		    public DecimalLiteralContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
 				: base(parent, invokingState)
 		    {
 		        _cachedNode = cachedNode;
@@ -9025,10 +9025,10 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 		    public GreenNode CachedNode => _cachedNode;
 		}
 		
-		internal class ScientificLiteralxContext_Cached : ScientificLiteralxContext, ICachedRuleContext
+		internal class ScientificLiteralContext_Cached : ScientificLiteralContext, ICachedRuleContext
 		{
 		    private GreenNode _cachedNode;
-		    public ScientificLiteralxContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+		    public ScientificLiteralContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
 				: base(parent, invokingState)
 		    {
 		        _cachedNode = cachedNode;
@@ -9047,10 +9047,10 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 		    public GreenNode CachedNode => _cachedNode;
 		}
 		
-		internal class DateTimeOffsetLiteralxContext_Cached : DateTimeOffsetLiteralxContext, ICachedRuleContext
+		internal class DateTimeOffsetLiteralContext_Cached : DateTimeOffsetLiteralContext, ICachedRuleContext
 		{
 		    private GreenNode _cachedNode;
-		    public DateTimeOffsetLiteralxContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+		    public DateTimeOffsetLiteralContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
 				: base(parent, invokingState)
 		    {
 		        _cachedNode = cachedNode;
@@ -9058,10 +9058,10 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 		    public GreenNode CachedNode => _cachedNode;
 		}
 		
-		internal class DateTimeLiteralxContext_Cached : DateTimeLiteralxContext, ICachedRuleContext
+		internal class DateTimeLiteralContext_Cached : DateTimeLiteralContext, ICachedRuleContext
 		{
 		    private GreenNode _cachedNode;
-		    public DateTimeLiteralxContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+		    public DateTimeLiteralContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
 				: base(parent, invokingState)
 		    {
 		        _cachedNode = cachedNode;
@@ -9069,10 +9069,10 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 		    public GreenNode CachedNode => _cachedNode;
 		}
 		
-		internal class DateLiteralxContext_Cached : DateLiteralxContext, ICachedRuleContext
+		internal class DateLiteralContext_Cached : DateLiteralContext, ICachedRuleContext
 		{
 		    private GreenNode _cachedNode;
-		    public DateLiteralxContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+		    public DateLiteralContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
 				: base(parent, invokingState)
 		    {
 		        _cachedNode = cachedNode;
@@ -9080,10 +9080,10 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 		    public GreenNode CachedNode => _cachedNode;
 		}
 		
-		internal class TimeLiteralxContext_Cached : TimeLiteralxContext, ICachedRuleContext
+		internal class TimeLiteralContext_Cached : TimeLiteralContext, ICachedRuleContext
 		{
 		    private GreenNode _cachedNode;
-		    public TimeLiteralxContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+		    public TimeLiteralContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
 				: base(parent, invokingState)
 		    {
 		        _cachedNode = cachedNode;
@@ -9091,10 +9091,10 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 		    public GreenNode CachedNode => _cachedNode;
 		}
 		
-		internal class CharLiteralxContext_Cached : CharLiteralxContext, ICachedRuleContext
+		internal class CharLiteralContext_Cached : CharLiteralContext, ICachedRuleContext
 		{
 		    private GreenNode _cachedNode;
-		    public CharLiteralxContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+		    public CharLiteralContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
 				: base(parent, invokingState)
 		    {
 		        _cachedNode = cachedNode;
@@ -9102,10 +9102,10 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 		    public GreenNode CachedNode => _cachedNode;
 		}
 		
-		internal class StringLiteralxContext_Cached : StringLiteralxContext, ICachedRuleContext
+		internal class StringLiteralContext_Cached : StringLiteralContext, ICachedRuleContext
 		{
 		    private GreenNode _cachedNode;
-		    public StringLiteralxContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+		    public StringLiteralContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
 				: base(parent, invokingState)
 		    {
 		        _cachedNode = cachedNode;
@@ -9113,10 +9113,10 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
 		    public GreenNode CachedNode => _cachedNode;
 		}
 		
-		internal class GuidLiteralxContext_Cached : GuidLiteralxContext, ICachedRuleContext
+		internal class GuidLiteralContext_Cached : GuidLiteralContext, ICachedRuleContext
 		{
 		    private GreenNode _cachedNode;
-		    public GuidLiteralxContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+		    public GuidLiteralContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
 				: base(parent, invokingState)
 		    {
 		        _cachedNode = cachedNode;

@@ -19,7 +19,7 @@
 // Ambiguous reference in cref attribute
 #pragma warning disable 419
 
-namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax {
+namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax {
 using Antlr4.Runtime.Misc;
 using IParseTreeListener = Antlr4.Runtime.Tree.IParseTreeListener;
 using IToken = Antlr4.Runtime.IToken;
@@ -1315,15 +1315,15 @@ public interface ITestLexerModeParserListener : IParseTreeListener {
 	void ExitTemplateContent([NotNull] TestLexerModeParser.TemplateContentContext context);
 
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="TestLexerModeParser.templateOutputx"/>.
+	/// Enter a parse tree produced by <see cref="TestLexerModeParser.templateOutput"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterTemplateOutputx([NotNull] TestLexerModeParser.TemplateOutputxContext context);
+	void EnterTemplateOutput([NotNull] TestLexerModeParser.TemplateOutputContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="TestLexerModeParser.templateOutputx"/>.
+	/// Exit a parse tree produced by <see cref="TestLexerModeParser.templateOutput"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitTemplateOutputx([NotNull] TestLexerModeParser.TemplateOutputxContext context);
+	void ExitTemplateOutput([NotNull] TestLexerModeParser.TemplateOutputContext context);
 
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="TestLexerModeParser.templateLineEnd"/>.
@@ -1689,37 +1689,37 @@ public interface ITestLexerModeParserListener : IParseTreeListener {
 	void ExitNumberLiteral([NotNull] TestLexerModeParser.NumberLiteralContext context);
 
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="TestLexerModeParser.integerLiteralx"/>.
+	/// Enter a parse tree produced by <see cref="TestLexerModeParser.integerLiteral"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterIntegerLiteralx([NotNull] TestLexerModeParser.IntegerLiteralxContext context);
+	void EnterIntegerLiteral([NotNull] TestLexerModeParser.IntegerLiteralContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="TestLexerModeParser.integerLiteralx"/>.
+	/// Exit a parse tree produced by <see cref="TestLexerModeParser.integerLiteral"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitIntegerLiteralx([NotNull] TestLexerModeParser.IntegerLiteralxContext context);
+	void ExitIntegerLiteral([NotNull] TestLexerModeParser.IntegerLiteralContext context);
 
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="TestLexerModeParser.decimalLiteralx"/>.
+	/// Enter a parse tree produced by <see cref="TestLexerModeParser.decimalLiteral"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterDecimalLiteralx([NotNull] TestLexerModeParser.DecimalLiteralxContext context);
+	void EnterDecimalLiteral([NotNull] TestLexerModeParser.DecimalLiteralContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="TestLexerModeParser.decimalLiteralx"/>.
+	/// Exit a parse tree produced by <see cref="TestLexerModeParser.decimalLiteral"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitDecimalLiteralx([NotNull] TestLexerModeParser.DecimalLiteralxContext context);
+	void ExitDecimalLiteral([NotNull] TestLexerModeParser.DecimalLiteralContext context);
 
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="TestLexerModeParser.scientificLiteralx"/>.
+	/// Enter a parse tree produced by <see cref="TestLexerModeParser.scientificLiteral"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterScientificLiteralx([NotNull] TestLexerModeParser.ScientificLiteralxContext context);
+	void EnterScientificLiteral([NotNull] TestLexerModeParser.ScientificLiteralContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="TestLexerModeParser.scientificLiteralx"/>.
+	/// Exit a parse tree produced by <see cref="TestLexerModeParser.scientificLiteral"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitScientificLiteralx([NotNull] TestLexerModeParser.ScientificLiteralxContext context);
+	void ExitScientificLiteral([NotNull] TestLexerModeParser.ScientificLiteralContext context);
 
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="TestLexerModeParser.dateOrTimeLiteral"/>.
@@ -1733,80 +1733,80 @@ public interface ITestLexerModeParserListener : IParseTreeListener {
 	void ExitDateOrTimeLiteral([NotNull] TestLexerModeParser.DateOrTimeLiteralContext context);
 
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="TestLexerModeParser.dateTimeOffsetLiteralx"/>.
+	/// Enter a parse tree produced by <see cref="TestLexerModeParser.dateTimeOffsetLiteral"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterDateTimeOffsetLiteralx([NotNull] TestLexerModeParser.DateTimeOffsetLiteralxContext context);
+	void EnterDateTimeOffsetLiteral([NotNull] TestLexerModeParser.DateTimeOffsetLiteralContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="TestLexerModeParser.dateTimeOffsetLiteralx"/>.
+	/// Exit a parse tree produced by <see cref="TestLexerModeParser.dateTimeOffsetLiteral"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitDateTimeOffsetLiteralx([NotNull] TestLexerModeParser.DateTimeOffsetLiteralxContext context);
+	void ExitDateTimeOffsetLiteral([NotNull] TestLexerModeParser.DateTimeOffsetLiteralContext context);
 
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="TestLexerModeParser.dateTimeLiteralx"/>.
+	/// Enter a parse tree produced by <see cref="TestLexerModeParser.dateTimeLiteral"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterDateTimeLiteralx([NotNull] TestLexerModeParser.DateTimeLiteralxContext context);
+	void EnterDateTimeLiteral([NotNull] TestLexerModeParser.DateTimeLiteralContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="TestLexerModeParser.dateTimeLiteralx"/>.
+	/// Exit a parse tree produced by <see cref="TestLexerModeParser.dateTimeLiteral"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitDateTimeLiteralx([NotNull] TestLexerModeParser.DateTimeLiteralxContext context);
+	void ExitDateTimeLiteral([NotNull] TestLexerModeParser.DateTimeLiteralContext context);
 
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="TestLexerModeParser.dateLiteralx"/>.
+	/// Enter a parse tree produced by <see cref="TestLexerModeParser.dateLiteral"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterDateLiteralx([NotNull] TestLexerModeParser.DateLiteralxContext context);
+	void EnterDateLiteral([NotNull] TestLexerModeParser.DateLiteralContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="TestLexerModeParser.dateLiteralx"/>.
+	/// Exit a parse tree produced by <see cref="TestLexerModeParser.dateLiteral"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitDateLiteralx([NotNull] TestLexerModeParser.DateLiteralxContext context);
+	void ExitDateLiteral([NotNull] TestLexerModeParser.DateLiteralContext context);
 
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="TestLexerModeParser.timeLiteralx"/>.
+	/// Enter a parse tree produced by <see cref="TestLexerModeParser.timeLiteral"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterTimeLiteralx([NotNull] TestLexerModeParser.TimeLiteralxContext context);
+	void EnterTimeLiteral([NotNull] TestLexerModeParser.TimeLiteralContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="TestLexerModeParser.timeLiteralx"/>.
+	/// Exit a parse tree produced by <see cref="TestLexerModeParser.timeLiteral"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitTimeLiteralx([NotNull] TestLexerModeParser.TimeLiteralxContext context);
+	void ExitTimeLiteral([NotNull] TestLexerModeParser.TimeLiteralContext context);
 
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="TestLexerModeParser.charLiteralx"/>.
+	/// Enter a parse tree produced by <see cref="TestLexerModeParser.charLiteral"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterCharLiteralx([NotNull] TestLexerModeParser.CharLiteralxContext context);
+	void EnterCharLiteral([NotNull] TestLexerModeParser.CharLiteralContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="TestLexerModeParser.charLiteralx"/>.
+	/// Exit a parse tree produced by <see cref="TestLexerModeParser.charLiteral"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitCharLiteralx([NotNull] TestLexerModeParser.CharLiteralxContext context);
+	void ExitCharLiteral([NotNull] TestLexerModeParser.CharLiteralContext context);
 
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="TestLexerModeParser.stringLiteralx"/>.
+	/// Enter a parse tree produced by <see cref="TestLexerModeParser.stringLiteral"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterStringLiteralx([NotNull] TestLexerModeParser.StringLiteralxContext context);
+	void EnterStringLiteral([NotNull] TestLexerModeParser.StringLiteralContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="TestLexerModeParser.stringLiteralx"/>.
+	/// Exit a parse tree produced by <see cref="TestLexerModeParser.stringLiteral"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitStringLiteralx([NotNull] TestLexerModeParser.StringLiteralxContext context);
+	void ExitStringLiteral([NotNull] TestLexerModeParser.StringLiteralContext context);
 
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="TestLexerModeParser.guidLiteralx"/>.
+	/// Enter a parse tree produced by <see cref="TestLexerModeParser.guidLiteral"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterGuidLiteralx([NotNull] TestLexerModeParser.GuidLiteralxContext context);
+	void EnterGuidLiteral([NotNull] TestLexerModeParser.GuidLiteralContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="TestLexerModeParser.guidLiteralx"/>.
+	/// Exit a parse tree produced by <see cref="TestLexerModeParser.guidLiteral"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitGuidLiteralx([NotNull] TestLexerModeParser.GuidLiteralxContext context);
+	void ExitGuidLiteral([NotNull] TestLexerModeParser.GuidLiteralContext context);
 }
-} // namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
+} // namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax

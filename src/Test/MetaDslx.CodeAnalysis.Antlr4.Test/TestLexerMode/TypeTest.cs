@@ -15,10 +15,11 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestLexerMode
             TestId = "TypeTest";
         }
 
-        protected void Type(string source)
+        protected void Type(string source, int delta = 1)
         {
-            for (int i = 0; i < source.Length; i++)
+            for (int i = 0; i < source.Length; i+= delta)
             {
+                if (i > source.Length) i = source.Length;
                 string currentSource = source.Substring(0, i);
                 try
                 {

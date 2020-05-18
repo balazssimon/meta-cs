@@ -13,11 +13,11 @@ using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Syntax;
 using Roslyn.Utilities;
-using MetaDslx.CodeAnalysis.Antlr4Test;
-using MetaDslx.CodeAnalysis.Antlr4Test.Syntax;
-using MetaDslx.CodeAnalysis.Antlr4Test.Symbols;
+using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode;
+using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax;
+using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Symbols;
 
-namespace MetaDslx.CodeAnalysis.Antlr4Test.Binding
+namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Binding
 {
 	// Make sure to keep this in sync with TestLexerModeBoundNodeFactoryVisitor
     public class TestLexerModeIsBindableNodeVisitor : IsBindableNodeVisitor, ITestLexerModeSyntaxVisitor<bool>
@@ -1181,7 +1181,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Binding
 			}
 		}
 		
-		public bool VisitTemplateOutputx(TemplateOutputxSyntax node)
+		public bool VisitTemplateOutput(TemplateOutputSyntax node)
 		{
 			var state = this.State;
 			if (this.State == BoundNodeFactoryState.InParent) this.State = BoundNodeFactoryState.InNode;
@@ -2237,7 +2237,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Binding
 			}
 		}
 		
-		public bool VisitIntegerLiteralx(IntegerLiteralxSyntax node)
+		public bool VisitIntegerLiteral(IntegerLiteralSyntax node)
 		{
 			var state = this.State;
 			if (this.State == BoundNodeFactoryState.InParent) this.State = BoundNodeFactoryState.InNode;
@@ -2253,7 +2253,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Binding
 			}
 		}
 		
-		public bool VisitDecimalLiteralx(DecimalLiteralxSyntax node)
+		public bool VisitDecimalLiteral(DecimalLiteralSyntax node)
 		{
 			var state = this.State;
 			if (this.State == BoundNodeFactoryState.InParent) this.State = BoundNodeFactoryState.InNode;
@@ -2269,7 +2269,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Binding
 			}
 		}
 		
-		public bool VisitScientificLiteralx(ScientificLiteralxSyntax node)
+		public bool VisitScientificLiteral(ScientificLiteralSyntax node)
 		{
 			var state = this.State;
 			if (this.State == BoundNodeFactoryState.InParent) this.State = BoundNodeFactoryState.InNode;
@@ -2301,7 +2301,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Binding
 			}
 		}
 		
-		public bool VisitDateTimeOffsetLiteralx(DateTimeOffsetLiteralxSyntax node)
+		public bool VisitDateTimeOffsetLiteral(DateTimeOffsetLiteralSyntax node)
 		{
 			var state = this.State;
 			if (this.State == BoundNodeFactoryState.InParent) this.State = BoundNodeFactoryState.InNode;
@@ -2317,7 +2317,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Binding
 			}
 		}
 		
-		public bool VisitDateTimeLiteralx(DateTimeLiteralxSyntax node)
+		public bool VisitDateTimeLiteral(DateTimeLiteralSyntax node)
 		{
 			var state = this.State;
 			if (this.State == BoundNodeFactoryState.InParent) this.State = BoundNodeFactoryState.InNode;
@@ -2333,7 +2333,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Binding
 			}
 		}
 		
-		public bool VisitDateLiteralx(DateLiteralxSyntax node)
+		public bool VisitDateLiteral(DateLiteralSyntax node)
 		{
 			var state = this.State;
 			if (this.State == BoundNodeFactoryState.InParent) this.State = BoundNodeFactoryState.InNode;
@@ -2349,7 +2349,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Binding
 			}
 		}
 		
-		public bool VisitTimeLiteralx(TimeLiteralxSyntax node)
+		public bool VisitTimeLiteral(TimeLiteralSyntax node)
 		{
 			var state = this.State;
 			if (this.State == BoundNodeFactoryState.InParent) this.State = BoundNodeFactoryState.InNode;
@@ -2365,7 +2365,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Binding
 			}
 		}
 		
-		public bool VisitCharLiteralx(CharLiteralxSyntax node)
+		public bool VisitCharLiteral(CharLiteralSyntax node)
 		{
 			var state = this.State;
 			if (this.State == BoundNodeFactoryState.InParent) this.State = BoundNodeFactoryState.InNode;
@@ -2381,7 +2381,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Binding
 			}
 		}
 		
-		public bool VisitStringLiteralx(StringLiteralxSyntax node)
+		public bool VisitStringLiteral(StringLiteralSyntax node)
 		{
 			var state = this.State;
 			if (this.State == BoundNodeFactoryState.InParent) this.State = BoundNodeFactoryState.InNode;
@@ -2397,7 +2397,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Binding
 			}
 		}
 		
-		public bool VisitGuidLiteralx(GuidLiteralxSyntax node)
+		public bool VisitGuidLiteral(GuidLiteralSyntax node)
 		{
 			var state = this.State;
 			if (this.State == BoundNodeFactoryState.InParent) this.State = BoundNodeFactoryState.InNode;

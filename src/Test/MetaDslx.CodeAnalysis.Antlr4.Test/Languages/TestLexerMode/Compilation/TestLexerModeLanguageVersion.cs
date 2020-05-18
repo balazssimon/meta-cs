@@ -4,7 +4,7 @@ using MetaDslx.CodeAnalysis;
 using Microsoft.CodeAnalysis;
 using Roslyn.Utilities;
 
-namespace MetaDslx.CodeAnalysis.Antlr4Test
+namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode
 {
     /// <summary>
     /// Specifies the language version.

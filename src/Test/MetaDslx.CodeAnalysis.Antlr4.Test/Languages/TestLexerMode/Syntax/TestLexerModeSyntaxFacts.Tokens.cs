@@ -8,7 +8,7 @@ using Microsoft.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Syntax;
 using Roslyn.Utilities;
 
-namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
+namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax
 {
 	public enum TestLexerModeTokenKind : int
 	{
@@ -168,32 +168,32 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 				case TestLexerModeTokensSyntaxKind.TOr:
 				case TestLexerModeTokensSyntaxKind.TQuestionQuestion:
 				case TestLexerModeTokensSyntaxKind.IdentifierNormal:
-				case TestLexerModeTokensSyntaxKind.IntegerLiteral:
-				case TestLexerModeTokensSyntaxKind.DecimalLiteral:
-				case TestLexerModeTokensSyntaxKind.ScientificLiteral:
-				case TestLexerModeTokensSyntaxKind.DateTimeOffsetLiteral:
-				case TestLexerModeTokensSyntaxKind.DateTimeLiteral:
-				case TestLexerModeTokensSyntaxKind.DateLiteral:
-				case TestLexerModeTokensSyntaxKind.TimeLiteral:
-				case TestLexerModeTokensSyntaxKind.CharLiteral:
-				case TestLexerModeTokensSyntaxKind.RegularStringLiteral:
-				case TestLexerModeTokensSyntaxKind.GuidLiteral:
+				case TestLexerModeTokensSyntaxKind.LInteger:
+				case TestLexerModeTokensSyntaxKind.LDecimal:
+				case TestLexerModeTokensSyntaxKind.LScientific:
+				case TestLexerModeTokensSyntaxKind.LDateTimeOffset:
+				case TestLexerModeTokensSyntaxKind.LDateTime:
+				case TestLexerModeTokensSyntaxKind.LDate:
+				case TestLexerModeTokensSyntaxKind.LTime:
+				case TestLexerModeTokensSyntaxKind.LChar:
+				case TestLexerModeTokensSyntaxKind.LRegularString:
+				case TestLexerModeTokensSyntaxKind.LGuid:
 				case TestLexerModeTokensSyntaxKind.LUtf8Bom:
 				case TestLexerModeTokensSyntaxKind.LWhitespace:
 				case TestLexerModeTokensSyntaxKind.LCrLf:
 				case TestLexerModeTokensSyntaxKind.LLineBreak:
 				case TestLexerModeTokensSyntaxKind.LLineComment:
 				case TestLexerModeTokensSyntaxKind.LMultiLineComment:
-				case TestLexerModeTokensSyntaxKind.DoubleQuoteVerbatimStringLiteral:
+				case TestLexerModeTokensSyntaxKind.LDoubleQuoteVerbatimString:
 				case TestLexerModeTokensSyntaxKind.TH_TOpenParenthesis:
 				case TestLexerModeTokensSyntaxKind.TH_TCloseParenthesis:
 				case TestLexerModeTokensSyntaxKind.KEndTemplate:
-				case TestLexerModeTokensSyntaxKind.TemplateLineControl:
-				case TestLexerModeTokensSyntaxKind.TemplateOutput:
-				case TestLexerModeTokensSyntaxKind.TemplateCrLf:
-				case TestLexerModeTokensSyntaxKind.TemplateLineBreak:
-				case TestLexerModeTokensSyntaxKind.TemplateStatementStart:
-				case TestLexerModeTokensSyntaxKind.TemplateStatementEnd:
+				case TestLexerModeTokensSyntaxKind.LTemplateLineControl:
+				case TestLexerModeTokensSyntaxKind.LTemplateOutput:
+				case TestLexerModeTokensSyntaxKind.LTemplateCrLf:
+				case TestLexerModeTokensSyntaxKind.LTemplateLineBreak:
+				case TestLexerModeTokensSyntaxKind.TTemplateStatementStart:
+				case TestLexerModeTokensSyntaxKind.TTemplateStatementEnd:
 				case TestLexerModeTokensSyntaxKind.TS_TOpenBracket:
 				case TestLexerModeTokensSyntaxKind.TS_TCloseBracket:
 				case TestLexerModeTokensSyntaxKind.DoubleQuoteVerbatimStringLiteralStart:
@@ -306,7 +306,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 				case TestLexerModeTokensSyntaxKind.TOr:
 				case TestLexerModeTokensSyntaxKind.TQuestionQuestion:
 				case TestLexerModeTokensSyntaxKind.DoubleQuoteVerbatimStringLiteralStart:
-				case TestLexerModeTokensSyntaxKind.DoubleQuoteVerbatimStringLiteral:
+				case TestLexerModeTokensSyntaxKind.LDoubleQuoteVerbatimString:
 					return true;
 				default:
 					return false;
@@ -514,7 +514,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 				case "@\"":
 					return TestLexerModeTokensSyntaxKind.DoubleQuoteVerbatimStringLiteralStart;
 				case "\"":
-					return TestLexerModeTokensSyntaxKind.DoubleQuoteVerbatimStringLiteral;
+					return TestLexerModeTokensSyntaxKind.LDoubleQuoteVerbatimString;
 				default:
 					return TestLexerModeTokensSyntaxKind.None;
 			}
@@ -720,7 +720,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 					return "??";
 				case TestLexerModeTokensSyntaxKind.DoubleQuoteVerbatimStringLiteralStart:
 					return "@\"";
-				case TestLexerModeTokensSyntaxKind.DoubleQuoteVerbatimStringLiteral:
+				case TestLexerModeTokensSyntaxKind.LDoubleQuoteVerbatimString:
 					return "\"";
 				default:
 					return string.Empty;
@@ -839,25 +839,25 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 					return TestLexerModeTokenKind.Operator;
 				case TestLexerModeTokensSyntaxKind.IdentifierNormal:
 					return TestLexerModeTokenKind.Identifier;
-				case TestLexerModeTokensSyntaxKind.IntegerLiteral:
+				case TestLexerModeTokensSyntaxKind.LInteger:
 					return TestLexerModeTokenKind.Number;
-				case TestLexerModeTokensSyntaxKind.DecimalLiteral:
+				case TestLexerModeTokensSyntaxKind.LDecimal:
 					return TestLexerModeTokenKind.Number;
-				case TestLexerModeTokensSyntaxKind.ScientificLiteral:
+				case TestLexerModeTokensSyntaxKind.LScientific:
 					return TestLexerModeTokenKind.Number;
-				case TestLexerModeTokensSyntaxKind.DateTimeOffsetLiteral:
+				case TestLexerModeTokensSyntaxKind.LDateTimeOffset:
 					return TestLexerModeTokenKind.Number;
-				case TestLexerModeTokensSyntaxKind.DateTimeLiteral:
+				case TestLexerModeTokensSyntaxKind.LDateTime:
 					return TestLexerModeTokenKind.Number;
-				case TestLexerModeTokensSyntaxKind.DateLiteral:
+				case TestLexerModeTokensSyntaxKind.LDate:
 					return TestLexerModeTokenKind.Number;
-				case TestLexerModeTokensSyntaxKind.TimeLiteral:
+				case TestLexerModeTokensSyntaxKind.LTime:
 					return TestLexerModeTokenKind.Number;
-				case TestLexerModeTokensSyntaxKind.CharLiteral:
+				case TestLexerModeTokensSyntaxKind.LChar:
 					return TestLexerModeTokenKind.String;
-				case TestLexerModeTokensSyntaxKind.RegularStringLiteral:
+				case TestLexerModeTokensSyntaxKind.LRegularString:
 					return TestLexerModeTokenKind.String;
-				case TestLexerModeTokensSyntaxKind.GuidLiteral:
+				case TestLexerModeTokensSyntaxKind.LGuid:
 					return TestLexerModeTokenKind.Number;
 				case TestLexerModeTokensSyntaxKind.LWhitespace:
 					return TestLexerModeTokenKind.Whitespace;
@@ -871,17 +871,17 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 					return TestLexerModeTokenKind.Operator;
 				case TestLexerModeTokensSyntaxKind.KEndTemplate:
 					return TestLexerModeTokenKind.ReservedKeyword;
-				case TestLexerModeTokensSyntaxKind.TemplateLineControl:
+				case TestLexerModeTokensSyntaxKind.LTemplateLineControl:
 					return TestLexerModeTokenKind.TemplateControl;
-				case TestLexerModeTokensSyntaxKind.TemplateOutput:
+				case TestLexerModeTokensSyntaxKind.LTemplateOutput:
 					return TestLexerModeTokenKind.TemplateOutput;
-				case TestLexerModeTokensSyntaxKind.TemplateCrLf:
+				case TestLexerModeTokensSyntaxKind.LTemplateCrLf:
 					return TestLexerModeTokenKind.TemplateOutput;
-				case TestLexerModeTokensSyntaxKind.TemplateLineBreak:
+				case TestLexerModeTokensSyntaxKind.LTemplateLineBreak:
 					return TestLexerModeTokenKind.TemplateOutput;
-				case TestLexerModeTokensSyntaxKind.TemplateStatementStart:
+				case TestLexerModeTokensSyntaxKind.TTemplateStatementStart:
 					return TestLexerModeTokenKind.TemplateControl;
-				case TestLexerModeTokensSyntaxKind.TemplateStatementEnd:
+				case TestLexerModeTokensSyntaxKind.TTemplateStatementEnd:
 					return TestLexerModeTokenKind.TemplateControl;
 				default:
 					return TestLexerModeTokenKind.None;
@@ -1305,21 +1305,21 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{
 			switch(kind.Switch())
 			{
-				case TestLexerModeTokensSyntaxKind.IntegerLiteral:
+				case TestLexerModeTokensSyntaxKind.LInteger:
 					return true;
-				case TestLexerModeTokensSyntaxKind.DecimalLiteral:
+				case TestLexerModeTokensSyntaxKind.LDecimal:
 					return true;
-				case TestLexerModeTokensSyntaxKind.ScientificLiteral:
+				case TestLexerModeTokensSyntaxKind.LScientific:
 					return true;
-				case TestLexerModeTokensSyntaxKind.DateTimeOffsetLiteral:
+				case TestLexerModeTokensSyntaxKind.LDateTimeOffset:
 					return true;
-				case TestLexerModeTokensSyntaxKind.DateTimeLiteral:
+				case TestLexerModeTokensSyntaxKind.LDateTime:
 					return true;
-				case TestLexerModeTokensSyntaxKind.DateLiteral:
+				case TestLexerModeTokensSyntaxKind.LDate:
 					return true;
-				case TestLexerModeTokensSyntaxKind.TimeLiteral:
+				case TestLexerModeTokensSyntaxKind.LTime:
 					return true;
-				case TestLexerModeTokensSyntaxKind.GuidLiteral:
+				case TestLexerModeTokensSyntaxKind.LGuid:
 					return true;
 				default:
 					return false;
@@ -1329,9 +1329,9 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{
 			switch(kind.Switch())
 			{
-				case TestLexerModeTokensSyntaxKind.CharLiteral:
+				case TestLexerModeTokensSyntaxKind.LChar:
 					return true;
-				case TestLexerModeTokensSyntaxKind.RegularStringLiteral:
+				case TestLexerModeTokensSyntaxKind.LRegularString:
 					return true;
 				default:
 					return false;
@@ -1365,11 +1365,11 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{
 			switch(kind.Switch())
 			{
-				case TestLexerModeTokensSyntaxKind.TemplateLineControl:
+				case TestLexerModeTokensSyntaxKind.LTemplateLineControl:
 					return true;
-				case TestLexerModeTokensSyntaxKind.TemplateStatementStart:
+				case TestLexerModeTokensSyntaxKind.TTemplateStatementStart:
 					return true;
-				case TestLexerModeTokensSyntaxKind.TemplateStatementEnd:
+				case TestLexerModeTokensSyntaxKind.TTemplateStatementEnd:
 					return true;
 				default:
 					return false;
@@ -1379,11 +1379,11 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{
 			switch(kind.Switch())
 			{
-				case TestLexerModeTokensSyntaxKind.TemplateOutput:
+				case TestLexerModeTokensSyntaxKind.LTemplateOutput:
 					return true;
-				case TestLexerModeTokensSyntaxKind.TemplateCrLf:
+				case TestLexerModeTokensSyntaxKind.LTemplateCrLf:
 					return true;
-				case TestLexerModeTokensSyntaxKind.TemplateLineBreak:
+				case TestLexerModeTokensSyntaxKind.LTemplateLineBreak:
 					return true;
 				default:
 					return false;

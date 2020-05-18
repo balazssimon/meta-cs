@@ -19,7 +19,7 @@
 // Ambiguous reference in cref attribute
 #pragma warning disable 419
 
-namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax {
+namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax {
 using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
 using IToken = Antlr4.Runtime.IToken;
@@ -838,11 +838,11 @@ public interface ITestLexerModeParserVisitor<Result> : IParseTreeVisitor<Result>
 	Result VisitTemplateContent([NotNull] TestLexerModeParser.TemplateContentContext context);
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="TestLexerModeParser.templateOutputx"/>.
+	/// Visit a parse tree produced by <see cref="TestLexerModeParser.templateOutput"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitTemplateOutputx([NotNull] TestLexerModeParser.TemplateOutputxContext context);
+	Result VisitTemplateOutput([NotNull] TestLexerModeParser.TemplateOutputContext context);
 
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="TestLexerModeParser.templateLineEnd"/>.
@@ -1076,25 +1076,25 @@ public interface ITestLexerModeParserVisitor<Result> : IParseTreeVisitor<Result>
 	Result VisitNumberLiteral([NotNull] TestLexerModeParser.NumberLiteralContext context);
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="TestLexerModeParser.integerLiteralx"/>.
+	/// Visit a parse tree produced by <see cref="TestLexerModeParser.integerLiteral"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitIntegerLiteralx([NotNull] TestLexerModeParser.IntegerLiteralxContext context);
+	Result VisitIntegerLiteral([NotNull] TestLexerModeParser.IntegerLiteralContext context);
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="TestLexerModeParser.decimalLiteralx"/>.
+	/// Visit a parse tree produced by <see cref="TestLexerModeParser.decimalLiteral"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitDecimalLiteralx([NotNull] TestLexerModeParser.DecimalLiteralxContext context);
+	Result VisitDecimalLiteral([NotNull] TestLexerModeParser.DecimalLiteralContext context);
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="TestLexerModeParser.scientificLiteralx"/>.
+	/// Visit a parse tree produced by <see cref="TestLexerModeParser.scientificLiteral"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitScientificLiteralx([NotNull] TestLexerModeParser.ScientificLiteralxContext context);
+	Result VisitScientificLiteral([NotNull] TestLexerModeParser.ScientificLiteralContext context);
 
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="TestLexerModeParser.dateOrTimeLiteral"/>.
@@ -1104,52 +1104,52 @@ public interface ITestLexerModeParserVisitor<Result> : IParseTreeVisitor<Result>
 	Result VisitDateOrTimeLiteral([NotNull] TestLexerModeParser.DateOrTimeLiteralContext context);
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="TestLexerModeParser.dateTimeOffsetLiteralx"/>.
+	/// Visit a parse tree produced by <see cref="TestLexerModeParser.dateTimeOffsetLiteral"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitDateTimeOffsetLiteralx([NotNull] TestLexerModeParser.DateTimeOffsetLiteralxContext context);
+	Result VisitDateTimeOffsetLiteral([NotNull] TestLexerModeParser.DateTimeOffsetLiteralContext context);
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="TestLexerModeParser.dateTimeLiteralx"/>.
+	/// Visit a parse tree produced by <see cref="TestLexerModeParser.dateTimeLiteral"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitDateTimeLiteralx([NotNull] TestLexerModeParser.DateTimeLiteralxContext context);
+	Result VisitDateTimeLiteral([NotNull] TestLexerModeParser.DateTimeLiteralContext context);
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="TestLexerModeParser.dateLiteralx"/>.
+	/// Visit a parse tree produced by <see cref="TestLexerModeParser.dateLiteral"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitDateLiteralx([NotNull] TestLexerModeParser.DateLiteralxContext context);
+	Result VisitDateLiteral([NotNull] TestLexerModeParser.DateLiteralContext context);
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="TestLexerModeParser.timeLiteralx"/>.
+	/// Visit a parse tree produced by <see cref="TestLexerModeParser.timeLiteral"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitTimeLiteralx([NotNull] TestLexerModeParser.TimeLiteralxContext context);
+	Result VisitTimeLiteral([NotNull] TestLexerModeParser.TimeLiteralContext context);
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="TestLexerModeParser.charLiteralx"/>.
+	/// Visit a parse tree produced by <see cref="TestLexerModeParser.charLiteral"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitCharLiteralx([NotNull] TestLexerModeParser.CharLiteralxContext context);
+	Result VisitCharLiteral([NotNull] TestLexerModeParser.CharLiteralContext context);
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="TestLexerModeParser.stringLiteralx"/>.
+	/// Visit a parse tree produced by <see cref="TestLexerModeParser.stringLiteral"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitStringLiteralx([NotNull] TestLexerModeParser.StringLiteralxContext context);
+	Result VisitStringLiteral([NotNull] TestLexerModeParser.StringLiteralContext context);
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="TestLexerModeParser.guidLiteralx"/>.
+	/// Visit a parse tree produced by <see cref="TestLexerModeParser.guidLiteral"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitGuidLiteralx([NotNull] TestLexerModeParser.GuidLiteralxContext context);
+	Result VisitGuidLiteral([NotNull] TestLexerModeParser.GuidLiteralContext context);
 }
-} // namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
+} // namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax

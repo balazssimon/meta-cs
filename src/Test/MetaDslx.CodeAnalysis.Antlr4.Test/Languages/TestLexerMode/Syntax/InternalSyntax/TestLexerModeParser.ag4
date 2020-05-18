@@ -103,7 +103,7 @@ loopWhereExpression : KWhere expression;
 //loopRunList : loopRun (TComma loopRun)*;
 //loopRun : separatorStatement | variableDeclarationStatement | expressionStatement;
 loopRunExpression : separatorStatement;
-separatorStatement : TSemicolon KSeparator identifier TAssign stringLiteralx;
+separatorStatement : TSemicolon KSeparator identifier TAssign stringLiteral;
 
 
 switchStatement : switchStatementBegin switchBranchStatement* switchDefaultStatement? switchStatementEnd;
@@ -123,10 +123,10 @@ templateDeclaration : templateSignature templateBody KEndTemplate;
 templateSignature : KTemplate identifier TOpenParenthesis paramList? TCloseParenthesis;
 templateBody : templateContentLine*;
 templateContentLine : templateContent* templateLineEnd;
-templateContent : templateOutputx | templateStatementStartEnd;
-templateOutputx : TemplateOutput;
-templateLineEnd : TemplateCrLf | TemplateLineBreak | TemplateLineControl;
-templateStatementStartEnd : TemplateStatementStart templateStatement? TemplateStatementEnd;
+templateContent : templateOutput | templateStatementStartEnd;
+templateOutput : LTemplateOutput;
+templateLineEnd : LTemplateCrLf | LTemplateLineBreak | LTemplateLineControl;
+templateStatementStartEnd : TTemplateStatementStart templateStatement? TTemplateStatementEnd;
 
 templateStatement 
     : voidStatement
@@ -235,35 +235,35 @@ identifier : IdentifierNormal;
 // Literals
 literal 
     : nullLiteral | booleanLiteral | numberLiteral | dateOrTimeLiteral  
-    | charLiteralx | stringLiteralx | guidLiteralx;
+    | charLiteral | stringLiteral | guidLiteral;
 
 // Null literal
 nullLiteral : KNull;
 
 // Boolean literals
 booleanLiteral : KTrue | KFalse;
-
+ 
 // Number literals
-numberLiteral : integerLiteralx | decimalLiteralx | scientificLiteralx;
-integerLiteralx : IntegerLiteral;
-decimalLiteralx : DecimalLiteral;
-scientificLiteralx : ScientificLiteral;
+numberLiteral : integerLiteral | decimalLiteral | scientificLiteral;
+integerLiteral : LInteger;
+decimalLiteral : LDecimal;
+scientificLiteral : LScientific;
 
 // Date and time literals  
 dateOrTimeLiteral 
-    : dateTimeLiteralx | dateTimeOffsetLiteralx | dateLiteralx | timeLiteralx;
-dateTimeOffsetLiteralx : DateTimeOffsetLiteral;
-dateTimeLiteralx : DateTimeLiteral;
-dateLiteralx : DateLiteral;
-timeLiteralx : TimeLiteral;
+    : dateTimeLiteral | dateTimeOffsetLiteral | dateLiteral | timeLiteral;
+dateTimeOffsetLiteral : LDateTimeOffset;
+dateTimeLiteral : LDateTime;
+dateLiteral : LDate;
+timeLiteral : LTime;
 
 // Char literals
-charLiteralx : CharLiteral;
+charLiteral : LChar;
 
 // String literals
-stringLiteralx : RegularStringLiteral | DoubleQuoteVerbatimStringLiteral;
+stringLiteral : LRegularString | LDoubleQuoteVerbatimString;
 
 // Guid literal
-guidLiteralx : GuidLiteral;
+guidLiteral : LGuid;
 
-
+ 

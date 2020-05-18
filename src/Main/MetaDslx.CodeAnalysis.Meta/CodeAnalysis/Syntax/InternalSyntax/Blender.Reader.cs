@@ -37,7 +37,6 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
             internal BlendedNode ReadNodeOrToken(bool asToken)
             {
-                LexerMode mode = _mode;
                 // This is the core driver of the blender.  It just sits in a loop trying to keep our
                 // positions in the old and new text in sync.  When they're out of sync it will try
                 // to match them back up, and it will appropriately determine which nodes or tokens
@@ -50,7 +49,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                     // read from the new text.
                     if (_oldTreeCursor.IsFinished)
                     {
-                        return this.ReadNewToken(mode);
+                        return this.ReadNewToken();
                     }
 
                     // If delta is non-zero then that means our positions in the respective text
@@ -75,7 +74,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                     {
                         // Case '2' above.  We're behind in the new text, so read a token to try to
                         // catch up.
-                        return this.ReadNewToken(mode);
+                        return this.ReadNewToken();
                     }
                     else
                     {
@@ -137,13 +136,13 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 }
             }
 
-            private BlendedNode ReadNewToken(LexerMode mode)
+            private BlendedNode ReadNewToken()
             {
                 Debug.Assert(_changeDelta > 0 || _oldTreeCursor.IsFinished);
 
                 // The new text is either behind the cursor, or the cursor is done.  In either event,
                 // we need to lex a real token from the stream.
-                var token = this.LexNewToken(mode);
+                var token = this.LexNewToken();
 
                 // If the oldTreeCursor was finished, then the below code isn't really necessary.
                 // We'll just repeat the outer reader loop and call right back into ReadNewToken.
@@ -162,7 +161,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 return this.CreateBlendedNode(node: null, token: token);
             }
 
-            private InternalSyntaxToken LexNewToken(LexerMode mode)
+            private InternalSyntaxToken LexNewToken()
             {
                 var lexer = _parser.Lexer;
                 if (lexer.Position != _newPosition)
@@ -170,9 +169,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                     lexer.Reset(_newPosition, _newDirectives);
                 }
 
-                var token = lexer.Lex(ref mode);
+                var token = lexer.Lex(ref _mode);
                 _newDirectives = lexer.Directives;
-                _mode = mode;
                 return token;
             }
 

@@ -11,7 +11,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 
-namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
+namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax
 {
     /// <summary>
     /// This class stores several source parsing related options and offers access to their values.

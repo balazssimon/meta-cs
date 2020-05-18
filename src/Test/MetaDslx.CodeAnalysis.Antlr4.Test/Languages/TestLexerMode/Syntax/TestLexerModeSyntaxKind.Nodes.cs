@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using MetaDslx.CodeAnalysis.Syntax;
 using Roslyn.Utilities;
 
-namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
+namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax
 {
 	public class TestLexerModeSyntaxKind : TestLexerModeTokensSyntaxKind
 	{
@@ -97,7 +97,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		public const string TemplateBody = nameof(TemplateBody);
 		public const string TemplateContentLine = nameof(TemplateContentLine);
 		public const string TemplateContent = nameof(TemplateContent);
-		public const string TemplateOutputx = nameof(TemplateOutputx);
+		public const string TemplateOutput = nameof(TemplateOutput);
 		public const string TemplateLineEnd = nameof(TemplateLineEnd);
 		public const string TemplateStatementStartEnd = nameof(TemplateStatementStartEnd);
 		public const string TemplateStatement = nameof(TemplateStatement);
@@ -163,17 +163,17 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		public const string NullLiteral = nameof(NullLiteral);
 		public const string BooleanLiteral = nameof(BooleanLiteral);
 		public const string NumberLiteral = nameof(NumberLiteral);
-		public const string IntegerLiteralx = nameof(IntegerLiteralx);
-		public const string DecimalLiteralx = nameof(DecimalLiteralx);
-		public const string ScientificLiteralx = nameof(ScientificLiteralx);
+		public const string IntegerLiteral = nameof(IntegerLiteral);
+		public const string DecimalLiteral = nameof(DecimalLiteral);
+		public const string ScientificLiteral = nameof(ScientificLiteral);
 		public const string DateOrTimeLiteral = nameof(DateOrTimeLiteral);
-		public const string DateTimeOffsetLiteralx = nameof(DateTimeOffsetLiteralx);
-		public const string DateTimeLiteralx = nameof(DateTimeLiteralx);
-		public const string DateLiteralx = nameof(DateLiteralx);
-		public const string TimeLiteralx = nameof(TimeLiteralx);
-		public const string CharLiteralx = nameof(CharLiteralx);
-		public const string StringLiteralx = nameof(StringLiteralx);
-		public const string GuidLiteralx = nameof(GuidLiteralx);
+		public const string DateTimeOffsetLiteral = nameof(DateTimeOffsetLiteral);
+		public const string DateTimeLiteral = nameof(DateTimeLiteral);
+		public const string DateLiteral = nameof(DateLiteral);
+		public const string TimeLiteral = nameof(TimeLiteral);
+		public const string CharLiteral = nameof(CharLiteral);
+		public const string StringLiteral = nameof(StringLiteral);
+		public const string GuidLiteral = nameof(GuidLiteral);
 
 		protected TestLexerModeSyntaxKind(string name)
             : base(name)
@@ -194,7 +194,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
             __LastFixedToken = DoubleQuoteVerbatimStringLiteralStart;
             __FirstRule = Main;
 			__FirstRuleValue = (int)__FirstRule;
-            __LastRule = GuidLiteralx;
+            __LastRule = GuidLiteral;
 			__LastRuleValue = (int)__LastRule;
         }
 

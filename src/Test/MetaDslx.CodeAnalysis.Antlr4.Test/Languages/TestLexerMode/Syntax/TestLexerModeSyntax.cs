@@ -13,7 +13,7 @@ using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
 
-namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
+namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax
 {
     public abstract class TestLexerModeSyntaxNode : LanguageSyntaxNode
     {
@@ -114,7 +114,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.MainGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.MainGreen)this.Green;
 				var greenToken = green.EndOfFileToken;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(5), this.GetChildIndex(5));
 			}
@@ -238,7 +238,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.NamespaceDeclarationGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.NamespaceDeclarationGreen)this.Green;
 				var greenToken = green.KNamespace;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -251,7 +251,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.NamespaceDeclarationGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.NamespaceDeclarationGreen)this.Green;
 				var greenToken = green.TSemicolon;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
@@ -341,7 +341,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.GeneratorDeclarationGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.GeneratorDeclarationGreen)this.Green;
 				var greenToken = green.KGenerator;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -354,7 +354,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.GeneratorDeclarationGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.GeneratorDeclarationGreen)this.Green;
 				var greenToken = green.TColon;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
@@ -367,7 +367,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.GeneratorDeclarationGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.GeneratorDeclarationGreen)this.Green;
 				var greenToken = green.KFor;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(4), this.GetChildIndex(4));
 			}
@@ -380,7 +380,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.GeneratorDeclarationGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.GeneratorDeclarationGreen)this.Green;
 				var greenToken = green.TSemicolon;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(6), this.GetChildIndex(6));
 			}
@@ -509,7 +509,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.UsingNamespaceDeclarationGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.UsingNamespaceDeclarationGreen)this.Green;
 				var greenToken = green.KUsing;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -522,7 +522,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.UsingNamespaceDeclarationGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.UsingNamespaceDeclarationGreen)this.Green;
 				var greenToken = green.TSemicolon;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
@@ -611,7 +611,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.UsingGeneratorDeclarationGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.UsingGeneratorDeclarationGreen)this.Green;
 				var greenToken = green.KUsing;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -620,7 +620,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.UsingGeneratorDeclarationGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.UsingGeneratorDeclarationGreen)this.Green;
 				var greenToken = green.KGenerator;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
 			}
@@ -637,7 +637,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.UsingGeneratorDeclarationGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.UsingGeneratorDeclarationGreen)this.Green;
 				var greenToken = green.TSemicolon;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(4), this.GetChildIndex(4));
 			}
@@ -740,7 +740,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.ConfigDeclarationGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.ConfigDeclarationGreen)this.Green;
 				var greenToken = green.StartProperties;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -762,7 +762,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.ConfigDeclarationGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.ConfigDeclarationGreen)this.Green;
 				var greenToken = green.KEnd;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(3), this.GetChildIndex(3));
 			}
@@ -771,7 +771,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.ConfigDeclarationGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.ConfigDeclarationGreen)this.Green;
 				var greenToken = green.EndProperties;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(4), this.GetChildIndex(4));
 			}
@@ -901,7 +901,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.ConfigPropertyDeclarationGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.ConfigPropertyDeclarationGreen)this.Green;
 				var greenToken = green.TAssign;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
@@ -914,7 +914,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.ConfigPropertyDeclarationGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.ConfigPropertyDeclarationGreen)this.Green;
 				var greenToken = green.TSemicolon;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(4), this.GetChildIndex(4));
 			}
@@ -1019,7 +1019,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.ConfigPropertyGroupDeclarationGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.ConfigPropertyGroupDeclarationGreen)this.Green;
 				var greenToken = green.StartProperties;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -1041,7 +1041,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.ConfigPropertyGroupDeclarationGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.ConfigPropertyGroupDeclarationGreen)this.Green;
 				var greenToken = green.KEnd;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(3), this.GetChildIndex(3));
 			}
@@ -1050,7 +1050,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.ConfigPropertyGroupDeclarationGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.ConfigPropertyGroupDeclarationGreen)this.Green;
 				var greenToken = green.EndProperties;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(4), this.GetChildIndex(4));
 			}
@@ -1278,7 +1278,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.ExternFunctionDeclarationGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.ExternFunctionDeclarationGreen)this.Green;
 				var greenToken = green.KExtern;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -1373,7 +1373,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.FunctionDeclarationGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.FunctionDeclarationGreen)this.Green;
 				var greenToken = green.KEnd;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
@@ -1382,7 +1382,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.FunctionDeclarationGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.FunctionDeclarationGreen)this.Green;
 				var greenToken = green.KFunction;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(3), this.GetChildIndex(3));
 			}
@@ -1481,7 +1481,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.FunctionSignatureGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.FunctionSignatureGreen)this.Green;
 				var greenToken = green.KFunction;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -1502,7 +1502,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.FunctionSignatureGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.FunctionSignatureGreen)this.Green;
 				var greenToken = green.TOpenParenthesis;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(4), this.GetChildIndex(4));
 			}
@@ -1515,7 +1515,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.FunctionSignatureGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.FunctionSignatureGreen)this.Green;
 				var greenToken = green.TCloseParenthesis;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(6), this.GetChildIndex(6));
 			}
@@ -1727,7 +1727,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.ParameterGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.ParameterGreen)this.Green;
 				var greenToken = green.TAssign;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
@@ -2256,7 +2256,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.SingleStatementSemicolonGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.SingleStatementSemicolonGreen)this.Green;
 				var greenToken = green.TSemicolon;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
 			}
@@ -2511,7 +2511,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.VariableDeclarationItemGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.VariableDeclarationItemGreen)this.Green;
 				var greenToken = green.TAssign;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
 			}
@@ -2605,7 +2605,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.VoidStatementGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.VoidStatementGreen)this.Green;
 				var greenToken = green.KVoid;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -2691,7 +2691,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.ReturnStatementGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.ReturnStatementGreen)this.Green;
 				var greenToken = green.KReturn;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -3149,7 +3149,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.IfStatementBeginGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.IfStatementBeginGreen)this.Green;
 				var greenToken = green.KIf;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -3158,7 +3158,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.IfStatementBeginGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.IfStatementBeginGreen)this.Green;
 				var greenToken = green.TOpenParenthesis;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
 			}
@@ -3171,7 +3171,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.IfStatementBeginGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.IfStatementBeginGreen)this.Green;
 				var greenToken = green.TCloseParenthesis;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(3), this.GetChildIndex(3));
 			}
@@ -3265,7 +3265,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.ElseIfStatementGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.ElseIfStatementGreen)this.Green;
 				var greenToken = green.KElse;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -3274,7 +3274,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.ElseIfStatementGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.ElseIfStatementGreen)this.Green;
 				var greenToken = green.KIf;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
 			}
@@ -3283,7 +3283,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.ElseIfStatementGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.ElseIfStatementGreen)this.Green;
 				var greenToken = green.TOpenParenthesis;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
@@ -3296,7 +3296,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.ElseIfStatementGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.ElseIfStatementGreen)this.Green;
 				var greenToken = green.TCloseParenthesis;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(4), this.GetChildIndex(4));
 			}
@@ -3395,7 +3395,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.IfStatementElseGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.IfStatementElseGreen)this.Green;
 				var greenToken = green.KElse;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -3468,7 +3468,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.IfStatementEndGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.IfStatementEndGreen)this.Green;
 				var greenToken = green.KEnd;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -3477,7 +3477,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.IfStatementEndGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.IfStatementEndGreen)this.Green;
 				var greenToken = green.KIf;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
 			}
@@ -3656,7 +3656,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.ForStatementBeginGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.ForStatementBeginGreen)this.Green;
 				var greenToken = green.KFor;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -3665,7 +3665,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.ForStatementBeginGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.ForStatementBeginGreen)this.Green;
 				var greenToken = green.TOpenParenthesis;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
 			}
@@ -3678,7 +3678,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.ForStatementBeginGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.ForStatementBeginGreen)this.Green;
 				var greenToken = green.Semi1;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(3), this.GetChildIndex(3));
 			}
@@ -3691,7 +3691,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.ForStatementBeginGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.ForStatementBeginGreen)this.Green;
 				var greenToken = green.Semi2;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(5), this.GetChildIndex(5));
 			}
@@ -3704,7 +3704,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.ForStatementBeginGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.ForStatementBeginGreen)this.Green;
 				var greenToken = green.TCloseParenthesis;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(7), this.GetChildIndex(7));
 			}
@@ -3825,7 +3825,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.ForStatementEndGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.ForStatementEndGreen)this.Green;
 				var greenToken = green.KEnd;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -3834,7 +3834,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.ForStatementEndGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.ForStatementEndGreen)this.Green;
 				var greenToken = green.KFor;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
 			}
@@ -4107,7 +4107,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.WhileStatementBeginGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.WhileStatementBeginGreen)this.Green;
 				var greenToken = green.KWhile;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -4116,7 +4116,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.WhileStatementBeginGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.WhileStatementBeginGreen)this.Green;
 				var greenToken = green.TOpenParenthesis;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
 			}
@@ -4129,7 +4129,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.WhileStatementBeginGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.WhileStatementBeginGreen)this.Green;
 				var greenToken = green.TCloseParenthesis;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(3), this.GetChildIndex(3));
 			}
@@ -4222,7 +4222,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.WhileStatementEndGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.WhileStatementEndGreen)this.Green;
 				var greenToken = green.KEnd;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -4231,7 +4231,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.WhileStatementEndGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.WhileStatementEndGreen)this.Green;
 				var greenToken = green.KWhile;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
 			}
@@ -4478,7 +4478,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.RepeatStatementBeginGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.RepeatStatementBeginGreen)this.Green;
 				var greenToken = green.KRepeat;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -4552,7 +4552,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.RepeatStatementEndGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.RepeatStatementEndGreen)this.Green;
 				var greenToken = green.KUntil;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -4561,7 +4561,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.RepeatStatementEndGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.RepeatStatementEndGreen)this.Green;
 				var greenToken = green.TOpenParenthesis;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
 			}
@@ -4574,7 +4574,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.RepeatStatementEndGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.RepeatStatementEndGreen)this.Green;
 				var greenToken = green.TCloseParenthesis;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(3), this.GetChildIndex(3));
 			}
@@ -4838,7 +4838,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.LoopStatementBeginGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.LoopStatementBeginGreen)this.Green;
 				var greenToken = green.KLoop;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -4847,7 +4847,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.LoopStatementBeginGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.LoopStatementBeginGreen)this.Green;
 				var greenToken = green.TOpenParenthesis;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
 			}
@@ -4868,7 +4868,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.LoopStatementBeginGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.LoopStatementBeginGreen)this.Green;
 				var greenToken = green.TCloseParenthesis;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(5), this.GetChildIndex(5));
 			}
@@ -4977,7 +4977,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.LoopStatementEndGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.LoopStatementEndGreen)this.Green;
 				var greenToken = green.KEnd;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -4986,7 +4986,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.LoopStatementEndGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.LoopStatementEndGreen)this.Green;
 				var greenToken = green.KLoop;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
 			}
@@ -5160,7 +5160,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.LoopChainItemGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.LoopChainItemGreen)this.Green;
 				var greenToken = green.TColon;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
@@ -5275,7 +5275,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.LoopChainTypeofExpressionGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.LoopChainTypeofExpressionGreen)this.Green;
 				var greenToken = green.KTypeof;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -5284,7 +5284,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.LoopChainTypeofExpressionGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.LoopChainTypeofExpressionGreen)this.Green;
 				var greenToken = green.TOpenParenthesis;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
 			}
@@ -5297,7 +5297,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.LoopChainTypeofExpressionGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.LoopChainTypeofExpressionGreen)this.Green;
 				var greenToken = green.TCloseParenthesis;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(3), this.GetChildIndex(3));
 			}
@@ -5481,7 +5481,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.LoopChainMemberAccessExpressionGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.LoopChainMemberAccessExpressionGreen)this.Green;
 				var greenToken = green.TDot;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
 			}
@@ -5592,7 +5592,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.LoopChainMethodCallExpressionGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.LoopChainMethodCallExpressionGreen)this.Green;
 				var greenToken = green.TOpenParenthesis;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
 			}
@@ -5605,7 +5605,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.LoopChainMethodCallExpressionGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.LoopChainMethodCallExpressionGreen)this.Green;
 				var greenToken = green.TCloseParenthesis;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(3), this.GetChildIndex(3));
 			}
@@ -5701,7 +5701,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.LoopWhereExpressionGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.LoopWhereExpressionGreen)this.Green;
 				var greenToken = green.KWhere;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -5843,7 +5843,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 	public sealed class SeparatorStatementSyntax : TestLexerModeSyntaxNode
 	{
 	    private IdentifierSyntax identifier;
-	    private StringLiteralxSyntax stringLiteralx;
+	    private StringLiteralSyntax stringLiteral;
 	
 	    public SeparatorStatementSyntax(InternalSyntaxNode green, TestLexerModeSyntaxTree syntaxTree, int position)
 	        : base(green, syntaxTree, position)
@@ -5859,7 +5859,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.SeparatorStatementGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.SeparatorStatementGreen)this.Green;
 				var greenToken = green.TSemicolon;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -5868,7 +5868,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.SeparatorStatementGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.SeparatorStatementGreen)this.Green;
 				var greenToken = green.KSeparator;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
 			}
@@ -5881,14 +5881,14 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.SeparatorStatementGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.SeparatorStatementGreen)this.Green;
 				var greenToken = green.TAssign;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(3), this.GetChildIndex(3));
 			}
 		}
-	    public StringLiteralxSyntax StringLiteralx 
+	    public StringLiteralSyntax StringLiteral 
 		{ 
-			get { return this.GetRed(ref this.stringLiteralx, 4); } 
+			get { return this.GetRed(ref this.stringLiteral, 4); } 
 		}
 	
 	    public override SyntaxNode GetNodeSlot(int index)
@@ -5896,7 +5896,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 	        switch (index)
 	        {
 				case 2: return this.GetRed(ref this.identifier, 2);
-				case 4: return this.GetRed(ref this.stringLiteralx, 4);
+				case 4: return this.GetRed(ref this.stringLiteral, 4);
 				default: return null;
 	        }
 	    }
@@ -5906,45 +5906,45 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 	        switch (index)
 	        {
 				case 2: return this.identifier;
-				case 4: return this.stringLiteralx;
+				case 4: return this.stringLiteral;
 				default: return null;
 	        }
 	    }
 	
 	    public SeparatorStatementSyntax WithTSemicolon(SyntaxToken tSemicolon)
 		{
-			return this.Update(TSemicolon, this.KSeparator, this.Identifier, this.TAssign, this.StringLiteralx);
+			return this.Update(TSemicolon, this.KSeparator, this.Identifier, this.TAssign, this.StringLiteral);
 		}
 	
 	    public SeparatorStatementSyntax WithKSeparator(SyntaxToken kSeparator)
 		{
-			return this.Update(this.TSemicolon, KSeparator, this.Identifier, this.TAssign, this.StringLiteralx);
+			return this.Update(this.TSemicolon, KSeparator, this.Identifier, this.TAssign, this.StringLiteral);
 		}
 	
 	    public SeparatorStatementSyntax WithIdentifier(IdentifierSyntax identifier)
 		{
-			return this.Update(this.TSemicolon, this.KSeparator, Identifier, this.TAssign, this.StringLiteralx);
+			return this.Update(this.TSemicolon, this.KSeparator, Identifier, this.TAssign, this.StringLiteral);
 		}
 	
 	    public SeparatorStatementSyntax WithTAssign(SyntaxToken tAssign)
 		{
-			return this.Update(this.TSemicolon, this.KSeparator, this.Identifier, TAssign, this.StringLiteralx);
+			return this.Update(this.TSemicolon, this.KSeparator, this.Identifier, TAssign, this.StringLiteral);
 		}
 	
-	    public SeparatorStatementSyntax WithStringLiteralx(StringLiteralxSyntax stringLiteralx)
+	    public SeparatorStatementSyntax WithStringLiteral(StringLiteralSyntax stringLiteral)
 		{
-			return this.Update(this.TSemicolon, this.KSeparator, this.Identifier, this.TAssign, StringLiteralx);
+			return this.Update(this.TSemicolon, this.KSeparator, this.Identifier, this.TAssign, StringLiteral);
 		}
 	
-	    public SeparatorStatementSyntax Update(SyntaxToken tSemicolon, SyntaxToken kSeparator, IdentifierSyntax identifier, SyntaxToken tAssign, StringLiteralxSyntax stringLiteralx)
+	    public SeparatorStatementSyntax Update(SyntaxToken tSemicolon, SyntaxToken kSeparator, IdentifierSyntax identifier, SyntaxToken tAssign, StringLiteralSyntax stringLiteral)
 	    {
 	        if (this.TSemicolon != tSemicolon ||
 				this.KSeparator != kSeparator ||
 				this.Identifier != identifier ||
 				this.TAssign != tAssign ||
-				this.StringLiteralx != stringLiteralx)
+				this.StringLiteral != stringLiteral)
 	        {
-	            var newNode = TestLexerModeLanguage.Instance.SyntaxFactory.SeparatorStatement(tSemicolon, kSeparator, identifier, tAssign, stringLiteralx);
+	            var newNode = TestLexerModeLanguage.Instance.SyntaxFactory.SeparatorStatement(tSemicolon, kSeparator, identifier, tAssign, stringLiteral);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -6107,7 +6107,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.SwitchStatementBeginGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.SwitchStatementBeginGreen)this.Green;
 				var greenToken = green.KSwitch;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -6116,7 +6116,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.SwitchStatementBeginGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.SwitchStatementBeginGreen)this.Green;
 				var greenToken = green.TOpenParenthesis;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
 			}
@@ -6129,7 +6129,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.SwitchStatementBeginGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.SwitchStatementBeginGreen)this.Green;
 				var greenToken = green.TCloseParenthesis;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(3), this.GetChildIndex(3));
 			}
@@ -6222,7 +6222,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.SwitchStatementEndGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.SwitchStatementEndGreen)this.Green;
 				var greenToken = green.KEnd;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -6231,7 +6231,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.SwitchStatementEndGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.SwitchStatementEndGreen)this.Green;
 				var greenToken = green.KSwitch;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
 			}
@@ -6668,7 +6668,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.SwitchCaseHeadStatementGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.SwitchCaseHeadStatementGreen)this.Green;
 				var greenToken = green.KCase;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -6681,7 +6681,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.SwitchCaseHeadStatementGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.SwitchCaseHeadStatementGreen)this.Green;
 				var greenToken = green.TColon;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
@@ -6769,7 +6769,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.SwitchTypeIsHeadStatementGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.SwitchTypeIsHeadStatementGreen)this.Green;
 				var greenToken = green.KType;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -6778,7 +6778,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.SwitchTypeIsHeadStatementGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.SwitchTypeIsHeadStatementGreen)this.Green;
 				var greenToken = green.KIs;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
 			}
@@ -6791,7 +6791,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.SwitchTypeIsHeadStatementGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.SwitchTypeIsHeadStatementGreen)this.Green;
 				var greenToken = green.TColon;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(3), this.GetChildIndex(3));
 			}
@@ -6885,7 +6885,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.SwitchTypeAsHeadStatementGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.SwitchTypeAsHeadStatementGreen)this.Green;
 				var greenToken = green.KType;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -6894,7 +6894,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.SwitchTypeAsHeadStatementGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.SwitchTypeAsHeadStatementGreen)this.Green;
 				var greenToken = green.KAs;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
 			}
@@ -6907,7 +6907,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.SwitchTypeAsHeadStatementGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.SwitchTypeAsHeadStatementGreen)this.Green;
 				var greenToken = green.TColon;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(3), this.GetChildIndex(3));
 			}
@@ -7084,7 +7084,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.SwitchDefaultHeadStatementGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.SwitchDefaultHeadStatementGreen)this.Green;
 				var greenToken = green.KDefault;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -7093,7 +7093,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.SwitchDefaultHeadStatementGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.SwitchDefaultHeadStatementGreen)this.Green;
 				var greenToken = green.TColon;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
 			}
@@ -7182,7 +7182,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.TemplateDeclarationGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.TemplateDeclarationGreen)this.Green;
 				var greenToken = green.KEndTemplate;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
@@ -7273,7 +7273,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.TemplateSignatureGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.TemplateSignatureGreen)this.Green;
 				var greenToken = green.KTemplate;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -7286,7 +7286,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.TemplateSignatureGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.TemplateSignatureGreen)this.Green;
 				var greenToken = green.TOpenParenthesis;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
@@ -7299,7 +7299,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.TemplateSignatureGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.TemplateSignatureGreen)this.Green;
 				var greenToken = green.TCloseParenthesis;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(4), this.GetChildIndex(4));
 			}
@@ -7560,7 +7560,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 	
 	public sealed class TemplateContentSyntax : TestLexerModeSyntaxNode
 	{
-	    private TemplateOutputxSyntax templateOutputx;
+	    private TemplateOutputSyntax templateOutput;
 	    private TemplateStatementStartEndSyntax templateStatementStartEnd;
 	
 	    public TemplateContentSyntax(InternalSyntaxNode green, TestLexerModeSyntaxTree syntaxTree, int position)
@@ -7573,9 +7573,9 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 	    {
 	    }
 	
-	    public TemplateOutputxSyntax TemplateOutputx 
+	    public TemplateOutputSyntax TemplateOutput 
 		{ 
-			get { return this.GetRed(ref this.templateOutputx, 0); } 
+			get { return this.GetRed(ref this.templateOutput, 0); } 
 		}
 	    public TemplateStatementStartEndSyntax TemplateStatementStartEnd 
 		{ 
@@ -7586,7 +7586,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 	    {
 	        switch (index)
 	        {
-				case 0: return this.GetRed(ref this.templateOutputx, 0);
+				case 0: return this.GetRed(ref this.templateOutput, 0);
 				case 1: return this.GetRed(ref this.templateStatementStartEnd, 1);
 				default: return null;
 	        }
@@ -7596,15 +7596,15 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 	    {
 	        switch (index)
 	        {
-				case 0: return this.templateOutputx;
+				case 0: return this.templateOutput;
 				case 1: return this.templateStatementStartEnd;
 				default: return null;
 	        }
 	    }
 	
-	    public TemplateContentSyntax WithTemplateOutputx(TemplateOutputxSyntax templateOutputx)
+	    public TemplateContentSyntax WithTemplateOutput(TemplateOutputSyntax templateOutput)
 		{
-			return this.Update(templateOutputx);
+			return this.Update(templateOutput);
 		}
 	
 	    public TemplateContentSyntax WithTemplateStatementStartEnd(TemplateStatementStartEndSyntax templateStatementStartEnd)
@@ -7612,11 +7612,11 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 			return this.Update(templateStatementStartEnd);
 		}
 	
-	    public TemplateContentSyntax Update(TemplateOutputxSyntax templateOutputx)
+	    public TemplateContentSyntax Update(TemplateOutputSyntax templateOutput)
 	    {
-	        if (this.TemplateOutputx != templateOutputx)
+	        if (this.TemplateOutput != templateOutput)
 	        {
-	            var newNode = TestLexerModeLanguage.Instance.SyntaxFactory.TemplateContent(templateOutputx);
+	            var newNode = TestLexerModeLanguage.Instance.SyntaxFactory.TemplateContent(templateOutput);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -7654,25 +7654,25 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 	    }
 	}
 	
-	public sealed class TemplateOutputxSyntax : TestLexerModeSyntaxNode
+	public sealed class TemplateOutputSyntax : TestLexerModeSyntaxNode
 	{
 	
-	    public TemplateOutputxSyntax(InternalSyntaxNode green, TestLexerModeSyntaxTree syntaxTree, int position)
+	    public TemplateOutputSyntax(InternalSyntaxNode green, TestLexerModeSyntaxTree syntaxTree, int position)
 	        : base(green, syntaxTree, position)
 	    {
 	    }
 	
-	    public TemplateOutputxSyntax(InternalSyntaxNode green, TestLexerModeSyntaxNode parent, int position)
+	    public TemplateOutputSyntax(InternalSyntaxNode green, TestLexerModeSyntaxNode parent, int position)
 	        : base(green, parent, position)
 	    {
 	    }
 	
-	    public SyntaxToken TemplateOutput 
+	    public SyntaxToken LTemplateOutput 
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.TemplateOutputxGreen)this.Green;
-				var greenToken = green.TemplateOutput;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.TemplateOutputGreen)this.Green;
+				var greenToken = green.LTemplateOutput;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
 		}
@@ -7693,37 +7693,37 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 	        }
 	    }
 	
-	    public TemplateOutputxSyntax WithTemplateOutput(SyntaxToken templateOutput)
+	    public TemplateOutputSyntax WithLTemplateOutput(SyntaxToken lTemplateOutput)
 		{
-			return this.Update(TemplateOutput);
+			return this.Update(LTemplateOutput);
 		}
 	
-	    public TemplateOutputxSyntax Update(SyntaxToken templateOutput)
+	    public TemplateOutputSyntax Update(SyntaxToken lTemplateOutput)
 	    {
-	        if (this.TemplateOutput != templateOutput)
+	        if (this.LTemplateOutput != lTemplateOutput)
 	        {
-	            var newNode = TestLexerModeLanguage.Instance.SyntaxFactory.TemplateOutputx(templateOutput);
+	            var newNode = TestLexerModeLanguage.Instance.SyntaxFactory.TemplateOutput(lTemplateOutput);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
-				return (TemplateOutputxSyntax)newNode;
+				return (TemplateOutputSyntax)newNode;
 	        }
 	        return this;
 	    }
 	
 	    public override TResult Accept<TArg, TResult>(ITestLexerModeSyntaxVisitor<TArg, TResult> visitor, TArg argument)
 	    {
-	        return visitor.VisitTemplateOutputx(this, argument);
+	        return visitor.VisitTemplateOutput(this, argument);
 	    }
 	
 	    public override TResult Accept<TResult>(ITestLexerModeSyntaxVisitor<TResult> visitor)
 	    {
-	        return visitor.VisitTemplateOutputx(this);
+	        return visitor.VisitTemplateOutput(this);
 	    }
 	
 	    public override void Accept(ITestLexerModeSyntaxVisitor visitor)
 	    {
-	        visitor.VisitTemplateOutputx(this);
+	        visitor.VisitTemplateOutput(this);
 	    }
 	}
 	
@@ -7744,7 +7744,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.TemplateLineEndGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.TemplateLineEndGreen)this.Green;
 				var greenToken = green.TemplateLineEnd;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -7814,12 +7814,12 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 	    {
 	    }
 	
-	    public SyntaxToken TemplateStatementStart 
+	    public SyntaxToken TTemplateStatementStart 
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.TemplateStatementStartEndGreen)this.Green;
-				var greenToken = green.TemplateStatementStart;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.TemplateStatementStartEndGreen)this.Green;
+				var greenToken = green.TTemplateStatementStart;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
 		}
@@ -7827,12 +7827,12 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get { return this.GetRed(ref this.templateStatement, 1); } 
 		}
-	    public SyntaxToken TemplateStatementEnd 
+	    public SyntaxToken TTemplateStatementEnd 
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.TemplateStatementStartEndGreen)this.Green;
-				var greenToken = green.TemplateStatementEnd;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.TemplateStatementStartEndGreen)this.Green;
+				var greenToken = green.TTemplateStatementEnd;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
 		}
@@ -7855,28 +7855,28 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 	        }
 	    }
 	
-	    public TemplateStatementStartEndSyntax WithTemplateStatementStart(SyntaxToken templateStatementStart)
+	    public TemplateStatementStartEndSyntax WithTTemplateStatementStart(SyntaxToken tTemplateStatementStart)
 		{
-			return this.Update(TemplateStatementStart, this.TemplateStatement, this.TemplateStatementEnd);
+			return this.Update(TTemplateStatementStart, this.TemplateStatement, this.TTemplateStatementEnd);
 		}
 	
 	    public TemplateStatementStartEndSyntax WithTemplateStatement(TemplateStatementSyntax templateStatement)
 		{
-			return this.Update(this.TemplateStatementStart, TemplateStatement, this.TemplateStatementEnd);
+			return this.Update(this.TTemplateStatementStart, TemplateStatement, this.TTemplateStatementEnd);
 		}
 	
-	    public TemplateStatementStartEndSyntax WithTemplateStatementEnd(SyntaxToken templateStatementEnd)
+	    public TemplateStatementStartEndSyntax WithTTemplateStatementEnd(SyntaxToken tTemplateStatementEnd)
 		{
-			return this.Update(this.TemplateStatementStart, this.TemplateStatement, TemplateStatementEnd);
+			return this.Update(this.TTemplateStatementStart, this.TemplateStatement, TTemplateStatementEnd);
 		}
 	
-	    public TemplateStatementStartEndSyntax Update(SyntaxToken templateStatementStart, TemplateStatementSyntax templateStatement, SyntaxToken templateStatementEnd)
+	    public TemplateStatementStartEndSyntax Update(SyntaxToken tTemplateStatementStart, TemplateStatementSyntax templateStatement, SyntaxToken tTemplateStatementEnd)
 	    {
-	        if (this.TemplateStatementStart != templateStatementStart ||
+	        if (this.TTemplateStatementStart != tTemplateStatementStart ||
 				this.TemplateStatement != templateStatement ||
-				this.TemplateStatementEnd != templateStatementEnd)
+				this.TTemplateStatementEnd != tTemplateStatementEnd)
 	        {
-	            var newNode = TestLexerModeLanguage.Instance.SyntaxFactory.TemplateStatementStartEnd(templateStatementStart, templateStatement, templateStatementEnd);
+	            var newNode = TestLexerModeLanguage.Instance.SyntaxFactory.TemplateStatementStartEnd(tTemplateStatementStart, templateStatement, tTemplateStatementEnd);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -8440,7 +8440,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.TypeArgumentListGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.TypeArgumentListGreen)this.Green;
 				var greenToken = green.TLessThan;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -8453,7 +8453,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.TypeArgumentListGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.TypeArgumentListGreen)this.Green;
 				var greenToken = green.TGreaterThan;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
@@ -8540,7 +8540,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.PredefinedTypeGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.PredefinedTypeGreen)this.Green;
 				var greenToken = green.PredefinedType;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -9053,7 +9053,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.NullableTypeGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.NullableTypeGreen)this.Green;
 				var greenToken = green.TQuestion;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
 			}
@@ -9410,7 +9410,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.VoidTypeGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.VoidTypeGreen)this.Green;
 				var greenToken = green.KVoid;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -9815,7 +9815,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.RankSpecifierGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.RankSpecifierGreen)this.Green;
 				var greenToken = green.TOpenBracket;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -9824,7 +9824,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get
 			{
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.RankSpecifierGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.RankSpecifierGreen)this.Green;
 				var greenTokens = green.TComma;
 				if (greenTokens.Node != null)
 				{
@@ -9837,7 +9837,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.RankSpecifierGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.RankSpecifierGreen)this.Green;
 				var greenToken = green.TCloseBracket;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
@@ -10090,7 +10090,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.GenericDimensionSpecifierGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.GenericDimensionSpecifierGreen)this.Green;
 				var greenToken = green.TLessThan;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -10099,7 +10099,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get
 			{
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.GenericDimensionSpecifierGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.GenericDimensionSpecifierGreen)this.Green;
 				var greenTokens = green.TComma;
 				if (greenTokens.Node != null)
 				{
@@ -10112,7 +10112,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.GenericDimensionSpecifierGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.GenericDimensionSpecifierGreen)this.Green;
 				var greenToken = green.TGreaterThan;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
@@ -10211,7 +10211,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.ExplicitAnonymousFunctionSignatureGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.ExplicitAnonymousFunctionSignatureGreen)this.Green;
 				var greenToken = green.TOpenParenthesis;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -10232,7 +10232,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.ExplicitAnonymousFunctionSignatureGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.ExplicitAnonymousFunctionSignatureGreen)this.Green;
 				var greenToken = green.TCloseParenthesis;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
@@ -10325,7 +10325,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.ImplicitAnonymousFunctionSignatureGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.ImplicitAnonymousFunctionSignatureGreen)this.Green;
 				var greenToken = green.TOpenParenthesis;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -10346,7 +10346,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.ImplicitAnonymousFunctionSignatureGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.ImplicitAnonymousFunctionSignatureGreen)this.Green;
 				var greenToken = green.TCloseParenthesis;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
@@ -10677,7 +10677,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.ThisExpressionGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.ThisExpressionGreen)this.Green;
 				var greenToken = green.KThis;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -10821,7 +10821,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.TypeofVoidExpressionGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.TypeofVoidExpressionGreen)this.Green;
 				var greenToken = green.KTypeof;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -10830,7 +10830,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.TypeofVoidExpressionGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.TypeofVoidExpressionGreen)this.Green;
 				var greenToken = green.TOpenParenthesis;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
 			}
@@ -10839,7 +10839,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.TypeofVoidExpressionGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.TypeofVoidExpressionGreen)this.Green;
 				var greenToken = green.KVoid;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
@@ -10848,7 +10848,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.TypeofVoidExpressionGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.TypeofVoidExpressionGreen)this.Green;
 				var greenToken = green.TCloseParenthesis;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(3), this.GetChildIndex(3));
 			}
@@ -10940,7 +10940,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.TypeofUnboundTypeExpressionGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.TypeofUnboundTypeExpressionGreen)this.Green;
 				var greenToken = green.KTypeof;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -10949,7 +10949,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.TypeofUnboundTypeExpressionGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.TypeofUnboundTypeExpressionGreen)this.Green;
 				var greenToken = green.TOpenParenthesis;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
 			}
@@ -10962,7 +10962,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.TypeofUnboundTypeExpressionGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.TypeofUnboundTypeExpressionGreen)this.Green;
 				var greenToken = green.TCloseParenthesis;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(3), this.GetChildIndex(3));
 			}
@@ -11056,7 +11056,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.TypeofTypeExpressionGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.TypeofTypeExpressionGreen)this.Green;
 				var greenToken = green.KTypeof;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -11065,7 +11065,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.TypeofTypeExpressionGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.TypeofTypeExpressionGreen)this.Green;
 				var greenToken = green.TOpenParenthesis;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
 			}
@@ -11078,7 +11078,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.TypeofTypeExpressionGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.TypeofTypeExpressionGreen)this.Green;
 				var greenToken = green.TCloseParenthesis;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(3), this.GetChildIndex(3));
 			}
@@ -11172,7 +11172,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.DefaultValueExpressionGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.DefaultValueExpressionGreen)this.Green;
 				var greenToken = green.KDefault;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -11181,7 +11181,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.DefaultValueExpressionGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.DefaultValueExpressionGreen)this.Green;
 				var greenToken = green.TOpenParenthesis;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
 			}
@@ -11194,7 +11194,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.DefaultValueExpressionGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.DefaultValueExpressionGreen)this.Green;
 				var greenToken = green.TCloseParenthesis;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(3), this.GetChildIndex(3));
 			}
@@ -11289,7 +11289,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.NewObjectOrCollectionWithConstructorExpressionGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.NewObjectOrCollectionWithConstructorExpressionGreen)this.Green;
 				var greenToken = green.KNew;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -11302,7 +11302,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.NewObjectOrCollectionWithConstructorExpressionGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.NewObjectOrCollectionWithConstructorExpressionGreen)this.Green;
 				var greenToken = green.TOpenParenthesis;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
@@ -11315,7 +11315,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.NewObjectOrCollectionWithConstructorExpressionGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.NewObjectOrCollectionWithConstructorExpressionGreen)this.Green;
 				var greenToken = green.TCloseParenthesis;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(4), this.GetChildIndex(4));
 			}
@@ -11502,7 +11502,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.HasLoopExpressionGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.HasLoopExpressionGreen)this.Green;
 				var greenToken = green.KHasLoop;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -11511,7 +11511,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.HasLoopExpressionGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.HasLoopExpressionGreen)this.Green;
 				var greenToken = green.TOpenParenthesis;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
 			}
@@ -11528,7 +11528,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.HasLoopExpressionGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.HasLoopExpressionGreen)this.Green;
 				var greenToken = green.TCloseParenthesis;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(4), this.GetChildIndex(4));
 			}
@@ -11630,7 +11630,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.ParenthesizedExpressionGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.ParenthesizedExpressionGreen)this.Green;
 				var greenToken = green.TOpenParenthesis;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -11643,7 +11643,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.ParenthesizedExpressionGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.ParenthesizedExpressionGreen)this.Green;
 				var greenToken = green.TCloseParenthesis;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
@@ -11736,7 +11736,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.ElementAccessExpressionGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.ElementAccessExpressionGreen)this.Green;
 				var greenToken = green.TOpenBracket;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
 			}
@@ -11749,7 +11749,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.ElementAccessExpressionGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.ElementAccessExpressionGreen)this.Green;
 				var greenToken = green.TCloseBracket;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(3), this.GetChildIndex(3));
 			}
@@ -11850,7 +11850,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.FunctionCallExpressionGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.FunctionCallExpressionGreen)this.Green;
 				var greenToken = green.TOpenParenthesis;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
 			}
@@ -11863,7 +11863,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.FunctionCallExpressionGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.FunctionCallExpressionGreen)this.Green;
 				var greenToken = green.TCloseParenthesis;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(3), this.GetChildIndex(3));
 			}
@@ -11965,7 +11965,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.PredefinedTypeMemberAccessExpressionGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.PredefinedTypeMemberAccessExpressionGreen)this.Green;
 				var greenToken = green.TDot;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
 			}
@@ -12077,7 +12077,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.MemberAccessExpressionGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.MemberAccessExpressionGreen)this.Green;
 				var greenToken = green.TDot;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
 			}
@@ -12184,7 +12184,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.TypecastExpressionGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.TypecastExpressionGreen)this.Green;
 				var greenToken = green.TOpenParenthesis;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -12197,7 +12197,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.TypecastExpressionGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.TypecastExpressionGreen)this.Green;
 				var greenToken = green.TCloseParenthesis;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
@@ -12297,7 +12297,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.UnaryExpressionGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.UnaryExpressionGreen)this.Green;
 				var greenToken = green.Op;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -12387,7 +12387,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.PostExpressionGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.PostExpressionGreen)this.Green;
 				var greenToken = green.Op;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
 			}
@@ -12474,7 +12474,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.MultiplicationExpressionGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.MultiplicationExpressionGreen)this.Green;
 				var greenToken = green.Op;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
 			}
@@ -12573,7 +12573,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.AdditionExpressionGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.AdditionExpressionGreen)this.Green;
 				var greenToken = green.Op;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
 			}
@@ -12672,7 +12672,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.RelationalExpressionGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.RelationalExpressionGreen)this.Green;
 				var greenToken = green.Op;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
 			}
@@ -12771,7 +12771,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.TypecheckExpressionGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.TypecheckExpressionGreen)this.Green;
 				var greenToken = green.Op;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
 			}
@@ -12870,7 +12870,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.EqualityExpressionGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.EqualityExpressionGreen)this.Green;
 				var greenToken = green.Op;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
 			}
@@ -12969,7 +12969,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.BitwiseAndExpressionGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.BitwiseAndExpressionGreen)this.Green;
 				var greenToken = green.TAmp;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
 			}
@@ -13068,7 +13068,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.BitwiseXorExpressionGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.BitwiseXorExpressionGreen)this.Green;
 				var greenToken = green.THat;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
 			}
@@ -13167,7 +13167,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.BitwiseOrExpressionGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.BitwiseOrExpressionGreen)this.Green;
 				var greenToken = green.TPipe;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
 			}
@@ -13266,7 +13266,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.LogicalAndExpressionGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.LogicalAndExpressionGreen)this.Green;
 				var greenToken = green.TAnd;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
 			}
@@ -13365,7 +13365,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.LogicalXorExpressionGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.LogicalXorExpressionGreen)this.Green;
 				var greenToken = green.TXor;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
 			}
@@ -13464,7 +13464,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.LogicalOrExpressionGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.LogicalOrExpressionGreen)this.Green;
 				var greenToken = green.TOr;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
 			}
@@ -13564,7 +13564,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.ConditionalExpressionGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.ConditionalExpressionGreen)this.Green;
 				var greenToken = green.TQuestion;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
 			}
@@ -13577,7 +13577,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.ConditionalExpressionGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.ConditionalExpressionGreen)this.Green;
 				var greenToken = green.TColon;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(3), this.GetChildIndex(3));
 			}
@@ -13690,7 +13690,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.AssignmentExpressionGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.AssignmentExpressionGreen)this.Green;
 				var greenToken = green.Op;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
 			}
@@ -13789,7 +13789,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.LambdaExpressionGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.LambdaExpressionGreen)this.Green;
 				var greenToken = green.TArrow;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
 			}
@@ -14050,7 +14050,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.IdentifierGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.IdentifierGreen)this.Green;
 				var greenToken = green.IdentifierNormal;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -14112,9 +14112,9 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 	    private BooleanLiteralSyntax booleanLiteral;
 	    private NumberLiteralSyntax numberLiteral;
 	    private DateOrTimeLiteralSyntax dateOrTimeLiteral;
-	    private CharLiteralxSyntax charLiteralx;
-	    private StringLiteralxSyntax stringLiteralx;
-	    private GuidLiteralxSyntax guidLiteralx;
+	    private CharLiteralSyntax charLiteral;
+	    private StringLiteralSyntax stringLiteral;
+	    private GuidLiteralSyntax guidLiteral;
 	
 	    public LiteralSyntax(InternalSyntaxNode green, TestLexerModeSyntaxTree syntaxTree, int position)
 	        : base(green, syntaxTree, position)
@@ -14142,17 +14142,17 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get { return this.GetRed(ref this.dateOrTimeLiteral, 3); } 
 		}
-	    public CharLiteralxSyntax CharLiteralx 
+	    public CharLiteralSyntax CharLiteral 
 		{ 
-			get { return this.GetRed(ref this.charLiteralx, 4); } 
+			get { return this.GetRed(ref this.charLiteral, 4); } 
 		}
-	    public StringLiteralxSyntax StringLiteralx 
+	    public StringLiteralSyntax StringLiteral 
 		{ 
-			get { return this.GetRed(ref this.stringLiteralx, 5); } 
+			get { return this.GetRed(ref this.stringLiteral, 5); } 
 		}
-	    public GuidLiteralxSyntax GuidLiteralx 
+	    public GuidLiteralSyntax GuidLiteral 
 		{ 
-			get { return this.GetRed(ref this.guidLiteralx, 6); } 
+			get { return this.GetRed(ref this.guidLiteral, 6); } 
 		}
 	
 	    public override SyntaxNode GetNodeSlot(int index)
@@ -14163,9 +14163,9 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 				case 1: return this.GetRed(ref this.booleanLiteral, 1);
 				case 2: return this.GetRed(ref this.numberLiteral, 2);
 				case 3: return this.GetRed(ref this.dateOrTimeLiteral, 3);
-				case 4: return this.GetRed(ref this.charLiteralx, 4);
-				case 5: return this.GetRed(ref this.stringLiteralx, 5);
-				case 6: return this.GetRed(ref this.guidLiteralx, 6);
+				case 4: return this.GetRed(ref this.charLiteral, 4);
+				case 5: return this.GetRed(ref this.stringLiteral, 5);
+				case 6: return this.GetRed(ref this.guidLiteral, 6);
 				default: return null;
 	        }
 	    }
@@ -14178,9 +14178,9 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 				case 1: return this.booleanLiteral;
 				case 2: return this.numberLiteral;
 				case 3: return this.dateOrTimeLiteral;
-				case 4: return this.charLiteralx;
-				case 5: return this.stringLiteralx;
-				case 6: return this.guidLiteralx;
+				case 4: return this.charLiteral;
+				case 5: return this.stringLiteral;
+				case 6: return this.guidLiteral;
 				default: return null;
 	        }
 	    }
@@ -14205,19 +14205,19 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 			return this.Update(dateOrTimeLiteral);
 		}
 	
-	    public LiteralSyntax WithCharLiteralx(CharLiteralxSyntax charLiteralx)
+	    public LiteralSyntax WithCharLiteral(CharLiteralSyntax charLiteral)
 		{
-			return this.Update(charLiteralx);
+			return this.Update(charLiteral);
 		}
 	
-	    public LiteralSyntax WithStringLiteralx(StringLiteralxSyntax stringLiteralx)
+	    public LiteralSyntax WithStringLiteral(StringLiteralSyntax stringLiteral)
 		{
-			return this.Update(stringLiteralx);
+			return this.Update(stringLiteral);
 		}
 	
-	    public LiteralSyntax WithGuidLiteralx(GuidLiteralxSyntax guidLiteralx)
+	    public LiteralSyntax WithGuidLiteral(GuidLiteralSyntax guidLiteral)
 		{
-			return this.Update(guidLiteralx);
+			return this.Update(guidLiteral);
 		}
 	
 	    public LiteralSyntax Update(NullLiteralSyntax nullLiteral)
@@ -14272,11 +14272,11 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 	        return this;
 	    }
 	
-	    public LiteralSyntax Update(CharLiteralxSyntax charLiteralx)
+	    public LiteralSyntax Update(CharLiteralSyntax charLiteral)
 	    {
-	        if (this.CharLiteralx != charLiteralx)
+	        if (this.CharLiteral != charLiteral)
 	        {
-	            var newNode = TestLexerModeLanguage.Instance.SyntaxFactory.Literal(charLiteralx);
+	            var newNode = TestLexerModeLanguage.Instance.SyntaxFactory.Literal(charLiteral);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -14285,11 +14285,11 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 	        return this;
 	    }
 	
-	    public LiteralSyntax Update(StringLiteralxSyntax stringLiteralx)
+	    public LiteralSyntax Update(StringLiteralSyntax stringLiteral)
 	    {
-	        if (this.StringLiteralx != stringLiteralx)
+	        if (this.StringLiteral != stringLiteral)
 	        {
-	            var newNode = TestLexerModeLanguage.Instance.SyntaxFactory.Literal(stringLiteralx);
+	            var newNode = TestLexerModeLanguage.Instance.SyntaxFactory.Literal(stringLiteral);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -14298,11 +14298,11 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 	        return this;
 	    }
 	
-	    public LiteralSyntax Update(GuidLiteralxSyntax guidLiteralx)
+	    public LiteralSyntax Update(GuidLiteralSyntax guidLiteral)
 	    {
-	        if (this.GuidLiteralx != guidLiteralx)
+	        if (this.GuidLiteral != guidLiteral)
 	        {
-	            var newNode = TestLexerModeLanguage.Instance.SyntaxFactory.Literal(guidLiteralx);
+	            var newNode = TestLexerModeLanguage.Instance.SyntaxFactory.Literal(guidLiteral);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -14344,7 +14344,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.NullLiteralGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.NullLiteralGreen)this.Green;
 				var greenToken = green.KNull;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -14417,7 +14417,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.BooleanLiteralGreen)this.Green;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.BooleanLiteralGreen)this.Green;
 				var greenToken = green.BooleanLiteral;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -14475,9 +14475,9 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 	
 	public sealed class NumberLiteralSyntax : TestLexerModeSyntaxNode
 	{
-	    private IntegerLiteralxSyntax integerLiteralx;
-	    private DecimalLiteralxSyntax decimalLiteralx;
-	    private ScientificLiteralxSyntax scientificLiteralx;
+	    private IntegerLiteralSyntax integerLiteral;
+	    private DecimalLiteralSyntax decimalLiteral;
+	    private ScientificLiteralSyntax scientificLiteral;
 	
 	    public NumberLiteralSyntax(InternalSyntaxNode green, TestLexerModeSyntaxTree syntaxTree, int position)
 	        : base(green, syntaxTree, position)
@@ -14489,26 +14489,26 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 	    {
 	    }
 	
-	    public IntegerLiteralxSyntax IntegerLiteralx 
+	    public IntegerLiteralSyntax IntegerLiteral 
 		{ 
-			get { return this.GetRed(ref this.integerLiteralx, 0); } 
+			get { return this.GetRed(ref this.integerLiteral, 0); } 
 		}
-	    public DecimalLiteralxSyntax DecimalLiteralx 
+	    public DecimalLiteralSyntax DecimalLiteral 
 		{ 
-			get { return this.GetRed(ref this.decimalLiteralx, 1); } 
+			get { return this.GetRed(ref this.decimalLiteral, 1); } 
 		}
-	    public ScientificLiteralxSyntax ScientificLiteralx 
+	    public ScientificLiteralSyntax ScientificLiteral 
 		{ 
-			get { return this.GetRed(ref this.scientificLiteralx, 2); } 
+			get { return this.GetRed(ref this.scientificLiteral, 2); } 
 		}
 	
 	    public override SyntaxNode GetNodeSlot(int index)
 	    {
 	        switch (index)
 	        {
-				case 0: return this.GetRed(ref this.integerLiteralx, 0);
-				case 1: return this.GetRed(ref this.decimalLiteralx, 1);
-				case 2: return this.GetRed(ref this.scientificLiteralx, 2);
+				case 0: return this.GetRed(ref this.integerLiteral, 0);
+				case 1: return this.GetRed(ref this.decimalLiteral, 1);
+				case 2: return this.GetRed(ref this.scientificLiteral, 2);
 				default: return null;
 	        }
 	    }
@@ -14517,33 +14517,33 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 	    {
 	        switch (index)
 	        {
-				case 0: return this.integerLiteralx;
-				case 1: return this.decimalLiteralx;
-				case 2: return this.scientificLiteralx;
+				case 0: return this.integerLiteral;
+				case 1: return this.decimalLiteral;
+				case 2: return this.scientificLiteral;
 				default: return null;
 	        }
 	    }
 	
-	    public NumberLiteralSyntax WithIntegerLiteralx(IntegerLiteralxSyntax integerLiteralx)
+	    public NumberLiteralSyntax WithIntegerLiteral(IntegerLiteralSyntax integerLiteral)
 		{
-			return this.Update(integerLiteralx);
+			return this.Update(integerLiteral);
 		}
 	
-	    public NumberLiteralSyntax WithDecimalLiteralx(DecimalLiteralxSyntax decimalLiteralx)
+	    public NumberLiteralSyntax WithDecimalLiteral(DecimalLiteralSyntax decimalLiteral)
 		{
-			return this.Update(decimalLiteralx);
+			return this.Update(decimalLiteral);
 		}
 	
-	    public NumberLiteralSyntax WithScientificLiteralx(ScientificLiteralxSyntax scientificLiteralx)
+	    public NumberLiteralSyntax WithScientificLiteral(ScientificLiteralSyntax scientificLiteral)
 		{
-			return this.Update(scientificLiteralx);
+			return this.Update(scientificLiteral);
 		}
 	
-	    public NumberLiteralSyntax Update(IntegerLiteralxSyntax integerLiteralx)
+	    public NumberLiteralSyntax Update(IntegerLiteralSyntax integerLiteral)
 	    {
-	        if (this.IntegerLiteralx != integerLiteralx)
+	        if (this.IntegerLiteral != integerLiteral)
 	        {
-	            var newNode = TestLexerModeLanguage.Instance.SyntaxFactory.NumberLiteral(integerLiteralx);
+	            var newNode = TestLexerModeLanguage.Instance.SyntaxFactory.NumberLiteral(integerLiteral);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -14552,11 +14552,11 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 	        return this;
 	    }
 	
-	    public NumberLiteralSyntax Update(DecimalLiteralxSyntax decimalLiteralx)
+	    public NumberLiteralSyntax Update(DecimalLiteralSyntax decimalLiteral)
 	    {
-	        if (this.DecimalLiteralx != decimalLiteralx)
+	        if (this.DecimalLiteral != decimalLiteral)
 	        {
-	            var newNode = TestLexerModeLanguage.Instance.SyntaxFactory.NumberLiteral(decimalLiteralx);
+	            var newNode = TestLexerModeLanguage.Instance.SyntaxFactory.NumberLiteral(decimalLiteral);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -14565,11 +14565,11 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 	        return this;
 	    }
 	
-	    public NumberLiteralSyntax Update(ScientificLiteralxSyntax scientificLiteralx)
+	    public NumberLiteralSyntax Update(ScientificLiteralSyntax scientificLiteral)
 	    {
-	        if (this.ScientificLiteralx != scientificLiteralx)
+	        if (this.ScientificLiteral != scientificLiteral)
 	        {
-	            var newNode = TestLexerModeLanguage.Instance.SyntaxFactory.NumberLiteral(scientificLiteralx);
+	            var newNode = TestLexerModeLanguage.Instance.SyntaxFactory.NumberLiteral(scientificLiteral);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -14594,25 +14594,25 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 	    }
 	}
 	
-	public sealed class IntegerLiteralxSyntax : TestLexerModeSyntaxNode
+	public sealed class IntegerLiteralSyntax : TestLexerModeSyntaxNode
 	{
 	
-	    public IntegerLiteralxSyntax(InternalSyntaxNode green, TestLexerModeSyntaxTree syntaxTree, int position)
+	    public IntegerLiteralSyntax(InternalSyntaxNode green, TestLexerModeSyntaxTree syntaxTree, int position)
 	        : base(green, syntaxTree, position)
 	    {
 	    }
 	
-	    public IntegerLiteralxSyntax(InternalSyntaxNode green, TestLexerModeSyntaxNode parent, int position)
+	    public IntegerLiteralSyntax(InternalSyntaxNode green, TestLexerModeSyntaxNode parent, int position)
 	        : base(green, parent, position)
 	    {
 	    }
 	
-	    public SyntaxToken IntegerLiteral 
+	    public SyntaxToken LInteger 
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.IntegerLiteralxGreen)this.Green;
-				var greenToken = green.IntegerLiteral;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.IntegerLiteralGreen)this.Green;
+				var greenToken = green.LInteger;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
 		}
@@ -14633,59 +14633,59 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 	        }
 	    }
 	
-	    public IntegerLiteralxSyntax WithIntegerLiteral(SyntaxToken integerLiteral)
+	    public IntegerLiteralSyntax WithLInteger(SyntaxToken lInteger)
 		{
-			return this.Update(IntegerLiteral);
+			return this.Update(LInteger);
 		}
 	
-	    public IntegerLiteralxSyntax Update(SyntaxToken integerLiteral)
+	    public IntegerLiteralSyntax Update(SyntaxToken lInteger)
 	    {
-	        if (this.IntegerLiteral != integerLiteral)
+	        if (this.LInteger != lInteger)
 	        {
-	            var newNode = TestLexerModeLanguage.Instance.SyntaxFactory.IntegerLiteralx(integerLiteral);
+	            var newNode = TestLexerModeLanguage.Instance.SyntaxFactory.IntegerLiteral(lInteger);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
-				return (IntegerLiteralxSyntax)newNode;
+				return (IntegerLiteralSyntax)newNode;
 	        }
 	        return this;
 	    }
 	
 	    public override TResult Accept<TArg, TResult>(ITestLexerModeSyntaxVisitor<TArg, TResult> visitor, TArg argument)
 	    {
-	        return visitor.VisitIntegerLiteralx(this, argument);
+	        return visitor.VisitIntegerLiteral(this, argument);
 	    }
 	
 	    public override TResult Accept<TResult>(ITestLexerModeSyntaxVisitor<TResult> visitor)
 	    {
-	        return visitor.VisitIntegerLiteralx(this);
+	        return visitor.VisitIntegerLiteral(this);
 	    }
 	
 	    public override void Accept(ITestLexerModeSyntaxVisitor visitor)
 	    {
-	        visitor.VisitIntegerLiteralx(this);
+	        visitor.VisitIntegerLiteral(this);
 	    }
 	}
 	
-	public sealed class DecimalLiteralxSyntax : TestLexerModeSyntaxNode
+	public sealed class DecimalLiteralSyntax : TestLexerModeSyntaxNode
 	{
 	
-	    public DecimalLiteralxSyntax(InternalSyntaxNode green, TestLexerModeSyntaxTree syntaxTree, int position)
+	    public DecimalLiteralSyntax(InternalSyntaxNode green, TestLexerModeSyntaxTree syntaxTree, int position)
 	        : base(green, syntaxTree, position)
 	    {
 	    }
 	
-	    public DecimalLiteralxSyntax(InternalSyntaxNode green, TestLexerModeSyntaxNode parent, int position)
+	    public DecimalLiteralSyntax(InternalSyntaxNode green, TestLexerModeSyntaxNode parent, int position)
 	        : base(green, parent, position)
 	    {
 	    }
 	
-	    public SyntaxToken DecimalLiteral 
+	    public SyntaxToken LDecimal 
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.DecimalLiteralxGreen)this.Green;
-				var greenToken = green.DecimalLiteral;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.DecimalLiteralGreen)this.Green;
+				var greenToken = green.LDecimal;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
 		}
@@ -14706,59 +14706,59 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 	        }
 	    }
 	
-	    public DecimalLiteralxSyntax WithDecimalLiteral(SyntaxToken decimalLiteral)
+	    public DecimalLiteralSyntax WithLDecimal(SyntaxToken lDecimal)
 		{
-			return this.Update(DecimalLiteral);
+			return this.Update(LDecimal);
 		}
 	
-	    public DecimalLiteralxSyntax Update(SyntaxToken decimalLiteral)
+	    public DecimalLiteralSyntax Update(SyntaxToken lDecimal)
 	    {
-	        if (this.DecimalLiteral != decimalLiteral)
+	        if (this.LDecimal != lDecimal)
 	        {
-	            var newNode = TestLexerModeLanguage.Instance.SyntaxFactory.DecimalLiteralx(decimalLiteral);
+	            var newNode = TestLexerModeLanguage.Instance.SyntaxFactory.DecimalLiteral(lDecimal);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
-				return (DecimalLiteralxSyntax)newNode;
+				return (DecimalLiteralSyntax)newNode;
 	        }
 	        return this;
 	    }
 	
 	    public override TResult Accept<TArg, TResult>(ITestLexerModeSyntaxVisitor<TArg, TResult> visitor, TArg argument)
 	    {
-	        return visitor.VisitDecimalLiteralx(this, argument);
+	        return visitor.VisitDecimalLiteral(this, argument);
 	    }
 	
 	    public override TResult Accept<TResult>(ITestLexerModeSyntaxVisitor<TResult> visitor)
 	    {
-	        return visitor.VisitDecimalLiteralx(this);
+	        return visitor.VisitDecimalLiteral(this);
 	    }
 	
 	    public override void Accept(ITestLexerModeSyntaxVisitor visitor)
 	    {
-	        visitor.VisitDecimalLiteralx(this);
+	        visitor.VisitDecimalLiteral(this);
 	    }
 	}
 	
-	public sealed class ScientificLiteralxSyntax : TestLexerModeSyntaxNode
+	public sealed class ScientificLiteralSyntax : TestLexerModeSyntaxNode
 	{
 	
-	    public ScientificLiteralxSyntax(InternalSyntaxNode green, TestLexerModeSyntaxTree syntaxTree, int position)
+	    public ScientificLiteralSyntax(InternalSyntaxNode green, TestLexerModeSyntaxTree syntaxTree, int position)
 	        : base(green, syntaxTree, position)
 	    {
 	    }
 	
-	    public ScientificLiteralxSyntax(InternalSyntaxNode green, TestLexerModeSyntaxNode parent, int position)
+	    public ScientificLiteralSyntax(InternalSyntaxNode green, TestLexerModeSyntaxNode parent, int position)
 	        : base(green, parent, position)
 	    {
 	    }
 	
-	    public SyntaxToken ScientificLiteral 
+	    public SyntaxToken LScientific 
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.ScientificLiteralxGreen)this.Green;
-				var greenToken = green.ScientificLiteral;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.ScientificLiteralGreen)this.Green;
+				var greenToken = green.LScientific;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
 		}
@@ -14779,46 +14779,46 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 	        }
 	    }
 	
-	    public ScientificLiteralxSyntax WithScientificLiteral(SyntaxToken scientificLiteral)
+	    public ScientificLiteralSyntax WithLScientific(SyntaxToken lScientific)
 		{
-			return this.Update(ScientificLiteral);
+			return this.Update(LScientific);
 		}
 	
-	    public ScientificLiteralxSyntax Update(SyntaxToken scientificLiteral)
+	    public ScientificLiteralSyntax Update(SyntaxToken lScientific)
 	    {
-	        if (this.ScientificLiteral != scientificLiteral)
+	        if (this.LScientific != lScientific)
 	        {
-	            var newNode = TestLexerModeLanguage.Instance.SyntaxFactory.ScientificLiteralx(scientificLiteral);
+	            var newNode = TestLexerModeLanguage.Instance.SyntaxFactory.ScientificLiteral(lScientific);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
-				return (ScientificLiteralxSyntax)newNode;
+				return (ScientificLiteralSyntax)newNode;
 	        }
 	        return this;
 	    }
 	
 	    public override TResult Accept<TArg, TResult>(ITestLexerModeSyntaxVisitor<TArg, TResult> visitor, TArg argument)
 	    {
-	        return visitor.VisitScientificLiteralx(this, argument);
+	        return visitor.VisitScientificLiteral(this, argument);
 	    }
 	
 	    public override TResult Accept<TResult>(ITestLexerModeSyntaxVisitor<TResult> visitor)
 	    {
-	        return visitor.VisitScientificLiteralx(this);
+	        return visitor.VisitScientificLiteral(this);
 	    }
 	
 	    public override void Accept(ITestLexerModeSyntaxVisitor visitor)
 	    {
-	        visitor.VisitScientificLiteralx(this);
+	        visitor.VisitScientificLiteral(this);
 	    }
 	}
 	
 	public sealed class DateOrTimeLiteralSyntax : TestLexerModeSyntaxNode
 	{
-	    private DateTimeLiteralxSyntax dateTimeLiteralx;
-	    private DateTimeOffsetLiteralxSyntax dateTimeOffsetLiteralx;
-	    private DateLiteralxSyntax dateLiteralx;
-	    private TimeLiteralxSyntax timeLiteralx;
+	    private DateTimeLiteralSyntax dateTimeLiteral;
+	    private DateTimeOffsetLiteralSyntax dateTimeOffsetLiteral;
+	    private DateLiteralSyntax dateLiteral;
+	    private TimeLiteralSyntax timeLiteral;
 	
 	    public DateOrTimeLiteralSyntax(InternalSyntaxNode green, TestLexerModeSyntaxTree syntaxTree, int position)
 	        : base(green, syntaxTree, position)
@@ -14830,31 +14830,31 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 	    {
 	    }
 	
-	    public DateTimeLiteralxSyntax DateTimeLiteralx 
+	    public DateTimeLiteralSyntax DateTimeLiteral 
 		{ 
-			get { return this.GetRed(ref this.dateTimeLiteralx, 0); } 
+			get { return this.GetRed(ref this.dateTimeLiteral, 0); } 
 		}
-	    public DateTimeOffsetLiteralxSyntax DateTimeOffsetLiteralx 
+	    public DateTimeOffsetLiteralSyntax DateTimeOffsetLiteral 
 		{ 
-			get { return this.GetRed(ref this.dateTimeOffsetLiteralx, 1); } 
+			get { return this.GetRed(ref this.dateTimeOffsetLiteral, 1); } 
 		}
-	    public DateLiteralxSyntax DateLiteralx 
+	    public DateLiteralSyntax DateLiteral 
 		{ 
-			get { return this.GetRed(ref this.dateLiteralx, 2); } 
+			get { return this.GetRed(ref this.dateLiteral, 2); } 
 		}
-	    public TimeLiteralxSyntax TimeLiteralx 
+	    public TimeLiteralSyntax TimeLiteral 
 		{ 
-			get { return this.GetRed(ref this.timeLiteralx, 3); } 
+			get { return this.GetRed(ref this.timeLiteral, 3); } 
 		}
 	
 	    public override SyntaxNode GetNodeSlot(int index)
 	    {
 	        switch (index)
 	        {
-				case 0: return this.GetRed(ref this.dateTimeLiteralx, 0);
-				case 1: return this.GetRed(ref this.dateTimeOffsetLiteralx, 1);
-				case 2: return this.GetRed(ref this.dateLiteralx, 2);
-				case 3: return this.GetRed(ref this.timeLiteralx, 3);
+				case 0: return this.GetRed(ref this.dateTimeLiteral, 0);
+				case 1: return this.GetRed(ref this.dateTimeOffsetLiteral, 1);
+				case 2: return this.GetRed(ref this.dateLiteral, 2);
+				case 3: return this.GetRed(ref this.timeLiteral, 3);
 				default: return null;
 	        }
 	    }
@@ -14863,39 +14863,39 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 	    {
 	        switch (index)
 	        {
-				case 0: return this.dateTimeLiteralx;
-				case 1: return this.dateTimeOffsetLiteralx;
-				case 2: return this.dateLiteralx;
-				case 3: return this.timeLiteralx;
+				case 0: return this.dateTimeLiteral;
+				case 1: return this.dateTimeOffsetLiteral;
+				case 2: return this.dateLiteral;
+				case 3: return this.timeLiteral;
 				default: return null;
 	        }
 	    }
 	
-	    public DateOrTimeLiteralSyntax WithDateTimeLiteralx(DateTimeLiteralxSyntax dateTimeLiteralx)
+	    public DateOrTimeLiteralSyntax WithDateTimeLiteral(DateTimeLiteralSyntax dateTimeLiteral)
 		{
-			return this.Update(dateTimeLiteralx);
+			return this.Update(dateTimeLiteral);
 		}
 	
-	    public DateOrTimeLiteralSyntax WithDateTimeOffsetLiteralx(DateTimeOffsetLiteralxSyntax dateTimeOffsetLiteralx)
+	    public DateOrTimeLiteralSyntax WithDateTimeOffsetLiteral(DateTimeOffsetLiteralSyntax dateTimeOffsetLiteral)
 		{
-			return this.Update(dateTimeOffsetLiteralx);
+			return this.Update(dateTimeOffsetLiteral);
 		}
 	
-	    public DateOrTimeLiteralSyntax WithDateLiteralx(DateLiteralxSyntax dateLiteralx)
+	    public DateOrTimeLiteralSyntax WithDateLiteral(DateLiteralSyntax dateLiteral)
 		{
-			return this.Update(dateLiteralx);
+			return this.Update(dateLiteral);
 		}
 	
-	    public DateOrTimeLiteralSyntax WithTimeLiteralx(TimeLiteralxSyntax timeLiteralx)
+	    public DateOrTimeLiteralSyntax WithTimeLiteral(TimeLiteralSyntax timeLiteral)
 		{
-			return this.Update(timeLiteralx);
+			return this.Update(timeLiteral);
 		}
 	
-	    public DateOrTimeLiteralSyntax Update(DateTimeLiteralxSyntax dateTimeLiteralx)
+	    public DateOrTimeLiteralSyntax Update(DateTimeLiteralSyntax dateTimeLiteral)
 	    {
-	        if (this.DateTimeLiteralx != dateTimeLiteralx)
+	        if (this.DateTimeLiteral != dateTimeLiteral)
 	        {
-	            var newNode = TestLexerModeLanguage.Instance.SyntaxFactory.DateOrTimeLiteral(dateTimeLiteralx);
+	            var newNode = TestLexerModeLanguage.Instance.SyntaxFactory.DateOrTimeLiteral(dateTimeLiteral);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -14904,11 +14904,11 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 	        return this;
 	    }
 	
-	    public DateOrTimeLiteralSyntax Update(DateTimeOffsetLiteralxSyntax dateTimeOffsetLiteralx)
+	    public DateOrTimeLiteralSyntax Update(DateTimeOffsetLiteralSyntax dateTimeOffsetLiteral)
 	    {
-	        if (this.DateTimeOffsetLiteralx != dateTimeOffsetLiteralx)
+	        if (this.DateTimeOffsetLiteral != dateTimeOffsetLiteral)
 	        {
-	            var newNode = TestLexerModeLanguage.Instance.SyntaxFactory.DateOrTimeLiteral(dateTimeOffsetLiteralx);
+	            var newNode = TestLexerModeLanguage.Instance.SyntaxFactory.DateOrTimeLiteral(dateTimeOffsetLiteral);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -14917,11 +14917,11 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 	        return this;
 	    }
 	
-	    public DateOrTimeLiteralSyntax Update(DateLiteralxSyntax dateLiteralx)
+	    public DateOrTimeLiteralSyntax Update(DateLiteralSyntax dateLiteral)
 	    {
-	        if (this.DateLiteralx != dateLiteralx)
+	        if (this.DateLiteral != dateLiteral)
 	        {
-	            var newNode = TestLexerModeLanguage.Instance.SyntaxFactory.DateOrTimeLiteral(dateLiteralx);
+	            var newNode = TestLexerModeLanguage.Instance.SyntaxFactory.DateOrTimeLiteral(dateLiteral);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -14930,11 +14930,11 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 	        return this;
 	    }
 	
-	    public DateOrTimeLiteralSyntax Update(TimeLiteralxSyntax timeLiteralx)
+	    public DateOrTimeLiteralSyntax Update(TimeLiteralSyntax timeLiteral)
 	    {
-	        if (this.TimeLiteralx != timeLiteralx)
+	        if (this.TimeLiteral != timeLiteral)
 	        {
-	            var newNode = TestLexerModeLanguage.Instance.SyntaxFactory.DateOrTimeLiteral(timeLiteralx);
+	            var newNode = TestLexerModeLanguage.Instance.SyntaxFactory.DateOrTimeLiteral(timeLiteral);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -14959,25 +14959,25 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 	    }
 	}
 	
-	public sealed class DateTimeOffsetLiteralxSyntax : TestLexerModeSyntaxNode
+	public sealed class DateTimeOffsetLiteralSyntax : TestLexerModeSyntaxNode
 	{
 	
-	    public DateTimeOffsetLiteralxSyntax(InternalSyntaxNode green, TestLexerModeSyntaxTree syntaxTree, int position)
+	    public DateTimeOffsetLiteralSyntax(InternalSyntaxNode green, TestLexerModeSyntaxTree syntaxTree, int position)
 	        : base(green, syntaxTree, position)
 	    {
 	    }
 	
-	    public DateTimeOffsetLiteralxSyntax(InternalSyntaxNode green, TestLexerModeSyntaxNode parent, int position)
+	    public DateTimeOffsetLiteralSyntax(InternalSyntaxNode green, TestLexerModeSyntaxNode parent, int position)
 	        : base(green, parent, position)
 	    {
 	    }
 	
-	    public SyntaxToken DateTimeOffsetLiteral 
+	    public SyntaxToken LDateTimeOffset 
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.DateTimeOffsetLiteralxGreen)this.Green;
-				var greenToken = green.DateTimeOffsetLiteral;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.DateTimeOffsetLiteralGreen)this.Green;
+				var greenToken = green.LDateTimeOffset;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
 		}
@@ -14998,59 +14998,59 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 	        }
 	    }
 	
-	    public DateTimeOffsetLiteralxSyntax WithDateTimeOffsetLiteral(SyntaxToken dateTimeOffsetLiteral)
+	    public DateTimeOffsetLiteralSyntax WithLDateTimeOffset(SyntaxToken lDateTimeOffset)
 		{
-			return this.Update(DateTimeOffsetLiteral);
+			return this.Update(LDateTimeOffset);
 		}
 	
-	    public DateTimeOffsetLiteralxSyntax Update(SyntaxToken dateTimeOffsetLiteral)
+	    public DateTimeOffsetLiteralSyntax Update(SyntaxToken lDateTimeOffset)
 	    {
-	        if (this.DateTimeOffsetLiteral != dateTimeOffsetLiteral)
+	        if (this.LDateTimeOffset != lDateTimeOffset)
 	        {
-	            var newNode = TestLexerModeLanguage.Instance.SyntaxFactory.DateTimeOffsetLiteralx(dateTimeOffsetLiteral);
+	            var newNode = TestLexerModeLanguage.Instance.SyntaxFactory.DateTimeOffsetLiteral(lDateTimeOffset);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
-				return (DateTimeOffsetLiteralxSyntax)newNode;
+				return (DateTimeOffsetLiteralSyntax)newNode;
 	        }
 	        return this;
 	    }
 	
 	    public override TResult Accept<TArg, TResult>(ITestLexerModeSyntaxVisitor<TArg, TResult> visitor, TArg argument)
 	    {
-	        return visitor.VisitDateTimeOffsetLiteralx(this, argument);
+	        return visitor.VisitDateTimeOffsetLiteral(this, argument);
 	    }
 	
 	    public override TResult Accept<TResult>(ITestLexerModeSyntaxVisitor<TResult> visitor)
 	    {
-	        return visitor.VisitDateTimeOffsetLiteralx(this);
+	        return visitor.VisitDateTimeOffsetLiteral(this);
 	    }
 	
 	    public override void Accept(ITestLexerModeSyntaxVisitor visitor)
 	    {
-	        visitor.VisitDateTimeOffsetLiteralx(this);
+	        visitor.VisitDateTimeOffsetLiteral(this);
 	    }
 	}
 	
-	public sealed class DateTimeLiteralxSyntax : TestLexerModeSyntaxNode
+	public sealed class DateTimeLiteralSyntax : TestLexerModeSyntaxNode
 	{
 	
-	    public DateTimeLiteralxSyntax(InternalSyntaxNode green, TestLexerModeSyntaxTree syntaxTree, int position)
+	    public DateTimeLiteralSyntax(InternalSyntaxNode green, TestLexerModeSyntaxTree syntaxTree, int position)
 	        : base(green, syntaxTree, position)
 	    {
 	    }
 	
-	    public DateTimeLiteralxSyntax(InternalSyntaxNode green, TestLexerModeSyntaxNode parent, int position)
+	    public DateTimeLiteralSyntax(InternalSyntaxNode green, TestLexerModeSyntaxNode parent, int position)
 	        : base(green, parent, position)
 	    {
 	    }
 	
-	    public SyntaxToken DateTimeLiteral 
+	    public SyntaxToken LDateTime 
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.DateTimeLiteralxGreen)this.Green;
-				var greenToken = green.DateTimeLiteral;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.DateTimeLiteralGreen)this.Green;
+				var greenToken = green.LDateTime;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
 		}
@@ -15071,59 +15071,59 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 	        }
 	    }
 	
-	    public DateTimeLiteralxSyntax WithDateTimeLiteral(SyntaxToken dateTimeLiteral)
+	    public DateTimeLiteralSyntax WithLDateTime(SyntaxToken lDateTime)
 		{
-			return this.Update(DateTimeLiteral);
+			return this.Update(LDateTime);
 		}
 	
-	    public DateTimeLiteralxSyntax Update(SyntaxToken dateTimeLiteral)
+	    public DateTimeLiteralSyntax Update(SyntaxToken lDateTime)
 	    {
-	        if (this.DateTimeLiteral != dateTimeLiteral)
+	        if (this.LDateTime != lDateTime)
 	        {
-	            var newNode = TestLexerModeLanguage.Instance.SyntaxFactory.DateTimeLiteralx(dateTimeLiteral);
+	            var newNode = TestLexerModeLanguage.Instance.SyntaxFactory.DateTimeLiteral(lDateTime);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
-				return (DateTimeLiteralxSyntax)newNode;
+				return (DateTimeLiteralSyntax)newNode;
 	        }
 	        return this;
 	    }
 	
 	    public override TResult Accept<TArg, TResult>(ITestLexerModeSyntaxVisitor<TArg, TResult> visitor, TArg argument)
 	    {
-	        return visitor.VisitDateTimeLiteralx(this, argument);
+	        return visitor.VisitDateTimeLiteral(this, argument);
 	    }
 	
 	    public override TResult Accept<TResult>(ITestLexerModeSyntaxVisitor<TResult> visitor)
 	    {
-	        return visitor.VisitDateTimeLiteralx(this);
+	        return visitor.VisitDateTimeLiteral(this);
 	    }
 	
 	    public override void Accept(ITestLexerModeSyntaxVisitor visitor)
 	    {
-	        visitor.VisitDateTimeLiteralx(this);
+	        visitor.VisitDateTimeLiteral(this);
 	    }
 	}
 	
-	public sealed class DateLiteralxSyntax : TestLexerModeSyntaxNode
+	public sealed class DateLiteralSyntax : TestLexerModeSyntaxNode
 	{
 	
-	    public DateLiteralxSyntax(InternalSyntaxNode green, TestLexerModeSyntaxTree syntaxTree, int position)
+	    public DateLiteralSyntax(InternalSyntaxNode green, TestLexerModeSyntaxTree syntaxTree, int position)
 	        : base(green, syntaxTree, position)
 	    {
 	    }
 	
-	    public DateLiteralxSyntax(InternalSyntaxNode green, TestLexerModeSyntaxNode parent, int position)
+	    public DateLiteralSyntax(InternalSyntaxNode green, TestLexerModeSyntaxNode parent, int position)
 	        : base(green, parent, position)
 	    {
 	    }
 	
-	    public SyntaxToken DateLiteral 
+	    public SyntaxToken LDate 
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.DateLiteralxGreen)this.Green;
-				var greenToken = green.DateLiteral;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.DateLiteralGreen)this.Green;
+				var greenToken = green.LDate;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
 		}
@@ -15144,59 +15144,59 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 	        }
 	    }
 	
-	    public DateLiteralxSyntax WithDateLiteral(SyntaxToken dateLiteral)
+	    public DateLiteralSyntax WithLDate(SyntaxToken lDate)
 		{
-			return this.Update(DateLiteral);
+			return this.Update(LDate);
 		}
 	
-	    public DateLiteralxSyntax Update(SyntaxToken dateLiteral)
+	    public DateLiteralSyntax Update(SyntaxToken lDate)
 	    {
-	        if (this.DateLiteral != dateLiteral)
+	        if (this.LDate != lDate)
 	        {
-	            var newNode = TestLexerModeLanguage.Instance.SyntaxFactory.DateLiteralx(dateLiteral);
+	            var newNode = TestLexerModeLanguage.Instance.SyntaxFactory.DateLiteral(lDate);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
-				return (DateLiteralxSyntax)newNode;
+				return (DateLiteralSyntax)newNode;
 	        }
 	        return this;
 	    }
 	
 	    public override TResult Accept<TArg, TResult>(ITestLexerModeSyntaxVisitor<TArg, TResult> visitor, TArg argument)
 	    {
-	        return visitor.VisitDateLiteralx(this, argument);
+	        return visitor.VisitDateLiteral(this, argument);
 	    }
 	
 	    public override TResult Accept<TResult>(ITestLexerModeSyntaxVisitor<TResult> visitor)
 	    {
-	        return visitor.VisitDateLiteralx(this);
+	        return visitor.VisitDateLiteral(this);
 	    }
 	
 	    public override void Accept(ITestLexerModeSyntaxVisitor visitor)
 	    {
-	        visitor.VisitDateLiteralx(this);
+	        visitor.VisitDateLiteral(this);
 	    }
 	}
 	
-	public sealed class TimeLiteralxSyntax : TestLexerModeSyntaxNode
+	public sealed class TimeLiteralSyntax : TestLexerModeSyntaxNode
 	{
 	
-	    public TimeLiteralxSyntax(InternalSyntaxNode green, TestLexerModeSyntaxTree syntaxTree, int position)
+	    public TimeLiteralSyntax(InternalSyntaxNode green, TestLexerModeSyntaxTree syntaxTree, int position)
 	        : base(green, syntaxTree, position)
 	    {
 	    }
 	
-	    public TimeLiteralxSyntax(InternalSyntaxNode green, TestLexerModeSyntaxNode parent, int position)
+	    public TimeLiteralSyntax(InternalSyntaxNode green, TestLexerModeSyntaxNode parent, int position)
 	        : base(green, parent, position)
 	    {
 	    }
 	
-	    public SyntaxToken TimeLiteral 
+	    public SyntaxToken LTime 
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.TimeLiteralxGreen)this.Green;
-				var greenToken = green.TimeLiteral;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.TimeLiteralGreen)this.Green;
+				var greenToken = green.LTime;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
 		}
@@ -15217,59 +15217,59 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 	        }
 	    }
 	
-	    public TimeLiteralxSyntax WithTimeLiteral(SyntaxToken timeLiteral)
+	    public TimeLiteralSyntax WithLTime(SyntaxToken lTime)
 		{
-			return this.Update(TimeLiteral);
+			return this.Update(LTime);
 		}
 	
-	    public TimeLiteralxSyntax Update(SyntaxToken timeLiteral)
+	    public TimeLiteralSyntax Update(SyntaxToken lTime)
 	    {
-	        if (this.TimeLiteral != timeLiteral)
+	        if (this.LTime != lTime)
 	        {
-	            var newNode = TestLexerModeLanguage.Instance.SyntaxFactory.TimeLiteralx(timeLiteral);
+	            var newNode = TestLexerModeLanguage.Instance.SyntaxFactory.TimeLiteral(lTime);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
-				return (TimeLiteralxSyntax)newNode;
+				return (TimeLiteralSyntax)newNode;
 	        }
 	        return this;
 	    }
 	
 	    public override TResult Accept<TArg, TResult>(ITestLexerModeSyntaxVisitor<TArg, TResult> visitor, TArg argument)
 	    {
-	        return visitor.VisitTimeLiteralx(this, argument);
+	        return visitor.VisitTimeLiteral(this, argument);
 	    }
 	
 	    public override TResult Accept<TResult>(ITestLexerModeSyntaxVisitor<TResult> visitor)
 	    {
-	        return visitor.VisitTimeLiteralx(this);
+	        return visitor.VisitTimeLiteral(this);
 	    }
 	
 	    public override void Accept(ITestLexerModeSyntaxVisitor visitor)
 	    {
-	        visitor.VisitTimeLiteralx(this);
+	        visitor.VisitTimeLiteral(this);
 	    }
 	}
 	
-	public sealed class CharLiteralxSyntax : TestLexerModeSyntaxNode
+	public sealed class CharLiteralSyntax : TestLexerModeSyntaxNode
 	{
 	
-	    public CharLiteralxSyntax(InternalSyntaxNode green, TestLexerModeSyntaxTree syntaxTree, int position)
+	    public CharLiteralSyntax(InternalSyntaxNode green, TestLexerModeSyntaxTree syntaxTree, int position)
 	        : base(green, syntaxTree, position)
 	    {
 	    }
 	
-	    public CharLiteralxSyntax(InternalSyntaxNode green, TestLexerModeSyntaxNode parent, int position)
+	    public CharLiteralSyntax(InternalSyntaxNode green, TestLexerModeSyntaxNode parent, int position)
 	        : base(green, parent, position)
 	    {
 	    }
 	
-	    public SyntaxToken CharLiteral 
+	    public SyntaxToken LChar 
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.CharLiteralxGreen)this.Green;
-				var greenToken = green.CharLiteral;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.CharLiteralGreen)this.Green;
+				var greenToken = green.LChar;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
 		}
@@ -15290,59 +15290,59 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 	        }
 	    }
 	
-	    public CharLiteralxSyntax WithCharLiteral(SyntaxToken charLiteral)
+	    public CharLiteralSyntax WithLChar(SyntaxToken lChar)
 		{
-			return this.Update(CharLiteral);
+			return this.Update(LChar);
 		}
 	
-	    public CharLiteralxSyntax Update(SyntaxToken charLiteral)
+	    public CharLiteralSyntax Update(SyntaxToken lChar)
 	    {
-	        if (this.CharLiteral != charLiteral)
+	        if (this.LChar != lChar)
 	        {
-	            var newNode = TestLexerModeLanguage.Instance.SyntaxFactory.CharLiteralx(charLiteral);
+	            var newNode = TestLexerModeLanguage.Instance.SyntaxFactory.CharLiteral(lChar);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
-				return (CharLiteralxSyntax)newNode;
+				return (CharLiteralSyntax)newNode;
 	        }
 	        return this;
 	    }
 	
 	    public override TResult Accept<TArg, TResult>(ITestLexerModeSyntaxVisitor<TArg, TResult> visitor, TArg argument)
 	    {
-	        return visitor.VisitCharLiteralx(this, argument);
+	        return visitor.VisitCharLiteral(this, argument);
 	    }
 	
 	    public override TResult Accept<TResult>(ITestLexerModeSyntaxVisitor<TResult> visitor)
 	    {
-	        return visitor.VisitCharLiteralx(this);
+	        return visitor.VisitCharLiteral(this);
 	    }
 	
 	    public override void Accept(ITestLexerModeSyntaxVisitor visitor)
 	    {
-	        visitor.VisitCharLiteralx(this);
+	        visitor.VisitCharLiteral(this);
 	    }
 	}
 	
-	public sealed class StringLiteralxSyntax : TestLexerModeSyntaxNode
+	public sealed class StringLiteralSyntax : TestLexerModeSyntaxNode
 	{
 	
-	    public StringLiteralxSyntax(InternalSyntaxNode green, TestLexerModeSyntaxTree syntaxTree, int position)
+	    public StringLiteralSyntax(InternalSyntaxNode green, TestLexerModeSyntaxTree syntaxTree, int position)
 	        : base(green, syntaxTree, position)
 	    {
 	    }
 	
-	    public StringLiteralxSyntax(InternalSyntaxNode green, TestLexerModeSyntaxNode parent, int position)
+	    public StringLiteralSyntax(InternalSyntaxNode green, TestLexerModeSyntaxNode parent, int position)
 	        : base(green, parent, position)
 	    {
 	    }
 	
-	    public SyntaxToken StringLiteralx 
+	    public SyntaxToken StringLiteral 
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.StringLiteralxGreen)this.Green;
-				var greenToken = green.StringLiteralx;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.StringLiteralGreen)this.Green;
+				var greenToken = green.StringLiteral;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
 		}
@@ -15363,59 +15363,59 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 	        }
 	    }
 	
-	    public StringLiteralxSyntax WithStringLiteralx(SyntaxToken stringLiteralx)
+	    public StringLiteralSyntax WithStringLiteral(SyntaxToken stringLiteral)
 		{
-			return this.Update(StringLiteralx);
+			return this.Update(StringLiteral);
 		}
 	
-	    public StringLiteralxSyntax Update(SyntaxToken stringLiteralx)
+	    public StringLiteralSyntax Update(SyntaxToken stringLiteral)
 	    {
-	        if (this.StringLiteralx != stringLiteralx)
+	        if (this.StringLiteral != stringLiteral)
 	        {
-	            var newNode = TestLexerModeLanguage.Instance.SyntaxFactory.StringLiteralx(stringLiteralx);
+	            var newNode = TestLexerModeLanguage.Instance.SyntaxFactory.StringLiteral(stringLiteral);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
-				return (StringLiteralxSyntax)newNode;
+				return (StringLiteralSyntax)newNode;
 	        }
 	        return this;
 	    }
 	
 	    public override TResult Accept<TArg, TResult>(ITestLexerModeSyntaxVisitor<TArg, TResult> visitor, TArg argument)
 	    {
-	        return visitor.VisitStringLiteralx(this, argument);
+	        return visitor.VisitStringLiteral(this, argument);
 	    }
 	
 	    public override TResult Accept<TResult>(ITestLexerModeSyntaxVisitor<TResult> visitor)
 	    {
-	        return visitor.VisitStringLiteralx(this);
+	        return visitor.VisitStringLiteral(this);
 	    }
 	
 	    public override void Accept(ITestLexerModeSyntaxVisitor visitor)
 	    {
-	        visitor.VisitStringLiteralx(this);
+	        visitor.VisitStringLiteral(this);
 	    }
 	}
 	
-	public sealed class GuidLiteralxSyntax : TestLexerModeSyntaxNode
+	public sealed class GuidLiteralSyntax : TestLexerModeSyntaxNode
 	{
 	
-	    public GuidLiteralxSyntax(InternalSyntaxNode green, TestLexerModeSyntaxTree syntaxTree, int position)
+	    public GuidLiteralSyntax(InternalSyntaxNode green, TestLexerModeSyntaxTree syntaxTree, int position)
 	        : base(green, syntaxTree, position)
 	    {
 	    }
 	
-	    public GuidLiteralxSyntax(InternalSyntaxNode green, TestLexerModeSyntaxNode parent, int position)
+	    public GuidLiteralSyntax(InternalSyntaxNode green, TestLexerModeSyntaxNode parent, int position)
 	        : base(green, parent, position)
 	    {
 	    }
 	
-	    public SyntaxToken GuidLiteral 
+	    public SyntaxToken LGuid 
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax.GuidLiteralxGreen)this.Green;
-				var greenToken = green.GuidLiteral;
+				var green = (global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.GuidLiteralGreen)this.Green;
+				var greenToken = green.LGuid;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
 		}
@@ -15436,47 +15436,47 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
 	        }
 	    }
 	
-	    public GuidLiteralxSyntax WithGuidLiteral(SyntaxToken guidLiteral)
+	    public GuidLiteralSyntax WithLGuid(SyntaxToken lGuid)
 		{
-			return this.Update(GuidLiteral);
+			return this.Update(LGuid);
 		}
 	
-	    public GuidLiteralxSyntax Update(SyntaxToken guidLiteral)
+	    public GuidLiteralSyntax Update(SyntaxToken lGuid)
 	    {
-	        if (this.GuidLiteral != guidLiteral)
+	        if (this.LGuid != lGuid)
 	        {
-	            var newNode = TestLexerModeLanguage.Instance.SyntaxFactory.GuidLiteralx(guidLiteral);
+	            var newNode = TestLexerModeLanguage.Instance.SyntaxFactory.GuidLiteral(lGuid);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
-				return (GuidLiteralxSyntax)newNode;
+				return (GuidLiteralSyntax)newNode;
 	        }
 	        return this;
 	    }
 	
 	    public override TResult Accept<TArg, TResult>(ITestLexerModeSyntaxVisitor<TArg, TResult> visitor, TArg argument)
 	    {
-	        return visitor.VisitGuidLiteralx(this, argument);
+	        return visitor.VisitGuidLiteral(this, argument);
 	    }
 	
 	    public override TResult Accept<TResult>(ITestLexerModeSyntaxVisitor<TResult> visitor)
 	    {
-	        return visitor.VisitGuidLiteralx(this);
+	        return visitor.VisitGuidLiteral(this);
 	    }
 	
 	    public override void Accept(ITestLexerModeSyntaxVisitor visitor)
 	    {
-	        visitor.VisitGuidLiteralx(this);
+	        visitor.VisitGuidLiteral(this);
 	    }
 	}
 }
 
-namespace MetaDslx.CodeAnalysis.Antlr4Test
+namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode
 {
     using System.Threading;
     using Microsoft.CodeAnalysis.Text;
-	using MetaDslx.CodeAnalysis.Antlr4Test.Syntax;
-    using MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax;
+	using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax;
+    using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax;
 
 	public interface ITestLexerModeSyntaxVisitor
 	{
@@ -15625,7 +15625,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test
 		
 		void VisitTemplateContent(TemplateContentSyntax node);
 		
-		void VisitTemplateOutputx(TemplateOutputxSyntax node);
+		void VisitTemplateOutput(TemplateOutputSyntax node);
 		
 		void VisitTemplateLineEnd(TemplateLineEndSyntax node);
 		
@@ -15757,27 +15757,27 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test
 		
 		void VisitNumberLiteral(NumberLiteralSyntax node);
 		
-		void VisitIntegerLiteralx(IntegerLiteralxSyntax node);
+		void VisitIntegerLiteral(IntegerLiteralSyntax node);
 		
-		void VisitDecimalLiteralx(DecimalLiteralxSyntax node);
+		void VisitDecimalLiteral(DecimalLiteralSyntax node);
 		
-		void VisitScientificLiteralx(ScientificLiteralxSyntax node);
+		void VisitScientificLiteral(ScientificLiteralSyntax node);
 		
 		void VisitDateOrTimeLiteral(DateOrTimeLiteralSyntax node);
 		
-		void VisitDateTimeOffsetLiteralx(DateTimeOffsetLiteralxSyntax node);
+		void VisitDateTimeOffsetLiteral(DateTimeOffsetLiteralSyntax node);
 		
-		void VisitDateTimeLiteralx(DateTimeLiteralxSyntax node);
+		void VisitDateTimeLiteral(DateTimeLiteralSyntax node);
 		
-		void VisitDateLiteralx(DateLiteralxSyntax node);
+		void VisitDateLiteral(DateLiteralSyntax node);
 		
-		void VisitTimeLiteralx(TimeLiteralxSyntax node);
+		void VisitTimeLiteral(TimeLiteralSyntax node);
 		
-		void VisitCharLiteralx(CharLiteralxSyntax node);
+		void VisitCharLiteral(CharLiteralSyntax node);
 		
-		void VisitStringLiteralx(StringLiteralxSyntax node);
+		void VisitStringLiteral(StringLiteralSyntax node);
 		
-		void VisitGuidLiteralx(GuidLiteralxSyntax node);
+		void VisitGuidLiteral(GuidLiteralSyntax node);
 	}
 	
 	public class TestLexerModeSyntaxVisitor : SyntaxVisitor, ITestLexerModeSyntaxVisitor
@@ -16143,7 +16143,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test
 		    this.DefaultVisit(node);
 		}
 		
-		public virtual void VisitTemplateOutputx(TemplateOutputxSyntax node)
+		public virtual void VisitTemplateOutput(TemplateOutputSyntax node)
 		{
 		    this.DefaultVisit(node);
 		}
@@ -16473,17 +16473,17 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test
 		    this.DefaultVisit(node);
 		}
 		
-		public virtual void VisitIntegerLiteralx(IntegerLiteralxSyntax node)
+		public virtual void VisitIntegerLiteral(IntegerLiteralSyntax node)
 		{
 		    this.DefaultVisit(node);
 		}
 		
-		public virtual void VisitDecimalLiteralx(DecimalLiteralxSyntax node)
+		public virtual void VisitDecimalLiteral(DecimalLiteralSyntax node)
 		{
 		    this.DefaultVisit(node);
 		}
 		
-		public virtual void VisitScientificLiteralx(ScientificLiteralxSyntax node)
+		public virtual void VisitScientificLiteral(ScientificLiteralSyntax node)
 		{
 		    this.DefaultVisit(node);
 		}
@@ -16493,37 +16493,37 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test
 		    this.DefaultVisit(node);
 		}
 		
-		public virtual void VisitDateTimeOffsetLiteralx(DateTimeOffsetLiteralxSyntax node)
+		public virtual void VisitDateTimeOffsetLiteral(DateTimeOffsetLiteralSyntax node)
 		{
 		    this.DefaultVisit(node);
 		}
 		
-		public virtual void VisitDateTimeLiteralx(DateTimeLiteralxSyntax node)
+		public virtual void VisitDateTimeLiteral(DateTimeLiteralSyntax node)
 		{
 		    this.DefaultVisit(node);
 		}
 		
-		public virtual void VisitDateLiteralx(DateLiteralxSyntax node)
+		public virtual void VisitDateLiteral(DateLiteralSyntax node)
 		{
 		    this.DefaultVisit(node);
 		}
 		
-		public virtual void VisitTimeLiteralx(TimeLiteralxSyntax node)
+		public virtual void VisitTimeLiteral(TimeLiteralSyntax node)
 		{
 		    this.DefaultVisit(node);
 		}
 		
-		public virtual void VisitCharLiteralx(CharLiteralxSyntax node)
+		public virtual void VisitCharLiteral(CharLiteralSyntax node)
 		{
 		    this.DefaultVisit(node);
 		}
 		
-		public virtual void VisitStringLiteralx(StringLiteralxSyntax node)
+		public virtual void VisitStringLiteral(StringLiteralSyntax node)
 		{
 		    this.DefaultVisit(node);
 		}
 		
-		public virtual void VisitGuidLiteralx(GuidLiteralxSyntax node)
+		public virtual void VisitGuidLiteral(GuidLiteralSyntax node)
 		{
 		    this.DefaultVisit(node);
 		}
@@ -16678,7 +16678,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test
 		
 		TResult VisitTemplateContent(TemplateContentSyntax node, TArg argument);
 		
-		TResult VisitTemplateOutputx(TemplateOutputxSyntax node, TArg argument);
+		TResult VisitTemplateOutput(TemplateOutputSyntax node, TArg argument);
 		
 		TResult VisitTemplateLineEnd(TemplateLineEndSyntax node, TArg argument);
 		
@@ -16810,27 +16810,27 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test
 		
 		TResult VisitNumberLiteral(NumberLiteralSyntax node, TArg argument);
 		
-		TResult VisitIntegerLiteralx(IntegerLiteralxSyntax node, TArg argument);
+		TResult VisitIntegerLiteral(IntegerLiteralSyntax node, TArg argument);
 		
-		TResult VisitDecimalLiteralx(DecimalLiteralxSyntax node, TArg argument);
+		TResult VisitDecimalLiteral(DecimalLiteralSyntax node, TArg argument);
 		
-		TResult VisitScientificLiteralx(ScientificLiteralxSyntax node, TArg argument);
+		TResult VisitScientificLiteral(ScientificLiteralSyntax node, TArg argument);
 		
 		TResult VisitDateOrTimeLiteral(DateOrTimeLiteralSyntax node, TArg argument);
 		
-		TResult VisitDateTimeOffsetLiteralx(DateTimeOffsetLiteralxSyntax node, TArg argument);
+		TResult VisitDateTimeOffsetLiteral(DateTimeOffsetLiteralSyntax node, TArg argument);
 		
-		TResult VisitDateTimeLiteralx(DateTimeLiteralxSyntax node, TArg argument);
+		TResult VisitDateTimeLiteral(DateTimeLiteralSyntax node, TArg argument);
 		
-		TResult VisitDateLiteralx(DateLiteralxSyntax node, TArg argument);
+		TResult VisitDateLiteral(DateLiteralSyntax node, TArg argument);
 		
-		TResult VisitTimeLiteralx(TimeLiteralxSyntax node, TArg argument);
+		TResult VisitTimeLiteral(TimeLiteralSyntax node, TArg argument);
 		
-		TResult VisitCharLiteralx(CharLiteralxSyntax node, TArg argument);
+		TResult VisitCharLiteral(CharLiteralSyntax node, TArg argument);
 		
-		TResult VisitStringLiteralx(StringLiteralxSyntax node, TArg argument);
+		TResult VisitStringLiteral(StringLiteralSyntax node, TArg argument);
 		
-		TResult VisitGuidLiteralx(GuidLiteralxSyntax node, TArg argument);
+		TResult VisitGuidLiteral(GuidLiteralSyntax node, TArg argument);
 	}
 	
 	public class TestLexerModeSyntaxVisitor<TArg, TResult> : SyntaxVisitor<TArg, TResult>, ITestLexerModeSyntaxVisitor<TArg, TResult>
@@ -17196,7 +17196,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test
 		    return this.DefaultVisit(node, argument);
 		}
 		
-		public virtual TResult VisitTemplateOutputx(TemplateOutputxSyntax node, TArg argument)
+		public virtual TResult VisitTemplateOutput(TemplateOutputSyntax node, TArg argument)
 		{
 		    return this.DefaultVisit(node, argument);
 		}
@@ -17526,17 +17526,17 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test
 		    return this.DefaultVisit(node, argument);
 		}
 		
-		public virtual TResult VisitIntegerLiteralx(IntegerLiteralxSyntax node, TArg argument)
+		public virtual TResult VisitIntegerLiteral(IntegerLiteralSyntax node, TArg argument)
 		{
 		    return this.DefaultVisit(node, argument);
 		}
 		
-		public virtual TResult VisitDecimalLiteralx(DecimalLiteralxSyntax node, TArg argument)
+		public virtual TResult VisitDecimalLiteral(DecimalLiteralSyntax node, TArg argument)
 		{
 		    return this.DefaultVisit(node, argument);
 		}
 		
-		public virtual TResult VisitScientificLiteralx(ScientificLiteralxSyntax node, TArg argument)
+		public virtual TResult VisitScientificLiteral(ScientificLiteralSyntax node, TArg argument)
 		{
 		    return this.DefaultVisit(node, argument);
 		}
@@ -17546,37 +17546,37 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test
 		    return this.DefaultVisit(node, argument);
 		}
 		
-		public virtual TResult VisitDateTimeOffsetLiteralx(DateTimeOffsetLiteralxSyntax node, TArg argument)
+		public virtual TResult VisitDateTimeOffsetLiteral(DateTimeOffsetLiteralSyntax node, TArg argument)
 		{
 		    return this.DefaultVisit(node, argument);
 		}
 		
-		public virtual TResult VisitDateTimeLiteralx(DateTimeLiteralxSyntax node, TArg argument)
+		public virtual TResult VisitDateTimeLiteral(DateTimeLiteralSyntax node, TArg argument)
 		{
 		    return this.DefaultVisit(node, argument);
 		}
 		
-		public virtual TResult VisitDateLiteralx(DateLiteralxSyntax node, TArg argument)
+		public virtual TResult VisitDateLiteral(DateLiteralSyntax node, TArg argument)
 		{
 		    return this.DefaultVisit(node, argument);
 		}
 		
-		public virtual TResult VisitTimeLiteralx(TimeLiteralxSyntax node, TArg argument)
+		public virtual TResult VisitTimeLiteral(TimeLiteralSyntax node, TArg argument)
 		{
 		    return this.DefaultVisit(node, argument);
 		}
 		
-		public virtual TResult VisitCharLiteralx(CharLiteralxSyntax node, TArg argument)
+		public virtual TResult VisitCharLiteral(CharLiteralSyntax node, TArg argument)
 		{
 		    return this.DefaultVisit(node, argument);
 		}
 		
-		public virtual TResult VisitStringLiteralx(StringLiteralxSyntax node, TArg argument)
+		public virtual TResult VisitStringLiteral(StringLiteralSyntax node, TArg argument)
 		{
 		    return this.DefaultVisit(node, argument);
 		}
 		
-		public virtual TResult VisitGuidLiteralx(GuidLiteralxSyntax node, TArg argument)
+		public virtual TResult VisitGuidLiteral(GuidLiteralSyntax node, TArg argument)
 		{
 		    return this.DefaultVisit(node, argument);
 		}
@@ -17729,7 +17729,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test
 		
 		TResult VisitTemplateContent(TemplateContentSyntax node);
 		
-		TResult VisitTemplateOutputx(TemplateOutputxSyntax node);
+		TResult VisitTemplateOutput(TemplateOutputSyntax node);
 		
 		TResult VisitTemplateLineEnd(TemplateLineEndSyntax node);
 		
@@ -17861,27 +17861,27 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test
 		
 		TResult VisitNumberLiteral(NumberLiteralSyntax node);
 		
-		TResult VisitIntegerLiteralx(IntegerLiteralxSyntax node);
+		TResult VisitIntegerLiteral(IntegerLiteralSyntax node);
 		
-		TResult VisitDecimalLiteralx(DecimalLiteralxSyntax node);
+		TResult VisitDecimalLiteral(DecimalLiteralSyntax node);
 		
-		TResult VisitScientificLiteralx(ScientificLiteralxSyntax node);
+		TResult VisitScientificLiteral(ScientificLiteralSyntax node);
 		
 		TResult VisitDateOrTimeLiteral(DateOrTimeLiteralSyntax node);
 		
-		TResult VisitDateTimeOffsetLiteralx(DateTimeOffsetLiteralxSyntax node);
+		TResult VisitDateTimeOffsetLiteral(DateTimeOffsetLiteralSyntax node);
 		
-		TResult VisitDateTimeLiteralx(DateTimeLiteralxSyntax node);
+		TResult VisitDateTimeLiteral(DateTimeLiteralSyntax node);
 		
-		TResult VisitDateLiteralx(DateLiteralxSyntax node);
+		TResult VisitDateLiteral(DateLiteralSyntax node);
 		
-		TResult VisitTimeLiteralx(TimeLiteralxSyntax node);
+		TResult VisitTimeLiteral(TimeLiteralSyntax node);
 		
-		TResult VisitCharLiteralx(CharLiteralxSyntax node);
+		TResult VisitCharLiteral(CharLiteralSyntax node);
 		
-		TResult VisitStringLiteralx(StringLiteralxSyntax node);
+		TResult VisitStringLiteral(StringLiteralSyntax node);
 		
-		TResult VisitGuidLiteralx(GuidLiteralxSyntax node);
+		TResult VisitGuidLiteral(GuidLiteralSyntax node);
 	}
 	
 	public class TestLexerModeSyntaxVisitor<TResult> : SyntaxVisitor<TResult>, ITestLexerModeSyntaxVisitor<TResult>
@@ -18247,7 +18247,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test
 		    return this.DefaultVisit(node);
 		}
 		
-		public virtual TResult VisitTemplateOutputx(TemplateOutputxSyntax node)
+		public virtual TResult VisitTemplateOutput(TemplateOutputSyntax node)
 		{
 		    return this.DefaultVisit(node);
 		}
@@ -18577,17 +18577,17 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test
 		    return this.DefaultVisit(node);
 		}
 		
-		public virtual TResult VisitIntegerLiteralx(IntegerLiteralxSyntax node)
+		public virtual TResult VisitIntegerLiteral(IntegerLiteralSyntax node)
 		{
 		    return this.DefaultVisit(node);
 		}
 		
-		public virtual TResult VisitDecimalLiteralx(DecimalLiteralxSyntax node)
+		public virtual TResult VisitDecimalLiteral(DecimalLiteralSyntax node)
 		{
 		    return this.DefaultVisit(node);
 		}
 		
-		public virtual TResult VisitScientificLiteralx(ScientificLiteralxSyntax node)
+		public virtual TResult VisitScientificLiteral(ScientificLiteralSyntax node)
 		{
 		    return this.DefaultVisit(node);
 		}
@@ -18597,37 +18597,37 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test
 		    return this.DefaultVisit(node);
 		}
 		
-		public virtual TResult VisitDateTimeOffsetLiteralx(DateTimeOffsetLiteralxSyntax node)
+		public virtual TResult VisitDateTimeOffsetLiteral(DateTimeOffsetLiteralSyntax node)
 		{
 		    return this.DefaultVisit(node);
 		}
 		
-		public virtual TResult VisitDateTimeLiteralx(DateTimeLiteralxSyntax node)
+		public virtual TResult VisitDateTimeLiteral(DateTimeLiteralSyntax node)
 		{
 		    return this.DefaultVisit(node);
 		}
 		
-		public virtual TResult VisitDateLiteralx(DateLiteralxSyntax node)
+		public virtual TResult VisitDateLiteral(DateLiteralSyntax node)
 		{
 		    return this.DefaultVisit(node);
 		}
 		
-		public virtual TResult VisitTimeLiteralx(TimeLiteralxSyntax node)
+		public virtual TResult VisitTimeLiteral(TimeLiteralSyntax node)
 		{
 		    return this.DefaultVisit(node);
 		}
 		
-		public virtual TResult VisitCharLiteralx(CharLiteralxSyntax node)
+		public virtual TResult VisitCharLiteral(CharLiteralSyntax node)
 		{
 		    return this.DefaultVisit(node);
 		}
 		
-		public virtual TResult VisitStringLiteralx(StringLiteralxSyntax node)
+		public virtual TResult VisitStringLiteral(StringLiteralSyntax node)
 		{
 		    return this.DefaultVisit(node);
 		}
 		
-		public virtual TResult VisitGuidLiteralx(GuidLiteralxSyntax node)
+		public virtual TResult VisitGuidLiteral(GuidLiteralSyntax node)
 		{
 		    return this.DefaultVisit(node);
 		}
@@ -19163,8 +19163,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test
 		    var kSeparator = this.VisitToken(node.KSeparator);
 		    var identifier = (IdentifierSyntax)this.Visit(node.Identifier);
 		    var tAssign = this.VisitToken(node.TAssign);
-		    var stringLiteralx = (StringLiteralxSyntax)this.Visit(node.StringLiteralx);
-			return node.Update(tSemicolon, kSeparator, identifier, tAssign, stringLiteralx);
+		    var stringLiteral = (StringLiteralSyntax)this.Visit(node.StringLiteral);
+			return node.Update(tSemicolon, kSeparator, identifier, tAssign, stringLiteral);
 		}
 		
 		public virtual SyntaxNode VisitSwitchStatement(SwitchStatementSyntax node)
@@ -19312,11 +19312,11 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test
 		
 		public virtual SyntaxNode VisitTemplateContent(TemplateContentSyntax node)
 		{
-			var oldTemplateOutputx = node.TemplateOutputx;
-			if (oldTemplateOutputx != null)
+			var oldTemplateOutput = node.TemplateOutput;
+			if (oldTemplateOutput != null)
 			{
-			    var newTemplateOutputx = (TemplateOutputxSyntax)this.Visit(oldTemplateOutputx);
-				return node.Update(newTemplateOutputx);
+			    var newTemplateOutput = (TemplateOutputSyntax)this.Visit(oldTemplateOutput);
+				return node.Update(newTemplateOutput);
 			}
 			var oldTemplateStatementStartEnd = node.TemplateStatementStartEnd;
 			if (oldTemplateStatementStartEnd != null)
@@ -19327,10 +19327,10 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test
 			return node;   
 		}
 		
-		public virtual SyntaxNode VisitTemplateOutputx(TemplateOutputxSyntax node)
+		public virtual SyntaxNode VisitTemplateOutput(TemplateOutputSyntax node)
 		{
-		    var templateOutput = this.VisitToken(node.TemplateOutput);
-			return node.Update(templateOutput);
+		    var lTemplateOutput = this.VisitToken(node.LTemplateOutput);
+			return node.Update(lTemplateOutput);
 		}
 		
 		public virtual SyntaxNode VisitTemplateLineEnd(TemplateLineEndSyntax node)
@@ -19341,10 +19341,10 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test
 		
 		public virtual SyntaxNode VisitTemplateStatementStartEnd(TemplateStatementStartEndSyntax node)
 		{
-		    var templateStatementStart = this.VisitToken(node.TemplateStatementStart);
+		    var tTemplateStatementStart = this.VisitToken(node.TTemplateStatementStart);
 		    var templateStatement = (TemplateStatementSyntax)this.Visit(node.TemplateStatement);
-		    var templateStatementEnd = this.VisitToken(node.TemplateStatementEnd);
-			return node.Update(templateStatementStart, templateStatement, templateStatementEnd);
+		    var tTemplateStatementEnd = this.VisitToken(node.TTemplateStatementEnd);
+			return node.Update(tTemplateStatementStart, templateStatement, tTemplateStatementEnd);
 		}
 		
 		public virtual SyntaxNode VisitTemplateStatement(TemplateStatementSyntax node)
@@ -19998,23 +19998,23 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test
 			    var newDateOrTimeLiteral = (DateOrTimeLiteralSyntax)this.Visit(oldDateOrTimeLiteral);
 				return node.Update(newDateOrTimeLiteral);
 			}
-			var oldCharLiteralx = node.CharLiteralx;
-			if (oldCharLiteralx != null)
+			var oldCharLiteral = node.CharLiteral;
+			if (oldCharLiteral != null)
 			{
-			    var newCharLiteralx = (CharLiteralxSyntax)this.Visit(oldCharLiteralx);
-				return node.Update(newCharLiteralx);
+			    var newCharLiteral = (CharLiteralSyntax)this.Visit(oldCharLiteral);
+				return node.Update(newCharLiteral);
 			}
-			var oldStringLiteralx = node.StringLiteralx;
-			if (oldStringLiteralx != null)
+			var oldStringLiteral = node.StringLiteral;
+			if (oldStringLiteral != null)
 			{
-			    var newStringLiteralx = (StringLiteralxSyntax)this.Visit(oldStringLiteralx);
-				return node.Update(newStringLiteralx);
+			    var newStringLiteral = (StringLiteralSyntax)this.Visit(oldStringLiteral);
+				return node.Update(newStringLiteral);
 			}
-			var oldGuidLiteralx = node.GuidLiteralx;
-			if (oldGuidLiteralx != null)
+			var oldGuidLiteral = node.GuidLiteral;
+			if (oldGuidLiteral != null)
 			{
-			    var newGuidLiteralx = (GuidLiteralxSyntax)this.Visit(oldGuidLiteralx);
-				return node.Update(newGuidLiteralx);
+			    var newGuidLiteral = (GuidLiteralSyntax)this.Visit(oldGuidLiteral);
+				return node.Update(newGuidLiteral);
 			}
 			return node;   
 		}
@@ -20033,114 +20033,114 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test
 		
 		public virtual SyntaxNode VisitNumberLiteral(NumberLiteralSyntax node)
 		{
-			var oldIntegerLiteralx = node.IntegerLiteralx;
-			if (oldIntegerLiteralx != null)
+			var oldIntegerLiteral = node.IntegerLiteral;
+			if (oldIntegerLiteral != null)
 			{
-			    var newIntegerLiteralx = (IntegerLiteralxSyntax)this.Visit(oldIntegerLiteralx);
-				return node.Update(newIntegerLiteralx);
+			    var newIntegerLiteral = (IntegerLiteralSyntax)this.Visit(oldIntegerLiteral);
+				return node.Update(newIntegerLiteral);
 			}
-			var oldDecimalLiteralx = node.DecimalLiteralx;
-			if (oldDecimalLiteralx != null)
+			var oldDecimalLiteral = node.DecimalLiteral;
+			if (oldDecimalLiteral != null)
 			{
-			    var newDecimalLiteralx = (DecimalLiteralxSyntax)this.Visit(oldDecimalLiteralx);
-				return node.Update(newDecimalLiteralx);
+			    var newDecimalLiteral = (DecimalLiteralSyntax)this.Visit(oldDecimalLiteral);
+				return node.Update(newDecimalLiteral);
 			}
-			var oldScientificLiteralx = node.ScientificLiteralx;
-			if (oldScientificLiteralx != null)
+			var oldScientificLiteral = node.ScientificLiteral;
+			if (oldScientificLiteral != null)
 			{
-			    var newScientificLiteralx = (ScientificLiteralxSyntax)this.Visit(oldScientificLiteralx);
-				return node.Update(newScientificLiteralx);
+			    var newScientificLiteral = (ScientificLiteralSyntax)this.Visit(oldScientificLiteral);
+				return node.Update(newScientificLiteral);
 			}
 			return node;   
 		}
 		
-		public virtual SyntaxNode VisitIntegerLiteralx(IntegerLiteralxSyntax node)
+		public virtual SyntaxNode VisitIntegerLiteral(IntegerLiteralSyntax node)
 		{
-		    var integerLiteral = this.VisitToken(node.IntegerLiteral);
-			return node.Update(integerLiteral);
+		    var lInteger = this.VisitToken(node.LInteger);
+			return node.Update(lInteger);
 		}
 		
-		public virtual SyntaxNode VisitDecimalLiteralx(DecimalLiteralxSyntax node)
+		public virtual SyntaxNode VisitDecimalLiteral(DecimalLiteralSyntax node)
 		{
-		    var decimalLiteral = this.VisitToken(node.DecimalLiteral);
-			return node.Update(decimalLiteral);
+		    var lDecimal = this.VisitToken(node.LDecimal);
+			return node.Update(lDecimal);
 		}
 		
-		public virtual SyntaxNode VisitScientificLiteralx(ScientificLiteralxSyntax node)
+		public virtual SyntaxNode VisitScientificLiteral(ScientificLiteralSyntax node)
 		{
-		    var scientificLiteral = this.VisitToken(node.ScientificLiteral);
-			return node.Update(scientificLiteral);
+		    var lScientific = this.VisitToken(node.LScientific);
+			return node.Update(lScientific);
 		}
 		
 		public virtual SyntaxNode VisitDateOrTimeLiteral(DateOrTimeLiteralSyntax node)
 		{
-			var oldDateTimeLiteralx = node.DateTimeLiteralx;
-			if (oldDateTimeLiteralx != null)
+			var oldDateTimeLiteral = node.DateTimeLiteral;
+			if (oldDateTimeLiteral != null)
 			{
-			    var newDateTimeLiteralx = (DateTimeLiteralxSyntax)this.Visit(oldDateTimeLiteralx);
-				return node.Update(newDateTimeLiteralx);
+			    var newDateTimeLiteral = (DateTimeLiteralSyntax)this.Visit(oldDateTimeLiteral);
+				return node.Update(newDateTimeLiteral);
 			}
-			var oldDateTimeOffsetLiteralx = node.DateTimeOffsetLiteralx;
-			if (oldDateTimeOffsetLiteralx != null)
+			var oldDateTimeOffsetLiteral = node.DateTimeOffsetLiteral;
+			if (oldDateTimeOffsetLiteral != null)
 			{
-			    var newDateTimeOffsetLiteralx = (DateTimeOffsetLiteralxSyntax)this.Visit(oldDateTimeOffsetLiteralx);
-				return node.Update(newDateTimeOffsetLiteralx);
+			    var newDateTimeOffsetLiteral = (DateTimeOffsetLiteralSyntax)this.Visit(oldDateTimeOffsetLiteral);
+				return node.Update(newDateTimeOffsetLiteral);
 			}
-			var oldDateLiteralx = node.DateLiteralx;
-			if (oldDateLiteralx != null)
+			var oldDateLiteral = node.DateLiteral;
+			if (oldDateLiteral != null)
 			{
-			    var newDateLiteralx = (DateLiteralxSyntax)this.Visit(oldDateLiteralx);
-				return node.Update(newDateLiteralx);
+			    var newDateLiteral = (DateLiteralSyntax)this.Visit(oldDateLiteral);
+				return node.Update(newDateLiteral);
 			}
-			var oldTimeLiteralx = node.TimeLiteralx;
-			if (oldTimeLiteralx != null)
+			var oldTimeLiteral = node.TimeLiteral;
+			if (oldTimeLiteral != null)
 			{
-			    var newTimeLiteralx = (TimeLiteralxSyntax)this.Visit(oldTimeLiteralx);
-				return node.Update(newTimeLiteralx);
+			    var newTimeLiteral = (TimeLiteralSyntax)this.Visit(oldTimeLiteral);
+				return node.Update(newTimeLiteral);
 			}
 			return node;   
 		}
 		
-		public virtual SyntaxNode VisitDateTimeOffsetLiteralx(DateTimeOffsetLiteralxSyntax node)
+		public virtual SyntaxNode VisitDateTimeOffsetLiteral(DateTimeOffsetLiteralSyntax node)
 		{
-		    var dateTimeOffsetLiteral = this.VisitToken(node.DateTimeOffsetLiteral);
-			return node.Update(dateTimeOffsetLiteral);
+		    var lDateTimeOffset = this.VisitToken(node.LDateTimeOffset);
+			return node.Update(lDateTimeOffset);
 		}
 		
-		public virtual SyntaxNode VisitDateTimeLiteralx(DateTimeLiteralxSyntax node)
+		public virtual SyntaxNode VisitDateTimeLiteral(DateTimeLiteralSyntax node)
 		{
-		    var dateTimeLiteral = this.VisitToken(node.DateTimeLiteral);
-			return node.Update(dateTimeLiteral);
+		    var lDateTime = this.VisitToken(node.LDateTime);
+			return node.Update(lDateTime);
 		}
 		
-		public virtual SyntaxNode VisitDateLiteralx(DateLiteralxSyntax node)
+		public virtual SyntaxNode VisitDateLiteral(DateLiteralSyntax node)
 		{
-		    var dateLiteral = this.VisitToken(node.DateLiteral);
-			return node.Update(dateLiteral);
+		    var lDate = this.VisitToken(node.LDate);
+			return node.Update(lDate);
 		}
 		
-		public virtual SyntaxNode VisitTimeLiteralx(TimeLiteralxSyntax node)
+		public virtual SyntaxNode VisitTimeLiteral(TimeLiteralSyntax node)
 		{
-		    var timeLiteral = this.VisitToken(node.TimeLiteral);
-			return node.Update(timeLiteral);
+		    var lTime = this.VisitToken(node.LTime);
+			return node.Update(lTime);
 		}
 		
-		public virtual SyntaxNode VisitCharLiteralx(CharLiteralxSyntax node)
+		public virtual SyntaxNode VisitCharLiteral(CharLiteralSyntax node)
 		{
-		    var charLiteral = this.VisitToken(node.CharLiteral);
-			return node.Update(charLiteral);
+		    var lChar = this.VisitToken(node.LChar);
+			return node.Update(lChar);
 		}
 		
-		public virtual SyntaxNode VisitStringLiteralx(StringLiteralxSyntax node)
+		public virtual SyntaxNode VisitStringLiteral(StringLiteralSyntax node)
 		{
-		    var stringLiteralx = this.VisitToken(node.StringLiteralx);
-			return node.Update(stringLiteralx);
+		    var stringLiteral = this.VisitToken(node.StringLiteral);
+			return node.Update(stringLiteral);
 		}
 		
-		public virtual SyntaxNode VisitGuidLiteralx(GuidLiteralxSyntax node)
+		public virtual SyntaxNode VisitGuidLiteral(GuidLiteralSyntax node)
 		{
-		    var guidLiteral = this.VisitToken(node.GuidLiteral);
-			return node.Update(guidLiteral);
+		    var lGuid = this.VisitToken(node.LGuid);
+			return node.Update(lGuid);
 		}
 	}
 
@@ -20240,104 +20240,104 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test
 	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.IdentifierNormal(text, value));
 	    }
 	
-	    public SyntaxToken IntegerLiteral(string text)
+	    public SyntaxToken LInteger(string text)
 	    {
-	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.IntegerLiteral(text));
+	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.LInteger(text));
 	    }
 	
-	    public SyntaxToken IntegerLiteral(string text, object value)
+	    public SyntaxToken LInteger(string text, object value)
 	    {
-	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.IntegerLiteral(text, value));
+	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.LInteger(text, value));
 	    }
 	
-	    public SyntaxToken DecimalLiteral(string text)
+	    public SyntaxToken LDecimal(string text)
 	    {
-	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.DecimalLiteral(text));
+	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.LDecimal(text));
 	    }
 	
-	    public SyntaxToken DecimalLiteral(string text, object value)
+	    public SyntaxToken LDecimal(string text, object value)
 	    {
-	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.DecimalLiteral(text, value));
+	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.LDecimal(text, value));
 	    }
 	
-	    public SyntaxToken ScientificLiteral(string text)
+	    public SyntaxToken LScientific(string text)
 	    {
-	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.ScientificLiteral(text));
+	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.LScientific(text));
 	    }
 	
-	    public SyntaxToken ScientificLiteral(string text, object value)
+	    public SyntaxToken LScientific(string text, object value)
 	    {
-	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.ScientificLiteral(text, value));
+	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.LScientific(text, value));
 	    }
 	
-	    public SyntaxToken DateTimeOffsetLiteral(string text)
+	    public SyntaxToken LDateTimeOffset(string text)
 	    {
-	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.DateTimeOffsetLiteral(text));
+	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.LDateTimeOffset(text));
 	    }
 	
-	    public SyntaxToken DateTimeOffsetLiteral(string text, object value)
+	    public SyntaxToken LDateTimeOffset(string text, object value)
 	    {
-	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.DateTimeOffsetLiteral(text, value));
+	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.LDateTimeOffset(text, value));
 	    }
 	
-	    public SyntaxToken DateTimeLiteral(string text)
+	    public SyntaxToken LDateTime(string text)
 	    {
-	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.DateTimeLiteral(text));
+	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.LDateTime(text));
 	    }
 	
-	    public SyntaxToken DateTimeLiteral(string text, object value)
+	    public SyntaxToken LDateTime(string text, object value)
 	    {
-	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.DateTimeLiteral(text, value));
+	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.LDateTime(text, value));
 	    }
 	
-	    public SyntaxToken DateLiteral(string text)
+	    public SyntaxToken LDate(string text)
 	    {
-	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.DateLiteral(text));
+	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.LDate(text));
 	    }
 	
-	    public SyntaxToken DateLiteral(string text, object value)
+	    public SyntaxToken LDate(string text, object value)
 	    {
-	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.DateLiteral(text, value));
+	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.LDate(text, value));
 	    }
 	
-	    public SyntaxToken TimeLiteral(string text)
+	    public SyntaxToken LTime(string text)
 	    {
-	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.TimeLiteral(text));
+	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.LTime(text));
 	    }
 	
-	    public SyntaxToken TimeLiteral(string text, object value)
+	    public SyntaxToken LTime(string text, object value)
 	    {
-	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.TimeLiteral(text, value));
+	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.LTime(text, value));
 	    }
 	
-	    public SyntaxToken CharLiteral(string text)
+	    public SyntaxToken LChar(string text)
 	    {
-	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.CharLiteral(text));
+	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.LChar(text));
 	    }
 	
-	    public SyntaxToken CharLiteral(string text, object value)
+	    public SyntaxToken LChar(string text, object value)
 	    {
-	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.CharLiteral(text, value));
+	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.LChar(text, value));
 	    }
 	
-	    public SyntaxToken RegularStringLiteral(string text)
+	    public SyntaxToken LRegularString(string text)
 	    {
-	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.RegularStringLiteral(text));
+	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.LRegularString(text));
 	    }
 	
-	    public SyntaxToken RegularStringLiteral(string text, object value)
+	    public SyntaxToken LRegularString(string text, object value)
 	    {
-	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.RegularStringLiteral(text, value));
+	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.LRegularString(text, value));
 	    }
 	
-	    public SyntaxToken GuidLiteral(string text)
+	    public SyntaxToken LGuid(string text)
 	    {
-	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.GuidLiteral(text));
+	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.LGuid(text));
 	    }
 	
-	    public SyntaxToken GuidLiteral(string text, object value)
+	    public SyntaxToken LGuid(string text, object value)
 	    {
-	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.GuidLiteral(text, value));
+	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.LGuid(text, value));
 	    }
 	
 	    public SyntaxToken LUtf8Bom(string text)
@@ -20430,64 +20430,64 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test
 	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.KEndTemplate(text, value));
 	    }
 	
-	    public SyntaxToken TemplateLineControl(string text)
+	    public SyntaxToken LTemplateLineControl(string text)
 	    {
-	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.TemplateLineControl(text));
+	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.LTemplateLineControl(text));
 	    }
 	
-	    public SyntaxToken TemplateLineControl(string text, object value)
+	    public SyntaxToken LTemplateLineControl(string text, object value)
 	    {
-	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.TemplateLineControl(text, value));
+	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.LTemplateLineControl(text, value));
 	    }
 	
-	    public SyntaxToken TemplateOutput(string text)
+	    public SyntaxToken LTemplateOutput(string text)
 	    {
-	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.TemplateOutput(text));
+	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.LTemplateOutput(text));
 	    }
 	
-	    public SyntaxToken TemplateOutput(string text, object value)
+	    public SyntaxToken LTemplateOutput(string text, object value)
 	    {
-	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.TemplateOutput(text, value));
+	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.LTemplateOutput(text, value));
 	    }
 	
-	    public SyntaxToken TemplateCrLf(string text)
+	    public SyntaxToken LTemplateCrLf(string text)
 	    {
-	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.TemplateCrLf(text));
+	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.LTemplateCrLf(text));
 	    }
 	
-	    public SyntaxToken TemplateCrLf(string text, object value)
+	    public SyntaxToken LTemplateCrLf(string text, object value)
 	    {
-	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.TemplateCrLf(text, value));
+	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.LTemplateCrLf(text, value));
 	    }
 	
-	    public SyntaxToken TemplateLineBreak(string text)
+	    public SyntaxToken LTemplateLineBreak(string text)
 	    {
-	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.TemplateLineBreak(text));
+	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.LTemplateLineBreak(text));
 	    }
 	
-	    public SyntaxToken TemplateLineBreak(string text, object value)
+	    public SyntaxToken LTemplateLineBreak(string text, object value)
 	    {
-	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.TemplateLineBreak(text, value));
+	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.LTemplateLineBreak(text, value));
 	    }
 	
-	    public SyntaxToken TemplateStatementStart(string text)
+	    public SyntaxToken TTemplateStatementStart(string text)
 	    {
-	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.TemplateStatementStart(text));
+	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.TTemplateStatementStart(text));
 	    }
 	
-	    public SyntaxToken TemplateStatementStart(string text, object value)
+	    public SyntaxToken TTemplateStatementStart(string text, object value)
 	    {
-	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.TemplateStatementStart(text, value));
+	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.TTemplateStatementStart(text, value));
 	    }
 	
-	    public SyntaxToken TemplateStatementEnd(string text)
+	    public SyntaxToken TTemplateStatementEnd(string text)
 	    {
-	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.TemplateStatementEnd(text));
+	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.TTemplateStatementEnd(text));
 	    }
 	
-	    public SyntaxToken TemplateStatementEnd(string text, object value)
+	    public SyntaxToken TTemplateStatementEnd(string text, object value)
 	    {
-	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.TemplateStatementEnd(text, value));
+	        return new SyntaxToken(TestLexerModeLanguage.Instance.InternalSyntaxFactory.TTemplateStatementEnd(text, value));
 	    }
 	
 	    public SyntaxToken TS_TOpenBracket(string text)
@@ -21234,7 +21234,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test
 		    return (LoopRunExpressionSyntax)TestLexerModeLanguage.Instance.InternalSyntaxFactory.LoopRunExpression((Syntax.InternalSyntax.SeparatorStatementGreen)separatorStatement.Green).CreateRed();
 		}
 		
-		public SeparatorStatementSyntax SeparatorStatement(SyntaxToken tSemicolon, SyntaxToken kSeparator, IdentifierSyntax identifier, SyntaxToken tAssign, StringLiteralxSyntax stringLiteralx)
+		public SeparatorStatementSyntax SeparatorStatement(SyntaxToken tSemicolon, SyntaxToken kSeparator, IdentifierSyntax identifier, SyntaxToken tAssign, StringLiteralSyntax stringLiteral)
 		{
 		    if (tSemicolon == null) throw new ArgumentNullException(nameof(tSemicolon));
 		    if (tSemicolon.GetKind() != TestLexerModeSyntaxKind.TSemicolon) throw new ArgumentException(nameof(tSemicolon));
@@ -21243,13 +21243,13 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test
 		    if (identifier == null) throw new ArgumentNullException(nameof(identifier));
 		    if (tAssign == null) throw new ArgumentNullException(nameof(tAssign));
 		    if (tAssign.GetKind() != TestLexerModeSyntaxKind.TAssign) throw new ArgumentException(nameof(tAssign));
-		    if (stringLiteralx == null) throw new ArgumentNullException(nameof(stringLiteralx));
-		    return (SeparatorStatementSyntax)TestLexerModeLanguage.Instance.InternalSyntaxFactory.SeparatorStatement((InternalSyntaxToken)tSemicolon.Node, (InternalSyntaxToken)kSeparator.Node, (Syntax.InternalSyntax.IdentifierGreen)identifier.Green, (InternalSyntaxToken)tAssign.Node, (Syntax.InternalSyntax.StringLiteralxGreen)stringLiteralx.Green).CreateRed();
+		    if (stringLiteral == null) throw new ArgumentNullException(nameof(stringLiteral));
+		    return (SeparatorStatementSyntax)TestLexerModeLanguage.Instance.InternalSyntaxFactory.SeparatorStatement((InternalSyntaxToken)tSemicolon.Node, (InternalSyntaxToken)kSeparator.Node, (Syntax.InternalSyntax.IdentifierGreen)identifier.Green, (InternalSyntaxToken)tAssign.Node, (Syntax.InternalSyntax.StringLiteralGreen)stringLiteral.Green).CreateRed();
 		}
 		
-		public SeparatorStatementSyntax SeparatorStatement(IdentifierSyntax identifier, StringLiteralxSyntax stringLiteralx)
+		public SeparatorStatementSyntax SeparatorStatement(IdentifierSyntax identifier, StringLiteralSyntax stringLiteral)
 		{
-			return this.SeparatorStatement(this.Token(TestLexerModeSyntaxKind.TSemicolon), this.Token(TestLexerModeSyntaxKind.KSeparator), identifier, this.Token(TestLexerModeSyntaxKind.TAssign), stringLiteralx);
+			return this.SeparatorStatement(this.Token(TestLexerModeSyntaxKind.TSemicolon), this.Token(TestLexerModeSyntaxKind.KSeparator), identifier, this.Token(TestLexerModeSyntaxKind.TAssign), stringLiteral);
 		}
 		
 		public SwitchStatementSyntax SwitchStatement(SwitchStatementBeginSyntax switchStatementBegin, SyntaxList<SwitchBranchStatementSyntax> switchBranchStatement, SwitchDefaultStatementSyntax switchDefaultStatement, SwitchStatementEndSyntax switchStatementEnd)
@@ -21449,10 +21449,10 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test
 			return this.TemplateContentLine(default, templateLineEnd);
 		}
 		
-		public TemplateContentSyntax TemplateContent(TemplateOutputxSyntax templateOutputx)
+		public TemplateContentSyntax TemplateContent(TemplateOutputSyntax templateOutput)
 		{
-		    if (templateOutputx == null) throw new ArgumentNullException(nameof(templateOutputx));
-		    return (TemplateContentSyntax)TestLexerModeLanguage.Instance.InternalSyntaxFactory.TemplateContent((Syntax.InternalSyntax.TemplateOutputxGreen)templateOutputx.Green).CreateRed();
+		    if (templateOutput == null) throw new ArgumentNullException(nameof(templateOutput));
+		    return (TemplateContentSyntax)TestLexerModeLanguage.Instance.InternalSyntaxFactory.TemplateContent((Syntax.InternalSyntax.TemplateOutputGreen)templateOutput.Green).CreateRed();
 		}
 		
 		public TemplateContentSyntax TemplateContent(TemplateStatementStartEndSyntax templateStatementStartEnd)
@@ -21461,11 +21461,11 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test
 		    return (TemplateContentSyntax)TestLexerModeLanguage.Instance.InternalSyntaxFactory.TemplateContent((Syntax.InternalSyntax.TemplateStatementStartEndGreen)templateStatementStartEnd.Green).CreateRed();
 		}
 		
-		public TemplateOutputxSyntax TemplateOutputx(SyntaxToken templateOutput)
+		public TemplateOutputSyntax TemplateOutput(SyntaxToken lTemplateOutput)
 		{
-		    if (templateOutput == null) throw new ArgumentNullException(nameof(templateOutput));
-		    if (templateOutput.GetKind() != TestLexerModeSyntaxKind.TemplateOutput) throw new ArgumentException(nameof(templateOutput));
-		    return (TemplateOutputxSyntax)TestLexerModeLanguage.Instance.InternalSyntaxFactory.TemplateOutputx((InternalSyntaxToken)templateOutput.Node).CreateRed();
+		    if (lTemplateOutput == null) throw new ArgumentNullException(nameof(lTemplateOutput));
+		    if (lTemplateOutput.GetKind() != TestLexerModeSyntaxKind.LTemplateOutput) throw new ArgumentException(nameof(lTemplateOutput));
+		    return (TemplateOutputSyntax)TestLexerModeLanguage.Instance.InternalSyntaxFactory.TemplateOutput((InternalSyntaxToken)lTemplateOutput.Node).CreateRed();
 		}
 		
 		public TemplateLineEndSyntax TemplateLineEnd(SyntaxToken templateLineEnd)
@@ -21474,18 +21474,18 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test
 		    return (TemplateLineEndSyntax)TestLexerModeLanguage.Instance.InternalSyntaxFactory.TemplateLineEnd((InternalSyntaxToken)templateLineEnd.Node).CreateRed();
 		}
 		
-		public TemplateStatementStartEndSyntax TemplateStatementStartEnd(SyntaxToken templateStatementStart, TemplateStatementSyntax templateStatement, SyntaxToken templateStatementEnd)
+		public TemplateStatementStartEndSyntax TemplateStatementStartEnd(SyntaxToken tTemplateStatementStart, TemplateStatementSyntax templateStatement, SyntaxToken tTemplateStatementEnd)
 		{
-		    if (templateStatementStart == null) throw new ArgumentNullException(nameof(templateStatementStart));
-		    if (templateStatementStart.GetKind() != TestLexerModeSyntaxKind.TemplateStatementStart) throw new ArgumentException(nameof(templateStatementStart));
-		    if (templateStatementEnd == null) throw new ArgumentNullException(nameof(templateStatementEnd));
-		    if (templateStatementEnd.GetKind() != TestLexerModeSyntaxKind.TemplateStatementEnd) throw new ArgumentException(nameof(templateStatementEnd));
-		    return (TemplateStatementStartEndSyntax)TestLexerModeLanguage.Instance.InternalSyntaxFactory.TemplateStatementStartEnd((InternalSyntaxToken)templateStatementStart.Node, templateStatement == null ? null : (Syntax.InternalSyntax.TemplateStatementGreen)templateStatement.Green, (InternalSyntaxToken)templateStatementEnd.Node).CreateRed();
+		    if (tTemplateStatementStart == null) throw new ArgumentNullException(nameof(tTemplateStatementStart));
+		    if (tTemplateStatementStart.GetKind() != TestLexerModeSyntaxKind.TTemplateStatementStart) throw new ArgumentException(nameof(tTemplateStatementStart));
+		    if (tTemplateStatementEnd == null) throw new ArgumentNullException(nameof(tTemplateStatementEnd));
+		    if (tTemplateStatementEnd.GetKind() != TestLexerModeSyntaxKind.TTemplateStatementEnd) throw new ArgumentException(nameof(tTemplateStatementEnd));
+		    return (TemplateStatementStartEndSyntax)TestLexerModeLanguage.Instance.InternalSyntaxFactory.TemplateStatementStartEnd((InternalSyntaxToken)tTemplateStatementStart.Node, templateStatement == null ? null : (Syntax.InternalSyntax.TemplateStatementGreen)templateStatement.Green, (InternalSyntaxToken)tTemplateStatementEnd.Node).CreateRed();
 		}
 		
-		public TemplateStatementStartEndSyntax TemplateStatementStartEnd(SyntaxToken templateStatementStart, SyntaxToken templateStatementEnd)
+		public TemplateStatementStartEndSyntax TemplateStatementStartEnd(SyntaxToken tTemplateStatementStart, SyntaxToken tTemplateStatementEnd)
 		{
-			return this.TemplateStatementStartEnd(templateStatementStart, default, templateStatementEnd);
+			return this.TemplateStatementStartEnd(tTemplateStatementStart, default, tTemplateStatementEnd);
 		}
 		
 		public TemplateStatementSyntax TemplateStatement(VoidStatementSyntax voidStatement)
@@ -22298,22 +22298,22 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test
 		    return (LiteralSyntax)TestLexerModeLanguage.Instance.InternalSyntaxFactory.Literal((Syntax.InternalSyntax.DateOrTimeLiteralGreen)dateOrTimeLiteral.Green).CreateRed();
 		}
 		
-		public LiteralSyntax Literal(CharLiteralxSyntax charLiteralx)
+		public LiteralSyntax Literal(CharLiteralSyntax charLiteral)
 		{
-		    if (charLiteralx == null) throw new ArgumentNullException(nameof(charLiteralx));
-		    return (LiteralSyntax)TestLexerModeLanguage.Instance.InternalSyntaxFactory.Literal((Syntax.InternalSyntax.CharLiteralxGreen)charLiteralx.Green).CreateRed();
+		    if (charLiteral == null) throw new ArgumentNullException(nameof(charLiteral));
+		    return (LiteralSyntax)TestLexerModeLanguage.Instance.InternalSyntaxFactory.Literal((Syntax.InternalSyntax.CharLiteralGreen)charLiteral.Green).CreateRed();
 		}
 		
-		public LiteralSyntax Literal(StringLiteralxSyntax stringLiteralx)
+		public LiteralSyntax Literal(StringLiteralSyntax stringLiteral)
 		{
-		    if (stringLiteralx == null) throw new ArgumentNullException(nameof(stringLiteralx));
-		    return (LiteralSyntax)TestLexerModeLanguage.Instance.InternalSyntaxFactory.Literal((Syntax.InternalSyntax.StringLiteralxGreen)stringLiteralx.Green).CreateRed();
+		    if (stringLiteral == null) throw new ArgumentNullException(nameof(stringLiteral));
+		    return (LiteralSyntax)TestLexerModeLanguage.Instance.InternalSyntaxFactory.Literal((Syntax.InternalSyntax.StringLiteralGreen)stringLiteral.Green).CreateRed();
 		}
 		
-		public LiteralSyntax Literal(GuidLiteralxSyntax guidLiteralx)
+		public LiteralSyntax Literal(GuidLiteralSyntax guidLiteral)
 		{
-		    if (guidLiteralx == null) throw new ArgumentNullException(nameof(guidLiteralx));
-		    return (LiteralSyntax)TestLexerModeLanguage.Instance.InternalSyntaxFactory.Literal((Syntax.InternalSyntax.GuidLiteralxGreen)guidLiteralx.Green).CreateRed();
+		    if (guidLiteral == null) throw new ArgumentNullException(nameof(guidLiteral));
+		    return (LiteralSyntax)TestLexerModeLanguage.Instance.InternalSyntaxFactory.Literal((Syntax.InternalSyntax.GuidLiteralGreen)guidLiteral.Green).CreateRed();
 		}
 		
 		public NullLiteralSyntax NullLiteral(SyntaxToken kNull)
@@ -22334,115 +22334,115 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test
 		    return (BooleanLiteralSyntax)TestLexerModeLanguage.Instance.InternalSyntaxFactory.BooleanLiteral((InternalSyntaxToken)booleanLiteral.Node).CreateRed();
 		}
 		
-		public NumberLiteralSyntax NumberLiteral(IntegerLiteralxSyntax integerLiteralx)
-		{
-		    if (integerLiteralx == null) throw new ArgumentNullException(nameof(integerLiteralx));
-		    return (NumberLiteralSyntax)TestLexerModeLanguage.Instance.InternalSyntaxFactory.NumberLiteral((Syntax.InternalSyntax.IntegerLiteralxGreen)integerLiteralx.Green).CreateRed();
-		}
-		
-		public NumberLiteralSyntax NumberLiteral(DecimalLiteralxSyntax decimalLiteralx)
-		{
-		    if (decimalLiteralx == null) throw new ArgumentNullException(nameof(decimalLiteralx));
-		    return (NumberLiteralSyntax)TestLexerModeLanguage.Instance.InternalSyntaxFactory.NumberLiteral((Syntax.InternalSyntax.DecimalLiteralxGreen)decimalLiteralx.Green).CreateRed();
-		}
-		
-		public NumberLiteralSyntax NumberLiteral(ScientificLiteralxSyntax scientificLiteralx)
-		{
-		    if (scientificLiteralx == null) throw new ArgumentNullException(nameof(scientificLiteralx));
-		    return (NumberLiteralSyntax)TestLexerModeLanguage.Instance.InternalSyntaxFactory.NumberLiteral((Syntax.InternalSyntax.ScientificLiteralxGreen)scientificLiteralx.Green).CreateRed();
-		}
-		
-		public IntegerLiteralxSyntax IntegerLiteralx(SyntaxToken integerLiteral)
+		public NumberLiteralSyntax NumberLiteral(IntegerLiteralSyntax integerLiteral)
 		{
 		    if (integerLiteral == null) throw new ArgumentNullException(nameof(integerLiteral));
-		    if (integerLiteral.GetKind() != TestLexerModeSyntaxKind.IntegerLiteral) throw new ArgumentException(nameof(integerLiteral));
-		    return (IntegerLiteralxSyntax)TestLexerModeLanguage.Instance.InternalSyntaxFactory.IntegerLiteralx((InternalSyntaxToken)integerLiteral.Node).CreateRed();
+		    return (NumberLiteralSyntax)TestLexerModeLanguage.Instance.InternalSyntaxFactory.NumberLiteral((Syntax.InternalSyntax.IntegerLiteralGreen)integerLiteral.Green).CreateRed();
 		}
 		
-		public DecimalLiteralxSyntax DecimalLiteralx(SyntaxToken decimalLiteral)
+		public NumberLiteralSyntax NumberLiteral(DecimalLiteralSyntax decimalLiteral)
 		{
 		    if (decimalLiteral == null) throw new ArgumentNullException(nameof(decimalLiteral));
-		    if (decimalLiteral.GetKind() != TestLexerModeSyntaxKind.DecimalLiteral) throw new ArgumentException(nameof(decimalLiteral));
-		    return (DecimalLiteralxSyntax)TestLexerModeLanguage.Instance.InternalSyntaxFactory.DecimalLiteralx((InternalSyntaxToken)decimalLiteral.Node).CreateRed();
+		    return (NumberLiteralSyntax)TestLexerModeLanguage.Instance.InternalSyntaxFactory.NumberLiteral((Syntax.InternalSyntax.DecimalLiteralGreen)decimalLiteral.Green).CreateRed();
 		}
 		
-		public ScientificLiteralxSyntax ScientificLiteralx(SyntaxToken scientificLiteral)
+		public NumberLiteralSyntax NumberLiteral(ScientificLiteralSyntax scientificLiteral)
 		{
 		    if (scientificLiteral == null) throw new ArgumentNullException(nameof(scientificLiteral));
-		    if (scientificLiteral.GetKind() != TestLexerModeSyntaxKind.ScientificLiteral) throw new ArgumentException(nameof(scientificLiteral));
-		    return (ScientificLiteralxSyntax)TestLexerModeLanguage.Instance.InternalSyntaxFactory.ScientificLiteralx((InternalSyntaxToken)scientificLiteral.Node).CreateRed();
+		    return (NumberLiteralSyntax)TestLexerModeLanguage.Instance.InternalSyntaxFactory.NumberLiteral((Syntax.InternalSyntax.ScientificLiteralGreen)scientificLiteral.Green).CreateRed();
 		}
 		
-		public DateOrTimeLiteralSyntax DateOrTimeLiteral(DateTimeLiteralxSyntax dateTimeLiteralx)
+		public IntegerLiteralSyntax IntegerLiteral(SyntaxToken lInteger)
 		{
-		    if (dateTimeLiteralx == null) throw new ArgumentNullException(nameof(dateTimeLiteralx));
-		    return (DateOrTimeLiteralSyntax)TestLexerModeLanguage.Instance.InternalSyntaxFactory.DateOrTimeLiteral((Syntax.InternalSyntax.DateTimeLiteralxGreen)dateTimeLiteralx.Green).CreateRed();
+		    if (lInteger == null) throw new ArgumentNullException(nameof(lInteger));
+		    if (lInteger.GetKind() != TestLexerModeSyntaxKind.LInteger) throw new ArgumentException(nameof(lInteger));
+		    return (IntegerLiteralSyntax)TestLexerModeLanguage.Instance.InternalSyntaxFactory.IntegerLiteral((InternalSyntaxToken)lInteger.Node).CreateRed();
 		}
 		
-		public DateOrTimeLiteralSyntax DateOrTimeLiteral(DateTimeOffsetLiteralxSyntax dateTimeOffsetLiteralx)
+		public DecimalLiteralSyntax DecimalLiteral(SyntaxToken lDecimal)
 		{
-		    if (dateTimeOffsetLiteralx == null) throw new ArgumentNullException(nameof(dateTimeOffsetLiteralx));
-		    return (DateOrTimeLiteralSyntax)TestLexerModeLanguage.Instance.InternalSyntaxFactory.DateOrTimeLiteral((Syntax.InternalSyntax.DateTimeOffsetLiteralxGreen)dateTimeOffsetLiteralx.Green).CreateRed();
+		    if (lDecimal == null) throw new ArgumentNullException(nameof(lDecimal));
+		    if (lDecimal.GetKind() != TestLexerModeSyntaxKind.LDecimal) throw new ArgumentException(nameof(lDecimal));
+		    return (DecimalLiteralSyntax)TestLexerModeLanguage.Instance.InternalSyntaxFactory.DecimalLiteral((InternalSyntaxToken)lDecimal.Node).CreateRed();
 		}
 		
-		public DateOrTimeLiteralSyntax DateOrTimeLiteral(DateLiteralxSyntax dateLiteralx)
+		public ScientificLiteralSyntax ScientificLiteral(SyntaxToken lScientific)
 		{
-		    if (dateLiteralx == null) throw new ArgumentNullException(nameof(dateLiteralx));
-		    return (DateOrTimeLiteralSyntax)TestLexerModeLanguage.Instance.InternalSyntaxFactory.DateOrTimeLiteral((Syntax.InternalSyntax.DateLiteralxGreen)dateLiteralx.Green).CreateRed();
+		    if (lScientific == null) throw new ArgumentNullException(nameof(lScientific));
+		    if (lScientific.GetKind() != TestLexerModeSyntaxKind.LScientific) throw new ArgumentException(nameof(lScientific));
+		    return (ScientificLiteralSyntax)TestLexerModeLanguage.Instance.InternalSyntaxFactory.ScientificLiteral((InternalSyntaxToken)lScientific.Node).CreateRed();
 		}
 		
-		public DateOrTimeLiteralSyntax DateOrTimeLiteral(TimeLiteralxSyntax timeLiteralx)
-		{
-		    if (timeLiteralx == null) throw new ArgumentNullException(nameof(timeLiteralx));
-		    return (DateOrTimeLiteralSyntax)TestLexerModeLanguage.Instance.InternalSyntaxFactory.DateOrTimeLiteral((Syntax.InternalSyntax.TimeLiteralxGreen)timeLiteralx.Green).CreateRed();
-		}
-		
-		public DateTimeOffsetLiteralxSyntax DateTimeOffsetLiteralx(SyntaxToken dateTimeOffsetLiteral)
-		{
-		    if (dateTimeOffsetLiteral == null) throw new ArgumentNullException(nameof(dateTimeOffsetLiteral));
-		    if (dateTimeOffsetLiteral.GetKind() != TestLexerModeSyntaxKind.DateTimeOffsetLiteral) throw new ArgumentException(nameof(dateTimeOffsetLiteral));
-		    return (DateTimeOffsetLiteralxSyntax)TestLexerModeLanguage.Instance.InternalSyntaxFactory.DateTimeOffsetLiteralx((InternalSyntaxToken)dateTimeOffsetLiteral.Node).CreateRed();
-		}
-		
-		public DateTimeLiteralxSyntax DateTimeLiteralx(SyntaxToken dateTimeLiteral)
+		public DateOrTimeLiteralSyntax DateOrTimeLiteral(DateTimeLiteralSyntax dateTimeLiteral)
 		{
 		    if (dateTimeLiteral == null) throw new ArgumentNullException(nameof(dateTimeLiteral));
-		    if (dateTimeLiteral.GetKind() != TestLexerModeSyntaxKind.DateTimeLiteral) throw new ArgumentException(nameof(dateTimeLiteral));
-		    return (DateTimeLiteralxSyntax)TestLexerModeLanguage.Instance.InternalSyntaxFactory.DateTimeLiteralx((InternalSyntaxToken)dateTimeLiteral.Node).CreateRed();
+		    return (DateOrTimeLiteralSyntax)TestLexerModeLanguage.Instance.InternalSyntaxFactory.DateOrTimeLiteral((Syntax.InternalSyntax.DateTimeLiteralGreen)dateTimeLiteral.Green).CreateRed();
 		}
 		
-		public DateLiteralxSyntax DateLiteralx(SyntaxToken dateLiteral)
+		public DateOrTimeLiteralSyntax DateOrTimeLiteral(DateTimeOffsetLiteralSyntax dateTimeOffsetLiteral)
+		{
+		    if (dateTimeOffsetLiteral == null) throw new ArgumentNullException(nameof(dateTimeOffsetLiteral));
+		    return (DateOrTimeLiteralSyntax)TestLexerModeLanguage.Instance.InternalSyntaxFactory.DateOrTimeLiteral((Syntax.InternalSyntax.DateTimeOffsetLiteralGreen)dateTimeOffsetLiteral.Green).CreateRed();
+		}
+		
+		public DateOrTimeLiteralSyntax DateOrTimeLiteral(DateLiteralSyntax dateLiteral)
 		{
 		    if (dateLiteral == null) throw new ArgumentNullException(nameof(dateLiteral));
-		    if (dateLiteral.GetKind() != TestLexerModeSyntaxKind.DateLiteral) throw new ArgumentException(nameof(dateLiteral));
-		    return (DateLiteralxSyntax)TestLexerModeLanguage.Instance.InternalSyntaxFactory.DateLiteralx((InternalSyntaxToken)dateLiteral.Node).CreateRed();
+		    return (DateOrTimeLiteralSyntax)TestLexerModeLanguage.Instance.InternalSyntaxFactory.DateOrTimeLiteral((Syntax.InternalSyntax.DateLiteralGreen)dateLiteral.Green).CreateRed();
 		}
 		
-		public TimeLiteralxSyntax TimeLiteralx(SyntaxToken timeLiteral)
+		public DateOrTimeLiteralSyntax DateOrTimeLiteral(TimeLiteralSyntax timeLiteral)
 		{
 		    if (timeLiteral == null) throw new ArgumentNullException(nameof(timeLiteral));
-		    if (timeLiteral.GetKind() != TestLexerModeSyntaxKind.TimeLiteral) throw new ArgumentException(nameof(timeLiteral));
-		    return (TimeLiteralxSyntax)TestLexerModeLanguage.Instance.InternalSyntaxFactory.TimeLiteralx((InternalSyntaxToken)timeLiteral.Node).CreateRed();
+		    return (DateOrTimeLiteralSyntax)TestLexerModeLanguage.Instance.InternalSyntaxFactory.DateOrTimeLiteral((Syntax.InternalSyntax.TimeLiteralGreen)timeLiteral.Green).CreateRed();
 		}
 		
-		public CharLiteralxSyntax CharLiteralx(SyntaxToken charLiteral)
+		public DateTimeOffsetLiteralSyntax DateTimeOffsetLiteral(SyntaxToken lDateTimeOffset)
 		{
-		    if (charLiteral == null) throw new ArgumentNullException(nameof(charLiteral));
-		    if (charLiteral.GetKind() != TestLexerModeSyntaxKind.CharLiteral) throw new ArgumentException(nameof(charLiteral));
-		    return (CharLiteralxSyntax)TestLexerModeLanguage.Instance.InternalSyntaxFactory.CharLiteralx((InternalSyntaxToken)charLiteral.Node).CreateRed();
+		    if (lDateTimeOffset == null) throw new ArgumentNullException(nameof(lDateTimeOffset));
+		    if (lDateTimeOffset.GetKind() != TestLexerModeSyntaxKind.LDateTimeOffset) throw new ArgumentException(nameof(lDateTimeOffset));
+		    return (DateTimeOffsetLiteralSyntax)TestLexerModeLanguage.Instance.InternalSyntaxFactory.DateTimeOffsetLiteral((InternalSyntaxToken)lDateTimeOffset.Node).CreateRed();
 		}
 		
-		public StringLiteralxSyntax StringLiteralx(SyntaxToken stringLiteralx)
+		public DateTimeLiteralSyntax DateTimeLiteral(SyntaxToken lDateTime)
 		{
-		    if (stringLiteralx == null) throw new ArgumentNullException(nameof(stringLiteralx));
-		    return (StringLiteralxSyntax)TestLexerModeLanguage.Instance.InternalSyntaxFactory.StringLiteralx((InternalSyntaxToken)stringLiteralx.Node).CreateRed();
+		    if (lDateTime == null) throw new ArgumentNullException(nameof(lDateTime));
+		    if (lDateTime.GetKind() != TestLexerModeSyntaxKind.LDateTime) throw new ArgumentException(nameof(lDateTime));
+		    return (DateTimeLiteralSyntax)TestLexerModeLanguage.Instance.InternalSyntaxFactory.DateTimeLiteral((InternalSyntaxToken)lDateTime.Node).CreateRed();
 		}
 		
-		public GuidLiteralxSyntax GuidLiteralx(SyntaxToken guidLiteral)
+		public DateLiteralSyntax DateLiteral(SyntaxToken lDate)
 		{
-		    if (guidLiteral == null) throw new ArgumentNullException(nameof(guidLiteral));
-		    if (guidLiteral.GetKind() != TestLexerModeSyntaxKind.GuidLiteral) throw new ArgumentException(nameof(guidLiteral));
-		    return (GuidLiteralxSyntax)TestLexerModeLanguage.Instance.InternalSyntaxFactory.GuidLiteralx((InternalSyntaxToken)guidLiteral.Node).CreateRed();
+		    if (lDate == null) throw new ArgumentNullException(nameof(lDate));
+		    if (lDate.GetKind() != TestLexerModeSyntaxKind.LDate) throw new ArgumentException(nameof(lDate));
+		    return (DateLiteralSyntax)TestLexerModeLanguage.Instance.InternalSyntaxFactory.DateLiteral((InternalSyntaxToken)lDate.Node).CreateRed();
+		}
+		
+		public TimeLiteralSyntax TimeLiteral(SyntaxToken lTime)
+		{
+		    if (lTime == null) throw new ArgumentNullException(nameof(lTime));
+		    if (lTime.GetKind() != TestLexerModeSyntaxKind.LTime) throw new ArgumentException(nameof(lTime));
+		    return (TimeLiteralSyntax)TestLexerModeLanguage.Instance.InternalSyntaxFactory.TimeLiteral((InternalSyntaxToken)lTime.Node).CreateRed();
+		}
+		
+		public CharLiteralSyntax CharLiteral(SyntaxToken lChar)
+		{
+		    if (lChar == null) throw new ArgumentNullException(nameof(lChar));
+		    if (lChar.GetKind() != TestLexerModeSyntaxKind.LChar) throw new ArgumentException(nameof(lChar));
+		    return (CharLiteralSyntax)TestLexerModeLanguage.Instance.InternalSyntaxFactory.CharLiteral((InternalSyntaxToken)lChar.Node).CreateRed();
+		}
+		
+		public StringLiteralSyntax StringLiteral(SyntaxToken stringLiteral)
+		{
+		    if (stringLiteral == null) throw new ArgumentNullException(nameof(stringLiteral));
+		    return (StringLiteralSyntax)TestLexerModeLanguage.Instance.InternalSyntaxFactory.StringLiteral((InternalSyntaxToken)stringLiteral.Node).CreateRed();
+		}
+		
+		public GuidLiteralSyntax GuidLiteral(SyntaxToken lGuid)
+		{
+		    if (lGuid == null) throw new ArgumentNullException(nameof(lGuid));
+		    if (lGuid.GetKind() != TestLexerModeSyntaxKind.LGuid) throw new ArgumentException(nameof(lGuid));
+		    return (GuidLiteralSyntax)TestLexerModeLanguage.Instance.InternalSyntaxFactory.GuidLiteral((InternalSyntaxToken)lGuid.Node).CreateRed();
 		}
 	
 	    internal static IEnumerable<Type> GetNodeTypes()
@@ -22520,7 +22520,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test
 				typeof(TemplateBodySyntax),
 				typeof(TemplateContentLineSyntax),
 				typeof(TemplateContentSyntax),
-				typeof(TemplateOutputxSyntax),
+				typeof(TemplateOutputSyntax),
 				typeof(TemplateLineEndSyntax),
 				typeof(TemplateStatementStartEndSyntax),
 				typeof(TemplateStatementSyntax),
@@ -22586,17 +22586,17 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test
 				typeof(NullLiteralSyntax),
 				typeof(BooleanLiteralSyntax),
 				typeof(NumberLiteralSyntax),
-				typeof(IntegerLiteralxSyntax),
-				typeof(DecimalLiteralxSyntax),
-				typeof(ScientificLiteralxSyntax),
+				typeof(IntegerLiteralSyntax),
+				typeof(DecimalLiteralSyntax),
+				typeof(ScientificLiteralSyntax),
 				typeof(DateOrTimeLiteralSyntax),
-				typeof(DateTimeOffsetLiteralxSyntax),
-				typeof(DateTimeLiteralxSyntax),
-				typeof(DateLiteralxSyntax),
-				typeof(TimeLiteralxSyntax),
-				typeof(CharLiteralxSyntax),
-				typeof(StringLiteralxSyntax),
-				typeof(GuidLiteralxSyntax),
+				typeof(DateTimeOffsetLiteralSyntax),
+				typeof(DateTimeLiteralSyntax),
+				typeof(DateLiteralSyntax),
+				typeof(TimeLiteralSyntax),
+				typeof(CharLiteralSyntax),
+				typeof(StringLiteralSyntax),
+				typeof(GuidLiteralSyntax),
 			};
 		}
 	}

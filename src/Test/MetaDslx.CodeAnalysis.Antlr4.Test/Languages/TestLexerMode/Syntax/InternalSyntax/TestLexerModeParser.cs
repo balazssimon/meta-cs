@@ -19,7 +19,7 @@
 // Ambiguous reference in cref attribute
 #pragma warning disable 419
 
-namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax {
+namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax {
 using Antlr4.Runtime;
 using Antlr4.Runtime.Atn;
 using Antlr4.Runtime.Misc;
@@ -49,15 +49,14 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		TQuestion=82, TPlus=83, TMinus=84, TExclamation=85, TTilde=86, TAsterisk=87, 
 		TSlash=88, TPercent=89, TPlusPlus=90, TMinusMinus=91, TColonColon=92, 
 		TAmp=93, THat=94, TPipe=95, TAnd=96, TXor=97, TOr=98, TQuestionQuestion=99, 
-		IdentifierNormal=100, IntegerLiteral=101, DecimalLiteral=102, ScientificLiteral=103, 
-		DateTimeOffsetLiteral=104, DateTimeLiteral=105, DateLiteral=106, TimeLiteral=107, 
-		CharLiteral=108, RegularStringLiteral=109, GuidLiteral=110, LUtf8Bom=111, 
-		LWhitespace=112, LCrLf=113, LLineBreak=114, LLineComment=115, LMultiLineComment=116, 
-		DoubleQuoteVerbatimStringLiteral=117, TH_TOpenParenthesis=118, TH_TCloseParenthesis=119, 
-		KEndTemplate=120, TemplateLineControl=121, TemplateOutput=122, TemplateCrLf=123, 
-		TemplateLineBreak=124, TemplateStatementStart=125, TemplateStatementEnd=126, 
-		TS_TOpenBracket=127, TS_TCloseBracket=128, DoubleQuoteVerbatimStringLiteralStart=129, 
-		COMMENT_START=130;
+		IdentifierNormal=100, LInteger=101, LDecimal=102, LScientific=103, LDateTimeOffset=104, 
+		LDateTime=105, LDate=106, LTime=107, LChar=108, LRegularString=109, LGuid=110, 
+		LUtf8Bom=111, LWhitespace=112, LCrLf=113, LLineBreak=114, LLineComment=115, 
+		LMultiLineComment=116, LDoubleQuoteVerbatimString=117, TH_TOpenParenthesis=118, 
+		TH_TCloseParenthesis=119, KEndTemplate=120, LTemplateLineControl=121, 
+		LTemplateOutput=122, LTemplateCrLf=123, LTemplateLineBreak=124, TTemplateStatementStart=125, 
+		TTemplateStatementEnd=126, TS_TOpenBracket=127, TS_TCloseBracket=128, 
+		DoubleQuoteVerbatimStringLiteralStart=129, COMMENT_START=130;
 	public const int
 		RULE_main = 0, RULE_namespaceDeclaration = 1, RULE_generatorDeclaration = 2, 
 		RULE_usingDeclaration = 3, RULE_configDeclaration = 4, RULE_configProperty = 5, 
@@ -82,7 +81,7 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		RULE_switchTypeIsHeadStatement = 58, RULE_switchTypeAsHeadStatement = 59, 
 		RULE_switchDefaultStatement = 60, RULE_switchDefaultHeadStatement = 61, 
 		RULE_templateDeclaration = 62, RULE_templateSignature = 63, RULE_templateBody = 64, 
-		RULE_templateContentLine = 65, RULE_templateContent = 66, RULE_templateOutputx = 67, 
+		RULE_templateContentLine = 65, RULE_templateContent = 66, RULE_templateOutput = 67, 
 		RULE_templateLineEnd = 68, RULE_templateStatementStartEnd = 69, RULE_templateStatement = 70, 
 		RULE_typeArgumentList = 71, RULE_predefinedType = 72, RULE_typeReferenceList = 73, 
 		RULE_typeReference = 74, RULE_arrayType = 75, RULE_arrayItemType = 76, 
@@ -93,10 +92,10 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		RULE_anonymousFunctionSignature = 90, RULE_explicitParameter = 91, RULE_implicitParameter = 92, 
 		RULE_expression = 93, RULE_qualifiedName = 94, RULE_identifierList = 95, 
 		RULE_identifier = 96, RULE_literal = 97, RULE_nullLiteral = 98, RULE_booleanLiteral = 99, 
-		RULE_numberLiteral = 100, RULE_integerLiteralx = 101, RULE_decimalLiteralx = 102, 
-		RULE_scientificLiteralx = 103, RULE_dateOrTimeLiteral = 104, RULE_dateTimeOffsetLiteralx = 105, 
-		RULE_dateTimeLiteralx = 106, RULE_dateLiteralx = 107, RULE_timeLiteralx = 108, 
-		RULE_charLiteralx = 109, RULE_stringLiteralx = 110, RULE_guidLiteralx = 111;
+		RULE_numberLiteral = 100, RULE_integerLiteral = 101, RULE_decimalLiteral = 102, 
+		RULE_scientificLiteral = 103, RULE_dateOrTimeLiteral = 104, RULE_dateTimeOffsetLiteral = 105, 
+		RULE_dateTimeLiteral = 106, RULE_dateLiteral = 107, RULE_timeLiteral = 108, 
+		RULE_charLiteral = 109, RULE_stringLiteral = 110, RULE_guidLiteral = 111;
 	public static readonly string[] ruleNames = {
 		"main", "namespaceDeclaration", "generatorDeclaration", "usingDeclaration", 
 		"configDeclaration", "configProperty", "methodDeclaration", "externFunctionDeclaration", 
@@ -116,7 +115,7 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		"switchCaseHeadStatement", "switchTypeIsHeadStatement", "switchTypeAsHeadStatement", 
 		"switchDefaultStatement", "switchDefaultHeadStatement", "templateDeclaration", 
 		"templateSignature", "templateBody", "templateContentLine", "templateContent", 
-		"templateOutputx", "templateLineEnd", "templateStatementStartEnd", "templateStatement", 
+		"templateOutput", "templateLineEnd", "templateStatementStartEnd", "templateStatement", 
 		"typeArgumentList", "predefinedType", "typeReferenceList", "typeReference", 
 		"arrayType", "arrayItemType", "nullableType", "nullableItemType", "genericType", 
 		"simpleType", "voidType", "returnType", "expressionList", "variableReference", 
@@ -124,9 +123,9 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		"genericDimensionSpecifier", "anonymousFunctionSignature", "explicitParameter", 
 		"implicitParameter", "expression", "qualifiedName", "identifierList", 
 		"identifier", "literal", "nullLiteral", "booleanLiteral", "numberLiteral", 
-		"integerLiteralx", "decimalLiteralx", "scientificLiteralx", "dateOrTimeLiteral", 
-		"dateTimeOffsetLiteralx", "dateTimeLiteralx", "dateLiteralx", "timeLiteralx", 
-		"charLiteralx", "stringLiteralx", "guidLiteralx"
+		"integerLiteral", "decimalLiteral", "scientificLiteral", "dateOrTimeLiteral", 
+		"dateTimeOffsetLiteral", "dateTimeLiteral", "dateLiteral", "timeLiteral", 
+		"charLiteral", "stringLiteral", "guidLiteral"
 	};
 
 	private static readonly string[] _LiteralNames = {
@@ -163,13 +162,12 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		"TQuestion", "TPlus", "TMinus", "TExclamation", "TTilde", "TAsterisk", 
 		"TSlash", "TPercent", "TPlusPlus", "TMinusMinus", "TColonColon", "TAmp", 
 		"THat", "TPipe", "TAnd", "TXor", "TOr", "TQuestionQuestion", "IdentifierNormal", 
-		"IntegerLiteral", "DecimalLiteral", "ScientificLiteral", "DateTimeOffsetLiteral", 
-		"DateTimeLiteral", "DateLiteral", "TimeLiteral", "CharLiteral", "RegularStringLiteral", 
-		"GuidLiteral", "LUtf8Bom", "LWhitespace", "LCrLf", "LLineBreak", "LLineComment", 
-		"LMultiLineComment", "DoubleQuoteVerbatimStringLiteral", "TH_TOpenParenthesis", 
-		"TH_TCloseParenthesis", "KEndTemplate", "TemplateLineControl", "TemplateOutput", 
-		"TemplateCrLf", "TemplateLineBreak", "TemplateStatementStart", "TemplateStatementEnd", 
-		"TS_TOpenBracket", "TS_TCloseBracket", "DoubleQuoteVerbatimStringLiteralStart", 
+		"LInteger", "LDecimal", "LScientific", "LDateTimeOffset", "LDateTime", 
+		"LDate", "LTime", "LChar", "LRegularString", "LGuid", "LUtf8Bom", "LWhitespace", 
+		"LCrLf", "LLineBreak", "LLineComment", "LMultiLineComment", "LDoubleQuoteVerbatimString", 
+		"TH_TOpenParenthesis", "TH_TCloseParenthesis", "KEndTemplate", "LTemplateLineControl", 
+		"LTemplateOutput", "LTemplateCrLf", "LTemplateLineBreak", "TTemplateStatementStart", 
+		"TTemplateStatementEnd", "TS_TOpenBracket", "TS_TCloseBracket", "DoubleQuoteVerbatimStringLiteralStart", 
 		"COMMENT_START"
 	};
 	public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);
@@ -250,14 +248,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_main; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterMain(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitMain(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitMain(this);
@@ -339,14 +329,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_namespaceDeclaration; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterNamespaceDeclaration(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitNamespaceDeclaration(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitNamespaceDeclaration(this);
@@ -400,14 +382,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_generatorDeclaration; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterGeneratorDeclaration(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitGeneratorDeclaration(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitGeneratorDeclaration(this);
@@ -482,14 +456,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		}
 		public ITerminalNode TSemicolon() { return GetToken(TestLexerModeParser.TSemicolon, 0); }
 		public UsingNamespaceDeclarationContext(UsingDeclarationContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterUsingNamespaceDeclaration(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitUsingNamespaceDeclaration(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitUsingNamespaceDeclaration(this);
@@ -507,14 +473,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 			return GetRuleContext<IdentifierContext>(0);
 		}
 		public UsingGeneratorDeclarationContext(UsingDeclarationContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterUsingGeneratorDeclaration(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitUsingGeneratorDeclaration(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitUsingGeneratorDeclaration(this);
@@ -599,14 +557,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_configDeclaration; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterConfigDeclaration(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitConfigDeclaration(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitConfigDeclaration(this);
@@ -689,14 +639,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 			return GetRuleContext<ExpressionContext>(0);
 		}
 		public ConfigPropertyDeclarationContext(ConfigPropertyContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterConfigPropertyDeclaration(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitConfigPropertyDeclaration(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitConfigPropertyDeclaration(this);
@@ -721,14 +663,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 			return GetRuleContext<ConfigPropertyContext>(i);
 		}
 		public ConfigPropertyGroupDeclarationContext(ConfigPropertyContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterConfigPropertyGroupDeclaration(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitConfigPropertyGroupDeclaration(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitConfigPropertyGroupDeclaration(this);
@@ -836,14 +770,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_methodDeclaration; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterMethodDeclaration(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitMethodDeclaration(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitMethodDeclaration(this);
@@ -906,14 +832,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_externFunctionDeclaration; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterExternFunctionDeclaration(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitExternFunctionDeclaration(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitExternFunctionDeclaration(this);
@@ -961,14 +879,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_functionDeclaration; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterFunctionDeclaration(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitFunctionDeclaration(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitFunctionDeclaration(this);
@@ -1025,14 +935,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_functionSignature; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterFunctionSignature(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitFunctionSignature(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitFunctionSignature(this);
@@ -1104,14 +1006,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_paramList; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterParamList(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitParamList(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitParamList(this);
@@ -1175,14 +1069,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_parameter; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterParameter(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitParameter(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitParameter(this);
@@ -1239,14 +1125,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_body; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterBody(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitBody(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitBody(this);
@@ -1321,14 +1199,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_statement; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterStatement(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitStatement(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitStatement(this);
@@ -1380,17 +1250,17 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 			case TPlusPlus:
 			case TMinusMinus:
 			case IdentifierNormal:
-			case IntegerLiteral:
-			case DecimalLiteral:
-			case ScientificLiteral:
-			case DateTimeOffsetLiteral:
-			case DateTimeLiteral:
-			case DateLiteral:
-			case TimeLiteral:
-			case CharLiteral:
-			case RegularStringLiteral:
-			case GuidLiteral:
-			case DoubleQuoteVerbatimStringLiteral:
+			case LInteger:
+			case LDecimal:
+			case LScientific:
+			case LDateTimeOffset:
+			case LDateTime:
+			case LDate:
+			case LTime:
+			case LChar:
+			case LRegularString:
+			case LGuid:
+			case LDoubleQuoteVerbatimString:
 				EnterOuterAlt(_localctx, 1);
 				{
 				State = 352; singleStatementSemicolon();
@@ -1462,14 +1332,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_singleStatement; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterSingleStatement(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitSingleStatement(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitSingleStatement(this);
@@ -1532,14 +1394,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_singleStatementSemicolon; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterSingleStatementSemicolon(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitSingleStatementSemicolon(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitSingleStatementSemicolon(this);
@@ -1582,14 +1436,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_variableDeclarationStatement; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterVariableDeclarationStatement(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitVariableDeclarationStatement(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitVariableDeclarationStatement(this);
@@ -1641,14 +1487,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_variableDeclarationExpression; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterVariableDeclarationExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitVariableDeclarationExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitVariableDeclarationExpression(this);
@@ -1710,14 +1548,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_variableDeclarationItem; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterVariableDeclarationItem(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitVariableDeclarationItem(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitVariableDeclarationItem(this);
@@ -1771,14 +1601,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_voidStatement; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterVoidStatement(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitVoidStatement(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitVoidStatement(this);
@@ -1822,14 +1644,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_returnStatement; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterReturnStatement(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitReturnStatement(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitReturnStatement(this);
@@ -1872,14 +1686,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_expressionStatement; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterExpressionStatement(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitExpressionStatement(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitExpressionStatement(this);
@@ -1936,14 +1742,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_ifStatement; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterIfStatement(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitIfStatement(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitIfStatement(this);
@@ -2016,14 +1814,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_elseIfStatementBody; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterElseIfStatementBody(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitElseIfStatementBody(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitElseIfStatementBody(this);
@@ -2069,14 +1859,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_ifStatementElseBody; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterIfStatementElseBody(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitIfStatementElseBody(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitIfStatementElseBody(this);
@@ -2122,14 +1904,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_ifStatementBegin; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterIfStatementBegin(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitIfStatementBegin(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitIfStatementBegin(this);
@@ -2178,14 +1952,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_elseIfStatement; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterElseIfStatement(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitElseIfStatement(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitElseIfStatement(this);
@@ -2229,14 +1995,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_ifStatementElse; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterIfStatementElse(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitIfStatementElse(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitIfStatementElse(this);
@@ -2277,14 +2035,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_ifStatementEnd; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterIfStatementEnd(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitIfStatementEnd(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitIfStatementEnd(this);
@@ -2333,14 +2083,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_forStatement; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterForStatement(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitForStatement(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitForStatement(this);
@@ -2401,14 +2143,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_forStatementBegin; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterForStatementBegin(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitForStatementBegin(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitForStatementBegin(this);
@@ -2433,7 +2167,7 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 			State = 435;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KHasLoop) | (1L << KNull) | (1L << KTrue) | (1L << KFalse) | (1L << KBool) | (1L << KByte) | (1L << KChar) | (1L << KDecimal) | (1L << KDouble) | (1L << KFloat) | (1L << KInt) | (1L << KLong) | (1L << KObject) | (1L << KSByte) | (1L << KShort) | (1L << KString) | (1L << KUInt) | (1L << KULong) | (1L << KUShort) | (1L << KThis) | (1L << KNew) | (1L << KTypeof) | (1L << KDefault))) != 0) || ((((_la - 68)) & ~0x3f) == 0 && ((1L << (_la - 68)) & ((1L << (TOpenParenthesis - 68)) | (1L << (TPlus - 68)) | (1L << (TMinus - 68)) | (1L << (TExclamation - 68)) | (1L << (TTilde - 68)) | (1L << (TPlusPlus - 68)) | (1L << (TMinusMinus - 68)) | (1L << (IdentifierNormal - 68)) | (1L << (IntegerLiteral - 68)) | (1L << (DecimalLiteral - 68)) | (1L << (ScientificLiteral - 68)) | (1L << (DateTimeOffsetLiteral - 68)) | (1L << (DateTimeLiteral - 68)) | (1L << (DateLiteral - 68)) | (1L << (TimeLiteral - 68)) | (1L << (CharLiteral - 68)) | (1L << (RegularStringLiteral - 68)) | (1L << (GuidLiteral - 68)) | (1L << (DoubleQuoteVerbatimStringLiteral - 68)))) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KHasLoop) | (1L << KNull) | (1L << KTrue) | (1L << KFalse) | (1L << KBool) | (1L << KByte) | (1L << KChar) | (1L << KDecimal) | (1L << KDouble) | (1L << KFloat) | (1L << KInt) | (1L << KLong) | (1L << KObject) | (1L << KSByte) | (1L << KShort) | (1L << KString) | (1L << KUInt) | (1L << KULong) | (1L << KUShort) | (1L << KThis) | (1L << KNew) | (1L << KTypeof) | (1L << KDefault))) != 0) || ((((_la - 68)) & ~0x3f) == 0 && ((1L << (_la - 68)) & ((1L << (TOpenParenthesis - 68)) | (1L << (TPlus - 68)) | (1L << (TMinus - 68)) | (1L << (TExclamation - 68)) | (1L << (TTilde - 68)) | (1L << (TPlusPlus - 68)) | (1L << (TMinusMinus - 68)) | (1L << (IdentifierNormal - 68)) | (1L << (LInteger - 68)) | (1L << (LDecimal - 68)) | (1L << (LScientific - 68)) | (1L << (LDateTimeOffset - 68)) | (1L << (LDateTime - 68)) | (1L << (LDate - 68)) | (1L << (LTime - 68)) | (1L << (LChar - 68)) | (1L << (LRegularString - 68)) | (1L << (LGuid - 68)) | (1L << (LDoubleQuoteVerbatimString - 68)))) != 0)) {
 				{
 				State = 434; forInitStatement();
 				}
@@ -2443,7 +2177,7 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 			State = 439;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KHasLoop) | (1L << KNull) | (1L << KTrue) | (1L << KFalse) | (1L << KBool) | (1L << KByte) | (1L << KChar) | (1L << KDecimal) | (1L << KDouble) | (1L << KFloat) | (1L << KInt) | (1L << KLong) | (1L << KObject) | (1L << KSByte) | (1L << KShort) | (1L << KString) | (1L << KUInt) | (1L << KULong) | (1L << KUShort) | (1L << KThis) | (1L << KNew) | (1L << KTypeof) | (1L << KDefault))) != 0) || ((((_la - 68)) & ~0x3f) == 0 && ((1L << (_la - 68)) & ((1L << (TOpenParenthesis - 68)) | (1L << (TPlus - 68)) | (1L << (TMinus - 68)) | (1L << (TExclamation - 68)) | (1L << (TTilde - 68)) | (1L << (TPlusPlus - 68)) | (1L << (TMinusMinus - 68)) | (1L << (IdentifierNormal - 68)) | (1L << (IntegerLiteral - 68)) | (1L << (DecimalLiteral - 68)) | (1L << (ScientificLiteral - 68)) | (1L << (DateTimeOffsetLiteral - 68)) | (1L << (DateTimeLiteral - 68)) | (1L << (DateLiteral - 68)) | (1L << (TimeLiteral - 68)) | (1L << (CharLiteral - 68)) | (1L << (RegularStringLiteral - 68)) | (1L << (GuidLiteral - 68)) | (1L << (DoubleQuoteVerbatimStringLiteral - 68)))) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KHasLoop) | (1L << KNull) | (1L << KTrue) | (1L << KFalse) | (1L << KBool) | (1L << KByte) | (1L << KChar) | (1L << KDecimal) | (1L << KDouble) | (1L << KFloat) | (1L << KInt) | (1L << KLong) | (1L << KObject) | (1L << KSByte) | (1L << KShort) | (1L << KString) | (1L << KUInt) | (1L << KULong) | (1L << KUShort) | (1L << KThis) | (1L << KNew) | (1L << KTypeof) | (1L << KDefault))) != 0) || ((((_la - 68)) & ~0x3f) == 0 && ((1L << (_la - 68)) & ((1L << (TOpenParenthesis - 68)) | (1L << (TPlus - 68)) | (1L << (TMinus - 68)) | (1L << (TExclamation - 68)) | (1L << (TTilde - 68)) | (1L << (TPlusPlus - 68)) | (1L << (TMinusMinus - 68)) | (1L << (IdentifierNormal - 68)) | (1L << (LInteger - 68)) | (1L << (LDecimal - 68)) | (1L << (LScientific - 68)) | (1L << (LDateTimeOffset - 68)) | (1L << (LDateTime - 68)) | (1L << (LDate - 68)) | (1L << (LTime - 68)) | (1L << (LChar - 68)) | (1L << (LRegularString - 68)) | (1L << (LGuid - 68)) | (1L << (LDoubleQuoteVerbatimString - 68)))) != 0)) {
 				{
 				State = 438; _localctx.endExpression = expressionList();
 				}
@@ -2453,7 +2187,7 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 			State = 443;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KHasLoop) | (1L << KNull) | (1L << KTrue) | (1L << KFalse) | (1L << KBool) | (1L << KByte) | (1L << KChar) | (1L << KDecimal) | (1L << KDouble) | (1L << KFloat) | (1L << KInt) | (1L << KLong) | (1L << KObject) | (1L << KSByte) | (1L << KShort) | (1L << KString) | (1L << KUInt) | (1L << KULong) | (1L << KUShort) | (1L << KThis) | (1L << KNew) | (1L << KTypeof) | (1L << KDefault))) != 0) || ((((_la - 68)) & ~0x3f) == 0 && ((1L << (_la - 68)) & ((1L << (TOpenParenthesis - 68)) | (1L << (TPlus - 68)) | (1L << (TMinus - 68)) | (1L << (TExclamation - 68)) | (1L << (TTilde - 68)) | (1L << (TPlusPlus - 68)) | (1L << (TMinusMinus - 68)) | (1L << (IdentifierNormal - 68)) | (1L << (IntegerLiteral - 68)) | (1L << (DecimalLiteral - 68)) | (1L << (ScientificLiteral - 68)) | (1L << (DateTimeOffsetLiteral - 68)) | (1L << (DateTimeLiteral - 68)) | (1L << (DateLiteral - 68)) | (1L << (TimeLiteral - 68)) | (1L << (CharLiteral - 68)) | (1L << (RegularStringLiteral - 68)) | (1L << (GuidLiteral - 68)) | (1L << (DoubleQuoteVerbatimStringLiteral - 68)))) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KHasLoop) | (1L << KNull) | (1L << KTrue) | (1L << KFalse) | (1L << KBool) | (1L << KByte) | (1L << KChar) | (1L << KDecimal) | (1L << KDouble) | (1L << KFloat) | (1L << KInt) | (1L << KLong) | (1L << KObject) | (1L << KSByte) | (1L << KShort) | (1L << KString) | (1L << KUInt) | (1L << KULong) | (1L << KUShort) | (1L << KThis) | (1L << KNew) | (1L << KTypeof) | (1L << KDefault))) != 0) || ((((_la - 68)) & ~0x3f) == 0 && ((1L << (_la - 68)) & ((1L << (TOpenParenthesis - 68)) | (1L << (TPlus - 68)) | (1L << (TMinus - 68)) | (1L << (TExclamation - 68)) | (1L << (TTilde - 68)) | (1L << (TPlusPlus - 68)) | (1L << (TMinusMinus - 68)) | (1L << (IdentifierNormal - 68)) | (1L << (LInteger - 68)) | (1L << (LDecimal - 68)) | (1L << (LScientific - 68)) | (1L << (LDateTimeOffset - 68)) | (1L << (LDateTime - 68)) | (1L << (LDate - 68)) | (1L << (LTime - 68)) | (1L << (LChar - 68)) | (1L << (LRegularString - 68)) | (1L << (LGuid - 68)) | (1L << (LDoubleQuoteVerbatimString - 68)))) != 0)) {
 				{
 				State = 442; _localctx.stepExpression = expressionList();
 				}
@@ -2481,14 +2215,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_forStatementEnd; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterForStatementEnd(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitForStatementEnd(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitForStatementEnd(this);
@@ -2534,14 +2260,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_forInitStatement; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterForInitStatement(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitForInitStatement(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitForInitStatement(this);
@@ -2602,14 +2320,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_whileStatement; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterWhileStatement(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitWhileStatement(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitWhileStatement(this);
@@ -2656,14 +2366,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_whileStatementBegin; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterWhileStatementBegin(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitWhileStatementBegin(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitWhileStatementBegin(this);
@@ -2707,14 +2409,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_whileStatementEnd; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterWhileStatementEnd(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitWhileStatementEnd(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitWhileStatementEnd(this);
@@ -2757,14 +2451,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_whileRunExpression; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterWhileRunExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitWhileRunExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitWhileRunExpression(this);
@@ -2812,14 +2498,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_repeatStatement; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterRepeatStatement(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitRepeatStatement(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitRepeatStatement(this);
@@ -2861,14 +2539,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_repeatStatementBegin; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterRepeatStatementBegin(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitRepeatStatementBegin(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitRepeatStatementBegin(this);
@@ -2913,14 +2583,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_repeatStatementEnd; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterRepeatStatementEnd(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitRepeatStatementEnd(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitRepeatStatementEnd(this);
@@ -2965,14 +2627,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_repeatRunExpression; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterRepeatRunExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitRepeatRunExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitRepeatRunExpression(this);
@@ -3020,14 +2674,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_loopStatement; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterLoopStatement(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitLoopStatement(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitLoopStatement(this);
@@ -3080,14 +2726,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_loopStatementBegin; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterLoopStatementBegin(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitLoopStatementBegin(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitLoopStatementBegin(this);
@@ -3150,14 +2788,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_loopStatementEnd; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterLoopStatementEnd(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitLoopStatementEnd(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitLoopStatementEnd(this);
@@ -3207,14 +2837,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_loopChain; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterLoopChain(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitLoopChain(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitLoopChain(this);
@@ -3278,14 +2900,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_loopChainItem; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterLoopChainItem(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitLoopChainItem(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitLoopChainItem(this);
@@ -3357,14 +2971,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		}
 		public ITerminalNode TCloseParenthesis() { return GetToken(TestLexerModeParser.TCloseParenthesis, 0); }
 		public LoopChainTypeofExpressionContext(LoopChainExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterLoopChainTypeofExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitLoopChainTypeofExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitLoopChainTypeofExpression(this);
@@ -3379,14 +2985,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 			return GetRuleContext<TypeArgumentListContext>(0);
 		}
 		public LoopChainIdentifierExpressionContext(LoopChainExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterLoopChainIdentifierExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitLoopChainIdentifierExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitLoopChainIdentifierExpression(this);
@@ -3405,14 +3003,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 			return GetRuleContext<TypeArgumentListContext>(0);
 		}
 		public LoopChainMemberAccessExpressionContext(LoopChainExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterLoopChainMemberAccessExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitLoopChainMemberAccessExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitLoopChainMemberAccessExpression(this);
@@ -3429,14 +3019,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 			return GetRuleContext<ExpressionListContext>(0);
 		}
 		public LoopChainMethodCallExpressionContext(LoopChainExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterLoopChainMethodCallExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitLoopChainMethodCallExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitLoopChainMethodCallExpression(this);
@@ -3542,7 +3124,7 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 						State = 538;
 						_errHandler.Sync(this);
 						_la = _input.La(1);
-						if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KHasLoop) | (1L << KNull) | (1L << KTrue) | (1L << KFalse) | (1L << KBool) | (1L << KByte) | (1L << KChar) | (1L << KDecimal) | (1L << KDouble) | (1L << KFloat) | (1L << KInt) | (1L << KLong) | (1L << KObject) | (1L << KSByte) | (1L << KShort) | (1L << KString) | (1L << KUInt) | (1L << KULong) | (1L << KUShort) | (1L << KThis) | (1L << KNew) | (1L << KTypeof) | (1L << KDefault))) != 0) || ((((_la - 68)) & ~0x3f) == 0 && ((1L << (_la - 68)) & ((1L << (TOpenParenthesis - 68)) | (1L << (TPlus - 68)) | (1L << (TMinus - 68)) | (1L << (TExclamation - 68)) | (1L << (TTilde - 68)) | (1L << (TPlusPlus - 68)) | (1L << (TMinusMinus - 68)) | (1L << (IdentifierNormal - 68)) | (1L << (IntegerLiteral - 68)) | (1L << (DecimalLiteral - 68)) | (1L << (ScientificLiteral - 68)) | (1L << (DateTimeOffsetLiteral - 68)) | (1L << (DateTimeLiteral - 68)) | (1L << (DateLiteral - 68)) | (1L << (TimeLiteral - 68)) | (1L << (CharLiteral - 68)) | (1L << (RegularStringLiteral - 68)) | (1L << (GuidLiteral - 68)) | (1L << (DoubleQuoteVerbatimStringLiteral - 68)))) != 0)) {
+						if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KHasLoop) | (1L << KNull) | (1L << KTrue) | (1L << KFalse) | (1L << KBool) | (1L << KByte) | (1L << KChar) | (1L << KDecimal) | (1L << KDouble) | (1L << KFloat) | (1L << KInt) | (1L << KLong) | (1L << KObject) | (1L << KSByte) | (1L << KShort) | (1L << KString) | (1L << KUInt) | (1L << KULong) | (1L << KUShort) | (1L << KThis) | (1L << KNew) | (1L << KTypeof) | (1L << KDefault))) != 0) || ((((_la - 68)) & ~0x3f) == 0 && ((1L << (_la - 68)) & ((1L << (TOpenParenthesis - 68)) | (1L << (TPlus - 68)) | (1L << (TMinus - 68)) | (1L << (TExclamation - 68)) | (1L << (TTilde - 68)) | (1L << (TPlusPlus - 68)) | (1L << (TMinusMinus - 68)) | (1L << (IdentifierNormal - 68)) | (1L << (LInteger - 68)) | (1L << (LDecimal - 68)) | (1L << (LScientific - 68)) | (1L << (LDateTimeOffset - 68)) | (1L << (LDateTime - 68)) | (1L << (LDate - 68)) | (1L << (LTime - 68)) | (1L << (LChar - 68)) | (1L << (LRegularString - 68)) | (1L << (LGuid - 68)) | (1L << (LDoubleQuoteVerbatimString - 68)))) != 0)) {
 							{
 							State = 537; expressionList();
 							}
@@ -3581,14 +3163,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_loopWhereExpression; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterLoopWhereExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitLoopWhereExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitLoopWhereExpression(this);
@@ -3631,14 +3205,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_loopRunExpression; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterLoopRunExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitLoopRunExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitLoopRunExpression(this);
@@ -3678,22 +3244,14 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 			return GetRuleContext<IdentifierContext>(0);
 		}
 		public ITerminalNode TAssign() { return GetToken(TestLexerModeParser.TAssign, 0); }
-		public StringLiteralxContext stringLiteralx() {
-			return GetRuleContext<StringLiteralxContext>(0);
+		public StringLiteralContext stringLiteral() {
+			return GetRuleContext<StringLiteralContext>(0);
 		}
 		public SeparatorStatementContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
 		public override int RuleIndex { get { return RULE_separatorStatement; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterSeparatorStatement(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitSeparatorStatement(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitSeparatorStatement(this);
@@ -3716,7 +3274,7 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 			State = 552; Match(KSeparator);
 			State = 553; identifier();
 			State = 554; Match(TAssign);
-			State = 555; stringLiteralx();
+			State = 555; stringLiteral();
 			}
 		}
 		catch (RecognitionException re) {
@@ -3751,14 +3309,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_switchStatement; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterSwitchStatement(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitSwitchStatement(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitSwitchStatement(this);
@@ -3827,14 +3377,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_switchStatementBegin; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterSwitchStatementBegin(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitSwitchStatementBegin(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitSwitchStatementBegin(this);
@@ -3878,14 +3420,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_switchStatementEnd; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterSwitchStatementEnd(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitSwitchStatementEnd(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitSwitchStatementEnd(this);
@@ -3931,14 +3465,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_switchBranchStatement; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterSwitchBranchStatement(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitSwitchBranchStatement(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitSwitchBranchStatement(this);
@@ -3984,14 +3510,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_switchBranchHeadStatement; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterSwitchBranchHeadStatement(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitSwitchBranchHeadStatement(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitSwitchBranchHeadStatement(this);
@@ -4049,14 +3567,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_switchCaseOrTypeIsHeadStatements; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterSwitchCaseOrTypeIsHeadStatements(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitSwitchCaseOrTypeIsHeadStatements(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitSwitchCaseOrTypeIsHeadStatements(this);
@@ -4120,14 +3630,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_switchCaseOrTypeIsHeadStatement; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterSwitchCaseOrTypeIsHeadStatement(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitSwitchCaseOrTypeIsHeadStatement(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitSwitchCaseOrTypeIsHeadStatement(this);
@@ -4185,14 +3687,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_switchCaseHeadStatement; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterSwitchCaseHeadStatement(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitSwitchCaseHeadStatement(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitSwitchCaseHeadStatement(this);
@@ -4239,14 +3733,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_switchTypeIsHeadStatement; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterSwitchTypeIsHeadStatement(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitSwitchTypeIsHeadStatement(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitSwitchTypeIsHeadStatement(this);
@@ -4294,14 +3780,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_switchTypeAsHeadStatement; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterSwitchTypeAsHeadStatement(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitSwitchTypeAsHeadStatement(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitSwitchTypeAsHeadStatement(this);
@@ -4349,14 +3827,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_switchDefaultStatement; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterSwitchDefaultStatement(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitSwitchDefaultStatement(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitSwitchDefaultStatement(this);
@@ -4398,14 +3868,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_switchDefaultHeadStatement; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterSwitchDefaultHeadStatement(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitSwitchDefaultHeadStatement(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitSwitchDefaultHeadStatement(this);
@@ -4452,14 +3914,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_templateDeclaration; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterTemplateDeclaration(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitTemplateDeclaration(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitTemplateDeclaration(this);
@@ -4509,14 +3963,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_templateSignature; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterTemplateSignature(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitTemplateSignature(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitTemplateSignature(this);
@@ -4574,14 +4020,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_templateBody; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterTemplateBody(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitTemplateBody(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitTemplateBody(this);
@@ -4604,7 +4042,7 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 			State = 628;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
-			while (((((_la - 121)) & ~0x3f) == 0 && ((1L << (_la - 121)) & ((1L << (TemplateLineControl - 121)) | (1L << (TemplateOutput - 121)) | (1L << (TemplateCrLf - 121)) | (1L << (TemplateLineBreak - 121)) | (1L << (TemplateStatementStart - 121)))) != 0)) {
+			while (((((_la - 121)) & ~0x3f) == 0 && ((1L << (_la - 121)) & ((1L << (LTemplateLineControl - 121)) | (1L << (LTemplateOutput - 121)) | (1L << (LTemplateCrLf - 121)) | (1L << (LTemplateLineBreak - 121)) | (1L << (TTemplateStatementStart - 121)))) != 0)) {
 				{
 				{
 				State = 625; templateContentLine();
@@ -4642,14 +4080,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_templateContentLine; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterTemplateContentLine(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitTemplateContentLine(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitTemplateContentLine(this);
@@ -4672,7 +4102,7 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 			State = 634;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
-			while (_la==TemplateOutput || _la==TemplateStatementStart) {
+			while (_la==LTemplateOutput || _la==TTemplateStatementStart) {
 				{
 				{
 				State = 631; templateContent();
@@ -4697,8 +4127,8 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 	}
 
 	public partial class TemplateContentContext : ParserRuleContext {
-		public TemplateOutputxContext templateOutputx() {
-			return GetRuleContext<TemplateOutputxContext>(0);
+		public TemplateOutputContext templateOutput() {
+			return GetRuleContext<TemplateOutputContext>(0);
 		}
 		public TemplateStatementStartEndContext templateStatementStartEnd() {
 			return GetRuleContext<TemplateStatementStartEndContext>(0);
@@ -4708,14 +4138,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_templateContent; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterTemplateContent(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitTemplateContent(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitTemplateContent(this);
@@ -4735,13 +4157,13 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 			State = 641;
 			_errHandler.Sync(this);
 			switch (_input.La(1)) {
-			case TemplateOutput:
+			case LTemplateOutput:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 639; templateOutputx();
+				State = 639; templateOutput();
 				}
 				break;
-			case TemplateStatementStart:
+			case TTemplateStatementStart:
 				EnterOuterAlt(_localctx, 2);
 				{
 				State = 640; templateStatementStartEnd();
@@ -4762,40 +4184,32 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		return _localctx;
 	}
 
-	public partial class TemplateOutputxContext : ParserRuleContext {
-		public ITerminalNode TemplateOutput() { return GetToken(TestLexerModeParser.TemplateOutput, 0); }
-		public TemplateOutputxContext(ParserRuleContext parent, int invokingState)
+	public partial class TemplateOutputContext : ParserRuleContext {
+		public ITerminalNode LTemplateOutput() { return GetToken(TestLexerModeParser.LTemplateOutput, 0); }
+		public TemplateOutputContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
-		public override int RuleIndex { get { return RULE_templateOutputx; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterTemplateOutputx(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitTemplateOutputx(this);
-		}
+		public override int RuleIndex { get { return RULE_templateOutput; } }
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitTemplateOutputx(this);
+			if (typedVisitor != null) return typedVisitor.VisitTemplateOutput(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
 
 	[RuleVersion(0)]
-	public TemplateOutputxContext templateOutputx() {
-		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseTemplateOutputx() : _DoParseTemplateOutputx();
+	public TemplateOutputContext templateOutput() {
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseTemplateOutput() : _DoParseTemplateOutput();
 	}
 
-	internal TemplateOutputxContext _DoParseTemplateOutputx() {
-		TemplateOutputxContext _localctx = new TemplateOutputxContext(_ctx, State);
-		EnterRule(_localctx, 134, RULE_templateOutputx);
+	internal TemplateOutputContext _DoParseTemplateOutput() {
+		TemplateOutputContext _localctx = new TemplateOutputContext(_ctx, State);
+		EnterRule(_localctx, 134, RULE_templateOutput);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 643; Match(TemplateOutput);
+			State = 643; Match(LTemplateOutput);
 			}
 		}
 		catch (RecognitionException re) {
@@ -4810,22 +4224,14 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 	}
 
 	public partial class TemplateLineEndContext : ParserRuleContext {
-		public ITerminalNode TemplateCrLf() { return GetToken(TestLexerModeParser.TemplateCrLf, 0); }
-		public ITerminalNode TemplateLineBreak() { return GetToken(TestLexerModeParser.TemplateLineBreak, 0); }
-		public ITerminalNode TemplateLineControl() { return GetToken(TestLexerModeParser.TemplateLineControl, 0); }
+		public ITerminalNode LTemplateCrLf() { return GetToken(TestLexerModeParser.LTemplateCrLf, 0); }
+		public ITerminalNode LTemplateLineBreak() { return GetToken(TestLexerModeParser.LTemplateLineBreak, 0); }
+		public ITerminalNode LTemplateLineControl() { return GetToken(TestLexerModeParser.LTemplateLineControl, 0); }
 		public TemplateLineEndContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
 		public override int RuleIndex { get { return RULE_templateLineEnd; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterTemplateLineEnd(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitTemplateLineEnd(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitTemplateLineEnd(this);
@@ -4847,7 +4253,7 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 			{
 			State = 645;
 			_la = _input.La(1);
-			if ( !(((((_la - 121)) & ~0x3f) == 0 && ((1L << (_la - 121)) & ((1L << (TemplateLineControl - 121)) | (1L << (TemplateCrLf - 121)) | (1L << (TemplateLineBreak - 121)))) != 0)) ) {
+			if ( !(((((_la - 121)) & ~0x3f) == 0 && ((1L << (_la - 121)) & ((1L << (LTemplateLineControl - 121)) | (1L << (LTemplateCrLf - 121)) | (1L << (LTemplateLineBreak - 121)))) != 0)) ) {
 			_errHandler.RecoverInline(this);
 			} else {
 				if (_input.La(1) == TokenConstants.Eof) {
@@ -4871,8 +4277,8 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 	}
 
 	public partial class TemplateStatementStartEndContext : ParserRuleContext {
-		public ITerminalNode TemplateStatementStart() { return GetToken(TestLexerModeParser.TemplateStatementStart, 0); }
-		public ITerminalNode TemplateStatementEnd() { return GetToken(TestLexerModeParser.TemplateStatementEnd, 0); }
+		public ITerminalNode TTemplateStatementStart() { return GetToken(TestLexerModeParser.TTemplateStatementStart, 0); }
+		public ITerminalNode TTemplateStatementEnd() { return GetToken(TestLexerModeParser.TTemplateStatementEnd, 0); }
 		public TemplateStatementContext templateStatement() {
 			return GetRuleContext<TemplateStatementContext>(0);
 		}
@@ -4881,14 +4287,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_templateStatementStartEnd; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterTemplateStatementStartEnd(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitTemplateStatementStartEnd(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitTemplateStatementStartEnd(this);
@@ -4908,17 +4306,17 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 647; Match(TemplateStatementStart);
+			State = 647; Match(TTemplateStatementStart);
 			State = 649;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KSwitch) | (1L << KCase) | (1L << KType) | (1L << KVoid) | (1L << KEnd) | (1L << KFor) | (1L << KIf) | (1L << KElse) | (1L << KRepeat) | (1L << KUntil) | (1L << KWhile) | (1L << KLoop) | (1L << KHasLoop) | (1L << KNull) | (1L << KTrue) | (1L << KFalse) | (1L << KBool) | (1L << KByte) | (1L << KChar) | (1L << KDecimal) | (1L << KDouble) | (1L << KFloat) | (1L << KInt) | (1L << KLong) | (1L << KObject) | (1L << KSByte) | (1L << KShort) | (1L << KString) | (1L << KUInt) | (1L << KULong) | (1L << KUShort) | (1L << KThis) | (1L << KNew) | (1L << KTypeof) | (1L << KDefault))) != 0) || ((((_la - 68)) & ~0x3f) == 0 && ((1L << (_la - 68)) & ((1L << (TOpenParenthesis - 68)) | (1L << (TPlus - 68)) | (1L << (TMinus - 68)) | (1L << (TExclamation - 68)) | (1L << (TTilde - 68)) | (1L << (TPlusPlus - 68)) | (1L << (TMinusMinus - 68)) | (1L << (IdentifierNormal - 68)) | (1L << (IntegerLiteral - 68)) | (1L << (DecimalLiteral - 68)) | (1L << (ScientificLiteral - 68)) | (1L << (DateTimeOffsetLiteral - 68)) | (1L << (DateTimeLiteral - 68)) | (1L << (DateLiteral - 68)) | (1L << (TimeLiteral - 68)) | (1L << (CharLiteral - 68)) | (1L << (RegularStringLiteral - 68)) | (1L << (GuidLiteral - 68)) | (1L << (DoubleQuoteVerbatimStringLiteral - 68)))) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KSwitch) | (1L << KCase) | (1L << KType) | (1L << KVoid) | (1L << KEnd) | (1L << KFor) | (1L << KIf) | (1L << KElse) | (1L << KRepeat) | (1L << KUntil) | (1L << KWhile) | (1L << KLoop) | (1L << KHasLoop) | (1L << KNull) | (1L << KTrue) | (1L << KFalse) | (1L << KBool) | (1L << KByte) | (1L << KChar) | (1L << KDecimal) | (1L << KDouble) | (1L << KFloat) | (1L << KInt) | (1L << KLong) | (1L << KObject) | (1L << KSByte) | (1L << KShort) | (1L << KString) | (1L << KUInt) | (1L << KULong) | (1L << KUShort) | (1L << KThis) | (1L << KNew) | (1L << KTypeof) | (1L << KDefault))) != 0) || ((((_la - 68)) & ~0x3f) == 0 && ((1L << (_la - 68)) & ((1L << (TOpenParenthesis - 68)) | (1L << (TPlus - 68)) | (1L << (TMinus - 68)) | (1L << (TExclamation - 68)) | (1L << (TTilde - 68)) | (1L << (TPlusPlus - 68)) | (1L << (TMinusMinus - 68)) | (1L << (IdentifierNormal - 68)) | (1L << (LInteger - 68)) | (1L << (LDecimal - 68)) | (1L << (LScientific - 68)) | (1L << (LDateTimeOffset - 68)) | (1L << (LDateTime - 68)) | (1L << (LDate - 68)) | (1L << (LTime - 68)) | (1L << (LChar - 68)) | (1L << (LRegularString - 68)) | (1L << (LGuid - 68)) | (1L << (LDoubleQuoteVerbatimString - 68)))) != 0)) {
 				{
 				State = 648; templateStatement();
 				}
 			}
 
-			State = 651; Match(TemplateStatementEnd);
+			State = 651; Match(TTemplateStatementEnd);
 			}
 		}
 		catch (RecognitionException re) {
@@ -4995,14 +4393,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_templateStatement; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterTemplateStatement(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitTemplateStatement(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitTemplateStatement(this);
@@ -5178,14 +4568,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_typeArgumentList; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterTypeArgumentList(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitTypeArgumentList(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitTypeArgumentList(this);
@@ -5241,14 +4623,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_predefinedType; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterPredefinedType(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitPredefinedType(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitPredefinedType(this);
@@ -5309,14 +4683,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_typeReferenceList; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterTypeReferenceList(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitTypeReferenceList(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitTypeReferenceList(this);
@@ -5382,14 +4748,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_typeReference; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterTypeReference(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitTypeReference(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitTypeReference(this);
@@ -5461,14 +4819,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_arrayType; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterArrayType(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitArrayType(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitArrayType(this);
@@ -5517,14 +4867,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_arrayItemType; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterArrayItemType(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitArrayItemType(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitArrayItemType(this);
@@ -5587,14 +4929,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_nullableType; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterNullableType(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitNullableType(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitNullableType(this);
@@ -5640,14 +4974,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_nullableItemType; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterNullableItemType(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitNullableItemType(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitNullableItemType(this);
@@ -5705,14 +5031,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_genericType; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterGenericType(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitGenericType(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitGenericType(this);
@@ -5758,14 +5076,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_simpleType; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterSimpleType(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitSimpleType(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitSimpleType(this);
@@ -5833,14 +5143,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_voidType; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterVoidType(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitVoidType(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitVoidType(this);
@@ -5885,14 +5187,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_returnType; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterReturnType(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitReturnType(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitReturnType(this);
@@ -5970,14 +5264,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_expressionList; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterExpressionList(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitExpressionList(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitExpressionList(this);
@@ -6034,14 +5320,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_variableReference; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterVariableReference(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitVariableReference(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitVariableReference(this);
@@ -6086,14 +5364,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_rankSpecifiers; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterRankSpecifiers(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitRankSpecifiers(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitRankSpecifiers(this);
@@ -6157,14 +5427,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_rankSpecifier; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterRankSpecifier(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitRankSpecifier(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitRankSpecifier(this);
@@ -6228,14 +5490,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_unboundTypeName; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterUnboundTypeName(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitUnboundTypeName(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitUnboundTypeName(this);
@@ -6295,14 +5549,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_genericDimensionItem; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterGenericDimensionItem(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitGenericDimensionItem(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitGenericDimensionItem(this);
@@ -6357,14 +5603,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_genericDimensionSpecifier; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterGenericDimensionSpecifier(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitGenericDimensionSpecifier(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitGenericDimensionSpecifier(this);
@@ -6438,14 +5676,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 			return GetToken(TestLexerModeParser.TComma, i);
 		}
 		public ExplicitAnonymousFunctionSignatureContext(AnonymousFunctionSignatureContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterExplicitAnonymousFunctionSignature(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitExplicitAnonymousFunctionSignature(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitExplicitAnonymousFunctionSignature(this);
@@ -6466,14 +5696,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 			return GetToken(TestLexerModeParser.TComma, i);
 		}
 		public ImplicitAnonymousFunctionSignatureContext(AnonymousFunctionSignatureContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterImplicitAnonymousFunctionSignature(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitImplicitAnonymousFunctionSignature(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitImplicitAnonymousFunctionSignature(this);
@@ -6485,14 +5707,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 			return GetRuleContext<ImplicitParameterContext>(0);
 		}
 		public SingleParamAnonymousFunctionSignatureContext(AnonymousFunctionSignatureContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterSingleParamAnonymousFunctionSignature(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitSingleParamAnonymousFunctionSignature(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitSingleParamAnonymousFunctionSignature(this);
@@ -6609,14 +5823,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_explicitParameter; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterExplicitParameter(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitExplicitParameter(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitExplicitParameter(this);
@@ -6659,14 +5865,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_implicitParameter; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterImplicitParameter(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitImplicitParameter(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitImplicitParameter(this);
@@ -6714,14 +5912,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 	public partial class ThisExpressionContext : ExpressionContext {
 		public ITerminalNode KThis() { return GetToken(TestLexerModeParser.KThis, 0); }
 		public ThisExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterThisExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitThisExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitThisExpression(this);
@@ -6733,14 +5923,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 			return GetRuleContext<LiteralContext>(0);
 		}
 		public LiteralExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterLiteralExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitLiteralExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitLiteralExpression(this);
@@ -6753,14 +5935,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		public ITerminalNode KVoid() { return GetToken(TestLexerModeParser.KVoid, 0); }
 		public ITerminalNode TCloseParenthesis() { return GetToken(TestLexerModeParser.TCloseParenthesis, 0); }
 		public TypeofVoidExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterTypeofVoidExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitTypeofVoidExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitTypeofVoidExpression(this);
@@ -6775,14 +5949,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		}
 		public ITerminalNode TCloseParenthesis() { return GetToken(TestLexerModeParser.TCloseParenthesis, 0); }
 		public TypeofUnboundTypeExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterTypeofUnboundTypeExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitTypeofUnboundTypeExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitTypeofUnboundTypeExpression(this);
@@ -6797,14 +5963,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		}
 		public ITerminalNode TCloseParenthesis() { return GetToken(TestLexerModeParser.TCloseParenthesis, 0); }
 		public TypeofTypeExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterTypeofTypeExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitTypeofTypeExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitTypeofTypeExpression(this);
@@ -6819,14 +5977,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		}
 		public ITerminalNode TCloseParenthesis() { return GetToken(TestLexerModeParser.TCloseParenthesis, 0); }
 		public DefaultValueExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterDefaultValueExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitDefaultValueExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitDefaultValueExpression(this);
@@ -6844,14 +5994,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 			return GetRuleContext<ExpressionListContext>(0);
 		}
 		public NewObjectOrCollectionWithConstructorExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterNewObjectOrCollectionWithConstructorExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitNewObjectOrCollectionWithConstructorExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitNewObjectOrCollectionWithConstructorExpression(this);
@@ -6866,14 +6008,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 			return GetRuleContext<TypeArgumentListContext>(0);
 		}
 		public IdentifierExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterIdentifierExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitIdentifierExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitIdentifierExpression(this);
@@ -6891,14 +6025,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 			return GetRuleContext<LoopWhereExpressionContext>(0);
 		}
 		public HasLoopExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterHasLoopExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitHasLoopExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitHasLoopExpression(this);
@@ -6912,14 +6038,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		}
 		public ITerminalNode TCloseParenthesis() { return GetToken(TestLexerModeParser.TCloseParenthesis, 0); }
 		public ParenthesizedExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterParenthesizedExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitParenthesizedExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitParenthesizedExpression(this);
@@ -6936,14 +6054,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		}
 		public ITerminalNode TCloseBracket() { return GetToken(TestLexerModeParser.TCloseBracket, 0); }
 		public ElementAccessExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterElementAccessExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitElementAccessExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitElementAccessExpression(this);
@@ -6960,14 +6070,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 			return GetRuleContext<ExpressionListContext>(0);
 		}
 		public FunctionCallExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterFunctionCallExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitFunctionCallExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitFunctionCallExpression(this);
@@ -6986,14 +6088,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 			return GetRuleContext<TypeArgumentListContext>(0);
 		}
 		public PredefinedTypeMemberAccessExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterPredefinedTypeMemberAccessExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitPredefinedTypeMemberAccessExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitPredefinedTypeMemberAccessExpression(this);
@@ -7012,14 +6106,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 			return GetRuleContext<TypeArgumentListContext>(0);
 		}
 		public MemberAccessExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterMemberAccessExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitMemberAccessExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitMemberAccessExpression(this);
@@ -7036,14 +6122,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 			return GetRuleContext<ExpressionContext>(0);
 		}
 		public TypecastExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterTypecastExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitTypecastExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitTypecastExpression(this);
@@ -7062,14 +6140,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		public ITerminalNode TPlusPlus() { return GetToken(TestLexerModeParser.TPlusPlus, 0); }
 		public ITerminalNode TMinusMinus() { return GetToken(TestLexerModeParser.TMinusMinus, 0); }
 		public UnaryExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterUnaryExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitUnaryExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitUnaryExpression(this);
@@ -7084,14 +6154,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		public ITerminalNode TPlusPlus() { return GetToken(TestLexerModeParser.TPlusPlus, 0); }
 		public ITerminalNode TMinusMinus() { return GetToken(TestLexerModeParser.TMinusMinus, 0); }
 		public PostExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterPostExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitPostExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitPostExpression(this);
@@ -7112,14 +6174,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		public ITerminalNode TSlash() { return GetToken(TestLexerModeParser.TSlash, 0); }
 		public ITerminalNode TPercent() { return GetToken(TestLexerModeParser.TPercent, 0); }
 		public MultiplicationExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterMultiplicationExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitMultiplicationExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitMultiplicationExpression(this);
@@ -7139,14 +6193,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		public ITerminalNode TPlus() { return GetToken(TestLexerModeParser.TPlus, 0); }
 		public ITerminalNode TMinus() { return GetToken(TestLexerModeParser.TMinus, 0); }
 		public AdditionExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterAdditionExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitAdditionExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitAdditionExpression(this);
@@ -7168,14 +6214,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		public ITerminalNode TLessThanOrEquals() { return GetToken(TestLexerModeParser.TLessThanOrEquals, 0); }
 		public ITerminalNode TGreaterThanOrEquals() { return GetToken(TestLexerModeParser.TGreaterThanOrEquals, 0); }
 		public RelationalExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterRelationalExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitRelationalExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitRelationalExpression(this);
@@ -7194,14 +6232,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		public ITerminalNode KIs() { return GetToken(TestLexerModeParser.KIs, 0); }
 		public ITerminalNode KAs() { return GetToken(TestLexerModeParser.KAs, 0); }
 		public TypecheckExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterTypecheckExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitTypecheckExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitTypecheckExpression(this);
@@ -7221,14 +6251,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		public ITerminalNode TEquals() { return GetToken(TestLexerModeParser.TEquals, 0); }
 		public ITerminalNode TNotEquals() { return GetToken(TestLexerModeParser.TNotEquals, 0); }
 		public EqualityExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterEqualityExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitEqualityExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitEqualityExpression(this);
@@ -7246,14 +6268,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 			return GetRuleContext<ExpressionContext>(i);
 		}
 		public BitwiseAndExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterBitwiseAndExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitBitwiseAndExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitBitwiseAndExpression(this);
@@ -7271,14 +6285,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 			return GetRuleContext<ExpressionContext>(i);
 		}
 		public BitwiseXorExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterBitwiseXorExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitBitwiseXorExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitBitwiseXorExpression(this);
@@ -7296,14 +6302,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 			return GetRuleContext<ExpressionContext>(i);
 		}
 		public BitwiseOrExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterBitwiseOrExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitBitwiseOrExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitBitwiseOrExpression(this);
@@ -7321,14 +6319,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 			return GetRuleContext<ExpressionContext>(i);
 		}
 		public LogicalAndExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterLogicalAndExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitLogicalAndExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitLogicalAndExpression(this);
@@ -7346,14 +6336,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 			return GetRuleContext<ExpressionContext>(i);
 		}
 		public LogicalXorExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterLogicalXorExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitLogicalXorExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitLogicalXorExpression(this);
@@ -7371,14 +6353,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 			return GetRuleContext<ExpressionContext>(i);
 		}
 		public LogicalOrExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterLogicalOrExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitLogicalOrExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitLogicalOrExpression(this);
@@ -7398,14 +6372,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 			return GetRuleContext<ExpressionContext>(i);
 		}
 		public ConditionalExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterConditionalExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitConditionalExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitConditionalExpression(this);
@@ -7434,14 +6400,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		public ITerminalNode TAssignLeftShift() { return GetToken(TestLexerModeParser.TAssignLeftShift, 0); }
 		public ITerminalNode TAssignRightShift() { return GetToken(TestLexerModeParser.TAssignRightShift, 0); }
 		public AssignmentExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterAssignmentExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitAssignmentExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitAssignmentExpression(this);
@@ -7457,14 +6415,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 			return GetRuleContext<ExpressionContext>(0);
 		}
 		public LambdaExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterLambdaExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitLambdaExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitLambdaExpression(this);
@@ -7574,7 +6524,7 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 				State = 825;
 				_errHandler.Sync(this);
 				_la = _input.La(1);
-				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KHasLoop) | (1L << KNull) | (1L << KTrue) | (1L << KFalse) | (1L << KBool) | (1L << KByte) | (1L << KChar) | (1L << KDecimal) | (1L << KDouble) | (1L << KFloat) | (1L << KInt) | (1L << KLong) | (1L << KObject) | (1L << KSByte) | (1L << KShort) | (1L << KString) | (1L << KUInt) | (1L << KULong) | (1L << KUShort) | (1L << KThis) | (1L << KNew) | (1L << KTypeof) | (1L << KDefault))) != 0) || ((((_la - 68)) & ~0x3f) == 0 && ((1L << (_la - 68)) & ((1L << (TOpenParenthesis - 68)) | (1L << (TPlus - 68)) | (1L << (TMinus - 68)) | (1L << (TExclamation - 68)) | (1L << (TTilde - 68)) | (1L << (TPlusPlus - 68)) | (1L << (TMinusMinus - 68)) | (1L << (IdentifierNormal - 68)) | (1L << (IntegerLiteral - 68)) | (1L << (DecimalLiteral - 68)) | (1L << (ScientificLiteral - 68)) | (1L << (DateTimeOffsetLiteral - 68)) | (1L << (DateTimeLiteral - 68)) | (1L << (DateLiteral - 68)) | (1L << (TimeLiteral - 68)) | (1L << (CharLiteral - 68)) | (1L << (RegularStringLiteral - 68)) | (1L << (GuidLiteral - 68)) | (1L << (DoubleQuoteVerbatimStringLiteral - 68)))) != 0)) {
+				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KHasLoop) | (1L << KNull) | (1L << KTrue) | (1L << KFalse) | (1L << KBool) | (1L << KByte) | (1L << KChar) | (1L << KDecimal) | (1L << KDouble) | (1L << KFloat) | (1L << KInt) | (1L << KLong) | (1L << KObject) | (1L << KSByte) | (1L << KShort) | (1L << KString) | (1L << KUInt) | (1L << KULong) | (1L << KUShort) | (1L << KThis) | (1L << KNew) | (1L << KTypeof) | (1L << KDefault))) != 0) || ((((_la - 68)) & ~0x3f) == 0 && ((1L << (_la - 68)) & ((1L << (TOpenParenthesis - 68)) | (1L << (TPlus - 68)) | (1L << (TMinus - 68)) | (1L << (TExclamation - 68)) | (1L << (TTilde - 68)) | (1L << (TPlusPlus - 68)) | (1L << (TMinusMinus - 68)) | (1L << (IdentifierNormal - 68)) | (1L << (LInteger - 68)) | (1L << (LDecimal - 68)) | (1L << (LScientific - 68)) | (1L << (LDateTimeOffset - 68)) | (1L << (LDateTime - 68)) | (1L << (LDate - 68)) | (1L << (LTime - 68)) | (1L << (LChar - 68)) | (1L << (LRegularString - 68)) | (1L << (LGuid - 68)) | (1L << (LDoubleQuoteVerbatimString - 68)))) != 0)) {
 					{
 					State = 824; expressionList();
 					}
@@ -7939,7 +6889,7 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 						State = 911;
 						_errHandler.Sync(this);
 						_la = _input.La(1);
-						if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KHasLoop) | (1L << KNull) | (1L << KTrue) | (1L << KFalse) | (1L << KBool) | (1L << KByte) | (1L << KChar) | (1L << KDecimal) | (1L << KDouble) | (1L << KFloat) | (1L << KInt) | (1L << KLong) | (1L << KObject) | (1L << KSByte) | (1L << KShort) | (1L << KString) | (1L << KUInt) | (1L << KULong) | (1L << KUShort) | (1L << KThis) | (1L << KNew) | (1L << KTypeof) | (1L << KDefault))) != 0) || ((((_la - 68)) & ~0x3f) == 0 && ((1L << (_la - 68)) & ((1L << (TOpenParenthesis - 68)) | (1L << (TPlus - 68)) | (1L << (TMinus - 68)) | (1L << (TExclamation - 68)) | (1L << (TTilde - 68)) | (1L << (TPlusPlus - 68)) | (1L << (TMinusMinus - 68)) | (1L << (IdentifierNormal - 68)) | (1L << (IntegerLiteral - 68)) | (1L << (DecimalLiteral - 68)) | (1L << (ScientificLiteral - 68)) | (1L << (DateTimeOffsetLiteral - 68)) | (1L << (DateTimeLiteral - 68)) | (1L << (DateLiteral - 68)) | (1L << (TimeLiteral - 68)) | (1L << (CharLiteral - 68)) | (1L << (RegularStringLiteral - 68)) | (1L << (GuidLiteral - 68)) | (1L << (DoubleQuoteVerbatimStringLiteral - 68)))) != 0)) {
+						if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KHasLoop) | (1L << KNull) | (1L << KTrue) | (1L << KFalse) | (1L << KBool) | (1L << KByte) | (1L << KChar) | (1L << KDecimal) | (1L << KDouble) | (1L << KFloat) | (1L << KInt) | (1L << KLong) | (1L << KObject) | (1L << KSByte) | (1L << KShort) | (1L << KString) | (1L << KUInt) | (1L << KULong) | (1L << KUShort) | (1L << KThis) | (1L << KNew) | (1L << KTypeof) | (1L << KDefault))) != 0) || ((((_la - 68)) & ~0x3f) == 0 && ((1L << (_la - 68)) & ((1L << (TOpenParenthesis - 68)) | (1L << (TPlus - 68)) | (1L << (TMinus - 68)) | (1L << (TExclamation - 68)) | (1L << (TTilde - 68)) | (1L << (TPlusPlus - 68)) | (1L << (TMinusMinus - 68)) | (1L << (IdentifierNormal - 68)) | (1L << (LInteger - 68)) | (1L << (LDecimal - 68)) | (1L << (LScientific - 68)) | (1L << (LDateTimeOffset - 68)) | (1L << (LDateTime - 68)) | (1L << (LDate - 68)) | (1L << (LTime - 68)) | (1L << (LChar - 68)) | (1L << (LRegularString - 68)) | (1L << (LGuid - 68)) | (1L << (LDoubleQuoteVerbatimString - 68)))) != 0)) {
 							{
 							State = 910; expressionList();
 							}
@@ -8050,14 +7000,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_qualifiedName; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterQualifiedName(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitQualifiedName(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitQualifiedName(this);
@@ -8123,14 +7065,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_identifierList; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterIdentifierList(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitIdentifierList(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitIdentifierList(this);
@@ -8185,14 +7119,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_identifier; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterIdentifier(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitIdentifier(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitIdentifier(this);
@@ -8238,28 +7164,20 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		public DateOrTimeLiteralContext dateOrTimeLiteral() {
 			return GetRuleContext<DateOrTimeLiteralContext>(0);
 		}
-		public CharLiteralxContext charLiteralx() {
-			return GetRuleContext<CharLiteralxContext>(0);
+		public CharLiteralContext charLiteral() {
+			return GetRuleContext<CharLiteralContext>(0);
 		}
-		public StringLiteralxContext stringLiteralx() {
-			return GetRuleContext<StringLiteralxContext>(0);
+		public StringLiteralContext stringLiteral() {
+			return GetRuleContext<StringLiteralContext>(0);
 		}
-		public GuidLiteralxContext guidLiteralx() {
-			return GetRuleContext<GuidLiteralxContext>(0);
+		public GuidLiteralContext guidLiteral() {
+			return GetRuleContext<GuidLiteralContext>(0);
 		}
 		public LiteralContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
 		public override int RuleIndex { get { return RULE_literal; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterLiteral(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitLiteral(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitLiteral(this);
@@ -8292,40 +7210,40 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 				State = 949; booleanLiteral();
 				}
 				break;
-			case IntegerLiteral:
-			case DecimalLiteral:
-			case ScientificLiteral:
+			case LInteger:
+			case LDecimal:
+			case LScientific:
 				EnterOuterAlt(_localctx, 3);
 				{
 				State = 950; numberLiteral();
 				}
 				break;
-			case DateTimeOffsetLiteral:
-			case DateTimeLiteral:
-			case DateLiteral:
-			case TimeLiteral:
+			case LDateTimeOffset:
+			case LDateTime:
+			case LDate:
+			case LTime:
 				EnterOuterAlt(_localctx, 4);
 				{
 				State = 951; dateOrTimeLiteral();
 				}
 				break;
-			case CharLiteral:
+			case LChar:
 				EnterOuterAlt(_localctx, 5);
 				{
-				State = 952; charLiteralx();
+				State = 952; charLiteral();
 				}
 				break;
-			case RegularStringLiteral:
-			case DoubleQuoteVerbatimStringLiteral:
+			case LRegularString:
+			case LDoubleQuoteVerbatimString:
 				EnterOuterAlt(_localctx, 6);
 				{
-				State = 953; stringLiteralx();
+				State = 953; stringLiteral();
 				}
 				break;
-			case GuidLiteral:
+			case LGuid:
 				EnterOuterAlt(_localctx, 7);
 				{
-				State = 954; guidLiteralx();
+				State = 954; guidLiteral();
 				}
 				break;
 			default:
@@ -8350,14 +7268,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_nullLiteral; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterNullLiteral(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitNullLiteral(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitNullLiteral(this);
@@ -8398,14 +7308,6 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		{
 		}
 		public override int RuleIndex { get { return RULE_booleanLiteral; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterBooleanLiteral(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitBooleanLiteral(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitBooleanLiteral(this);
@@ -8451,28 +7353,20 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 	}
 
 	public partial class NumberLiteralContext : ParserRuleContext {
-		public IntegerLiteralxContext integerLiteralx() {
-			return GetRuleContext<IntegerLiteralxContext>(0);
+		public IntegerLiteralContext integerLiteral() {
+			return GetRuleContext<IntegerLiteralContext>(0);
 		}
-		public DecimalLiteralxContext decimalLiteralx() {
-			return GetRuleContext<DecimalLiteralxContext>(0);
+		public DecimalLiteralContext decimalLiteral() {
+			return GetRuleContext<DecimalLiteralContext>(0);
 		}
-		public ScientificLiteralxContext scientificLiteralx() {
-			return GetRuleContext<ScientificLiteralxContext>(0);
+		public ScientificLiteralContext scientificLiteral() {
+			return GetRuleContext<ScientificLiteralContext>(0);
 		}
 		public NumberLiteralContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
 		public override int RuleIndex { get { return RULE_numberLiteral; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterNumberLiteral(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitNumberLiteral(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitNumberLiteral(this);
@@ -8492,22 +7386,22 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 			State = 964;
 			_errHandler.Sync(this);
 			switch (_input.La(1)) {
-			case IntegerLiteral:
+			case LInteger:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 961; integerLiteralx();
+				State = 961; integerLiteral();
 				}
 				break;
-			case DecimalLiteral:
+			case LDecimal:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 962; decimalLiteralx();
+				State = 962; decimalLiteral();
 				}
 				break;
-			case ScientificLiteral:
+			case LScientific:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 963; scientificLiteralx();
+				State = 963; scientificLiteral();
 				}
 				break;
 			default:
@@ -8525,40 +7419,32 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		return _localctx;
 	}
 
-	public partial class IntegerLiteralxContext : ParserRuleContext {
-		public ITerminalNode IntegerLiteral() { return GetToken(TestLexerModeParser.IntegerLiteral, 0); }
-		public IntegerLiteralxContext(ParserRuleContext parent, int invokingState)
+	public partial class IntegerLiteralContext : ParserRuleContext {
+		public ITerminalNode LInteger() { return GetToken(TestLexerModeParser.LInteger, 0); }
+		public IntegerLiteralContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
-		public override int RuleIndex { get { return RULE_integerLiteralx; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterIntegerLiteralx(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitIntegerLiteralx(this);
-		}
+		public override int RuleIndex { get { return RULE_integerLiteral; } }
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitIntegerLiteralx(this);
+			if (typedVisitor != null) return typedVisitor.VisitIntegerLiteral(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
 
 	[RuleVersion(0)]
-	public IntegerLiteralxContext integerLiteralx() {
-		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseIntegerLiteralx() : _DoParseIntegerLiteralx();
+	public IntegerLiteralContext integerLiteral() {
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseIntegerLiteral() : _DoParseIntegerLiteral();
 	}
 
-	internal IntegerLiteralxContext _DoParseIntegerLiteralx() {
-		IntegerLiteralxContext _localctx = new IntegerLiteralxContext(_ctx, State);
-		EnterRule(_localctx, 202, RULE_integerLiteralx);
+	internal IntegerLiteralContext _DoParseIntegerLiteral() {
+		IntegerLiteralContext _localctx = new IntegerLiteralContext(_ctx, State);
+		EnterRule(_localctx, 202, RULE_integerLiteral);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 966; Match(IntegerLiteral);
+			State = 966; Match(LInteger);
 			}
 		}
 		catch (RecognitionException re) {
@@ -8572,40 +7458,32 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		return _localctx;
 	}
 
-	public partial class DecimalLiteralxContext : ParserRuleContext {
-		public ITerminalNode DecimalLiteral() { return GetToken(TestLexerModeParser.DecimalLiteral, 0); }
-		public DecimalLiteralxContext(ParserRuleContext parent, int invokingState)
+	public partial class DecimalLiteralContext : ParserRuleContext {
+		public ITerminalNode LDecimal() { return GetToken(TestLexerModeParser.LDecimal, 0); }
+		public DecimalLiteralContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
-		public override int RuleIndex { get { return RULE_decimalLiteralx; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterDecimalLiteralx(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitDecimalLiteralx(this);
-		}
+		public override int RuleIndex { get { return RULE_decimalLiteral; } }
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitDecimalLiteralx(this);
+			if (typedVisitor != null) return typedVisitor.VisitDecimalLiteral(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
 
 	[RuleVersion(0)]
-	public DecimalLiteralxContext decimalLiteralx() {
-		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseDecimalLiteralx() : _DoParseDecimalLiteralx();
+	public DecimalLiteralContext decimalLiteral() {
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseDecimalLiteral() : _DoParseDecimalLiteral();
 	}
 
-	internal DecimalLiteralxContext _DoParseDecimalLiteralx() {
-		DecimalLiteralxContext _localctx = new DecimalLiteralxContext(_ctx, State);
-		EnterRule(_localctx, 204, RULE_decimalLiteralx);
+	internal DecimalLiteralContext _DoParseDecimalLiteral() {
+		DecimalLiteralContext _localctx = new DecimalLiteralContext(_ctx, State);
+		EnterRule(_localctx, 204, RULE_decimalLiteral);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 968; Match(DecimalLiteral);
+			State = 968; Match(LDecimal);
 			}
 		}
 		catch (RecognitionException re) {
@@ -8619,40 +7497,32 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		return _localctx;
 	}
 
-	public partial class ScientificLiteralxContext : ParserRuleContext {
-		public ITerminalNode ScientificLiteral() { return GetToken(TestLexerModeParser.ScientificLiteral, 0); }
-		public ScientificLiteralxContext(ParserRuleContext parent, int invokingState)
+	public partial class ScientificLiteralContext : ParserRuleContext {
+		public ITerminalNode LScientific() { return GetToken(TestLexerModeParser.LScientific, 0); }
+		public ScientificLiteralContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
-		public override int RuleIndex { get { return RULE_scientificLiteralx; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterScientificLiteralx(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitScientificLiteralx(this);
-		}
+		public override int RuleIndex { get { return RULE_scientificLiteral; } }
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitScientificLiteralx(this);
+			if (typedVisitor != null) return typedVisitor.VisitScientificLiteral(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
 
 	[RuleVersion(0)]
-	public ScientificLiteralxContext scientificLiteralx() {
-		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseScientificLiteralx() : _DoParseScientificLiteralx();
+	public ScientificLiteralContext scientificLiteral() {
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseScientificLiteral() : _DoParseScientificLiteral();
 	}
 
-	internal ScientificLiteralxContext _DoParseScientificLiteralx() {
-		ScientificLiteralxContext _localctx = new ScientificLiteralxContext(_ctx, State);
-		EnterRule(_localctx, 206, RULE_scientificLiteralx);
+	internal ScientificLiteralContext _DoParseScientificLiteral() {
+		ScientificLiteralContext _localctx = new ScientificLiteralContext(_ctx, State);
+		EnterRule(_localctx, 206, RULE_scientificLiteral);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 970; Match(ScientificLiteral);
+			State = 970; Match(LScientific);
 			}
 		}
 		catch (RecognitionException re) {
@@ -8667,31 +7537,23 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 	}
 
 	public partial class DateOrTimeLiteralContext : ParserRuleContext {
-		public DateTimeLiteralxContext dateTimeLiteralx() {
-			return GetRuleContext<DateTimeLiteralxContext>(0);
+		public DateTimeLiteralContext dateTimeLiteral() {
+			return GetRuleContext<DateTimeLiteralContext>(0);
 		}
-		public DateTimeOffsetLiteralxContext dateTimeOffsetLiteralx() {
-			return GetRuleContext<DateTimeOffsetLiteralxContext>(0);
+		public DateTimeOffsetLiteralContext dateTimeOffsetLiteral() {
+			return GetRuleContext<DateTimeOffsetLiteralContext>(0);
 		}
-		public DateLiteralxContext dateLiteralx() {
-			return GetRuleContext<DateLiteralxContext>(0);
+		public DateLiteralContext dateLiteral() {
+			return GetRuleContext<DateLiteralContext>(0);
 		}
-		public TimeLiteralxContext timeLiteralx() {
-			return GetRuleContext<TimeLiteralxContext>(0);
+		public TimeLiteralContext timeLiteral() {
+			return GetRuleContext<TimeLiteralContext>(0);
 		}
 		public DateOrTimeLiteralContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
 		public override int RuleIndex { get { return RULE_dateOrTimeLiteral; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterDateOrTimeLiteral(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitDateOrTimeLiteral(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitDateOrTimeLiteral(this);
@@ -8711,28 +7573,28 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 			State = 976;
 			_errHandler.Sync(this);
 			switch (_input.La(1)) {
-			case DateTimeLiteral:
+			case LDateTime:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 972; dateTimeLiteralx();
+				State = 972; dateTimeLiteral();
 				}
 				break;
-			case DateTimeOffsetLiteral:
+			case LDateTimeOffset:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 973; dateTimeOffsetLiteralx();
+				State = 973; dateTimeOffsetLiteral();
 				}
 				break;
-			case DateLiteral:
+			case LDate:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 974; dateLiteralx();
+				State = 974; dateLiteral();
 				}
 				break;
-			case TimeLiteral:
+			case LTime:
 				EnterOuterAlt(_localctx, 4);
 				{
-				State = 975; timeLiteralx();
+				State = 975; timeLiteral();
 				}
 				break;
 			default:
@@ -8750,40 +7612,32 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		return _localctx;
 	}
 
-	public partial class DateTimeOffsetLiteralxContext : ParserRuleContext {
-		public ITerminalNode DateTimeOffsetLiteral() { return GetToken(TestLexerModeParser.DateTimeOffsetLiteral, 0); }
-		public DateTimeOffsetLiteralxContext(ParserRuleContext parent, int invokingState)
+	public partial class DateTimeOffsetLiteralContext : ParserRuleContext {
+		public ITerminalNode LDateTimeOffset() { return GetToken(TestLexerModeParser.LDateTimeOffset, 0); }
+		public DateTimeOffsetLiteralContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
-		public override int RuleIndex { get { return RULE_dateTimeOffsetLiteralx; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterDateTimeOffsetLiteralx(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitDateTimeOffsetLiteralx(this);
-		}
+		public override int RuleIndex { get { return RULE_dateTimeOffsetLiteral; } }
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitDateTimeOffsetLiteralx(this);
+			if (typedVisitor != null) return typedVisitor.VisitDateTimeOffsetLiteral(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
 
 	[RuleVersion(0)]
-	public DateTimeOffsetLiteralxContext dateTimeOffsetLiteralx() {
-		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseDateTimeOffsetLiteralx() : _DoParseDateTimeOffsetLiteralx();
+	public DateTimeOffsetLiteralContext dateTimeOffsetLiteral() {
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseDateTimeOffsetLiteral() : _DoParseDateTimeOffsetLiteral();
 	}
 
-	internal DateTimeOffsetLiteralxContext _DoParseDateTimeOffsetLiteralx() {
-		DateTimeOffsetLiteralxContext _localctx = new DateTimeOffsetLiteralxContext(_ctx, State);
-		EnterRule(_localctx, 210, RULE_dateTimeOffsetLiteralx);
+	internal DateTimeOffsetLiteralContext _DoParseDateTimeOffsetLiteral() {
+		DateTimeOffsetLiteralContext _localctx = new DateTimeOffsetLiteralContext(_ctx, State);
+		EnterRule(_localctx, 210, RULE_dateTimeOffsetLiteral);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 978; Match(DateTimeOffsetLiteral);
+			State = 978; Match(LDateTimeOffset);
 			}
 		}
 		catch (RecognitionException re) {
@@ -8797,40 +7651,32 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		return _localctx;
 	}
 
-	public partial class DateTimeLiteralxContext : ParserRuleContext {
-		public ITerminalNode DateTimeLiteral() { return GetToken(TestLexerModeParser.DateTimeLiteral, 0); }
-		public DateTimeLiteralxContext(ParserRuleContext parent, int invokingState)
+	public partial class DateTimeLiteralContext : ParserRuleContext {
+		public ITerminalNode LDateTime() { return GetToken(TestLexerModeParser.LDateTime, 0); }
+		public DateTimeLiteralContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
-		public override int RuleIndex { get { return RULE_dateTimeLiteralx; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterDateTimeLiteralx(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitDateTimeLiteralx(this);
-		}
+		public override int RuleIndex { get { return RULE_dateTimeLiteral; } }
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitDateTimeLiteralx(this);
+			if (typedVisitor != null) return typedVisitor.VisitDateTimeLiteral(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
 
 	[RuleVersion(0)]
-	public DateTimeLiteralxContext dateTimeLiteralx() {
-		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseDateTimeLiteralx() : _DoParseDateTimeLiteralx();
+	public DateTimeLiteralContext dateTimeLiteral() {
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseDateTimeLiteral() : _DoParseDateTimeLiteral();
 	}
 
-	internal DateTimeLiteralxContext _DoParseDateTimeLiteralx() {
-		DateTimeLiteralxContext _localctx = new DateTimeLiteralxContext(_ctx, State);
-		EnterRule(_localctx, 212, RULE_dateTimeLiteralx);
+	internal DateTimeLiteralContext _DoParseDateTimeLiteral() {
+		DateTimeLiteralContext _localctx = new DateTimeLiteralContext(_ctx, State);
+		EnterRule(_localctx, 212, RULE_dateTimeLiteral);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 980; Match(DateTimeLiteral);
+			State = 980; Match(LDateTime);
 			}
 		}
 		catch (RecognitionException re) {
@@ -8844,40 +7690,32 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		return _localctx;
 	}
 
-	public partial class DateLiteralxContext : ParserRuleContext {
-		public ITerminalNode DateLiteral() { return GetToken(TestLexerModeParser.DateLiteral, 0); }
-		public DateLiteralxContext(ParserRuleContext parent, int invokingState)
+	public partial class DateLiteralContext : ParserRuleContext {
+		public ITerminalNode LDate() { return GetToken(TestLexerModeParser.LDate, 0); }
+		public DateLiteralContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
-		public override int RuleIndex { get { return RULE_dateLiteralx; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterDateLiteralx(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitDateLiteralx(this);
-		}
+		public override int RuleIndex { get { return RULE_dateLiteral; } }
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitDateLiteralx(this);
+			if (typedVisitor != null) return typedVisitor.VisitDateLiteral(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
 
 	[RuleVersion(0)]
-	public DateLiteralxContext dateLiteralx() {
-		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseDateLiteralx() : _DoParseDateLiteralx();
+	public DateLiteralContext dateLiteral() {
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseDateLiteral() : _DoParseDateLiteral();
 	}
 
-	internal DateLiteralxContext _DoParseDateLiteralx() {
-		DateLiteralxContext _localctx = new DateLiteralxContext(_ctx, State);
-		EnterRule(_localctx, 214, RULE_dateLiteralx);
+	internal DateLiteralContext _DoParseDateLiteral() {
+		DateLiteralContext _localctx = new DateLiteralContext(_ctx, State);
+		EnterRule(_localctx, 214, RULE_dateLiteral);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 982; Match(DateLiteral);
+			State = 982; Match(LDate);
 			}
 		}
 		catch (RecognitionException re) {
@@ -8891,40 +7729,32 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		return _localctx;
 	}
 
-	public partial class TimeLiteralxContext : ParserRuleContext {
-		public ITerminalNode TimeLiteral() { return GetToken(TestLexerModeParser.TimeLiteral, 0); }
-		public TimeLiteralxContext(ParserRuleContext parent, int invokingState)
+	public partial class TimeLiteralContext : ParserRuleContext {
+		public ITerminalNode LTime() { return GetToken(TestLexerModeParser.LTime, 0); }
+		public TimeLiteralContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
-		public override int RuleIndex { get { return RULE_timeLiteralx; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterTimeLiteralx(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitTimeLiteralx(this);
-		}
+		public override int RuleIndex { get { return RULE_timeLiteral; } }
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitTimeLiteralx(this);
+			if (typedVisitor != null) return typedVisitor.VisitTimeLiteral(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
 
 	[RuleVersion(0)]
-	public TimeLiteralxContext timeLiteralx() {
-		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseTimeLiteralx() : _DoParseTimeLiteralx();
+	public TimeLiteralContext timeLiteral() {
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseTimeLiteral() : _DoParseTimeLiteral();
 	}
 
-	internal TimeLiteralxContext _DoParseTimeLiteralx() {
-		TimeLiteralxContext _localctx = new TimeLiteralxContext(_ctx, State);
-		EnterRule(_localctx, 216, RULE_timeLiteralx);
+	internal TimeLiteralContext _DoParseTimeLiteral() {
+		TimeLiteralContext _localctx = new TimeLiteralContext(_ctx, State);
+		EnterRule(_localctx, 216, RULE_timeLiteral);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 984; Match(TimeLiteral);
+			State = 984; Match(LTime);
 			}
 		}
 		catch (RecognitionException re) {
@@ -8938,40 +7768,32 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		return _localctx;
 	}
 
-	public partial class CharLiteralxContext : ParserRuleContext {
-		public ITerminalNode CharLiteral() { return GetToken(TestLexerModeParser.CharLiteral, 0); }
-		public CharLiteralxContext(ParserRuleContext parent, int invokingState)
+	public partial class CharLiteralContext : ParserRuleContext {
+		public ITerminalNode LChar() { return GetToken(TestLexerModeParser.LChar, 0); }
+		public CharLiteralContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
-		public override int RuleIndex { get { return RULE_charLiteralx; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterCharLiteralx(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitCharLiteralx(this);
-		}
+		public override int RuleIndex { get { return RULE_charLiteral; } }
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitCharLiteralx(this);
+			if (typedVisitor != null) return typedVisitor.VisitCharLiteral(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
 
 	[RuleVersion(0)]
-	public CharLiteralxContext charLiteralx() {
-		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseCharLiteralx() : _DoParseCharLiteralx();
+	public CharLiteralContext charLiteral() {
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseCharLiteral() : _DoParseCharLiteral();
 	}
 
-	internal CharLiteralxContext _DoParseCharLiteralx() {
-		CharLiteralxContext _localctx = new CharLiteralxContext(_ctx, State);
-		EnterRule(_localctx, 218, RULE_charLiteralx);
+	internal CharLiteralContext _DoParseCharLiteral() {
+		CharLiteralContext _localctx = new CharLiteralContext(_ctx, State);
+		EnterRule(_localctx, 218, RULE_charLiteral);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 986; Match(CharLiteral);
+			State = 986; Match(LChar);
 			}
 		}
 		catch (RecognitionException re) {
@@ -8985,44 +7807,36 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		return _localctx;
 	}
 
-	public partial class StringLiteralxContext : ParserRuleContext {
-		public ITerminalNode RegularStringLiteral() { return GetToken(TestLexerModeParser.RegularStringLiteral, 0); }
-		public ITerminalNode DoubleQuoteVerbatimStringLiteral() { return GetToken(TestLexerModeParser.DoubleQuoteVerbatimStringLiteral, 0); }
-		public StringLiteralxContext(ParserRuleContext parent, int invokingState)
+	public partial class StringLiteralContext : ParserRuleContext {
+		public ITerminalNode LRegularString() { return GetToken(TestLexerModeParser.LRegularString, 0); }
+		public ITerminalNode LDoubleQuoteVerbatimString() { return GetToken(TestLexerModeParser.LDoubleQuoteVerbatimString, 0); }
+		public StringLiteralContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
-		public override int RuleIndex { get { return RULE_stringLiteralx; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterStringLiteralx(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitStringLiteralx(this);
-		}
+		public override int RuleIndex { get { return RULE_stringLiteral; } }
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitStringLiteralx(this);
+			if (typedVisitor != null) return typedVisitor.VisitStringLiteral(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
 
 	[RuleVersion(0)]
-	public StringLiteralxContext stringLiteralx() {
-		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseStringLiteralx() : _DoParseStringLiteralx();
+	public StringLiteralContext stringLiteral() {
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseStringLiteral() : _DoParseStringLiteral();
 	}
 
-	internal StringLiteralxContext _DoParseStringLiteralx() {
-		StringLiteralxContext _localctx = new StringLiteralxContext(_ctx, State);
-		EnterRule(_localctx, 220, RULE_stringLiteralx);
+	internal StringLiteralContext _DoParseStringLiteral() {
+		StringLiteralContext _localctx = new StringLiteralContext(_ctx, State);
+		EnterRule(_localctx, 220, RULE_stringLiteral);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
 			State = 988;
 			_la = _input.La(1);
-			if ( !(_la==RegularStringLiteral || _la==DoubleQuoteVerbatimStringLiteral) ) {
+			if ( !(_la==LRegularString || _la==LDoubleQuoteVerbatimString) ) {
 			_errHandler.RecoverInline(this);
 			} else {
 				if (_input.La(1) == TokenConstants.Eof) {
@@ -9045,40 +7859,32 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 		return _localctx;
 	}
 
-	public partial class GuidLiteralxContext : ParserRuleContext {
-		public ITerminalNode GuidLiteral() { return GetToken(TestLexerModeParser.GuidLiteral, 0); }
-		public GuidLiteralxContext(ParserRuleContext parent, int invokingState)
+	public partial class GuidLiteralContext : ParserRuleContext {
+		public ITerminalNode LGuid() { return GetToken(TestLexerModeParser.LGuid, 0); }
+		public GuidLiteralContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
-		public override int RuleIndex { get { return RULE_guidLiteralx; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.EnterGuidLiteralx(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ITestLexerModeParserListener typedListener = listener as ITestLexerModeParserListener;
-			if (typedListener != null) typedListener.ExitGuidLiteralx(this);
-		}
+		public override int RuleIndex { get { return RULE_guidLiteral; } }
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITestLexerModeParserVisitor<TResult> typedVisitor = visitor as ITestLexerModeParserVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitGuidLiteralx(this);
+			if (typedVisitor != null) return typedVisitor.VisitGuidLiteral(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
 
 	[RuleVersion(0)]
-	public GuidLiteralxContext guidLiteralx() {
-		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseGuidLiteralx() : _DoParseGuidLiteralx();
+	public GuidLiteralContext guidLiteral() {
+		return this.SyntaxParser != null && this.SyntaxParser.IsIncremental ? this.SyntaxParser._Antlr4ParseGuidLiteral() : _DoParseGuidLiteral();
 	}
 
-	internal GuidLiteralxContext _DoParseGuidLiteralx() {
-		GuidLiteralxContext _localctx = new GuidLiteralxContext(_ctx, State);
-		EnterRule(_localctx, 222, RULE_guidLiteralx);
+	internal GuidLiteralContext _DoParseGuidLiteral() {
+		GuidLiteralContext _localctx = new GuidLiteralContext(_ctx, State);
+		EnterRule(_localctx, 222, RULE_guidLiteral);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 990; Match(GuidLiteral);
+			State = 990; Match(LGuid);
 			}
 		}
 		catch (RecognitionException re) {
@@ -9553,4 +8359,4 @@ public partial class TestLexerModeParser : global::MetaDslx.Languages.Antlr4Rosl
 	public static readonly ATN _ATN =
 		new ATNDeserializer().Deserialize(_serializedATN.ToCharArray());
 }
-} // namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax.InternalSyntax
+} // namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax

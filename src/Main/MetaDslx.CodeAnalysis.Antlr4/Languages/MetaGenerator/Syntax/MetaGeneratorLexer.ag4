@@ -135,11 +135,11 @@ fragment IdentifierGeneralBegin : [a-zA-Z_];
 fragment IdentifierGeneralCharacter : [a-zA-Z0-9_];
 
 $Token(kind=Number)
-IntegerLiteral : DecimalDigits | Hexadecimal;
+LInteger : DecimalDigits | Hexadecimal;
 $Token(kind=Number)
-DecimalLiteral : DecimalDigit+ '.' DecimalDigit+;
+LDecimal : DecimalDigit+ '.' DecimalDigit+;
 $Token(kind=Number)
-ScientificLiteral : DecimalLiteral [eE] Sign? DecimalDigit+;
+LScientific : LDecimal [eE] Sign? DecimalDigit+;
 fragment DecimalDigits : DecimalDigit+;
 fragment DecimalDigit : [0-9];
 fragment Sign : '+' | '-';
@@ -147,13 +147,13 @@ fragment Hexadecimal : ('0x'|'0X') HexDigit*;
 fragment HexDigit : [0-9a-fA-F];
 
 $Token(kind=Number)
-DateTimeOffsetLiteral : DateLiteral 'T' TimeLiteral TimeZone;
+LDateTimeOffset : LDate 'T' LTime TimeZone;
 $Token(kind=Number)
-DateTimeLiteral : DateLiteral 'T' TimeLiteral;
+LDateTime : LDate 'T' LTime;
 $Token(kind=Number)
-DateLiteral : Sign? DateYear '-' DateMonth '-' DateDay;
+LDate : Sign? DateYear '-' DateMonth '-' DateDay;
 $Token(kind=Number)
-TimeLiteral : TimeHourMinute ':' TimeSecond;
+LTime : TimeHourMinute ':' TimeSecond;
 fragment DateDay
     : '01' | '02' | '03' | '04' | '05' | '06' | '07' | '08' | '09' | '10'
     | '11' | '12' | '13' | '14' | '15'
@@ -180,10 +180,10 @@ fragment TimeSecond: [0-5] DecimalDigit TimeSecondDecimalPart?;
 fragment TimeSecondDecimalPart: '.' DecimalDigits;
 
 $Token(kind=String)
-CharLiteral : '\'' SingleQuoteTextCharacter* '\'';
+LChar : '\'' SingleQuoteTextCharacter* '\'';
 
 $Token(kind=String)
-RegularStringLiteral
+LRegularString
     : '"' DoubleQuoteTextCharacter* '"';
 //    | '\'' SingleQuoteTextCharacter* '\'';
 
@@ -214,7 +214,7 @@ fragment CharacterEscapeUnicode
     | '\\U' HexDigit HexDigit HexDigit HexDigit HexDigit HexDigit HexDigit HexDigit;
 
 $Token(kind=Number)
-GuidLiteral : '#[' HexDigit HexDigit HexDigit HexDigit HexDigit HexDigit HexDigit
+LGuid : '#[' HexDigit HexDigit HexDigit HexDigit HexDigit HexDigit HexDigit
                    HexDigit '-' HexDigit HexDigit HexDigit HexDigit '-'
                    HexDigit HexDigit HexDigit HexDigit '-'
                    HexDigit HexDigit HexDigit HexDigit '-'
@@ -247,7 +247,7 @@ $Token(kind=String)
 mode DOUBLEQUOTE_VERBATIM_STRING;
 
 DoubleQuoteVerbatimStringText : DoubleQuoteTextVerbatimCharacter -> more;
-DoubleQuoteVerbatimStringLiteral : '"' -> mode(DEFAULT_MODE);
+LDoubleQuoteVerbatimString : '"' -> mode(DEFAULT_MODE);
 
 
 mode TEMPLATE_HEADER;
@@ -347,16 +347,16 @@ TH_TOr : TOr -> type(TOr);
 TH_TQuestionQuestion : TQuestionQuestion -> type(TQuestionQuestion);
 
 TH_IdentifierNormal : IdentifierNormal -> type(IdentifierNormal);
-TH_IntegerLiteral : IntegerLiteral -> type(IntegerLiteral);
-TH_DecimalLiteral : DecimalLiteral -> type(DecimalLiteral);
-TH_ScientificLiteral : ScientificLiteral -> type(ScientificLiteral);
-TH_DateTimeOffsetLiteral : DateTimeOffsetLiteral -> type(DateTimeOffsetLiteral);
-TH_DateTimeLiteral : DateTimeLiteral -> type(DateTimeLiteral);
-TH_DateLiteral : DateLiteral -> type(DateLiteral);
-TH_TimeLiteral : TimeLiteral -> type(TimeLiteral);
-TH_CharLiteral : CharLiteral -> type(CharLiteral);
-TH_RegularStringLiteral : RegularStringLiteral -> type(RegularStringLiteral);
-TH_GuidLiteral : GuidLiteral -> type(GuidLiteral);
+TH_IntegerLiteral : LInteger -> type(LInteger);
+TH_DecimalLiteral : LDecimal -> type(LDecimal);
+TH_ScientificLiteral : LScientific -> type(LScientific);
+TH_DateTimeOffsetLiteral : LDateTimeOffset -> type(LDateTimeOffset);
+TH_DateTimeLiteral : LDateTime -> type(LDateTime);
+TH_DateLiteral : LDate -> type(LDate);
+TH_TimeLiteral : LTime -> type(LTime);
+TH_CharLiteral : LChar -> type(LChar);
+TH_RegularStringLiteral : LRegularString -> type(LRegularString);
+TH_GuidLiteral : LGuid -> type(LGuid);
 
 $Token(kind=TemplateOutput)
 mode TEMPLATE_OUTPUT;
@@ -365,22 +365,22 @@ $Token(kind=ReservedKeyword)
 KEndTemplate : 'end template' ('\r'? '\n' | [\u0085\u2028\u2029]) -> mode(DEFAULT_MODE);
 
 $Token(kind=TemplateControl)
-TemplateLineControl : ('\\' | '^') [\u0020\u0009\u000B\u000C\u00A0\u001A]* (TemplateCrLf | TemplateLineBreak);
+LTemplateLineControl : ('\\' | '^') [\u0020\u0009\u000B\u000C\u00A0\u001A]* (LTemplateCrLf | LTemplateLineBreak);
 $Token(kind=TemplateOutput)
-TemplateOutput : (~[\u005C\u005E\u005B\r\n\u0085\u2028\u2029]+ | '\\' | '^');
+LTemplateOutput : (~[\u005C\u005E\u005B\r\n\u0085\u2028\u2029]+ | '\\' | '^');
 $Token(kind=TemplateOutput)
-TemplateCrLf : '\r'? '\n';
+LTemplateCrLf : '\r'? '\n';
 $Token(kind=TemplateOutput)
-TemplateLineBreak : [\u0085\u2028\u2029];
+LTemplateLineBreak : [\u0085\u2028\u2029];
 $Token(kind=TemplateControl)
-TemplateStatementStart : '[' {Mode(TEMPLATE_STATEMENT); _templateBrackets=0;};
+TTemplateStatementStart : '[' {Mode(TEMPLATE_STATEMENT); _templateBrackets=0;};
 
 mode TEMPLATE_STATEMENT;
 
 TemplateStatementCrLf : '\r'? '\n' -> type(LCrLf), channel(WHITESPACE), mode(TEMPLATE_OUTPUT);
 TemplateStatementLineBreak : [\u0085\u2028\u2029] -> type(LLineBreak), channel(WHITESPACE), mode(TEMPLATE_OUTPUT);
 $Token(kind=TemplateControl)
-TemplateStatementEnd : {_templateBrackets == 0}? ']' -> mode(TEMPLATE_OUTPUT);
+TTemplateStatementEnd : {_templateBrackets == 0}? ']' -> mode(TEMPLATE_OUTPUT);
 TemplateStatement_COMMENT_START : '/*' -> more, mode(TEMPLATE_STATEMENT_COMMENT);
 TemplateStatement_WHITESPACE : [\u0020\u0009\u000B\u000C\u00A0\u001A]+ -> type(LWhitespace), channel(WHITESPACE);
 
@@ -477,16 +477,16 @@ TS_TOr : TOr -> type(TOr);
 TS_TQuestionQuestion : TQuestionQuestion -> type(TQuestionQuestion);
 
 TS_IdentifierNormal : IdentifierNormal -> type(IdentifierNormal);
-TS_IntegerLiteral : IntegerLiteral -> type(IntegerLiteral);
-TS_DecimalLiteral : DecimalLiteral -> type(DecimalLiteral);
-TS_ScientificLiteral : ScientificLiteral -> type(ScientificLiteral);
-TS_DateTimeOffsetLiteral : DateTimeOffsetLiteral -> type(DateTimeOffsetLiteral);
-TS_DateTimeLiteral : DateTimeLiteral -> type(DateTimeLiteral);
-TS_DateLiteral : DateLiteral -> type(DateLiteral);
-TS_TimeLiteral : TimeLiteral -> type(TimeLiteral);
-TS_CharLiteral : CharLiteral -> type(CharLiteral);
-TS_RegularStringLiteral : RegularStringLiteral -> type(RegularStringLiteral);
-TS_GuidLiteral : GuidLiteral -> type(GuidLiteral);
+TS_IntegerLiteral : LInteger -> type(LInteger);
+TS_DecimalLiteral : LDecimal -> type(LDecimal);
+TS_ScientificLiteral : LScientific -> type(LScientific);
+TS_DateTimeOffsetLiteral : LDateTimeOffset -> type(LDateTimeOffset);
+TS_DateTimeLiteral : LDateTime -> type(LDateTime);
+TS_DateLiteral : LDate -> type(LDate);
+TS_TimeLiteral : LTime -> type(LTime);
+TS_CharLiteral : LChar -> type(LChar);
+TS_RegularStringLiteral : LRegularString -> type(LRegularString);
+TS_GuidLiteral : LGuid -> type(LGuid);
 
 $Token(kind=GeneralComment)
 mode TEMPLATE_STATEMENT_COMMENT;

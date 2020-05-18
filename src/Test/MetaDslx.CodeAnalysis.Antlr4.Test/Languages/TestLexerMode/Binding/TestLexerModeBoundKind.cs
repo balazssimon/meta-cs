@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using MetaDslx.CodeAnalysis.Binding;
 using Roslyn.Utilities;
 
-namespace MetaDslx.CodeAnalysis.Antlr4Test.Binding
+namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Binding
 {
     public class TestLexerModeBoundKind : BoundKind
     {

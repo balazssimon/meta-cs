@@ -8,7 +8,7 @@ using Microsoft.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Syntax;
 using Roslyn.Utilities;
 
-namespace MetaDslx.CodeAnalysis.Antlr4Test.Syntax
+namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax
 {
 	public class TestLexerModeSyntaxFacts : TestLexerModeTokensSyntaxFacts
 	{

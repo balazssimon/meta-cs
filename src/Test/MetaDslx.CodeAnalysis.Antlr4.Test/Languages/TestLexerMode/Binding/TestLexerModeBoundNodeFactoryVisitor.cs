@@ -14,11 +14,11 @@ using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Syntax;
 using Roslyn.Utilities;
-using MetaDslx.CodeAnalysis.Antlr4Test;
-using MetaDslx.CodeAnalysis.Antlr4Test.Syntax;
-using MetaDslx.CodeAnalysis.Antlr4Test.Symbols;
+using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode;
+using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax;
+using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Symbols;
 
-namespace MetaDslx.CodeAnalysis.Antlr4Test.Binding
+namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Binding
 {
 	// Make sure to keep this in sync with TestLexerModeIsBindableNodeVisitor
     public class TestLexerModeBoundNodeFactoryVisitor : BoundNodeFactoryVisitor, ITestLexerModeSyntaxVisitor<ArrayBuilder<object>, BoundNode>
@@ -2406,7 +2406,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Binding
 			}
 		}
 		
-		public BoundNode VisitTemplateOutputx(TemplateOutputxSyntax node, ArrayBuilder<object> childBoundNodesForParent)
+		public BoundNode VisitTemplateOutput(TemplateOutputSyntax node, ArrayBuilder<object> childBoundNodesForParent)
 		{
 			if (node == null || node.IsMissing) return null;
 			var state = this.State;
@@ -4584,7 +4584,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Binding
 			}
 		}
 		
-		public BoundNode VisitIntegerLiteralx(IntegerLiteralxSyntax node, ArrayBuilder<object> childBoundNodesForParent)
+		public BoundNode VisitIntegerLiteral(IntegerLiteralSyntax node, ArrayBuilder<object> childBoundNodesForParent)
 		{
 			if (node == null || node.IsMissing) return null;
 			var state = this.State;
@@ -4617,7 +4617,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Binding
 			}
 		}
 		
-		public BoundNode VisitDecimalLiteralx(DecimalLiteralxSyntax node, ArrayBuilder<object> childBoundNodesForParent)
+		public BoundNode VisitDecimalLiteral(DecimalLiteralSyntax node, ArrayBuilder<object> childBoundNodesForParent)
 		{
 			if (node == null || node.IsMissing) return null;
 			var state = this.State;
@@ -4650,7 +4650,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Binding
 			}
 		}
 		
-		public BoundNode VisitScientificLiteralx(ScientificLiteralxSyntax node, ArrayBuilder<object> childBoundNodesForParent)
+		public BoundNode VisitScientificLiteral(ScientificLiteralSyntax node, ArrayBuilder<object> childBoundNodesForParent)
 		{
 			if (node == null || node.IsMissing) return null;
 			var state = this.State;
@@ -4716,7 +4716,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Binding
 			}
 		}
 		
-		public BoundNode VisitDateTimeOffsetLiteralx(DateTimeOffsetLiteralxSyntax node, ArrayBuilder<object> childBoundNodesForParent)
+		public BoundNode VisitDateTimeOffsetLiteral(DateTimeOffsetLiteralSyntax node, ArrayBuilder<object> childBoundNodesForParent)
 		{
 			if (node == null || node.IsMissing) return null;
 			var state = this.State;
@@ -4749,7 +4749,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Binding
 			}
 		}
 		
-		public BoundNode VisitDateTimeLiteralx(DateTimeLiteralxSyntax node, ArrayBuilder<object> childBoundNodesForParent)
+		public BoundNode VisitDateTimeLiteral(DateTimeLiteralSyntax node, ArrayBuilder<object> childBoundNodesForParent)
 		{
 			if (node == null || node.IsMissing) return null;
 			var state = this.State;
@@ -4782,7 +4782,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Binding
 			}
 		}
 		
-		public BoundNode VisitDateLiteralx(DateLiteralxSyntax node, ArrayBuilder<object> childBoundNodesForParent)
+		public BoundNode VisitDateLiteral(DateLiteralSyntax node, ArrayBuilder<object> childBoundNodesForParent)
 		{
 			if (node == null || node.IsMissing) return null;
 			var state = this.State;
@@ -4815,7 +4815,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Binding
 			}
 		}
 		
-		public BoundNode VisitTimeLiteralx(TimeLiteralxSyntax node, ArrayBuilder<object> childBoundNodesForParent)
+		public BoundNode VisitTimeLiteral(TimeLiteralSyntax node, ArrayBuilder<object> childBoundNodesForParent)
 		{
 			if (node == null || node.IsMissing) return null;
 			var state = this.State;
@@ -4848,7 +4848,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Binding
 			}
 		}
 		
-		public BoundNode VisitCharLiteralx(CharLiteralxSyntax node, ArrayBuilder<object> childBoundNodesForParent)
+		public BoundNode VisitCharLiteral(CharLiteralSyntax node, ArrayBuilder<object> childBoundNodesForParent)
 		{
 			if (node == null || node.IsMissing) return null;
 			var state = this.State;
@@ -4881,7 +4881,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Binding
 			}
 		}
 		
-		public BoundNode VisitStringLiteralx(StringLiteralxSyntax node, ArrayBuilder<object> childBoundNodesForParent)
+		public BoundNode VisitStringLiteral(StringLiteralSyntax node, ArrayBuilder<object> childBoundNodesForParent)
 		{
 			if (node == null || node.IsMissing) return null;
 			var state = this.State;
@@ -4914,7 +4914,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Binding
 			}
 		}
 		
-		public BoundNode VisitGuidLiteralx(GuidLiteralxSyntax node, ArrayBuilder<object> childBoundNodesForParent)
+		public BoundNode VisitGuidLiteral(GuidLiteralSyntax node, ArrayBuilder<object> childBoundNodesForParent)
 		{
 			if (node == null || node.IsMissing) return null;
 			var state = this.State;
