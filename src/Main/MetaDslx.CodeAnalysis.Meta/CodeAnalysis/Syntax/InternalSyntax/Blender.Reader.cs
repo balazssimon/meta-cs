@@ -2,6 +2,8 @@
 
 using System.Collections.Immutable;
 using System.Diagnostics;
+using System.Linq;
+using MetaDslx.CodeAnalysis.InternalUtilities;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 using Roslyn.Utilities;
@@ -210,7 +212,13 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 var tokenAnnot = SyntaxLexer.GetTokenAnnotation(lastToken);
                 if (tokenAnnot != null) _mode = tokenAnnot.EndMode;
 
-                if (!_oldTreeCursor.IsFinished)
+                if (currentNodeOrToken.IsNode)
+                {
+                    var nodeAnnot = SyntaxParser.GetNodeAnnotation(currentNodeOrToken.NodeOrParent.Green);
+                    if (nodeAnnot != null) _state = nodeAnnot.EndState;
+                }
+
+                /*if (!_oldTreeCursor.IsFinished)
                 {
                     if (currentNodeOrToken.IsNode)
                     {
@@ -228,7 +236,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                     {
                         _state = treeAnnot.EndState;
                     }
-                }
+                }*/
 
                 blendedNode = CreateBlendedNode(
                     node: (LanguageSyntaxNode)currentNodeOrToken.AsNode(),
@@ -238,6 +246,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
             private bool CanReuse(SyntaxNodeOrToken nodeOrToken)
             {
+                CallLogger.Instance.Call(nodeOrToken.GetDebuggerDisplay());
+
                 // Zero width nodes and tokens always indicate that the parser had to do
                 // something tricky, so don't reuse them.
                 // NOTE: this is slightly different from IsMissing because of omitted type arguments
@@ -295,13 +305,21 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                     if (!LexerMode.SameMode(_mode, null)) return false;
                 }
 
-
-                // don't reuse nodes and tokens whit no incremental parsing annotation
-                if (nodeOrToken.IsToken && SyntaxLexer.GetTokenAnnotation(nodeOrToken.Parent.Green) == null ||
-                    nodeOrToken.IsNode && SyntaxParser.GetNodeAnnotation(nodeOrToken.Parent.Green) == null)
+                if (nodeOrToken.IsNode)
                 {
-                    return false;
+                    var nodeAnnot = SyntaxParser.GetNodeAnnotation(nodeOrToken.UnderlyingNode);
+                    if (nodeAnnot == null) return false;
+                    if (ParserState.SameState(_state, nodeAnnot.StartState))
+                    {
+                        CallLogger.Instance.Log("  State mismatch:");
+                        CallLogger.Instance.Log("    Parser state: "+_state);
+                        CallLogger.Instance.Log("    Node start state: "+nodeAnnot.StartState);
+                        return false;
+                    }
+                    //Debug.Assert(_state == nodeAnnot.StartState);
                 }
+
+                CallLogger.Instance.Log("  Reuse: true");
 
                 if (!nodeOrToken.ContainsDirectives)
                 {
@@ -327,9 +345,9 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
             private static bool IsIncomplete(LanguageSyntaxNode node)
             {
-                // A node is incomplete if the last token in it is a missing token.  Use the green
+                // A node is incomplete if at least one node or token in it is missing.  Use the green
                 // node to determine this as it's much faster than going through the red API.
-                return node.Green.GetLastTerminal().IsMissing;
+                return node.Green.EnumerateNodes().Any(green => green.IsMissing);
             }
 
             // any token that was fabricated by the parser

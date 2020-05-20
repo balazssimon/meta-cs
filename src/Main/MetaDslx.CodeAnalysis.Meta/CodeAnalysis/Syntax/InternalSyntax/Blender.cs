@@ -139,7 +139,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
             // check if change is not after the end. TODO: there should be an assert somewhere about
             // changes starting at least at the End of old tree
-            var lastCharIndex = oldRoot.FullWidth - 1;
+            var lastCharIndex = oldRoot.FullWidth;
 
             // Move the start and end of the change range so that it is contained within oldTree.
             var start = Math.Max(Math.Min(changeRange.Span.Start - maxLexerLookahead, lastCharIndex), 0);

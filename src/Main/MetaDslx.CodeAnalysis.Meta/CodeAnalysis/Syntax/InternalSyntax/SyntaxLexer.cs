@@ -96,6 +96,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             }
             var token = this.CachedSyntaxToken() ?? this.LexSyntaxToken();
             CallLogger.Instance.Call(token);
+            CallLogger.Instance.Log("  [" + _position + ".." + (_position + token.FullWidth) + ")");
             return token;
         }
 

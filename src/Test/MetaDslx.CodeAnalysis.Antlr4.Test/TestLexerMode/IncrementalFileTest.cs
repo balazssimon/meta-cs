@@ -25,9 +25,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestLexerMode
         [Fact]
         public void PropertyTest()
         {
-            string source = File.ReadAllText($@"..\..\..\InputFiles\LexerMode\PropertyTest.txt");//.Substring(0, 153);
+            string source = File.ReadAllText($@"..\..\..\InputFiles\LexerMode\PropertyTest.txt");;
             Type(source);
-            Parse(SourceText.From(source));
         }
     }
     public class IncrementalFileTest_MetaModelGenerator : IncrementalTypeTest
@@ -35,8 +34,9 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestLexerMode
         [Fact]
         public void MetaModelGenerator()
         {
-            string source = File.ReadAllText($@"..\..\..\InputFiles\LexerMode\MetaModelGenerator.txt");
-            Type(source);
+            var pos = 451;
+            string source = File.ReadAllText($@"..\..\..\InputFiles\LexerMode\MetaModelGenerator.txt").Substring(0, pos);
+            Type(source, pos - 1);
         }
     }
     public class IncrementalFileTest_MofModelToMetaModelGenerator : IncrementalTypeTest
@@ -45,8 +45,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestLexerMode
         public void MofModelToMetaModelGenerator()
         {
             string source = File.ReadAllText($@"..\..\..\InputFiles\LexerMode\MofModelToMetaModelGenerator.txt");
-            //Type(source, 64);
-            Parse(SourceText.From(source));
+            Type(source, 64);
         }
     }
     public class IncrementalFileTest_UmlModelToMetaModelGenerator : IncrementalTypeTest
@@ -55,8 +54,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestLexerMode
         public void UmlModelToMetaModelGenerator()
         {
             string source = File.ReadAllText($@"..\..\..\InputFiles\LexerMode\UmlModelToMetaModelGenerator.txt");
-            //Type(source, 64);
-            Parse(SourceText.From(source));
+            Type(source, 64);
         }
     }
     public class IncrementalFileTest_ImmutableMetaModelGenerator : IncrementalTypeTest
@@ -65,8 +63,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestLexerMode
         public void ImmutableMetaModelGenerator()
         {
             string source = File.ReadAllText($@"..\..\..\InputFiles\LexerMode\ImmutableMetaModelGenerator.txt");
-            Parse(SourceText.From(source));
-            //Type(source, 560);
+            Type(source, 560);
         }
     }
     public class IncrementalFileTest_CompilerGenerator : IncrementalTypeTest
@@ -75,8 +72,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestLexerMode
         public void CompilerGenerator()
         {
             string source = File.ReadAllText($@"..\..\..\InputFiles\LexerMode\CompilerGenerator.txt");
-            Parse(SourceText.From(source));
-            //Type(source, 20000);
+            Type(source, 20000);
         }
     }
     public class IncrementalFileTest_SoalPrinter : IncrementalTypeTest
@@ -85,8 +81,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestLexerMode
         public void SoalPrinter()
         {
             string source = File.ReadAllText($@"..\..\..\InputFiles\LexerMode\SoalPrinter.txt");
-            Parse(SourceText.From(source));
-            //Type(source, 70);
+            Type(source, 70);
         }
     }
     public class IncrementalFileTest_XsdGenerator : IncrementalTypeTest
@@ -95,8 +90,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestLexerMode
         public void XsdGenerator()
         {
             string source = File.ReadAllText($@"..\..\..\InputFiles\LexerMode\XsdGenerator.txt");
-            Parse(SourceText.From(source));
-            //Type(source, 120);
+            Type(source, 120);
         }
     }
     public class IncrementalFileTest_WsdlGenerator : IncrementalTypeTest
@@ -105,8 +99,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestLexerMode
         public void WsdlGenerator()
         {
             string source = File.ReadAllText($@"..\..\..\InputFiles\LexerMode\WsdlGenerator.txt");
-            Parse(SourceText.From(source));
-            //Type(source, 100);
+            Type(source, 100);
         }
     }
 }

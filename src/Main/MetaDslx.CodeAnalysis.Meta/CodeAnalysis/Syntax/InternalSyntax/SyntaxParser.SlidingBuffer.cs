@@ -196,11 +196,11 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 {
                     this.AddSlot();
                 }
-                _count++;
                 for (int i = _count; i > _offset; i--)
                 {
                     _items[i] = _items[i - 1];
                 }
+                _count++;
                 _items[_offset] = item;
                 if (_offset == _count) _lastCreatedItem = item;
             }

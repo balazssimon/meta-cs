@@ -33,8 +33,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         public ImmutableArray<SyntaxKind> GetTokenSuggestions(int position, CancellationToken cancellationToken = default)
         {
             (var node, var annot) = FindInnermostNodeWithAnnotation(position);
-            if (annot == null || !(annot.State is Antlr4ParserState)) return ImmutableArray<SyntaxKind>.Empty;
-            var startState = _atn.states[((Antlr4ParserState)annot.State).State];
+            if (annot == null || !(annot.StartState is Antlr4ParserState)) return ImmutableArray<SyntaxKind>.Empty;
+            var startState = _atn.states[((Antlr4ParserState)annot.StartState).State];
 
             var tokens = ArrayBuilder<SyntaxToken>.GetInstance();
             var adjustedPosition = position;

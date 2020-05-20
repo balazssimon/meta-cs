@@ -191,6 +191,10 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         {
             if (green == null) return null;
 
+            _state = SaveParserState();
+            CallLogger.Instance.Call(_state);
+            PrintStateStack();
+
             if (IsIncremental)
             {
                 var incrementalState = _incrementalStateStack.Pop();
@@ -201,9 +205,9 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 if (nodeAnnot == null)
                 {
 #if DEBUG
-                    green = green.WithAdditionalAnnotationsGreen(new SyntaxAnnotation(IncrementalNodeAnnotationKind, new IncrementalNodeAnnotation(incrementalState.state, minLookahead, maxLookahead, _version)));
+                    green = green.WithAdditionalAnnotationsGreen(new SyntaxAnnotation(IncrementalNodeAnnotationKind, new IncrementalNodeAnnotation(incrementalState.state, _state, minLookahead, maxLookahead, _version)));
 #else
-                    green = green.WithAdditionalAnnotationsGreen(new SyntaxAnnotation(IncrementalNodeAnnotationKind, new IncrementalNodeAnnotation(incrementalState.state, minLookahead, maxLookahead)));
+                    green = green.WithAdditionalAnnotationsGreen(new SyntaxAnnotation(IncrementalNodeAnnotationKind, new IncrementalNodeAnnotation(incrementalState.state, _state, minLookahead, maxLookahead)));
 #endif
                 }
                 if (_incrementalStateStack.Count > 0)
@@ -215,9 +219,6 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 }
             }
 
-            _state = SaveParserState();
-            CallLogger.Instance.Call(_state);
-            PrintStateStack();
             return _state;
         }
 
@@ -409,7 +410,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         {
             if (_blendedTokens != null)
             {
-                if (_currentNode.Token != null && (_blendedTokens.Count == 0 || _blendedTokens.Index == _blendedTokens.Count))
+                if (_currentNode.Token != null && _blendedTokens.Count == 0/* || _blendedTokens.Index == _blendedTokens.Count)*/)
                 {
                     _currentNodeIndex = _blendedTokens.Index;
                     _blendedTokens.AddItem(_currentNode);
@@ -499,7 +500,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         private InternalSyntaxToken EatCurrentToken()
         {
             var ct = this.CurrentToken;
-            CallLogger.Instance.Call(ct);
+            CallLogger.Instance.Call(ct.ToFullString());
             var index = TokenIndex;
             var skippedTokenCount = index - _lastNonSkippedTokenIndex - 1;
             if (skippedTokenCount > 0)
@@ -590,6 +591,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         protected InternalSyntaxToken SkipToken()
         {
             var ct = this.CurrentToken;
+            CallLogger.Instance.Call(ct.ToFullString());
             MoveToNextToken();
             return ct;
         }

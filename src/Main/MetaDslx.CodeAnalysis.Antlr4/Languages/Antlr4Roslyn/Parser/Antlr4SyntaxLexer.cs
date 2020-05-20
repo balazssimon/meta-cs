@@ -51,9 +51,13 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             base.Reset(position, directives);
             _readNextToken = true;
             _eof = false;
-            _lexer.Reset();
+            _lexer._hitEOF = false;
+            _lexer._modeStack.Clear();
+            _lexer._mode = 0;
             _lexer.InputStream.Seek(position);
             CallLogger.Instance.Call(CreateAntlr4LexerModeSnapshot());
+            CallLogger.Instance.Log("  position=" + position);
+            CallLogger.Instance.Log("  Text=" + Text.GetSubText(TextSpan.FromBounds(position, Math.Min(Text.Length, position + 10))) + (position+10 < Text.Length ? "..." : ""));
         }
 
         protected sealed override bool HasLexerModeChanged(LexerMode previousMode)
@@ -96,7 +100,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         {
             base.RestoreLexerMode(mode);
             var position = this.Position;
-            _lexer.Reset();
+            _lexer._hitEOF = false;
+            _lexer._modeStack.Clear();
             _lexer.InputStream.Seek(position);
             if (mode != null)
             {

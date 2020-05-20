@@ -14,6 +14,13 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             State = state;
         }
 
+        public override bool Equals(object obj)
+        {
+            if (obj == null || obj.GetType() != this.GetType()) return false;
+            var other = (Antlr4ParserState)obj;
+            return other.State == this.State;
+        }
+
         public override string ToString()
         {
             return $"state={State}";

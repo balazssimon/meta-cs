@@ -16,6 +16,7 @@ using MetaDslx.Languages.Meta.Symbols;
 //using MetaDslx.Languages.Ecore;
 //using MetaDslx.Languages.Ecore.Model;
 using MetaDslx.Modeling;
+using MetaDslx.Tests;
 using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
@@ -264,23 +265,31 @@ namespace MetaDslx.Bootstrap
             //*/
 
             //*/
-            try
+            using (var assertions = new DebugAssertUnitTestTraceListener())
             {
-                IncrementalCompiler compiler = new IncrementalCompiler();
-                var pos = 153;
-                //string source = File.ReadAllText($@"..\..\..\..\..\Test\MetaDslx.CodeAnalysis.Antlr4.Test\InputFiles\LexerMode\MGenTest.txt").Substring(0, pos);
-                string source = File.ReadAllText($@"..\..\..\..\..\Test\MetaDslx.CodeAnalysis.Antlr4.Test\InputFiles\LexerMode\PropertyTest.txt").Substring(0, pos);
-                compiler.Type(source, pos - 1);
-                //string source = File.ReadAllText($@"..\..\..\..\..\Test\MetaDslx.CodeAnalysis.Antlr4.Test\InputFiles\LexerMode\PropertyTest.txt");
-                //compiler.Type(source);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-            }
-            finally
-            {
-                File.WriteAllText(@"..\..\..\CallLog.txt", CallLogger.Instance.GetLog());
+                try
+                {
+                    IncrementalCompiler compiler = new IncrementalCompiler();
+                    var pos = 451;
+                    //string source = File.ReadAllText($@"..\..\..\..\..\Test\MetaDslx.CodeAnalysis.Antlr4.Test\InputFiles\LexerMode\MGenTest.txt").Substring(0, pos);
+                    //string source = File.ReadAllText($@"..\..\..\..\..\Test\MetaDslx.CodeAnalysis.Antlr4.Test\InputFiles\LexerMode\PropertyTest.txt").Substring(0, pos);
+                    string source = File.ReadAllText($@"..\..\..\..\..\Test\MetaDslx.CodeAnalysis.Antlr4.Test\InputFiles\LexerMode\MetaModelGenerator.txt").Substring(0, pos);
+                    compiler.Type(source, pos - 1);
+                    //string source = File.ReadAllText($@"..\..\..\..\..\Test\MetaDslx.CodeAnalysis.Antlr4.Test\InputFiles\LexerMode\PropertyTest.txt");
+                    //compiler.Type(source);
+                    foreach (var assertion in assertions.AssertionFailures)
+                    {
+                        Console.WriteLine(assertion);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
+                finally
+                {
+                    File.WriteAllText(@"..\..\..\CallLog.txt", CallLogger.Instance.GetLog());
+                }
             }
             //*/
         }

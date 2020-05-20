@@ -6,7 +6,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 {
     public sealed class IncrementalNodeAnnotation
     {
-        public readonly ParserState State;
+        public readonly ParserState StartState;
+        public readonly ParserState EndState;
         public readonly int LookaheadBefore;
         public readonly int LookaheadAfter;
 #if DEBUG
@@ -14,12 +15,13 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 #endif
 
 #if DEBUG
-        public IncrementalNodeAnnotation(ParserState state, int lookaheadBefore, int lookaheadAfter, int version)
+        public IncrementalNodeAnnotation(ParserState startState, ParserState endState, int lookaheadBefore, int lookaheadAfter, int version)
 #else
-        public IncrementalNodeAnnotation(ParserState state, int lookaheadBefore, int lookaheadAfter)
+        public IncrementalNodeAnnotation(ParserState startState, ParserState endState,  int lookaheadBefore, int lookaheadAfter)
 #endif
         {
-            State = state;
+            StartState = startState;
+            EndState = endState;
             LookaheadBefore = lookaheadBefore;
             LookaheadAfter = lookaheadAfter;
 #if DEBUG
