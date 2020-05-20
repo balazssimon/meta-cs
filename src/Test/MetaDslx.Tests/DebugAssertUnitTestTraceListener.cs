@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Reflection;
 using System.Text;
+using Xunit.Sdk;
 
 namespace MetaDslx.Tests
 {
@@ -113,6 +114,8 @@ namespace MetaDslx.Tests
         /// </summary>
         public List<Assertion> AllowedFailures { get; private set; }
 
+        public bool CollectAssertions { get; private set; }
+
         /// <summary>
         /// Creates a new instance of this trace listener with the default name
         /// DebugAssertUnitTestTraceListener.
@@ -123,10 +126,11 @@ namespace MetaDslx.Tests
         /// Creates a new instance of this trace listener with the specified name.
         /// </summary>
         /// <param name="name"></param>
-        public DebugAssertUnitTestTraceListener(string name, bool autoRegister = true) : base()
+        public DebugAssertUnitTestTraceListener(string name, bool collectAssertions, bool autoRegister = true) : base()
         {
             AssertUiEnabled = false;
             Name = name;
+            CollectAssertions = collectAssertions;
             AllowedFailures = new List<Assertion>();
             assertionFailures = new List<Assertion>();
             if (autoRegister) this.Register();
@@ -162,7 +166,8 @@ namespace MetaDslx.Tests
 
             if (!AllowedFailures.Contains(failure))
             {
-                assertionFailures.Add(failure);
+                if (CollectAssertions) assertionFailures.Add(failure);
+                else throw new XunitException(message);
             }
         }
 

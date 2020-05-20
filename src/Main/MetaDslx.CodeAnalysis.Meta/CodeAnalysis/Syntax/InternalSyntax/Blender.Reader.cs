@@ -144,6 +144,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 // we need to lex a real token from the stream.
                 var token = this.LexNewToken();
 
+                if (token == null) return this.CreateBlendedNode(node: null, token: null);
+
                 // If the oldTreeCursor was finished, then the below code isn't really necessary.
                 // We'll just repeat the outer reader loop and call right back into ReadNewToken.
                 // That will then call LexNewToken (which doesn't use either of these variables).  If
@@ -202,17 +204,22 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 _newDirectives = currentNodeOrToken.ApplyDirectives(_newDirectives);
                 _oldDirectives = currentNodeOrToken.ApplyDirectives(_oldDirectives);
 
+                GreenNode lastToken;
+                if (currentNodeOrToken.IsNode) lastToken = currentNodeOrToken.NodeOrParent.Green.GetLastTerminal();
+                else lastToken = currentNodeOrToken.UnderlyingNode;
+                var tokenAnnot = SyntaxLexer.GetTokenAnnotation(lastToken);
+                if (tokenAnnot != null) _mode = tokenAnnot.EndMode;
+
                 if (!_oldTreeCursor.IsFinished)
                 {
                     if (currentNodeOrToken.IsNode)
                     {
-                        var nodeAnnot = SyntaxParser.GetNodeAnnotation(currentNodeOrToken.NodeOrParent.Green);
                         var nextNodeAnnot = SyntaxParser.GetNodeAnnotation(_oldTreeCursor.CurrentNodeOrToken.NodeOrParent.Green);
                         if (nextNodeAnnot != null) _state = nextNodeAnnot.State;
                     }
-                    var nextToken = _oldTreeCursor.MoveToFirstToken();
-                    var nextTokenAnnot = SyntaxLexer.GetTokenAnnotation(nextToken.CurrentNodeOrToken.UnderlyingNode);
-                    if (nextTokenAnnot != null) _mode = nextTokenAnnot.Mode;
+                    //var nextToken = _oldTreeCursor.MoveToFirstToken();
+                    //var nextTokenAnnot = SyntaxLexer.GetTokenAnnotation(nextToken.CurrentNodeOrToken.UnderlyingNode);
+                    //if (nextTokenAnnot != null) _mode = nextTokenAnnot.Mode;
                 }
                 else
                 {
@@ -220,7 +227,6 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                     if (treeAnnot != null)
                     {
                         _state = treeAnnot.EndState;
-                        _mode = treeAnnot.EndMode;
                     }
                 }
 
@@ -275,6 +281,20 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 {
                     return false;
                 }
+
+                GreenNode firstToken;
+                if (nodeOrToken.IsNode) firstToken = nodeOrToken.NodeOrParent.Green.GetFirstTerminal();
+                else firstToken = nodeOrToken.UnderlyingNode;
+                var tokenAnnot = SyntaxLexer.GetTokenAnnotation(firstToken);
+                if (tokenAnnot != null)
+                {
+                    if (!LexerMode.SameMode(_mode, tokenAnnot.StartMode)) return false;
+                }
+                else
+                {
+                    if (!LexerMode.SameMode(_mode, null)) return false;
+                }
+
 
                 // don't reuse nodes and tokens whit no incremental parsing annotation
                 if (nodeOrToken.IsToken && SyntaxLexer.GetTokenAnnotation(nodeOrToken.Parent.Green) == null ||

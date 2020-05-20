@@ -1,4 +1,5 @@
-﻿using MetaDslx.CodeAnalysis.Syntax;
+﻿using MetaDslx.CodeAnalysis.InternalUtilities;
+using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
 using MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax;
 using Microsoft.CodeAnalysis.Text;
@@ -41,6 +42,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.Intern
             var antlr4Lexer = (TestLexerModeLexer)this.Antlr4Lexer;
             antlr4Lexer._templateParenthesis = customMode?.TemplateParenthesis ?? 0;
             antlr4Lexer._templateBrackets = customMode?.TemplateBrackets ?? 0;
+            CallLogger.Instance.Call(mode);
+            CallLogger.Instance.Log("  Lexer mode: " + CreateAntlr4LexerModeSnapshot());
         }
     }
 
@@ -80,6 +83,11 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.Intern
         public override bool Equals(Antlr4LexerMode other)
         {
             return this.Equals(other as CustomLexerMode);
+        }
+
+        public override string ToString()
+        {
+            return $"[{base.ToString()}, p={_templateParenthesis}, b={_templateBrackets}]";
         }
     }
 }

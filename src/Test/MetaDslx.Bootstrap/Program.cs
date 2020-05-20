@@ -1,6 +1,7 @@
 ﻿using Antlr4.Runtime;
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Binding;
+using MetaDslx.CodeAnalysis.InternalUtilities;
 using MetaDslx.CodeAnalysis.Symbols.CSharp;
 using MetaDslx.CodeAnalysis.Symbols.Source;
 using MetaDslx.Languages.Meta;
@@ -38,7 +39,7 @@ namespace MetaDslx.Bootstrap
             mg.Compile();
             //*/
 
-            //*/
+            /*/
             //Antlr4RoslynBootstrap a4l = new Antlr4RoslynBootstrap(@"..\..\..\..\..\Main\MetaDslx.CodeAnalysis.Antlr4\Languages\Antlr4Roslyn\Syntax\InternalSyntax\Antlr4RoslynLexer.ag4", "MetaDslx.Languages.Antlr4Roslyn");
             //a4l.Compile();
             //Antlr4RoslynBootstrap a4r = new Antlr4RoslynBootstrap(@"..\..\..\..\..\Main\MetaDslx.CodeAnalysis.Antlr4\Languages\Antlr4Roslyn\Syntax\InternalSyntax\Antlr4RoslynParser.ag4", "MetaDslx.Languages.Antlr4Roslyn");
@@ -260,6 +261,27 @@ namespace MetaDslx.Bootstrap
             //UmlXmiTest();
             //EcoreXmiTest();
             //MetaDslxXmiTest();
+            //*/
+
+            //*/
+            try
+            {
+                IncrementalCompiler compiler = new IncrementalCompiler();
+                var pos = 153;
+                //string source = File.ReadAllText($@"..\..\..\..\..\Test\MetaDslx.CodeAnalysis.Antlr4.Test\InputFiles\LexerMode\MGenTest.txt").Substring(0, pos);
+                string source = File.ReadAllText($@"..\..\..\..\..\Test\MetaDslx.CodeAnalysis.Antlr4.Test\InputFiles\LexerMode\PropertyTest.txt").Substring(0, pos);
+                compiler.Type(source, pos - 1);
+                //string source = File.ReadAllText($@"..\..\..\..\..\Test\MetaDslx.CodeAnalysis.Antlr4.Test\InputFiles\LexerMode\PropertyTest.txt");
+                //compiler.Type(source);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            finally
+            {
+                File.WriteAllText(@"..\..\..\CallLog.txt", CallLogger.Instance.GetLog());
+            }
             //*/
         }
 

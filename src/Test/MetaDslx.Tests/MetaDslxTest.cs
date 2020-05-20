@@ -10,11 +10,14 @@ namespace MetaDslx.Tests
     {
         protected DebugAssertUnitTestTraceListener _debugAssertListener;
 
-        public DebugAssertUnitTest()
+        public DebugAssertUnitTest(bool throwAfterTestFinished = false)
         {
-            _debugAssertListener = new DebugAssertUnitTestTraceListener();
+            _debugAssertListener = new DebugAssertUnitTestTraceListener(this.GetType().Name, throwAfterTestFinished);
             _debugAssertListener.AssertUiEnabled = false;
+            ThrowAfterTestFinished = throwAfterTestFinished;
         }
+
+        public bool ThrowAfterTestFinished { get; private set; }
 
         public void Dispose()
         {

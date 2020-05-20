@@ -25,6 +25,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             private T _lastUnbufferedItem;
             private T _previousItem;
             private T _lastCreatedItem;
+            private bool _hasMoreItems;
 
             public SlidingBuffer(SyntaxParser parser, T previousItem)
             {
@@ -35,6 +36,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 _items = s_itemsPool.Allocate();
                 _hasCurrentItem = false;
                 _currentItem = default;
+                _hasMoreItems = true;
             }
 
             public void Dispose()
@@ -61,7 +63,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             public int Count => _firstIndex + _count;
             public T LastCreatedItem => _lastCreatedItem;
             public T PreviousItem => _previousItem;
-            public T CurrentItem => _hasCurrentItem ? _currentItem : (_currentItem = FetchCurrentItem());
+            public T GetCurrentItem() => _hasCurrentItem ? _currentItem : (_currentItem = FetchCurrentItem());
 
             internal void Reset()
             {
@@ -74,6 +76,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 _resetPoint = 0;
                 _previousItem = default;
                 _lastUnbufferedItem = default;
+                _hasMoreItems = true;
             }
 
             internal void ResetTo(int index)
@@ -83,6 +86,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 _offset = offset;
                 _hasCurrentItem = false;
                 _currentItem = default;
+                _hasMoreItems = true;
                 if (_count > 0 && _offset > 0) _previousItem = _items[_offset - 1];
                 else _previousItem = _lastUnbufferedItem;
                 // look forward for slots not holding a token
@@ -112,8 +116,9 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 _hasResetPoint = false;
             }
 
-            internal void ForgetFollowingTokens()
+            internal void ForgetFollowingItems()
             {
+                _hasMoreItems = true;
                 _hasCurrentItem = false;
                 _currentItem = default;
                 _count = _offset;
@@ -132,7 +137,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             //we should keep it simple so that it can be inlined.
             public T EatItem()
             {
-                var ct = this.CurrentItem;
+                var ct = this.GetCurrentItem();
                 MoveToNextItem();
                 return ct;
             }
@@ -142,7 +147,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 _previousItem = _currentItem;
                 _hasCurrentItem = false;
                 _currentItem = default;
-                _offset++;
+                if (_hasMoreItems) _offset++;
             }
 
             public T PeekItem(int n)
@@ -152,15 +157,24 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 if (_hasResetPoint && index < _resetPoint) return default;
                 //Debug.Assert(_hasResetPoint || index >= 0, "index must be at least 0");
                 //Debug.Assert(!_hasResetPoint || index >= _resetPoint, $"index must be at least at the reset point {_resetPoint}");
-                while (index >= _count && _parser.SlidingBuffer_ReadNewToken()) { }
-                if (index >= _count) return default;
-                return _items[index];
+                while (_hasMoreItems && index >= _count) 
+                {
+                    _hasMoreItems = _parser.SlidingBuffer_ReadNewToken();
+                }
+                if (index >= _count)
+                {
+                    if (_count > 0) return _items[_count - 1];
+                    else return default;
+                }
+                else
+                {
+                    return _items[index];
+                }
             }
 
             private T FetchCurrentItem()
             {
-                while (_offset >= _count && _parser.SlidingBuffer_ReadNewToken()) { }
-                return _items[_offset];
+                return PeekItem(0);
             }
 
             public void AddItem(in T item)

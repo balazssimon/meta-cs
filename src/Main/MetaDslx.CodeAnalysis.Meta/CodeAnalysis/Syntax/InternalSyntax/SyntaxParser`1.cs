@@ -16,7 +16,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             _customTokens = new SlidingBuffer<T>(this, default);
         }
 
-        public T CurrentCustomToken => _customTokens.CurrentItem;
+        public T GetCurrentCustomToken() => _customTokens.GetCurrentItem();
 
         public override void Dispose()
         {
@@ -60,7 +60,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         protected override void SlidingBuffer_ForgetFollowingTokens()
         {
-            _customTokens.ForgetFollowingTokens();
+            _customTokens.ForgetFollowingItems();
             base.SlidingBuffer_ForgetFollowingTokens();
         }
 

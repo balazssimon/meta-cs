@@ -1,0 +1,4274 @@
+===========================================
+Source (length=0):
+
+===========================================
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RestoreParserState()
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=-1
+  StateStack=state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,0:-1='<EOF>',<-1>,1:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,0:-1='<EOF>',<-1>,1:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,0:-1='<EOF>',<-1>,1:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,0:-1='<EOF>',<-1>,1:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): 
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=224
+  StateStack=state=224,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,0:-1='<EOF>',<-1>,1:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,0:-1='<EOF>',<-1>,1:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,0:-1='<EOF>',<-1>,1:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,0:-1='<EOF>',<-1>,1:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): 
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,0:-1='<EOF>',<-1>,1:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,0:-1='<EOF>',<-1>,1:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,0:-1='<EOF>',<-1>,1:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,0:-1='<EOF>',<-1>,1:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): 
+  Parser error: mismatched input '' expecting 'namespace'
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=224
+  StateStack=state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=225
+  StateStack=state=225,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,0:-1='<EOF>',<-1>,1:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,0:-1='<EOF>',<-1>,1:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,0:-1='<EOF>',<-1>,1:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,0:-1='<EOF>',<-1>,1:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): 
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=225
+  StateStack=state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentToken(): 
+  StateStack=state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=-1
+  StateStack=
+===========================================
+Source (length=152):
+namespace MetaDslx.Bootstrap;
+generator MGenTest;
+
+properties Properties
+	string Name = "";
+end properties
+
+template SayHello()
+Hello, [Properties.Name]
+===========================================
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RestoreParserState()
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=-1
+  StateStack=state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,0:8='namespace',<1>,1:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,0:8='namespace',<1>,1:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,0:8='namespace',<1>,1:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,9:9=' ',<112>,channel=3,1:9]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,9:9=' ',<112>,channel=3,1:9]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,10:17='MetaDslx',<100>,1:10]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): namespace
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=224
+  StateStack=state=224,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.CustomTestLexerModeSyntaxLexer.RestoreAntlr4LexerMode()
+  Lexer mode: [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,0:8='namespace',<1>,1:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,0:8='namespace',<1>,1:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,0:8='namespace',<1>,1:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,9:9=' ',<112>,channel=3,1:9]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,9:9=' ',<112>,channel=3,1:9]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,10:17='MetaDslx',<100>,1:10]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): namespace
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentToken(): namespace
+  StateStack=state=224,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,10:17='MetaDslx',<100>,1:10]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,10:17='MetaDslx',<100>,1:10]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,10:17='MetaDslx',<100>,1:10]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,18:18='.',<55>,1:18]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): MetaDslx
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=244
+  StateStack=state=244,state=224,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.CustomTestLexerModeSyntaxLexer.RestoreAntlr4LexerMode()
+  Lexer mode: [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,10:17='MetaDslx',<100>,1:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,10:17='MetaDslx',<100>,1:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,10:17='MetaDslx',<100>,1:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,18:18='.',<55>,1:8]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): MetaDslx
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=930
+  StateStack=state=930,state=244,state=224,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.CustomTestLexerModeSyntaxLexer.RestoreAntlr4LexerMode()
+  Lexer mode: [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,10:17='MetaDslx',<100>,1:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,10:17='MetaDslx',<100>,1:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,10:17='MetaDslx',<100>,1:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,18:18='.',<55>,1:8]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): MetaDslx
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentToken(): MetaDslx
+  StateStack=state=930,state=244,state=224,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,18:18='.',<55>,1:8]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,18:18='.',<55>,1:8]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,18:18='.',<55>,1:8]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,19:27='Bootstrap',<100>,1:9]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): .
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=930
+  StateStack=state=244,state=224,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,19:27='Bootstrap',<100>,1:9]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,19:27='Bootstrap',<100>,1:9]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,19:27='Bootstrap',<100>,1:9]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,28:28=';',<53>,1:18]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): Bootstrap
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,28:28=';',<53>,1:18]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,28:28=';',<53>,1:18]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,28:28=';',<53>,1:18]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,29:29='\n',<113>,channel=3,1:19]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,29:29='\n',<113>,channel=3,1:19]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): ;
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RestoreParserState(): state=930
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RestoreParserState(): state=930
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentToken(): .
+  StateStack=state=244,state=224,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=932
+  StateStack=state=932,state=244,state=224,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.CustomTestLexerModeSyntaxLexer.RestoreAntlr4LexerMode()
+  Lexer mode: [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,19:27='Bootstrap',<100>,1:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,19:27='Bootstrap',<100>,1:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,19:27='Bootstrap',<100>,1:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,28:28=';',<53>,1:9]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): Bootstrap
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentToken(): Bootstrap
+  StateStack=state=932,state=244,state=224,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=932
+  StateStack=state=244,state=224,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RestoreParserState(): state=932
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=244
+  StateStack=state=224,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentToken(): ;
+  StateStack=state=224,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.CustomTestLexerModeSyntaxLexer.RestoreAntlr4LexerMode()
+  Lexer mode: [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,30:38='generator',<2>,1:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,30:38='generator',<2>,1:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,30:38='generator',<2>,1:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,39:39=' ',<112>,channel=3,1:9]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,39:39=' ',<112>,channel=3,1:9]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,40:47='MGenTest',<100>,1:10]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): generator
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=224
+  StateStack=state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=225
+  StateStack=state=225,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.CustomTestLexerModeSyntaxLexer.RestoreAntlr4LexerMode()
+  Lexer mode: [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,30:38='generator',<2>,1:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,30:38='generator',<2>,1:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,30:38='generator',<2>,1:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,39:39=' ',<112>,channel=3,1:9]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,39:39=' ',<112>,channel=3,1:9]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,40:47='MGenTest',<100>,1:10]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): generator
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentToken(): generator
+  StateStack=state=225,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,40:47='MGenTest',<100>,1:10]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,40:47='MGenTest',<100>,1:10]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,40:47='MGenTest',<100>,1:10]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,48:48=';',<53>,1:18]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): MGenTest
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=248
+  StateStack=state=248,state=225,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.CustomTestLexerModeSyntaxLexer.RestoreAntlr4LexerMode()
+  Lexer mode: [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,40:47='MGenTest',<100>,1:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,40:47='MGenTest',<100>,1:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,40:47='MGenTest',<100>,1:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,48:48=';',<53>,1:8]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): MGenTest
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentToken(): MGenTest
+  StateStack=state=248,state=225,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,48:48=';',<53>,1:8]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,48:48=';',<53>,1:8]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,48:48=';',<53>,1:8]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,49:49='\n',<113>,channel=3,1:9]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,49:49='\n',<113>,channel=3,1:9]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): ;
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=248
+  StateStack=state=225,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentToken(): ;
+  StateStack=state=225,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,50:50='\n',<113>,channel=3,2:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,50:50='\n',<113>,channel=3,2:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,51:60='properties',<5>,3:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,51:60='properties',<5>,3:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,51:60='properties',<5>,3:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,61:61=' ',<112>,channel=3,3:10]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,61:61=' ',<112>,channel=3,3:10]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,62:71='Properties',<100>,3:11]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): properties
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=225
+  StateStack=state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=232
+  StateStack=state=232,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.CustomTestLexerModeSyntaxLexer.RestoreAntlr4LexerMode()
+  Lexer mode: [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,50:50='\n',<113>,channel=3,1:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,50:50='\n',<113>,channel=3,1:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,51:60='properties',<5>,2:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,51:60='properties',<5>,2:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,51:60='properties',<5>,2:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,61:61=' ',<112>,channel=3,2:10]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,61:61=' ',<112>,channel=3,2:10]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,62:71='Properties',<100>,2:11]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): properties
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentToken(): properties
+  StateStack=state=232,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,62:71='Properties',<100>,2:11]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,62:71='Properties',<100>,2:11]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,62:71='Properties',<100>,2:11]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,72:72='\n',<113>,channel=3,2:21]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,72:72='\n',<113>,channel=3,2:21]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): Properties
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,73:73='\t',<112>,channel=3,3:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,73:73='\t',<112>,channel=3,3:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,74:79='string',<43>,3:1]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,74:79='string',<43>,3:1]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,74:79='string',<43>,3:1]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,80:80=' ',<112>,channel=3,3:7]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,80:80=' ',<112>,channel=3,3:7]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,81:84='Name',<100>,3:8]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): string
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RestoreParserState(): state=232
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=274
+  StateStack=state=274,state=232,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.CustomTestLexerModeSyntaxLexer.RestoreAntlr4LexerMode()
+  Lexer mode: [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,62:71='Properties',<100>,1:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,62:71='Properties',<100>,1:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,62:71='Properties',<100>,1:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,72:72='\n',<113>,channel=3,1:10]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,72:72='\n',<113>,channel=3,1:10]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): Properties
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentToken(): Properties
+  StateStack=state=274,state=232,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=274
+  StateStack=state=232,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=277
+  StateStack=state=277,state=232,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,73:73='\t',<112>,channel=3,2:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,73:73='\t',<112>,channel=3,2:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,74:79='string',<43>,2:1]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,74:79='string',<43>,2:1]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,74:79='string',<43>,2:1]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,80:80=' ',<112>,channel=3,2:7]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,80:80=' ',<112>,channel=3,2:7]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,81:84='Name',<100>,2:8]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): string
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=286
+  StateStack=state=286,state=277,state=232,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.CustomTestLexerModeSyntaxLexer.RestoreAntlr4LexerMode()
+  Lexer mode: [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,73:73='\t',<112>,channel=3,1:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,73:73='\t',<112>,channel=3,1:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,74:79='string',<43>,1:1]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,74:79='string',<43>,1:1]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,74:79='string',<43>,1:1]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,80:80=' ',<112>,channel=3,1:7]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,80:80=' ',<112>,channel=3,1:7]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,81:84='Name',<100>,1:8]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): string
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,81:84='Name',<100>,1:8]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,81:84='Name',<100>,1:8]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,81:84='Name',<100>,1:8]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,85:85=' ',<112>,channel=3,1:12]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,85:85=' ',<112>,channel=3,1:12]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,86:86='=',<57>,1:13]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): Name
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RestoreParserState(): state=286
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=691
+  StateStack=state=691,state=286,state=277,state=232,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.CustomTestLexerModeSyntaxLexer.RestoreAntlr4LexerMode()
+  Lexer mode: [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,73:73='\t',<112>,channel=3,1:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,73:73='\t',<112>,channel=3,1:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,74:79='string',<43>,1:1]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,74:79='string',<43>,1:1]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,74:79='string',<43>,1:1]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,80:80=' ',<112>,channel=3,1:7]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,80:80=' ',<112>,channel=3,1:7]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,81:84='Name',<100>,1:8]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): string
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=713
+  StateStack=state=713,state=691,state=286,state=277,state=232,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.CustomTestLexerModeSyntaxLexer.RestoreAntlr4LexerMode()
+  Lexer mode: [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,73:73='\t',<112>,channel=3,1:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,73:73='\t',<112>,channel=3,1:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,74:79='string',<43>,1:1]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,74:79='string',<43>,1:1]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,74:79='string',<43>,1:1]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,80:80=' ',<112>,channel=3,1:7]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,80:80=' ',<112>,channel=3,1:7]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,81:84='Name',<100>,1:8]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): string
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentToken(): string
+  StateStack=state=713,state=691,state=286,state=277,state=232,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=713
+  StateStack=state=691,state=286,state=277,state=232,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=691
+  StateStack=state=286,state=277,state=232,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=286
+  StateStack=state=277,state=232,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=287
+  StateStack=state=287,state=277,state=232,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,81:84='Name',<100>,1:8]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,81:84='Name',<100>,1:8]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,81:84='Name',<100>,1:8]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,85:85=' ',<112>,channel=3,1:12]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,85:85=' ',<112>,channel=3,1:12]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,86:86='=',<57>,1:13]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): Name
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentToken(): Name
+  StateStack=state=287,state=277,state=232,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,86:86='=',<57>,1:13]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,86:86='=',<57>,1:13]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,86:86='=',<57>,1:13]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,87:87=' ',<112>,channel=3,1:14]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,87:87=' ',<112>,channel=3,1:14]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,88:89='""',<109>,1:15]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): =
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=287
+  StateStack=state=277,state=232,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentToken(): =
+  StateStack=state=277,state=232,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,88:89='""',<109>,1:15]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,88:89='""',<109>,1:15]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,88:89='""',<109>,1:15]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,90:90=';',<53>,1:17]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): ""
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=289
+  StateStack=state=289,state=277,state=232,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.CustomTestLexerModeSyntaxLexer.RestoreAntlr4LexerMode()
+  Lexer mode: [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,88:89='""',<109>,1:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,88:89='""',<109>,1:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,88:89='""',<109>,1:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,90:90=';',<53>,1:2]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): ""
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RestoreParserState(): state=289
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=801
+  StateStack=state=801,state=289,state=277,state=232,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.CustomTestLexerModeSyntaxLexer.RestoreAntlr4LexerMode()
+  Lexer mode: [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,88:89='""',<109>,1:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,88:89='""',<109>,1:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,88:89='""',<109>,1:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,90:90=';',<53>,1:2]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): ""
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=953
+  StateStack=state=953,state=801,state=289,state=277,state=232,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.CustomTestLexerModeSyntaxLexer.RestoreAntlr4LexerMode()
+  Lexer mode: [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,88:89='""',<109>,1:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,88:89='""',<109>,1:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,88:89='""',<109>,1:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,90:90=';',<53>,1:2]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): ""
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentToken(): ""
+  StateStack=state=953,state=801,state=289,state=277,state=232,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,90:90=';',<53>,1:2]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,90:90=';',<53>,1:2]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,90:90=';',<53>,1:2]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,91:91='\n',<113>,channel=3,1:3]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,91:91='\n',<113>,channel=3,1:3]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): ;
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=953
+  StateStack=state=801,state=289,state=277,state=232,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=801
+  StateStack=state=289,state=277,state=232,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RestoreParserState(): state=801
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=801
+  StateStack=state=277,state=232,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentToken(): ;
+  StateStack=state=277,state=232,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,92:94='end',<14>,2:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,92:94='end',<14>,2:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,92:94='end',<14>,2:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,95:95=' ',<112>,channel=3,2:3]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,95:95=' ',<112>,channel=3,2:3]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,96:105='properties',<5>,2:4]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): end
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=277
+  StateStack=state=232,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentToken(): end
+  StateStack=state=232,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,96:105='properties',<5>,2:4]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,96:105='properties',<5>,2:4]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,96:105='properties',<5>,2:4]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,106:106='\n',<113>,channel=3,2:14]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,106:106='\n',<113>,channel=3,2:14]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): properties
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentToken(): properties
+  StateStack=state=232,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,107:107='\n',<113>,channel=3,3:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,107:107='\n',<113>,channel=3,3:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,108:115='template',<6>,4:0]
+  LexerMode=[mode=3, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=[mode=3, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=3, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=3, modeStack=, p=0, b=0]
+  _lastMode=[mode=3, modeStack=, p=0, b=0]
+  token=[@-1,108:115='template',<6>,4:0]
+  LexerMode=[mode=3, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=[mode=3, modeStack=, p=0, b=0]
+  _currentMode=[mode=3, modeStack=, p=0, b=0]
+  result=[@-1,108:115='template',<6>,4:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=3, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=3, modeStack=, p=0, b=0]
+  _lastMode=[mode=3, modeStack=, p=0, b=0]
+  token=[@-1,116:116=' ',<112>,channel=3,4:8]
+  LexerMode=[mode=3, modeStack=, p=0, b=0]
+  _currentMode=[mode=3, modeStack=, p=0, b=0]
+  _lastMode=[mode=3, modeStack=, p=0, b=0]
+  _currentMode=[mode=3, modeStack=, p=0, b=0]
+  result=[@-1,116:116=' ',<112>,channel=3,4:8]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=3, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=3, modeStack=, p=0, b=0]
+  _lastMode=[mode=3, modeStack=, p=0, b=0]
+  token=[@-1,117:124='SayHello',<100>,4:9]
+  LexerMode=[mode=3, modeStack=, p=0, b=0]
+  _currentMode=[mode=3, modeStack=, p=0, b=0]
+  _lastMode=[mode=3, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): template
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=232
+  StateStack=state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=235
+  StateStack=state=235,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.CustomTestLexerModeSyntaxLexer.RestoreAntlr4LexerMode()
+  Lexer mode: [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,107:107='\n',<113>,channel=3,1:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,107:107='\n',<113>,channel=3,1:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,108:115='template',<6>,2:0]
+  LexerMode=[mode=3, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=[mode=3, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=3, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=3, modeStack=, p=0, b=0]
+  _lastMode=[mode=3, modeStack=, p=0, b=0]
+  token=[@-1,108:115='template',<6>,2:0]
+  LexerMode=[mode=3, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=[mode=3, modeStack=, p=0, b=0]
+  _currentMode=[mode=3, modeStack=, p=0, b=0]
+  result=[@-1,108:115='template',<6>,2:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=3, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=3, modeStack=, p=0, b=0]
+  _lastMode=[mode=3, modeStack=, p=0, b=0]
+  token=[@-1,116:116=' ',<112>,channel=3,2:8]
+  LexerMode=[mode=3, modeStack=, p=0, b=0]
+  _currentMode=[mode=3, modeStack=, p=0, b=0]
+  _lastMode=[mode=3, modeStack=, p=0, b=0]
+  _currentMode=[mode=3, modeStack=, p=0, b=0]
+  result=[@-1,116:116=' ',<112>,channel=3,2:8]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=3, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=3, modeStack=, p=0, b=0]
+  _lastMode=[mode=3, modeStack=, p=0, b=0]
+  token=[@-1,117:124='SayHello',<100>,2:9]
+  LexerMode=[mode=3, modeStack=, p=0, b=0]
+  _currentMode=[mode=3, modeStack=, p=0, b=0]
+  _lastMode=[mode=3, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): template
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=308
+  StateStack=state=308,state=235,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.CustomTestLexerModeSyntaxLexer.RestoreAntlr4LexerMode()
+  Lexer mode: [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,107:107='\n',<113>,channel=3,1:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,107:107='\n',<113>,channel=3,1:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,108:115='template',<6>,2:0]
+  LexerMode=[mode=3, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=[mode=3, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=3, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=3, modeStack=, p=0, b=0]
+  _lastMode=[mode=3, modeStack=, p=0, b=0]
+  token=[@-1,108:115='template',<6>,2:0]
+  LexerMode=[mode=3, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=[mode=3, modeStack=, p=0, b=0]
+  _currentMode=[mode=3, modeStack=, p=0, b=0]
+  result=[@-1,108:115='template',<6>,2:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=3, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=3, modeStack=, p=0, b=0]
+  _lastMode=[mode=3, modeStack=, p=0, b=0]
+  token=[@-1,116:116=' ',<112>,channel=3,2:8]
+  LexerMode=[mode=3, modeStack=, p=0, b=0]
+  _currentMode=[mode=3, modeStack=, p=0, b=0]
+  _lastMode=[mode=3, modeStack=, p=0, b=0]
+  _currentMode=[mode=3, modeStack=, p=0, b=0]
+  result=[@-1,116:116=' ',<112>,channel=3,2:8]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=3, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=3, modeStack=, p=0, b=0]
+  _lastMode=[mode=3, modeStack=, p=0, b=0]
+  token=[@-1,117:124='SayHello',<100>,2:9]
+  LexerMode=[mode=3, modeStack=, p=0, b=0]
+  _currentMode=[mode=3, modeStack=, p=0, b=0]
+  _lastMode=[mode=3, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): template
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=613
+  StateStack=state=613,state=308,state=235,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.CustomTestLexerModeSyntaxLexer.RestoreAntlr4LexerMode()
+  Lexer mode: [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,107:107='\n',<113>,channel=3,1:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,107:107='\n',<113>,channel=3,1:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,108:115='template',<6>,2:0]
+  LexerMode=[mode=3, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=[mode=3, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=3, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=3, modeStack=, p=0, b=0]
+  _lastMode=[mode=3, modeStack=, p=0, b=0]
+  token=[@-1,108:115='template',<6>,2:0]
+  LexerMode=[mode=3, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=[mode=3, modeStack=, p=0, b=0]
+  _currentMode=[mode=3, modeStack=, p=0, b=0]
+  result=[@-1,108:115='template',<6>,2:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=3, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=3, modeStack=, p=0, b=0]
+  _lastMode=[mode=3, modeStack=, p=0, b=0]
+  token=[@-1,116:116=' ',<112>,channel=3,2:8]
+  LexerMode=[mode=3, modeStack=, p=0, b=0]
+  _currentMode=[mode=3, modeStack=, p=0, b=0]
+  _lastMode=[mode=3, modeStack=, p=0, b=0]
+  _currentMode=[mode=3, modeStack=, p=0, b=0]
+  result=[@-1,116:116=' ',<112>,channel=3,2:8]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=3, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=3, modeStack=, p=0, b=0]
+  _lastMode=[mode=3, modeStack=, p=0, b=0]
+  token=[@-1,117:124='SayHello',<100>,2:9]
+  LexerMode=[mode=3, modeStack=, p=0, b=0]
+  _currentMode=[mode=3, modeStack=, p=0, b=0]
+  _lastMode=[mode=3, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): template
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentToken(): template
+  StateStack=state=613,state=308,state=235,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=3, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
+  LexerMode=[mode=3, modeStack=, p=0, b=0]
+  _lastMode=[mode=3, modeStack=, p=0, b=0]
+  token=[@-1,117:124='SayHello',<100>,2:9]
+  LexerMode=[mode=3, modeStack=, p=0, b=0]
+  _currentMode=[mode=3, modeStack=, p=0, b=0]
+  _lastMode=[mode=3, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=3, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=3, modeStack=, p=0, b=0]
+  _lastMode=[mode=3, modeStack=, p=0, b=0]
+  token=[@-1,117:124='SayHello',<100>,2:9]
+  LexerMode=[mode=3, modeStack=, p=0, b=0]
+  _currentMode=[mode=3, modeStack=, p=0, b=0]
+  _lastMode=[mode=3, modeStack=, p=0, b=0]
+  _currentMode=[mode=3, modeStack=, p=0, b=0]
+  result=[@-1,117:124='SayHello',<100>,2:9]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=3, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=3, modeStack=, p=0, b=0]
+  _lastMode=[mode=3, modeStack=, p=0, b=0]
+  token=[@-1,125:125='(',<68>,2:17]
+  LexerMode=[mode=3, modeStack=, p=1, b=0]
+  _currentMode=[mode=3, modeStack=, p=0, b=0]
+  _lastMode=[mode=3, modeStack=, p=1, b=0]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): SayHello
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=618
+  StateStack=state=618,state=613,state=308,state=235,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset(): [mode=0, modeStack=, p=1, b=0]
+
+MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.CustomTestLexerModeSyntaxLexer.RestoreAntlr4LexerMode(): [mode=3, modeStack=, p=0, b=0]
+  Lexer mode: [mode=3, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=3, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=3, modeStack=, p=0, b=0]
+  _lastMode=[mode=3, modeStack=, p=0, b=0]
+  token=[@-1,117:124='SayHello',<100>,1:0]
+  LexerMode=[mode=3, modeStack=, p=0, b=0]
+  _currentMode=[mode=3, modeStack=, p=0, b=0]
+  _lastMode=[mode=3, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=3, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=3, modeStack=, p=0, b=0]
+  _lastMode=[mode=3, modeStack=, p=0, b=0]
+  token=[@-1,117:124='SayHello',<100>,1:0]
+  LexerMode=[mode=3, modeStack=, p=0, b=0]
+  _currentMode=[mode=3, modeStack=, p=0, b=0]
+  _lastMode=[mode=3, modeStack=, p=0, b=0]
+  _currentMode=[mode=3, modeStack=, p=0, b=0]
+  result=[@-1,117:124='SayHello',<100>,1:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=3, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=3, modeStack=, p=0, b=0]
+  _lastMode=[mode=3, modeStack=, p=0, b=0]
+  token=[@-1,125:125='(',<68>,1:8]
+  LexerMode=[mode=3, modeStack=, p=1, b=0]
+  _currentMode=[mode=3, modeStack=, p=0, b=0]
+  _lastMode=[mode=3, modeStack=, p=1, b=0]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): SayHello
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentToken(): SayHello
+  StateStack=state=618,state=613,state=308,state=235,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=3, modeStack=, p=1, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
+  LexerMode=[mode=3, modeStack=, p=1, b=0]
+  _lastMode=[mode=3, modeStack=, p=1, b=0]
+  token=[@-1,125:125='(',<68>,1:8]
+  LexerMode=[mode=3, modeStack=, p=1, b=0]
+  _currentMode=[mode=3, modeStack=, p=0, b=0]
+  _lastMode=[mode=3, modeStack=, p=1, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=3, modeStack=, p=1, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=3, modeStack=, p=1, b=0]
+  _lastMode=[mode=3, modeStack=, p=1, b=0]
+  token=[@-1,125:125='(',<68>,1:8]
+  LexerMode=[mode=3, modeStack=, p=1, b=0]
+  _currentMode=[mode=3, modeStack=, p=0, b=0]
+  _lastMode=[mode=3, modeStack=, p=1, b=0]
+  _currentMode=[mode=3, modeStack=, p=1, b=0]
+  result=[@-1,125:125='(',<68>,1:8]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=3, modeStack=, p=1, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=3, modeStack=, p=1, b=0]
+  _lastMode=[mode=3, modeStack=, p=1, b=0]
+  token=[@-1,126:126=')',<69>,1:9]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=3, modeStack=, p=1, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): (
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=618
+  StateStack=state=613,state=308,state=235,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentToken(): (
+  StateStack=state=613,state=308,state=235,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,126:126=')',<69>,1:9]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=3, modeStack=, p=1, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,126:126=')',<69>,1:9]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=3, modeStack=, p=1, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  result=[@-1,126:126=')',<69>,1:9]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,127:127='\n',<123>,1:10]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): )
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentToken(): )
+  StateStack=state=613,state=308,state=235,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,127:127='\n',<123>,1:10]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,127:127='\n',<123>,1:10]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  result=[@-1,127:127='\n',<123>,1:10]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,128:134='Hello, ',<122>,2:0]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): 
+
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=613
+  StateStack=state=308,state=235,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=614
+  StateStack=state=614,state=308,state=235,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.CustomTestLexerModeSyntaxLexer.RestoreAntlr4LexerMode(): [mode=4, modeStack=, p=0, b=0]
+  Lexer mode: [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,127:127='\n',<123>,1:0]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,127:127='\n',<123>,1:0]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  result=[@-1,127:127='\n',<123>,1:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,128:134='Hello, ',<122>,2:0]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): 
+
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=625
+  StateStack=state=625,state=614,state=308,state=235,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.CustomTestLexerModeSyntaxLexer.RestoreAntlr4LexerMode(): [mode=4, modeStack=, p=0, b=0]
+  Lexer mode: [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,127:127='\n',<123>,1:0]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,127:127='\n',<123>,1:0]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  result=[@-1,127:127='\n',<123>,1:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,128:134='Hello, ',<122>,2:0]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): 
+
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=637
+  StateStack=state=637,state=625,state=614,state=308,state=235,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.CustomTestLexerModeSyntaxLexer.RestoreAntlr4LexerMode(): [mode=4, modeStack=, p=0, b=0]
+  Lexer mode: [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,127:127='\n',<123>,1:0]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,127:127='\n',<123>,1:0]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  result=[@-1,127:127='\n',<123>,1:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,128:134='Hello, ',<122>,2:0]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): 
+
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentToken(): 
+
+  StateStack=state=637,state=625,state=614,state=308,state=235,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,128:134='Hello, ',<122>,2:0]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,128:134='Hello, ',<122>,2:0]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  result=[@-1,128:134='Hello, ',<122>,2:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,135:135='[',<125>,2:7]
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): Hello, 
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=637
+  StateStack=state=625,state=614,state=308,state=235,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=625
+  StateStack=state=614,state=308,state=235,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=625
+  StateStack=state=625,state=614,state=308,state=235,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.CustomTestLexerModeSyntaxLexer.RestoreAntlr4LexerMode(): [mode=4, modeStack=, p=0, b=0]
+  Lexer mode: [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,128:134='Hello, ',<122>,1:0]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,128:134='Hello, ',<122>,1:0]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  result=[@-1,128:134='Hello, ',<122>,1:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,135:135='[',<125>,1:7]
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): Hello, 
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=631
+  StateStack=state=631,state=625,state=614,state=308,state=235,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.CustomTestLexerModeSyntaxLexer.RestoreAntlr4LexerMode(): [mode=4, modeStack=, p=0, b=0]
+  Lexer mode: [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,128:134='Hello, ',<122>,1:0]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,128:134='Hello, ',<122>,1:0]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  result=[@-1,128:134='Hello, ',<122>,1:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,135:135='[',<125>,1:7]
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): Hello, 
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=639
+  StateStack=state=639,state=631,state=625,state=614,state=308,state=235,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.CustomTestLexerModeSyntaxLexer.RestoreAntlr4LexerMode(): [mode=4, modeStack=, p=0, b=0]
+  Lexer mode: [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,128:134='Hello, ',<122>,1:0]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,128:134='Hello, ',<122>,1:0]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  result=[@-1,128:134='Hello, ',<122>,1:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,135:135='[',<125>,1:7]
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): Hello, 
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentToken(): Hello, 
+  StateStack=state=639,state=631,state=625,state=614,state=308,state=235,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  token=[@-1,135:135='[',<125>,1:7]
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  token=[@-1,135:135='[',<125>,1:7]
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  result=[@-1,135:135='[',<125>,1:7]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  token=[@-1,136:145='Properties',<100>,1:8]
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): [
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=639
+  StateStack=state=631,state=625,state=614,state=308,state=235,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=631
+  StateStack=state=625,state=614,state=308,state=235,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=631
+  StateStack=state=631,state=625,state=614,state=308,state=235,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.CustomTestLexerModeSyntaxLexer.RestoreAntlr4LexerMode(): [mode=4, modeStack=, p=0, b=0]
+  Lexer mode: [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,135:135='[',<125>,1:0]
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  token=[@-1,135:135='[',<125>,1:0]
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  result=[@-1,135:135='[',<125>,1:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  token=[@-1,136:145='Properties',<100>,1:1]
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): [
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=640
+  StateStack=state=640,state=631,state=625,state=614,state=308,state=235,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.CustomTestLexerModeSyntaxLexer.RestoreAntlr4LexerMode(): [mode=4, modeStack=, p=0, b=0]
+  Lexer mode: [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,135:135='[',<125>,1:0]
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  token=[@-1,135:135='[',<125>,1:0]
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  result=[@-1,135:135='[',<125>,1:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  token=[@-1,136:145='Properties',<100>,1:1]
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): [
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentToken(): [
+  StateStack=state=640,state=631,state=625,state=614,state=308,state=235,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  token=[@-1,136:145='Properties',<100>,1:1]
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  token=[@-1,136:145='Properties',<100>,1:1]
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  result=[@-1,136:145='Properties',<100>,1:1]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  token=[@-1,146:146='.',<55>,1:11]
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): Properties
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=648
+  StateStack=state=648,state=640,state=631,state=625,state=614,state=308,state=235,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.CustomTestLexerModeSyntaxLexer.RestoreAntlr4LexerMode(): [mode=5, modeStack=, p=0, b=0]
+  Lexer mode: [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  token=[@-1,136:145='Properties',<100>,1:0]
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  token=[@-1,136:145='Properties',<100>,1:0]
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  result=[@-1,136:145='Properties',<100>,1:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  token=[@-1,146:146='.',<55>,1:10]
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): Properties
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  token=[@-1,146:146='.',<55>,1:10]
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  token=[@-1,146:146='.',<55>,1:10]
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  result=[@-1,146:146='.',<55>,1:10]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  token=[@-1,147:150='Name',<100>,1:11]
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): .
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  token=[@-1,147:150='Name',<100>,1:11]
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  token=[@-1,147:150='Name',<100>,1:11]
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  result=[@-1,147:150='Name',<100>,1:11]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  token=[@-1,151:151=']',<126>,1:15]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): Name
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,151:151=']',<126>,1:15]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,151:151=']',<126>,1:15]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  result=[@-1,151:151=']',<126>,1:15]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,152:151='<EOF>',<-1>,1:16]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): ]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RestoreParserState(): state=648
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=655
+  StateStack=state=655,state=648,state=640,state=631,state=625,state=614,state=308,state=235,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.CustomTestLexerModeSyntaxLexer.RestoreAntlr4LexerMode(): [mode=5, modeStack=, p=0, b=0]
+  Lexer mode: [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  token=[@-1,136:145='Properties',<100>,1:0]
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  token=[@-1,136:145='Properties',<100>,1:0]
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  result=[@-1,136:145='Properties',<100>,1:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  token=[@-1,146:146='.',<55>,1:10]
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): Properties
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=391
+  StateStack=state=391,state=655,state=648,state=640,state=631,state=625,state=614,state=308,state=235,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.CustomTestLexerModeSyntaxLexer.RestoreAntlr4LexerMode(): [mode=5, modeStack=, p=0, b=0]
+  Lexer mode: [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  token=[@-1,136:145='Properties',<100>,1:0]
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  token=[@-1,136:145='Properties',<100>,1:0]
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  result=[@-1,136:145='Properties',<100>,1:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  token=[@-1,146:146='.',<55>,1:10]
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): Properties
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RestoreParserState(): state=391
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=829
+  StateStack=state=829,state=391,state=655,state=648,state=640,state=631,state=625,state=614,state=308,state=235,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.CustomTestLexerModeSyntaxLexer.RestoreAntlr4LexerMode(): [mode=5, modeStack=, p=0, b=0]
+  Lexer mode: [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  token=[@-1,136:145='Properties',<100>,1:0]
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  token=[@-1,136:145='Properties',<100>,1:0]
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  result=[@-1,136:145='Properties',<100>,1:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  token=[@-1,146:146='.',<55>,1:10]
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): Properties
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentToken(): Properties
+  StateStack=state=829,state=391,state=655,state=648,state=640,state=631,state=625,state=614,state=308,state=235,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=829
+  StateStack=state=391,state=655,state=648,state=640,state=631,state=625,state=614,state=308,state=235,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RestoreParserState(): state=829
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RestoreParserState(): state=829
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RestoreParserState(): state=829
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentToken(): .
+  StateStack=state=391,state=655,state=648,state=640,state=631,state=625,state=614,state=308,state=235,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=916
+  StateStack=state=916,state=391,state=655,state=648,state=640,state=631,state=625,state=614,state=308,state=235,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.CustomTestLexerModeSyntaxLexer.RestoreAntlr4LexerMode(): [mode=5, modeStack=, p=0, b=0]
+  Lexer mode: [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  token=[@-1,147:150='Name',<100>,1:0]
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  token=[@-1,147:150='Name',<100>,1:0]
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  result=[@-1,147:150='Name',<100>,1:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  token=[@-1,151:151=']',<126>,1:4]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): Name
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentToken(): Name
+  StateStack=state=916,state=391,state=655,state=648,state=640,state=631,state=625,state=614,state=308,state=235,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=916
+  StateStack=state=391,state=655,state=648,state=640,state=631,state=625,state=614,state=308,state=235,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RestoreParserState(): state=916
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RestoreParserState(): state=916
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=916
+  StateStack=state=655,state=648,state=640,state=631,state=625,state=614,state=308,state=235,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=655
+  StateStack=state=648,state=640,state=631,state=625,state=614,state=308,state=235,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=648
+  StateStack=state=640,state=631,state=625,state=614,state=308,state=235,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentToken(): ]
+  StateStack=state=640,state=631,state=625,state=614,state=308,state=235,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.CustomTestLexerModeSyntaxLexer.RestoreAntlr4LexerMode(): [mode=4, modeStack=, p=0, b=0]
+  Lexer mode: [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,152:151='<EOF>',<-1>,1:0]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,152:151='<EOF>',<-1>,1:0]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  result=[@-1,152:151='<EOF>',<-1>,1:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,152:151='<EOF>',<-1>,1:0]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): 
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=640
+  StateStack=state=631,state=625,state=614,state=308,state=235,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=631
+  StateStack=state=625,state=614,state=308,state=235,state=-1
+  Parser error: extraneous input '' expecting {LTemplateLineControl, LTemplateOutput, LTemplateCrLf, LTemplateLineBreak, TTemplateStatementStart}
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=637
+  StateStack=state=637,state=625,state=614,state=308,state=235,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,152:151='<EOF>',<-1>,1:0]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,152:151='<EOF>',<-1>,1:0]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  result=[@-1,152:151='<EOF>',<-1>,1:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,152:151='<EOF>',<-1>,1:0]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): 
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,152:151='<EOF>',<-1>,1:0]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,152:151='<EOF>',<-1>,1:0]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  result=[@-1,152:151='<EOF>',<-1>,1:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,152:151='<EOF>',<-1>,1:0]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): 
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=637
+  StateStack=state=625,state=614,state=308,state=235,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=625
+  StateStack=state=614,state=308,state=235,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=614
+  StateStack=state=308,state=235,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=308
+  StateStack=state=235,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=235
+  StateStack=state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentToken(): 
+  StateStack=state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=-1
+  StateStack=
+===========================================
+Source (length=153):
+namespace MetaDslx.Bootstrap;
+generator MGenTest;
+
+properties Properties
+	string Name = "";
+end properties
+
+template SayHello()
+Hello, [Properties.Name]!
+===========================================
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RestoreParserState()
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=-1
+  StateStack=state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,0:8='namespace',<1>,1:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,0:8='namespace',<1>,1:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,0:8='namespace',<1>,1:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,9:9=' ',<112>,channel=3,1:9]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,9:9=' ',<112>,channel=3,1:9]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,10:17='MetaDslx',<100>,1:10]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): namespace
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=224
+  StateStack=state=224,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatNode(): namespace MetaDslx.Bootstrap;
+  StateStack=state=224,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RestoreParserState(): state=225
+  StateStack=state=224,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=225
+  StateStack=state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=225
+  StateStack=state=225,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatNode(): generator MGenTest;
+  StateStack=state=225,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.CustomTestLexerModeSyntaxLexer.RestoreAntlr4LexerMode()
+  Lexer mode: [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,30:38='generator',<2>,1:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,30:38='generator',<2>,1:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,30:38='generator',<2>,1:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,39:39=' ',<112>,channel=3,1:9]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,39:39=' ',<112>,channel=3,1:9]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,40:47='MGenTest',<100>,1:10]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): generator
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RestoreParserState(): state=232
+  StateStack=state=225,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=232
+  StateStack=state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.CustomTestLexerModeSyntaxLexer.RestoreAntlr4LexerMode()
+  Lexer mode: [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,50:50='\n',<113>,channel=3,1:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,50:50='\n',<113>,channel=3,1:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,51:60='properties',<5>,2:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,51:60='properties',<5>,2:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,51:60='properties',<5>,2:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,61:61=' ',<112>,channel=3,2:10]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,61:61=' ',<112>,channel=3,2:10]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,62:71='Properties',<100>,2:11]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): properties
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=232
+  StateStack=state=232,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatNode(): properties Properties
+	string Name = "";
+end properties
+  StateStack=state=232,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RestoreParserState(): state=235
+  StateStack=state=232,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=235
+  StateStack=state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.CustomTestLexerModeSyntaxLexer.RestoreAntlr4LexerMode()
+  Lexer mode: [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,107:107='\n',<113>,channel=3,1:0]
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,107:107='\n',<113>,channel=3,1:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=0, modeStack=, p=0, b=0]
+  _lastMode=
+  token=[@-1,108:115='template',<6>,2:0]
+  LexerMode=[mode=3, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=[mode=3, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=3, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=3, modeStack=, p=0, b=0]
+  _lastMode=[mode=3, modeStack=, p=0, b=0]
+  token=[@-1,108:115='template',<6>,2:0]
+  LexerMode=[mode=3, modeStack=, p=0, b=0]
+  _currentMode=
+  _lastMode=[mode=3, modeStack=, p=0, b=0]
+  _currentMode=[mode=3, modeStack=, p=0, b=0]
+  result=[@-1,108:115='template',<6>,2:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=3, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=3, modeStack=, p=0, b=0]
+  _lastMode=[mode=3, modeStack=, p=0, b=0]
+  token=[@-1,116:116=' ',<112>,channel=3,2:8]
+  LexerMode=[mode=3, modeStack=, p=0, b=0]
+  _currentMode=[mode=3, modeStack=, p=0, b=0]
+  _lastMode=[mode=3, modeStack=, p=0, b=0]
+  _currentMode=[mode=3, modeStack=, p=0, b=0]
+  result=[@-1,116:116=' ',<112>,channel=3,2:8]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=3, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=3, modeStack=, p=0, b=0]
+  _lastMode=[mode=3, modeStack=, p=0, b=0]
+  token=[@-1,117:124='SayHello',<100>,2:9]
+  LexerMode=[mode=3, modeStack=, p=0, b=0]
+  _currentMode=[mode=3, modeStack=, p=0, b=0]
+  _lastMode=[mode=3, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): template
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=235
+  StateStack=state=235,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=308
+  StateStack=state=308,state=235,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=613
+  StateStack=state=613,state=308,state=235,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatNode(): template SayHello()
+  StateStack=state=613,state=308,state=235,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RestoreParserState(): state=614
+  StateStack=state=613,state=308,state=235,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=614
+  StateStack=state=308,state=235,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=614
+  StateStack=state=614,state=308,state=235,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.CustomTestLexerModeSyntaxLexer.RestoreAntlr4LexerMode(): [mode=4, modeStack=, p=0, b=0]
+  Lexer mode: [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,127:127='\n',<123>,1:0]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,127:127='\n',<123>,1:0]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  result=[@-1,127:127='\n',<123>,1:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,128:134='Hello, ',<122>,2:0]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): 
+
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=625
+  StateStack=state=625,state=614,state=308,state=235,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatNode(): 
+
+  StateStack=state=625,state=614,state=308,state=235,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RestoreParserState(): state=625
+  StateStack=state=625,state=614,state=308,state=235,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=625
+  StateStack=state=614,state=308,state=235,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,128:134='Hello, ',<122>,2:0]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,128:134='Hello, ',<122>,2:0]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  result=[@-1,128:134='Hello, ',<122>,2:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,135:135='[',<125>,2:7]
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): Hello, 
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=625
+  StateStack=state=625,state=614,state=308,state=235,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=631
+  StateStack=state=631,state=625,state=614,state=308,state=235,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatNode(): Hello, 
+  StateStack=state=631,state=625,state=614,state=308,state=235,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RestoreParserState(): state=631
+  StateStack=state=631,state=625,state=614,state=308,state=235,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=631
+  StateStack=state=625,state=614,state=308,state=235,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  token=[@-1,135:135='[',<125>,2:7]
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  token=[@-1,135:135='[',<125>,2:7]
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  result=[@-1,135:135='[',<125>,2:7]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  token=[@-1,136:145='Properties',<100>,2:8]
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): [
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=631
+  StateStack=state=631,state=625,state=614,state=308,state=235,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.CustomTestLexerModeSyntaxLexer.RestoreAntlr4LexerMode(): [mode=4, modeStack=, p=0, b=0]
+  Lexer mode: [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,135:135='[',<125>,1:0]
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  token=[@-1,135:135='[',<125>,1:0]
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  result=[@-1,135:135='[',<125>,1:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  token=[@-1,136:145='Properties',<100>,1:1]
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): [
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=640
+  StateStack=state=640,state=631,state=625,state=614,state=308,state=235,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.CustomTestLexerModeSyntaxLexer.RestoreAntlr4LexerMode(): [mode=4, modeStack=, p=0, b=0]
+  Lexer mode: [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,135:135='[',<125>,1:0]
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  token=[@-1,135:135='[',<125>,1:0]
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  result=[@-1,135:135='[',<125>,1:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  token=[@-1,136:145='Properties',<100>,1:1]
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): [
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentToken(): [
+  StateStack=state=640,state=631,state=625,state=614,state=308,state=235,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  token=[@-1,136:145='Properties',<100>,1:1]
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  token=[@-1,136:145='Properties',<100>,1:1]
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  result=[@-1,136:145='Properties',<100>,1:1]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  token=[@-1,146:146='.',<55>,1:11]
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): Properties
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=648
+  StateStack=state=648,state=640,state=631,state=625,state=614,state=308,state=235,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  token=[@-1,146:146='.',<55>,1:11]
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  token=[@-1,146:146='.',<55>,1:11]
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  result=[@-1,146:146='.',<55>,1:11]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  token=[@-1,147:150='Name',<100>,1:12]
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): .
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  token=[@-1,147:150='Name',<100>,1:12]
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  token=[@-1,147:150='Name',<100>,1:12]
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  result=[@-1,147:150='Name',<100>,1:12]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  token=[@-1,151:151=']',<126>,1:16]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): Name
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,151:151=']',<126>,1:16]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,151:151=']',<126>,1:16]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  result=[@-1,151:151=']',<126>,1:16]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,152:152='!',<122>,1:17]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): ]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RestoreParserState(): state=648
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=655
+  StateStack=state=655,state=648,state=640,state=631,state=625,state=614,state=308,state=235,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=391
+  StateStack=state=391,state=655,state=648,state=640,state=631,state=625,state=614,state=308,state=235,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatNode(): Properties
+  StateStack=state=391,state=655,state=648,state=640,state=631,state=625,state=614,state=308,state=235,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RestoreParserState(): state=391
+  StateStack=state=391,state=655,state=648,state=640,state=631,state=625,state=614,state=308,state=235,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=391
+  StateStack=state=655,state=648,state=640,state=631,state=625,state=614,state=308,state=235,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=655
+  StateStack=state=648,state=640,state=631,state=625,state=614,state=308,state=235,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=648
+  StateStack=state=640,state=631,state=625,state=614,state=308,state=235,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.CustomTestLexerModeSyntaxLexer.RestoreAntlr4LexerMode(): [mode=5, modeStack=, p=0, b=0]
+  Lexer mode: [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  token=[@-1,146:146='.',<55>,1:0]
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  token=[@-1,146:146='.',<55>,1:0]
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  result=[@-1,146:146='.',<55>,1:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  token=[@-1,147:150='Name',<100>,1:1]
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): .
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  token=[@-1,147:150='Name',<100>,1:1]
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  token=[@-1,147:150='Name',<100>,1:1]
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  result=[@-1,147:150='Name',<100>,1:1]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=5, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=5, modeStack=, p=0, b=0]
+  token=[@-1,151:151=']',<126>,1:5]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): Name
+  Parser error: mismatched input '.' expecting TTemplateStatementEnd
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,151:151=']',<126>,1:5]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,151:151=']',<126>,1:5]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=5, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  result=[@-1,151:151=']',<126>,1:5]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,152:152='!',<122>,1:6]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): ]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,152:152='!',<122>,1:6]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,152:152='!',<122>,1:6]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  result=[@-1,152:152='!',<122>,1:6]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,153:152='<EOF>',<-1>,1:7]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): !
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=640
+  StateStack=state=631,state=625,state=614,state=308,state=235,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=631
+  StateStack=state=625,state=614,state=308,state=235,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=631
+  StateStack=state=631,state=625,state=614,state=308,state=235,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.CustomTestLexerModeSyntaxLexer.RestoreAntlr4LexerMode(): [mode=4, modeStack=, p=0, b=0]
+  Lexer mode: [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,152:152='!',<122>,1:0]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,152:152='!',<122>,1:0]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  result=[@-1,152:152='!',<122>,1:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,153:152='<EOF>',<-1>,1:1]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): !
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=639
+  StateStack=state=639,state=631,state=625,state=614,state=308,state=235,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset(): [mode=0, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.CustomTestLexerModeSyntaxLexer.RestoreAntlr4LexerMode(): [mode=4, modeStack=, p=0, b=0]
+  Lexer mode: [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,152:152='!',<122>,1:0]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,152:152='!',<122>,1:0]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  result=[@-1,152:152='!',<122>,1:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,153:152='<EOF>',<-1>,1:1]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): !
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentToken(): !
+  StateStack=state=639,state=631,state=625,state=614,state=308,state=235,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,153:152='<EOF>',<-1>,1:1]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,153:152='<EOF>',<-1>,1:1]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  result=[@-1,153:152='<EOF>',<-1>,1:1]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,153:152='<EOF>',<-1>,1:1]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): 
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=639
+  StateStack=state=631,state=625,state=614,state=308,state=235,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=631
+  StateStack=state=625,state=614,state=308,state=235,state=-1
+  Parser error: extraneous input '' expecting {LTemplateLineControl, LTemplateOutput, LTemplateCrLf, LTemplateLineBreak, TTemplateStatementStart}
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=637
+  StateStack=state=637,state=625,state=614,state=308,state=235,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,153:152='<EOF>',<-1>,1:1]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,153:152='<EOF>',<-1>,1:1]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  result=[@-1,153:152='<EOF>',<-1>,1:1]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,153:152='<EOF>',<-1>,1:1]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): 
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,153:152='<EOF>',<-1>,1:1]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,153:152='<EOF>',<-1>,1:1]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  result=[@-1,153:152='<EOF>',<-1>,1:1]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia(): [mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+  token=[@-1,153:152='<EOF>',<-1>,1:1]
+  LexerMode=[mode=4, modeStack=, p=0, b=0]
+  _currentMode=[mode=4, modeStack=, p=0, b=0]
+  _lastMode=[mode=4, modeStack=, p=0, b=0]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): 
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=637
+  StateStack=state=625,state=614,state=308,state=235,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=625
+  StateStack=state=614,state=308,state=235,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=614
+  StateStack=state=308,state=235,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=308
+  StateStack=state=235,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=235
+  StateStack=state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentToken(): 
+  StateStack=state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=-1
+  StateStack=

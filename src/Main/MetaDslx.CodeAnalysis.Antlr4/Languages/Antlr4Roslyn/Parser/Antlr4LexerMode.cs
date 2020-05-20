@@ -21,7 +21,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 
         public override bool Equals(object obj)
         {
-            return this.Equals(obj as Antlr4LexerMode);
+            if (!base.Equals(obj)) return false;
+            return this.Equals((Antlr4LexerMode)obj);
         }
 
         public virtual bool Equals(Antlr4LexerMode other)
@@ -58,6 +59,22 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
                 if (this.ModeStack[i] != antlr4Lexer._modeStack[i]) return true;
             }
             return false;
+        }
+
+        public override string ToString()
+        {
+            string modeStack = string.Empty;
+            if (ModeStack.Length > 0)
+            {
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < ModeStack.Length; i++)
+                {
+                    if (i > 0) sb.Append(",");
+                    sb.Append(ModeStack[i]);
+                }
+                modeStack = sb.ToString();
+            }
+            return $"mode={Mode}, modeStack={modeStack}";
         }
     }
 }

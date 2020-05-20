@@ -1,6 +1,7 @@
 ﻿using Antlr4.Runtime;
 using Antlr4.Runtime.Misc;
 using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.InternalUtilities;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
 using MetaDslx.Languages.Antlr4Roslyn.Compilation;
@@ -19,13 +20,15 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 {
     public abstract class Antlr4SyntaxLexer : SyntaxLexer, IAntlr4Lexer, IAntlrErrorListener<int>
     {
+        internal static readonly IncrementalToken InvalidToken = new IncrementalToken(0, string.Empty);
+
         private readonly Antlr4InputStream _stream;
         private readonly Antlr4.Runtime.Lexer _lexer;
         private readonly SyntaxFacts _syntaxFacts;
         private bool _readNextToken;
-        private int _position;
-        private Antlr4LexerMode _lastReadMode;
+        private bool _eof;
         private Antlr4LexerMode _currentMode;
+        private Antlr4LexerMode _lastMode;
 
         public Antlr4SyntaxLexer(Language language, SourceText text, LanguageParseOptions options) 
             : base(language, text, options)
@@ -41,20 +44,21 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 
         public Antlr4.Runtime.Lexer Antlr4Lexer => _lexer;
 
-        public override int Position => _position;
-
         internal Antlr4InputStream InputStream => _stream;
 
         public override void Reset(int position, DirectiveStack directives)
         {
             base.Reset(position, directives);
-            _position = position;
+            _readNextToken = true;
+            _eof = false;
+            _lexer.Reset();
+            _lexer.InputStream.Seek(position);
+            CallLogger.Instance.Call(CreateAntlr4LexerModeSnapshot());
         }
 
         protected sealed override bool HasLexerModeChanged(LexerMode previousMode)
         {
-            if (_currentMode == null) return previousMode == null;
-            return !_currentMode.Equals(previousMode);
+            return !LexerMode.SameMode(_currentMode, previousMode);
         }
 
         protected sealed override LexerMode CreateLexerModeSnapshot()
@@ -64,11 +68,10 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 
         protected sealed override void RestoreLexerMode(LexerMode mode)
         {
-            //if (HasAntlr4LexerModeSnapshotChanged((Antlr4LexerMode)mode)) 
             this.RestoreAntlr4LexerMode((Antlr4LexerMode)mode);
         }
 
-        protected virtual bool HasAntlr4LexerModeSnapshotChanged(Antlr4LexerMode previousMode)
+        protected virtual bool HasAntlr4LexerModeChanged(Antlr4LexerMode previousMode)
         {
             var antlr4Mode = (Antlr4LexerMode)previousMode;
             if ((antlr4Mode == null && (_lexer._modeStack.Count != 0 || _lexer._mode != 0)) ||
@@ -92,27 +95,25 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         protected virtual void RestoreAntlr4LexerMode(Antlr4LexerMode mode)
         {
             base.RestoreLexerMode(mode);
+            var position = this.Position;
             _lexer.Reset();
-            _lexer.InputStream.Seek(_position);
-            _lexer._modeStack.Clear();
+            _lexer.InputStream.Seek(position);
             if (mode != null)
             {
                 _lexer._modeStack.AddRange(mode.ModeStack);
                 _lexer._mode = mode.Mode;
             }
-            else
-            {
-                _lexer._mode = 0;
-            }
-            _currentMode = mode;
-            _lastReadMode = _currentMode;
             _readNextToken = true;
+            _eof = false;
+            _currentMode = mode;
+            _lastMode = mode;
         }
 
         protected override SyntaxKind ScanSyntaxToken()
         {
+            CallLogger.Instance.Call(CreateAntlr4LexerModeSnapshot());
             IToken token = ReadNextToken(false);
-            if (token == null) return SyntaxKind.None;
+            if (token == null || token.Type == 0 || token.Type < -1) return SyntaxKind.None;
             if (token.Type == -1) return SyntaxKind.Eof;
             var kind = token.Type.FromAntlr4(_syntaxFacts.SyntaxKindType);
             return kind;
@@ -120,33 +121,43 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 
         protected override SyntaxKind ScanSyntaxTrivia(bool afterFirstToken, bool isTrailing)
         {
+            CallLogger.Instance.Call(CreateAntlr4LexerModeSnapshot());
             IToken token = ReadNextToken(true);
-            if (token == null || token.Type == -1) return SyntaxKind.None;
+            if (token == null || token.Type <= 0) return SyntaxKind.None;
             var kind = token.Type.FromAntlr4(_syntaxFacts.SyntaxKindType);
             return kind;
         }
 
         private IToken ReadNextToken(bool readTrivia)
         {
+            //if (_eof) return null;
+            CallLogger.Instance.Call("readTrivia="+readTrivia+", readNextToken="+_readNextToken);
+            CallLogger.Instance.Log("  LexerMode=" + CreateAntlr4LexerModeSnapshot());
+            CallLogger.Instance.Log("  _lastMode=" + _lastMode);
             IToken token;
-            RestoreAntlr4LexerMode(_currentMode);
             if (_readNextToken)
             {
-                _readNextToken = false;
                 this.Start();
+                _readNextToken = false;
                 token = _lexer.NextToken();
-                if (this.HasAntlr4LexerModeSnapshotChanged(_lastReadMode)) _lastReadMode = this.CreateAntlr4LexerModeSnapshot();
+                if (HasAntlr4LexerModeChanged(_lastMode)) _lastMode = CreateAntlr4LexerModeSnapshot();
             }
             else
             {
                 token = _lexer.Token;
             }
+            CallLogger.Instance.Log("  token=" + token);
+            CallLogger.Instance.Log("  LexerMode=" + CreateAntlr4LexerModeSnapshot());
+            CallLogger.Instance.Log("  _currentMode=" + _currentMode);
+            CallLogger.Instance.Log("  _lastMode=" + _lastMode);
             if (token == null) return null;
             if ((readTrivia && token.Channel != 0) || (!readTrivia && token.Channel == 0))
             {
+                _eof = token.Type == TokenConstants.Eof;
                 _readNextToken = true;
-                _position = _lexer.InputStream.Index;
-                _currentMode = _lastReadMode;
+                _currentMode = _lastMode;
+                CallLogger.Instance.Log("  _currentMode=" + _currentMode);
+                CallLogger.Instance.Log("  result=" + token);
                 return token;
             }
             _readNextToken = false;
@@ -156,6 +167,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         public void SyntaxError([NotNull] IRecognizer recognizer, [Nullable] int offendingSymbol, int line, int charPositionInLine, [NotNull] string msg, [Nullable] RecognitionException e)
         {
             this.AddError(Antlr4RoslynErrorCode.ERR_SyntaxError, msg);
+            CallLogger.Instance.Log("  Lexer error: " + msg);
         }
     }
 }

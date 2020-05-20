@@ -3,6 +3,7 @@ using Antlr4.Runtime.Atn;
 using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
 using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.InternalUtilities;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
 using MetaDslx.Languages.Antlr4Roslyn.Compilation;
@@ -92,18 +93,9 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 
         IToken ITokenStream.Lt(int k)
         {
-            if (k > 0)
-            {
-                return this.PeekCustomToken(k - 1);
-            }
-            else if (k < 0)
-            {
-                return this.PeekCustomToken(k);
-            }
-            else
-            {
-                return null;
-            }
+            if (k > 0) return this.PeekCustomToken(k - 1) ?? Antlr4SyntaxLexer.InvalidToken;
+            else if (k < 0) return this.PeekCustomToken(k) ?? Antlr4SyntaxLexer.InvalidToken;
+            else return Antlr4SyntaxLexer.InvalidToken;
         }
 
         IToken ITokenStream.Get(int i)
@@ -144,18 +136,21 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         void IIntStream.Consume()
         {
             //Debug.Assert(_matchedToken);
-            var token = this.CurrentCustomToken;
-            token.TokenIndex = this.TokenIndex;
-            var green = _matchedToken ? this.EatToken() : this.SkipToken();
-            token.SetGreenToken(green);
+            var token = this.GetCurrentCustomToken();
+            if (token != null)
+            {
+                token.TokenIndex = this.TokenIndex;
+                var green = _matchedToken ? this.EatToken() : this.SkipToken();
+                token.SetGreenToken(green);
+            }
             _matchedToken = false;
         }
 
         int IIntStream.La(int i)
         {
-            if (i > 0) return this.PeekToken(i - 1).Kind.ToAntlr4();
-            else if (i < 0) return this.PeekToken(i).Kind.ToAntlr4();
-            else return -1;
+            if (i > 0) return this.PeekCustomToken(i - 1)?.Type ?? 0;
+            else if (i < 0) return this.PeekCustomToken(i)?.Type ?? 0;
+            else return 0;
         }
 
         int IIntStream.Mark()
@@ -213,6 +208,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         void IAntlrErrorListener<IToken>.SyntaxError(IRecognizer recognizer, IToken offendingSymbol, int line, int charPositionInLine, string msg, RecognitionException e)
         {
             this.AddErrorToCurrentToken(Antlr4RoslynErrorCode.ERR_SyntaxError, msg);
+            CallLogger.Instance.Log("  Parser error: " + msg);
         }
 
         #endregion
@@ -245,7 +241,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
                     // we want to return the token we're actually matching
                     ReportMatch(recognizer);
                     // we know current token is correct
-                    return _parser.CurrentCustomToken;
+                    return _parser.GetCurrentCustomToken();
                 }
                 return null;
             }
@@ -272,7 +268,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             protected override IToken ConstructToken(ITokenSource tokenSource, int expectedTokenType, string tokenText, IToken current)
             {
                 var green = _parser.CreateMissingToken(expectedTokenType.FromAntlr4(_parser.Language.SyntaxFacts.SyntaxKindType), current.Type.FromAntlr4(_parser.Language.SyntaxFacts.SyntaxKindType), true);
-                var token = _parser.CurrentCustomToken;
+                var token = _parser.GetCurrentCustomToken();
                 token.SetGreenToken(green);
                 return token;
             }
@@ -283,7 +279,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             {
                 //		System.err.println("consumeUntil("+set.toString(recognizer.getTokenNames())+")");
                 int ttype = ((ITokenStream)recognizer.InputStream).La(1);
-                while (ttype != TokenConstants.Eof && !set.Contains(ttype))
+                while (ttype != TokenConstants.Eof && ttype != TokenConstants.InvalidType && !set.Contains(ttype))
                 {
                     //System.out.println("consume during recover LA(1)="+getTokenNames()[input.LA(1)]);
                     //			recognizer.getInputStream().consume();

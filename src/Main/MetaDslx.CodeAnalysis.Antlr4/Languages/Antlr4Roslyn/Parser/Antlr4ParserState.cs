@@ -13,5 +13,10 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         {
             State = state;
         }
+
+        public override string ToString()
+        {
+            return $"state={State}";
+        }
     }
 }

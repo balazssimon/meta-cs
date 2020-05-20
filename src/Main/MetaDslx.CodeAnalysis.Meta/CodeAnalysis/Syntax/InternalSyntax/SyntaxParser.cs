@@ -1,4 +1,5 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using MetaDslx.CodeAnalysis.InternalUtilities;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
 using Microsoft.CodeAnalysis.Syntax.InternalSyntax;
 using Microsoft.CodeAnalysis.Text;
@@ -25,6 +26,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         private ParserState _state;
         private LanguageSyntaxNode _oldRoot;
         private BlendedNode _currentNode;
+        private int _currentNodeIndex;
         private InternalSyntaxToken _currentToken;
         private GreenNode _prevTokenTrailingTrivia;
         private int _resetCount;
@@ -56,6 +58,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             IsIncremental = options.Incremental || oldTree != null && changes != null && GetTreeAnnotation(oldTree.Green) != null;
             CancellationToken = cancellationToken;
             _currentNode = default;
+            _currentNodeIndex = -1;
             _currentTokenErrors = new List<SyntaxDiagnosticInfo>();
             _lastNonSkippedTokenIndex = -1;
 #if DEBUG
@@ -87,7 +90,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         public LanguageParseOptions Options => Lexer.Options;
 
-        public SourceText Text => Lexer.Text;
+        protected SourceText Text => Lexer.Text;
 
         public bool IsScript => Options != null && Options.Kind == SourceCodeKind.Script;
 
@@ -145,19 +148,35 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             }
         }
 
+        [Conditional("DEBUG")]
+        private void PrintStateStack()
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (var item in _incrementalStateStack)
+            {
+                if (sb.Length > 0) sb.Append(",");
+                sb.Append(item.state);
+            }
+            CallLogger.Instance.Log("  StateStack="+sb.ToString());
+        }
+
+
         protected void BeginNode()
         {
             _state = SaveParserState();
+            CallLogger.Instance.Call(_state);
             if (IsIncremental)
             {
                 _minLookahead = int.MaxValue;
                 _maxLookahead = int.MinValue;
                 _incrementalStateStack.Push((_minLookahead, _maxLookahead, _state));
             }
+            PrintStateStack();
         }
 
         protected void BeginNode(ParserState state)
         {
+            CallLogger.Instance.Call(state);
             RestoreParserState(state);
             if (IsIncremental)
             {
@@ -165,6 +184,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 _maxLookahead = int.MinValue;
                 _incrementalStateStack.Push((_minLookahead, _maxLookahead, state));
             }
+            PrintStateStack();
         }
 
         protected ParserState EndNode(ref GreenNode green)
@@ -196,6 +216,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             }
 
             _state = SaveParserState();
+            CallLogger.Instance.Call(_state);
+            PrintStateStack();
             return _state;
         }
 
@@ -211,6 +233,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         protected virtual void RestoreParserState(ParserState state)
         {
+            CallLogger.Instance.Call(state);
             if (_state != state)
             {
                 this.SlidingBuffer_ForgetFollowingTokens();
@@ -221,8 +244,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         protected virtual void SlidingBuffer_ForgetFollowingTokens()
         {
-            if (_blendedTokens != null) _blendedTokens.ForgetFollowingTokens();
-            else _lexedTokens.ForgetFollowingTokens();
+            if (_blendedTokens != null) _blendedTokens.ForgetFollowingItems();
+            else _lexedTokens.ForgetFollowingItems();
         }
 
         protected ResetPoint GetResetPoint()
@@ -329,6 +352,10 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             // remember result
             var result = CurrentNode.Green;
             var currentNode = _currentNode;
+
+            CallLogger.Instance.Call(currentNode.Node);
+            PrintStateStack();
+
             _lastNonSkippedTokenIndex = TokenIndex;
             SlidingBuffer_InsertNode(currentNode);
             SlidingBuffer_EatItem();
@@ -338,6 +365,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             this.EraseState();
             RestoreParserState(currentNode.Blender.State);
             _mode = currentNode.Blender.Mode;
+
+            PrintStateStack();
 
             // TODO:MetaDslx: correct Peek before this position
 
@@ -352,6 +381,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         protected virtual void EraseState()
         {
             _currentNode = default;
+            _currentNodeIndex = -1;
             _currentToken = default;
         }
 
@@ -367,11 +397,11 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         {
             if (_blendedTokens != null)
             {
-                return _blendedTokens.CurrentItem.Token;
+                return _blendedTokens.GetCurrentItem().Token;
             }
             else
             {
-                return _lexedTokens.CurrentItem;
+                return _lexedTokens.GetCurrentItem();
             }
         }
 
@@ -379,15 +409,25 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         {
             if (_blendedTokens != null)
             {
-                /*if (_currentNode.Token != null)
+                if (_currentNode.Token != null && (_blendedTokens.Count == 0 || _blendedTokens.Index == _blendedTokens.Count))
                 {
+                    _currentNodeIndex = _blendedTokens.Index;
                     _blendedTokens.AddItem(_currentNode);
+                    return true;
                 }
-                else*/
+                else
                 {
                     var token = _blendedTokens.LastCreatedItem.Blender.ReadToken();
-                    if (token.Token == null) return false;
+                    if (token.Token == null)
+                    {
+                        if (_blendedTokens[_blendedTokens.Count - 1].Token.Kind != SyntaxKind.Eof)
+                        {
+                            Debug.Assert(false);
+                        }
+                        return false;
+                    }
                     _blendedTokens.AddItem(token);
+                    return true;
                 }
             }
             else
@@ -395,8 +435,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 var token = Lexer.Lex(ref _mode);
                 if (token == null) return false;
                 _lexedTokens.AddItem(token);
+                return true;
             }
-            return true;
         }
 
         protected void RegisterLookahead(int n)
@@ -459,6 +499,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         private InternalSyntaxToken EatCurrentToken()
         {
             var ct = this.CurrentToken;
+            CallLogger.Instance.Call(ct);
             var index = TokenIndex;
             var skippedTokenCount = index - _lastNonSkippedTokenIndex - 1;
             if (skippedTokenCount > 0)
@@ -477,6 +518,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 ct = WithAdditionalDiagnostics(ct, _currentTokenErrors.ToArray());
                 _currentTokenErrors.Clear();
             }
+            PrintStateStack();
             return ct;
         }
 
@@ -485,7 +527,11 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             _prevTokenTrailingTrivia = _currentToken.GetTrailingTrivia();
 
             _currentToken = default;
-            if (_blendedTokens != null) _currentNode = default;
+            if (_blendedTokens != null)
+            {
+                _currentNode = default;
+                _currentNodeIndex = -1;
+            }
 
             SlidingBuffer_EatItem();
         }
@@ -495,7 +541,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             if (_blendedTokens != null)
             {
                 _blendedTokens.EatItem();
-                _mode = _blendedTokens.CurrentItem.Blender.Mode;
+                _mode = _blendedTokens.GetCurrentItem().Blender.Mode;
             }
             else
             {

@@ -1,4 +1,5 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using MetaDslx.CodeAnalysis.InternalUtilities;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Syntax.InternalSyntax;
 using Microsoft.CodeAnalysis.Text;
 using Roslyn.Utilities;
@@ -20,8 +21,10 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         private readonly LexerCache _cache;
         private readonly Func<InternalSyntaxToken> _createCachedTokenFunction;
         private Func<InternalSyntaxTrivia> _createWhitespaceTriviaFunction;
+        private int _position;
         private DirectiveStack _directives;
         private LexerMode _mode;
+        private bool _restoreLexerMode;
 
         public SyntaxLexer(Language language, SourceText text, LanguageParseOptions options)
             : base(language, text)
@@ -36,16 +39,21 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         public LanguageParseOptions Options => _options;
 
+        public override int Position => _position;
+
         public virtual void Reset(int position, DirectiveStack directives)
         {
             this.TextWindow.Reset(position);
+            _position = position;
             _directives = directives;
+            _restoreLexerMode = true;
         }
 
         public InternalSyntaxToken Lex(ref LexerMode mode)
         {
             var result = Lex(mode);
-            _mode = mode = this.SaveLexerMode();
+            if (result != null) _position += result.FullWidth;
+            mode = _mode;
             return result;
         }
 
@@ -81,8 +89,14 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 #if DEBUG
             TokensLexed++;
 #endif
-            this.RestoreLexerMode(mode);
-            return this.CachedSyntaxToken() ?? this.LexSyntaxToken();
+            if (_restoreLexerMode || !LexerMode.SameMode(_mode, mode))
+            {
+                this.RestoreLexerMode(mode);
+                _restoreLexerMode = false;
+            }
+            var token = this.CachedSyntaxToken() ?? this.LexSyntaxToken();
+            CallLogger.Instance.Call(token);
+            return token;
         }
 
         private SyntaxListBuilder _leadingTriviaCache = new SyntaxListBuilder(10);
@@ -120,7 +134,9 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             this.LexSyntaxTrivia(afterFirstToken: true, isTrailing: true, triviaList: _trailingTriviaCache);
             var trailing = _trailingTriviaCache;
 
-            return Create(kind, text, leading.ToListNode(), trailing.ToListNode(), startMode, errors);
+            _mode = this.SaveLexerMode();
+
+            return Create(kind, text, leading.ToListNode(), trailing.ToListNode(), startMode, _mode, errors);
         }
 
         private InternalSyntaxToken CachedSyntaxToken()
@@ -155,7 +171,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             return false;
         }
 
-        private InternalSyntaxToken Create(SyntaxKind kind, string text, GreenNode leadingTrivia, GreenNode trailingTrivia, LexerMode mode, SyntaxDiagnosticInfo[] errors)
+        private InternalSyntaxToken Create(SyntaxKind kind, string text, GreenNode leadingTrivia, GreenNode trailingTrivia, LexerMode startMode, LexerMode endMode, SyntaxDiagnosticInfo[] errors)
         {
             InternalSyntaxToken token;
             switch (kind.Switch())
@@ -174,9 +190,9 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             {
                 token = token.WithDiagnosticsGreen(errors);
             }
-            if (mode != null && Options.Incremental)
+            if ((startMode != null || endMode != null) && Options.Incremental)
             {
-                token = token.WithAdditionalAnnotationsGreen(new SyntaxAnnotation(IncrementalTokenAnnotationKind, new IncrementalTokenAnnotation(mode)));
+                token = token.WithAdditionalAnnotationsGreen(new SyntaxAnnotation(IncrementalTokenAnnotationKind, new IncrementalTokenAnnotation(startMode, endMode)));
             }
             return token;
         }

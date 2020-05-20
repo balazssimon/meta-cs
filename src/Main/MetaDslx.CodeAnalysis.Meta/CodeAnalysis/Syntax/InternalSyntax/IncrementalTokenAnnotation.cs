@@ -6,11 +6,13 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 {
     public sealed class IncrementalTokenAnnotation
     {
-        public readonly LexerMode Mode;
+        public readonly LexerMode StartMode;
+        public readonly LexerMode EndMode;
 
-        public IncrementalTokenAnnotation(LexerMode mode)
+        public IncrementalTokenAnnotation(LexerMode startMode, LexerMode endMode)
         {
-            Mode = mode;
+            StartMode = startMode;
+            EndMode = endMode;
         }
     }
 }

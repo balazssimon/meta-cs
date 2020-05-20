@@ -12,8 +12,12 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestLexerMode
         [Fact]
         public void MGenTest()
         {
+            //int pos = 83;
+            //string source = File.ReadAllText($@"..\..\..\InputFiles\LexerMode\MGenTest.txt").Substring(0, pos);
+            //Type(source, pos - 1);
             string source = File.ReadAllText($@"..\..\..\InputFiles\LexerMode\MGenTest.txt");
             Type(source);
+            //Parse(SourceText.From(source));
         }
     }
     public class IncrementalFileTest_PropertyTest : IncrementalTypeTest
@@ -22,7 +26,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestLexerMode
         public void PropertyTest()
         {
             string source = File.ReadAllText($@"..\..\..\InputFiles\LexerMode\PropertyTest.txt");//.Substring(0, 153);
-            //Type(source, 152);
+            Type(source);
             Parse(SourceText.From(source));
         }
     }
