@@ -9,6 +9,8 @@ namespace MetaDslx.CodeAnalysis.InternalUtilities
     {
         public static readonly CallLogger Instance = new CallLogger();
 
+        public static bool Enabled = false;
+
         private StringBuilder _log;
         private string _indent;
 
@@ -18,7 +20,7 @@ namespace MetaDslx.CodeAnalysis.InternalUtilities
             _indent = string.Empty;
         }
 
-        [Conditional("DEBUG")]
+        [Conditional("TRACE")]
         public void Clear()
         {
             _log.Clear();
@@ -38,9 +40,10 @@ namespace MetaDslx.CodeAnalysis.InternalUtilities
             return $"{typeName}.{methodName}()";
         }
 
-        [Conditional("DEBUG")]
+        [Conditional("TRACE")]
         public void Enter(object data)
         {
+            if (!Enabled) return;
             _log.AppendLine();
             _log.Append(_indent);
             _log.Append("-> ");
@@ -54,9 +57,10 @@ namespace MetaDslx.CodeAnalysis.InternalUtilities
             _indent += "  ";
         }
 
-        [Conditional("DEBUG")]
+        [Conditional("TRACE")]
         public void Exit(object data)
         {
+            if (!Enabled) return;
             if (_indent.Length >= 2) _indent = _indent.Substring(2);
             else _indent = string.Empty;
             _log.Append(_indent);
@@ -70,9 +74,10 @@ namespace MetaDslx.CodeAnalysis.InternalUtilities
             _log.AppendLine();
         }
 
-        [Conditional("DEBUG")]
+        [Conditional("TRACE")]
         public void Call(object data)
         {
+            if (!Enabled) return;
             _log.AppendLine();
             _log.Append(GetMethodName());
             if (data != null)
@@ -83,9 +88,10 @@ namespace MetaDslx.CodeAnalysis.InternalUtilities
             _log.AppendLine();
         }
 
-        [Conditional("DEBUG")]
+        [Conditional("TRACE")]
         public void Log(object data)
         {
+            if (!Enabled) return;
             if (data != null)
             {
                 _log.Append(data);

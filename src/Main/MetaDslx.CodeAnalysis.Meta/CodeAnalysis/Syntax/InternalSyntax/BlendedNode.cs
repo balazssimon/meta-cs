@@ -11,12 +11,14 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
     {
         public readonly LanguageSyntaxNode Node;
         public readonly InternalSyntaxToken Token;
+        public readonly object CustomToken;
         internal readonly Blender Blender;
 
-        internal BlendedNode(LanguageSyntaxNode node, InternalSyntaxToken token, Blender blender)
+        internal BlendedNode(LanguageSyntaxNode node, InternalSyntaxToken token, object customToken, Blender blender)
         {
             this.Node = node;
             this.Token = token;
+            this.CustomToken = customToken;
             this.Blender = blender;
         }
     }

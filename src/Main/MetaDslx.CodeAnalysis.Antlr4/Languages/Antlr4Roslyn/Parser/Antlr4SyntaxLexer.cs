@@ -145,7 +145,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
                 this.Start();
                 _readNextToken = false;
                 token = _lexer.NextToken();
-                if (HasAntlr4LexerModeChanged(_lastMode)) _lastMode = CreateAntlr4LexerModeSnapshot();
+                /*if (HasAntlr4LexerModeChanged(_lastMode))*/ _lastMode = CreateAntlr4LexerModeSnapshot();
             }
             else
             {

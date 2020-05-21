@@ -1,6 +1,7 @@
 ﻿using Microsoft.CodeAnalysis.Text;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Threading;
 
@@ -8,92 +9,21 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 {
     public abstract class SyntaxParser<T> : SyntaxParser
     {
-        private SlidingBuffer<T> _customTokens;
-
         protected SyntaxParser(Language language, SourceText text, LanguageParseOptions options, LanguageSyntaxNode oldTree, IEnumerable<TextChangeRange> changes, CancellationToken cancellationToken = default) 
             : base(language, text, options, oldTree, changes, cancellationToken)
         {
-            _customTokens = new SlidingBuffer<T>(this, default);
         }
 
-        public T GetCurrentCustomToken() => _customTokens.GetCurrentItem();
+        public new T GetCurrentCustomToken() => (T)base.GetCurrentCustomToken();
 
-        public override void Dispose()
+        protected new T PeekCustomToken(int n)
         {
-            var customTokens = _customTokens;
-            if (customTokens != null)
-            {
-                _customTokens = null;
-                customTokens.Dispose();
-            }
-            base.Dispose();
+            return (T)base.PeekCustomToken(n);
         }
 
-        protected override void SlidingBuffer_Reset()
+        internal protected override object CreateCustomTokenCore(InternalSyntaxToken token)
         {
-            _customTokens.Reset();
-            base.SlidingBuffer_Reset();
-        }
-
-        protected override void SlidingBuffer_ResetTo(int position)
-        {
-            _customTokens.ResetTo(position);
-            base.SlidingBuffer_ResetTo(position);
-        }
-
-        protected override bool SlidingBuffer_ReadNewToken()
-        {
-            if (base.SlidingBuffer_ReadNewToken())
-            {
-                var token = LastCreatedToken;
-                _customTokens.AddItem(CreateCustomToken(token));
-                return true;
-            }
-            return false;
-        }
-
-        protected override void SlidingBuffer_EatItem()
-        {
-            _customTokens.EatItem();
-            base.SlidingBuffer_EatItem();
-        }
-
-        protected override void SlidingBuffer_ForgetFollowingTokens()
-        {
-            _customTokens.ForgetFollowingItems();
-            base.SlidingBuffer_ForgetFollowingTokens();
-        }
-
-        protected override void SlidingBuffer_InsertNode(in BlendedNode node)
-        {
-            if (node.Token != null)
-            {
-                _customTokens.InsertItem(CreateCustomToken(node.Token));
-            }
-            else if (node.Node != null)
-            {
-                var lastToken = node.Node.GetLastToken();
-                _customTokens.InsertItem(CreateCustomToken((InternalSyntaxToken)lastToken.Node));
-            }
-            base.SlidingBuffer_InsertNode(node);
-        }
-        /*
-        protected override InternalSyntaxToken SlidingBuffer_InsertItem(InternalSyntaxToken token)
-        {
-            _customTokens.InsertItem(CreateCustomToken(token));
-            return base.SlidingBuffer_InsertItem(token);
-        }*/
-
-        protected override void SlidingBuffer_MarkResetPoint()
-        {
-            _customTokens.MarkResetPoint();
-            base.SlidingBuffer_MarkResetPoint();
-        }
-
-        protected T PeekCustomToken(int n)
-        {
-            RegisterLookahead(n);
-            return _customTokens.PeekItem(n);
+            return this.CreateCustomToken(token);
         }
 
         protected abstract T CreateCustomToken(InternalSyntaxToken token);

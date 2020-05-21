@@ -35,12 +35,8 @@ namespace MetaDslx.Bootstrap
                     i = source.Length;
                 }
                 string currentSource = source.Substring(0, i);
-                try
+                //try
                 {
-                    CallLogger.Instance.Log("===========================================");
-                    CallLogger.Instance.Log($"Source (length={i}):");
-                    CallLogger.Instance.Log(currentSource);
-                    CallLogger.Instance.Log("===========================================");
                     if (i == 0)
                     {
                         oldText = SourceText.From(currentSource);
@@ -51,12 +47,13 @@ namespace MetaDslx.Bootstrap
                         (oldText, oldTree) = IncrementalParseWithInsertedText((oldText, oldTree), i - currentDelta, source.Substring(i - currentDelta, currentDelta), assertEmptyDiagnostics: false);
                     }
                 }
-                catch (Exception ex)
+                /*catch (Exception ex)
                 {
-                    Console.WriteLine($"Typing failed at position {i}:\r\n----\r\n{currentSource}\r\n----\r\nOriginal source is:\r\n----\r\n{source}\r\n----\r\n", ex);
+                    Console.WriteLine($"Typing failed at position {i}:\r\n----\r\n{currentSource}\r\n----\r\nOriginal source is:\r\n----\r\n{source}\r\n----\r\n");
                     throw;
-                }
+                }*/
                 if (i == source.Length) reachedEnd = true;
+                Console.WriteLine(i+"/"+source.Length);
             }
         }
 
@@ -95,11 +92,17 @@ namespace MetaDslx.Bootstrap
             if (assertEmptyDiagnostics) AssertEmptyDiagnostics(diagnostics);
             var antlr4Diagnostics = Antlr4Parse(text, assertEmptyDiagnostics);
 
+            var wasEnabled = CallLogger.Enabled;
+            CallLogger.Enabled = true;
+
+            CallLogger.Instance.Log("===========================================");
+            CallLogger.Instance.Log("Text length: " + text.Length);
+            CallLogger.Instance.Log("----");
+            CallLogger.Instance.Log(text);
             CallLogger.Instance.Log("----");
             CallLogger.Instance.Log(PrintSyntaxTree(tree));
-            CallLogger.Instance.Log("----");
-            CallLogger.Instance.Log("Text length: "+text.Length);
-            
+            CallLogger.Instance.Log("===========================================");
+
             var formatter = new DiagnosticFormatter();
             CallLogger.Instance.Log("Antlr4 diagnostics:");
             foreach (var diag in antlr4Diagnostics)
@@ -112,6 +115,8 @@ namespace MetaDslx.Bootstrap
                 CallLogger.Instance.Log("  " + formatter.Format(diag));
             }
             CallLogger.Instance.Log("----");
+
+            CallLogger.Enabled = wasEnabled;
 
             Assert.Equal(antlr4Diagnostics.Length, diagnostics.Length);
             return tree;
@@ -173,9 +178,9 @@ namespace MetaDslx.Bootstrap
             if (annot != null)
             {
 #if DEBUG
-                buf.Append($"[{annot.Version} (startState={((Antlr4ParserState)annot.StartState).State},endState={((Antlr4ParserState)annot.EndState).State},lb={annot.LookaheadBefore},la={annot.LookaheadAfter})] ");
+                buf.Append($"[{annot.Version} (startState={((Antlr4ParserState)annot.StartState).State},endState={((Antlr4ParserState)annot.EndState).State},ltb={annot.LookaheadTokensBefore},lta={annot.LookaheadTokensAfter},lb={annot.LookaheadBefore},la={annot.LookaheadAfter})] ");
 #else
-                buf.Append($"[(startState={((Antlr4ParserState)annot.StartState).State},endState={((Antlr4ParserState)annot.EndState).State},lb={annot.LookaheadBefore},la={annot.LookaheadAfter})] ");
+                buf.Append($"[(startState={((Antlr4ParserState)annot.StartState).State},endState={((Antlr4ParserState)annot.EndState).State},ltb={annot.LookaheadTokensBefore},lta={annot.LookaheadTokensAfter},lb={annot.LookaheadBefore},la={annot.LookaheadAfter})] ");
 #endif
             }
             buf.Append(node.Kind);

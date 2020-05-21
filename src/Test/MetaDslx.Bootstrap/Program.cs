@@ -18,6 +18,7 @@ using MetaDslx.Languages.Meta.Symbols;
 using MetaDslx.Modeling;
 using MetaDslx.Tests;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Text;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -270,13 +271,16 @@ namespace MetaDslx.Bootstrap
                 try
                 {
                     IncrementalCompiler compiler = new IncrementalCompiler();
-                    var pos = 451;
+                    //var pos = 507;
+                    var pos = 2150;
                     //string source = File.ReadAllText($@"..\..\..\..\..\Test\MetaDslx.CodeAnalysis.Antlr4.Test\InputFiles\LexerMode\MGenTest.txt").Substring(0, pos);
                     //string source = File.ReadAllText($@"..\..\..\..\..\Test\MetaDslx.CodeAnalysis.Antlr4.Test\InputFiles\LexerMode\PropertyTest.txt").Substring(0, pos);
-                    string source = File.ReadAllText($@"..\..\..\..\..\Test\MetaDslx.CodeAnalysis.Antlr4.Test\InputFiles\LexerMode\MetaModelGenerator.txt").Substring(0, pos);
-                    compiler.Type(source, pos - 1);
-                    //string source = File.ReadAllText($@"..\..\..\..\..\Test\MetaDslx.CodeAnalysis.Antlr4.Test\InputFiles\LexerMode\PropertyTest.txt");
+                    //string source = File.ReadAllText($@"..\..\..\..\..\Test\MetaDslx.CodeAnalysis.Antlr4.Test\InputFiles\LexerMode\MetaModelGenerator.txt").Substring(0, pos);
+                    //compiler.Type(source, pos - 1);
+                    //string source = File.ReadAllText($@"..\..\..\..\..\Test\MetaDslx.CodeAnalysis.Antlr4.Test\InputFiles\LexerMode\MetaModelGenerator.txt");
                     //compiler.Type(source);
+                    string source = File.ReadAllText($@"..\..\..\..\..\Test\MetaDslx.CodeAnalysis.Antlr4.Test\InputFiles\LexerMode\UmlModelToMetaModelGenerator.txt");
+                    compiler.Type(source, 64);
                     foreach (var assertion in assertions.AssertionFailures)
                     {
                         Console.WriteLine(assertion);

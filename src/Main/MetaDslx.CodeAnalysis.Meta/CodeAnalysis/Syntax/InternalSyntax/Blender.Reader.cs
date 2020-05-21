@@ -192,7 +192,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 // See if we're actually able to reuse this node or token.  If not, our caller will
                 // move the cursor to the next appropriate position and will try again.
                 var currentNodeOrToken = _oldTreeCursor.CurrentNodeOrToken;
-                if (!CanReuse(currentNodeOrToken))
+                var nodeAnnot = SyntaxParser.GetNodeAnnotation(currentNodeOrToken.NodeOrParent.Green);
+                if (!CanReuse(currentNodeOrToken, nodeAnnot))
                 {
                     blendedNode = default;
                     return false;
@@ -212,31 +213,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 var tokenAnnot = SyntaxLexer.GetTokenAnnotation(lastToken);
                 if (tokenAnnot != null) _mode = tokenAnnot.EndMode;
 
-                if (currentNodeOrToken.IsNode)
-                {
-                    var nodeAnnot = SyntaxParser.GetNodeAnnotation(currentNodeOrToken.NodeOrParent.Green);
-                    if (nodeAnnot != null) _state = nodeAnnot.EndState;
-                }
-
-                /*if (!_oldTreeCursor.IsFinished)
-                {
-                    if (currentNodeOrToken.IsNode)
-                    {
-                        var nextNodeAnnot = SyntaxParser.GetNodeAnnotation(_oldTreeCursor.CurrentNodeOrToken.NodeOrParent.Green);
-                        if (nextNodeAnnot != null) _state = nextNodeAnnot.State;
-                    }
-                    //var nextToken = _oldTreeCursor.MoveToFirstToken();
-                    //var nextTokenAnnot = SyntaxLexer.GetTokenAnnotation(nextToken.CurrentNodeOrToken.UnderlyingNode);
-                    //if (nextTokenAnnot != null) _mode = nextTokenAnnot.Mode;
-                }
-                else
-                {
-                    var treeAnnot = SyntaxParser.GetTreeAnnotation(_parser.OldRoot.Green);
-                    if (treeAnnot != null)
-                    {
-                        _state = treeAnnot.EndState;
-                    }
-                }*/
+                if (nodeAnnot != null) _state = nodeAnnot.EndState;
 
                 blendedNode = CreateBlendedNode(
                     node: (LanguageSyntaxNode)currentNodeOrToken.AsNode(),
@@ -244,7 +221,70 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 return true;
             }
 
-            private bool CanReuse(SyntaxNodeOrToken nodeOrToken)
+            private bool CanReuse(SyntaxNodeOrToken nodeOrToken, IncrementalNodeAnnotation nodeAnnot)
+            {
+                CallLogger.Instance.Call(nodeOrToken.GetDebuggerDisplay());
+
+                if (!CanReuseDirectly(nodeOrToken)) return false;
+
+                var lookahead = nodeAnnot?.LookaheadAfter ?? 0;
+                if (lookahead > 0)
+                {
+                    var next = _oldTreeCursor;
+                    while (!next.IsFinished && lookahead > 0)
+                    {
+                        next = GetNextNodeOrToken(next, lookahead);
+                        if (!next.IsFinished)
+                        {
+                            var nextNodeOrToken = next.CurrentNodeOrToken;
+                            if (!CanReuseDirectly(nextNodeOrToken)) return false;
+                            lookahead -= nextNodeOrToken.FullWidth;
+                        }
+                    }
+                }
+
+                GreenNode firstToken;
+                if (nodeOrToken.IsNode) firstToken = nodeOrToken.NodeOrParent.Green.GetFirstTerminal();
+                else firstToken = nodeOrToken.UnderlyingNode;
+                var tokenAnnot = SyntaxLexer.GetTokenAnnotation(firstToken);
+                if (tokenAnnot != null)
+                {
+                    if (!LexerMode.SameMode(_mode, tokenAnnot.StartMode)) return false;
+                }
+                else
+                {
+                    if (!LexerMode.SameMode(_mode, null)) return false;
+                }
+
+                if (nodeOrToken.IsNode)
+                {
+                    if (nodeAnnot == null) return false;
+                    if (ParserState.SameState(_state, nodeAnnot.StartState))
+                    {
+                        CallLogger.Instance.Log("  State mismatch:");
+                        CallLogger.Instance.Log("    Parser state: "+_state);
+                        CallLogger.Instance.Log("    Node start state: "+nodeAnnot.StartState);
+                        return false;
+                    }
+                    //Debug.Assert(_state == nodeAnnot.StartState);
+                }
+
+                CallLogger.Instance.Log("  Reuse: true");
+
+                return true;
+            }
+
+            private Cursor GetNextNodeOrToken(Cursor current, int maxWidth)
+            {
+                var next = current.MoveToNextSibling();
+                while (!next.IsFinished && !next.CurrentNodeOrToken.IsToken && next.CurrentNodeOrToken.FullWidth > maxWidth)
+                {
+                    next = next.MoveToFirstChild();
+                }
+                return next;
+            }
+
+            private bool CanReuseDirectly(SyntaxNodeOrToken nodeOrToken)
             {
                 CallLogger.Instance.Call(nodeOrToken.GetDebuggerDisplay());
 
@@ -264,8 +304,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 }
 
                 // don't reuse nodes or tokens with skipped text or diagnostics attached to them
-                if (nodeOrToken.ContainsDiagnostics ||
-                    (nodeOrToken.IsToken && ((InternalSyntaxNode)nodeOrToken.AsToken().Node).ContainsSkippedText && nodeOrToken.Parent.ContainsDiagnostics))
+                if (nodeOrToken.NodeOrParent.ContainsSkippedText && nodeOrToken.NodeOrParent.ContainsDiagnostics)
                 {
                     return false;
                 }
@@ -291,35 +330,6 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 {
                     return false;
                 }
-
-                GreenNode firstToken;
-                if (nodeOrToken.IsNode) firstToken = nodeOrToken.NodeOrParent.Green.GetFirstTerminal();
-                else firstToken = nodeOrToken.UnderlyingNode;
-                var tokenAnnot = SyntaxLexer.GetTokenAnnotation(firstToken);
-                if (tokenAnnot != null)
-                {
-                    if (!LexerMode.SameMode(_mode, tokenAnnot.StartMode)) return false;
-                }
-                else
-                {
-                    if (!LexerMode.SameMode(_mode, null)) return false;
-                }
-
-                if (nodeOrToken.IsNode)
-                {
-                    var nodeAnnot = SyntaxParser.GetNodeAnnotation(nodeOrToken.UnderlyingNode);
-                    if (nodeAnnot == null) return false;
-                    if (ParserState.SameState(_state, nodeAnnot.StartState))
-                    {
-                        CallLogger.Instance.Log("  State mismatch:");
-                        CallLogger.Instance.Log("    Parser state: "+_state);
-                        CallLogger.Instance.Log("    Node start state: "+nodeAnnot.StartState);
-                        return false;
-                    }
-                    //Debug.Assert(_state == nodeAnnot.StartState);
-                }
-
-                CallLogger.Instance.Log("  Reuse: true");
 
                 if (!nodeOrToken.ContainsDirectives)
                 {
@@ -362,7 +372,11 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
             private BlendedNode CreateBlendedNode(LanguageSyntaxNode node, InternalSyntaxToken token)
             {
-                return new BlendedNode(node, token,
+                object customToken = null;
+                if (token != null) customToken = _parser.CreateCustomTokenCore(token);
+                else if (node != null) customToken = _parser.CreateCustomTokenCore((InternalSyntaxToken)node.Green.GetLastTerminal());
+
+                return new BlendedNode(node, token, customToken,
                     new Blender(_parser, _oldTreeCursor, _changes, _newPosition, _changeDelta, _newDirectives, _oldDirectives, _mode, _state));
             }
         }

@@ -82,7 +82,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             internal void ResetTo(int index)
             {
                 var offset = index - _firstIndex;
-                Debug.Assert(offset >= 0 && offset < _count);
+                Debug.Assert(offset >= 0 && offset <= _count);
                 _offset = offset;
                 _hasCurrentItem = false;
                 _currentItem = default;
@@ -147,7 +147,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 _previousItem = _currentItem;
                 _hasCurrentItem = false;
                 _currentItem = default;
-                if (_hasMoreItems) _offset++;
+                if (_offset < _count || _hasMoreItems) _offset++;
             }
 
             public T PeekItem(int n)
@@ -159,7 +159,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 //Debug.Assert(!_hasResetPoint || index >= _resetPoint, $"index must be at least at the reset point {_resetPoint}");
                 while (_hasMoreItems && index >= _count) 
                 {
-                    _hasMoreItems = _parser.SlidingBuffer_ReadNewToken();
+                    _hasMoreItems = _parser.ReadNewToken();
                 }
                 if (index >= _count)
                 {

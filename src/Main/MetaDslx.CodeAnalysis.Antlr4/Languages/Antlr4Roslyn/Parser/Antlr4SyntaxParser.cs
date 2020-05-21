@@ -82,7 +82,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         protected override IncrementalToken CreateCustomToken(InternalSyntaxToken green)
         {
             var token = new IncrementalToken(green.Kind.ToAntlr4(), green.Text);
-            //token.SetGreenToken(green);
+            token.SetGreenToken(green);
             //token.TokenIndex = this.TokenCount - 1;
             return token;
         }
@@ -135,7 +135,6 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 
         void IIntStream.Consume()
         {
-            //Debug.Assert(_matchedToken);
             var token = this.GetCurrentCustomToken();
             if (token != null)
             {
@@ -267,9 +266,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 
             protected override IToken ConstructToken(ITokenSource tokenSource, int expectedTokenType, string tokenText, IToken current)
             {
-                var green = _parser.CreateMissingToken(expectedTokenType.FromAntlr4(_parser.Language.SyntaxFacts.SyntaxKindType), current.Type.FromAntlr4(_parser.Language.SyntaxFacts.SyntaxKindType), true);
-                var token = _parser.GetCurrentCustomToken();
-                token.SetGreenToken(green);
+                var green = _parser.CreateMissingToken(expectedTokenType.FromAntlr4(_parser.Language.SyntaxFacts.SyntaxKindType), current.Type.FromAntlr4(_parser.Language.SyntaxFacts.SyntaxKindType), false);
+                var token = _parser.CreateCustomToken(green);
                 return token;
             }
 

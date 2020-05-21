@@ -175,75 +175,88 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 end = Math.Min(lastCharIndex, token.Position + Math.Max(token.FullWidth, 1));
             }
 
-            var startNode = FindLastReusableNodeBefore(start, oldRoot);
-            var endNode = FindFirstReusableNodeAfter(end, oldRoot);
-
-            start = startNode?.FullSpan.End ?? 0;
-            end = endNode?.FullSpan.Start ?? oldRoot.FullWidth;
+            start = FindLastReusablePositionBefore(start, oldRoot);
+            if (start < 0) start = 0;
+            end = FindFirstReusablePositionAfter(end, oldRoot);
+            if (end < 0 || end > oldRoot.FullWidth) end = oldRoot.FullWidth;
 
             var finalSpan = TextSpan.FromBounds(start, end);
             var finalLength = changeRange.NewLength + (changeRange.Span.Start - start) + (end - changeRange.Span.End);
             return new TextChangeRange(finalSpan, finalLength);
         }
 
-        private static LanguageSyntaxNode FindLastReusableNodeBefore(
+        private static int FindLastReusablePositionBefore(
             int position,
             LanguageSyntaxNode oldNode)
         {
-            if (oldNode.FullSpan.End <= position) return oldNode;
-            if (oldNode.FullSpan.Start > position) return null;
+            var annot = SyntaxParser.GetNodeAnnotation(oldNode.Green);
+            var end = oldNode.FullSpan.End + Math.Max(0, annot.LookaheadAfter);
+            if (end <= position) return end;
+            if (oldNode.FullSpan.Start+annot.LookaheadBefore > position) return -1;
             var children = oldNode.ChildNodes();
-            LanguageSyntaxNode prevChild = null;
+            int prevPosition = -1;
             int i = 0;
             foreach (var child in children)
             {
                 if (child.FullSpan.Contains(position))
                 {
-                    var result = FindLastReusableNodeBefore(position, (LanguageSyntaxNode)child);
-                    if (result != null) return result;
-                    else return prevChild;
-                }
-                else if (child.FullSpan.End <= position)
-                {
-                    prevChild = (LanguageSyntaxNode)child;
+                    var result = FindLastReusablePositionBefore(position, (LanguageSyntaxNode)child);
+                    if (result >= 0) return result;
+                    else return prevPosition;
                 }
                 else
                 {
-                    return prevChild;
+                    var childAnnot = SyntaxParser.GetNodeAnnotation(child.Green);
+                    var childEnd = child.FullSpan.End + Math.Max(0, annot.LookaheadAfter);
+                    if (childEnd <= position)
+                    {
+                        prevPosition = childEnd;
+                    }
+                    else
+                    {
+                        return prevPosition;
+                    }
                 }
                 ++i;
             }
-            return prevChild;
+            return prevPosition;
         }
 
-        private static LanguageSyntaxNode FindFirstReusableNodeAfter(
+        private static int FindFirstReusablePositionAfter(
             int position,
             LanguageSyntaxNode oldNode)
         {
-            if (oldNode.FullSpan.Start >= position) return oldNode;
-            if (oldNode.FullSpan.End < position) return null;
+            var annot = SyntaxParser.GetNodeAnnotation(oldNode.Green);
+            var start = oldNode.FullSpan.Start + Math.Min(0, annot.LookaheadBefore);
+            if (start >= position) return start;
+            if (oldNode.FullSpan.End < position) return -1;
             var children = oldNode.ChildNodes().Reverse();
-            LanguageSyntaxNode nextChild = null;
+            int nextPosition = -1;
             int i = 0;
             foreach (var child in children)
             {
                 if (child.FullSpan.Contains(position))
                 {
-                    var result = FindFirstReusableNodeAfter(position, (LanguageSyntaxNode)child);
-                    if (result != null) return result;
-                    else return nextChild;
-                }
-                else if (child.FullSpan.Start > position)
-                {
-                    nextChild = (LanguageSyntaxNode)child;
+                    var result = FindFirstReusablePositionAfter(position, (LanguageSyntaxNode)child);
+                    if (result >= 0) return result;
+                    else return nextPosition;
                 }
                 else
                 {
-                    return nextChild;
+                    var childAnnot = SyntaxParser.GetNodeAnnotation(child.Green);
+                    var childStart = child.FullSpan.Start + Math.Min(0, annot.LookaheadBefore);
+                    if (childStart > position)
+                    {
+                        nextPosition = childStart;
+                    }
+                    else
+                    {
+                        return nextPosition;
+                    }
                 }
                 ++i;
             }
-            return nextChild;
+            return nextPosition;
         }
 
         public BlendedNode ReadNode()

@@ -13,8 +13,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestLexerMode
         public void MGenTest()
         {
             string source = File.ReadAllText($@"..\..\..\InputFiles\LexerMode\MGenTest.txt");
-            Parse(SourceText.From(source));
-            //Type(source);
+            //Parse(SourceText.From(source));
+            Type(source);
         }
     }
     public class FileTest_PropertyTest : TypeTest

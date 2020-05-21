@@ -34,9 +34,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestLexerMode
         [Fact]
         public void MetaModelGenerator()
         {
-            var pos = 451;
-            string source = File.ReadAllText($@"..\..\..\InputFiles\LexerMode\MetaModelGenerator.txt").Substring(0, pos);
-            Type(source, pos - 1);
+            string source = File.ReadAllText($@"..\..\..\InputFiles\LexerMode\MetaModelGenerator.txt");
+            Type(source, 50);
         }
     }
     public class IncrementalFileTest_MofModelToMetaModelGenerator : IncrementalTypeTest

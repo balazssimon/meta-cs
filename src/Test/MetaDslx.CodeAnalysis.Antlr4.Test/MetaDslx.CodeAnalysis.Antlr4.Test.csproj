@@ -3,6 +3,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    
     <IsPackable>false</IsPackable>
     <AssemblyName>MetaDslx.CodeAnalysis.Antlr4.Test</AssemblyName>
     <RootNamespace>MetaDslx.CodeAnalysis.Antlr4Test</RootNamespace>

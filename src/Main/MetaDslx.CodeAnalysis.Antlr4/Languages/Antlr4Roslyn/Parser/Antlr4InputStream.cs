@@ -47,18 +47,17 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 
         public int Mark()
         {
-            // do nothing: SlidingTextWindow does the buffering
-            return -1;
+            return _textWindow.GetResetPoint();
         }
 
         public void Release(int marker)
         {
-            // do nothing: SlidingTextWindow does the buffering
+            _textWindow.ReleaseResetPoint(marker);
         }
 
         public void Seek(int index)
         {
-            _textWindow.Reset(index);
+            _textWindow.ResetTo(index);
         }
     }
 }

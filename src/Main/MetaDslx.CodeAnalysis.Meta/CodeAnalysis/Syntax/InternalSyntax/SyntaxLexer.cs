@@ -43,10 +43,20 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         public virtual void Reset(int position, DirectiveStack directives)
         {
-            this.TextWindow.Reset(position);
+            this.TextWindow.ResetTo(position);
             _position = position;
             _directives = directives;
             _restoreLexerMode = true;
+        }
+
+        public int MarkResetPoint()
+        {
+            return this.TextWindow.GetResetPoint();
+        }
+
+        public void ReleaseResetPoint(int resetPoint)
+        {
+            this.TextWindow.ReleaseResetPoint(resetPoint);
         }
 
         public InternalSyntaxToken Lex(ref LexerMode mode)
