@@ -304,7 +304,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 }
 
                 // don't reuse nodes or tokens with skipped text or diagnostics attached to them
-                if (nodeOrToken.NodeOrParent.ContainsSkippedText && nodeOrToken.NodeOrParent.ContainsDiagnostics)
+                if (nodeOrToken.NodeOrParent.ContainsSkippedText || nodeOrToken.NodeOrParent.ContainsDiagnostics)
                 {
                     return false;
                 }

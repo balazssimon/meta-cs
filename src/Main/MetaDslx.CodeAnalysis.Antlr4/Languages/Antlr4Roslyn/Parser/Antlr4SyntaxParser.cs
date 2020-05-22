@@ -81,9 +81,11 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 
         protected override IncrementalToken CreateCustomToken(InternalSyntaxToken green)
         {
-            var token = new IncrementalToken(green.Kind.ToAntlr4(), green.Text);
+            var token = new IncrementalToken(green.Kind.ToAntlr4(), green.Kind == SyntaxKind.Eof ? "<EOF>" : green.Text);
             token.SetGreenToken(green);
-            //token.TokenIndex = this.TokenCount - 1;
+            token.TokenIndex = this.TokenCount;
+            token.StartIndex = Lexer.Position - green.FullWidth + green.GetLeadingTriviaWidth();
+            token.StopIndex = Lexer.Position - green.GetTrailingTriviaWidth() - 1;
             return token;
         }
 
