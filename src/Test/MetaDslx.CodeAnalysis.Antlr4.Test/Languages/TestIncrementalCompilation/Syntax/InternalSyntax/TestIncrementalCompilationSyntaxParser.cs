@@ -2852,7 +2852,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation.
 					else return null;
 				}
 				var green = ((IncrementalToken)node.Symbol).GreenToken;
-				Debug.Assert(kind == null || green?.Kind == kind);
+				Debug.Assert(kind == null || green.Kind == kind);
 				return green;
 			}
             public override GreenNode VisitTerminal(ITerminalNode node)

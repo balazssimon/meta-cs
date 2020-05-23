@@ -28,7 +28,7 @@ namespace MetaDslx.Languages.Meta.Binding
             var syntax = (MetaSyntaxNode)this.Syntax;
             var symbolDef = this.GetBinder<SymbolDefBinder>();
             var mobj = (MetaDocumentedElementBuilder)symbolDef?.LastDeclaredSymbol?.ModelObject;
-            if (mobj == null) return;
+            if (syntax == null || mobj == null) return;
             switch (syntax.Kind.Switch())
             {
                 case MetaSyntaxKind.MetamodelDeclaration:
@@ -45,15 +45,15 @@ namespace MetaDslx.Languages.Meta.Binding
                     break;
                 case MetaSyntaxKind.ClassDeclaration:
                     var cls = (ClassDeclarationSyntax)syntax;
-                    this.SetDocumentation(mobj, cls.KAbstract.Span.Length > 0 ? cls.KAbstract : cls.KClass, cls.Attribute);
+                    this.SetDocumentation(mobj, cls.KAbstract.GetKind() != MetaSyntaxKind.None ? cls.KAbstract : cls.KClass, cls.Attribute);
                     break;
                 case MetaSyntaxKind.FieldDeclaration:
                     var fld = (FieldDeclarationSyntax)syntax;
-                    this.SetDocumentation(mobj, fld.FieldContainment.Span.Length > 0 ? fld.FieldContainment.GetFirstToken() : (fld.FieldModifier.Span.Length > 0 ? fld.FieldModifier.GetFirstToken() : fld.TypeReference.GetFirstToken()), fld.Attribute);
+                    this.SetDocumentation(mobj, fld.FieldContainment != null ? fld.FieldContainment.GetFirstToken() : (fld.FieldModifier != null ? fld.FieldModifier.GetFirstToken() : fld.TypeReference.GetFirstToken()), fld.Attribute);
                     break;
                 case MetaSyntaxKind.OperationDeclaration:
                     var op = (OperationDeclarationSyntax)syntax;
-                    this.SetDocumentation(mobj, op.OperationModifier.Span.Length > 0 ? op.OperationModifier.First().GetFirstToken() : op.ReturnType.GetFirstToken(), op.Attribute);
+                    this.SetDocumentation(mobj, op.OperationModifier.Count > 0 ? op.OperationModifier.First().GetFirstToken() : op.ReturnType.GetFirstToken(), op.Attribute);
                     break;
                 default:
                     break;
@@ -62,7 +62,11 @@ namespace MetaDslx.Languages.Meta.Binding
 
         private void SetDocumentation(MetaDocumentedElementBuilder mobj, SyntaxToken token, SyntaxList<AttributeSyntax> attributes)
         {
-            Debug.Assert(token.GetKind() != MetaSyntaxKind.None);
+            if (token == null || token.GetKind() == MetaSyntaxKind.None || token.FullSpan.Length == 0)
+            {
+                Debug.Assert(false);
+                return;
+            }
             StringBuilder sb = new StringBuilder();
             foreach (var attribute in attributes)
             {

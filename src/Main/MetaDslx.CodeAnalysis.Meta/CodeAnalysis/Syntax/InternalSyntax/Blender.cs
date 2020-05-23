@@ -189,7 +189,9 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             int position,
             LanguageSyntaxNode oldNode)
         {
+            if (oldNode == null) return -1;
             var annot = SyntaxParser.GetNodeAnnotation(oldNode.Green);
+            if (annot == null) return -1;
             var end = oldNode.FullSpan.End + Math.Max(0, annot.LookaheadAfter);
             if (end <= position) return end;
             if (oldNode.FullSpan.Start+annot.LookaheadBefore > position) return -1;
@@ -207,6 +209,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 else
                 {
                     var childAnnot = SyntaxParser.GetNodeAnnotation(child.Green);
+                    if (childAnnot == null) return prevPosition;
                     var childEnd = child.FullSpan.End + Math.Max(0, annot.LookaheadAfter);
                     if (childEnd <= position)
                     {
@@ -226,7 +229,9 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             int position,
             LanguageSyntaxNode oldNode)
         {
+            if (oldNode == null) return -1;
             var annot = SyntaxParser.GetNodeAnnotation(oldNode.Green);
+            if (annot == null) return -1;
             var start = oldNode.FullSpan.Start + Math.Min(0, annot.LookaheadBefore);
             if (start >= position) return start;
             if (oldNode.FullSpan.End < position) return -1;
@@ -244,6 +249,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 else
                 {
                     var childAnnot = SyntaxParser.GetNodeAnnotation(child.Green);
+                    if (childAnnot == null) return nextPosition;
                     var childStart = child.FullSpan.Start + Math.Min(0, annot.LookaheadBefore);
                     if (childStart > position)
                     {

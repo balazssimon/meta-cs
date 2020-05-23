@@ -32,49 +32,39 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 
         public ImmutableArray<SyntaxKind> GetTokenSuggestions(int position, CancellationToken cancellationToken = default)
         {
-            (var node, var annot) = FindInnermostNodeWithAnnotation(position);
-            if (annot == null || !(annot.StartState is Antlr4ParserState)) return ImmutableArray<SyntaxKind>.Empty;
-            var startState = _atn.states[((Antlr4ParserState)annot.StartState).State];
+            (var node, var startStateIndex, var startPosition) = FindStartState(position);
+            if (startStateIndex < 0) startStateIndex = 0;
+            var startState = _atn.states[startStateIndex];
 
             var tokens = ArrayBuilder<SyntaxToken>.GetInstance();
-            var adjustedPosition = position;
-            var tokenStart = string.Empty;
+            bool last = false;
             foreach (var token in node.DescendantTokens())
             {
                 var span = token.Span;
-                tokens.Add(token);
-                if (span.Contains(position))
+                if (span.End > startPosition && span.Start <= position)
                 {
-                    adjustedPosition = span.Start;
-                    tokenStart = token.Text.Substring(0, position - adjustedPosition);
-                    break;
+                    tokens.Add(token);
                 }
-                else if (token.FullSpan.Start > position)
+                else if (span.Start > position)
                 {
-                    break;
+                    if (last)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        tokens.Add(token);
+                        last = true;
+                    }
                 }
             }
 
             var suggestions = new HashSet<int>();
-            Process(startState, new CompletionTokenStream(tokens, adjustedPosition), new ParserStack(ImmutableStack<ATNState>.Empty), ImmutableHashSet<int>.Empty, suggestions, cancellationToken);
+            Process(startState, new CompletionTokenStream(tokens, position), new ParserStack(ImmutableStack<ATNState>.Empty), ImmutableHashSet<int>.Empty, suggestions, cancellationToken);
             tokens.Free();
 
             var result = ArrayBuilder<SyntaxKind>.GetInstance();
-            if (!string.IsNullOrEmpty(tokenStart))
-            {
-                foreach (var tokenType in suggestions)
-                {
-                    var kind = tokenType.FromAntlr4(_syntaxFacts.SyntaxKindType);
-                    if (IsValidSuggestion(kind, tokenStart))
-                    {
-                        result.Add(kind);
-                    }
-                }
-            }
-            else
-            {
-                result.AddRange(suggestions.Select(tokenType => tokenType.FromAntlr4(_syntaxFacts.SyntaxKindType)));
-            }
+            result.AddRange(suggestions.Select(tokenType => tokenType.FromAntlr4(_syntaxFacts.SyntaxKindType)));
             return result.ToImmutableAndFree();
         }
 
@@ -86,24 +76,50 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             return false;
         }
 
-        private (LanguageSyntaxNode, IncrementalNodeAnnotation) FindInnermostNodeWithAnnotation(int position)
+        private (LanguageSyntaxNode node, int startState, int startPosition) FindStartState(int position)
         {
-            SyntaxNode innermost = _root;
-            var child = innermost.ChildThatContainsPosition(position);
-            while (child != null && child.IsNode)
+            var token = _root.FindToken(position);
+
+            SyntaxToken prevToken;
+            if (token.Span.End <= position)
             {
-                innermost = child.AsNode();
-                child = innermost.ChildThatContainsPosition(position);
+                prevToken = token;
+                token = _root.FindToken(token.FullSpan.End);
             }
-            var node = innermost;
-            var annot = Antlr4SyntaxParser.GetNodeAnnotation(node.Green);
-            while (node.Parent != null && annot == null)
+            else
             {
-                node = node.Parent;
+                var prevPosition = token.FullSpan.Start - 1;
+                if (prevPosition < 0) prevPosition = 0;
+                prevToken = _root.FindToken(prevPosition);
+            }
+
+            SyntaxNode node;
+            IncrementalNodeAnnotation annot = null;
+            int startPosition = -1;
+
+            if (prevToken.Span.End <= position)
+            {
+                node = prevToken.Parent;
+                annot = null;
+                while (node != null && node.Span.End <= position)
+                {
+                    annot = Antlr4SyntaxParser.GetNodeAnnotation(node.Green);
+                    startPosition = node.Span.End;
+                    node = node.Parent;
+                }
+                if (annot != null) return ((LanguageSyntaxNode)token.Parent, ((Antlr4ParserState)annot.EndState).State, startPosition);
+            }
+
+            node = token.Parent;
+            while (node != null && node.SpanStart == token.SpanStart)
+            {
                 annot = Antlr4SyntaxParser.GetNodeAnnotation(node.Green);
+                startPosition = node.SpanStart;
+                node = node.Parent;
             }
-            if (annot != null) return ((LanguageSyntaxNode)node, annot);
-            else return (_root, null);
+            if (annot != null) return ((LanguageSyntaxNode)token.Parent, ((Antlr4ParserState)annot.StartState).State, startPosition);
+
+            return (_root, 0, 0);
         }
 
         /// <summary>

@@ -23,7 +23,7 @@ namespace Antlr4Intellisense
     {
         public static void Main(string[] args)
         {
-            /*/        01234567890123 4 567890123456 7
+            //*/        01234567890123 4 567890123456 7
             var text = "var a = 1 + 2\r\nvar b = a+1\r\n";
             var change = ImmutableArray<TextChangeRange>.Empty;
 
@@ -91,7 +91,7 @@ namespace Antlr4Intellisense
 
             //*/
 
-            //*/
+            /*/
 
             TypeTest(@"namespace A { metamodel M; class B { string S; multi_list<object> O; C C; } class C { B B; } association B.C with C.B; }");
 

@@ -77,7 +77,7 @@ namespace MetaDslx.Bootstrap
             Console.WriteLine(test.SayHello("me"));
             //*/
 
-            /*/
+            //*/
             ImmutableModel coreModel = MetaInstance.MModel;
             Console.WriteLine(coreModel);
 
@@ -86,10 +86,11 @@ namespace MetaDslx.Bootstrap
             //string text = File.ReadAllText(@"..\..\..\..\..\..\..\soal-cs\Src\Main\MetaDslx.Languages.Soal\Symbols\Soal.mm");
             //string text = File.ReadAllText(@"..\..\..\..\..\Test\WebSequenceDiagramsModel\Symbols\UmlModel.mm");
             //string text = File.ReadAllText(@"..\..\..\..\..\Main\MetaDslx.Languages.Omg\Mof\Model\Mof.mm");
-            //string text = File.ReadAllText(@"..\..\..\..\..\Languages\MetaDslx.Languages.Uml-v2.5.1\Model\Uml.mm");
+            string text = File.ReadAllText(@"..\..\..\..\..\Languages\MetaDslx.Languages.Uml-v2.5.1\Model\Uml.mm");
             //string text = File.ReadAllText(@"..\..\..\..\..\Languages\MetaDslx.Languages.Ecore\Model\Ecore.mm");
+            //string text = File.ReadAllText(@"..\..\..\..\..\Examples\RailDsl\Model\RailDsl.mm");
             //string text = File.ReadAllText(@"..\..\..\Error0.mm");
-            string text = File.ReadAllText(@"..\..\..\Error1.mm");
+            //string text = File.ReadAllText(@"..\..\..\Error1.mm");
             //string text = File.ReadAllText(@"..\..\..\Error2.mm");
             //string text = File.ReadAllText(@"..\..\..\Error3.mm");
 
@@ -265,7 +266,7 @@ namespace MetaDslx.Bootstrap
             //MetaDslxXmiTest();
             //*/
 
-            //*/
+            /*/
             using (var assertions = new DebugAssertUnitTestTraceListener())
             {
                 try
