@@ -363,10 +363,9 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 _minLookahead = Math.Min(_minLookahead, _position + annot.LookaheadBefore);
                 _maxLookahead = Math.Max(_maxLookahead, _position + currentNode.Node.FullWidth + annot.LookaheadAfter);
             }
-            _position += currentNode.Node.FullWidth;
 
-            _lastNonSkippedTokenIndex = TokenIndex;
             _blendedTokens.InsertItem(currentNode);
+            _lastNonSkippedTokenIndex = TokenIndex;
             MoveToNextToken();
 
             // erase current state
@@ -525,14 +524,27 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         //we should keep it simple so that it can be inlined.
         protected InternalSyntaxToken EatToken()
         {
-            var ct = this.EatCurrentToken();
+            var ct = this.EatCurrentTokenWithSkippedTokensAndErrors();
             MoveToNextToken();
             return ct;
         }
 
-        private InternalSyntaxToken EatCurrentToken()
+        private InternalSyntaxToken CurrentTokenWithErrors()
         {
             var ct = this.CurrentToken;
+            CallLogger.Instance.Call(ct.ToFullString());
+            if (_currentTokenErrors.Count > 0)
+            {
+                ct = WithAdditionalDiagnostics(ct, _currentTokenErrors.ToArray());
+                _currentTokenErrors.Clear();
+            }
+            PrintStateStack();
+            return ct;
+        }
+
+        private InternalSyntaxToken EatCurrentTokenWithSkippedTokensAndErrors()
+        {
+            var ct = this.CurrentTokenWithErrors();
             CallLogger.Instance.Call(ct.ToFullString());
             var index = TokenIndex;
             var skippedTokenCount = index - _lastNonSkippedTokenIndex - 1;
@@ -546,24 +558,27 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 }
                 ct = AddSkippedSyntax(ct, skippedTokens.ToListNode(), false);
             }
-            _position += ct.FullWidth;
             _lastNonSkippedTokenIndex = TokenIndex;
-            if (_currentTokenErrors.Count > 0)
-            {
-                ct = WithAdditionalDiagnostics(ct, _currentTokenErrors.ToArray());
-                _currentTokenErrors.Clear();
-            }
             PrintStateStack();
             return ct;
         }
 
         protected void MoveToNextToken()
         {
-            _prevTokenTrailingTrivia = _currentToken?.GetTrailingTrivia();
+            if (_currentNode.Node != null)
+            {
+                _position += _currentNode.Node.FullWidth;
+                _prevTokenTrailingTrivia = _currentNode.Node.GetTrailingTrivia().Node;
+            }
+            else
+            {
+                _position += _currentToken.FullWidth;
+                _prevTokenTrailingTrivia = _currentToken.GetTrailingTrivia();
+            }
             _currentToken = default;
             if (_blendedTokens != null)
             {
-                var token = _blendedTokens.EatItem();
+                _blendedTokens.EatItem();
                 _currentNode = default;
             }
             else
@@ -583,7 +598,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         {
             Debug.Assert(Language.SyntaxFacts.IsToken(kind));
 
-            var ct = this.EatCurrentToken();
+            var ct = this.EatCurrentTokenWithSkippedTokensAndErrors();
             if (ct.Kind == kind)
             {
                 MoveToNextToken();
@@ -599,7 +614,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         {
             Debug.Assert(Language.SyntaxFacts.IsToken(expected));
 
-            var ct = this.EatCurrentToken();
+            var ct = this.EatCurrentTokenWithSkippedTokensAndErrors();
             if (ct.Kind == expected)
             {
                 MoveToNextToken();
@@ -680,21 +695,21 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         protected InternalSyntaxToken EatTokenWithPrejudice(SyntaxKind kind)
         {
-            var token = this.CurrentToken;
+            var token = this.EatCurrentTokenWithSkippedTokensAndErrors();
             Debug.Assert(Language.SyntaxFacts.IsToken(kind));
             if (token.Kind != kind)
             {
                 token = WithAdditionalDiagnostics(token, this.GetExpectedTokenError(kind, token.Kind));
             }
 
-            this.MoveToNextToken();
+            MoveToNextToken();
             return token;
         }
 
         protected InternalSyntaxToken EatTokenWithPrejudice(ErrorCode errorCode, params object[] args)
         {
             var token = this.EatToken();
-            token = WithAdditionalDiagnostics(token, MakeError(token.GetLeadingTriviaWidth(), token.Width, errorCode, args));
+            token = WithAdditionalDiagnostics(token, MakeError(token, errorCode, args));
             return token;
         }
 
@@ -823,12 +838,17 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         protected void AddErrorToCurrentToken(ErrorCode code)
         {
-            this.AddErrorToCurrentToken(MakeError(code));
+            this.AddErrorToCurrentToken(MakeError(CurrentToken, code));
         }
 
         protected void AddErrorToCurrentToken(ErrorCode code, params object[] args)
         {
-            this.AddErrorToCurrentToken(MakeError(code, args));
+            this.AddErrorToCurrentToken(MakeError(CurrentToken, code, args));
+        }
+
+        protected void AddErrorToPreviousTokenEnd(ErrorCode code, params object[] args)
+        {
+            this.AddErrorToCurrentToken(MakeError(_prevTokenTrailingTrivia != null ? - _prevTokenTrailingTrivia.FullWidth : 0, 1, code, args));
         }
 
         protected void AddErrorToCurrentToken(SyntaxDiagnosticInfo error)
@@ -1087,7 +1107,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             {
                 // Since we're adding triviaWidth before the token, we have to add that much to
                 // the offset of each of its diagnostics.
-                if (triviaWidth > 0)
+                /*if (triviaWidth > 0)
                 {
                     var targetDiagnostics = target.GetDiagnostics();
                     for (int i = 0; i < targetDiagnostics.Length; i++)
@@ -1095,7 +1115,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                         var d = (SyntaxDiagnosticInfo)targetDiagnostics[i];
                         targetDiagnostics[i] = new SyntaxDiagnosticInfo(d.Offset + triviaWidth, d.Width, d.ErrorCode, d.Arguments);
                     }
-                }
+                }*/
 
                 var leadingTrivia = target.GetLeadingTrivia();
                 target = target.TokenWithLeadingTrivia(SyntaxList.Concat(trivia, leadingTrivia));
