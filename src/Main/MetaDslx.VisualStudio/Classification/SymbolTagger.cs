@@ -81,7 +81,6 @@ namespace MetaDslx.VisualStudio.Classification
             var foundNew = false;
             if (_ctrlDown && _mousePosition >= 0)
             {
-                this.BackgroundCompilation.CheckCompilationVersion();
                 var compilationSnapshot = this.BackgroundCompilation.CompilationSnapshot;
                 var symbols = compilationSnapshot?.GetCompilationStepResult<CollectSymbolsResult>();
                 ITextSnapshot textSnapshot = compilationSnapshot.Text;
@@ -117,7 +116,6 @@ namespace MetaDslx.VisualStudio.Classification
 
         public IEnumerable<ITagSpan<IClassificationTag>> GetTags(NormalizedSnapshotSpanCollection spans)
         {
-            this.BackgroundCompilation.CheckCompilationVersion();
             var compilationSnapshot = this.BackgroundCompilation.CompilationSnapshot;
             var symbols = compilationSnapshot?.GetCompilationStepResult<CollectSymbolsResult>();
             if (symbols == null) yield break;

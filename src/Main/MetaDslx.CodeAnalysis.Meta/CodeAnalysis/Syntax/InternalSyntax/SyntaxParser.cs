@@ -529,22 +529,9 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             return ct;
         }
 
-        private InternalSyntaxToken CurrentTokenWithErrors()
-        {
-            var ct = this.CurrentToken;
-            CallLogger.Instance.Call(ct.ToFullString());
-            if (_currentTokenErrors.Count > 0)
-            {
-                ct = WithAdditionalDiagnostics(ct, _currentTokenErrors.ToArray());
-                _currentTokenErrors.Clear();
-            }
-            PrintStateStack();
-            return ct;
-        }
-
         private InternalSyntaxToken EatCurrentTokenWithSkippedTokensAndErrors()
         {
-            var ct = this.CurrentTokenWithErrors();
+            var ct = this.CurrentToken;
             CallLogger.Instance.Call(ct.ToFullString());
             var index = TokenIndex;
             var skippedTokenCount = index - _lastNonSkippedTokenIndex - 1;
@@ -557,6 +544,11 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                     skippedTokens.Add(token);
                 }
                 ct = AddSkippedSyntax(ct, skippedTokens.ToListNode(), false);
+            }
+            if (_currentTokenErrors.Count > 0)
+            {
+                ct = WithAdditionalDiagnostics(ct, _currentTokenErrors.ToArray());
+                _currentTokenErrors.Clear();
             }
             _lastNonSkippedTokenIndex = TokenIndex;
             PrintStateStack();

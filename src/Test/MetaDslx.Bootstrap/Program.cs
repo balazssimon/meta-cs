@@ -92,8 +92,10 @@ namespace MetaDslx.Bootstrap
             //string text = File.ReadAllText(@"..\..\..\Error0.mm");
             //string text = File.ReadAllText(@"..\..\..\Error1.mm");
             //string text = File.ReadAllText(@"..\..\..\Error2.mm");
-            string text = File.ReadAllText(@"..\..\..\Error3.mm");
+            //string text = File.ReadAllText(@"..\..\..\Error3.mm");
             //string text = File.ReadAllText(@"..\..\..\Error4.mm");
+
+            string text = @"namespace A { metamodel M; class B { s";
 
             var tree = MetaSyntaxTree.ParseText(text);
             var declarations = MetaDeclarationTreeBuilderVisitor.ForTree((MetaSyntaxTree)tree, "Script", false);

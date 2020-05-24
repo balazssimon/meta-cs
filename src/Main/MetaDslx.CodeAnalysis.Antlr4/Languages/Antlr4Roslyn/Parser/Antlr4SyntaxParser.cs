@@ -142,6 +142,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             {
                 token.TokenIndex = this.TokenIndex;
                 var green = _matchedToken ? this.EatToken() : this.SkipToken();
+                //var green = this.EatToken();
                 token.SetGreenToken(green);
             }
             _matchedToken = false;

@@ -46,8 +46,9 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestIncrementalCompilation
         [Fact]
         public void File01()
         {
-            string source = @"namespace A { metamodel M; class B { string S; multi_list<object> O; C C; } class C { B B; } association B.C with C.B; }";
-            Type(source);
+            var pos = 39;
+            string source = @"namespace A { metamodel M; class B { string S; multi_list<object> O; C C; } class C { B B; } association B.C with C.B; }".Substring(0, pos);
+            Type(source, pos-1);
         }
 
         [Fact]

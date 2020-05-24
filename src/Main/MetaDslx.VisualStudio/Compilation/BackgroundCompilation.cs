@@ -1,6 +1,7 @@
 ﻿using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.VisualStudio.Utilities;
+using Microsoft.CodeAnalysis.PooledObjects;
 using Microsoft.CodeAnalysis.Text;
 using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.Editor;
@@ -27,9 +28,13 @@ namespace MetaDslx.VisualStudio.Compilation
         private readonly ITextBuffer _textBuffer;
         private readonly MetaDslxMefServices _mefServices;
 
+        private SourceText _sourceText;
+        private ConcurrentQueue<ImmutableArray<TextChange>> _textChanges;
+        private LanguageSyntaxTree _syntaxTree;
+        private ManualResetEvent _syntaxTreeResetEvent;
+
         private CompilationSnapshot _compilationSnapshot;
         private CompilationSnapshot _backgroundCompilationSnapshot;
-        private ITextVersion _backgroundVersion;
         private CancellationTokenSource _cancellationTokenSource;
 
         private BackgroundWorker _backgroundWorker;
@@ -40,11 +45,26 @@ namespace MetaDslx.VisualStudio.Compilation
         private BackgroundCompilation(MetaDslxMefServices mefServices, ITextBuffer textBuffer)
         {
             _textBuffer = textBuffer;
+            _textBuffer.Changed += TextBuffer_Changed;
+            _sourceText = SourceText.From(_textBuffer.CurrentSnapshot.GetText());
+            _syntaxTreeResetEvent = new ManualResetEvent(true);
+            _textChanges = new ConcurrentQueue<ImmutableArray<TextChange>>();
             _mefServices = mefServices;
 
             _cancellationTokenSource = new CancellationTokenSource();
             _compilationSnapshot = CompilationSnapshot.Default;
             _backgroundCompilationSnapshot = CompilationSnapshot.Default;
+        }
+
+        private void TextBuffer_Changed(object sender, TextContentChangedEventArgs e)
+        {
+            var changes = ArrayBuilder<TextChange>.GetInstance();
+            foreach (var change in e.Changes)
+            {
+                changes.Add(new TextChange(new Microsoft.CodeAnalysis.Text.TextSpan(change.OldPosition, change.OldLength), change.NewText));
+            }
+            _textChanges.Enqueue(changes.ToImmutableAndFree());
+            this.Recompile();
         }
 
         public static BackgroundCompilation GetOrCreate(MetaDslxMefServices mefServices, ITextBuffer textBuffer)
@@ -125,14 +145,9 @@ namespace MetaDslx.VisualStudio.Compilation
         }
         #endregion
 
-        public void CheckCompilationVersion()
+        private void Recompile()
         {
-            ITextVersion textVersion = this.TextBuffer?.CurrentSnapshot?.Version;
-            if (_backgroundVersion == null || _backgroundVersion != textVersion)
-            {
-                Interlocked.Exchange(ref _backgroundVersion, textVersion);
-                if (this.GetCompilationFactory() != null) this.Compile();
-            }
+            if (this.GetCompilationFactory() != null) this.Compile();
         }
 
         private void Compile()
@@ -210,25 +225,54 @@ namespace MetaDslx.VisualStudio.Compilation
             {
                 if (e.Argument == null)
                 {
-                    ITextBuffer textBuffer = this.TextBuffer;
-                    if (textBuffer == null) return;
-                    ITextSnapshot textSnapshot = textBuffer.CurrentSnapshot;
-                    if (_backgroundCompilationSnapshot.Changed(textSnapshot))
+                    if (_syntaxTree == null || _textChanges.Count > 0)
                     {
-                        string filePath = this.FilePath;
-                        string sourceText = textSnapshot.GetText();
-                        var versionBefore = textSnapshot.Version;
-                        var cancellationToken = _cancellationTokenSource.Token;
                         var factory = this.GetCompilationFactory();
                         var language = factory.Language;
+                        var textSnapshot = _textBuffer.CurrentSnapshot;
+                        var versionBefore = textSnapshot.Version;
+                        _syntaxTreeResetEvent.WaitOne();
+                        var sourceText = _sourceText;
+                        var syntaxTree = _syntaxTree;
+                        try
+                        {
+                            var allChanges = ArrayBuilder<TextChange>.GetInstance();
+                            while (_textChanges.TryDequeue(out var changes))
+                            {
+                                allChanges.AddRange(changes);
+                            }
+                            sourceText = _sourceText.WithChanges(allChanges);
+                            allChanges.Free();
+                            string filePath = this.FilePath;
+                            if (_syntaxTree == null)
+                            {
+                                syntaxTree = language.SyntaxFactory.ParseSyntaxTree(sourceText, language.SyntaxFactory.DefaultParseOptions.WithIncremental(true), filePath);
+                            }
+                            else
+                            {
+                                syntaxTree = (LanguageSyntaxTree)syntaxTree.WithChangedText(sourceText);
+                            }
+                            Interlocked.Exchange(ref _syntaxTree, syntaxTree);
+                            Interlocked.Exchange(ref _sourceText, sourceText);
+                        }
+                        catch
+                        {
+                            Interlocked.Exchange(ref _syntaxTree, null);
+                            Interlocked.Exchange(ref _sourceText, sourceText);
+                            return;
+                        }
+                        finally
+                        {
+                            _syntaxTreeResetEvent.Set();
+                        }
+                        var cancellationToken = _cancellationTokenSource.Token;
                         if (cancellationToken.IsCancellationRequested) return;
-                        var syntaxTree = language.SyntaxFactory.ParseSyntaxTree(SourceText.From(sourceText), language.SyntaxFactory.DefaultParseOptions.WithIncremental(true), filePath, cancellationToken);
                         var compilation = factory.CreateCompilation(this, ImmutableArray.Create(syntaxTree), cancellationToken);
                         if (_backgroundCompilationSnapshot == null || compilation != null)
                         {
                             compilation.ForceComplete(cancellationToken);
                             if (cancellationToken.IsCancellationRequested) return;
-                            textSnapshot = textBuffer.CurrentSnapshot;
+                            textSnapshot = _textBuffer.CurrentSnapshot;
                             var versionAfter = textSnapshot.Version;
                             if (versionAfter == versionBefore)
                             {

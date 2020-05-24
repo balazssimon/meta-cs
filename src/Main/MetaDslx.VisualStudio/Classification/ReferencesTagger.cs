@@ -55,7 +55,6 @@ namespace MetaDslx.VisualStudio.Classification
 
         public IEnumerable<ITagSpan<ReferencesTag>> GetTags(NormalizedSnapshotSpanCollection spans)
         {
-            _backgroundCompilation.CheckCompilationVersion();
             var compilationSnapshot = _backgroundCompilation.CompilationSnapshot;
             var symbols = compilationSnapshot?.GetCompilationStepResult<SymbolReferencesResult>();
             if (symbols == null) yield break;

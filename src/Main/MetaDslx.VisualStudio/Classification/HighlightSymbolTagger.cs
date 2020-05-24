@@ -99,7 +99,6 @@ namespace MetaDslx.VisualStudio.Classification
             SnapshotSpan? currentWord = null;
             ISymbol currentSymbol = null;
 
-            _backgroundCompilation.CheckCompilationVersion();
             var compilationSnapshot = _backgroundCompilation.CompilationSnapshot;
             var symbols = compilationSnapshot?.GetCompilationStepResult<CollectSymbolsResult>();
             ITextSnapshot textSnapshot = compilationSnapshot.Text;

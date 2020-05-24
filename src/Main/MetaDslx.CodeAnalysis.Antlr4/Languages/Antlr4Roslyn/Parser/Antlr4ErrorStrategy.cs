@@ -197,7 +197,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
                     //			System.err.println("seen error condition before index="+
                     //							   lastErrorIndex+", states="+lastErrorStates);
                     //			System.err.println("FAILSAFE consumes "+recognizer.getTokenNames()[recognizer.getInputStream().LA(1)]);
-                    recognizer.Consume();
+                    _parser.SkipToken(); // recognizer.Consume();
                 }
                 lastErrorIndex = ((ITokenStream)recognizer.InputStream).Index;
                 if (lastErrorStates == null)
@@ -894,13 +894,16 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             protected internal virtual void ConsumeUntil([NotNull] Parser recognizer, [NotNull] IntervalSet set)
             {
                 //		System.err.println("consumeUntil("+set.toString(recognizer.getTokenNames())+")");
-                int ttype = ((ITokenStream)recognizer.InputStream).La(1);
+                int ttype = ttype = _parser.CurrentToken.Kind.ToAntlr4(); //((ITokenStream)recognizer.InputStream).La(1);
                 while (ttype != TokenConstants.Eof && !set.Contains(ttype))
                 {
                     //System.out.println("consume during recover LA(1)="+getTokenNames()[input.LA(1)]);
                     //			recognizer.getInputStream().consume();
-                    _parser.SkipToken(); // recognizer.Consume();
-                    ttype = ((ITokenStream)recognizer.InputStream).La(1);
+                    //recognizer.Consume();
+                    //ttype = ((ITokenStream)recognizer.InputStream).La(1);
+
+                    _parser.SkipToken();
+                    ttype = _parser.CurrentToken.Kind.ToAntlr4();
                 }
             }
         }
