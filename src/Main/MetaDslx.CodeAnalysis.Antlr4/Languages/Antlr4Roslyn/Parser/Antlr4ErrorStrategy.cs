@@ -66,12 +66,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             /// This method is called to enter error recovery mode when a recognition
             /// exception is reported.
             /// </summary>
-            /// <remarks>
-            /// This method is called to enter error recovery mode when a recognition
-            /// exception is reported.
-            /// </remarks>
             /// <param name="recognizer">the parser instance</param>
-            protected internal virtual void BeginErrorCondition(Parser recognizer)
+            protected internal virtual void BeginErrorCondition([NotNull] Parser recognizer)
             {
                 errorRecoveryMode = true;
             }
@@ -86,12 +82,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             /// This method is called to leave error recovery mode after recovering from
             /// a recognition exception.
             /// </summary>
-            /// <remarks>
-            /// This method is called to leave error recovery mode after recovering from
-            /// a recognition exception.
-            /// </remarks>
             /// <param name="recognizer"/>
-            protected internal virtual void EndErrorCondition(Parser recognizer)
+            protected internal virtual void EndErrorCondition([NotNull] Parser recognizer)
             {
                 errorRecoveryMode = false;
                 lastErrorStates = null;
@@ -107,6 +99,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             public virtual void ReportMatch(Parser recognizer)
             {
                 EndErrorCondition(recognizer);
+                _parser._matchedToken = true;
             }
 
             /// <summary>
@@ -171,10 +164,15 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 #if !PORTABLE
                             System.Console.Error.WriteLine("unknown recognition error type: " + e.GetType().FullName);
 #endif
-                            NotifyErrorListeners(e.Message, e);
+                            NotifyErrorListeners(recognizer, e.Message, e);
                         }
                     }
                 }
+            }
+
+            protected internal virtual void NotifyErrorListeners([NotNull] Parser recognizer, string message, RecognitionException e)
+            {
+                recognizer.NotifyErrorListeners(e.OffendingToken, message, e);
             }
 
             /// <summary>
@@ -199,7 +197,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
                     //			System.err.println("seen error condition before index="+
                     //							   lastErrorIndex+", states="+lastErrorStates);
                     //			System.err.println("FAILSAFE consumes "+recognizer.getTokenNames()[recognizer.getInputStream().LA(1)]);
-                    _parser.SkipToken(); // recognizer.Consume();
+                    recognizer.Consume();
                 }
                 lastErrorIndex = ((ITokenStream)recognizer.InputStream).Index;
                 if (lastErrorStates == null)
@@ -268,7 +266,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
                 ITokenStream tokens = ((ITokenStream)recognizer.InputStream);
                 int la = tokens.La(1);
                 // try cheaper subset first; might get lucky. seems to shave a wee bit off
-                var nextTokens = recognizer.Atn.NextTokens(s);
+                IntervalSet nextTokens = recognizer.Atn.NextTokens(s);
                 if (nextTokens.Contains(TokenConstants.Epsilon) || nextTokens.Contains(la))
                 {
                     return;
@@ -317,7 +315,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             /// <seealso cref="ReportError(Parser, RecognitionException)"/>
             /// <param name="recognizer">the parser instance</param>
             /// <param name="e">the recognition exception</param>
-            protected internal virtual void ReportNoViableAlternative(Parser recognizer, NoViableAltException e)
+            protected internal virtual void ReportNoViableAlternative([NotNull] Parser recognizer, [NotNull] NoViableAltException e)
             {
                 ITokenStream tokens = ((ITokenStream)recognizer.InputStream);
                 string input;
@@ -337,7 +335,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
                     input = "<unknown input>";
                 }
                 string msg = "no viable alternative at input " + EscapeWSAndQuote(input);
-                NotifyErrorListeners(msg, e);
+                NotifyErrorListeners(recognizer, msg, e);
             }
 
             /// <summary>
@@ -350,12 +348,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             /// <seealso cref="ReportError(Parser, RecognitionException)"/>
             /// <param name="recognizer">the parser instance</param>
             /// <param name="e">the recognition exception</param>
-            protected internal virtual void ReportInputMismatch(Parser recognizer, InputMismatchException e)
+            protected internal virtual void ReportInputMismatch([NotNull] Parser recognizer, [NotNull] InputMismatchException e)
             {
-                _parser.AddErrorToPreviousTokenEnd(Antlr4RoslynErrorCode.ERR_SyntaxError, e.GetExpectedTokens().ToString(recognizer.Vocabulary)+" expected");
+                _parser.AddErrorToPreviousTokenEnd(Antlr4RoslynErrorCode.ERR_SyntaxError, "missing " + e.GetExpectedTokens().ToString(recognizer.Vocabulary));
 
-                //string msg = "mismatched input " + GetTokenErrorDisplay(e.OffendingToken) + " expecting " + e.GetExpectedTokens().ToString(recognizer.Vocabulary);
-                //NotifyErrorListeners(msg, e);
+                // string msg = "mismatched input " + GetTokenErrorDisplay(e.OffendingToken) + " expecting " + e.GetExpectedTokens().ToString(recognizer.Vocabulary);
+                // NotifyErrorListeners(recognizer, msg, e);
             }
 
             /// <summary>
@@ -368,11 +366,11 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             /// <seealso cref="ReportError(Parser, RecognitionException)"/>
             /// <param name="recognizer">the parser instance</param>
             /// <param name="e">the recognition exception</param>
-            protected internal virtual void ReportFailedPredicate(Parser recognizer, FailedPredicateException e)
+            protected internal virtual void ReportFailedPredicate([NotNull] Parser recognizer, [NotNull] FailedPredicateException e)
             {
-                string ruleName = recognizer.RuleNames[recognizer.RuleContext.RuleIndex];
+                string ruleName = recognizer.RuleNames[recognizer.Context.RuleIndex];
                 string msg = "rule " + ruleName + " " + e.Message;
-                NotifyErrorListeners(msg, e);
+                NotifyErrorListeners(recognizer, msg, e);
             }
 
             /// <summary>
@@ -402,18 +400,19 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             /// .</p>
             /// </remarks>
             /// <param name="recognizer">the parser instance</param>
-            protected internal virtual void ReportUnwantedToken(Parser recognizer)
+            protected internal virtual void ReportUnwantedToken([NotNull] Parser recognizer)
             {
                 if (InErrorRecoveryMode(recognizer))
                 {
                     return;
                 }
                 BeginErrorCondition(recognizer);
+
                 IToken t = recognizer.CurrentToken;
                 string tokenName = GetTokenErrorDisplay(t);
                 IntervalSet expecting = GetExpectedTokens(recognizer);
                 string msg = "extraneous input " + tokenName + " expecting " + expecting.ToString(recognizer.Vocabulary);
-                this.NotifyErrorListeners(msg, null);
+                recognizer.NotifyErrorListeners(t, msg, null);
             }
 
             /// <summary>
@@ -441,7 +440,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             /// .</p>
             /// </remarks>
             /// <param name="recognizer">the parser instance</param>
-            protected internal virtual void ReportMissingToken(Parser recognizer)
+            protected internal virtual void ReportMissingToken([NotNull] Parser recognizer)
             {
                 if (InErrorRecoveryMode(recognizer))
                 {
@@ -449,12 +448,10 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
                 }
                 BeginErrorCondition(recognizer);
 
-                // Don't report this from ANTLR4. It is automatically reported by the missing token created by the parser.
-
-                //IToken t = recognizer.CurrentToken;
-                //IntervalSet expecting = GetExpectedTokens(recognizer);
-                //string msg = "missing " + expecting.ToString(recognizer.Vocabulary) + " at " + GetTokenErrorDisplay(t);
-                //recognizer.NotifyErrorListeners(t, msg, null);
+                IToken t = recognizer.CurrentToken;
+                IntervalSet expecting = GetExpectedTokens(recognizer);
+                string msg = "missing " + expecting.ToString(recognizer.Vocabulary) + " at " + GetTokenErrorDisplay(t);
+                recognizer.NotifyErrorListeners(t, msg, null);
             }
 
             /// <summary>
@@ -543,7 +540,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
                 {
                     // we have deleted the extra token.
                     // now, move past ttype token as if all were ok
-                    _parser.SkipToken(); // recognizer.Consume();
+                    recognizer.Consume();
                     return matchedSymbol;
                 }
                 // SINGLE TOKEN INSERTION
@@ -584,13 +581,13 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             /// </remarks>
             /// <param name="recognizer">the parser instance</param>
             /// <returns>
-            ///
+            /// 
             /// <see langword="true"/>
             /// if single-token insertion is a viable recovery
             /// strategy for the current mismatched input, otherwise
             /// <see langword="false"/>
             /// </returns>
-            protected internal virtual bool SingleTokenInsertion(Parser recognizer)
+            protected internal virtual bool SingleTokenInsertion([NotNull] Parser recognizer)
             {
                 int currentSymbolType = ((ITokenStream)recognizer.InputStream).La(1);
                 // if current token is consistent with what could come after current
@@ -599,8 +596,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
                 ATNState currentState = recognizer.Interpreter.atn.states[recognizer.State];
                 ATNState next = currentState.Transition(0).target;
                 ATN atn = recognizer.Interpreter.atn;
-                PredictionContext predictionContext = PredictionContext.FromRuleContext(atn, recognizer.RuleContext);
-                IntervalSet expectingAtLL2 = atn.NextTokens(next, predictionContext);
+                IntervalSet expectingAtLL2 = atn.NextTokens(next, PredictionContext.FromRuleContext(atn, recognizer.Context));
+                //		System.out.println("LT(2) set="+expectingAtLL2.toString(recognizer.getTokenNames()));
                 if (expectingAtLL2.Contains(currentSymbolType))
                 {
                     ReportMissingToken(recognizer);
@@ -642,19 +639,26 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             /// <see langword="null"/>
             /// </returns>
             [return: Nullable]
-            protected internal virtual IToken SingleTokenDeletion(Parser recognizer)
+            protected internal virtual IToken SingleTokenDeletion([NotNull] Parser recognizer)
             {
                 int nextTokenType = ((ITokenStream)recognizer.InputStream).La(2);
                 IntervalSet expecting = GetExpectedTokens(recognizer);
                 if (expecting.Contains(nextTokenType))
                 {
                     ReportUnwantedToken(recognizer);
-                    // simply delete extra token
+                    /*
+                    System.err.println("recoverFromMismatchedToken deleting "+
+                                        ((TokenStream)recognizer.getInputStream()).LT(1)+
+                                        " since "+((TokenStream)recognizer.getInputStream()).LT(2)+
+                                        " is what we want");
+                    */
                     _parser.SkipToken(); // recognizer.Consume();
+                    // simply delete extra token
                     // we want to return the token we're actually matching
+                    IToken matchedSymbol = _parser.GetCurrentCustomToken(); // recognizer.CurrentToken;
                     ReportMatch(recognizer);
                     // we know current token is correct
-                    return _parser.GetCurrentCustomToken();
+                    return matchedSymbol;
                 }
                 return null;
             }
@@ -680,7 +684,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             /// override this method to create the appropriate tokens.
             /// </remarks>
             [return: NotNull]
-            protected internal virtual IToken GetMissingSymbol(Parser recognizer)
+            protected internal virtual IToken GetMissingSymbol([NotNull] Parser recognizer)
             {
                 IToken currentSymbol = recognizer.CurrentToken;
                 IntervalSet expecting = GetExpectedTokens(recognizer);
@@ -701,12 +705,20 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
                 {
                     current = lookback;
                 }
-                var green = _parser.CreateMissingToken(expectedTokenType.FromAntlr4(_parser.Language.SyntaxFacts.SyntaxKindType), current.Type.FromAntlr4(_parser.Language.SyntaxFacts.SyntaxKindType), true);
-                return _parser.CreateCustomToken(green);
+                return ConstructToken(((ITokenStream)recognizer.InputStream).TokenSource, expectedTokenType, tokenText, current);
+            }
+
+            protected internal virtual IToken ConstructToken(ITokenSource tokenSource, int expectedTokenType, string tokenText, IToken current)
+            {
+                var green = _parser.CreateMissingToken(expectedTokenType.FromAntlr4(_parser.Language.SyntaxFacts.SyntaxKindType), current.Type.FromAntlr4(_parser.Language.SyntaxFacts.SyntaxKindType), false);
+                var token = _parser.CreateCustomToken(green);
+                return token;
+                // ITokenFactory factory = tokenSource.TokenFactory;
+                // return factory.Create(Tuple.Create(tokenSource, current.TokenSource.InputStream), expectedTokenType, tokenText, TokenConstants.DefaultChannel, -1, -1, current.Line, current.Column);
             }
 
             [return: NotNull]
-            protected internal virtual IntervalSet GetExpectedTokens(Parser recognizer)
+            protected internal virtual IntervalSet GetExpectedTokens([NotNull] Parser recognizer)
             {
                 return recognizer.GetExpectedTokens();
             }
@@ -746,18 +758,18 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
                 return EscapeWSAndQuote(s);
             }
 
-            protected internal virtual string GetSymbolText(IToken symbol)
+            protected internal virtual string GetSymbolText([NotNull] IToken symbol)
             {
                 return symbol.Text;
             }
 
-            protected internal virtual int GetSymbolType(IToken symbol)
+            protected internal virtual int GetSymbolType([NotNull] IToken symbol)
             {
                 return symbol.Type;
             }
 
             [return: NotNull]
-            protected internal virtual string EscapeWSAndQuote(string s)
+            protected internal virtual string EscapeWSAndQuote([NotNull] string s)
             {
                 //		if ( s==null ) return s;
                 s = s.Replace("\n", "\\n");
@@ -766,11 +778,103 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
                 return "'" + s + "'";
             }
 
+            /*  Compute the error recovery set for the current rule.  During
+                *  rule invocation, the parser pushes the set of tokens that can
+                *  follow that rule reference on the stack; this amounts to
+                *  computing FIRST of what follows the rule reference in the
+                *  enclosing rule. See LinearApproximator.FIRST().
+                *  This local follow set only includes tokens
+                *  from within the rule; i.e., the FIRST computation done by
+                *  ANTLR stops at the end of a rule.
+                *
+                *  EXAMPLE
+                *
+                *  When you find a "no viable alt exception", the input is not
+                *  consistent with any of the alternatives for rule r.  The best
+                *  thing to do is to consume tokens until you see something that
+                *  can legally follow a call to r *or* any rule that called r.
+                *  You don't want the exact set of viable next tokens because the
+                *  input might just be missing a token--you might consume the
+                *  rest of the input looking for one of the missing tokens.
+                *
+                *  Consider grammar:
+                *
+                *  a : '[' b ']'
+                *    | '(' b ')'
+                *    ;
+                *  b : c '^' INT ;
+                *  c : ID
+                *    | INT
+                *    ;
+                *
+                *  At each rule invocation, the set of tokens that could follow
+                *  that rule is pushed on a stack.  Here are the various
+                *  context-sensitive follow sets:
+                *
+                *  FOLLOW(b1_in_a) = FIRST(']') = ']'
+                *  FOLLOW(b2_in_a) = FIRST(')') = ')'
+                *  FOLLOW(c_in_b) = FIRST('^') = '^'
+                *
+                *  Upon erroneous input "[]", the call chain is
+                *
+                *  a -> b -> c
+                *
+                *  and, hence, the follow context stack is:
+                *
+                *  depth     follow set       start of rule execution
+                *    0         <EOF>                    a (from main())
+                *    1          ']'                     b
+                *    2          '^'                     c
+                *
+                *  Notice that ')' is not included, because b would have to have
+                *  been called from a different context in rule a for ')' to be
+                *  included.
+                *
+                *  For error recovery, we cannot consider FOLLOW(c)
+                *  (context-sensitive or otherwise).  We need the combined set of
+                *  all context-sensitive FOLLOW sets--the set of all tokens that
+                *  could follow any reference in the call chain.  We need to
+                *  resync to one of those tokens.  Note that FOLLOW(c)='^' and if
+                *  we resync'd to that token, we'd consume until EOF.  We need to
+                *  sync to context-sensitive FOLLOWs for a, b, and c: {']','^'}.
+                *  In this case, for input "[]", LA(1) is ']' and in the set, so we would
+                *  not consume anything. After printing an error, rule c would
+                *  return normally.  Rule b would not find the required '^' though.
+                *  At this point, it gets a mismatched token error and throws an
+                *  exception (since LA(1) is not in the viable following token
+                *  set).  The rule exception handler tries to recover, but finds
+                *  the same recovery set and doesn't consume anything.  Rule b
+                *  exits normally returning to rule a.  Now it finds the ']' (and
+                *  with the successful match exits errorRecovery mode).
+                *
+                *  So, you can see that the parser walks up the call chain looking
+                *  for the token that was a member of the recovery set.
+                *
+                *  Errors are not generated in errorRecovery mode.
+                *
+                *  ANTLR's error recovery mechanism is based upon original ideas:
+                *
+                *  "Algorithms + Data Structures = Programs" by Niklaus Wirth
+                *
+                *  and
+                *
+                *  "A note on error recovery in recursive descent parsers":
+                *  http://portal.acm.org/citation.cfm?id=947902.947905
+                *
+                *  Later, Josef Grosch had some good ideas:
+                *
+                *  "Efficient and Comfortable Error Recovery in Recursive Descent
+                *  Parsers":
+                *  ftp://www.cocolab.com/products/cocktail/doca4.ps/ell.ps.zip
+                *
+                *  Like Grosch I implement context-sensitive FOLLOW sets that are combined
+                *  at run-time upon error to avoid overhead during parsing.
+                */
             [return: NotNull]
-            protected internal virtual IntervalSet GetErrorRecoverySet(Parser recognizer)
+            protected internal virtual IntervalSet GetErrorRecoverySet([NotNull] Parser recognizer)
             {
                 ATN atn = recognizer.Interpreter.atn;
-                RuleContext ctx = recognizer.RuleContext;
+                RuleContext ctx = recognizer.Context;
                 IntervalSet recoverSet = new IntervalSet();
                 while (ctx != null && ctx.invokingState >= 0)
                 {
@@ -779,7 +883,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
                     RuleTransition rt = (RuleTransition)invokingState.Transition(0);
                     IntervalSet follow = atn.NextTokens(rt.followState);
                     recoverSet.AddAll(follow);
-                    ctx = ctx.Parent;
+                    ctx = ctx.parent;
                 }
                 recoverSet.Remove(TokenConstants.Epsilon);
                 //		System.out.println("recover set "+recoverSet.toString(recognizer.getTokenNames()));
@@ -787,8 +891,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             }
 
             /// <summary>Consume tokens until one matches the given token set.</summary>
-            /// <remarks>Consume tokens until one matches the given token set.</remarks>
-            protected internal virtual void ConsumeUntil(Parser recognizer, IntervalSet set)
+            protected internal virtual void ConsumeUntil([NotNull] Parser recognizer, [NotNull] IntervalSet set)
             {
                 //		System.err.println("consumeUntil("+set.toString(recognizer.getTokenNames())+")");
                 int ttype = ((ITokenStream)recognizer.InputStream).La(1);
@@ -796,14 +899,9 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
                 {
                     //System.out.println("consume during recover LA(1)="+getTokenNames()[input.LA(1)]);
                     //			recognizer.getInputStream().consume();
-                    _parser.SkipToken(); //recognizer.Consume();
+                    _parser.SkipToken(); // recognizer.Consume();
                     ttype = ((ITokenStream)recognizer.InputStream).La(1);
                 }
-            }
-
-            private void NotifyErrorListeners(string msg, RecognitionException e)
-            {
-                _parser.AddErrorToCurrentToken(Antlr4RoslynErrorCode.ERR_SyntaxError, msg);
             }
         }
     }

@@ -17,9 +17,15 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestLexerMode
 
         protected void Type(string source, int delta = 1)
         {
-            for (int i = 0; i < source.Length; i+= delta)
+            bool last = false;
+            int i = 0;
+            while (i <= source.Length && !last)
             {
-                if (i > source.Length) i = source.Length;
+                if (i >= source.Length)
+                {
+                    i = source.Length;
+                    last = true;
+                }
                 string currentSource = source.Substring(0, i);
                 try
                 {
@@ -29,6 +35,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestLexerMode
                 {
                     throw new WrappedXunitException($"Typing failed at position {i}:\r\n----\r\n{currentSource}\r\n----\r\nOriginal source is:\r\n----\r\n{source}\r\n----\r\n", ex);
                 }
+                i += delta;
             }
         }
 

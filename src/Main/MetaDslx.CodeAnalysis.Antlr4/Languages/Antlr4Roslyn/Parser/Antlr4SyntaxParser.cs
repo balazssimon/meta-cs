@@ -24,7 +24,7 @@ using System.Threading;
 
 namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 {
-    public abstract partial class Antlr4SyntaxParser : SyntaxParser<IncrementalToken>, ITokenStream//, ITokenSource
+    public abstract partial class Antlr4SyntaxParser : SyntaxParser<IncrementalToken>, ITokenStream, ITokenSource, IAntlrErrorListener<IToken>
     {
         private readonly Antlr4SyntaxLexer _lexer;
         private readonly IncrementalParser _parser;
@@ -32,7 +32,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         private Stack<ResetPoint> _resetPoints;
         private bool _matchedToken;
 
-        public Antlr4SyntaxParser(Language language, SourceText text, LanguageParseOptions options, LanguageSyntaxNode oldTree, IEnumerable<TextChangeRange> changes, CancellationToken cancellationToken = default) 
+        public Antlr4SyntaxParser(Language language, SourceText text, LanguageParseOptions options, LanguageSyntaxNode oldTree, IEnumerable<TextChangeRange> changes, CancellationToken cancellationToken = default)
             : base(language, text, options, oldTree, changes, cancellationToken)
         {
             _nodeCache = new Dictionary<ParserRuleContext, GreenNode>();
@@ -40,6 +40,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             _parser = (IncrementalParser)((IAntlr4SyntaxFactory)language.InternalSyntaxFactory).CreateAntlr4Parser(this);
             _parser._incrementalParser = this;
             _parser.RemoveErrorListeners();
+            _parser.AddErrorListener(this);
             _parser.ErrorHandler = new Antlr4ErrorStrategy(this);
             _resetPoints = new Stack<ResetPoint>();
         }
@@ -140,8 +141,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             if (token != null)
             {
                 token.TokenIndex = this.TokenIndex;
-                //var green = _matchedToken ? this.EatToken() : this.SkipToken();
-                var green = this.EatToken();
+                var green = _matchedToken ? this.EatToken() : this.SkipToken();
                 token.SetGreenToken(green);
             }
             _matchedToken = false;
@@ -185,7 +185,6 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 
         #endregion
 
-        /*
         #region ITokenSource
 
         int ITokenSource.Line => throw new NotImplementedException();
@@ -203,7 +202,17 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             throw new NotImplementedException();
         }
 
-        #endregion*/
+        #endregion
+
+        #region IAntlrErrorListener
+
+        void IAntlrErrorListener<IToken>.SyntaxError(IRecognizer recognizer, IToken offendingSymbol, int line, int charPositionInLine, string msg, RecognitionException e)
+        {
+            this.AddErrorToCurrentToken(Antlr4RoslynErrorCode.ERR_SyntaxError, msg);
+            CallLogger.Instance.Log("  Parser error: " + msg);
+        }
+
+        #endregion
         /*
         private class ErrorStrategy : DefaultErrorStrategy
         {
@@ -218,21 +227,6 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             {
                 _parser._matchedToken = true;
                 base.ReportMatch(recognizer);
-            }
-
-            protected override void ReportInputMismatch([NotNull] Parser recognizer, [NotNull] InputMismatchException e)
-            {
-                base.ReportInputMismatch(recognizer, e);
-            }
-
-            protected override void ReportMissingToken([NotNull] Parser recognizer)
-            {
-                base.ReportMissingToken(recognizer);
-            }
-
-            protected override void ReportUnwantedToken([NotNull] Parser recognizer)
-            {
-                base.ReportUnwantedToken(recognizer);
             }
 
             [return: Nullable]
@@ -263,7 +257,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
                 ATNState next = currentState.Transition(0).target;
                 ATN atn = recognizer.Interpreter.atn;
                 PredictionContext predictionContext = PredictionContext.FromRuleContext(atn, recognizer.RuleContext);
-                IntervalSet expectingAtLL2 = atn.NextTokens(next,  predictionContext);
+                IntervalSet expectingAtLL2 = atn.NextTokens(next, predictionContext);
                 if (expectingAtLL2.Contains(currentSymbolType))
                 {
                     ReportMissingToken(recognizer);
