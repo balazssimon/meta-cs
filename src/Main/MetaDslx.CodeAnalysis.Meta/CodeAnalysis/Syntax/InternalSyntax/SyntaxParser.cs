@@ -852,6 +852,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                     _currentTokenErrors = new List<SyntaxDiagnosticInfo>(8);
                 }
 
+                //if (_currentTokenErrors.Any(err => err.ErrorCode == error.ErrorCode && err.Offset == error.Offset)) return;
                 _currentTokenErrors.Add(error);
             }
         }
@@ -1224,6 +1225,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         protected int TokenIndex => _blendedTokens != null ? _blendedTokens.Index : _lexedTokens.Index;
         protected int TokenCount => _blendedTokens != null ? _blendedTokens.Count : _lexedTokens.Count;
         protected InternalSyntaxToken LastCreatedToken => _blendedTokens != null ? _blendedTokens.LastCreatedItem.Token : _lexedTokens.LastCreatedItem.Token;
+        internal protected int SkippedTokenCount => TokenIndex - _lastNonSkippedTokenIndex - 1;
 
         internal protected virtual object CreateCustomTokenCore(InternalSyntaxToken token)
         {

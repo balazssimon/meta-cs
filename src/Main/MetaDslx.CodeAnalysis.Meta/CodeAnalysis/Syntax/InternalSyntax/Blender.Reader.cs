@@ -189,6 +189,12 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                     _oldTreeCursor = _oldTreeCursor.MoveToFirstToken();
                 }
 
+                if (_parser.SkippedTokenCount > 0)
+                {
+                    blendedNode = default;
+                    return false;
+                }
+
                 // See if we're actually able to reuse this node or token.  If not, our caller will
                 // move the cursor to the next appropriate position and will try again.
                 var currentNodeOrToken = _oldTreeCursor.CurrentNodeOrToken;

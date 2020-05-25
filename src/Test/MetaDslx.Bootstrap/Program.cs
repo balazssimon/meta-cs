@@ -21,6 +21,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -77,7 +78,7 @@ namespace MetaDslx.Bootstrap
             Console.WriteLine(test.SayHello("me"));
             //*/
 
-            //*/
+            /*/
             ImmutableModel coreModel = MetaInstance.MModel;
             Console.WriteLine(coreModel);
 
@@ -303,6 +304,32 @@ namespace MetaDslx.Bootstrap
                     File.WriteAllText(@"..\..\..\CallLog.txt", CallLogger.Instance.GetLog());
                 }
             }
+            //*/
+
+            try
+            {
+                CallLogger.Enabled = true;
+                var text = @"namespace EntitiesSample
+{
+	metamodel Entities; 
+
+    class NamedElement{}
+}";
+                var source = SourceText.From(text);
+                var compiler = new MetaCompiler();
+                var src1 = compiler.SingleEdit(source, 76, 1);
+                var src2 = compiler.SingleEdit(src1, 77, 1);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            finally
+            {
+                var log = CallLogger.Instance.GetLog();
+                File.WriteAllText(@"..\..\..\CallLogger.txt", log);
+            }
+
             //*/
         }
 
