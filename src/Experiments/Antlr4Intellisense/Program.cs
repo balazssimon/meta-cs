@@ -93,7 +93,7 @@ namespace Antlr4Intellisense
 
             //*/
 
-            TypeTest(@"namespace A { metamodel M; class B { st");
+            TypeTest(@"namespace A { metamodel M; associationx B.c with C.b; class B { C c; } class C { B b; } }");
 
             //*/
         }

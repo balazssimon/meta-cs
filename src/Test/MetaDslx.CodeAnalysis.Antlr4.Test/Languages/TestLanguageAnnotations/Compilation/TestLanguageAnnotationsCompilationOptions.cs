@@ -13,7 +13,6 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations
     public class TestLanguageAnnotationsCompilationOptions : LanguageCompilationOptions, IEquatable<LanguageCompilationOptions>
     {
         public TestLanguageAnnotationsCompilationOptions(
-            Language language,
             OutputKind outputKind,
             bool reportSuppressedDiagnostics = false,
             string moduleName = null,
@@ -44,7 +43,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations
             MetadataImportOptions metadataImportOptions = MetadataImportOptions.Public,
             bool referencesSupersedeLowerVersions = false,
             BinderFlags topLevelBinderFlags = null)
-            : base(language, outputKind, reportSuppressedDiagnostics, moduleName, mainTypeName, scriptClassName, usings,
+            : base(TestLanguageAnnotationsLanguage.Instance, outputKind, reportSuppressedDiagnostics, moduleName, mainTypeName, scriptClassName, usings,
                    optimizationLevel, checkOverflow, allowUnsafe, cryptoKeyContainer, cryptoKeyFile, cryptoPublicKey, delaySign, platform, 
                    generalDiagnosticOption, warningLevel, specificDiagnosticOptions,
                    concurrentBuild, deterministic, currentLocalTime, debugPlusMode, xmlReferenceResolver,
@@ -55,7 +54,6 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations
         protected override LanguageCompilationOptions Clone()
         {
             return new TestLanguageAnnotationsCompilationOptions(
-                language: this.Language,
                 outputKind: this.OutputKind,
                 reportSuppressedDiagnostics: this.ReportSuppressedDiagnostics,
                 moduleName: this.ModuleName,

@@ -16,8 +16,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation
     public class TestIncrementalCompilationCompilation : LanguageCompilation
     {
         #region Constructors and Factories
-        private static readonly TestIncrementalCompilationCompilationOptions s_defaultOptions = new TestIncrementalCompilationCompilationOptions(TestIncrementalCompilationLanguage.Instance, OutputKind.ConsoleApplication);
-        private static readonly TestIncrementalCompilationCompilationOptions s_defaultSubmissionOptions = new TestIncrementalCompilationCompilationOptions(TestIncrementalCompilationLanguage.Instance, OutputKind.DynamicallyLinkedLibrary).WithReferencesSupersedeLowerVersions(true);
+        private static readonly TestIncrementalCompilationCompilationOptions s_defaultOptions = new TestIncrementalCompilationCompilationOptions(OutputKind.ConsoleApplication);
+        private static readonly TestIncrementalCompilationCompilationOptions s_defaultSubmissionOptions = new TestIncrementalCompilationCompilationOptions(OutputKind.DynamicallyLinkedLibrary).WithReferencesSupersedeLowerVersions(true);
         /// <summary>
         /// Creates a new compilation from scratch. Methods such as AddSyntaxTrees or AddReferences
         /// on the returned object will allow to continue building up the Compilation incrementally.

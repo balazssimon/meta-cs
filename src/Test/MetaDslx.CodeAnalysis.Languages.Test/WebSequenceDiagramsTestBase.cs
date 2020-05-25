@@ -17,7 +17,7 @@ namespace MetaDslx.CodeAnalysis.Languages.Test
             UmlDescriptor.Initialize();
             string text = File.ReadAllText($@"..\..\..\InputFiles\WebSequenceDiagrams\{fileId}.wsd");
             var st = SequenceSyntaxTree.ParseText(text);
-            var options = new SequenceCompilationOptions(SequenceLanguage.Instance, Microsoft.CodeAnalysis.OutputKind.DynamicallyLinkedLibrary, topLevelBinderFlags: (BinderFlags)BinderFlags.IgnoreAccessibility, concurrentBuild: false);
+            var options = new SequenceCompilationOptions(Microsoft.CodeAnalysis.OutputKind.DynamicallyLinkedLibrary, topLevelBinderFlags: (BinderFlags)BinderFlags.IgnoreAccessibility, concurrentBuild: false);
             var comp = SequenceCompilation.Create("Test").WithOptions(options).AddSyntaxTrees(st);
             comp.ForceComplete();
             if (assertEmptyDiagnostics) AssertEmptyDiagnostics(comp);

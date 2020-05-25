@@ -13,7 +13,6 @@ namespace MetaDslx.Languages.Meta
     public class MetaCompilationOptions : LanguageCompilationOptions, IEquatable<LanguageCompilationOptions>
     {
         public MetaCompilationOptions(
-            Language language,
             OutputKind outputKind,
             bool reportSuppressedDiagnostics = false,
             string moduleName = null,
@@ -44,7 +43,7 @@ namespace MetaDslx.Languages.Meta
             MetadataImportOptions metadataImportOptions = MetadataImportOptions.Public,
             bool referencesSupersedeLowerVersions = false,
             BinderFlags topLevelBinderFlags = null)
-            : base(language, outputKind, reportSuppressedDiagnostics, moduleName, mainTypeName, scriptClassName, usings,
+            : base(MetaLanguage.Instance, outputKind, reportSuppressedDiagnostics, moduleName, mainTypeName, scriptClassName, usings,
                    optimizationLevel, checkOverflow, allowUnsafe, cryptoKeyContainer, cryptoKeyFile, cryptoPublicKey, delaySign, platform, 
                    generalDiagnosticOption, warningLevel, specificDiagnosticOptions,
                    concurrentBuild, deterministic, currentLocalTime, debugPlusMode, xmlReferenceResolver,
@@ -55,7 +54,6 @@ namespace MetaDslx.Languages.Meta
         protected override LanguageCompilationOptions Clone()
         {
             return new MetaCompilationOptions(
-                language: this.Language,
                 outputKind: this.OutputKind,
                 reportSuppressedDiagnostics: this.ReportSuppressedDiagnostics,
                 moduleName: this.ModuleName,

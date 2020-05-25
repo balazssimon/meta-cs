@@ -488,8 +488,8 @@ namespace [Properties.DefaultNamespace]
     {
         #region Constructors and Factories
 
-        private static readonly [lang]CompilationOptions s_defaultOptions = new [lang]CompilationOptions([lang]Language.Instance, OutputKind.ConsoleApplication);
-        private static readonly [lang]CompilationOptions s_defaultSubmissionOptions = new [lang]CompilationOptions([lang]Language.Instance, OutputKind.DynamicallyLinkedLibrary).WithReferencesSupersedeLowerVersions(true);
+        private static readonly [lang]CompilationOptions s_defaultOptions = new [lang]CompilationOptions(OutputKind.ConsoleApplication);
+        private static readonly [lang]CompilationOptions s_defaultSubmissionOptions = new [lang]CompilationOptions(OutputKind.DynamicallyLinkedLibrary).WithReferencesSupersedeLowerVersions(true);
 
         /// <summary>
         /// Creates a new compilation from scratch. Methods such as AddSyntaxTrees or AddReferences
@@ -733,6 +733,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Immutable;
+using Microsoft.CodeAnalysis;
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Declarations;
@@ -745,12 +746,64 @@ using [Properties.DefaultNamespace].Binding;
 using [Properties.DefaultNamespace].Symbols;
 [Instances.ParserHeader]
 ^
+[var lang = Properties.LanguageName]
 namespace [Properties.DefaultNamespace]
 {
-    public class [Properties.LanguageName]CompilationFactory : CompilationFactory
+    public class [lang]CompilationFactory : CompilationFactory
     {
-        internal [Properties.LanguageName]CompilationFactory()
+        internal [lang]CompilationFactory()
         {
+        }
+^
+        /// <summary>
+        /// Default compilation options for the [lang] language
+        /// </summary>
+        public override LanguageCompilationOptions DefaultCompilationOptions => new [lang]CompilationOptions(OutputKind.ConsoleApplication);
+^
+        /// <summary>
+        /// Default compilation options for script submissions for the [lang] language
+        /// </summary>
+        public override LanguageCompilationOptions DefaultSubmissionOptions => new [lang]CompilationOptions(OutputKind.DynamicallyLinkedLibrary).WithReferencesSupersedeLowerVersions(true);
+^
+        /// <summary>
+        /// Creates a new compilation from scratch. Methods such as AddSyntaxTrees or AddReferences
+        /// on the returned object will allow to continue building up the Compilation incrementally.
+        /// </summary>
+        /// <param name="assemblyName">Simple assembly name.</param>
+        /// <param name="syntaxTrees">The syntax trees with the source code for the new compilation.</param>
+        /// <param name="references">The references for the new compilation.</param>
+        /// <param name="options">The compiler options to use.</param>
+        /// <returns>A new compilation.</returns>
+        public override LanguageCompilation CreateCompilation(
+            string assemblyName,
+            IEnumerable<SyntaxTree> syntaxTrees = null,
+            IEnumerable<MetadataReference> references = null,
+            LanguageCompilationOptions options = null)
+        {
+            return [lang]Compilation.Create(assemblyName, syntaxTrees, references, ([lang]CompilationOptions)options);
+        }
+^
+        /// <summary>
+        /// Creates a new compilation that can be used in scripting.
+        /// </summary>
+        /// <param name="assemblyName">Simple assembly name.</param>
+        /// <param name="syntaxTree">The syntax tree with the source code for the new compilation.</param>
+        /// <param name="references">The references for the new compilation.</param>
+        /// <param name="options">The compiler options to use.</param>
+        /// <param name="previousScriptCompilation">The compilation of the previous state of the script.</param>
+        /// <param name="returnType">The return type resulting from the script.</param>
+        /// <param name="globalsType">The type from which the script can take the global variables.</param>
+        /// <returns>A new compilation.</returns>
+        public override LanguageCompilation CreateScriptCompilation(
+            string assemblyName,
+            SyntaxTree syntaxTree = null,
+            IEnumerable<MetadataReference> references = null,
+            LanguageCompilationOptions options = null,
+            LanguageCompilation previousScriptCompilation = null,
+            global::System.Type returnType = null,
+            global::System.Type globalsType = null)
+        {
+            return [lang]Compilation.CreateScriptCompilation(assemblyName, syntaxTree, references, ([lang]CompilationOptions)options, ([lang]Compilation)previousScriptCompilation, returnType, globalsType);
         }
 ^
         public override BinderFactoryVisitor CreateBinderFactoryVisitor(BinderFactory binderFactory)
@@ -802,7 +855,6 @@ namespace [Properties.DefaultNamespace]
     public class [lang]CompilationOptions : LanguageCompilationOptions, IEquatable<LanguageCompilationOptions>
     {
         public [lang]CompilationOptions(
-            Language language,
             OutputKind outputKind,
             bool reportSuppressedDiagnostics = false,
             string moduleName = null,
@@ -833,7 +885,7 @@ namespace [Properties.DefaultNamespace]
             MetadataImportOptions metadataImportOptions = MetadataImportOptions.Public,
             bool referencesSupersedeLowerVersions = false,
             BinderFlags topLevelBinderFlags = null)
-            : base(language, outputKind, reportSuppressedDiagnostics, moduleName, mainTypeName, scriptClassName, usings,
+            : base([lang]Language.Instance, outputKind, reportSuppressedDiagnostics, moduleName, mainTypeName, scriptClassName, usings,
                    optimizationLevel, checkOverflow, allowUnsafe, cryptoKeyContainer, cryptoKeyFile, cryptoPublicKey, delaySign, platform, 
                    generalDiagnosticOption, warningLevel, specificDiagnosticOptions,
                    concurrentBuild, deterministic, currentLocalTime, debugPlusMode, xmlReferenceResolver,
@@ -845,7 +897,6 @@ namespace [Properties.DefaultNamespace]
         protected override LanguageCompilationOptions Clone()
         {
             return new [lang]CompilationOptions(
-                language: this.Language,
                 outputKind: this.OutputKind,
                 reportSuppressedDiagnostics: this.ReportSuppressedDiagnostics,
                 moduleName: this.ModuleName,

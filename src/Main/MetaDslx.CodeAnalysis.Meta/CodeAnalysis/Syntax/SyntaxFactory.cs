@@ -810,6 +810,10 @@ namespace MetaDslx.CodeAnalysis.Syntax
         /// <summary>
         /// Produces a syntax tree by parsing the source text.
         /// </summary>
+        /// <param name="text">The source code to be parsed.</param>
+        /// <param name="options">The options for parsing.</param>
+        /// <param name="path">The file path of the source code. Used to provide better diagnostics.</param>
+        /// <param name="cancellationToken">Can be used to cancel the parsing process.</param>
         public LanguageSyntaxTree ParseSyntaxTree(
             SourceText text,
             ParseOptions options = null,
@@ -822,6 +826,10 @@ namespace MetaDslx.CodeAnalysis.Syntax
         /// <summary>
         /// Produces a syntax tree by parsing the source text.
         /// </summary>
+        /// <param name="text">The source code to be parsed.</param>
+        /// <param name="options">The options for parsing.</param>
+        /// <param name="path">The file path of the source code. Used to provide better diagnostics.</param>
+        /// <param name="cancellationToken">Can be used to cancel the parsing process.</param>
         protected abstract LanguageSyntaxTree ParseSyntaxTreeCore(
             SourceText text,
             ParseOptions options = null,

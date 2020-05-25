@@ -16,8 +16,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode
     public class TestLexerModeCompilation : LanguageCompilation
     {
         #region Constructors and Factories
-        private static readonly TestLexerModeCompilationOptions s_defaultOptions = new TestLexerModeCompilationOptions(TestLexerModeLanguage.Instance, OutputKind.ConsoleApplication);
-        private static readonly TestLexerModeCompilationOptions s_defaultSubmissionOptions = new TestLexerModeCompilationOptions(TestLexerModeLanguage.Instance, OutputKind.DynamicallyLinkedLibrary).WithReferencesSupersedeLowerVersions(true);
+        private static readonly TestLexerModeCompilationOptions s_defaultOptions = new TestLexerModeCompilationOptions(OutputKind.ConsoleApplication);
+        private static readonly TestLexerModeCompilationOptions s_defaultSubmissionOptions = new TestLexerModeCompilationOptions(OutputKind.DynamicallyLinkedLibrary).WithReferencesSupersedeLowerVersions(true);
         /// <summary>
         /// Creates a new compilation from scratch. Methods such as AddSyntaxTrees or AddReferences
         /// on the returned object will allow to continue building up the Compilation incrementally.

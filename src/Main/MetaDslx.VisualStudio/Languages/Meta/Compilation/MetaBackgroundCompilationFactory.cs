@@ -31,7 +31,7 @@ namespace MetaDslx.VisualStudio.Languages.Meta.Compilation
             BinderFlags binderFlags = BinderFlags.IgnoreAccessibility;
             BinderFlags binderFlags2 = BinderFlags.IgnoreMetaLibraryDuplicatedTypes;
             binderFlags = binderFlags.UnionWith(binderFlags2);
-            MetaCompilationOptions options = new MetaCompilationOptions(MetaLanguage.Instance, OutputKind.NetModule,
+            MetaCompilationOptions options = new MetaCompilationOptions(OutputKind.NetModule,
                 deterministic: true, concurrentBuild: true,
                 topLevelBinderFlags: binderFlags);
             var compilation = MetaCompilation.Create("MetaBackgroundCompilation").AddReferences(metaModelReference).AddSyntaxTrees(syntaxTrees).WithOptions(options);

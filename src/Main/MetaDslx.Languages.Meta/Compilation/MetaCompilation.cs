@@ -16,8 +16,8 @@ namespace MetaDslx.Languages.Meta
     public class MetaCompilation : LanguageCompilation
     {
         #region Constructors and Factories
-        private static readonly MetaCompilationOptions s_defaultOptions = new MetaCompilationOptions(MetaLanguage.Instance, OutputKind.ConsoleApplication);
-        private static readonly MetaCompilationOptions s_defaultSubmissionOptions = new MetaCompilationOptions(MetaLanguage.Instance, OutputKind.DynamicallyLinkedLibrary).WithReferencesSupersedeLowerVersions(true);
+        private static readonly MetaCompilationOptions s_defaultOptions = new MetaCompilationOptions(OutputKind.ConsoleApplication);
+        private static readonly MetaCompilationOptions s_defaultSubmissionOptions = new MetaCompilationOptions(OutputKind.DynamicallyLinkedLibrary).WithReferencesSupersedeLowerVersions(true);
         /// <summary>
         /// Creates a new compilation from scratch. Methods such as AddSyntaxTrees or AddReferences
         /// on the returned object will allow to continue building up the Compilation incrementally.

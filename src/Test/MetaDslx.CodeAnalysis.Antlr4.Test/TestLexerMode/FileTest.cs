@@ -7,7 +7,7 @@ using Xunit;
 
 namespace MetaDslx.CodeAnalysis.Antlr4Test.TestLexerMode
 {
-    public class FileTest_MGenTest : TypeTest
+    public class FileTest_MGenTest : LexerModeTestBase
     {
         [Fact]
         public void MGenTest()
@@ -17,7 +17,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestLexerMode
             Type(source);
         }
     }
-    public class FileTest_PropertyTest : TypeTest
+    public class FileTest_PropertyTest : LexerModeTestBase
     {
         [Fact]
         public void PropertyTest()
@@ -26,7 +26,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestLexerMode
             Type(source);
         }
     }
-    public class FileTest_MetaModelGenerator : TypeTest
+    public class FileTest_MetaModelGenerator : LexerModeTestBase
     {
         [Fact]
         public void MetaModelGenerator()
@@ -35,7 +35,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestLexerMode
             Type(source, 50);
         }
     }
-    public class FileTest_MofModelToMetaModelGenerator : TypeTest
+    public class FileTest_MofModelToMetaModelGenerator : LexerModeTestBase
     {
         [Fact]
         public void MofModelToMetaModelGenerator()
@@ -44,7 +44,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestLexerMode
             Type(source, 64);
         }
     }
-    public class FileTest_UmlModelToMetaModelGenerator : TypeTest
+    public class FileTest_UmlModelToMetaModelGenerator : LexerModeTestBase
     {
         [Fact]
         public void UmlModelToMetaModelGenerator()
@@ -53,7 +53,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestLexerMode
             Type(source, 64);
         }
     }
-    public class FileTest_ImmutableMetaModelGenerator : TypeTest
+    public class FileTest_ImmutableMetaModelGenerator : LexerModeTestBase
     {
         [Fact]
         public void ImmutableMetaModelGenerator()
@@ -62,7 +62,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestLexerMode
             Type(source, 560);
         }
     }
-    public class FileTest_CompilerGenerator : TypeTest
+    public class FileTest_CompilerGenerator : LexerModeTestBase
     {
         [Fact]
         public void CompilerGenerator()
@@ -71,7 +71,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestLexerMode
             Type(source, 20000);
         }
     }
-    public class FileTest_SoalPrinter : TypeTest
+    public class FileTest_SoalPrinter : LexerModeTestBase
     {
         [Fact]
         public void SoalPrinter()
@@ -80,7 +80,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestLexerMode
             Type(source, 70);
         }
     }
-    public class FileTest_XsdGenerator : TypeTest
+    public class FileTest_XsdGenerator : LexerModeTestBase
     {
         [Fact]
         public void XsdGenerator()
@@ -89,7 +89,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestLexerMode
             Type(source, 120);
         }
     }
-    public class FileTest_WsdlGenerator : TypeTest
+    public class FileTest_WsdlGenerator : LexerModeTestBase
     {
         [Fact]
         public void WsdlGenerator()

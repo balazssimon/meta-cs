@@ -94,8 +94,9 @@ namespace MetaDslx.Bootstrap
             //string text = File.ReadAllText(@"..\..\..\Error2.mm");
             //string text = File.ReadAllText(@"..\..\..\Error3.mm");
             //string text = File.ReadAllText(@"..\..\..\Error4.mm");
+            string text = File.ReadAllText(@"..\..\..\Error5.mm");
 
-            string text = @"namespace A { metamodel M; class B { s";
+            //string text = @"namespace A { metamodel M; class B { s";
 
             var tree = MetaSyntaxTree.ParseText(text);
             var declarations = MetaDeclarationTreeBuilderVisitor.ForTree((MetaSyntaxTree)tree, "Script", false);
@@ -116,7 +117,7 @@ namespace MetaDslx.Bootstrap
             BinderFlags binderFlags = BinderFlags.IgnoreAccessibility;
             BinderFlags binderFlags2 = BinderFlags.IgnoreMetaLibraryDuplicatedTypes;
             binderFlags = binderFlags.UnionWith(binderFlags2);
-            MetaCompilationOptions options = new MetaCompilationOptions(MetaLanguage.Instance, OutputKind.NetModule, deterministic: true, concurrentBuild: false, topLevelBinderFlags: binderFlags);
+            MetaCompilationOptions options = new MetaCompilationOptions(OutputKind.NetModule, deterministic: true, concurrentBuild: false, topLevelBinderFlags: binderFlags);
             var compilation = MetaCompilation.
                 Create("MetaTest").
                 AddSyntaxTrees(tree).

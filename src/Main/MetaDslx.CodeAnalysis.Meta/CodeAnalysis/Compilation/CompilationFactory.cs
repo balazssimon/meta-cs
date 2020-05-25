@@ -21,6 +21,45 @@ namespace MetaDslx.CodeAnalysis
         {
         }
 
+        public abstract LanguageCompilationOptions DefaultCompilationOptions { get; }
+        public abstract LanguageCompilationOptions DefaultSubmissionOptions { get; }
+
+        /// <summary>
+        /// Creates a new compilation from scratch. Methods such as AddSyntaxTrees or AddReferences
+        /// on the returned object will allow to continue building up the Compilation incrementally.
+        /// </summary>
+        /// <param name="assemblyName">Simple assembly name.</param>
+        /// <param name="syntaxTrees">The syntax trees with the source code for the new compilation.</param>
+        /// <param name="references">The references for the new compilation.</param>
+        /// <param name="options">The compiler options to use.</param>
+        /// <returns>A new compilation.</returns>
+        public abstract LanguageCompilation CreateCompilation(
+            string assemblyName,
+            IEnumerable<SyntaxTree> syntaxTrees = null,
+            IEnumerable<MetadataReference> references = null,
+            LanguageCompilationOptions options = null);
+
+        /// <summary>
+        /// Creates a new compilation that can be used in scripting.
+        /// </summary>
+        /// <param name="assemblyName">Simple assembly name.</param>
+        /// <param name="syntaxTree">The syntax tree with the source code for the new compilation.</param>
+        /// <param name="references">The references for the new compilation.</param>
+        /// <param name="options">The compiler options to use.</param>
+        /// <param name="previousScriptCompilation">The compilation of the previous state of the script.</param>
+        /// <param name="returnType">The return type resulting from the script.</param>
+        /// <param name="globalsType">The type from which the script can take the global variables.</param>
+        /// <returns>A new compilation.</returns>
+        public abstract LanguageCompilation CreateScriptCompilation(
+            string assemblyName,
+            SyntaxTree syntaxTree = null,
+            IEnumerable<MetadataReference> references = null,
+            LanguageCompilationOptions options = null,
+            LanguageCompilation previousScriptCompilation = null,
+            Type returnType = null,
+            Type globalsType = null);
+
+
         public CompletionGraph CompletionGraph
         {
             get

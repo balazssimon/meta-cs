@@ -6,7 +6,7 @@ using Xunit;
 
 namespace MetaDslx.CodeAnalysis.Antlr4Test.TestIncrementalCompilation
 {
-    public class RandomTest : TypeTest
+    public class RandomTest : IncrementalCompilationTestBase
     {
         private const int TestCount = 10;
         private const int SourceLength = 1000;

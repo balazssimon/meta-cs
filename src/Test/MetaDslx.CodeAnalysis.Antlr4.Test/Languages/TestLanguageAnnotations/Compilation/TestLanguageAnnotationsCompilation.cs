@@ -16,8 +16,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations
     public class TestLanguageAnnotationsCompilation : LanguageCompilation
     {
         #region Constructors and Factories
-        private static readonly TestLanguageAnnotationsCompilationOptions s_defaultOptions = new TestLanguageAnnotationsCompilationOptions(TestLanguageAnnotationsLanguage.Instance, OutputKind.ConsoleApplication);
-        private static readonly TestLanguageAnnotationsCompilationOptions s_defaultSubmissionOptions = new TestLanguageAnnotationsCompilationOptions(TestLanguageAnnotationsLanguage.Instance, OutputKind.DynamicallyLinkedLibrary).WithReferencesSupersedeLowerVersions(true);
+        private static readonly TestLanguageAnnotationsCompilationOptions s_defaultOptions = new TestLanguageAnnotationsCompilationOptions(OutputKind.ConsoleApplication);
+        private static readonly TestLanguageAnnotationsCompilationOptions s_defaultSubmissionOptions = new TestLanguageAnnotationsCompilationOptions(OutputKind.DynamicallyLinkedLibrary).WithReferencesSupersedeLowerVersions(true);
         /// <summary>
         /// Creates a new compilation from scratch. Methods such as AddSyntaxTrees or AddReferences
         /// on the returned object will allow to continue building up the Compilation incrementally.
