@@ -14,43 +14,39 @@ namespace MetaDslx.VisualStudio.Compilation
 {
     public class CompilationSnapshot
     {
-        public static readonly CompilationSnapshot Default = new CompilationSnapshot(null, null, ImmutableDictionary<object, object>.Empty);
+        public static readonly CompilationSnapshot Default = new CompilationSnapshot(null, null, null, ImmutableDictionary<object, object>.Empty);
         
-        private ITextSnapshot text;
-        private ICompilation compilation;
-        private ImmutableDictionary<object, object> compilationStepResults;
+        public readonly ITextSnapshot Text;
+        public readonly LanguageSyntaxTree SyntaxTree;
+        public readonly ICompilation Compilation;
+        public readonly ImmutableDictionary<object, object> CompilationStepResults;
 
-        public CompilationSnapshot(ITextSnapshot text, ICompilation compilation, ImmutableDictionary<object, object> compilationStepResults)
+        public CompilationSnapshot(ITextSnapshot text, LanguageSyntaxTree syntaxTree, ICompilation compilation, ImmutableDictionary<object, object> compilationStepResults)
         {
-            this.text = text;
-            this.compilation = compilation;
-            this.compilationStepResults = compilationStepResults;
+            this.Text = text;
+            this.SyntaxTree = syntaxTree;
+            this.Compilation = compilation;
+            this.CompilationStepResults = compilationStepResults;
         }
-
-        public ITextSnapshot Text => text;
-
-        public ICompilation Compilation => compilation;
-
-        public ImmutableDictionary<object, object> CompilationStepResults => compilationStepResults;
 
         public T GetCompilationStepResult<T>(object key = null)
             where T: class
         {
             if (key == null) key = typeof(T);
-            if (this.compilationStepResults.TryGetValue(key, out var value) && value is T tValue) return tValue;
+            if (this.CompilationStepResults.TryGetValue(key, out var value) && value is T tValue) return tValue;
             else return null;
         }
 
         public bool Changed(ITextSnapshot newText)
         {
-            return this.text == null || newText != null && newText.Version != this.text.Version;
+            return this.Text == null || newText != null && newText.Version != this.Text.Version;
         }
 
-        public CompilationSnapshot Update(ITextSnapshot text, ICompilation compilation, ImmutableDictionary<object, object> compilationStepResults)
+        public CompilationSnapshot Update(ITextSnapshot text, LanguageSyntaxTree syntaxTree, ICompilation compilation, ImmutableDictionary<object, object> compilationStepResults)
         {
-            if (this.text != text || this.compilation != compilation || this.compilationStepResults != compilationStepResults)
+            if (this.Text != text || this.SyntaxTree != syntaxTree || this.Compilation != compilation || this.CompilationStepResults != compilationStepResults)
             {
-                return new CompilationSnapshot(text, compilation, compilationStepResults);
+                return new CompilationSnapshot(text, syntaxTree, compilation, compilationStepResults);
             }
             return this;
         }

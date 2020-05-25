@@ -28,6 +28,7 @@ namespace MetaDslx.VisualStudio.Compilation
             var result = new SymbolReferencesResult();
             var compilationSnapshot = _backgroundCompilation.CompilationSnapshot;
             var collectedSymbols = compilationSnapshot.GetCompilationStepResult<CollectSymbolsResult>();
+            if (collectedSymbols == null) return result;
             ITextSnapshot textSnapshot = compilationSnapshot.Text;
             foreach (var token in collectedSymbols.TokensWithSymbols)
             {

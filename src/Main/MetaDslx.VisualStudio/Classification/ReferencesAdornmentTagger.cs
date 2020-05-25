@@ -40,13 +40,14 @@ namespace MetaDslx.VisualStudio.Classification
             ));
         }
 
-        protected virtual void CompilationChanged(object sender, CompilationChangedEventArgs e)
+        protected virtual void CompilationChanged(object sender, EventArgs e)
         {
-            var symbols = e.NewCompilation.GetCompilationStepResult<SymbolReferencesResult>();
-            if (_symbols != symbols)
+            var compilationSnapshot = _backgroundCompilation.CompilationSnapshot;
+            var symbols = compilationSnapshot.GetCompilationStepResult<SymbolReferencesResult>();
+            if (_symbols != symbols && symbols != null)
             {
                 Interlocked.Exchange(ref _symbols, symbols);
-                ITextSnapshot textSnapshot = e.NewCompilation.Text;
+                ITextSnapshot textSnapshot = compilationSnapshot.Text;
                 this.RaiseTagsChanged(new SnapshotSpan(textSnapshot, Span.FromBounds(0, textSnapshot.Length)));
             }
         }

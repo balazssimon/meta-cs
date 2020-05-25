@@ -42,10 +42,11 @@ namespace MetaDslx.VisualStudio.Classification
             base.Dispose();
         }
 
-        protected override void CompilationChanged(object sender, CompilationChangedEventArgs e)
+        protected override void CompilationChanged(object sender, EventArgs e)
         {
             base.CompilationChanged(sender, e);
-            this.Factory.UpdateErrors(this.BackgroundCompilation.FilePath, this.BackgroundCompilation.CompilationSnapshot.Compilation);
+            var compilationSnapshot = this.BackgroundCompilation.CompilationSnapshot;
+            this.Factory.UpdateErrors(this.BackgroundCompilation.FilePath, compilationSnapshot.Compilation);
             this.TaggerProvider.UpdateAllSinks();
         }
 

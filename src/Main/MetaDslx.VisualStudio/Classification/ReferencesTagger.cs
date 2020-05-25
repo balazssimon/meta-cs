@@ -42,13 +42,14 @@ namespace MetaDslx.VisualStudio.Classification
 
         public event EventHandler<SnapshotSpanEventArgs> TagsChanged;
 
-        protected virtual void CompilationChanged(object sender, CompilationChangedEventArgs e)
+        protected virtual void CompilationChanged(object sender, EventArgs e)
         {
-            var symbols = e.NewCompilation.GetCompilationStepResult<SymbolReferencesResult>();
+            var compilationSnapshot = _backgroundCompilation.CompilationSnapshot;
+            var symbols = compilationSnapshot.GetCompilationStepResult<SymbolReferencesResult>();
             if (_symbols != symbols)
             {
                 Interlocked.Exchange(ref _symbols, symbols);
-                ITextSnapshot textSnapshot = e.NewCompilation.Text;
+                ITextSnapshot textSnapshot = compilationSnapshot.Text;
                 this.TagsChanged?.Invoke(this, new SnapshotSpanEventArgs(new SnapshotSpan(textSnapshot, Span.FromBounds(0, textSnapshot.Length))));
             }
         }

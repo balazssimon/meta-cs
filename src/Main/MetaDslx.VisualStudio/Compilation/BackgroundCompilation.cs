@@ -28,16 +28,15 @@ namespace MetaDslx.VisualStudio.Compilation
         private readonly ITextBuffer _textBuffer;
         private readonly MetaDslxMefServices _mefServices;
 
+        private TaskScheduler _synchronizationContext;
+
         private SourceText _sourceText;
         private ConcurrentQueue<ImmutableArray<TextChange>> _textChanges;
         private LanguageSyntaxTree _syntaxTree;
         private ManualResetEvent _syntaxTreeResetEvent;
 
         private CompilationSnapshot _compilationSnapshot;
-        private CompilationSnapshot _backgroundCompilationSnapshot;
         private CancellationTokenSource _cancellationTokenSource;
-
-        private BackgroundWorker _backgroundWorker;
 
         private IBackgroundCompilationFactory _compilationFactory;
         private List<IBackgroundCompilationStep> _compilationSteps;
@@ -51,9 +50,9 @@ namespace MetaDslx.VisualStudio.Compilation
             _textChanges = new ConcurrentQueue<ImmutableArray<TextChange>>();
             _mefServices = mefServices;
 
+            _synchronizationContext = TaskScheduler.FromCurrentSynchronizationContext();
             _cancellationTokenSource = new CancellationTokenSource();
             _compilationSnapshot = CompilationSnapshot.Default;
-            _backgroundCompilationSnapshot = CompilationSnapshot.Default;
         }
 
         private void TextBuffer_Changed(object sender, TextContentChangedEventArgs e)
@@ -69,12 +68,14 @@ namespace MetaDslx.VisualStudio.Compilation
 
         public static BackgroundCompilation GetOrCreate(MetaDslxMefServices mefServices, ITextBuffer textBuffer)
         {
-            return textBuffer.Properties.GetOrCreateSingletonProperty(typeof(BackgroundCompilation), () => new BackgroundCompilation(mefServices, textBuffer));
+            var result = textBuffer.Properties.GetOrCreateSingletonProperty(typeof(BackgroundCompilation), () => new BackgroundCompilation(mefServices, textBuffer));
+            result.Recompile();
+            return result;
         }
 
         public MetaDslxMefServices MefServices => _mefServices;
 
-        public event EventHandler<CompilationChangedEventArgs> CompilationChanged;
+        public event EventHandler CompilationChanged;
 
         public CompilationSnapshot CompilationSnapshot => _compilationSnapshot;
 
@@ -128,11 +129,8 @@ namespace MetaDslx.VisualStudio.Compilation
         {
             if (!disposedValue)
             {
-                if (disposing)
-                {
-                    _cancellationTokenSource.Cancel();
-                    _cancellationTokenSource.Dispose();
-                }
+                _textBuffer.Changed -= TextBuffer_Changed;
+                Cancel();
                 disposedValue = true;
             }
         }
@@ -147,10 +145,17 @@ namespace MetaDslx.VisualStudio.Compilation
 
         private void Recompile()
         {
-            if (this.GetCompilationFactory() != null) this.Compile();
+            var compilationSnapshot = _compilationSnapshot;
+            var textSnapshot = _textBuffer.CurrentSnapshot;
+            if (compilationSnapshot != null && !compilationSnapshot.Changed(textSnapshot)) return;
+            Cancel();
+            var newCompilationSnapshot = new CompilationSnapshot(textSnapshot, null, null, ImmutableDictionary<object, object>.Empty);
+            Interlocked.Exchange(ref _compilationSnapshot, newCompilationSnapshot);
+            NotifyCompilationChanged();
+            Compile();
         }
 
-        private void Compile()
+        private void Cancel()
         {
             try
             {
@@ -162,158 +167,131 @@ namespace MetaDslx.VisualStudio.Compilation
             {
                 // nop
             }
+        }
+
+        private void Compile()
+        {
             try
             {
-                if (_backgroundWorker != null)
-                {
-                    _backgroundWorker.DoWork -= BackgroundWorker_DoWork;
-                    _backgroundWorker.RunWorkerCompleted -= BackgroundWorker_RunWorkerCompleted;
-                    _backgroundWorker.Dispose();
-                    _backgroundWorker = null;
-                }
+                GetCompilationSteps(); // cache compilation steps
+                _cancellationTokenSource = new CancellationTokenSource();
+                Task.Run(() => SyntaxTreeWorker(_cancellationTokenSource.Token));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 // nop
+                Debug.WriteLine(ex.ToString());
             }
-            _cancellationTokenSource = new CancellationTokenSource();
-            _backgroundWorker = new BackgroundWorker();
-            _backgroundWorker.DoWork += BackgroundWorker_DoWork;
-            _backgroundWorker.RunWorkerCompleted += BackgroundWorker_RunWorkerCompleted;
-            _backgroundWorker.RunWorkerAsync(null);
         }
 
-        private void BackgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        private void SyntaxTreeWorker(CancellationToken cancellationToken)
         {
-            CompilationSnapshot oldCompilation = _backgroundCompilationSnapshot;
-            if (_compilationSnapshot != oldCompilation)
+            if (_syntaxTree == null || _textChanges.Count > 0)
             {
-                Interlocked.Exchange(ref _compilationSnapshot, _backgroundCompilationSnapshot);
-                var tempEvent = this.CompilationChanged;
-                tempEvent?.Invoke(this, new CompilationChangedEventArgs(oldCompilation, _compilationSnapshot));
-            }
-            if (e.Result != null)
-            {
-                var steps = this.GetCompilationSteps();
-                int index = (int)e.Result;
-                if (index < steps.Count)
+                var factory = this.GetCompilationFactory();
+                var language = factory.Language;
+                var textSnapshot = _textBuffer.CurrentSnapshot;
+                var versionBefore = textSnapshot.Version;
+                _syntaxTreeResetEvent.WaitOne();
+                var sourceText = _sourceText;
+                var syntaxTree = _syntaxTree;
+                var oldCompilationSnapshot = _compilationSnapshot;
+                try
                 {
-                    try
+                    var allChanges = ArrayBuilder<TextChange>.GetInstance();
+                    while (_textChanges.TryDequeue(out var changes))
                     {
-                        if (_backgroundWorker != null)
-                        {
-                            _backgroundWorker.DoWork -= BackgroundWorker_DoWork;
-                            _backgroundWorker.RunWorkerCompleted -= BackgroundWorker_RunWorkerCompleted;
-                            _backgroundWorker.Dispose();
-                            _backgroundWorker = new BackgroundWorker();
-                            _backgroundWorker.DoWork += BackgroundWorker_DoWork;
-                            _backgroundWorker.RunWorkerCompleted += BackgroundWorker_RunWorkerCompleted;
-                            _backgroundWorker.RunWorkerAsync(index);
-                        }
+                        allChanges.AddRange(changes);
                     }
-                    catch (Exception)
+                    if (syntaxTree == null)
                     {
-                        // nop
+                        allChanges.Free();
+                        sourceText = SourceText.From(textSnapshot.GetText());
+                        string filePath = this.FilePath;
+                        syntaxTree = language.SyntaxFactory.ParseSyntaxTree(sourceText, language.SyntaxFactory.DefaultParseOptions.WithIncremental(true), filePath);
                     }
+                    else
+                    {
+                        sourceText = sourceText.WithChanges(allChanges);
+                        allChanges.Free();
+                        syntaxTree = (LanguageSyntaxTree)syntaxTree.WithChangedText(sourceText);
+                    }
+                    Interlocked.Exchange(ref _syntaxTree, syntaxTree);
+                    Interlocked.Exchange(ref _sourceText, sourceText);
+                    var compilationSnapshot = new CompilationSnapshot(textSnapshot, syntaxTree, null, ImmutableDictionary<object, object>.Empty);
+                    Interlocked.Exchange(ref _compilationSnapshot, compilationSnapshot);
+                    Task.Run(() => CompilationWorker(cancellationToken))
+                        .ContinueWith(task => NotifyCompilationChanged(), CancellationToken.None, TaskContinuationOptions.None, _synchronizationContext);
+                }
+                catch (Exception ex)
+                {
+                    syntaxTree = null;
+                    Debug.WriteLine(ex.ToString());
+                }
+                finally
+                {
+                    _syntaxTreeResetEvent.Set();
                 }
             }
         }
 
-        private void BackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
+        private void CompilationWorker(CancellationToken cancellationToken)
         {
             try
             {
-                if (e.Argument == null)
+                var factory = this.GetCompilationFactory();
+                var compilationSnapshot = _compilationSnapshot;
+                if (factory != null)
                 {
-                    if (_syntaxTree == null || _textChanges.Count > 0)
+                    var compilation = factory.CreateCompilation(this, ImmutableArray.Create(compilationSnapshot.SyntaxTree), cancellationToken);
+                    if (compilationSnapshot == null || compilation != null)
                     {
-                        var factory = this.GetCompilationFactory();
-                        var language = factory.Language;
-                        var textSnapshot = _textBuffer.CurrentSnapshot;
-                        var versionBefore = textSnapshot.Version;
-                        _syntaxTreeResetEvent.WaitOne();
-                        var sourceText = _sourceText;
-                        var syntaxTree = _syntaxTree;
-                        try
-                        {
-                            var allChanges = ArrayBuilder<TextChange>.GetInstance();
-                            while (_textChanges.TryDequeue(out var changes))
-                            {
-                                allChanges.AddRange(changes);
-                            }
-                            sourceText = _sourceText.WithChanges(allChanges);
-                            allChanges.Free();
-                            string filePath = this.FilePath;
-                            if (_syntaxTree == null)
-                            {
-                                syntaxTree = language.SyntaxFactory.ParseSyntaxTree(sourceText, language.SyntaxFactory.DefaultParseOptions.WithIncremental(true), filePath);
-                            }
-                            else
-                            {
-                                syntaxTree = (LanguageSyntaxTree)syntaxTree.WithChangedText(sourceText);
-                            }
-                            Interlocked.Exchange(ref _syntaxTree, syntaxTree);
-                            Interlocked.Exchange(ref _sourceText, sourceText);
-                        }
-                        catch
-                        {
-                            Interlocked.Exchange(ref _syntaxTree, null);
-                            Interlocked.Exchange(ref _sourceText, sourceText);
-                            return;
-                        }
-                        finally
-                        {
-                            _syntaxTreeResetEvent.Set();
-                        }
-                        var cancellationToken = _cancellationTokenSource.Token;
                         if (cancellationToken.IsCancellationRequested) return;
-                        var compilation = factory.CreateCompilation(this, ImmutableArray.Create(syntaxTree), cancellationToken);
-                        if (_backgroundCompilationSnapshot == null || compilation != null)
-                        {
-                            compilation.ForceComplete(cancellationToken);
-                            if (cancellationToken.IsCancellationRequested) return;
-                            textSnapshot = _textBuffer.CurrentSnapshot;
-                            var versionAfter = textSnapshot.Version;
-                            if (versionAfter == versionBefore)
-                            {
-                                Interlocked.Exchange(ref _backgroundCompilationSnapshot, _backgroundCompilationSnapshot.Update(textSnapshot, compilation, ImmutableDictionary<object, object>.Empty));
-                                e.Result = 0;
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    int index = (int)e.Argument;
-                    var steps = this.GetCompilationSteps();
-                    if (index < steps.Count)
-                    {
-                        var step = steps[index];
-                        var cancellationToken = _cancellationTokenSource.Token;
-                        ITextBuffer textBuffer = this.TextBuffer;
-                        if (textBuffer == null) return;
-                        ITextSnapshot textSnapshot = textBuffer.CurrentSnapshot;
-                        var snaphsotBefore = _backgroundCompilationSnapshot;
-                        if (!snaphsotBefore.Changed(textSnapshot))
-                        {
-                            var result = step.Execute(snaphsotBefore.Compilation, cancellationToken);
-                            if (cancellationToken.IsCancellationRequested) return;
-                            if (!snaphsotBefore.Changed(textSnapshot))
-                            {
-                                Interlocked.Exchange(ref _backgroundCompilationSnapshot, _backgroundCompilationSnapshot.Update(snaphsotBefore.Text, snaphsotBefore.Compilation, snaphsotBefore.CompilationStepResults.Add(step.ResultKey, result)));
-                                e.Result = index + 1;
-                            }
-                        }
+                        compilation.ForceComplete(cancellationToken);
+                        if (cancellationToken.IsCancellationRequested) return;
+                        var newCompilationSnapshot = compilationSnapshot.Update(compilationSnapshot.Text, compilationSnapshot.SyntaxTree, compilation, ImmutableDictionary<object, object>.Empty);
+                        Interlocked.Exchange(ref _compilationSnapshot, newCompilationSnapshot);
+                        Task.Run(() => CompilationStepWorker(0, cancellationToken))
+                            .ContinueWith(task => NotifyCompilationChanged(), CancellationToken.None, TaskContinuationOptions.None, _synchronizationContext);
                     }
                 }
             }
             catch(Exception ex)
             {
+                // nop
                 Debug.WriteLine(ex.ToString());
-                e.Result = null;
             }
         }
-    }
 
+        private void CompilationStepWorker(int stepIndex, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var steps = this.GetCompilationSteps();
+                if (stepIndex >= 0 && stepIndex < steps.Count)
+                {
+                    if (cancellationToken.IsCancellationRequested) return;
+                    var step = steps[stepIndex];
+                    var compilationSnapshot = _compilationSnapshot;
+                    var result = step.Execute(compilationSnapshot.Compilation, cancellationToken);
+                    if (cancellationToken.IsCancellationRequested) return;
+                    var newCompilationSnapshot = compilationSnapshot.Update(compilationSnapshot.Text, compilationSnapshot.SyntaxTree, compilationSnapshot.Compilation, compilationSnapshot.CompilationStepResults.Add(step.ResultKey, result));
+                    Interlocked.Exchange(ref _compilationSnapshot, newCompilationSnapshot);
+                    Task.Run(() => CompilationStepWorker(stepIndex + 1, cancellationToken))
+                        .ContinueWith(task => NotifyCompilationChanged(), CancellationToken.None, TaskContinuationOptions.None, _synchronizationContext);
+                }
+            }
+            catch (Exception ex)
+            {
+                // nop
+                Debug.WriteLine(ex.ToString());
+            }
+        }
+
+        private void NotifyCompilationChanged()
+        {
+            if (CompilationChanged != null) CompilationChanged(this, new EventArgs());
+        }
+    }
 
 }
