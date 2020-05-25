@@ -57,6 +57,7 @@
     <Compile Include="Classification\ReferencesAdornmentTagger.cs" />
     <Compile Include="Classification\ReferencesTagger.cs" />
     <Compile Include="Classification\StandardClassificationTypeNames.cs" />
+    <Compile Include="Classification\TokenClassifier.cs" />
     <Compile Include="Commands\MetaDslxCompletionCommandHandler.cs" />
     <Compile Include="Commands\MetaDslxKeyProcessor.cs" />
     <Compile Include="Commands\MetaDslxMouseProcessor.cs" />

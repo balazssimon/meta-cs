@@ -38,7 +38,7 @@ namespace MetaDslx.VisualStudio.Intellisense
 
         public static CompletionSource GetOrCreate(MetaDslxMefServices mefServices, MetaDslxCompletionSourceProvider provider, ITextBuffer textBuffer)
         {
-            textBuffer.Properties.TryGetProperty<Antlr4LexerClassifier>(typeof(IClassifier), out var classifier);
+            textBuffer.Properties.TryGetProperty<IClassifier>(typeof(IClassifier), out var classifier);
             return textBuffer.Properties.GetOrCreateSingletonProperty(() => new CompletionSource(
                 mefServices,
                 provider,

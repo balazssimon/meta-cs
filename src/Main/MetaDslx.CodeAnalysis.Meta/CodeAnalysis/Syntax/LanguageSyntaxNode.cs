@@ -11,6 +11,7 @@ using System.Threading;
 using MetaDslx.CodeAnalysis.Syntax;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
+using Microsoft.CodeAnalysis.Text;
 using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis
@@ -391,6 +392,26 @@ namespace MetaDslx.CodeAnalysis
         public new SyntaxToken FindToken(int position, bool findInsideTrivia = false)
         {
             return base.FindToken(position, findInsideTrivia);
+        }
+
+        /// <summary>
+        /// Find all tokens inside the given text span. If the text span is not within the 
+        /// full span of the node, an ArgumentOutOfRangeException is thrown.
+        /// </summary>
+        /// <param name="textSpan">the text span overlapping with the tokens</param>
+        /// <param name="findInsideTrivia">the text span overlapping with the tokens</param>
+        /// <returns>the tokens in their source order</returns>
+        public IEnumerable<SyntaxToken> FindTokens(TextSpan textSpan, bool findInsideTrivia = false)
+        {
+            if (textSpan.Start < this.FullSpan.Start) throw new ArgumentOutOfRangeException(nameof(textSpan));
+            if (textSpan.End > this.FullSpan.End) throw new ArgumentOutOfRangeException(nameof(textSpan));
+            var next = FindToken(textSpan.Start, findInsideTrivia);
+            while (true)
+            {
+                if (next.GetKind() == SyntaxKind.None) yield break;
+                else yield return next;
+                next = SyntaxNavigator.Instance.GetNextToken(next, SyntaxToken.Any, findInsideTrivia ? SyntaxTrivia.Any : null);
+            }
         }
 
         #endregion
