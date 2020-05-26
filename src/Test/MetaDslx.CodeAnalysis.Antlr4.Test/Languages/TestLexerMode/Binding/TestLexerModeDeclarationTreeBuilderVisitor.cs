@@ -28,6 +28,10 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Binding
             var builder = new TestLexerModeDeclarationTreeBuilderVisitor(syntaxTree, scriptClassName, isSubmission);
             return builder.CreateRoot(syntaxTree.GetRoot(), null);
         }
+
+		public virtual void VisitSkippedTokensTrivia(TestLexerModeSkippedTokensTriviaSyntax node)
+		{
+		}
 		
 		public virtual void VisitMain(MainSyntax node)
 		{

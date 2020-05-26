@@ -28,6 +28,11 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Binding
 
         }
 
+		public virtual bool VisitSkippedTokensTrivia(TestLexerModeSkippedTokensTriviaSyntax node)
+		{
+            return false;
+		}
+
 		
 		public bool VisitMain(MainSyntax node)
 		{

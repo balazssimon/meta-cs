@@ -350,10 +350,9 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             /// <param name="e">the recognition exception</param>
             protected internal virtual void ReportInputMismatch([NotNull] Parser recognizer, [NotNull] InputMismatchException e)
             {
-                _parser.AddErrorToPreviousTokenEnd(Antlr4RoslynErrorCode.ERR_SyntaxError, "missing " + e.GetExpectedTokens().ToString(recognizer.Vocabulary));
-
-                // string msg = "mismatched input " + GetTokenErrorDisplay(e.OffendingToken) + " expecting " + e.GetExpectedTokens().ToString(recognizer.Vocabulary);
-                // NotifyErrorListeners(recognizer, msg, e);
+                //_parser.AddErrorToPreviousTokenEnd(Antlr4RoslynErrorCode.ERR_SyntaxError, "missing " + e.GetExpectedTokens().ToString(recognizer.Vocabulary));
+                string msg = "mismatched input " + GetTokenErrorDisplay(e.OffendingToken) + " expecting " + e.GetExpectedTokens().ToString(recognizer.Vocabulary);
+                NotifyErrorListeners(recognizer, msg, e);
             }
 
             /// <summary>

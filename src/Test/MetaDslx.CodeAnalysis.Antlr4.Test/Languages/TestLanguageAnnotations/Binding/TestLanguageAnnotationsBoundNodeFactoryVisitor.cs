@@ -31,6 +31,11 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Bin
 
         }
 
+		public BoundNode VisitSkippedTokensTrivia(TestLanguageAnnotationsSkippedTokensTriviaSyntax node, ArrayBuilder<object> childBoundNodesForParent)
+		{
+			return null;
+		}
+
 		
 		public BoundNode VisitMain(MainSyntax node, ArrayBuilder<object> childBoundNodesForParent)
 		{

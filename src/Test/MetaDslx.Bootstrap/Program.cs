@@ -311,14 +311,20 @@ namespace MetaDslx.Bootstrap
                 CallLogger.Enabled = true;
                 var text = @"namespace EntitiesSample
 {
-	metamodel Entities; 
+	etamodel Entities; 
 
     class NamedElement{}
 }";
                 var source = SourceText.From(text);
                 var compiler = new MetaCompiler();
                 var src1 = compiler.SingleEdit(source, 76, 1);
-                var src2 = compiler.SingleEdit(src1, 77, 1);
+                var root = (LanguageSyntaxNode)src1.Item2.GetRoot();
+                var tokens = root.FindTokens(TextSpan.FromBounds(0, src1.Item1.Length), true);
+                foreach (var token in tokens)
+                {
+                    Console.WriteLine(token.RawKind+" "+token.GetKind().ToString()+" '"+token.Text+"' "+ token.GetContextualKind().ToString());
+                }
+                //var src2 = compiler.SingleEdit(src1, 77, 1);
             }
             catch (Exception ex)
             {

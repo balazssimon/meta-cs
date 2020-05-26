@@ -78,6 +78,55 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
         protected override Language LanguageCore => this.Language;
         public new TestLanguageAnnotationsSyntaxKind Kind => (TestLanguageAnnotationsSyntaxKind)this.RawKind;
         protected override SyntaxKind KindCore => this.Kind;
+
+		// Use conditional weak table so we always return same identity for structured trivia
+		private static readonly ConditionalWeakTable<SyntaxNode, Dictionary<SyntaxTrivia, SyntaxNode>> s_structuresTable
+			= new ConditionalWeakTable<SyntaxNode, Dictionary<SyntaxTrivia, SyntaxNode>>();
+
+		/// <summary>
+		/// Gets the syntax node represented the structure of this trivia, if any. The HasStructure property can be used to 
+		/// determine if this trivia has structure.
+		/// </summary>
+		/// <returns>
+		/// A TestLanguageAnnotationsSyntaxNode derived from StructuredTriviaSyntax, with the structured view of this trivia node. 
+		/// If this trivia node does not have structure, returns null.
+		/// </returns>
+		/// <remarks>
+		/// Some types of trivia have structure that can be accessed as additional syntax nodes.
+		/// These forms of trivia include: 
+		///   directives, where the structure describes the structure of the directive.
+		///   documentation comments, where the structure describes the XML structure of the comment.
+		///   skipped tokens, where the structure describes the tokens that were skipped by the parser.
+		/// </remarks>
+		public override SyntaxNode GetStructure(Microsoft.CodeAnalysis.SyntaxTrivia trivia)
+		{
+			if (trivia.HasStructure)
+			{
+				var parent = trivia.Token.Parent;
+				if (parent != null)
+				{
+					SyntaxNode structure;
+					var structsInParent = s_structuresTable.GetOrCreateValue(parent);
+					lock (structsInParent)
+					{
+						if (!structsInParent.TryGetValue(trivia, out structure))
+						{
+							structure = TestLanguageAnnotationsStructuredTriviaSyntax.Create(trivia);
+							structsInParent.Add(trivia, structure);
+						}
+					}
+
+					return structure;
+				}
+				else
+				{
+					return TestLanguageAnnotationsStructuredTriviaSyntax.Create(trivia);
+				}
+			}
+
+			return null;
+		}
+
 	}
 
     internal class GreenSyntaxTrivia : InternalSyntaxTrivia
@@ -132,25 +181,18 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
         }
     }
 
-    internal class GreenStructuredSyntaxTrivia : GreenSyntaxTrivia
+    internal abstract class GreenStructuredTriviaSyntax : GreenSyntaxNode
     {
-        private readonly GreenNode _structure;
-        internal GreenStructuredSyntaxTrivia(TestLanguageAnnotationsSyntaxKind kind, GreenNode structure, DiagnosticInfo[] diagnostics = null, SyntaxAnnotation[] annotations = null)
-            : base(kind, structure?.ToFullString(), diagnostics, annotations)
+        internal GreenStructuredTriviaSyntax(TestLanguageAnnotationsSyntaxKind kind, DiagnosticInfo[] diagnostics = null, SyntaxAnnotation[] annotations = null)
+            : base(kind, diagnostics, annotations)
         {
             this.Initialize();
-            _structure = structure;
         }
 
-        internal GreenStructuredSyntaxTrivia(ObjectReader reader)
+        internal GreenStructuredTriviaSyntax(ObjectReader reader)
             : base(reader)
         {
             this.Initialize();
-        }
-
-        static GreenStructuredSyntaxTrivia()
-        {
-            ObjectBinder.RegisterTypeReader(typeof(GreenStructuredSyntaxTrivia), r => new GreenStructuredSyntaxTrivia(r));
         }
 
         private void Initialize()
@@ -163,21 +205,88 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
             }
         }
 
-        public GreenNode Structure => _structure;
+        public override bool IsStructuredTrivia => true;
+    }
 
-        internal static GreenStructuredSyntaxTrivia Create(TestLanguageAnnotationsSyntaxKind kind, GreenNode structure)
+    internal sealed partial class GreenSkippedTokensTriviaSyntax : GreenStructuredTriviaSyntax
+    {
+        internal readonly GreenNode tokens;
+
+        internal GreenSkippedTokensTriviaSyntax(TestLanguageAnnotationsSyntaxKind kind, GreenNode tokens, DiagnosticInfo[] diagnostics = null, SyntaxAnnotation[] annotations = null)
+            : base(kind, diagnostics, annotations)
         {
-            return new GreenStructuredSyntaxTrivia(kind, structure, ExtractDiagnosticsFromGreenNode(structure), ExtractAnnotationsFromGreenNode(structure));
+            this.SlotCount = 1;
+            if (tokens != null)
+            {
+                this.AdjustFlagsAndWidth(tokens);
+                this.tokens = tokens;
+            }
         }
 
-        public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
+        public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<InternalSyntaxToken> Tokens => new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<InternalSyntaxToken>(this.tokens);
+
+        protected override GreenNode GetSlot(int index)
         {
-            return new GreenStructuredSyntaxTrivia(this.Kind, this.Structure, diagnostics, GetAnnotations());
+            switch (index)
+            {
+                case 0: return this.tokens;
+                default: return null;
+            }
         }
 
-        public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
+        protected override SyntaxNode CreateRed(SyntaxNode parent, int position) => new TestLanguageAnnotationsSkippedTokensTriviaSyntax(this, (TestLanguageAnnotationsSyntaxNode)parent, position);
+
+        public override TResult Accept<TResult>(TestLanguageAnnotationsSyntaxVisitor<TResult> visitor) => visitor.VisitSkippedTokensTrivia(this);
+
+        public override void Accept(TestLanguageAnnotationsSyntaxVisitor visitor) => visitor.VisitSkippedTokensTrivia(this);
+
+        public GreenSkippedTokensTriviaSyntax Update(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<InternalSyntaxToken> tokens)
         {
-            return new GreenStructuredSyntaxTrivia(this.Kind, this.Structure, GetDiagnostics(), annotations);
+            if (tokens != this.Tokens)
+            {
+                var newNode = Language.InternalSyntaxFactory.SkippedTokensTrivia(tokens.Node);
+                var diags = this.GetDiagnostics();
+                if (diags != null && diags.Length > 0)
+                    newNode = newNode.WithDiagnosticsGreen(diags);
+                var annotations = this.GetAnnotations();
+                if (annotations != null && annotations.Length > 0)
+                    newNode = newNode.WithAnnotationsGreen(annotations);
+                return (GreenSkippedTokensTriviaSyntax)newNode;
+            }
+            return this;
+        }
+
+		public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
+		{
+			return new GreenSkippedTokensTriviaSyntax(this.Kind, this.tokens, diagnostics, GetAnnotations());
+		}
+
+		public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
+		{
+			return new GreenSkippedTokensTriviaSyntax(this.Kind, this.tokens, GetDiagnostics(), annotations);
+		}
+
+        internal GreenSkippedTokensTriviaSyntax(ObjectReader reader)
+            : base(reader)
+        {
+            this.SlotCount = 1;
+            var tokens = (GreenNode)reader.ReadValue();
+            if (tokens != null)
+            {
+                AdjustFlagsAndWidth(tokens);
+                this.tokens = tokens;
+            }
+        }
+
+        protected override void WriteTo(ObjectWriter writer)
+        {
+            base.WriteTo(writer);
+            writer.WriteValue(this.tokens);
+        }
+
+        static GreenSkippedTokensTriviaSyntax()
+        {
+            ObjectBinder.RegisterTypeReader(typeof(GreenSkippedTokensTriviaSyntax), r => new GreenSkippedTokensTriviaSyntax(r));
         }
     }
 
@@ -10418,6 +10527,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
 
 	internal class TestLanguageAnnotationsSyntaxVisitor : InternalSyntaxVisitor
 	{
+		public virtual void VisitSkippedTokensTrivia(GreenSkippedTokensTriviaSyntax node) => this.DefaultVisit(node);
 		public virtual void VisitMainGreen(MainGreen node) => this.DefaultVisit(node);
 		public virtual void VisitTestGreen(TestGreen node) => this.DefaultVisit(node);
 		public virtual void VisitTest01Green(Test01Green node) => this.DefaultVisit(node);
@@ -10509,6 +10619,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
 	
 	internal class TestLanguageAnnotationsSyntaxVisitor<TResult> : InternalSyntaxVisitor<TResult>
 	{
+		public virtual TResult VisitSkippedTokensTrivia(GreenSkippedTokensTriviaSyntax node) => this.DefaultVisit(node);
 		public virtual TResult VisitMainGreen(MainGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitTestGreen(TestGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitTest01Green(Test01Green node) => this.DefaultVisit(node);
@@ -10651,9 +10762,9 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
 	        return GreenSyntaxTrivia.Create(ToTestLanguageAnnotationsSyntaxKind(SyntaxKind.DisabledTextTrivia), text);
 	    }
 	
-		public override InternalSyntaxTrivia SkippedToken(GreenNode token)
+		public override InternalSyntaxNode SkippedTokensTrivia(GreenNode token)
 		{
-			return GreenStructuredSyntaxTrivia.Create(ToTestLanguageAnnotationsSyntaxKind(SyntaxKind.SkippedTokensTrivia), token);
+			return new GreenSkippedTokensTriviaSyntax(ToTestLanguageAnnotationsSyntaxKind(SyntaxKind.SkippedTokensTrivia), token);
 		}
 	
 	    public override InternalSyntaxToken Token(SyntaxKind kind)

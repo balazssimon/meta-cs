@@ -138,6 +138,11 @@ namespace MetaDslx.Languages.Meta.Binding
             }
         }
 
+        public Binder VisitSkippedTokensTrivia(MetaSkippedTokensTriviaSyntax parent)
+        {
+            return null;
+        }
+
 		
 		public Binder VisitMain(MainSyntax parent)
 		{

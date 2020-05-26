@@ -30,6 +30,10 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Bin
             var builder = new TestLanguageAnnotationsDeclarationTreeBuilderVisitor(syntaxTree, scriptClassName, isSubmission);
             return builder.CreateRoot(syntaxTree.GetRoot(), null);
         }
+
+		public virtual void VisitSkippedTokensTrivia(TestLanguageAnnotationsSkippedTokensTriviaSyntax node)
+		{
+		}
 		
 		public virtual void VisitMain(MainSyntax node)
 		{

@@ -29,6 +29,11 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Binding
 
         }
 
+		public BoundNode VisitSkippedTokensTrivia(TestLexerModeSkippedTokensTriviaSyntax node, ArrayBuilder<object> childBoundNodesForParent)
+		{
+			return null;
+		}
+
 		
 		public BoundNode VisitMain(MainSyntax node, ArrayBuilder<object> childBoundNodesForParent)
 		{

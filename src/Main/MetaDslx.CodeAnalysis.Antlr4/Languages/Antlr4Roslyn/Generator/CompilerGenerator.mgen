@@ -2003,6 +2003,7 @@ using System.Threading.Tasks;
 [var lang = Properties.LanguageName]
 namespace [Properties.DefaultNamespace].Syntax.InternalSyntax
 {
+    using System.Runtime.CompilerServices;
     using MetaDslx.CodeAnalysis;
     using MetaDslx.CodeAnalysis.Syntax;
     using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
@@ -2068,6 +2069,55 @@ namespace [Properties.DefaultNamespace].Syntax.InternalSyntax
         protected override Language LanguageCore => this.Language;
         public new [lang]SyntaxKind Kind => ([lang]SyntaxKind)this.RawKind;
         protected override SyntaxKind KindCore => this.Kind;
+^
+		// Use conditional weak table so we always return same identity for structured trivia
+		private static readonly ConditionalWeakTable<SyntaxNode, Dictionary<SyntaxTrivia, SyntaxNode>> s_structuresTable
+			= new ConditionalWeakTable<SyntaxNode, Dictionary<SyntaxTrivia, SyntaxNode>>();
+^
+		/// <summary>
+		/// Gets the syntax node represented the structure of this trivia, if any. The HasStructure property can be used to 
+		/// determine if this trivia has structure.
+		/// </summary>
+		/// <returns>
+		/// A [lang]SyntaxNode derived from StructuredTriviaSyntax, with the structured view of this trivia node. 
+		/// If this trivia node does not have structure, returns null.
+		/// </returns>
+		/// <remarks>
+		/// Some types of trivia have structure that can be accessed as additional syntax nodes.
+		/// These forms of trivia include: 
+		///   directives, where the structure describes the structure of the directive.
+		///   documentation comments, where the structure describes the XML structure of the comment.
+		///   skipped tokens, where the structure describes the tokens that were skipped by the parser.
+		/// </remarks>
+		public override SyntaxNode GetStructure(Microsoft.CodeAnalysis.SyntaxTrivia trivia)
+		{
+			if (trivia.HasStructure)
+			{
+				var parent = trivia.Token.Parent;
+				if (parent != null)
+				{
+					SyntaxNode structure;
+					var structsInParent = s_structuresTable.GetOrCreateValue(parent);
+					lock (structsInParent)
+					{
+						if (!structsInParent.TryGetValue(trivia, out structure))
+						{
+							structure = [lang]StructuredTriviaSyntax.Create(trivia);
+							structsInParent.Add(trivia, structure);
+						}
+					}
+^
+					return structure;
+				}
+				else
+				{
+					return [lang]StructuredTriviaSyntax.Create(trivia);
+				}
+			}
+^
+			return null;
+		}
+^
 	}
 ^
     internal class GreenSyntaxTrivia : InternalSyntaxTrivia
@@ -2122,26 +2172,18 @@ namespace [Properties.DefaultNamespace].Syntax.InternalSyntax
         }
     }
 ^
-    internal class GreenStructuredSyntaxTrivia : GreenSyntaxTrivia
+    internal abstract class GreenStructuredTriviaSyntax : GreenSyntaxNode
     {
-        private readonly GreenNode _structure;
-
-        internal GreenStructuredSyntaxTrivia([lang]SyntaxKind kind, GreenNode structure, DiagnosticInfo["[]"] diagnostics = null, SyntaxAnnotation["[]"] annotations = null)
-            : base(kind, structure?.ToFullString(), diagnostics, annotations)
+        internal GreenStructuredTriviaSyntax([lang]SyntaxKind kind, DiagnosticInfo["[]"] diagnostics = null, SyntaxAnnotation["[]"] annotations = null)
+            : base(kind, diagnostics, annotations)
         {
             this.Initialize();
-            _structure = structure;
         }
 ^
-        internal GreenStructuredSyntaxTrivia(ObjectReader reader)
+        internal GreenStructuredTriviaSyntax(ObjectReader reader)
             : base(reader)
         {
             this.Initialize();
-        }
-^
-        static GreenStructuredSyntaxTrivia()
-        {
-            ObjectBinder.RegisterTypeReader(typeof(GreenStructuredSyntaxTrivia), r => new GreenStructuredSyntaxTrivia(r));
         }
 ^
         private void Initialize()
@@ -2154,21 +2196,88 @@ namespace [Properties.DefaultNamespace].Syntax.InternalSyntax
             }
         }
 ^
-        public GreenNode Structure => _structure;
+        public override bool IsStructuredTrivia => true;
+    }
 ^
-        internal static GreenStructuredSyntaxTrivia Create([lang]SyntaxKind kind, GreenNode structure)
+    internal sealed partial class GreenSkippedTokensTriviaSyntax : GreenStructuredTriviaSyntax
+    {
+        internal readonly GreenNode tokens;
+^
+        internal GreenSkippedTokensTriviaSyntax([lang]SyntaxKind kind, GreenNode tokens, DiagnosticInfo["[]"] diagnostics = null, SyntaxAnnotation["[]"] annotations = null)
+            : base(kind, diagnostics, annotations)
         {
-            return new GreenStructuredSyntaxTrivia(kind, structure, ExtractDiagnosticsFromGreenNode(structure), ExtractAnnotationsFromGreenNode(structure));
+            this.SlotCount = 1;
+            if (tokens != null)
+            {
+                this.AdjustFlagsAndWidth(tokens);
+                this.tokens = tokens;
+            }
         }
 ^
-        public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo["[]"] diagnostics)
+        public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<InternalSyntaxToken> Tokens => new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<InternalSyntaxToken>(this.tokens);
+^
+        protected override GreenNode GetSlot(int index)
         {
-            return new GreenStructuredSyntaxTrivia(this.Kind, this.Structure, diagnostics, GetAnnotations());
+            switch (index)
+            {
+                case 0: return this.tokens;
+                default: return null;
+            }
         }
 ^
-        public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation["[]"] annotations)
+        protected override SyntaxNode CreateRed(SyntaxNode parent, int position) => new [lang]SkippedTokensTriviaSyntax(this, ([lang]SyntaxNode)parent, position);
+^
+        public override TResult Accept<TResult>([lang]SyntaxVisitor<TResult> visitor) => visitor.VisitSkippedTokensTrivia(this);
+^
+        public override void Accept([lang]SyntaxVisitor visitor) => visitor.VisitSkippedTokensTrivia(this);
+^
+        public GreenSkippedTokensTriviaSyntax Update(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<InternalSyntaxToken> tokens)
         {
-            return new GreenStructuredSyntaxTrivia(this.Kind, this.Structure, GetDiagnostics(), annotations);
+            if (tokens != this.Tokens)
+            {
+                var newNode = Language.InternalSyntaxFactory.SkippedTokensTrivia(tokens.Node);
+                var diags = this.GetDiagnostics();
+                if (diags != null && diags.Length > 0)
+                    newNode = newNode.WithDiagnosticsGreen(diags);
+                var annotations = this.GetAnnotations();
+                if (annotations != null && annotations.Length > 0)
+                    newNode = newNode.WithAnnotationsGreen(annotations);
+                return (GreenSkippedTokensTriviaSyntax)newNode;
+            }
+            return this;
+        }
+^
+		public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo["[]"] diagnostics)
+		{
+			return new GreenSkippedTokensTriviaSyntax(this.Kind, this.tokens, diagnostics, GetAnnotations());
+		}
+^
+		public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation["[]"] annotations)
+		{
+			return new GreenSkippedTokensTriviaSyntax(this.Kind, this.tokens, GetDiagnostics(), annotations);
+		}
+^
+        internal GreenSkippedTokensTriviaSyntax(ObjectReader reader)
+            : base(reader)
+        {
+            this.SlotCount = 1;
+            var tokens = (GreenNode)reader.ReadValue();
+            if (tokens != null)
+            {
+                AdjustFlagsAndWidth(tokens);
+                this.tokens = tokens;
+            }
+        }
+^
+        protected override void WriteTo(ObjectWriter writer)
+        {
+            base.WriteTo(writer);
+            writer.WriteValue(this.tokens);
+        }
+^
+        static GreenSkippedTokensTriviaSyntax()
+        {
+            ObjectBinder.RegisterTypeReader(typeof(GreenSkippedTokensTriviaSyntax), r => new GreenSkippedTokensTriviaSyntax(r));
         }
     }
 ^
@@ -2575,6 +2684,7 @@ end template
 template GenerateInternalSyntaxVisitor()
 internal class [Properties.LanguageName]SyntaxVisitor : InternalSyntaxVisitor
 {
+	public virtual void VisitSkippedTokensTrivia(GreenSkippedTokensTriviaSyntax node) => this.DefaultVisit(node);
 [loop(rule:Instances.ParserRules)]
 	[if (rule.Alternatives.Count > 0)]
 		[loop(alt:rule.Alternatives)]
@@ -2588,6 +2698,7 @@ internal class [Properties.LanguageName]SyntaxVisitor : InternalSyntaxVisitor
 ^
 internal class [Properties.LanguageName]SyntaxVisitor<TResult> : InternalSyntaxVisitor<TResult>
 {
+	public virtual TResult VisitSkippedTokensTrivia(GreenSkippedTokensTriviaSyntax node) => this.DefaultVisit(node);
 [loop(rule:Instances.ParserRules)]
 	[if (rule.Alternatives.Count > 0)]
 		[loop(alt:rule.Alternatives)]
@@ -2657,9 +2768,9 @@ internal class [lang]InternalSyntaxFactory : InternalSyntaxFactory, MetaDslx.Lan
         return GreenSyntaxTrivia.Create(To[lang]SyntaxKind(SyntaxKind.DisabledTextTrivia), text);
     }
 ^
-	public override InternalSyntaxTrivia SkippedToken(GreenNode token)
+	public override InternalSyntaxNode SkippedTokensTrivia(GreenNode token)
 	{
-		return GreenStructuredSyntaxTrivia.Create(To[lang]SyntaxKind(SyntaxKind.SkippedTokensTrivia), token);
+		return new GreenSkippedTokensTriviaSyntax(To[lang]SyntaxKind(SyntaxKind.SkippedTokensTrivia), token);
 	}
 ^
     public override InternalSyntaxToken Token(SyntaxKind kind)
@@ -3005,6 +3116,107 @@ namespace [Properties.DefaultNamespace].Syntax
         }
 
         public abstract void Accept(I[lang]SyntaxVisitor visitor);
+    }
+^
+    /// <summary>
+    /// It's a non terminal Trivia [lang]SyntaxNode that has a tree underneath it.
+    /// </summary>
+    public abstract partial class [lang]StructuredTriviaSyntax : [lang]SyntaxNode, IStructuredTriviaSyntax
+    {
+        private SyntaxTrivia _parent;
+
+        internal [lang]StructuredTriviaSyntax(InternalSyntaxNode green, [lang]SyntaxNode parent, int position)
+            : base(green, parent == null ? null : ([lang]SyntaxTree)parent.SyntaxTree, position)
+        {
+            System.Diagnostics.Debug.Assert(parent == null || position >= 0);
+        }
+
+		internal static [lang]StructuredTriviaSyntax Create(SyntaxTrivia trivia)
+		{
+			var red = ([lang]StructuredTriviaSyntax)[lang]Language.Instance.SyntaxFactory.CreateStructure(trivia);
+			red._parent = trivia;
+			return red;
+		}
+
+        /// <summary>
+        /// Get parent trivia.
+        /// </summary>
+        public override SyntaxTrivia ParentTrivia => _parent;
+    }
+^
+    public sealed partial class [lang]SkippedTokensTriviaSyntax : [lang]StructuredTriviaSyntax
+    {
+        internal [lang]SkippedTokensTriviaSyntax(InternalSyntaxNode green, [lang]SyntaxNode parent, int position)
+            : base(green, parent, position)
+        {
+        }
+^
+        public SyntaxTokenList Tokens 
+        {
+            get
+            {
+				var slot = ((global::[Properties.DefaultNamespace].Syntax.InternalSyntax.GreenSkippedTokensTriviaSyntax)this.Green).Tokens;
+				if (slot != null)
+				{
+					return new SyntaxTokenList(this, slot.Node, this.GetChildPosition(0), this.GetChildIndex(0));
+				}
+                return default;
+            }
+        }
+^
+        public override SyntaxNode GetNodeSlot(int index)
+        {
+            switch (index)
+            {
+                default: return null;
+            }
+        }
+^
+		public override SyntaxNode GetCachedSlot(int index)
+        {
+            switch (index)
+            {
+                default: return null;
+            }
+        }
+^
+		public override TResult Accept<TArg, TResult>(I[lang]SyntaxVisitor<TArg, TResult> visitor, TArg argument)
+		{
+			return visitor.VisitSkippedTokensTrivia(this, argument);
+		}
+^
+		public override TResult Accept<TResult>(I[lang]SyntaxVisitor<TResult> visitor)
+        {
+            return visitor.VisitSkippedTokensTrivia(this);
+        }
+^
+        public override void Accept(I[lang]SyntaxVisitor visitor)
+        {
+            visitor.VisitSkippedTokensTrivia(this);
+        }
+^
+        public [lang]SkippedTokensTriviaSyntax Update(SyntaxTokenList tokens)
+        {
+            if (tokens != this.Tokens)
+            {
+                var newNode = ([lang]SkippedTokensTriviaSyntax)Language.SyntaxFactory.SkippedTokensTrivia(tokens);
+                var annotations = this.GetAnnotations();
+                if (annotations != null && annotations.Length > 0)
+                    return newNode.WithAnnotations(annotations);
+                return newNode;
+            }
+            return this;
+        }
+^
+        public [lang]SkippedTokensTriviaSyntax WithTokens(SyntaxTokenList tokens)
+        {
+            return this.Update(tokens);
+        }
+^
+        public [lang]SkippedTokensTriviaSyntax AddTokens(params SyntaxToken["[]"] items)
+        {
+            return this.WithTokens(this.Tokens.AddRange(items));
+        }
     }
 ^
 	[loop(rule:Instances.ParserRules)]
@@ -3489,6 +3701,7 @@ end template
 template GenerateSyntaxVisitor()
 public interface I[Properties.LanguageName]SyntaxVisitor
 {
+    void VisitSkippedTokensTrivia([Properties.LanguageName]SkippedTokensTriviaSyntax node);
    	[loop(rule:Instances.ParserRules)]
 		[if (rule.Alternatives.Count > 0)]
 			[loop(alt:rule.Alternatives)]
@@ -3502,7 +3715,11 @@ public interface I[Properties.LanguageName]SyntaxVisitor
 ^
 public class [Properties.LanguageName]SyntaxVisitor : SyntaxVisitor, I[Properties.LanguageName]SyntaxVisitor
 {
-   	[loop(rule:Instances.ParserRules)]
+    public virtual void VisitSkippedTokensTrivia([Properties.LanguageName]SkippedTokensTriviaSyntax node)
+    {
+        this.DefaultVisit(node);
+    }
+    [loop(rule:Instances.ParserRules)]
 		[if (rule.Alternatives.Count > 0)]
 			[loop(alt:rule.Alternatives)]
 	[GenerateSyntaxVisitorVisit(alt, false)]
@@ -3529,6 +3746,7 @@ end template
 template GenerateSyntaxTypedVisitor()
 public interface I[Properties.LanguageName]SyntaxVisitor<TResult> 
 {
+    TResult VisitSkippedTokensTrivia([Properties.LanguageName]SkippedTokensTriviaSyntax node);
    	[loop(rule:Instances.ParserRules)]
 		[if (rule.Alternatives.Count > 0)]
 			[loop(alt:rule.Alternatives)]
@@ -3542,6 +3760,10 @@ public interface I[Properties.LanguageName]SyntaxVisitor<TResult>
 ^
 public class [Properties.LanguageName]SyntaxVisitor<TResult> : SyntaxVisitor<TResult>, I[Properties.LanguageName]SyntaxVisitor<TResult>
 {
+    public virtual TResult VisitSkippedTokensTrivia([Properties.LanguageName]SkippedTokensTriviaSyntax node)
+    {
+        return this.DefaultVisit(node);
+    }
    	[loop(rule:Instances.ParserRules)]
 		[if (rule.Alternatives.Count > 0)]
 			[loop(alt:rule.Alternatives)]
@@ -3569,6 +3791,7 @@ end template
 template GenerateSyntaxTypedArgVisitor()
 public interface I[Properties.LanguageName]SyntaxVisitor<TArg, TResult> 
 {
+    TResult VisitSkippedTokensTrivia([Properties.LanguageName]SkippedTokensTriviaSyntax node, TArg argument);
    	[loop(rule:Instances.ParserRules)]
 		[if (rule.Alternatives.Count > 0)]
 			[loop(alt:rule.Alternatives)]
@@ -3582,6 +3805,10 @@ public interface I[Properties.LanguageName]SyntaxVisitor<TArg, TResult>
 ^
 public class [Properties.LanguageName]SyntaxVisitor<TArg, TResult> : SyntaxVisitor<TArg, TResult>, I[Properties.LanguageName]SyntaxVisitor<TArg, TResult>
 {
+    public virtual TResult VisitSkippedTokensTrivia([Properties.LanguageName]SkippedTokensTriviaSyntax node, TArg argument)
+    {
+        return this.DefaultVisit(node, argument);
+    }
    	[loop(rule:Instances.ParserRules)]
 		[if (rule.Alternatives.Count > 0)]
 			[loop(alt:rule.Alternatives)]
@@ -3650,7 +3877,13 @@ public class [Properties.LanguageName]SyntaxRewriter : SyntaxRewriter, I[Propert
 		: base([Properties.LanguageName]Language.Instance, visitIntoStructuredTrivia)
     {
     }
-   	[loop(rule:Instances.ParserRules)]
+^
+    public virtual SyntaxNode VisitSkippedTokensTrivia([Properties.LanguageName]SkippedTokensTriviaSyntax node)
+    {
+      var tokens = this.VisitList(node.Tokens);
+      return node.Update(tokens);
+    }
+    [loop(rule:Instances.ParserRules)]
 		[if (rule.Alternatives.Count > 0)]
 			[loop(alt:rule.Alternatives)]
 	[GenerateSyntaxRewriterVisit(alt)]
@@ -3762,18 +3995,6 @@ public class [Properties.LanguageName]SyntaxFactory : SyntaxFactory
 	{
 		return [lang]SyntaxTree.Create(([lang]SyntaxNode)root, ([lang]ParseOptions)options, path, null, encoding);
 	}
-^
-    public override SyntaxNode CreateStructure(SyntaxTrivia trivia)
-    {
-        if (trivia != null && trivia.UnderlyingNode is GreenStructuredSyntaxTrivia structuredTrivia)
-        {
-            return structuredTrivia.Structure.CreateRed();
-        }
-        else
-        {
-            return null;
-        }
-    }
 ^
 [loop(rule:Instances.LexerRules)]
 	[if (rule.FixedToken == null)]
@@ -4845,6 +5066,10 @@ namespace [Properties.DefaultNamespace].Binding
             var builder = new [Properties.LanguageName]DeclarationTreeBuilderVisitor(syntaxTree, scriptClassName, isSubmission);
             return builder.CreateRoot(syntaxTree.GetRoot(), [Instances.MainRule().Annotations.GetObjectType(MetaCompilerAnnotationInfo.Root)]);
         }
+^
+		public virtual void VisitSkippedTokensTrivia([Properties.LanguageName]SkippedTokensTriviaSyntax node)
+		{
+		}
    		[loop(rule:Instances.ParserRules)]
 			[if (rule.Alternatives.Count > 0)]
 				[loop(alt:rule.Alternatives)]
@@ -5109,6 +5334,11 @@ namespace [Properties.DefaultNamespace].Binding
                 return null;
             }
         }
+^
+        public Binder VisitSkippedTokensTrivia([Properties.LanguageName]SkippedTokensTriviaSyntax parent)
+        {
+            return null;
+        }
 ^		
 		[loop(rule:Instances.ParserRules)]
 			[if (rule.Alternatives.Count > 0)]
@@ -5311,6 +5541,11 @@ namespace [Properties.DefaultNamespace].Binding
             return new Bound[annot.Name]([lang]BoundKind.[annot.Name], boundTree, childBoundNodes, syntax, hasErrors);
         }
 		[end loop]
+^
+		public BoundNode VisitSkippedTokensTrivia([lang]SkippedTokensTriviaSyntax node, ArrayBuilder<object> childBoundNodesForParent)
+		{
+			return null;
+		}
 ^		
 		[loop(rule:Instances.ParserRules)]
 			[if (rule.Alternatives.Count > 0)]
@@ -5556,6 +5791,11 @@ namespace [Properties.DefaultNamespace].Binding
         {
 ^
         }
+^
+		public virtual bool VisitSkippedTokensTrivia([lang]SkippedTokensTriviaSyntax node)
+		{
+            return false;
+		}
 ^		
 		[loop(rule:Instances.ParserRules)]
 			[if (rule.Alternatives.Count > 0)]

@@ -265,30 +265,6 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         /// </remarks>
         public override SyntaxNode GetStructure(SyntaxTrivia trivia)
         {
-            if (trivia.HasStructure)
-            {
-                var parent = trivia.Token.Parent;
-                if (parent != null)
-                {
-                    SyntaxNode structure;
-                    var structsInParent = s_structuresTable.GetOrCreateValue(parent);
-                    lock (structsInParent)
-                    {
-                        if (!structsInParent.TryGetValue(trivia, out structure))
-                        {
-                            structure = Language.SyntaxFactory.CreateStructure(trivia);
-                            structsInParent.Add(trivia, structure);
-                        }
-                    }
-
-                    return structure;
-                }
-                else
-                {
-                    return Language.SyntaxFactory.CreateStructure(trivia);
-                }
-            }
-
             return null;
         }
     }

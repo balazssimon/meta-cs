@@ -68,7 +68,7 @@ namespace Microsoft.CodeAnalysis
         /// The width of this trivia in characters. If this trivia is a structured trivia then the returned width will
         /// include the widths of any leading or trailing trivia present on the child non-terminal node of this trivia.
         /// </summary>
-        internal int FullWidth => UnderlyingNode?.FullWidth ?? 0;
+        public int FullWidth => UnderlyingNode?.FullWidth ?? 0;
 
         /// <summary>
         /// The absolute span of this trivia in characters. If this trivia is a structured trivia then the returned span

@@ -51,6 +51,11 @@ namespace MetaDslx.Languages.Meta.Binding
             return new BoundOpposite(MetaBoundKind.Opposite, boundTree, childBoundNodes, syntax, hasErrors);
         }
 
+		public BoundNode VisitSkippedTokensTrivia(MetaSkippedTokensTriviaSyntax node, ArrayBuilder<object> childBoundNodesForParent)
+		{
+			return null;
+		}
+
 		
 		public BoundNode VisitMain(MainSyntax node, ArrayBuilder<object> childBoundNodesForParent)
 		{

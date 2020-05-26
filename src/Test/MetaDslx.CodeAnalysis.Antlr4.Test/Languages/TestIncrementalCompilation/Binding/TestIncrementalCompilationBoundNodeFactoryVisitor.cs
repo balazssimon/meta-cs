@@ -49,6 +49,11 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation.
             return new BoundOpposite(TestIncrementalCompilationBoundKind.Opposite, boundTree, childBoundNodes, syntax, hasErrors);
         }
 
+		public BoundNode VisitSkippedTokensTrivia(TestIncrementalCompilationSkippedTokensTriviaSyntax node, ArrayBuilder<object> childBoundNodesForParent)
+		{
+			return null;
+		}
+
 		
 		public BoundNode VisitMain(MainSyntax node, ArrayBuilder<object> childBoundNodesForParent)
 		{

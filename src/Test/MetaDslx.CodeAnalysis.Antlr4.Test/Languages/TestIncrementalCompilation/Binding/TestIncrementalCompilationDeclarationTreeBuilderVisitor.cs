@@ -28,6 +28,10 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation.
             var builder = new TestIncrementalCompilationDeclarationTreeBuilderVisitor(syntaxTree, scriptClassName, isSubmission);
             return builder.CreateRoot(syntaxTree.GetRoot(), null);
         }
+
+		public virtual void VisitSkippedTokensTrivia(TestIncrementalCompilationSkippedTokensTriviaSyntax node)
+		{
+		}
 		
 		public virtual void VisitMain(MainSyntax node)
 		{

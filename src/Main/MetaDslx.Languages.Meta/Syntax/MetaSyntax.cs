@@ -61,6 +61,104 @@ namespace MetaDslx.Languages.Meta.Syntax
         public abstract void Accept(IMetaSyntaxVisitor visitor);
     }
 
+    /// <summary>
+    /// It's a non terminal Trivia MetaSyntaxNode that has a tree underneath it.
+    /// </summary>
+    public abstract partial class MetaStructuredTriviaSyntax : MetaSyntaxNode, IStructuredTriviaSyntax
+    {
+        private SyntaxTrivia _parent;
+        internal MetaStructuredTriviaSyntax(InternalSyntaxNode green, MetaSyntaxNode parent, int position)
+            : base(green, parent == null ? null : (MetaSyntaxTree)parent.SyntaxTree, position)
+        {
+            System.Diagnostics.Debug.Assert(parent == null || position >= 0);
+        }
+		internal static MetaStructuredTriviaSyntax Create(SyntaxTrivia trivia)
+		{
+			var red = (MetaStructuredTriviaSyntax)MetaLanguage.Instance.SyntaxFactory.CreateStructure(trivia);
+			red._parent = trivia;
+			return red;
+		}
+        /// <summary>
+        /// Get parent trivia.
+        /// </summary>
+        public override SyntaxTrivia ParentTrivia => _parent;
+    }
+
+    public sealed partial class MetaSkippedTokensTriviaSyntax : MetaStructuredTriviaSyntax
+    {
+        internal MetaSkippedTokensTriviaSyntax(InternalSyntaxNode green, MetaSyntaxNode parent, int position)
+            : base(green, parent, position)
+        {
+        }
+
+        public SyntaxTokenList Tokens 
+        {
+            get
+            {
+				var slot = ((global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.GreenSkippedTokensTriviaSyntax)this.Green).Tokens;
+				if (slot != null)
+				{
+					return new SyntaxTokenList(this, slot.Node, this.GetChildPosition(0), this.GetChildIndex(0));
+				}
+                return default;
+            }
+        }
+
+        public override SyntaxNode GetNodeSlot(int index)
+        {
+            switch (index)
+            {
+                default: return null;
+            }
+        }
+
+		public override SyntaxNode GetCachedSlot(int index)
+        {
+            switch (index)
+            {
+                default: return null;
+            }
+        }
+
+		public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+		{
+			return visitor.VisitSkippedTokensTrivia(this, argument);
+		}
+
+		public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
+        {
+            return visitor.VisitSkippedTokensTrivia(this);
+        }
+
+        public override void Accept(IMetaSyntaxVisitor visitor)
+        {
+            visitor.VisitSkippedTokensTrivia(this);
+        }
+
+        public MetaSkippedTokensTriviaSyntax Update(SyntaxTokenList tokens)
+        {
+            if (tokens != this.Tokens)
+            {
+                var newNode = (MetaSkippedTokensTriviaSyntax)Language.SyntaxFactory.SkippedTokensTrivia(tokens);
+                var annotations = this.GetAnnotations();
+                if (annotations != null && annotations.Length > 0)
+                    return newNode.WithAnnotations(annotations);
+                return newNode;
+            }
+            return this;
+        }
+
+        public MetaSkippedTokensTriviaSyntax WithTokens(SyntaxTokenList tokens)
+        {
+            return this.Update(tokens);
+        }
+
+        public MetaSkippedTokensTriviaSyntax AddTokens(params SyntaxToken[] items)
+        {
+            return this.WithTokens(this.Tokens.AddRange(items));
+        }
+    }
+
 	
 	public sealed class MainSyntax : MetaSyntaxNode, ICompilationUnitSyntax
 	{
@@ -5896,6 +5994,7 @@ namespace MetaDslx.Languages.Meta
 
 	public interface IMetaSyntaxVisitor
 	{
+	    void VisitSkippedTokensTrivia(MetaSkippedTokensTriviaSyntax node);
 		
 		void VisitMain(MainSyntax node);
 		
@@ -6018,6 +6117,10 @@ namespace MetaDslx.Languages.Meta
 	
 	public class MetaSyntaxVisitor : SyntaxVisitor, IMetaSyntaxVisitor
 	{
+	    public virtual void VisitSkippedTokensTrivia(MetaSkippedTokensTriviaSyntax node)
+	    {
+	        this.DefaultVisit(node);
+	    }
 		
 		public virtual void VisitMain(MainSyntax node)
 		{
@@ -6319,6 +6422,7 @@ namespace MetaDslx.Languages.Meta
 
 	public interface IMetaSyntaxVisitor<TArg, TResult> 
 	{
+	    TResult VisitSkippedTokensTrivia(MetaSkippedTokensTriviaSyntax node, TArg argument);
 		
 		TResult VisitMain(MainSyntax node, TArg argument);
 		
@@ -6441,6 +6545,10 @@ namespace MetaDslx.Languages.Meta
 	
 	public class MetaSyntaxVisitor<TArg, TResult> : SyntaxVisitor<TArg, TResult>, IMetaSyntaxVisitor<TArg, TResult>
 	{
+	    public virtual TResult VisitSkippedTokensTrivia(MetaSkippedTokensTriviaSyntax node, TArg argument)
+	    {
+	        return this.DefaultVisit(node, argument);
+	    }
 		
 		public virtual TResult VisitMain(MainSyntax node, TArg argument)
 		{
@@ -6740,6 +6848,7 @@ namespace MetaDslx.Languages.Meta
 
 	public interface IMetaSyntaxVisitor<TResult> 
 	{
+	    TResult VisitSkippedTokensTrivia(MetaSkippedTokensTriviaSyntax node);
 		
 		TResult VisitMain(MainSyntax node);
 		
@@ -6862,6 +6971,10 @@ namespace MetaDslx.Languages.Meta
 	
 	public class MetaSyntaxVisitor<TResult> : SyntaxVisitor<TResult>, IMetaSyntaxVisitor<TResult>
 	{
+	    public virtual TResult VisitSkippedTokensTrivia(MetaSkippedTokensTriviaSyntax node)
+	    {
+	        return this.DefaultVisit(node);
+	    }
 		
 		public virtual TResult VisitMain(MainSyntax node)
 		{
@@ -7164,6 +7277,12 @@ namespace MetaDslx.Languages.Meta
 	    public MetaSyntaxRewriter(bool visitIntoStructuredTrivia = false)
 			: base(MetaLanguage.Instance, visitIntoStructuredTrivia)
 	    {
+	    }
+	
+	    public virtual SyntaxNode VisitSkippedTokensTrivia(MetaSkippedTokensTriviaSyntax node)
+	    {
+	      var tokens = this.VisitList(node.Tokens);
+	      return node.Update(tokens);
 	    }
 		
 		public virtual SyntaxNode VisitMain(MainSyntax node)
@@ -7788,18 +7907,6 @@ namespace MetaDslx.Languages.Meta
 		{
 			return MetaSyntaxTree.Create((MetaSyntaxNode)root, (MetaParseOptions)options, path, null, encoding);
 		}
-	
-	    public override SyntaxNode CreateStructure(SyntaxTrivia trivia)
-	    {
-	        if (trivia != null && trivia.UnderlyingNode is GreenStructuredSyntaxTrivia structuredTrivia)
-	        {
-	            return structuredTrivia.Structure.CreateRed();
-	        }
-	        else
-	        {
-	            return null;
-	        }
-	    }
 	
 	
 	    public SyntaxToken TAsterisk(string text)

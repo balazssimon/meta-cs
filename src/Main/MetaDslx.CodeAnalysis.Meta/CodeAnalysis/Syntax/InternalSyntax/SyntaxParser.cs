@@ -488,7 +488,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             if (_blendedTokens != null)
             {
 #if DEBUG
-                if (n < 0)
+                /*if (n < 0)
                 {
                     for (int i = 0; i >= n; i--)
                     {
@@ -509,7 +509,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                             Debug.Assert(_blendedTokens[index].Token != null);
                         }
                     }
-                }
+                }*/
 #endif
                 RegisterLookahead(n);
                 return _blendedTokens.PeekItem(n).Token;
@@ -1057,7 +1057,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                             }
                         }
 
-                        builder.Add(Language.InternalSyntaxFactory.SkippedToken(tk));
+                        builder.Add(Language.InternalSyntaxFactory.SkippedTokensTrivia(tk));
                     }
                     else
                     {

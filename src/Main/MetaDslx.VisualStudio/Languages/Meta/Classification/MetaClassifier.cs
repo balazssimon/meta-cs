@@ -17,24 +17,19 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.VisualStudio.Languages.Meta.Classification
 {
-    internal class MetaClassifier : Antlr4LexerClassifier
+    internal class MetaClassifier : TokenClassifier
     {
         private readonly MetaSyntaxFacts _syntaxFacts;
 
         internal MetaClassifier(ITextBuffer textBuffer, MetaDslxMefServices mefServices)
-            : base(textBuffer, mefServices, new MetaLexer(Antlr4LexerClassifier.EmptyCharStream))
+            : base(textBuffer, mefServices)
         {
             _syntaxFacts = MetaLanguage.Instance.SyntaxFacts;
         }
 
-        protected override IClassificationType GetClassificationType(int tokenType, int mode)
+        protected override IClassificationType GetClassificationType(SyntaxKind syntaxKind)
         {
-            var syntaxKind = tokenType.FromAntlr4(_syntaxFacts.SyntaxKindType);
             MetaTokenKind tokenKind = _syntaxFacts.GetTokenKind(syntaxKind);
-            if (tokenKind == MetaTokenKind.None)
-            {
-                tokenKind = _syntaxFacts.GetModeTokenKind(mode);
-            }
             switch (tokenKind)
             {
                 case MetaTokenKind.GeneralComment:
@@ -57,4 +52,46 @@ namespace MetaDslx.VisualStudio.Languages.Meta.Classification
         }
 
     }
+
+
+    /*    internal class MetaClassifier : Antlr4LexerClassifier
+        {
+            private readonly MetaSyntaxFacts _syntaxFacts;
+
+            internal MetaClassifier(ITextBuffer textBuffer, MetaDslxMefServices mefServices)
+                : base(textBuffer, mefServices, new MetaLexer(Antlr4LexerClassifier.EmptyCharStream))
+            {
+                _syntaxFacts = MetaLanguage.Instance.SyntaxFacts;
+            }
+
+            protected override IClassificationType GetClassificationType(int tokenType, int mode)
+            {
+                var syntaxKind = tokenType.FromAntlr4(_syntaxFacts.SyntaxKindType);
+                MetaTokenKind tokenKind = _syntaxFacts.GetTokenKind(syntaxKind);
+                if (tokenKind == MetaTokenKind.None)
+                {
+                    tokenKind = _syntaxFacts.GetModeTokenKind(mode);
+                }
+                switch (tokenKind)
+                {
+                    case MetaTokenKind.GeneralComment:
+                    case MetaTokenKind.DocumentationCommentTrivia:
+                    case MetaTokenKind.GeneralCommentTrivia:
+                        return StandardClassificationService.Comment;
+                    case MetaTokenKind.Identifier:
+                        return StandardClassificationService.Identifier;
+                    case MetaTokenKind.ReservedKeyword:
+                    case MetaTokenKind.ContextualKeyword:
+                        return StandardClassificationService.Keyword;
+                    case MetaTokenKind.Number:
+                        return StandardClassificationService.NumberLiteral;
+                    case MetaTokenKind.String:
+                        return StandardClassificationService.StringLiteral;
+                    default:
+                        return StandardClassificationService.Other;
+                }
+
+            }
+
+        }*/
 }

@@ -61,6 +61,104 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax
         public abstract void Accept(ITestLexerModeSyntaxVisitor visitor);
     }
 
+    /// <summary>
+    /// It's a non terminal Trivia TestLexerModeSyntaxNode that has a tree underneath it.
+    /// </summary>
+    public abstract partial class TestLexerModeStructuredTriviaSyntax : TestLexerModeSyntaxNode, IStructuredTriviaSyntax
+    {
+        private SyntaxTrivia _parent;
+        internal TestLexerModeStructuredTriviaSyntax(InternalSyntaxNode green, TestLexerModeSyntaxNode parent, int position)
+            : base(green, parent == null ? null : (TestLexerModeSyntaxTree)parent.SyntaxTree, position)
+        {
+            System.Diagnostics.Debug.Assert(parent == null || position >= 0);
+        }
+		internal static TestLexerModeStructuredTriviaSyntax Create(SyntaxTrivia trivia)
+		{
+			var red = (TestLexerModeStructuredTriviaSyntax)TestLexerModeLanguage.Instance.SyntaxFactory.CreateStructure(trivia);
+			red._parent = trivia;
+			return red;
+		}
+        /// <summary>
+        /// Get parent trivia.
+        /// </summary>
+        public override SyntaxTrivia ParentTrivia => _parent;
+    }
+
+    public sealed partial class TestLexerModeSkippedTokensTriviaSyntax : TestLexerModeStructuredTriviaSyntax
+    {
+        internal TestLexerModeSkippedTokensTriviaSyntax(InternalSyntaxNode green, TestLexerModeSyntaxNode parent, int position)
+            : base(green, parent, position)
+        {
+        }
+
+        public SyntaxTokenList Tokens 
+        {
+            get
+            {
+				var slot = ((global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax.GreenSkippedTokensTriviaSyntax)this.Green).Tokens;
+				if (slot != null)
+				{
+					return new SyntaxTokenList(this, slot.Node, this.GetChildPosition(0), this.GetChildIndex(0));
+				}
+                return default;
+            }
+        }
+
+        public override SyntaxNode GetNodeSlot(int index)
+        {
+            switch (index)
+            {
+                default: return null;
+            }
+        }
+
+		public override SyntaxNode GetCachedSlot(int index)
+        {
+            switch (index)
+            {
+                default: return null;
+            }
+        }
+
+		public override TResult Accept<TArg, TResult>(ITestLexerModeSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+		{
+			return visitor.VisitSkippedTokensTrivia(this, argument);
+		}
+
+		public override TResult Accept<TResult>(ITestLexerModeSyntaxVisitor<TResult> visitor)
+        {
+            return visitor.VisitSkippedTokensTrivia(this);
+        }
+
+        public override void Accept(ITestLexerModeSyntaxVisitor visitor)
+        {
+            visitor.VisitSkippedTokensTrivia(this);
+        }
+
+        public TestLexerModeSkippedTokensTriviaSyntax Update(SyntaxTokenList tokens)
+        {
+            if (tokens != this.Tokens)
+            {
+                var newNode = (TestLexerModeSkippedTokensTriviaSyntax)Language.SyntaxFactory.SkippedTokensTrivia(tokens);
+                var annotations = this.GetAnnotations();
+                if (annotations != null && annotations.Length > 0)
+                    return newNode.WithAnnotations(annotations);
+                return newNode;
+            }
+            return this;
+        }
+
+        public TestLexerModeSkippedTokensTriviaSyntax WithTokens(SyntaxTokenList tokens)
+        {
+            return this.Update(tokens);
+        }
+
+        public TestLexerModeSkippedTokensTriviaSyntax AddTokens(params SyntaxToken[] items)
+        {
+            return this.WithTokens(this.Tokens.AddRange(items));
+        }
+    }
+
 	
 	public sealed class MainSyntax : TestLexerModeSyntaxNode, ICompilationUnitSyntax
 	{
@@ -15480,6 +15578,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode
 
 	public interface ITestLexerModeSyntaxVisitor
 	{
+	    void VisitSkippedTokensTrivia(TestLexerModeSkippedTokensTriviaSyntax node);
 		
 		void VisitMain(MainSyntax node);
 		
@@ -15782,6 +15881,10 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode
 	
 	public class TestLexerModeSyntaxVisitor : SyntaxVisitor, ITestLexerModeSyntaxVisitor
 	{
+	    public virtual void VisitSkippedTokensTrivia(TestLexerModeSkippedTokensTriviaSyntax node)
+	    {
+	        this.DefaultVisit(node);
+	    }
 		
 		public virtual void VisitMain(MainSyntax node)
 		{
@@ -16533,6 +16636,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode
 
 	public interface ITestLexerModeSyntaxVisitor<TArg, TResult> 
 	{
+	    TResult VisitSkippedTokensTrivia(TestLexerModeSkippedTokensTriviaSyntax node, TArg argument);
 		
 		TResult VisitMain(MainSyntax node, TArg argument);
 		
@@ -16835,6 +16939,10 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode
 	
 	public class TestLexerModeSyntaxVisitor<TArg, TResult> : SyntaxVisitor<TArg, TResult>, ITestLexerModeSyntaxVisitor<TArg, TResult>
 	{
+	    public virtual TResult VisitSkippedTokensTrivia(TestLexerModeSkippedTokensTriviaSyntax node, TArg argument)
+	    {
+	        return this.DefaultVisit(node, argument);
+	    }
 		
 		public virtual TResult VisitMain(MainSyntax node, TArg argument)
 		{
@@ -17584,6 +17692,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode
 
 	public interface ITestLexerModeSyntaxVisitor<TResult> 
 	{
+	    TResult VisitSkippedTokensTrivia(TestLexerModeSkippedTokensTriviaSyntax node);
 		
 		TResult VisitMain(MainSyntax node);
 		
@@ -17886,6 +17995,10 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode
 	
 	public class TestLexerModeSyntaxVisitor<TResult> : SyntaxVisitor<TResult>, ITestLexerModeSyntaxVisitor<TResult>
 	{
+	    public virtual TResult VisitSkippedTokensTrivia(TestLexerModeSkippedTokensTriviaSyntax node)
+	    {
+	        return this.DefaultVisit(node);
+	    }
 		
 		public virtual TResult VisitMain(MainSyntax node)
 		{
@@ -18638,6 +18751,12 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode
 	    public TestLexerModeSyntaxRewriter(bool visitIntoStructuredTrivia = false)
 			: base(TestLexerModeLanguage.Instance, visitIntoStructuredTrivia)
 	    {
+	    }
+	
+	    public virtual SyntaxNode VisitSkippedTokensTrivia(TestLexerModeSkippedTokensTriviaSyntax node)
+	    {
+	      var tokens = this.VisitList(node.Tokens);
+	      return node.Update(tokens);
 	    }
 		
 		public virtual SyntaxNode VisitMain(MainSyntax node)
@@ -20196,18 +20315,6 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode
 		{
 			return TestLexerModeSyntaxTree.Create((TestLexerModeSyntaxNode)root, (TestLexerModeParseOptions)options, path, null, encoding);
 		}
-	
-	    public override SyntaxNode CreateStructure(SyntaxTrivia trivia)
-	    {
-	        if (trivia != null && trivia.UnderlyingNode is GreenStructuredSyntaxTrivia structuredTrivia)
-	        {
-	            return structuredTrivia.Structure.CreateRed();
-	        }
-	        else
-	        {
-	            return null;
-	        }
-	    }
 	
 	
 	    public SyntaxToken TOpenBracket(string text)

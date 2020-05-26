@@ -30,6 +30,11 @@ namespace MetaDslx.Languages.Meta.Binding
 
         }
 
+		public virtual bool VisitSkippedTokensTrivia(MetaSkippedTokensTriviaSyntax node)
+		{
+            return false;
+		}
+
 		
 		public bool VisitMain(MainSyntax node)
 		{

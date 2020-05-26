@@ -28,6 +28,11 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation.
 
         }
 
+		public virtual bool VisitSkippedTokensTrivia(TestIncrementalCompilationSkippedTokensTriviaSyntax node)
+		{
+            return false;
+		}
+
 		
 		public bool VisitMain(MainSyntax node)
 		{

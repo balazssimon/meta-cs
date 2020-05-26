@@ -401,7 +401,7 @@ MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=145
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset()
   position=26
   Text={
-	metamo...
+	etamod...
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
 
@@ -465,7 +465,7 @@ MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSynt
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
   LexerMode=
   _lastMode=
-  token=[@-1,30:38='metamodel',<3>,7:1]
+  token=[@-1,30:37='etamodel',<95>,7:1]
   LexerMode=
   _currentMode=
   _lastMode=
@@ -475,37 +475,37 @@ MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSynt
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
   LexerMode=
   _lastMode=
-  token=[@-1,30:38='metamodel',<3>,7:1]
+  token=[@-1,30:37='etamodel',<95>,7:1]
   LexerMode=
   _currentMode=
   _lastMode=
   _currentMode=
-  result=[@-1,30:38='metamodel',<3>,7:1]
+  result=[@-1,30:37='etamodel',<95>,7:1]
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
   LexerMode=
   _lastMode=
-  token=[@-1,39:39=' ',<107>,channel=3,7:10]
+  token=[@-1,38:38=' ',<107>,channel=3,7:9]
   LexerMode=
   _currentMode=
   _lastMode=
   _currentMode=
-  result=[@-1,39:39=' ',<107>,channel=3,7:10]
+  result=[@-1,38:38=' ',<107>,channel=3,7:9]
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
   LexerMode=
   _lastMode=
-  token=[@-1,40:47='Entities',<95>,7:11]
+  token=[@-1,39:46='Entities',<95>,7:10]
   LexerMode=
   _currentMode=
   _lastMode=
 
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): metamodel
-  [29..40)
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): etamodel
+  [29..39)
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
   SkippedTokenCount=0
@@ -520,26 +520,26 @@ MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=148
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset()
   position=29
-  Text=	metamodel...
+  Text=	etamodel ...
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
   LexerMode=
   _lastMode=
-  token=[@-1,29:29='\t',<107>,channel=3,7:19]
+  token=[@-1,29:29='\t',<107>,channel=3,7:18]
   LexerMode=
   _currentMode=
   _lastMode=
   _currentMode=
-  result=[@-1,29:29='\t',<107>,channel=3,7:19]
+  result=[@-1,29:29='\t',<107>,channel=3,7:18]
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
   LexerMode=
   _lastMode=
-  token=[@-1,30:38='metamodel',<3>,7:20]
+  token=[@-1,30:37='etamodel',<95>,7:19]
   LexerMode=
   _currentMode=
   _lastMode=
@@ -549,37 +549,37 @@ MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSynt
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
   LexerMode=
   _lastMode=
-  token=[@-1,30:38='metamodel',<3>,7:20]
+  token=[@-1,30:37='etamodel',<95>,7:19]
   LexerMode=
   _currentMode=
   _lastMode=
   _currentMode=
-  result=[@-1,30:38='metamodel',<3>,7:20]
+  result=[@-1,30:37='etamodel',<95>,7:19]
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
   LexerMode=
   _lastMode=
-  token=[@-1,39:39=' ',<107>,channel=3,7:29]
+  token=[@-1,38:38=' ',<107>,channel=3,7:27]
   LexerMode=
   _currentMode=
   _lastMode=
   _currentMode=
-  result=[@-1,39:39=' ',<107>,channel=3,7:29]
+  result=[@-1,38:38=' ',<107>,channel=3,7:27]
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
   LexerMode=
   _lastMode=
-  token=[@-1,40:47='Entities',<95>,7:30]
+  token=[@-1,39:46='Entities',<95>,7:28]
   LexerMode=
   _currentMode=
   _lastMode=
 
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): metamodel
-  [29..40)
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): etamodel
+  [29..39)
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
   SkippedTokenCount=0
@@ -594,7 +594,7 @@ MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSynt
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
   LexerMode=
   _lastMode=
-  token=[@-1,40:47='Entities',<95>,7:30]
+  token=[@-1,39:46='Entities',<95>,7:28]
   LexerMode=
   _currentMode=
   _lastMode=
@@ -604,143 +604,36 @@ MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSynt
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
   LexerMode=
   _lastMode=
-  token=[@-1,40:47='Entities',<95>,7:30]
+  token=[@-1,39:46='Entities',<95>,7:28]
   LexerMode=
   _currentMode=
   _lastMode=
   _currentMode=
-  result=[@-1,40:47='Entities',<95>,7:30]
+  result=[@-1,39:46='Entities',<95>,7:28]
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
   LexerMode=
   _lastMode=
-  token=[@-1,48:48=';',<50>,7:38]
+  token=[@-1,47:47=';',<50>,7:36]
   LexerMode=
   _currentMode=
   _lastMode=
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): Entities
-  [40..48)
+  [39..47)
 
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 1
   SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentTokenWithSkippedTokensAndErrors(): 	metamodel 
-  StateStack=state=148,state=145,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=164
-  StateStack=state=164,state=148,state=145,state=118,state=-1
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset()
-  position=40
-  Text=Entities; ...
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
-  LexerMode=
-  _lastMode=
-  token=[@-1,40:47='Entities',<95>,7:39]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
-  LexerMode=
-  _lastMode=
-  token=[@-1,40:47='Entities',<95>,7:39]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-  _currentMode=
-  result=[@-1,40:47='Entities',<95>,7:39]
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
-  LexerMode=
-  _lastMode=
-  token=[@-1,48:48=';',<50>,7:47]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): Entities
-  [40..48)
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=121
-  StateStack=state=121,state=164,state=148,state=145,state=118,state=-1
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset()
-  position=40
-  Text=Entities; ...
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
-  LexerMode=
-  _lastMode=
-  token=[@-1,40:47='Entities',<95>,7:48]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
-  LexerMode=
-  _lastMode=
-  token=[@-1,40:47='Entities',<95>,7:48]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-  _currentMode=
-  result=[@-1,40:47='Entities',<95>,7:48]
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
-  LexerMode=
-  _lastMode=
-  token=[@-1,48:48=';',<50>,7:56]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): Entities
-  [40..48)
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
+  LookaheadCount=2
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
   LexerMode=
   _lastMode=
-  token=[@-1,48:48=';',<50>,7:56]
+  token=[@-1,47:47=';',<50>,7:36]
   LexerMode=
   _currentMode=
   _lastMode=
@@ -750,126 +643,81 @@ MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSynt
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
   LexerMode=
   _lastMode=
-  token=[@-1,48:48=';',<50>,7:56]
+  token=[@-1,47:47=';',<50>,7:36]
   LexerMode=
   _currentMode=
   _lastMode=
   _currentMode=
-  result=[@-1,48:48=';',<50>,7:56]
+  result=[@-1,47:47=';',<50>,7:36]
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
   LexerMode=
   _lastMode=
-  token=[@-1,49:49=' ',<107>,channel=3,7:57]
+  token=[@-1,48:48=' ',<107>,channel=3,7:37]
   LexerMode=
   _currentMode=
   _lastMode=
   _currentMode=
-  result=[@-1,49:49=' ',<107>,channel=3,7:57]
+  result=[@-1,48:48=' ',<107>,channel=3,7:37]
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
   LexerMode=
   _lastMode=
-  token=[@-1,50:51='\r\n',<108>,channel=3,7:58]
+  token=[@-1,49:50='\r\n',<108>,channel=3,7:38]
   LexerMode=
   _currentMode=
   _lastMode=
   _currentMode=
-  result=[@-1,50:51='\r\n',<108>,channel=3,7:58]
+  result=[@-1,49:50='\r\n',<108>,channel=3,7:38]
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): ;
-  [48..52)
+  [47..51)
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
   SkippedTokenCount=0
   LookaheadCount=1
 
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.SkipToken(): 	etamodel 
 
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentTokenWithSkippedTokensAndErrors(): Entities
-  StateStack=state=121,state=164,state=148,state=145,state=118,state=-1
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.SkipToken(): Entities
 
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): -1
-  SkippedTokenCount=0
-  LookaheadCount=0
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.SkipToken(): ; 
 
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=121
-  StateStack=state=121,state=164,state=148,state=145,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): -1
-  SkippedTokenCount=0
-  LookaheadCount=0
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=164
-  StateStack=state=164,state=148,state=145,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentTokenWithSkippedTokensAndErrors(): ; 
-
-  StateStack=state=148,state=145,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): -1
-  SkippedTokenCount=0
-  LookaheadCount=0
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=148
-  StateStack=state=148,state=145,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
   LexerMode=
   _lastMode=
-  token=[@-1,52:53='\r\n',<108>,channel=3,8:0]
+  token=[@-1,51:52='\r\n',<108>,channel=3,8:0]
   LexerMode=
   _currentMode=
   _lastMode=
   _currentMode=
-  result=[@-1,52:53='\r\n',<108>,channel=3,8:0]
+  result=[@-1,51:52='\r\n',<108>,channel=3,8:0]
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
   LexerMode=
   _lastMode=
-  token=[@-1,54:57='    ',<107>,channel=3,9:0]
+  token=[@-1,53:56='    ',<107>,channel=3,9:0]
   LexerMode=
   _currentMode=
   _lastMode=
   _currentMode=
-  result=[@-1,54:57='    ',<107>,channel=3,9:0]
+  result=[@-1,53:56='    ',<107>,channel=3,9:0]
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
   LexerMode=
   _lastMode=
-  token=[@-1,58:62='class',<7>,9:4]
+  token=[@-1,57:61='class',<7>,9:4]
   LexerMode=
   _currentMode=
   _lastMode=
@@ -879,47 +727,89 @@ MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSynt
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
   LexerMode=
   _lastMode=
-  token=[@-1,58:62='class',<7>,9:4]
+  token=[@-1,57:61='class',<7>,9:4]
   LexerMode=
   _currentMode=
   _lastMode=
   _currentMode=
-  result=[@-1,58:62='class',<7>,9:4]
+  result=[@-1,57:61='class',<7>,9:4]
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
   LexerMode=
   _lastMode=
-  token=[@-1,63:63=' ',<107>,channel=3,9:9]
+  token=[@-1,62:62=' ',<107>,channel=3,9:9]
   LexerMode=
   _currentMode=
   _lastMode=
   _currentMode=
-  result=[@-1,63:63=' ',<107>,channel=3,9:9]
+  result=[@-1,62:62=' ',<107>,channel=3,9:9]
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
   LexerMode=
   _lastMode=
-  token=[@-1,64:75='NamedElement',<95>,9:10]
+  token=[@-1,63:74='NamedElement',<95>,9:10]
   LexerMode=
   _currentMode=
   _lastMode=
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): class
-  [52..64)
+  [51..63)
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): -1
+  SkippedTokenCount=3
+  LookaheadCount=3
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=148
+  StateStack=state=148,state=145,state=118,state=-1
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
+  SkippedTokenCount=3
+  LookaheadCount=4
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
+  LexerMode=
+  _lastMode=
+  token=[@-1,63:74='NamedElement',<95>,9:10]
+  LexerMode=
+  _currentMode=
+  _lastMode=
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken()
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=
+  _lastMode=
+  token=[@-1,63:74='NamedElement',<95>,9:10]
+  LexerMode=
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,63:74='NamedElement',<95>,9:10]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=
+  _lastMode=
+  token=[@-1,75:75='{',<59>,9:22]
+  LexerMode=
+  _currentMode=
+  _lastMode=
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): NamedElement
+  [63..75)
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=149
   StateStack=state=149,state=145,state=118,state=-1
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset()
-  position=52
+  position=51
   Text=
     clas...
 
@@ -928,31 +818,31 @@ MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSynt
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
   LexerMode=
   _lastMode=
-  token=[@-1,52:53='\r\n',<108>,channel=3,9:22]
+  token=[@-1,51:52='\r\n',<108>,channel=3,9:23]
   LexerMode=
   _currentMode=
   _lastMode=
   _currentMode=
-  result=[@-1,52:53='\r\n',<108>,channel=3,9:22]
+  result=[@-1,51:52='\r\n',<108>,channel=3,9:23]
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
   LexerMode=
   _lastMode=
-  token=[@-1,54:57='    ',<107>,channel=3,10:0]
+  token=[@-1,53:56='    ',<107>,channel=3,10:0]
   LexerMode=
   _currentMode=
   _lastMode=
   _currentMode=
-  result=[@-1,54:57='    ',<107>,channel=3,10:0]
+  result=[@-1,53:56='    ',<107>,channel=3,10:0]
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
   LexerMode=
   _lastMode=
-  token=[@-1,58:62='class',<7>,10:4]
+  token=[@-1,57:61='class',<7>,10:4]
   LexerMode=
   _currentMode=
   _lastMode=
@@ -962,88 +852,49 @@ MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSynt
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
   LexerMode=
   _lastMode=
-  token=[@-1,58:62='class',<7>,10:4]
+  token=[@-1,57:61='class',<7>,10:4]
   LexerMode=
   _currentMode=
   _lastMode=
   _currentMode=
-  result=[@-1,58:62='class',<7>,10:4]
+  result=[@-1,57:61='class',<7>,10:4]
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
   LexerMode=
   _lastMode=
-  token=[@-1,63:63=' ',<107>,channel=3,10:9]
+  token=[@-1,62:62=' ',<107>,channel=3,10:9]
   LexerMode=
   _currentMode=
   _lastMode=
   _currentMode=
-  result=[@-1,63:63=' ',<107>,channel=3,10:9]
+  result=[@-1,62:62=' ',<107>,channel=3,10:9]
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
   LexerMode=
   _lastMode=
-  token=[@-1,64:75='NamedElement',<95>,10:10]
+  token=[@-1,63:74='NamedElement',<95>,10:10]
   LexerMode=
   _currentMode=
   _lastMode=
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): class
-  [52..64)
+  [51..63)
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
+  SkippedTokenCount=3
+  LookaheadCount=4
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
-  LexerMode=
-  _lastMode=
-  token=[@-1,64:75='NamedElement',<95>,10:10]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
-  LexerMode=
-  _lastMode=
-  token=[@-1,64:75='NamedElement',<95>,10:10]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-  _currentMode=
-  result=[@-1,64:75='NamedElement',<95>,10:10]
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
-  LexerMode=
-  _lastMode=
-  token=[@-1,76:76='}',<60>,10:22]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): NamedElement
-  [64..76)
+  SkippedTokenCount=3
+  LookaheadCount=4
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
+  SkippedTokenCount=3
+  LookaheadCount=4
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RestoreParserState(): state=149
 
@@ -1051,7 +902,7 @@ MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=195
   StateStack=state=195,state=149,state=145,state=118,state=-1
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset()
-  position=52
+  position=51
   Text=
     clas...
 
@@ -1060,31 +911,31 @@ MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSynt
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
   LexerMode=
   _lastMode=
-  token=[@-1,52:53='\r\n',<108>,channel=3,10:23]
+  token=[@-1,51:52='\r\n',<108>,channel=3,10:22]
   LexerMode=
   _currentMode=
   _lastMode=
   _currentMode=
-  result=[@-1,52:53='\r\n',<108>,channel=3,10:23]
+  result=[@-1,51:52='\r\n',<108>,channel=3,10:22]
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
   LexerMode=
   _lastMode=
-  token=[@-1,54:57='    ',<107>,channel=3,11:0]
+  token=[@-1,53:56='    ',<107>,channel=3,11:0]
   LexerMode=
   _currentMode=
   _lastMode=
   _currentMode=
-  result=[@-1,54:57='    ',<107>,channel=3,11:0]
+  result=[@-1,53:56='    ',<107>,channel=3,11:0]
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
   LexerMode=
   _lastMode=
-  token=[@-1,58:62='class',<7>,11:4]
+  token=[@-1,57:61='class',<7>,11:4]
   LexerMode=
   _currentMode=
   _lastMode=
@@ -1094,68 +945,72 @@ MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSynt
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
   LexerMode=
   _lastMode=
-  token=[@-1,58:62='class',<7>,11:4]
+  token=[@-1,57:61='class',<7>,11:4]
   LexerMode=
   _currentMode=
   _lastMode=
   _currentMode=
-  result=[@-1,58:62='class',<7>,11:4]
+  result=[@-1,57:61='class',<7>,11:4]
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
   LexerMode=
   _lastMode=
-  token=[@-1,63:63=' ',<107>,channel=3,11:9]
+  token=[@-1,62:62=' ',<107>,channel=3,11:9]
   LexerMode=
   _currentMode=
   _lastMode=
   _currentMode=
-  result=[@-1,63:63=' ',<107>,channel=3,11:9]
+  result=[@-1,62:62=' ',<107>,channel=3,11:9]
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
   LexerMode=
   _lastMode=
-  token=[@-1,64:75='NamedElement',<95>,11:10]
+  token=[@-1,63:74='NamedElement',<95>,11:10]
   LexerMode=
   _currentMode=
   _lastMode=
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): class
-  [52..64)
+  [51..63)
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
+  SkippedTokenCount=3
+  LookaheadCount=4
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
+  SkippedTokenCount=3
+  LookaheadCount=4
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
+  SkippedTokenCount=3
+  LookaheadCount=4
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
+  SkippedTokenCount=3
+  LookaheadCount=4
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
+  SkippedTokenCount=3
+  LookaheadCount=4
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentTokenWithSkippedTokensAndErrors(): 
     class 
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): -3
+  SkippedTokenCount=3
+  LookaheadCount=1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): -2
+  SkippedTokenCount=3
+  LookaheadCount=2
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): -1
+  SkippedTokenCount=3
+  LookaheadCount=3
   StateStack=state=195,state=149,state=145,state=118,state=-1
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=251
@@ -1166,7 +1021,7 @@ MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSynt
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
   LexerMode=
   _lastMode=
-  token=[@-1,64:75='NamedElement',<95>,11:10]
+  token=[@-1,63:74='NamedElement',<95>,11:10]
   LexerMode=
   _currentMode=
   _lastMode=
@@ -1176,25 +1031,25 @@ MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSynt
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
   LexerMode=
   _lastMode=
-  token=[@-1,64:75='NamedElement',<95>,11:10]
+  token=[@-1,63:74='NamedElement',<95>,11:10]
   LexerMode=
   _currentMode=
   _lastMode=
   _currentMode=
-  result=[@-1,64:75='NamedElement',<95>,11:10]
+  result=[@-1,63:74='NamedElement',<95>,11:10]
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
   LexerMode=
   _lastMode=
-  token=[@-1,76:76='}',<60>,11:22]
+  token=[@-1,75:75='{',<59>,11:22]
   LexerMode=
   _currentMode=
   _lastMode=
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): NamedElement
-  [64..76)
+  [63..75)
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
   SkippedTokenCount=0
@@ -1204,7 +1059,7 @@ MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=121
   StateStack=state=121,state=251,state=195,state=149,state=145,state=118,state=-1
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset()
-  position=64
+  position=63
   Text=NamedEleme...
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
@@ -1212,7 +1067,7 @@ MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSynt
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
   LexerMode=
   _lastMode=
-  token=[@-1,64:75='NamedElement',<95>,11:23]
+  token=[@-1,63:74='NamedElement',<95>,11:23]
   LexerMode=
   _currentMode=
   _lastMode=
@@ -1222,25 +1077,25 @@ MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSynt
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
   LexerMode=
   _lastMode=
-  token=[@-1,64:75='NamedElement',<95>,11:23]
+  token=[@-1,63:74='NamedElement',<95>,11:23]
   LexerMode=
   _currentMode=
   _lastMode=
   _currentMode=
-  result=[@-1,64:75='NamedElement',<95>,11:23]
+  result=[@-1,63:74='NamedElement',<95>,11:23]
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
   LexerMode=
   _lastMode=
-  token=[@-1,76:76='}',<60>,11:35]
+  token=[@-1,75:75='{',<59>,11:35]
   LexerMode=
   _currentMode=
   _lastMode=
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): NamedElement
-  [64..76)
+  [63..75)
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
   SkippedTokenCount=0
@@ -1255,7 +1110,7 @@ MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSynt
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
   LexerMode=
   _lastMode=
-  token=[@-1,76:76='}',<60>,11:35]
+  token=[@-1,75:75='{',<59>,11:35]
   LexerMode=
   _currentMode=
   _lastMode=
@@ -1265,27 +1120,27 @@ MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSynt
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
   LexerMode=
   _lastMode=
-  token=[@-1,76:76='}',<60>,11:35]
+  token=[@-1,75:75='{',<59>,11:35]
   LexerMode=
   _currentMode=
   _lastMode=
   _currentMode=
-  result=[@-1,76:76='}',<60>,11:35]
+  result=[@-1,75:75='{',<59>,11:35]
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
   LexerMode=
   _lastMode=
-  token=[@-1,77:78='\r\n',<108>,channel=3,11:36]
+  token=[@-1,76:77='\r\n',<108>,channel=3,11:36]
   LexerMode=
   _currentMode=
   _lastMode=
   _currentMode=
-  result=[@-1,77:78='\r\n',<108>,channel=3,11:36]
+  result=[@-1,76:77='\r\n',<108>,channel=3,11:36]
 
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): }
-  [76..79)
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): {
+  [75..78)
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
   SkippedTokenCount=0
@@ -1316,16 +1171,24 @@ MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
   SkippedTokenCount=0
   LookaheadCount=1
 
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 1
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
   SkippedTokenCount=0
-  LookaheadCount=2
+  LookaheadCount=1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=256
+  StateStack=state=256,state=195,state=149,state=145,state=118,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset()
+  position=75
+  Text={
+}
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
   LexerMode=
   _lastMode=
-  token=[@-1,79:79='}',<60>,12:0]
+  token=[@-1,75:75='{',<59>,12:0]
   LexerMode=
   _currentMode=
   _lastMode=
@@ -1335,64 +1198,104 @@ MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSynt
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
   LexerMode=
   _lastMode=
-  token=[@-1,79:79='}',<60>,12:0]
+  token=[@-1,75:75='{',<59>,12:0]
   LexerMode=
   _currentMode=
   _lastMode=
   _currentMode=
-  result=[@-1,79:79='}',<60>,12:0]
+  result=[@-1,75:75='{',<59>,12:0]
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
   LexerMode=
   _lastMode=
-  token=[@-1,80:79='<EOF>',<-1>,12:1]
+  token=[@-1,76:77='\r\n',<108>,channel=3,12:1]
+  LexerMode=
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,76:77='\r\n',<108>,channel=3,12:1]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): {
+  [75..78)
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
+  SkippedTokenCount=0
+  LookaheadCount=1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
+  SkippedTokenCount=0
+  LookaheadCount=1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=
+  _lastMode=
+  token=[@-1,78:78='}',<60>,13:0]
+  LexerMode=
+  _currentMode=
+  _lastMode=
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken()
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=
+  _lastMode=
+  token=[@-1,78:78='}',<60>,13:0]
+  LexerMode=
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,78:78='}',<60>,13:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=
+  _lastMode=
+  token=[@-1,79:78='<EOF>',<-1>,13:1]
   LexerMode=
   _currentMode=
   _lastMode=
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): }
-  [79..80)
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
-  LexerMode=
-  _lastMode=
-  token=[@-1,80:79='<EOF>',<-1>,12:1]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
-  LexerMode=
-  _lastMode=
-  token=[@-1,80:79='<EOF>',<-1>,12:1]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-  _currentMode=
-  result=[@-1,80:79='<EOF>',<-1>,12:1]
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
-  LexerMode=
-  _lastMode=
-  token=[@-1,80:79='<EOF>',<-1>,12:1]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): 
-  [80..80)
+  [78..79)
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
   SkippedTokenCount=0
   LookaheadCount=1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentTokenWithSkippedTokensAndErrors(): {
+
+  StateStack=state=256,state=195,state=149,state=145,state=118,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
+  SkippedTokenCount=0
+  LookaheadCount=1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
+  SkippedTokenCount=0
+  LookaheadCount=1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
+  SkippedTokenCount=0
+  LookaheadCount=1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
+  SkippedTokenCount=0
+  LookaheadCount=1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentTokenWithSkippedTokensAndErrors(): }
+  StateStack=state=256,state=195,state=149,state=145,state=118,state=-1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): -1
+  SkippedTokenCount=0
+  LookaheadCount=0
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=256
+  StateStack=state=256,state=195,state=149,state=145,state=118,state=-1
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): -1
   SkippedTokenCount=0
@@ -1412,6 +1315,46 @@ MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
   SkippedTokenCount=0
   LookaheadCount=1
 
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
+  LexerMode=
+  _lastMode=
+  token=[@-1,79:78='<EOF>',<-1>,13:1]
+  LexerMode=
+  _currentMode=
+  _lastMode=
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken()
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=
+  _lastMode=
+  token=[@-1,79:78='<EOF>',<-1>,13:1]
+  LexerMode=
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,79:78='<EOF>',<-1>,13:1]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=
+  _lastMode=
+  token=[@-1,79:78='<EOF>',<-1>,13:1]
+  LexerMode=
+  _currentMode=
+  _lastMode=
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): 
+  [79..79)
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
+  SkippedTokenCount=0
+  LookaheadCount=1
+  Parser error: extraneous input '<EOF>' expecting {'abstract', 'class', 'enum', 'association', 'const', '[', '}'}
+
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
   SkippedTokenCount=0
   LookaheadCount=1
@@ -1420,9 +1363,56 @@ MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
   SkippedTokenCount=0
   LookaheadCount=1
 
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentTokenWithSkippedTokensAndErrors(): }
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 1
+  SkippedTokenCount=0
+  LookaheadCount=2
 
-  StateStack=state=145,state=118,state=-1
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
+  LexerMode=
+  _lastMode=
+  token=[@-1,79:78='<EOF>',<-1>,13:1]
+  LexerMode=
+  _currentMode=
+  _lastMode=
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken()
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=
+  _lastMode=
+  token=[@-1,79:78='<EOF>',<-1>,13:1]
+  LexerMode=
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,79:78='<EOF>',<-1>,13:1]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=
+  _lastMode=
+  token=[@-1,79:78='<EOF>',<-1>,13:1]
+  LexerMode=
+  _currentMode=
+  _lastMode=
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): 
+  [79..79)
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
+  SkippedTokenCount=0
+  LookaheadCount=1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
+  SkippedTokenCount=0
+  LookaheadCount=1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): -1
+  SkippedTokenCount=0
+  LookaheadCount=0
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): -1
   SkippedTokenCount=0
@@ -1442,45 +1432,30 @@ MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
   SkippedTokenCount=0
   LookaheadCount=1
 
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 1
-  SkippedTokenCount=0
-  LookaheadCount=2
-
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
   SkippedTokenCount=0
   LookaheadCount=1
-  Parser error: extraneous input '}' expecting <EOF>
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.SkipToken(): }
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=1
-  LookaheadCount=2
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): -1
-  SkippedTokenCount=1
+  SkippedTokenCount=0
   LookaheadCount=1
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentTokenWithSkippedTokensAndErrors(): 
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): -1
-  SkippedTokenCount=1
-  LookaheadCount=1
   StateStack=state=-1
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=-1
   StateStack=state=-1
 ===========================================
-Text length: 80
+Text length: 79
 ----
 namespace EntitiesSample
 {
-	metamodel Entities; 
+	etamodel Entities; 
 
-    class NamedElement}
+    class NamedElement{
 }
 ----
-[1 (startState=-1,endState=-1,ltb=0,lta=2,lb=0,la=-1)] Main
+[1 (startState=-1,endState=-1,ltb=0,lta=2,lb=0,la=0)] Main
   [1 (startState=118,endState=118,ltb=0,lta=2,lb=0,la=0)] NamespaceDeclaration
     [(startMode=0,endState=0)] KNamespace: namespace
     [1 (startState=144,endState=144,ltb=0,lta=1,lb=0,la=3)] QualifiedName
@@ -1489,29 +1464,29 @@ namespace EntitiesSample
           [(startMode=0,endState=0)] IdentifierNormal: EntitiesSample
     [1 (startState=145,endState=145,ltb=0,lta=2,lb=0,la=0)] NamespaceBody
       [(startMode=0,endState=0)] TOpenBrace: {
-      [1 (startState=148,endState=148,ltb=0,lta=1,lb=0,la=0)] MetamodelDeclaration
-        [(startMode=0,endState=0)] KMetamodel: metamodel
-        [1 (startState=164,endState=164,ltb=0,lta=1,lb=0,la=4)] Name
-          [1 (startState=121,endState=121,ltb=0,lta=1,lb=0,la=4)] Identifier
-            [(startMode=0,endState=0)] IdentifierNormal: Entities
-        [(startMode=0,endState=0)] TSemicolon: ;
-      [1 (startState=149,endState=149,ltb=0,lta=2,lb=0,la=3)] Declaration
-        [1 (startState=195,endState=195,ltb=0,lta=2,lb=0,la=3)] ClassDeclaration
+      [1 (startState=148,endState=148,ltb=1,lta=3,lb=0,la=34)] MetamodelDeclaration
+        [(startMode=0,endState=0)] KMetamodel: 
+        Name
+        [(startMode=0,endState=0)] TSemicolon: 
+      [1 (startState=149,endState=149,ltb=0,lta=1,lb=0,la=-22)] Declaration
+        [1 (startState=195,endState=195,ltb=0,lta=1,lb=0,la=-22)] ClassDeclaration
           [(startMode=0,endState=0)] KClass: class
           [1 (startState=251,endState=251,ltb=0,lta=1,lb=0,la=3)] Name
             [1 (startState=121,endState=121,ltb=0,lta=1,lb=0,la=3)] Identifier
               [(startMode=0,endState=0)] IdentifierNormal: NamedElement
-          ClassBody
-      [(startMode=0,endState=0)] TCloseBrace: }
+          [1 (startState=256,endState=256,ltb=0,lta=1,lb=0,la=0)] ClassBody
+            [(startMode=0,endState=0)] TOpenBrace: {
+            [(startMode=0,endState=0)] TCloseBrace: }
+      [(startMode=0,endState=0)] TCloseBrace: 
   [(startMode=0,endState=0)] Eof: 
 
 ===========================================
 Antlr4 diagnostics:
-  (6,23): error AR0001: Syntax error: mismatched input '}' expecting {':', '{'}
-  (7,1): error AR0001: Syntax error: extraneous input '}' expecting <EOF>
+  (4,2): error AR0001: Syntax error: mismatched input 'etamodel' expecting {'metamodel', '['}
+  (7,2): error AR0001: Syntax error: extraneous input '<EOF>' expecting {'abstract', 'class', 'enum', 'association', 'const', '[', '}'}
 MetaDslx diagnostics:
-  (5,23): error AR0001: Syntax error: missing {':', '{'}
-  (6,1): error AR0001: Syntax error: extraneous input '}' expecting <EOF>
+  (2,2): error AR0001: Syntax error: missing {'metamodel', '['}
+  (6,2): error AR0001: Syntax error: extraneous input '<EOF>' expecting {'abstract', 'class', 'enum', 'association', 'const', '[', '}'}
 ----
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RestoreParserState()
@@ -1521,29 +1496,31 @@ MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=-1
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken Main namespace EntitiesSample
 {
-	metamodel Entities; 
+	etamodel Entities; 
 
-    class NamedElement}
+    class NamedElement{
 }
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken Main namespace EntitiesSample
 {
-	metamodel Entities; 
+	etamodel Entities; 
 
-    class NamedElement}
+    class NamedElement{
 }
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken NamespaceDeclaration namespace EntitiesSample
 {
-	metamodel Entities; 
+	etamodel Entities; 
 
-    class NamedElement}
+    class NamedElement{
+}
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken NamespaceDeclaration namespace EntitiesSample
 {
-	metamodel Entities; 
+	etamodel Entities; 
 
-    class NamedElement}
+    class NamedElement{
+}
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken KNamespace namespace
 
@@ -1605,29 +1582,31 @@ MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=118
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken Main namespace EntitiesSample
 {
-	metamodel Entities; 
+	etamodel Entities; 
 
-    class NamedElement}
+    class NamedElement{
 }
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken Main namespace EntitiesSample
 {
-	metamodel Entities; 
+	etamodel Entities; 
 
-    class NamedElement}
+    class NamedElement{
 }
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken NamespaceDeclaration namespace EntitiesSample
 {
-	metamodel Entities; 
+	etamodel Entities; 
 
-    class NamedElement}
+    class NamedElement{
+}
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken NamespaceDeclaration namespace EntitiesSample
 {
-	metamodel Entities; 
+	etamodel Entities; 
 
-    class NamedElement}
+    class NamedElement{
+}
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken KNamespace namespace
 
@@ -2056,14 +2035,16 @@ MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=145
   StateStack=state=145,state=118,state=-1
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken NamespaceBody {
-	metamodel Entities; 
+	etamodel Entities; 
 
-    class NamedElement}
+    class NamedElement{
+}
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken NamespaceBody {
-	metamodel Entities; 
+	etamodel Entities; 
 
-    class NamedElement}
+    class NamedElement{
+}
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken TOpenBrace {
 
@@ -2072,7 +2053,7 @@ MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): S
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset()
   position=26
   Text={
-	metamo...
+	etamod...
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
 
@@ -2119,10 +2100,68 @@ MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
   SkippedTokenCount=0
   LookaheadCount=1
 
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken KMetamodel metamodel
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken KClass class
 
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken KMetamodel metamodel
-  Reuse: true
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken KClass class
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=
+  _lastMode=
+  token=[@-1,29:29='\t',<107>,channel=3,7:0]
+  LexerMode=
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,29:29='\t',<107>,channel=3,7:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=
+  _lastMode=
+  token=[@-1,30:37='etamodel',<95>,7:1]
+  LexerMode=
+  _currentMode=
+  _lastMode=
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken()
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=
+  _lastMode=
+  token=[@-1,30:37='etamodel',<95>,7:1]
+  LexerMode=
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,30:37='etamodel',<95>,7:1]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=
+  _lastMode=
+  token=[@-1,38:38=' ',<107>,channel=3,7:9]
+  LexerMode=
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,38:38=' ',<107>,channel=3,7:9]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=
+  _lastMode=
+  token=[@-1,39:46='Entities',<95>,7:10]
+  LexerMode=
+  _currentMode=
+  _lastMode=
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): etamodel
+  [29..39)
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
   SkippedTokenCount=0
@@ -2135,39 +2174,44 @@ MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentTokenWithSkip
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=148
   StateStack=state=148,state=145,state=118,state=-1
 
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken MetamodelDeclaration metamodel Entities;
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken Declaration class NamedElement{
+}
 
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken MetamodelDeclaration metamodel Entities;
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken Declaration class NamedElement{
+}
 
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken KMetamodel metamodel
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken ClassDeclaration class NamedElement{
+}
 
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken KMetamodel metamodel
-  Reuse: true
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken ClassDeclaration class NamedElement{
+}
 
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken KClass class
 
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken IdentifierNormal Entities
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken IdentifierNormal Entities
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken TSemicolon ;
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken KClass class
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset()
-  position=40
-  Text=Entities; ...
+  position=29
+  Text=	etamodel ...
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
   LexerMode=
   _lastMode=
-  token=[@-1,40:47='Entities',<95>,7:0]
+  token=[@-1,29:29='\t',<107>,channel=3,7:18]
+  LexerMode=
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,29:29='\t',<107>,channel=3,7:18]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=
+  _lastMode=
+  token=[@-1,30:37='etamodel',<95>,7:19]
   LexerMode=
   _currentMode=
   _lastMode=
@@ -2177,1826 +2221,80 @@ MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSynt
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
   LexerMode=
   _lastMode=
-  token=[@-1,40:47='Entities',<95>,7:0]
+  token=[@-1,30:37='etamodel',<95>,7:19]
   LexerMode=
   _currentMode=
   _lastMode=
   _currentMode=
-  result=[@-1,40:47='Entities',<95>,7:0]
+  result=[@-1,30:37='etamodel',<95>,7:19]
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
   LexerMode=
   _lastMode=
-  token=[@-1,48:48=';',<50>,7:8]
+  token=[@-1,38:38=' ',<107>,channel=3,7:27]
+  LexerMode=
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,38:38=' ',<107>,channel=3,7:27]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=
+  _lastMode=
+  token=[@-1,39:46='Entities',<95>,7:28]
+  LexerMode=
+  _currentMode=
+  _lastMode=
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): etamodel
+  [29..39)
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
+  SkippedTokenCount=0
+  LookaheadCount=1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
+  SkippedTokenCount=0
+  LookaheadCount=1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
+  LexerMode=
+  _lastMode=
+  token=[@-1,39:46='Entities',<95>,7:28]
+  LexerMode=
+  _currentMode=
+  _lastMode=
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken()
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=
+  _lastMode=
+  token=[@-1,39:46='Entities',<95>,7:28]
+  LexerMode=
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,39:46='Entities',<95>,7:28]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=
+  _lastMode=
+  token=[@-1,47:47=';',<50>,7:36]
   LexerMode=
   _currentMode=
   _lastMode=
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): Entities
-  [40..48)
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentTokenWithSkippedTokensAndErrors(): 	metamodel 
-  StateStack=state=148,state=145,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=164
-  StateStack=state=164,state=148,state=145,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken Name Entities
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken Name Entities
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken TSemicolon ;
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken Identifier Entities
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken Identifier Entities
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken TSemicolon ;
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken IdentifierNormal Entities
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken IdentifierNormal Entities
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken TSemicolon ;
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset()
-  position=40
-  Text=Entities; ...
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
-  LexerMode=
-  _lastMode=
-  token=[@-1,40:47='Entities',<95>,7:9]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
-  LexerMode=
-  _lastMode=
-  token=[@-1,40:47='Entities',<95>,7:9]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-  _currentMode=
-  result=[@-1,40:47='Entities',<95>,7:9]
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
-  LexerMode=
-  _lastMode=
-  token=[@-1,48:48=';',<50>,7:17]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): Entities
-  [40..48)
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=121
-  StateStack=state=121,state=164,state=148,state=145,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken Name Entities
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken Name Entities
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken TSemicolon ;
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken Identifier Entities
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken Identifier Entities
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken TSemicolon ;
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken IdentifierNormal Entities
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken IdentifierNormal Entities
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken TSemicolon ;
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset()
-  position=40
-  Text=Entities; ...
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
-  LexerMode=
-  _lastMode=
-  token=[@-1,40:47='Entities',<95>,7:18]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
-  LexerMode=
-  _lastMode=
-  token=[@-1,40:47='Entities',<95>,7:18]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-  _currentMode=
-  result=[@-1,40:47='Entities',<95>,7:18]
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
-  LexerMode=
-  _lastMode=
-  token=[@-1,48:48=';',<50>,7:26]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): Entities
-  [40..48)
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken TSemicolon ;
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken TSemicolon ;
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
-  LexerMode=
-  _lastMode=
-  token=[@-1,48:48=';',<50>,7:26]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
-  LexerMode=
-  _lastMode=
-  token=[@-1,48:48=';',<50>,7:26]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-  _currentMode=
-  result=[@-1,48:48=';',<50>,7:26]
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
-  LexerMode=
-  _lastMode=
-  token=[@-1,49:49=' ',<107>,channel=3,7:27]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-  _currentMode=
-  result=[@-1,49:49=' ',<107>,channel=3,7:27]
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
-  LexerMode=
-  _lastMode=
-  token=[@-1,50:51='\r\n',<108>,channel=3,7:28]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-  _currentMode=
-  result=[@-1,50:51='\r\n',<108>,channel=3,7:28]
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): ;
-  [48..52)
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentTokenWithSkippedTokensAndErrors(): Entities
-  StateStack=state=121,state=164,state=148,state=145,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): -1
-  SkippedTokenCount=0
-  LookaheadCount=0
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=121
-  StateStack=state=121,state=164,state=148,state=145,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): -1
-  SkippedTokenCount=0
-  LookaheadCount=0
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=164
-  StateStack=state=164,state=148,state=145,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentTokenWithSkippedTokensAndErrors(): ; 
-
-  StateStack=state=148,state=145,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): -1
-  SkippedTokenCount=0
-  LookaheadCount=0
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=148
-  StateStack=state=148,state=145,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken KClass class
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken KClass class
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
-  LexerMode=
-  _lastMode=
-  token=[@-1,52:53='\r\n',<108>,channel=3,8:0]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-  _currentMode=
-  result=[@-1,52:53='\r\n',<108>,channel=3,8:0]
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
-  LexerMode=
-  _lastMode=
-  token=[@-1,54:57='    ',<107>,channel=3,9:0]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-  _currentMode=
-  result=[@-1,54:57='    ',<107>,channel=3,9:0]
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
-  LexerMode=
-  _lastMode=
-  token=[@-1,58:62='class',<7>,9:4]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
-  LexerMode=
-  _lastMode=
-  token=[@-1,58:62='class',<7>,9:4]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-  _currentMode=
-  result=[@-1,58:62='class',<7>,9:4]
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
-  LexerMode=
-  _lastMode=
-  token=[@-1,63:63=' ',<107>,channel=3,9:9]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-  _currentMode=
-  result=[@-1,63:63=' ',<107>,channel=3,9:9]
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
-  LexerMode=
-  _lastMode=
-  token=[@-1,64:75='NamedElement',<95>,9:10]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): class
-  [52..64)
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=149
-  StateStack=state=149,state=145,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken Declaration class NamedElement
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken Declaration class NamedElement
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken ClassDeclaration class NamedElement
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken ClassDeclaration class NamedElement
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken KClass class
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken KClass class
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset()
-  position=52
-  Text=
-    clas...
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
-  LexerMode=
-  _lastMode=
-  token=[@-1,52:53='\r\n',<108>,channel=3,9:22]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-  _currentMode=
-  result=[@-1,52:53='\r\n',<108>,channel=3,9:22]
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
-  LexerMode=
-  _lastMode=
-  token=[@-1,54:57='    ',<107>,channel=3,10:0]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-  _currentMode=
-  result=[@-1,54:57='    ',<107>,channel=3,10:0]
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
-  LexerMode=
-  _lastMode=
-  token=[@-1,58:62='class',<7>,10:4]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
-  LexerMode=
-  _lastMode=
-  token=[@-1,58:62='class',<7>,10:4]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-  _currentMode=
-  result=[@-1,58:62='class',<7>,10:4]
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
-  LexerMode=
-  _lastMode=
-  token=[@-1,63:63=' ',<107>,channel=3,10:9]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-  _currentMode=
-  result=[@-1,63:63=' ',<107>,channel=3,10:9]
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
-  LexerMode=
-  _lastMode=
-  token=[@-1,64:75='NamedElement',<95>,10:10]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): class
-  [52..64)
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken IdentifierNormal NamedElement
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken IdentifierNormal NamedElement
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
-  LexerMode=
-  _lastMode=
-  token=[@-1,64:75='NamedElement',<95>,10:10]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
-  LexerMode=
-  _lastMode=
-  token=[@-1,64:75='NamedElement',<95>,10:10]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-  _currentMode=
-  result=[@-1,64:75='NamedElement',<95>,10:10]
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
-  LexerMode=
-  _lastMode=
-  token=[@-1,76:76='{',<59>,10:22]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): NamedElement
-  [64..76)
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=195
-  StateStack=state=195,state=149,state=145,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken Declaration class NamedElement
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken Declaration class NamedElement
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken ClassDeclaration class NamedElement
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken ClassDeclaration class NamedElement
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken KClass class
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken KClass class
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset()
-  position=52
-  Text=
-    clas...
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
-  LexerMode=
-  _lastMode=
-  token=[@-1,52:53='\r\n',<108>,channel=3,10:23]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-  _currentMode=
-  result=[@-1,52:53='\r\n',<108>,channel=3,10:23]
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
-  LexerMode=
-  _lastMode=
-  token=[@-1,54:57='    ',<107>,channel=3,11:0]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-  _currentMode=
-  result=[@-1,54:57='    ',<107>,channel=3,11:0]
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
-  LexerMode=
-  _lastMode=
-  token=[@-1,58:62='class',<7>,11:4]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
-  LexerMode=
-  _lastMode=
-  token=[@-1,58:62='class',<7>,11:4]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-  _currentMode=
-  result=[@-1,58:62='class',<7>,11:4]
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
-  LexerMode=
-  _lastMode=
-  token=[@-1,63:63=' ',<107>,channel=3,11:9]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-  _currentMode=
-  result=[@-1,63:63=' ',<107>,channel=3,11:9]
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
-  LexerMode=
-  _lastMode=
-  token=[@-1,64:75='NamedElement',<95>,11:10]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): class
-  [52..64)
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentTokenWithSkippedTokensAndErrors(): 
-    class 
-  StateStack=state=195,state=149,state=145,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=251
-  StateStack=state=251,state=195,state=149,state=145,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken Name NamedElement
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken Name NamedElement
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken Identifier NamedElement
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken Identifier NamedElement
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken IdentifierNormal NamedElement
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken IdentifierNormal NamedElement
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
-  LexerMode=
-  _lastMode=
-  token=[@-1,64:75='NamedElement',<95>,11:10]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
-  LexerMode=
-  _lastMode=
-  token=[@-1,64:75='NamedElement',<95>,11:10]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-  _currentMode=
-  result=[@-1,64:75='NamedElement',<95>,11:10]
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
-  LexerMode=
-  _lastMode=
-  token=[@-1,76:76='{',<59>,11:22]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): NamedElement
-  [64..76)
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=121
-  StateStack=state=121,state=251,state=195,state=149,state=145,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken Name NamedElement
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken Name NamedElement
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken Identifier NamedElement
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken Identifier NamedElement
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken IdentifierNormal NamedElement
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken IdentifierNormal NamedElement
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset()
-  position=64
-  Text=NamedEleme...
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
-  LexerMode=
-  _lastMode=
-  token=[@-1,64:75='NamedElement',<95>,11:23]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
-  LexerMode=
-  _lastMode=
-  token=[@-1,64:75='NamedElement',<95>,11:23]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-  _currentMode=
-  result=[@-1,64:75='NamedElement',<95>,11:23]
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
-  LexerMode=
-  _lastMode=
-  token=[@-1,76:76='{',<59>,11:35]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): NamedElement
-  [64..76)
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken TCloseBrace }
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken TCloseBrace }
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
-  LexerMode=
-  _lastMode=
-  token=[@-1,76:76='{',<59>,11:35]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
-  LexerMode=
-  _lastMode=
-  token=[@-1,76:76='{',<59>,11:35]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-  _currentMode=
-  result=[@-1,76:76='{',<59>,11:35]
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
-  LexerMode=
-  _lastMode=
-  token=[@-1,77:77='}',<60>,11:36]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): {
-  [76..77)
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentTokenWithSkippedTokensAndErrors(): NamedElement
-  StateStack=state=121,state=251,state=195,state=149,state=145,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): -1
-  SkippedTokenCount=0
-  LookaheadCount=0
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=121
-  StateStack=state=121,state=251,state=195,state=149,state=145,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): -1
-  SkippedTokenCount=0
-  LookaheadCount=0
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=251
-  StateStack=state=251,state=195,state=149,state=145,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=256
-  StateStack=state=256,state=195,state=149,state=145,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken TCloseBrace }
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken TCloseBrace }
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset()
-  position=76
-  Text={}
-}
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
-  LexerMode=
-  _lastMode=
-  token=[@-1,76:76='{',<59>,11:37]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
-  LexerMode=
-  _lastMode=
-  token=[@-1,76:76='{',<59>,11:37]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-  _currentMode=
-  result=[@-1,76:76='{',<59>,11:37]
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
-  LexerMode=
-  _lastMode=
-  token=[@-1,77:77='}',<60>,11:38]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): {
-  [76..77)
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
-  LexerMode=
-  _lastMode=
-  token=[@-1,77:77='}',<60>,11:38]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
-  LexerMode=
-  _lastMode=
-  token=[@-1,77:77='}',<60>,11:38]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-  _currentMode=
-  result=[@-1,77:77='}',<60>,11:38]
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
-  LexerMode=
-  _lastMode=
-  token=[@-1,78:79='\r\n',<108>,channel=3,11:39]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-  _currentMode=
-  result=[@-1,78:79='\r\n',<108>,channel=3,11:39]
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): }
-  [77..80)
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentTokenWithSkippedTokensAndErrors(): {
-  StateStack=state=256,state=195,state=149,state=145,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentTokenWithSkippedTokensAndErrors(): }
-
-  StateStack=state=256,state=195,state=149,state=145,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): -1
-  SkippedTokenCount=0
-  LookaheadCount=0
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=256
-  StateStack=state=256,state=195,state=149,state=145,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): -1
-  SkippedTokenCount=0
-  LookaheadCount=0
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=195
-  StateStack=state=195,state=149,state=145,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): -1
-  SkippedTokenCount=0
-  LookaheadCount=0
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=149
-  StateStack=state=149,state=145,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
-  LexerMode=
-  _lastMode=
-  token=[@-1,80:80='}',<60>,12:0]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
-  LexerMode=
-  _lastMode=
-  token=[@-1,80:80='}',<60>,12:0]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-  _currentMode=
-  result=[@-1,80:80='}',<60>,12:0]
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
-  LexerMode=
-  _lastMode=
-  token=[@-1,81:80='<EOF>',<-1>,12:1]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): }
-  [80..81)
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentTokenWithSkippedTokensAndErrors(): }
-  StateStack=state=145,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): -1
-  SkippedTokenCount=0
-  LookaheadCount=0
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=145
-  StateStack=state=145,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): -1
-  SkippedTokenCount=0
-  LookaheadCount=0
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=118
-  StateStack=state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
-  LexerMode=
-  _lastMode=
-  token=[@-1,81:80='<EOF>',<-1>,12:1]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
-  LexerMode=
-  _lastMode=
-  token=[@-1,81:80='<EOF>',<-1>,12:1]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-  _currentMode=
-  result=[@-1,81:80='<EOF>',<-1>,12:1]
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
-  LexerMode=
-  _lastMode=
-  token=[@-1,81:80='<EOF>',<-1>,12:1]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): 
-  [81..81)
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentTokenWithSkippedTokensAndErrors(): 
-  StateStack=state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=-1
-  StateStack=state=-1
-===========================================
-Text length: 81
-----
-namespace EntitiesSample
-{
-	metamodel Entities; 
-
-    class NamedElement{}
-}
-----
-[2 (startState=-1,endState=-1,ltb=0,lta=1,lb=0,la=-1)] Main
-  [2 (startState=118,endState=118,ltb=0,lta=1,lb=0,la=-1)] NamespaceDeclaration
-    [(startMode=0,endState=0)] KNamespace: namespace
-    [2 (startState=144,endState=144,ltb=0,lta=1,lb=0,la=3)] QualifiedName
-      [2 (startState=123,endState=123,ltb=0,lta=1,lb=0,la=3)] Qualifier
-        [2 (startState=125,endState=125,ltb=0,lta=1,lb=0,la=3)] Identifier
-          [(startMode=0,endState=0)] IdentifierNormal: EntitiesSample
-    [2 (startState=145,endState=145,ltb=0,lta=1,lb=0,la=-1)] NamespaceBody
-      [(startMode=0,endState=0)] TOpenBrace: {
-      [2 (startState=148,endState=148,ltb=0,lta=1,lb=0,la=0)] MetamodelDeclaration
-        [(startMode=0,endState=0)] KMetamodel: metamodel
-        [2 (startState=164,endState=164,ltb=0,lta=1,lb=0,la=4)] Name
-          [2 (startState=121,endState=121,ltb=0,lta=1,lb=0,la=4)] Identifier
-            [(startMode=0,endState=0)] IdentifierNormal: Entities
-        [(startMode=0,endState=0)] TSemicolon: ;
-      [2 (startState=149,endState=149,ltb=0,lta=1,lb=0,la=0)] Declaration
-        [2 (startState=195,endState=195,ltb=0,lta=1,lb=0,la=0)] ClassDeclaration
-          [(startMode=0,endState=0)] KClass: class
-          [2 (startState=251,endState=251,ltb=0,lta=1,lb=0,la=1)] Name
-            [2 (startState=121,endState=121,ltb=0,lta=1,lb=0,la=1)] Identifier
-              [(startMode=0,endState=0)] IdentifierNormal: NamedElement
-          [2 (startState=256,endState=256,ltb=0,lta=1,lb=0,la=0)] ClassBody
-            [(startMode=0,endState=0)] TOpenBrace: {
-            [(startMode=0,endState=0)] TCloseBrace: }
-      [(startMode=0,endState=0)] TCloseBrace: }
-  [(startMode=0,endState=0)] Eof: 
-
-===========================================
-Antlr4 diagnostics:
-MetaDslx diagnostics:
-----
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RestoreParserState()
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=-1
-  StateStack=state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken Main namespace EntitiesSample
-{
-	metamodel Entities; 
-
-    class NamedElement{}
-}
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken Main namespace EntitiesSample
-{
-	metamodel Entities; 
-
-    class NamedElement{}
-}
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken NamespaceDeclaration namespace EntitiesSample
-{
-	metamodel Entities; 
-
-    class NamedElement{}
-}
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken NamespaceDeclaration namespace EntitiesSample
-{
-	metamodel Entities; 
-
-    class NamedElement{}
-}
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken KNamespace namespace
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken KNamespace namespace
-  Reuse: true
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=118
-  StateStack=state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken Main namespace EntitiesSample
-{
-	metamodel Entities; 
-
-    class NamedElement{}
-}
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken Main namespace EntitiesSample
-{
-	metamodel Entities; 
-
-    class NamedElement{}
-}
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken NamespaceDeclaration namespace EntitiesSample
-{
-	metamodel Entities; 
-
-    class NamedElement{}
-}
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken NamespaceDeclaration namespace EntitiesSample
-{
-	metamodel Entities; 
-
-    class NamedElement{}
-}
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken KNamespace namespace
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken KNamespace namespace
-  Reuse: true
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken IdentifierNormal EntitiesSample
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken IdentifierNormal EntitiesSample
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken TOpenBrace {
-  Reuse: true
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentTokenWithSkippedTokensAndErrors(): namespace 
-  StateStack=state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=144
-  StateStack=state=144,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken QualifiedName EntitiesSample
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken QualifiedName EntitiesSample
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken TOpenBrace {
-  Reuse: true
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatNode(): EntitiesSample
-  StateStack=state=144,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RestoreParserState(): state=144
-  StateStack=state=144,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=144
-  StateStack=state=144,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=145
-  StateStack=state=145,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken NamespaceBody {
-	metamodel Entities; 
-
-    class NamedElement{}
-}
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken NamespaceBody {
-	metamodel Entities; 
-
-    class NamedElement{}
-}
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken TOpenBrace {
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken TOpenBrace {
-  Reuse: true
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken KMetamodel metamodel
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken KMetamodel metamodel
-  Reuse: true
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentTokenWithSkippedTokensAndErrors(): {
-
-  StateStack=state=145,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=148
-  StateStack=state=148,state=145,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken MetamodelDeclaration metamodel Entities;
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken MetamodelDeclaration metamodel Entities;
-  Reuse: true
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatNode(): metamodel Entities;
-  StateStack=state=148,state=145,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RestoreParserState(): state=148
-  StateStack=state=148,state=145,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=148
-  StateStack=state=148,state=145,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken KClass class
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken KClass class
-  Reuse: true
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=149
-  StateStack=state=149,state=145,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken Declaration class NamedElement{}
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken Declaration class NamedElement{}
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken ClassDeclaration class NamedElement{}
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken ClassDeclaration class NamedElement{}
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken KClass class
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken KClass class
-  Reuse: true
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken IdentifierNormal NamedElement
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken IdentifierNormal NamedElement
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset()
-  position=64
-  Text=NamedEleme...
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
-  LexerMode=
-  _lastMode=
-  token=[@-1,64:75='NamedElement',<95>,1:0]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
-  LexerMode=
-  _lastMode=
-  token=[@-1,64:75='NamedElement',<95>,1:0]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-  _currentMode=
-  result=[@-1,64:75='NamedElement',<95>,1:0]
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
-  LexerMode=
-  _lastMode=
-  token=[@-1,76:76='{',<59>,1:12]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): NamedElement
-  [64..76)
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=195
-  StateStack=state=195,state=149,state=145,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken Declaration class NamedElement{}
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken Declaration class NamedElement{}
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken ClassDeclaration class NamedElement{}
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken ClassDeclaration class NamedElement{}
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken KClass class
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken KClass class
-  Reuse: true
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentTokenWithSkippedTokensAndErrors(): 
-    class 
-  StateStack=state=195,state=149,state=145,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=251
-  StateStack=state=251,state=195,state=149,state=145,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken Name NamedElement
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken Name NamedElement
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken Identifier NamedElement
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken Identifier NamedElement
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken IdentifierNormal NamedElement
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken IdentifierNormal NamedElement
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset()
-  position=64
-  Text=NamedEleme...
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
-  LexerMode=
-  _lastMode=
-  token=[@-1,64:75='NamedElement',<95>,1:13]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
-  LexerMode=
-  _lastMode=
-  token=[@-1,64:75='NamedElement',<95>,1:13]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-  _currentMode=
-  result=[@-1,64:75='NamedElement',<95>,1:13]
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
-  LexerMode=
-  _lastMode=
-  token=[@-1,76:76='{',<59>,1:25]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): NamedElement
-  [64..76)
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=121
-  StateStack=state=121,state=251,state=195,state=149,state=145,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken Name NamedElement
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken Name NamedElement
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken Identifier NamedElement
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken Identifier NamedElement
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken IdentifierNormal NamedElement
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken IdentifierNormal NamedElement
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset()
-  position=64
-  Text=NamedEleme...
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
-  LexerMode=
-  _lastMode=
-  token=[@-1,64:75='NamedElement',<95>,1:26]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
-  LexerMode=
-  _lastMode=
-  token=[@-1,64:75='NamedElement',<95>,1:26]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-  _currentMode=
-  result=[@-1,64:75='NamedElement',<95>,1:26]
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
-  LexerMode=
-  _lastMode=
-  token=[@-1,76:76='{',<59>,1:38]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): NamedElement
-  [64..76)
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken TOpenBrace {
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken TOpenBrace {
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
-  LexerMode=
-  _lastMode=
-  token=[@-1,76:76='{',<59>,1:38]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
-  LexerMode=
-  _lastMode=
-  token=[@-1,76:76='{',<59>,1:38]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-  _currentMode=
-  result=[@-1,76:76='{',<59>,1:38]
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
-  LexerMode=
-  _lastMode=
-  token=[@-1,77:78='\r\n',<108>,channel=3,1:39]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-  _currentMode=
-  result=[@-1,77:78='\r\n',<108>,channel=3,1:39]
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): {
-  [76..79)
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentTokenWithSkippedTokensAndErrors(): NamedElement
-  StateStack=state=121,state=251,state=195,state=149,state=145,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): -1
-  SkippedTokenCount=0
-  LookaheadCount=0
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=121
-  StateStack=state=121,state=251,state=195,state=149,state=145,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): -1
-  SkippedTokenCount=0
-  LookaheadCount=0
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=251
-  StateStack=state=251,state=195,state=149,state=145,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=256
-  StateStack=state=256,state=195,state=149,state=145,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken ClassBody {}
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken ClassBody {}
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken TOpenBrace {
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken TOpenBrace {
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset()
-  position=76
-  Text={
-}
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
-  LexerMode=
-  _lastMode=
-  token=[@-1,76:76='{',<59>,2:0]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
-  LexerMode=
-  _lastMode=
-  token=[@-1,76:76='{',<59>,2:0]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-  _currentMode=
-  result=[@-1,76:76='{',<59>,2:0]
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
-  LexerMode=
-  _lastMode=
-  token=[@-1,77:78='\r\n',<108>,channel=3,2:1]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-  _currentMode=
-  result=[@-1,77:78='\r\n',<108>,channel=3,2:1]
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): {
-  [76..79)
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
-  LexerMode=
-  _lastMode=
-  token=[@-1,79:79='}',<60>,3:0]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
-  LexerMode=
-  _lastMode=
-  token=[@-1,79:79='}',<60>,3:0]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-  _currentMode=
-  result=[@-1,79:79='}',<60>,3:0]
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
-  LexerMode=
-  _lastMode=
-  token=[@-1,80:79='<EOF>',<-1>,3:1]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): }
-  [79..80)
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentTokenWithSkippedTokensAndErrors(): {
-
-  StateStack=state=256,state=195,state=149,state=145,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentTokenWithSkippedTokensAndErrors(): }
-  StateStack=state=256,state=195,state=149,state=145,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): -1
-  SkippedTokenCount=0
-  LookaheadCount=0
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=256
-  StateStack=state=256,state=195,state=149,state=145,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): -1
-  SkippedTokenCount=0
-  LookaheadCount=0
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=195
-  StateStack=state=195,state=149,state=145,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): -1
-  SkippedTokenCount=0
-  LookaheadCount=0
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=149
-  StateStack=state=149,state=145,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken TCloseBrace }
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken TCloseBrace }
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
-  LexerMode=
-  _lastMode=
-  token=[@-1,80:79='<EOF>',<-1>,3:1]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
-  LexerMode=
-  _lastMode=
-  token=[@-1,80:79='<EOF>',<-1>,3:1]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-  _currentMode=
-  result=[@-1,80:79='<EOF>',<-1>,3:1]
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
-  LexerMode=
-  _lastMode=
-  token=[@-1,80:79='<EOF>',<-1>,3:1]
-  LexerMode=
-  _currentMode=
-  _lastMode=
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): 
-  [80..80)
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-  Parser error: extraneous input '<EOF>' expecting {'abstract', 'class', 'enum', 'association', 'const', '[', '}'}
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
+  [39..47)
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 1
   SkippedTokenCount=0
@@ -4007,7 +2305,7 @@ MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSynt
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
   LexerMode=
   _lastMode=
-  token=[@-1,80:79='<EOF>',<-1>,3:1]
+  token=[@-1,47:47=';',<50>,7:36]
   LexerMode=
   _currentMode=
   _lastMode=
@@ -4017,353 +2315,139 @@ MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSynt
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
   LexerMode=
   _lastMode=
-  token=[@-1,80:79='<EOF>',<-1>,3:1]
+  token=[@-1,47:47=';',<50>,7:36]
   LexerMode=
   _currentMode=
   _lastMode=
   _currentMode=
-  result=[@-1,80:79='<EOF>',<-1>,3:1]
+  result=[@-1,47:47=';',<50>,7:36]
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
   LexerMode=
   _lastMode=
-  token=[@-1,80:79='<EOF>',<-1>,3:1]
+  token=[@-1,48:48=' ',<107>,channel=3,7:37]
+  LexerMode=
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,48:48=' ',<107>,channel=3,7:37]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=
+  _lastMode=
+  token=[@-1,49:50='\r\n',<108>,channel=3,7:38]
+  LexerMode=
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,49:50='\r\n',<108>,channel=3,7:38]
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): ;
+  [47..51)
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
+  SkippedTokenCount=0
+  LookaheadCount=1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.SkipToken(): 	etamodel 
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.SkipToken(): Entities
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.SkipToken(): ; 
+
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=
+  _lastMode=
+  token=[@-1,51:52='\r\n',<108>,channel=3,8:0]
+  LexerMode=
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,51:52='\r\n',<108>,channel=3,8:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=
+  _lastMode=
+  token=[@-1,53:56='    ',<107>,channel=3,9:0]
+  LexerMode=
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,53:56='    ',<107>,channel=3,9:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=
+  _lastMode=
+  token=[@-1,57:61='class',<7>,9:4]
   LexerMode=
   _currentMode=
   _lastMode=
 
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): 
-  [80..80)
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken()
 
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=
+  _lastMode=
+  token=[@-1,57:61='class',<7>,9:4]
+  LexerMode=
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,57:61='class',<7>,9:4]
 
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=
+  _lastMode=
+  token=[@-1,62:62=' ',<107>,channel=3,9:9]
+  LexerMode=
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,62:62=' ',<107>,channel=3,9:9]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=
+  _lastMode=
+  token=[@-1,63:74='NamedElement',<95>,9:10]
+  LexerMode=
+  _currentMode=
+  _lastMode=
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): class
+  [51..63)
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): -1
-  SkippedTokenCount=0
-  LookaheadCount=0
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): -1
-  SkippedTokenCount=0
-  LookaheadCount=0
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=145
-  StateStack=state=145,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): -1
-  SkippedTokenCount=0
-  LookaheadCount=0
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=118
-  StateStack=state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentTokenWithSkippedTokensAndErrors(): 
-  StateStack=state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=-1
-  StateStack=state=-1
-===========================================
-Text length: 80
-----
-namespace EntitiesSample
-{
-	metamodel Entities; 
-
-    class NamedElement{
-}
-----
-[3 (startState=-1,endState=-1,ltb=0,lta=2,lb=0,la=0)] Main
-  [3 (startState=118,endState=118,ltb=0,lta=2,lb=0,la=0)] NamespaceDeclaration
-    [(startMode=0,endState=0)] KNamespace: namespace
-    [2 (startState=144,endState=144,ltb=0,lta=1,lb=0,la=3)] QualifiedName
-      [2 (startState=123,endState=123,ltb=0,lta=1,lb=0,la=3)] Qualifier
-        [2 (startState=125,endState=125,ltb=0,lta=1,lb=0,la=3)] Identifier
-          [(startMode=0,endState=0)] IdentifierNormal: EntitiesSample
-    [3 (startState=145,endState=145,ltb=0,lta=2,lb=0,la=0)] NamespaceBody
-      [(startMode=0,endState=0)] TOpenBrace: {
-      [2 (startState=148,endState=148,ltb=0,lta=1,lb=0,la=0)] MetamodelDeclaration
-        [(startMode=0,endState=0)] KMetamodel: metamodel
-        [2 (startState=164,endState=164,ltb=0,lta=1,lb=0,la=4)] Name
-          [2 (startState=121,endState=121,ltb=0,lta=1,lb=0,la=4)] Identifier
-            [(startMode=0,endState=0)] IdentifierNormal: Entities
-        [(startMode=0,endState=0)] TSemicolon: ;
-      [3 (startState=149,endState=149,ltb=0,lta=1,lb=0,la=0)] Declaration
-        [3 (startState=195,endState=195,ltb=0,lta=1,lb=0,la=0)] ClassDeclaration
-          [(startMode=0,endState=0)] KClass: class
-          [3 (startState=251,endState=251,ltb=0,lta=1,lb=0,la=3)] Name
-            [3 (startState=121,endState=121,ltb=0,lta=1,lb=0,la=3)] Identifier
-              [(startMode=0,endState=0)] IdentifierNormal: NamedElement
-          [3 (startState=256,endState=256,ltb=0,lta=1,lb=0,la=0)] ClassBody
-            [(startMode=0,endState=0)] TOpenBrace: {
-            [(startMode=0,endState=0)] TCloseBrace: }
-      [(startMode=0,endState=0)] TCloseBrace: 
-  [(startMode=0,endState=0)] Eof: 
-
-===========================================
-Antlr4 diagnostics:
-  (7,2): error AR0001: Syntax error: extraneous input '<EOF>' expecting {'abstract', 'class', 'enum', 'association', 'const', '[', '}'}
-MetaDslx diagnostics:
-  (6,2): error AR0001: Syntax error: extraneous input '<EOF>' expecting {'abstract', 'class', 'enum', 'association', 'const', '[', '}'}
-----
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RestoreParserState()
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=-1
-  StateStack=state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken Main namespace EntitiesSample
-{
-	metamodel Entities; 
-
-    class NamedElement{
-}
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken Main namespace EntitiesSample
-{
-	metamodel Entities; 
-
-    class NamedElement{
-}
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken NamespaceDeclaration namespace EntitiesSample
-{
-	metamodel Entities; 
-
-    class NamedElement{
-}
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken NamespaceDeclaration namespace EntitiesSample
-{
-	metamodel Entities; 
-
-    class NamedElement{
-}
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken KNamespace namespace
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken KNamespace namespace
-  Reuse: true
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=118
-  StateStack=state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken Main namespace EntitiesSample
-{
-	metamodel Entities; 
-
-    class NamedElement{
-}
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken Main namespace EntitiesSample
-{
-	metamodel Entities; 
-
-    class NamedElement{
-}
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken NamespaceDeclaration namespace EntitiesSample
-{
-	metamodel Entities; 
-
-    class NamedElement{
-}
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken NamespaceDeclaration namespace EntitiesSample
-{
-	metamodel Entities; 
-
-    class NamedElement{
-}
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken KNamespace namespace
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken KNamespace namespace
-  Reuse: true
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken IdentifierNormal EntitiesSample
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken IdentifierNormal EntitiesSample
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken TOpenBrace {
-  Reuse: true
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentTokenWithSkippedTokensAndErrors(): namespace 
-  StateStack=state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=144
-  StateStack=state=144,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken QualifiedName EntitiesSample
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken QualifiedName EntitiesSample
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken TOpenBrace {
-  Reuse: true
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatNode(): EntitiesSample
-  StateStack=state=144,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RestoreParserState(): state=144
-  StateStack=state=144,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=144
-  StateStack=state=144,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=145
-  StateStack=state=145,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken NamespaceBody {
-	metamodel Entities; 
-
-    class NamedElement{
-}
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken NamespaceBody {
-	metamodel Entities; 
-
-    class NamedElement{
-}
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken TOpenBrace {
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken TOpenBrace {
-  Reuse: true
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken KMetamodel metamodel
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken KMetamodel metamodel
-  Reuse: true
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentTokenWithSkippedTokensAndErrors(): {
-
-  StateStack=state=145,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=148
-  StateStack=state=148,state=145,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken MetamodelDeclaration metamodel Entities;
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken MetamodelDeclaration metamodel Entities;
-  Reuse: true
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatNode(): metamodel Entities;
-  StateStack=state=148,state=145,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RestoreParserState(): state=148
-  StateStack=state=148,state=145,state=118,state=-1
+  SkippedTokenCount=3
+  LookaheadCount=3
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=148
   StateStack=state=148,state=145,state=118,state=-1
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken KClass class
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken KClass class
-  Reuse: true
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=149
-  StateStack=state=149,state=145,state=118,state=-1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken Declaration class NamedElement{
-}
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken Declaration class NamedElement{
-}
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken ClassDeclaration class NamedElement{
-}
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken ClassDeclaration class NamedElement{
-}
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken KClass class
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken KClass class
-  Reuse: true
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken IdentifierNormal NamedElement
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken IdentifierNormal NamedElement
-
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset()
-  position=64
-  Text=NamedEleme...
+  SkippedTokenCount=3
+  LookaheadCount=4
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
 
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
   LexerMode=
   _lastMode=
-  token=[@-1,64:75='NamedElement',<95>,1:0]
+  token=[@-1,63:74='NamedElement',<95>,9:10]
   LexerMode=
   _currentMode=
   _lastMode=
@@ -4373,80 +2457,226 @@ MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSynt
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
   LexerMode=
   _lastMode=
-  token=[@-1,64:75='NamedElement',<95>,1:0]
+  token=[@-1,63:74='NamedElement',<95>,9:10]
   LexerMode=
   _currentMode=
   _lastMode=
   _currentMode=
-  result=[@-1,64:75='NamedElement',<95>,1:0]
+  result=[@-1,63:74='NamedElement',<95>,9:10]
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
   LexerMode=
   _lastMode=
-  token=[@-1,76:76='{',<59>,1:12]
+  token=[@-1,75:75='{',<59>,9:22]
   LexerMode=
   _currentMode=
   _lastMode=
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): NamedElement
-  [64..76)
+  [63..75)
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=149
+  StateStack=state=149,state=145,state=118,state=-1
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset()
+  position=51
+  Text=
+    clas...
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=
+  _lastMode=
+  token=[@-1,51:52='\r\n',<108>,channel=3,9:23]
+  LexerMode=
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,51:52='\r\n',<108>,channel=3,9:23]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=
+  _lastMode=
+  token=[@-1,53:56='    ',<107>,channel=3,10:0]
+  LexerMode=
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,53:56='    ',<107>,channel=3,10:0]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=
+  _lastMode=
+  token=[@-1,57:61='class',<7>,10:4]
+  LexerMode=
+  _currentMode=
+  _lastMode=
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken()
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=
+  _lastMode=
+  token=[@-1,57:61='class',<7>,10:4]
+  LexerMode=
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,57:61='class',<7>,10:4]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=
+  _lastMode=
+  token=[@-1,62:62=' ',<107>,channel=3,10:9]
+  LexerMode=
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,62:62=' ',<107>,channel=3,10:9]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=
+  _lastMode=
+  token=[@-1,63:74='NamedElement',<95>,10:10]
+  LexerMode=
+  _currentMode=
+  _lastMode=
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): class
+  [51..63)
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
+  SkippedTokenCount=3
+  LookaheadCount=4
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
+  SkippedTokenCount=3
+  LookaheadCount=4
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=195
   StateStack=state=195,state=149,state=145,state=118,state=-1
 
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken Declaration class NamedElement{
-}
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset()
+  position=51
+  Text=
+    clas...
 
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken Declaration class NamedElement{
-}
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
 
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken ClassDeclaration class NamedElement{
-}
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=
+  _lastMode=
+  token=[@-1,51:52='\r\n',<108>,channel=3,10:22]
+  LexerMode=
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,51:52='\r\n',<108>,channel=3,10:22]
 
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken ClassDeclaration class NamedElement{
-}
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
 
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNodeOrToken KClass class
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=
+  _lastMode=
+  token=[@-1,53:56='    ',<107>,channel=3,11:0]
+  LexerMode=
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,53:56='    ',<107>,channel=3,11:0]
 
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken KClass class
-  Reuse: true
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=
+  _lastMode=
+  token=[@-1,57:61='class',<7>,11:4]
+  LexerMode=
+  _currentMode=
+  _lastMode=
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxToken()
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
+  LexerMode=
+  _lastMode=
+  token=[@-1,57:61='class',<7>,11:4]
+  LexerMode=
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,57:61='class',<7>,11:4]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=
+  _lastMode=
+  token=[@-1,62:62=' ',<107>,channel=3,11:9]
+  LexerMode=
+  _currentMode=
+  _lastMode=
+  _currentMode=
+  result=[@-1,62:62=' ',<107>,channel=3,11:9]
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
+
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+  LexerMode=
+  _lastMode=
+  token=[@-1,63:74='NamedElement',<95>,11:10]
+  LexerMode=
+  _currentMode=
+  _lastMode=
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): class
+  [51..63)
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
+  SkippedTokenCount=3
+  LookaheadCount=4
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
+  SkippedTokenCount=3
+  LookaheadCount=4
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
+  SkippedTokenCount=3
+  LookaheadCount=4
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
+  SkippedTokenCount=3
+  LookaheadCount=4
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
-
-MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
-  SkippedTokenCount=0
-  LookaheadCount=1
+  SkippedTokenCount=3
+  LookaheadCount=4
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentTokenWithSkippedTokensAndErrors(): 
     class 
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): -3
+  SkippedTokenCount=3
+  LookaheadCount=1
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): -2
+  SkippedTokenCount=3
+  LookaheadCount=2
+
+MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): -1
+  SkippedTokenCount=3
+  LookaheadCount=3
   StateStack=state=195,state=149,state=145,state=118,state=-1
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.BeginNode(): state=251
@@ -4464,16 +2694,12 @@ MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNod
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken IdentifierNormal NamedElement
 
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset()
-  position=64
-  Text=NamedEleme...
-
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
 
-MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
+MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
   LexerMode=
   _lastMode=
-  token=[@-1,64:75='NamedElement',<95>,1:13]
+  token=[@-1,63:74='NamedElement',<95>,11:10]
   LexerMode=
   _currentMode=
   _lastMode=
@@ -4483,25 +2709,25 @@ MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSynt
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
   LexerMode=
   _lastMode=
-  token=[@-1,64:75='NamedElement',<95>,1:13]
+  token=[@-1,63:74='NamedElement',<95>,11:10]
   LexerMode=
   _currentMode=
   _lastMode=
   _currentMode=
-  result=[@-1,64:75='NamedElement',<95>,1:13]
+  result=[@-1,63:74='NamedElement',<95>,11:10]
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
   LexerMode=
   _lastMode=
-  token=[@-1,76:76='{',<59>,1:25]
+  token=[@-1,75:75='{',<59>,11:22]
   LexerMode=
   _currentMode=
   _lastMode=
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): NamedElement
-  [64..76)
+  [63..75)
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
   SkippedTokenCount=0
@@ -4523,7 +2749,7 @@ MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNod
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken IdentifierNormal NamedElement
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset()
-  position=64
+  position=63
   Text=NamedEleme...
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
@@ -4531,7 +2757,7 @@ MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSynt
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
   LexerMode=
   _lastMode=
-  token=[@-1,64:75='NamedElement',<95>,1:26]
+  token=[@-1,63:74='NamedElement',<95>,11:23]
   LexerMode=
   _currentMode=
   _lastMode=
@@ -4541,25 +2767,25 @@ MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSynt
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
   LexerMode=
   _lastMode=
-  token=[@-1,64:75='NamedElement',<95>,1:26]
+  token=[@-1,63:74='NamedElement',<95>,11:23]
   LexerMode=
   _currentMode=
   _lastMode=
   _currentMode=
-  result=[@-1,64:75='NamedElement',<95>,1:26]
+  result=[@-1,63:74='NamedElement',<95>,11:23]
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
   LexerMode=
   _lastMode=
-  token=[@-1,76:76='{',<59>,1:38]
+  token=[@-1,75:75='{',<59>,11:35]
   LexerMode=
   _currentMode=
   _lastMode=
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): NamedElement
-  [64..76)
+  [63..75)
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
   SkippedTokenCount=0
@@ -4578,7 +2804,7 @@ MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSynt
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
   LexerMode=
   _lastMode=
-  token=[@-1,76:76='{',<59>,1:38]
+  token=[@-1,75:75='{',<59>,11:35]
   LexerMode=
   _currentMode=
   _lastMode=
@@ -4588,25 +2814,25 @@ MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSynt
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
   LexerMode=
   _lastMode=
-  token=[@-1,76:76='{',<59>,1:38]
+  token=[@-1,75:75='{',<59>,11:35]
   LexerMode=
   _currentMode=
   _lastMode=
   _currentMode=
-  result=[@-1,76:76='{',<59>,1:38]
+  result=[@-1,75:75='{',<59>,11:35]
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
   LexerMode=
   _lastMode=
-  token=[@-1,77:77='}',<60>,1:39]
+  token=[@-1,76:76='}',<60>,11:36]
   LexerMode=
   _currentMode=
   _lastMode=
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): {
-  [76..77)
+  [75..76)
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
   SkippedTokenCount=0
@@ -4655,7 +2881,7 @@ MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuse(): SyntaxNod
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.Blender+Reader.CanReuseDirectly(): SyntaxNodeOrToken TOpenBrace {
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.Reset()
-  position=76
+  position=75
   Text={}
 }
 
@@ -4664,7 +2890,7 @@ MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSynt
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
   LexerMode=
   _lastMode=
-  token=[@-1,76:76='{',<59>,1:40]
+  token=[@-1,75:75='{',<59>,11:37]
   LexerMode=
   _currentMode=
   _lastMode=
@@ -4674,25 +2900,25 @@ MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSynt
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
   LexerMode=
   _lastMode=
-  token=[@-1,76:76='{',<59>,1:40]
+  token=[@-1,75:75='{',<59>,11:37]
   LexerMode=
   _currentMode=
   _lastMode=
   _currentMode=
-  result=[@-1,76:76='{',<59>,1:40]
+  result=[@-1,75:75='{',<59>,11:37]
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
   LexerMode=
   _lastMode=
-  token=[@-1,77:77='}',<60>,1:41]
+  token=[@-1,76:76='}',<60>,11:38]
   LexerMode=
   _currentMode=
   _lastMode=
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): {
-  [76..77)
+  [75..76)
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
   SkippedTokenCount=0
@@ -4707,7 +2933,7 @@ MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSynt
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
   LexerMode=
   _lastMode=
-  token=[@-1,77:77='}',<60>,1:41]
+  token=[@-1,76:76='}',<60>,11:38]
   LexerMode=
   _currentMode=
   _lastMode=
@@ -4717,27 +2943,27 @@ MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSynt
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
   LexerMode=
   _lastMode=
-  token=[@-1,77:77='}',<60>,1:41]
+  token=[@-1,76:76='}',<60>,11:38]
   LexerMode=
   _currentMode=
   _lastMode=
   _currentMode=
-  result=[@-1,77:77='}',<60>,1:41]
+  result=[@-1,76:76='}',<60>,11:38]
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
   LexerMode=
   _lastMode=
-  token=[@-1,78:79='\r\n',<108>,channel=3,1:42]
+  token=[@-1,77:78='\r\n',<108>,channel=3,11:39]
   LexerMode=
   _currentMode=
   _lastMode=
   _currentMode=
-  result=[@-1,78:79='\r\n',<108>,channel=3,1:42]
+  result=[@-1,77:78='\r\n',<108>,channel=3,11:39]
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): }
-  [77..80)
+  [76..79)
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
   SkippedTokenCount=0
@@ -4796,7 +3022,7 @@ MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSynt
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
   LexerMode=
   _lastMode=
-  token=[@-1,80:80='}',<60>,2:0]
+  token=[@-1,79:79='}',<60>,12:0]
   LexerMode=
   _currentMode=
   _lastMode=
@@ -4806,25 +3032,25 @@ MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSynt
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
   LexerMode=
   _lastMode=
-  token=[@-1,80:80='}',<60>,2:0]
+  token=[@-1,79:79='}',<60>,12:0]
   LexerMode=
   _currentMode=
   _lastMode=
   _currentMode=
-  result=[@-1,80:80='}',<60>,2:0]
+  result=[@-1,79:79='}',<60>,12:0]
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
   LexerMode=
   _lastMode=
-  token=[@-1,81:80='<EOF>',<-1>,2:1]
+  token=[@-1,80:79='<EOF>',<-1>,12:1]
   LexerMode=
   _currentMode=
   _lastMode=
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): }
-  [80..81)
+  [79..80)
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
   SkippedTokenCount=0
@@ -4864,7 +3090,7 @@ MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSynt
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=False
   LexerMode=
   _lastMode=
-  token=[@-1,81:80='<EOF>',<-1>,2:1]
+  token=[@-1,80:79='<EOF>',<-1>,12:1]
   LexerMode=
   _currentMode=
   _lastMode=
@@ -4874,25 +3100,25 @@ MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSynt
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=False, readNextToken=False
   LexerMode=
   _lastMode=
-  token=[@-1,81:80='<EOF>',<-1>,2:1]
+  token=[@-1,80:79='<EOF>',<-1>,12:1]
   LexerMode=
   _currentMode=
   _lastMode=
   _currentMode=
-  result=[@-1,81:80='<EOF>',<-1>,2:1]
+  result=[@-1,80:79='<EOF>',<-1>,12:1]
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ScanSyntaxTrivia()
 
 MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4SyntaxLexer.ReadNextToken(): readTrivia=True, readNextToken=True
   LexerMode=
   _lastMode=
-  token=[@-1,81:80='<EOF>',<-1>,2:1]
+  token=[@-1,80:79='<EOF>',<-1>,12:1]
   LexerMode=
   _currentMode=
   _lastMode=
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxLexer.Lex(): 
-  [81..81)
+  [80..80)
 
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.RegisterLookahead(): 0
   SkippedTokenCount=0
@@ -4908,37 +3134,35 @@ MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EatCurrentTokenWithSkip
 MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxParser.EndNode(): state=-1
   StateStack=state=-1
 ===========================================
-Text length: 81
+Text length: 80
 ----
 namespace EntitiesSample
 {
-	metamodel Entities; 
+	etamodel Entities; 
 
     class NamedElement{}
 }
 ----
-[4 (startState=-1,endState=-1,ltb=0,lta=1,lb=0,la=-1)] Main
-  [4 (startState=118,endState=118,ltb=0,lta=1,lb=0,la=-1)] NamespaceDeclaration
+[2 (startState=-1,endState=-1,ltb=0,lta=1,lb=0,la=-1)] Main
+  [2 (startState=118,endState=118,ltb=0,lta=1,lb=0,la=-1)] NamespaceDeclaration
     [(startMode=0,endState=0)] KNamespace: namespace
     [2 (startState=144,endState=144,ltb=0,lta=1,lb=0,la=3)] QualifiedName
       [2 (startState=123,endState=123,ltb=0,lta=1,lb=0,la=3)] Qualifier
         [2 (startState=125,endState=125,ltb=0,lta=1,lb=0,la=3)] Identifier
           [(startMode=0,endState=0)] IdentifierNormal: EntitiesSample
-    [4 (startState=145,endState=145,ltb=0,lta=1,lb=0,la=-1)] NamespaceBody
+    [2 (startState=145,endState=145,ltb=0,lta=1,lb=0,la=-1)] NamespaceBody
       [(startMode=0,endState=0)] TOpenBrace: {
-      [2 (startState=148,endState=148,ltb=0,lta=1,lb=0,la=0)] MetamodelDeclaration
-        [(startMode=0,endState=0)] KMetamodel: metamodel
-        [2 (startState=164,endState=164,ltb=0,lta=1,lb=0,la=4)] Name
-          [2 (startState=121,endState=121,ltb=0,lta=1,lb=0,la=4)] Identifier
-            [(startMode=0,endState=0)] IdentifierNormal: Entities
-        [(startMode=0,endState=0)] TSemicolon: ;
-      [4 (startState=149,endState=149,ltb=0,lta=1,lb=0,la=0)] Declaration
-        [4 (startState=195,endState=195,ltb=0,lta=1,lb=0,la=0)] ClassDeclaration
+      [2 (startState=148,endState=148,ltb=1,lta=3,lb=0,la=34)] MetamodelDeclaration
+        [(startMode=0,endState=0)] KMetamodel: 
+        Name
+        [(startMode=0,endState=0)] TSemicolon: 
+      [2 (startState=149,endState=149,ltb=0,lta=1,lb=0,la=-22)] Declaration
+        [2 (startState=195,endState=195,ltb=0,lta=1,lb=0,la=-22)] ClassDeclaration
           [(startMode=0,endState=0)] KClass: class
-          [4 (startState=251,endState=251,ltb=0,lta=1,lb=0,la=1)] Name
-            [4 (startState=121,endState=121,ltb=0,lta=1,lb=0,la=1)] Identifier
+          [2 (startState=251,endState=251,ltb=0,lta=1,lb=0,la=1)] Name
+            [2 (startState=121,endState=121,ltb=0,lta=1,lb=0,la=1)] Identifier
               [(startMode=0,endState=0)] IdentifierNormal: NamedElement
-          [4 (startState=256,endState=256,ltb=0,lta=1,lb=0,la=0)] ClassBody
+          [2 (startState=256,endState=256,ltb=0,lta=1,lb=0,la=0)] ClassBody
             [(startMode=0,endState=0)] TOpenBrace: {
             [(startMode=0,endState=0)] TCloseBrace: }
       [(startMode=0,endState=0)] TCloseBrace: }
@@ -4946,5 +3170,7 @@ namespace EntitiesSample
 
 ===========================================
 Antlr4 diagnostics:
+  (4,2): error AR0001: Syntax error: mismatched input 'etamodel' expecting {'metamodel', '['}
 MetaDslx diagnostics:
+  (2,2): error AR0001: Syntax error: missing {'metamodel', '['}
 ----

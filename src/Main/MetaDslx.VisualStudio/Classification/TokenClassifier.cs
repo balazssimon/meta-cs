@@ -64,8 +64,11 @@ namespace MetaDslx.VisualStudio.Classification
             var tokens = root.FindTokens(TextSpan.FromBounds(startPosition, endPosition), true);
             foreach (var token in tokens)
             {
-                var classificationType = GetClassificationType(token.GetKind());
-                result.Add(new ClassificationSpan(new SnapshotSpan(span.Snapshot, new Span(token.Span.Start, token.Span.Length)), classificationType));
+                if (token.Span.Length > 0)
+                {
+                    var classificationType = GetClassificationType(token.GetKind());
+                    result.Add(new ClassificationSpan(new SnapshotSpan(span.Snapshot, new Span(token.Span.Start, token.Span.Length)), classificationType));
+                }
             }
             return result;
         }

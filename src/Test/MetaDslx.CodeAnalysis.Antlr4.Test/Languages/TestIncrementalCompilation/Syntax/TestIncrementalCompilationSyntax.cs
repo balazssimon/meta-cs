@@ -61,6 +61,104 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation.
         public abstract void Accept(ITestIncrementalCompilationSyntaxVisitor visitor);
     }
 
+    /// <summary>
+    /// It's a non terminal Trivia TestIncrementalCompilationSyntaxNode that has a tree underneath it.
+    /// </summary>
+    public abstract partial class TestIncrementalCompilationStructuredTriviaSyntax : TestIncrementalCompilationSyntaxNode, IStructuredTriviaSyntax
+    {
+        private SyntaxTrivia _parent;
+        internal TestIncrementalCompilationStructuredTriviaSyntax(InternalSyntaxNode green, TestIncrementalCompilationSyntaxNode parent, int position)
+            : base(green, parent == null ? null : (TestIncrementalCompilationSyntaxTree)parent.SyntaxTree, position)
+        {
+            System.Diagnostics.Debug.Assert(parent == null || position >= 0);
+        }
+		internal static TestIncrementalCompilationStructuredTriviaSyntax Create(SyntaxTrivia trivia)
+		{
+			var red = (TestIncrementalCompilationStructuredTriviaSyntax)TestIncrementalCompilationLanguage.Instance.SyntaxFactory.CreateStructure(trivia);
+			red._parent = trivia;
+			return red;
+		}
+        /// <summary>
+        /// Get parent trivia.
+        /// </summary>
+        public override SyntaxTrivia ParentTrivia => _parent;
+    }
+
+    public sealed partial class TestIncrementalCompilationSkippedTokensTriviaSyntax : TestIncrementalCompilationStructuredTriviaSyntax
+    {
+        internal TestIncrementalCompilationSkippedTokensTriviaSyntax(InternalSyntaxNode green, TestIncrementalCompilationSyntaxNode parent, int position)
+            : base(green, parent, position)
+        {
+        }
+
+        public SyntaxTokenList Tokens 
+        {
+            get
+            {
+				var slot = ((global::MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation.Syntax.InternalSyntax.GreenSkippedTokensTriviaSyntax)this.Green).Tokens;
+				if (slot != null)
+				{
+					return new SyntaxTokenList(this, slot.Node, this.GetChildPosition(0), this.GetChildIndex(0));
+				}
+                return default;
+            }
+        }
+
+        public override SyntaxNode GetNodeSlot(int index)
+        {
+            switch (index)
+            {
+                default: return null;
+            }
+        }
+
+		public override SyntaxNode GetCachedSlot(int index)
+        {
+            switch (index)
+            {
+                default: return null;
+            }
+        }
+
+		public override TResult Accept<TArg, TResult>(ITestIncrementalCompilationSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+		{
+			return visitor.VisitSkippedTokensTrivia(this, argument);
+		}
+
+		public override TResult Accept<TResult>(ITestIncrementalCompilationSyntaxVisitor<TResult> visitor)
+        {
+            return visitor.VisitSkippedTokensTrivia(this);
+        }
+
+        public override void Accept(ITestIncrementalCompilationSyntaxVisitor visitor)
+        {
+            visitor.VisitSkippedTokensTrivia(this);
+        }
+
+        public TestIncrementalCompilationSkippedTokensTriviaSyntax Update(SyntaxTokenList tokens)
+        {
+            if (tokens != this.Tokens)
+            {
+                var newNode = (TestIncrementalCompilationSkippedTokensTriviaSyntax)Language.SyntaxFactory.SkippedTokensTrivia(tokens);
+                var annotations = this.GetAnnotations();
+                if (annotations != null && annotations.Length > 0)
+                    return newNode.WithAnnotations(annotations);
+                return newNode;
+            }
+            return this;
+        }
+
+        public TestIncrementalCompilationSkippedTokensTriviaSyntax WithTokens(SyntaxTokenList tokens)
+        {
+            return this.Update(tokens);
+        }
+
+        public TestIncrementalCompilationSkippedTokensTriviaSyntax AddTokens(params SyntaxToken[] items)
+        {
+            return this.WithTokens(this.Tokens.AddRange(items));
+        }
+    }
+
 	
 	public sealed class MainSyntax : TestIncrementalCompilationSyntaxNode, ICompilationUnitSyntax
 	{
@@ -5896,6 +5994,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation
 
 	public interface ITestIncrementalCompilationSyntaxVisitor
 	{
+	    void VisitSkippedTokensTrivia(TestIncrementalCompilationSkippedTokensTriviaSyntax node);
 		
 		void VisitMain(MainSyntax node);
 		
@@ -6018,6 +6117,10 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation
 	
 	public class TestIncrementalCompilationSyntaxVisitor : SyntaxVisitor, ITestIncrementalCompilationSyntaxVisitor
 	{
+	    public virtual void VisitSkippedTokensTrivia(TestIncrementalCompilationSkippedTokensTriviaSyntax node)
+	    {
+	        this.DefaultVisit(node);
+	    }
 		
 		public virtual void VisitMain(MainSyntax node)
 		{
@@ -6319,6 +6422,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation
 
 	public interface ITestIncrementalCompilationSyntaxVisitor<TArg, TResult> 
 	{
+	    TResult VisitSkippedTokensTrivia(TestIncrementalCompilationSkippedTokensTriviaSyntax node, TArg argument);
 		
 		TResult VisitMain(MainSyntax node, TArg argument);
 		
@@ -6441,6 +6545,10 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation
 	
 	public class TestIncrementalCompilationSyntaxVisitor<TArg, TResult> : SyntaxVisitor<TArg, TResult>, ITestIncrementalCompilationSyntaxVisitor<TArg, TResult>
 	{
+	    public virtual TResult VisitSkippedTokensTrivia(TestIncrementalCompilationSkippedTokensTriviaSyntax node, TArg argument)
+	    {
+	        return this.DefaultVisit(node, argument);
+	    }
 		
 		public virtual TResult VisitMain(MainSyntax node, TArg argument)
 		{
@@ -6740,6 +6848,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation
 
 	public interface ITestIncrementalCompilationSyntaxVisitor<TResult> 
 	{
+	    TResult VisitSkippedTokensTrivia(TestIncrementalCompilationSkippedTokensTriviaSyntax node);
 		
 		TResult VisitMain(MainSyntax node);
 		
@@ -6862,6 +6971,10 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation
 	
 	public class TestIncrementalCompilationSyntaxVisitor<TResult> : SyntaxVisitor<TResult>, ITestIncrementalCompilationSyntaxVisitor<TResult>
 	{
+	    public virtual TResult VisitSkippedTokensTrivia(TestIncrementalCompilationSkippedTokensTriviaSyntax node)
+	    {
+	        return this.DefaultVisit(node);
+	    }
 		
 		public virtual TResult VisitMain(MainSyntax node)
 		{
@@ -7164,6 +7277,12 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation
 	    public TestIncrementalCompilationSyntaxRewriter(bool visitIntoStructuredTrivia = false)
 			: base(TestIncrementalCompilationLanguage.Instance, visitIntoStructuredTrivia)
 	    {
+	    }
+	
+	    public virtual SyntaxNode VisitSkippedTokensTrivia(TestIncrementalCompilationSkippedTokensTriviaSyntax node)
+	    {
+	      var tokens = this.VisitList(node.Tokens);
+	      return node.Update(tokens);
 	    }
 		
 		public virtual SyntaxNode VisitMain(MainSyntax node)
@@ -7788,18 +7907,6 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation
 		{
 			return TestIncrementalCompilationSyntaxTree.Create((TestIncrementalCompilationSyntaxNode)root, (TestIncrementalCompilationParseOptions)options, path, null, encoding);
 		}
-	
-	    public override SyntaxNode CreateStructure(SyntaxTrivia trivia)
-	    {
-	        if (trivia != null && trivia.UnderlyingNode is GreenStructuredSyntaxTrivia structuredTrivia)
-	        {
-	            return structuredTrivia.Structure.CreateRed();
-	        }
-	        else
-	        {
-	            return null;
-	        }
-	    }
 	
 	
 	    public SyntaxToken TAsterisk(string text)

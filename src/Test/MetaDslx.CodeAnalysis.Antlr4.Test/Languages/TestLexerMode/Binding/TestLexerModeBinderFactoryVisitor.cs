@@ -48,6 +48,11 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Binding
             }
         }
 
+        public Binder VisitSkippedTokensTrivia(TestLexerModeSkippedTokensTriviaSyntax parent)
+        {
+            return null;
+        }
+
 		
 		public Binder VisitMain(MainSyntax parent)
 		{

@@ -137,6 +137,11 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Bin
             }
         }
 
+        public Binder VisitSkippedTokensTrivia(TestLanguageAnnotationsSkippedTokensTriviaSyntax parent)
+        {
+            return null;
+        }
+
 		
 		public Binder VisitMain(MainSyntax parent)
 		{

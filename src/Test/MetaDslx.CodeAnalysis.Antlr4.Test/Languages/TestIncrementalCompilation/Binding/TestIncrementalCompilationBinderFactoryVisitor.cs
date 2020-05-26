@@ -136,6 +136,11 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation.
             }
         }
 
+        public Binder VisitSkippedTokensTrivia(TestIncrementalCompilationSkippedTokensTriviaSyntax parent)
+        {
+            return null;
+        }
+
 		
 		public Binder VisitMain(MainSyntax parent)
 		{

@@ -30,6 +30,11 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Bin
 
         }
 
+		public virtual bool VisitSkippedTokensTrivia(TestLanguageAnnotationsSkippedTokensTriviaSyntax node)
+		{
+            return false;
+		}
+
 		
 		public bool VisitMain(MainSyntax node)
 		{

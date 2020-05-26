@@ -145,7 +145,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         public abstract InternalSyntaxTrivia Trivia(SyntaxKind kind, string text, bool elastic = false);
         public abstract InternalSyntaxTrivia ConflictMarker(string text);
         public abstract InternalSyntaxTrivia DisabledText(string text);
-        public abstract InternalSyntaxTrivia SkippedToken(GreenNode token);
+        public abstract InternalSyntaxNode SkippedTokensTrivia(GreenNode token);
         public abstract InternalSyntaxToken Token(SyntaxKind kind);
         public abstract InternalSyntaxToken Token(GreenNode leading, SyntaxKind kind, GreenNode trailing);
         public abstract InternalSyntaxToken Token(GreenNode leading, SyntaxKind kind, string text, GreenNode trailing);

@@ -30,6 +30,10 @@ namespace MetaDslx.Languages.Meta.Binding
             var builder = new MetaDeclarationTreeBuilderVisitor(syntaxTree, scriptClassName, isSubmission);
             return builder.CreateRoot(syntaxTree.GetRoot(), null);
         }
+
+		public virtual void VisitSkippedTokensTrivia(MetaSkippedTokensTriviaSyntax node)
+		{
+		}
 		
 		public virtual void VisitMain(MainSyntax node)
 		{

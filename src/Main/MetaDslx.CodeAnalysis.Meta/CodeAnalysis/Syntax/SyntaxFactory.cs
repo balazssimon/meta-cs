@@ -67,7 +67,15 @@ namespace MetaDslx.CodeAnalysis.Syntax
                 return _defaultSeparator;
             }
         }
-        public abstract SyntaxNode CreateStructure(SyntaxTrivia trivia);
+
+        public SyntaxNode CreateStructure(SyntaxTrivia trivia)
+        {
+            var node = (InternalSyntaxNode)trivia.UnderlyingNode;
+            var parent = trivia.Token.Parent;
+            var position = trivia.Position;
+            var red = node.CreateRed(parent, position);
+            return red;
+        }
 
         /// <summary>
         /// A trivia with kind EndOfLineTrivia containing both the carriage return and line feed characters.
@@ -224,6 +232,19 @@ namespace MetaDslx.CodeAnalysis.Syntax
                 throw new ArgumentException("kind");
             }
             return new SyntaxTrivia(default(SyntaxToken), Language.InternalSyntaxFactory.Trivia(kind, text), 0, 0);
+        }
+
+        /// <summary>Creates a new SkippedTokensTriviaSyntax instance.</summary>
+        public LanguageSyntaxNode SkippedTokensTrivia(SyntaxTokenList tokens)
+        {
+            return (LanguageSyntaxNode)Language.InternalSyntaxFactory.SkippedTokensTrivia(tokens.Node).CreateRed();
+        }
+
+
+        /// <summary>Creates a new SkippedTokensTriviaSyntax instance.</summary>
+        public LanguageSyntaxNode SkippedTokensTrivia()
+        {
+            return this.SkippedTokensTrivia(default);
         }
 
         /// <summary>
