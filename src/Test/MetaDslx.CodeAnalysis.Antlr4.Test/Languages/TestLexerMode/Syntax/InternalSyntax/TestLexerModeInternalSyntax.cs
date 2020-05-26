@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax
 {
+    using System.Runtime.CompilerServices;
     using MetaDslx.CodeAnalysis;
     using MetaDslx.CodeAnalysis.Syntax;
     using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
