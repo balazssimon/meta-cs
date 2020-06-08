@@ -1,0 +1,284 @@
+﻿parser grammar PilParser;
+
+options
+{
+    tokenVocab = PilLexer; 
+	generateCompiler=true;
+}
+
+main: declaration* EOF;
+
+declaration: typeDefDeclaration | externalParameterDeclaration | enumDeclaration | objectDeclaration | functionDeclaration | queryDeclaration;
+
+$SymbolDef(TypeAlias)
+typeDefDeclaration: KTypeDef name TColon $Property(TargetType) typeReference TSemicolon;
+
+$SymbolDef(ExternalParameter)
+externalParameterDeclaration: KParam name TColon $Property(Type) typeReference (TAssign $Property(DefaultValue) expression)? TSemicolon;
+
+$SymbolDef(PilEnum)
+enumDeclaration: KEnum name TOpenBracket enumLiterals TCloseBracket TSemicolon;
+$Property(Literals)
+enumLiterals: enumLiteral (TComma enumLiteral)*;
+$SymbolDef(EnumLiteral)
+enumLiteral: name;
+
+$SymbolDef(PilObject)
+objectDeclaration: KObject objectHeader TSemicolon objectExternalParameters objectFields objectFunctions KEndObject;
+objectHeader: name TOpenParen ports? TCloseParen;
+ports: port (TComma port)*;
+$Property(Ports)
+$SymbolDef(Port)
+port: name;
+$Property(ExternalParameters)
+objectExternalParameters: externalParameterDeclaration*;
+$Property(Fields)
+objectFields: variableDeclaration*;
+$Property(Functions)
+objectFunctions: functionDeclaration*;
+
+$SymbolDef(Function)
+functionDeclaration: KFunction functionHeader comment? TSemicolon statements? KEndFunction;
+functionHeader: name TOpenParen functionParams? TCloseParen TColon $Property(ReturnType) typeReference;
+$Property(Parameters)
+functionParams: param (TComma param)*;
+$SymbolDef(Variable)
+param: name TColon $Property(Type) typeReference;
+
+// TODO:MetaDslx
+//queryDeclaration: KQuery queryHeader comment? startQuerySemicolon=TSemicolon $Property(Fields) variableDeclaration* $Property(Functions) functionDeclaration* $Property(Objects) queryObject* KEndQuery endName=identifier? endQuerySemicolon=TSemicolon;
+
+
+$SymbolDef(Query)
+queryDeclaration: KQuery queryHeader comment? startQuerySemicolon=TSemicolon queryExternalParameters* queryField* functionDeclaration* queryObject* KEndQuery endName=identifier? endQuerySemicolon=TSemicolon;
+queryHeader: name TOpenParen queryRequestParams? TCloseParen;
+$Property(RequestParameters)
+queryRequestParams: KRequest? param (TComma param)* TSemicolon?;
+$Property(AcceptParameters)
+queryAcceptParams: KAccept param (TComma param)* TSemicolon?;
+$Property(RefuseParameters)
+queryRefuseParams: KRefuse param (TComma param)* TSemicolon?;
+$Property(CancelParameters)
+queryCancelParams: KCancel param (TComma param)* TSemicolon?;
+$Property(ExternalParameters)
+queryExternalParameters: externalParameterDeclaration;
+$Property(Fields)
+queryField: variableDeclaration;
+$Property(Functions)
+queryFunction: functionDeclaration;
+$Property(Objects)
+$SymbolDef(QueryObject)
+queryObject: KObject name comment? startObjectSemicolon=TSemicolon queryObjectField* queryObjectFunction* queryObjectEvent* KEndObject endName=identifier? endObjectSemicolon=TSemicolon;
+$Property(Fields)
+queryObjectField: variableDeclaration;
+$Property(Functions)
+queryObjectFunction: functionDeclaration;
+$Property(Events)
+queryObjectEvent: input | trigger;
+$SymbolDef(InputEvent)
+input: KInput inputPortList comment? TSemicolon statements?;
+inputPortList: inputPort (TComma inputPort)*;
+$Property(Ports)
+$SymbolDef(RequestPort)
+inputPort: $Property(PortName) $Value portName=identifier (TDot $Property(QueryName) $Value queryName=identifier)?;
+$SymbolDef(Trigger)
+trigger: KTrigger triggerVarList comment? TSemicolon statements?;
+triggerVarList: triggerVar (TComma triggerVar)*;
+triggerVar: $Property(TriggerVariables) $Value identifier;
+
+$Property(Statements)
+statements: statement*;
+statement: variableDeclarationStatement | requestStatement | forkStatement | forkRequestStatement | ifStatement | responseStatement | cancelStatement | assignmentStatement;
+
+$SymbolDef(ForkStatement)
+forkStatement: KFork $Property(SwitchValue) expression? caseBranch* elseBranch? KEndFork;
+$Property(Branches)
+$SymbolDef(Branch)
+caseBranch: KCase $Property(Value) condition=expression comment? TSemicolon statements?;
+$Property(Branches)
+$SymbolDef(Branch)
+elseBranch: KElse comment? statements?;
+
+$SymbolDef(ForkStatement)
+ifStatement: KIf ifBranch elseIfBranch* elseBranch* KEndIf;
+$Property(Branches)
+$SymbolDef(Branch)
+ifBranch: $Property(Value) conditionalExpression comment? TSemicolon statements?;
+elseIfBranch: KElse KIf ifBranch;
+
+$SymbolDef(RequestStatement)
+requestStatement: ($Property(RequestVariable) $Value leftSide TAssign)? callRequest $Property(Assertion) assertion? TSemicolon;
+callRequest: KRequest $Property(PortName) $Value portName=identifier (TDot $Property(QueryName) $Value queryName=identifier)? requestArguments?;
+$Property(Arguments)
+requestArguments: TOpenParen expressionList? TCloseParen;
+
+$SymbolDef(ResponseStatement)
+responseStatement: responseStatementKind $Property(Assertion) assertion? TSemicolon;
+
+$SymbolDef(ResponseStatement)
+cancelStatement: cancelStatementKind $Property(PortName) $Value portName=identifier? $Property(Assertion) assertion? TSemicolon;
+
+$SymbolDef(AssertStatement)
+$Property(Condition)
+assertion: TColon expression? comment?;
+
+$Property(Kind)
+responseStatementKind
+	: $Value(ResponseKind.Accept) KAccept 
+	| $Value(ResponseKind.Refuse) KRefuse
+	;
+
+$Property(Kind)
+cancelStatementKind
+	: $Property(Kind) $Value(ResponseKind.Cancel) KCancel
+	;
+
+// $SymbolDef(RequestStatement)
+// assertStatement: KAssert condition=expression comment? TSemicolon;
+// 
+// $SymbolDef(RequestStatement)
+// requestStatement: ($Property(RequestVariable) $Value leftSide TAssign)? callRequest TSemicolon;
+// callRequest: KRequest $Property(PortName) $Value portName=identifier (TDot $Property(QueryName) $Value queryName=identifier)? requestArguments?;
+// $Property(Arguments)
+// requestArguments: TOpenParen expressionList? TCloseParen;
+// 
+// $SymbolDef(ResponseStatement)
+// responseStatement: responseStatementKind TSemicolon;
+
+
+$SymbolDef(ForkRequestStatement)
+forkRequestStatement: KFork forkRequestVariable acceptBranch? refuseBranch? cancelBranch? KEndFork;
+forkRequestVariable: $Property(SwitchVariable) forkRequestIdentifier | $Property(SwitchRequest) requestStatement;
+forkRequestIdentifier: $Value identifier TSemicolon;
+$Property(Branches)
+$SymbolDef(ForkRequestBranch)
+acceptBranch: KCase $Property(name=Kind,value=ResponseKind.Accept) KAccept $Property(Condition) condition=expression? comment? TSemicolon statements?;
+$Property(Branches)
+$SymbolDef(ForkRequestBranch)
+refuseBranch: KCase $Property(name=Kind,value=ResponseKind.Refuse) KRefuse $Property(Condition) condition=expression? comment? TSemicolon statements?;
+$Property(Branches)
+$SymbolDef(ForkRequestBranch)
+cancelBranch: KCase $Property(name=Kind,value=ResponseKind.Cancel) KCancel $Property(Condition) condition=expression? comment? TSemicolon statements?;
+
+$SymbolDef(VariableDeclarationStatement)
+variableDeclarationStatement: $Property(Variable) variableDeclaration;
+$SymbolDef(Variable)
+variableDeclaration: KVar name TColon $Property(Type) typeReference (TAssign $Property(DefaultValue) expression)? TSemicolon;
+
+$SymbolDef(AssignmentStatement)
+assignmentStatement: $Property(LeftSide) $Value leftSide TAssign $Property(Value) value=expression TSemicolon;
+
+leftSide : identifier | resultIdentifier;
+
+expressionList: expression (TComma expression)*;
+expression : arithmeticExpression | conditionalExpression;
+
+arithmeticExpression
+	: $Property(Left) left=arithmeticExpression $Property(Operator) opMulDiv $Property(Right) right=arithmeticExpression  #mulDivExpression $SymbolDef(BinaryExpression)
+	| $Property(Left) left=arithmeticExpression $Property(Operator) opAddSub $Property(Right) right=arithmeticExpression  #plusMinusExpression $SymbolDef(BinaryExpression)
+	| $Property(Operator) opMinus $Property(Inner) arithmeticExpressionTerminator    #negateExpression $SymbolDef(UnaryExpression)
+	| arithmeticExpressionTerminator                                                 #simpleArithmeticExpression
+	;
+opMulDiv
+	: $Value(BinaryOperator.Multiply) TAsterisk
+	| $Value(BinaryOperator.Divide) TSlash
+	;
+opAddSub
+	: $Value(BinaryOperator.Add) TPlus
+	| $Value(BinaryOperator.Subtract) TMinus
+	;
+
+arithmeticExpressionTerminator
+	: TOpenParen $Property(Inner) arithmeticExpression TCloseParen                        #parenArithmeticExpression $SymbolDef(ParenthesizedExpression)
+	| terminalExpression                                                 #terminalArithmeticExpression
+	;
+
+$Value(UnaryOperator.Minus)
+opMinus: TMinus;
+
+conditionalExpression
+	: $Property(Left) left=conditionalExpression $Property(Operator) andAlsoOp $Property(Right) right=conditionalExpression     #andExpression $SymbolDef(BinaryExpression)
+	| $Property(Left) left=conditionalExpression $Property(Operator) orElseOp $Property(Right) right=conditionalExpression      #orExpression $SymbolDef(BinaryExpression)
+	| $Property(Operator) opExcl $Property(Inner) conditionalExpressionTerminator     #notExpression $SymbolDef(UnaryExpression)
+	| conditionalExpressionTerminator                                                 #simpleConditionalExpression
+	;
+
+$Value(BinaryOperator.AndAlso)
+andAlsoOp: TAndAlso;
+$Value(BinaryOperator.OrElse)
+orElseOp: TOrElse;
+$Value(UnaryOperator.Negate)
+opExcl: TExclamation;
+
+conditionalExpressionTerminator
+	: TOpenParen $Property(Inner) conditionalExpression TCloseParen             #parenConditionalExpression $SymbolDef(ParenthesizedExpression)
+	| elementOfExpression                                      #elementOfConditionalExpression
+	| comparisonExpression                                     #comparisonConditionalExpression
+	| terminalExpression   #terminalComparisonExpression
+	;
+
+$SymbolDef(BinaryExpression)
+comparisonExpression
+	: $Property(Left) left=arithmeticExpression $Property(Operator) op=comparisonOperator $Property(Right) right=arithmeticExpression 
+	;
+
+comparisonOperator
+	: $Value(BinaryOperator.Equal) TEqual 
+	| $Value(BinaryOperator.NotEqual) TNotEqual 
+	| $Value(BinaryOperator.LessThan) TLessThan 
+	| $Value(BinaryOperator.GreaterThan) TGreaterThan 
+	| $Value(BinaryOperator.LessThanOrEqual) TLessThanOrEqual 
+	| $Value(BinaryOperator.GreaterThanOrEqual) TGreaterThanOrEqual
+	;
+
+$SymbolDef(ElementOfExpression)
+elementOfExpression : $Property(Value) terminalExpression KIn TOpenBracket elementOfValueList? TCloseBracket;
+elementOfValueList: elementOfValue (TComma elementOfValue)*;
+$Property(Set)
+$Value
+elementOfValue: identifier;
+
+terminalExpression : variableReference | functionCallExpression | literal;
+
+$SymbolDef(FunctionCallExpression)
+functionCallExpression
+	: $Property(Name) $Value identifier TOpenParen $Property(Arguments) expressionList? TCloseParen;
+
+$SymbolDef(ReferenceExpression)
+variableReference: variableReferenceIdentifier (TDot variableReferenceIdentifier)*;
+$Property(Qualifier)
+variableReferenceIdentifier: $Value identifier;
+
+$Property(Comment)
+$Value
+comment: LString;
+
+$SymbolDef(LiteralExpression)
+$Property(Value)
+$Value
+literal: LInteger | KTrue | KFalse | KNull;
+
+$SymbolUse(NamedType)
+typeReference: builtInType | identifier;
+
+$Identifier
+builtInType
+	: KBool 
+	| KInt 
+	| KString 
+	| KObjectType;
+
+qualifierList: qualifier (TComma qualifier)*;
+
+$Qualifier
+qualifier: identifier (TDot identifier)*;
+
+$Name
+name: identifier;
+
+identifierList: identifier (TComma identifier)*;
+
+$Identifier
+identifier: LIdentifier;
+
+resultIdentifier: KResult;

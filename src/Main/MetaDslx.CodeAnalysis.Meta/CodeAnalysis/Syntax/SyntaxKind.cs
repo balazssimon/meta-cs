@@ -10,15 +10,15 @@ namespace MetaDslx.CodeAnalysis.Syntax
         private int _value;
 
         public const string None = nameof(None);
-        public const string Eof = nameof(Eof);
         public const string List = nameof(List);
         public const string BadToken = nameof(BadToken);
         public const string MissingToken = nameof(MissingToken);
         public const string SkippedTokensTrivia = nameof(SkippedTokensTrivia);
         public const string DisabledTextTrivia = nameof(DisabledTextTrivia);
         public const string ConflictMarkerTrivia = nameof(ConflictMarkerTrivia);
+        public const string Eof = nameof(Eof);
 
-        public const string __LastPredefinedSyntaxKind = ConflictMarkerTrivia;
+        public const string __LastPredefinedSyntaxKind = Eof;
         public static readonly int __LastPredefinedSyntaxKindValue;
 
         protected SyntaxKind(string name)
@@ -33,6 +33,7 @@ namespace MetaDslx.CodeAnalysis.Syntax
 
         static SyntaxKind()
         {
+            EnumObject.RegisterDefault<SyntaxKind>(None);
             EnumObject.RegisterAlias<SyntaxKind>(__LastPredefinedSyntaxKind);
             EnumObject.AutoInit<SyntaxKind>();
             __LastPredefinedSyntaxKindValue = ((SyntaxKind)__LastPredefinedSyntaxKind).GetValue();

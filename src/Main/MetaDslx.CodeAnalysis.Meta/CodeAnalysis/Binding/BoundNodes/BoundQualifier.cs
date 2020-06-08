@@ -93,7 +93,8 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
         {
             if (this.IsInitialized())
             {
-                Debug.Assert(object.ReferenceEquals(_lazyValue, value));
+                if (value == null) Debug.Assert(_lazyValue == null);
+                else Debug.Assert(value.Equals(_lazyValue));
                 return;
             }
             if (Interlocked.CompareExchange(ref _isInitialized, 1, 0) == 0)

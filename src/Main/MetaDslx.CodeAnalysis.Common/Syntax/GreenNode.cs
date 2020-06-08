@@ -156,11 +156,6 @@ namespace Microsoft.CodeAnalysis
 
         internal abstract GreenNode GetSlot(int index);
 
-        internal object GetAnnotations(object incrementalNodeAnnotationKind)
-        {
-            throw new NotImplementedException();
-        }
-
         // for slot counts >= byte.MaxValue
         protected virtual int GetSlotCount()
         {

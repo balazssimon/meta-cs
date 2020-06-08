@@ -5095,20 +5095,24 @@ end template
 template GenerateDeclarationTreeBuilderVisitBody(Antlr4ParserRule rule)
 [if (rule.ContainsAnnotations)]
 	[loop(elem:rule.AllElements where elem.ContainsAnnotations)]
+        [if (elem.IsList)]
+if (node.[elem.RedName()] != null)
+{
+	foreach (var child in node.[elem.RedName()])
+	{
+        [GenerateDeclarationTreeBuilderVisitElement(rule, elem)]
+	}
+}
+        [else]
 [GenerateDeclarationTreeBuilderVisitElement(rule, elem)]
+        [end if]
 	[end loop]    
 [end if]
 end template
 
 template GenerateDeclarationTreeBuilderVisitElementBody(Antlr4ParserRuleElement elem)
 	[if (elem.IsList)]
-if (node.[elem.RedName()] != null)
-{
-	foreach (var child in node.[elem.RedName()])
-	{
-		this.Visit(child);
-	}
-}
+this.Visit(child);
 	[else]
 		[if (elem.IsToken || elem.IsFixedTokenAltBlock)]
 		[else]
@@ -5226,7 +5230,7 @@ function string GetDeclarationTreeBuilderVisitElement(Antlr4ParserRule rule, Ant
 	string body = GenerateDeclarationTreeBuilderVisitElementBody(elem);
 	string name = "node."+elem.RedName();
 	if (elem.IsList)
-		name = "(LanguageSyntaxNode)"+name+".Node";
+		name = "child";
 	end if
 	loop (annot:elem.Annotations.Annotations.Reverse())
 		if (annot.Name == MetaCompilerAnnotationInfo.Identifier)
@@ -5735,7 +5739,7 @@ switch (node.[elem.RedName()].GetKind().Switch())
 			[string children = "ImmutableArray<object>.Empty"]
 			[loop (annot:alt.Annotations.BoundNodeAnnotations.Reverse())]
 		bound[alt.RedName()] = this.CreateBound[annot.Name](this.BoundTree, [children][annot.GetAnnotationParams()], syntax: node, hasErrors: false);
-			[children = "ImmutableArray.Create(bound"+alt.RedName()+")"]
+			[children = "ImmutableArray.Create<object>(bound"+alt.RedName()+")"]
 			[end loop]
 		[childBoundNodesName].Add(bound[alt.RedName()]);
 		break;
@@ -5754,7 +5758,7 @@ if (node.[elem.RedName()].GetKind() == [Properties.LanguageName]SyntaxKind.[elem
 	[string children = "ImmutableArray<object>.Empty"]
 	[loop (annot:elem.Annotations.BoundNodeAnnotations.Reverse())]
 	bound[elem.RedName()] = this.CreateBound[annot.Name](this.BoundTree, [children][annot.GetAnnotationParams()], syntax: node, hasErrors: false);
-	[children = "ImmutableArray.Create(bound"+elem.RedName()+")"]
+	[children = "ImmutableArray.Create<object>(bound"+elem.RedName()+")"]
 	[end loop]
 	[childBoundNodesName].Add(bound[elem.RedName()]);
 }

@@ -1560,7 +1560,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         private bool IsEbnfOptional(Antlr4RoslynParser.EbnfSuffixContext context)
         {
             if (context == null) return false;
-            return context.PLUS() == null && context.STAR() == null && context.QUESTION().Length == 1;
+            return context.PLUS() == null && (context.STAR() != null || context.QUESTION().Length == 1);
         }
 
         private bool IsEbnfList(Antlr4RoslynParser.EbnfSuffixContext context)

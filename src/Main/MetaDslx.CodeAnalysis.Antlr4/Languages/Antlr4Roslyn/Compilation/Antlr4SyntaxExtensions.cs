@@ -3,6 +3,7 @@ using Microsoft.CodeAnalysis.Text;
 using Roslyn.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -12,13 +13,28 @@ namespace MetaDslx.CodeAnalysis.Syntax
     {
         public static int ToAntlr4(this SyntaxKind kind)
         {
-            if (kind == SyntaxKind.Eof) return -1;
-            else return kind.GetValue() - SyntaxKind.__LastPredefinedSyntaxKindValue;
+            if (kind == SyntaxKind.None) return 0;
+            else if (kind == SyntaxKind.Eof) return -1;
+            else 
+            {
+                var value = kind.GetValue();
+                if (value > SyntaxKind.__LastPredefinedSyntaxKindValue)
+                {
+                    return value - SyntaxKind.__LastPredefinedSyntaxKindValue;
+                }
+                else
+                {
+                    Debug.Assert(false);
+                    return 0;
+                }
+            }
         }
 
         public static SyntaxKind FromAntlr4(this int token, Type syntaxKindType)
         {
-            return (SyntaxKind)EnumObject.FromIntUnsafe(syntaxKindType, token + SyntaxKind.__LastPredefinedSyntaxKindValue);
+            if (token == 0) return (SyntaxKind)EnumObject.ByName(syntaxKindType, SyntaxKind.None);
+            else if (token == -1) return (SyntaxKind)EnumObject.ByName(syntaxKindType, SyntaxKind.Eof);
+            else return (SyntaxKind)EnumObject.FromIntUnsafe(syntaxKindType, token + SyntaxKind.__LastPredefinedSyntaxKindValue);
         }
 
         public static TextSpan GetTextSpan(this IToken token)

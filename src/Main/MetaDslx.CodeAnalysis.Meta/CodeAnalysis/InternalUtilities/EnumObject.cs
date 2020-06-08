@@ -29,7 +29,7 @@ namespace Roslyn.Utilities
         protected EnumObject(EnumObject retargetedValue)
         {
             if ((object)retargetedValue == null) return;
-            Debug.Assert(retargetedValue._name != null || retargetedValue._value != 0);
+            Debug.Assert(retargetedValue._name != null || retargetedValue._value >= 0);
             if (retargetedValue._name == null)
             {
                 var descriptor = GetDescriptor(this.GetType());
@@ -39,10 +39,10 @@ namespace Roslyn.Utilities
             {
                 _name = retargetedValue._name;
             }
-            if (retargetedValue._value == 0)
+            if (retargetedValue._value < 0)
             {
                 var descriptor = GetDescriptor(this.GetType());
-                _value = descriptor?.GetValue(retargetedValue._name)?._value ?? default;
+                _value = descriptor?.GetValue(retargetedValue._name)?._value ?? -1;
             }
             else
             {
@@ -92,7 +92,7 @@ namespace Roslyn.Utilities
 
         public int GetValue()
         {
-            if (_value != 0)
+            if (_value >= 0)
             {
                 return _value;
             }
@@ -100,7 +100,7 @@ namespace Roslyn.Utilities
             {
                 var descriptor = GetDescriptor(this.GetType());
                 if (ReferenceEquals(this, descriptor.DefaultValue)) return 0;
-                return descriptor.GetValue(_name)?._value ?? 0;
+                return descriptor.GetValue(_name)?._value ?? -1;
             }
         }
 
@@ -134,7 +134,7 @@ namespace Roslyn.Utilities
         public bool Equals(EnumObject other)
         {
             if ((object)other == null) return false;
-            if (_value == 0) return other._value == 0;
+            if (_value >= 0) return other._value == _value;
             if (!other.IsAssignableFrom(this.GetType())) return false;
             return _name == other._name;
         }
@@ -160,7 +160,7 @@ namespace Roslyn.Utilities
         public static bool operator >(EnumObject left, EnumObject right)
         {
             if ((object)left == null || (object)right == null) return false;
-            if (left._value == 0 || right._value == 0) return false;
+            if (left._value == -1 || right._value == -1) return false;
             return left.GetValue() > right.GetValue();
         }
 
@@ -299,6 +299,10 @@ namespace Roslyn.Utilities
                     {
                         if (!descriptor.IsAlias(name)) throw new InvalidOperationException($"Name of the field {type}.{field.Name} is different than it's value '{name}'. If you want to create an alias, use RegisterAlias() in the static initializer.");
                         else continue;
+                    }
+                    if (descriptor.IsDefault(name))
+                    {
+                        continue;
                     }
                     if (autoNames.Contains(name))
                     {
@@ -603,9 +607,9 @@ namespace Roslyn.Utilities
                     foreach (var entry in baseValuesByName)
                     {
                         var name = entry.Key;
+                        if (name == _defaultName) continue;
                         var value = CreateValue(entry.Value);
-                        if (!_cachedByName.ContainsKey(name)) _cachedByName.Add(name, value);
-                        else throw new InvalidOperationException($"Enum literal '{name}' is registered multiple times in {_type}.");
+                        CacheNewName(name, value);
                     }
                     var baseValues = baseDescriptor._cachedByValue;
                     for (int i = 0; i < baseValues.Length; i++)
@@ -614,6 +618,12 @@ namespace Roslyn.Utilities
                     }
                 }
                 _closed = true;
+            }
+
+            private void CacheNewName(string name, EnumObject value)
+            {
+                if (!_cachedByName.ContainsKey(name)) _cachedByName.Add(name, value);
+                else throw new InvalidOperationException($"Enum literal '{name}' is registered multiple times in {_type}.");
             }
 
             public bool TryGetValue(int value, out EnumObject enumObject)
@@ -774,13 +784,14 @@ namespace Roslyn.Utilities
 
             public void RegisterDefaultValue(string name)
             {
-                if (_cachedByName.ContainsKey(name))
-                {
-                    throw new InvalidOperationException($"Duplicate enum literal '{name}' in {_type}. If you want to create an alias, use RegisterAlias() in the static initializer.");
-                }
-                else if (_defaultName != null)
+                if (name == _defaultName) return;
+                if (_defaultName != null)
                 {
                     throw new InvalidOperationException($"Duplicate default enum literal '{name}' in {_type}. If you want to create an alias, use RegisterAlias() in the static initializer.");
+                }
+                else if (_cachedByName.ContainsKey(name))
+                {
+                    throw new InvalidOperationException($"Duplicate enum literal '{name}' in {_type}. If you want to create an alias, use RegisterAlias() in the static initializer.");
                 }
                 else
                 {
@@ -796,6 +807,11 @@ namespace Roslyn.Utilities
                     throw new InvalidOperationException($"Duplicate enum literal '{name}' in {_type}. If you want to create an alias, use RegisterAlias() in the static initializer.");
                 }
                 _aliases.Add(name);
+            }
+
+            public bool IsDefault(string name)
+            {
+                return _defaultName == name;
             }
 
             public bool IsAlias(string name)
