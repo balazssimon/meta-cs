@@ -484,7 +484,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
             if (context.typeReference() != null)
             {
                 string instancesType = context.typeReference().GetText();
-                WriteLine("private {0} Instances; {1}", instancesType, context.ToComment());
+                WriteLine("public readonly {0} Instances; {1}", instancesType, context.ToComment());
                 AppendLine();
             }
             WriteLine("public {0}() {1}", name, context.ToComment());
