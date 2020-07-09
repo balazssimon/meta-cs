@@ -163,13 +163,6 @@ namespace MetaDslx.CodeAnalysis.Syntax
             return Language.InternalSyntaxFactory.EndOfLine(text, elastic: true);
         }
 
-        [Obsolete("Use SyntaxFactory.EndOfLine or SyntaxFactory.ElasticEndOfLine")]
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        public virtual SyntaxTrivia EndOfLine(string text, bool elastic)
-        {
-            return Language.InternalSyntaxFactory.EndOfLine(text, elastic);
-        }
-
         /// <summary>
         /// Creates a trivia with kind WhitespaceTrivia containing the specified text.
         /// </summary>
@@ -189,13 +182,6 @@ namespace MetaDslx.CodeAnalysis.Syntax
         public virtual SyntaxTrivia ElasticWhitespace(string text)
         {
             return Language.InternalSyntaxFactory.Whitespace(text, elastic: false);
-        }
-
-        [Obsolete("Use SyntaxFactory.Whitespace or SyntaxFactory.ElasticWhitespace")]
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        public virtual SyntaxTrivia Whitespace(string text, bool elastic)
-        {
-            return Language.InternalSyntaxFactory.Whitespace(text, elastic);
         }
 
         /// <summary>
