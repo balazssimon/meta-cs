@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace MetaDslx.CodeAnalysis.Declarations
 {
-    public sealed partial class SyntaxAndDeclarationManager : CommonSyntaxAndDeclarationManager
+    public sealed partial class SyntaxAndDeclarationManager
     {
         public sealed class State
         {

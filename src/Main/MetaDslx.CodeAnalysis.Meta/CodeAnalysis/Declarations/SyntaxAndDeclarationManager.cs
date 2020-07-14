@@ -13,8 +13,13 @@ using MetaDslx.Modeling;
 
 namespace MetaDslx.CodeAnalysis.Declarations
 {
-    public sealed partial class SyntaxAndDeclarationManager : CommonSyntaxAndDeclarationManager
+    public sealed partial class SyntaxAndDeclarationManager
     {
+        internal readonly ImmutableArray<SyntaxTree> ExternalSyntaxTrees;
+        internal readonly string ScriptClassName;
+        internal readonly SourceReferenceResolver Resolver;
+        internal readonly Language Language;
+        internal readonly bool IsSubmission;
         private State _lazyState;
 
         public SyntaxAndDeclarationManager(
@@ -24,8 +29,12 @@ namespace MetaDslx.CodeAnalysis.Declarations
             Language language,
             bool isSubmission,
             State state)
-            : base(externalSyntaxTrees, scriptClassName, resolver, language, isSubmission)
         {
+            this.ExternalSyntaxTrees = externalSyntaxTrees;
+            this.ScriptClassName = scriptClassName ?? "";
+            this.Resolver = resolver;
+            this.Language = language;
+            this.IsSubmission = isSubmission;
             _lazyState = state;
         }
 
