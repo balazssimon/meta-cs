@@ -14,10 +14,12 @@
     <IsPackable>true</IsPackable>
     <Authors>Balazs Simon</Authors>
     <PackageId>MetaDslx.Languages.Ecore</PackageId>
+    <VersionPrefix>$(MetaDslxLanguagesPackageVersion)</VersionPrefix>
+    <VersionSuffix></VersionSuffix>
     <PackageDescription>
       The complete implementation of the Eclipse Ecore metamodel.
     </PackageDescription>
-    <PackageLicenseFile>license.txt</PackageLicenseFile>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageOutputPath>..\..\..\..\..\nuget\</PackageOutputPath>
     <RepositoryUrl>https://github.com/balazssimon/meta-cs.git</RepositoryUrl>
     <IncludeSymbols>true</IncludeSymbols>
@@ -37,14 +39,15 @@
     <PackageReference Include="System.Threading.Tasks.Extensions" Version="$(SystemThreadingTasksExtensionsVersion)" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="$(SystemTextEncodingCodePagesVersion)" />
     <PackageReference Include="MetaDslx.BuildTasks" Version="$(BootstrapVersion)" PrivateAssets="all" />
+    <PackageReference Include="MetaDslx.CodeAnalysis" Version="$(BootstrapVersion)" />
   </ItemGroup>
   
-  <ItemGroup>
+  <!--ItemGroup>
     <ProjectReference Include="..\..\Main\MetaDslx.CodeAnalysis.Antlr4\MetaDslx.CodeAnalysis.Antlr4.csproj" />
     <ProjectReference Include="..\..\Main\MetaDslx.CodeAnalysis.Common\MetaDslx.CodeAnalysis.Common.csproj" />
     <ProjectReference Include="..\..\Main\MetaDslx.CodeAnalysis.CSharp\MetaDslx.CodeAnalysis.CSharp.csproj" />
     <ProjectReference Include="..\..\Main\MetaDslx.CodeAnalysis.Meta\MetaDslx.CodeAnalysis.Meta.csproj" />
-  </ItemGroup>
+  </ItemGroup-->
   
   <ItemGroup>
     <Folder Include="Generator\" />

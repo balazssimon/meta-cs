@@ -198,11 +198,6 @@ namespace MetaDslx.Languages.Ecore.Model.Internal
             throw new NotImplementedException();
         }
 
-        public override EClassBuilder EReference_ComputeProperty_EReferenceType(EReferenceBuilder _this)
-        {
-            throw new NotImplementedException();
-        }
-
         public override Type EStructuralFeature_GetContainerClass(EStructuralFeatureBuilder _this)
         {
             throw new NotImplementedException();

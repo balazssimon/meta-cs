@@ -232,7 +232,7 @@
 		derived bool Container;
 		bool ResolveProxies = "true";
 		EReference EOpposite;
-		derived EClass EReferenceType;
+		EClass EReferenceType; // TODO: match with EType
 	}
 
 	class EOperation : ETypedElement
