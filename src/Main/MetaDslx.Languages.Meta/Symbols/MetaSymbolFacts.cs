@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.Languages.Meta;
 using MetaDslx.Languages.Meta.Syntax.InternalSyntax;
@@ -14,6 +15,8 @@ namespace MetaDslx.Languages.Meta.Symbols
 {
     public class MetaSymbolFacts : SymbolFacts
     {
+        public new MetaLanguage Language => MetaLanguage.Instance;
+        protected override Language LanguageCore => this.Language;
     }
 }
 

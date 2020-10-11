@@ -9,7 +9,7 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Syntax
 {
-    public abstract class SyntaxFacts
+    public abstract class SyntaxFacts : LanguageService
     {
         // Maximum size of tokens/trivia that we cache and use in quick scanner.
         // From what I see in our own codebase, tokens longer then 40-50 chars are 

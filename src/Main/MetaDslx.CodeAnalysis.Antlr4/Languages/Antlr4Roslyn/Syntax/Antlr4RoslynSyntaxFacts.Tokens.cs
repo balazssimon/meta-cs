@@ -7,6 +7,7 @@ using System.Threading;
 using Microsoft.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Syntax;
 using Roslyn.Utilities;
+using MetaDslx.CodeAnalysis;
 
 namespace MetaDslx.Languages.Antlr4Roslyn.Syntax
 {
@@ -65,6 +66,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax
             : base(syntaxKindType)
         {
         }
+
+        protected override Language LanguageCore => throw new NotImplementedException();
 
         public override SyntaxKind DefaultWhitespaceKind => (Antlr4RoslynTokensSyntaxKind)Antlr4RoslynTokensSyntaxKind.WS;
         public override SyntaxKind DefaultEndOfLineKind => (Antlr4RoslynTokensSyntaxKind)Antlr4RoslynTokensSyntaxKind.WS;

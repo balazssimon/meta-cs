@@ -34,9 +34,11 @@ namespace MetaDslx.BuildTasks
 
         public string Name => _compilerName;
 
-        public string OutputLocation { get; set; }
+        public string AutomaticOutputLocation { get; set; }
+        
+        public string AutomaticOutputPath { get; set; }
 
-        public string OutputPath { get; set; }
+        public string ManualOutputPath { get; set; }
 
         public string IntermediateOutputPath { get; set; }
 
@@ -71,25 +73,30 @@ namespace MetaDslx.BuildTasks
                 Log.LogError("{0}: FAILED to generate code for '{1}': the file does not exits.", this.Name, filePath);
                 return false;
             }
-            string outputPath = this.OutputPath;
-            if (string.IsNullOrEmpty(outputPath))
+            string automaticOutputPath = this.AutomaticOutputPath;
+            if (string.IsNullOrEmpty(automaticOutputPath))
             {
-                switch (this.OutputLocation)
+                switch (this.AutomaticOutputLocation)
                 {
                     case "CurrentDirectory":
-                        outputPath = null;
+                        automaticOutputPath = null;
                         break;
                     case "IntermediateDirectory":
                     default:
-                        outputPath = this.IntermediateOutputPath;
+                        automaticOutputPath = this.IntermediateOutputPath;
                         break;
                 }
             }
+            if (string.IsNullOrEmpty(automaticOutputPath))
+            {
+                automaticOutputPath = Path.GetDirectoryName(filePath);
+            }
+            string outputPath = this.ManualOutputPath;
             if (string.IsNullOrEmpty(outputPath))
             {
                 outputPath = Path.GetDirectoryName(filePath);
             }
-            var compiler = this.CreateCompiler(filePath, outputPath);
+            var compiler = this.CreateCompiler(filePath, outputPath, automaticOutputPath);
             try
             {
                 bool hasIntermediateOutputPath = !string.IsNullOrWhiteSpace(this.IntermediateOutputPath);
@@ -128,7 +135,7 @@ namespace MetaDslx.BuildTasks
             return Path.GetFullPath(filePath).StartsWith(_absoluteIntermediatePath);
         }
 
-        protected abstract ICompilerForBuildTask CreateCompiler(string filePath, string outputPath);
+        protected abstract ICompilerForBuildTask CreateCompiler(string filePath, string outputPath, string hiddenOutputPath);
 
         private void LogDiagnostics(ImmutableArray<Diagnostic> diagnostics)
         {

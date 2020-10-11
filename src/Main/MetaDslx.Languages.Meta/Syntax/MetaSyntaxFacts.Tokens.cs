@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Syntax;
 using Roslyn.Utilities;
 
@@ -51,6 +51,9 @@ namespace MetaDslx.Languages.Meta.Syntax
             : base(syntaxKindType)
         {
         }
+
+        public new MetaLanguage Language => MetaLanguage.Instance;
+        protected override Language LanguageCore => this.Language;
 
         public override SyntaxKind DefaultWhitespaceKind => (MetaTokensSyntaxKind)MetaTokensSyntaxKind.LWhiteSpace;
         public override SyntaxKind DefaultEndOfLineKind => (MetaTokensSyntaxKind)MetaTokensSyntaxKind.LCrLf;

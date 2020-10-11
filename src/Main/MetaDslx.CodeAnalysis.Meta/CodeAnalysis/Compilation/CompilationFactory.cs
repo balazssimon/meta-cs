@@ -2,18 +2,20 @@
 using MetaDslx.CodeAnalysis.Binding.BoundNodes;
 using MetaDslx.CodeAnalysis.Declarations;
 using MetaDslx.CodeAnalysis.Symbols;
+using MetaDslx.CodeAnalysis.Symbols.Metadata;
 using MetaDslx.CodeAnalysis.Symbols.Source;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Text;
 using System.Threading;
 
 namespace MetaDslx.CodeAnalysis
 {
-    public abstract class CompilationFactory
+    public abstract class CompilationFactory : LanguageService
     {
         private CompletionGraph _lazyCompletionGraph;
 
@@ -74,6 +76,19 @@ namespace MetaDslx.CodeAnalysis
 
         public virtual Symbol CreateSpecialSymbol(ModuleSymbol module, object key)
         {
+            if (module is MetaModuleSymbol metaModule)
+            {
+                var specialSymbol = Language.SymbolFacts.GetBuiltInObjects().FirstOrDefault(c => c.MName == key.ToString());
+                if (specialSymbol != null && metaModule.Models.Contains(specialSymbol.MModel))
+                {
+                    Symbol symbol;
+                    if (specialSymbol.MId.Descriptor.IsNamedType) symbol = new MetaNamedTypeSymbol(specialSymbol, module);
+                    else if (specialSymbol.MId.Descriptor.IsNamespace) symbol = new MetaNamespaceSymbol(specialSymbol, module);
+                    else if (specialSymbol.MId.Descriptor.IsName) symbol = new MetaMemberSymbol(specialSymbol, module);
+                    else symbol = null;
+                    return symbol;
+                }
+            }
             return null;
         }
 

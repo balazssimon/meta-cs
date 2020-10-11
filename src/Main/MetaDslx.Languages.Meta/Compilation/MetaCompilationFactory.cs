@@ -29,6 +29,9 @@ namespace MetaDslx.Languages.Meta
         {
         }
 
+        public new MetaLanguage Language => MetaLanguage.Instance;
+        protected override Language LanguageCore => this.Language;
+
         /// <summary>
         /// Default compilation options for the Meta language
         /// </summary>
@@ -74,8 +77,8 @@ namespace MetaDslx.Languages.Meta
             IEnumerable<MetadataReference> references = null,
             LanguageCompilationOptions options = null,
             LanguageCompilation previousScriptCompilation = null,
-            Type returnType = null,
-            Type globalsType = null)
+            global::System.Type returnType = null,
+            global::System.Type globalsType = null)
         {
             return MetaCompilation.CreateScriptCompilation(assemblyName, syntaxTree, references, (MetaCompilationOptions)options, (MetaCompilation)previousScriptCompilation, returnType, globalsType);
         }
@@ -98,19 +101,6 @@ namespace MetaDslx.Languages.Meta
         public override RootSingleDeclaration CreateDeclarationTree(LanguageSyntaxTree syntaxTree, string scriptClassName, bool isSubmission)
         {
             return MetaDeclarationTreeBuilderVisitor.ForTree((MetaSyntaxTree)syntaxTree, scriptClassName, isSubmission);
-        }
-        public override Symbol CreateSpecialSymbol(ModuleSymbol module, object key)
-        {
-            if (module is MetaModuleSymbol metaModule && metaModule.Models.Contains(MetaInstance.MModel))
-            {
-                var specialType = MetaConstants.Types.FirstOrDefault(c => c.MName == key.ToString());
-                if (specialType != null)
-                {
-                    var symbol = new MetaNamedTypeSymbol(specialType, module);
-                    return symbol;
-                }
-            }
-            return null;
         }
 
         /*public override ScriptCompilationInfo CreateScriptCompilationInfo(CompilationBase previousSubmission, Type submissionReturnType, Type hostObjectType)

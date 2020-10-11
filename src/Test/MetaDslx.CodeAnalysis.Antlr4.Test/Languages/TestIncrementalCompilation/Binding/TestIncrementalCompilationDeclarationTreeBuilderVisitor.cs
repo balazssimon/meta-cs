@@ -73,7 +73,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation.
 				{
 					foreach (var child in node.Identifier)
 					{
-						this.Visit(child);
+				        this.Visit(child);
 					}
 				}
 			}
@@ -113,7 +113,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation.
 				{
 					foreach (var child in node.Attribute)
 					{
-						this.Visit(child);
+				        this.Visit(child);
 					}
 				}
 				this.Visit(node.QualifiedName);
@@ -135,7 +135,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation.
 				{
 					foreach (var child in node.Declaration)
 					{
-						this.Visit(child);
+				        this.Visit(child);
 					}
 				}
 			}
@@ -157,7 +157,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation.
 					{
 						foreach (var child in node.Attribute)
 						{
-							this.Visit(child);
+					        this.Visit(child);
 						}
 					}
 					this.Visit(node.Name);
@@ -180,7 +180,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation.
 			{
 				foreach (var child in node.MetamodelProperty)
 				{
-					this.Visit(child);
+			        this.Visit(child);
 				}
 			}
 		}
@@ -242,7 +242,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation.
 				{
 					foreach (var child in node.Attribute)
 					{
-						this.Visit(child);
+				        this.Visit(child);
 					}
 				}
 				this.Visit(node.Name);
@@ -272,7 +272,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation.
 				{
 					foreach (var child in node.EnumMemberDeclaration)
 					{
-						this.Visit(child);
+				        this.Visit(child);
 					}
 				}
 			}
@@ -288,7 +288,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation.
 			{
 				foreach (var child in node.EnumValue)
 				{
-					this.Visit(child);
+			        this.Visit(child);
 				}
 			}
 		}
@@ -302,7 +302,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation.
 				{
 					foreach (var child in node.Attribute)
 					{
-						this.Visit(child);
+				        this.Visit(child);
 					}
 				}
 				this.Visit(node.Name);
@@ -335,7 +335,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation.
 				{
 					foreach (var child in node.Attribute)
 					{
-						this.Visit(child);
+				        this.Visit(child);
 					}
 				}
 				switch (node.KAbstract.GetKind().Switch())
@@ -370,7 +370,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation.
 				{
 					foreach (var child in node.ClassMemberDeclaration)
 					{
-						this.Visit(child);
+				        this.Visit(child);
 					}
 				}
 			}
@@ -386,7 +386,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation.
 			{
 				foreach (var child in node.ClassAncestor)
 				{
-					this.Visit(child);
+			        this.Visit(child);
 				}
 			}
 		}
@@ -435,7 +435,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation.
 				{
 					foreach (var child in node.Attribute)
 					{
-						this.Visit(child);
+				        this.Visit(child);
 					}
 				}
 				this.Visit(node.FieldContainment);
@@ -455,7 +455,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation.
 				{
 					foreach (var child in node.RedefinitionsOrSubsettings)
 					{
-						this.Visit(child);
+				        this.Visit(child);
 					}
 				}
 			}
@@ -556,7 +556,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation.
 				{
 					foreach (var child in node.Qualifier)
 					{
-						this.Visit(child);
+				        this.Visit(child);
 					}
 				}
 			}
@@ -764,14 +764,14 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation.
 				{
 					foreach (var child in node.Attribute)
 					{
-						this.Visit(child);
+				        this.Visit(child);
 					}
 				}
 				if (node.OperationModifier != null)
 				{
 					foreach (var child in node.OperationModifier)
 					{
-						this.Visit(child);
+				        this.Visit(child);
 					}
 				}
 				this.BeginProperty(node.ReturnType, name: "ReturnType");
@@ -836,7 +836,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation.
 			{
 				foreach (var child in node.Parameter)
 				{
-					this.Visit(child);
+			        this.Visit(child);
 				}
 			}
 		}
@@ -850,7 +850,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation.
 				{
 					foreach (var child in node.Attribute)
 					{
-						this.Visit(child);
+				        this.Visit(child);
 					}
 				}
 				this.BeginProperty(node.TypeReference, name: "Type");
@@ -876,7 +876,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation.
 			{
 				foreach (var child in node.Attribute)
 				{
-					this.Visit(child);
+			        this.Visit(child);
 				}
 			}
 			this.BeginSymbolUse(node.Source, types: ImmutableArray.Create(typeof(MetaProperty)));

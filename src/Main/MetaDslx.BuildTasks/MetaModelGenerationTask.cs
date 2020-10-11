@@ -19,7 +19,7 @@ namespace MetaDslx.BuildTasks
         {
         }
 
-        protected override ICompilerForBuildTask CreateCompiler(string filePath, string outputPath)
+        protected override ICompilerForBuildTask CreateCompiler(string filePath, string outputPath, string hiddenOutputPath)
         {
             return new MetaCompilerForBuildTask(filePath, outputPath, this.CompileMetaModelCore, this.MetaModelCoreNamespace);
         }

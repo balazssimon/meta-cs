@@ -40,10 +40,10 @@ namespace MetaDslx.BuildTasks
         public bool UseCSharpGenerator { get; set; }
         public bool ContinueOnError { get; set; }
 
-        protected override ICompilerForBuildTask CreateCompiler(string filePath, string outputPath)
+        protected override ICompilerForBuildTask CreateCompiler(string filePath, string outputPath, string hiddenOutputPath)
         {
             var antlr4Tool = this.CreateAntlr4BuildTool();
-            return new Antlr4RoslynCompiler(filePath, outputPath, this.TargetNamespace, antlr4Tool);
+            return new Antlr4RoslynCompiler(filePath, outputPath, hiddenOutputPath, this.TargetNamespace, antlr4Tool);
         }
 
         private Antlr4BuildTool CreateAntlr4BuildTool()
@@ -58,7 +58,7 @@ namespace MetaDslx.BuildTasks
 
             if (this.TokensFiles != null && this.TokensFiles.Length > 0)
             {
-                Directory.CreateDirectory(OutputPath);
+                Directory.CreateDirectory(AutomaticOutputPath);
 
                 HashSet<string> copied = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
                 foreach (ITaskItem taskItem in TokensFiles)
@@ -77,7 +77,7 @@ namespace MetaDslx.BuildTasks
                         continue;
                     }
 
-                    string target = Path.Combine(OutputPath, Path.GetFileName(fileName));
+                    string target = Path.Combine(AutomaticOutputPath, Path.GetFileName(fileName));
                     if (!Path.GetExtension(target).Equals(".tokens", StringComparison.OrdinalIgnoreCase))
                     {
                         Log.LogError("The destination for the tokens file '{0}' did not have the correct extension '.tokens'.", target);
@@ -92,7 +92,7 @@ namespace MetaDslx.BuildTasks
             antlr4.ToolPath = ToolPath;
             antlr4.TargetLanguage = TargetLanguage;
             antlr4.TargetFrameworkVersion = TargetFrameworkVersion;
-            antlr4.OutputPath = OutputPath;
+            antlr4.OutputPath = AutomaticOutputPath;
             antlr4.Encoding = Encoding;
             antlr4.LanguageSourceExtensions = LanguageSourceExtensions;
             antlr4.TargetNamespace = TargetNamespace;

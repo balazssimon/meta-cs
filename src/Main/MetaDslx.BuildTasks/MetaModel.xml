@@ -12,16 +12,22 @@
 
   <StringProperty
     Category="MetaDslx"
-    Name="OutputDirectory"
-    DisplayName="Output Directory"
+    Name="ManualOutputDirectory"
+    DisplayName="Manual Output Directory"
     Default=""
-    Description="Explicitly specifies the output directory for the generated files." />
+    Description="Explicitly specifies the output directory for the manually editable generated files." />
+  <StringProperty
+    Category="MetaDslx"
+    Name="AutomaticOutputDirectory"
+    DisplayName="Automatic Output Directory"
+    Default=""
+    Description="Explicitly specifies the output directory for the non-editable generated files." />
   <EnumProperty
     Category="MetaDslx"
-    Name="OutputLocation"
-    DisplayName="Output Location"
+    Name="AutomaticOutputLocation"
+    DisplayName="Automatic Output Location"
     Default=""
-    Description="Explicitly specifies the output location for the generated files." >
+    Description="Explicitly specifies the output location for the hidden and non-editable generated files." >
     <EnumValue Name="IntermediateDirectory" DisplayName="Intermediate directory" Description="Files are generated into the intermediate output directory, i.e. the project's &quot;obj&quot; directory." />
     <EnumValue Name="CurrentDirectory" DisplayName="Current directory" Description="Files are generated next to the original file."/>
   </EnumProperty>

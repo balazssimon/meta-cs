@@ -3,6 +3,7 @@ using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,18 +15,44 @@ namespace MetaDslx.CodeAnalysis
     {
         public static readonly Language None = new NoLanguage();
 
-        public abstract string Name { get; }
+        private ServiceCollection _serviceCollection;
+        private ServiceProvider _serviceProvider;
+        private LanguageServices _languageServices;
 
-        public SyntaxFacts SyntaxFacts => this.SyntaxFactsCore;
-        internal protected abstract SyntaxFacts SyntaxFactsCore { get; }
-        public InternalSyntaxFactory InternalSyntaxFactory => this.InternalSyntaxFactoryCore;
-        internal protected abstract InternalSyntaxFactory InternalSyntaxFactoryCore { get; }
-        public SyntaxFactory SyntaxFactory => this.SyntaxFactoryCore;
-        internal protected abstract SyntaxFactory SyntaxFactoryCore { get; }
-        public CompilationFactory CompilationFactory => this.CompilationFactoryCore;
-        internal protected abstract CompilationFactory CompilationFactoryCore { get; }
-        public SymbolFacts SymbolFacts => this.SymbolFactsCore;
-        internal protected abstract SymbolFacts SymbolFactsCore { get; }
+        private SyntaxFacts _syntaxFacts;
+        private SymbolFacts _symbolFacts;
+        private InternalSyntaxFactory _internalSyntaxFactory;
+        private SyntaxFactory _syntaxFactory;
+        private CompilationFactory _compilationFactory;
+
+        public Language()
+        {
+            _serviceCollection = new ServiceCollection();
+            RegisterServices(_serviceCollection);
+            _serviceProvider = _serviceCollection.BuildServiceProvider();
+            _syntaxFacts = _serviceProvider.GetRequiredService<SyntaxFacts>();
+            _symbolFacts = _serviceProvider.GetRequiredService<SymbolFacts>();
+            _internalSyntaxFactory = _serviceProvider.GetRequiredService<InternalSyntaxFactory>();
+            _syntaxFactory = _serviceProvider.GetRequiredService<SyntaxFactory>();
+            _compilationFactory = _serviceProvider.GetRequiredService<CompilationFactory>();
+        }
+
+        public abstract string Name { get; }
+        public ServiceProvider Services => _serviceProvider;
+
+        protected abstract LanguageServices CreateLanguageServices();
+        private void RegisterServices(ServiceCollection services)
+        {
+            _languageServices = CreateLanguageServices();
+            _languageServices.RegisterDefaultServices(services);
+            _languageServices.RegisterServices(services);
+        }
+
+        public SyntaxFacts SyntaxFacts => _syntaxFacts;
+        public InternalSyntaxFactory InternalSyntaxFactory => _internalSyntaxFactory;
+        public SyntaxFactory SyntaxFactory => _syntaxFactory;
+        public CompilationFactory CompilationFactory => _compilationFactory;
+        public SymbolFacts SymbolFacts => _symbolFacts;
 
         public LanguageParseOptions DefaultParseOptions => this.SyntaxFactory.DefaultParseOptions;
         public LanguageCompilationOptions DefaultCompilationOptions => this.CompilationFactory.DefaultCompilationOptions;
@@ -88,24 +115,15 @@ namespace MetaDslx.CodeAnalysis
 
     internal class NoLanguage : Language
     {
-        private SymbolFacts _symbolFacts;
-
         public NoLanguage()
         {
-            _symbolFacts = new SymbolFacts();
         }
 
         public override string Name => string.Empty;
 
-        protected internal override SyntaxFacts SyntaxFactsCore => throw new NotImplementedException();
-
-        protected internal override InternalSyntaxFactory InternalSyntaxFactoryCore => throw new NotImplementedException();
-
-        protected internal override SyntaxFactory SyntaxFactoryCore => throw new NotImplementedException();
-
-        protected internal override CompilationFactory CompilationFactoryCore => throw new NotImplementedException();
-
-        protected internal override SymbolFacts SymbolFactsCore => _symbolFacts;
-
+        protected override LanguageServices CreateLanguageServices()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

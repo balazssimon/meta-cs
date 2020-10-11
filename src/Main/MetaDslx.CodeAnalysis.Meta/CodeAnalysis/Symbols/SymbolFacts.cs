@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Text;
+using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 
 namespace MetaDslx.CodeAnalysis.Symbols
@@ -8,7 +10,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
     using CSharpSymbolKind = Microsoft.CodeAnalysis.SymbolKind;
     using CSharpTypeKind = Microsoft.CodeAnalysis.TypeKind;
 
-    public class SymbolFacts
+    public abstract class SymbolFacts : LanguageService
     {
         public virtual string AttributeNameSuffix => "Attribute";
 
@@ -127,6 +129,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 default:
                     throw new ArgumentException("Unexpected type kind: " + kind.ToString(), nameof(kind));
             }
+        }
+
+        public virtual IEnumerable<IModelObject> GetBuiltInObjects()
+        {
+            return ImmutableArray<IModelObject>.Empty;
         }
     }
 }

@@ -7,6 +7,7 @@ using System.Threading;
 using Microsoft.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Syntax;
 using Roslyn.Utilities;
+using MetaDslx.CodeAnalysis;
 
 namespace MetaDslx.Languages.MetaGenerator.Syntax
 {
@@ -57,6 +58,8 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
             : base(syntaxKindType)
         {
         }
+
+        protected override Language LanguageCore => throw new NotImplementedException();
 
         public override SyntaxKind DefaultWhitespaceKind => (MetaGeneratorTokensSyntaxKind)MetaGeneratorTokensSyntaxKind.LWhitespace;
         public override SyntaxKind DefaultEndOfLineKind => (MetaGeneratorTokensSyntaxKind)MetaGeneratorTokensSyntaxKind.LCrLf;

@@ -1,13 +1,18 @@
-// NOTE: This is an auto-generated file. However, it will not be regenerated. If you want it to be regenerated, just delete it.
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 using System;
 using System.Diagnostics;
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
+using MetaDslx.Languages.Meta;
 using MetaDslx.Languages.Meta.Symbols;
 using MetaDslx.Languages.Meta.Syntax;
 using MetaDslx.Languages.Meta.Syntax.InternalSyntax;
+
+using MetaDslx.Languages.Meta.Model;
 
 namespace MetaDslx.Languages.Meta
 {
@@ -15,37 +20,21 @@ namespace MetaDslx.Languages.Meta
     {
         public static readonly MetaLanguage Instance = new MetaLanguage();
 
-		private MetaSyntaxFacts _syntaxFacts;
-		private MetaSymbolFacts _symbolFacts;
-		private MetaInternalSyntaxFactory _internalSyntaxFactory;
-		private MetaSyntaxFactory _syntaxFactory;
-		private MetaCompilationFactory _compilationFactory;
-
 		private MetaLanguage()
 		{
-			_syntaxFacts = new MetaSyntaxFacts();
-			_internalSyntaxFactory = new MetaInternalSyntaxFactory(_syntaxFacts);
-			_syntaxFactory = new MetaSyntaxFactory(_internalSyntaxFactory);
-			_symbolFacts = new MetaSymbolFacts();
-			_compilationFactory = new MetaCompilationFactory();
 		}
 
         public override string Name => "Meta";
 
-        public new MetaSyntaxFacts SyntaxFacts => _syntaxFacts;
-        protected override SyntaxFacts SyntaxFactsCore => this.SyntaxFacts;
-
-        public new MetaSymbolFacts SymbolFacts => _symbolFacts;
-        protected override SymbolFacts SymbolFactsCore => this.SymbolFacts;
-
-        internal new MetaInternalSyntaxFactory InternalSyntaxFactory => _internalSyntaxFactory;
-        protected override InternalSyntaxFactory InternalSyntaxFactoryCore => this.InternalSyntaxFactory;
-
-        public new MetaSyntaxFactory SyntaxFactory => _syntaxFactory;
-        protected override SyntaxFactory SyntaxFactoryCore => this.SyntaxFactory;
-
-        public new MetaCompilationFactory CompilationFactory => _compilationFactory;
-        protected override CompilationFactory CompilationFactoryCore => this.CompilationFactory;
+        public new MetaSyntaxFacts SyntaxFacts => (MetaSyntaxFacts)base.SyntaxFacts;
+        public new MetaSymbolFacts SymbolFacts => (MetaSymbolFacts)base.SymbolFacts;
+        internal new MetaInternalSyntaxFactory InternalSyntaxFactory => (MetaInternalSyntaxFactory)base.InternalSyntaxFactory;
+        public new MetaSyntaxFactory SyntaxFactory => (MetaSyntaxFactory)base.SyntaxFactory;
+        public new MetaCompilationFactory CompilationFactory => (MetaCompilationFactory)base.CompilationFactory;
+        protected override LanguageServices CreateLanguageServices()
+        {
+            return new MetaLanguageServices();
+        }
     }
 }
 

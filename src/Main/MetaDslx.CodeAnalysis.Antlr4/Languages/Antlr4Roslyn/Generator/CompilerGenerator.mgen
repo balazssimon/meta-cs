@@ -30,37 +30,94 @@ namespace [Properties.DefaultNamespace]
     {
         public static readonly [lang]Language Instance = new [lang]Language();
 ^
-		private [lang]SyntaxFacts _syntaxFacts;
-		private [lang]SymbolFacts _symbolFacts;
-		private [lang]InternalSyntaxFactory _internalSyntaxFactory;
-		private [lang]SyntaxFactory _syntaxFactory;
-		private [lang]CompilationFactory _compilationFactory;
-^
 		private [lang]Language()
 		{
-			_syntaxFacts = new [lang]SyntaxFacts();
-			_internalSyntaxFactory = new [lang]InternalSyntaxFactory(_syntaxFacts);
-			_syntaxFactory = new [lang]SyntaxFactory(_internalSyntaxFactory);
-			_symbolFacts = new [lang]SymbolFacts();
-			_compilationFactory = new [lang]CompilationFactory();
 		}
 ^
         public override string Name => "[lang]";
 ^
-        public new [lang]SyntaxFacts SyntaxFacts => _syntaxFacts;
-        protected override SyntaxFacts SyntaxFactsCore => this.SyntaxFacts;
+        public new [lang]SyntaxFacts SyntaxFacts => ([lang]SyntaxFacts)base.SyntaxFacts;
+        public new [lang]SymbolFacts SymbolFacts => ([lang]SymbolFacts)base.SymbolFacts;
+        internal new [lang]InternalSyntaxFactory InternalSyntaxFactory => ([lang]InternalSyntaxFactory)base.InternalSyntaxFactory;
+        public new [lang]SyntaxFactory SyntaxFactory => ([lang]SyntaxFactory)base.SyntaxFactory;
+        public new [lang]CompilationFactory CompilationFactory => ([lang]CompilationFactory)base.CompilationFactory;
+
+        protected override LanguageServices CreateLanguageServices()
+        {
+            return new [lang]LanguageServices();
+        }
+    }
+}
+end template
+
+template GenerateLanguageServicesBase()
+using System;
+using System.Diagnostics;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Symbols;
+using MetaDslx.CodeAnalysis.Syntax;
+using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
+using [Properties.DefaultNamespace];
+using [Properties.DefaultNamespace].Symbols;
+using [Properties.DefaultNamespace].Syntax;
+using [Properties.DefaultNamespace].Syntax.InternalSyntax;
+using Microsoft.Extensions.DependencyInjection;
 ^
-        public new [lang]SymbolFacts SymbolFacts => _symbolFacts;
-        protected override SymbolFacts SymbolFactsCore => this.SymbolFacts;
+[var lang = Properties.LanguageName]
+namespace [Properties.DefaultNamespace]
+{
+    public class [lang]LanguageServicesBase : LanguageServices
+    {
+        public override SyntaxFacts CreateSyntaxFacts()
+        {
+            return new [lang]SyntaxFacts();
+        }
+
+        public override SymbolFacts CreateSymbolFacts()
+        {
+            return new [lang]SymbolFacts();
+        }
+
+        public override InternalSyntaxFactory CreateInternalSyntaxFactory(SyntaxFacts syntaxFacts)
+        {
+            return new [lang]InternalSyntaxFactory(([lang]SyntaxFacts)syntaxFacts);
+        }
+
+        public override SyntaxFactory CreateSyntaxFactory(InternalSyntaxFactory internalSyntaxFactory)
+        {
+            return new [lang]SyntaxFactory(([lang]InternalSyntaxFactory)internalSyntaxFactory);
+        }
+
+        public override CompilationFactory CreateCompilationFactory()
+        {
+            return new [lang]CompilationFactory();
+        }
+
+        public override void RegisterServices(ServiceCollection services)
+        {
+        }
+    }
+}
+end template
+
+template GenerateLanguageServices()
+using System;
+using System.Diagnostics;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Symbols;
+using MetaDslx.CodeAnalysis.Syntax;
+using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
+using [Properties.DefaultNamespace];
+using [Properties.DefaultNamespace].Symbols;
+using [Properties.DefaultNamespace].Syntax;
+using [Properties.DefaultNamespace].Syntax.InternalSyntax;
+[Instances.ParserHeader]
 ^
-        internal new [lang]InternalSyntaxFactory InternalSyntaxFactory => _internalSyntaxFactory;
-        protected override InternalSyntaxFactory InternalSyntaxFactoryCore => this.InternalSyntaxFactory;
-^
-        public new [lang]SyntaxFactory SyntaxFactory => _syntaxFactory;
-        protected override SyntaxFactory SyntaxFactoryCore => this.SyntaxFactory;
-^
-        public new [lang]CompilationFactory CompilationFactory => _compilationFactory;
-        protected override CompilationFactory CompilationFactoryCore => this.CompilationFactory;
+[var lang = Properties.LanguageName]
+namespace [Properties.DefaultNamespace]
+{
+    public class [lang]LanguageServices : [lang]LanguageServicesBase
+    {
     }
 }
 end template
@@ -755,6 +812,9 @@ namespace [Properties.DefaultNamespace]
         {
         }
 ^
+        public new [lang]Language Language => [lang]Language.Instance;
+        protected override Language LanguageCore => this.Language;
+^
         /// <summary>
         /// Default compilation options for the [lang] language
         /// </summary>
@@ -1044,7 +1104,7 @@ using Microsoft.CodeAnalysis;
 [var lang = Properties.LanguageName]
 namespace [Properties.DefaultNamespace]
 {
-    public class [lang]ErrorCode : ErrorCode
+    public partial class [lang]ErrorCode : ErrorCode
     {
         public new const string Category = "[Instances.ErrorCodeCategory]";
         public new const string MessagePrefix = "[Instances.MessagePrefix]";
@@ -2741,7 +2801,8 @@ internal class [lang]InternalSyntaxFactory : InternalSyntaxFactory, MetaDslx.Lan
 		return new [lang]SyntaxParser(text, ([lang]ParseOptions)options ?? [lang]ParseOptions.Default, ([lang]SyntaxNode)oldTree, changes, cancellationToken);
 	}
 ^
-    public override Language Language => [lang]Language.Instance;
+    public new [lang]Language Language => [lang]Language.Instance;
+    protected override Language LanguageCore => this.Language;
 ^
 	private [lang]SyntaxKind To[lang]SyntaxKind(SyntaxKind kind)
     {
@@ -3433,7 +3494,7 @@ template GenerateTokenSyntaxFacts()
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Syntax;
 using Roslyn.Utilities;
 ^
@@ -3469,6 +3530,9 @@ namespace [Properties.DefaultNamespace].Syntax
             : base(syntaxKindType)
         {
         }
+^
+        public new [lang]Language Language => [lang]Language.Instance;
+        protected override Language LanguageCore => this.Language;
 ^
         public override SyntaxKind DefaultWhitespaceKind => ([syntaxKind])[syntaxKind].[Instances.DefaultWhitespaceKind.PlainName()];
         public override SyntaxKind DefaultEndOfLineKind => ([syntaxKind])[syntaxKind].[Instances.DefaultEndOfLineKind.PlainName()];
@@ -3943,9 +4007,8 @@ public class [Properties.LanguageName]SyntaxFactory : SyntaxFactory
 	{
 	}
 	
-	public new [lang]Language Language => [lang]Language.Instance;
-	
-	protected override Language LanguageCore => this.Language;
+    public new [lang]Language Language => [lang]Language.Instance;
+    protected override Language LanguageCore => this.Language;
 
     public override LanguageParseOptions DefaultParseOptions => [lang]ParseOptions.Default;
 	
@@ -5935,6 +5998,7 @@ template GenerateSymbolFacts()
 using System;
 using System.Collections.Generic;
 using System.Text;
+using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Symbols;
 using [Properties.DefaultNamespace];
 using [Properties.DefaultNamespace].Syntax.InternalSyntax;
@@ -5945,6 +6009,8 @@ namespace [Properties.DefaultNamespace].Symbols
 {
     public class [lang]SymbolFacts : SymbolFacts
     {
+        public new [lang]Language Language => [lang]Language.Instance;
+        protected override Language LanguageCore => this.Language;
     }
 }
 end template

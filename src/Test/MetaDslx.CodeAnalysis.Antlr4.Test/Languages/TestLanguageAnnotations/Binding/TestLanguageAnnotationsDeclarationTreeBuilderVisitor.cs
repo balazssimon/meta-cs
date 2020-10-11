@@ -41,7 +41,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Bin
 			{
 				foreach (var child in node.Test)
 				{
-					this.Visit(child);
+			        this.Visit(child);
 				}
 			}
 		}
@@ -92,7 +92,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Bin
 					{
 						foreach (var child in node.Declaration01)
 						{
-							this.Visit(child);
+					        this.Visit(child);
 						}
 					}
 				}
@@ -200,7 +200,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Bin
 				{
 					foreach (var child in node.Declaration02)
 					{
-						this.Visit(child);
+				        this.Visit(child);
 					}
 				}
 			}
@@ -329,7 +329,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Bin
 				{
 					foreach (var child in node.Declaration03)
 					{
-						this.Visit(child);
+				        this.Visit(child);
 					}
 				}
 			}
@@ -458,7 +458,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Bin
 				{
 					foreach (var child in node.Declaration04)
 					{
-						this.Visit(child);
+				        this.Visit(child);
 					}
 				}
 			}
@@ -582,7 +582,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Bin
 			{
 				foreach (var child in node.Declaration05)
 				{
-					this.Visit(child);
+			        this.Visit(child);
 				}
 			}
 		}
@@ -683,7 +683,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Bin
 					{
 						foreach (var child in node.Declaration06)
 						{
-							this.Visit(child);
+					        this.Visit(child);
 						}
 					}
 				}
@@ -807,7 +807,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Bin
 				{
 					foreach (var child in node.Declaration07)
 					{
-						this.Visit(child);
+				        this.Visit(child);
 					}
 				}
 			}
@@ -952,7 +952,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Bin
 				{
 					foreach (var child in node.Declaration08)
 					{
-						this.Visit(child);
+				        this.Visit(child);
 					}
 				}
 			}
@@ -1097,7 +1097,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Bin
 				{
 					foreach (var child in node.Declaration09)
 					{
-						this.Visit(child);
+				        this.Visit(child);
 					}
 				}
 			}
@@ -1237,7 +1237,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Bin
 			{
 				foreach (var child in node.Declaration10)
 				{
-					this.Visit(child);
+			        this.Visit(child);
 				}
 			}
 		}
@@ -1329,7 +1329,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Bin
 			{
 				foreach (var child in node.NamespaceDeclaration11)
 				{
-					this.Visit(child);
+			        this.Visit(child);
 				}
 			}
 		}
@@ -1360,7 +1360,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Bin
 					{
 						foreach (var child in node.Declaration11)
 						{
-							this.Visit(child);
+					        this.Visit(child);
 						}
 					}
 				}
@@ -1475,7 +1475,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Bin
 				{
 					foreach (var child in node.Identifier)
 					{
-						this.Visit(child);
+				        this.Visit(child);
 					}
 				}
 			}

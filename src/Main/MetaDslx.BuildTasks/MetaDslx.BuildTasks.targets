@@ -165,8 +165,9 @@
     </ItemGroup>
 
     <MetaGeneratorGenerationTask
-      OutputPath="%(MetaGenerator.OutputDirectory)"
-      OutputLocation="%(MetaGenerator.OutputLocation)"
+      ManualOutputPath="%(MetaGenerator.ManualOutputDirectory)"
+      AutomaticOutputPath="%(MetaGenerator.AutomaticOutputDirectory)"
+      AutomaticOutputLocation="%(MetaGenerator.AutomaticOutputLocation)"
       IntermediateOutputPath="$(IntermediateOutputPath)"
       Encoding="%(MetaGenerator.Encoding)"
       SourceCodeFiles="@(MetaGenerator -> '%(FullPath)')"
@@ -198,8 +199,9 @@
     </ItemGroup>
 
     <MetaModelGenerationTask
-      OutputPath="%(MetaModel.OutputDirectory)"
-      OutputLocation="%(MetaModel.OutputLocation)"
+      ManualOutputPath="%(MetaModel.ManualOutputDirectory)"
+      AutomaticOutputPath="%(MetaModel.AutomaticOutputDirectory)"
+      AutomaticOutputLocation="%(MetaModel.AutomaticOutputLocation)"
       IntermediateOutputPath="$(IntermediateOutputPath)"
       Encoding="%(MetaModel.Encoding)"
       SourceCodeFiles="@(MetaModel -> '%(FullPath)')"
@@ -238,8 +240,9 @@
       JavaInstallation="$(Antlr4JavaInstallation)"
       JavaExecutable="$(Antlr4JavaExecutable)"
       BuildTaskPath="$(MetaDslxBuildTaskLocation)"
-      OutputPath="%(Antlr4Roslyn.OutputDirectory)"
-      OutputLocation="%(Antlr4Roslyn.OutputLocation)"
+      ManualOutputPath="%(Antlr4Roslyn.ManualOutputDirectory)"
+      AutomaticOutputPath="%(Antlr4Roslyn.AutomaticOutputDirectory)"
+      AutomaticOutputLocation="%(Antlr4Roslyn.AutomaticOutputLocation)"
       IntermediateOutputPath="$(IntermediateOutputPath)"
       Encoding="%(Antlr4Roslyn.Encoding)"
       TargetLanguage="%(Antlr4Roslyn.TargetLanguage)"

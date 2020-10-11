@@ -13,7 +13,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
     using System.Threading;
     using Internal = Microsoft.CodeAnalysis.Syntax.InternalSyntax;
 
-    public abstract class InternalSyntaxFactory
+    public abstract class InternalSyntaxFactory : LanguageService
     {
         internal readonly ObjectPool<CachingIdentityFactory<string, SyntaxKind>> KeywordKindPool;
 
@@ -79,8 +79,6 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         {
             return (SyntaxKind)kind.CastUnsafe(_syntaxKind);
         }
-
-        public abstract Language Language { get; }
 
         public virtual InternalSyntaxToken DefaultSeparator
         {

@@ -20,7 +20,7 @@ namespace MetaDslx.CodeAnalysis.Syntax
     /// <summary>
     /// A class containing factory methods for constructing syntax nodes, tokens and trivia.
     /// </summary>
-    public abstract class SyntaxFactory
+    public abstract class SyntaxFactory : LanguageService
     {
         private SyntaxToken _endOfFile;
         private SyntaxToken _defaultSeparator;
@@ -42,8 +42,6 @@ namespace MetaDslx.CodeAnalysis.Syntax
             ElasticMarker = internalSyntaxFactory.ElasticZeroSpace;
         }
 
-        public Language Language => this.LanguageCore;
-        protected abstract Language LanguageCore { get; }
         public abstract LanguageParseOptions DefaultParseOptions { get; }
         public SyntaxToken EndOfFile
         {
