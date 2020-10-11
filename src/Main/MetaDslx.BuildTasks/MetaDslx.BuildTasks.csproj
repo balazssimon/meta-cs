@@ -2,10 +2,9 @@
   <Import Project="..\..\Versions.props" />
 
   <PropertyGroup>
-    <OutputType>Library</OutputType>
     <RootNamespace>MetaDslx.BuildTasks</RootNamespace>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
-    <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <NoStdLib>true</NoStdLib>
     <ApplyNgenOptimization>partial</ApplyNgenOptimization>
     <LangVersion>preview</LangVersion>
@@ -30,18 +29,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-*" PrivateAssets="All"/>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-*" PrivateAssets="All" />
     <PackageReference Include="Microsoft.Build.Framework" Version="$(MicrosoftBuildVersion)" PrivateAssets="All" />
     <PackageReference Include="Microsoft.Build.Utilities.Core" Version="$(MicrosoftBuildVersion)" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="$(MicrosoftBclAsyncInterfacesVersion)" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="$(MicrosoftDependencyInjectionVersion)" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="$(MicrosoftDependencyInjectionVersion)" PrivateAssets="All" />
-    <PackageReference Include="System.Collections.Immutable" Version="$(SystemCollectionsImmutableVersion)" PrivateAssets="All" />
-    <PackageReference Include="System.Memory" Version="$(SystemMemoryVersion)" PrivateAssets="All" />
-    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="$(SystemRuntimeCompilerServicesUnsafeVersion)" PrivateAssets="All" />
-    <PackageReference Include="System.Reflection.Metadata" Version="$(SystemReflectionMetadataVersion)" PrivateAssets="All" />
-    <PackageReference Include="System.Threading.Tasks.Extensions" Version="$(SystemThreadingTasksExtensionsVersion)" PrivateAssets="All" />
-    <PackageReference Include="System.Text.Encoding.CodePages" Version="$(SystemTextEncodingCodePagesVersion)" PrivateAssets="All" />
     <PackageReference Include="Antlr4.Runtime" Version="$(Antlr4Version)" PrivateAssets="All" />
     <PackageReference Include="Antlr4.CodeGenerator" Version="$(Antlr4Version)" PrivateAssets="All" />
   </ItemGroup>
@@ -50,14 +40,6 @@
     <Reference Include="$(NuGetPackageRoot)\antlr4.codegenerator\$(Antlr4Version)\tools\netstandard2.0\Antlr4.dll" Condition="Exists('$(NuGetPackageRoot)\antlr4.codegenerator\$(Antlr4Version)\tools\netstandard2.0\Antlr4.dll')" PrivateAssets="All" />
     <Reference Include="$(NuGetPackageRoot)\antlr4.runtime\$(Antlr4Version)\lib\netstandard1.1\Antlr4.Runtime.dll" Condition="!Exists('$(NuGetPackageRoot)\antlr4.runtime\$(Antlr4Version)\lib\netstandard2.0\Antlr4.Runtime.dll')" PrivateAssets="All" />
     <Reference Include="$(NuGetPackageRoot)\antlr4.runtime\$(Antlr4Version)\lib\netstandard2.0\Antlr4.Runtime.dll" Condition="Exists('$(NuGetPackageRoot)\antlr4.runtime\$(Antlr4Version)\lib\netstandard2.0\Antlr4.Runtime.dll')" PrivateAssets="All" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\MetaDslx.CodeAnalysis.Common\MetaDslx.CodeAnalysis.Common.csproj" PrivateAssets="all" />
-    <ProjectReference Include="..\MetaDslx.CodeAnalysis.CSharp\MetaDslx.CodeAnalysis.CSharp.csproj" PrivateAssets="all" />
-    <ProjectReference Include="..\MetaDslx.CodeAnalysis.Meta\MetaDslx.CodeAnalysis.Meta.csproj" PrivateAssets="all" />
-    <ProjectReference Include="..\MetaDslx.CodeAnalysis.Antlr4\MetaDslx.CodeAnalysis.Antlr4.csproj" PrivateAssets="all" />
-    <ProjectReference Include="..\MetaDslx.Languages.Meta\MetaDslx.Languages.Meta.csproj"  PrivateAssets="all" />
   </ItemGroup>
 
   <ItemGroup>
@@ -75,31 +57,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="$(OutputPath)\netstandard2.0\MetaDslx.BuildTasks.dll" PrivateAssets="all" Pack="true" PackagePath="tools\netstandard2.0" />
-    <None Include="$(OutputPath)\netstandard2.0\MetaDslx.CodeAnalysis.Common.dll" Pack="true" PackagePath="tools\netstandard2.0" />
-    <None Include="$(OutputPath)\netstandard2.0\MetaDslx.CodeAnalysis.CSharp.dll" Pack="true" PackagePath="tools\netstandard2.0" />
-    <None Include="$(OutputPath)\netstandard2.0\MetaDslx.CodeAnalysis.Meta.dll" Pack="true" PackagePath="tools\netstandard2.0" />
-    <None Include="$(OutputPath)\netstandard2.0\MetaDslx.CodeAnalysis.Antlr4.dll" Pack="true" PackagePath="tools\netstandard2.0" />
-    <None Include="$(OutputPath)\netstandard2.0\MetaDslx.Languages.Meta.dll" Pack="true" PackagePath="tools\netstandard2.0" />
+    <None Include="..\MetaDslx.BuildTools\bin\$(Configuration)\netcoreapp2.0\**\*.*" Pack="true" PackagePath="tools\netstandard2.0" />
     <None Include="$(NuGetPackageRoot)\antlr4.codegenerator\$(Antlr4Version)\tools\netstandard\**\*.*" Condition="Exists('$(NuGetPackageRoot)\antlr4.codegenerator\$(Antlr4Version)\tools\netstandard')" Pack="true" PackagePath="tools\netstandard2.0" />
-    <None Include="$(NuGetPackageRoot)\system.reflection.metadata\$(SystemReflectionMetadataVersion)\lib\netstandard2.0\System.Reflection.Metadata.dll" Pack="true" PackagePath="tools\netstandard2.0" />
-    <None Include="$(NuGetPackageRoot)\system.threading.tasks.extensions\$(SystemThreadingTasksExtensionsVersion)\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll" Pack="true" PackagePath="tools\netstandard2.0" />
-    <None Include="$(NuGetPackageRoot)\microsoft.bcl.asyncinterfaces\$(MicrosoftBclAsyncInterfacesVersion)\lib\netstandard2.0\Microsoft.Bcl.AsyncInterfaces.dll" Pack="true" PackagePath="tools\netstandard2.0" />
-    <None Include="$(NuGetPackageRoot)\microsoft.extensions.dependencyinjection\$(MicrosoftDependencyInjectionVersion)\lib\netcoreapp3.1\Microsoft.Extensions.DependencyInjection.dll" Pack="true" PackagePath="tools\netstandard2.0" />
-    <None Include="$(NuGetPackageRoot)\microsoft.extensions.dependencyinjection.abstractions\$(MicrosoftDependencyInjectionVersion)\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll" Pack="true" PackagePath="tools\netstandard2.0" />
 
-    <None Include="$(OutputPath)\net461\MetaDslx.BuildTasks.dll" PrivateAssets="all" Pack="true" PackagePath="tools\net461" />
-    <None Include="$(OutputPath)\net461\MetaDslx.CodeAnalysis.Common.dll" Pack="true" PackagePath="tools\net461" />
-    <None Include="$(OutputPath)\net461\MetaDslx.CodeAnalysis.CSharp.dll" Pack="true" PackagePath="tools\net461" />
-    <None Include="$(OutputPath)\net461\MetaDslx.CodeAnalysis.Meta.dll" Pack="true" PackagePath="tools\net461" />
-    <None Include="$(OutputPath)\net461\MetaDslx.CodeAnalysis.Antlr4.dll" Pack="true" PackagePath="tools\net461" />
-    <None Include="$(OutputPath)\net461\MetaDslx.Languages.Meta.dll" Pack="true" PackagePath="tools\net461" />
-    <None Include="$(NuGetPackageRoot)\antlr4.codegenerator\$(Antlr4Version)\tools\net45\**\*.*" Pack="true" PackagePath="tools\net461" />
-    <None Include="$(NuGetPackageRoot)\system.reflection.metadata\$(SystemReflectionMetadataVersion)\lib\netstandard2.0\System.Reflection.Metadata.dll" Pack="true" PackagePath="tools\net461" />
-    <None Include="$(NuGetPackageRoot)\system.threading.tasks.extensions\$(SystemThreadingTasksExtensionsVersion)\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll" Pack="true" PackagePath="tools\net461" />
-    <None Include="$(NuGetPackageRoot)\microsoft.bcl.asyncinterfaces\$(MicrosoftBclAsyncInterfacesVersion)\lib\netstandard2.0\Microsoft.Bcl.AsyncInterfaces.dll" Pack="true" PackagePath="tools\net461" />
-    <None Include="$(NuGetPackageRoot)\microsoft.extensions.dependencyinjection\$(MicrosoftDependencyInjectionVersion)\lib\netcoreapp3.1\Microsoft.Extensions.DependencyInjection.dll" Pack="true" PackagePath="tools\net461" />
-    <None Include="$(NuGetPackageRoot)\microsoft.extensions.dependencyinjection.abstractions\$(MicrosoftDependencyInjectionVersion)\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll" Pack="true" PackagePath="tools\net461" />
+    <None Include="..\MetaDslx.BuildTools\bin\$(Configuration)\netcoreapp2.0\**\*.*" Pack="true" PackagePath="tools\net461" />
+    <None Include="$(NuGetPackageRoot)\antlr4.codegenerator\$(Antlr4Version)\tools\netstandard\**\*.*" Condition="Exists('$(NuGetPackageRoot)\antlr4.codegenerator\$(Antlr4Version)\tools\netstandard')" Pack="true" PackagePath="tools\net461" />
   </ItemGroup>
 
   <ItemGroup>

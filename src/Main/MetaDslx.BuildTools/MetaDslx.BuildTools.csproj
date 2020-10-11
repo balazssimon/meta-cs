@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\..\Versions.props" />
+
+  <PropertyGroup>
+    <RootNamespace>MetaDslx.BuildTools</RootNamespace>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <NoStdLib>true</NoStdLib>
+    <ApplyNgenOptimization>partial</ApplyNgenOptimization>
+    <LangVersion>preview</LangVersion>
+
+    <!-- NuGet -->
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Antlr4.Runtime" Version="$(Antlr4Version)" PrivateAssets="All" />
+    <PackageReference Include="Antlr4.CodeGenerator" Version="$(Antlr4Version)" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MetaDslx.CodeAnalysis.Common\MetaDslx.CodeAnalysis.Common.csproj" />
+    <ProjectReference Include="..\MetaDslx.CodeAnalysis.CSharp\MetaDslx.CodeAnalysis.CSharp.csproj" />
+    <ProjectReference Include="..\MetaDslx.CodeAnalysis.Meta\MetaDslx.CodeAnalysis.Meta.csproj" />
+    <ProjectReference Include="..\MetaDslx.CodeAnalysis.Antlr4\MetaDslx.CodeAnalysis.Antlr4.csproj" />
+    <ProjectReference Include="..\MetaDslx.Languages.Meta\MetaDslx.Languages.Meta.csproj" />
+  </ItemGroup>
+
+</Project>

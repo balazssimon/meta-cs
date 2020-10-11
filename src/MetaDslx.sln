@@ -14,6 +14,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.CodeAnalysis.Antlr4", "Main\MetaDslx.CodeAnalysis.Antlr4\MetaDslx.CodeAnalysis.Antlr4.csproj", "{2C630C7B-B5C1-4587-9382-D83B10A093EA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.BuildTasks", "Main\MetaDslx.BuildTasks\MetaDslx.BuildTasks.csproj", "{93A7C322-B45E-4D2F-8FCE-8D8CD8B4AD32}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BD01C76B-61B2-4E78-B57C-0D5258B8BC37} = {BD01C76B-61B2-4E78-B57C-0D5258B8BC37}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.CodeAnalysis", "Main\MetaDslx.CodeAnalysis\MetaDslx.CodeAnalysis.csproj", "{679E9677-911B-44B9-8BD1-AF2A907D1E7F}"
 EndProject
@@ -47,7 +50,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphVizExample", "Examples
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfDiagramDesigner", "Experiments\WpfDiagramDesigner\WpfDiagramDesigner.csproj", "{D4374883-0B86-4CC1-AB62-DBB90FD0470D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr4Intellisense", "Experiments\Antlr4Intellisense\Antlr4Intellisense.csproj", "{9273912C-6FBB-4545-8CEF-17B186F97FD5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antlr4Intellisense", "Experiments\Antlr4Intellisense\Antlr4Intellisense.csproj", "{9273912C-6FBB-4545-8CEF-17B186F97FD5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.BuildTools", "Main\MetaDslx.BuildTools\MetaDslx.BuildTools.csproj", "{BD01C76B-61B2-4E78-B57C-0D5258B8BC37}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -147,6 +152,10 @@ Global
 		{9273912C-6FBB-4545-8CEF-17B186F97FD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9273912C-6FBB-4545-8CEF-17B186F97FD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9273912C-6FBB-4545-8CEF-17B186F97FD5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD01C76B-61B2-4E78-B57C-0D5258B8BC37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD01C76B-61B2-4E78-B57C-0D5258B8BC37}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD01C76B-61B2-4E78-B57C-0D5258B8BC37}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD01C76B-61B2-4E78-B57C-0D5258B8BC37}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,27 +1,27 @@
-﻿using MetaDslx.CodeAnalysis;
-using MetaDslx.Languages.Antlr4Roslyn.Compilation;
-using MetaDslx.Languages.Meta;
-using Microsoft.Build.Framework;
-using Microsoft.Build.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿//using MetaDslx.CodeAnalysis;
+//using MetaDslx.Languages.Antlr4Roslyn.Compilation;
+//using MetaDslx.Languages.Meta;
+//using Microsoft.Build.Framework;
+//using Microsoft.Build.Utilities;
+//using System;
+//using System.Collections.Generic;
+//using System.Text;
 
-namespace MetaDslx.BuildTasks
-{
-    public class MetaModelGenerationTask : Antlr4CompilerTask
-    {
-        public bool CompileMetaModelCore { get; set; }
-        public string MetaModelCoreNamespace { get; set; }
+//namespace MetaDslx.BuildTasks
+//{
+//    public class MetaModelGenerationTask : Antlr4CompilerTask
+//    {
+//        public bool CompileMetaModelCore { get; set; }
+//        public string MetaModelCoreNamespace { get; set; }
 
-        public MetaModelGenerationTask()
-            : base("MetaModel")
-        {
-        }
+//        public MetaModelGenerationTask()
+//            : base("MetaModel")
+//        {
+//        }
 
-        protected override ICompilerForBuildTask CreateCompiler(string filePath, string outputPath, string hiddenOutputPath)
-        {
-            return new MetaCompilerForBuildTask(filePath, outputPath, this.CompileMetaModelCore, this.MetaModelCoreNamespace);
-        }
-    }
-}
+//        protected override ICompilerForBuildTask CreateCompiler(string filePath, string outputPath, string hiddenOutputPath)
+//        {
+//            return new MetaCompilerForBuildTask(filePath, outputPath, this.CompileMetaModelCore, this.MetaModelCoreNamespace);
+//        }
+//    }
+//}
