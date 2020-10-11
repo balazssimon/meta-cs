@@ -23,7 +23,6 @@
     <ProjectReference Include="..\..\Main\MetaDslx.CodeAnalysis.Meta\MetaDslx.CodeAnalysis.Meta.csproj" />
     <ProjectReference Include="..\..\Main\MetaDslx.Languages.Meta\MetaDslx.Languages.Meta.csproj" />
     <ProjectReference Include="..\MetaDslx.Tests\MetaDslx.Tests.csproj" />
-    <ProjectReference Include="..\..\Test\MetaDslx.CodeAnalysis.Antlr4.Test\MetaDslx.CodeAnalysis.Antlr4.Test.csproj" />
     <!--ProjectReference Include="..\..\Languages\MetaDslx.Languages.Mof\MetaDslx.Languages.Mof.csproj" />
     <ProjectReference Include="..\..\Languages\MetaDslx.Languages.Uml\MetaDslx.Languages.Uml.csproj" />
     <ProjectReference Include="..\..\Languages\MetaDslx.Languages.Ecore\MetaDslx.Languages.Ecore.csproj" /-->

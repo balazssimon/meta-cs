@@ -9,24 +9,24 @@ using System.Text;
 
 namespace MetaDslx.Bootstrap
 {
-    public class MetaCompiler : Antlr4RoslynTestBase
-    {
-        public override Language Language => MetaLanguage.Instance;
+    //public class MetaCompiler : Antlr4RoslynTestBase
+    //{
+    //    public override Language Language => MetaLanguage.Instance;
 
-        public override Lexer CreateAntlr4Lexer(ICharStream stream)
-        {
-            return new MetaLexer(stream);
-        }
+    //    public override Lexer CreateAntlr4Lexer(ICharStream stream)
+    //    {
+    //        return new MetaLexer(stream);
+    //    }
 
-        public override Parser CreateAntlr4Parser(ITokenStream stream)
-        {
-            return new MetaParser(stream);
-        }
+    //    public override Parser CreateAntlr4Parser(ITokenStream stream)
+    //    {
+    //        return new MetaParser(stream);
+    //    }
 
-        public override ParserRuleContext Antlr4MainRule(Parser parser)
-        {
-            return ((MetaParser)parser).main();
-        }
+    //    public override ParserRuleContext Antlr4MainRule(Parser parser)
+    //    {
+    //        return ((MetaParser)parser).main();
+    //    }
 
-    }
+    //}
 }

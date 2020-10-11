@@ -5,7 +5,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>MetaDslx</RootNamespace>
     <IsPackable>false</IsPackable>
-    <MetaDslxDisableMetaGeneratorGenerator>false</MetaDslxDisableMetaGeneratorGenerator>
+    <MetaDslxDisableMetaGeneratorGenerator>true</MetaDslxDisableMetaGeneratorGenerator>
     <MetaDslxDisableAntlr4RoslynGenerator>true</MetaDslxDisableAntlr4RoslynGenerator>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
@@ -24,25 +24,25 @@
 
   <ItemGroup>
     <Antlr4Roslyn Update="Languages\Antlr4Roslyn\Syntax\Antlr4RoslynLexer.ag4">
-      <OutputLocation>CurrentDirectory</OutputLocation>
+      <AutomaticOutputLocation>CurrentDirectory</AutomaticOutputLocation>
     </Antlr4Roslyn>
     <Antlr4Roslyn Update="Languages\Antlr4Roslyn\Syntax\Antlr4RoslynParser.ag4">
-      <OutputLocation>CurrentDirectory</OutputLocation>
+      <AutomaticOutputLocation>CurrentDirectory</AutomaticOutputLocation>
     </Antlr4Roslyn>
     <Antlr4Roslyn Update="Languages\Antlr4Roslyn\Syntax\LexBasic.ag4">
-      <OutputLocation>CurrentDirectory</OutputLocation>
+      <AutomaticOutputLocation>CurrentDirectory</AutomaticOutputLocation>
     </Antlr4Roslyn>
     <Antlr4Roslyn Update="Languages\MetaGenerator\Syntax\MetaGeneratorLexer.ag4">
-      <OutputLocation>CurrentDirectory</OutputLocation>
+      <AutomaticOutputLocation>CurrentDirectory</AutomaticOutputLocation>
     </Antlr4Roslyn>
     <Antlr4Roslyn Update="Languages\MetaGenerator\Syntax\MetaGeneratorParser.ag4">
-      <OutputLocation>CurrentDirectory</OutputLocation>
+      <AutomaticOutputLocation>CurrentDirectory</AutomaticOutputLocation>
     </Antlr4Roslyn>
   </ItemGroup>
 
   <ItemGroup>
     <MetaGenerator Update="Languages\Antlr4Roslyn\Generator\CompilerGenerator.mgen">
-      <OutputLocation>CurrentDirectory</OutputLocation>
+      <AutomaticOutputLocation>CurrentDirectory</AutomaticOutputLocation>
     </MetaGenerator>
   </ItemGroup>
 

@@ -9,10 +9,10 @@
   -->
   <PropertyGroup>
 	<OfficialBuild>true</OfficialBuild>
-    <VersionPrefix>0.10.351</VersionPrefix>
+    <VersionPrefix>0.10.355</VersionPrefix>
 	<MetaDslxLanguagesPackageVersion>0.2.40</MetaDslxLanguagesPackageVersion>
     <VersionSuffix Condition="'$(OfficialBuild)' != 'true' and '$(DotNetUseShippingVersions)' != 'true'">alpha1</VersionSuffix>
-    <BootstrapVersion>0.10.350</BootstrapVersion>
+    <BootstrapVersion>0.10.344</BootstrapVersion>
     <SemanticVersioningV1>true</SemanticVersioningV1>
     <!-- 
       By default the assembly version in official builds is "$(VersionPrefix).0".
@@ -44,6 +44,7 @@
 	<Antlr4BuildTasksVersion>1.0.4</Antlr4BuildTasksVersion>
 	<MicrosoftBuildVersion>16.0.461</MicrosoftBuildVersion>
 	<MicrosoftDependencyInjectionVersion>3.1.8</MicrosoftDependencyInjectionVersion>
+	<MicrosoftBclAsyncInterfacesVersion>1.1.1</MicrosoftBclAsyncInterfacesVersion>
 	<MicrosoftNetDskTestVersion>16.6.1</MicrosoftNetDskTestVersion>
 	<XUnitVersion>2.4.1</XUnitVersion>
   </PropertyGroup>

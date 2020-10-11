@@ -35,6 +35,7 @@
   <ItemGroup>
     <MetaModel Update="Languages\Meta\Model\ImmutableMetaModel.mm">
       <OutputLocation>CurrentDirectory</OutputLocation>
+      <AutomaticOutputLocation>CurrentDirectory</AutomaticOutputLocation>
     </MetaModel>
   </ItemGroup>
 

@@ -78,11 +78,11 @@ namespace MetaDslx.Bootstrap
             Console.WriteLine(test.SayHello("me"));
             //*/
 
-            /*/
+            //*/
             ImmutableModel coreModel = MetaInstance.MModel;
             Console.WriteLine(coreModel);
 
-            //string text = File.ReadAllText(@"..\..\..\..\..\Main\MetaDslx.CodeAnalysis.Meta\Languages\Meta\Model\ImmutableMetaModel.mm");
+            string text = File.ReadAllText(@"..\..\..\..\..\Main\MetaDslx.CodeAnalysis.Meta\Languages\Meta\Model\ImmutableMetaModel.mm");
             //string text = File.ReadAllText(@"..\..\..\Calculator.mm");
             //string text = File.ReadAllText(@"..\..\..\..\..\..\..\soal-cs\Src\Main\MetaDslx.Languages.Soal\Symbols\Soal.mm");
             //string text = File.ReadAllText(@"..\..\..\..\..\Test\WebSequenceDiagramsModel\Symbols\UmlModel.mm");
@@ -95,7 +95,7 @@ namespace MetaDslx.Bootstrap
             //string text = File.ReadAllText(@"..\..\..\Error2.mm");
             //string text = File.ReadAllText(@"..\..\..\Error3.mm");
             //string text = File.ReadAllText(@"..\..\..\Error4.mm");
-            string text = File.ReadAllText(@"..\..\..\Error5.mm");
+            //string text = File.ReadAllText(@"..\..\..\Error5.mm");
 
             //string text = @"namespace A { metamodel M; class B { s";
 
@@ -305,7 +305,7 @@ namespace MetaDslx.Bootstrap
                 }
             }
             //*/
-
+            /*/
             try
             {
                 CallLogger.Enabled = true;
