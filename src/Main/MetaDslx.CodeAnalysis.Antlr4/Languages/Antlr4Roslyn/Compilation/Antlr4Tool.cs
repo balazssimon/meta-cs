@@ -30,10 +30,9 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         public Antlr4Tool()
         {
             this.TimeoutInSeconds = 30;
-            this.UseCSharpGenerator = true;
             this.Encoding = "UTF-8";
             this.TargetLanguage = "CSharp";
-            this.LanguageSourceExtensions = new string[] { ".cs", ".tokens" };
+            this.LanguageSourceExtensions = new string[] { ".cs", ".tokens", ".interp" };
             this.Diagnostics = ImmutableArray<Antlr4Message>.Empty;
         }
 
@@ -46,6 +45,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         }
 
         public int TimeoutInSeconds { get; set; }
+        public string JavaExe { get; set; }
         public string ToolPath { get; set; }
         public string TargetLanguage { get; set; }
         public string TargetFrameworkVersion { get; set; }
@@ -60,7 +60,6 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         public string JavaVendor { get; set; }
         public string JavaInstallation { get; set; }
         public string JavaExecutable { get; set; }
-        public bool UseCSharpGenerator { get; set; }
 
         public IList<string> SourceCodeFiles
         {

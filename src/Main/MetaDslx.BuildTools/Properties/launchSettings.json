@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "MetaDslx.BuildTools": {
+      "commandName": "Project",
+      "commandLineArgs": "ag4 --input ..\\..\\..\\Syntax\\InternalSyntax\\MetaLexer.ag4 --tool-path ..\\..\\..\\tools\\antlr-4.8-complete.jar"
+    }
+  }
+}

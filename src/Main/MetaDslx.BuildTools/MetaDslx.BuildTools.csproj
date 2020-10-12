@@ -1,21 +1,40 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <Import Project="..\..\Versions.props" />
 
   <PropertyGroup>
+    <OutputType>Exe</OutputType>
     <RootNamespace>MetaDslx.BuildTools</RootNamespace>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
-    <NoStdLib>true</NoStdLib>
-    <ApplyNgenOptimization>partial</ApplyNgenOptimization>
-    <LangVersion>preview</LangVersion>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>metadslx</ToolCommandName>
 
     <!-- NuGet -->
-    <IsPackable>false</IsPackable>
+    <IsPackable>true</IsPackable>
+    <Authors>Balazs Simon</Authors>
+    <PackageId>MetaDslx.BuildTools</PackageId>
+    <PackageDescription>
+      .NET core tooling for the MetaDslx metamodeling platform.
+    </PackageDescription>
+    <PackageLicenseFile>license.txt</PackageLicenseFile>
+    <PackageOutputPath>..\..\..\..\..\nuget\</PackageOutputPath>
+    <RepositoryUrl>https://github.com/balazssimon/meta-cs.git</RepositoryUrl>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <!-- Optional: Declare that the Repository URL can be published to NuSpec -->
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <!-- Optional: Embed source files that are not tracked by the source control manager to the PDB -->
+    <!-- This is useful if you generate files during the build -->
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Antlr4.Runtime" Version="$(Antlr4Version)" PrivateAssets="All" />
-    <PackageReference Include="Antlr4.CodeGenerator" Version="$(Antlr4Version)" PrivateAssets="All" />
+    <None Include="license.txt" Pack="true" PackagePath="" />
+    <None Include="tools\antlr-4.8-complete.jar" Pack="true" PackagePath="tools" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="System.CommandLine" Version="2.0.0-beta1.20371.2" />
+    <PackageReference Include="System.CommandLine.DragonFruit" Version="0.3.0-alpha.20371.2" />
   </ItemGroup>
 
   <ItemGroup>

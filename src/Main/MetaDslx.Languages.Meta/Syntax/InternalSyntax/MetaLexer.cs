@@ -23,11 +23,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax {
 using Antlr4.Runtime;
 using Antlr4.Runtime.Atn;
 using Antlr4.Runtime.Misc;
-using DFA = Antlr4.Runtime.Dfa.DFA;
+    using System;
+    using System.IO;
+    using DFA = Antlr4.Runtime.Dfa.DFA;
 
 [System.CodeDom.Compiler.GeneratedCode("ANTLR", "4.6.6")]
 [System.CLSCompliant(false)]
 public partial class MetaLexer : Lexer {
+	protected static DFA[] decisionToDFA;
+	protected static PredictionContextCache sharedContextCache = new PredictionContextCache();
 	public const int
 		KNamespace=1, KUsing=2, KMetamodel=3, KExtern=4, KTypeDef=5, KAbstract=6, 
 		KClass=7, KStruct=8, KEnum=9, KAssociation=10, KContainment=11, KWith=12, 
@@ -97,9 +101,12 @@ public partial class MetaLexer : Lexer {
 
 
 	public MetaLexer(ICharStream input)
-		: base(input)
+	: this(input, Console.Out, Console.Error) { }
+
+	public MetaLexer(ICharStream input, TextWriter output, TextWriter errorOutput)
+	: base(input, output, errorOutput)
 	{
-		_interp = new LexerATNSimulator(this,_ATN);
+		Interpreter = new LexerATNSimulator(this, _ATN, decisionToDFA, sharedContextCache);
 	}
 
 	private static readonly string[] _LiteralNames = {
@@ -161,15 +168,6 @@ public partial class MetaLexer : Lexer {
 		}
 
 		return tokenNames;
-	}
-
-	[System.Obsolete("Use IRecognizer.Vocabulary instead.")]
-	public override string[] TokenNames
-	{
-		get
-		{
-			return tokenNames;
-		}
 	}
 
 	[NotNull]

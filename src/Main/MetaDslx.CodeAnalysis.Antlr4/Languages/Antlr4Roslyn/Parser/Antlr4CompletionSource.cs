@@ -148,7 +148,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             var (compatible, nextParserStack) = parserStack.Process(state);
             if (!compatible) return;
 
-            foreach (var transition in state.Transitions)
+            foreach (var transition in state.TransitionsArray)
             {
                 if (transition.IsEpsilon)
                 {
@@ -160,46 +160,22 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
                 else
                 {
                     var nextToken = stream.CurrentToken;
-                    switch (transition)
+                    foreach (var label in transition.Label.ToIntegerList())
                     {
-                        case AtomTransition atomTransition:
-                            if (atCaret)
+                        if (atCaret)
+                        {
+                            if (parserStack.IsCompatibleWith(transition.target))
                             {
-                                if (parserStack.IsCompatibleWith(atomTransition.target))
-                                {
-                                    suggestions.Add(atomTransition.label);
-                                }
+                                suggestions.Add(label);
                             }
-                            else
+                        }
+                        else
+                        {
+                            if (label == nextToken)
                             {
-                                if (atomTransition.label == nextToken)
-                                {
-                                    Process(transition.target, stream.MoveNext(), nextParserStack, ImmutableHashSet<int>.Empty, suggestions, cancellationToken);
-                                }
+                                Process(transition.target, stream.MoveNext(), nextParserStack, ImmutableHashSet<int>.Empty, suggestions, cancellationToken);
                             }
-                            break;
-                        case SetTransition setTransition:
-                            foreach (var label in setTransition.Label.ToIntegerList())
-                            {
-                                if (atCaret)
-                                {
-                                    if (parserStack.IsCompatibleWith(setTransition.target))
-                                    {
-                                        suggestions.Add(label);
-                                    }
-                                }
-                                else
-                                {
-                                    if (label == nextToken)
-                                    {
-                                        Process(setTransition.target, stream.MoveNext(), nextParserStack, ImmutableHashSet<int>.Empty, suggestions, cancellationToken);
-                                    }
-                                }
-                            }
-                            break;
-                        default:
-                            Debug.Assert(false, "Unsupported ATN transition type: "+transition.GetType());
-                            break;
+                        }
                     }
                 }
             }
@@ -247,7 +223,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             {
                 var (compatible, nextStack) = this.Process(state);
                 if (!compatible) return false;
-                if (state.epsilonOnlyTransitions) return state.Transitions.Any(t => nextStack.IsCompatibleWith(t.target));
+                if (state.epsilonOnlyTransitions) return state.TransitionsArray.Any(t => nextStack.IsCompatibleWith(t.target));
                 else return true;
             }
         }

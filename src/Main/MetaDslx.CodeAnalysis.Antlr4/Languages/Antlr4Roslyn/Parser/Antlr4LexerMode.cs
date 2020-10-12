@@ -12,12 +12,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
     {
         public Antlr4LexerMode(IAntlr4Lexer lexer)
         {
-            this.Mode = lexer.Antlr4Lexer._mode;
-            this.ModeStack = lexer.Antlr4Lexer._modeStack.ToImmutableArray();
+            this.Mode = lexer.Antlr4Lexer.CurrentMode;
+            this.ModeStackReversed = lexer.Antlr4Lexer.ModeStack.ToImmutableArray();
         }
 
         public int Mode { get; private set; }
-        public ImmutableArray<int> ModeStack { get; private set; }
+        public ImmutableArray<int> ModeStackReversed { get; private set; }
 
         public override bool Equals(object obj)
         {
@@ -29,48 +29,32 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         {
             if (other == null)
             {
-                return this.Mode == 0 && this.ModeStack.Length == 0;
+                return this.Mode == 0 && this.ModeStackReversed.Length == 0;
             }
             if (this.Mode != other.Mode) return false;
-            if (this.ModeStack.Length != other.ModeStack.Length) return false;
-            for (int i = 0; i < this.ModeStack.Length; i++)
+            if (this.ModeStackReversed.Length != other.ModeStackReversed.Length) return false;
+            for (int i = 0; i < this.ModeStackReversed.Length; i++)
             {
-                if (this.ModeStack[i] != other.ModeStack[i]) return false;
+                if (this.ModeStackReversed[i] != other.ModeStackReversed[i]) return false;
             }
             return true;
         }
 
         public override int GetHashCode()
         {
-            return Hash.Combine(this.Mode, this.ModeStack.GetHashCode());
-        }
-
-        public virtual bool HasChanged(IAntlr4Lexer lexer)
-        {
-            var antlr4Lexer = lexer?.Antlr4Lexer;
-            if (antlr4Lexer == null)
-            {
-                return this.Mode != 0 || this.ModeStack.Length != 0;
-            }
-            if (this.Mode != antlr4Lexer._mode) return true;
-            if (this.ModeStack.Length != antlr4Lexer._modeStack.Count) return true;
-            for (int i = 0; i < this.ModeStack.Length; i++)
-            {
-                if (this.ModeStack[i] != antlr4Lexer._modeStack[i]) return true;
-            }
-            return false;
+            return Hash.Combine(this.Mode, this.ModeStackReversed.GetHashCode());
         }
 
         public override string ToString()
         {
             string modeStack = string.Empty;
-            if (ModeStack.Length > 0)
+            if (ModeStackReversed.Length > 0)
             {
                 StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < ModeStack.Length; i++)
+                for (int i = ModeStackReversed.Length - 1; i >= 0; i--)
                 {
-                    if (i > 0) sb.Append(",");
-                    sb.Append(ModeStack[i]);
+                    if (i < ModeStackReversed.Length - 1) sb.Append(",");
+                    sb.Append(ModeStackReversed[i]);
                 }
                 modeStack = sb.ToString();
             }

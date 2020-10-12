@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Data;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
@@ -93,7 +94,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 
         ITokenSource ITokenStream.TokenSource => null;// (ITokenSource)this;
 
-        IToken ITokenStream.Lt(int k)
+        IToken ITokenStream.LT(int k)
         {
             if (k > 0) return this.PeekCustomToken(k - 1) ?? Antlr4SyntaxLexer.InvalidToken;
             else if (k < 0) return this.PeekCustomToken(k) ?? Antlr4SyntaxLexer.InvalidToken;
@@ -148,7 +149,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             _matchedToken = false;
         }
 
-        int IIntStream.La(int i)
+        int IIntStream.LA(int i)
         {
             if (i > 0) return this.PeekCustomToken(i - 1)?.Type ?? 0;
             else if (i < 0) return this.PeekCustomToken(i)?.Type ?? 0;
@@ -207,88 +208,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 
         #region IAntlrErrorListener
 
-        void IAntlrErrorListener<IToken>.SyntaxError(IRecognizer recognizer, IToken offendingSymbol, int line, int charPositionInLine, string msg, RecognitionException e)
+        void IAntlrErrorListener<IToken>.SyntaxError(TextWriter output, IRecognizer recognizer, IToken offendingSymbol, int line, int charPositionInLine, string msg, RecognitionException e)
         {
             this.AddErrorToCurrentToken(Antlr4RoslynErrorCode.ERR_SyntaxError, msg);
             CallLogger.Instance.Log("  Parser error: " + msg);
         }
 
         #endregion
-        /*
-        private class ErrorStrategy : DefaultErrorStrategy
-        {
-            private Antlr4SyntaxParser _parser;
-
-            public ErrorStrategy(Antlr4SyntaxParser parser)
-            {
-                _parser = parser;
-            }
-
-            public override void ReportMatch(Parser recognizer)
-            {
-                _parser._matchedToken = true;
-                base.ReportMatch(recognizer);
-            }
-
-            [return: Nullable]
-            protected override IToken SingleTokenDeletion([NotNull] Parser recognizer)
-            {
-                int nextTokenType = ((ITokenStream)recognizer.InputStream).La(2);
-                IntervalSet expecting = GetExpectedTokens(recognizer);
-                if (expecting.Contains(nextTokenType))
-                {
-                    ReportUnwantedToken(recognizer);
-                    // simply delete extra token
-                    _parser.SkipToken();
-                    // we want to return the token we're actually matching
-                    ReportMatch(recognizer);
-                    // we know current token is correct
-                    return _parser.GetCurrentCustomToken();
-                }
-                return null;
-            }
-
-            protected override bool SingleTokenInsertion([NotNull] Parser recognizer)
-            {
-                int currentSymbolType = ((ITokenStream)recognizer.InputStream).La(1);
-                // if current token is consistent with what could come after current
-                // ATN state, then we know we're missing a token; error recovery
-                // is free to conjure up and insert the missing token
-                ATNState currentState = recognizer.Interpreter.atn.states[recognizer.State];
-                ATNState next = currentState.Transition(0).target;
-                ATN atn = recognizer.Interpreter.atn;
-                PredictionContext predictionContext = PredictionContext.FromRuleContext(atn, recognizer.RuleContext);
-                IntervalSet expectingAtLL2 = atn.NextTokens(next, predictionContext);
-                if (expectingAtLL2.Contains(currentSymbolType))
-                {
-                    ReportMissingToken(recognizer);
-                    return true;
-                }
-                return false;
-            }
-
-            protected override IToken ConstructToken(ITokenSource tokenSource, int expectedTokenType, string tokenText, IToken current)
-            {
-                var green = _parser.CreateMissingToken(expectedTokenType.FromAntlr4(_parser.Language.SyntaxFacts.SyntaxKindType), current.Type.FromAntlr4(_parser.Language.SyntaxFacts.SyntaxKindType), false);
-                var token = _parser.CreateCustomToken(green);
-                return token;
-            }
-
-            /// <summary>Consume tokens until one matches the given token set.</summary>
-            /// <remarks>Consume tokens until one matches the given token set.</remarks>
-            protected override void ConsumeUntil(Parser recognizer, IntervalSet set)
-            {
-                //		System.err.println("consumeUntil("+set.toString(recognizer.getTokenNames())+")");
-                int ttype = ((ITokenStream)recognizer.InputStream).La(1);
-                while (ttype != TokenConstants.Eof && ttype != TokenConstants.InvalidType && !set.Contains(ttype))
-                {
-                    //System.out.println("consume during recover LA(1)="+getTokenNames()[input.LA(1)]);
-                    //			recognizer.getInputStream().consume();
-                    _parser.SkipToken();
-                    //recognizer.Consume();
-                    ttype = ((ITokenStream)recognizer.InputStream).La(1);
-                }
-            }
-        }*/
     }
 }

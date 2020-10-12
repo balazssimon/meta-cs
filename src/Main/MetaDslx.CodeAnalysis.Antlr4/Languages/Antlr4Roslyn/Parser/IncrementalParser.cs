@@ -4,6 +4,7 @@ using Antlr4.Runtime.Tree;
 using MetaDslx.CodeAnalysis.Syntax;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
@@ -12,8 +13,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
     {
         internal Antlr4SyntaxParser _incrementalParser;
 
-        public IncrementalParser(ITokenStream input) 
-            : base(input)
+        public IncrementalParser(ITokenStream input, TextWriter output, TextWriter errorOutput)
+            : base(input, output, errorOutput)
         {
         }
 

@@ -17,13 +17,13 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             _textWindow = textWindow;
         }
 
-        public int La(int i)
+        public int LA(int i)
         {
             char pch;
             if (i > 0) pch = _textWindow.PeekChar(i - 1);
             else if (i < 0) pch = _textWindow.PeekChar(i);
             else pch = SlidingTextWindow.InvalidCharacter;
-            if (pch == SlidingTextWindow.InvalidCharacter) return IntStreamConstants.Eof;
+            if (pch == SlidingTextWindow.InvalidCharacter) return IntStreamConstants.EOF;
             else return pch;
         }
 

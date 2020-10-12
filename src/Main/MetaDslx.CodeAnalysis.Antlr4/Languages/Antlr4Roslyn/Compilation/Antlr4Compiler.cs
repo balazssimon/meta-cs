@@ -252,7 +252,17 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             this.DiagnosticBag.Add(code, Location.Create(this.InputFilePath, rule.GetTextSpan(), rule.GetLinePositionSpan()), args);
         }
 
-        public void SyntaxError([NotNull] IRecognizer recognizer, [Nullable] int offendingSymbol, int line, int charPositionInLine, [NotNull] string msg, [Nullable] RecognitionException e)
+        protected void RegisterGeneratedFile(string filePath)
+        {
+            this.generatedFileList.Add(filePath);
+        }
+
+        public ImmutableArray<string> GetGeneratedFileList()
+        {
+            return this.generatedFileList.AsImmutable();
+        }
+
+        public void SyntaxError(TextWriter output, IRecognizer recognizer, int offendingSymbol, int line, int charPositionInLine, string msg, RecognitionException e)
         {
             IToken token = e.OffendingToken;
             if (token != null)
@@ -265,7 +275,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             }
         }
 
-        public void SyntaxError([NotNull] IRecognizer recognizer, [Nullable] IToken offendingSymbol, int line, int charPositionInLine, [NotNull] string msg, [Nullable] RecognitionException e)
+        public void SyntaxError(TextWriter output, IRecognizer recognizer, IToken offendingSymbol, int line, int charPositionInLine, string msg, RecognitionException e)
         {
             if (offendingSymbol != null)
             {
@@ -275,16 +285,6 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             {
                 this.DiagnosticBag.Add(Antlr4RoslynErrorCode.ERR_SyntaxError, Location.Create(this.InputFilePath, this.GetTextSpan(recognizer.InputStream.Index), this.GetLinePositionSpan(line, charPositionInLine)), msg);
             }
-        }
-
-        protected void RegisterGeneratedFile(string filePath)
-        {
-            this.generatedFileList.Add(filePath);
-        }
-
-        public ImmutableArray<string> GetGeneratedFileList()
-        {
-            return this.generatedFileList.AsImmutable();
         }
     }
 }

@@ -10,8 +10,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 {
     public abstract class LexerAdaptor : Lexer
     {
-        public LexerAdaptor(ICharStream input)
-            : base(input)
+        public LexerAdaptor(ICharStream input, TextWriter output, TextWriter errorOutput)
+            : base(input, output, errorOutput)
         {
         }
 
@@ -57,7 +57,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         protected void handleEndArgument()
         {
             PopMode();
-            if (this._modeStack.Count > 0)
+            if (this.ModeStack.Count > 0)
             {
                 Type = Antlr4RoslynLexer.ARGUMENT_CONTENT;
             }
@@ -66,7 +66,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         protected void handleEndAction()
         {
             PopMode();
-            if (this._modeStack.Count > 0)
+            if (this.ModeStack.Count > 0)
             {
                 Type = Antlr4RoslynLexer.ACTION_CONTENT;
             }

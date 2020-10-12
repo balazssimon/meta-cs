@@ -40,9 +40,9 @@
     <SystemRuntimeCompilerServicesUnsafeVersion>4.5.3</SystemRuntimeCompilerServicesUnsafeVersion>
     <SystemTextEncodingCodePagesVersion>4.5.1</SystemTextEncodingCodePagesVersion>
     <SystemThreadingTasksExtensionsVersion>4.5.4</SystemThreadingTasksExtensionsVersion>
-	<Antlr4Version>4.6.6</Antlr4Version>
-	<Antlr4BuildTasksVersion>1.0.4</Antlr4BuildTasksVersion>
-	<MicrosoftBuildVersion>16.0.461</MicrosoftBuildVersion>
+	<Antlr4RuntimeStandardVersion>4.8.0</Antlr4RuntimeStandardVersion>
+	<Antlr4BuildTasksVersion>8.4.0</Antlr4BuildTasksVersion>
+	<MicrosoftBuildVersion>16.7.0</MicrosoftBuildVersion>
 	<MicrosoftDependencyInjectionVersion>3.1.8</MicrosoftDependencyInjectionVersion>
 	<MicrosoftBclAsyncInterfacesVersion>1.1.1</MicrosoftBclAsyncInterfacesVersion>
 	<MicrosoftNetDskTestVersion>16.6.1</MicrosoftNetDskTestVersion>
