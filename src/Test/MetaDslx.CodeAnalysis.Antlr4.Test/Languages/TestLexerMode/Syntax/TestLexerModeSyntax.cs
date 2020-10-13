@@ -20269,8 +20269,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode
 			: base(internalSyntaxFactory)
 		{
 		}
-		public new TestLexerModeLanguage Language => TestLexerModeLanguage.Instance;
-		protected override Language LanguageCore => this.Language;
+	    public new TestLexerModeLanguage Language => TestLexerModeLanguage.Instance;
+	    protected override Language LanguageCore => this.Language;
 	    public override LanguageParseOptions DefaultParseOptions => TestLexerModeParseOptions.Default;
 		/// <summary>
 		/// Create a new syntax tree from a syntax node.

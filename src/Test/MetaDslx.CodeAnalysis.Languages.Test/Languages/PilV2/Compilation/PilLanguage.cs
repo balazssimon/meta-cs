@@ -1,4 +1,6 @@
-// NOTE: This is an auto-generated file. However, it will not be regenerated. If you want it to be regenerated, just delete it.
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 using System;
 using System.Diagnostics;
 using MetaDslx.CodeAnalysis;
@@ -16,37 +18,21 @@ namespace PilV2
     {
         public static readonly PilLanguage Instance = new PilLanguage();
 
-		private PilSyntaxFacts _syntaxFacts;
-		private PilSymbolFacts _symbolFacts;
-		private PilInternalSyntaxFactory _internalSyntaxFactory;
-		private PilSyntaxFactory _syntaxFactory;
-		private PilCompilationFactory _compilationFactory;
-
 		private PilLanguage()
 		{
-			_syntaxFacts = new PilSyntaxFacts();
-			_internalSyntaxFactory = new PilInternalSyntaxFactory(_syntaxFacts);
-			_syntaxFactory = new PilSyntaxFactory(_internalSyntaxFactory);
-			_symbolFacts = new PilSymbolFacts();
-			_compilationFactory = new PilCompilationFactory();
 		}
 
         public override string Name => "Pil";
 
-        public new PilSyntaxFacts SyntaxFacts => _syntaxFacts;
-        protected override SyntaxFacts SyntaxFactsCore => this.SyntaxFacts;
-
-        public new PilSymbolFacts SymbolFacts => _symbolFacts;
-        protected override SymbolFacts SymbolFactsCore => this.SymbolFacts;
-
-        internal new PilInternalSyntaxFactory InternalSyntaxFactory => _internalSyntaxFactory;
-        protected override InternalSyntaxFactory InternalSyntaxFactoryCore => this.InternalSyntaxFactory;
-
-        public new PilSyntaxFactory SyntaxFactory => _syntaxFactory;
-        protected override SyntaxFactory SyntaxFactoryCore => this.SyntaxFactory;
-
-        public new PilCompilationFactory CompilationFactory => _compilationFactory;
-        protected override CompilationFactory CompilationFactoryCore => this.CompilationFactory;
+        public new PilSyntaxFacts SyntaxFacts => (PilSyntaxFacts)base.SyntaxFacts;
+        public new PilSymbolFacts SymbolFacts => (PilSymbolFacts)base.SymbolFacts;
+        internal new PilInternalSyntaxFactory InternalSyntaxFactory => (PilInternalSyntaxFactory)base.InternalSyntaxFactory;
+        public new PilSyntaxFactory SyntaxFactory => (PilSyntaxFactory)base.SyntaxFactory;
+        public new PilCompilationFactory CompilationFactory => (PilCompilationFactory)base.CompilationFactory;
+        protected override LanguageServices CreateLanguageServices()
+        {
+            return new PilLanguageServices();
+        }
     }
 }
 

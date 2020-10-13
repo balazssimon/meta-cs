@@ -27,6 +27,9 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode
         {
         }
 
+        public new TestLexerModeLanguage Language => TestLexerModeLanguage.Instance;
+        protected override Language LanguageCore => this.Language;
+
         /// <summary>
         /// Default compilation options for the TestLexerMode language
         /// </summary>
@@ -72,8 +75,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode
             IEnumerable<MetadataReference> references = null,
             LanguageCompilationOptions options = null,
             LanguageCompilation previousScriptCompilation = null,
-            Type returnType = null,
-            Type globalsType = null)
+            global::System.Type returnType = null,
+            global::System.Type globalsType = null)
         {
             return TestLexerModeCompilation.CreateScriptCompilation(assemblyName, syntaxTree, references, (TestLexerModeCompilationOptions)options, (TestLexerModeCompilation)previousScriptCompilation, returnType, globalsType);
         }

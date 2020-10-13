@@ -13985,8 +13985,8 @@ namespace PilV2
 			: base(internalSyntaxFactory)
 		{
 		}
-		public new PilLanguage Language => PilLanguage.Instance;
-		protected override Language LanguageCore => this.Language;
+	    public new PilLanguage Language => PilLanguage.Instance;
+	    protected override Language LanguageCore => this.Language;
 	    public override LanguageParseOptions DefaultParseOptions => PilParseOptions.Default;
 		/// <summary>
 		/// Create a new syntax tree from a syntax node.

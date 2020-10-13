@@ -82,29 +82,36 @@ namespace MetaDslx.BuildTools
                         Console.Error.WriteLine("{0}: error: file not found", inputFile.FullName);
                         continue;
                     }
-                    var currentOutputPath = outputPath ?? inputFile.DirectoryName;
-                    var compiler = new MetaGeneratorCompiler(inputFile.FullName, currentOutputPath);
-                    compiler.Compile();
-                    if (compiler.HasErrors)
+                    try
                     {
-                        DiagnosticFormatter formatter = new DiagnosticFormatter();
-                        foreach (var message in compiler.GetDiagnostics())
+                        var currentOutputPath = outputPath ?? inputFile.DirectoryName;
+                        var compiler = new MetaGeneratorCompiler(inputFile.FullName, currentOutputPath);
+                        compiler.Compile();
+                        if (compiler.HasErrors)
                         {
-                            Console.Error.WriteLine(formatter.Format(message));
+                            DiagnosticFormatter formatter = new DiagnosticFormatter();
+                            foreach (var message in compiler.GetDiagnostics())
+                            {
+                                Console.Error.WriteLine(formatter.Format(message));
+                            }
+                        }
+                        else
+                        {
+                            foreach (var file in compiler.GetGeneratedFileList())
+                            {
+                                Console.WriteLine("generated file: {0}", file);
+                            }
                         }
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        foreach (var file in compiler.GetGeneratedFileList())
-                        {
-                            Console.WriteLine("generated file: {0}", file);
-                        }
+                        Console.Error.WriteLine("{0}: error: {1}", inputFile.FullName, ex.ToString().Replace('\r', ' ').Replace('\n', ' '));
                     }
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
+                Console.Error.WriteLine(ex);
             }
         }
 
@@ -133,30 +140,36 @@ namespace MetaDslx.BuildTools
                         Console.Error.WriteLine("{0}: error: file not found", inputFile.FullName);
                         continue;
                     }
-                    var currentOutputPath = outputPath ?? inputFile.DirectoryName;
-                    var compiler = new MetaCompilerForBuildTask(inputFile.FullName, currentOutputPath, isCoreModel, coreNamespace);
-                    compiler.Compile();
-                    if (compiler.HasErrors)
-                    {
-                        DiagnosticFormatter formatter = new DiagnosticFormatter();
-                        foreach (var message in compiler.GetDiagnostics())
+                    try {
+                        var currentOutputPath = outputPath ?? inputFile.DirectoryName;
+                        var compiler = new MetaCompilerForBuildTask(inputFile.FullName, currentOutputPath, isCoreModel, coreNamespace);
+                        compiler.Compile();
+                        if (compiler.HasErrors)
                         {
-                            Console.Error.WriteLine(formatter.Format(message));
+                            DiagnosticFormatter formatter = new DiagnosticFormatter();
+                            foreach (var message in compiler.GetDiagnostics())
+                            {
+                                Console.Error.WriteLine(formatter.Format(message));
+                            }
+                        }
+                        else
+                        {
+                            compiler.Generate();
+                            foreach (var file in compiler.GetGeneratedFileList())
+                            {
+                                Console.WriteLine("generated file: {0}", file);
+                            }
                         }
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        compiler.Generate();
-                        foreach (var file in compiler.GetGeneratedFileList())
-                        {
-                            Console.WriteLine("generated file: {0}", file);
-                        }
+                        Console.Error.WriteLine("{0}: error: {1}", inputFile.FullName, ex.ToString().Replace('\r', ' ').Replace('\n', ' '));
                     }
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
+                Console.Error.WriteLine(ex);
             }
         }
 
@@ -176,45 +189,52 @@ namespace MetaDslx.BuildTools
                         Console.Error.WriteLine("{0}: error: file not found", inputFile.FullName);
                         continue;
                     }
-                    string automaticOutputPath = null;
-                    if (automaticOutputDirectory != null || automaticOutputLocation == OutputLocation.CustomDirectory)
+                    try
                     {
-                        automaticOutputPath = automaticOutputDirectory?.FullName;
+                        string automaticOutputPath = null;
+                        if (automaticOutputDirectory != null || automaticOutputLocation == OutputLocation.CustomDirectory)
+                        {
+                            automaticOutputPath = automaticOutputDirectory?.FullName;
+                        }
+                        else if (automaticOutputLocation == OutputLocation.IntermediateDirectory)
+                        {
+                            automaticOutputPath = intermediateDirectory?.FullName;
+                        }
+                        if (automaticOutputPath == null) automaticOutputPath = inputFile.DirectoryName;
+                        string manualOutputPath = manualOutputDirectory?.FullName ?? inputFile.DirectoryName;
+                        var antlr4BuildTool = new Antlr4BuildTool();
+                        if (javaExe != null) antlr4BuildTool.JavaExe = javaExe.FullName;
+                        if (toolPath != null) antlr4BuildTool.ToolPath = toolPath.FullName;
+                        else
+                        {
+                            string assemblyPath = Path.GetDirectoryName(typeof(Antlr4BuildTool).Assembly.Location);
+                            antlr4BuildTool.ToolPath = Path.Combine(assemblyPath, "..", "..", "antlr-4.8-complete.jar");
+                        }
+                        var compiler = new Antlr4RoslynCompiler(inputFile.FullName, manualOutputPath, automaticOutputPath, targetNamespace, antlr4BuildTool);
+                        compiler.Compile();
+                        if (!compiler.HasErrors)
+                        {
+                            compiler.Generate();
+                        }
+                        DiagnosticFormatter formatter = new DiagnosticFormatter();
+                        foreach (var message in compiler.GetDiagnostics())
+                        {
+                            Console.Error.WriteLine(formatter.Format(message));
+                        }
+                        foreach (var file in compiler.GetGeneratedFileList())
+                        {
+                            Console.WriteLine("Generated file: {0}", file);
+                        }
                     }
-                    else if (automaticOutputLocation == OutputLocation.IntermediateDirectory)
+                    catch (Exception ex)
                     {
-                        automaticOutputPath = intermediateDirectory?.FullName;
-                    }
-                    if (automaticOutputPath == null) automaticOutputPath = inputFile.DirectoryName;
-                    string manualOutputPath = manualOutputDirectory?.FullName ?? inputFile.DirectoryName;
-                    var antlr4BuildTool = new Antlr4BuildTool();
-                    if (javaExe != null) antlr4BuildTool.JavaExe = javaExe.FullName;
-                    if (toolPath != null) antlr4BuildTool.ToolPath = toolPath.FullName;
-                    else
-                    {
-                        string assemblyPath = Path.GetDirectoryName(typeof(Antlr4BuildTool).Assembly.Location);
-                        antlr4BuildTool.ToolPath = Path.Combine(assemblyPath, "..", "..", "antlr-4.8-complete.jar");
-                    }
-                    var compiler = new Antlr4RoslynCompiler(inputFile.FullName, manualOutputPath, automaticOutputPath, targetNamespace, antlr4BuildTool);
-                    compiler.Compile();
-                    if (!compiler.HasErrors)
-                    {
-                        compiler.Generate();
-                    }
-                    DiagnosticFormatter formatter = new DiagnosticFormatter();
-                    foreach (var message in compiler.GetDiagnostics())
-                    {
-                        Console.Error.WriteLine(formatter.Format(message));
-                    }
-                    foreach (var file in compiler.GetGeneratedFileList())
-                    {
-                        Console.WriteLine("Generated file: {0}", file);
+                        Console.Error.WriteLine("{0}: error: {1}", inputFile.FullName, ex.ToString().Replace('\r', ' ').Replace('\n', ' '));
                     }
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
+                Console.Error.WriteLine(ex);
             }
         }
     }

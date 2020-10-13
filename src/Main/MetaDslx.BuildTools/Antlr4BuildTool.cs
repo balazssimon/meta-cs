@@ -83,6 +83,9 @@ namespace MetaDslx.BuildTasks
                 arguments.Add("-o");
                 arguments.Add(this.OutputPath);
 
+                arguments.Add("-lib");
+                arguments.Add(this.OutputPath);
+
                 /*if (!string.IsNullOrEmpty(LibPath))
                 {
                     var split = LibPath.Split(';');

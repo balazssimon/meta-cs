@@ -7861,8 +7861,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation
 			: base(internalSyntaxFactory)
 		{
 		}
-		public new TestIncrementalCompilationLanguage Language => TestIncrementalCompilationLanguage.Instance;
-		protected override Language LanguageCore => this.Language;
+	    public new TestIncrementalCompilationLanguage Language => TestIncrementalCompilationLanguage.Instance;
+	    protected override Language LanguageCore => this.Language;
 	    public override LanguageParseOptions DefaultParseOptions => TestIncrementalCompilationParseOptions.Default;
 		/// <summary>
 		/// Create a new syntax tree from a syntax node.

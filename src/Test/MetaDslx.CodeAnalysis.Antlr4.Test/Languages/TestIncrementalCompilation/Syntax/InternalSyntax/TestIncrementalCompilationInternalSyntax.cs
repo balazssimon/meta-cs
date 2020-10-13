@@ -7423,8 +7423,6 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation.
 			return new TestIncrementalCompilationSyntaxParser(text, (TestIncrementalCompilationParseOptions)options ?? TestIncrementalCompilationParseOptions.Default, (TestIncrementalCompilationSyntaxNode)oldTree, changes, cancellationToken);
 		}
 	
-	    public override Language Language => TestIncrementalCompilationLanguage.Instance;
-	
 		private TestIncrementalCompilationSyntaxKind ToTestIncrementalCompilationSyntaxKind(SyntaxKind kind)
 	    {
 	        return kind.CastUnsafe<TestIncrementalCompilationSyntaxKind>();

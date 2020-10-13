@@ -1,4 +1,6 @@
-// NOTE: This is an auto-generated file. However, it will not be regenerated. If you want it to be regenerated, just delete it.
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +11,7 @@ using Microsoft.CodeAnalysis;
 
 namespace PilV2
 {
-    public class PilErrorCode : ErrorCode
+    public partial class PilErrorCode : ErrorCode
     {
         public new const string Category = "Pil";
         public new const string MessagePrefix = "P";

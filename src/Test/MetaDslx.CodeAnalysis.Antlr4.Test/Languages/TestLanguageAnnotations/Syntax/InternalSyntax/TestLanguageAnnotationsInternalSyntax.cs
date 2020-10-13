@@ -10736,8 +10736,6 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Syn
 			return new TestLanguageAnnotationsSyntaxParser(text, (TestLanguageAnnotationsParseOptions)options ?? TestLanguageAnnotationsParseOptions.Default, (TestLanguageAnnotationsSyntaxNode)oldTree, changes, cancellationToken);
 		}
 	
-	    public override Language Language => TestLanguageAnnotationsLanguage.Instance;
-	
 		private TestLanguageAnnotationsSyntaxKind ToTestLanguageAnnotationsSyntaxKind(SyntaxKind kind)
 	    {
 	        return kind.CastUnsafe<TestLanguageAnnotationsSyntaxKind>();

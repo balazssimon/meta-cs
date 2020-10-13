@@ -4476,7 +4476,7 @@ namespace PilV2.Syntax.InternalSyntax
             }
             private GreenNode VisitTerminal(IToken token, PilSyntaxKind kind)
             {
-				if (token == null || (token.Type == TokenConstants.Eof && kind != SyntaxKind.Eof))
+				if (token == null || (token.Type == TokenConstants.EOF && kind != SyntaxKind.Eof))
 				{
 					if (kind != null) return _factory.MissingToken(kind);
 					else return null;
@@ -4491,7 +4491,7 @@ namespace PilV2.Syntax.InternalSyntax
             }
             private GreenNode VisitTerminal(ITerminalNode node, PilSyntaxKind kind)
             {
-                if (node == null || node.Symbol == null || (node.Symbol.Type == TokenConstants.Eof && kind != SyntaxKind.Eof))
+                if (node == null || node.Symbol == null || (node.Symbol.Type == TokenConstants.EOF && kind != SyntaxKind.Eof))
 				{
 					if (kind != null) return _factory.MissingToken(kind);
 					else return null;

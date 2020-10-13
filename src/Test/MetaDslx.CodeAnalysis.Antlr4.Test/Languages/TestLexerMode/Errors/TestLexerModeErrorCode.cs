@@ -1,4 +1,6 @@
-// NOTE: This is an auto-generated file. However, it will not be regenerated. If you want it to be regenerated, just delete it.
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +11,7 @@ using Microsoft.CodeAnalysis;
 
 namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode
 {
-    public class TestLexerModeErrorCode : ErrorCode
+    public partial class TestLexerModeErrorCode : ErrorCode
     {
         public new const string Category = "TestLexerMode";
         public new const string MessagePrefix = "TLM";

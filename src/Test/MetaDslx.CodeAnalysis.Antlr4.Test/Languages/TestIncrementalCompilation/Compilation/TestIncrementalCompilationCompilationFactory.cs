@@ -27,6 +27,9 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation
         {
         }
 
+        public new TestIncrementalCompilationLanguage Language => TestIncrementalCompilationLanguage.Instance;
+        protected override Language LanguageCore => this.Language;
+
         /// <summary>
         /// Default compilation options for the TestIncrementalCompilation language
         /// </summary>
@@ -72,8 +75,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation
             IEnumerable<MetadataReference> references = null,
             LanguageCompilationOptions options = null,
             LanguageCompilation previousScriptCompilation = null,
-            Type returnType = null,
-            Type globalsType = null)
+            global::System.Type returnType = null,
+            global::System.Type globalsType = null)
         {
             return TestIncrementalCompilationCompilation.CreateScriptCompilation(assemblyName, syntaxTree, references, (TestIncrementalCompilationCompilationOptions)options, (TestIncrementalCompilationCompilation)previousScriptCompilation, returnType, globalsType);
         }

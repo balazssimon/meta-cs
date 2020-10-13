@@ -62,15 +62,6 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.Intern
         public int TemplateParenthesis => _templateParenthesis;
         public int TemplateBrackets => _templateBrackets;
 
-        public override bool HasChanged(IAntlr4Lexer lexer)
-        {
-            if (base.HasChanged(lexer)) return true;
-            var antlr4Lexer = (TestLexerModeLexer)lexer.Antlr4Lexer;
-            if (antlr4Lexer._templateParenthesis != _templateParenthesis) return true;
-            if (antlr4Lexer._templateBrackets != _templateBrackets) return true;
-            return false;
-        }
-
         public bool Equals(CustomLexerMode other)
         {
             if (!base.Equals((Antlr4LexerMode)other)) return false;

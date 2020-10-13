@@ -2831,7 +2831,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation.
             }
             private GreenNode VisitTerminal(IToken token, TestIncrementalCompilationSyntaxKind kind)
             {
-				if (token == null || (token.Type == TokenConstants.Eof && kind != SyntaxKind.Eof))
+				if (token == null || (token.Type == TokenConstants.EOF && kind != SyntaxKind.Eof))
 				{
 					if (kind != null) return _factory.MissingToken(kind);
 					else return null;
@@ -2846,7 +2846,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation.
             }
             private GreenNode VisitTerminal(ITerminalNode node, TestIncrementalCompilationSyntaxKind kind)
             {
-                if (node == null || node.Symbol == null || (node.Symbol.Type == TokenConstants.Eof && kind != SyntaxKind.Eof))
+                if (node == null || node.Symbol == null || (node.Symbol.Type == TokenConstants.EOF && kind != SyntaxKind.Eof))
 				{
 					if (kind != null) return _factory.MissingToken(kind);
 					else return null;

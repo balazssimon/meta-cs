@@ -1,4 +1,6 @@
-// NOTE: This is an auto-generated file. However, it will not be regenerated. If you want it to be regenerated, just delete it.
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 using System;
 using System.Diagnostics;
 using MetaDslx.CodeAnalysis;
@@ -16,37 +18,21 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode
     {
         public static readonly TestLexerModeLanguage Instance = new TestLexerModeLanguage();
 
-		private TestLexerModeSyntaxFacts _syntaxFacts;
-		private TestLexerModeSymbolFacts _symbolFacts;
-		private TestLexerModeInternalSyntaxFactory _internalSyntaxFactory;
-		private TestLexerModeSyntaxFactory _syntaxFactory;
-		private TestLexerModeCompilationFactory _compilationFactory;
-
 		private TestLexerModeLanguage()
 		{
-			_syntaxFacts = new TestLexerModeSyntaxFacts();
-			_internalSyntaxFactory = new CustomTestLexerModeInternalSyntaxFactory(_syntaxFacts);
-			_syntaxFactory = new TestLexerModeSyntaxFactory(_internalSyntaxFactory);
-			_symbolFacts = new TestLexerModeSymbolFacts();
-			_compilationFactory = new TestLexerModeCompilationFactory();
 		}
 
         public override string Name => "TestLexerMode";
 
-        public new TestLexerModeSyntaxFacts SyntaxFacts => _syntaxFacts;
-        protected override SyntaxFacts SyntaxFactsCore => this.SyntaxFacts;
-
-        public new TestLexerModeSymbolFacts SymbolFacts => _symbolFacts;
-        protected override SymbolFacts SymbolFactsCore => this.SymbolFacts;
-
-        internal new TestLexerModeInternalSyntaxFactory InternalSyntaxFactory => _internalSyntaxFactory;
-        protected override InternalSyntaxFactory InternalSyntaxFactoryCore => this.InternalSyntaxFactory;
-
-        public new TestLexerModeSyntaxFactory SyntaxFactory => _syntaxFactory;
-        protected override SyntaxFactory SyntaxFactoryCore => this.SyntaxFactory;
-
-        public new TestLexerModeCompilationFactory CompilationFactory => _compilationFactory;
-        protected override CompilationFactory CompilationFactoryCore => this.CompilationFactory;
+        public new TestLexerModeSyntaxFacts SyntaxFacts => (TestLexerModeSyntaxFacts)base.SyntaxFacts;
+        public new TestLexerModeSymbolFacts SymbolFacts => (TestLexerModeSymbolFacts)base.SymbolFacts;
+        internal new TestLexerModeInternalSyntaxFactory InternalSyntaxFactory => (TestLexerModeInternalSyntaxFactory)base.InternalSyntaxFactory;
+        public new TestLexerModeSyntaxFactory SyntaxFactory => (TestLexerModeSyntaxFactory)base.SyntaxFactory;
+        public new TestLexerModeCompilationFactory CompilationFactory => (TestLexerModeCompilationFactory)base.CompilationFactory;
+        protected override LanguageServices CreateLanguageServices()
+        {
+            return new TestLexerModeLanguageServices();
+        }
     }
 }
 

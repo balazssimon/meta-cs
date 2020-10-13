@@ -12587,8 +12587,6 @@ namespace PilV2.Syntax.InternalSyntax
 			return new PilSyntaxParser(text, (PilParseOptions)options ?? PilParseOptions.Default, (PilSyntaxNode)oldTree, changes, cancellationToken);
 		}
 	
-	    public override Language Language => PilLanguage.Instance;
-	
 		private PilSyntaxKind ToPilSyntaxKind(SyntaxKind kind)
 	    {
 	        return kind.CastUnsafe<PilSyntaxKind>();

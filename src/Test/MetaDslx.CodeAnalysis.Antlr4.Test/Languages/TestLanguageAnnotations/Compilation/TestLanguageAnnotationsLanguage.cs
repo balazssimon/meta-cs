@@ -1,4 +1,6 @@
-// NOTE: This is an auto-generated file. However, it will not be regenerated. If you want it to be regenerated, just delete it.
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 using System;
 using System.Diagnostics;
 using MetaDslx.CodeAnalysis;
@@ -18,37 +20,21 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations
     {
         public static readonly TestLanguageAnnotationsLanguage Instance = new TestLanguageAnnotationsLanguage();
 
-		private TestLanguageAnnotationsSyntaxFacts _syntaxFacts;
-		private TestLanguageAnnotationsSymbolFacts _symbolFacts;
-		private TestLanguageAnnotationsInternalSyntaxFactory _internalSyntaxFactory;
-		private TestLanguageAnnotationsSyntaxFactory _syntaxFactory;
-		private TestLanguageAnnotationsCompilationFactory _compilationFactory;
-
 		private TestLanguageAnnotationsLanguage()
 		{
-			_syntaxFacts = new TestLanguageAnnotationsSyntaxFacts();
-			_internalSyntaxFactory = new TestLanguageAnnotationsInternalSyntaxFactory(_syntaxFacts);
-			_syntaxFactory = new TestLanguageAnnotationsSyntaxFactory(_internalSyntaxFactory);
-			_symbolFacts = new TestLanguageAnnotationsSymbolFacts();
-			_compilationFactory = new TestLanguageAnnotationsCompilationFactory();
 		}
 
         public override string Name => "TestLanguageAnnotations";
 
-        public new TestLanguageAnnotationsSyntaxFacts SyntaxFacts => _syntaxFacts;
-        protected override SyntaxFacts SyntaxFactsCore => this.SyntaxFacts;
-
-        public new TestLanguageAnnotationsSymbolFacts SymbolFacts => _symbolFacts;
-        protected override SymbolFacts SymbolFactsCore => this.SymbolFacts;
-
-        internal new TestLanguageAnnotationsInternalSyntaxFactory InternalSyntaxFactory => _internalSyntaxFactory;
-        protected override InternalSyntaxFactory InternalSyntaxFactoryCore => this.InternalSyntaxFactory;
-
-        public new TestLanguageAnnotationsSyntaxFactory SyntaxFactory => _syntaxFactory;
-        protected override SyntaxFactory SyntaxFactoryCore => this.SyntaxFactory;
-
-        public new TestLanguageAnnotationsCompilationFactory CompilationFactory => _compilationFactory;
-        protected override CompilationFactory CompilationFactoryCore => this.CompilationFactory;
+        public new TestLanguageAnnotationsSyntaxFacts SyntaxFacts => (TestLanguageAnnotationsSyntaxFacts)base.SyntaxFacts;
+        public new TestLanguageAnnotationsSymbolFacts SymbolFacts => (TestLanguageAnnotationsSymbolFacts)base.SymbolFacts;
+        internal new TestLanguageAnnotationsInternalSyntaxFactory InternalSyntaxFactory => (TestLanguageAnnotationsInternalSyntaxFactory)base.InternalSyntaxFactory;
+        public new TestLanguageAnnotationsSyntaxFactory SyntaxFactory => (TestLanguageAnnotationsSyntaxFactory)base.SyntaxFactory;
+        public new TestLanguageAnnotationsCompilationFactory CompilationFactory => (TestLanguageAnnotationsCompilationFactory)base.CompilationFactory;
+        protected override LanguageServices CreateLanguageServices()
+        {
+            return new TestLanguageAnnotationsLanguageServices();
+        }
     }
 }
 

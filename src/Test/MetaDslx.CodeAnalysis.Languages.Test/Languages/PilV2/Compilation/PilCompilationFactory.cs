@@ -1,4 +1,6 @@
-// NOTE: This is an auto-generated file. However, it will not be regenerated. If you want it to be regenerated, just delete it.
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,8 +15,9 @@ using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Symbols.Source;
 using MetaDslx.CodeAnalysis.Symbols.Metadata;
 using PilV2;
-using PilV2.Symbols;
+using PilV2.Syntax;
 using PilV2.Binding;
+using PilV2.Symbols;
 
 namespace PilV2
 {
@@ -23,6 +26,9 @@ namespace PilV2
         internal PilCompilationFactory()
         {
         }
+
+        public new PilLanguage Language => PilLanguage.Instance;
+        protected override Language LanguageCore => this.Language;
 
         /// <summary>
         /// Default compilation options for the Pil language
@@ -95,19 +101,6 @@ namespace PilV2
             return PilDeclarationTreeBuilderVisitor.ForTree((PilSyntaxTree)syntaxTree, scriptClassName, isSubmission);
         }
 
-        public override Symbol CreateSpecialSymbol(ModuleSymbol module, object key)
-        {
-            if (module is MetaModuleSymbol metaModule && metaModule.Models.Contains(PilInstance.MModel))
-            {
-                var specialType = PilConstants.Types.FirstOrDefault(c => c.MName == key.ToString());
-                if (specialType != null)
-                {
-                    var symbol = new MetaNamedTypeSymbol(specialType, module);
-                    return symbol;
-                }
-            }
-            return null;
-        }
         /*public override ScriptCompilationInfo CreateScriptCompilationInfo(CompilationBase previousSubmission, Type submissionReturnType, Type hostObjectType)
         {
             return new PilScriptCompilationInfo((PilCompilation)previousSubmission, submissionReturnType, hostObjectType);

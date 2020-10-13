@@ -1,4 +1,6 @@
-// NOTE: This is an auto-generated file. However, it will not be regenerated. If you want it to be regenerated, just delete it.
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 using System;
 using System.Diagnostics;
 using MetaDslx.CodeAnalysis;
@@ -16,37 +18,21 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation
     {
         public static readonly TestIncrementalCompilationLanguage Instance = new TestIncrementalCompilationLanguage();
 
-		private TestIncrementalCompilationSyntaxFacts _syntaxFacts;
-		private TestIncrementalCompilationSymbolFacts _symbolFacts;
-		private TestIncrementalCompilationInternalSyntaxFactory _internalSyntaxFactory;
-		private TestIncrementalCompilationSyntaxFactory _syntaxFactory;
-		private TestIncrementalCompilationCompilationFactory _compilationFactory;
-
 		private TestIncrementalCompilationLanguage()
 		{
-			_syntaxFacts = new TestIncrementalCompilationSyntaxFacts();
-			_internalSyntaxFactory = new TestIncrementalCompilationInternalSyntaxFactory(_syntaxFacts);
-			_syntaxFactory = new TestIncrementalCompilationSyntaxFactory(_internalSyntaxFactory);
-			_symbolFacts = new TestIncrementalCompilationSymbolFacts();
-			_compilationFactory = new TestIncrementalCompilationCompilationFactory();
 		}
 
         public override string Name => "TestIncrementalCompilation";
 
-        public new TestIncrementalCompilationSyntaxFacts SyntaxFacts => _syntaxFacts;
-        protected override SyntaxFacts SyntaxFactsCore => this.SyntaxFacts;
-
-        public new TestIncrementalCompilationSymbolFacts SymbolFacts => _symbolFacts;
-        protected override SymbolFacts SymbolFactsCore => this.SymbolFacts;
-
-        internal new TestIncrementalCompilationInternalSyntaxFactory InternalSyntaxFactory => _internalSyntaxFactory;
-        protected override InternalSyntaxFactory InternalSyntaxFactoryCore => this.InternalSyntaxFactory;
-
-        public new TestIncrementalCompilationSyntaxFactory SyntaxFactory => _syntaxFactory;
-        protected override SyntaxFactory SyntaxFactoryCore => this.SyntaxFactory;
-
-        public new TestIncrementalCompilationCompilationFactory CompilationFactory => _compilationFactory;
-        protected override CompilationFactory CompilationFactoryCore => this.CompilationFactory;
+        public new TestIncrementalCompilationSyntaxFacts SyntaxFacts => (TestIncrementalCompilationSyntaxFacts)base.SyntaxFacts;
+        public new TestIncrementalCompilationSymbolFacts SymbolFacts => (TestIncrementalCompilationSymbolFacts)base.SymbolFacts;
+        internal new TestIncrementalCompilationInternalSyntaxFactory InternalSyntaxFactory => (TestIncrementalCompilationInternalSyntaxFactory)base.InternalSyntaxFactory;
+        public new TestIncrementalCompilationSyntaxFactory SyntaxFactory => (TestIncrementalCompilationSyntaxFactory)base.SyntaxFactory;
+        public new TestIncrementalCompilationCompilationFactory CompilationFactory => (TestIncrementalCompilationCompilationFactory)base.CompilationFactory;
+        protected override LanguageServices CreateLanguageServices()
+        {
+            return new TestIncrementalCompilationLanguageServices();
+        }
     }
 }
 

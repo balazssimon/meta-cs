@@ -11691,8 +11691,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations
 			: base(internalSyntaxFactory)
 		{
 		}
-		public new TestLanguageAnnotationsLanguage Language => TestLanguageAnnotationsLanguage.Instance;
-		protected override Language LanguageCore => this.Language;
+	    public new TestLanguageAnnotationsLanguage Language => TestLanguageAnnotationsLanguage.Instance;
+	    protected override Language LanguageCore => this.Language;
 	    public override LanguageParseOptions DefaultParseOptions => TestLanguageAnnotationsParseOptions.Default;
 		/// <summary>
 		/// Create a new syntax tree from a syntax node.

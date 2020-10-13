@@ -211,6 +211,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                 while(!reader.EndOfStream)
                 {
                     var line = reader.ReadLine();
+                    if (line.Contains("global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParser")) return;
                     if (line.Contains(": Parser {"))
                     {
                         line = line.Replace(": Parser {", $": global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParser {{\r\n    private {LanguageName}SyntaxParser SyntaxParser => ({LanguageName}SyntaxParser)this.IncrementalAntlr4Parser;");
@@ -515,6 +516,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                 Directory.CreateDirectory(Path.Combine(this.HiddenOutputDirectory, @"Compilation"));
                 Directory.CreateDirectory(Path.Combine(this.HiddenOutputDirectory, @"Binding"));
                 Directory.CreateDirectory(Path.Combine(this.HiddenOutputDirectory, @"Symbols"));
+                Directory.CreateDirectory(Path.Combine(this.OutputDirectory, @"Compilation"));
+
                 this.GenerateOutputFile(Path.Combine(this.InternalSyntaxDirectory, this.LanguageName + "InternalSyntax.cs"), this.GeneratedInternalSyntax);
                 this.GenerateOutputFile(Path.Combine(this.SyntaxDirectory, this.LanguageName + "SyntaxKind.Nodes.cs"), this.GeneratedSyntaxKind);
                 this.GenerateOutputFile(Path.Combine(this.SyntaxDirectory, this.LanguageName + "SyntaxFacts.Nodes.cs"), this.GeneratedNodeSyntaxFacts);

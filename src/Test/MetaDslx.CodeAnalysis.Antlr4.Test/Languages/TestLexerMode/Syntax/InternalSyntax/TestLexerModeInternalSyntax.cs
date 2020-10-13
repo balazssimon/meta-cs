@@ -18014,8 +18014,6 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.Intern
 			return new TestLexerModeSyntaxParser(text, (TestLexerModeParseOptions)options ?? TestLexerModeParseOptions.Default, (TestLexerModeSyntaxNode)oldTree, changes, cancellationToken);
 		}
 	
-	    public override Language Language => TestLexerModeLanguage.Instance;
-	
 		private TestLexerModeSyntaxKind ToTestLexerModeSyntaxKind(SyntaxKind kind)
 	    {
 	        return kind.CastUnsafe<TestLexerModeSyntaxKind>();

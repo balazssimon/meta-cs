@@ -29,6 +29,9 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations
         {
         }
 
+        public new TestLanguageAnnotationsLanguage Language => TestLanguageAnnotationsLanguage.Instance;
+        protected override Language LanguageCore => this.Language;
+
         /// <summary>
         /// Default compilation options for the TestLanguageAnnotations language
         /// </summary>
@@ -74,8 +77,8 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations
             IEnumerable<MetadataReference> references = null,
             LanguageCompilationOptions options = null,
             LanguageCompilation previousScriptCompilation = null,
-            System.Type returnType = null,
-            System.Type globalsType = null)
+            global::System.Type returnType = null,
+            global::System.Type globalsType = null)
         {
             return TestLanguageAnnotationsCompilation.CreateScriptCompilation(assemblyName, syntaxTree, references, (TestLanguageAnnotationsCompilationOptions)options, (TestLanguageAnnotationsCompilation)previousScriptCompilation, returnType, globalsType);
         }
