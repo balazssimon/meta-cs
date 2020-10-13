@@ -14,7 +14,7 @@
     <Authors>Balazs Simon</Authors>
     <PackageId>MetaDslx.BuildTasks</PackageId>
     <PackageDescription>
-      MSBuild tooling for the MetaDslx metamodeling platform.
+      MSBuild tasks for the MetaDslx metamodeling platform.
     </PackageDescription>
     <PackageLicenseFile>license.txt</PackageLicenseFile>
     <PackageOutputPath>..\..\..\..\..\nuget\</PackageOutputPath>
