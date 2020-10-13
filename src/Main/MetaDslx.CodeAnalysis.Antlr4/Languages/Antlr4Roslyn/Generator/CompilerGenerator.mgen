@@ -2801,9 +2801,6 @@ internal class [lang]InternalSyntaxFactory : InternalSyntaxFactory, MetaDslx.Lan
 		return new [lang]SyntaxParser(text, ([lang]ParseOptions)options ?? [lang]ParseOptions.Default, ([lang]SyntaxNode)oldTree, changes, cancellationToken);
 	}
 ^
-    public new [lang]Language Language => [lang]Language.Instance;
-    protected override Language LanguageCore => this.Language;
-^
 	private [lang]SyntaxKind To[lang]SyntaxKind(SyntaxKind kind)
     {
         return kind.CastUnsafe<[lang]SyntaxKind>();
@@ -3530,9 +3527,6 @@ namespace [Properties.DefaultNamespace].Syntax
             : base(syntaxKindType)
         {
         }
-^
-        public new [lang]Language Language => [lang]Language.Instance;
-        protected override Language LanguageCore => this.Language;
 ^
         public override SyntaxKind DefaultWhitespaceKind => ([syntaxKind])[syntaxKind].[Instances.DefaultWhitespaceKind.PlainName()];
         public override SyntaxKind DefaultEndOfLineKind => ([syntaxKind])[syntaxKind].[Instances.DefaultEndOfLineKind.PlainName()];
@@ -6009,8 +6003,6 @@ namespace [Properties.DefaultNamespace].Symbols
 {
     public class [lang]SymbolFacts : SymbolFacts
     {
-        public new [lang]Language Language => [lang]Language.Instance;
-        protected override Language LanguageCore => this.Language;
     }
 }
 end template

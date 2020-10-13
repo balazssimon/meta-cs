@@ -7423,9 +7423,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			return new MetaSyntaxParser(text, (MetaParseOptions)options ?? MetaParseOptions.Default, (MetaSyntaxNode)oldTree, changes, cancellationToken);
 		}
 	
-	    public new MetaLanguage Language => MetaLanguage.Instance;
-	    protected override Language LanguageCore => this.Language;
-	
 		private MetaSyntaxKind ToMetaSyntaxKind(SyntaxKind kind)
 	    {
 	        return kind.CastUnsafe<MetaSyntaxKind>();

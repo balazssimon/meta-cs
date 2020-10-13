@@ -15,13 +15,16 @@ using System.Threading;
 
 namespace MetaDslx.CodeAnalysis
 {
-    public abstract class CompilationFactory : LanguageService
+    public abstract class CompilationFactory
     {
         private CompletionGraph _lazyCompletionGraph;
 
         public CompilationFactory()
         {
         }
+
+        public Language Language => this.LanguageCore;
+        protected abstract Language LanguageCore { get; }
 
         public abstract LanguageCompilationOptions DefaultCompilationOptions { get; }
         public abstract LanguageCompilationOptions DefaultSubmissionOptions { get; }

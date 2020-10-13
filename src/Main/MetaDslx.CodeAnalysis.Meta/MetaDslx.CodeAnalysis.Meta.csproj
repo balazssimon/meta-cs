@@ -12,8 +12,8 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <MetaDslxCompileMetaModelCore>true</MetaDslxCompileMetaModelCore>
     <MetaDslxMetaModelCoreNamespace>MetaDslx.Languages.Meta.Model</MetaDslxMetaModelCoreNamespace>
-    <MetaDslxDisableMetaModelGenerator>true</MetaDslxDisableMetaModelGenerator>
-    <MetaDslxDisableMetaGeneratorGenerator>true</MetaDslxDisableMetaGeneratorGenerator>
+    <MetaDslxDisableMetaModelGenerator>false</MetaDslxDisableMetaModelGenerator>
+    <MetaDslxDisableMetaGeneratorGenerator>false</MetaDslxDisableMetaGeneratorGenerator>
   </PropertyGroup>
 
   <ItemGroup>
@@ -30,6 +30,15 @@
   <ItemGroup>
     <ProjectReference Include="..\MetaDslx.CodeAnalysis.Common\MetaDslx.CodeAnalysis.Common.csproj" PrivateAssets="all" />
     <ProjectReference Include="..\MetaDslx.CodeAnalysis.CSharp\MetaDslx.CodeAnalysis.CSharp.csproj" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <MetaGenerator Update="Languages\Meta\Generator\ImmutableMetaModelGenerator.mgen">
+      <OutputLocation>CurrentDirectory</OutputLocation>
+    </MetaGenerator>
+    <MetaGenerator Update="Languages\Meta\Generator\MetaModelGenerator.mgen">
+      <OutputLocation>CurrentDirectory</OutputLocation>
+    </MetaGenerator>
   </ItemGroup>
 
   <ItemGroup>

@@ -10,7 +10,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
     using CSharpSymbolKind = Microsoft.CodeAnalysis.SymbolKind;
     using CSharpTypeKind = Microsoft.CodeAnalysis.TypeKind;
 
-    public abstract class SymbolFacts : LanguageService
+    public abstract class SymbolFacts
     {
         public virtual string AttributeNameSuffix => "Attribute";
 

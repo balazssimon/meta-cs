@@ -66,9 +66,6 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax
         {
         }
 
-        public new Language Language => Language.None;
-        protected override Language LanguageCore => this.Language;
-
         public override SyntaxKind DefaultWhitespaceKind => (Antlr4RoslynTokensSyntaxKind)Antlr4RoslynTokensSyntaxKind.WS;
         public override SyntaxKind DefaultEndOfLineKind => (Antlr4RoslynTokensSyntaxKind)Antlr4RoslynTokensSyntaxKind.WS;
         public override SyntaxKind DefaultSeparatorKind => (Antlr4RoslynTokensSyntaxKind)Antlr4RoslynTokensSyntaxKind.COMMA;

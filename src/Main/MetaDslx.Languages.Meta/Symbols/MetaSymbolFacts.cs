@@ -15,8 +15,6 @@ namespace MetaDslx.Languages.Meta.Symbols
 {
     public class MetaSymbolFacts : SymbolFacts
     {
-        public new MetaLanguage Language => MetaLanguage.Instance;
-        protected override Language LanguageCore => this.Language;
     }
 }
 

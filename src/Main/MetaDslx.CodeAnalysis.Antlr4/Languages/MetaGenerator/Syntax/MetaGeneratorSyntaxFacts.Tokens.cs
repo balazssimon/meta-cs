@@ -58,9 +58,6 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
         {
         }
 
-		public new Language Language => Language.None;
-		protected override Language LanguageCore => this.Language;
-
         public override SyntaxKind DefaultWhitespaceKind => (MetaGeneratorTokensSyntaxKind)MetaGeneratorTokensSyntaxKind.LWhitespace;
         public override SyntaxKind DefaultEndOfLineKind => (MetaGeneratorTokensSyntaxKind)MetaGeneratorTokensSyntaxKind.LCrLf;
         public override SyntaxKind DefaultSeparatorKind => (MetaGeneratorTokensSyntaxKind)MetaGeneratorTokensSyntaxKind.TComma;
