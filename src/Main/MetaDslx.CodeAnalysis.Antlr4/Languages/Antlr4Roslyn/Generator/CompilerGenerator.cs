@@ -12060,7 +12060,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             }
             __out.Append("            {"); //1233:1
             __out.AppendLine(false); //1233:14
-            __out.Append("				if (token == null || (token.Type == TokenConstants.Eof && kind != SyntaxKind.Eof))"); //1234:1
+            __out.Append("				if (token == null || (token.Type == TokenConstants.EOF && kind != SyntaxKind.Eof))"); //1234:1
             __out.AppendLine(false); //1234:87
             __out.Append("				{"); //1235:1
             __out.AppendLine(false); //1235:6
@@ -12123,7 +12123,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             }
             __out.Append("            {"); //1248:1
             __out.AppendLine(false); //1248:14
-            __out.Append("                if (node == null || node.Symbol == null || (node.Symbol.Type == TokenConstants.Eof && kind != SyntaxKind.Eof))"); //1249:1
+            __out.Append("                if (node == null || node.Symbol == null || (node.Symbol.Type == TokenConstants.EOF && kind != SyntaxKind.Eof))"); //1249:1
             __out.AppendLine(false); //1249:127
             __out.Append("				{"); //1250:1
             __out.AppendLine(false); //1250:6

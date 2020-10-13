@@ -12,13 +12,6 @@ using System.Text.RegularExpressions;
 
 namespace MetaDslx.BuildTasks
 {
-    public enum OutputLocation
-    {
-        CustomDirectory,
-        IntermediateDirectory,
-        CurrentDirectory
-    }
-
     public abstract class MetaDslxBuildTask : BuildToolTask
     {
         private List<string> _generatedCodeFiles = new List<string>();
@@ -72,8 +65,9 @@ namespace MetaDslx.BuildTasks
             if (!match.Success) return false;
 
             string filePath = match.Groups["FILEPATH"].Value;
-            if (Path.GetExtension(filePath) == ".cs")
+            if (File.Exists(filePath) && Path.GetExtension(filePath) == ".cs")
             {
+                filePath = Path.GetFullPath(filePath);
                 if (_fullIntermediatePath != null && filePath.StartsWith(_fullIntermediatePath))
                 {
                     _generatedIntermediateCodeFiles.Add(filePath);

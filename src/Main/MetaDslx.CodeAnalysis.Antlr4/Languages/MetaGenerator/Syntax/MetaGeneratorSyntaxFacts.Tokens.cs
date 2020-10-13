@@ -4,10 +4,9 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Syntax;
 using Roslyn.Utilities;
-using MetaDslx.CodeAnalysis;
 
 namespace MetaDslx.Languages.MetaGenerator.Syntax
 {
@@ -59,7 +58,8 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
         {
         }
 
-        protected override Language LanguageCore => throw new NotImplementedException();
+		public new Language Language => Language.None;
+		protected override Language LanguageCore => this.Language;
 
         public override SyntaxKind DefaultWhitespaceKind => (MetaGeneratorTokensSyntaxKind)MetaGeneratorTokensSyntaxKind.LWhitespace;
         public override SyntaxKind DefaultEndOfLineKind => (MetaGeneratorTokensSyntaxKind)MetaGeneratorTokensSyntaxKind.LCrLf;

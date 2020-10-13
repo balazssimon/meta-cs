@@ -30,7 +30,7 @@ namespace MetaDslx.BuildTasks
 
         public string ManualOutputDirectory { get; set; }
         public string AutomaticOutputDirectory { get; set; }
-        public OutputLocation AutomaticOutputLocation { get; set; }
+        public string AutomaticOutputLocation { get; set; }
 
 
         protected override void AddSubArguments(List<string> arguments)
@@ -60,10 +60,10 @@ namespace MetaDslx.BuildTasks
                 arguments.Add("--automatic-output-directory");
                 arguments.Add(AutomaticOutputDirectory);
             }
-            else if (AutomaticOutputLocation == OutputLocation.CurrentDirectory)
+            else if (AutomaticOutputLocation == "CurrentDirectory")
             {
                 arguments.Add("--automatic-output-location");
-                arguments.Add(AutomaticOutputLocation.ToString());
+                arguments.Add(AutomaticOutputLocation);
             }
         }
     }

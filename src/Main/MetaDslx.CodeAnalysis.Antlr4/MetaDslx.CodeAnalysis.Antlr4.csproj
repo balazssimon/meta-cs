@@ -42,7 +42,7 @@
 
   <ItemGroup>
     <MetaGenerator Update="Languages\Antlr4Roslyn\Generator\CompilerGenerator.mgen">
-      <AutomaticOutputLocation>CurrentDirectory</AutomaticOutputLocation>
+      <OutputLocation>CurrentDirectory</OutputLocation>
     </MetaGenerator>
   </ItemGroup>
 

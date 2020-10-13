@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from MetaGeneratorParser.g4 by ANTLR 4.8
+// Generated from C:\Users\Balazs\source\repos\meta-cs\src\Main\MetaDslx.CodeAnalysis.Antlr4\Languages\MetaGenerator\Syntax\InternalSyntax\MetaGeneratorParser.g4 by ANTLR 4.8
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -235,14 +235,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_main; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterMain(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitMain(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitMain(this);
@@ -320,14 +312,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_namespaceDeclaration; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterNamespaceDeclaration(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitNamespaceDeclaration(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitNamespaceDeclaration(this);
@@ -377,14 +361,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_generatorDeclaration; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterGeneratorDeclaration(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitGeneratorDeclaration(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitGeneratorDeclaration(this);
@@ -455,14 +431,6 @@ public partial class MetaGeneratorParser : Parser {
 		}
 		public ITerminalNode TSemicolon() { return GetToken(MetaGeneratorParser.TSemicolon, 0); }
 		public UsingNamespaceDeclarationContext(UsingDeclarationContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterUsingNamespaceDeclaration(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitUsingNamespaceDeclaration(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitUsingNamespaceDeclaration(this);
@@ -480,14 +448,6 @@ public partial class MetaGeneratorParser : Parser {
 			return GetRuleContext<IdentifierContext>(0);
 		}
 		public UsingGeneratorDeclarationContext(UsingDeclarationContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterUsingGeneratorDeclaration(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitUsingGeneratorDeclaration(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitUsingGeneratorDeclaration(this);
@@ -567,14 +527,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_configDeclaration; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterConfigDeclaration(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitConfigDeclaration(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitConfigDeclaration(this);
@@ -658,14 +610,6 @@ public partial class MetaGeneratorParser : Parser {
 			return GetRuleContext<ConfigPropertyContext>(i);
 		}
 		public ConfigPropertyGroupDeclarationContext(ConfigPropertyContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterConfigPropertyGroupDeclaration(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitConfigPropertyGroupDeclaration(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitConfigPropertyGroupDeclaration(this);
@@ -685,14 +629,6 @@ public partial class MetaGeneratorParser : Parser {
 			return GetRuleContext<ExpressionContext>(0);
 		}
 		public ConfigPropertyDeclarationContext(ConfigPropertyContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterConfigPropertyDeclaration(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitConfigPropertyDeclaration(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitConfigPropertyDeclaration(this);
@@ -796,14 +732,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_methodDeclaration; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterMethodDeclaration(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitMethodDeclaration(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitMethodDeclaration(this);
@@ -862,14 +790,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_externFunctionDeclaration; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterExternFunctionDeclaration(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitExternFunctionDeclaration(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitExternFunctionDeclaration(this);
@@ -913,14 +833,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_functionDeclaration; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterFunctionDeclaration(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitFunctionDeclaration(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitFunctionDeclaration(this);
@@ -973,14 +885,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_functionSignature; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterFunctionSignature(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitFunctionSignature(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitFunctionSignature(this);
@@ -1048,14 +952,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_paramList; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterParamList(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitParamList(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitParamList(this);
@@ -1115,14 +1011,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_parameter; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterParameter(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitParameter(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitParameter(this);
@@ -1175,14 +1063,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_body; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterBody(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitBody(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitBody(this);
@@ -1253,14 +1133,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_statement; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterStatement(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitStatement(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitStatement(this);
@@ -1390,14 +1262,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_singleStatement; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterSingleStatement(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitSingleStatement(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitSingleStatement(this);
@@ -1454,14 +1318,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_singleStatementSemicolon; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterSingleStatementSemicolon(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitSingleStatementSemicolon(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitSingleStatementSemicolon(this);
@@ -1500,14 +1356,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_variableDeclarationStatement; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterVariableDeclarationStatement(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitVariableDeclarationStatement(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitVariableDeclarationStatement(this);
@@ -1555,14 +1403,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_variableDeclarationExpression; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterVariableDeclarationExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitVariableDeclarationExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitVariableDeclarationExpression(this);
@@ -1620,14 +1460,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_variableDeclarationItem; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterVariableDeclarationItem(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitVariableDeclarationItem(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitVariableDeclarationItem(this);
@@ -1677,14 +1509,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_voidStatement; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterVoidStatement(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitVoidStatement(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitVoidStatement(this);
@@ -1724,14 +1548,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_returnStatement; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterReturnStatement(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitReturnStatement(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitReturnStatement(this);
@@ -1770,14 +1586,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_expressionStatement; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterExpressionStatement(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitExpressionStatement(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitExpressionStatement(this);
@@ -1830,14 +1638,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_ifStatement; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterIfStatement(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitIfStatement(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitIfStatement(this);
@@ -1906,14 +1706,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_elseIfStatementBody; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterElseIfStatementBody(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitElseIfStatementBody(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitElseIfStatementBody(this);
@@ -1955,14 +1747,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_ifStatementElseBody; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterIfStatementElseBody(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitIfStatementElseBody(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitIfStatementElseBody(this);
@@ -2004,14 +1788,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_ifStatementBegin; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterIfStatementBegin(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitIfStatementBegin(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitIfStatementBegin(this);
@@ -2056,14 +1832,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_elseIfStatement; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterElseIfStatement(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitElseIfStatement(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitElseIfStatement(this);
@@ -2103,14 +1871,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_ifStatementElse; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterIfStatementElse(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitIfStatementElse(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitIfStatementElse(this);
@@ -2147,14 +1907,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_ifStatementEnd; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterIfStatementEnd(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitIfStatementEnd(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitIfStatementEnd(this);
@@ -2199,14 +1951,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_forStatement; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterForStatement(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitForStatement(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitForStatement(this);
@@ -2263,14 +2007,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_forStatementBegin; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterForStatementBegin(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitForStatementBegin(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitForStatementBegin(this);
@@ -2339,14 +2075,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_forStatementEnd; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterForStatementEnd(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitForStatementEnd(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitForStatementEnd(this);
@@ -2388,14 +2116,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_forInitStatement; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterForInitStatement(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitForInitStatement(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitForInitStatement(this);
@@ -2451,14 +2171,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_whileStatement; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterWhileStatement(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitWhileStatement(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitWhileStatement(this);
@@ -2501,14 +2213,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_whileStatementBegin; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterWhileStatementBegin(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitWhileStatementBegin(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitWhileStatementBegin(this);
@@ -2548,14 +2252,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_whileStatementEnd; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterWhileStatementEnd(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitWhileStatementEnd(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitWhileStatementEnd(this);
@@ -2594,14 +2290,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_whileRunExpression; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterWhileRunExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitWhileRunExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitWhileRunExpression(this);
@@ -2645,14 +2333,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_repeatStatement; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterRepeatStatement(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitRepeatStatement(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitRepeatStatement(this);
@@ -2690,14 +2370,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_repeatStatementBegin; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterRepeatStatementBegin(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitRepeatStatementBegin(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitRepeatStatementBegin(this);
@@ -2738,14 +2410,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_repeatStatementEnd; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterRepeatStatementEnd(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitRepeatStatementEnd(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitRepeatStatementEnd(this);
@@ -2786,14 +2450,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_repeatRunExpression; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterRepeatRunExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitRepeatRunExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitRepeatRunExpression(this);
@@ -2837,14 +2493,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_loopStatement; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterLoopStatement(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitLoopStatement(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitLoopStatement(this);
@@ -2893,14 +2541,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_loopStatementBegin; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterLoopStatementBegin(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitLoopStatementBegin(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitLoopStatementBegin(this);
@@ -2959,14 +2599,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_loopStatementEnd; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterLoopStatementEnd(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitLoopStatementEnd(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitLoopStatementEnd(this);
@@ -3012,14 +2644,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_loopChain; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterLoopChain(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitLoopChain(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitLoopChain(this);
@@ -3079,14 +2703,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_loopChainItem; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterLoopChainItem(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitLoopChainItem(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitLoopChainItem(this);
@@ -3158,14 +2774,6 @@ public partial class MetaGeneratorParser : Parser {
 			return GetRuleContext<TypeArgumentListContext>(0);
 		}
 		public LoopChainMemberAccessExpressionContext(LoopChainExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterLoopChainMemberAccessExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitLoopChainMemberAccessExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitLoopChainMemberAccessExpression(this);
@@ -3182,14 +2790,6 @@ public partial class MetaGeneratorParser : Parser {
 			return GetRuleContext<ExpressionListContext>(0);
 		}
 		public LoopChainMethodCallExpressionContext(LoopChainExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterLoopChainMethodCallExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitLoopChainMethodCallExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitLoopChainMethodCallExpression(this);
@@ -3204,14 +2804,6 @@ public partial class MetaGeneratorParser : Parser {
 			return GetRuleContext<TypeArgumentListContext>(0);
 		}
 		public LoopChainIdentifierExpressionContext(LoopChainExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterLoopChainIdentifierExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitLoopChainIdentifierExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitLoopChainIdentifierExpression(this);
@@ -3226,14 +2818,6 @@ public partial class MetaGeneratorParser : Parser {
 		}
 		public ITerminalNode TCloseParenthesis() { return GetToken(MetaGeneratorParser.TCloseParenthesis, 0); }
 		public LoopChainTypeofExpressionContext(LoopChainExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterLoopChainTypeofExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitLoopChainTypeofExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitLoopChainTypeofExpression(this);
@@ -3374,14 +2958,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_loopWhereExpression; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterLoopWhereExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitLoopWhereExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitLoopWhereExpression(this);
@@ -3420,14 +2996,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_loopRunExpression; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterLoopRunExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitLoopRunExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitLoopRunExpression(this);
@@ -3471,14 +3039,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_separatorStatement; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterSeparatorStatement(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitSeparatorStatement(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitSeparatorStatement(this);
@@ -3532,14 +3092,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_switchStatement; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterSwitchStatement(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitSwitchStatement(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitSwitchStatement(this);
@@ -3604,14 +3156,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_switchStatementBegin; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterSwitchStatementBegin(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitSwitchStatementBegin(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitSwitchStatementBegin(this);
@@ -3651,14 +3195,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_switchStatementEnd; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterSwitchStatementEnd(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitSwitchStatementEnd(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitSwitchStatementEnd(this);
@@ -3700,14 +3236,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_switchBranchStatement; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterSwitchBranchStatement(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitSwitchBranchStatement(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitSwitchBranchStatement(this);
@@ -3749,14 +3277,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_switchBranchHeadStatement; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterSwitchBranchHeadStatement(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitSwitchBranchHeadStatement(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitSwitchBranchHeadStatement(this);
@@ -3809,14 +3329,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_switchCaseOrTypeIsHeadStatements; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterSwitchCaseOrTypeIsHeadStatements(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitSwitchCaseOrTypeIsHeadStatements(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitSwitchCaseOrTypeIsHeadStatements(this);
@@ -3876,14 +3388,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_switchCaseOrTypeIsHeadStatement; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterSwitchCaseOrTypeIsHeadStatement(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitSwitchCaseOrTypeIsHeadStatement(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitSwitchCaseOrTypeIsHeadStatement(this);
@@ -3937,14 +3441,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_switchCaseHeadStatement; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterSwitchCaseHeadStatement(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitSwitchCaseHeadStatement(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitSwitchCaseHeadStatement(this);
@@ -3987,14 +3483,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_switchTypeIsHeadStatement; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterSwitchTypeIsHeadStatement(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitSwitchTypeIsHeadStatement(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitSwitchTypeIsHeadStatement(this);
@@ -4038,14 +3526,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_switchTypeAsHeadStatement; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterSwitchTypeAsHeadStatement(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitSwitchTypeAsHeadStatement(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitSwitchTypeAsHeadStatement(this);
@@ -4089,14 +3569,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_switchDefaultStatement; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterSwitchDefaultStatement(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitSwitchDefaultStatement(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitSwitchDefaultStatement(this);
@@ -4134,14 +3606,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_switchDefaultHeadStatement; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterSwitchDefaultHeadStatement(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitSwitchDefaultHeadStatement(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitSwitchDefaultHeadStatement(this);
@@ -4184,14 +3648,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_templateDeclaration; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterTemplateDeclaration(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitTemplateDeclaration(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitTemplateDeclaration(this);
@@ -4237,14 +3693,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_templateSignature; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterTemplateSignature(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitTemplateSignature(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitTemplateSignature(this);
@@ -4298,14 +3746,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_templateBody; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterTemplateBody(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitTemplateBody(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitTemplateBody(this);
@@ -4362,14 +3802,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_templateContentLine; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterTemplateContentLine(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitTemplateContentLine(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitTemplateContentLine(this);
@@ -4424,14 +3856,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_templateContent; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterTemplateContent(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitTemplateContent(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitTemplateContent(this);
@@ -4481,14 +3905,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_templateOutput; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterTemplateOutput(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitTemplateOutput(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitTemplateOutput(this);
@@ -4526,14 +3942,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_templateLineEnd; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterTemplateLineEnd(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitTemplateLineEnd(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitTemplateLineEnd(this);
@@ -4582,14 +3990,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_templateStatementStartEnd; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterTemplateStatementStartEnd(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitTemplateStatementStartEnd(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitTemplateStatementStartEnd(this);
@@ -4692,14 +4092,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_templateStatement; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterTemplateStatement(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitTemplateStatement(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitTemplateStatement(this);
@@ -4853,14 +4245,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_typeArgumentList; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterTypeArgumentList(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitTypeArgumentList(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitTypeArgumentList(this);
@@ -4912,14 +4296,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_predefinedType; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterPredefinedType(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitPredefinedType(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitPredefinedType(this);
@@ -4973,14 +4349,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_typeReferenceList; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterTypeReferenceList(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitTypeReferenceList(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitTypeReferenceList(this);
@@ -5042,14 +4410,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_typeReference; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterTypeReference(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitTypeReference(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitTypeReference(this);
@@ -5114,14 +4474,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_arrayType; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterArrayType(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitArrayType(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitArrayType(this);
@@ -5166,14 +4518,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_arrayItemType; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterArrayItemType(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitArrayItemType(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitArrayItemType(this);
@@ -5230,14 +4574,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_nullableType; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterNullableType(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitNullableType(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitNullableType(this);
@@ -5279,14 +4615,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_nullableItemType; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterNullableItemType(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitNullableItemType(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitNullableItemType(this);
@@ -5339,14 +4667,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_genericType; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterGenericType(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitGenericType(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitGenericType(this);
@@ -5388,14 +4708,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_simpleType; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterSimpleType(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitSimpleType(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitSimpleType(this);
@@ -5459,14 +4771,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_voidType; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterVoidType(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitVoidType(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitVoidType(this);
@@ -5507,14 +4811,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_returnType; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterReturnType(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitReturnType(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitReturnType(this);
@@ -5588,14 +4884,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_expressionList; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterExpressionList(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitExpressionList(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitExpressionList(this);
@@ -5648,14 +4936,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_variableReference; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterVariableReference(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitVariableReference(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitVariableReference(this);
@@ -5696,14 +4976,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_rankSpecifiers; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterRankSpecifiers(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitRankSpecifiers(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitRankSpecifiers(this);
@@ -5763,14 +5035,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_rankSpecifier; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterRankSpecifier(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitRankSpecifier(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitRankSpecifier(this);
@@ -5830,14 +5094,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_unboundTypeName; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterUnboundTypeName(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitUnboundTypeName(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitUnboundTypeName(this);
@@ -5893,14 +5149,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_genericDimensionItem; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterGenericDimensionItem(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitGenericDimensionItem(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitGenericDimensionItem(this);
@@ -5951,14 +5199,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_genericDimensionSpecifier; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterGenericDimensionSpecifier(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitGenericDimensionSpecifier(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitGenericDimensionSpecifier(this);
@@ -6019,14 +5259,6 @@ public partial class MetaGeneratorParser : Parser {
 			return GetRuleContext<ImplicitParameterContext>(0);
 		}
 		public SingleParamAnonymousFunctionSignatureContext(AnonymousFunctionSignatureContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterSingleParamAnonymousFunctionSignature(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitSingleParamAnonymousFunctionSignature(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitSingleParamAnonymousFunctionSignature(this);
@@ -6047,14 +5279,6 @@ public partial class MetaGeneratorParser : Parser {
 			return GetToken(MetaGeneratorParser.TComma, i);
 		}
 		public ImplicitAnonymousFunctionSignatureContext(AnonymousFunctionSignatureContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterImplicitAnonymousFunctionSignature(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitImplicitAnonymousFunctionSignature(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitImplicitAnonymousFunctionSignature(this);
@@ -6075,14 +5299,6 @@ public partial class MetaGeneratorParser : Parser {
 			return GetToken(MetaGeneratorParser.TComma, i);
 		}
 		public ExplicitAnonymousFunctionSignatureContext(AnonymousFunctionSignatureContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterExplicitAnonymousFunctionSignature(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitExplicitAnonymousFunctionSignature(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitExplicitAnonymousFunctionSignature(this);
@@ -6193,14 +5409,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_explicitParameter; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterExplicitParameter(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitExplicitParameter(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitExplicitParameter(this);
@@ -6239,14 +5447,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_implicitParameter; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterImplicitParameter(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitImplicitParameter(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitImplicitParameter(this);
@@ -6295,14 +5495,6 @@ public partial class MetaGeneratorParser : Parser {
 		}
 		public ITerminalNode TCloseParenthesis() { return GetToken(MetaGeneratorParser.TCloseParenthesis, 0); }
 		public TypeofUnboundTypeExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterTypeofUnboundTypeExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitTypeofUnboundTypeExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitTypeofUnboundTypeExpression(this);
@@ -6322,14 +5514,6 @@ public partial class MetaGeneratorParser : Parser {
 		public ITerminalNode TPlus() { return GetToken(MetaGeneratorParser.TPlus, 0); }
 		public ITerminalNode TMinus() { return GetToken(MetaGeneratorParser.TMinus, 0); }
 		public AdditionExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterAdditionExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitAdditionExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitAdditionExpression(this);
@@ -6348,14 +5532,6 @@ public partial class MetaGeneratorParser : Parser {
 		public ITerminalNode KIs() { return GetToken(MetaGeneratorParser.KIs, 0); }
 		public ITerminalNode KAs() { return GetToken(MetaGeneratorParser.KAs, 0); }
 		public TypecheckExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterTypecheckExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitTypecheckExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitTypecheckExpression(this);
@@ -6377,14 +5553,6 @@ public partial class MetaGeneratorParser : Parser {
 		public ITerminalNode TLessThanOrEquals() { return GetToken(MetaGeneratorParser.TLessThanOrEquals, 0); }
 		public ITerminalNode TGreaterThanOrEquals() { return GetToken(MetaGeneratorParser.TGreaterThanOrEquals, 0); }
 		public RelationalExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterRelationalExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitRelationalExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitRelationalExpression(this);
@@ -6399,14 +5567,6 @@ public partial class MetaGeneratorParser : Parser {
 			return GetRuleContext<TypeArgumentListContext>(0);
 		}
 		public IdentifierExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterIdentifierExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitIdentifierExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitIdentifierExpression(this);
@@ -6421,14 +5581,6 @@ public partial class MetaGeneratorParser : Parser {
 		public ITerminalNode TPlusPlus() { return GetToken(MetaGeneratorParser.TPlusPlus, 0); }
 		public ITerminalNode TMinusMinus() { return GetToken(MetaGeneratorParser.TMinusMinus, 0); }
 		public PostExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterPostExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitPostExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitPostExpression(this);
@@ -6441,14 +5593,6 @@ public partial class MetaGeneratorParser : Parser {
 		public ITerminalNode KVoid() { return GetToken(MetaGeneratorParser.KVoid, 0); }
 		public ITerminalNode TCloseParenthesis() { return GetToken(MetaGeneratorParser.TCloseParenthesis, 0); }
 		public TypeofVoidExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterTypeofVoidExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitTypeofVoidExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitTypeofVoidExpression(this);
@@ -6462,14 +5606,6 @@ public partial class MetaGeneratorParser : Parser {
 		}
 		public ITerminalNode TCloseParenthesis() { return GetToken(MetaGeneratorParser.TCloseParenthesis, 0); }
 		public ParenthesizedExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterParenthesizedExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitParenthesizedExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitParenthesizedExpression(this);
@@ -6487,14 +5623,6 @@ public partial class MetaGeneratorParser : Parser {
 			return GetRuleContext<ExpressionContext>(i);
 		}
 		public BitwiseAndExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterBitwiseAndExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitBitwiseAndExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitBitwiseAndExpression(this);
@@ -6512,14 +5640,6 @@ public partial class MetaGeneratorParser : Parser {
 			return GetRuleContext<ExpressionContext>(i);
 		}
 		public LogicalAndExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterLogicalAndExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitLogicalAndExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitLogicalAndExpression(this);
@@ -6536,14 +5656,6 @@ public partial class MetaGeneratorParser : Parser {
 			return GetRuleContext<ExpressionListContext>(0);
 		}
 		public FunctionCallExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterFunctionCallExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitFunctionCallExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitFunctionCallExpression(this);
@@ -6562,14 +5674,6 @@ public partial class MetaGeneratorParser : Parser {
 			return GetRuleContext<TypeArgumentListContext>(0);
 		}
 		public MemberAccessExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterMemberAccessExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitMemberAccessExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitMemberAccessExpression(this);
@@ -6588,14 +5692,6 @@ public partial class MetaGeneratorParser : Parser {
 		public ITerminalNode TPlusPlus() { return GetToken(MetaGeneratorParser.TPlusPlus, 0); }
 		public ITerminalNode TMinusMinus() { return GetToken(MetaGeneratorParser.TMinusMinus, 0); }
 		public UnaryExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterUnaryExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitUnaryExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitUnaryExpression(this);
@@ -6612,14 +5708,6 @@ public partial class MetaGeneratorParser : Parser {
 			return GetRuleContext<ExpressionContext>(0);
 		}
 		public TypecastExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterTypecastExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitTypecastExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitTypecastExpression(this);
@@ -6637,14 +5725,6 @@ public partial class MetaGeneratorParser : Parser {
 			return GetRuleContext<ExpressionContext>(i);
 		}
 		public LogicalXorExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterLogicalXorExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitLogicalXorExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitLogicalXorExpression(this);
@@ -6663,14 +5743,6 @@ public partial class MetaGeneratorParser : Parser {
 			return GetRuleContext<TypeArgumentListContext>(0);
 		}
 		public PredefinedTypeMemberAccessExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterPredefinedTypeMemberAccessExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitPredefinedTypeMemberAccessExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitPredefinedTypeMemberAccessExpression(this);
@@ -6688,14 +5760,6 @@ public partial class MetaGeneratorParser : Parser {
 			return GetRuleContext<ExpressionContext>(i);
 		}
 		public BitwiseXorExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterBitwiseXorExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitBitwiseXorExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitBitwiseXorExpression(this);
@@ -6711,14 +5775,6 @@ public partial class MetaGeneratorParser : Parser {
 			return GetRuleContext<ExpressionContext>(0);
 		}
 		public LambdaExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterLambdaExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitLambdaExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitLambdaExpression(this);
@@ -6733,14 +5789,6 @@ public partial class MetaGeneratorParser : Parser {
 		}
 		public ITerminalNode TCloseParenthesis() { return GetToken(MetaGeneratorParser.TCloseParenthesis, 0); }
 		public DefaultValueExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterDefaultValueExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitDefaultValueExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitDefaultValueExpression(this);
@@ -6760,14 +5808,6 @@ public partial class MetaGeneratorParser : Parser {
 			return GetRuleContext<ExpressionContext>(i);
 		}
 		public ConditionalExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterConditionalExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitConditionalExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitConditionalExpression(this);
@@ -6796,14 +5836,6 @@ public partial class MetaGeneratorParser : Parser {
 		public ITerminalNode TAssignLeftShift() { return GetToken(MetaGeneratorParser.TAssignLeftShift, 0); }
 		public ITerminalNode TAssignRightShift() { return GetToken(MetaGeneratorParser.TAssignRightShift, 0); }
 		public AssignmentExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterAssignmentExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitAssignmentExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitAssignmentExpression(this);
@@ -6824,14 +5856,6 @@ public partial class MetaGeneratorParser : Parser {
 		public ITerminalNode TSlash() { return GetToken(MetaGeneratorParser.TSlash, 0); }
 		public ITerminalNode TPercent() { return GetToken(MetaGeneratorParser.TPercent, 0); }
 		public MultiplicationExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterMultiplicationExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitMultiplicationExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitMultiplicationExpression(this);
@@ -6849,14 +5873,6 @@ public partial class MetaGeneratorParser : Parser {
 			return GetRuleContext<ExpressionListContext>(0);
 		}
 		public NewObjectOrCollectionWithConstructorExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterNewObjectOrCollectionWithConstructorExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitNewObjectOrCollectionWithConstructorExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitNewObjectOrCollectionWithConstructorExpression(this);
@@ -6874,14 +5890,6 @@ public partial class MetaGeneratorParser : Parser {
 			return GetRuleContext<ExpressionContext>(i);
 		}
 		public LogicalOrExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterLogicalOrExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitLogicalOrExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitLogicalOrExpression(this);
@@ -6899,14 +5907,6 @@ public partial class MetaGeneratorParser : Parser {
 			return GetRuleContext<ExpressionContext>(i);
 		}
 		public BitwiseOrExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterBitwiseOrExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitBitwiseOrExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitBitwiseOrExpression(this);
@@ -6924,14 +5924,6 @@ public partial class MetaGeneratorParser : Parser {
 			return GetRuleContext<LoopWhereExpressionContext>(0);
 		}
 		public HasLoopExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterHasLoopExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitHasLoopExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitHasLoopExpression(this);
@@ -6941,14 +5933,6 @@ public partial class MetaGeneratorParser : Parser {
 	public partial class ThisExpressionContext : ExpressionContext {
 		public ITerminalNode KThis() { return GetToken(MetaGeneratorParser.KThis, 0); }
 		public ThisExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterThisExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitThisExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitThisExpression(this);
@@ -6965,14 +5949,6 @@ public partial class MetaGeneratorParser : Parser {
 		}
 		public ITerminalNode TCloseBracket() { return GetToken(MetaGeneratorParser.TCloseBracket, 0); }
 		public ElementAccessExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterElementAccessExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitElementAccessExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitElementAccessExpression(this);
@@ -6987,14 +5963,6 @@ public partial class MetaGeneratorParser : Parser {
 		}
 		public ITerminalNode TCloseParenthesis() { return GetToken(MetaGeneratorParser.TCloseParenthesis, 0); }
 		public TypeofTypeExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterTypeofTypeExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitTypeofTypeExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitTypeofTypeExpression(this);
@@ -7014,14 +5982,6 @@ public partial class MetaGeneratorParser : Parser {
 		public ITerminalNode TEquals() { return GetToken(MetaGeneratorParser.TEquals, 0); }
 		public ITerminalNode TNotEquals() { return GetToken(MetaGeneratorParser.TNotEquals, 0); }
 		public EqualityExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterEqualityExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitEqualityExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitEqualityExpression(this);
@@ -7033,14 +5993,6 @@ public partial class MetaGeneratorParser : Parser {
 			return GetRuleContext<LiteralContext>(0);
 		}
 		public LiteralExpressionContext(ExpressionContext context) { CopyFrom(context); }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterLiteralExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitLiteralExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitLiteralExpression(this);
@@ -7570,14 +6522,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_qualifiedName; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterQualifiedName(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitQualifiedName(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitQualifiedName(this);
@@ -7639,14 +6583,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_identifierList; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterIdentifierList(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitIdentifierList(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitIdentifierList(this);
@@ -7697,14 +6633,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_identifier; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterIdentifier(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitIdentifier(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitIdentifier(this);
@@ -7760,14 +6688,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_literal; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterLiteral(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitLiteral(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitLiteral(this);
@@ -7854,14 +6774,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_nullLiteral; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterNullLiteral(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitNullLiteral(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitNullLiteral(this);
@@ -7898,14 +6810,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_booleanLiteral; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterBooleanLiteral(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitBooleanLiteral(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitBooleanLiteral(this);
@@ -7958,14 +6862,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_numberLiteral; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterNumberLiteral(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitNumberLiteral(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitNumberLiteral(this);
@@ -8021,14 +6917,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_integerLiteral; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterIntegerLiteral(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitIntegerLiteral(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitIntegerLiteral(this);
@@ -8064,14 +6952,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_decimalLiteral; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterDecimalLiteral(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitDecimalLiteral(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitDecimalLiteral(this);
@@ -8107,14 +6987,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_scientificLiteral; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterScientificLiteral(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitScientificLiteral(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitScientificLiteral(this);
@@ -8161,14 +7033,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_dateOrTimeLiteral; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterDateOrTimeLiteral(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitDateOrTimeLiteral(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitDateOrTimeLiteral(this);
@@ -8230,14 +7094,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_dateTimeOffsetLiteral; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterDateTimeOffsetLiteral(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitDateTimeOffsetLiteral(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitDateTimeOffsetLiteral(this);
@@ -8273,14 +7129,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_dateTimeLiteral; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterDateTimeLiteral(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitDateTimeLiteral(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitDateTimeLiteral(this);
@@ -8316,14 +7164,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_dateLiteral; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterDateLiteral(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitDateLiteral(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitDateLiteral(this);
@@ -8359,14 +7199,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_timeLiteral; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterTimeLiteral(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitTimeLiteral(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitTimeLiteral(this);
@@ -8402,14 +7234,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_charLiteral; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterCharLiteral(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitCharLiteral(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitCharLiteral(this);
@@ -8446,14 +7270,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_stringLiteral; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterStringLiteral(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitStringLiteral(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitStringLiteral(this);
@@ -8498,14 +7314,6 @@ public partial class MetaGeneratorParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_guidLiteral; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.EnterGuidLiteral(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IMetaGeneratorParserListener typedListener = listener as IMetaGeneratorParserListener;
-			if (typedListener != null) typedListener.ExitGuidLiteral(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaGeneratorParserVisitor<TResult> typedVisitor = visitor as IMetaGeneratorParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitGuidLiteral(this);

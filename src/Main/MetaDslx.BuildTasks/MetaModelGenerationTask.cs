@@ -16,7 +16,7 @@ namespace MetaDslx.BuildTasks
         public bool CompileMetaModelCore { get; set; }
         public string MetaModelCoreNamespace { get; set; }
         public string OutputDirectory { get; set; }
-        public OutputLocation OutputLocation { get; set; }
+        public string OutputLocation { get; set; }
 
         protected override void AddSubArguments(List<string> arguments)
         {
@@ -34,10 +34,10 @@ namespace MetaDslx.BuildTasks
                 arguments.Add("--output-directory");
                 arguments.Add(OutputDirectory);
             }
-            else if (OutputLocation == OutputLocation.CurrentDirectory)
+            else if (OutputLocation == "CurrentDirectory")
             {
                 arguments.Add("--output-location");
-                arguments.Add(OutputLocation.ToString());
+                arguments.Add(OutputLocation);
             }
         }
     }

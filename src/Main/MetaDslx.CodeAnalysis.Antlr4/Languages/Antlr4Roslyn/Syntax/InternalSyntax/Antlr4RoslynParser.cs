@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from Antlr4RoslynParser.g4 by ANTLR 4.8
+// Generated from C:\Users\Balazs\source\repos\meta-cs\src\Main\MetaDslx.CodeAnalysis.Antlr4\Languages\Antlr4Roslyn\Syntax\InternalSyntax\Antlr4RoslynParser.g4 by ANTLR 4.8
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -181,14 +181,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_grammarSpec; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterGrammarSpec(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitGrammarSpec(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitGrammarSpec(this);
@@ -283,14 +275,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_grammarType; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterGrammarType(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitGrammarType(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitGrammarType(this);
@@ -362,14 +346,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_prequelConstruct; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterPrequelConstruct(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitPrequelConstruct(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitPrequelConstruct(this);
@@ -445,14 +421,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_optionsSpec; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterOptionsSpec(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitOptionsSpec(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitOptionsSpec(this);
@@ -511,14 +479,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_option; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterOption(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitOption(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitOption(this);
@@ -572,14 +532,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_optionValue; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterOptionValue(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitOptionValue(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitOptionValue(this);
@@ -666,14 +618,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_delegateGrammars; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterDelegateGrammars(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitDelegateGrammars(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitDelegateGrammars(this);
@@ -732,14 +676,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_delegateGrammar; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterDelegateGrammar(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitDelegateGrammar(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitDelegateGrammar(this);
@@ -794,14 +730,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_tokensSpec; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterTokensSpec(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitTokensSpec(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitTokensSpec(this);
@@ -854,14 +782,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_channelsSpec; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterChannelsSpec(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitChannelsSpec(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitChannelsSpec(this);
@@ -918,14 +838,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_idList; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterIdList(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitIdList(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitIdList(this);
@@ -996,14 +908,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_annotatedIdentifier; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterAnnotatedIdentifier(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitAnnotatedIdentifier(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitAnnotatedIdentifier(this);
@@ -1063,14 +967,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_action; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterAction(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitAction(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitAction(this);
@@ -1122,14 +1018,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_actionScopeName; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterActionScopeName(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitActionScopeName(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitActionScopeName(this);
@@ -1191,14 +1079,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_actionBlock; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterActionBlock(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitActionBlock(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitActionBlock(this);
@@ -1254,14 +1134,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_argActionBlock; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterArgActionBlock(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitArgActionBlock(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitArgActionBlock(this);
@@ -1328,14 +1200,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_modeSpec; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterModeSpec(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitModeSpec(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitModeSpec(this);
@@ -1408,14 +1272,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_rules; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterRules(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitRules(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitRules(this);
@@ -1471,14 +1327,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_ruleSpec; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterRuleSpec(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitRuleSpec(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitRuleSpec(this);
@@ -1565,14 +1413,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_parserRuleSpec; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterParserRuleSpec(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitParserRuleSpec(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitParserRuleSpec(this);
@@ -1705,14 +1545,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_exceptionGroup; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterExceptionGroup(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitExceptionGroup(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitExceptionGroup(this);
@@ -1776,14 +1608,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_exceptionHandler; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterExceptionHandler(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitExceptionHandler(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitExceptionHandler(this);
@@ -1824,14 +1648,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_finallyClause; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterFinallyClause(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitFinallyClause(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitFinallyClause(this);
@@ -1873,14 +1689,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_rulePrequel; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterRulePrequel(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitRulePrequel(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitRulePrequel(this);
@@ -1933,14 +1741,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_ruleReturns; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterRuleReturns(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitRuleReturns(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitRuleReturns(this);
@@ -1987,14 +1787,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_throwsSpec; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterThrowsSpec(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitThrowsSpec(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitThrowsSpec(this);
@@ -2049,14 +1841,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_localsSpec; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterLocalsSpec(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitLocalsSpec(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitLocalsSpec(this);
@@ -2099,14 +1883,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_ruleAction; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterRuleAction(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitRuleAction(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitRuleAction(this);
@@ -2149,14 +1925,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_ruleModifiers; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterRuleModifiers(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitRuleModifiers(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitRuleModifiers(this);
@@ -2208,14 +1976,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_ruleModifier; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterRuleModifier(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitRuleModifier(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitRuleModifier(this);
@@ -2262,14 +2022,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_ruleBlock; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterRuleBlock(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitRuleBlock(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitRuleBlock(this);
@@ -2314,14 +2066,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_ruleAltList; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterRuleAltList(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitRuleAltList(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitRuleAltList(this);
@@ -2384,14 +2128,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_labeledAlt; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterLabeledAlt(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitLabeledAlt(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitLabeledAlt(this);
@@ -2467,14 +2203,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_lexerRuleSpec; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterLexerRuleSpec(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitLexerRuleSpec(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitLexerRuleSpec(this);
@@ -2551,14 +2279,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_lexerRuleBlock; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterLexerRuleBlock(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitLexerRuleBlock(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitLexerRuleBlock(this);
@@ -2603,14 +2323,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_lexerAltList; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterLexerAltList(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitLexerAltList(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitLexerAltList(this);
@@ -2666,14 +2378,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_lexerAlt; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterLexerAlt(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitLexerAlt(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitLexerAlt(this);
@@ -2746,14 +2450,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_lexerElements; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterLexerElements(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitLexerElements(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitLexerElements(this);
@@ -2817,14 +2513,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_lexerElement; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterLexerElement(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitLexerElement(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitLexerElement(this);
@@ -2931,14 +2619,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_labeledLexerElement; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterLabeledLexerElement(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitLabeledLexerElement(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitLabeledLexerElement(this);
@@ -3008,14 +2688,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_lexerBlock; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterLexerBlock(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitLexerBlock(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitLexerBlock(this);
@@ -3063,14 +2735,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_lexerCommands; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterLexerCommands(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitLexerCommands(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitLexerCommands(this);
@@ -3129,14 +2793,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_lexerCommand; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterLexerCommand(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitLexerCommand(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitLexerCommand(this);
@@ -3190,14 +2846,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_lexerCommandName; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterLexerCommandName(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitLexerCommandName(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitLexerCommandName(this);
@@ -3251,14 +2899,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_lexerCommandExpr; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterLexerCommandExpr(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitLexerCommandExpr(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitLexerCommandExpr(this);
@@ -3318,14 +2958,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_altList; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterAltList(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitAltList(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitAltList(this);
@@ -3384,14 +3016,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_alternative; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterAlternative(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitAlternative(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitAlternative(this);
@@ -3494,14 +3118,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_element; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterElement(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitElement(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitElement(this);
@@ -3663,14 +3279,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_labeledElement; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterLabeledElement(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitLabeledElement(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitLabeledElement(this);
@@ -3741,14 +3349,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_ebnf; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterEbnf(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitEbnf(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitEbnf(this);
@@ -3796,14 +3396,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_blockSuffix; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterBlockSuffix(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitBlockSuffix(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitBlockSuffix(this);
@@ -3844,14 +3436,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_ebnfSuffix; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterEbnfSuffix(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitEbnfSuffix(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitEbnfSuffix(this);
@@ -3948,14 +3532,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_lexerAtom; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterLexerAtom(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitLexerAtom(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitLexerAtom(this);
@@ -4046,14 +3622,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_atom; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterAtom(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitAtom(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitAtom(this);
@@ -4135,14 +3703,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_notSet; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterNotSet(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitNotSet(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitNotSet(this);
@@ -4203,14 +3763,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_blockSet; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterBlockSet(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitBlockSet(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitBlockSet(this);
@@ -4271,14 +3823,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_setElement; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterSetElement(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitSetElement(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitSetElement(this);
@@ -4371,14 +3915,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_block; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterBlock(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitBlock(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitBlock(this);
@@ -4454,14 +3990,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_ruleref; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterRuleref(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitRuleref(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitRuleref(this);
@@ -4520,14 +4048,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_characterRange; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterCharacterRange(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitCharacterRange(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitCharacterRange(this);
@@ -4569,14 +4089,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_terminal; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterTerminal(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitTerminal(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitTerminal(this);
@@ -4656,14 +4168,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_elementOptions; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterElementOptions(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitElementOptions(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitElementOptions(this);
@@ -4723,14 +4227,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_elementOption; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterElementOption(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitElementOption(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitElementOption(this);
@@ -4797,14 +4293,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_identifier; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterIdentifier(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitIdentifier(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitIdentifier(this);
@@ -4855,14 +4343,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_annotation; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterAnnotation(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitAnnotation(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitAnnotation(this);
@@ -4919,14 +4399,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_annotationBody; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterAnnotationBody(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitAnnotationBody(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitAnnotationBody(this);
@@ -4991,14 +4463,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_annotationAttributeList; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterAnnotationAttributeList(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitAnnotationAttributeList(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitAnnotationAttributeList(this);
@@ -5058,14 +4522,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_annotationAttribute; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterAnnotationAttribute(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitAnnotationAttribute(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitAnnotationAttribute(this);
@@ -5136,14 +4592,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_expressionList; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterExpressionList(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitExpressionList(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitExpressionList(this);
@@ -5205,14 +4653,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_qualifiedName; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterQualifiedName(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitQualifiedName(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitQualifiedName(this);
@@ -5270,14 +4710,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_expression; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterExpression(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitExpression(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitExpression(this);
@@ -5340,14 +4772,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_literal; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterLiteral(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitLiteral(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitLiteral(this);
@@ -5412,14 +4836,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_annotationIdentifier; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterAnnotationIdentifier(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitAnnotationIdentifier(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitAnnotationIdentifier(this);
@@ -5465,14 +4881,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_boolLiteral; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterBoolLiteral(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitBoolLiteral(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitBoolLiteral(this);
@@ -5517,14 +4925,6 @@ public partial class Antlr4RoslynParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_nullLiteral; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.EnterNullLiteral(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAntlr4RoslynParserListener typedListener = listener as IAntlr4RoslynParserListener;
-			if (typedListener != null) typedListener.ExitNullLiteral(this);
-		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IAntlr4RoslynParserVisitor<TResult> typedVisitor = visitor as IAntlr4RoslynParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitNullLiteral(this);
