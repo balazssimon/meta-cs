@@ -13,7 +13,7 @@
     <MetaDslxCompileMetaModelCore>true</MetaDslxCompileMetaModelCore>
     <MetaDslxMetaModelCoreNamespace>MetaDslx.Languages.Meta.Model</MetaDslxMetaModelCoreNamespace>
     <MetaDslxDisableMetaModelGenerator>true</MetaDslxDisableMetaModelGenerator>
-    <MetaDslxDisableMetaGeneratorGenerator>false</MetaDslxDisableMetaGeneratorGenerator>
+    <MetaDslxDisableMetaGeneratorGenerator>true</MetaDslxDisableMetaGeneratorGenerator>
   </PropertyGroup>
 
   <ItemGroup>
@@ -35,7 +35,6 @@
   <ItemGroup>
     <MetaModel Update="Languages\Meta\Model\ImmutableMetaModel.mm">
       <OutputLocation>CurrentDirectory</OutputLocation>
-      <AutomaticOutputLocation>CurrentDirectory</AutomaticOutputLocation>
     </MetaModel>
   </ItemGroup>
 

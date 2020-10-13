@@ -4,7 +4,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <RootNamespace>MetaDslx.BuildTools</RootNamespace>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFrameworks>netcoreapp2.2</TargetFrameworks>
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>metadslx</ToolCommandName>
 
@@ -35,14 +35,8 @@
   <ItemGroup>
     <PackageReference Include="System.CommandLine" Version="2.0.0-beta1.20371.2" />
     <PackageReference Include="System.CommandLine.DragonFruit" Version="0.3.0-alpha.20371.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\MetaDslx.CodeAnalysis.Common\MetaDslx.CodeAnalysis.Common.csproj" />
-    <ProjectReference Include="..\MetaDslx.CodeAnalysis.CSharp\MetaDslx.CodeAnalysis.CSharp.csproj" />
-    <ProjectReference Include="..\MetaDslx.CodeAnalysis.Meta\MetaDslx.CodeAnalysis.Meta.csproj" />
-    <ProjectReference Include="..\MetaDslx.CodeAnalysis.Antlr4\MetaDslx.CodeAnalysis.Antlr4.csproj" />
-    <ProjectReference Include="..\MetaDslx.Languages.Meta\MetaDslx.Languages.Meta.csproj" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+    <PackageReference Include="MetaDslx.CodeAnalysis" Version="$(VersionPrefix)" />
   </ItemGroup>
 
 </Project>

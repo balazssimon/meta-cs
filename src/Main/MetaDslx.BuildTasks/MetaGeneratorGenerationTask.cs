@@ -1,26 +1,34 @@
-﻿//using MetaDslx.CodeAnalysis;
-//using MetaDslx.Languages.Antlr4Roslyn.Compilation;
-//using MetaDslx.Languages.MetaGenerator.Compilation;
-//using Microsoft.Build.Framework;
-//using Microsoft.Build.Utilities;
-//using System;
-//using System.Collections.Generic;
-//using System.IO;
-//using System.Text;
+﻿using Microsoft.Build.Framework;
+using Microsoft.Build.Utilities;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
 
-//namespace MetaDslx.BuildTasks
-//{
-//    public class MetaGeneratorGenerationTask : Antlr4CompilerTask
-//    {
-//        public MetaGeneratorGenerationTask()
-//            : base("MetaGenerator")
-//        {
-//        }
+namespace MetaDslx.BuildTasks
+{
+    public class MetaGeneratorGenerationTask : MetaDslxBuildTask
+    {
+        public MetaGeneratorGenerationTask()
+            : base("mgen")
+        {
+        }
 
-//        protected override ICompilerForBuildTask CreateCompiler(string filePath, string outputPath, string hiddenOutputPath)
-//        {
-//            return new MetaGeneratorCompiler(filePath, outputPath);
-//        }
+        public string OutputDirectory { get; set; }
+        public OutputLocation OutputLocation { get; set; }
 
-//    }
-//}
+        protected override void AddSubArguments(List<string> arguments)
+        {
+            if (!string.IsNullOrWhiteSpace(OutputDirectory))
+            {
+                arguments.Add("--output-directory");
+                arguments.Add(OutputDirectory);
+            }
+            else if (OutputLocation == OutputLocation.CurrentDirectory)
+            {
+                arguments.Add("--output-location");
+                arguments.Add(OutputLocation.ToString());
+            }
+        }
+    }
+}

@@ -1,27 +1,44 @@
-﻿//using MetaDslx.CodeAnalysis;
-//using MetaDslx.Languages.Antlr4Roslyn.Compilation;
-//using MetaDslx.Languages.Meta;
-//using Microsoft.Build.Framework;
-//using Microsoft.Build.Utilities;
-//using System;
-//using System.Collections.Generic;
-//using System.Text;
+﻿using Microsoft.Build.Framework;
+using Microsoft.Build.Utilities;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
-//namespace MetaDslx.BuildTasks
-//{
-//    public class MetaModelGenerationTask : Antlr4CompilerTask
-//    {
-//        public bool CompileMetaModelCore { get; set; }
-//        public string MetaModelCoreNamespace { get; set; }
+namespace MetaDslx.BuildTasks
+{
+    public class MetaModelGenerationTask : MetaDslxBuildTask
+    {
+        public MetaModelGenerationTask()
+            : base("mm")
+        {
+        }
 
-//        public MetaModelGenerationTask()
-//            : base("MetaModel")
-//        {
-//        }
+        public bool CompileMetaModelCore { get; set; }
+        public string MetaModelCoreNamespace { get; set; }
+        public string OutputDirectory { get; set; }
+        public OutputLocation OutputLocation { get; set; }
 
-//        protected override ICompilerForBuildTask CreateCompiler(string filePath, string outputPath, string hiddenOutputPath)
-//        {
-//            return new MetaCompilerForBuildTask(filePath, outputPath, this.CompileMetaModelCore, this.MetaModelCoreNamespace);
-//        }
-//    }
-//}
+        protected override void AddSubArguments(List<string> arguments)
+        {
+            if (CompileMetaModelCore)
+            {
+                arguments.Add("--is-core-model");
+            }
+            if (!string.IsNullOrWhiteSpace(MetaModelCoreNamespace))
+            {
+                arguments.Add("--core-namespace");
+                arguments.Add(MetaModelCoreNamespace);
+            }
+            if (!string.IsNullOrWhiteSpace(OutputDirectory))
+            {
+                arguments.Add("--output-directory");
+                arguments.Add(OutputDirectory);
+            }
+            else if (OutputLocation == OutputLocation.CurrentDirectory)
+            {
+                arguments.Add("--output-location");
+                arguments.Add(OutputLocation.ToString());
+            }
+        }
+    }
+}

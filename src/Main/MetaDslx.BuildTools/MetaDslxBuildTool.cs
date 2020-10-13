@@ -1,5 +1,6 @@
 ﻿using MetaDslx.BuildTasks;
 using MetaDslx.Languages.Antlr4Roslyn.Compilation;
+using MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax;
 using MetaDslx.Languages.Meta;
 using MetaDslx.Languages.MetaGenerator.Compilation;
 using Microsoft.CodeAnalysis;
@@ -56,46 +57,48 @@ namespace MetaDslx.BuildTools
             rootCommand.Invoke(args);
         }
 
-        public static void MetaGeneratorTool(FileInfo input, DirectoryInfo intermediateDirectory, DirectoryInfo outputDirectory = null, OutputLocation outputLocation = OutputLocation.IntermediateDirectory)
+        public static void MetaGeneratorTool(FileInfo[] input, DirectoryInfo intermediateDirectory, DirectoryInfo outputDirectory = null, OutputLocation outputLocation = OutputLocation.IntermediateDirectory)
         {
             if (input == null)
             {
                 Console.Error.WriteLine("error: input file is missing");
                 return;
             }
-            if (!input.Exists)
-            {
-                Console.Error.WriteLine("{0}: error: file not found", input.FullName);
-                return;
-            }
             try
             {
                 string outputPath = null;
-                switch (outputLocation)
+                if (outputDirectory != null || outputLocation == OutputLocation.CustomDirectory)
                 {
-                    case OutputLocation.CustomDirectory:
-                        outputPath = outputDirectory?.FullName;
-                        break;
-                    case OutputLocation.IntermediateDirectory:
-                        outputPath = intermediateDirectory?.FullName;
-                        break;
+                    outputPath = outputDirectory?.FullName;
                 }
-                if (outputPath == null) outputPath = input.DirectoryName;
-                var compiler = new MetaGeneratorCompiler(input.FullName, outputPath);
-                compiler.Compile();
-                if (compiler.HasErrors)
+                else if (outputLocation == OutputLocation.IntermediateDirectory)
                 {
-                    DiagnosticFormatter formatter = new DiagnosticFormatter();
-                    foreach (var message in compiler.GetDiagnostics())
+                    outputPath = intermediateDirectory?.FullName;
+                }
+                foreach (var inputFile in input)
+                {
+                    if (!inputFile.Exists)
                     {
-                        Console.Error.WriteLine(formatter.Format(message));
+                        Console.Error.WriteLine("{0}: error: file not found", inputFile.FullName);
+                        continue;
                     }
-                } 
-                else
-                {
-                    foreach (var file in compiler.GetGeneratedFileList())
+                    var currentOutputPath = outputPath ?? inputFile.DirectoryName;
+                    var compiler = new MetaGeneratorCompiler(inputFile.FullName, currentOutputPath);
+                    compiler.Compile();
+                    if (compiler.HasErrors)
                     {
-                        Console.WriteLine("generated file: {1}", file);
+                        DiagnosticFormatter formatter = new DiagnosticFormatter();
+                        foreach (var message in compiler.GetDiagnostics())
+                        {
+                            Console.Error.WriteLine(formatter.Format(message));
+                        }
+                    }
+                    else
+                    {
+                        foreach (var file in compiler.GetGeneratedFileList())
+                        {
+                            Console.WriteLine("generated file: {0}", file);
+                        }
                     }
                 }
             }
@@ -105,46 +108,49 @@ namespace MetaDslx.BuildTools
             }
         }
 
-        public static void MetaModelTool(FileInfo input, DirectoryInfo intermediateDirectory, bool isCoreModel, string coreNamespace, DirectoryInfo outputDirectory = null, OutputLocation outputLocation = OutputLocation.IntermediateDirectory)
+        public static void MetaModelTool(FileInfo[] input, DirectoryInfo intermediateDirectory, bool isCoreModel, string coreNamespace, DirectoryInfo outputDirectory = null, OutputLocation outputLocation = OutputLocation.IntermediateDirectory)
         {
             if (input == null)
             {
                 Console.Error.WriteLine("error: input file is missing");
                 return;
             }
-            if (!input.Exists)
-            {
-                Console.Error.WriteLine("{0}: error: file not found", input.FullName);
-                return;
-            }
             try
             {
                 string outputPath = null;
-                switch (outputLocation)
+                if (outputDirectory != null || outputLocation == OutputLocation.CustomDirectory)
                 {
-                    case OutputLocation.CustomDirectory:
-                        outputPath = outputDirectory?.FullName;
-                        break;
-                    case OutputLocation.IntermediateDirectory:
-                        outputPath = intermediateDirectory?.FullName;
-                        break;
+                    outputPath = outputDirectory?.FullName;
                 }
-                if (outputPath == null) outputPath = input.DirectoryName;
-                var compiler = new MetaCompilerForBuildTask(input.FullName, outputPath, isCoreModel, coreNamespace);
-                compiler.Compile();
-                if (compiler.HasErrors)
+                else if (outputLocation == OutputLocation.IntermediateDirectory)
                 {
-                    DiagnosticFormatter formatter = new DiagnosticFormatter();
-                    foreach (var message in compiler.GetDiagnostics())
+                    outputPath = intermediateDirectory?.FullName;
+                }
+                foreach (var inputFile in input)
+                {
+                    if (!inputFile.Exists)
                     {
-                        Console.Error.WriteLine(formatter.Format(message));
+                        Console.Error.WriteLine("{0}: error: file not found", inputFile.FullName);
+                        continue;
                     }
-                } else
-                {
-                    compiler.Generate();
-                    foreach (var file in compiler.GetGeneratedFileList())
+                    var currentOutputPath = outputPath ?? inputFile.DirectoryName;
+                    var compiler = new MetaCompilerForBuildTask(inputFile.FullName, currentOutputPath, isCoreModel, coreNamespace);
+                    compiler.Compile();
+                    if (compiler.HasErrors)
                     {
-                        Console.WriteLine("generated file: {1}", file);
+                        DiagnosticFormatter formatter = new DiagnosticFormatter();
+                        foreach (var message in compiler.GetDiagnostics())
+                        {
+                            Console.Error.WriteLine(formatter.Format(message));
+                        }
+                    }
+                    else
+                    {
+                        compiler.Generate();
+                        foreach (var file in compiler.GetGeneratedFileList())
+                        {
+                            Console.WriteLine("generated file: {0}", file);
+                        }
                     }
                 }
             }
@@ -154,50 +160,56 @@ namespace MetaDslx.BuildTools
             }
         }
 
-        public static void Antlr4RoslynTool(FileInfo javaExe, FileInfo toolPath, FileInfo input, DirectoryInfo intermediateDirectory, string targetNamespace, DirectoryInfo manualOutputDirectory, DirectoryInfo automaticOutputDirectory = null, OutputLocation automaticOutputLocation = OutputLocation.IntermediateDirectory)
+        public static void Antlr4RoslynTool(FileInfo javaExe, FileInfo toolPath, FileInfo[] input, DirectoryInfo intermediateDirectory, string targetNamespace, DirectoryInfo manualOutputDirectory, DirectoryInfo automaticOutputDirectory = null, OutputLocation automaticOutputLocation = OutputLocation.IntermediateDirectory)
         {
             if (input == null)
             {
                 Console.Error.WriteLine("error: input file is missing");
                 return;
             }
-            if (!input.Exists)
-            {
-                Console.Error.WriteLine("{0}: error: file not found", input.FullName);
-                return;
-            }
             try
             {
-                string automaticOutputPath = null;
-                switch (automaticOutputLocation)
+                foreach (var inputFile in input)
                 {
-                    case OutputLocation.CustomDirectory:
+                    if (!inputFile.Exists)
+                    {
+                        Console.Error.WriteLine("{0}: error: file not found", inputFile.FullName);
+                        continue;
+                    }
+                    string automaticOutputPath = null;
+                    if (automaticOutputDirectory != null || automaticOutputLocation == OutputLocation.CustomDirectory)
+                    {
                         automaticOutputPath = automaticOutputDirectory?.FullName;
-                        break;
-                    case OutputLocation.IntermediateDirectory:
+                    }
+                    else if (automaticOutputLocation == OutputLocation.IntermediateDirectory)
+                    {
                         automaticOutputPath = intermediateDirectory?.FullName;
-                        break;
-                }
-                if (automaticOutputPath == null) automaticOutputPath = input.DirectoryName;
-                string manualOutputPath = manualOutputDirectory?.FullName ?? input.DirectoryName;
-                var antlr4BuildTool = new Antlr4BuildTool();
-                if (javaExe != null) antlr4BuildTool.JavaExe = javaExe.FullName;
-                if (toolPath != null) antlr4BuildTool.ToolPath = toolPath.FullName;
-                else antlr4BuildTool.ToolPath = Path.GetFullPath(@"tools\antlr-4.8-complete.jar");
-                var compiler = new Antlr4RoslynCompiler(input.FullName, manualOutputPath, automaticOutputPath, targetNamespace, antlr4BuildTool);
-                compiler.Compile();
-                if (!compiler.HasErrors)
-                {
-                    compiler.Generate();
-                }
-                DiagnosticFormatter formatter = new DiagnosticFormatter();
-                foreach (var message in compiler.GetDiagnostics())
-                {
-                    Console.Error.WriteLine(formatter.Format(message));
-                }
-                foreach (var file in compiler.GetGeneratedFileList())
-                {
-                    Console.WriteLine("Generated file: {0}", file);
+                    }
+                    if (automaticOutputPath == null) automaticOutputPath = inputFile.DirectoryName;
+                    string manualOutputPath = manualOutputDirectory?.FullName ?? inputFile.DirectoryName;
+                    var antlr4BuildTool = new Antlr4BuildTool();
+                    if (javaExe != null) antlr4BuildTool.JavaExe = javaExe.FullName;
+                    if (toolPath != null) antlr4BuildTool.ToolPath = toolPath.FullName;
+                    else
+                    {
+                        string assemblyPath = Path.GetDirectoryName(typeof(Antlr4BuildTool).Assembly.Location);
+                        antlr4BuildTool.ToolPath = Path.Combine(assemblyPath, "..", "..", "antlr-4.8-complete.jar");
+                    }
+                    var compiler = new Antlr4RoslynCompiler(inputFile.FullName, manualOutputPath, automaticOutputPath, targetNamespace, antlr4BuildTool);
+                    compiler.Compile();
+                    if (!compiler.HasErrors)
+                    {
+                        compiler.Generate();
+                    }
+                    DiagnosticFormatter formatter = new DiagnosticFormatter();
+                    foreach (var message in compiler.GetDiagnostics())
+                    {
+                        Console.Error.WriteLine(formatter.Format(message));
+                    }
+                    foreach (var file in compiler.GetGeneratedFileList())
+                    {
+                        Console.WriteLine("Generated file: {0}", file);
+                    }
                 }
             }
             catch (Exception ex)

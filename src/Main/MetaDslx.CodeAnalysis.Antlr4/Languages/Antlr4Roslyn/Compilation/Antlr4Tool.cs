@@ -23,6 +23,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
 
     public abstract class Antlr4Tool
     {
+        private List<string> _allGeneratedFiles = new List<string>();
         private List<string> _generatedCodeFiles = new List<string>();
         private IList<string> _sourceCodeFiles = new List<string>();
         private ArrayBuilder<Antlr4Message> _diagnostics = new ArrayBuilder<Antlr4Message>();
@@ -32,8 +33,16 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             this.TimeoutInSeconds = 30;
             this.Encoding = "UTF-8";
             this.TargetLanguage = "CSharp";
-            this.LanguageSourceExtensions = new string[] { ".cs", ".tokens", ".interp" };
+            this.LanguageSourceExtensions = new string[] { ".cs" };
             this.Diagnostics = ImmutableArray<Antlr4Message>.Empty;
+        }
+
+        public IList<string> AllGeneratedFiles
+        {
+            get
+            {
+                return this._allGeneratedFiles;
+            }
         }
 
         public IList<string> GeneratedCodeFiles

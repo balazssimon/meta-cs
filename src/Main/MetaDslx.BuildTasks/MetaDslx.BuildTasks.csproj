@@ -4,7 +4,7 @@
   <PropertyGroup>
     <RootNamespace>MetaDslx.BuildTasks</RootNamespace>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
     <NoStdLib>true</NoStdLib>
     <ApplyNgenOptimization>partial</ApplyNgenOptimization>
     <LangVersion>preview</LangVersion>
@@ -29,11 +29,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-*" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.Build.Framework" Version="$(MicrosoftBuildVersion)" PrivateAssets="All" />
     <PackageReference Include="Microsoft.Build.Utilities.Core" Version="$(MicrosoftBuildVersion)" PrivateAssets="All" />
   </ItemGroup>
-
+  
   <ItemGroup>
     <None Include="MetaDslx.ProjectItemsSchema.xml" Pack="true" PackagePath="build\Rules" CopyToOutputDirectory="PreserveNewest" />
     <None Include="MetaGenerator.xml" Pack="true" PackagePath="build\Rules" CopyToOutputDirectory="PreserveNewest" />
@@ -46,11 +46,6 @@
     <None Include="MetaDslx.BuildTasks.DefaultItems.targets" Pack="true" PackagePath="build" CopyToOutputDirectory="PreserveNewest" />
     <None Include="MetaDslx.BuildTasks.props" Pack="true" PackagePath="build" CopyToOutputDirectory="PreserveNewest" />
     <None Include="MetaDslx.BuildTasks.targets" Pack="true" PackagePath="build" CopyToOutputDirectory="PreserveNewest" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="..\MetaDslx.BuildTools\bin\$(Configuration)\netcoreapp2.1\**\*.*" Pack="true" PackagePath="tools\netstandard2.0" />
-    <None Include="..\MetaDslx.BuildTools\bin\$(Configuration)\netcoreapp2.1\**\*.*" Pack="true" PackagePath="tools\net461" />
   </ItemGroup>
 
   <ItemGroup>

@@ -18,14 +18,11 @@
   <PropertyGroup>
     <MetaDslxBuildTaskLocation Condition="'$(MetaDslxBuildTaskPath)'==''">$(MSBuildBinPath)</MetaDslxBuildTaskLocation>
     <MetaDslxBuildTaskLocation Condition="'$(MetaDslxBuildTaskPath)'!=''">$(MetaDslxBuildTaskPath)</MetaDslxBuildTaskLocation>
-
-    <Antlr4ToolLocation Condition="'$(Antlr4ToolPath)'==''">$(MetaDslxBuildTaskLocation)</Antlr4ToolLocation>
     <Antlr4ToolLocation Condition="'$(Antlr4ToolPath)'!=''">$(Antlr4ToolPath)</Antlr4ToolLocation>
-    <Antlr4JavaVendor Condition="'$(Antlr4JavaVendor)'==''">JavaSoft</Antlr4JavaVendor>
-    <Antlr4JavaInstallation Condition="'$(Antlr4JavaInstallation)'==''">Java Runtime Environment</Antlr4JavaInstallation>
-    <Antlr4UseCSharpGenerator Condition="'$(Antlr4UseCSharpGenerator)' == ''">True</Antlr4UseCSharpGenerator>
   </PropertyGroup>
 
+  <UsingTask Condition="'$(MetaDslxBuildTaskPath)'==''" TaskName="MetaDslx.BuildTasks.RestoreBuildToolTask" AssemblyName="$(MetaDslxBuildTaskAssemblyName)" />
+  <UsingTask Condition="'$(MetaDslxBuildTaskPath)'!=''" TaskName="MetaDslx.BuildTasks.RestoreBuildToolTask" AssemblyFile="$(MetaDslxBuildTaskPath)\MetaDslx.BuildTasks.dll" />
   <UsingTask Condition="'$(MetaDslxBuildTaskPath)'==''" TaskName="MetaDslx.BuildTasks.MetaGeneratorGenerationTask" AssemblyName="$(MetaDslxBuildTaskAssemblyName)" />
   <UsingTask Condition="'$(MetaDslxBuildTaskPath)'!=''" TaskName="MetaDslx.BuildTasks.MetaGeneratorGenerationTask" AssemblyFile="$(MetaDslxBuildTaskPath)\MetaDslx.BuildTasks.dll" />
   <UsingTask Condition="'$(MetaDslxBuildTaskPath)'==''" TaskName="MetaDslx.BuildTasks.MetaModelGenerationTask" AssemblyName="$(MetaDslxBuildTaskAssemblyName)" />
@@ -94,12 +91,15 @@
 
   <PropertyGroup>
     <MetaGeneratorCompileDependsOn>
+      RestoreMetaDslxBuildTool;
       MetaGeneratorCompileReadGeneratedFileList
     </MetaGeneratorCompileDependsOn>
     <MetaModelCompileDependsOn>
+      RestoreMetaDslxBuildTool;
       MetaModelCompileReadGeneratedFileList
     </MetaModelCompileDependsOn>
     <Antlr4RoslynCompileDependsOn>
+      RestoreMetaDslxBuildTool;
       Antlr4RoslynCompileReadGeneratedFileList
     </Antlr4RoslynCompileDependsOn>
   </PropertyGroup>
@@ -135,6 +135,10 @@
     </Antlr4Roslyn>
   </ItemDefinitionGroup>
 
+  <Target Name="RestoreMetaDslxBuildTool">
+    <RestoreBuildToolTask Dll="MetaDslx.BuildTools"/>
+  </Target>
+
   <Target Name="MetaGeneratorCompileReadGeneratedFileList">
     <ReadLinesFromFile File="$(IntermediateOutputPath)$(MetaGeneratorGenCodeFileNames)">
       <Output TaskParameter="Lines" ItemName="MetaGeneratorOutputCodeFilesList"/>
@@ -165,10 +169,9 @@
     </ItemGroup>
 
     <MetaGeneratorGenerationTask
-      ManualOutputPath="%(MetaGenerator.ManualOutputDirectory)"
-      AutomaticOutputPath="%(MetaGenerator.AutomaticOutputDirectory)"
-      AutomaticOutputLocation="%(MetaGenerator.AutomaticOutputLocation)"
-      IntermediateOutputPath="$(IntermediateOutputPath)"
+      OutputDirectory="%(MetaGenerator.OutputDirectory)"
+      OutputLocation="%(MetaGenerator.OutputLocation)"
+      IntermediateDirectory="$(IntermediateOutputPath)"
       Encoding="%(MetaGenerator.Encoding)"
       SourceCodeFiles="@(MetaGenerator -> '%(FullPath)')"
       ContinueOnError="false">
@@ -199,10 +202,9 @@
     </ItemGroup>
 
     <MetaModelGenerationTask
-      ManualOutputPath="%(MetaModel.ManualOutputDirectory)"
-      AutomaticOutputPath="%(MetaModel.AutomaticOutputDirectory)"
-      AutomaticOutputLocation="%(MetaModel.AutomaticOutputLocation)"
-      IntermediateOutputPath="$(IntermediateOutputPath)"
+      OutputDirectory="%(MetaModel.OutputDirectory)"
+      OutputLocation="%(MetaModel.OutputLocation)"
+      IntermediateDirectory="$(IntermediateOutputPath)"
       Encoding="%(MetaModel.Encoding)"
       SourceCodeFiles="@(MetaModel -> '%(FullPath)')"
       ContinueOnError="false"
@@ -235,15 +237,13 @@
     </ItemGroup>
 
     <Antlr4RoslynGenerationTask
-      ToolPath="$(Antlr4ToolLocation)"
-      JavaVendor="$(Antlr4JavaVendor)"
-      JavaInstallation="$(Antlr4JavaInstallation)"
+      Antlr4ToolPath="$(Antlr4ToolLocation)"
       JavaExecutable="$(Antlr4JavaExecutable)"
       BuildTaskPath="$(MetaDslxBuildTaskLocation)"
-      ManualOutputPath="%(Antlr4Roslyn.ManualOutputDirectory)"
-      AutomaticOutputPath="%(Antlr4Roslyn.AutomaticOutputDirectory)"
+      ManualOutputDirectory="%(Antlr4Roslyn.ManualOutputDirectory)"
+      AutomaticOutputDirectory="%(Antlr4Roslyn.AutomaticOutputDirectory)"
       AutomaticOutputLocation="%(Antlr4Roslyn.AutomaticOutputLocation)"
-      IntermediateOutputPath="$(IntermediateOutputPath)"
+      IntermediateDirectory="$(IntermediateOutputPath)"
       Encoding="%(Antlr4Roslyn.Encoding)"
       TargetLanguage="%(Antlr4Roslyn.TargetLanguage)"
       TargetFrameworkVersion="$(TargetFrameworkVersion)"
@@ -256,8 +256,7 @@
       GenerateListener="%(Antlr4Roslyn.Listener)"
       GenerateVisitor="%(Antlr4Roslyn.Visitor)"
       ForceAtn="%(Antlr4Roslyn.ForceAtn)"
-      AbstractGrammar="%(Antlr4Roslyn.Abstract)"
-      UseCSharpGenerator="$(Antlr4UseCSharpGenerator)">
+      AbstractGrammar="%(Antlr4Roslyn.Abstract)">
 
       <Output ItemName="Antlr4RoslynGeneratedCodeFiles" TaskParameter="GeneratedIntermediateCodeFiles" />
     </Antlr4RoslynGenerationTask>

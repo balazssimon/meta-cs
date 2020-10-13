@@ -2,5 +2,5 @@
 generator MGenTest;
 
 template SayHello(string name)
-Hello, [name]!
+HelloXA, [name]!
 end template

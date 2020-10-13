@@ -16,7 +16,6 @@ using MetaDslx.Languages.Meta.Symbols;
 //using MetaDslx.Languages.Ecore;
 //using MetaDslx.Languages.Ecore.Model;
 using MetaDslx.Modeling;
-using MetaDslx.Tests;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 using System;

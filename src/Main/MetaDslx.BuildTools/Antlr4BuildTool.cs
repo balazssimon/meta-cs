@@ -54,8 +54,8 @@ namespace MetaDslx.BuildTasks
 
                 if (string.IsNullOrWhiteSpace(ToolPath))
                 {
-                    string assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                    ToolPath = Path.Combine(assemblyPath, "..", "..", "tools", "antlr-4.8-complete.jar");
+                    string assemblyPath = Path.GetDirectoryName(typeof(Antlr4BuildTool).Assembly.Location);
+                    ToolPath = Path.Combine(assemblyPath, "..", "..", "antlr-4.8-complete.jar");
                 }
 
                 if (string.IsNullOrWhiteSpace(ToolPath) || !File.Exists(ToolPath))
@@ -74,11 +74,9 @@ namespace MetaDslx.BuildTasks
                 // output so as to get a clean list of files generated.
                 List<string> arguments = new List<string>();
 
-                {
-                    arguments.Add("-cp");
-                    arguments.Add(ToolPath);
-                    arguments.Add("org.antlr.v4.Tool");
-                }
+                arguments.Add("-cp");
+                arguments.Add(ToolPath);
+                arguments.Add("org.antlr.v4.Tool");
 
                 arguments.Add("-depend");
 
@@ -161,10 +159,9 @@ namespace MetaDslx.BuildTasks
                     if (Path.GetExtension(s) == ".tokens")
                     {
                         var interp = s.Replace(Path.GetExtension(s), ".interp");
-                        _generatedCodeFiles.Append(interp);
+                        _generatedCodeFiles.Add(interp);
                     }
-                    else
-                        _generatedCodeFiles.Add(s);
+                    _generatedCodeFiles.Add(s);
                 }
 
                 // Remove the -depend option from the second run
@@ -204,14 +201,18 @@ namespace MetaDslx.BuildTasks
                 var new_all_list = new List<string>();
                 foreach (var fn in _generatedCodeFiles.Distinct().ToList())
                 {
+                    if (File.Exists(fn))
+                    {
+
+                    }
                     var ext = Path.GetExtension(fn);
-                    if (File.Exists(fn) && ext != ".g4")
+                    if (ext != ".g4")
+                    {
+                        AllGeneratedFiles.Add(fn);
+                    }
+                    if (ext == ".cs" || ext == ".java" || ext == ".cpp" || ext == ".php" || ext == ".js")
                     {
                         GeneratedCodeFiles.Add(fn);
-                    }
-                    if ((ext == ".cs" || ext == ".java" || ext == ".cpp" || ext == ".php" || ext == ".js") && File.Exists(fn))
-                    {
-                        SourceCodeFiles.Add(fn);
                     }
                 }
                 success = process.ExitCode == 0;
@@ -224,8 +225,8 @@ namespace MetaDslx.BuildTasks
 
             if (!success)
             {
+                AllGeneratedFiles.Clear();
                 GeneratedCodeFiles.Clear();
-                SourceCodeFiles.Clear();
             }
 
             return success;
