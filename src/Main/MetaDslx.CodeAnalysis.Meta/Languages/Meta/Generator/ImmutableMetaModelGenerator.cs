@@ -1,3 +1,6 @@
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -19792,3 +19795,4 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
         }
     }
 }
+

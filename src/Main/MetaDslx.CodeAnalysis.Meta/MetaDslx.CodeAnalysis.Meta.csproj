@@ -34,16 +34,16 @@
 
   <ItemGroup>
     <MetaGenerator Update="Languages\Meta\Generator\ImmutableMetaModelGenerator.mgen">
-      <OutputLocation>CurrentDirectory</OutputLocation>
+      <AutomaticOutputLocation>ManualOutputDirectory</AutomaticOutputLocation>
     </MetaGenerator>
     <MetaGenerator Update="Languages\Meta\Generator\MetaModelGenerator.mgen">
-      <OutputLocation>CurrentDirectory</OutputLocation>
+      <AutomaticOutputLocation>ManualOutputDirectory</AutomaticOutputLocation>
     </MetaGenerator>
   </ItemGroup>
 
   <ItemGroup>
     <MetaModel Update="Languages\Meta\Model\ImmutableMetaModel.mm">
-      <OutputLocation>CurrentDirectory</OutputLocation>
+      <AutomaticOutputLocation>ManualOutputDirectory</AutomaticOutputLocation>
     </MetaModel>
   </ItemGroup>
 

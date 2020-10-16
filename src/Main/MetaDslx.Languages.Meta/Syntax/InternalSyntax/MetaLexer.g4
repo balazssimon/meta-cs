@@ -246,3 +246,4 @@ mode SINGLEQUOTE_VERBATIM_STRING;
 SingleQuoteVerbatimStringText : SingleQuoteTextVerbatimCharacter -> more;
                    
 LSingleQuoteVerbatimString : '\'' -> mode(DEFAULT_MODE);
+

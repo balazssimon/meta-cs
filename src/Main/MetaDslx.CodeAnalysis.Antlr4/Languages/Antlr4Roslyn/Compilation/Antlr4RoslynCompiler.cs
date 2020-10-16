@@ -33,6 +33,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         public Antlr4Grammar Grammar { get; private set; }
         public string LanguageName { get; private set; }
 
+        public string BaseDirectory { get; private set; }
         public string SyntaxDirectory { get; private set; }
         public string InternalSyntaxDirectory { get; private set; }
 
@@ -97,9 +98,10 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             }
             this.DefaultNamespace = defaultNamespace;
 
-            if (!string.IsNullOrWhiteSpace(this.ManualOutputDirectory))
+            this.BaseDirectory = Path.GetDirectoryName(inputFilePath);
+            if (!string.IsNullOrWhiteSpace(this.BaseDirectory))
             {
-                string directory = this.ManualOutputDirectory;
+                string directory = this.BaseDirectory;
                 DirectoryInfo info = new DirectoryInfo(directory);
                 if (info.Name == "InternalSyntax")
                 {
@@ -109,27 +111,10 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                 {
                     info = info.Parent;
                 }
-                directory = info.ToString();
-                this.ManualOutputDirectory = directory;
+                this.BaseDirectory = info.ToString();
             }
 
-            if (!string.IsNullOrWhiteSpace(this.AutomaticOutputDirectory))
-            {
-                string directory = this.AutomaticOutputDirectory;
-                DirectoryInfo info = new DirectoryInfo(directory);
-                if (info.Name == "InternalSyntax")
-                {
-                    info = info.Parent;
-                }
-                if (info.Name == "Syntax")
-                {
-                    info = info.Parent;
-                }
-                directory = info.ToString();
-
-                this.AutomaticOutputDirectory = directory;
-            }
-            this.SyntaxDirectory = "Syntax";
+            this.SyntaxDirectory = Path.Combine(this.BaseDirectory, "Syntax"); 
             this.InternalSyntaxDirectory = Path.Combine(this.SyntaxDirectory, "InternalSyntax");
 
             _noLocation = new ExternalFileLocation(this.InputFilePath, TextSpan.FromBounds(0, 1), new LinePositionSpan(LinePosition.Zero, LinePosition.Zero));
@@ -486,10 +471,10 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
 
             if (this.GenerateCompiler)
             {
-                var CompilationDirectory = "Compilation";
-                var ErrorsDirectory = "Errors";
-                var SymbolsDirectory = "Symbols";
-                var BindingDirectory = "Binding";
+                var CompilationDirectory = Path.Combine(this.BaseDirectory, "Compilation"); 
+                var ErrorsDirectory = Path.Combine(this.BaseDirectory, "Errors"); 
+                var SymbolsDirectory = Path.Combine(this.BaseDirectory, "Symbols");
+                var BindingDirectory = Path.Combine(this.BaseDirectory, "Binding");
                 this.WriteOutputFile(Path.Combine(this.InternalSyntaxDirectory, this.LanguageName + "InternalSyntax.cs"), this.GeneratedInternalSyntax);
                 this.WriteOutputFile(Path.Combine(this.InternalSyntaxDirectory, this.LanguageName + @"SyntaxLexer.cs"), this.GeneratedSyntaxLexer);
                 this.WriteOutputFile(Path.Combine(this.InternalSyntaxDirectory, this.LanguageName + @"SyntaxParser.cs"), this.GeneratedSyntaxParser);

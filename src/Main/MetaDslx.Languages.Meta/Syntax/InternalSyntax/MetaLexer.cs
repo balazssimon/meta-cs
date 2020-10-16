@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\Balazs\source\repos\meta-cs\src\Main\MetaDslx.Languages.Meta\Syntax\InternalSyntax\MetaLexer.g4 by ANTLR 4.8
+// Generated from Syntax\InternalSyntax\MetaLexer.g4 by ANTLR 4.8
 
 // Unreachable code detected
 #pragma warning disable 0162

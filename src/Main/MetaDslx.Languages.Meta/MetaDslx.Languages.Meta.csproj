@@ -32,10 +32,10 @@
   
   <ItemGroup>
     <Antlr4Roslyn Update="Syntax\InternalSyntax\MetaLexer.ag4">
-      <AutomaticOutputLocation>CurrentDirectory</AutomaticOutputLocation>
+      <AutomaticOutputLocation>ManualOutputDirectory</AutomaticOutputLocation>
     </Antlr4Roslyn>
     <Antlr4Roslyn Update="Syntax\InternalSyntax\MetaParser.ag4">
-      <AutomaticOutputLocation>CurrentDirectory</AutomaticOutputLocation>
+      <AutomaticOutputLocation>ManualOutputDirectory</AutomaticOutputLocation>
   </Antlr4Roslyn>
   </ItemGroup>
 
