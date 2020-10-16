@@ -14,7 +14,7 @@
     <IsPackable>true</IsPackable>
     <Authors>Balazs Simon</Authors>
     <PackageId>MetaDslx.Languages.Ecore</PackageId>
-    <VersionPrefix>$(MetaDslxLanguagesPackageVersion)</VersionPrefix>
+    <VersionPrefix>$(MetaDslxLanguagesTargetVersion)</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <PackageDescription>
       The complete implementation of the Eclipse Ecore metamodel.
@@ -38,8 +38,8 @@
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="$(SystemRuntimeCompilerServicesUnsafeVersion)" />
     <PackageReference Include="System.Threading.Tasks.Extensions" Version="$(SystemThreadingTasksExtensionsVersion)" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="$(SystemTextEncodingCodePagesVersion)" />
-    <PackageReference Include="MetaDslx.BuildTasks" Version="$(BootstrapVersion)" PrivateAssets="all" />
-    <PackageReference Include="MetaDslx.CodeAnalysis" Version="$(BootstrapVersion)" />
+    <PackageReference Include="MetaDslx.BuildTasks" Version="$(MetaDslxTargetVersion)" PrivateAssets="all" />
+    <PackageReference Include="MetaDslx.CodeAnalysis" Version="$(MetaDslxTargetVersion)" />
   </ItemGroup>
   
   <!--ItemGroup>

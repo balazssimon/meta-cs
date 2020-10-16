@@ -497,3 +497,4 @@ TemplateStatement_COMMENT_TEXT : ~[\u002A\r\n\u0085\u2028\u2029]+ -> more;
 
 TemplateStatement_COMMENT : '*/' -> mode(TEMPLATE_STATEMENT), channel(COMMENT), type(LMultiLineComment);
 TemplateStatement_COMMENT_STAR : '*' -> more;
+

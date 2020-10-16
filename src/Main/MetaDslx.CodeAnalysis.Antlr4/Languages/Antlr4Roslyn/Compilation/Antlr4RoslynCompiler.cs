@@ -102,16 +102,11 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             if (!string.IsNullOrWhiteSpace(this.BaseDirectory))
             {
                 string directory = this.BaseDirectory;
-                DirectoryInfo info = new DirectoryInfo(directory);
-                if (info.Name == "InternalSyntax")
-                {
-                    info = info.Parent;
-                }
-                if (info.Name == "Syntax")
-                {
-                    info = info.Parent;
-                }
-                this.BaseDirectory = info.ToString();
+                if (directory.EndsWith("InternalSyntax")) directory = directory.Substring(0, directory.Length - 14);
+                directory = directory.TrimEnd('\\', '/');
+                if (directory.EndsWith("Syntax")) directory = directory.Substring(0, directory.Length - 6);
+                directory = directory.TrimEnd('\\', '/');
+                this.BaseDirectory = directory;
             }
 
             this.SyntaxDirectory = Path.Combine(this.BaseDirectory, "Syntax"); 

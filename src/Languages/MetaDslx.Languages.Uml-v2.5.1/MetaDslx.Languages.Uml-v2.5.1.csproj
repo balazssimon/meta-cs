@@ -14,7 +14,7 @@
     <IsPackable>true</IsPackable>
     <Authors>Balazs Simon</Authors>
     <PackageId>MetaDslx.Languages.Uml-v2.5.1</PackageId>
-    <VersionPrefix>$(MetaDslxLanguagesPackageVersion)</VersionPrefix>
+    <VersionPrefix>$(MetaDslxLanguagesTargetVersion)</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <PackageDescription>
       The complete implementation of the OMG UML 2.5.1 metamodel standard with XMI serialization support.
@@ -33,8 +33,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MetaDslx.BuildTasks" Version="$(BootstrapVersion)" PrivateAssets="all" />
-    <PackageReference Include="MetaDslx.CodeAnalysis" Version="$(BootstrapVersion)" />
+    <PackageReference Include="MetaDslx.BuildTasks" Version="$(MetaDslxTargetVersion)" PrivateAssets="all" />
+    <PackageReference Include="MetaDslx.CodeAnalysis" Version="$(MetaDslxTargetVersion)" />
   </ItemGroup>
 
 

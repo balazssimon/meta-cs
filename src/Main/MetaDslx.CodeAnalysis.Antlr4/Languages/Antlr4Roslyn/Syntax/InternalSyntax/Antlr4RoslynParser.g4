@@ -420,3 +420,4 @@ annotationIdentifier : TOKEN_REF | RULE_REF | ID;
 boolLiteral : TRUE | FALSE;
 
 nullLiteral : NULL;
+

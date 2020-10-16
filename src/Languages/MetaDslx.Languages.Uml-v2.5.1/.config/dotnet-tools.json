@@ -1,5 +1,12 @@
 {
   "version": 1,
   "isRoot": true,
-  "tools": {}
+  "tools": {
+    "metadslx.buildtools": {
+      "version": "0.10.446",
+      "commands": [
+        "metadslx"
+      ]
+    }
+  }
 }
