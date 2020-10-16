@@ -14,13 +14,6 @@ using System.Text;
 
 namespace MetaDslx.BuildTools
 {
-    public enum OutputLocation
-    {
-        CustomDirectory,
-        IntermediateDirectory,
-        CurrentDirectory
-    }
-
     public class MetaDslxBuildTool
     {
         public static void Main(string[] args)
@@ -57,7 +50,7 @@ namespace MetaDslx.BuildTools
             rootCommand.Invoke(args);
         }
 
-        public static void MetaGeneratorTool(FileInfo[] input, DirectoryInfo intermediateDirectory, DirectoryInfo outputDirectory = null, OutputLocation outputLocation = OutputLocation.IntermediateDirectory)
+        public static void MetaGeneratorTool(FileInfo[] input, DirectoryInfo manualOutputDirectory = null, DirectoryInfo automaticOutputDirectory = null)
         {
             if (input == null)
             {
@@ -66,15 +59,6 @@ namespace MetaDslx.BuildTools
             }
             try
             {
-                string outputPath = null;
-                if (outputDirectory != null || outputLocation == OutputLocation.CustomDirectory)
-                {
-                    outputPath = outputDirectory?.FullName;
-                }
-                else if (outputLocation == OutputLocation.IntermediateDirectory)
-                {
-                    outputPath = intermediateDirectory?.FullName;
-                }
                 foreach (var inputFile in input)
                 {
                     if (!inputFile.Exists)
@@ -84,8 +68,9 @@ namespace MetaDslx.BuildTools
                     }
                     try
                     {
-                        var currentOutputPath = outputPath ?? inputFile.DirectoryName;
-                        var compiler = new MetaGeneratorCompiler(inputFile.FullName, currentOutputPath);
+                        string automaticOutputPath = automaticOutputDirectory?.ToString() ?? string.Empty;
+                        string manualOutputPath = manualOutputDirectory?.ToString() ?? string.Empty;
+                        var compiler = new MetaGeneratorCompiler(manualOutputPath, automaticOutputPath, inputFile.ToString());
                         compiler.Compile();
                         if (compiler.HasErrors)
                         {
@@ -115,7 +100,7 @@ namespace MetaDslx.BuildTools
             }
         }
 
-        public static void MetaModelTool(FileInfo[] input, DirectoryInfo intermediateDirectory, bool isCoreModel, string coreNamespace, DirectoryInfo outputDirectory = null, OutputLocation outputLocation = OutputLocation.IntermediateDirectory)
+        public static void MetaModelTool(FileInfo[] input, bool isCoreModel, string coreNamespace, DirectoryInfo manualOutputDirectory = null, DirectoryInfo automaticOutputDirectory = null)
         {
             if (input == null)
             {
@@ -124,15 +109,6 @@ namespace MetaDslx.BuildTools
             }
             try
             {
-                string outputPath = null;
-                if (outputDirectory != null || outputLocation == OutputLocation.CustomDirectory)
-                {
-                    outputPath = outputDirectory?.FullName;
-                }
-                else if (outputLocation == OutputLocation.IntermediateDirectory)
-                {
-                    outputPath = intermediateDirectory?.FullName;
-                }
                 foreach (var inputFile in input)
                 {
                     if (!inputFile.Exists)
@@ -141,8 +117,9 @@ namespace MetaDslx.BuildTools
                         continue;
                     }
                     try {
-                        var currentOutputPath = outputPath ?? inputFile.DirectoryName;
-                        var compiler = new MetaCompilerForBuildTask(inputFile.FullName, currentOutputPath, isCoreModel, coreNamespace);
+                        string automaticOutputPath = automaticOutputDirectory?.ToString() ?? string.Empty;
+                        string manualOutputPath = manualOutputDirectory?.ToString() ?? string.Empty;
+                        var compiler = new MetaCompilerForBuildTask(manualOutputPath, automaticOutputPath, inputFile.ToString(), isCoreModel, coreNamespace);
                         compiler.Compile();
                         if (compiler.HasErrors)
                         {
@@ -173,7 +150,7 @@ namespace MetaDslx.BuildTools
             }
         }
 
-        public static void Antlr4RoslynTool(FileInfo javaExe, FileInfo toolPath, FileInfo[] input, DirectoryInfo intermediateDirectory, string targetNamespace, DirectoryInfo manualOutputDirectory, DirectoryInfo automaticOutputDirectory = null, OutputLocation automaticOutputLocation = OutputLocation.IntermediateDirectory)
+        public static void Antlr4RoslynTool(FileInfo javaExe, FileInfo toolPath, FileInfo[] input, string targetNamespace, DirectoryInfo manualOutputDirectory = null, DirectoryInfo automaticOutputDirectory = null)
         {
             if (input == null)
             {
@@ -191,17 +168,8 @@ namespace MetaDslx.BuildTools
                     }
                     try
                     {
-                        string automaticOutputPath = null;
-                        if (automaticOutputDirectory != null || automaticOutputLocation == OutputLocation.CustomDirectory)
-                        {
-                            automaticOutputPath = automaticOutputDirectory?.FullName;
-                        }
-                        else if (automaticOutputLocation == OutputLocation.IntermediateDirectory)
-                        {
-                            automaticOutputPath = intermediateDirectory?.FullName;
-                        }
-                        if (automaticOutputPath == null) automaticOutputPath = inputFile.DirectoryName;
-                        string manualOutputPath = manualOutputDirectory?.FullName ?? inputFile.DirectoryName;
+                        string automaticOutputPath = automaticOutputDirectory?.ToString() ?? string.Empty;
+                        string manualOutputPath = manualOutputDirectory?.ToString() ?? string.Empty;
                         var antlr4BuildTool = new Antlr4BuildTool();
                         if (javaExe != null) antlr4BuildTool.JavaExe = javaExe.FullName;
                         if (toolPath != null) antlr4BuildTool.ToolPath = toolPath.FullName;
@@ -210,7 +178,7 @@ namespace MetaDslx.BuildTools
                             string assemblyPath = Path.GetDirectoryName(typeof(Antlr4BuildTool).Assembly.Location);
                             antlr4BuildTool.ToolPath = Path.Combine(assemblyPath, "..", "..", "antlr-4.8-complete.jar");
                         }
-                        var compiler = new Antlr4RoslynCompiler(inputFile.FullName, manualOutputPath, automaticOutputPath, targetNamespace, antlr4BuildTool);
+                        var compiler = new Antlr4RoslynCompiler(manualOutputPath, automaticOutputPath, inputFile.ToString(), targetNamespace, antlr4BuildTool);
                         compiler.Compile();
                         if (!compiler.HasErrors)
                         {

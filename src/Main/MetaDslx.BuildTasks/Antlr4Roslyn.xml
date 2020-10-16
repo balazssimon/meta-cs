@@ -21,21 +21,21 @@
     Name="ManualOutputDirectory"
     DisplayName="Manual Output Directory"
     Default=""
-    Description="Explicitly specifies the output directory for the manually editable generated files." />
+    Description="Explicitly specifies the output directory for the manually editable generated files. If not specified, files are generated next to the original file by default." />
   <StringProperty
     Category="MetaDslx"
     Name="AutomaticOutputDirectory"
     DisplayName="Automatic Output Directory"
     Default=""
-    Description="Explicitly specifies the output directory for the non-editable generated files." />
+    Description="Explicitly specifies the output directory for the non-editable generated files. If not specified, files are generated into the intermediate output directory by default." />
   <EnumProperty
     Category="MetaDslx"
     Name="AutomaticOutputLocation"
     DisplayName="Automatic Output Location"
     Default=""
-    Description="Explicitly specifies the output location for the hidden and non-editable generated files." >
-    <EnumValue Name="IntermediateDirectory" DisplayName="Intermediate directory" Description="Files are generated into the intermediate output directory, i.e. the project's &quot;obj&quot; directory." />
-    <EnumValue Name="CurrentDirectory" DisplayName="Current directory" Description="Files are generated next to the original file."/>
+    Description="Explicitly specifies the output location for the hidden and non-editable generated files. If an automatic output directory is explicitly specified, this option is ignored." >
+    <EnumValue Name="IntermediateDirectory" DisplayName="Intermediate Directory" Description="Files are generated into the intermediate output directory, i.e. the project's &quot;obj&quot; directory." />
+    <EnumValue Name="ManualOutputDirectory" DisplayName="Manual Output Directory" Description="Files are generated into the manual output directory. If no manual output directory is specified, files are generated next to the original file by default."/>
   </EnumProperty>
   <BoolProperty
     Category="MetaDslx"

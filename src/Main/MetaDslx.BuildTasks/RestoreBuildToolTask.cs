@@ -1,4 +1,5 @@
-﻿using Microsoft.Build.Utilities;
+﻿using Microsoft.Build.Framework;
+using Microsoft.Build.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -11,9 +12,11 @@ namespace MetaDslx.BuildTasks
         public RestoreBuildToolTask()
             : base("tool")
         {
+            Version = typeof(RestoreBuildToolTask).Assembly.GetName().Version.ToString();
         }
 
         public string Dll { get; set; }
+        public string Version { get; set; }
 
         public override bool Execute()
         {
@@ -25,19 +28,19 @@ namespace MetaDslx.BuildTasks
                 arguments.Add("tool-manifest");
                 result = RunTool(arguments);
 
-                if (!result) return result;
-
-                arguments = new List<string>();
-                arguments.Add("tool");
-                arguments.Add("update");
-                arguments.Add(Dll);
-                arguments.Add("--version");
-                var assembly = typeof(RestoreBuildToolTask).Assembly;
-                var version = assembly.GetName().Version.ToString();
-                arguments.Add(version);
-                result = RunTool(arguments);
-                return result;
+                if (result)
+                {
+                    arguments = new List<string>();
+                    arguments.Add("tool");
+                    arguments.Add("update");
+                    arguments.Add(Dll);
+                    arguments.Add("--version");
+                    arguments.Add(Version);
+                    result = RunTool(arguments);
+                }
             }
+            if (result) Log.LogMessage(MessageImportance.High, ".NET core tool '{0}' version '{1}' is installed.", Dll, Version);
+            else Log.LogError("Could not install .NET core tool '{0}' version '{1}'.", Dll, Version);
             return result;
         }
 
@@ -46,9 +49,7 @@ namespace MetaDslx.BuildTasks
             arguments.Add("update");
             arguments.Add(Dll);
             arguments.Add("--version");
-            var assembly = typeof(RestoreBuildToolTask).Assembly;
-            var version = assembly.GetName().Version.ToString();
-            arguments.Add(version);
+            arguments.Add(Version);
         }
     }
 }

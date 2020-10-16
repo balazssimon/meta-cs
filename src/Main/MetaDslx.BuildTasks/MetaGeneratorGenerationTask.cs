@@ -14,21 +14,8 @@ namespace MetaDslx.BuildTasks
         {
         }
 
-        public string OutputDirectory { get; set; }
-        public string OutputLocation { get; set; }
-
         protected override void AddSubArguments(List<string> arguments)
         {
-            if (!string.IsNullOrWhiteSpace(OutputDirectory))
-            {
-                arguments.Add("--output-directory");
-                arguments.Add(OutputDirectory);
-            }
-            else if (OutputLocation == "CurrentDirectory")
-            {
-                arguments.Add("--output-location");
-                arguments.Add(OutputLocation);
-            }
         }
     }
 }

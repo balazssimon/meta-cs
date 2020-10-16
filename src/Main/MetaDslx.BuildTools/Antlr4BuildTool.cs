@@ -35,8 +35,10 @@ namespace MetaDslx.BuildTasks
             bool success = false;
             try
             {
-                //this.AddDiagnosticInfo($"Starting Antlr4 Build Tasks. ToolPath is '{ToolPath}'");
-                Directory.CreateDirectory(OutputPath);
+                if (SourceCodeFiles.Count == 0)
+                {
+                    throw new FileNotFoundException("There is no input file.");
+                }
 
                 if (string.IsNullOrWhiteSpace(JavaExe))
                 {
@@ -80,11 +82,19 @@ namespace MetaDslx.BuildTasks
 
                 arguments.Add("-depend");
 
-                arguments.Add("-o");
-                arguments.Add(this.OutputPath);
+                if (!string.IsNullOrEmpty(OutputPath))
+                {
+                    arguments.Add("-o");
+                    arguments.Add(this.OutputPath);
+                    Directory.CreateDirectory(OutputPath);
+                }
 
-                arguments.Add("-lib");
-                arguments.Add(this.OutputPath);
+                foreach (var src in SourceCodeFiles)
+                {
+                    if (string.IsNullOrWhiteSpace(src)) continue;
+                    arguments.Add("-lib");
+                    arguments.Add(Path.GetDirectoryName(src));
+                }
 
                 /*if (!string.IsNullOrEmpty(LibPath))
                 {
@@ -306,7 +316,7 @@ namespace MetaDslx.BuildTasks
 
         private void HandleErrorDataReceived(string data)
         {
-            if (string.IsNullOrEmpty(data))
+            if (string.IsNullOrWhiteSpace(data))
                 return;
 
             try
@@ -321,8 +331,8 @@ namespace MetaDslx.BuildTasks
                 string severity = match.Groups["SEVERITY"].Value;
                 string fileName = match.Groups["FILE"].Value;
                 int.TryParse(match.Groups["ERRORCODE"].Value, out int errorCode);
-                int.TryParse(match.Groups["COLUMN"].Value, out int column);
                 int.TryParse(match.Groups["LINE"].Value, out int line);
+                int.TryParse(match.Groups["COLUMN"].Value, out int column);
                 string message = match.Groups["MESSAGE"].Value;
 
                 string filePath = SourceCodeFiles.FirstOrDefault(f => f.EndsWith(fileName)) ?? fileName;
@@ -354,7 +364,7 @@ namespace MetaDslx.BuildTasks
 
         private void HandleOutputDataReceived(string data)
         {
-            if (string.IsNullOrEmpty(data))
+            if (string.IsNullOrWhiteSpace(data))
                 return;
 
             try

@@ -28,10 +28,6 @@ namespace MetaDslx.BuildTasks
         public bool ForceAtn { get; set; }
         public bool AbstractGrammar { get; set; }
 
-        public string ManualOutputDirectory { get; set; }
-        public string AutomaticOutputDirectory { get; set; }
-        public string AutomaticOutputLocation { get; set; }
-
 
         protected override void AddSubArguments(List<string> arguments)
         {
@@ -49,21 +45,6 @@ namespace MetaDslx.BuildTasks
             {
                 arguments.Add("--target-namespace");
                 arguments.Add(TargetNamespace);
-            }
-            if (!string.IsNullOrWhiteSpace(ManualOutputDirectory))
-            {
-                arguments.Add("--manual-output-directory");
-                arguments.Add(AutomaticOutputDirectory);
-            }
-            if (!string.IsNullOrWhiteSpace(AutomaticOutputDirectory))
-            {
-                arguments.Add("--automatic-output-directory");
-                arguments.Add(AutomaticOutputDirectory);
-            }
-            else if (AutomaticOutputLocation == "CurrentDirectory")
-            {
-                arguments.Add("--automatic-output-location");
-                arguments.Add(AutomaticOutputLocation);
             }
         }
     }

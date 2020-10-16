@@ -9,7 +9,7 @@ namespace MetaDslx.CodeAnalysis
     public interface ICompilerForBuildTask
     {
         void Compile();
-        void Generate(bool forceOverwrite = false);
+        void Generate();
         bool HasErrors { get; }
         ImmutableArray<Diagnostic> GetDiagnostics();
         ImmutableArray<string> GetGeneratedFileList();

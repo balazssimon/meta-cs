@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using MetaDslx.Languages.Antlr4Roslyn.Compilation;
 using System.IO;
 using MetaDslx.Languages.MetaGenerator.Syntax.InternalSyntax;
+using System.Runtime.InteropServices.ComTypes;
 
 namespace MetaDslx.Languages.MetaGenerator.Compilation
 {
@@ -21,9 +22,10 @@ namespace MetaDslx.Languages.MetaGenerator.Compilation
     {
         private MetaGeneratorGenerator generator;
         public string GeneratedSource { get; private set; }
+        public string GeneratedExtensions { get; private set; }
 
-        public MetaGeneratorCompiler(string inputFilePath, string outputDirectory, string defaultNamespace = null)
-            : base(inputFilePath, outputDirectory, defaultNamespace)
+        public MetaGeneratorCompiler(string manualOutputDirectory, string automaticOutputDirectory, string inputFilePath, string defaultNamespace = null)
+            : base(manualOutputDirectory, automaticOutputDirectory, inputFilePath, defaultNamespace)
         {
         }
 
@@ -49,13 +51,16 @@ namespace MetaDslx.Languages.MetaGenerator.Compilation
 
         protected override void DoGenerate()
         {
-            this.GeneratedSource = this.generator.GeneratedSource;
+            (this.GeneratedSource, this.GeneratedExtensions) = this.generator.Generate();
 
-            if (this.GenerateOutput && this.OutputDirectory != null)
+            if (this.GenerateOutput)
             {
-                string fileName = Path.Combine(this.OutputDirectory, Path.ChangeExtension(this.FileName, ".cs"));
-                this.RegisterGeneratedFile(fileName);
-                File.WriteAllText(fileName, this.GeneratedSource);
+                var bareFilePath = Path.ChangeExtension(this.InputFilePath, null);
+                this.WriteOutputFile(bareFilePath + ".cs", this.GeneratedSource);
+                if (this.GeneratedExtensions != null)
+                {
+                    this.WriteOutputFile(bareFilePath + "Extensions.cs", this.GeneratedExtensions, automatic: false);
+                }
             }
         }
     }

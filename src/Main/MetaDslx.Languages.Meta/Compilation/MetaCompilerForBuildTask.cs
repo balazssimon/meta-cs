@@ -12,24 +12,22 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using MetaDslx.CodeGeneration;
 
 namespace MetaDslx.Languages.Meta
 {
-    public class MetaCompilerForBuildTask : ICompilerForBuildTask
+    public class MetaCompilerForBuildTask : CodeGenerator, ICompilerForBuildTask
     {
         private string _inputFilePath;
-        private string _outputDirectory;
-        private string _outputFilePath;
         private bool _compileMetaModelCore;
         private string _metaModelCoreNamespace;
 
         private MetaCompilation _compilation;
 
-        public MetaCompilerForBuildTask(string inputFilePath, string outputDirectory, bool compileMetaModelCore, string metaModelCoreNamespace)
+        public MetaCompilerForBuildTask(string manualOutputDirectory, string automaticOutputDirectory, string inputFilePath, bool compileMetaModelCore, string metaModelCoreNamespace)
+            : base(manualOutputDirectory, automaticOutputDirectory)
         {
             _inputFilePath = inputFilePath;
-            _outputDirectory = outputDirectory;
-            _outputFilePath = Path.Combine(_outputDirectory, Path.ChangeExtension(Path.GetFileName(_inputFilePath), ".cs"));
             _compileMetaModelCore = compileMetaModelCore;
             _metaModelCoreNamespace = metaModelCoreNamespace;
         }
@@ -72,15 +70,23 @@ namespace MetaDslx.Languages.Meta
             _compilation.ForceComplete();
         }
 
-        public void Generate(bool forceOverwrite = false)
+        public void Generate()
         {
             if (!this.HasErrors)
             {
                 var compiledModel = _compilation.Model;
                 ImmutableMetaModelGenerator mmgen = new ImmutableMetaModelGenerator(compiledModel.Objects);
-                mmgen.Properties.MetaNs = "global::"+_metaModelCoreNamespace;
+                mmgen.Properties.MetaNs = "global::" + _metaModelCoreNamespace;
+
+                var bareFilePath = Path.ChangeExtension(_inputFilePath, null);
+
+                var outputFilePath = bareFilePath + ".cs";
                 string generatedCSharpModel = mmgen.Generate();
-                File.WriteAllText(_outputFilePath, generatedCSharpModel);
+                this.WriteOutputFile(outputFilePath, generatedCSharpModel);
+
+                string generatedCSharpModelImpl = mmgen.GenerateImplementation();
+                var outputImplFilePath = bareFilePath + "Implementation.cs";
+                this.WriteOutputFile(outputImplFilePath, generatedCSharpModelImpl, automatic: false);
             }
         }
 
@@ -88,11 +94,6 @@ namespace MetaDslx.Languages.Meta
         {
             this.Compile();
             return _compilation.GetDiagnostics();
-        }
-
-        public ImmutableArray<string> GetGeneratedFileList()
-        {
-            return this.HasErrors ? ImmutableArray<string>.Empty : ImmutableArray.Create(_outputFilePath);
         }
     }
 }

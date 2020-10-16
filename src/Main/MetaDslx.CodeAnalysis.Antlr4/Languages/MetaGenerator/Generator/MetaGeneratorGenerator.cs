@@ -7,46 +7,45 @@ using System.Text;
 using System.Threading.Tasks;
 using Antlr4.Runtime.Misc;
 using MetaDslx.Languages.MetaGenerator.Syntax.InternalSyntax;
+using MetaDslx.CodeGeneration;
 
 namespace MetaDslx.Languages.MetaGenerator.Generator
 {
     internal class MetaGeneratorGenerator
     {
-        private bool generated = false;
-        private string generatedSource = null;
         public ParserRuleContext ParseTree { get; private set; }
-        public string GeneratedSource
-        {
-            get
-            {
-                if (!this.generated)
-                {
-                    this.generatedSource = this.Generate();
-                    this.generated = true;
-                }
-                return this.generatedSource;
-            }
-        }
 
         public MetaGeneratorGenerator(ParserRuleContext parseTree)
         {
             this.ParseTree = parseTree;
         }
 
-        public string Generate()
+        public (string generator, string extensions) Generate()
         {
-            StringBuilder sb = new StringBuilder();
-            var ul = new MetaGenCSharpUsingVisitor(sb);
-            ul.Visit(this.ParseTree);
-            ul.Close();
-            var cl = new MetaGenCSharpClassVisitor(sb);
-            cl.Loops = ul.Loops;
-            cl.HasLoops = ul.HasLoops;
-            cl.ExternFunctions = ul.ExternFunctions;
-            cl.Visit(this.ParseTree);
-            cl.Close();
-            return sb.ToString();
+            CodeBuilder genCb = new CodeBuilder();
+            var uv = new MetaGenCSharpUsingVisitor(genCb);
+            uv.Visit(this.ParseTree);
+            uv.Close();
+            var cv = new MetaGenCSharpClassVisitor(genCb);
+            cv.Loops = uv.Loops;
+            cv.HasLoops = uv.HasLoops;
+            cv.ExternFunctions = uv.ExternFunctions;
+            cv.Visit(this.ParseTree);
+            cv.Close();
+            if (cv.ExternFunctions.Count > 0)
+            {
+                CodeBuilder extCb = new CodeBuilder();
+                var ev = new MetaGenCSharpExtensionsImplVisitor(extCb);
+                ev.Visit(this.ParseTree);
+                ev.Close();
+                return (genCb.ToString(), extCb.ToString());
+            }
+            else
+            {
+                return (genCb.ToString(), null);
+            }
         }
+
     }
 
     internal class ExternFunctionInfo
@@ -96,8 +95,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
 
     internal abstract class MetaGenVisitor : MetaGeneratorParserBaseVisitor<object>
     {
-        private StringBuilder sb;
-        private string indent;
+        private CodeBuilder cb;
         private int loopCounter;
         public Dictionary<MetaGeneratorParser.ExternFunctionDeclarationContext, ExternFunctionInfo> ExternFunctions { get; set; }
         public Dictionary<MetaGeneratorParser.WhileStatementBeginContext, LoopInfo> Whiles { get; set; }
@@ -105,10 +103,9 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
         public Dictionary<MetaGeneratorParser.LoopStatementBeginContext, LoopInfo> Loops { get; set; }
         public Dictionary<MetaGeneratorParser.HasLoopExpressionContext, LoopInfo> HasLoops { get; set; }
 
-        public MetaGenVisitor(StringBuilder sb)
+        public MetaGenVisitor(CodeBuilder cb)
         {
-            this.sb = sb;
-            this.indent = "";
+            this.cb = cb;
             this.loopCounter = 0;
             this.ExternFunctions = new Dictionary<MetaGeneratorParser.ExternFunctionDeclarationContext, ExternFunctionInfo>();
             this.Whiles = new Dictionary<MetaGeneratorParser.WhileStatementBeginContext, LoopInfo>();
@@ -119,46 +116,42 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
 
         protected void IncIndent()
         {
-            indent += "    ";
+            cb.IncIndent();
         }
 
         protected void DecIndent()
         {
-            indent = indent.Substring(4);
+            cb.DecIndent();
         }
 
         protected void WriteIndent()
         {
-            sb.Append(indent);
+            cb.WriteIndent();
         }
 
         protected void Write(string text)
         {
-            sb.Append(text);
+            cb.Write(text);
         }
 
         protected void Write(string format, params object[] args)
         {
-            sb.Append(string.Format(format, args));
+            cb.Write(format, args);
         }
 
-        protected void AppendLine()
+        protected void WriteLine()
         {
-            sb.AppendLine();
+            cb.WriteLine();
         }
 
-        protected void WriteLine(string text = "")
+        protected void WriteLine(string text)
         {
-            this.WriteIndent();
-            this.Write(text);
-            this.AppendLine();
+            cb.WriteLine(text);
         }
 
         protected void WriteLine(string format, params object[] args)
         {
-            this.WriteIndent();
-            this.Write(format, args);
-            this.AppendLine();
+            cb.WriteLine(format, args);
         }
 
         public virtual void Close()
@@ -286,8 +279,8 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
 
     internal class MetaGenCSharpUsingVisitor : MetaGenVisitor
     {
-        public MetaGenCSharpUsingVisitor(StringBuilder sb)
-            : base(sb)
+        public MetaGenCSharpUsingVisitor(CodeBuilder cb)
+            : base(cb)
         {
         }
 
@@ -316,6 +309,119 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
 
     }
 
+    internal class MetaGenCSharpExtensionsImplVisitor : MetaGenVisitor
+    {
+        public MetaGenCSharpExtensionsImplVisitor(CodeBuilder cb)
+            : base(cb)
+        {
+        }
+
+        public override object VisitNamespaceDeclaration(MetaGeneratorParser.NamespaceDeclarationContext context)
+        {
+            WriteLine("namespace {0} {1}", context.qualifiedName().GetText(), context.ToComment());
+            WriteLine("{");
+            IncIndent();
+            return null;
+        }
+
+        public override object VisitGeneratorDeclaration(MetaGeneratorParser.GeneratorDeclarationContext context)
+        {
+            string generatorName = context.identifier().GetText();
+            WriteLine("internal class {0}Extensions : I{0}Extensions", generatorName);
+            WriteLine("{");
+            IncIndent();
+            WriteLine("private readonly {0} _generator;", generatorName);
+            WriteLine("public {0}Extensions({0} generator)", generatorName);
+            WriteLine("{");
+            IncIndent();
+            WriteLine("_generator = generator;");
+            DecIndent();
+            WriteLine("}");
+            return null;
+        }
+
+        public override object VisitExternFunctionDeclaration([NotNull] MetaGeneratorParser.ExternFunctionDeclarationContext context)
+        {
+            WriteLine();
+            VisitExternFunctionSignature(context.functionSignature());
+            WriteLine("{");
+            IncIndent();
+            VisitExternFunctionCall(context.functionSignature());
+            DecIndent();
+            WriteLine("}");
+            return null;
+        }
+
+        public object VisitExternFunctionSignature(MetaGeneratorParser.FunctionSignatureContext context)
+        {
+            WriteIndent();
+            Write("public {0} {1}", context.returnType().GetText(), context.identifier().GetText());
+            if (context.typeArgumentList() != null)
+            {
+                string comma = "";
+                foreach (var arg in context.typeArgumentList().typeReferenceList().typeReference())
+                {
+                    Write(comma);
+                    Write(arg.GetText());
+                    comma = ", ";
+                }
+            }
+            Write("(");
+            if (context.paramList() != null)
+            {
+                Visit(context.paramList());
+            }
+            Write(") {0}", context.ToComment());
+            WriteLine();
+            return null;
+        }
+
+        public override object VisitParamList(MetaGeneratorParser.ParamListContext context)
+        {
+            string comma = "";
+            foreach (var param in context.parameter())
+            {
+                Write(comma);
+                Visit(param);
+                comma = ", ";
+            }
+            return null;
+        }
+
+        public override object VisitParameter(MetaGeneratorParser.ParameterContext context)
+        {
+            Write("{0} {1}", context.typeReference().GetText(), context.identifier().GetText());
+            if (context.expression() != null)
+            {
+                Write(" = ");
+                Write(context.expression().GetText());
+            }
+            return null;
+        }
+
+        public object VisitExternFunctionCall(MetaGeneratorParser.FunctionSignatureContext context)
+        {
+            if (context.returnType().GetText() != "void")
+            {
+                WriteIndent();
+                Write("return default(");
+                Write(context.returnType().GetText());
+                Write(");");
+                WriteLine();
+            }
+            return null;
+        }
+
+        public override void Close()
+        {
+            DecIndent();
+            WriteLine("}");
+            DecIndent();
+            WriteLine("}");
+        }
+
+    }
+
     internal class MetaGenCSharpClassVisitor : MetaGenVisitor
     {
         private int tmpCounter = 0;
@@ -323,8 +429,8 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
         private List<SwitchInfo> switchStack = new List<SwitchInfo>();
         private HashSet<string> externFunctionNames = new HashSet<string>();
 
-        public MetaGenCSharpClassVisitor(StringBuilder sb)
-            : base(sb)
+        public MetaGenCSharpClassVisitor(CodeBuilder cb)
+            : base(cb)
         {
         }
 
@@ -424,7 +530,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
         {
             if (this.ExternFunctions.Count > 0)
             {
-                AppendLine();
+                WriteLine();
                 WriteLine("internal interface I{0}Extensions", generatorName);
                 WriteLine("{");
                 IncIndent();
@@ -468,9 +574,9 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
             WriteLine("}");
             DecIndent();
             WriteLine("}");
-            AppendLine();
+            WriteLine();
             this.GenerateExtensionsInterface(name);
-            AppendLine();
+            WriteLine();
             string baseType = string.Empty;
             if (context.qualifiedName() != null)
             {
@@ -485,7 +591,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
             {
                 string instancesType = context.typeReference().GetText();
                 WriteLine("public readonly {0} Instances; {1}", instancesType, context.ToComment());
-                AppendLine();
+                WriteLine();
             }
             WriteLine("public {0}() {1}", name, context.ToComment());
             WriteLine("{");
@@ -503,7 +609,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
             }
             DecIndent();
             WriteLine("}");
-            AppendLine();
+            WriteLine();
             if (context.typeReference() != null)
             {
                 string instancesType = context.typeReference().GetText();
@@ -513,7 +619,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
                 WriteLine("this.Instances = instances;");
                 DecIndent();
                 WriteLine("}");
-                AppendLine();
+                WriteLine();
             }
             WriteLine("private Stream __ToStream(string text)");
             WriteLine("{");
@@ -526,7 +632,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
             WriteLine("return stream;");
             DecIndent();
             WriteLine("}");
-            AppendLine();
+            WriteLine();
             WriteLine("private static IEnumerable<T> __Enumerate<T>(IEnumerator<T> items)");
             WriteLine("{");
             IncIndent();
@@ -538,7 +644,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
             WriteLine("}");
             DecIndent();
             WriteLine("}");
-            AppendLine();
+            WriteLine();
             if (this.processTemplateOutput)
             {
                 WriteLine("protected override string ProcessTemplateOutput(object output) {0}", context.ToComment());
@@ -547,7 +653,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
                 WriteLine("return base.ProcessTemplateOutput(output);");
                 DecIndent();
                 WriteLine("}");
-                AppendLine();
+                WriteLine();
             }
             return null;
         }
@@ -566,7 +672,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
                 name = context.identifier().GetText();
             }
             WriteLine("private {0} {1} = new {0}(); {2}", type, name, context.ToComment());
-            AppendLine();
+            WriteLine();
             return null;
         }
 
@@ -575,7 +681,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
             string name = "Properties";
             if (context.identifier() != null) name = context.identifier().GetText();
             WriteLine("public __{0} {0} {1} get; private set; {2} {3}", name, "{", "}", context.ToComment());
-            AppendLine();
+            WriteLine();
             WriteLine("public class __{0} {1}", name, context.ToComment());
             WriteLine("{");
             IncIndent();
@@ -593,7 +699,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
                         Write("this.{0} = ", prop.identifier().GetText());
                         Visit(prop.expression());
                         Write("; {0}", prop.expression().ToComment());
-                        AppendLine();
+                        WriteLine();
                     }
                 }
                 if (child is MetaGeneratorParser.ConfigPropertyGroupDeclarationContext)
@@ -619,7 +725,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
             }
             DecIndent();
             WriteLine("}");
-            AppendLine();
+            WriteLine();
             foreach (var child in context.children)
             {
                 if (child is MetaGeneratorParser.ConfigPropertyGroupDeclarationContext)
@@ -651,7 +757,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
                         Write("this.{0} = ", prop.identifier().GetText());
                         Visit(prop.expression());
                         Write("; {0}", prop.expression().ToComment());
-                        AppendLine();
+                        WriteLine();
                     }
                 }
                 if (child is MetaGeneratorParser.ConfigPropertyGroupDeclarationContext)
@@ -677,7 +783,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
             }
             DecIndent();
             WriteLine("}");
-            AppendLine();
+            WriteLine();
             foreach (var child in context.children)
             {
                 if (child is MetaGeneratorParser.ConfigPropertyGroupDeclarationContext)
@@ -698,7 +804,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
             VisitExternFunctionCall(context.functionSignature());
             DecIndent();
             WriteLine("}");
-            AppendLine();
+            WriteLine();
             return null;
         }
 
@@ -716,7 +822,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
                 Visit(context.paramList());
             }
             Write(") {0}", context.ToComment());
-            AppendLine();
+            WriteLine();
             return null;
         }
 
@@ -735,7 +841,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
                 VisitParamListCall(context.paramList());
             }
             Write("); {0}", context.ToComment());
-            AppendLine();
+            WriteLine();
             return null;
         }
 
@@ -748,7 +854,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
             Visit(context.body());
             DecIndent();
             WriteLine("}");
-            AppendLine();
+            WriteLine();
             return null;
         }
 
@@ -766,7 +872,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
                 Visit(context.paramList());
             }
             Write(") {0}", context.ToComment());
-            AppendLine();
+            WriteLine();
             return null;
         }
 
@@ -784,7 +890,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
                 Visit(context.paramList());
             }
             Write("); {0}", context.ToComment());
-            AppendLine();
+            WriteLine();
             return null;
         }
 
@@ -799,7 +905,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
             WriteLine("return __out.ToString();");
             DecIndent();
             WriteLine("}");
-            AppendLine();
+            WriteLine();
             return null;
         }
 
@@ -812,7 +918,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
                 Visit(context.paramList());
             }
             Write(") {0}", context.ToComment());
-            AppendLine();
+            WriteLine();
             return null;
         }
 
@@ -857,7 +963,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
             Visit(context.variableDeclarationExpression());
             Write("; ");
             Write(context.ToComment());
-            AppendLine();
+            WriteLine();
             return null;
         }
 
@@ -891,7 +997,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
             Write("return ");
             Visit(context.expression());
             Write("; " + context.ToComment());
-            AppendLine();
+            WriteLine();
             return null;
         }
 
@@ -900,7 +1006,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
             WriteIndent();
             Visit(context.expression());
             Write("; " + context.ToComment());
-            AppendLine();
+            WriteLine();
             return null;
         }
 
@@ -909,7 +1015,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
             WriteIndent();
             Visit(context.expression());
             Write("; " + context.ToComment());
-            AppendLine();
+            WriteLine();
             return null;
         }
 
@@ -919,7 +1025,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
             Write("if (");
             Visit(context.expression());
             Write(") " + context.ToComment());
-            AppendLine();
+            WriteLine();
             WriteLine("{");
             IncIndent();
             return null;
@@ -933,7 +1039,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
             Write("else if (");
             Visit(context.expression());
             Write(") " + context.ToComment());
-            AppendLine();
+            WriteLine();
             WriteLine("{");
             IncIndent();
             return null;
@@ -1666,7 +1772,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
                     WriteIndent();
                     Visit(expression);
                     Write(";");
-                    AppendLine();
+                    WriteLine();
                 }
                 else
                 {
@@ -1688,7 +1794,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
                     {
                         Write(");");
                     }
-                    AppendLine();
+                    WriteLine();
                 }
             }
             else
@@ -1722,7 +1828,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
                 Visit(context.stepExpression);
             }
             Write(") " + context.ToComment());
-            AppendLine();
+            WriteLine();
             WriteLine("{");
             IncIndent();
             return null;
@@ -1741,7 +1847,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
             Write("while (");
             Visit(context.expression());
             Write(") " + context.ToComment());
-            AppendLine();
+            WriteLine();
             WriteLine("{");
             IncIndent();
             return null;
@@ -1770,7 +1876,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
             Write("while (!(");
             Visit(context.expression());
             Write(")); " + context.ToComment());
-            AppendLine();
+            WriteLine();
             return null;
         }
 
@@ -1788,7 +1894,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
                     MetaGeneratorParser.LoopChainTypeofExpressionContext expression = (MetaGeneratorParser.LoopChainTypeofExpressionContext)lci.loopChainExpression();
                     WriteIndent();
                     Write("from {0} in __Enumerate(({1}).GetEnumerator()).OfType<{2}>() {3}", lii.Name, i > 0 ? ResolveIdentifier(li.Items[i - 1].Name) : "", expression.typeReference().GetText(), lci.ToComment());
-                    AppendLine();
+                    WriteLine();
                 }
                 else if (i == 0)
                 {
@@ -1796,7 +1902,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
                     Write("(from {0} in __Enumerate((", lii.Name);
                     Visit(lci);
                     Write(").GetEnumerator()) {0}", lci.ToComment());
-                    AppendLine();
+                    WriteLine();
                 }
                 else
                 {
@@ -1804,7 +1910,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
                     Write("from {0} in __Enumerate(({1}.", lii.Name, ResolveIdentifier(li.Items[i - 1].Name));
                     Visit(lci);
                     Write(").GetEnumerator()) {0}", lci.ToComment());
-                    AppendLine();
+                    WriteLine();
                 }
             }
             if (context.loopWhereExpression() != null)
@@ -1813,7 +1919,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
                 Write("where ");
                 Visit(context.loopWhereExpression().expression());
                 Write(" {0}", context.loopWhereExpression().ToComment());
-                AppendLine();
+                WriteLine();
             }
             WriteIndent();
             Write("select new { ");
@@ -1824,7 +1930,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
                 Write("{0} = {0}", lii.Name);
             }
             Write("}");
-            AppendLine();
+            WriteLine();
             WriteLine(").ToList(); {0}", context.ToComment());
             DecIndent();
             string tmp1 = NewTmp();
@@ -1840,7 +1946,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
                 Write("if ({0}_iteration+1 < {0}_results.Count) {1} = ", li.Name, separatorVariable);
                 Write(separatorStatement.stringLiteral().GetText());
                 Write(";");
-                AppendLine();
+                WriteLine();
                 WriteLine("else {0} = string.Empty;", separatorVariable);
             }
             WriteLine("var {1} = {0}_results[{0}_iteration];", li.Name, tmp1);
@@ -1870,14 +1976,14 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
                     MetaGeneratorParser.LoopChainTypeofExpressionContext expression = (MetaGeneratorParser.LoopChainTypeofExpressionContext)lci.loopChainExpression();
                     WriteIndent();
                     Write("from {0} in __Enumerate(({1}).GetEnumerator()).OfType<{2}>() {3}", lii.Name, i > 0 ? ResolveIdentifier(li.Items[i - 1].Name) : "", expression.typeReference().GetText(), lci.ToComment());
-                    AppendLine();
+                    WriteLine();
                 }
                 else if (i == 0)
                 {
                     Write("(from {0} in __Enumerate((", lii.Name);
                     Visit(lci);
                     Write(").GetEnumerator()) {0}", lci.ToComment());
-                    AppendLine();
+                    WriteLine();
                 }
                 else
                 {
@@ -1885,7 +1991,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
                     Write("from {0} in __Enumerate(({1}.", lii.Name, ResolveIdentifier(li.Items[i - 1].Name));
                     Visit(lci);
                     Write(").GetEnumerator()) {0}", lci.ToComment());
-                    AppendLine();
+                    WriteLine();
                 }
             }
             if (context.loopWhereExpression() != null)
@@ -1894,7 +2000,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
                 Write("where ");
                 Visit(context.loopWhereExpression().expression());
                 Write(" {0}", context.loopWhereExpression().ToComment());
-                AppendLine();
+                WriteLine();
             }
             WriteIndent();
             Write("select new { ");
@@ -1905,7 +2011,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
                 Write("{0} = {0}", lii.Name);
             }
             Write("}");
-            AppendLine();
+            WriteLine();
             WriteIndent();
             Write(").GetEnumerator().MoveNext()");
             return null;
@@ -1965,7 +2071,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
             }
             this.Visit(context.expression());
             Write("; {0}", context.expression().ToComment());
-            AppendLine();
+            WriteLine();
             return null;
         }
 
@@ -1979,7 +2085,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
             WriteIndent();
             Write("}");
             Write("{0}", context.ToComment());
-            AppendLine();
+            WriteLine();
             return null;
         }
 
@@ -2046,11 +2152,11 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
                     else
                     {
                         Write(" || {0}", currentCase.ToComment());
-                        AppendLine();
+                        WriteLine();
                     }
                 }
             }
-            AppendLine();
+            WriteLine();
             WriteLine("{");
             IncIndent();
             return null;

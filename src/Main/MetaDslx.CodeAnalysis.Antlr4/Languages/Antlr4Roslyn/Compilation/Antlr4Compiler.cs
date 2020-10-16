@@ -14,10 +14,11 @@ using MetaDslx.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 using Microsoft.CodeAnalysis.PooledObjects;
 using MetaDslx.CodeAnalysis.Syntax;
+using MetaDslx.CodeGeneration;
 
 namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
 {
-    public abstract class Antlr4Compiler<TLexer, TParser> : ICompilerForBuildTask, IAntlrErrorListener<int>, IAntlrErrorListener<IToken>
+    public abstract class Antlr4Compiler<TLexer, TParser> : CodeGenerator, ICompilerForBuildTask, IAntlrErrorListener<int>, IAntlrErrorListener<IToken>
         where TLexer: Antlr4.Runtime.Lexer
         where TParser: Antlr4.Runtime.Parser
     {
@@ -35,9 +36,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         public string FileName { get; private set; }
         public string InputDirectory { get; private set; }
         public string InputFilePath { get; private set; }
-        public string OutputDirectory { get; protected set; }
         public bool GenerateOutput { get; set; }
-        public bool ForceOverwriteGeneratedFiles { get; private set; }
         protected DiagnosticBag DiagnosticBag { get; set; }
 
         public bool HasErrors
@@ -45,13 +44,13 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             get { return this.DiagnosticBag?.HasAnyErrors() ?? false; }
         }
 
-        public Antlr4Compiler(string inputFilePath, string outputDirectory, string defaultNamespace = null)
+        public Antlr4Compiler(string manualOutputDirectory, string automaticOutputDirectory, string inputFilePath, string defaultNamespace = null)
+            : base(manualOutputDirectory, automaticOutputDirectory)
         {
             this.InputFilePath = inputFilePath;
             this.Source = File.ReadAllText(inputFilePath);
             this.DefaultNamespace = defaultNamespace;
             this.InputDirectory = Path.GetDirectoryName(inputFilePath);
-            this.OutputDirectory = outputDirectory;
             this.FileName = Path.GetFileName(inputFilePath);
             this.GenerateOutput = true;
             this.diagnostics = ImmutableArray<Diagnostic>.Empty;
@@ -121,7 +120,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             this.diagnostics = this.DiagnosticBag.ToReadOnly();
         }
 
-        public void Generate(bool forceOverwrite = false)
+        public void Generate()
         {
             if (!this.compiled)
             {
@@ -131,7 +130,6 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             if (this.generated) return;
             else this.generated = true;
             if (this.HasErrors) return;
-            if (forceOverwrite) this.ForceOverwriteGeneratedFiles = true;
             this.DoGenerate();
         }
 
@@ -250,16 +248,6 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         internal void AddDiagnostic(ParserRuleContext rule, Antlr4RoslynErrorCode code, params object[] args)
         {
             this.DiagnosticBag.Add(code, Location.Create(this.InputFilePath, rule.GetTextSpan(), rule.GetLinePositionSpan()), args);
-        }
-
-        protected void RegisterGeneratedFile(string filePath)
-        {
-            this.generatedFileList.Add(filePath);
-        }
-
-        public ImmutableArray<string> GetGeneratedFileList()
-        {
-            return this.generatedFileList.AsImmutable();
         }
 
         public void SyntaxError(TextWriter output, IRecognizer recognizer, int offendingSymbol, int line, int charPositionInLine, string msg, RecognitionException e)

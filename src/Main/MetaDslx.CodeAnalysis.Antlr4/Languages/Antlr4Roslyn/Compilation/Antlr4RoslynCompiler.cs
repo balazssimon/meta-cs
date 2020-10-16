@@ -33,7 +33,6 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         public Antlr4Grammar Grammar { get; private set; }
         public string LanguageName { get; private set; }
 
-        public string HiddenOutputDirectory { get; private set; }
         public string SyntaxDirectory { get; private set; }
         public string InternalSyntaxDirectory { get; private set; }
 
@@ -77,8 +76,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         public string GeneratedSymbolFacts { get; private set; }
         //public string GeneratedLanguageService { get; private set; }
 
-        public Antlr4RoslynCompiler(string inputFilePath, string outputDirectory, string hiddenOutputDirectory, string defaultNamespace, Antlr4Tool antlr4Tool)
-            : base(inputFilePath, outputDirectory, defaultNamespace)
+        public Antlr4RoslynCompiler(string manualOutputDirectory, string automaticOutputDirectory, string inputFilePath, string defaultNamespace, Antlr4Tool antlr4Tool)
+            : base(manualOutputDirectory, automaticOutputDirectory, inputFilePath, defaultNamespace)
         {
             _antlr4Tool = antlr4Tool;
             this.GenerateAntlr4 = true;
@@ -86,7 +85,6 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             if (languageName.EndsWith("Parser")) languageName = languageName.Substring(0, languageName.Length - 6);
             else if (languageName.EndsWith("Lexer")) languageName = languageName.Substring(0, languageName.Length - 5);
             this.LanguageName = languageName;
-            this.HiddenOutputDirectory = hiddenOutputDirectory;
 
             if (defaultNamespace == null) defaultNamespace = string.Empty;
             if (defaultNamespace.EndsWith(".InternalSyntax"))
@@ -99,9 +97,9 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             }
             this.DefaultNamespace = defaultNamespace;
 
-            if (this.OutputDirectory != null)
+            if (!string.IsNullOrWhiteSpace(this.ManualOutputDirectory))
             {
-                string directory = this.OutputDirectory;
+                string directory = this.ManualOutputDirectory;
                 DirectoryInfo info = new DirectoryInfo(directory);
                 if (info.Name == "InternalSyntax")
                 {
@@ -111,13 +109,13 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                 {
                     info = info.Parent;
                 }
-                directory = info.FullName;
-                this.OutputDirectory = directory;
+                directory = info.ToString();
+                this.ManualOutputDirectory = directory;
             }
 
-            if (this.HiddenOutputDirectory != null)
+            if (!string.IsNullOrWhiteSpace(this.AutomaticOutputDirectory))
             {
-                string directory = this.HiddenOutputDirectory;
+                string directory = this.AutomaticOutputDirectory;
                 DirectoryInfo info = new DirectoryInfo(directory);
                 if (info.Name == "InternalSyntax")
                 {
@@ -127,14 +125,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                 {
                     info = info.Parent;
                 }
-                directory = info.FullName;
+                directory = info.ToString();
 
-                this.SyntaxDirectory = Path.Combine(directory, "Syntax");
-                this.InternalSyntaxDirectory = Path.Combine(this.SyntaxDirectory, "InternalSyntax");
-                Directory.CreateDirectory(Path.Combine(directory, this.InternalSyntaxDirectory));
-
-                this.HiddenOutputDirectory = directory;
+                this.AutomaticOutputDirectory = directory;
             }
+            this.SyntaxDirectory = "Syntax";
+            this.InternalSyntaxDirectory = Path.Combine(this.SyntaxDirectory, "InternalSyntax");
 
             _noLocation = new ExternalFileLocation(this.InputFilePath, TextSpan.FromBounds(0, 1), new LinePositionSpan(LinePosition.Zero, LinePosition.Zero));
         }
@@ -161,11 +157,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             if (this.HasErrors) return false;
             if (_antlr4Tool != null)
             {
+                var Antlr4Directory = Path.Combine(this.AutomaticOutputDirectory, this.InternalSyntaxDirectory);
                 this.remover = new Antlr4AnnotationRemover(this.CommonTokenStream);
                 this.remover.Visit(this.ParseTree);
                 this.Antlr4GrammarSource = remover.GetText();
                 this.GeneratedAntlr4GrammarFile = Path.Combine(this.InternalSyntaxDirectory, Path.ChangeExtension(this.FileName, ".g4"));
-                File.WriteAllText(this.GeneratedAntlr4GrammarFile, this.Antlr4GrammarSource);
+                this.WriteOutputFile(this.GeneratedAntlr4GrammarFile, this.Antlr4GrammarSource, omitCodeGenerationWarning: true);
                 _antlr4Tool.GenerateVisitor = true;
                 if (!this.GenerateAntlr4)
                 {
@@ -174,9 +171,10 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                 }
                 else
                 {
-                    if (_antlr4Tool.OutputPath == null) _antlr4Tool.OutputPath = this.InternalSyntaxDirectory;
+                    _antlr4Tool.OutputPath = null;
+                    //if (_antlr4Tool.OutputPath == null) _antlr4Tool.OutputPath = Antlr4Directory;
                 }
-                _antlr4Tool.SourceCodeFiles.Add(this.GeneratedAntlr4GrammarFile);
+                _antlr4Tool.SourceCodeFiles.Add(Path.Combine(Antlr4Directory, Path.ChangeExtension(this.FileName, ".g4")));
                 _antlr4Tool.TargetNamespace = this.DefaultNamespace + ".Syntax.InternalSyntax";
                 bool success = _antlr4Tool.Execute();
                 foreach (var diag in _antlr4Tool.Diagnostics)
@@ -297,7 +295,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         {
             this.Grammar.ErrorCodeCategory = this.LanguageName;
             this.Grammar.MessagePrefix = new string(this.LanguageName.Where(c => char.IsUpper(c) || char.IsNumber(c)).ToArray());
-            string antlr4TokensFile = Path.ChangeExtension(this.GeneratedAntlr4GrammarFile, ".tokens");
+            string antlr4TokensFile = Path.Combine(this.AutomaticOutputDirectory, Path.ChangeExtension(this.GeneratedAntlr4GrammarFile, ".tokens"));
             if (!File.Exists(antlr4TokensFile))
             {
                 this.AddDiagnostic(Antlr4RoslynErrorCode.ERR_Antlr4ToolError, string.Format("Tokens file '{0}' is missing.", antlr4TokensFile));
@@ -424,30 +422,6 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             return tokenName != null && int.TryParse(tokenLine.Substring(index + 1).Trim(), out tokenKind) && tokenKind > 0;
         }
 
-        private void GenerateOutputFile(string filePath, string fileContent, bool overwrite = true)
-        {
-            if (this.ForceOverwriteGeneratedFiles || overwrite || !File.Exists(filePath))
-            {
-                if (overwrite)
-                {
-                    File.WriteAllLines(filePath, new string[] {
-                            "// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",
-                            "// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.",
-                            "// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",
-                            fileContent
-                        });
-                }
-                else
-                {
-                    File.WriteAllLines(filePath, new string[] {
-                            "// NOTE: This is an auto-generated file. However, it will not be regenerated. If you want it to be regenerated, just delete it.",
-                            fileContent
-                        });
-                }
-            }
-            this.RegisterGeneratedFile(filePath);
-        }
-
         private void GenerateLexer()
         {
             if (!this.IsLexer) return;
@@ -459,12 +433,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             this.GeneratedSyntaxKind = generator.GenerateSyntaxKind(false, this.LanguageName + "TokensSyntaxKind", "SyntaxKind");
             //this.GeneratedLanguageService = this.GetLanguageService();
 
-            if (this.HiddenOutputDirectory == null || this.OutputDirectory == null) return;
+            if (this.AutomaticOutputDirectory == null || this.ManualOutputDirectory == null) return;
 
             if (this.GenerateCompiler)
             {
-                this.GenerateOutputFile(Path.Combine(this.SyntaxDirectory, this.LanguageName + "SyntaxFacts.Tokens.cs"), this.GeneratedTokenSyntaxFacts);
-                this.GenerateOutputFile(Path.Combine(this.SyntaxDirectory, this.LanguageName + "SyntaxKind.Tokens.cs"), this.GeneratedSyntaxKind);
+                this.WriteOutputFile(Path.Combine(this.SyntaxDirectory, this.LanguageName + "SyntaxFacts.Tokens.cs"), this.GeneratedTokenSyntaxFacts);
+                this.WriteOutputFile(Path.Combine(this.SyntaxDirectory, this.LanguageName + "SyntaxKind.Tokens.cs"), this.GeneratedSyntaxKind);
             }
         }
 
@@ -477,7 +451,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             generator.Properties.DefaultNamespace = this.DefaultNamespace;
             generator.Properties.LanguageName = this.LanguageName;
 
-            IncrementalParserFix(Path.Combine(this.InternalSyntaxDirectory, this.LanguageName + "Parser.cs"));
+            string antlr4ParserFile = Path.Combine(this.AutomaticOutputDirectory, Path.ChangeExtension(this.GeneratedAntlr4GrammarFile, ".cs"));
+            IncrementalParserFix(antlr4ParserFile);
 
             this.GeneratedSyntaxKind = generator.GenerateSyntaxKind(true, this.LanguageName + "SyntaxKind", this.LanguageName + "TokensSyntaxKind");
             this.GeneratedNodeSyntaxFacts = generator.GenerateNodeSyntaxFacts();
@@ -507,41 +482,38 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             this.GeneratedBoundNodeFactoryVisitor = generator.GenerateBoundNodeFactoryVisitor();
             this.GeneratedIsBindableNodeVisitor = generator.GenerateIsBindableNodeVisitor();
 
-            if (this.HiddenOutputDirectory == null || this.OutputDirectory == null) return;
+            if (this.AutomaticOutputDirectory == null || this.ManualOutputDirectory == null) return;
 
             if (this.GenerateCompiler)
             {
-                Directory.CreateDirectory(Path.Combine(this.HiddenOutputDirectory, @"Errors"));
-                Directory.CreateDirectory(Path.Combine(this.HiddenOutputDirectory, @"Parser"));
-                Directory.CreateDirectory(Path.Combine(this.HiddenOutputDirectory, @"Compilation"));
-                Directory.CreateDirectory(Path.Combine(this.HiddenOutputDirectory, @"Binding"));
-                Directory.CreateDirectory(Path.Combine(this.HiddenOutputDirectory, @"Symbols"));
-                Directory.CreateDirectory(Path.Combine(this.OutputDirectory, @"Compilation"));
-
-                this.GenerateOutputFile(Path.Combine(this.InternalSyntaxDirectory, this.LanguageName + "InternalSyntax.cs"), this.GeneratedInternalSyntax);
-                this.GenerateOutputFile(Path.Combine(this.SyntaxDirectory, this.LanguageName + "SyntaxKind.Nodes.cs"), this.GeneratedSyntaxKind);
-                this.GenerateOutputFile(Path.Combine(this.SyntaxDirectory, this.LanguageName + "SyntaxFacts.Nodes.cs"), this.GeneratedNodeSyntaxFacts);
-                this.GenerateOutputFile(Path.Combine(this.SyntaxDirectory, this.LanguageName + "Syntax.cs"), this.GeneratedSyntax);
-                this.GenerateOutputFile(Path.Combine(this.SyntaxDirectory, this.LanguageName + "SyntaxTree.cs"), this.GeneratedSyntaxTree);
-                this.GenerateOutputFile(Path.Combine(this.SyntaxDirectory, this.LanguageName + @"ParseOptions.cs"), this.GeneratedParseOptions);
-                this.GenerateOutputFile(Path.Combine(this.InternalSyntaxDirectory, this.LanguageName + @"SyntaxLexer.cs"), this.GeneratedSyntaxLexer);
-                this.GenerateOutputFile(Path.Combine(this.InternalSyntaxDirectory, this.LanguageName + @"SyntaxParser.cs"), this.GeneratedSyntaxParser);
-                this.GenerateOutputFile(Path.Combine(this.HiddenOutputDirectory, @"Compilation\" + this.LanguageName + @"LanguageVersion.cs"), this.GeneratedLanguageVersion);
-                this.GenerateOutputFile(Path.Combine(this.HiddenOutputDirectory, @"Errors\" + this.LanguageName + @"ErrorCode.cs"), this.GeneratedErrorCode);
-                this.GenerateOutputFile(Path.Combine(this.HiddenOutputDirectory, @"Symbols\" + this.LanguageName + @"SymbolFacts.cs"), this.GeneratedSymbolFacts);
-                this.GenerateOutputFile(Path.Combine(this.HiddenOutputDirectory, @"Compilation\" + this.LanguageName + @"Language.cs"), this.GeneratedLanguage);
-                this.GenerateOutputFile(Path.Combine(this.HiddenOutputDirectory, @"Compilation\" + this.LanguageName + @"LanguageServicesBase.cs"), this.GeneratedLanguageServicesBase);
-                this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Compilation\" + this.LanguageName + @"LanguageServices.cs"), this.GeneratedLanguageServices, false);
-                this.GenerateOutputFile(Path.Combine(this.HiddenOutputDirectory, @"Compilation\" + this.LanguageName + @"CompilationOptions.cs"), this.GeneratedCompilationOptions);
-                this.GenerateOutputFile(Path.Combine(this.HiddenOutputDirectory, @"Compilation\" + this.LanguageName + @"Compilation.cs"), this.GeneratedCompilation);
-                this.GenerateOutputFile(Path.Combine(this.HiddenOutputDirectory, @"Binding\" + this.LanguageName + @"DeclarationTreeBuilderVisitor.cs"), this.GeneratedDeclarationTreeBuilder);
-                this.GenerateOutputFile(Path.Combine(this.HiddenOutputDirectory, @"Binding\" + this.LanguageName + @"BinderFactoryVisitor.cs"), this.GeneratedBinderFactoryVisitor);
-                this.GenerateOutputFile(Path.Combine(this.HiddenOutputDirectory, @"Binding\" + this.LanguageName + @"BoundKind.cs"), this.GeneratedBoundKind);
-                this.GenerateOutputFile(Path.Combine(this.HiddenOutputDirectory, @"Binding\" + this.LanguageName + @"BoundNodeFactoryVisitor.cs"), this.GeneratedBoundNodeFactoryVisitor);
-                this.GenerateOutputFile(Path.Combine(this.HiddenOutputDirectory, @"Binding\" + this.LanguageName + @"IsBindableNodeVisitor.cs"), this.GeneratedIsBindableNodeVisitor);
-                this.GenerateOutputFile(Path.Combine(this.HiddenOutputDirectory, @"Compilation\" + this.LanguageName + @"CompilationFactory.cs"), this.GeneratedCompilationFactory);
-                /*this.GenerateOutputFile(Path.Combine(this.HiddenOutputDirectory, @"Compilation\" + this.LanguageName + @"ScriptCompilationInfo.cs"), this.GeneratedScriptCompilationInfo);
-                this.GenerateOutputFile(Path.Combine(this.HiddenOutputDirectory, @"Compilation\" + this.LanguageName + @"Feature.cs"), this.GeneratedFeature);*/
+                var CompilationDirectory = "Compilation";
+                var ErrorsDirectory = "Errors";
+                var SymbolsDirectory = "Symbols";
+                var BindingDirectory = "Binding";
+                this.WriteOutputFile(Path.Combine(this.InternalSyntaxDirectory, this.LanguageName + "InternalSyntax.cs"), this.GeneratedInternalSyntax);
+                this.WriteOutputFile(Path.Combine(this.InternalSyntaxDirectory, this.LanguageName + @"SyntaxLexer.cs"), this.GeneratedSyntaxLexer);
+                this.WriteOutputFile(Path.Combine(this.InternalSyntaxDirectory, this.LanguageName + @"SyntaxParser.cs"), this.GeneratedSyntaxParser);
+                this.WriteOutputFile(Path.Combine(this.SyntaxDirectory, this.LanguageName + "SyntaxKind.Nodes.cs"), this.GeneratedSyntaxKind);
+                this.WriteOutputFile(Path.Combine(this.SyntaxDirectory, this.LanguageName + "SyntaxFacts.Nodes.cs"), this.GeneratedNodeSyntaxFacts);
+                this.WriteOutputFile(Path.Combine(this.SyntaxDirectory, this.LanguageName + "Syntax.cs"), this.GeneratedSyntax);
+                this.WriteOutputFile(Path.Combine(this.SyntaxDirectory, this.LanguageName + "SyntaxTree.cs"), this.GeneratedSyntaxTree);
+                this.WriteOutputFile(Path.Combine(this.SyntaxDirectory, this.LanguageName + @"ParseOptions.cs"), this.GeneratedParseOptions);
+                this.WriteOutputFile(Path.Combine(ErrorsDirectory, this.LanguageName + @"ErrorCode.cs"), this.GeneratedErrorCode);
+                this.WriteOutputFile(Path.Combine(SymbolsDirectory, this.LanguageName + @"SymbolFacts.cs"), this.GeneratedSymbolFacts);
+                this.WriteOutputFile(Path.Combine(CompilationDirectory, this.LanguageName + @"CompilationOptions.cs"), this.GeneratedCompilationOptions);
+                this.WriteOutputFile(Path.Combine(CompilationDirectory, this.LanguageName + @"Compilation.cs"), this.GeneratedCompilation);
+                this.WriteOutputFile(Path.Combine(CompilationDirectory, this.LanguageName + @"CompilationFactory.cs"), this.GeneratedCompilationFactory);
+                this.WriteOutputFile(Path.Combine(CompilationDirectory, this.LanguageName + @"Language.cs"), this.GeneratedLanguage);
+                this.WriteOutputFile(Path.Combine(CompilationDirectory, this.LanguageName + @"LanguageVersion.cs"), this.GeneratedLanguageVersion);
+                this.WriteOutputFile(Path.Combine(CompilationDirectory, this.LanguageName + @"LanguageServicesBase.cs"), this.GeneratedLanguageServicesBase);
+                this.WriteOutputFile(Path.Combine(CompilationDirectory, this.LanguageName + @"LanguageServices.cs"), this.GeneratedLanguageServices, automatic: false);
+                this.WriteOutputFile(Path.Combine(BindingDirectory, this.LanguageName + @"DeclarationTreeBuilderVisitor.cs"), this.GeneratedDeclarationTreeBuilder);
+                this.WriteOutputFile(Path.Combine(BindingDirectory, this.LanguageName + @"BinderFactoryVisitor.cs"), this.GeneratedBinderFactoryVisitor);
+                this.WriteOutputFile(Path.Combine(BindingDirectory, this.LanguageName + @"BoundKind.cs"), this.GeneratedBoundKind);
+                this.WriteOutputFile(Path.Combine(BindingDirectory, this.LanguageName + @"BoundNodeFactoryVisitor.cs"), this.GeneratedBoundNodeFactoryVisitor);
+                this.WriteOutputFile(Path.Combine(BindingDirectory, this.LanguageName + @"IsBindableNodeVisitor.cs"), this.GeneratedIsBindableNodeVisitor);
+                /*this.WriteOutputFile(Path.Combine(this.AutomaticManualOutputDirectory, @"Compilation\" + this.LanguageName + @"ScriptCompilationInfo.cs"), this.GeneratedScriptCompilationInfo);
+                this.WriteOutputFile(Path.Combine(this.AutomaticManualOutputDirectory, @"Compilation\" + this.LanguageName + @"Feature.cs"), this.GeneratedFeature);*/
             }
         }
 

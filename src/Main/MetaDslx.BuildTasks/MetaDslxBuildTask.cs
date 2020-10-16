@@ -15,7 +15,6 @@ namespace MetaDslx.BuildTasks
     public abstract class MetaDslxBuildTask : BuildToolTask
     {
         private List<string> _generatedCodeFiles = new List<string>();
-        private string _fullIntermediatePath = null;
         private List<string> _generatedIntermediateCodeFiles = new List<string>();
 
         public MetaDslxBuildTask(string subToolName)
@@ -28,6 +27,10 @@ namespace MetaDslx.BuildTasks
         public string IntermediateDirectory { get; set; }
         public string Encoding { get; set; }
         public bool ContinueOnError { get; set; }
+
+        public string ManualOutputDirectory { get; set; }
+        public string AutomaticOutputDirectory { get; set; }
+        public string AutomaticOutputLocation { get; set; }
 
         public ITaskItem[] SourceCodeFiles { get; set; }
 
@@ -47,11 +50,28 @@ namespace MetaDslx.BuildTasks
                 arguments.Add("--input");
                 arguments.Add(sourceCodeFile.ItemSpec);
             }
-            if (!string.IsNullOrWhiteSpace(IntermediateDirectory))
+            if (!string.IsNullOrWhiteSpace(ManualOutputDirectory))
             {
-                arguments.Add("--intermediate-directory");
+                arguments.Add("--manual-output-directory");
+                arguments.Add(ManualOutputDirectory);
+            }
+            if (!string.IsNullOrWhiteSpace(AutomaticOutputDirectory))
+            {
+                arguments.Add("--automatic-output-directory");
+                arguments.Add(AutomaticOutputDirectory);
+            }
+            else if (AutomaticOutputLocation == "ManualOutputDirectory")
+            {
+                if (!string.IsNullOrWhiteSpace(ManualOutputDirectory))
+                {
+                    arguments.Add("--automatic-output-directory");
+                    arguments.Add(ManualOutputDirectory);
+                }
+            }
+            else
+            {
+                arguments.Add("--automatic-output-directory");
                 arguments.Add(IntermediateDirectory);
-                _fullIntermediatePath = Path.GetFullPath(IntermediateDirectory);
             }
             AddSubArguments(arguments);
         }
@@ -64,11 +84,10 @@ namespace MetaDslx.BuildTasks
             Match match = GeneratedFileMessageFormat.Match(data);
             if (!match.Success) return false;
 
-            string filePath = match.Groups["FILEPATH"].Value;
-            if (File.Exists(filePath) && Path.GetExtension(filePath) == ".cs")
+            string filePath = match.Groups["FILEPATH"].Value?.Trim();
+            if (!string.IsNullOrEmpty(filePath) && File.Exists(filePath) && Path.GetExtension(filePath) == ".cs")
             {
-                filePath = Path.GetFullPath(filePath);
-                if (_fullIntermediatePath != null && filePath.StartsWith(_fullIntermediatePath))
+                if (!string.IsNullOrEmpty(IntermediateDirectory) && filePath.StartsWith(IntermediateDirectory))
                 {
                     _generatedIntermediateCodeFiles.Add(filePath);
                 }

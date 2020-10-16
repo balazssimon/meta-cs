@@ -42,7 +42,7 @@
     <MetaModelGenCodeFileNames Condition="'$(MetaModelGenCodeFileNames)'==''">$(MSBuildProjectFile).MetaModelGeneratedCodeFileListAbsolute.txt</MetaModelGenCodeFileNames>
     <Antlr4RoslynGenCodeFileNames Condition="'$(Antlr4RoslynGenCodeFileNames)'==''">$(MSBuildProjectFile).Antlr4RoslynGeneratedCodeFileListAbsolute.txt</Antlr4RoslynGenCodeFileNames>
   </PropertyGroup>
-  
+
   <PropertyGroup>
     <LoadTimeSensitiveTargets>
       $(LoadTimeSensitiveTargets);
@@ -168,12 +168,15 @@
       <MetaGeneratorGeneratedCodeFiles Remove="@(MetaGeneratorGeneratedCodeFiles)" />
     </ItemGroup>
 
+    <Message Importance="high" Text="Running .mgen compiler on: @(MetaGenerator)" />
+
     <MetaGeneratorGenerationTask
-      OutputDirectory="%(MetaGenerator.OutputDirectory)"
-      OutputLocation="%(MetaGenerator.OutputLocation)"
+      ManualOutputDirectory="%(MetaGenerator.ManualOutputDirectory)"
+      AutomaticOutputDirectory="%(MetaGenerator.AutomaticOutputDirectory)"
+      AutomaticOutputLocation="%(MetaGenerator.AutomaticOutputLocation)"
       IntermediateDirectory="$(IntermediateOutputPath)"
       Encoding="%(MetaGenerator.Encoding)"
-      SourceCodeFiles="@(MetaGenerator -> '%(FullPath)')"
+      SourceCodeFiles="@(MetaGenerator)"
       ContinueOnError="false">
 
       <Output ItemName="MetaGeneratorGeneratedCodeFiles" TaskParameter="GeneratedIntermediateCodeFiles" />
@@ -201,12 +204,15 @@
       <MetaModelGeneratedCodeFiles Remove="@(MetaModelGeneratedCodeFiles)" />
     </ItemGroup>
 
+    <Message Importance="high" Text="Running .mm compiler on: @(MetaModel)" />
+
     <MetaModelGenerationTask
-      OutputDirectory="%(MetaModel.OutputDirectory)"
-      OutputLocation="%(MetaModel.OutputLocation)"
+      ManualOutputDirectory="%(MetaModel.ManualOutputDirectory)"
+      AutomaticOutputDirectory="%(MetaModel.AutomaticOutputDirectory)"
+      AutomaticOutputLocation="%(MetaModel.AutomaticOutputLocation)"
       IntermediateDirectory="$(IntermediateOutputPath)"
       Encoding="%(MetaModel.Encoding)"
-      SourceCodeFiles="@(MetaModel -> '%(FullPath)')"
+      SourceCodeFiles="@(MetaModel)"
       ContinueOnError="false"
       CompileMetaModelCore="$(MetaDslxCompileMetaModelCore)"
       MetaModelCoreNamespace="$(MetaDslxMetaModelCoreNamespace)">
@@ -236,6 +242,8 @@
       <Antlr4RoslynGeneratedCodeFiles Remove="@(Antlr4RoslynGeneratedCodeFiles)" />
     </ItemGroup>
 
+    <Message Importance="high" Text="Running .ag4 compiler on: @(Antlr4Roslyn)" />
+
     <Antlr4RoslynGenerationTask
       Antlr4ToolPath="$(Antlr4ToolLocation)"
       JavaExecutable="$(Antlr4JavaExecutable)"
@@ -248,7 +256,7 @@
       TargetLanguage="%(Antlr4Roslyn.TargetLanguage)"
       TargetFrameworkVersion="$(TargetFrameworkVersion)"
       TargetNamespace="%(Antlr4Roslyn.CustomToolNamespace)"
-      SourceCodeFiles="@(Antlr4Roslyn -> '%(FullPath)')"
+      SourceCodeFiles="@(Antlr4Roslyn)"
       ContinueOnError="false"
       TokensFiles="@(Antlr4Tokens)"
       AbstractGrammarFiles="@(Antlr4AbstractGrammar)"
@@ -278,7 +286,7 @@
     <ItemGroup>
       <MetaGeneratorGeneratedCodeFiles Condition="'@(MetaGeneratorGeneratedCodeFiles)' == ''" Include="@(MetaGeneratorOutputCodeFilesList)" />
     </ItemGroup>
-    
+
     <ItemGroup>
       <Compile Include="@(MetaGeneratorGeneratedCodeFiles)" />
       <!-- The WinFX "GenerateTemporaryTargetAssembly" target requires generated code files be added here. -->

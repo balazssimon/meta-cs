@@ -1,4 +1,5 @@
-﻿using Microsoft.Build.Utilities;
+﻿using Microsoft.Build.Framework;
+using Microsoft.Build.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -48,7 +49,7 @@ namespace MetaDslx.BuildTasks
                     RedirectStandardError = true,
                 };
 
-                Log.LogMessage("Executing: {0} {1}", startInfo.FileName, startInfo.Arguments);
+                Log.LogMessage(MessageImportance.High, "Executing: {0} {1}", startInfo.FileName, startInfo.Arguments);
 
                 var process = new Process();
                 process.StartInfo = startInfo;
@@ -94,7 +95,7 @@ namespace MetaDslx.BuildTasks
 
         private void HandleErrorDataReceived(string data)
         {
-            if (string.IsNullOrEmpty(data))
+            if (string.IsNullOrWhiteSpace(data))
                 return;
 
             try
@@ -129,7 +130,7 @@ namespace MetaDslx.BuildTasks
                             Log.LogWarning(subcategory, code, null, origin, l1, c1, l2, c2, text);
                             break;
                         default:
-                            Log.LogMessage(subcategory, code, null, origin, l1, c1, l2, c2, text);
+                            Log.LogMessage(MessageImportance.High, subcategory, code, null, origin, l1, c1, l2, c2, text);
                             break;
                     }
                 }
@@ -147,14 +148,14 @@ namespace MetaDslx.BuildTasks
 
         private void HandleOutputDataReceived(string data)
         {
-            if (string.IsNullOrEmpty(data))
+            if (string.IsNullOrWhiteSpace(data))
                 return;
 
             try
             {
                 if (!HandleOutputData(data) && ForwardLogs)
                 {
-                    Log.LogMessage(data);
+                    Log.LogMessage(MessageImportance.High, data);
                     return;
                 }
             }
