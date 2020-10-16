@@ -20,24 +20,28 @@ namespace MetaDslx.BuildTasks
 
         public override bool Execute()
         {
+            ForwardLogs = false;
             var result = base.Execute();
             if (!result)
             {
                 var arguments = new List<string>();
                 arguments.Add("new");
                 arguments.Add("tool-manifest");
-                result = RunTool(arguments);
+                RunTool(arguments);
 
-                if (result)
-                {
-                    arguments = new List<string>();
-                    arguments.Add("tool");
-                    arguments.Add("update");
-                    arguments.Add(Dll);
-                    arguments.Add("--version");
-                    arguments.Add(Version);
-                    result = RunTool(arguments);
-                }
+                arguments = new List<string>();
+                arguments.Add("tool");
+                arguments.Add("uninstall");
+                arguments.Add(Dll);
+                RunTool(arguments);
+
+                arguments = new List<string>();
+                arguments.Add("tool");
+                arguments.Add("update");
+                arguments.Add(Dll);
+                arguments.Add("--version");
+                arguments.Add(Version);
+                result = RunTool(arguments);
             }
             if (result) Log.LogMessage(MessageImportance.High, ".NET core tool '{0}' version '{1}' is installed.", Dll, Version);
             else Log.LogError("Could not install .NET core tool '{0}' version '{1}'.", Dll, Version);

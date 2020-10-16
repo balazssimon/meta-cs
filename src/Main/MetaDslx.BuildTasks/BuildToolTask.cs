@@ -8,8 +8,17 @@ using System.Text.RegularExpressions;
 
 namespace MetaDslx.BuildTasks
 {
+    public enum LogSeverity
+    {
+        Error,
+        Warning,
+        Info
+    }
+
     public abstract class BuildToolTask : Task
     {
+        private List<(LogSeverity, string)> _logs = new List<(LogSeverity, string)>();
+
         public BuildToolTask(string toolName)
         {
             ToolName = toolName;
@@ -17,6 +26,7 @@ namespace MetaDslx.BuildTasks
         }
 
         public string ToolName { get; }
+        public List<(LogSeverity, string)> SavedLogs { get; }
         public int TimeoutInSeconds { get; set; }
         public bool ForwardLogs { get; set; }
         public bool DebugBuildTool { get; set; }
@@ -134,6 +144,10 @@ namespace MetaDslx.BuildTasks
                             break;
                     }
                 }
+                else
+                {
+                    _logs.Add((LogSeverity.Error, data));
+                }
             }
             catch (Exception ex)
             {
@@ -156,7 +170,10 @@ namespace MetaDslx.BuildTasks
                 if (!HandleOutputData(data) && ForwardLogs)
                 {
                     Log.LogMessage(MessageImportance.High, data);
-                    return;
+                }
+                else
+                {
+                    _logs.Add((LogSeverity.Error, data));
                 }
             }
             catch (Exception ex)
@@ -167,10 +184,11 @@ namespace MetaDslx.BuildTasks
 
         protected void ProcessException(Exception ex)
         {
-            Log.LogError(ex.ToString().Replace('\r', ' ').Replace('\n', ' '));
+            if (ForwardLogs) Log.LogError(ex.ToString().Replace('\r', ' ').Replace('\n', ' '));
+            else _logs.Add((LogSeverity.Error, ex.ToString().Replace('\r', ' ').Replace('\n', ' ')));
         }
 
-        protected static string JoinArguments(IEnumerable<string> arguments)
+    protected static string JoinArguments(IEnumerable<string> arguments)
         {
             if (arguments == null)
                 throw new ArgumentNullException("arguments");
