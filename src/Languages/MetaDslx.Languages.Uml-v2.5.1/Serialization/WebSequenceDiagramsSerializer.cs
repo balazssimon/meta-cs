@@ -608,7 +608,8 @@ namespace MetaDslx.Languages.Uml.Serialization
                 startIndex = 1;
                 endIndex = text.Length - 1;
             }
-            return text.Substring(startIndex, endIndex - startIndex);
+            if (endIndex >= startIndex) return text.Substring(startIndex, endIndex - startIndex);
+            else return string.Empty;
         }
 
         private LifelineBuilder GetLifeline(string name, bool participantLine, Dictionary<string, LifelineBuilder> lifelines, Dictionary<string, string> lifelineAliases, InteractionBuilder interaction, int lineIndex)

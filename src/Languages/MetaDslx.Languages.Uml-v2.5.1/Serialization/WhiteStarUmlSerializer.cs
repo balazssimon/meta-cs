@@ -1178,10 +1178,13 @@ namespace MetaDslx.Languages.Uml.Serialization
             {
                 if (propertyName == "Client")
                 {
-                    interfaceRealization.Owner = null;
                     var cls = ResolveValue(location, typeof(IModelObject), propertyValue) as BehavioredClassifierBuilder;
-                    cls.InterfaceRealization.Add(interfaceRealization);
-                    return true;
+                    if (cls != null)
+                    {
+                        interfaceRealization.Owner = null;
+                        cls.InterfaceRealization.Add(interfaceRealization);
+                        return true;
+                    }
                 }
             }
             if (obj is MessageBuilder message)

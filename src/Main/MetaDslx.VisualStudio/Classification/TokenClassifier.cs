@@ -61,7 +61,7 @@ namespace MetaDslx.VisualStudio.Classification
             if (startPosition < 0) startPosition = 0;
             if (endPosition > root.FullSpan.End) endPosition = root.FullSpan.End;
             if (endPosition <= startPosition) return result;
-            var tokens = root.FindTokens(TextSpan.FromBounds(startPosition, endPosition), true);
+            var tokens = root.FindTokens(TextSpan.FromBounds(startPosition, endPosition), true); // TODO perf: do this on the green tree
             foreach (var token in tokens)
             {
                 if (token.Span.Length > 0)
