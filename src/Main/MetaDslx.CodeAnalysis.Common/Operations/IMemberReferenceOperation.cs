@@ -24,7 +24,7 @@ namespace Microsoft.CodeAnalysis.Operations
         /// <summary>
         /// Referenced member.
         /// </summary>
-        ISymbol Member { get; }
+        IDeclaredSymbol Member { get; }
     }
 }
 

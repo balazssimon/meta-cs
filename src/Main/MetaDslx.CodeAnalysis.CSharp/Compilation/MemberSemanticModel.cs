@@ -542,13 +542,13 @@ namespace Microsoft.CodeAnalysis.CSharp
             return null;
         }
 
-        public override ISymbol GetDeclaredSymbol(LocalFunctionStatementSyntax declarationSyntax, CancellationToken cancellationToken = default(CancellationToken))
+        public override IDeclaredSymbol GetDeclaredSymbol(LocalFunctionStatementSyntax declarationSyntax, CancellationToken cancellationToken = default(CancellationToken))
         {
             CheckSyntaxNode(declarationSyntax);
             return GetDeclaredLocalFunction(declarationSyntax, declarationSyntax.Identifier);
         }
 
-        public override ISymbol GetDeclaredSymbol(MemberDeclarationSyntax declarationSyntax, CancellationToken cancellationToken = default(CancellationToken))
+        public override IDeclaredSymbol GetDeclaredSymbol(MemberDeclarationSyntax declarationSyntax, CancellationToken cancellationToken = default(CancellationToken))
         {
             // Can't define member inside member.
             return null;
@@ -560,7 +560,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             return null;
         }
 
-        public override ISymbol GetDeclaredSymbol(BasePropertyDeclarationSyntax declarationSyntax, CancellationToken cancellationToken = default(CancellationToken))
+        public override IDeclaredSymbol GetDeclaredSymbol(BasePropertyDeclarationSyntax declarationSyntax, CancellationToken cancellationToken = default(CancellationToken))
         {
             // Can't define property inside member.
             return null;
@@ -596,13 +596,13 @@ namespace Microsoft.CodeAnalysis.CSharp
             return null;
         }
 
-        public override ISymbol GetDeclaredSymbol(VariableDeclaratorSyntax declarationSyntax, CancellationToken cancellationToken = default(CancellationToken))
+        public override IDeclaredSymbol GetDeclaredSymbol(VariableDeclaratorSyntax declarationSyntax, CancellationToken cancellationToken = default(CancellationToken))
         {
             CheckSyntaxNode(declarationSyntax);
             return GetDeclaredLocal(declarationSyntax, declarationSyntax.Identifier);
         }
 
-        public override ISymbol GetDeclaredSymbol(SingleVariableDesignationSyntax declarationSyntax, CancellationToken cancellationToken = default(CancellationToken))
+        public override IDeclaredSymbol GetDeclaredSymbol(SingleVariableDesignationSyntax declarationSyntax, CancellationToken cancellationToken = default(CancellationToken))
         {
             CheckSyntaxNode(declarationSyntax);
             return GetDeclaredLocal(declarationSyntax, declarationSyntax.Identifier);
@@ -716,10 +716,10 @@ namespace Microsoft.CodeAnalysis.CSharp
             return GetLambdaOrLocalFunctionParameterSymbol(declarationSyntax, cancellationToken);
         }
 
-        internal override ImmutableArray<ISymbol> GetDeclaredSymbols(BaseFieldDeclarationSyntax declarationSyntax, CancellationToken cancellationToken = default(CancellationToken))
+        internal override ImmutableArray<IDeclaredSymbol> GetDeclaredSymbols(BaseFieldDeclarationSyntax declarationSyntax, CancellationToken cancellationToken = default(CancellationToken))
         {
             // Can't define field inside member.
-            return ImmutableArray.Create<ISymbol>();
+            return ImmutableArray.Create<IDeclaredSymbol>();
         }
 
         private ParameterSymbol GetLambdaOrLocalFunctionParameterSymbol(
@@ -1002,7 +1002,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             return GetTypeOfTupleLiteral(declaratorSyntax);
         }
 
-        public override ISymbol GetDeclaredSymbol(ArgumentSyntax declaratorSyntax, CancellationToken cancellationToken = default(CancellationToken))
+        public override IDeclaredSymbol GetDeclaredSymbol(ArgumentSyntax declaratorSyntax, CancellationToken cancellationToken = default(CancellationToken))
         {
             CheckSyntaxNode(declaratorSyntax);
 

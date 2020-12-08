@@ -13,6 +13,6 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
         {
         }
 
-        public override ImmutableArray<Symbol> Symbols => ImmutableArray<Symbol>.Empty;
+        public override ImmutableArray<DeclaredSymbol> Symbols => ImmutableArray<DeclaredSymbol>.Empty;
     }
 }

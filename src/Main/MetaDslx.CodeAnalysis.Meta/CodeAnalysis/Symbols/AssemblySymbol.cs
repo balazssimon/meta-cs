@@ -195,70 +195,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
             get;
         }
 
-        public sealed override Accessibility DeclaredAccessibility
-        {
-            get
-            {
-                return Accessibility.NotApplicable;
-            }
-        }
-
-        public sealed override bool IsStatic
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        public sealed override bool IsVirtual
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        public sealed override bool IsOverride
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        public sealed override bool IsAbstract
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        public sealed override bool IsSealed
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        public sealed override bool IsExtern
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences
-        {
-            get
-            {
-                return ImmutableArray<SyntaxReference>.Empty;
-            }
-        }
-
         /// <summary>
         /// True if the assembly contains interactive code.
         /// </summary>
@@ -357,9 +293,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// Lookup declaration for predefined symbol in this Assembly.
         /// </summary>
         /// <returns>The symbol for the pre-defined symbol or an error type if the symbol is not defined in the core library.</returns>
-        public abstract Symbol GetDeclaredSpecialSymbol(object key);
+        public abstract DeclaredSymbol GetDeclaredSpecialSymbol(object key);
 
-        public abstract ImmutableArray<Symbol> DeclaredSpecialSymbols { get; }
+        public abstract ImmutableArray<DeclaredSymbol> DeclaredSpecialSymbols { get; }
 
         /// <summary>
         /// Figure out if the target runtime supports default interface implementation.
@@ -401,7 +337,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         internal virtual bool GetGuidString(out string guidString)
         {
-            return GetGuidStringDefaultImplementation(out guidString);
+            //TODO:MetaDslx
+            guidString = null;
+            return false;
         }
 
         /// <summary>
@@ -441,7 +379,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return GetDeclaredSpecialSymbol(key);
         }
 
-        public ImmutableArray<Symbol> SpecialSymbols => DeclaredSpecialSymbols;
+        public ImmutableArray<DeclaredSymbol> SpecialSymbols => DeclaredSpecialSymbols;
 
         internal static TypeSymbol DynamicType
         {
@@ -811,7 +749,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             Debug.Assert((object)result.ContainingType == null || IsValidWellKnownType(result.ContainingType),
                 "Checking the containing type is the caller's responsibility.");
 
-            return result.DeclaredAccessibility == Accessibility.Public || IsSymbolAccessible(result, this);
+            return result.DeclaredAccessibility == Accessibility.Public || DeclaredSymbol.IsSymbolAccessible(result, this);
         }
 
         private static NamedTypeSymbol GetTopLevelTypeByMetadataName(AssemblySymbol assembly, ref MetadataTypeName metadataName, AssemblyIdentity assemblyOpt)

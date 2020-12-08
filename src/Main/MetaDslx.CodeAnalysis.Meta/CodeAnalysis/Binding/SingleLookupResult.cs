@@ -18,12 +18,12 @@ namespace MetaDslx.CodeAnalysis.Binding
         public readonly LookupResultKind Kind;
 
         // the symbol or null.
-        public readonly Symbol Symbol;
+        public readonly DeclaredSymbol Symbol;
 
         // the error of the result, if it is NonViable or Inaccessible
         public readonly DiagnosticInfo Error;
 
-        public SingleLookupResult(LookupResultKind kind, Symbol symbol, DiagnosticInfo error)
+        public SingleLookupResult(LookupResultKind kind, DeclaredSymbol symbol, DiagnosticInfo error)
         {
             this.Kind = kind;
             this.Symbol = symbol;

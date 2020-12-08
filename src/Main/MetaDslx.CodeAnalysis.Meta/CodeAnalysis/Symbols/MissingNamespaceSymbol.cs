@@ -120,19 +120,19 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return ImmutableArray<NamedTypeSymbol>.Empty;
         }
 
-        public override ImmutableArray<Symbol> GetMembers()
+        public override ImmutableArray<DeclaredSymbol> GetMembers()
         {
-            return ImmutableArray<Symbol>.Empty;
+            return ImmutableArray<DeclaredSymbol>.Empty;
         }
 
-        public override ImmutableArray<Symbol> GetMembers(string name)
+        public override ImmutableArray<DeclaredSymbol> GetMembers(string name)
         {
-            return ImmutableArray<Symbol>.Empty;
+            return ImmutableArray<DeclaredSymbol>.Empty;
         }
 
-        public override ImmutableArray<Symbol> GetMembers(string name, string metadataName)
+        public override ImmutableArray<DeclaredSymbol> GetMembers(string name, string metadataName)
         {
-            return ImmutableArray<Symbol>.Empty;
+            return ImmutableArray<DeclaredSymbol>.Empty;
         }
     }
 }

@@ -91,9 +91,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             map.TryAdd(modelObject, symbol);
         }
 
-        public ImmutableArray<Symbol> GetSymbols(IEnumerable<IModelObject> csharpSymbols)
+        public ImmutableArray<DeclaredSymbol> GetMemberSymbols(IEnumerable<IModelObject> csharpSymbols)
         {
-            return csharpSymbols.Select(symbol => GetSymbol(symbol)).ToImmutableArray();
+            return csharpSymbols.Select(symbol => (DeclaredSymbol)GetSymbol(symbol)).ToImmutableArray();
         }
 
         public NamespaceSymbol GetNamespaceSymbol(IModelObject metaSymbol)

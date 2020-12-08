@@ -25,7 +25,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// Lazily filled by GetSpecialSymbol method.
         /// </summary>
         /// <remarks></remarks>
-        private ConcurrentDictionary<object, Symbol> _lazySpecialSymbols;
+        private ConcurrentDictionary<object, DeclaredSymbol> _lazySpecialSymbols;
 
         /// <summary>
         /// Lookup declaration for predefined symbol in this Assembly.
@@ -33,7 +33,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <param name="type"></param>
         /// <returns></returns>
         /// <remarks></remarks>
-        public override Symbol GetDeclaredSpecialSymbol(object key)
+        public override DeclaredSymbol GetDeclaredSpecialSymbol(object key)
         {
 #if DEBUG
             foreach (var module in this.Modules)
@@ -43,7 +43,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 #endif
 
             MetadataTypeName emittedName = default;
-            Symbol result = null;
+            DeclaredSymbol result = null;
             if (_lazySpecialSymbols == null || !_lazySpecialSymbols.ContainsKey(key))
             {
                 ModuleSymbol firstModule = this.Modules[0];
@@ -60,9 +60,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 {
                     foreach (var module in this.Modules)
                     {
-                        if (module.TryGetSymbol(metaSymbol, out Symbol symbol))
+                        if (module.TryGetSymbol(metaSymbol, out Symbol symbol) && symbol is DeclaredSymbol ds)
                         {
-                            result = symbol;
+                            result = ds;
                             break;
                         }
                     }
@@ -71,7 +71,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 {
                     foreach (var module in this.Modules)
                     {
-                        var symbol = this.Language.CompilationFactory.CreateSpecialSymbol(module, key);
+                        var symbol = this.Language.CompilationFactory.CreateSpecialSymbol(module, key) as DeclaredSymbol;
                         if (symbol != null)
                         {
                             result = symbol;
@@ -96,21 +96,21 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return _lazySpecialSymbols[key];
         }
 
-        public override ImmutableArray<Symbol> DeclaredSpecialSymbols => _lazySpecialSymbols == null ? ImmutableArray<Symbol>.Empty : _lazySpecialSymbols.Values.ToImmutableArray();
+        public override ImmutableArray<DeclaredSymbol> DeclaredSpecialSymbols => _lazySpecialSymbols == null ? ImmutableArray<DeclaredSymbol>.Empty : _lazySpecialSymbols.Values.ToImmutableArray();
 
 
         /// <summary>
         /// Register declaration of predefined symbol in this Assembly.
         /// </summary>
         /// <param name="corType"></param>
-        private void RegisterDeclaredSpecialSymbol(object key, ref Symbol symbol)
+        private void RegisterDeclaredSpecialSymbol(object key, ref DeclaredSymbol symbol)
         {
             Debug.Assert(key != null);
             Debug.Assert(ReferenceEquals(symbol.ContainingAssembly, this));
 
             if (_lazySpecialSymbols == null)
             {
-                Interlocked.CompareExchange(ref _lazySpecialSymbols, new ConcurrentDictionary<object, Symbol>(), null);
+                Interlocked.CompareExchange(ref _lazySpecialSymbols, new ConcurrentDictionary<object, DeclaredSymbol>(), null);
             }
             _lazySpecialSymbols.TryAdd(key, symbol);
         }

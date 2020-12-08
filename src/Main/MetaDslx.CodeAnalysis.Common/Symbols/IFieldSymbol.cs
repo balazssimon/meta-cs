@@ -12,7 +12,7 @@ namespace Microsoft.CodeAnalysis
     /// This interface is reserved for implementation by its associated APIs. We reserve the right to
     /// change it in the future.
     /// </remarks>
-    public interface IFieldSymbol : ISymbol
+    public interface IFieldSymbol : IDeclaredSymbol
     {
         /// <summary>
         /// If this field serves as a backing variable for an automatically generated

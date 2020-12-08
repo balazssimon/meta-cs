@@ -258,7 +258,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// information to report diagnostics, then store the symbols so that diagnostics
         /// can be reported at a later stage.
         /// </summary>
-        public void ReportDiagnosticsIfObsolete(DiagnosticBag diagnostics, Symbol symbol, SyntaxNodeOrToken node, bool hasBaseReceiver)
+        public void ReportDiagnosticsIfObsolete(DiagnosticBag diagnostics, DeclaredSymbol symbol, SyntaxNodeOrToken node, bool hasBaseReceiver)
         {
             switch (symbol.Kind.Switch())
             {
@@ -281,10 +281,10 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         public static void ReportDiagnosticsIfObsolete(
             DiagnosticBag diagnostics,
-            Symbol symbol,
+            DeclaredSymbol symbol,
             SyntaxNodeOrToken node,
             bool hasBaseReceiver,
-            Symbol containingMember,
+            DeclaredSymbol containingMember,
             NamedTypeSymbol containingType,
             BinderFlags location)
         {

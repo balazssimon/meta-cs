@@ -65,7 +65,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         private LookupResultKind _kind;
 
         // If there is more than one symbol, they are stored in this list.
-        private readonly ArrayBuilder<Symbol> _symbolList;
+        private readonly ArrayBuilder<DeclaredSymbol> _symbolList;
 
         // the error of the result, if it is NonViable or Inaccessible
         private DiagnosticInfo _error;
@@ -76,7 +76,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         {
             _pool = pool;
             _kind = LookupResultKind.Empty;
-            _symbolList = new ArrayBuilder<Symbol>();
+            _symbolList = new ArrayBuilder<DeclaredSymbol>();
             _error = null;
         }
 
@@ -106,7 +106,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// <summary>
         /// Return the single symbol if there is exactly one, otherwise null.
         /// </summary>
-        public Symbol SingleSymbolOrDefault
+        public DeclaredSymbol SingleSymbolOrDefault
         {
             get
             {
@@ -114,7 +114,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             }
         }
 
-        public ArrayBuilder<Symbol> Symbols
+        public ArrayBuilder<DeclaredSymbol> Symbols
         {
             get
             {
@@ -152,12 +152,12 @@ namespace MetaDslx.CodeAnalysis.Binding
             }
         }
 
-        public static SingleLookupResult Good(Symbol symbol)
+        public static SingleLookupResult Good(DeclaredSymbol symbol)
         {
             return new SingleLookupResult(LookupResultKind.Viable, symbol, null);
         }
 
-        public static SingleLookupResult WrongArity(Symbol symbol, DiagnosticInfo error)
+        public static SingleLookupResult WrongArity(DeclaredSymbol symbol, DiagnosticInfo error)
         {
             return new SingleLookupResult(LookupResultKind.WrongArity, symbol, error);
         }
@@ -167,51 +167,51 @@ namespace MetaDslx.CodeAnalysis.Binding
             return new SingleLookupResult(LookupResultKind.Empty, null, null);
         }
 
-        public static SingleLookupResult NotReferencable(Symbol symbol, DiagnosticInfo error)
+        public static SingleLookupResult NotReferencable(DeclaredSymbol symbol, DiagnosticInfo error)
         {
             return new SingleLookupResult(LookupResultKind.NotReferencable, symbol, error);
         }
 
-        public static SingleLookupResult StaticInstanceMismatch(Symbol symbol, DiagnosticInfo error)
+        public static SingleLookupResult StaticInstanceMismatch(DeclaredSymbol symbol, DiagnosticInfo error)
         {
             return new SingleLookupResult(LookupResultKind.StaticInstanceMismatch, symbol, error);
         }
 
-        public static SingleLookupResult Inaccessible(Symbol symbol, DiagnosticInfo error)
+        public static SingleLookupResult Inaccessible(DeclaredSymbol symbol, DiagnosticInfo error)
         {
             return new SingleLookupResult(LookupResultKind.Inaccessible, symbol, error);
         }
 
-        public static SingleLookupResult NotInvocable(Symbol unwrappedSymbol, Symbol symbol, bool diagnose)
+        public static SingleLookupResult NotInvocable(DeclaredSymbol unwrappedSymbol, DeclaredSymbol symbol, bool diagnose)
         {
             /*var diagInfo = diagnose ? new LanguageDiagnosticInfo(InternalErrorCode.ERR_NonInvocableMemberCalled, unwrappedSymbol) : null;
             return new SingleLookupResult(LookupResultKind.NotInvocable, symbol, diagInfo);*/
             throw new NotImplementedException("TODO:MetaDslx");
         }
 
-        public static SingleLookupResult NotLabel(Symbol symbol, DiagnosticInfo error)
+        public static SingleLookupResult NotLabel(DeclaredSymbol symbol, DiagnosticInfo error)
         {
             return new SingleLookupResult(LookupResultKind.NotLabel, symbol, error);
         }
 
-        public static SingleLookupResult NotTypeOrNamespace(Symbol symbol, DiagnosticInfo error)
+        public static SingleLookupResult NotTypeOrNamespace(DeclaredSymbol symbol, DiagnosticInfo error)
         {
             return new SingleLookupResult(LookupResultKind.NotATypeOrNamespace, symbol, error);
         }
 
-        public static SingleLookupResult NotTypeOrNamespace(Symbol unwrappedSymbol, Symbol symbol, bool diagnose)
+        public static SingleLookupResult NotTypeOrNamespace(DeclaredSymbol unwrappedSymbol, DeclaredSymbol symbol, bool diagnose)
         {
             // TODO: determine correct diagnosis 
             var diagInfo = diagnose ? new LanguageDiagnosticInfo(InternalErrorCode.ERR_BadSKknown, unwrappedSymbol.Name, unwrappedSymbol.GetKindText(), "type or namespace") : null;
             return new SingleLookupResult(LookupResultKind.NotATypeOrNamespace, symbol, diagInfo);
         }
 
-        public static SingleLookupResult NotAnAttributeType(Symbol symbol, DiagnosticInfo error)
+        public static SingleLookupResult NotAnAttributeType(DeclaredSymbol symbol, DiagnosticInfo error)
         {
             return new SingleLookupResult(LookupResultKind.NotAnAttributeType, symbol, error);
         }
 
-        public static SingleLookupResult WrongSymbol(Symbol unwrappedSymbol, Symbol symbol, ImmutableArray<ModelObjectDescriptor> expectedKinds, bool diagnose)
+        public static SingleLookupResult WrongSymbol(DeclaredSymbol unwrappedSymbol, DeclaredSymbol symbol, ImmutableArray<ModelObjectDescriptor> expectedKinds, bool diagnose)
         {
             var psb = PooledStringBuilder.GetInstance();
             var sb = psb.Builder;

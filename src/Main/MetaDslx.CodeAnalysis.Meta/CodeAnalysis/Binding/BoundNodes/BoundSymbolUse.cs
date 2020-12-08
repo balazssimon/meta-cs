@@ -15,7 +15,7 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
     {
         private ImmutableArray<Type> _types;
         private ImmutableArray<Type> _nestingTypes;
-        private ImmutableArray<Symbol> _lazySymbols;
+        private ImmutableArray<DeclaredSymbol> _lazySymbols;
 
         public BoundSymbolUse(BoundKind kind, BoundTree boundTree, ImmutableArray<object> childBoundNodes, ImmutableArray<Type> types, ImmutableArray<Type> nestingTypes, LanguageSyntaxNode syntax, bool hasErrors = false)
             : base(kind, boundTree, childBoundNodes, syntax, hasErrors)
@@ -24,13 +24,13 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
             _nestingTypes = nestingTypes;
         }
 
-        public override ImmutableArray<Symbol> Symbols
+        public override ImmutableArray<DeclaredSymbol> Symbols
         {
             get
             {
                 if (_lazySymbols == null)
                 {
-                    ArrayBuilder<Symbol> symbols = ArrayBuilder<Symbol>.GetInstance();
+                    ArrayBuilder<DeclaredSymbol> symbols = ArrayBuilder<DeclaredSymbol>.GetInstance();
                     if (!this.Syntax.IsMissing)
                     {
                         ImmutableArray<BoundValues> boundValues = this.GetChildValues();
@@ -38,13 +38,13 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
                         {
                             foreach (var value in boundValue.Values)
                             {
-                                if (value is Symbol symbol)
+                                if (value is DeclaredSymbol symbol)
                                 {
                                     symbols.Add(symbol);
                                 }
                                 else 
                                 {
-                                    var specialSymbol = this.Compilation.GetSpecialSymbol(value);
+                                    var specialSymbol = this.Compilation.GetSpecialSymbol(value) as DeclaredSymbol;
                                     if (specialSymbol == null || specialSymbol.Kind == LanguageSymbolKind.ErrorType || specialSymbol.DeclaredAccessibility != Accessibility.Public)
                                     {
                                         this.BoundTree.DiagnosticBag.Add(ModelErrorCode.ERR_ValueIsNotSymbol, this.Syntax.Location, value);

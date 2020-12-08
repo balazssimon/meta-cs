@@ -11,7 +11,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
     public class MetaGlobalNamespaceSymbol : NamespaceSymbol, IMetaMetadataSymbol
     {
         private MetaModuleSymbol _module;
-        private ImmutableArray<Symbol> _lazyMembers;
+        private ImmutableArray<DeclaredSymbol> _lazyMembers;
         private ImmutableArray<NamedTypeSymbol> _lazyTypeMembers;
         private ImmutableArray<string> _lazyTypeNames;
         private ImmutableArray<string> _lazyNamespaceNames;
@@ -89,11 +89,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             }
         }
 
-        public override ImmutableArray<Symbol> GetMembers()
+        public override ImmutableArray<DeclaredSymbol> GetMembers()
         {
             if (_lazyMembers.IsDefault)
             {
-                HashSet<Symbol> symbols = new HashSet<Symbol>();
+                HashSet<DeclaredSymbol> symbols = new HashSet<DeclaredSymbol>();
                 try
                 {
                     foreach (var model in _module.Models)
@@ -102,7 +102,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
                         {
                             if (ms.MParent == null)
                             {
-                                var symbol = MetaSymbolMap.GetSymbol(ms);
+                                var symbol = (DeclaredSymbol)MetaSymbolMap.GetSymbol(ms);
                                 symbols.Add(symbol);
                             }
                         }
@@ -116,12 +116,12 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             return _lazyMembers;
         }
 
-        public override ImmutableArray<Symbol> GetMembers(string name)
+        public override ImmutableArray<DeclaredSymbol> GetMembers(string name)
         {
             return GetMembers().WhereAsArray(m => m.Name == name);
         }
 
-        public override ImmutableArray<Symbol> GetMembers(string name, string metadataName)
+        public override ImmutableArray<DeclaredSymbol> GetMembers(string name, string metadataName)
         {
             return GetMembers().WhereAsArray(m => m.Name == name && m.MetadataName == metadataName);
         }

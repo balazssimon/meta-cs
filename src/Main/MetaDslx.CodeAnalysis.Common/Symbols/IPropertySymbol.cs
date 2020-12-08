@@ -12,7 +12,7 @@ namespace Microsoft.CodeAnalysis
     /// This interface is reserved for implementation by its associated APIs. We reserve the right to
     /// change it in the future.
     /// </remarks>
-    public interface IPropertySymbol : ISymbol
+    public interface IPropertySymbol : IDeclaredSymbol
     {
         /// <summary>
         /// Returns whether the property is really an indexer.

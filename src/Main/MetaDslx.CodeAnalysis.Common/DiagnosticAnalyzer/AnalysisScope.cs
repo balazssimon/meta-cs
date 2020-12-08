@@ -76,7 +76,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
             return symbolEvent.Symbol.IsImplicitlyDeclared || symbolEvent.DeclaringSyntaxReferences.All(s => s.SyntaxTree == null);
         }
 
-        public static bool ShouldSkipDeclarationAnalysis(ISymbol symbol)
+        public static bool ShouldSkipDeclarationAnalysis(IDeclaredSymbol symbol)
         {
             // Skip syntax actions for implicitly declared symbols, except for implicitly declared global namespace symbols.
             return symbol.IsImplicitlyDeclared &&

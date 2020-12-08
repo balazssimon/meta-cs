@@ -820,7 +820,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
         }
 
-        public static ImmutableArray<ISymbol> GetMemberGroup(this SemanticModel semanticModel, ExpressionSyntax expression, CancellationToken cancellationToken = default(CancellationToken))
+        public static ImmutableArray<IDeclaredSymbol> GetMemberGroup(this SemanticModel semanticModel, ExpressionSyntax expression, CancellationToken cancellationToken = default(CancellationToken))
         {
             var csmodel = semanticModel as CSharpSemanticModel;
             if (csmodel != null)
@@ -829,11 +829,11 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
             else
             {
-                return ImmutableArray.Create<ISymbol>();
+                return ImmutableArray.Create<IDeclaredSymbol>();
             }
         }
 
-        public static ImmutableArray<ISymbol> GetMemberGroup(this SemanticModel semanticModel, AttributeSyntax attribute, CancellationToken cancellationToken = default(CancellationToken))
+        public static ImmutableArray<IDeclaredSymbol> GetMemberGroup(this SemanticModel semanticModel, AttributeSyntax attribute, CancellationToken cancellationToken = default(CancellationToken))
         {
             var csmodel = semanticModel as CSharpSemanticModel;
             if (csmodel != null)
@@ -842,11 +842,11 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
             else
             {
-                return ImmutableArray.Create<ISymbol>();
+                return ImmutableArray.Create<IDeclaredSymbol>();
             }
         }
 
-        public static ImmutableArray<ISymbol> GetMemberGroup(this SemanticModel semanticModel, ConstructorInitializerSyntax initializer, CancellationToken cancellationToken = default(CancellationToken))
+        public static ImmutableArray<IDeclaredSymbol> GetMemberGroup(this SemanticModel semanticModel, ConstructorInitializerSyntax initializer, CancellationToken cancellationToken = default(CancellationToken))
         {
             var csmodel = semanticModel as CSharpSemanticModel;
             if (csmodel != null)
@@ -855,7 +855,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
             else
             {
-                return ImmutableArray.Create<ISymbol>();
+                return ImmutableArray.Create<IDeclaredSymbol>();
             }
         }
 

@@ -39,17 +39,17 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
 
         public override LanguageTypeKind TypeKind => Language.SymbolFacts.FromCSharpKind(_csharpSymbol.TypeKind);
 
-        public override ImmutableArray<Symbol> GetMembers()
+        public override ImmutableArray<DeclaredSymbol> GetMembers()
         {
-            return CSharpSymbolMap.GetSymbols(_csharpSymbol.GetMembers());
+            return CSharpSymbolMap.GetMemberSymbols(_csharpSymbol.GetMembers());
         }
 
-        public override ImmutableArray<Symbol> GetMembers(string name)
+        public override ImmutableArray<DeclaredSymbol> GetMembers(string name)
         {
-            return CSharpSymbolMap.GetSymbols(_csharpSymbol.GetMembers(name));
+            return CSharpSymbolMap.GetMemberSymbols(_csharpSymbol.GetMembers(name));
         }
 
-        public override ImmutableArray<Symbol> GetMembers(string name, string metadataName)
+        public override ImmutableArray<DeclaredSymbol> GetMembers(string name, string metadataName)
         {
             return GetMembers(name).WhereAsArray(s => s.MetadataName == metadataName);
         }

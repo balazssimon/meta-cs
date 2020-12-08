@@ -60,7 +60,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
         {
             get
             {
-                return this.RetargetingTranslator.Retarget(_underlyingMember.ContainingSymbol);
+                var container = _underlyingMember.ContainingSymbol as DeclaredSymbol;
+                if (container == null) return null;
+                else return this.RetargetingTranslator.Retarget(container);
             }
         }
 
@@ -95,22 +97,22 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
             return _lazyUseSiteDiagnostic;
         }
 
-        internal override ImmutableArray<Symbol> GetMembersUnordered()
+        internal override ImmutableArray<DeclaredSymbol> GetMembersUnordered()
         {
             return RetargetMembers(_underlyingMember.GetMembersUnordered());
         }
 
-        public override ImmutableArray<Symbol> GetMembers()
+        public override ImmutableArray<DeclaredSymbol> GetMembers()
         {
             return RetargetMembers(_underlyingMember.GetMembers());
         }
 
-        public override ImmutableArray<Symbol> GetMembers(string name)
+        public override ImmutableArray<DeclaredSymbol> GetMembers(string name)
         {
             return RetargetMembers(_underlyingMember.GetMembers(name));
         }
 
-        public override ImmutableArray<Symbol> GetMembers(string name, string metadataName)
+        public override ImmutableArray<DeclaredSymbol> GetMembers(string name, string metadataName)
         {
             return RetargetMembers(_underlyingMember.GetMembers(name, metadataName));
         }
@@ -154,11 +156,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
             return RetargetTypeMembers(_underlyingMember.GetTypeMembers(name, metadataName));
         }
 
-        private ImmutableArray<Symbol> RetargetMembers(ImmutableArray<Symbol> underlyingMembers)
+        private ImmutableArray<DeclaredSymbol> RetargetMembers(ImmutableArray<DeclaredSymbol> underlyingMembers)
         {
-            var builder = ArrayBuilder<Symbol>.GetInstance(underlyingMembers.Length);
+            var builder = ArrayBuilder<DeclaredSymbol>.GetInstance(underlyingMembers.Length);
 
-            foreach (Symbol s in underlyingMembers)
+            foreach (DeclaredSymbol s in underlyingMembers)
             {
                 // Skip explicitly declared local types.
                 if (s.Kind == LanguageSymbolKind.NamedType && ((NamedTypeSymbol)s).IsExplicitDefinitionOfNoPiaLocalType)

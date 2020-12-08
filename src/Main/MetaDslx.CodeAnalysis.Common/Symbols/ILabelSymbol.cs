@@ -11,7 +11,7 @@ namespace Microsoft.CodeAnalysis
     /// This interface is reserved for implementation by its associated APIs. We reserve the right to
     /// change it in the future.
     /// </remarks>
-    public interface ILabelSymbol : ISymbol
+    public interface ILabelSymbol : IDeclaredSymbol
     {
         /// <summary>
         /// Gets the immediately containing <see cref="IMethodSymbol"/> of this <see cref="ILocalSymbol"/>.

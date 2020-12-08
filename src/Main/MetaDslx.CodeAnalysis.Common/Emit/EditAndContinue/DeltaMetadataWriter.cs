@@ -606,16 +606,16 @@ namespace Microsoft.CodeAnalysis.Emit
         {
             foreach (var typeRef in GetTypeRefs())
             {
-                ReportReferencesToAddedSymbol(typeRef as ISymbol);
+                ReportReferencesToAddedSymbol(typeRef as IDeclaredSymbol);
             }
 
             foreach (var memberRef in GetMemberRefs())
             {
-                ReportReferencesToAddedSymbol(memberRef as ISymbol);
+                ReportReferencesToAddedSymbol(memberRef as IDeclaredSymbol);
             }
         }
 
-        private void ReportReferencesToAddedSymbol(ISymbol symbolOpt)
+        private void ReportReferencesToAddedSymbol(IDeclaredSymbol symbolOpt)
         {
             if (symbolOpt != null && _changes.IsAdded(symbolOpt))
             {

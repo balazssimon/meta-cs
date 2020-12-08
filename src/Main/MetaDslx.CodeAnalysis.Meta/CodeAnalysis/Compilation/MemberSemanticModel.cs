@@ -259,16 +259,16 @@ namespace MetaDslx.CodeAnalysis
             throw new NotSupportedException();
         }
 
-        public override ISymbol GetDeclaredSymbol(LanguageSyntaxNode declarationSyntax, CancellationToken cancellationToken = default(CancellationToken))
+        public override IDeclaredSymbol GetDeclaredSymbol(LanguageSyntaxNode declarationSyntax, CancellationToken cancellationToken = default(CancellationToken))
         {
             // Can't define namespace inside a member.
             return null;
         }
 
-        public override ImmutableArray<ISymbol> GetDeclaredSymbols(LanguageSyntaxNode declarationSyntax, CancellationToken cancellationToken = default(CancellationToken))
+        public override ImmutableArray<IDeclaredSymbol> GetDeclaredSymbols(LanguageSyntaxNode declarationSyntax, CancellationToken cancellationToken = default(CancellationToken))
         {
             // Can't define field inside member.
-            return ImmutableArray.Create<ISymbol>();
+            return ImmutableArray.Create<IDeclaredSymbol>();
         }
 
         public override SyntaxTree SyntaxTree

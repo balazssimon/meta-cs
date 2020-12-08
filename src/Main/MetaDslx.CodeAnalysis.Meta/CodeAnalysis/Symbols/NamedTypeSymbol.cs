@@ -26,23 +26,23 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         /// <returns>An ImmutableArray containing all the members of this symbol. If this symbol has no members,
         /// returns an empty ImmutableArray. Never returns null.</returns>
-        public abstract override ImmutableArray<Symbol> GetMembers();
+        public abstract override ImmutableArray<DeclaredSymbol> GetMembers();
 
         /// <summary>
         /// Get all the members of this symbol that have a particular name.
         /// </summary>
         /// <returns>An ImmutableArray containing all the members of this symbol with the given name. If there are
         /// no members with this name, returns an empty ImmutableArray. Never returns null.</returns>
-        public abstract override ImmutableArray<Symbol> GetMembers(string name);
+        public abstract override ImmutableArray<DeclaredSymbol> GetMembers(string name);
 
         /// <summary>
         /// Get all the members of this symbol that have a particular name.
         /// </summary>
         /// <returns>An ImmutableArray containing all the members of this symbol with the given name. If there are
         /// no members with this name, returns an empty ImmutableArray. Never returns null.</returns>
-        public abstract override ImmutableArray<Symbol> GetMembers(string name, string metadataName);
+        public abstract override ImmutableArray<DeclaredSymbol> GetMembers(string name, string metadataName);
 
-        public virtual ImmutableArray<Symbol> GetNonTypeMembers(string name)
+        public virtual ImmutableArray<DeclaredSymbol> GetNonTypeMembers(string name)
         {
             return GetMembers(name);
         }
@@ -77,7 +77,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// For source symbols may be called while calculating
         /// <see cref="NamespaceOrTypeSymbol.GetMembersUnordered"/>.
         /// </remarks>
-        public virtual ImmutableArray<Symbol> GetInstanceMembers()
+        public virtual ImmutableArray<DeclaredSymbol> GetInstanceMembers()
         {
             return GetMembersUnordered().WhereAsArray(IsInstanceMember);
         }
@@ -89,13 +89,13 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// For source symbols may be called while calculating
         /// <see cref="NamespaceOrTypeSymbol.GetMembersUnordered"/>.
         /// </remarks>
-        public virtual ImmutableArray<Symbol> GetStaticMembers()
+        public virtual ImmutableArray<DeclaredSymbol> GetStaticMembers()
         {
             return GetMembersUnordered().WhereAsArray(IsStaticMember);
         }
 
-        internal static Func<Symbol, bool> IsInstanceMember = symbol => !symbol.IsStatic;
-        internal static Func<Symbol, bool> IsStaticMember = symbol => symbol.IsStatic;
+        internal static Func<DeclaredSymbol, bool> IsInstanceMember = symbol => !symbol.IsStatic;
+        internal static Func<DeclaredSymbol, bool> IsStaticMember = symbol => symbol.IsStatic;
 
         public virtual MethodSymbol GetScriptInitializer()
         {
@@ -112,7 +112,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         public ImmutableArray<MethodSymbol> GetOperators(string name)
         {
-            ImmutableArray<Symbol> candidates = GetNonTypeMembers(name);
+            ImmutableArray<DeclaredSymbol> candidates = GetNonTypeMembers(name);
             if (candidates.IsEmpty)
             {
                 return ImmutableArray<MethodSymbol>.Empty;
@@ -149,12 +149,12 @@ namespace MetaDslx.CodeAnalysis.Symbols
         {
             Debug.Assert(includeInstance || includeStatic);
 
-            ImmutableArray<Symbol> instanceCandidates = includeInstance
+            ImmutableArray<DeclaredSymbol> instanceCandidates = includeInstance
                 ? GetMembers(WellKnownMemberNames.InstanceConstructorName)
-                : ImmutableArray<Symbol>.Empty;
-            ImmutableArray<Symbol> staticCandidates = includeStatic
+                : ImmutableArray<DeclaredSymbol>.Empty;
+            ImmutableArray<DeclaredSymbol> staticCandidates = includeStatic
                 ? GetMembers(WellKnownMemberNames.StaticConstructorName)
-                : ImmutableArray<Symbol>.Empty;
+                : ImmutableArray<DeclaredSymbol>.Empty;
 
             if (instanceCandidates.IsEmpty && staticCandidates.IsEmpty)
             {

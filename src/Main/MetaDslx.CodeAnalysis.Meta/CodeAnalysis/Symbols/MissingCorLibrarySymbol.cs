@@ -23,7 +23,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// Lazily filled by GetSpecialSymbol method.
         /// </summary>
         /// <remarks></remarks>
-        private ConcurrentDictionary<object, Symbol> _lazySpecialSymbols;
+        private ConcurrentDictionary<object, DeclaredSymbol> _lazySpecialSymbols;
 
         private MissingCorLibrarySymbol()
             : base(new AssemblyIdentity("<Missing Core Assembly>"))
@@ -36,7 +36,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// called if it is know that this is the Cor Library (mscorlib).
         /// </summary>
         /// <param name="type"></param>
-        public override Symbol GetDeclaredSpecialSymbol(object key)
+        public override DeclaredSymbol GetDeclaredSpecialSymbol(object key)
         {
 #if DEBUG
             foreach (var module in this.Modules)
@@ -45,7 +45,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
 #endif
 
-            Symbol result;
+            DeclaredSymbol result;
             if (_lazySpecialSymbols == null || !_lazySpecialSymbols.ContainsKey(key))
             {
                 ModuleSymbol module = this.Modules[0];
@@ -60,7 +60,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 }
                 else
                 {
-                    result = this.Language.CompilationFactory.CreateSpecialSymbol(module, key);
+                    result = this.Language.CompilationFactory.CreateSpecialSymbol(module, key) as DeclaredSymbol;
                     if (result == null)
                     {
                         result = new MissingMetadataTypeSymbol.TopLevel(module, string.Empty, key.ToString(), 0, false);
@@ -76,7 +76,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// Register declaration of predefined symbol in this Assembly.
         /// </summary>
         /// <param name="corType"></param>
-        private void RegisterDeclaredSpecialSymbol(object key, ref Symbol symbol)
+        private void RegisterDeclaredSpecialSymbol(object key, ref DeclaredSymbol symbol)
         {
             Debug.Assert(key != null);
             Debug.Assert(ReferenceEquals(symbol.ContainingAssembly, this));
@@ -85,7 +85,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
             if (_lazySpecialSymbols == null)
             {
-                Interlocked.CompareExchange(ref _lazySpecialSymbols, new ConcurrentDictionary<object, Symbol>(), null);
+                Interlocked.CompareExchange(ref _lazySpecialSymbols, new ConcurrentDictionary<object, DeclaredSymbol>(), null);
             }
             _lazySpecialSymbols.TryAdd(key, symbol);
         }

@@ -37,7 +37,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// might have intended. It will return no symbols if no possible symbols were found.
         /// See the CandidateReason property to understand why the symbols were unsuitable.
         /// </summary>
-        public virtual ImmutableArray<Symbol> CandidateSymbols => ImmutableArray<Symbol>.Empty;
+        public virtual ImmutableArray<DeclaredSymbol> CandidateSymbols => ImmutableArray<DeclaredSymbol>.Empty;
 
         ///<summary>
         /// If CandidateSymbols returns one or more symbols, returns the reason that those
@@ -74,9 +74,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         /// <returns>An ImmutableArray containing all the members of this symbol. If this symbol has no members,
         /// returns an empty ImmutableArray. Never returns Null.</returns>
-        public override ImmutableArray<Symbol> GetMembers()
+        public override ImmutableArray<DeclaredSymbol> GetMembers()
         {
-            return ImmutableArray<Symbol>.Empty;
+            return ImmutableArray<DeclaredSymbol>.Empty;
         }
 
         /// <summary>
@@ -84,9 +84,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         /// <returns>An ImmutableArray containing all the members of this symbol with the given name. If there are
         /// no members with this name, returns an empty ImmutableArray. Never returns Null.</returns>
-        public override ImmutableArray<Symbol> GetMembers(string name)
+        public override ImmutableArray<DeclaredSymbol> GetMembers(string name)
         {
-            return ImmutableArray<Symbol>.Empty;
+            return ImmutableArray<DeclaredSymbol>.Empty;
         }
 
         /// <summary>
@@ -94,9 +94,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         /// <returns>An ImmutableArray containing all the members of this symbol with the given name. If there are
         /// no members with this name, returns an empty ImmutableArray. Never returns Null.</returns>
-        public override ImmutableArray<Symbol> GetMembers(string name, string metadataName)
+        public override ImmutableArray<DeclaredSymbol> GetMembers(string name, string metadataName)
         {
-            return ImmutableArray<Symbol>.Empty;
+            return ImmutableArray<DeclaredSymbol>.Empty;
         }
 
         /// <summary>

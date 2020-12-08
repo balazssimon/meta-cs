@@ -33,7 +33,7 @@ namespace Microsoft.CodeAnalysis
             return GetDeclarationInfo(model, node, getSymbol, executableCodeBlocks.AsEnumerable(), cancellationToken);
         }
 
-        private static ISymbol GetDeclaredSymbol(SemanticModel model, SyntaxNode node, bool getSymbol, CancellationToken cancellationToken)
+        private static IDeclaredSymbol GetDeclaredSymbol(SemanticModel model, SyntaxNode node, bool getSymbol, CancellationToken cancellationToken)
         {
             if (!getSymbol)
             {

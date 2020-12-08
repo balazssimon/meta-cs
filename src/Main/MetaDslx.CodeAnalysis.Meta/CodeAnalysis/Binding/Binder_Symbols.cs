@@ -58,13 +58,13 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// space to execute. Preventing inlining here to keep recursive frames small.
         /// </summary>
         [MethodImpl(MethodImplOptions.NoInlining)]
-        public Symbol BindNamespaceOrTypeOrNameSymbol(SyntaxNodeOrToken syntax, DiagnosticBag diagnostics, ConsList<TypeSymbol> basesBeingResolved, bool suppressUseSiteDiagnostics)
+        public DeclaredSymbol BindNamespaceOrTypeOrNameSymbol(SyntaxNodeOrToken syntax, DiagnosticBag diagnostics, ConsList<TypeSymbol> basesBeingResolved, bool suppressUseSiteDiagnostics)
         {
             var result = BindNamespaceOrTypeOrAliasSymbol(syntax, true, diagnostics, basesBeingResolved, suppressUseSiteDiagnostics, qualifierOpt: null);
             return UnwrapAlias(result, diagnostics, syntax, basesBeingResolved);
         }
 
-        private Symbol UnwrapAliasNoDiagnostics(Symbol symbol, ConsList<TypeSymbol> basesBeingResolved = null)
+        private DeclaredSymbol UnwrapAliasNoDiagnostics(DeclaredSymbol symbol, ConsList<TypeSymbol> basesBeingResolved = null)
         {
             if (symbol.Kind == LanguageSymbolKind.Alias)
             {
@@ -73,13 +73,13 @@ namespace MetaDslx.CodeAnalysis.Binding
             return symbol;
         }
 
-        private Symbol UnwrapAlias(Symbol symbol, DiagnosticBag diagnostics, SyntaxNodeOrToken syntax, ConsList<TypeSymbol> basesBeingResolved = null)
+        private DeclaredSymbol UnwrapAlias(DeclaredSymbol symbol, DiagnosticBag diagnostics, SyntaxNodeOrToken syntax, ConsList<TypeSymbol> basesBeingResolved = null)
         {
             AliasSymbol discarded;
             return UnwrapAlias(symbol, out discarded, diagnostics, syntax, basesBeingResolved);
         }
 
-        private Symbol UnwrapAlias(Symbol symbol, out AliasSymbol alias, DiagnosticBag diagnostics, SyntaxNodeOrToken syntax, ConsList<TypeSymbol> basesBeingResolved = null)
+        private DeclaredSymbol UnwrapAlias(DeclaredSymbol symbol, out AliasSymbol alias, DiagnosticBag diagnostics, SyntaxNodeOrToken syntax, ConsList<TypeSymbol> basesBeingResolved = null)
         {
             Debug.Assert(syntax != null);
             Debug.Assert(diagnostics != null);
@@ -124,7 +124,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// enough they should be disqualified from inlining. In the future when attributes are allowed on 
         /// local functions we should explicitly mark them as <see cref="MethodImplOptions.NoInlining"/>
         /// </remarks>
-        public Symbol BindNamespaceOrTypeOrAliasSymbol(SyntaxNodeOrToken node, bool allowMembers, DiagnosticBag diagnostics, ConsList<TypeSymbol> basesBeingResolved, bool suppressUseSiteDiagnostics, NamespaceOrTypeSymbol qualifierOpt)
+        public DeclaredSymbol BindNamespaceOrTypeOrAliasSymbol(SyntaxNodeOrToken node, bool allowMembers, DiagnosticBag diagnostics, ConsList<TypeSymbol> basesBeingResolved, bool suppressUseSiteDiagnostics, NamespaceOrTypeSymbol qualifierOpt)
         {
             var syntaxFacts = Compilation.Language.SyntaxFacts;
             var identifierValueText = syntaxFacts.ExtractName(node);
@@ -146,7 +146,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             this.LookupSymbolsSimpleName(result, constraints);
             diagnostics.Add(node.GetLocation(), constraints.UseSiteDiagnostics);
 
-            Symbol bindingResult;
+            DeclaredSymbol bindingResult;
             // If we were looking up the identifier "dynamic" at the topmost level and didn't find anything good,
             // we actually have the type dynamic (assuming /langversion is at least 4).
             if ((object)qualifierOpt == null &&
@@ -178,13 +178,13 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         }
 
-        private Symbol[] BindQualifiedName(
+        private DeclaredSymbol[] BindQualifiedName(
             SyntaxNodeOrToken[] qualifiedName,
             DiagnosticBag diagnostics,
             ConsList<TypeSymbol> basesBeingResolved,
             bool suppressUseSiteDiagnostics)
         {
-            Symbol[] result = new Symbol[qualifiedName.Length];
+            DeclaredSymbol[] result = new DeclaredSymbol[qualifiedName.Length];
             if (qualifiedName.Length == 0) return result;
             result[0] = BindNamespaceOrTypeSymbol(qualifiedName[0], diagnostics, basesBeingResolved, suppressUseSiteDiagnostics: false);
             ReportDiagnosticsIfObsolete(diagnostics, result[0], qualifiedName[0], hasBaseReceiver: false);
@@ -269,7 +269,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         }
 
         // return the type or namespace symbol in a lookup result, or report an error.
-        public Symbol ResultSymbol(
+        public DeclaredSymbol ResultSymbol(
             LookupResult result,
             string simpleName,
             string metadataName,
@@ -973,7 +973,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// <summary>
         /// Prefer symbols from source module, then from added modules, then from referenced assemblies.
         /// </summary>
-        private BestSymbolInfo GetBestSymbolInfo(ArrayBuilder<Symbol> symbols, out BestSymbolInfo secondBest)
+        private BestSymbolInfo GetBestSymbolInfo(ArrayBuilder<DeclaredSymbol> symbols, out BestSymbolInfo secondBest)
         {
             BestSymbolInfo first = default(BestSymbolInfo);
             BestSymbolInfo second = default(BestSymbolInfo);

@@ -19,10 +19,10 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         private readonly SymbolCompletionState _state;
         private Members _lazyMembers;
 
-        private Dictionary<string, ImmutableArray<Symbol>> _lazyMembersDictionary;
+        private Dictionary<string, ImmutableArray<DeclaredSymbol>> _lazyMembersDictionary;
         private Dictionary<string, ImmutableArray<NamedTypeSymbol>> _lazyTypeMembers;
         private int _flattenedMembersIsSorted = 0;
-        private ImmutableArray<Symbol> _lazyMembersFlattened;
+        private ImmutableArray<DeclaredSymbol> _lazyMembersFlattened;
 
         private LexicalSortKey _lazyLexicalSortKey = LexicalSortKey.NotInitialized;
 
@@ -183,7 +183,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             }
         }
 
-        public ImmutableArray<Symbol> GetMembersUnordered()
+        public ImmutableArray<DeclaredSymbol> GetMembersUnordered()
         {
             var result = _lazyMembersFlattened;
 
@@ -197,7 +197,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             return result.ConditionallyDeOrder();
         }
 
-        public ImmutableArray<Symbol> GetMembers()
+        public ImmutableArray<DeclaredSymbol> GetMembers()
         {
             if (_flattenedMembersIsSorted != 0)
             {
@@ -219,33 +219,33 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             }
         }
 
-        public ImmutableArray<Symbol> GetMembers(string name)
+        public ImmutableArray<DeclaredSymbol> GetMembers(string name)
         {
-            ImmutableArray<Symbol> members;
+            ImmutableArray<DeclaredSymbol> members;
             if (GetMembersByName().TryGetValue(name, out members))
             {
                 return members;
             }
 
-            return ImmutableArray<Symbol>.Empty;
+            return ImmutableArray<DeclaredSymbol>.Empty;
         }
 
-        public ImmutableArray<Symbol> GetMembers(string name, string metadataName)
+        public ImmutableArray<DeclaredSymbol> GetMembers(string name, string metadataName)
         {
             return this.GetMembers(name).WhereAsArray(m => m.MetadataName == metadataName);
         }
 
-        public ImmutableArray<Symbol> GetNonTypeMembers(string name)
+        public ImmutableArray<DeclaredSymbol> GetNonTypeMembers(string name)
         {
             if (_lazyMembers != null || this.Declaration.ChildNames.Contains(name))
             {
                 return GetMembers(name);
             }
 
-            return ImmutableArray<Symbol>.Empty;
+            return ImmutableArray<DeclaredSymbol>.Empty;
         }
 
-        public Dictionary<string, ImmutableArray<Symbol>> GetMembersByName()
+        public Dictionary<string, ImmutableArray<DeclaredSymbol>> GetMembersByName()
         {
             if (_state.HasComplete(CompletionPart.Members))
             {
@@ -255,7 +255,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             return GetMembersByNameSlow();
         }
 
-        private Dictionary<string, ImmutableArray<Symbol>> GetMembersByNameSlow()
+        private Dictionary<string, ImmutableArray<DeclaredSymbol>> GetMembersByNameSlow()
         {
             if (_lazyMembers == null)
             {
@@ -281,10 +281,10 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             return _lazyMembersDictionary;
         }
 
-        private Dictionary<string, ImmutableArray<Symbol>> MakeNamedMembers(DiagnosticBag diagnostics)
+        private Dictionary<string, ImmutableArray<DeclaredSymbol>> MakeNamedMembers(DiagnosticBag diagnostics)
         {
             var members = GetMembersForLookup(); //NOTE: separately cached
-            ArrayBuilder<Symbol> membersByName = ArrayBuilder<Symbol>.GetInstance();
+            ArrayBuilder<DeclaredSymbol> membersByName = ArrayBuilder<DeclaredSymbol>.GetInstance();
             foreach (var member in members.NamedNonTypeMembers)
             {
                 membersByName.Add(member);
@@ -433,7 +433,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             return new SourceAnonymousTypeSymbol(_symbol, declaration, diagnostics);
         }
 
-        protected virtual Symbol BuildMemberSymbol(MergedDeclaration declaration, DiagnosticBag diagnostics)
+        protected virtual DeclaredSymbol BuildMemberSymbol(MergedDeclaration declaration, DiagnosticBag diagnostics)
         {
             Debug.Assert(!declaration.IsType, "Use BuildTypeSymbol to create type symbols.");
             Debug.Assert(!declaration.IsNamespace, "Use BuildNamespaceSymbol to create namespace symbols.");
@@ -441,12 +441,12 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             else return BuildAnonymousMemberSymbol(declaration, diagnostics);
         }
 
-        protected virtual Symbol BuildNamedMemberSymbol(MergedDeclaration declaration, DiagnosticBag diagnostics)
+        protected virtual DeclaredSymbol BuildNamedMemberSymbol(MergedDeclaration declaration, DiagnosticBag diagnostics)
         {
             return new SourceMemberSymbol(_symbol, declaration, diagnostics);
         }
 
-        protected virtual Symbol BuildAnonymousMemberSymbol(MergedDeclaration declaration, DiagnosticBag diagnostics)
+        protected virtual DeclaredSymbol BuildAnonymousMemberSymbol(MergedDeclaration declaration, DiagnosticBag diagnostics)
         {
             return new SourceMemberSymbol(_symbol, declaration, diagnostics);
         }
@@ -469,7 +469,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             }
         }
 
-        private void AddNonTypeMembers(ArrayBuilder<Symbol> builder, DiagnosticBag diagnostics)
+        private void AddNonTypeMembers(ArrayBuilder<DeclaredSymbol> builder, DiagnosticBag diagnostics)
         {
             foreach (var decl in this.Declaration.Children)
             {
@@ -496,7 +496,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         protected virtual void MergePartialSymbols(
             ArrayBuilder<string> memberNames,
-            Dictionary<string, ImmutableArray<Symbol>> membersByName,
+            Dictionary<string, ImmutableArray<DeclaredSymbol>> membersByName,
             DiagnosticBag diagnostics)
         {
             //key and value will be the same object

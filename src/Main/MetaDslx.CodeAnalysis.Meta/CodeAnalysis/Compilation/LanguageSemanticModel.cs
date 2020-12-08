@@ -642,7 +642,7 @@ namespace MetaDslx.CodeAnalysis
         /// members of "containing" are accessible. 
         /// </remarks>
         /// <exception cref="ArgumentException">Throws an argument exception if the passed lookup options are invalid.</exception>
-        private ImmutableArray<Symbol> LookupSymbolsInternal(
+        private ImmutableArray<DeclaredSymbol> LookupSymbolsInternal(
             int position,
             NamespaceOrTypeSymbol container,
             string name,
@@ -669,7 +669,7 @@ namespace MetaDslx.CodeAnalysis
             var binder = GetEnclosingBinder(position);
             if (binder == null)
             {
-                return ImmutableArray<Symbol>.Empty;
+                return ImmutableArray<DeclaredSymbol>.Empty;
             }
 
             if (useBaseReferenceAccessibility)
@@ -681,7 +681,7 @@ namespace MetaDslx.CodeAnalysis
                 // For a script class or a submission class base should have no members.
                 if ((object)containingType != null && containingType.Kind == LanguageSymbolKind.NamedType && ((NamedTypeSymbol)containingType).IsScript)
                 {
-                    return ImmutableArray<Symbol>.Empty;
+                    return ImmutableArray<DeclaredSymbol>.Empty;
                 }
 
                 if ((object)containingType == null || containingType.BaseTypesNoUseSiteDiagnostics.IsEmpty)
@@ -705,7 +705,7 @@ namespace MetaDslx.CodeAnalysis
                 binder.AddMemberLookupSymbolsInfo(info, new LookupConstraints(qualifierOpt: container, options: options));
             }
 
-            var results = ArrayBuilder<Symbol>.GetInstance(info.Count);
+            var results = ArrayBuilder<DeclaredSymbol>.GetInstance(info.Count);
 
             if (name == null)
             {
@@ -730,16 +730,16 @@ namespace MetaDslx.CodeAnalysis
                 throw new NotImplementedException("TODO:MetaDslx");
             }
 
-            ImmutableArray<Symbol> sealedResults = results.ToImmutableAndFree();
+            ImmutableArray<DeclaredSymbol> sealedResults = results.ToImmutableAndFree();
             return name == null
                 ? FilterNotReferencable(sealedResults)
                 : sealedResults;
         }
 
-        private void AppendSymbolsWithName(ArrayBuilder<Symbol> results, string name, Binder binder, NamespaceOrTypeSymbol container, LookupOptions options, LookupSymbolsInfo info)
+        private void AppendSymbolsWithName(ArrayBuilder<DeclaredSymbol> results, string name, Binder binder, NamespaceOrTypeSymbol container, LookupOptions options, LookupSymbolsInfo info)
         {
             IEnumerable<string> metadataNames;
-            Symbol uniqueSymbol;
+            DeclaredSymbol uniqueSymbol;
 
             if (info.TryGetMultipleNamesAndUniqueSymbol(name, out metadataNames, out uniqueSymbol))
             {
@@ -770,7 +770,7 @@ namespace MetaDslx.CodeAnalysis
         }
 
         private void AppendSymbolsWithMetadataName(
-            ArrayBuilder<Symbol> results,
+            ArrayBuilder<DeclaredSymbol> results,
             string name,
             string metadataName,
             Binder binder,
@@ -801,7 +801,7 @@ namespace MetaDslx.CodeAnalysis
                     // binder.ResultSymbol is defined only for type/namespace lookups
                     bool wasError;
                     var diagnostics = DiagnosticBag.GetInstance();  // client code never expects a null diagnostic bag.
-                    Symbol singleSymbol = binder.ResultSymbol(lookupResult, name, metadataName, this.Root, diagnostics, true, out wasError, container, options);
+                    DeclaredSymbol singleSymbol = binder.ResultSymbol(lookupResult, name, metadataName, this.Root, diagnostics, true, out wasError, container, options);
                     diagnostics.Free();
 
                     if (!wasError)
@@ -822,9 +822,9 @@ namespace MetaDslx.CodeAnalysis
             lookupResult.Free();
         }
 
-        private static ImmutableArray<Symbol> FilterNotReferencable(ImmutableArray<Symbol> sealedResults)
+        private static ImmutableArray<DeclaredSymbol> FilterNotReferencable(ImmutableArray<DeclaredSymbol> sealedResults)
         {
-            ArrayBuilder<Symbol> builder = null;
+            ArrayBuilder<DeclaredSymbol> builder = null;
             int pos = 0;
             foreach (var result in sealedResults)
             {
@@ -834,7 +834,7 @@ namespace MetaDslx.CodeAnalysis
                 }
                 else if (builder == null)
                 {
-                    builder = ArrayBuilder<Symbol>.GetInstance();
+                    builder = ArrayBuilder<DeclaredSymbol>.GetInstance();
                     builder.AddRange(sealedResults, pos);
                 }
                 pos++;
@@ -867,7 +867,7 @@ namespace MetaDslx.CodeAnalysis
                 throw new ArgumentNullException(nameof(symbol));
             }
 
-            var cssymbol = symbol.EnsureLanguageSymbolOrNull<ISymbol, Symbol>(nameof(symbol));
+            var cssymbol = symbol.EnsureLanguageSymbolOrNull<ISymbol, DeclaredSymbol>(nameof(symbol));
 
             var binder = this.GetEnclosingBinder(position);
             if (binder != null)
@@ -976,7 +976,7 @@ namespace MetaDslx.CodeAnalysis
 
         private static void AddUnwrappingErrorTypes(ArrayBuilder<Symbol> builder, Symbol s)
         {
-            var originalErrorSymbol = s.OriginalDefinition as ErrorTypeSymbol;
+            var originalErrorSymbol = (s as DeclaredSymbol)?.OriginalDefinition as ErrorTypeSymbol;
             if ((object)originalErrorSymbol != null)
             {
                 builder.AddRange(originalErrorSymbol.CandidateSymbols);
@@ -1058,7 +1058,7 @@ namespace MetaDslx.CodeAnalysis
                 LookupResultKind resultKind = originalErrorSymbol.ResultKind;
                 if (resultKind != LookupResultKind.Empty)
                 {
-                    symbols = originalErrorSymbol.CandidateSymbols;
+                    symbols = StaticCast<Symbol>.From(originalErrorSymbol.CandidateSymbols);
                 }
 
                 if ((options & SymbolInfoOptions.ResolveAliases) != 0)
@@ -1361,7 +1361,7 @@ namespace MetaDslx.CodeAnalysis
         /// NOTE:   (3) BaseFieldDeclarationSyntax or its subtypes as these declarations can contain multiple variable declarators.
         /// NOTE:       GetDeclaredSymbol should be called on the variable declarators directly.
         /// </remarks>
-        public abstract ISymbol GetDeclaredSymbol(LanguageSyntaxNode declarationSyntax, CancellationToken cancellationToken = default(CancellationToken));
+        public abstract IDeclaredSymbol GetDeclaredSymbol(LanguageSyntaxNode declarationSyntax, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Given a base field declaration syntax, get the corresponding symbols.
@@ -1369,7 +1369,7 @@ namespace MetaDslx.CodeAnalysis
         /// <param name="declarationSyntax">The syntax node that declares one or more fields or events.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The symbols that were declared.</returns>
-        public abstract ImmutableArray<ISymbol> GetDeclaredSymbols(LanguageSyntaxNode declarationSyntax, CancellationToken cancellationToken = default(CancellationToken));
+        public abstract ImmutableArray<IDeclaredSymbol> GetDeclaredSymbols(LanguageSyntaxNode declarationSyntax, CancellationToken cancellationToken = default(CancellationToken));
 
         // Get the symbols and possible method or property group associated with a bound node, as
         // they should be exposed through GetSemanticInfo.
@@ -1525,7 +1525,7 @@ namespace MetaDslx.CodeAnalysis
             return LanguageTypeInfo.None;
         }
 
-        private ImmutableArray<ISymbol> GetMemberGroupFromNode(SyntaxNode node, CancellationToken cancellationToken)
+        private ImmutableArray<IDeclaredSymbol> GetMemberGroupFromNode(SyntaxNode node, CancellationToken cancellationToken)
         {
             switch (node)
             {
@@ -1540,13 +1540,13 @@ namespace MetaDslx.CodeAnalysis
                     return this.GetMemberGroup(attribute, cancellationToken);*/
             }
 
-            return ImmutableArray<ISymbol>.Empty;
+            return ImmutableArray<IDeclaredSymbol>.Empty;
         }
 
-        protected sealed override ImmutableArray<ISymbol> GetMemberGroupCore(SyntaxNode node, CancellationToken cancellationToken)
+        protected sealed override ImmutableArray<IDeclaredSymbol> GetMemberGroupCore(SyntaxNode node, CancellationToken cancellationToken)
         {
             var methodGroup = this.GetMemberGroupFromNode(node, cancellationToken);
-            return StaticCast<ISymbol>.From(methodGroup);
+            return StaticCast<IDeclaredSymbol>.From(methodGroup);
         }
 
         protected sealed override SymbolInfo GetSpeculativeSymbolInfoCore(int position, SyntaxNode node, SpeculativeBindingOption bindingOption)
@@ -1597,7 +1597,7 @@ namespace MetaDslx.CodeAnalysis
             return GetPreprocessingSymbolInfo(node);
         }
 
-        protected sealed override ISymbol GetDeclaredSymbolCore(SyntaxNode node, CancellationToken cancellationToken)
+        protected sealed override IDeclaredSymbol GetDeclaredSymbolCore(SyntaxNode node, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -1664,11 +1664,11 @@ namespace MetaDslx.CodeAnalysis
             return null;
         }
 
-        protected sealed override ImmutableArray<ISymbol> GetDeclaredSymbolsCore(SyntaxNode declaration, CancellationToken cancellationToken = default(CancellationToken))
+        protected sealed override ImmutableArray<IDeclaredSymbol> GetDeclaredSymbolsCore(SyntaxNode declaration, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            ImmutableArray<ISymbol> result = this.GetDeclaredSymbols((LanguageSyntaxNode)declaration, cancellationToken);
+            ImmutableArray<IDeclaredSymbol> result = this.GetDeclaredSymbols((LanguageSyntaxNode)declaration, cancellationToken);
 
             if (result.IsDefault)
             {
@@ -1679,7 +1679,7 @@ namespace MetaDslx.CodeAnalysis
                 }
             }
 
-            return ImmutableArray.Create<ISymbol>();
+            return ImmutableArray.Create<IDeclaredSymbol>();
         }
 
         internal override void ComputeDeclarationsInSpan(TextSpan span, bool getSymbol, ArrayBuilder<DeclarationInfo> builder, CancellationToken cancellationToken)

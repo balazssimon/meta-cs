@@ -13,21 +13,21 @@ namespace Microsoft.CodeAnalysis
     /// This interface is reserved for implementation by its associated APIs. We reserve the right to
     /// change it in the future.
     /// </remarks>
-    public interface INamespaceOrTypeSymbol : ISymbol
+    public interface INamespaceOrTypeSymbol : IDeclaredSymbol
     {
         /// <summary>
         /// Get all the members of this symbol.
         /// </summary>
         /// <returns>An ImmutableArray containing all the members of this symbol. If this symbol has no members,
         /// returns an empty ImmutableArray. Never returns Null.</returns>
-        ImmutableArray<ISymbol> GetMembers();
+        ImmutableArray<IDeclaredSymbol> GetMembers();
 
         /// <summary>
         /// Get all the members of this symbol that have a particular name.
         /// </summary>
         /// <returns>An ImmutableArray containing all the members of this symbol with the given name. If there are
         /// no members with this name, returns an empty ImmutableArray. Never returns Null.</returns>
-        ImmutableArray<ISymbol> GetMembers(string name);
+        ImmutableArray<IDeclaredSymbol> GetMembers(string name);
 
         /// <summary>
         /// Get all the members of this symbol that are types.

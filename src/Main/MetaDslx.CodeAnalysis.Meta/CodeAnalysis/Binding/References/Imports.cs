@@ -700,8 +700,8 @@ namespace MetaDslx.CodeAnalysis.Binding
 
             foreach (var typeOrNamespace in usings)
             {
-                ImmutableArray<Symbol> candidates = Binder.GetCandidateMembers(constraints.WithQualifier(typeOrNamespace.NamespaceOrType));
-                foreach (Symbol symbol in candidates)
+                ImmutableArray<DeclaredSymbol> candidates = Binder.GetCandidateMembers(constraints.WithQualifier(typeOrNamespace.NamespaceOrType));
+                foreach (DeclaredSymbol symbol in candidates)
                 {
                     if (!IsValidLookupCandidateInUsings(symbol))
                     {
@@ -722,7 +722,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             }
         }
 
-        private static bool IsValidLookupCandidateInUsings(Symbol symbol)
+        private static bool IsValidLookupCandidateInUsings(DeclaredSymbol symbol)
         {
             switch (symbol.Kind.Switch())
             {

@@ -17,8 +17,8 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
         {
             Debug.Assert(result.IsClear);
 
-            var specialSymbol = Compilation.GetSpecialSymbol(constraints.MetadataName);
-            if (specialSymbol.Kind != LanguageSymbolKind.ErrorType)
+            var specialSymbol = Compilation.GetSpecialSymbol(constraints.MetadataName) as DeclaredSymbol;
+            if (specialSymbol != null && specialSymbol.Kind != LanguageSymbolKind.ErrorType)
             {
                 result.SetFrom(LookupResult.Good(specialSymbol));
             }
@@ -28,7 +28,10 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
         {
             foreach (var symbol in Compilation.SourceAssembly.SpecialSymbols)
             {
-                result.AddSymbol(symbol, symbol.Name, symbol.MetadataName);
+                if (symbol is DeclaredSymbol ds)
+                {
+                    result.AddSymbol(ds, symbol.Name, symbol.MetadataName);
+                }
             }
         }
 

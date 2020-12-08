@@ -320,7 +320,7 @@ namespace MetaDslx.CodeAnalysis.FlowAnalysis
         private static ImmutableArray<ISymbol> Normalize(IEnumerable<Symbol> data)
         {
             var builder = ArrayBuilder<Symbol>.GetInstance();
-            builder.AddRange(data.Where(s => s.CanBeReferencedByName));
+            builder.AddRange(data.Where(s => s is DeclaredSymbol ds && ds.CanBeReferencedByName));
             builder.Sort(LexicalOrderSymbolComparer.Instance);
             return builder.ToImmutableAndFree().As<ISymbol>();
         }

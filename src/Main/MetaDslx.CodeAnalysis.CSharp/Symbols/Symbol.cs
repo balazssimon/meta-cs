@@ -23,7 +23,7 @@ namespace Microsoft.CodeAnalysis.CSharp
     /// exposed by the compiler.
     /// </summary>
     [DebuggerDisplay("{GetDebuggerDisplay(), nq}")]
-    internal abstract partial class Symbol : ISymbol, IFormattable
+    internal abstract partial class Symbol : IDeclaredSymbol, IFormattable
     {
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         // Changes to the public interface of this class should remain synchronized with the VB version of Symbol.
@@ -1210,7 +1210,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             return SymbolDisplay.ToMinimalDisplayParts(this, csharpModel, position, format);
         }
 
-        bool ISymbol.IsImplicitlyDeclared
+        bool IDeclaredSymbol.IsImplicitlyDeclared
         {
             get { return this.IsImplicitlyDeclared; }
         }
@@ -1230,37 +1230,37 @@ namespace Microsoft.CodeAnalysis.CSharp
             get { return this.ContainingModule; }
         }
 
-        INamedTypeSymbol ISymbol.ContainingType
+        INamedTypeSymbol IDeclaredSymbol.ContainingType
         {
             get { return this.ContainingType; }
         }
 
-        INamespaceSymbol ISymbol.ContainingNamespace
+        INamespaceSymbol IDeclaredSymbol.ContainingNamespace
         {
             get { return this.ContainingNamespace; }
         }
 
-        bool ISymbol.IsDefinition
+        bool IDeclaredSymbol.IsDefinition
         {
             get { return this.IsDefinition; }
         }
 
-        bool ISymbol.IsStatic
+        bool IDeclaredSymbol.IsStatic
         {
             get { return this.IsStatic; }
         }
 
-        bool ISymbol.IsVirtual
+        bool IDeclaredSymbol.IsVirtual
         {
             get { return this.IsVirtual; }
         }
 
-        bool ISymbol.IsOverride
+        bool IDeclaredSymbol.IsOverride
         {
             get { return this.IsOverride; }
         }
 
-        bool ISymbol.IsAbstract
+        bool IDeclaredSymbol.IsAbstract
         {
             get
             {
@@ -1268,7 +1268,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
         }
 
-        bool ISymbol.IsSealed
+        bool IDeclaredSymbol.IsSealed
         {
             get
             {
@@ -1284,7 +1284,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
         }
 
-        ImmutableArray<SyntaxReference> ISymbol.DeclaringSyntaxReferences
+        ImmutableArray<SyntaxReference> IDeclaredSymbol.DeclaringSyntaxReferences
         {
             get
             {
@@ -1297,7 +1297,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             return StaticCast<AttributeData>.From(this.GetAttributes());
         }
 
-        Accessibility ISymbol.DeclaredAccessibility
+        Accessibility IDeclaredSymbol.DeclaredAccessibility
         {
             get
             {
@@ -1305,7 +1305,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
         }
 
-        ISymbol ISymbol.OriginalDefinition
+        IDeclaredSymbol IDeclaredSymbol.OriginalDefinition
         {
             get
             {

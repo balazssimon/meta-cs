@@ -119,14 +119,14 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             }
         }
 
-        public override ImmutableArray<Symbol> GetMembers()
+        public override ImmutableArray<DeclaredSymbol> GetMembers()
         {
-            return ImmutableArray<Symbol>.Empty;
+            return ImmutableArray<DeclaredSymbol>.Empty;
         }
 
-        public override ImmutableArray<Symbol> GetMembers(string name)
+        public override ImmutableArray<DeclaredSymbol> GetMembers(string name)
         {
-            return ImmutableArray<Symbol>.Empty;
+            return ImmutableArray<DeclaredSymbol>.Empty;
         }
 
         public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name)

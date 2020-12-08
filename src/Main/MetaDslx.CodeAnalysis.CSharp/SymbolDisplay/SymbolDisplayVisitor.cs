@@ -295,7 +295,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             builder.Add(CreatePart(SymbolDisplayPartKind.Keyword, null, SyntaxFacts.GetText(keywordKind)));
         }
 
-        private void AddAccessibilityIfRequired(ISymbol symbol)
+        private void AddAccessibilityIfRequired(IDeclaredSymbol symbol)
         {
             INamedTypeSymbol containingType = symbol.ContainingType;
 
@@ -320,7 +320,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             return ((IMethodSymbol)symbol).MethodKind == MethodKind.LocalFunction;
         }
 
-        private void AddAccessibility(ISymbol symbol)
+        private void AddAccessibility(IDeclaredSymbol symbol)
         {
             switch (symbol.DeclaredAccessibility)
             {
@@ -353,7 +353,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             AddSpace();
         }
 
-        private bool ShouldVisitNamespace(ISymbol containingSymbol)
+        private bool ShouldVisitNamespace(IDeclaredSymbol containingSymbol)
         {
             var namespaceSymbol = containingSymbol as INamespaceSymbol;
             if (namespaceSymbol == null)
@@ -378,7 +378,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 (!namedType.IsScriptClass || format.CompilerInternalOptions.IncludesOption(SymbolDisplayCompilerInternalOptions.IncludeScriptType));
         }
 
-        private static bool IsEnumMember(ISymbol symbol)
+        private static bool IsEnumMember(IDeclaredSymbol symbol)
         {
             return symbol != null
                 && symbol.Kind == SymbolKind.Field

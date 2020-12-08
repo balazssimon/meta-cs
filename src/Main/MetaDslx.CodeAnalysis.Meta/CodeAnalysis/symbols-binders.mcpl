@@ -2,714 +2,166 @@ namespace MetaDslx.CodeAnalysis.Symbols
 {
     abstract symbol Symbol
     {
-        public virtual string Name => string.Empty;
-        public virtual string MetadataName => this.Name;
-        public virtual LanguageSymbolKind Kind => LanguageSymbolKind.None;
-        public abstract Symbol ContainingSymbol { get; }
-        public virtual NamedTypeSymbol ContainingType
-        public virtual NamespaceSymbol ContainingNamespace
-        public virtual AssemblySymbol ContainingAssembly
-        internal virtual LanguageCompilation DeclaringCompilation
-        public virtual ModuleSymbol ContainingModule
-        public Symbol OriginalDefinition => OriginalSymbolDefinition;
-        protected virtual Symbol OriginalSymbolDefinition => this;
-        public bool IsDefinition => (object)this == (object)OriginalDefinition;
-        public virtual LexicalSortKey GetLexicalSortKey()
-        public abstract ImmutableArray<Location> Locations { get; }
-        public abstract ImmutableArray<SyntaxReference> DeclaringSyntaxReferences { get; }
-        public virtual Accessibility DeclaredAccessibility => Accessibility.NotApplicable;
-        public abstract bool IsStatic { get; }
-        public virtual bool IsVirtual => false;
-        public virtual bool IsOverride => false;
-        public virtual bool IsAbstract => false;
-        public virtual bool IsSealed => false;
-        public virtual bool IsExtern => false;
-        public virtual bool IsImplicitlyDeclared => false;
-        public virtual bool CanBeReferencedByName
-        public virtual ImmutableArray<AttributeData> GetAttributes()
-        public virtual bool GetGuidStringDefaultImplementation(out string guidString)
-        internal bool IsFromCompilation(LanguageCompilation compilation)
-        internal bool Dangerous_IsFromSomeCompilation
-        public virtual bool IsDefinedInSourceTree(SyntaxTree tree, TextSpan? definedWithinSpan, CancellationToken cancellationToken = default(CancellationToken))
-        internal static void ForceCompleteMemberByLocation(SourceLocation locationOpt, Symbol member, CancellationToken cancellationToken)
-        public virtual string GetDocumentationCommentId()
-        public virtual string GetDocumentationCommentXml(CultureInfo preferredCulture = null, bool expandIncludes = false, CancellationToken cancellationToken = default(CancellationToken))
-        internal virtual string GetDebuggerDisplay()
-        internal virtual void AddDeclarationDiagnostics(DiagnosticBag diagnostics)
-        internal bool HasUseSiteError
-        public virtual DiagnosticInfo GetUseSiteDiagnostic()
-        protected virtual ErrorCode HighestPriorityUseSiteError => null;
-        public virtual bool HasUnsupportedMetadata => false;
-        internal DiagnosticInfo GetUseSiteDiagnosticForSymbolOrContainingType()
-        internal bool MergeUseSiteDiagnostics(ref DiagnosticInfo result, DiagnosticInfo info)
-        internal static bool ReportUseSiteDiagnostic(DiagnosticInfo info, DiagnosticBag diagnostics, Location location)
-        internal bool DeriveUseSiteDiagnosticFromType(ref DiagnosticInfo result, TypeSymbol type)
-        internal bool DeriveUseSiteDiagnosticFromCustomModifiers(ref DiagnosticInfo result, ImmutableArray<CustomModifier> customModifiers)
-        internal static bool GetUnificationUseSiteDiagnosticRecursive<T>(ref DiagnosticInfo result, ImmutableArray<T> types, Symbol owner, ref HashSet<TypeSymbol> checkedTypes) where T : TypeSymbol
-        internal static bool GetUnificationUseSiteDiagnosticRecursive(ref DiagnosticInfo result, ImmutableArray<CustomModifier> modifiers, Symbol owner, ref HashSet<TypeSymbol> checkedTypes)
-        public string ToDisplayString(SymbolDisplayFormat format = null)
-        public ImmutableArray<SymbolDisplayPart> ToDisplayParts(SymbolDisplayFormat format = null)
-        public string ToMinimalDisplayString(SemanticModel semanticModel, int position, SymbolDisplayFormat format = null)
-        public ImmutableArray<SymbolDisplayPart> ToMinimalDisplayParts(SemanticModel semanticModel, int position, SymbolDisplayFormat format = null)
+        LanguageSymbolKind Kind;
 
-        string ISymbol.Language => this.Language.Name;
-        string ISymbol.Name => this.Name;
-        string ISymbol.ToDisplayString(SymbolDisplayFormat format)
-        ImmutableArray<SymbolDisplayPart> ISymbol.ToDisplayParts(SymbolDisplayFormat format)
-        string ISymbol.ToMinimalDisplayString(SemanticModel semanticModel, int position, SymbolDisplayFormat format)
-        ImmutableArray<SymbolDisplayPart> ISymbol.ToMinimalDisplayParts(SemanticModel semanticModel, int position, SymbolDisplayFormat format)
-        bool ISymbol.IsImplicitlyDeclared => this.IsImplicitlyDeclared;
-        ISymbol ISymbol.ContainingSymbol => this.ContainingSymbol;
-        Microsoft.CodeAnalysis.SymbolKind ISymbol.Kind => Language.SymbolFacts.ToCSharpKind(this.Kind);
-        IAssemblySymbol ISymbol.ContainingAssembly => this.ContainingAssembly;
-        IModuleSymbol ISymbol.ContainingModule => this.ContainingModule;
-        INamedTypeSymbol ISymbol.ContainingType => this.ContainingType;
-        INamespaceSymbol ISymbol.ContainingNamespace => this.ContainingNamespace;
-        bool ISymbol.IsDefinition => this.IsDefinition;
-        bool ISymbol.IsStatic => this.IsStatic;
-        bool ISymbol.IsVirtual => this.IsVirtual;
-        bool ISymbol.IsOverride => this.IsOverride;
-        bool ISymbol.IsAbstract => this.IsAbstract;
-        bool ISymbol.IsSealed => this.IsSealed;
-        ImmutableArray<Location> ISymbol.Locations => this.Locations;
-        ImmutableArray<SyntaxReference> ISymbol.DeclaringSyntaxReferences => this.DeclaringSyntaxReferences;
-        ImmutableArray<AttributeData> ISymbol.GetAttributes()
-        Accessibility ISymbol.DeclaredAccessibility => this.DeclaredAccessibility;
-        ISymbol ISymbol.OriginalDefinition => this.OriginalDefinition;
-        public abstract void Accept(Microsoft.CodeAnalysis.SymbolVisitor visitor);
-        public abstract TResult Accept<TResult>(Microsoft.CodeAnalysis.SymbolVisitor<TResult> visitor);
-        public abstract void Accept(SymbolVisitor visitor);
-        public abstract TResult Accept<TResult>(SymbolVisitor<TResult> visitor);
-        public abstract TResult Accept<TArgument, TResult>(SymbolVisitor<TArgument, TResult> visitor, TArgument argument);
-        public ThreeState ObsoleteState
-        public ObsoleteAttributeKind ObsoleteKind
-        public virtual ObsoleteAttributeData ObsoleteAttributeData => null; // TODO:MetaDslx
-        public void ForceCompleteObsoleteAttribute()
-        public virtual Symbol ConstructedFrom => this;
-        public virtual Symbol AsMember(NamedTypeSymbol newOwner)
-        public virtual Symbol GetLeastOverriddenMember(NamedTypeSymbol accessingTypeOpt)
-        public virtual Symbol GetConstructedLeastOverriddenMember(NamedTypeSymbol accessingTypeOpt)
-    }
+        string Name;
+        string MetadataName;
+        bool CanBeReferencedByName;
+        LexicalSortKey GetLexicalSortKey();
 
-    abstract symbol class AssemblySymbol : Symbol, IAssemblySymbolInternal
-    {
-        private AssemblySymbol _corLibrary;
-        internal AssemblySymbol CorLibrary
-        internal void SetCorLibrary(AssemblySymbol corLibrary)
-        public override string Name
-        public abstract AssemblyIdentity Identity { get; }
-        public abstract Version AssemblyVersionPattern { get; }
-        internal Machine Machine
-        internal bool Bit32Required
-        public abstract NamespaceSymbol GlobalNamespace
-        internal NamespaceSymbol GetAssemblyNamespace(NamespaceSymbol namespaceSymbol)
-        public abstract ImmutableArray<ModuleSymbol> Modules { get; }
-        public sealed override LanguageSymbolKind Kind
-        public sealed override AssemblySymbol ContainingAssembly
+        Symbol ContainingSymbol;
 
-        public abstract bool IsMissing
-        public sealed override Accessibility DeclaredAccessibility
-        public sealed override bool IsStatic
-        public sealed override bool IsVirtual
-        public sealed override bool IsOverride
-        public sealed override bool IsAbstract
-        public sealed override bool IsSealed
-        public sealed override bool IsExtern
-        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences
-        public virtual bool IsInteractive
-        public sealed override Symbol ContainingSymbol
-        internal NamedTypeSymbol LookupTopLevelMetadataType(ref MetadataTypeName emittedName, bool digThroughForwardedTypes)
-        internal abstract NamedTypeSymbol LookupTopLevelMetadataTypeWithCycleDetection(ref MetadataTypeName emittedName, ConsList<AssemblySymbol> visitedAssemblies, bool digThroughForwardedTypes);
-        public NamedTypeSymbol ResolveForwardedType(string fullyQualifiedMetadataName)
-        internal NamedTypeSymbol TryLookupForwardedMetadataType(ref MetadataTypeName emittedName)
-        internal virtual NamedTypeSymbol TryLookupForwardedMetadataTypeWithCycleDetection(ref MetadataTypeName emittedName, ConsList<AssemblySymbol> visitedAssemblies)
-        internal ErrorTypeSymbol CreateCycleInTypeForwarderErrorTypeSymbol(ref MetadataTypeName emittedName)
-        internal ErrorTypeSymbol CreateMultipleForwardingErrorTypeSymbol(ref MetadataTypeName emittedName, ModuleSymbol forwardingModule, AssemblySymbol destination1, AssemblySymbol destination2)
-        public abstract Symbol GetDeclaredSpecialSymbol(object key);
-        public abstract ImmutableArray<Symbol> DeclaredSpecialSymbols { get; }
-        internal bool RuntimeSupportsDefaultInterfaceImplementation
+        ImmutableArray<Location> Locations;
+        ImmutableArray<AttributeData> GetAttributes();
+        bool IsFromCompilation(LanguageCompilation compilation);
+        bool Dangerous_IsFromSomeCompilation;
+        bool IsDefinedInSourceTree(SyntaxTree tree, TextSpan? definedWithinSpan, CancellationToken cancellationToken = default(CancellationToken));
+        string GetDocumentationCommentId();
+        string GetDocumentationCommentXml(CultureInfo preferredCulture = null, bool expandIncludes = false, CancellationToken cancellationToken = default(CancellationToken));
+        string GetDebuggerDisplay();
 
-        internal abstract ImmutableArray<AssemblySymbol> GetNoPiaResolutionAssemblies();
-        internal abstract void SetNoPiaResolutionAssemblies(ImmutableArray<AssemblySymbol> assemblies);
+        void AddDeclarationDiagnostics(DiagnosticBag diagnostics);
+        bool HasUseSiteError;
+        DiagnosticInfo GetUseSiteDiagnostic();
+        ErrorCode HighestPriorityUseSiteError;
+        bool HasUnsupportedMetadata;
+        DiagnosticInfo GetUseSiteDiagnosticForSymbolOrContainingType();
+        bool MergeUseSiteDiagnostics(ref DiagnosticInfo result, DiagnosticInfo info);
+        static bool ReportUseSiteDiagnostic(DiagnosticInfo info, DiagnosticBag diagnostics, Location location);
+        bool DeriveUseSiteDiagnosticFromType(ref DiagnosticInfo result, TypeSymbol type);
+        bool DeriveUseSiteDiagnosticFromCustomModifiers(ref DiagnosticInfo result, ImmutableArray<CustomModifier> customModifiers);
+        static bool GetUnificationUseSiteDiagnosticRecursive<T>(ref DiagnosticInfo result, ImmutableArray<T> types, Symbol owner, ref HashSet<TypeSymbol> checkedTypes) where T : TypeSymbol;
+        static bool GetUnificationUseSiteDiagnosticRecursive(ref DiagnosticInfo result, ImmutableArray<CustomModifier> modifiers, Symbol owner, ref HashSet<TypeSymbol> checkedTypes);
 
-        internal abstract ImmutableArray<AssemblySymbol> GetLinkedReferencedAssemblies();
-        internal abstract void SetLinkedReferencedAssemblies(ImmutableArray<AssemblySymbol> assemblies);
+        string ToDisplayString(SymbolDisplayFormat format = null);
+        ImmutableArray<SymbolDisplayPart> ToDisplayParts(SymbolDisplayFormat format = null);
+        string ToMinimalDisplayString(SemanticModel semanticModel, int position, SymbolDisplayFormat format = null);
+        ImmutableArray<SymbolDisplayPart> ToMinimalDisplayParts(SemanticModel semanticModel, int position, SymbolDisplayFormat format = null);
 
-        internal abstract IEnumerable<ImmutableArray<byte>> GetInternalsVisibleToPublicKeys(string simpleName);
-        internal abstract bool AreInternalsVisibleToThisAssembly(AssemblySymbol other);
+        ThreeState ObsoleteState;
+        ObsoleteAttributeKind ObsoleteKind;
+        ObsoleteAttributeData ObsoleteAttributeData;
+        void ForceCompleteObsoleteAttribute();
 
-        public abstract bool IsLinked { get; }
-        internal virtual bool GetGuidString(out string guidString)
-        public abstract ICollection<string> TypeNames { get; }
-        public abstract ICollection<string> NamespaceNames { get; }
-        public abstract bool MightContainExtensionMethods { get; }
-        public Symbol GetSpecialSymbol(object key)
-        public ImmutableArray<Symbol> SpecialSymbols => DeclaredSpecialSymbols;
-        internal static TypeSymbol DynamicType
-        internal NamedTypeSymbol ObjectType
-        internal NamedTypeSymbol GetPrimitiveType(Microsoft.Cci.PrimitiveTypeCode type)
-        public NamedTypeSymbol GetTypeByMetadataName(string fullyQualifiedMetadataName)
-        internal NamedTypeSymbol GetTypeByMetadataName(
-            string metadataName,
-            bool includeReferences,
-            bool isWellKnownType,
-            out (AssemblySymbol, AssemblySymbol) conflicts,
-            bool useCLSCompliantNameArityEncoding = false,
-            DiagnosticBag warnings = null,
-            bool ignoreCorLibraryDuplicatedTypes = false)
-        internal TypeSymbol GetTypeByReflectionType(Type type, bool includeReferences)
-        private NamedTypeSymbol ApplyGenericArguments(NamedTypeSymbol symbol, Type[] typeArguments, ref int currentTypeArgument, bool includeReferences)
-        internal NamedTypeSymbol GetTopLevelTypeByMetadataName(
-            ref MetadataTypeName metadataName,
-            AssemblyIdentity assemblyOpt,
-            bool includeReferences,
-            bool isWellKnownType,
-            out (AssemblySymbol, AssemblySymbol) conflicts,
-            DiagnosticBag warnings = null,
-            bool ignoreCorLibraryDuplicatedTypes = false)
-        private bool IsInCorLib(NamedTypeSymbol type)
-        private bool IsValidWellKnownType(NamedTypeSymbol result)
-        private static NamedTypeSymbol GetTopLevelTypeByMetadataName(AssemblySymbol assembly, ref MetadataTypeName metadataName, AssemblyIdentity assemblyOpt)
-        private static bool IsAcceptableMatchForGetTypeByMetadataName(NamedTypeSymbol candidate)
-        internal virtual Symbol GetDeclaredSpecialTypeMember(SpecialMember member)
-        internal virtual Symbol GetSpecialTypeMember(SpecialMember member)
-        internal abstract ImmutableArray<byte> PublicKey { get; }
-        INamespaceSymbol IAssemblySymbol.GlobalNamespace
-        IEnumerable<IModuleSymbol> IAssemblySymbol.Modules
-        public abstract AssemblyMetadata GetMetadata();
-        INamedTypeSymbol IAssemblySymbol.ResolveForwardedType(string fullyQualifiedMetadataName)
-        INamedTypeSymbol IAssemblySymbol.GetTypeByMetadataName(string metadataName)
-    }
-
-    abstract symbol class MetadataOrSourceAssemblySymbol
-        : NonMissingAssemblySymbol
-    {
-        public override Symbol GetDeclaredSpecialSymbol(object key)
-        public override ImmutableArray<Symbol> DeclaredSpecialSymbols => _lazySpecialSymbols == null ? ImmutableArray<Symbol>.Empty : _lazySpecialSymbols.Values.ToImmutableArray();
-        private void RegisterDeclaredSpecialSymbol(object key, ref Symbol symbol)
-
-        public override ICollection<string> TypeNames
-        public override ICollection<string> NamespaceNames
-
-        internal override Symbol GetDeclaredSpecialTypeMember(SpecialMember member)
-        protected IVTConclusion MakeFinalIVTDetermination(AssemblySymbol potentialGiverOfAccess)
-        private ConcurrentDictionary<AssemblySymbol, IVTConclusion> AssembliesToWhichInternalAccessHasBeenDetermined
-    }
-
-    symbol MissingAssemblySymbol : AssemblySymbol
-    {
-        public MissingAssemblySymbol(AssemblyIdentity identity)
-      
-        public sealed override bool IsMissing
-        public override bool IsLinked
-        internal override Symbol GetDeclaredSpecialTypeMember(SpecialMember member)
-        public override AssemblyIdentity Identity
-        public override Version AssemblyVersionPattern => null;
-        internal override ImmutableArray<byte> PublicKey
-        public override ImmutableArray<ModuleSymbol> Modules
-        public override ImmutableArray<Location> Locations
-        internal override void SetLinkedReferencedAssemblies(ImmutableArray<AssemblySymbol> assemblies)
-        internal override ImmutableArray<AssemblySymbol> GetLinkedReferencedAssemblies()
-        internal override void SetNoPiaResolutionAssemblies(ImmutableArray<AssemblySymbol> assemblies)
-        internal override ImmutableArray<AssemblySymbol> GetNoPiaResolutionAssemblies()
-        public sealed override NamespaceSymbol GlobalNamespace
-        public override ICollection<string> TypeNames
-        public override ICollection<string> NamespaceNames
-        internal override NamedTypeSymbol LookupTopLevelMetadataTypeWithCycleDetection(ref MetadataTypeName emittedName, ConsList<AssemblySymbol> visitedAssemblies, bool digThroughForwardedTypes)
-        public override Symbol GetDeclaredSpecialSymbol(object key)
-        public override ImmutableArray<Symbol> DeclaredSpecialSymbols => throw ExceptionUtilities.Unreachable;
-        internal override bool AreInternalsVisibleToThisAssembly(AssemblySymbol other)
-        internal override IEnumerable<ImmutableArray<byte>> GetInternalsVisibleToPublicKeys(string simpleName)
-        public override bool MightContainExtensionMethods
-        public override AssemblyMetadata GetMetadata() => null;
-    }
-
-    symbol MissingCorLibrarySymbol : MissingAssemblySymbol
-    {
-        internal static readonly MissingCorLibrarySymbol Instance = new MissingCorLibrarySymbol();
-        
-        private MissingCorLibrarySymbol() : base(new AssemblyIdentity("<Missing Core Assembly>"))
-        
-        public override Symbol GetDeclaredSpecialSymbol(object key)
-        private void RegisterDeclaredSpecialSymbol(object key, ref Symbol symbol)
-    }
-
-    abstract symbol ModuleSymbol : Symbol, IModuleSymbol
-    {
-        public abstract NamespaceSymbol GlobalNamespace { get; }
-        public override AssemblySymbol ContainingAssembly
-        public sealed override ModuleSymbol ContainingModule
-        public sealed override LanguageSymbolKind Kind
-
-        public abstract int Ordinal { get; }
-        public abstract Machine Machine { get; }
-        public abstract bool Bit32Required { get; }
-        public abstract bool IsMissing
-        public sealed override Accessibility DeclaredAccessibility
-        public sealed override bool IsStatic
-        public sealed override bool IsVirtual
-        public sealed override bool IsOverride
-        public sealed override bool IsAbstract
-        public sealed override bool IsSealed
-        public sealed override bool IsExtern
-        public sealed override ObsoleteAttributeData ObsoleteAttributeData
-        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences
-        public abstract ImmutableArray<AssemblyIdentity> ReferencedAssemblies { get; }
-        public abstract ImmutableArray<AssemblySymbol> ReferencedAssemblySymbols { get; }
-        internal AssemblySymbol GetReferencedAssemblySymbol(int referencedAssemblyIndex)
-        internal abstract void SetReferences(ModuleReferences<AssemblySymbol> moduleReferences, SourceAssemblySymbol originatingSourceAssemblyDebugOnly = null);
-        public abstract bool HasUnifiedReferences { get; }
-        public abstract bool GetUnificationUseSiteDiagnostic(ref DiagnosticInfo result, TypeSymbol dependentType);
-
-        public abstract NamedTypeSymbol LookupTopLevelMetadataType(ref MetadataTypeName emittedName);
-        public abstract ICollection<string> TypeNames { get; }
-        public abstract ICollection<string> NamespaceNames { get; }
-        internal abstract bool HasAssemblyCompilationRelaxationsAttribute { get; }
-        internal abstract bool HasAssemblyRuntimeCompatibilityAttribute { get; }
-        internal abstract CharSet? DefaultMarshallingCharSet { get; }
-        internal virtual ImmutableArray<byte> GetHash(AssemblyHashAlgorithm algorithmId)
-        public NamespaceSymbol GetModuleNamespace(INamespaceSymbol namespaceSymbol)
-        public virtual bool TryGetSymbol(IModelObject modelObject, out Symbol symbol)
-
-        INamespaceSymbol IModuleSymbol.GlobalNamespace
-        INamespaceSymbol IModuleSymbol.GetModuleNamespace(INamespaceSymbol namespaceSymbol)
-        ImmutableArray<IAssemblySymbol> IModuleSymbol.ReferencedAssemblySymbols
-
-        public abstract ModuleMetadata GetMetadata();
-    }
-
-
-    symbol MissingModuleSymbol : ModuleSymbol
-    {
-        protected readonly AssemblySymbol assembly;
-        protected readonly int ordinal;
-        protected readonly MissingNamespaceSymbol globalNamespace;
-
-        public MissingModuleSymbol(AssemblySymbol assembly, int ordinal)
-
-        public override int Ordinal
-        public override Machine Machine
-        public override bool Bit32Required
-        public sealed override bool IsMissing
-        public override string Name
-        public override AssemblySymbol ContainingAssembly
-        public override Symbol ContainingSymbol
-        public override NamespaceSymbol GlobalNamespace
-        public override ImmutableArray<Location> Locations
-        public override ICollection<string> NamespaceNames
-        public override ICollection<string> TypeNames
-        public override NamedTypeSymbol LookupTopLevelMetadataType(ref MetadataTypeName emittedName)
-        public override ImmutableArray<AssemblyIdentity> ReferencedAssemblies => ImmutableArray<AssemblyIdentity>.Empty;
-        public override ImmutableArray<AssemblySymbol> ReferencedAssemblySymbols => ImmutableArray<AssemblySymbol>.Empty;
-        internal override void SetReferences(ModuleReferences<AssemblySymbol> moduleReferences, SourceAssemblySymbol originatingSourceAssemblyDebugOnly)
-        public override bool HasUnifiedReferences
-        public override bool GetUnificationUseSiteDiagnostic(ref DiagnosticInfo result, TypeSymbol dependentType)
-        internal override bool HasAssemblyCompilationRelaxationsAttribute
-        internal override bool HasAssemblyRuntimeCompatibilityAttribute
-        internal override CharSet? DefaultMarshallingCharSet
-        public override ModuleMetadata GetMetadata() => null;
-    }
-
-    symbol class MissingModuleSymbolWithName : MissingModuleSymbol
-    {
-        public override string Name
+        void Accept(Microsoft.CodeAnalysis.SymbolVisitor visitor);
+        TResult Accept<TResult>(Microsoft.CodeAnalysis.SymbolVisitor<TResult> visitor);
+        void Accept(SymbolVisitor visitor);
+        TResult Accept<TResult>(SymbolVisitor<TResult> visitor);
+        TResult Accept<TArgument, TResult>(SymbolVisitor<TArgument, TResult> visitor, TArgument argument);
     }
 
     abstract symbol DeclaredSymbol : Symbol
     {
-        public override Accessibility DeclaredAccessibility => Accessibility.Public;
-        public abstract ImmutableArray<Symbol> GetMembers();
-        internal virtual ImmutableArray<Symbol> GetMembersUnordered()
-        public abstract ImmutableArray<Symbol> GetMembers(string name);
-        public virtual ImmutableArray<Symbol> GetMembers(string name, string metadataName)
-        internal virtual ImmutableArray<NamedTypeSymbol> GetTypeMembersUnordered()
-        public abstract ImmutableArray<NamedTypeSymbol> GetTypeMembers();
-        public abstract ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name);
-        public virtual ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name, string metadataName)
-        public virtual MergedDeclaration MergedDeclaration => null;
-        public virtual void CheckMembers(Dictionary<string, ImmutableArray<Symbol>> result, DiagnosticBag diagnostics)
-        public DeclaredSymbol GetSourceMember(SyntaxNodeOrToken syntax)
+        NamedTypeSymbol ContainingType;
+        NamespaceSymbol ContainingNamespace;
+        AssemblySymbol ContainingAssembly;
+        LanguageCompilation DeclaringCompilation;
+        ModuleSymbol ContainingModule;
+        Symbol OriginalDefinition;
+        bool IsDefinition;
+        ImmutableArray<SyntaxReference> DeclaringSyntaxReferences;
+        Accessibility DeclaredAccessibility;
+        bool IsStatic;
+        bool IsVirtual;
+        bool IsOverride;
+        bool IsAbstract;
+        bool IsSealed;
+        bool IsExtern;
+        bool IsImplicitlyDeclared;
+        
+        static void ForceCompleteMemberByLocation(SourceLocation locationOpt, Symbol member, CancellationToken cancellationToken);
+        Symbol ConstructedFrom => this;
+        Symbol AsMember(NamedTypeSymbol newOwner);
+        Symbol GetLeastOverriddenMember(NamedTypeSymbol accessingTypeOpt);
+        Symbol GetConstructedLeastOverriddenMember(NamedTypeSymbol accessingTypeOpt);
+        
+        ImmutableArray<Symbol> GetMembers();
+        ImmutableArray<Symbol> GetMembersUnordered();
+        ImmutableArray<Symbol> GetMembers(string name);
+        ImmutableArray<Symbol> GetMembers(string name, string metadataName);
+        ImmutableArray<NamedTypeSymbol> GetTypeMembersUnordered();
+        ImmutableArray<NamedTypeSymbol> GetTypeMembers();
+        ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name);
+        ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name, string metadataName);
+        MergedDeclaration MergedDeclaration;
+        void CheckMembers(Dictionary<string, ImmutableArray<Symbol>> result, DiagnosticBag diagnostics);
+        DeclaredSymbol GetSourceMember(SyntaxNodeOrToken syntax);
     }
 
-    abstract symbol NamespaceOrTypeSymbol : DeclaredSymbol, IMetaNamespaceOrTypeSymbol
+    abstract symbol AssemblySymbol : Symbol
     {
-        public bool IsNamespace => Kind == LanguageSymbolKind.Namespace;
-        public bool IsType => !IsNamespace;
-
-        bool INamespaceOrTypeSymbol.IsNamespace => this.IsNamespace;
-        bool INamespaceOrTypeSymbol.IsType => this.IsType;
-        ImmutableArray<ISymbol> INamespaceOrTypeSymbol.GetMembers()
-        ImmutableArray<ISymbol> INamespaceOrTypeSymbol.GetMembers(string name)
-        ImmutableArray<ISymbol> IMetaNamespaceOrTypeSymbol.GetMembers(string name, string metadataName)
-        ImmutableArray<INamedTypeSymbol> INamespaceOrTypeSymbol.GetTypeMembers()
-        ImmutableArray<INamedTypeSymbol> INamespaceOrTypeSymbol.GetTypeMembers(string name)
-        ImmutableArray<INamedTypeSymbol> INamespaceOrTypeSymbol.GetTypeMembers(string name, int arity)
-        ImmutableArray<INamedTypeSymbol> IMetaNamespaceOrTypeSymbol.GetTypeMembers(string name, string metadataName)
-
-        internal virtual NamedTypeSymbol LookupMetadataType(ref MetadataTypeName emittedTypeName)
-        internal IEnumerable<NamespaceOrTypeSymbol> GetNamespaceOrTypeByQualifiedName(IEnumerable<string> qualifiedName)
     }
 
-    abstract symbol NamespaceSymbol : NamespaceOrTypeSymbol, IMetaNamespaceSymbol, Microsoft.Cci.INamespace
+    abstract symbol NonMissingAssemblySymbol : AssemblySymbol
     {
-        public virtual bool IsGlobalNamespace => (object)ContainingNamespace == null;
-        public abstract NamespaceExtent Extent { get; }
-        public NamespaceKind NamespaceKind => this.Extent.Kind;
-        public LanguageCompilation ContainingCompilation
-        public virtual ImmutableArray<NamespaceSymbol> ConstituentNamespaces => ImmutableArray.Create(this);
-        public override ModuleSymbol ContainingModule
-        public sealed override LanguageSymbolKind Kind => LanguageSymbolKind.Namespace;
-        public override bool IsImplicitlyDeclared => this.IsGlobalNamespace;
-        public override Accessibility DeclaredAccessibility => Accessibility.Public;
-        public override bool IsStatic => true;
-        internal NamedTypeSymbol ImplicitType
-        public NamespaceSymbol LookupNestedNamespace(ImmutableArray<string> names)
-        public NamespaceSymbol GetNestedNamespace(string name)
-        public IEnumerable<NamespaceSymbol> GetNamespaceMembers()
+    }
 
-        INamespaceSymbol IMetaNamespaceSymbol.LookupNestedNamespace(ImmutableArray<string> names)
-        INamespaceSymbol IMetaNamespaceSymbol.GetNestedNamespace(string name)
+    abstract symbol MetadataOrSourceAssemblySymbol : NonMissingAssemblySymbol
+    {
+    }
 
-        IEnumerable<INamespaceOrTypeSymbol> INamespaceSymbol.GetMembers()
-        IEnumerable<INamespaceOrTypeSymbol> INamespaceSymbol.GetMembers(string name)
-        IEnumerable<INamespaceSymbol> INamespaceSymbol.GetNamespaceMembers()
-        NamespaceKind INamespaceSymbol.NamespaceKind
-        Compilation INamespaceSymbol.ContainingCompilation
-        ImmutableArray<INamespaceSymbol> INamespaceSymbol.ConstituentNamespaces
-        public string QualifiedName
-        INamespace INamespace.ContainingNamespace => this.ContainingNamespace;
+    symbol MissingAssemblySymbol : AssemblySymbol
+    {
+    }
 
-        public override void Accept(SymbolVisitor visitor)
-        public override TResult Accept<TResult>(SymbolVisitor<TResult> visitor)
-        public override TResult Accept<TArgument, TResult>(SymbolVisitor<TArgument, TResult> visitor, TArgument argument)
-        public override void Accept(Microsoft.CodeAnalysis.SymbolVisitor visitor)
-        public override TResult Accept<TResult>(Microsoft.CodeAnalysis.SymbolVisitor<TResult> visitor)
+    symbol MissingCorLibrarySymbol : MissingAssemblySymbol
+    {
+    }
+
+    abstract symbol ModuleSymbol : Symbol
+    {
+    }
+
+    symbol MissingModuleSymbol : ModuleSymbol
+    {
+    }
+
+    symbol MissingModuleSymbolWithName : MissingModuleSymbol
+    {
+    }
+
+    abstract symbol NamespaceOrTypeSymbol : DeclaredSymbol
+    {
+    }
+
+    abstract symbol NamespaceSymbol : NamespaceOrTypeSymbol
+    {
     }
 
     symbol MergedNamespaceSymbol : NamespaceSymbol
     {
-        internal static NamespaceSymbol Create(NamespaceExtent extent, NamespaceSymbol containingNamespace, ImmutableArray<NamespaceSymbol> namespacesToMerge, string nameOpt = null)
-
-        private MergedNamespaceSymbol(NamespaceExtent extent, NamespaceSymbol containingNamespace, ImmutableArray<NamespaceSymbol> namespacesToMerge, string nameOpt)
-
-        internal NamespaceSymbol GetConstituentForCompilation(LanguageCompilation compilation)
-
-        public override void ForceComplete(SourceLocation locationOpt, CancellationToken cancellationToken)
-
-        private ImmutableArray<Symbol> SlowGetChildrenOfName(string name)
-        private HashSet<string> SlowGetChildNames(IEqualityComparer<string> comparer)
-        private ImmutableArray<Symbol> SlowGetAllMembers()
-        public override ModelObjectDescriptor ModelSymbolInfo => _namespacesToMerge[0].ModelSymbolInfo;
-        public override string Name
-        public override NamespaceExtent Extent
-        public override ImmutableArray<NamespaceSymbol> ConstituentNamespaces
-        public override ImmutableArray<Symbol> GetMembers()
-        public override ImmutableArray<Symbol> GetMembers(string name)
-        internal sealed override ImmutableArray<NamedTypeSymbol> GetTypeMembersUnordered()
-        public sealed override ImmutableArray<NamedTypeSymbol> GetTypeMembers()
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name)
-        public override Symbol ContainingSymbol
-        public override AssemblySymbol ContainingAssembly
-        public override ImmutableArray<Location> Locations
-        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences
     }
 
     symbol MissingNamespaceSymbol : NamespaceSymbol
     {
-        public MissingNamespaceSymbol(MissingModuleSymbol containingModule)
-        public MissingNamespaceSymbol(NamespaceSymbol containingNamespace, string name)
-
-        public override string Name
-        public override Symbol ContainingSymbol
-        public override AssemblySymbol ContainingAssembly
-        public override NamespaceExtent Extent
-        public override ImmutableArray<Location> Locations
-        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers()
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name)
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name, string metadataName)
-        public override ImmutableArray<Symbol> GetMembers()
-        public override ImmutableArray<Symbol> GetMembers(string name)
-        public override ImmutableArray<Symbol> GetMembers(string name, string metadataName)
     }
 
-    abstract symbol TypeSymbol : NamespaceOrTypeSymbol, IMetaTypeSymbol
+    abstract symbol TypeSymbol : NamespaceOrTypeSymbol
     {
-        internal const string ImplicitTypeName = "<invalid-global-code>";
-        private static readonly BaseTypeInfo s_noBaseTypes = new BaseTypeInfo();
-        private ImmutableHashSet<Symbol> _lazyAbstractMembers;
-        private BaseTypeInfo _lazyBaseTypeInfo;
-
-        private class BaseTypeInfo
-        {
-            internal ImmutableArray<NamedTypeSymbol> allBaseTypes;
-            internal MultiDictionary<NamedTypeSymbol, NamedTypeSymbol> baseTypesAndTheirBaseTypes;
-            internal readonly static MultiDictionary<NamedTypeSymbol, NamedTypeSymbol> EmptyBaseTypesAndTheirBaseTypes =
-                new MultiDictionary<NamedTypeSymbol, NamedTypeSymbol>(0, EqualsCLRSignatureComparer);
-            public ConcurrentDictionary<Symbol, SymbolAndDiagnostics> ImplementationForBaseMemberMap
-            internal MultiDictionary<Symbol, Symbol> explicitBaseTypeImplementationMap;
-            internal bool IsDefaultValue()
-        }
-
-        private BaseTypeInfo GetBaseTypeInfo()
-        public ImmutableArray<NamedTypeSymbol> BaseTypesWithDefinitionUseSiteDiagnostics(ref HashSet<DiagnosticInfo> useSiteDiagnostics)
-        public ImmutableArray<NamedTypeSymbol> BaseTypesOriginalDefinition(ref HashSet<DiagnosticInfo> useSiteDiagnostics)
-        public virtual ImmutableArray<NamedTypeSymbol> BaseTypesNoUseSiteDiagnostics => this.GetBaseTypesNoUseSiteDiagnostics();
-        public abstract ImmutableArray<NamedTypeSymbol> GetBaseTypesNoUseSiteDiagnostics(ConsList<TypeSymbol> basesBeingResolved = null);
-        public ImmutableArray<NamedTypeSymbol> AllBaseTypesNoUseSiteDiagnostics => this.GetAllBaseTypes();
-        public ImmutableArray<NamedTypeSymbol> AllBaseTypesWithDefinitionUseSiteDiagnostics(ref HashSet<DiagnosticInfo> useSiteDiagnostics)
-        public TypeSymbol EffectiveTypeNoUseSiteDiagnostics => this;
-        public TypeSymbol EffectiveType(ref HashSet<DiagnosticInfo> useSiteDiagnostics)
-        public bool IsDerivedFrom(TypeSymbol type, TypeCompareKind comparison, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
-        public bool IsEqualToOrDerivedFrom(TypeSymbol type, TypeCompareKind comparison, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
-
-        protected virtual ImmutableArray<NamedTypeSymbol> GetAllBaseTypes()
-        protected virtual ImmutableArray<NamedTypeSymbol> MakeAllBaseTypes()
-        private static void AddAllBaseTypes(NamedTypeSymbol baseType, HashSet<NamedTypeSymbol> visited, ArrayBuilder<NamedTypeSymbol> result)
-        internal MultiDictionary<NamedTypeSymbol, NamedTypeSymbol> BaseTypesAndTheirBaseTypesNoUseSiteDiagnostics
-        internal MultiDictionary<NamedTypeSymbol, NamedTypeSymbol> BaseTypesAndTheirBaseTypesWithDefinitionUseSiteDiagnostics(ref HashSet<DiagnosticInfo> useSiteDiagnostics)
-        private static MultiDictionary<NamedTypeSymbol, NamedTypeSymbol> MakeBaseTypesAndTheirBaseTypes(ImmutableArray<NamedTypeSymbol> declaredBaseTypes)
-        public Symbol FindImplementationForBaseTypeMember(Symbol baseTypeMember)
-        public virtual LanguageTypeKind TypeKind => LanguageTypeKind.None;
-        public virtual SpecialType SpecialType => SpecialType.None;
-        internal Microsoft.Cci.PrimitiveTypeCode PrimitiveTypeCode => SpecialTypes.GetTypeCode(SpecialType);
-        protected override ErrorCode HighestPriorityUseSiteError => InternalErrorCode.ERR_BogusType;
-
-        public sealed override bool HasUnsupportedMetadata
-        public abstract bool GetUnificationUseSiteDiagnosticRecursive(ref DiagnosticInfo result, Symbol owner, ref HashSet<TypeSymbol> checkedTypes);
-        public new TypeSymbol OriginalDefinition => OriginalTypeSymbolDefinition;
-        protected virtual TypeSymbol OriginalTypeSymbolDefinition => this;
-        protected override sealed Symbol OriginalSymbolDefinition => this.OriginalTypeSymbolDefinition;
-
-        ImmutableArray<INamedTypeSymbol> IMetaTypeSymbol.BaseTypes => StaticCast<INamedTypeSymbol>.From(this.BaseTypesNoUseSiteDiagnostics);
-        ImmutableArray<INamedTypeSymbol> IMetaTypeSymbol.AllBaseTypes => StaticCast<INamedTypeSymbol>.From(this.AllBaseTypesNoUseSiteDiagnostics);
-        ISymbol IMetaTypeSymbol.FindImplementationForBaseTypeMember(ISymbol baseMember)
-
-        TypeKind ITypeSymbol.TypeKind => Language.SymbolFacts.ToCSharpKind(this.TypeKind);
-        INamedTypeSymbol ITypeSymbol.BaseType => this.BaseTypesNoUseSiteDiagnostics.Where(t => ((ITypeSymbol)t).TypeKind == Microsoft.CodeAnalysis.TypeKind.Class).FirstOrDefault();
-        ImmutableArray<INamedTypeSymbol> ITypeSymbol.Interfaces => StaticCast<INamedTypeSymbol>.From(this.BaseTypesNoUseSiteDiagnostics.WhereAsArray(t => ((ITypeSymbol)t).TypeKind == Microsoft.CodeAnalysis.TypeKind.Interface));
-        ImmutableArray<INamedTypeSymbol> ITypeSymbol.AllInterfaces => StaticCast<INamedTypeSymbol>.From(this.AllBaseTypesNoUseSiteDiagnostics.WhereAsArray(t => ((ITypeSymbol)t).TypeKind == Microsoft.CodeAnalysis.TypeKind.Interface));
-        public virtual bool IsReferenceType => false;
-        public virtual bool IsValueType => false;
-        public virtual bool IsAnonymousType => false;
-        public virtual bool IsTupleType => false;
-        ITypeSymbol ITypeSymbol.OriginalDefinition => this.OriginalTypeSymbolDefinition;
-        SpecialType ITypeSymbol.SpecialType => this.SpecialType;
-        public virtual bool IsRefLikeType => false;
-        public virtual bool IsUnmanagedType => false;
-        public virtual bool IsReadOnly => false;
-        ISymbol ITypeSymbol.FindImplementationForInterfaceMember(ISymbol interfaceMember)
-
-        protected virtual SymbolAndDiagnostics FindMostSpecificImplementationWithDiagnostics(Symbol baseTypeMember, NamedTypeSymbol implementingBaseType)
-        public virtual void CheckAllConstraints(LanguageCompilation compilation, ConversionsBase conversions, Location location, DiagnosticBag diagnostics)
-        public bool CheckAllConstraints(LanguageCompilation compilation, ConversionsBase conversions)
     }
 
-    abstract symbol ErrorTypeSymbol : NamedTypeSymbol, IErrorTypeSymbol, IMetaErrorSymbol
+    abstract symbol ErrorTypeSymbol : NamedTypeSymbol
     {
-        internal static readonly ErrorTypeSymbol UnknownResultType = new UnsupportedMetadataTypeSymbol();
-
-        public abstract DiagnosticInfo ErrorInfo { get; }
-        internal virtual LookupResultKind ResultKind { get { return LookupResultKind.Empty; } }
-        public virtual ImmutableArray<Symbol> CandidateSymbols => ImmutableArray<Symbol>.Empty;
-        public CandidateReason CandidateReason
-        public override DiagnosticInfo GetUseSiteDiagnostic()
-        public override IEnumerable<string> MemberNames => SpecializedCollections.EmptyEnumerable<string>();
-        public override ImmutableArray<Symbol> GetMembers()
-        public override ImmutableArray<Symbol> GetMembers(string name)
-        public override ImmutableArray<Symbol> GetMembers(string name, string metadataName)
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers()
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name)
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name, string metadataName)
-        public sealed override LanguageSymbolKind Kind => LanguageSymbolKind.ErrorType;
-        public sealed override LanguageTypeKind TypeKind => LanguageTypeKind.Error;
-        public override Symbol ContainingSymbol => null;
-        public override ImmutableArray<Location> Locations => ImmutableArray<Location>.Empty;
-        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => ImmutableArray<SyntaxReference>.Empty;
-        public override string Name => string.Empty;
-
-        internal ErrorTypeSymbol()
-
-        public sealed override Accessibility DeclaredAccessibility => Accessibility.NotApplicable;
-        public override ImmutableArray<NamedTypeSymbol> BaseTypesNoUseSiteDiagnostics => ImmutableArray<NamedTypeSymbol>.Empty;
-        public override ImmutableArray<NamedTypeSymbol> GetBaseTypesNoUseSiteDiagnostics(ConsList<TypeSymbol> basesBeingResolved)
-        public override ImmutableArray<NamedTypeSymbol> GetDeclaredBaseTypes(ConsList<TypeSymbol> basesBeingResolved)
-        public virtual bool Unreported
-
-        ImmutableArray<ISymbol> IErrorTypeSymbol.CandidateSymbols
     }
-
 
     abstract symbol MissingMetadataTypeSymbol : ErrorTypeSymbol
     {
-        protected readonly string name;
-        protected readonly int arity;
-        protected readonly bool mangleName;
-
-        private MissingMetadataTypeSymbol(string name, int arity, bool mangleName)
-        public override string Name
-        public override bool MangleName
-        public override DiagnosticInfo ErrorInfo
-
-        internal class TopLevel : MissingMetadataTypeSymbol
-        {
-            public TopLevel(ModuleSymbol module, string @namespace, string name, int arity, bool mangleName) : base(name, arity, mangleName)
-            public TopLevel(ModuleSymbol module, ref MetadataTypeName fullName) : this(module, ref fullName, -1)
-            public TopLevel(ModuleSymbol module, ref MetadataTypeName fullName, SpecialType specialType) : this(module, ref fullName, (int)specialType)
-            public TopLevel(ModuleSymbol module, ref MetadataTypeName fullName, WellKnownType wellKnownType) : this(module, ref fullName, (int)wellKnownType)
-            private TopLevel(ModuleSymbol module, ref MetadataTypeName fullName, int typeId) : this(module, ref fullName, fullName.ForcedArity == -1 || fullName.ForcedArity == fullName.InferredArity)
-            private TopLevel(ModuleSymbol module, ref MetadataTypeName fullName, bool mangleName) : this(module, fullName.NamespaceName, mangleName ? fullName.UnmangledTypeName : fullName.TypeName, mangleName ? fullName.InferredArity : fullName.ForcedArity, mangleName)
-
-            public string NamespaceName
-            public override ModuleSymbol ContainingModule
-            public override AssemblySymbol ContainingAssembly
-            public override Symbol ContainingSymbol
-            private int TypeId
-            public override SpecialType SpecialType
-            public override DiagnosticInfo ErrorInfo
-        }
-
-        internal class TopLevelWithCustomErrorInfo : TopLevel
-        {
-            private readonly DiagnosticInfo _errorInfo;
-
-            public TopLevelWithCustomErrorInfo(ModuleSymbol module, ref MetadataTypeName emittedName, DiagnosticInfo errorInfo) : base(module, ref emittedName)
-            public TopLevelWithCustomErrorInfo(ModuleSymbol module, ref MetadataTypeName emittedName, DiagnosticInfo errorInfo, SpecialType typeId) : base(module, ref emittedName, typeId)
-            public TopLevelWithCustomErrorInfo(ModuleSymbol module, ref MetadataTypeName emittedName, DiagnosticInfo errorInfo, WellKnownType typeId) : base(module, ref emittedName, typeId)
-
-            public override DiagnosticInfo ErrorInfo
-        }
-
-        /// <summary>
-        /// Represents nested missing type.
-        /// </summary>
-        internal class Nested : MissingMetadataTypeSymbol
-        {
-            private readonly NamedTypeSymbol _containingType;
-
-            public Nested(NamedTypeSymbol containingType, string name, int arity, bool mangleName) : base(name, arity, mangleName)
-            public Nested(NamedTypeSymbol containingType, ref MetadataTypeName emittedName) : this(containingType, ref emittedName, emittedName.ForcedArity == -1 || emittedName.ForcedArity == emittedName.InferredArity)
-            private Nested(NamedTypeSymbol containingType, ref MetadataTypeName emittedName, bool mangleName) : this(containingType, mangleName ? emittedName.UnmangledTypeName : emittedName.TypeName, mangleName ? emittedName.InferredArity : emittedName.ForcedArity, mangleName)
-
-            public override Symbol ContainingSymbol
-            public override SpecialType SpecialType
-            public override int GetHashCode()
-            public override bool Equals(TypeSymbol t2, TypeCompareKind comparison)
-        }
     }
 
     symbol UnsupportedSymbol : Symbol, IMetaErrorSymbol
     {
-        public ISymbol Symbol => _symbol;
-        public override LanguageSymbolKind Kind => LanguageSymbolKind.None;
-        public override Symbol ContainingSymbol => _containingSymbol;
-        public override ImmutableArray<Location> Locations => _symbol.Locations;
-        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => _symbol.DeclaringSyntaxReferences;
-        public override bool IsStatic => _symbol.IsStatic;
     }
 
-    abstract symbol MemberSymbol : DeclaredSymbol, IMetaMemberSymbol
+    abstract symbol MemberSymbol : DeclaredSymbol
     {
-        public virtual bool IsImplementableMember => !this.IsStatic;
-        public virtual bool HidesBaseMembersByName => false;
-        public virtual MemberSymbol OverridenMember => null;
-        public override Symbol GetLeastOverriddenMember(NamedTypeSymbol accessingTypeOpt)
-        public MemberSymbol OverriddenMember
-        internal virtual OverriddenOrHiddenMembersResult OverriddenOrHiddenMembers
-        public virtual bool CanOverrideOrHide(MemberSymbol other)
-        protected OverriddenOrHiddenMembersResult MakeOverriddenOrHiddenMembers()
-        private static void FindOverriddenOrHiddenMembersInType(
-            Symbol member,
-            bool memberIsFromSomeCompilation,
-            NamedTypeSymbol memberContainingType,
-            NamedTypeSymbol currType,
-            out Symbol currTypeBestMatch,
-            out bool currTypeHasSameKindNonMatch,
-            out ArrayBuilder<Symbol> hiddenBuilder)
-        private static void FindRelatedMembers(
-            bool isOverride,
-            bool overridingMemberIsFromSomeCompilation,
-            LanguageSymbolKind overridingMemberKind,
-            Symbol representativeMember,
-            out ImmutableArray<Symbol> overriddenMembers,
-            out ImmutableArray<Symbol> runtimeOverriddenMembers,
-            ref ArrayBuilder<Symbol> hiddenBuilder)
-        private static void AddHiddenMemberIfApplicable(ref ArrayBuilder<Symbol> hiddenBuilder, LanguageSymbolKind hidingMemberKind, Symbol hiddenMember)
-        private static ArrayBuilder<T> AccessOrGetInstance<T>(ref ArrayBuilder<T> builder)
-        private static void FindOtherOverriddenMethodsInContainingType(Symbol representativeMember, bool overridingMemberIsFromSomeCompilation, ArrayBuilder<Symbol> overriddenBuilder, ArrayBuilder<Symbol> runtimeOverriddenBuilder)
-        private static void FindOtherHiddenMembersInContainingType(LanguageSymbolKind hidingMemberKind, Symbol representativeMember, ref ArrayBuilder<Symbol> hiddenBuilder)
-        private static bool MatchesOverride(Symbol member, Symbol otherMember)
-        private static bool IsOverriddenSymbolAccessible(Symbol overridden, NamedTypeSymbol overridingContainingType)
-        internal DiagnosticInfo CalculateUseSiteDiagnostic()
     }
 
-    abstract symbol MethodSymbol : MemberSymbol, IMethodSymbolInternal
+    abstract symbol MethodSymbol : MemberSymbol
     {
-        internal const MethodSymbol None = null;
-
-        protected MethodSymbol()
-
-        public abstract MethodKind MethodKind { get; }
-        bool IMethodSymbolInternal.IsIterator { get; }
-        MethodKind IMethodSymbol.MethodKind { get; }
-        int IMethodSymbol.Arity { get; }
-        bool IMethodSymbol.IsGenericMethod { get; }
-        bool IMethodSymbol.IsExtensionMethod { get; }
-        public virtual bool IsAsync => false;
-        bool IMethodSymbol.IsVararg { get; }
-        bool IMethodSymbol.IsCheckedBuiltin { get; }
-        bool IMethodSymbol.HidesBaseMethodsByName { get; }
-        bool IMethodSymbol.ReturnsVoid { get; }
-        bool IMethodSymbol.ReturnsByRef { get; }
-        bool IMethodSymbol.ReturnsByRefReadonly { get; }
-        RefKind IMethodSymbol.RefKind { get; }
-        ITypeSymbol IMethodSymbol.ReturnType { get; }
-        ImmutableArray<ITypeSymbol> IMethodSymbol.TypeArguments { get; }
-        ImmutableArray<ITypeParameterSymbol> IMethodSymbol.TypeParameters { get; }
-        ImmutableArray<IParameterSymbol> IMethodSymbol.Parameters { get; }
-        IMethodSymbol IMethodSymbol.ConstructedFrom { get; }
-        bool IMethodSymbol.IsReadOnly { get; }
-        IMethodSymbol IMethodSymbol.OriginalDefinition { get; }
-        IMethodSymbol IMethodSymbol.OverriddenMethod { get; }
-        ITypeSymbol IMethodSymbol.ReceiverType { get; }
-        IMethodSymbol IMethodSymbol.ReducedFrom { get; }
-        ImmutableArray<IMethodSymbol> IMethodSymbol.ExplicitInterfaceImplementations { get; }
-        ImmutableArray<CustomModifier> IMethodSymbol.ReturnTypeCustomModifiers { get; }
-        ImmutableArray<CustomModifier> IMethodSymbol.RefCustomModifiers { get; }
-        ISymbol IMethodSymbol.AssociatedSymbol { get; }
-        IMethodSymbol IMethodSymbol.PartialDefinitionPart { get; }
-        IMethodSymbol IMethodSymbol.PartialImplementationPart { get; }
-        INamedTypeSymbol IMethodSymbol.AssociatedAnonymousDelegate { get; }
-        public virtual bool IsScriptInitializer => false;
-        int IMethodSymbolInternal.CalculateLocalSyntaxOffset(int declaratorPosition, SyntaxTree declaratorTree)
-        IMethodSymbol IMethodSymbol.Construct(params ITypeSymbol[] typeArguments)
-        DllImportData IMethodSymbol.GetDllImportData()
-        ImmutableArray<AttributeData> IMethodSymbol.GetReturnTypeAttributes()
-        ITypeSymbol IMethodSymbol.GetTypeInferredDuringReduction(ITypeParameterSymbol reducedFromTypeParameter)
-        IMethodSymbol IMethodSymbol.ReduceExtensionMethod(ITypeSymbol receiverType)
     }
 
-    symbol DiscardSymbol : Symbol, IDiscardSymbol
+    symbol DiscardSymbol : Symbol
     {
-        public DiscardSymbol(TypeSymbol type)
-
-        ITypeSymbol IDiscardSymbol.Type => Type;
-        public TypeSymbol Type { get; }
-
-        internal static DiscardSymbol CreateForTest(ITypeSymbol type) => new DiscardSymbol((TypeSymbol)type);
-
-        public override Symbol ContainingSymbol => null;
-        public override Accessibility DeclaredAccessibility => Accessibility.NotApplicable;
-        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => ImmutableArray<SyntaxReference>.Empty;
-        public override bool IsAbstract => false;
-        public override bool IsExtern => false;
-        public override bool IsImplicitlyDeclared => true;
-        public override bool IsOverride => false;
-        public override bool IsSealed => false;
-        public override bool IsStatic => false;
-        public override bool IsVirtual => false;
-        public override LanguageSymbolKind Kind => LanguageSymbolKind.Discard;
-        public override ImmutableArray<Location> Locations => ImmutableArray<Location>.Empty;
     }
     
     
@@ -717,922 +169,154 @@ namespace MetaDslx.CodeAnalysis.Symbols
     
     symbol CSharpAssemblySymbol : NonMissingAssemblySymbol
     {
-        internal CSharpAssemblySymbol(CSharpSymbols.AssemblySymbol underlyingAssembly)
-        internal override CSharpSymbolMap CSharpSymbolMap
-        internal CSharpSymbols.AssemblySymbol CSharpAssembly => _underlyingAssembly;
-        internal ConcurrentDictionary<NamedTypeSymbol, NamedTypeSymbol> NoPiaUnificationMap =>
-            LazyInitializer.EnsureInitialized(ref _noPiaUnificationMap, () => new ConcurrentDictionary<NamedTypeSymbol, NamedTypeSymbol>(concurrencyLevel: 2, capacity: 0));
-
-        public override bool IsImplicitlyDeclared
-        public override AssemblyIdentity Identity
-        public override Version AssemblyVersionPattern => _underlyingAssembly.AssemblyVersionPattern;
-        internal override ImmutableArray<byte> PublicKey
-        public override string GetDocumentationCommentXml(CultureInfo preferredCulture = null, bool expandIncludes = false, CancellationToken cancellationToken = default(CancellationToken))
-        public override ImmutableArray<ModuleSymbol> Modules
-        public override ImmutableArray<Location> Locations
-        internal override IEnumerable<ImmutableArray<byte>> GetInternalsVisibleToPublicKeys(string simpleName)
-        internal override bool AreInternalsVisibleToThisAssembly(AssemblySymbol other)
-        public override ImmutableArray<AttributeData> GetAttributes()
-        public override Symbol GetDeclaredSpecialSymbol(object key)
-        public override ImmutableArray<Symbol> DeclaredSpecialSymbols => ImmutableArray<Symbol>.Empty; // TODO:MetaDslx
-        internal override ImmutableArray<AssemblySymbol> GetNoPiaResolutionAssemblies()
-        internal override void SetNoPiaResolutionAssemblies(ImmutableArray<AssemblySymbol> assemblies)
-        internal override void SetLinkedReferencedAssemblies(ImmutableArray<AssemblySymbol> assemblies)
-        internal override ImmutableArray<AssemblySymbol> GetLinkedReferencedAssemblies()
-        public override bool IsLinked
-        public override ICollection<string> TypeNames
-        public override ICollection<string> NamespaceNames
-        public override bool MightContainExtensionMethods
-        internal sealed override LanguageCompilation DeclaringCompilation // perf, not correctness
-        internal override bool GetGuidString(out string guidString)
-        internal override NamedTypeSymbol TryLookupForwardedMetadataTypeWithCycleDetection(ref MetadataTypeName emittedName, ConsList<AssemblySymbol> visitedAssemblies)
-        public override AssemblyMetadata GetMetadata() => _underlyingAssembly.GetMetadata();
     }
     
     symbol CSharpModuleSymbol : NonMissingModuleSymbol
     {
-        internal CSharpModuleSymbol(AssemblySymbol assembly, CSharpSymbols.ModuleSymbol underlyingModule, int ordinal)
-        internal CSharpSymbols.ModuleSymbol CSharpModule => _underlyingModule;
-        internal override CSharpSymbolMap CSharpSymbolMap => _csharpSymbolMap;
-        public PEModule Module => (_underlyingModule as CSharpSymbols.Metadata.PE.PEModuleSymbol)?.Module;
-        public override int Ordinal
-        public override Machine Machine
-        public override bool Bit32Required
-        internal CSharpSymbols.ModuleSymbol UnderlyingModule
-        public override NamespaceSymbol GlobalNamespace
-        public override bool IsImplicitlyDeclared
-        public override string Name
-        public override string GetDocumentationCommentXml(CultureInfo preferredCulture = null, bool expandIncludes = false, CancellationToken cancellationToken = default(CancellationToken))
-        public override Symbol ContainingSymbol
-        public override AssemblySymbol ContainingAssembly
-        public override ImmutableArray<Location> Locations
-        internal override void SetReferences(ModuleReferences<AssemblySymbol> moduleReferences, SourceAssemblySymbol originatingSourceAssemblyDebugOnly)
-        public override ICollection<string> TypeNames
-        public override ICollection<string> NamespaceNames
-        public override ImmutableArray<AttributeData> GetAttributes()
-        internal override bool HasAssemblyCompilationRelaxationsAttribute
-        internal override bool HasAssemblyRuntimeCompatibilityAttribute
-        internal override CharSet? DefaultMarshallingCharSet
-        internal sealed override LanguageCompilation DeclaringCompilation // perf, not correctness
-        public override ModuleMetadata GetMetadata() => _underlyingModule.GetMetadata();
-        internal (AssemblySymbol FirstSymbol, AssemblySymbol SecondSymbol) GetAssembliesForForwardedType(ref MetadataTypeName fullName)
-        internal IEnumerable<NamedTypeSymbol> GetForwardedTypes()
     }
     
     symbol CSharpNamespaceSymbol : NamespaceSymbol
     {
-        internal CSharpNamespaceSymbol(NonMissingModuleSymbol module, CSharpSymbols.NamespaceSymbol csharpSymbol)
-
-        internal CSharpSymbolMap CSharpSymbolMap => _module.CSharpSymbolMap;
-        internal CSharpSymbols.NamespaceSymbol CSharpSymbol => _csharpSymbol;
-        public override string Name => _csharpSymbol.Name;
-        public override string MetadataName => _csharpSymbol.MetadataName;
-        public override NamespaceExtent Extent => new NamespaceExtent(_module);
-        public override Symbol ContainingSymbol => CSharpSymbolMap.GetSymbol(_csharpSymbol.ContainingSymbol);
-        public override ImmutableArray<Location> Locations => _csharpSymbol.Locations;
-        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => _csharpSymbol.DeclaringSyntaxReferences;
-        public override ImmutableArray<Symbol> GetMembers()
-        public override ImmutableArray<Symbol> GetMembers(string name)
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers()
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name)
     }
     
     symbol CSharpNamedTypeSymbol : NamedTypeSymbol
     {
-        internal CSharpNamedTypeSymbol(NonMissingModuleSymbol module, CSharpSymbols.NamedTypeSymbol csharpSymbol)
-
-        internal CSharpSymbolMap CSharpSymbolMap => _module.CSharpSymbolMap;
-        public override LanguageSymbolKind Kind => Language.SymbolFacts.FromCSharpKind(_csharpSymbol.Kind);
-        public override string Name => _csharpSymbol.Name;
-        public override string MetadataName => _csharpSymbol.MetadataName;
-        public override int Arity => _csharpSymbol.Arity;
-        public override bool MangleName => _csharpSymbol.MangleName;
-        public override SpecialType SpecialType => _csharpSymbol.SpecialType;
-        public override LanguageTypeKind TypeKind => Language.SymbolFacts.FromCSharpKind(_csharpSymbol.TypeKind);
-        public override ImmutableArray<Symbol> GetMembers()
-        public override ImmutableArray<Symbol> GetMembers(string name)
-        public override ImmutableArray<Symbol> GetMembers(string name, string metadataName)
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers()
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name)
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name, string metadataName)
-        public override ImmutableArray<NamedTypeSymbol> GetDeclaredBaseTypes(ConsList<TypeSymbol> basesBeingResolved)
-        public override ImmutableArray<NamedTypeSymbol> GetBaseTypesNoUseSiteDiagnostics(ConsList<TypeSymbol> basesBeingResolved = null)
-        internal CSharpSymbols.NamedTypeSymbol CSharpSymbol => _csharpSymbol;
-        public override Symbol ContainingSymbol => CSharpSymbolMap.GetSymbol(_csharpSymbol.ContainingSymbol);
-        public override ImmutableArray<Location> Locations => _csharpSymbol.Locations;
-        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => _csharpSymbol.DeclaringSyntaxReferences;
-        public override IEnumerable<string> MemberNames => _csharpSymbol.MemberNames;
-        public override ImmutableArray<NamedTypeSymbol> BaseTypesNoUseSiteDiagnostics
     }
 
     // ================================================
 
-    symbol MetaModuleSymbol : NonMissingModuleSymbol, IMetaMetadataSymbol
+    symbol MetaModuleSymbol : NonMissingModuleSymbol
     {
-        public MetaModuleSymbol(AssemblySymbol owningAssembly, ImmutableArray<ImmutableModel> models, int ordinal)
-        public MetaModuleSymbol(AssemblySymbol owningAssembly, ImmutableModelGroup modelGroup, int ordinal)
-
-        public ImmutableArray<ImmutableModel> Models => _models;
-        public MetaSymbolMap MetaSymbolMap => _symbolMap;
-        internal override CSharpSymbolMap CSharpSymbolMap => throw ExceptionUtilities.Unreachable;
-        public override int Ordinal => _ordinal;
-        public override bool HasUnifiedReferences => false;
-        public override NamespaceSymbol GlobalNamespace
-        public override ICollection<string> TypeNames => _globalNamespace.TypeNames;
-        public override ICollection<string> NamespaceNames => _globalNamespace.NamespaceNames;
-        public override ImmutableArray<Location> Locations => ImmutableArray<Location>.Empty;
-        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => ImmutableArray<SyntaxReference>.Empty;
-        public override Machine Machine => Machine.Unknown;
-        public override bool Bit32Required => false;
-        internal override bool HasAssemblyCompilationRelaxationsAttribute => false;
-        internal override bool HasAssemblyRuntimeCompatibilityAttribute => false;
-        internal override CharSet? DefaultMarshallingCharSet => null;
-        public override Symbol ContainingSymbol => _owningAssembly;
-        public override ModuleMetadata GetMetadata()
-        public override bool TryGetSymbol(IModelObject modelObject, out Symbol symbol)
     }
 
-    symbol MetaNamespaceSymbol : NamespaceSymbol, IMetaMetadataSymbol
+    symbol MetaNamespaceSymbol : NamespaceSymbol
     {
-        public MetaNamespaceSymbol(IModelObject metaObject, Symbol container)
-
-        public MetaSymbolMap MetaSymbolMap => ((IMetaMetadataSymbol)_container).MetaSymbolMap;
-        public override NamespaceExtent Extent
-        public override Symbol ContainingSymbol => _container;
-        public override ImmutableArray<Location> Locations => this.ContainingModule.Locations;
-        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => ImmutableArray<SyntaxReference>.Empty;
-        public override string Name => _metaObject.MName;
-        public override ModelObjectDescriptor ModelSymbolInfo => _metaObject.MId.Descriptor;
-        public override IModelObject ModelObject => _metaObject;
-        public override ImmutableArray<Symbol> GetMembers()
-        public override ImmutableArray<Symbol> GetMembers(string name)
-        public override ImmutableArray<Symbol> GetMembers(string name, string metadataName)
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers()
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name)
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name, string metadataName)
     }
 
-    symbol MetaGlobalNamespaceSymbol : NamespaceSymbol, IMetaMetadataSymbol
+    symbol MetaGlobalNamespaceSymbol : NamespaceSymbol
     {
-        public MetaGlobalNamespaceSymbol(MetaModuleSymbol module) 
-
-        public MetaSymbolMap MetaSymbolMap => _module.MetaSymbolMap;
-        public override NamespaceExtent Extent => new NamespaceExtent(_module);
-        public override Symbol ContainingSymbol => _module;
-        public override ImmutableArray<Location> Locations => _module.Locations;
-        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => ImmutableArray<SyntaxReference>.Empty;
-        public ImmutableArray<string> NamespaceNames
-        public ImmutableArray<string> TypeNames
-        public override ImmutableArray<Symbol> GetMembers()
-        public override ImmutableArray<Symbol> GetMembers(string name)
-        public override ImmutableArray<Symbol> GetMembers(string name, string metadataName)
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers()
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name)
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name, string metadataName)
     }
 
-    symbol MetaNamedTypeSymbol : NamedTypeSymbol, IMetaMetadataSymbol
+    symbol MetaNamedTypeSymbol : NamedTypeSymbol
     {
-        public MetaNamedTypeSymbol(IModelObject metaObject, Symbol container)
-
-        public MetaSymbolMap MetaSymbolMap => ((IMetaMetadataSymbol)_container).MetaSymbolMap;
-        public override string Name => _metaObject.MName;
-        public override LanguageSymbolKind Kind => LanguageSymbolKind.NamedType;
-        public override ModelObjectDescriptor ModelSymbolInfo => _metaObject.MId.Descriptor;
-        public override IModelObject ModelObject => _metaObject;
-        public override IEnumerable<string> MemberNames
-        public override Symbol ContainingSymbol => _container;
-        public override ImmutableArray<Location> Locations => this.ContainingModule.Locations;
-        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => ImmutableArray<SyntaxReference>.Empty;
-        public override ImmutableArray<NamedTypeSymbol> GetBaseTypesNoUseSiteDiagnostics(ConsList<TypeSymbol> basesBeingResolved = null)
-        public override ImmutableArray<NamedTypeSymbol> GetDeclaredBaseTypes(ConsList<TypeSymbol> basesBeingResolved)
-        public override ImmutableArray<Symbol> GetMembers()
-        public override ImmutableArray<Symbol> GetMembers(string name)
-        public override ImmutableArray<Symbol> GetMembers(string name, string metadataName)
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers()
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name)
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name, string metadataName)
     }
 
-    symbol MetaMemberSymbol : MemberSymbol, IMetaMetadataSymbol
+    symbol MetaMemberSymbol : MemberSymbol
     {
-        public MetaMemberSymbol(IModelObject metaObject, Symbol container)
-
-        public MetaSymbolMap MetaSymbolMap => ((IMetaMetadataSymbol)_container).MetaSymbolMap;
-        public override ModelObjectDescriptor ModelSymbolInfo => _metaObject.MId.Descriptor;
-        public override IModelObject ModelObject => _metaObject;
-        public override LanguageSymbolKind Kind => LanguageSymbolKind.Name;
-        public override Symbol ContainingSymbol => _container;
-        public override ImmutableArray<Location> Locations => this.ContainingModule.Locations;
-        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => ImmutableArray<SyntaxReference>.Empty;
-        public override bool IsStatic => false;
-        public override ImmutableArray<Symbol> GetMembers()
-        public override ImmutableArray<Symbol> GetMembers(string name)
-        public override ImmutableArray<Symbol> GetMembers(string name, string metadataName)
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers()
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name)
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name, string metadataName)
     }
     
     // ================================================
 
-    symbol SourceAssemblySymbol : MetadataOrSourceAssemblySymbol, ISourceAssemblySymbol
+    symbol SourceAssemblySymbol : MetadataOrSourceAssemblySymbol
     {
-        internal AssemblyIdentity lazyAssemblyIdentity;
-        internal ConcurrentSet<TypeSymbol> TypesReferencedInExternalMethods = new ConcurrentSet<TypeSymbol>();
-
-        internal SourceAssemblySymbol(
-            LanguageCompilation compilation,
-            string assemblySimpleName,
-            string moduleName,
-            ImmutableArray<PEModule> netModules,
-            ImmutableArray<CustomReference> customReferences)
-
-        public override string Name
-        public override Language Language => _language;
-        internal protected MutableModelGroup ModelGroupBuilder => _modelGroupBuilder;
-        internal protected override MutableModel ModelBuilder => this.SourceModule.ModelBuilder;
-        internal override CSharpSymbolMap CSharpSymbolMap
-        internal sealed override LanguageCompilation DeclaringCompilation
-        public override bool IsInteractive
-        internal bool MightContainNoPiaLocalTypes()
-        public override AssemblyIdentity Identity
-        internal override Symbol GetSpecialTypeMember(SpecialMember member)
-        private string GetWellKnownAttributeDataStringField(Func<CommonAssemblyWellKnownAttributeData, string> fieldGetter, string missingValue = null)
-        internal bool RuntimeCompatibilityWrapNonExceptionThrows
-        internal string FileVersion
-        internal string Title
-        internal string Description
-        internal string Company
-        internal string Product
-        internal string InformationalVersion
-        internal string Copyright
-        internal string Trademark
-        private ThreeState AssemblyDelaySignAttributeSetting
-        private string AssemblyKeyContainerAttributeSetting
-        private string AssemblyKeyFileAttributeSetting
-        private string AssemblyCultureAttributeSetting
-        public string SignatureKey
-        private Version AssemblyVersionAttributeSetting
-        public override Version AssemblyVersionPattern
-        public AssemblyHashAlgorithm HashAlgorithm
-        internal AssemblyHashAlgorithm? AssemblyAlgorithmIdAttributeSetting
-        public AssemblyFlags AssemblyFlags
-        private StrongNameKeys ComputeStrongNameKeys()
-        internal StrongNameKeys StrongNameKeys
-        internal override ImmutableArray<byte> PublicKey
-        public override ImmutableArray<ModuleSymbol> Modules
-        internal ImmutableArray<ModuleSymbol> PEModules => _peModules;
-        public override ImmutableArray<Location> Locations
-        private void ValidateAttributeSemantics(DiagnosticBag diagnostics)
-        private static void ReportDiagnosticsForSynthesizedAttributes(LanguageCompilation compilation, DiagnosticBag diagnostics)
-        private void ValidateIVTPublicKeys(DiagnosticBag diagnostics)
-        public bool InternalsAreVisible
-        private void DetectAttributeAndOptionConflicts(DiagnosticBag diagnostics)
-        internal bool IsDelaySigned
-        internal SourceModuleSymbol SourceModule
-        public override bool RequiresCompletion
-        public override bool HasComplete(CompletionPart part)
-        public override void ForceComplete(SourceLocation locationOpt, CancellationToken cancellationToken)
-        private void ReportDiagnosticsForAddedModules()
-        private void ReportNameCollisionDiagnosticsForAddedModules(NamespaceSymbol ns, DiagnosticBag diagnostics)
-        private class NameCollisionForAddedModulesTypeComparer : IComparer<NamedTypeSymbol>
-        private bool IsKnownAssemblyAttribute(AttributeData attribute)
-        private void AddOmittedAttributeIndex(int index)
-        private HashSet<AttributeData> GetUniqueSourceAssemblyAttributes()
-        private static bool AddUniqueAssemblyAttribute(AttributeData attribute, ref HashSet<AttributeData> uniqueAttributes)
-        private ImmutableArray<AttributeData> GetNetModuleAttributes(out ImmutableArray<string> netModuleNames)
-        private WellKnownAttributeData ValidateAttributeUsageAndDecodeWellKnownAttributes(
-            ImmutableArray<AttributeData> attributesFromNetModules,
-            ImmutableArray<string> netModuleNames,
-            DiagnosticBag diagnostics)
-        private void LoadAndValidateNetModuleAttributes(ref CustomAttributesBag<AttributeData> lazyNetModuleAttributesBag)
-        private void EnsureNetModuleAttributesAreBound()
-        private CustomAttributesBag<AttributeData> GetNetModuleAttributesBag()
-        internal CommonAssemblyWellKnownAttributeData GetNetModuleDecodedWellKnownAttributeData()
-        private void EnsureAttributesAreBound()
-        private CustomAttributesBag<AttributeData> GetSourceAttributesBag()
-        public sealed override ImmutableArray<AttributeData> GetAttributes()
-        internal CommonAssemblyWellKnownAttributeData GetSourceDecodedWellKnownAttributeData()
-        internal HashSet<NamedTypeSymbol> GetForwardedTypes()
-        internal override ImmutableArray<AssemblySymbol> GetNoPiaResolutionAssemblies()
-        internal override void SetNoPiaResolutionAssemblies(ImmutableArray<AssemblySymbol> assemblies)
-        internal override ImmutableArray<AssemblySymbol> GetLinkedReferencedAssemblies()
-        internal override void SetLinkedReferencedAssemblies(ImmutableArray<AssemblySymbol> assemblies)
-        public override bool IsLinked
-        internal bool DeclaresTheObjectClass
-        public override bool MightContainExtensionMethods
-        private bool HasDebuggableAttribute
-        private bool HasReferenceAssemblyAttribute
-        private bool ContainsExtensionMethods()
-        private static bool ContainsExtensionMethods(ImmutableArray<ModuleSymbol> modules)
-        private static bool ContainsExtensionMethods(NamespaceSymbol ns)
-        private void CheckOptimisticIVTAccessGrants(DiagnosticBag bag)
-        internal override IEnumerable<ImmutableArray<byte>> GetInternalsVisibleToPublicKeys(string simpleName)
-        internal override bool AreInternalsVisibleToThisAssembly(AssemblySymbol potentialGiverOfAccess)
-        private AssemblyIdentity ComputeIdentity()
-        private static Location GetAssemblyAttributeLocationForDiagnostic(SyntaxNode attributeSyntaxOpt)
-        internal void NoteSymbolAccess(Symbol symbol, bool read, bool write)
-        internal void NoteSymbolDefinition(Symbol symbol, bool isInternal, bool isUnread)
-        internal ImmutableArray<Diagnostic> GetUnusedSymbolWarnings(CancellationToken cancellationToken)
-        private static string DefaultValue(TypeSymbol type)
-        internal override NamedTypeSymbol TryLookupForwardedMetadataTypeWithCycleDetection(ref MetadataTypeName emittedName, ConsList<AssemblySymbol> visitedAssemblies)
-        public override AssemblyMetadata GetMetadata() => null;
-        public bool TryGetSymbol(IModelObject modelObject, out Symbol symbol)
-        public Symbol GetSymbol(IModelObject modelObject)
-        Compilation ISourceAssemblySymbol.Compilation => _compilation;
     }
 
     symbol SourceModuleSymbol : NonMissingModuleSymbol
     {
-        internal SourceModuleSymbol(
-            SourceAssemblySymbol assemblySymbol,
-            MutableModel modelBuilder,
-            DeclarationTable declarations,
-            string moduleName)
-
-        public override Language Language => _assemblySymbol.Language;
-        internal override CSharpSymbolMap CSharpSymbolMap => _csharpSymbolMap;
-        internal protected override MutableModel ModelBuilder => _modelBuilder;
-        internal void RecordPresenceOfBadAttributes()
-        internal bool HasBadAttributes
-        public override int Ordinal
-        public override Machine Machine
-        public override bool Bit32Required
-        internal bool AnyReferencedAssembliesAreLinked
-        internal bool MightContainNoPiaLocalTypes()
-        internal ImmutableArray<AssemblySymbol> GetAssembliesToEmbedTypesFrom()
-        internal bool ContainsExplicitDefinitionOfNoPiaLocalTypes
-        private static bool NamespaceContainsExplicitDefinitionOfNoPiaLocalTypes(NamespaceSymbol ns)
-        public override NamespaceSymbol GlobalNamespace
-        public sealed override bool RequiresCompletion
-        public sealed override bool HasComplete(CompletionPart part)
-        public override void ForceComplete(SourceLocation locationOpt, CancellationToken cancellationToken)
-        private void ValidateLinkedAssemblies(DiagnosticBag diagnostics, CancellationToken cancellationToken)
-        public override ImmutableArray<Location> Locations
-        public override string Name
-        public override Symbol ContainingSymbol
-        public override AssemblySymbol ContainingAssembly
-        internal SourceAssemblySymbol ContainingSourceAssembly
-        internal override LanguageCompilation DeclaringCompilation
-        public override ICollection<string> TypeNames
-        public override ICollection<string> NamespaceNames
-        private CustomAttributesBag<AttributeData> GetAttributesBag()
-        public sealed override ImmutableArray<AttributeData> GetAttributes()
-        private CommonModuleWellKnownAttributeData GetDecodedWellKnownAttributeData()
-        internal override bool HasAssemblyCompilationRelaxationsAttribute
-        internal override bool HasAssemblyRuntimeCompatibilityAttribute
-        internal override CharSet? DefaultMarshallingCharSet
-        public override ModuleMetadata GetMetadata()
-        public override bool TryGetSymbol(IModelObject modelObject, out Symbol symbol)
     }
 
     symbol SourceNamespaceSymbol : NamespaceSymbol
     {
-        public SourceNamespaceSymbol(
-            SourceModuleSymbol module, 
-            Symbol container,
-            MergedDeclaration declaration,
-            DiagnosticBag diagnostics)
-
-        public override Language Language => _module.Language;
-        internal protected override MutableModel ModelBuilder => _module.ModelBuilder;
-        public override IModelObject ModelObject => _modelObject;
-        public override ModelObjectDescriptor ModelSymbolInfo => _declaration.Kind;
-        public override MergedDeclaration MergedDeclaration => _declaration;
-        public override Symbol ContainingSymbol => _container;
-        public override AssemblySymbol ContainingAssembly => _module.ContainingAssembly;
-        internal IEnumerable<Imports> GetBoundImportsMerged()
-        public override string Name => _declaration.Name;
-        protected SourceDeclaration SourceDeclaration
-        public override LexicalSortKey GetLexicalSortKey()
-        public override ImmutableArray<Location> Locations => _declaration.NameLocations;
-        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => _declaration.SyntaxReferences;
-        public virtual ImmutableArray<Symbol> GetDeclaredChildren()
-        internal override ImmutableArray<Symbol> GetMembersUnordered()
-        public override ImmutableArray<Symbol> GetMembers()
-        public override ImmutableArray<Symbol> GetMembers(string name)
-        internal override ImmutableArray<NamedTypeSymbol> GetTypeMembersUnordered()
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers()
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name)
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name, string metadataName)
-        public override bool IsDefinedInSourceTree(SyntaxTree tree, TextSpan? definedWithinSpan, CancellationToken cancellationToken = default(CancellationToken))
-        public override ImmutableArray<AttributeData> GetAttributes()
-        public override ModuleSymbol ContainingModule => _module;
-        public override NamespaceExtent Extent => new NamespaceExtent(_module);
-        public override void CheckMembers(Dictionary<string, ImmutableArray<Symbol>> result, DiagnosticBag diagnostics)
-        public sealed override bool RequiresCompletion
-        public override void ForceComplete(SourceLocation locationOpt, CancellationToken cancellationToken)
-        public override bool HasComplete(CompletionPart part)
-        protected void CompleteBoundNode(DiagnosticBag diagnostics, CancellationToken cancellationToken)
     }
 
     abstract symbol SourceMemberContainerTypeSymbol : NamedTypeSymbol
     {
-        public SourceMemberContainerTypeSymbol(
-            DeclaredSymbol containingSymbol,
-            MergedDeclaration declaration,
-            DiagnosticBag diagnostics)
-
-        public override Language Language => _containingSymbol.Language;
-        public override LanguageTypeKind TypeKind => LanguageTypeKind.NamedType;
-        internal protected override MutableModel ModelBuilder => this.ContainingModule.ModelBuilder;
-        public override IModelObject ModelObject => _modelObject;
-        public override ModelObjectDescriptor ModelSymbolInfo => _declaration.Kind;
-        public override MergedDeclaration MergedDeclaration => _declaration;
-        public virtual bool IsPartial => _declaration.Merge;
-        public sealed override NamedTypeSymbol ContainingType => _containingSymbol as NamedTypeSymbol;
-        public sealed override Symbol ContainingSymbol => _containingSymbol;
-        public override bool IsScript => _declaration.IsScript;
-        public override bool IsSubmission => _declaration.IsSubmission;
-        public override bool IsImplicit => _declaration.IsImplicit;
-        public override bool IsImplicitlyDeclared
-        public override string MetadataName => _declaration.MetadataName;
-        public override string Name => _declaration.Name;
-        public override bool MangleName => _declaration.Name != _declaration.MetadataName;
-        protected SourceDeclaration SourceDeclaration
-        public override LexicalSortKey GetLexicalSortKey()
-        public override ImmutableArray<Location> Locations => _declaration.NameLocations;
-        public ImmutableArray<SyntaxReference> SyntaxReferences => _declaration.SyntaxReferences;
-        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => SyntaxReferences;
-        public override bool IsDefinedInSourceTree(SyntaxTree tree, TextSpan? definedWithinSpan, CancellationToken cancellationToken)
-        public override IEnumerable<string> MemberNames => this.SourceDeclaration.MemberNames;
-        public override ImmutableArray<Symbol> GetMembers()
-        public override ImmutableArray<Symbol> GetMembers(string name)
-        public override ImmutableArray<Symbol> GetMembers(string name, string metadataName)
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers()
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name)
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name, string metadataName)
-        public override ImmutableArray<AttributeData> GetAttributes()
-        public sealed override bool RequiresCompletion
-        public sealed override bool HasComplete(CompletionPart part)
-        protected virtual void CheckBaseTypes(DiagnosticBag diagnostics)
-        public override void ForceComplete(SourceLocation locationOpt, CancellationToken cancellationToken)
-        public virtual void EnsureSymbolDefinitionsNoted()
-        public override void CheckMembers(Dictionary<string, ImmutableArray<Symbol>> result, DiagnosticBag diagnostics)
-        protected void CompleteBoundNode(DiagnosticBag diagnostics, CancellationToken cancellationToken)
     }
 
     symbol SourceNamedTypeSymbol : SourceMemberContainerTypeSymbol
     {
-        public SourceNamedTypeSymbol(DeclaredSymbol containingSymbol, MergedDeclaration declaration, DiagnosticBag diagnostics) : base(containingSymbol, declaration, diagnostics)
-
-        public override LanguageSymbolKind Kind => LanguageSymbolKind.NamedType;
-        public sealed override ImmutableArray<NamedTypeSymbol> GetBaseTypesNoUseSiteDiagnostics(ConsList<TypeSymbol> basesBeingResolved)
-        private ImmutableArray<NamedTypeSymbol> MakeAcyclicBaseTypes(ConsList<TypeSymbol> basesBeingResolved, DiagnosticBag diagnostics)
-        protected ImmutableArray<NamedTypeSymbol> GetDeclaredBases(ConsList<TypeSymbol> basesBeingResolved)
-        public override ImmutableArray<NamedTypeSymbol> GetDeclaredBaseTypes(ConsList<TypeSymbol> basesBeingResolved)
-        private ImmutableArray<NamedTypeSymbol> MakeDeclaredBases(ConsList<TypeSymbol> basesBeingResolved, DiagnosticBag diagnostics)
-        protected virtual void CheckDeclaredBaseTypes(ImmutableArray<NamedTypeSymbol> baseTypes, PooledDictionary<NamedTypeSymbol, Location> baseTypeLocations, DiagnosticBag diagnostics, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
-        protected virtual ImmutableArray<NamedTypeSymbol> ResolveBaseTypes(ConsList<TypeSymbol> newBasesBeingResolved, SingleDeclaration decl, DiagnosticBag diagnostics)
-        protected override void CheckBaseTypes(DiagnosticBag diagnostics)
     }
 
     symbol SourceAnonymousTypeSymbol : SourceNamedTypeSymbol
     {
-        public SourceAnonymousTypeSymbol(DeclaredSymbol containingSymbol, MergedDeclaration declaration, DiagnosticBag diagnostics) : base(containingSymbol, declaration, diagnostics)
-
-        public override LanguageTypeKind TypeKind => LanguageTypeKind.AnonymousType;
     }    
     
     symbol ImplicitNamedTypeSymbol : SourceMemberContainerTypeSymbol
     {
-        internal ImplicitNamedTypeSymbol(NamespaceOrTypeSymbol containingSymbol, MergedDeclaration declaration, DiagnosticBag diagnostics) : base(containingSymbol, declaration, diagnostics)
-        
-        public override ImmutableArray<NamedTypeSymbol> BaseTypesNoUseSiteDiagnostics
-        public override ImmutableArray<NamedTypeSymbol> GetBaseTypesNoUseSiteDiagnostics(ConsList<TypeSymbol> basesBeingResolved)
-        public override ImmutableArray<NamedTypeSymbol> GetDeclaredBaseTypes(ConsList<TypeSymbol> basesBeingResolved)
     }
 
-    symbol DynamicTypeSymbol : TypeSymbol, IDynamicTypeSymbol
+    symbol DynamicTypeSymbol : TypeSymbol
     {
-        public static readonly DynamicTypeSymbol Instance = new DynamicTypeSymbol();
-
-        private DynamicTypeSymbol()
-
-        public override string Name
-        public override bool IsAbstract
-        public override bool IsReferenceType
-        public override bool IsSealed
-        public override LanguageSymbolKind Kind
-        public override LanguageTypeKind TypeKind
-        public override ImmutableArray<Location> Locations
-        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences
-        public override ImmutableArray<NamedTypeSymbol> GetBaseTypesNoUseSiteDiagnostics(ConsList<TypeSymbol> basesBeingResolved)
-        public override bool IsStatic
-        public override bool IsValueType
-        public sealed override bool IsRefLikeType
-        public sealed override bool IsReadOnly
-        public override ImmutableArray<Symbol> GetMembers()
-        public override ImmutableArray<Symbol> GetMembers(string name)
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name)
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers()
-        public override Symbol ContainingSymbol
-        public override Accessibility DeclaredAccessibility
-        public override bool GetUnificationUseSiteDiagnosticRecursive(ref DiagnosticInfo result, Symbol owner, ref HashSet<TypeSymbol> checkedTypes)
     }
 
     symbol SourceMemberSymbol : MemberSymbol
     {
-        public SourceMemberSymbol(
-            DeclaredSymbol containingSymbol,
-            MergedDeclaration declaration,
-            DiagnosticBag diagnostics)
-
-        public override Language Language => _containingSymbol.Language;
-        internal protected override MutableModel ModelBuilder => _containingSymbol.ModelBuilder;
-        public override IModelObject ModelObject => _modelObject;
-        public override ModelObjectDescriptor ModelSymbolInfo => _declaration.Kind;
-        public override MergedDeclaration MergedDeclaration => _declaration;
-        public override Symbol ContainingSymbol => _containingSymbol;
-        public override AssemblySymbol ContainingAssembly => _containingSymbol.ContainingAssembly;
-        public override string Name => _declaration.Name;
-        public override bool IsStatic => false;
-        public override ModuleSymbol ContainingModule => _containingSymbol.ContainingModule;
-        protected SourceDeclaration SourceDeclaration
-        public override LexicalSortKey GetLexicalSortKey()
-        public override ImmutableArray<Location> Locations => _declaration.NameLocations;
-        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => _declaration.SyntaxReferences;
-        public virtual ImmutableArray<Symbol> GetDeclaredChildren()
-        internal override ImmutableArray<Symbol> GetMembersUnordered()
-        public override ImmutableArray<Symbol> GetMembers()
-        public override ImmutableArray<Symbol> GetMembers(string name)
-        internal override ImmutableArray<NamedTypeSymbol> GetTypeMembersUnordered()
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers()
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name)
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name, string metadataName)
-        public override bool IsDefinedInSourceTree(SyntaxTree tree, TextSpan? definedWithinSpan, CancellationToken cancellationToken = default(CancellationToken))
-        public override ImmutableArray<AttributeData> GetAttributes()
-        public sealed override bool RequiresCompletion
-        public override void ForceComplete(SourceLocation locationOpt, CancellationToken cancellationToken)
-        public override bool HasComplete(CompletionPart part)
-        protected void CompleteBoundNode(DiagnosticBag diagnostics, CancellationToken cancellationToken)
     }
     
-    symbol AliasSymbol : Symbol, IAliasSymbol
+    symbol AliasSymbol : Symbol
     {
-        private AliasSymbol(Binder binder, NamespaceOrTypeSymbol target, string aliasName, ImmutableArray<Location> locations)
-        private AliasSymbol(Binder binder, string aliasName, SyntaxNodeOrToken aliasTargetName, Location location, bool isExtern = false)
-
-        internal static AliasSymbol CreateGlobalNamespaceAlias(NamespaceSymbol globalNamespace, Binder globalNamespaceBinder)
-        internal static AliasSymbol CreateCustomDebugInfoAlias(NamespaceOrTypeSymbol targetSymbol, SyntaxToken aliasToken, Binder binder)
-        internal static AliasSymbol CreateUsing(string aliasName, UsingDirective directive, Binder binder)
-        internal static AliasSymbol CreateExternAlias(string aliasName, ExternAliasDirective directive, Binder binder)
-        internal AliasSymbol ToNewSubmission(LanguageCompilation compilation)
-
-        public override string Name
-        public override LanguageSymbolKind Kind
-        public NamespaceOrTypeSymbol Target
-        public override ImmutableArray<Location> Locations
-        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences
-        public override bool IsExtern
-        public override bool IsSealed
-        public override bool IsAbstract
-        public override bool IsOverride
-        public override bool IsVirtual
-        public override bool IsStatic
-        public override Accessibility DeclaredAccessibility
-        public override Symbol ContainingSymbol
-        public NamespaceOrTypeSymbol GetAliasTarget(ConsList<TypeSymbol> basesBeingResolved)
-        internal DiagnosticBag AliasTargetDiagnostics
-        internal void CheckConstraints(DiagnosticBag diagnostics)
-        private NamespaceSymbol ResolveExternAliasTarget(DiagnosticBag diagnostics)
-        private static NamespaceOrTypeSymbol ResolveAliasTarget(Binder binder, SyntaxNodeOrToken syntax, DiagnosticBag diagnostics, ConsList<TypeSymbol> basesBeingResolved)
-        public override bool RequiresCompletion
-        INamespaceOrTypeSymbol IAliasSymbol.Target
     }
 }
 
 
 namespace MetaDslx.CodeAnalysis.Binding.Binders
 {
-    public partial class Binder
+    binder Binder
     {
-        public readonly BinderFlags Flags;
-
-        public Binder(LanguageCompilation compilation)
-        public Binder(Binder next, Conversions conversions = null)
-        private Binder(Binder next, BinderFlags flags)
-
-
-        public LanguageCompilation Compilation => _compilation;
-        public Language Language => _compilation.Language;
-        public Binder WithFlags(params BinderFlags[] flags)
-        public Binder WithAdditionalFlags(params BinderFlags[] flags)
-        public bool IsSemanticModelBinder => this.Flags.Includes(BinderFlags.SemanticModel);
-        public bool IsEarlyAttributeBinder => this.Flags.Includes(BinderFlags.EarlyAttributeBinding);
-        public Binder Next => _next;
-        public virtual Binder GetBinder(SyntaxNode node)
-        public virtual ImmutableArray<Symbol> GetDeclaredLocalsForScope(SyntaxNode scopeDesignator)
-        public virtual SyntaxNode ScopeDesignator => null;
-        public virtual NamespaceOrTypeSymbol ContainingSymbol
-        public virtual ImmutableArray<Symbol> ChildSymbols => Next.ChildSymbols;
-        public virtual ImportChain ImportChain => _next.ImportChain;
-        public virtual Imports GetImports(ConsList<TypeSymbol> basesBeingResolved)
-        protected virtual bool InExecutableBinder => _next.InExecutableBinder;
-        public NamedTypeSymbol ContainingType
-        public bool BindingTopLevelScriptCode
-        public Conversions Conversions
-        public OverloadResolution OverloadResolution
-        public static void Error(DiagnosticBag diagnostics, DiagnosticInfo info, SyntaxNode syntax)
-        public static void Error(DiagnosticBag diagnostics, DiagnosticInfo info, Location location)
-        public static void Error(DiagnosticBag diagnostics, ErrorCode code, SyntaxNode syntax)
-        public static void Error(DiagnosticBag diagnostics, ErrorCode code, SyntaxNode syntax, params object[] args)
-        public static void Error(DiagnosticBag diagnostics, ErrorCode code, SyntaxToken token)
-        public static void Error(DiagnosticBag diagnostics, ErrorCode code, SyntaxToken token, params object[] args)
-        public static void Error(DiagnosticBag diagnostics, ErrorCode code, SyntaxNodeOrToken syntax)
-        public static void Error(DiagnosticBag diagnostics, ErrorCode code, SyntaxNodeOrToken syntax, params object[] args)
-        public static void Error(DiagnosticBag diagnostics, ErrorCode code, Location location)
-        public static void Error(DiagnosticBag diagnostics, ErrorCode code, Location location, params object[] args)
-        public void ReportDiagnosticsIfObsolete(DiagnosticBag diagnostics, Symbol symbol, SyntaxNodeOrToken node, bool hasBaseReceiver)
-        public void ReportDiagnosticsIfObsolete(DiagnosticBag diagnostics, Conversion conversion, SyntaxNodeOrToken node, bool hasBaseReceiver)
-        public static void ReportDiagnosticsIfObsolete(
-            DiagnosticBag diagnostics,
-            Symbol symbol,
-            SyntaxNodeOrToken node,
-            bool hasBaseReceiver,
-            Symbol containingMember,
-            NamedTypeSymbol containingType,
-            BinderFlags location)
-        internal static ObsoleteDiagnosticKind ReportDiagnosticsIfObsoleteInternal(DiagnosticBag diagnostics, Symbol symbol, SyntaxNodeOrToken node, Symbol containingMember, BinderFlags location)
-        public static bool IsSymbolAccessibleConditional(
-            Symbol symbol,
-            AssemblySymbol within,
-            ref HashSet<DiagnosticInfo> useSiteDiagnostics)
-        public bool IsSymbolAccessibleConditional(
-            Symbol symbol,
-            NamedTypeSymbol within,
-            ref HashSet<DiagnosticInfo> useSiteDiagnostics,
-            TypeSymbol throughTypeOpt = null)
-        public bool IsSymbolAccessibleConditional(
-            Symbol symbol,
-            NamedTypeSymbol within,
-            TypeSymbol throughTypeOpt,
-            out bool failedThroughTypeCheck,
-            ref HashSet<DiagnosticInfo> useSiteDiagnostics,
-            ConsList<TypeSymbol> basesBeingResolved = null)
-
-        #if DEBUG
-        // Helper to allow displaying the binder hierarchy in the debugger.
-        internal Binder[] GetAllBinders()
-        #endif
-
-        internal string Dump()
-
-        public BoundNode Bind(LanguageSyntaxNode node, BoundTree boundTree)
-        public BoundExpression BindExpression(LanguageSyntaxNode node, BoundTree boundTree)
-        public BoundStatement BindStatement(LanguageSyntaxNode node, BoundTree boundTree)
-        protected virtual BoundNode BindCore(LanguageSyntaxNode node, BoundTree boundTree)
-        protected virtual BoundExpression BindExpressionCore(LanguageSyntaxNode node, BoundTree boundTree)
-        protected virtual BoundStatement BindStatementCore(LanguageSyntaxNode node, BoundTree boundTree)
-        internal protected virtual BoundNode CreateBoundNodeForBoundTree(LanguageSyntaxNode node, BoundTree boundTree)
-
-        public void LookupSymbolsSimpleName(LookupResult result, LookupConstraints constraints)
-        private Binder LookupSymbolsWithFallback(LookupResult result, LookupConstraints constraints)
-        private Binder LookupSymbolsInternal(LookupResult result, LookupConstraints constraints)
-        public virtual void LookupSymbolsInSingleBinder(LookupResult result, LookupConstraints constraints)
-
-        private void LookupSymbolsOrMembersInternal(LookupResult result, LookupConstraints constraints)
-        private void LookupMembersWithFallback(LookupResult result, LookupConstraints constraints)
-        protected void LookupMembersInternal(LookupResult result, LookupConstraints constraints)
-        protected void LookupMembersInType(LookupResult result, LookupConstraints constraints)
-        private void LookupMembersInErrorType(LookupResult result, LookupConstraints constraints)
-        private void LookupMembersInSubmissions(LookupResult result, LookupConstraints constraints)
-        private static void LookupMembersInNamespace(LookupResult result, LookupConstraints constraints)
-
-        private void LookupAttributeType(LookupResult result, LookupConstraints constraints)
-        private bool IsAmbiguousResult(LookupResult result, out Symbol resultSymbol)
-        private Symbol ResolveMultipleSymbolsInAttributeTypeLookup(ArrayBuilder<Symbol> symbols)
-        private bool IsSingleViableAttributeType(LookupResult result, out Symbol symbol)
-        private SingleLookupResult GenerateNonViableAttributeTypeResult(Symbol symbol, DiagnosticInfo diagInfo, bool diagnose)
-        public virtual bool CheckAttributeTypeViability(Symbol symbol, bool diagnose, ref DiagnosticInfo diagInfo)
-
-        protected static void LookupMembersWithoutInheritance(LookupResult result, LookupConstraints constraints)
-        private void LookupMembersInTypeCore(LookupResult result, LookupConstraints constraints)
-        private static void LookupMembersInCurrentType(LookupResult current, LookupConstraints constraints)
-        private static void LookupMembersInTypesWithoutInheritance(LookupResult current, ImmutableArray<NamedTypeSymbol> baseTypes, LookupConstraints constraints)
-        private void LookupMembersInTypeAndBaseTypes(LookupResult current, LookupConstraints constraints)
-        private void LookupMembersInBaseTypes(LookupResult result, LookupConstraints constraints)
-        private static Symbol GetNearestOtherSymbol(ConsList<TypeSymbol> list, TypeSymbol type)
-        private static bool IsDerivedType(NamedTypeSymbol baseType, NamedTypeSymbol derivedType, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
-        private static void MergeHidingLookupResults(LookupResult resultHiding, LookupResult resultHidden, LookupConstraints constraints)
-        private static bool IsMethodOrIndexer(Symbol symbol)
-
-        public static ImmutableArray<Symbol> GetCandidateMembers(LookupConstraints constraints)
-        public virtual SingleLookupResult CheckViability(Symbol symbol, LookupConstraints constraints)
-        public void CheckViability<TSymbol>(LookupResult result, ImmutableArray<TSymbol> symbols, LookupConstraints constraints) where TSymbol : Symbol
-        public bool CanAddLookupSymbolInfo(Symbol symbol, LookupSymbolsInfo info, LookupConstraints constraints, AliasSymbol aliasSymbol = null)
-
-        private static TypeSymbol RefineAccessThroughType(LookupOptions options, TypeSymbol accessThroughType)
-        private bool IsCrefAccessible(Symbol symbol)
-        private static bool IsEffectivelyPrivate(Symbol symbol)
-        public bool IsAccessible(Symbol symbol, ref HashSet<DiagnosticInfo> useSiteDiagnostics, TypeSymbol accessThroughType = null, ConsList<TypeSymbol> basesBeingResolved = null)
-        public bool IsAccessible(Symbol symbol, TypeSymbol accessThroughType, out bool failedThroughTypeCheck, ref HashSet<DiagnosticInfo> useSiteDiagnostics, ConsList<TypeSymbol> basesBeingResolved = null)
-        public virtual bool IsAccessibleHelper(Symbol symbol, TypeSymbol accessThroughType, out bool failedThroughTypeCheck, ref HashSet<DiagnosticInfo> useSiteDiagnostics, ConsList<TypeSymbol> basesBeingResolved)
-        public bool IsNonInvocableMember(Symbol symbol)
-        private bool IsInvocableMember(Symbol symbol)
-        private static bool IsInstance(Symbol symbol)
-        private static bool WrongArity(Symbol symbol, string metadataName, bool diagnose, LookupOptions options, out DiagnosticInfo diagInfo)
-
-        public void AddLookupSymbolsInfo(LookupSymbolsInfo result, LookupConstraints constraints)
-        protected virtual void AddLookupSymbolsInfoInSingleBinder(LookupSymbolsInfo info, LookupConstraints constraints)
-        public void AddMemberLookupSymbolsInfo(LookupSymbolsInfo result, LookupConstraints constraints)
-        private void AddMemberLookupSymbolsInfoInType(LookupSymbolsInfo result, LookupConstraints constraints)
-        private void AddMemberLookupSymbolsInfoInSubmissions(LookupSymbolsInfo result, LookupConstraints constraints)
-        private static void AddMemberLookupSymbolsInfoInNamespace(LookupSymbolsInfo result, LookupConstraints constraints)
-        private static void AddMemberLookupSymbolsInfoWithoutInheritance(LookupSymbolsInfo result, LookupConstraints constraints)
-        private void AddMemberLookupSymbolsInfoInTypeCore(LookupSymbolsInfo result, LookupConstraints constraints)
-        protected virtual LookupConstraints AdjustConstraints(LookupConstraints constraints)
-
-        private NamespaceOrTypeSymbol GetContainingNamespaceOrType(Symbol symbol)
-        public NamespaceOrTypeSymbol BindNamespaceOrTypeSymbol(ImmutableArray<string> qualifiedName, DiagnosticBag diagnostics)
-        public NamespaceOrTypeSymbol BindNamespaceOrTypeSymbol(SyntaxNodeOrToken syntax, DiagnosticBag diagnostics, ConsList<TypeSymbol> basesBeingResolved = null)
-        public NamespaceOrTypeSymbol BindNamespaceOrTypeSymbol(SyntaxNodeOrToken syntax, DiagnosticBag diagnostics, ConsList<TypeSymbol> basesBeingResolved, bool suppressUseSiteDiagnostics)
-        public Symbol BindNamespaceOrTypeOrNameSymbol(SyntaxNodeOrToken syntax, DiagnosticBag diagnostics, ConsList<TypeSymbol> basesBeingResolved, bool suppressUseSiteDiagnostics)
-        private Symbol UnwrapAliasNoDiagnostics(Symbol symbol, ConsList<TypeSymbol> basesBeingResolved = null)
-        private Symbol UnwrapAlias(Symbol symbol, DiagnosticBag diagnostics, SyntaxNodeOrToken syntax, ConsList<TypeSymbol> basesBeingResolved = null)
-        private Symbol UnwrapAlias(Symbol symbol, out AliasSymbol alias, DiagnosticBag diagnostics, SyntaxNodeOrToken syntax, ConsList<TypeSymbol> basesBeingResolved = null)
-        public Symbol BindNamespaceOrTypeOrAliasSymbol(SyntaxNodeOrToken node, bool allowMembers, DiagnosticBag diagnostics, ConsList<TypeSymbol> basesBeingResolved, bool suppressUseSiteDiagnostics, NamespaceOrTypeSymbol qualifierOpt)
-        private Symbol[] BindQualifiedName(SyntaxNodeOrToken[] qualifiedName, DiagnosticBag diagnostics, ConsList<TypeSymbol> basesBeingResolved, bool suppressUseSiteDiagnostics)
-        private Symbol BindQualifiedName(ImmutableArray<string> qualifiedName, DiagnosticBag diagnostics)
-        protected virtual void ReportUseSiteDiagnosticForDynamic(DiagnosticBag diagnostics, SyntaxNodeOrToken node)
-        private static bool IsViableType(LookupResult result)
-
-        // return the type or namespace symbol in a lookup result, or report an error.
-        public Symbol ResultSymbol(
-            LookupResult result,
-            string simpleName,
-            string metadataName,
-            SyntaxNodeOrToken where,
-            DiagnosticBag diagnostics,
-            bool suppressUseSiteDiagnostics,
-            out bool wasError,
-            NamespaceOrTypeSymbol qualifierOpt = null,
-            LookupOptions options = default(LookupOptions))
-
-        protected LanguageDiagnosticInfo NotFound(SyntaxNodeOrToken where, string simpleName, string metadataName, string whereText, DiagnosticBag diagnostics, SyntaxNodeOrToken aliasOpt, NamespaceOrTypeSymbol qualifierOpt, LookupOptions options)
-        protected virtual AssemblySymbol GetForwardedToAssemblyInUsingNamespaces(string metadataName, ref NamespaceOrTypeSymbol qualifierOpt, DiagnosticBag diagnostics, Location location)
-        protected AssemblySymbol GetForwardedToAssembly(string fullName, DiagnosticBag diagnostics, Location location)
-        protected AssemblySymbol GetForwardedToAssembly(string name, string metadataName, ref NamespaceOrTypeSymbol qualifierOpt, DiagnosticBag diagnostics, Location location)
-        private static AssemblySymbol GetContainingAssembly(Symbol symbol)
-
-        private BestSymbolInfo GetBestSymbolInfo(ArrayBuilder<Symbol> symbols, out BestSymbolInfo secondBest)
-        private static BestSymbolLocation GetLocation(LanguageCompilation compilation, Symbol symbol)
-
-        internal static bool ReportUseSiteDiagnostics(Symbol symbol, DiagnosticBag diagnostics, SyntaxNode node)
-        internal static bool ReportUseSiteDiagnostics(Symbol symbol, DiagnosticBag diagnostics, SyntaxToken token)
-        internal static bool ReportUseSiteDiagnostics(Symbol symbol, DiagnosticBag diagnostics, SyntaxNodeOrToken nodeOrToken)
-        internal static bool ReportUseSiteDiagnostics(Symbol symbol, DiagnosticBag diagnostics, Location location)
-        public virtual DeclaredSymbol GetDeclarationSymbol()
-        public DeclaredSymbol GetParentDeclarationSymbol()
-        public virtual void InitializeQualifierSymbol(BoundQualifier qualifier)
     }
 
-    public class BuckStopsHereBinder : Binder
+    binder BuckStopsHereBinder : Binder
     {
-        public BuckStopsHereBinder(LanguageCompilation compilation) : base(compilation)
-
-        public override ImportChain ImportChain
-        public override Imports GetImports(ConsList<TypeSymbol> basesBeingResolved)
-        public override bool IsAccessibleHelper(Symbol symbol, TypeSymbol accessThroughType, out bool failedThroughTypeCheck, ref HashSet<DiagnosticInfo> useSiteDiagnostics, ConsList<TypeSymbol> basesBeingResolved)
-        public override NamespaceOrTypeSymbol ContainingSymbol => this.GetDeclarationSymbol() as NamespaceOrTypeSymbol;
-        public override ImmutableArray<Symbol> ChildSymbols => ImmutableArray<Symbol>.Empty;
-        protected override bool InExecutableBinder => false;
-        public override Binder GetBinder(SyntaxNode node)
-        public override DeclaredSymbol GetDeclarationSymbol()
-        public override void InitializeQualifierSymbol(BoundQualifier qualifier)
     }
 
-    internal sealed class HostObjectModelBinder : Binder
+    binder class HostObjectModelBinder : Binder
     {
-        public HostObjectModelBinder(Binder next) : base(next, null)
-
-        private TypeSymbol GetHostObjectType()
-        public override void LookupSymbolsInSingleBinder(LookupResult result, LookupConstraints constraints)
-        protected override void AddLookupSymbolsInfoInSingleBinder(LookupSymbolsInfo result, LookupConstraints constraints)
     }
 
-
-    public class ValueBinder : Binder
+    binder ValueBinder : Binder
     {
-        public ValueBinder(Binder next, object value) : base(next)
-        protected ValueBinder(Binder next) : base(next)
-
-        public object Value => _lazyValue.Value;
-        protected virtual object ComputeValue()
-        public override void InitializeQualifierSymbol(BoundQualifier qualifier)
     }
     
-    public class EnumValueBinder : ValueBinder
+    binder EnumValueBinder : ValueBinder
     {
-        public EnumValueBinder(Binder next, string enumLiteral, Type enumType) : base(next)
-
-        public Type EnumType
-        protected override object ComputeValue()
     }
 
-    public class SymbolDefBinder : Binder
+    binder SymbolDefBinder : Binder
     {
-        public SymbolDefBinder(Binder next, LanguageSyntaxNode syntax, Type type, Type nestingType) : base(next)
-
-        public ImmutableArray<DeclaredSymbol> DeclaredSymbols
-        public DeclaredSymbol LastDeclaredSymbol
-        public override DeclaredSymbol GetDeclarationSymbol()
-        public override void InitializeQualifierSymbol(BoundQualifier qualifier)
-        private void InitializeFullQualifierSymbol(BoundQualifier qualifier)
     }
 
-    public class SymbolUseBinder : Binder
+    binder SymbolUseBinder : Binder
     {
-        public SymbolUseBinder(Binder next, LanguageSyntaxNode syntax, ImmutableArray<Type> types, ImmutableArray<Type> nestingTypes) : base(next)
-
-        public override void InitializeQualifierSymbol(BoundQualifier qualifier)
-        private void InitializeFullQualifierSymbol(BoundQualifier qualifier)
-        protected override LookupConstraints AdjustConstraints(LookupConstraints constraints)
     }
 
-    public class AttributeBinder : SymbolUseBinder
+    binder AttributeBinder : SymbolUseBinder
     {
-        public AttributeBinder(Binder next, LanguageSyntaxNode syntax, ImmutableArray<Type> types, ImmutableArray<Type> nestingTypes)  : base(next, syntax, types, nestingTypes)
-        
-        protected override LookupConstraints AdjustConstraints(LookupConstraints constraints)
     }
     
-    public class SpecialSymbolBinder : Binder
+    binder SpecialSymbolBinder : Binder
     {
-        public SpecialSymbolBinder(Binder next, Conversions conversions = null)  : base(next, conversions)
-        public override void LookupSymbolsInSingleBinder(LookupResult result, LookupConstraints constraints)
-        protected override void AddLookupSymbolsInfoInSingleBinder(LookupSymbolsInfo result, LookupConstraints constraints)
     }
 
-    public class InContainerBinder : Binder
+    binder InContainerBinder : Binder
     {
-        public InContainerBinder(NamespaceOrTypeSymbol container, Binder next, LanguageSyntaxNode declarationSyntax, bool inUsing) : base(next)
-        public InContainerBinder(NamespaceOrTypeSymbol container, Binder next, Imports imports = null) : base(next, null)
-        public InContainerBinder(Binder next, Func<ConsList<TypeSymbol>, Imports> computeImports) : base(next, null)
-
-        public NamespaceOrTypeSymbol Container
-        public override Imports GetImports(ConsList<TypeSymbol> basesBeingResolved)
-        public override ImportChain ImportChain
-        public override NamespaceOrTypeSymbol ContainingSymbol
-        private bool IsSubmission
-        private bool IsScript
-        public override bool IsAccessibleHelper(Symbol symbol, TypeSymbol accessThroughType, out bool failedThroughTypeCheck, ref HashSet<DiagnosticInfo> useSiteDiagnostics, ConsList<TypeSymbol> basesBeingResolved)
-        public override void LookupSymbolsInSingleBinder(LookupResult result, LookupConstraints constraints)
-        protected override void AddLookupSymbolsInfoInSingleBinder(LookupSymbolsInfo result, LookupConstraints constraints)
     }
 
-    public class ScopeBinder : Binder
+    binder ScopeBinder : Binder
     {
-        public ScopeBinder(Binder next, LanguageSyntaxNode syntax) : base(next)
-
-        public DeclaredSymbol DeclaredSymbol
-        public override NamespaceOrTypeSymbol ContainingSymbol
-        private bool IsSubmission
-        private bool IsScript
-        public override bool IsAccessibleHelper(Symbol symbol, TypeSymbol accessThroughType, out bool failedThroughTypeCheck, ref HashSet<DiagnosticInfo> useSiteDiagnostics, ConsList<TypeSymbol> basesBeingResolved)
-        public override void LookupSymbolsInSingleBinder(LookupResult result, LookupConstraints constraints)
-        protected override void AddLookupSymbolsInfoInSingleBinder(LookupSymbolsInfo result, LookupConstraints constraints)
     }
 
-    public class LocalScopeBinder : Binder
+    binder LocalScopeBinder : Binder
     {
-        public LocalScopeBinder(Binder next) : base(next)
     }
     
-    public class PropertyBinder : Binder
+    binder PropertyBinder : Binder
     {
-        public PropertyBinder(Binder next, string propertyName, Optional<object> propertyValueOpt, SymbolPropertyOwner owner, Type ownerType) : base(next)
-
-        public override DeclaredSymbol GetDeclarationSymbol()
-        private DeclaredSymbol GetParentDeclaredSymbol()
-        private DeclaredSymbol GetParentDeclaredScope()
-        private DeclaredSymbol GetAncestorDeclaredSymbol()
-        private DeclaredSymbol GetAncestorDeclaredScope()
     }
 
-    public class NameBinder : Binder
+    binder NameBinder : Binder
     {
-        public NameBinder(Binder next/*, LanguageSyntaxNode syntax*/) : base(next)
     }
 
-    public class QualifierBinder : Binder
+    binder QualifierBinder : Binder
     {
-        public QualifierBinder(Binder next, LanguageSyntaxNode syntax)  : base(next)
-        
-        public BoundQualifier BoundNode
     }
 
-    public class IdentifierBinder : Binder
+    binder IdentifierBinder : Binder
     {
-        public IdentifierBinder(Binder next, SyntaxNodeOrToken syntax) : base(next)
     }
     
-    public class CustomBinder : Binder
+    binder CustomBinder : Binder
     {
-        public CustomBinder(Binder next, LanguageSyntaxNode syntax) : base(next)
-
-        public LanguageSyntaxNode Syntax => _syntax;
     }    
 }
 

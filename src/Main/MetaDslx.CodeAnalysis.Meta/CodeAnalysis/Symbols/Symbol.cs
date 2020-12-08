@@ -35,6 +35,10 @@ namespace MetaDslx.CodeAnalysis.Symbols
         // Do not make any changes to the public interface without making the corresponding change
         // to the VB version.
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        // Prevent anyone else from deriving from this class.
+        public Symbol()
+        {
+        }
 
         public virtual ModelObjectDescriptor ModelSymbolInfo => null;
 
@@ -89,57 +93,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// Get the symbol that logically contains this symbol. 
         /// </summary>
         public abstract Symbol ContainingSymbol { get; }
-
-        /// <summary>
-        /// Returns the nearest lexically enclosing type, or null if there is none.
-        /// </summary>
-        public virtual NamedTypeSymbol ContainingType
-        {
-            get
-            {
-                Symbol container = this.ContainingSymbol;
-
-                NamedTypeSymbol containerAsType = container as NamedTypeSymbol;
-
-                // NOTE: container could be null, so we do not check 
-                //       whether containerAsType is not null, but 
-                //       instead check if it did not change after 
-                //       the cast.
-                if ((object)containerAsType == (object)container)
-                {
-                    // this should be relatively uncommon
-                    // most symbols that may be contained in a type
-                    // know their containing type and can override ContainingType
-                    // with a more precise implementation
-                    return containerAsType;
-                }
-
-                // this is recursive, but recursion should be very short 
-                // before we reach symbol that definitely knows its containing type.
-                return container.ContainingType;
-            }
-        }
-
-        /// <summary>
-        /// Gets the nearest enclosing namespace for this namespace or type. For a nested type,
-        /// returns the namespace that contains its container.
-        /// </summary>
-        public virtual NamespaceSymbol ContainingNamespace
-        {
-            get
-            {
-                for (var container = this.ContainingSymbol; (object)container != null; container = container.ContainingSymbol)
-                {
-                    var ns = container as NamespaceSymbol;
-                    if ((object)ns != null)
-                    {
-                        return ns;
-                    }
-                }
-
-                return null;
-            }
-        }
 
         /// <summary>
         /// Returns the assembly containing this symbol. If this symbol is shared across multiple
@@ -206,25 +159,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         }
 
         /// <summary>
-        /// The original definition of this symbol. If this symbol is constructed from another
-        /// symbol by type substitution then OriginalDefinition gets the original symbol as it was defined in
-        /// source or metadata.
-        /// </summary>
-        /// <summary>
-        /// The original definition of this symbol. If this symbol is constructed from another
-        /// symbol by type substitution then OriginalDefinition gets the original symbol as it was defined in
-        /// source or metadata.
-        /// </summary>
-        public Symbol OriginalDefinition => OriginalSymbolDefinition;
-
-        protected virtual Symbol OriginalSymbolDefinition => this;
-
-        /// <summary>
-        /// Returns true if this is the original definition of this symbol.
-        /// </summary>
-        public bool IsDefinition => (object)this == (object)OriginalDefinition;
-
-        /// <summary>
         /// <para>
         /// Get a source location key for sorting. For performance, it's important that this
         /// be able to be returned from a symbol without doing any additional allocations (even
@@ -250,165 +184,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         public abstract ImmutableArray<Location> Locations { get; }
 
-        /// <summary>
-        /// <para>
-        /// Get the syntax node(s) where this symbol was declared in source. Some symbols (for
-        /// example, partial classes) may be defined in more than one location. This property should
-        /// return one or more syntax nodes only if the symbol was declared in source code and also
-        /// was not implicitly declared (see the <see cref="IsImplicitlyDeclared"/> property). 
-        /// </para>
-        /// <para>
-        /// Note that for namespace symbol, the declaring syntax might be declaring a nested
-        /// namespace. For example, the declaring syntax node for N1 in "namespace N1.N2 {...}" is
-        /// the entire <see cref="NamespaceDeclarationSyntax"/> for N1.N2. For the global namespace, the declaring
-        /// syntax will be the <see cref="CompilationUnitSyntax"/>.
-        /// </para>
-        /// </summary>
-        /// <returns>
-        /// The syntax node(s) that declared the symbol. If the symbol was declared in metadata or
-        /// was implicitly declared, returns an empty read-only array.
-        /// </returns>
-        /// <remarks>
-        /// To go the opposite direction (from syntax node to symbol), see <see
-        /// cref="CSharpSemanticModel.GetDeclaredSymbol(MemberDeclarationSyntax, CancellationToken)"/>.
-        /// </remarks>
-        public abstract ImmutableArray<SyntaxReference> DeclaringSyntaxReferences { get; }
-
-        /// <summary>
-        /// Helper for implementing <see cref="DeclaringSyntaxReferences"/> for derived classes that store a location but not a 
-        /// <see cref="CSharpSyntaxNode"/> or <see cref="SyntaxReference"/>.
-        /// </summary>
-        internal static ImmutableArray<SyntaxReference> GetDeclaringSyntaxReferenceHelper<TNode>(ImmutableArray<Location> locations)
-            where TNode : LanguageSyntaxNode
-        {
-            if (locations.IsEmpty)
-            {
-                return ImmutableArray<SyntaxReference>.Empty;
-            }
-
-            ArrayBuilder<SyntaxReference> builder = ArrayBuilder<SyntaxReference>.GetInstance();
-            foreach (Location location in locations)
-            {
-                // Location may be null. See https://github.com/dotnet/roslyn/issues/28862.
-                if (location == null)
-                {
-                    continue;
-                }
-                if (location.IsInSource)
-                {
-                    SyntaxToken token = (SyntaxToken)location.SourceTree.GetRoot().FindToken(location.SourceSpan.Start);
-                    if (token.GetKind() != SyntaxKind.None)
-                    {
-                        LanguageSyntaxNode node = token.Parent.FirstAncestorOrSelf<TNode>();
-                        if (node != null)
-                            builder.Add(node.GetReference());
-                    }
-                }
-            }
-
-            return builder.ToImmutableAndFree();
-        }
-
-        /// <summary>
-        /// Get this accessibility that was declared on this symbol. For symbols that do not have
-        /// accessibility declared on them, returns <see cref="Accessibility.NotApplicable"/>.
-        /// </summary>
-        public virtual Accessibility DeclaredAccessibility => Accessibility.NotApplicable;
-
-        /// <summary>
-        /// Returns true if this symbol is "static"; i.e., declared with the <c>static</c> modifier or
-        /// implicitly static.
-        /// </summary>
-        public abstract bool IsStatic { get; }
-
-        /// <summary>
-        /// Returns true if this symbol is "virtual", has an implementation, and does not override a
-        /// base class member; i.e., declared with the <c>virtual</c> modifier. Does not return true for
-        /// members declared as abstract or override.
-        /// </summary>
-        public virtual bool IsVirtual => false;
-
-        /// <summary>
-        /// Returns true if this symbol was declared to override a base class member; i.e., declared
-        /// with the <c>override</c> modifier. Still returns true if member was declared to override
-        /// something, but (erroneously) no member to override exists.
-        /// </summary>
-        /// <remarks>
-        /// Even for metadata symbols, <see cref="IsOverride"/> = true does not imply that <see cref="IMethodSymbol.OverriddenMethod"/> will
-        /// be non-null.
-        /// </remarks>
-        public virtual bool IsOverride => false;
-
-        /// <summary>
-        /// Returns true if this symbol was declared as requiring an override; i.e., declared with
-        /// the <c>abstract</c> modifier. Also returns true on a type declared as "abstract", all
-        /// interface types, and members of interface types.
-        /// </summary>
-        public virtual bool IsAbstract => false;
-
-        /// <summary>
-        /// Returns true if this symbol was declared to override a base class member and was also
-        /// sealed from further overriding; i.e., declared with the <c>sealed</c> modifier. Also set for
-        /// types that do not allow a derived class (declared with <c>sealed</c> or <c>static</c> or <c>struct</c>
-        /// or <c>enum</c> or <c>delegate</c>).
-        /// </summary>
-        public virtual bool IsSealed => false;
-
-        /// <summary>
-        /// Returns true if this symbol has external implementation; i.e., declared with the 
-        /// <c>extern</c> modifier. 
-        /// </summary>
-        public virtual bool IsExtern => false;
-
-        /// <summary>
-        /// Returns true if this symbol was automatically created by the compiler, and does not
-        /// have an explicit corresponding source code declaration.  
-        /// 
-        /// This is intended for symbols that are ordinary symbols in the language sense,
-        /// and may be used by code, but that are simply declared implicitly rather than
-        /// with explicit language syntax.
-        /// 
-        /// Examples include (this list is not exhaustive):
-        ///   the default constructor for a class or struct that is created if one is not provided,
-        ///   the BeginInvoke/Invoke/EndInvoke methods for a delegate,
-        ///   the generated backing field for an auto property or a field-like event,
-        ///   the "this" parameter for non-static methods,
-        ///   the "value" parameter for a property setter,
-        ///   the parameters on indexer accessor methods (not on the indexer itself),
-        ///   methods in anonymous types,
-        ///   anonymous functions
-        /// </summary>
-        public virtual bool IsImplicitlyDeclared => false;
-
-        /// <summary>
-        /// Returns true if this symbol can be referenced by its name in code. Examples of symbols
-        /// that cannot be referenced by name are:
-        ///    constructors, destructors, operators, explicit interface implementations,
-        ///    accessor methods for properties and events, array types.
-        /// </summary>
-        public virtual bool CanBeReferencedByName
-        {
-            get
-            {
-                return ModelSymbolInfo?.HasName ?? false;
-            }
-        }
-
         public virtual ImmutableArray<AttributeData> GetAttributes()
         {
             return ImmutableArray<AttributeData>.Empty;
-        }
-
-        /// <summary>
-        /// Returns true and a <see cref="string"/> from the first <see cref="GuidAttribute"/> on the symbol, 
-        /// the string might be null or an invalid guid representation. False, 
-        /// if there is no <see cref="GuidAttribute"/> with string argument.
-        /// </summary>
-        public virtual bool GetGuidStringDefaultImplementation(out string guidString)
-        {
-            // TODO:MetaDslx
-            guidString = null;
-            return false;
         }
 
         // Note: This is no public "IsNew". This is intentional, because new has no syntactic meaning.
@@ -499,11 +277,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         // want to expose publicly.
         // ---- End of Public Definition ---
 
-        // Prevent anyone else from deriving from this class.
-        internal Symbol()
-        {
-        }
-
         internal bool IsFromCompilation(LanguageCompilation compilation)
         {
             Debug.Assert(compilation != null);
@@ -530,76 +303,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
             get { return this.DeclaringCompilation != null; }
         }
 
-        public virtual bool IsDefinedInSourceTree(SyntaxTree tree, TextSpan? definedWithinSpan, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            var declaringReferences = this.DeclaringSyntaxReferences;
-            if (this.IsImplicitlyDeclared && declaringReferences.Length == 0)
-            {
-                return this.ContainingSymbol.IsDefinedInSourceTree(tree, definedWithinSpan, cancellationToken);
-            }
-
-            foreach (var syntaxRef in declaringReferences)
-            {
-                cancellationToken.ThrowIfCancellationRequested();
-
-                if (syntaxRef.SyntaxTree == tree &&
-                    (!definedWithinSpan.HasValue || syntaxRef.Span.IntersectsWith(definedWithinSpan.Value)))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        internal static void ForceCompleteMemberByLocation(SourceLocation locationOpt, Symbol member, CancellationToken cancellationToken)
-        {
-            if (locationOpt == null || member.IsDefinedInSourceTree(locationOpt.SourceTree, locationOpt.SourceSpan, cancellationToken))
-            {
-                cancellationToken.ThrowIfCancellationRequested();
-                member.ForceComplete(locationOpt, cancellationToken);
-            }
-        }
-
-        /// <summary>
-        /// Returns the Documentation Comment ID for the symbol, or null if the symbol doesn't
-        /// support documentation comments.
-        /// </summary>
-        public virtual string GetDocumentationCommentId()
-        {
-            // NOTE: we're using a try-finally here because there's a test that specifically
-            // triggers an exception here to confirm that some symbols don't have documentation
-            // comment IDs.  We don't care about "leaks" in such cases, but we don't want spew
-            // in the test output.
-            var pool = PooledStringBuilder.GetInstance();
-            try
-            {
-                StringBuilder builder = pool.Builder;
-                // TODO:MetaDslx
-                // DocumentationCommentIDVisitor.Instance.Visit(this, builder);
-                return builder.Length == 0 ? null : builder.ToString();
-            }
-            finally
-            {
-                pool.Free();
-            }
-        }
-
-        /// <summary>
-        /// Fetches the documentation comment for this element with a cancellation token.
-        /// </summary>
-        /// <param name="preferredCulture">Optionally, retrieve the comments formatted for a particular culture. No impact on source documentation comments.</param>
-        /// <param name="expandIncludes">Optionally, expand <![CDATA[<include>]]> elements. No impact on non-source documentation comments.</param>
-        /// <param name="cancellationToken">Optionally, allow cancellation of documentation comment retrieval.</param>
-        /// <returns>The XML that would be written to the documentation file for the symbol.</returns>
-        public virtual string GetDocumentationCommentXml(
-            CultureInfo preferredCulture = null,
-            bool expandIncludes = false,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return string.Empty;
-        }
-
         private static readonly SymbolDisplayFormat s_debuggerDisplayFormat =
             SymbolDisplayFormat.TestFormat.WithCompilerInternalOptions(SymbolDisplayCompilerInternalOptions.IncludeNonNullableTypeModifier)
                 .AddMiscellaneousOptions(SymbolDisplayMiscellaneousOptions.IncludeNullableReferenceTypeModifier);
@@ -607,16 +310,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         internal virtual string GetDebuggerDisplay()
         {
             return $"{this.Kind} {this.ToDisplayString(s_debuggerDisplayFormat)}";
-        }
-
-        internal virtual void AddDeclarationDiagnostics(DiagnosticBag diagnostics)
-        {
-            if (!diagnostics.IsEmptyWithoutResolution)
-            {
-                LanguageCompilation compilation = this.DeclaringCompilation;
-                Debug.Assert(compilation != null);
-                compilation.DeclarationDiagnostics.AddRange(diagnostics);
-            }
         }
 
         #region Use-Site Diagnostics
@@ -666,16 +359,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// Parameter - type is unsupported
         /// </summary>
         public virtual bool HasUnsupportedMetadata => false;
-
-        internal DiagnosticInfo GetUseSiteDiagnosticForSymbolOrContainingType()
-        {
-            var info = this.GetUseSiteDiagnostic();
-            if (info != null && info.Severity == DiagnosticSeverity.Error)
-            {
-                return info;
-            }
-            return this.ContainingType.GetUseSiteDiagnostic() ?? info;
-        }
 
         /// <summary>
         /// Merges given diagnostic to the existing result diagnostic.
@@ -730,43 +413,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
             diagnostics.Add(info, location);
             return info.Severity == DiagnosticSeverity.Error;
-        }
-
-        /// <summary>
-        /// Derive error info from a type symbol.
-        /// </summary>
-        internal bool DeriveUseSiteDiagnosticFromType(ref DiagnosticInfo result, TypeSymbol type)
-        {
-            DiagnosticInfo info = type.GetUseSiteDiagnostic();
-            if (info != null)
-            {
-                if (info.HasErrorCode(InternalErrorCode.ERR_BogusType))
-                {
-                    switch (this.Kind.Switch())
-                    {
-                        case LanguageSymbolKind.Name:
-                        case LanguageSymbolKind.Operation:
-                        case LanguageSymbolKind.Property:
-                            info = new LanguageDiagnosticInfo(InternalErrorCode.ERR_BindToBogus, this);
-                            break;
-                    }
-                }
-            }
-
-            return MergeUseSiteDiagnostics(ref result, info);
-        }
-
-        internal bool DeriveUseSiteDiagnosticFromCustomModifiers(ref DiagnosticInfo result, ImmutableArray<CustomModifier> customModifiers)
-        {
-            foreach (CustomModifier modifier in customModifiers)
-            {
-                var modifierType = (NamedTypeSymbol)modifier.Modifier;
-                if (DeriveUseSiteDiagnosticFromType(ref result, modifierType))
-                {
-                    return true;
-                }
-            }
-            return false;
         }
 
         internal static bool GetUnificationUseSiteDiagnosticRecursive<T>(ref DiagnosticInfo result, ImmutableArray<T> types, Symbol owner, ref HashSet<TypeSymbol> checkedTypes) 
@@ -870,8 +516,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return SymbolDisplay.ToMinimalDisplayParts(this, csharpModel, position, format);
         }
 
-        bool ISymbol.IsImplicitlyDeclared => this.IsImplicitlyDeclared;
-
         ISymbol ISymbol.ContainingSymbol => this.ContainingSymbol;
 
         Microsoft.CodeAnalysis.SymbolKind ISymbol.Kind => Language.SymbolFacts.ToCSharpKind(this.Kind);
@@ -880,34 +524,12 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         IModuleSymbol ISymbol.ContainingModule => this.ContainingModule;
 
-        INamedTypeSymbol ISymbol.ContainingType => this.ContainingType;
-
-        INamespaceSymbol ISymbol.ContainingNamespace => this.ContainingNamespace;
-
-        bool ISymbol.IsDefinition => this.IsDefinition;
-
-        bool ISymbol.IsStatic => this.IsStatic;
-
-        bool ISymbol.IsVirtual => this.IsVirtual;
-
-        bool ISymbol.IsOverride => this.IsOverride;
-
-        bool ISymbol.IsAbstract => this.IsAbstract;
-
-        bool ISymbol.IsSealed => this.IsSealed;
-
         ImmutableArray<Location> ISymbol.Locations => this.Locations;
-
-        ImmutableArray<SyntaxReference> ISymbol.DeclaringSyntaxReferences => this.DeclaringSyntaxReferences;
 
         ImmutableArray<AttributeData> ISymbol.GetAttributes()
         {
             return this.GetAttributes();
         }
-
-        Accessibility ISymbol.DeclaredAccessibility => this.DeclaredAccessibility;
-
-        ISymbol ISymbol.OriginalDefinition => this.OriginalDefinition;
 
         public abstract void Accept(Microsoft.CodeAnalysis.SymbolVisitor visitor);
 
@@ -979,37 +601,14 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         #endregion
 
-        public virtual Symbol ConstructedFrom => this;
-
-        public virtual Symbol AsMember(NamedTypeSymbol newOwner)
+        internal virtual void AddDeclarationDiagnostics(DiagnosticBag diagnostics)
         {
-            Debug.Assert(this.IsDefinition);
-            Debug.Assert(ReferenceEquals(newOwner.OriginalDefinition, this.ContainingSymbol.OriginalDefinition));
-            return this; // TODO:MetaDslx
-            //return newOwner.IsDefinition ? this : new SubstitutedNestedTypeSymbol((SubstitutedNamedTypeSymbol)newOwner, this);
-        }
-
-        /// <summary>
-        /// Returns the original virtual or abstract method which a given method symbol overrides,
-        /// ignoring any other overriding methods in base classes.
-        /// </summary>
-        /// <param name="accessingTypeOpt">The search must respect accessibility from this type.</param>
-        public virtual Symbol GetLeastOverriddenMember(NamedTypeSymbol accessingTypeOpt)
-        {
-            return null;
-        }
-
-        /// <summary>
-        /// Returns the original virtual or abstract method which a given method symbol overrides,
-        /// ignoring any other overriding methods in base classes.
-        /// Also, if the given method symbol is generic then the resulting virtual or abstract method is constructed with the
-        /// same type arguments as the given method.
-        /// </summary>
-        public virtual Symbol GetConstructedLeastOverriddenMember(NamedTypeSymbol accessingTypeOpt)
-        {
-            var m = this.ConstructedFrom.GetLeastOverriddenMember(accessingTypeOpt);
-            return m; // TODO:MetaDslx
-            //return m.IsGenericMethod ? m.Construct(this.TypeArgumentsWithAnnotations) : m;
+            if (!diagnostics.IsEmptyWithoutResolution)
+            {
+                LanguageCompilation compilation = this.DeclaringCompilation;
+                Debug.Assert(compilation != null);
+                compilation.DeclarationDiagnostics.AddRange(diagnostics);
+            }
         }
     }
 }

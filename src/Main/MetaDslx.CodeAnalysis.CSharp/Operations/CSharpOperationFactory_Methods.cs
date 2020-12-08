@@ -115,7 +115,7 @@ namespace Microsoft.CodeAnalysis.Operations
             return boundLocal == null ? null : new VariableDeclaratorOperation(boundLocal.LocalSymbol, initializer: null, ignoredArguments: ImmutableArray<IOperation>.Empty, semanticModel: _semanticModel, syntax: boundLocal.Syntax, type: null, constantValue: default, isImplicit: false);
         }
 
-        internal IOperation CreateReceiverOperation(BoundNode instance, ISymbol symbol)
+        internal IOperation CreateReceiverOperation(BoundNode instance, IDeclaredSymbol symbol)
         {
             if (instance == null || instance.Kind == BoundKind.TypeExpression)
             {

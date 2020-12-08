@@ -45,12 +45,12 @@ namespace Microsoft.CodeAnalysis.Emit
         public SymbolChange GetChange(IDefinition def)
         {
             var synthesizedDef = def as ISynthesizedMethodBodyImplementationSymbol;
-            if (synthesizedDef != null)
+            if (synthesizedDef is IDeclaredSymbol)
             {
                 Debug.Assert(synthesizedDef.Method != null);
 
                 var generator = synthesizedDef.Method;
-                var synthesizedSymbol = (ISymbol)synthesizedDef;
+                var synthesizedSymbol = (IDeclaredSymbol)synthesizedDef;
 
                 var change = GetChange((IDefinition)generator);
                 switch (change)

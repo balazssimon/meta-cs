@@ -99,22 +99,22 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => _declaration.SyntaxReferences;
 
-        public virtual ImmutableArray<Symbol> GetDeclaredChildren()
+        public virtual ImmutableArray<DeclaredSymbol> GetDeclaredChildren()
         {
             return GetMembers();
         }
 
-        internal override ImmutableArray<Symbol> GetMembersUnordered()
+        internal override ImmutableArray<DeclaredSymbol> GetMembersUnordered()
         {
             return this.SourceDeclaration.GetMembersUnordered();
         }
 
-        public override ImmutableArray<Symbol> GetMembers()
+        public override ImmutableArray<DeclaredSymbol> GetMembers()
         {
             return this.SourceDeclaration.GetMembers();
         }
 
-        public override ImmutableArray<Symbol> GetMembers(string name)
+        public override ImmutableArray<DeclaredSymbol> GetMembers(string name)
         {
             return this.SourceDeclaration.GetMembers(name);
         }
@@ -155,9 +155,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         public override NamespaceExtent Extent => new NamespaceExtent(_module);
 
-        public override void CheckMembers(Dictionary<string, ImmutableArray<Symbol>> result, DiagnosticBag diagnostics)
+        public override void CheckMembers(Dictionary<string, ImmutableArray<DeclaredSymbol>> result, DiagnosticBag diagnostics)
         {
-            var memberOfMetadataName = new Dictionary<string, Symbol>();
+            var memberOfMetadataName = new Dictionary<string, DeclaredSymbol>();
             MergedNamespaceSymbol mergedAssemblyNamespace = null;
 
             if (this.ContainingAssembly.Modules.Length > 1)
@@ -174,7 +174,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                     var metadataName = ((object)nts != null) ? nts.MetadataName : string.Empty;
                     if (metadataName == null) metadataName = string.Empty;
 
-                    if (memberOfMetadataName.TryGetValue(metadataName, out Symbol other))
+                    if (memberOfMetadataName.TryGetValue(metadataName, out DeclaredSymbol other))
                     {
                         if ((nts as SourceNamedTypeSymbol)?.IsPartial == true && (other as SourceNamedTypeSymbol)?.IsPartial == true)
                         {

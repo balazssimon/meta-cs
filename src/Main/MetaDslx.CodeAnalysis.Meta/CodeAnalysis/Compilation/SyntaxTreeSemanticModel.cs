@@ -647,7 +647,7 @@ namespace MetaDslx.CodeAnalysis
         /// NOTE:   (3) BaseFieldDeclarationSyntax or its subtypes as these declarations can contain multiple variable declarators.
         /// NOTE:       GetDeclaredSymbol should be called on the variable declarators directly.
         /// </remarks>
-        public override ISymbol GetDeclaredSymbol(LanguageSyntaxNode declarationSyntax, CancellationToken cancellationToken = default(CancellationToken))
+        public override IDeclaredSymbol GetDeclaredSymbol(LanguageSyntaxNode declarationSyntax, CancellationToken cancellationToken = default(CancellationToken))
         {
             CheckSyntaxNode(declarationSyntax);
 
@@ -689,7 +689,7 @@ namespace MetaDslx.CodeAnalysis
         /// <param name="declarationSyntax">The syntax node that declares one or more fields or events.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The field symbols that were declared.</returns>
-        public override ImmutableArray<ISymbol> GetDeclaredSymbols(LanguageSyntaxNode declarationSyntax, CancellationToken cancellationToken = default(CancellationToken))
+        public override ImmutableArray<IDeclaredSymbol> GetDeclaredSymbols(LanguageSyntaxNode declarationSyntax, CancellationToken cancellationToken = default(CancellationToken))
         {
             CheckSyntaxNode(declarationSyntax);
 

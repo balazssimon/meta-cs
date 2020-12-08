@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using MetaDslx.CodeAnalysis.Symbols;
 using Roslyn.Utilities;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Linq;
 namespace MetaDslx.CodeAnalysis.Binding
 {
     public class MultipleNamesLookupSymbolsInfo<TSymbol>
-        where TSymbol: class
+        where TSymbol: DeclaredSymbol
     {
         // PERF: This is a very frequent allocation, so the aim is to keep
         // it as small as possible.

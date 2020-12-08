@@ -8,7 +8,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 {
     public interface IMetaNamespaceOrTypeSymbol : INamespaceOrTypeSymbol
     {
-        ImmutableArray<ISymbol> GetMembers(string name, string metadataName);
+        ImmutableArray<IDeclaredSymbol> GetMembers(string name, string metadataName);
         ImmutableArray<INamedTypeSymbol> GetTypeMembers(string name, string metadataName);
     }
 }

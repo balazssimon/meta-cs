@@ -655,7 +655,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
         }
 
-        private void AddMemberModifiersIfRequired(ISymbol symbol)
+        private void AddMemberModifiersIfRequired(IDeclaredSymbol symbol)
         {
             INamedTypeSymbol containingType = symbol.ContainingType;
 
@@ -753,7 +753,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
         }
 
-        private void AddAccessor(ISymbol property, IMethodSymbol method, SyntaxKind keyword)
+        private void AddAccessor(IDeclaredSymbol property, IMethodSymbol method, SyntaxKind keyword)
         {
             if (method != null)
             {
@@ -768,7 +768,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
         }
 
-        private void AddExplicitInterfaceIfRequired<T>(ImmutableArray<T> implementedMethods) where T : ISymbol
+        private void AddExplicitInterfaceIfRequired<T>(ImmutableArray<T> implementedMethods) where T : IDeclaredSymbol
         {
             if (format.MemberOptions.IncludesOption(SymbolDisplayMemberOptions.IncludeExplicitInterface) && !implementedMethods.IsEmpty)
             {

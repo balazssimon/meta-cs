@@ -130,17 +130,17 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         public override IEnumerable<string> MemberNames => this.SourceDeclaration.MemberNames;
 
-        public override ImmutableArray<Symbol> GetMembers()
+        public override ImmutableArray<DeclaredSymbol> GetMembers()
         {
             return this.SourceDeclaration.GetMembers();
         }
 
-        public override ImmutableArray<Symbol> GetMembers(string name)
+        public override ImmutableArray<DeclaredSymbol> GetMembers(string name)
         {
             return this.SourceDeclaration.GetMembers(name);
         }
 
-        public override ImmutableArray<Symbol> GetMembers(string name, string metadataName)
+        public override ImmutableArray<DeclaredSymbol> GetMembers(string name, string metadataName)
         {
             return this.SourceDeclaration.GetMembers(name, metadataName);
         }
@@ -218,7 +218,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 }
                 else if (incompletePart == CompletionPart.MembersCompleted)
                 {
-                    ImmutableArray<Symbol> members = this.GetMembersUnordered();
+                    ImmutableArray<DeclaredSymbol> members = this.GetMembersUnordered();
 
                     bool allCompleted = true;
 
@@ -287,7 +287,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             // TODO:MetaDslx
         }
 
-        public override void CheckMembers(Dictionary<string, ImmutableArray<Symbol>> result, DiagnosticBag diagnostics)
+        public override void CheckMembers(Dictionary<string, ImmutableArray<DeclaredSymbol>> result, DiagnosticBag diagnostics)
         {
             // TODO:MetaDslx
         }

@@ -399,7 +399,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         protected virtual TypeSymbol OriginalTypeSymbolDefinition => this;
 
-        protected override sealed Symbol OriginalSymbolDefinition => this.OriginalTypeSymbolDefinition;
+        protected override sealed DeclaredSymbol OriginalSymbolDefinition => this.OriginalTypeSymbolDefinition;
 
         #endregion
         ImmutableArray<INamedTypeSymbol> IMetaTypeSymbol.BaseTypes => StaticCast<INamedTypeSymbol>.From(this.BaseTypesNoUseSiteDiagnostics);

@@ -107,11 +107,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
         /// </summary>
         private ImmutableArray<AttributeData> _lazyCustomAttributes;
 
-        public override bool IsImplicitlyDeclared
-        {
-            get { return _underlyingAssembly.IsImplicitlyDeclared; }
-        }
-
         public override AssemblyIdentity Identity
         {
             get
@@ -125,11 +120,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
         internal override ImmutableArray<byte> PublicKey
         {
             get { return _underlyingAssembly.PublicKey; }
-        }
-
-        public override string GetDocumentationCommentXml(CultureInfo preferredCulture = null, bool expandIncludes = false, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return _underlyingAssembly.GetDocumentationCommentXml(preferredCulture, expandIncludes, cancellationToken);
         }
 
         public override ImmutableArray<ModuleSymbol> Modules
@@ -170,7 +160,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
         /// <param name="type"></param>
         /// <returns></returns>
         /// <remarks></remarks>
-        public override Symbol GetDeclaredSpecialSymbol(object key)
+        public override DeclaredSymbol GetDeclaredSpecialSymbol(object key)
         {
             if (key is SpecialType type)
             {
@@ -182,7 +172,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
             }
         }
 
-        public override ImmutableArray<Symbol> DeclaredSpecialSymbols => ImmutableArray<Symbol>.Empty; // TODO:MetaDslx
+        public override ImmutableArray<DeclaredSymbol> DeclaredSpecialSymbols => ImmutableArray<DeclaredSymbol>.Empty; // TODO:MetaDslx
 
         internal override ImmutableArray<AssemblySymbol> GetNoPiaResolutionAssemblies()
         {

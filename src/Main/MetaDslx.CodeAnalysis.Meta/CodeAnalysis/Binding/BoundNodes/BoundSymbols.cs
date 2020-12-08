@@ -19,7 +19,7 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
         {
         }
 
-        public virtual ImmutableArray<Symbol> Symbols { get; }
+        public virtual ImmutableArray<DeclaredSymbol> Symbols { get; }
 
         public override ImmutableArray<object> Values => StaticCast<object>.From(this.Symbols);
 

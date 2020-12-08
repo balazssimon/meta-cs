@@ -50,7 +50,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             get { return (this.DeclaredSymbol?.Kind == LanguageSymbolKind.NamedType) && ((NamedTypeSymbol)this.DeclaredSymbol).IsScript; }
         }
 
-        public override bool IsAccessibleHelper(Symbol symbol, TypeSymbol accessThroughType, out bool failedThroughTypeCheck, ref HashSet<DiagnosticInfo> useSiteDiagnostics, ConsList<TypeSymbol> basesBeingResolved)
+        public override bool IsAccessibleHelper(DeclaredSymbol symbol, TypeSymbol accessThroughType, out bool failedThroughTypeCheck, ref HashSet<DiagnosticInfo> useSiteDiagnostics, ConsList<TypeSymbol> basesBeingResolved)
         {
             var type = this.DeclaredSymbol as NamedTypeSymbol;
             if ((object)type != null)

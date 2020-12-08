@@ -92,12 +92,12 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         ///  (a) Key: Unassigned field symbol.
         ///  (b) Value: True if the unassigned field is effectively internal, false otherwise.
         /// </summary>
-        private readonly ConcurrentDictionary<Symbol, bool> _unassignedFieldsMap = new ConcurrentDictionary<Symbol, bool>();
+        private readonly ConcurrentDictionary<DeclaredSymbol, bool> _unassignedFieldsMap = new ConcurrentDictionary<DeclaredSymbol, bool>();
 
         /// <summary>
         /// private fields declared in this assembly but never read
         /// </summary>
-        private readonly ConcurrentSet<Symbol> _unreadFields = new ConcurrentSet<Symbol>();
+        private readonly ConcurrentSet<DeclaredSymbol> _unreadFields = new ConcurrentSet<DeclaredSymbol>();
 
         /// <summary>
         /// We imitate the native compiler's policy of not warning about unused fields
@@ -1564,7 +1564,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             return (object)attributeSyntaxOpt != null ? attributeSyntaxOpt.Location : NoLocation.Singleton;
         }
 
-        internal void NoteSymbolAccess(Symbol symbol, bool read, bool write)
+        internal void NoteSymbolAccess(DeclaredSymbol symbol, bool read, bool write)
         {
             var container = symbol.ContainingSymbol as SourceMemberContainerTypeSymbol;
             if ((object)container == null)
@@ -1603,7 +1603,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             }
         }
 
-        internal void NoteSymbolDefinition(Symbol symbol, bool isInternal, bool isUnread)
+        internal void NoteSymbolDefinition(DeclaredSymbol symbol, bool isInternal, bool isUnread)
         {
             Debug.Assert(_unusedFieldWarnings.IsDefault, "We shouldn't have computed the diagnostics if we're still noting definitions.");
 
@@ -1642,7 +1642,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
                 HashSet<Symbol> handledUnreadSymbols = null;
 
-                foreach (Symbol symbol in _unassignedFieldsMap.Keys) // Not mutating, so no snapshot required.
+                foreach (DeclaredSymbol symbol in _unassignedFieldsMap.Keys) // Not mutating, so no snapshot required.
                 {
                     bool isInternalAccessibility;
                     bool success = _unassignedFieldsMap.TryGetValue(symbol, out isInternalAccessibility);

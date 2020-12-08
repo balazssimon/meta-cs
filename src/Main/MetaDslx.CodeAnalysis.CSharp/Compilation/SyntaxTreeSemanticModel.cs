@@ -465,7 +465,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             return (model == null) ? null : model.GetDeclaredSymbol(declaratorSyntax, cancellationToken);
         }
 
-        public override ISymbol GetDeclaredSymbol(ArgumentSyntax declaratorSyntax, CancellationToken cancellationToken = default(CancellationToken))
+        public override IDeclaredSymbol GetDeclaredSymbol(ArgumentSyntax declaratorSyntax, CancellationToken cancellationToken = default(CancellationToken))
         {
             CheckSyntaxNode(declaratorSyntax);
             var model = this.GetMemberModel(declaratorSyntax);
@@ -1343,7 +1343,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         /// NOTE:   (3) BaseFieldDeclarationSyntax or its subtypes as these declarations can contain multiple variable declarators.
         /// NOTE:       GetDeclaredSymbol should be called on the variable declarators directly.
         /// </remarks>
-        public override ISymbol GetDeclaredSymbol(MemberDeclarationSyntax declarationSyntax, CancellationToken cancellationToken = default(CancellationToken))
+        public override IDeclaredSymbol GetDeclaredSymbol(MemberDeclarationSyntax declarationSyntax, CancellationToken cancellationToken = default(CancellationToken))
         {
             CheckSyntaxNode(declarationSyntax);
 
@@ -1375,7 +1375,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         /// <param name="declarationSyntax">The syntax node that declares a member.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The symbol that was declared.</returns>
-        public override ISymbol GetDeclaredSymbol(LocalFunctionStatementSyntax declarationSyntax, CancellationToken cancellationToken = default(CancellationToken))
+        public override IDeclaredSymbol GetDeclaredSymbol(LocalFunctionStatementSyntax declarationSyntax, CancellationToken cancellationToken = default(CancellationToken))
         {
             CheckSyntaxNode(declarationSyntax);
 
@@ -1415,7 +1415,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         /// <param name="declarationSyntax">The syntax node that declares a property, indexer or an event.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The symbol that was declared.</returns>
-        public override ISymbol GetDeclaredSymbol(BasePropertyDeclarationSyntax declarationSyntax, CancellationToken cancellationToken = default(CancellationToken))
+        public override IDeclaredSymbol GetDeclaredSymbol(BasePropertyDeclarationSyntax declarationSyntax, CancellationToken cancellationToken = default(CancellationToken))
         {
             return GetDeclaredMemberSymbol(declarationSyntax);
         }
@@ -1711,7 +1711,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         /// <param name="declarationSyntax">The syntax node that declares a variable.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The symbol that was declared.</returns>
-        public override ISymbol GetDeclaredSymbol(VariableDeclaratorSyntax declarationSyntax, CancellationToken cancellationToken = default(CancellationToken))
+        public override IDeclaredSymbol GetDeclaredSymbol(VariableDeclaratorSyntax declarationSyntax, CancellationToken cancellationToken = default(CancellationToken))
         {
             CheckSyntaxNode(declarationSyntax);
 
@@ -1732,11 +1732,11 @@ namespace Microsoft.CodeAnalysis.CSharp
             return memberModel?.GetDeclaredSymbol(declarationSyntax, cancellationToken);
         }
 
-        public override ISymbol GetDeclaredSymbol(SingleVariableDesignationSyntax declarationSyntax, CancellationToken cancellationToken = default(CancellationToken))
+        public override IDeclaredSymbol GetDeclaredSymbol(SingleVariableDesignationSyntax declarationSyntax, CancellationToken cancellationToken = default(CancellationToken))
         {
             // Might be a local variable.
             var memberModel = this.GetMemberModel(declarationSyntax);
-            ISymbol local = memberModel?.GetDeclaredSymbol(declarationSyntax, cancellationToken);
+            IDeclaredSymbol local = memberModel?.GetDeclaredSymbol(declarationSyntax, cancellationToken);
 
             if (local != null)
             {
@@ -1850,15 +1850,15 @@ namespace Microsoft.CodeAnalysis.CSharp
         /// <param name="declarationSyntax">The syntax node that declares one or more fields or events.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The field symbols that were declared.</returns>
-        internal override ImmutableArray<ISymbol> GetDeclaredSymbols(BaseFieldDeclarationSyntax declarationSyntax, CancellationToken cancellationToken = default(CancellationToken))
+        internal override ImmutableArray<IDeclaredSymbol> GetDeclaredSymbols(BaseFieldDeclarationSyntax declarationSyntax, CancellationToken cancellationToken = default(CancellationToken))
         {
             CheckSyntaxNode(declarationSyntax);
 
-            var builder = new ArrayBuilder<ISymbol>();
+            var builder = new ArrayBuilder<IDeclaredSymbol>();
 
             foreach (var declarator in declarationSyntax.Declaration.Variables)
             {
-                var field = this.GetDeclaredSymbol(declarator, cancellationToken) as ISymbol;
+                var field = this.GetDeclaredSymbol(declarator, cancellationToken) as IDeclaredSymbol;
                 if (field != null)
                 {
                     builder.Add(field);

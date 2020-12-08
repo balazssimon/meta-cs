@@ -20,13 +20,13 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         private readonly DeclaredSymbol _symbol;
         private readonly SymbolCompletionState _state;
 
-        public readonly ImmutableArray<Symbol> NamedNonTypeMembers;
+        public readonly ImmutableArray<DeclaredSymbol> NamedNonTypeMembers;
         public readonly ImmutableArray<NamedTypeSymbol> NamedTypeMembers;
-        public readonly ImmutableArray<Symbol> AnonymousNonTypeMembers;
+        public readonly ImmutableArray<DeclaredSymbol> AnonymousNonTypeMembers;
         public readonly ImmutableArray<NamedTypeSymbol> AnonymousTypeMembers;
 
         public Members(DeclaredSymbol symbol, SymbolCompletionState state,
-            ImmutableArray<Symbol> nonTypeMembers, ImmutableArray<NamedTypeSymbol> typeMembers)
+            ImmutableArray<DeclaredSymbol> nonTypeMembers, ImmutableArray<NamedTypeSymbol> typeMembers)
         {
             Debug.Assert(!nonTypeMembers.IsDefault);
             Debug.Assert(!typeMembers.IsDefault);
@@ -42,15 +42,15 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         public ImmutableArray<NamespaceSymbol> NamespaceMembers => NamedNonTypeMembers.OfType<NamespaceSymbol>().ToImmutableArray();
 
-        public ImmutableArray<Symbol> StaticMembers => NamedNonTypeMembers.Where(NamedTypeSymbol.IsStaticMember).ToImmutableArray();
+        public ImmutableArray<DeclaredSymbol> StaticMembers => NamedNonTypeMembers.Where(NamedTypeSymbol.IsStaticMember).ToImmutableArray();
 
-        public ImmutableArray<Symbol> InstanceMembers => NamedNonTypeMembers.Where(NamedTypeSymbol.IsInstanceMember).ToImmutableArray();
+        public ImmutableArray<DeclaredSymbol> InstanceMembers => NamedNonTypeMembers.Where(NamedTypeSymbol.IsInstanceMember).ToImmutableArray();
 
-        public ImmutableArray<Symbol> AllMembers
+        public ImmutableArray<DeclaredSymbol> AllMembers
         {
             get
             {
-                ArrayBuilder<Symbol> result = ArrayBuilder<Symbol>.GetInstance();
+                ArrayBuilder<DeclaredSymbol> result = ArrayBuilder<DeclaredSymbol>.GetInstance();
                 result.AddRange(NamedNonTypeMembers);
                 result.AddRange(NamedTypeMembers);
                 result.AddRange(AnonymousNonTypeMembers);

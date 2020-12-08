@@ -127,22 +127,12 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
             }
         }
 
-        public override bool IsImplicitlyDeclared
-        {
-            get { return _underlyingModule.IsImplicitlyDeclared; }
-        }
-
         public override string Name
         {
             get
             {
                 return _underlyingModule.Name;
             }
-        }
-
-        public override string GetDocumentationCommentXml(CultureInfo preferredCulture = null, bool expandIncludes = false, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return _underlyingModule.GetDocumentationCommentXml(preferredCulture, expandIncludes, cancellationToken);
         }
 
         public override Symbol ContainingSymbol

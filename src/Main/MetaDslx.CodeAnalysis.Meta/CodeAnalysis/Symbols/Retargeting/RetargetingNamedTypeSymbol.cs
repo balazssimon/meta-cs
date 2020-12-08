@@ -69,22 +69,22 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
             }
         }
 
-        public override ImmutableArray<Symbol> GetMembers()
+        public override ImmutableArray<DeclaredSymbol> GetMembers()
         {
             return this.RetargetingTranslator.Retarget(_underlyingType.GetMembers());
         }
 
-        internal override ImmutableArray<Symbol> GetMembersUnordered()
+        internal override ImmutableArray<DeclaredSymbol> GetMembersUnordered()
         {
             return this.RetargetingTranslator.Retarget(_underlyingType.GetMembersUnordered());
         }
 
-        public override ImmutableArray<Symbol> GetMembers(string name)
+        public override ImmutableArray<DeclaredSymbol> GetMembers(string name)
         {
             return this.RetargetingTranslator.Retarget(_underlyingType.GetMembers(name));
         }
 
-        public override ImmutableArray<Symbol> GetMembers(string name, string metadataName)
+        public override ImmutableArray<DeclaredSymbol> GetMembers(string name, string metadataName)
         {
             return this.RetargetingTranslator.Retarget(_underlyingType.GetMembers(name, metadataName));
         }
@@ -113,7 +113,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
         {
             get
             {
-                return this.RetargetingTranslator.Retarget(_underlyingType.ContainingSymbol);
+                var container = _underlyingType.ContainingSymbol as DeclaredSymbol;
+                if (container == null) return null;
+                else return this.RetargetingTranslator.Retarget(container);
             }
         }
 

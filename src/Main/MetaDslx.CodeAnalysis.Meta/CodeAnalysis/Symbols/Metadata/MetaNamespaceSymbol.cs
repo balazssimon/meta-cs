@@ -12,7 +12,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
     {
         private IModelObject _metaObject;
         private Symbol _container;
-        private ImmutableArray<Symbol> _lazyMembers;
+        private ImmutableArray<DeclaredSymbol> _lazyMembers;
         private ImmutableArray<NamedTypeSymbol> _lazyTypeMembers;
 
         public MetaNamespaceSymbol(IModelObject metaObject, Symbol container)
@@ -46,21 +46,21 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 
         public override IModelObject ModelObject => _metaObject;
 
-        public override ImmutableArray<Symbol> GetMembers()
+        public override ImmutableArray<DeclaredSymbol> GetMembers()
         {
             if (_lazyMembers.IsDefault)
             {
-                ImmutableInterlocked.InterlockedInitialize(ref _lazyMembers, MetaSymbolMap.GetSymbols(_metaObject.MChildren));
+                ImmutableInterlocked.InterlockedInitialize(ref _lazyMembers, MetaSymbolMap.GetMemberSymbols(_metaObject.MChildren));
             }
             return _lazyMembers;
         }
 
-        public override ImmutableArray<Symbol> GetMembers(string name)
+        public override ImmutableArray<DeclaredSymbol> GetMembers(string name)
         {
             return GetMembers().WhereAsArray(m => m.Name == name);
         }
 
-        public override ImmutableArray<Symbol> GetMembers(string name, string metadataName)
+        public override ImmutableArray<DeclaredSymbol> GetMembers(string name, string metadataName)
         {
             return GetMembers().WhereAsArray(m => m.Name == name && m.MetadataName == metadataName);
         }

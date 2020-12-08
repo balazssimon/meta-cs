@@ -23,7 +23,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             _state = state;
         }
 
-        public readonly ArrayBuilder<Symbol> NonTypeMembers = ArrayBuilder<Symbol>.GetInstance();
+        public readonly ArrayBuilder<DeclaredSymbol> NonTypeMembers = ArrayBuilder<DeclaredSymbol>.GetInstance();
         public readonly ArrayBuilder<NamedTypeSymbol> TypeMembers = ArrayBuilder<NamedTypeSymbol>.GetInstance();
 
         public Members ToReadOnlyAndFree()

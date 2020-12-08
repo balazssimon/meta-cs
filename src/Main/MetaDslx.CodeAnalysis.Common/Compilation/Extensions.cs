@@ -130,7 +130,7 @@ namespace Microsoft.CodeAnalysis
         /// UsingDirectiveSyntax</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The symbol declared by the node or null if the node is not a declaration.</returns>
-        public static ISymbol GetDeclaredSymbol(this SemanticModel semanticModel, SyntaxNode declaration, CancellationToken cancellationToken = default(CancellationToken))
+        public static IDeclaredSymbol GetDeclaredSymbol(this SemanticModel semanticModel, SyntaxNode declaration, CancellationToken cancellationToken = default(CancellationToken))
         {
             return semanticModel.GetDeclaredSymbolForNode(declaration, cancellationToken);
         }
@@ -141,7 +141,7 @@ namespace Microsoft.CodeAnalysis
         /// <param name="semanticModel"></param>
         /// <param name="node">The syntax node to get semantic information for.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        public static ImmutableArray<ISymbol> GetMemberGroup(this SemanticModel semanticModel, SyntaxNode node, CancellationToken cancellationToken = default(CancellationToken))
+        public static ImmutableArray<IDeclaredSymbol> GetMemberGroup(this SemanticModel semanticModel, SyntaxNode node, CancellationToken cancellationToken = default(CancellationToken))
         {
             return semanticModel.GetMemberGroup(node, cancellationToken);
         }

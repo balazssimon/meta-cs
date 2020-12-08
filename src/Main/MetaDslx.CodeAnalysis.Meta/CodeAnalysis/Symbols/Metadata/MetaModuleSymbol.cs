@@ -67,8 +67,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 
         public override ImmutableArray<Location> Locations => ImmutableArray<Location>.Empty;
 
-        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => ImmutableArray<SyntaxReference>.Empty;
-
         public override Machine Machine => Machine.Unknown;
 
         public override bool Bit32Required => false;

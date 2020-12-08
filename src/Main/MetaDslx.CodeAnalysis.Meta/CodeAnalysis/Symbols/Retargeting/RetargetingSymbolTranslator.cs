@@ -112,10 +112,10 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
                 }
             }
 
-            public Symbol Retarget(Symbol symbol)
+            public DeclaredSymbol Retarget(DeclaredSymbol symbol)
             {
                 Debug.Assert(symbol.Kind != LanguageSymbolKind.NamedType || ((NamedTypeSymbol)symbol).PrimitiveTypeCode == PrimitiveTypeCode.NotPrimitive);
-                return symbol.Accept(this, RetargetOptions.RetargetPrimitiveTypesByName);
+                return symbol.Accept(this, RetargetOptions.RetargetPrimitiveTypesByName) as DeclaredSymbol;
             }
 
             public MarshalPseudoCustomAttributeData Retarget(MarshalPseudoCustomAttributeData marshallingInfo)
@@ -367,9 +367,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
                         type.ErrorInfo ?? new LanguageDiagnosticInfo(InternalErrorCode.ERR_ErrorInReferencedAssembly, type.ContainingAssembly?.Identity.GetDisplayName() ?? string.Empty), true);
             }
 
-            public ImmutableArray<Symbol> Retarget(ImmutableArray<Symbol> arr)
+            public ImmutableArray<DeclaredSymbol> Retarget(ImmutableArray<DeclaredSymbol> arr)
             {
-                var symbols = ArrayBuilder<Symbol>.GetInstance(arr.Length);
+                var symbols = ArrayBuilder<DeclaredSymbol>.GetInstance(arr.Length);
 
                 foreach (var s in arr)
                 {

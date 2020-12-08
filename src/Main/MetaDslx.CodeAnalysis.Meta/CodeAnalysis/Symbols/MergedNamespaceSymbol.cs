@@ -39,12 +39,12 @@ namespace MetaDslx.CodeAnalysis.Symbols
         // The cachedLookup caches results of lookups on the constituent namespaces so that
         // subsequent lookups for the same name are much faster than having to ask each of the
         // constituent namespaces.
-        private readonly CachingDictionary<string, Symbol> _cachedLookup;
+        private readonly CachingDictionary<string, DeclaredSymbol> _cachedLookup;
 
         // GetMembers() is repeatedly called on merged namespaces in some IDE scenarios.
         // This caches the result that is built by asking the 'cachedLookup' for a concatenated
         // view of all of its values.
-        private ImmutableArray<Symbol> _allMembers;
+        private ImmutableArray<DeclaredSymbol> _allMembers;
 
         /// <summary>
         /// Create a possibly merged namespace symbol. If only a single namespace is passed it, it
@@ -89,7 +89,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             _extent = extent;
             _namespacesToMerge = namespacesToMerge;
             _containingNamespace = containingNamespace;
-            _cachedLookup = new CachingDictionary<string, Symbol>(SlowGetChildrenOfName, SlowGetChildNames, EqualityComparer<string>.Default);
+            _cachedLookup = new CachingDictionary<string, DeclaredSymbol>(SlowGetChildrenOfName, SlowGetChildNames, EqualityComparer<string>.Default);
             _nameOpt = nameOpt;
 
 #if DEBUG
@@ -128,15 +128,15 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// Method that is called from the CachingLookup to lookup the children of a given name.
         /// Looks in all the constituent namespaces.
         /// </summary>
-        private ImmutableArray<Symbol> SlowGetChildrenOfName(string name)
+        private ImmutableArray<DeclaredSymbol> SlowGetChildrenOfName(string name)
         {
             ArrayBuilder<NamespaceSymbol> namespaceSymbols = null;
-            var otherSymbols = ArrayBuilder<Symbol>.GetInstance();
+            var otherSymbols = ArrayBuilder<DeclaredSymbol>.GetInstance();
 
             // Accumulate all the child namespaces and types.
             foreach (NamespaceSymbol namespaceSymbol in _namespacesToMerge)
             {
-                foreach (Symbol childSymbol in namespaceSymbol.GetMembers(name))
+                foreach (DeclaredSymbol childSymbol in namespaceSymbol.GetMembers(name))
                 {
                     if (childSymbol.Kind == LanguageSymbolKind.Namespace)
                     {
@@ -177,9 +177,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return childNames;
         }
 
-        private ImmutableArray<Symbol> SlowGetAllMembers()
+        private ImmutableArray<DeclaredSymbol> SlowGetAllMembers()
         {
-            var members = ArrayBuilder<Symbol>.GetInstance();
+            var members = ArrayBuilder<DeclaredSymbol>.GetInstance();
 
             foreach (var ns in _namespacesToMerge)
             {
@@ -218,7 +218,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
         }
 
-        public override ImmutableArray<Symbol> GetMembers()
+        public override ImmutableArray<DeclaredSymbol> GetMembers()
         {
             // Return all the elements from every IGrouping in the ILookup.
             if (_allMembers.IsDefault)
@@ -229,7 +229,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return _allMembers;
         }
 
-        public override ImmutableArray<Symbol> GetMembers(string name)
+        public override ImmutableArray<DeclaredSymbol> GetMembers(string name)
         {
             return _cachedLookup[name];
         }

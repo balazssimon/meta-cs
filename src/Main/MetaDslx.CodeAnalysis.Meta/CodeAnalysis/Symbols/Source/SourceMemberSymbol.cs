@@ -86,22 +86,22 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => _declaration.SyntaxReferences;
 
-        public virtual ImmutableArray<Symbol> GetDeclaredChildren()
+        public virtual ImmutableArray<DeclaredSymbol> GetDeclaredChildren()
         {
             return GetMembers();
         }
 
-        internal override ImmutableArray<Symbol> GetMembersUnordered()
+        internal override ImmutableArray<DeclaredSymbol> GetMembersUnordered()
         {
             return this.SourceDeclaration.GetMembersUnordered();
         }
 
-        public override ImmutableArray<Symbol> GetMembers()
+        public override ImmutableArray<DeclaredSymbol> GetMembers()
         {
             return this.SourceDeclaration.GetMembers();
         }
 
-        public override ImmutableArray<Symbol> GetMembers(string name)
+        public override ImmutableArray<DeclaredSymbol> GetMembers(string name)
         {
             return this.SourceDeclaration.GetMembers(name);
         }

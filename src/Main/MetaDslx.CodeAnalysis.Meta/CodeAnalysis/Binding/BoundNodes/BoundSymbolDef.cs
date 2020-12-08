@@ -16,7 +16,7 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
     public class BoundSymbolDef : BoundSymbols
     {
         private Type _type;
-        private ImmutableArray<Symbol> _lazySymbols;
+        private ImmutableArray<DeclaredSymbol> _lazySymbols;
 
         public BoundSymbolDef(BoundKind kind, BoundTree boundTree, ImmutableArray<object> childBoundNodes, Type type, LanguageSyntaxNode syntax, bool hasErrors = false) 
             : base(kind, boundTree, childBoundNodes, syntax, hasErrors)
@@ -24,7 +24,7 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
             _type = type;
         }
 
-        public override ImmutableArray<Symbol> Symbols
+        public override ImmutableArray<DeclaredSymbol> Symbols
         {
             get
             {
@@ -39,16 +39,16 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
                         // Debug.Assert(symbol != null); // TODO:MetaDslx
                         if (symbol != null)
                         {
-                            ImmutableInterlocked.InterlockedInitialize(ref _lazySymbols, ImmutableArray.Create<Symbol>(symbol));
+                            ImmutableInterlocked.InterlockedInitialize(ref _lazySymbols, ImmutableArray.Create<DeclaredSymbol>(symbol));
                         }
                         else
                         {
-                            ImmutableInterlocked.InterlockedInitialize(ref _lazySymbols, ImmutableArray<Symbol>.Empty);
+                            ImmutableInterlocked.InterlockedInitialize(ref _lazySymbols, ImmutableArray<DeclaredSymbol>.Empty);
                         }
                     }
                     else
                     {
-                        var symbols = ArrayBuilder<Symbol>.GetInstance();
+                        var symbols = ArrayBuilder<DeclaredSymbol>.GetInstance();
                         foreach (var boundName in boundNames)
                         {
                             foreach (var qualifier in boundName.GetChildQualifiers())

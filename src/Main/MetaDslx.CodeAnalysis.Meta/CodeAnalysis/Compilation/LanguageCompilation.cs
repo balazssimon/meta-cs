@@ -2177,7 +2177,7 @@ namespace MetaDslx.CodeAnalysis
             this.ModelBuilder.EvaluateLazyValues(cancellationToken);
         }
 
-        private static bool IsDefinedOrImplementedInSourceTree(Symbol symbol, SyntaxTree tree, TextSpan? span)
+        private static bool IsDefinedOrImplementedInSourceTree(DeclaredSymbol symbol, SyntaxTree tree, TextSpan? span)
         {
             if (symbol.IsDefinedInSourceTree(tree, span))
             {
@@ -2567,7 +2567,7 @@ namespace MetaDslx.CodeAnalysis
             return new AnalyzerDriver<int>(analyzers, getKind, analyzerManager, isComment);
         }
 
-        internal void SymbolDeclaredEvent(Symbol symbol)
+        internal void SymbolDeclaredEvent(DeclaredSymbol symbol)
         {
             EventQueue?.TryEnqueue(new SymbolDeclaredCompilationEvent(this, symbol));
         }

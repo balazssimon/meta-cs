@@ -5,11 +5,12 @@ using MetaDslx.CodeAnalysis.Symbols;
 using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
 
-    public partial class Symbol
+    public partial class DeclaredSymbol
     {
         /// <summary>
         /// Checks if 'symbol' is accessible from within named type 'within'.  If 'symbol' is accessed off
@@ -17,7 +18,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// properly do protected access checks.
         /// </summary>
         public static bool IsSymbolAccessible(
-            Symbol symbol,
+            DeclaredSymbol symbol,
             NamedTypeSymbol within,
             NamedTypeSymbol throughTypeOpt = null)
         {
@@ -43,7 +44,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// Checks if 'symbol' is accessible from within assembly 'within'.  
         /// </summary>
         public static bool IsSymbolAccessible(
-            Symbol symbol,
+            DeclaredSymbol symbol,
             AssemblySymbol within)
         {
             if ((object)symbol == null)
@@ -59,5 +60,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
             HashSet<DiagnosticInfo> useSiteDiagnostics = null;
             return AccessCheck.IsSymbolAccessible(symbol, within, ref useSiteDiagnostics);
         }
+
     }
 }

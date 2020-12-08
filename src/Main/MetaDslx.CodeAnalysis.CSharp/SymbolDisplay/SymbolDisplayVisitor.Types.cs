@@ -257,7 +257,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
 
             //only visit the namespace if the style requires it and there isn't an enclosing type
-            var containingSymbol = symbol.ContainingSymbol;
+            var containingSymbol = symbol.ContainingSymbol as IDeclaredSymbol;
             if (ShouldVisitNamespace(containingSymbol))
             {
                 var namespaceSymbol = (INamespaceSymbol)containingSymbol;

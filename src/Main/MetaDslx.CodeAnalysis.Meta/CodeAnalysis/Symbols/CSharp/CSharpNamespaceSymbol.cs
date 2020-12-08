@@ -37,18 +37,18 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
 
         public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => _csharpSymbol.DeclaringSyntaxReferences;
 
-        public override ImmutableArray<Symbol> GetMembers()
+        public override ImmutableArray<DeclaredSymbol> GetMembers()
         {
             var csharpMembers = _csharpSymbol.GetMembers();
-            var builder = ArrayBuilder<Symbol>.GetInstance(csharpMembers.Length);
+            var builder = ArrayBuilder<DeclaredSymbol>.GetInstance(csharpMembers.Length);
             foreach (CSharpSymbol csharpMember in csharpMembers)
             {
-                builder.Add(CSharpSymbolMap.GetSymbol(csharpMember));
+                builder.Add((DeclaredSymbol)CSharpSymbolMap.GetSymbol(csharpMember));
             }
             return builder.ToImmutableAndFree();
         }
 
-        public override ImmutableArray<Symbol> GetMembers(string name)
+        public override ImmutableArray<DeclaredSymbol> GetMembers(string name)
         {
             return GetMembers().WhereAsArray(m => m.Name == name);
         }

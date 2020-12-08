@@ -44,7 +44,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
     ///     IList&lt;Symbol&gt; SemanticModel.LookupSymbols(CSharpSyntaxNode location, NamespaceOrTypeSymbol container = null, string name = null, int? arity = null, LookupOptions options = LookupOptions.Default, List&lt;Symbol> results = null);
     /// </pre>
     /// </summary>
-    public sealed class AliasSymbol : Symbol, IAliasSymbol
+    public sealed class AliasSymbol : DeclaredSymbol, IAliasSymbol
     {
         private readonly string _aliasName;
         private readonly Binder _binder;
@@ -370,6 +370,26 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         public override TResult Accept<TResult>(Microsoft.CodeAnalysis.SymbolVisitor<TResult> visitor)
         {
             return visitor.VisitAlias(this);
+        }
+
+        public override ImmutableArray<DeclaredSymbol> GetMembers()
+        {
+            return ImmutableArray<DeclaredSymbol>.Empty;
+        }
+
+        public override ImmutableArray<DeclaredSymbol> GetMembers(string name)
+        {
+            return ImmutableArray<DeclaredSymbol>.Empty;
+        }
+
+        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers()
+        {
+            return ImmutableArray<NamedTypeSymbol>.Empty;
+        }
+
+        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name)
+        {
+            return ImmutableArray<NamedTypeSymbol>.Empty;
         }
 
         #endregion

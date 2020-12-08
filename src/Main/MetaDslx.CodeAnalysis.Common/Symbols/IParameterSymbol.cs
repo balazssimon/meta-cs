@@ -13,7 +13,7 @@ namespace Microsoft.CodeAnalysis
     /// This interface is reserved for implementation by its associated APIs. We reserve the right to
     /// change it in the future.
     /// </remarks>
-    public interface IParameterSymbol : ISymbol
+    public interface IParameterSymbol : IDeclaredSymbol
     {
         /// <summary>
         /// Whether the parameter passed by value or by reference.

@@ -165,7 +165,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
 
                     return memberSet;
 
-                    void processMembers(IEnumerable<ISymbol> members)
+                    void processMembers(IEnumerable<IDeclaredSymbol> members)
                     {
                         foreach (var member in members)
                         {

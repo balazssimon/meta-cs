@@ -125,9 +125,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
             return new UnsupportedSymbol(csharpSymbol, GetSymbol(csharpSymbol.ContainingSymbol));
         }
 
-        public ImmutableArray<Symbol> GetSymbols(ImmutableArray<CSharpSymbol> csharpSymbols)
+        public ImmutableArray<DeclaredSymbol> GetMemberSymbols(ImmutableArray<CSharpSymbol> csharpSymbols)
         {
-            return csharpSymbols.Select(symbol => GetSymbol(symbol)).ToImmutableArray();
+            return csharpSymbols.Select(symbol => (DeclaredSymbol)GetSymbol(symbol)).ToImmutableArray();
         }
 
         public CSharpModuleSymbol RegisterModuleSymbol(CSharpModuleSymbol moduleSymbol)

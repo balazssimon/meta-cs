@@ -26,19 +26,19 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         bool INamespaceOrTypeSymbol.IsType => this.IsType;
 
-        ImmutableArray<ISymbol> INamespaceOrTypeSymbol.GetMembers()
+        ImmutableArray<IDeclaredSymbol> INamespaceOrTypeSymbol.GetMembers()
         {
-            return StaticCast<ISymbol>.From(this.GetMembers());
+            return StaticCast<IDeclaredSymbol>.From(this.GetMembers());
         }
 
-        ImmutableArray<ISymbol> INamespaceOrTypeSymbol.GetMembers(string name)
+        ImmutableArray<IDeclaredSymbol> INamespaceOrTypeSymbol.GetMembers(string name)
         {
-            return StaticCast<ISymbol>.From(this.GetMembers(name));
+            return StaticCast<IDeclaredSymbol>.From(this.GetMembers(name));
         }
 
-        ImmutableArray<ISymbol> IMetaNamespaceOrTypeSymbol.GetMembers(string name, string metadataName)
+        ImmutableArray<IDeclaredSymbol> IMetaNamespaceOrTypeSymbol.GetMembers(string name, string metadataName)
         {
-            return StaticCast<ISymbol>.From(this.GetMembers(name, metadataName));
+            return StaticCast<IDeclaredSymbol>.From(this.GetMembers(name, metadataName));
         }
 
         ImmutableArray<INamedTypeSymbol> INamespaceOrTypeSymbol.GetTypeMembers()

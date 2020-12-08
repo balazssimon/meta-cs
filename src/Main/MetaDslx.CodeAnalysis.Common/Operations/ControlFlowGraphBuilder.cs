@@ -2967,7 +2967,7 @@ oneMoreTime:
 
             if (method != null)
             {
-                foreach (ISymbol candidate in valueType.GetMembers(method.Name))
+                foreach (IDeclaredSymbol candidate in valueType.GetMembers(method.Name))
                 {
                     if (candidate.OriginalDefinition.Equals(method))
                     {

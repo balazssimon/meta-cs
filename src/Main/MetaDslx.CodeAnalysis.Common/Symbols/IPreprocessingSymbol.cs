@@ -9,7 +9,7 @@ namespace Microsoft.CodeAnalysis
     /// This interface is reserved for implementation by its associated APIs. We reserve the right to
     /// change it in the future.
     /// </remarks>
-    public interface IPreprocessingSymbol : ISymbol
+    public interface IPreprocessingSymbol : IDeclaredSymbol
     {
     }
 }

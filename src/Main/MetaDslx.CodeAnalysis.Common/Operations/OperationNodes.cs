@@ -4632,7 +4632,7 @@ namespace Microsoft.CodeAnalysis.Operations
     /// </summary>
     internal abstract partial class BaseMemberReferenceOperation : Operation, IMemberReferenceOperation
     {
-        protected BaseMemberReferenceOperation(ISymbol member, OperationKind kind, SemanticModel semanticModel, SyntaxNode syntax, ITypeSymbol type, Optional<object> constantValue, bool isImplicit) :
+        protected BaseMemberReferenceOperation(IDeclaredSymbol member, OperationKind kind, SemanticModel semanticModel, SyntaxNode syntax, ITypeSymbol type, Optional<object> constantValue, bool isImplicit) :
             base(kind, semanticModel, syntax, type, constantValue, isImplicit)
         {
             Member = member;
@@ -4645,7 +4645,7 @@ namespace Microsoft.CodeAnalysis.Operations
         /// <summary>
         /// Referenced member.
         /// </summary>
-        public ISymbol Member { get; }
+        public IDeclaredSymbol Member { get; }
     }
 
     /// <summary>

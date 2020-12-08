@@ -91,10 +91,10 @@ namespace MetaDslx.CodeAnalysis.Binding
         {
             Debug.Assert((object)symbol != null);
             Debug.Assert((object)within != null);
-            Debug.Assert(within.IsDefinition);
-            Debug.Assert(within is NamedTypeSymbol || within is AssemblySymbol);
+            Debug.Assert((within is NamedTypeSymbol nts && nts.IsDefinition) || within is AssemblySymbol);
 
             failedThroughTypeCheck = false;
+            var declaredSymbol = symbol as DeclaredSymbol;
 
             switch (symbol.Kind.Switch())
             {
@@ -125,7 +125,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
                 case LanguageSymbolKind.Operation:
                 case LanguageSymbolKind.Property:
-                    if (symbol.IsStatic)
+                    if (declaredSymbol.IsStatic)
                     {
                         // static members aren't accessed "through" an "instance" of any type.  So we
                         // null out the "through" instance here.  This ensures that we'll understand
@@ -133,7 +133,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                         throughTypeOpt = null;
                     }
 
-                    return IsMemberAccessible(symbol.ContainingType, symbol.DeclaredAccessibility, within, throughTypeOpt, out failedThroughTypeCheck, compilation, ref useSiteDiagnostics);
+                    return IsMemberAccessible(declaredSymbol.ContainingType, declaredSymbol.DeclaredAccessibility, within, throughTypeOpt, out failedThroughTypeCheck, compilation, ref useSiteDiagnostics);
 
                 case LanguageSymbolKind.None:
                     return false;

@@ -375,14 +375,14 @@ Done:
 
         #region INamespaceOrTypeSymbol Members
 
-        ImmutableArray<ISymbol> INamespaceOrTypeSymbol.GetMembers()
+        ImmutableArray<IDeclaredSymbol> INamespaceOrTypeSymbol.GetMembers()
         {
-            return StaticCast<ISymbol>.From(this.GetMembers());
+            return StaticCast<IDeclaredSymbol>.From(this.GetMembers());
         }
 
-        ImmutableArray<ISymbol> INamespaceOrTypeSymbol.GetMembers(string name)
+        ImmutableArray<IDeclaredSymbol> INamespaceOrTypeSymbol.GetMembers(string name)
         {
-            return StaticCast<ISymbol>.From(this.GetMembers(name));
+            return StaticCast<IDeclaredSymbol>.From(this.GetMembers(name));
         }
 
         ImmutableArray<INamedTypeSymbol> INamespaceOrTypeSymbol.GetTypeMembers()

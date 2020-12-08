@@ -334,7 +334,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             var members = GetCandidateMembers(constraints);
 
             Binder originalBinder = constraints.OriginalBinder;
-            foreach (Symbol member in members)
+            foreach (DeclaredSymbol member in members)
             {
                 SingleLookupResult resultOfThisMember = originalBinder.CheckViability(member, constraints);
                 result.MergeEqual(resultOfThisMember);
@@ -381,7 +381,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             LookupSymbolsOrMembersInternal(result, constraints);
 
             // Result without 'Attribute' suffix added.
-            Symbol symbolWithoutSuffix;
+            DeclaredSymbol symbolWithoutSuffix;
             bool resultWithoutSuffixIsViable = IsSingleViableAttributeType(result, out symbolWithoutSuffix);
 
             // Generic types are not allowed.
@@ -389,7 +389,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
             // Result with 'Attribute' suffix added.
             LookupResult resultWithSuffix = null;
-            Symbol symbolWithSuffix = null;
+            DeclaredSymbol symbolWithSuffix = null;
             bool resultWithSuffixIsViable = false;
             if (!constraints.Options.IsVerbatimNameAttributeTypeLookup())
             {
@@ -447,7 +447,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             resultWithSuffix?.Free();
         }
 
-        private bool IsAmbiguousResult(LookupResult result, out Symbol resultSymbol)
+        private bool IsAmbiguousResult(LookupResult result, out DeclaredSymbol resultSymbol)
         {
             resultSymbol = null;
             var symbols = result.Symbols;
@@ -473,7 +473,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             }
         }
 
-        private Symbol ResolveMultipleSymbolsInAttributeTypeLookup(ArrayBuilder<Symbol> symbols)
+        private DeclaredSymbol ResolveMultipleSymbolsInAttributeTypeLookup(ArrayBuilder<DeclaredSymbol> symbols)
         {
             Debug.Assert(symbols.Count >= 2);
 
@@ -506,7 +506,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             return null;
         }
 
-        private bool IsSingleViableAttributeType(LookupResult result, out Symbol symbol)
+        private bool IsSingleViableAttributeType(LookupResult result, out DeclaredSymbol symbol)
         {
             if (IsAmbiguousResult(result, out symbol))
             {
@@ -522,7 +522,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             return CheckAttributeTypeViability(UnwrapAliasNoDiagnostics(symbol), diagnose: false, diagInfo: ref discarded);
         }
 
-        private SingleLookupResult GenerateNonViableAttributeTypeResult(Symbol symbol, DiagnosticInfo diagInfo, bool diagnose)
+        private SingleLookupResult GenerateNonViableAttributeTypeResult(DeclaredSymbol symbol, DiagnosticInfo diagInfo, bool diagnose)
         {
             Debug.Assert((object)symbol != null);
 
@@ -531,7 +531,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             return LookupResult.NotAnAttributeType(symbol, diagInfo);
         }
 
-        public virtual bool CheckAttributeTypeViability(Symbol symbol, bool diagnose, ref DiagnosticInfo diagInfo)
+        public virtual bool CheckAttributeTypeViability(DeclaredSymbol symbol, bool diagnose, ref DiagnosticInfo diagInfo)
         {
             Debug.Assert((object)symbol != null);
 
@@ -584,7 +584,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         {
             var members = GetCandidateMembers(constraints);
 
-            foreach (Symbol member in members)
+            foreach (DeclaredSymbol member in members)
             {
                 // Do we need to exclude override members, or is that done later by overload resolution. It seems like
                 // not excluding them here can't lead to problems, because we will always find the overridden method as well.
@@ -753,11 +753,11 @@ namespace MetaDslx.CodeAnalysis.Binding
             return symbol.Kind == LanguageSymbolKind.Operation; // TODO:MetaDslx || symbol.IsIndexer();
         }
 
-        public static ImmutableArray<Symbol> GetCandidateMembers(LookupConstraints constraints)
+        public static ImmutableArray<DeclaredSymbol> GetCandidateMembers(LookupConstraints constraints)
         {
             if ((constraints.Options & LookupOptions.NamespacesOrTypesOnly) != 0 && constraints.QualifierOpt is TypeSymbol)
             {
-                return constraints.QualifierOpt.GetTypeMembers(constraints.Name).Cast<NamedTypeSymbol, Symbol>();
+                return constraints.QualifierOpt.GetTypeMembers(constraints.Name).Cast<NamedTypeSymbol, DeclaredSymbol>();
             }
             /* TODO:MetaDslx - else if (nsOrType.Kind == LanguageSymbolKind.NamedType && originalBinder.IsEarlyAttributeBinder)
             {
@@ -765,7 +765,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             }*/
             else if ((constraints.Options & LookupOptions.LabelsOnly) != 0)
             {
-                return ImmutableArray<Symbol>.Empty;
+                return ImmutableArray<DeclaredSymbol>.Empty;
             }
             else
             {
@@ -777,7 +777,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// <remarks>
         /// Distinguish from <see cref="CanAddLookupSymbolInfo"/>, which performs an analogous task for Add*LookupSymbolsInfo*.
         /// </remarks>
-        public virtual SingleLookupResult CheckViability(Symbol symbol, LookupConstraints constraints)
+        public virtual SingleLookupResult CheckViability(DeclaredSymbol symbol, LookupConstraints constraints)
         {
             bool inaccessibleViaQualifier;
             DiagnosticInfo diagInfo;
@@ -893,7 +893,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             }
         }
 
-        public void CheckViability<TSymbol>(LookupResult result, ImmutableArray<TSymbol> symbols, LookupConstraints constraints) where TSymbol : Symbol
+        public void CheckViability<TSymbol>(LookupResult result, ImmutableArray<TSymbol> symbols, LookupConstraints constraints) where TSymbol : DeclaredSymbol
         {
             foreach (var symbol in symbols)
             {
@@ -909,7 +909,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// <remarks>
         /// Does not consider <see cref="Symbol.CanBeReferencedByName"/> - that is left to the caller.
         /// </remarks>
-        public bool CanAddLookupSymbolInfo(Symbol symbol, LookupSymbolsInfo info, LookupConstraints constraints, AliasSymbol aliasSymbol = null)
+        public bool CanAddLookupSymbolInfo(DeclaredSymbol symbol, LookupSymbolsInfo info, LookupConstraints constraints, AliasSymbol aliasSymbol = null)
         {
             Debug.Assert(symbol.Kind != LanguageSymbolKind.Alias, "It is the caller's responsibility to unwrap aliased symbols.");
             Debug.Assert(aliasSymbol == null || aliasSymbol.GetAliasTarget(basesBeingResolved: null) == symbol);
@@ -965,16 +965,16 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// A symbol is accessible for referencing in a cref if it is in the same assembly as the reference
         /// or the symbols's effective visibility is not private.
         /// </summary>
-        private bool IsCrefAccessible(Symbol symbol)
+        private bool IsCrefAccessible(DeclaredSymbol symbol)
         {
             return !IsEffectivelyPrivate(symbol) || symbol.ContainingAssembly == this.Compilation.Assembly;
         }
 
-        private static bool IsEffectivelyPrivate(Symbol symbol)
+        private static bool IsEffectivelyPrivate(DeclaredSymbol symbol)
         {
             for (Symbol s = symbol; (object)s != null; s = s.ContainingSymbol)
             {
-                if (s.DeclaredAccessibility == Accessibility.Private)
+                if (s is DeclaredSymbol ds && ds.DeclaredAccessibility == Accessibility.Private)
                 {
                     return true;
                 }
@@ -987,7 +987,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// Check whether "symbol" is accessible from this binder.
         /// Also checks protected access via "accessThroughType".
         /// </summary>
-        public bool IsAccessible(Symbol symbol, ref HashSet<DiagnosticInfo> useSiteDiagnostics, TypeSymbol accessThroughType = null, ConsList<TypeSymbol> basesBeingResolved = null)
+        public bool IsAccessible(DeclaredSymbol symbol, ref HashSet<DiagnosticInfo> useSiteDiagnostics, TypeSymbol accessThroughType = null, ConsList<TypeSymbol> basesBeingResolved = null)
         {
             bool failedThroughTypeCheck;
             return IsAccessible(symbol, accessThroughType, out failedThroughTypeCheck, ref useSiteDiagnostics, basesBeingResolved);
@@ -998,7 +998,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// Also checks protected access via "accessThroughType", and sets "failedThroughTypeCheck" if fails
         /// the protected access check.
         /// </summary>
-        public bool IsAccessible(Symbol symbol, TypeSymbol accessThroughType, out bool failedThroughTypeCheck, ref HashSet<DiagnosticInfo> useSiteDiagnostics, ConsList<TypeSymbol> basesBeingResolved = null)
+        public bool IsAccessible(DeclaredSymbol symbol, TypeSymbol accessThroughType, out bool failedThroughTypeCheck, ref HashSet<DiagnosticInfo> useSiteDiagnostics, ConsList<TypeSymbol> basesBeingResolved = null)
         {
             if (this.Flags.Includes(BinderFlags.IgnoreAccessibility))
             {
@@ -1013,13 +1013,13 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// Should only be called by <see cref="IsAccessible(Symbol, TypeSymbol, out bool, ref HashSet{DiagnosticInfo}, ConsList{TypeSymbol})"/>,
         /// which will already have checked for <see cref="BinderFlags.IgnoreAccessibility"/>.
         /// </remarks>
-        public virtual bool IsAccessibleHelper(Symbol symbol, TypeSymbol accessThroughType, out bool failedThroughTypeCheck, ref HashSet<DiagnosticInfo> useSiteDiagnostics, ConsList<TypeSymbol> basesBeingResolved)
+        public virtual bool IsAccessibleHelper(DeclaredSymbol symbol, TypeSymbol accessThroughType, out bool failedThroughTypeCheck, ref HashSet<DiagnosticInfo> useSiteDiagnostics, ConsList<TypeSymbol> basesBeingResolved)
         {
             // By default, just delegate to containing binder.
             return Next.IsAccessibleHelper(symbol, accessThroughType, out failedThroughTypeCheck, ref useSiteDiagnostics, basesBeingResolved);
         }
 
-        public bool IsNonInvocableMember(Symbol symbol)
+        public bool IsNonInvocableMember(DeclaredSymbol symbol)
         {
             switch (symbol.Kind.Switch())
             {
@@ -1033,7 +1033,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             }
         }
 
-        private bool IsInvocableMember(Symbol symbol)
+        private bool IsInvocableMember(DeclaredSymbol symbol)
         {
             // If a member is a method or event, or if it is a constant, field or property of 
             // either a delegate type or the type dynamic, then the member is said to be invocable.
@@ -1051,7 +1051,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             return (object)type != null && type.IsDynamic();
         }
 
-        private static bool IsInstance(Symbol symbol)
+        private static bool IsInstance(DeclaredSymbol symbol)
         {
             switch (symbol.Kind.Switch())
             {

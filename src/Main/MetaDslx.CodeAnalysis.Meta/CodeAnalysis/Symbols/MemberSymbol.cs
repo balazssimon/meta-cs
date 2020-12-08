@@ -27,7 +27,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// ignoring any other overriding methods in base classes.
         /// </summary>
         /// <param name="accessingTypeOpt">The search must respect accessibility from this type.</param>
-        public override Symbol GetLeastOverriddenMember(NamedTypeSymbol accessingTypeOpt)
+        public override DeclaredSymbol GetLeastOverriddenMember(NamedTypeSymbol accessingTypeOpt)
         {
             var accessingType = ((object)accessingTypeOpt == null ? this.ContainingType : accessingTypeOpt).OriginalDefinition;
 
@@ -177,8 +177,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 return MakeInterfaceOverriddenOrHiddenMembers(member, isFromSomeCompilation);
             }*/
 
-            Symbol bestMatch = null;
-            ArrayBuilder<Symbol> hiddenBuilder = null;
+            DeclaredSymbol bestMatch = null;
+            ArrayBuilder<DeclaredSymbol> hiddenBuilder = null;
 
             foreach (var currType in containingType.AllBaseTypesNoUseSiteDiagnostics)
             {
@@ -196,11 +196,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
             // Based on bestMatch, find other methods that will be overridden, hidden, or runtime overridden
             // (in bestMatch.ContainingType).
-            ImmutableArray<Symbol> overriddenMembers;
-            ImmutableArray<Symbol> runtimeOverriddenMembers;
+            ImmutableArray<DeclaredSymbol> overriddenMembers;
+            ImmutableArray<DeclaredSymbol> runtimeOverriddenMembers;
             FindRelatedMembers(this.IsOverride, isFromSomeCompilation, this.Kind, bestMatch, out overriddenMembers, out runtimeOverriddenMembers, ref hiddenBuilder);
 
-            ImmutableArray<Symbol> hiddenMembers = hiddenBuilder == null ? ImmutableArray<Symbol>.Empty : hiddenBuilder.ToImmutableAndFree();
+            ImmutableArray<DeclaredSymbol> hiddenMembers = hiddenBuilder == null ? ImmutableArray<DeclaredSymbol>.Empty : hiddenBuilder.ToImmutableAndFree();
             return OverriddenOrHiddenMembersResult.Create(overriddenMembers, hiddenMembers, runtimeOverriddenMembers);
         }
 
@@ -224,13 +224,13 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// In incorrect or imported code, it is possible that both currTypeBestMatch and hiddenBuilder will be populated.
         /// </remarks>
         private static void FindOverriddenOrHiddenMembersInType(
-            Symbol member,
+            DeclaredSymbol member,
             bool memberIsFromSomeCompilation,
             NamedTypeSymbol memberContainingType,
             NamedTypeSymbol currType,
-            out Symbol currTypeBestMatch,
+            out DeclaredSymbol currTypeBestMatch,
             out bool currTypeHasSameKindNonMatch,
-            out ArrayBuilder<Symbol> hiddenBuilder)
+            out ArrayBuilder<DeclaredSymbol> hiddenBuilder)
         {
             currTypeBestMatch = null;
             currTypeHasSameKindNonMatch = false;
@@ -239,7 +239,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             bool currTypeHasExactMatch = false;
             LanguageSymbolKind memberKind = member.Kind;
 
-            foreach (Symbol otherMember in currType.GetMembers(member.Name))
+            foreach (DeclaredSymbol otherMember in currType.GetMembers(member.Name))
             {
                 if (!IsOverriddenSymbolAccessible(otherMember, memberContainingType))
                 {
@@ -274,13 +274,13 @@ namespace MetaDslx.CodeAnalysis.Symbols
             bool isOverride,
             bool overridingMemberIsFromSomeCompilation,
             LanguageSymbolKind overridingMemberKind,
-            Symbol representativeMember,
-            out ImmutableArray<Symbol> overriddenMembers,
-            out ImmutableArray<Symbol> runtimeOverriddenMembers,
-            ref ArrayBuilder<Symbol> hiddenBuilder)
+            DeclaredSymbol representativeMember,
+            out ImmutableArray<DeclaredSymbol> overriddenMembers,
+            out ImmutableArray<DeclaredSymbol> runtimeOverriddenMembers,
+            ref ArrayBuilder<DeclaredSymbol> hiddenBuilder)
         {
-            overriddenMembers = ImmutableArray<Symbol>.Empty;
-            runtimeOverriddenMembers = ImmutableArray<Symbol>.Empty;
+            overriddenMembers = ImmutableArray<DeclaredSymbol>.Empty;
+            runtimeOverriddenMembers = ImmutableArray<DeclaredSymbol>.Empty;
 
             if ((object)representativeMember != null)
             {
@@ -290,8 +290,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 {
                     if (needToSearchForRelated)
                     {
-                        ArrayBuilder<Symbol> overriddenBuilder = ArrayBuilder<Symbol>.GetInstance();
-                        ArrayBuilder<Symbol> runtimeOverriddenBuilder = ArrayBuilder<Symbol>.GetInstance();
+                        ArrayBuilder<DeclaredSymbol> overriddenBuilder = ArrayBuilder<DeclaredSymbol>.GetInstance();
+                        ArrayBuilder<DeclaredSymbol> runtimeOverriddenBuilder = ArrayBuilder<DeclaredSymbol>.GetInstance();
 
                         overriddenBuilder.Add(representativeMember);
                         runtimeOverriddenBuilder.Add(representativeMember);
@@ -303,7 +303,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                     }
                     else
                     {
-                        overriddenMembers = ImmutableArray.Create<Symbol>(representativeMember);
+                        overriddenMembers = ImmutableArray.Create<DeclaredSymbol>(representativeMember);
                         runtimeOverriddenMembers = overriddenMembers;
                     }
                 }
@@ -324,7 +324,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// Specifically, methods, properties, and types cannot hide constructors, destructors,
         /// operators, conversions, or accessors.
         /// </summary>
-        private static void AddHiddenMemberIfApplicable(ref ArrayBuilder<Symbol> hiddenBuilder, LanguageSymbolKind hidingMemberKind, Symbol hiddenMember)
+        private static void AddHiddenMemberIfApplicable(ref ArrayBuilder<DeclaredSymbol> hiddenBuilder, LanguageSymbolKind hidingMemberKind, DeclaredSymbol hiddenMember)
         {
             Debug.Assert((object)hiddenMember != null);
             AccessOrGetInstance(ref hiddenBuilder).Add(hiddenMember);
@@ -374,7 +374,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// way of communicating to CLR which method is the overridden one. We only run into this problem when the 
         /// parameters are generic.
         /// </param>
-        private static void FindOtherOverriddenMethodsInContainingType(Symbol representativeMember, bool overridingMemberIsFromSomeCompilation, ArrayBuilder<Symbol> overriddenBuilder, ArrayBuilder<Symbol> runtimeOverriddenBuilder)
+        private static void FindOtherOverriddenMethodsInContainingType(DeclaredSymbol representativeMember, bool overridingMemberIsFromSomeCompilation, ArrayBuilder<DeclaredSymbol> overriddenBuilder, ArrayBuilder<DeclaredSymbol> runtimeOverriddenBuilder)
         {
             Debug.Assert((object)representativeMember != null);
         }
@@ -400,12 +400,12 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// Will have all other members with the same signature (including custom modifiers) as 
         /// representativeMember added.
         /// </param>
-        private static void FindOtherHiddenMembersInContainingType(LanguageSymbolKind hidingMemberKind, Symbol representativeMember, ref ArrayBuilder<Symbol> hiddenBuilder)
+        private static void FindOtherHiddenMembersInContainingType(LanguageSymbolKind hidingMemberKind, DeclaredSymbol representativeMember, ref ArrayBuilder<DeclaredSymbol> hiddenBuilder)
         {
             Debug.Assert((object)representativeMember != null);
         }
 
-        private static bool MatchesOverride(Symbol member, Symbol otherMember)
+        private static bool MatchesOverride(DeclaredSymbol member, DeclaredSymbol otherMember)
         {
             return member.Kind == otherMember.Kind && member.ModelSymbolInfo == otherMember.ModelSymbolInfo && member.Name == otherMember.Name;
         }
@@ -416,7 +416,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// has been passed as a type argument).
         /// See DevDiv #11967 for an example.
         /// </remarks>
-        private static bool IsOverriddenSymbolAccessible(Symbol overridden, NamedTypeSymbol overridingContainingType)
+        private static bool IsOverriddenSymbolAccessible(DeclaredSymbol overridden, NamedTypeSymbol overridingContainingType)
         {
             HashSet<DiagnosticInfo> useSiteDiagnostics = null;
             return AccessCheck.IsSymbolAccessible(overridden.OriginalDefinition, overridingContainingType.OriginalDefinition, ref useSiteDiagnostics);

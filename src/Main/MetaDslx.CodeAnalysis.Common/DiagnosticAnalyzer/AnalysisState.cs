@@ -161,7 +161,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
             }
         }
 
-        private ImmutableArray<ISymbol> GetDeclaredSymbolsInTree(
+        private ImmutableArray<IDeclaredSymbol> GetDeclaredSymbolsInTree(
             SyntaxTree tree,
             Compilation compilation,
             Func<SyntaxTree, Compilation, CancellationToken, SemanticModel> getCachedSemanticModel,
@@ -171,12 +171,12 @@ namespace Microsoft.CodeAnalysis.Diagnostics
             var fullSpan = tree.GetRoot(cancellationToken).FullSpan;
             var declarationInfoBuilder = ArrayBuilder<DeclarationInfo>.GetInstance();
             model.ComputeDeclarationsInSpan(fullSpan, getSymbol: true, builder: declarationInfoBuilder, cancellationToken: cancellationToken);
-            ImmutableArray<ISymbol> result = declarationInfoBuilder.Select(declInfo => declInfo.DeclaredSymbol).Distinct().WhereNotNull().ToImmutableArray();
+            ImmutableArray<IDeclaredSymbol> result = declarationInfoBuilder.Select(declInfo => declInfo.DeclaredSymbol).Distinct().WhereNotNull().ToImmutableArray();
             declarationInfoBuilder.Free();
             return result;
         }
 
-        private static ImmutableArray<CompilationEvent> CreateCompilationEventsForTree(IEnumerable<ISymbol> declaredSymbols, SyntaxTree tree, Compilation compilation)
+        private static ImmutableArray<CompilationEvent> CreateCompilationEventsForTree(IEnumerable<IDeclaredSymbol> declaredSymbols, SyntaxTree tree, Compilation compilation)
         {
             var builder = ImmutableArray.CreateBuilder<CompilationEvent>();
             foreach (var symbol in declaredSymbols)

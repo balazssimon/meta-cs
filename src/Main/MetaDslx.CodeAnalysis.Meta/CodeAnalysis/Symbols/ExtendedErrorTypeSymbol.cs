@@ -23,7 +23,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         private readonly NamespaceOrTypeSymbol _containingSymbol;
         private readonly bool _unreported;
         public readonly bool VariableUsedBeforeDeclaration;
-        private readonly ImmutableArray<Symbol> _candidateSymbols;  // Best guess at what user meant, but was wrong.
+        private readonly ImmutableArray<DeclaredSymbol> _candidateSymbols;  // Best guess at what user meant, but was wrong.
         private readonly LookupResultKind _resultKind; // why the guessSymbols were wrong.
 
         internal ExtendedErrorTypeSymbol(LanguageCompilation compilation, string name, string metadataName, DiagnosticInfo errorInfo, bool unreported = false, bool variableUsedBeforeDeclaration = false)
@@ -50,7 +50,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             _resultKind = LookupResultKind.Empty;
         }
 
-        private ExtendedErrorTypeSymbol(NamespaceOrTypeSymbol containingSymbol, string name, string metadataName, DiagnosticInfo errorInfo, bool unreported, bool variableUsedBeforeDeclaration, ImmutableArray<Symbol> candidateSymbols, LookupResultKind resultKind)
+        private ExtendedErrorTypeSymbol(NamespaceOrTypeSymbol containingSymbol, string name, string metadataName, DiagnosticInfo errorInfo, bool unreported, bool variableUsedBeforeDeclaration, ImmutableArray<DeclaredSymbol> candidateSymbols, LookupResultKind resultKind)
         {
             _name = name;
             _errorInfo = errorInfo;
@@ -67,12 +67,12 @@ namespace MetaDslx.CodeAnalysis.Symbols
         {
         }
 
-        internal ExtendedErrorTypeSymbol(NamespaceOrTypeSymbol containingSymbol, Symbol guessSymbol, LookupResultKind resultKind, DiagnosticInfo errorInfo, bool unreported = false)
-            : this(containingSymbol, ImmutableArray.Create<Symbol>(guessSymbol), resultKind, errorInfo, guessSymbol.MetadataName, unreported)
+        internal ExtendedErrorTypeSymbol(NamespaceOrTypeSymbol containingSymbol, DeclaredSymbol guessSymbol, LookupResultKind resultKind, DiagnosticInfo errorInfo, bool unreported = false)
+            : this(containingSymbol, ImmutableArray.Create<DeclaredSymbol>(guessSymbol), resultKind, errorInfo, guessSymbol.MetadataName, unreported)
         {
         }
 
-        internal ExtendedErrorTypeSymbol(NamespaceOrTypeSymbol containingSymbol, ImmutableArray<Symbol> candidateSymbols, LookupResultKind resultKind, DiagnosticInfo errorInfo, string metadataName, bool unreported = false)
+        internal ExtendedErrorTypeSymbol(NamespaceOrTypeSymbol containingSymbol, ImmutableArray<DeclaredSymbol> candidateSymbols, LookupResultKind resultKind, DiagnosticInfo errorInfo, string metadataName, bool unreported = false)
             : this(containingSymbol, candidateSymbols[0].Name, metadataName, errorInfo, unreported)
         {
             _candidateSymbols = UnwrapErrorCandidates(candidateSymbols);
@@ -86,7 +86,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 new ExtendedErrorTypeSymbol(_containingSymbol, _name, _metadataName, _errorInfo, true, VariableUsedBeforeDeclaration, _candidateSymbols, _resultKind);
         }
 
-        private static ImmutableArray<Symbol> UnwrapErrorCandidates(ImmutableArray<Symbol> candidateSymbols)
+        private static ImmutableArray<DeclaredSymbol> UnwrapErrorCandidates(ImmutableArray<DeclaredSymbol> candidateSymbols)
         {
             var candidate = candidateSymbols.IsEmpty ? null : candidateSymbols[0] as ErrorTypeSymbol;
             return ((object)candidate != null && !candidate.CandidateSymbols.IsEmpty) ? candidate.CandidateSymbols : candidateSymbols;
@@ -108,7 +108,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
         }
 
-        public override ImmutableArray<Symbol> CandidateSymbols => _candidateSymbols.NullToEmpty();
+        public override ImmutableArray<DeclaredSymbol> CandidateSymbols => _candidateSymbols.NullToEmpty();
 
         public override bool Unreported
         {

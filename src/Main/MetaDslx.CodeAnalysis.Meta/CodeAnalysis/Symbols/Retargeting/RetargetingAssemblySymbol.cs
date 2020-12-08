@@ -137,11 +137,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
             }
         }
 
-        public override bool IsImplicitlyDeclared
-        {
-            get { return _underlyingAssembly.IsImplicitlyDeclared; }
-        }
-
         public override AssemblyIdentity Identity
         {
             get
@@ -155,11 +150,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
         internal override ImmutableArray<byte> PublicKey
         {
             get { return _underlyingAssembly.PublicKey; }
-        }
-
-        public override string GetDocumentationCommentXml(CultureInfo preferredCulture = null, bool expandIncludes = false, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return _underlyingAssembly.GetDocumentationCommentXml(preferredCulture, expandIncludes, cancellationToken);
         }
 
         public override ImmutableArray<ModuleSymbol> Modules
@@ -199,14 +189,14 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
         /// <param name="type"></param>
         /// <returns></returns>
         /// <remarks></remarks>
-        public override Symbol GetDeclaredSpecialSymbol(object key)
+        public override DeclaredSymbol GetDeclaredSpecialSymbol(object key)
         {
             // Cor library should not have any references and, therefore, should never be
             // wrapped by a RetargetingAssemblySymbol.
             throw ExceptionUtilities.Unreachable;
         }
 
-        public override ImmutableArray<Symbol> DeclaredSpecialSymbols => throw ExceptionUtilities.Unreachable;
+        public override ImmutableArray<DeclaredSymbol> DeclaredSpecialSymbols => throw ExceptionUtilities.Unreachable;
 
         internal override ImmutableArray<AssemblySymbol> GetNoPiaResolutionAssemblies()
         {

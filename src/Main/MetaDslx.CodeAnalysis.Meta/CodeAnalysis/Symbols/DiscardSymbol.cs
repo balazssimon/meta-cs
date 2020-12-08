@@ -23,15 +23,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         internal static DiscardSymbol CreateForTest(ITypeSymbol type) => new DiscardSymbol((TypeSymbol)type);
 
         public override Symbol ContainingSymbol => null;
-        public override Accessibility DeclaredAccessibility => Accessibility.NotApplicable;
-        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => ImmutableArray<SyntaxReference>.Empty;
-        public override bool IsAbstract => false;
-        public override bool IsExtern => false;
-        public override bool IsImplicitlyDeclared => true;
-        public override bool IsOverride => false;
-        public override bool IsSealed => false;
-        public override bool IsStatic => false;
-        public override bool IsVirtual => false;
         public override LanguageSymbolKind Kind => LanguageSymbolKind.Discard;
         public override ImmutableArray<Location> Locations => ImmutableArray<Location>.Empty;
         public override void Accept(SymbolVisitor visitor) => visitor.VisitDiscard(this);
@@ -54,5 +45,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         public override bool Equals(object obj) => obj is DiscardSymbol other && this.Type.Equals(other.Type);
         public override int GetHashCode() => this.Type.GetHashCode();
+
     }
 }

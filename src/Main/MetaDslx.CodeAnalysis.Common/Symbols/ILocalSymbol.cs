@@ -9,7 +9,7 @@ namespace Microsoft.CodeAnalysis
     /// This interface is reserved for implementation by its associated APIs. We reserve the right to
     /// change it in the future.
     /// </remarks>
-    public interface ILocalSymbol : ISymbol
+    public interface ILocalSymbol : IDeclaredSymbol
     {
         /// <summary>
         /// Gets the type of this local variable.

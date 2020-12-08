@@ -389,7 +389,7 @@ namespace Microsoft.CodeAnalysis
         /// UsingDirectiveSyntax</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The symbol declared by the node or null if the node is not a declaration.</returns>
-        internal ISymbol GetDeclaredSymbolForNode(SyntaxNode declaration, CancellationToken cancellationToken = default(CancellationToken))
+        internal IDeclaredSymbol GetDeclaredSymbolForNode(SyntaxNode declaration, CancellationToken cancellationToken = default(CancellationToken))
         {
             return GetDeclaredSymbolCore(declaration, cancellationToken);
         }
@@ -403,7 +403,7 @@ namespace Microsoft.CodeAnalysis
         /// UsingDirectiveSyntax</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The symbol declared by the node or null if the node is not a declaration.</returns>
-        protected abstract ISymbol GetDeclaredSymbolCore(SyntaxNode declaration, CancellationToken cancellationToken = default(CancellationToken));
+        protected abstract IDeclaredSymbol GetDeclaredSymbolCore(SyntaxNode declaration, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Gets the symbol associated with a declaration syntax node. Unlike <see cref="GetDeclaredSymbolForNode(SyntaxNode, CancellationToken)"/>,
@@ -416,7 +416,7 @@ namespace Microsoft.CodeAnalysis
         /// UsingDirectiveSyntax</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The symbols declared by the node.</returns>
-        internal ImmutableArray<ISymbol> GetDeclaredSymbolsForNode(SyntaxNode declaration, CancellationToken cancellationToken = default(CancellationToken))
+        internal ImmutableArray<IDeclaredSymbol> GetDeclaredSymbolsForNode(SyntaxNode declaration, CancellationToken cancellationToken = default(CancellationToken))
         {
             return GetDeclaredSymbolsCore(declaration, cancellationToken);
         }
@@ -432,7 +432,7 @@ namespace Microsoft.CodeAnalysis
         /// UsingDirectiveSyntax</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The symbols declared by the node.</returns>
-        protected abstract ImmutableArray<ISymbol> GetDeclaredSymbolsCore(SyntaxNode declaration, CancellationToken cancellationToken = default(CancellationToken));
+        protected abstract ImmutableArray<IDeclaredSymbol> GetDeclaredSymbolsCore(SyntaxNode declaration, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Gets the available named symbols in the context of the specified location and optional container. Only
@@ -754,7 +754,7 @@ namespace Microsoft.CodeAnalysis
         /// from which a method is then chosen; the chosen method or property is present in Symbol;
         /// all methods in the group that was consulted are placed in this property.
         /// </summary>
-        internal ImmutableArray<ISymbol> GetMemberGroup(SyntaxNode node, CancellationToken cancellationToken = default(CancellationToken))
+        internal ImmutableArray<IDeclaredSymbol> GetMemberGroup(SyntaxNode node, CancellationToken cancellationToken = default(CancellationToken))
         {
             return GetMemberGroupCore(node, cancellationToken);
         }
@@ -764,7 +764,7 @@ namespace Microsoft.CodeAnalysis
         /// from which a method is then chosen; the chosen method or property is present in Symbol;
         /// all methods in the group that was consulted are placed in this property.
         /// </summary>
-        protected abstract ImmutableArray<ISymbol> GetMemberGroupCore(SyntaxNode node, CancellationToken cancellationToken = default(CancellationToken));
+        protected abstract ImmutableArray<IDeclaredSymbol> GetMemberGroupCore(SyntaxNode node, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Given a position in the SyntaxTree for this SemanticModel returns the innermost Symbol

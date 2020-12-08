@@ -364,7 +364,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
                 return new ParameterInfo(type.Value, isRefOrOut);
             }
 
-            private TypeInfo? ParseType(ISymbol bindingContext)
+            private TypeInfo? ParseType(IDeclaredSymbol bindingContext)
             {
                 TypeInfo? result;
 
@@ -478,7 +478,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
                 }
             }
 
-            private TypeInfo? ParseIndexedTypeParameter(ISymbol bindingContext)
+            private TypeInfo? ParseIndexedTypeParameter(IDeclaredSymbol bindingContext)
             {
                 var startIndex = _index;
 
@@ -527,7 +527,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
                 return TypeInfo.CreateUnbound(startIndex);
             }
 
-            private TypeInfo? ParseNamedTypeParameter(ISymbol bindingContext)
+            private TypeInfo? ParseNamedTypeParameter(IDeclaredSymbol bindingContext)
             {
                 Debug.Assert(bindingContext != null);
 
@@ -561,7 +561,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
                 return null;
             }
 
-            private TypeInfo? ParseNamedType(ISymbol bindingContext)
+            private TypeInfo? ParseNamedType(IDeclaredSymbol bindingContext)
             {
                 INamespaceOrTypeSymbol containingSymbol = _compilation.GlobalNamespace;
 
@@ -642,7 +642,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
                 }
             }
 
-            private TypeInfo[] ParseTypeArgumentList(ISymbol bindingContext)
+            private TypeInfo[] ParseTypeArgumentList(IDeclaredSymbol bindingContext)
             {
                 Debug.Assert(PeekNextChar() == '<');
                 ++_index;
@@ -711,7 +711,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
                 }
             }
 
-            private ISymbol GetFirstMatchingIndexer(ImmutableArray<ISymbol> candidateMembers, ParameterInfo[] parameters)
+            private ISymbol GetFirstMatchingIndexer(ImmutableArray<IDeclaredSymbol> candidateMembers, ParameterInfo[] parameters)
             {
                 foreach (var symbol in candidateMembers)
                 {
@@ -725,7 +725,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
                 return null;
             }
 
-            private ImmutableArray<IMethodSymbol> GetMatchingMethods(ImmutableArray<ISymbol> candidateMembers, int? arity, ParameterInfo[] parameters, TypeInfo? returnType)
+            private ImmutableArray<IMethodSymbol> GetMatchingMethods(ImmutableArray<IDeclaredSymbol> candidateMembers, int? arity, ParameterInfo[] parameters, TypeInfo? returnType)
             {
                 var builder = new ArrayBuilder<IMethodSymbol>();
 
@@ -788,12 +788,15 @@ namespace Microsoft.CodeAnalysis.Diagnostics
                     return false;
                 }
 
-                var parameterType = BindParameterOrReturnType(symbol.ContainingSymbol, parameterInfo.Type);
+                var container = symbol.ContainingSymbol as IDeclaredSymbol;
+                if (container == null) return false;
+
+                var parameterType = BindParameterOrReturnType(container, parameterInfo.Type);
 
                 return parameterType != null && symbol.Type.Equals(parameterType);
             }
 
-            private ITypeSymbol BindParameterOrReturnType(ISymbol bindingContext, TypeInfo type)
+            private ITypeSymbol BindParameterOrReturnType(IDeclaredSymbol bindingContext, TypeInfo type)
             {
                 if (type.IsBound)
                 {
@@ -808,14 +811,14 @@ namespace Microsoft.CodeAnalysis.Diagnostics
                 return result?.Type;
             }
 
-            private static INamedTypeSymbol GetFirstMatchingNamedType(ImmutableArray<ISymbol> candidateMembers, int arity)
+            private static INamedTypeSymbol GetFirstMatchingNamedType(ImmutableArray<IDeclaredSymbol> candidateMembers, int arity)
             {
                 return (INamedTypeSymbol)candidateMembers.FirstOrDefault(s =>
                     s.Kind == SymbolKind.NamedType &&
                     ((INamedTypeSymbol)s).Arity == arity);
             }
 
-            private static INamespaceOrTypeSymbol GetFirstMatchingNamespaceOrType(ImmutableArray<ISymbol> candidateMembers)
+            private static INamespaceOrTypeSymbol GetFirstMatchingNamespaceOrType(ImmutableArray<IDeclaredSymbol> candidateMembers)
             {
                 return (INamespaceOrTypeSymbol)candidateMembers
                     .FirstOrDefault(s =>

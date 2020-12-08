@@ -35,7 +35,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             return Imports.Empty;
         }
 
-        public override bool IsAccessibleHelper(Symbol symbol, TypeSymbol accessThroughType, out bool failedThroughTypeCheck, ref HashSet<DiagnosticInfo> useSiteDiagnostics, ConsList<TypeSymbol> basesBeingResolved)
+        public override bool IsAccessibleHelper(DeclaredSymbol symbol, TypeSymbol accessThroughType, out bool failedThroughTypeCheck, ref HashSet<DiagnosticInfo> useSiteDiagnostics, ConsList<TypeSymbol> basesBeingResolved)
         {
             failedThroughTypeCheck = false;
             return IsSymbolAccessibleConditional(symbol, Compilation.Assembly, ref useSiteDiagnostics);

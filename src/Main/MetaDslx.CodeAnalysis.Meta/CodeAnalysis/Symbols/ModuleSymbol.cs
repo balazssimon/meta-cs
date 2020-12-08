@@ -90,84 +90,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         {
             get;
         }
-
-        /// <summary>
-        /// Returns 'NotApplicable'
-        /// </summary>
-        public sealed override Accessibility DeclaredAccessibility
-        {
-            get
-            {
-                return Accessibility.NotApplicable;
-            }
-        }
-
-        /// <summary>
-        /// Returns false because module can't be declared as 'static'.
-        /// </summary>
-        public sealed override bool IsStatic
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Returns false because module can't be virtual.
-        /// </summary>
-        public sealed override bool IsVirtual
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Returns false because module can't be overridden.
-        /// </summary>
-        public sealed override bool IsOverride
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Returns false because module can't be abstract.
-        /// </summary>
-        public sealed override bool IsAbstract
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Returns false because module can't be sealed.
-        /// </summary>
-        public sealed override bool IsSealed
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Returns false because module can't be defined externally.
-        /// </summary>
-        public sealed override bool IsExtern
-        {
-            get
-            {
-                return false;
-            }
-        }
-
         /// <summary>
         /// Returns data decoded from Obsolete attribute or null if there is no Obsolete attribute.
         /// This property returns ObsoleteAttributeData.Uninitialized if attribute arguments haven't been decoded yet.
@@ -175,14 +97,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public sealed override ObsoleteAttributeData ObsoleteAttributeData
         {
             get { return null; }
-        }
-
-        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences
-        {
-            get
-            {
-                return ImmutableArray<SyntaxReference>.Empty;
-            }
         }
 
         /// <summary>

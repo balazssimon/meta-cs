@@ -1165,8 +1165,8 @@ namespace Microsoft.CodeAnalysis
         /// helpful for more precisely diagnosing reasons for accessibility failure.</para>
         /// </remarks>
         public bool IsSymbolAccessibleWithin(
-            ISymbol symbol,
-            ISymbol within,
+            IDeclaredSymbol symbol,
+            IDeclaredSymbol within,
             ITypeSymbol throughType = null)
         {
             if (symbol is null)
@@ -1193,7 +1193,7 @@ namespace Microsoft.CodeAnalysis
 
             return IsSymbolAccessibleWithinCore(symbol, within, throughType);
 
-            void checkInCompilationReferences(ISymbol s, string parameterName)
+            void checkInCompilationReferences(IDeclaredSymbol s, string parameterName)
             {
                 var containingAssembly = computeContainingAssembly(s);
                 if (!assemblyIsInReferences(containingAssembly))
@@ -1244,7 +1244,7 @@ namespace Microsoft.CodeAnalysis
                 return false;
             }
 
-            IAssemblySymbol computeContainingAssembly(ISymbol s)
+            IAssemblySymbol computeContainingAssembly(IDeclaredSymbol s)
             {
                 while (true)
                 {

@@ -13,7 +13,7 @@ namespace Microsoft.CodeAnalysis
     /// This interface is reserved for implementation by its associated APIs. We reserve the right to
     /// change it in the future.
     /// </remarks>
-    public interface IMethodSymbol : ISymbol
+    public interface IMethodSymbol : IDeclaredSymbol
     {
         /// <summary>
         /// Gets what kind of method this is. There are several different kinds of things in the

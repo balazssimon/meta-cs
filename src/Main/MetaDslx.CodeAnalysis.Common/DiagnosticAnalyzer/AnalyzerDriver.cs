@@ -969,15 +969,16 @@ namespace Microsoft.CodeAnalysis.Diagnostics
 
             async Task onSymbolAndMembersProcessedAsync(ISymbol symbol, DiagnosticAnalyzer analyzer)
             {
-                if (AnalyzerActions.SymbolStartActionsCount == 0 || symbol.IsImplicitlyDeclared)
+                var declSymbol = symbol as IDeclaredSymbol;
+                if (AnalyzerActions.SymbolStartActionsCount == 0 || declSymbol == null || declSymbol.IsImplicitlyDeclared)
                 {
                     return;
                 }
 
                 _perSymbolAnalyzerActionsCache.TryRemove((symbol, analyzer), out _);
 
-                await processContainerOnMemberCompletedAsync(symbol.ContainingNamespace, symbol, analyzer).ConfigureAwait(false);
-                await processContainerOnMemberCompletedAsync(symbol.ContainingType, symbol, analyzer).ConfigureAwait(false);
+                await processContainerOnMemberCompletedAsync(declSymbol.ContainingNamespace, symbol, analyzer).ConfigureAwait(false);
+                await processContainerOnMemberCompletedAsync(declSymbol.ContainingType, symbol, analyzer).ConfigureAwait(false);
             }
 
             async Task processContainerOnMemberCompletedAsync(INamespaceOrTypeSymbol containerSymbol, ISymbol processedMemberSymbol, DiagnosticAnalyzer analyzer)
@@ -1389,7 +1390,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
         public bool HasSymbolStartedActions => this.AnalyzerActions.SymbolStartActionsCount > 0;
 
         private async Task<AnalyzerActions> GetPerSymbolAnalyzerActionsAsync(
-            ISymbol symbol,
+            IDeclaredSymbol symbol,
             AnalysisScope analysisScope,
             AnalysisState analysisStateOpt,
             CancellationToken cancellationToken)
@@ -1413,7 +1414,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
         }
 
         private async Task<AnalyzerActions> GetPerSymbolAnalyzerActionsAsync(
-            ISymbol symbol,
+            IDeclaredSymbol symbol,
             DiagnosticAnalyzer analyzer,
             AnalysisState analysisStateOpt,
             CancellationToken cancellationToken)
@@ -1440,16 +1441,16 @@ namespace Microsoft.CodeAnalysis.Diagnostics
 
             async Task<AnalyzerActions> getInheritedActionsAsync()
             {
-                if (symbol.ContainingSymbol != null)
+                if (symbol.ContainingSymbol is IDeclaredSymbol container)
                 {
                     // Get container symbol's per-symbol actions, which also forces its start actions to execute.
-                    var containerActions = await GetPerSymbolAnalyzerActionsAsync(symbol.ContainingSymbol, analyzer, analysisStateOpt, cancellationToken).ConfigureAwait(false);
+                    var containerActions = await GetPerSymbolAnalyzerActionsAsync(container, analyzer, analysisStateOpt, cancellationToken).ConfigureAwait(false);
                     if (containerActions != null)
                     {
                         // Don't inherit actions for nested type and namespace from its containing type and namespace respectively.
                         // However, note that we bail out **after** computing container's per-symbol actions above.
                         // This is done to ensure that we have executed symbol started actions for the container before our start actions are executed.
-                        if (symbol.ContainingSymbol.Kind != symbol.Kind)
+                        if (container.Kind != symbol.Kind)
                         {
                             // Don't inherit the symbol start and symbol end actions.
                             return new AnalyzerActions().Append(containerActions, appendSymbolStartAndSymbolEndActions: false);
@@ -1516,7 +1517,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
         [PerformanceSensitive(
             "https://github.com/dotnet/roslyn/pull/23637",
             AllowLocks = false)]
-        private bool IsGeneratedCodeSymbol(ISymbol symbol)
+        private bool IsGeneratedCodeSymbol(IDeclaredSymbol symbol)
         {
             if (_treatAllCodeAsNonGeneratedCode)
             {
