@@ -49,8 +49,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
         //public static readonly CompletionPart StartProperties = new CompletionPart(nameof(StartProperties));
         //public static readonly CompletionPart FinishProperties = new CompletionPart(nameof(FinishProperties));
 
-        public static readonly CompletionPart StartBoundNode = new CompletionPart(nameof(StartBoundNode));
-        public static readonly CompletionPart FinishBoundNode = new CompletionPart(nameof(FinishBoundNode));
+        //public static readonly CompletionPart StartBoundNode = new CompletionPart(nameof(StartBoundNode));
+        //public static readonly CompletionPart FinishBoundNode = new CompletionPart(nameof(FinishBoundNode));
 
         public static readonly CompletionPart AliasTarget = new CompletionPart(nameof(AliasTarget));
 
@@ -62,7 +62,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public static readonly ImmutableHashSet<CompletionPart> NamedTypeSymbolWithLocationAll =
             Combine(Attributes, StartBaseTypes, FinishBaseTypes, Members, TypeMembers/*, StartProperties, FinishProperties*/);
         public static readonly ImmutableHashSet<CompletionPart> NamedTypeSymbolAll = 
-            Combine(Attributes, StartBaseTypes, FinishBaseTypes, Members, TypeMembers/*, StartProperties, FinishProperties*/, StartBoundNode, FinishBoundNode, MembersCompleted);
+            Combine(Attributes, StartBaseTypes, FinishBaseTypes, Members, TypeMembers/*, StartProperties, FinishProperties, StartBoundNode, FinishBoundNode*/, MembersCompleted);
 
         public static readonly ImmutableHashSet<CompletionPart> ImportsAll =
             Combine(StartValidatingImports, FinishValidatingImports);
@@ -70,7 +70,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public static readonly ImmutableHashSet<CompletionPart> NamespaceSymbolWithLocationAll =
             Combine(Attributes, Members/*, StartProperties, FinishProperties*/);
         public static readonly ImmutableHashSet<CompletionPart> NamespaceSymbolAll =
-            Combine(Attributes, Members, MembersCompleted/*, StartProperties, FinishProperties*/, StartBoundNode, FinishBoundNode);
+            Combine(Attributes, Members, MembersCompleted/*, StartProperties, FinishProperties, StartBoundNode, FinishBoundNode*/);
 
         public static ImmutableHashSet<CompletionPart> Combine(params CompletionPart[] parts)
         {
@@ -96,8 +96,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
             builder.AddLast(CompletionPart.FinishValidatingImports);
             builder.AddLast(CompletionPart.AliasTarget);
             builder.AddLast(CompletionPart.MembersCompleted);
-            builder.AddLast(CompletionPart.StartBoundNode);
-            builder.AddLast(CompletionPart.FinishBoundNode);
+            //builder.AddLast(CompletionPart.StartBoundNode);
+            //builder.AddLast(CompletionPart.FinishBoundNode);
             //builder.AddLast(CompletionPart.StartProperties);
             //builder.AddLast(CompletionPart.FinishProperties);
             builder.AddLast(CompletionPart.Module);

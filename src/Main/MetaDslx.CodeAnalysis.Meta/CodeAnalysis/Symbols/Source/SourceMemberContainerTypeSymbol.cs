@@ -252,17 +252,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                     // proceed to the next iteration.
                     _state.NotePartComplete(CompletionPart.MembersCompleted);
                 }
-                else if (incompletePart == CompletionPart.StartBoundNode || incompletePart == CompletionPart.FinishBoundNode)
-                {
-                    if (_state.NotePartComplete(CompletionPart.StartBoundNode))
-                    {
-                        var diagnostics = DiagnosticBag.GetInstance();
-                        CompleteBoundNode(diagnostics, cancellationToken);
-                        var thisThreadCompleted = _state.NotePartComplete(CompletionPart.FinishBoundNode);
-                        Debug.Assert(thisThreadCompleted);
-                        diagnostics.Free();
-                    }
-                }
                 else if (incompletePart == null)
                 {
                     return;
@@ -290,16 +279,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         public override void CheckMembers(Dictionary<string, ImmutableArray<DeclaredSymbol>> result, DiagnosticBag diagnostics)
         {
             // TODO:MetaDslx
-        }
-
-        protected void CompleteBoundNode(DiagnosticBag diagnostics, CancellationToken cancellationToken)
-        {
-            foreach (var syntaxRef in _declaration.SyntaxReferences)
-            {
-                if (cancellationToken.IsCancellationRequested) return;
-                var boundNode = this.DeclaringCompilation.GetBoundNode<BoundSymbolDef>(syntaxRef.GetSyntax());
-                boundNode?.ForceComplete(cancellationToken);
-            }
         }
     }
 }

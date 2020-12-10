@@ -16,13 +16,46 @@ namespace MetaDslx.CodeAnalysis.Symbols
     public abstract partial class DeclaredSymbol : Symbol, IDeclaredSymbol
     {
         /// <summary>
+        /// Returns the nearest lexically enclosing declaration, or null if there is none.
+        /// </summary>
+        public virtual DeclaredSymbol ContainingDeclaration
+        {
+            get
+            {
+                Symbol container = this.ContainingSymbol;
+
+                while (container != null)
+                {
+                    DeclaredSymbol containerAsDeclaration = container as DeclaredSymbol;
+
+                    // NOTE: container could be null, so we do not check 
+                    //       whether containerAsType is not null, but 
+                    //       instead check if it did not change after 
+                    //       the cast.
+                    if ((object)containerAsDeclaration == (object)container)
+                    {
+                        // this should be relatively uncommon
+                        // most symbols that may be contained in a type
+                        // know their containing type and can override ContainingType
+                        // with a more precise implementation
+                        return containerAsDeclaration;
+                    }
+
+                    container = container.ContainingSymbol;
+                }
+
+                return null;
+            }
+        }
+
+        /// <summary>
         /// Returns the nearest lexically enclosing type, or null if there is none.
         /// </summary>
         public virtual NamedTypeSymbol ContainingType
         {
             get
             {
-                DeclaredSymbol container = this.ContainingSymbol as DeclaredSymbol;
+                DeclaredSymbol container = this.ContainingDeclaration;
 
                 NamedTypeSymbol containerAsType = container as NamedTypeSymbol;
 
@@ -53,7 +86,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         {
             get
             {
-                for (var container = this.ContainingSymbol; (object)container != null; container = container.ContainingSymbol)
+                for (var container = this.ContainingDeclaration; (object)container != null; container = container.ContainingDeclaration)
                 {
                     var ns = container as NamespaceSymbol;
                     if ((object)ns != null)

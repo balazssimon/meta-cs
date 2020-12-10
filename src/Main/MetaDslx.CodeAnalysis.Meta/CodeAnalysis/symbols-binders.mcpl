@@ -10,57 +10,30 @@ namespace MetaDslx.CodeAnalysis.Symbols
         LexicalSortKey GetLexicalSortKey();
 
         Symbol ContainingSymbol;
+        AssemblySymbol ContainingAssembly;
+        ModuleSymbol ContainingModule;
+        LanguageCompilation DeclaringCompilation;
 
         ImmutableArray<Location> Locations;
         ImmutableArray<AttributeData> GetAttributes();
-        bool IsFromCompilation(LanguageCompilation compilation);
-        bool Dangerous_IsFromSomeCompilation;
-        bool IsDefinedInSourceTree(SyntaxTree tree, TextSpan? definedWithinSpan, CancellationToken cancellationToken = default(CancellationToken));
-        string GetDocumentationCommentId();
-        string GetDocumentationCommentXml(CultureInfo preferredCulture = null, bool expandIncludes = false, CancellationToken cancellationToken = default(CancellationToken));
-        string GetDebuggerDisplay();
-
-        void AddDeclarationDiagnostics(DiagnosticBag diagnostics);
-        bool HasUseSiteError;
-        DiagnosticInfo GetUseSiteDiagnostic();
-        ErrorCode HighestPriorityUseSiteError;
-        bool HasUnsupportedMetadata;
-        DiagnosticInfo GetUseSiteDiagnosticForSymbolOrContainingType();
-        bool MergeUseSiteDiagnostics(ref DiagnosticInfo result, DiagnosticInfo info);
-        static bool ReportUseSiteDiagnostic(DiagnosticInfo info, DiagnosticBag diagnostics, Location location);
-        bool DeriveUseSiteDiagnosticFromType(ref DiagnosticInfo result, TypeSymbol type);
-        bool DeriveUseSiteDiagnosticFromCustomModifiers(ref DiagnosticInfo result, ImmutableArray<CustomModifier> customModifiers);
-        static bool GetUnificationUseSiteDiagnosticRecursive<T>(ref DiagnosticInfo result, ImmutableArray<T> types, Symbol owner, ref HashSet<TypeSymbol> checkedTypes) where T : TypeSymbol;
-        static bool GetUnificationUseSiteDiagnosticRecursive(ref DiagnosticInfo result, ImmutableArray<CustomModifier> modifiers, Symbol owner, ref HashSet<TypeSymbol> checkedTypes);
-
-        string ToDisplayString(SymbolDisplayFormat format = null);
-        ImmutableArray<SymbolDisplayPart> ToDisplayParts(SymbolDisplayFormat format = null);
-        string ToMinimalDisplayString(SemanticModel semanticModel, int position, SymbolDisplayFormat format = null);
-        ImmutableArray<SymbolDisplayPart> ToMinimalDisplayParts(SemanticModel semanticModel, int position, SymbolDisplayFormat format = null);
-
-        ThreeState ObsoleteState;
-        ObsoleteAttributeKind ObsoleteKind;
-        ObsoleteAttributeData ObsoleteAttributeData;
-        void ForceCompleteObsoleteAttribute();
-
-        void Accept(Microsoft.CodeAnalysis.SymbolVisitor visitor);
-        TResult Accept<TResult>(Microsoft.CodeAnalysis.SymbolVisitor<TResult> visitor);
-        void Accept(SymbolVisitor visitor);
-        TResult Accept<TResult>(SymbolVisitor<TResult> visitor);
-        TResult Accept<TArgument, TResult>(SymbolVisitor<TArgument, TResult> visitor, TArgument argument);
     }
 
     abstract symbol DeclaredSymbol : Symbol
     {
+        init(ContainingDeclaration, MergedDeclaration);
+    
+        DeclaredSymbol ContainingDeclaration;
         NamedTypeSymbol ContainingType;
         NamespaceSymbol ContainingNamespace;
-        AssemblySymbol ContainingAssembly;
-        LanguageCompilation DeclaringCompilation;
-        ModuleSymbol ContainingModule;
-        Symbol OriginalDefinition;
-        bool IsDefinition;
+
+        MergedDeclaration MergedDeclaration;
         ImmutableArray<SyntaxReference> DeclaringSyntaxReferences;
         Accessibility DeclaredAccessibility;
+
+        Symbol OriginalDefinition;
+        bool IsDefinition;
+        Symbol ConstructedFrom;
+
         bool IsStatic;
         bool IsVirtual;
         bool IsOverride;
@@ -68,24 +41,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         bool IsSealed;
         bool IsExtern;
         bool IsImplicitlyDeclared;
-        
-        static void ForceCompleteMemberByLocation(SourceLocation locationOpt, Symbol member, CancellationToken cancellationToken);
-        Symbol ConstructedFrom => this;
-        Symbol AsMember(NamedTypeSymbol newOwner);
-        Symbol GetLeastOverriddenMember(NamedTypeSymbol accessingTypeOpt);
-        Symbol GetConstructedLeastOverriddenMember(NamedTypeSymbol accessingTypeOpt);
-        
-        ImmutableArray<Symbol> GetMembers();
-        ImmutableArray<Symbol> GetMembersUnordered();
-        ImmutableArray<Symbol> GetMembers(string name);
-        ImmutableArray<Symbol> GetMembers(string name, string metadataName);
-        ImmutableArray<NamedTypeSymbol> GetTypeMembersUnordered();
-        ImmutableArray<NamedTypeSymbol> GetTypeMembers();
-        ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name);
-        ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name, string metadataName);
-        MergedDeclaration MergedDeclaration;
-        void CheckMembers(Dictionary<string, ImmutableArray<Symbol>> result, DiagnosticBag diagnostics);
-        DeclaredSymbol GetSourceMember(SyntaxNodeOrToken syntax);
     }
 
     abstract symbol AssemblySymbol : Symbol

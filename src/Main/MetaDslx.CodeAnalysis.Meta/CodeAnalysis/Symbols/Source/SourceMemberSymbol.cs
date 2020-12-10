@@ -218,17 +218,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                         goto done;
                     }
                 }
-                else if (incompletePart == CompletionPart.StartBoundNode || incompletePart == CompletionPart.FinishBoundNode)
-                {
-                    if (_state.NotePartComplete(CompletionPart.StartBoundNode))
-                    {
-                        var diagnostics = DiagnosticBag.GetInstance();
-                        CompleteBoundNode(diagnostics, cancellationToken);
-                        var thisThreadCompleted = _state.NotePartComplete(CompletionPart.FinishBoundNode);
-                        Debug.Assert(thisThreadCompleted);
-                        diagnostics.Free();
-                    }
-                }
                 else if (incompletePart == null)
                 {
                     return;

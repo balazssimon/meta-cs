@@ -49,6 +49,23 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public virtual IModelObject ModelObject => null;
 
         /// <summary>
+        /// Gets the name of this symbol. Symbols without a name return the empty string; null is
+        /// never returned.
+        /// </summary>
+        public virtual string Name => string.Empty;
+
+        /// <summary>
+        /// Gets the name of a symbol as it appears in metadata. Most of the time, this
+        /// is the same as the Name property, with the following exceptions:
+        /// 1) The metadata name of generic types includes the "`1", "`2" etc. suffix that
+        /// indicates the number of type parameters (it does not include, however, names of
+        /// containing types or namespaces).
+        /// 2) The metadata name of explicit interface names have spaces removed, compared to
+        /// the name property.
+        /// </summary>
+        public virtual string MetadataName => this.Name;
+        
+        /// <summary>
         /// True if this Symbol should be completed by calling ForceComplete.
         /// Intuitively, true for source entities (from any compilation).
         /// </summary>
@@ -66,23 +83,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
             Debug.Assert(!this.RequiresCompletion);
             return true;
         }
-
-        /// <summary>
-        /// Gets the name of this symbol. Symbols without a name return the empty string; null is
-        /// never returned.
-        /// </summary>
-        public virtual string Name => string.Empty;
-
-        /// <summary>
-        /// Gets the name of a symbol as it appears in metadata. Most of the time, this
-        /// is the same as the Name property, with the following exceptions:
-        /// 1) The metadata name of generic types includes the "`1", "`2" etc. suffix that
-        /// indicates the number of type parameters (it does not include, however, names of
-        /// containing types or namespaces).
-        /// 2) The metadata name of explicit interface names have spaces removed, compared to
-        /// the name property.
-        /// </summary>
-        public virtual string MetadataName => this.Name;
 
         /// <summary>
         /// Gets the kind of this symbol.
