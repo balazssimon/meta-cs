@@ -6474,9 +6474,9 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		}
 	}
 	
-	internal class MetaClassImpl : global::MetaDslx.Modeling.ImmutableObjectBase, MetaClass
+	public class MetaClassImpl : global::MetaDslx.Modeling.ImmutableObjectBase, MetaClass
 	{
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<MetaAttribute> attributes0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string documentation0;

@@ -43,6 +43,10 @@ namespace MetaDslx.Languages.Meta.Generator
         BuilderInstance,
         FactoryMethod,
         Implementation,
+        ImmutableInternalImpl,
+        BuilderInternalImpl,
+        ImmutableImplBase,
+        BuilderImplBase,
         ImmutableImpl,
         BuilderImpl,
         ImmutableOperation,
@@ -310,6 +314,18 @@ namespace MetaDslx.Languages.Meta.Generator
                 case ClassKind.Builder:
                 case ClassKind.BuilderOperation:
                     result = result + "Builder";
+                    break;
+                case ClassKind.ImmutableInternalImpl:
+                    result = result + "InternalImpl";
+                    break;
+                case ClassKind.BuilderInternalImpl:
+                    result = result + "BuilderInternalImpl";
+                    break;
+                case ClassKind.ImmutableImplBase:
+                    result = result + "ImplBase";
+                    break;
+                case ClassKind.BuilderImplBase:
+                    result = result + "BuilderImplBase";
                     break;
                 case ClassKind.ImmutableImpl:
                     result = result + "Impl";

@@ -6,7 +6,7 @@ using System.IO;
 using System.Text;
 
 namespace MetaDslx.Bootstrap
-{
+{/*
     public class MetaGeneratorBootstrap
     {
         private string _mgenFileName;
@@ -41,5 +41,5 @@ namespace MetaDslx.Bootstrap
                 Console.WriteLine(ex);
             }
         }
-    }
+    }*/
 }

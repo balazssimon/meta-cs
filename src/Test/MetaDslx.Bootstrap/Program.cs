@@ -189,7 +189,7 @@ namespace MetaDslx.Bootstrap
 
             //*/
 
-            /*/
+            //*/
             ImmutableMetaModelGenerator mmgen = new ImmutableMetaModelGenerator(compiledModel.Objects);
             string generatedCsharpModel = mmgen.Generate();
             File.WriteAllText("Model.cs.txt", generatedCsharpModel);
@@ -335,6 +335,35 @@ namespace MetaDslx.Bootstrap
                 File.WriteAllText(@"..\..\..\CallLogger.txt", log);
             }
 
+            /*/
+
+            ObjectPoolItemImplD d1 = null;
+            ObjectPoolItemImplD._AllocateRoot(ref d1, new object());
+            Console.WriteLine(d1._Id);
+            Console.WriteLine(d1.ObjectPoolItemZ._Id);
+
+            Console.WriteLine(d1.ObjectPoolItemZ._Id);
+            Console.WriteLine(d1.ObjectPoolItemA.ObjectPoolItemZ._Id);
+            Console.WriteLine(d1.ObjectPoolItemA._Id);
+            Console.WriteLine(d1.ObjectPoolItemB.ObjectPoolItemZ._Id);
+            Console.WriteLine(d1.ObjectPoolItemB._Id);
+            Console.WriteLine(d1.ObjectPoolItemC._Id);
+            Console.WriteLine(d1.ObjectPoolItemD._Id);
+            d1._Free();
+
+            ObjectPoolItemImplD d2 = null;
+            ObjectPoolItemImplD._AllocateRoot(ref d2, new object());
+            Console.WriteLine(d2._Id);
+            Console.WriteLine(d2.ObjectPoolItemB._Id);
+
+            Console.WriteLine(d2.ObjectPoolItemZ._Id);
+            Console.WriteLine(d2.ObjectPoolItemA.ObjectPoolItemZ._Id);
+            Console.WriteLine(d2.ObjectPoolItemA._Id);
+            Console.WriteLine(d2.ObjectPoolItemB.ObjectPoolItemZ._Id);
+            Console.WriteLine(d2.ObjectPoolItemB._Id);
+            Console.WriteLine(d2.ObjectPoolItemC._Id);
+            Console.WriteLine(d2.ObjectPoolItemD._Id);
+            d2._Free();
             //*/
         }
 

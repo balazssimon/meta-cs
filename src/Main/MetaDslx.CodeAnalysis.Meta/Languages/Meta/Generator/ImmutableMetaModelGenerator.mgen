@@ -885,10 +885,9 @@ function string GetClassParameters(MetaModel model, MetaClass cls, MetaOperation
 end function
 
 function string GetClassImplCallParameterNames(MetaModel model, MetaOperation op, ClassKind kind)
-	string result = "this";
-	string delim = ", ";
-	loop(op->param:Parameters)
-		result += delim+param.Name;
+	string result = "";
+	loop(op->param:Parameters; separator delim = ", ")
+		result += param.Name+delim;
 	end loop
 	return result;
 end function
@@ -932,12 +931,12 @@ internal class [cls.CSharpName(model, ClassKind.Id)] : [Properties.CoreNs].Objec
 ^
 	public override [Properties.CoreNs].ImmutableObjectBase CreateImmutable([Properties.CoreNs].ImmutableModel model)
 	{
-		return new [cls.CSharpName(model, ClassKind.ImmutableImpl)](this, model);
+		return new [cls.CSharpName(model, ClassKind.ImmutableInternalImpl)](this, model);
 	}
 ^
 	public override [Properties.CoreNs].MutableObjectBase CreateMutable([Properties.CoreNs].MutableModel model, bool creating)
 	{
-		return new [cls.CSharpName(model, ClassKind.BuilderImpl)](this, model, creating);
+		return new [cls.CSharpName(model, ClassKind.BuilderInternalImpl)](this, model, creating);
 	}
 }
 end template
@@ -1093,16 +1092,31 @@ function string GetBuilderAncestors(MetaModel model, MetaClass cls)
 	return result;
 end function
 
+function string GetImmutableImplAncestors(MetaModel model, MetaClass cls)
+	string result = "";
+	loop(cls->super:SuperClasses; separator delim = ", ")
+		result += "I"+super.CSharpName(model, ClassKind.ImmutableImpl, true)+delim;
+	end loop
+	if (result != "")
+		result += ", ";
+	end if
+	result = " : "+result+cls.CSharpName(model, ClassKind.Immutable, true);
+	return result;
+end function
+
 template GenerateImmutableImplClass(MetaModel model, MetaClass cls)
 [bool metaMetaModel = model.IsMetaMetaModel()]
 [string metaNs = metaMetaModel ? "" : Properties.MetaNs + "."]
-internal class [cls.CSharpName(model, ClassKind.ImmutableImpl)] : [Properties.CoreNs].ImmutableObjectBase, [cls.CSharpName(model, ClassKind.Immutable)]
+internal class [cls.CSharpName(model, ClassKind.ImmutableInternalImpl)] : [Properties.CoreNs].ImmutableObjectBase, [cls.CSharpName(model, ClassKind.Immutable)]
 {
+	["[DebuggerBrowsable(DebuggerBrowsableState.Never)]"]
+	private [cls.CSharpName(model, ClassKind.ImmutableImpl)] _impl;
+	^
 	[loop(cls->prop:GetAllProperties())]
 	[GenerateImmutableField(model, cls, prop)]
 	[end loop]
 	^
-	internal [cls.CSharpName(model, ClassKind.ImmutableImpl)]([Properties.CoreNs].ObjectId id, [Properties.CoreNs].ImmutableModel model)
+	internal [cls.CSharpName(model, ClassKind.ImmutableInternalImpl)]([Properties.CoreNs].ObjectId id, [Properties.CoreNs].ImmutableModel model)
 		: base(id, model)
 	{
 	}
@@ -1140,11 +1154,11 @@ internal class [cls.CSharpName(model, ClassKind.ImmutableImpl)] : [Properties.Co
 	[end loop]
 	[loop(cls->prop:GetAllProperties())]
 	^
-	[GenerateImmutablePropertyImpl(model, cls, prop)]
+	[GenerateImmutablePropertyInternalImpl(model, cls, prop)]
 	[end loop]
 	[loop(cls->op:GetAllOperations() where !op.IsBuilder)]
 	^
-	[GenerateImmutableOperationImpl(model, cls, op)]
+	[GenerateImmutableOperationInternalImpl(model, cls, op)]
 	[end loop]
 
 	[if (metaMetaModel && cls.Name == "MetaModel")]
@@ -1163,6 +1177,87 @@ internal class [cls.CSharpName(model, ClassKind.ImmutableImpl)] : [Properties.Co
 	}
 	[end if]
 }
+^
+public interface I[cls.CSharpName(model, ClassKind.ImmutableImpl)][GetImmutableImplAncestors(model, cls)]
+{
+	[cls.CSharpName(model, ClassKind.ImmutableImpl)] _Base[cls.CSharpName(model, ClassKind.Immutable)] { get; }
+}
+^
+public abstract class [cls.CSharpName(model, ClassKind.ImmutableImplBase)] : global::MetaDslx.Modeling.Internal.ImmutableObjectPoolItem<I[cls.CSharpName(model, ClassKind.ImmutableImpl)], [cls.CSharpName(model, ClassKind.ImmutableImpl)], [cls.CSharpName(model, ClassKind.Immutable)]>, I[cls.CSharpName(model, ClassKind.ImmutableImpl)]
+{
+	[loop(cls->sup:GetAllSuperClasses(false))]
+	["[DebuggerBrowsable(DebuggerBrowsableState.Never)]"]
+    private [sup.CSharpName(model, ClassKind.ImmutableImpl, true)] _base[sup.CSharpName(model, ClassKind.Immutable)];
+	["[DebuggerBrowsable(DebuggerBrowsableState.Never)]"]
+    public [sup.CSharpName(model, ClassKind.ImmutableImpl, true)] _Base[sup.CSharpName(model, ClassKind.Immutable)] => object.ReferenceEquals(this, _RootObject) ? [sup.CSharpName(model, ClassKind.ImmutableImpl, true)]._Allocate(ref _base[sup.CSharpName(model, ClassKind.Immutable)], _RootObject, _This) : _RootObject._Base[sup.CSharpName(model, ClassKind.Immutable)];
+	[end loop]
+	["[DebuggerBrowsable(DebuggerBrowsableState.Never)]"]
+	public abstract [cls.CSharpName(model, ClassKind.ImmutableImpl)] _Base[cls.CSharpName(model, ClassKind.Immutable)] { get; }
+	^
+    public override bool _Free()
+    {
+        if (base._Free())
+        {
+			[loop(cls->sup:GetAllSuperClasses(false))]
+            [sup.CSharpName(model, ClassKind.ImmutableImpl, true)]._Free(ref _base[sup.CSharpName(model, ClassKind.Immutable)]);
+			[end loop]
+            return true;
+        }
+        return false;
+    }
+	^
+	public [cls.CSharpName(model, ClassKind.Builder)] ToMutable()
+	{
+		return _This.ToMutable();
+	}
+	^
+	public [cls.CSharpName(model, ClassKind.Builder)] ToMutable([Properties.CoreNs].MutableModel model)
+	{
+		return _This.ToMutable(model);
+	}
+	[loop(cls->sup:GetAllSuperClasses(false))]
+	^
+	[sup.CSharpName(model, ClassKind.Builder, true)] [sup.CSharpName(model, ClassKind.Immutable, true)].ToMutable()
+	{
+		return this.ToMutable();
+	}
+	^
+	[sup.CSharpName(model, ClassKind.Builder, true)] [sup.CSharpName(model, ClassKind.Immutable, true)].ToMutable([Properties.CoreNs].MutableModel model)
+	{
+		return this.ToMutable(model);
+	}
+	[end loop]
+	[loop(cls->prop:GetAllProperties())]
+	^
+	[GenerateImmutablePropertyImplBase(model, cls, prop)]
+	[end loop]
+	[loop(cls->op:GetAllOperations() where !op.IsBuilder)]
+	^
+	[GenerateImmutableOperationImplBase(model, cls, op)]
+	[end loop]
+
+	[if (metaMetaModel && cls.Name == "MetaModel")]
+	[Properties.CoreNs].ModelId [Properties.CoreNs].IModel.Id => _This.Id;
+	string [Properties.CoreNs].IModel.Name => _This.Name;
+	[Properties.CoreNs].ModelVersion [Properties.CoreNs].IModel.Version => _This.Version;
+	global::System.Collections.Generic.IEnumerable<global::MetaDslx.Modeling.IModelObject> [Properties.CoreNs].IModel.Objects => _This.Objects;
+	string [Properties.CoreNs].IMetaModel.Uri => _This.Uri;
+	string [Properties.CoreNs].IMetaModel.Prefix => _This.Prefix;
+	[Properties.CoreNs].IModelGroup [Properties.CoreNs].IModel.ModelGroup => _This.ModelGroup;
+	string [Properties.CoreNs].IMetaModel.Namespace => _This.Namespace.FullName;
+^
+	public [Properties.CoreNs].IModelFactory CreateFactory([Properties.CoreNs].MutableModel model, [Properties.CoreNs].ModelFactoryFlags flags = [Properties.CoreNs].ModelFactoryFlags.None)
+	{
+		return new [model.CSharpName(ModelKind.Factory)](model, flags);
+	}
+	[end if]
+}
+^
+public partial class [cls.CSharpName(model, ClassKind.ImmutableImpl)] : [cls.CSharpName(model, ClassKind.ImmutableImplBase)]
+{
+	["[DebuggerBrowsable(DebuggerBrowsableState.Never)]"]
+	public override [cls.CSharpName(model, ClassKind.ImmutableImpl)] _Base[cls.CSharpName(model, ClassKind.Immutable)] => this;
+}
 end template
 
 template GenerateImmutableField(MetaModel model, MetaClass cls, MetaProperty prop)
@@ -1170,7 +1265,7 @@ template GenerateImmutableField(MetaModel model, MetaClass cls, MetaProperty pro
 private [prop.Type.CSharpName(model, ClassKind.Immutable, true)] [prop.GetFieldName(cls)];
 end template
 
-template GenerateImmutablePropertyImpl(MetaModel model, MetaClass cls, MetaProperty prop)
+template GenerateImmutablePropertyInternalImpl(MetaModel model, MetaClass cls, MetaProperty prop)
 ^
 [if (cls.GetAllFinalProperties().Contains(prop))]
 public [prop.Type.CSharpName(model, ClassKind.Immutable, true)] [prop.Name]
@@ -1193,37 +1288,103 @@ public [prop.Type.CSharpName(model, ClassKind.Immutable, true)] [prop.Name]
 }
 end template
 
-template GenerateImmutableOperationImpl(MetaModel model, MetaClass cls, MetaOperation op)
+template GenerateImmutablePropertyImplBase(MetaModel model, MetaClass cls, MetaProperty prop)
+^
+[if (cls.GetAllFinalProperties().Contains(prop))]
+public [prop.Type.CSharpName(model, ClassKind.Immutable, true)] [prop.Name] => _This.[prop.Name];
+[else]
+["[DebuggerBrowsable(DebuggerBrowsableState.Never)]"]
+[prop.Type.CSharpName(model, ClassKind.Immutable, true)] [prop.Class.CSharpName(model, ClassKind.Immutable, true)].[prop.Name] => _This.[prop.Name];
+[end if]
+end template
+
+template GenerateImmutableOperationInternalImpl(MetaModel model, MetaClass cls, MetaOperation op)
 ^
 [op.ReturnType.CSharpName(model, ClassKind.ImmutableOperation, true)] [op.Class.CSharpName(model, ClassKind.Immutable, true)].[op.Name]([GetClassParameters(model, op.Class, op, ClassKind.ImmutableOperation)])
 {
 [var finalOp = GetFinalOperation(cls, op)]
-    [GetReturn(finalOp.ReturnType.CSharpName(model, ClassKind.ImmutableOperation))][model.CSharpName(ModelKind.ImplementationProvider)].Implementation.[finalOp.Class.CSharpName(model, ClassKind.Immutable)]_[finalOp.Name]([GetClassImplCallParameterNames(model, finalOp, ClassKind.ImmutableOperation)]);
+	[cls.CSharpName(model, ClassKind.ImmutableImpl)]._AllocateRoot(ref _impl, this);
+	try
+	{
+		[GetReturn(finalOp.ReturnType.CSharpName(model, ClassKind.ImmutableOperation))]_impl.[finalOp.Name]([GetClassImplCallParameterNames(model, finalOp, ClassKind.ImmutableOperation)]);
+	}
+	finally
+	{
+		[cls.CSharpName(model, ClassKind.ImmutableImpl)]._Free(ref _impl);
+	}
 }
 end template
+
+template GenerateImmutableOperationImplBase(MetaModel model, MetaClass cls, MetaOperation op)
+^
+[var finalOp = GetFinalOperation(cls, op)]
+[if (object.ReferenceEquals(cls, op.Class))]
+public abstract [op.ReturnType.CSharpName(model, ClassKind.ImmutableOperation, true)] [op.Name]([GetClassParameters(model, op.Class, op, ClassKind.ImmutableOperation)]);
+[else]
+	[if (object.ReferenceEquals(op, finalOp))]
+public [op.ReturnType.CSharpName(model, ClassKind.ImmutableOperation, true)] [op.Name]([GetClassParameters(model, op.Class, op, ClassKind.ImmutableOperation)])
+	[else]
+[op.ReturnType.CSharpName(model, ClassKind.ImmutableOperation, true)] [op.Class.CSharpName(model, ClassKind.Immutable, true)].[op.Name]([GetClassParameters(model, op.Class, op, ClassKind.ImmutableOperation)])
+	[end if]
+{
+    [GetReturn(finalOp.ReturnType.CSharpName(model, ClassKind.ImmutableOperation))]this.[finalOp.Name]([GetClassImplCallParameterNames(model, finalOp, ClassKind.ImmutableOperation)]);
+}
+[end if]
+end template
+
+function string GetBuilderImplAncestors(MetaModel model, MetaClass cls)
+	string result = "";
+	loop(cls->super:SuperClasses; separator delim = ", ")
+		result += "I"+super.CSharpName(model, ClassKind.BuilderImpl, true)+delim;
+	end loop
+	if (result != "")
+		result += ", ";
+	end if
+	result = " : "+result+cls.CSharpName(model, ClassKind.Builder, true);
+	return result;
+end function
 
 template GenerateBuilderImplClass(MetaModel model, MetaClass cls)
 [bool metaMetaModel = model.IsMetaMetaModel()]
 [string metaNs = metaMetaModel ? "" : Properties.MetaNs + "."]
-internal class [cls.CSharpName(model, ClassKind.BuilderImpl)] : [Properties.CoreNs].MutableObjectBase, [cls.CSharpName(model, ClassKind.Builder)]
+internal class [cls.CSharpName(model, ClassKind.BuilderInternalImpl)] : [Properties.CoreNs].MutableObjectBase, [cls.CSharpName(model, ClassKind.Builder)]
 {
+	["[DebuggerBrowsable(DebuggerBrowsableState.Never)]"]
+	private [cls.CSharpName(model, ClassKind.BuilderImpl)] _impl;
+	^
 	[loop(cls->prop:GetAllProperties() where prop.Type is MetaCollectionType)]
 	[GenerateBuilderField(model, cls, prop)]
 	[end loop]
 	^
-	internal [cls.CSharpName(model, ClassKind.BuilderImpl)]([Properties.CoreNs].ObjectId id, [Properties.CoreNs].MutableModel model, bool creating)
+	internal [cls.CSharpName(model, ClassKind.BuilderInternalImpl)]([Properties.CoreNs].ObjectId id, [Properties.CoreNs].MutableModel model, bool creating)
 		: base(id, model, creating)
 	{
 	}
 	^
 	protected override void MInit()
 	{
-		[model.CSharpName(ModelKind.ImplementationProvider)].Implementation.[cls.CSharpName(model, ClassKind.Immutable)](this);
+		[cls.CSharpName(model, ClassKind.BuilderImpl)]._AllocateRoot(ref _impl, this);
+		try
+		{
+			_impl.MInit();
+		}
+		finally
+		{
+			[cls.CSharpName(model, ClassKind.BuilderImpl)]._Free(ref _impl);
+		}
 	}
 	^
 	public override void MValidate(global::Microsoft.CodeAnalysis.DiagnosticBag diagnostics, global::System.Threading.CancellationToken cancellationToken = default)
 	{
-		[model.CSharpName(ModelKind.ImplementationProvider)].Implementation.[cls.CSharpName(model, ClassKind.Immutable)]_MValidate(this, diagnostics, cancellationToken);
+		[cls.CSharpName(model, ClassKind.BuilderImpl)]._AllocateRoot(ref _impl, this);
+		try
+		{
+			_impl.MValidate(diagnostics, cancellationToken);
+		}
+		finally
+		{
+			[cls.CSharpName(model, ClassKind.BuilderImpl)]._Free(ref _impl);
+		}
 	}
 	^
 	public override [Properties.CoreNs].IMetaModel MMetaModel
@@ -1259,11 +1420,11 @@ internal class [cls.CSharpName(model, ClassKind.BuilderImpl)] : [Properties.Core
 	[end loop]
 	[loop(cls->prop:GetAllProperties())]
 	^
-	[GenerateBuilderPropertyImpl(model, cls, prop)]
+	[GenerateBuilderPropertyInternalImpl(model, cls, prop)]
 	[end loop]
 	[loop(cls->op:GetAllOperations())]
 	^
-	[GenerateBuilderOperationImpl(model, cls, op)]
+	[GenerateBuilderOperationInternalImpl(model, cls, op)]
 	[end loop]
 	[if (metaMetaModel && cls.Name == "MetaModel")]
 ^
@@ -1282,13 +1443,171 @@ internal class [cls.CSharpName(model, ClassKind.BuilderImpl)] : [Properties.Core
 	}
 	[end if]
 }
+^
+public interface I[cls.CSharpName(model, ClassKind.BuilderImpl)][GetBuilderImplAncestors(model, cls)]
+{
+	[cls.CSharpName(model, ClassKind.BuilderImpl)] _Base[cls.CSharpName(model, ClassKind.Builder)] { get; }
+	[loop(cls->prop:Properties where prop.Kind == MetaPropertyKind.Readonly || prop.Kind == MetaPropertyKind.Lazy || prop.Kind == MetaPropertyKind.Derived)]
+		[if (metaMetaModel && cls.Name == "MetaConstant" && prop.Name == "Value")]
+		[else]
+	/// <summary>
+	/// Computes the value of the property: [cls.CSharpName(model, ClassKind.Immutable)].[prop.CSharpName(model)]
+	/// </summary>	
+	[prop.Type.CSharpName(model, ClassKind.BuilderOperation, true)] Compute_[prop.CSharpName(model)]();
+		[end if]
+	[end loop]
+}
+^
+public abstract class [cls.CSharpName(model, ClassKind.BuilderImplBase)] : global::MetaDslx.Modeling.Internal.MutableObjectPoolItem<I[cls.CSharpName(model, ClassKind.BuilderImpl)], [cls.CSharpName(model, ClassKind.BuilderImpl)], [cls.CSharpName(model, ClassKind.Builder)]>, I[cls.CSharpName(model, ClassKind.BuilderImpl)]
+{
+	[loop(cls->sup:GetAllSuperClasses(false))]
+	["[DebuggerBrowsable(DebuggerBrowsableState.Never)]"]
+    private [sup.CSharpName(model, ClassKind.BuilderImpl, true)] _base[sup.CSharpName(model, ClassKind.Builder)];
+	["[DebuggerBrowsable(DebuggerBrowsableState.Never)]"]
+    public [sup.CSharpName(model, ClassKind.BuilderImpl, true)] _Base[sup.CSharpName(model, ClassKind.Builder)] => object.ReferenceEquals(this, _RootObject) ? [sup.CSharpName(model, ClassKind.BuilderImpl, true)]._Allocate(ref _base[sup.CSharpName(model, ClassKind.Builder)], _RootObject, _This) : _RootObject._Base[sup.CSharpName(model, ClassKind.Builder)];
+	[end loop]
+	["[DebuggerBrowsable(DebuggerBrowsableState.Never)]"]
+	public abstract [cls.CSharpName(model, ClassKind.BuilderImpl)] _Base[cls.CSharpName(model, ClassKind.Builder)] { get; }
+	^
+    public override bool _Free()
+    {
+        if (base._Free())
+        {
+			[loop(cls->sup:GetAllSuperClasses(false))]
+            [sup.CSharpName(model, ClassKind.BuilderImpl, true)]._Free(ref _base[sup.CSharpName(model, ClassKind.Builder)]);
+			[end loop]
+            return true;
+        }
+        return false;
+    }
+	^
+	public override void MInit()
+	{
+		[loop(cls->prop:GetAllFinalProperties())]
+			[if (metaMetaModel && cls.Name == "MetaConstant" && prop.Name == "Value")]
+			[else if (prop.DefaultValue != null)]
+				[if(!(prop.Type is MetaCollectionType))]
+		this.Set[prop.CSharpName(model, PropertyKind.Builder)]Lazy(() => [prop.DefaultValue]);
+				[else]
+		// ERROR: default value for collection
+		// this.[prop.CSharpName(model, PropertyKind.Builder)] = [prop.DefaultValue];
+				[end if]
+			[else if (prop.Kind == MetaPropertyKind.Lazy || prop.Kind == MetaPropertyKind.Derived)]
+				[if(!(prop.Type is MetaCollectionType))]
+		this.Set[prop.CSharpName(model, PropertyKind.Builder)]Lazy(ComputeLazy_[prop.CSharpName(model)]);
+				[else]
+		this.[prop.CSharpName(model, PropertyKind.Builder)].AddRangeLazy<[prop.Class.CSharpName(model, ClassKind.Builder)]>(ComputeLazy_[prop.CSharpName(model)]);
+				[end if]
+			[else if (prop.Kind == MetaPropertyKind.Readonly)]
+				[if(!(prop.Type is MetaCollectionType))]
+		this.Set[prop.CSharpName(model, PropertyKind.Builder)]Lazy(ComputeLazy_[prop.CSharpName(model)]);
+				[else]
+		this.[prop.CSharpName(model, PropertyKind.Builder)].AddRangeLazy(ComputeLazy_[prop.CSharpName(model)]);
+				[end if]
+			[end if]
+		[end loop]
+		[loop(cls->sup:GetAllSuperClasses(true))]
+        _Base[sup.CSharpName(model, ClassKind.Builder)].MConstructor();
+		[end loop]
+	}
+	^
+	/// <summary>
+	/// Implements the constructor: [cls.CSharpName(model, ClassKind.Immutable)]()
+	/// </summary>	
+	public virtual void MConstructor()
+	{
+	}
+	[loop(cls->prop:GetAllFinalProperties() where prop.Kind == MetaPropertyKind.Readonly || prop.Kind == MetaPropertyKind.Lazy || prop.Kind == MetaPropertyKind.Derived)]
+		[if (metaMetaModel && cls.Name == "MetaConstant" && prop.Name == "Value")]
+		[else]
+	^
+	private [prop.Type.CSharpName(model, ClassKind.BuilderOperation, true)] ComputeLazy_[prop.CSharpName(model)]()
+	{
+		[cls.CSharpName(model, ClassKind.BuilderImpl)] _impl = null;
+		[cls.CSharpName(model, ClassKind.BuilderImpl)]._AllocateRoot(ref _impl, _This);
+		try
+		{
+			return _impl.Compute_[prop.CSharpName(model)]();
+		}
+		finally
+		{
+			[cls.CSharpName(model, ClassKind.BuilderImpl)]._Free(ref _impl);
+		}
+	}
+	^
+	/// <summary>
+	/// Computes the value of the property: [cls.CSharpName(model, ClassKind.Immutable)].[prop.CSharpName(model)]
+	/// </summary>
+			[if (object.ReferenceEquals(prop.Class, cls))]
+	public abstract [prop.Type.CSharpName(model, ClassKind.BuilderOperation, true)] Compute_[prop.CSharpName(model)]();
+			[else]
+	public virtual [prop.Type.CSharpName(model, ClassKind.BuilderOperation, true)] Compute_[prop.CSharpName(model)]()
+	{
+		return _Base[prop.Class.CSharpName(model, ClassKind.Builder)].Compute_[prop.CSharpName(model)]();
+	}
+			[end if]
+		[end if]
+	[end loop]
+	^
+	public [cls.CSharpName(model, ClassKind.Immutable)] ToImmutable()
+	{
+		return _This.ToImmutable();
+	}
+	^
+	public [cls.CSharpName(model, ClassKind.Immutable)] ToImmutable([Properties.CoreNs].ImmutableModel model)
+	{
+		return _This.ToImmutable(model);
+	}
+	[loop(cls->sup:GetAllSuperClasses(false))]
+	^
+	[sup.CSharpName(model, ClassKind.Immutable, true)] [sup.CSharpName(model, ClassKind.Builder, true)].ToImmutable()
+	{
+		return this.ToImmutable();
+	}
+	^
+	[sup.CSharpName(model, ClassKind.Immutable, true)] [sup.CSharpName(model, ClassKind.Builder, true)].ToImmutable([Properties.CoreNs].ImmutableModel model)
+	{
+		return this.ToImmutable(model);
+	}
+	[end loop]
+	[loop(cls->prop:GetAllProperties())]
+	^
+	[GenerateBuilderPropertyImplBase(model, cls, prop)]
+	[end loop]
+	[loop(cls->op:GetAllOperations())]
+	^
+	[GenerateBuilderOperationImplBase(model, cls, op)]
+	[end loop]
+	[if (metaMetaModel && cls.Name == "MetaModel")]
+^
+	[Properties.CoreNs].ModelId [Properties.CoreNs].IModel.Id => _This.Id;
+	string [Properties.CoreNs].IModel.Name => _This.Name;
+	[Properties.CoreNs].ModelVersion [Properties.CoreNs].IModel.Version => _This.Version;
+	global::System.Collections.Generic.IEnumerable<global::MetaDslx.Modeling.IModelObject> [Properties.CoreNs].IModel.Objects => _This.Objects;
+	string [Properties.CoreNs].IMetaModel.Uri => _This.Uri;
+	string [Properties.CoreNs].IMetaModel.Prefix => _This.Prefix;
+	[Properties.CoreNs].IModelGroup [Properties.CoreNs].IModel.ModelGroup => _This.ModelGroup;
+	string [Properties.CoreNs].IMetaModel.Namespace => _This.Namespace.FullName;
+^
+	public [Properties.CoreNs].IModelFactory CreateFactory([Properties.CoreNs].MutableModel model, [Properties.CoreNs].ModelFactoryFlags flags = [Properties.CoreNs].ModelFactoryFlags.None)
+	{
+		return new [model.CSharpName(ModelKind.Factory)](model, flags);
+	}
+	[end if]
+}
+^
+public partial class [cls.CSharpName(model, ClassKind.BuilderImpl)] : [cls.CSharpName(model, ClassKind.BuilderImplBase)]
+{
+	["[DebuggerBrowsable(DebuggerBrowsableState.Never)]"]
+	public override [cls.CSharpName(model, ClassKind.BuilderImpl)] _Base[cls.CSharpName(model, ClassKind.Builder)] => this;
+}
 end template
 
 template GenerateBuilderField(MetaModel model, MetaClass cls, MetaProperty prop)
 private [prop.Type.CSharpName(model, ClassKind.Builder, true)] [prop.GetFieldName(cls)];
 end template
 
-template GenerateBuilderPropertyImpl(MetaModel model, MetaClass cls, MetaProperty prop)
+template GenerateBuilderPropertyInternalImpl(MetaModel model, MetaClass cls, MetaProperty prop)
 ^
 [if (cls.GetAllFinalProperties().Contains(prop))]
 public [prop.Type.CSharpName(model, ClassKind.Builder, true)] [prop.Name]
@@ -1347,12 +1666,70 @@ void [prop.Class.CSharpName(model, ClassKind.Builder, true)].Set[prop.Name]Lazy(
 [end if]
 end template
 
-template GenerateBuilderOperationImpl(MetaModel model, MetaClass cls, MetaOperation op)
+template GenerateBuilderPropertyImplBase(MetaModel model, MetaClass cls, MetaProperty prop)
+^
+[if (cls.GetAllFinalProperties().Contains(prop))]
+public [prop.Type.CSharpName(model, ClassKind.Builder, true)] [prop.Name]
+[else]
+["[DebuggerBrowsable(DebuggerBrowsableState.Never)]"]
+[prop.Type.CSharpName(model, ClassKind.Builder, true)] [prop.Class.CSharpName(model, ClassKind.Builder, true)].[prop.Name]
+[end if]
+{
+	get { return _This.[prop.Name]; }
+	[if((prop.Kind == MetaPropertyKind.Normal) && !(prop.Type is MetaCollectionType))]
+	set { _This.[prop.Name] = value; }
+	[end if]
+}
+[if(!(prop.Type is MetaCollectionType))]
+^
+public void Set[prop.Name]Lazy(global::System.Func<[prop.Type.CSharpName(model, ClassKind.Builder, true)]> lazy)
+{
+	_This.Set[prop.Name]Lazy(lazy);
+}
+^
+public void Set[prop.Name]Lazy(global::System.Func<[prop.Class.CSharpName(model, ClassKind.Builder, true)], [prop.Type.CSharpName(model, ClassKind.Builder, true)]> lazy)
+{
+	_This.Set[prop.Name]Lazy(lazy);
+}
+^
+public void Set[prop.Name]Lazy(global::System.Func<[prop.Class.CSharpName(model, ClassKind.Immutable, true)], [prop.Type.CSharpName(model, ClassKind.Immutable, true)]> immutableLazy, global::System.Func<[prop.Class.CSharpName(model, ClassKind.Builder, true)], [prop.Type.CSharpName(model, ClassKind.Builder, true)]> mutableLazy)
+{
+	_This.Set[prop.Name]Lazy(immutableLazy, mutableLazy);
+}
+[end if]
+end template
+
+template GenerateBuilderOperationInternalImpl(MetaModel model, MetaClass cls, MetaOperation op)
 ^
 [op.ReturnType.CSharpName(model, ClassKind.BuilderOperation, true)] [op.Class.CSharpName(model, ClassKind.Builder, true)].[op.Name]([GetClassParameters(model, op.Class, op, ClassKind.BuilderOperation)])
 {
 [var finalOp = GetFinalOperation(cls, op)]
-    [GetReturn(finalOp.ReturnType.CSharpName(model, ClassKind.BuilderOperation))][model.CSharpName(ModelKind.ImplementationProvider)].Implementation.[finalOp.Class.CSharpName(model, ClassKind.Immutable)]_[finalOp.Name]([GetClassImplCallParameterNames(model, finalOp, ClassKind.BuilderOperation)]);
+	[cls.CSharpName(model, ClassKind.BuilderImpl)]._AllocateRoot(ref _impl, this);
+	try
+	{
+	    [GetReturn(finalOp.ReturnType.CSharpName(model, ClassKind.BuilderOperation))]_impl.[finalOp.Name]([GetClassImplCallParameterNames(model, finalOp, ClassKind.BuilderOperation)]);
+	}
+	finally
+	{
+		[cls.CSharpName(model, ClassKind.BuilderImpl)]._Free(ref _impl);
+	}
 }
+end template
+
+template GenerateBuilderOperationImplBase(MetaModel model, MetaClass cls, MetaOperation op)
+[var finalOp = GetFinalOperation(cls, op)]
+[if (object.ReferenceEquals(cls, op.Class))]
+public abstract [op.ReturnType.CSharpName(model, ClassKind.BuilderOperation, true)] [op.Name]([GetClassParameters(model, op.Class, op, ClassKind.BuilderOperation)]);
+[else]
+^
+	[if (object.ReferenceEquals(op, finalOp))]
+public [op.ReturnType.CSharpName(model, ClassKind.BuilderOperation, true)] [op.Name]([GetClassParameters(model, op.Class, op, ClassKind.BuilderOperation)])
+	[else]
+[op.ReturnType.CSharpName(model, ClassKind.BuilderOperation, true)] [op.Class.CSharpName(model, ClassKind.Builder, true)].[op.Name]([GetClassParameters(model, op.Class, op, ClassKind.BuilderOperation)])
+	[end if]
+{
+    [GetReturn(finalOp.ReturnType.CSharpName(model, ClassKind.BuilderOperation))]this.[finalOp.Name]([GetClassImplCallParameterNames(model, finalOp, ClassKind.BuilderOperation)]);
+}
+[end if]
 end template
 
