@@ -1,0 +1,274 @@
+﻿namespace MetaDslx.Languages.MetaCompiler.Generator;
+generator SymbolGenerator for IEnumerable<ImmutableObject>;
+
+using MetaDslx.Modeling;
+using MetaDslx.Languages.MetaCompiler.Model;
+using System.Collections.Immutable;
+using Roslyn.Utilities;
+
+extern function string GenerateDefaultValue(Property property)
+extern function string GenerateType(DataType typ)
+extern function string Start(Phase phase)
+extern function string Finish(Phase phase)
+
+template Generate()
+[loop (Instances->ns:typeof(Namespace))]
+[GenerateNamespace(ns)]
+[end loop]
+end template
+
+template GenerateNamespace(Namespace ns)
+[var symbols = ns.Declarations.OfType<Class>().Where(cls => cls.Kind == ClassKind.Symbol)]
+[var compilers = ns.Declarations.OfType<Compiler>()]
+namespace [ns.FullName]
+{
+	[loop(compiler:compilers)]
+	[GenerateCompletionGraph(compiler.Namespace.FullName)]
+	[end loop]
+	^
+	[loop(symbol:symbols)]
+	[GenerateSymbol(symbol)]
+	[end loop]
+}
+end template
+
+template GenerateSymbol(Class symbol)
+[GenerateSymbolInterface(symbol)]
+^
+[GenerateSymbolClass(symbol)]
+^
+[GenerateMetaSymbolClass(symbol)]
+^
+[GenerateSourceSymbolClass(symbol)]
+^
+end template
+
+template GenerateCompletionGraph(string ns)
+using MetaDslx.CodeAnalysis.Symbols;
+^
+namespace [ns]
+{
+	public static class SymbolCompletionGraph
+	{
+		[loop(Instances->phase:typeof(Phase))]
+            [if (phase.IsLocked)]
+		public static readonly CompletionPart [phase.Start()] = new CompletionPart(nameof([phase.Start()]));
+		public static readonly CompletionPart [phase.Finish()] = new CompletionPart(nameof([phase.Finish()]));
+            [else]
+		public static readonly CompletionPart [phase.Name] = new CompletionPart(nameof([phase.Name]));
+            [end if]
+		[end loop]
+		^
+		[loop(Instances->symbol:typeof(Class) where symbol.Kind == ClassKind.Symbol)]
+			[if (hasloop(symbol->prop:GetAllProperties() where prop.Phase != null))]
+		public static readonly ImmutableHashSet<CompletionPart> [symbol.Name]All = CompletionPart.Combine([loop(symbol->prop:GetAllProperties() where prop.Phase != null; separator comma = ", ")][if (prop.Phase.IsLocked)][prop.Phase.Start()], [prop.Phase.Finish()][else][prop.Phase.Name][end if][comma][end loop]);
+			[end if]
+		[end loop]
+
+		public static CompletionGraphBuilder ConstructCompletionGraph()
+		{
+			CompletionGraphBuilder builder = new CompletionGraphBuilder();
+			[loop(Instances->phase:typeof(Phase))]
+            [if (phase.IsLocked)]
+			builder.Add([phase.Start()]);
+			builder.Add([phase.Finish()]);
+            [else]
+			builder.Add([phase.Name]);
+            [end if]
+			[end loop]
+			[loop(Instances->phase:typeof(Phase))]
+                [if (phase.IsLocked)]
+			builder.Precedes([phase.Start()], [phase.Finish()]);
+                [end if]
+                [loop(phase->after:AfterPhases)]
+			builder.Precedes([after.Finish()], [phase.Start()]);
+                [end loop]
+                [loop(phase->before:BeforePhases)]
+			builder.Precedes([phase.Finish()], [before.Start()]);
+                [end loop]
+			[end loop]
+			return builder;
+		}
+	}
+}
+end template
+
+template GenerateSymbolInterface(Class symbol)
+public interface I[symbol.Name][if (symbol.SuperClasses.Count > 0)] : [loop(symbol->sup:SuperClasses; separator comma = ", ")]I[sup.Name][end loop][end if]
+{
+	[loop(symbol->prop:Properties)]
+	[GenerateType(prop.Type)] [prop.Name] { get; }
+	[end loop]
+}
+end template
+
+template GenerateSymbolClass(Class symbol)
+[var props = symbol.GetAllProperties().Where(p => p.Phase != null).ToList()]
+[var phases = props.Select(p => p.Phase).ToHashSet()]
+public partial class [symbol.Name] : [if (symbol.Name != "Symbol")]Symbol, [end if] I[symbol.Name]
+{
+	[if (props.Count > 0)]
+    private readonly SymbolCompletionState _state;
+	[end if]
+	[loop(symbol->prop:Properties)]
+	private [GenerateType(prop.Type)] _[prop.Name.ToCamelCase()]Lazy;
+	[end loop]
+	^
+	[if (props.Count > 0)]
+	public sealed override bool RequiresCompletion => true;
+
+    private SymbolCompletionState CompletionState
+    {
+        get
+        {
+            if (_state == null) Interlocked.CompareExchange(ref _state, SymbolCompletionState.Create(this.Language), null);
+            return _state;
+        }
+    }
+	[end if]
+	^
+	[loop(symbol->prop:Properties)]
+	public [GenerateType(prop.Type)] [prop.Name] 
+	{
+		get
+		{
+			if (_[prop.Name.ToCamelCase()]Lazy == default) ForceComplete(CompletionPart.[prop.Phase.Finish()]);
+			return _[prop.Name.ToCamelCase()]Lazy;
+		}
+	}
+	[end loop]
+	^
+    public override void ForceComplete(CompletionPart part, SourceLocation locationOpt, CancellationToken cancellationToken)
+    {
+        while (true)
+        {
+            if (part != null && HasComplete(part))
+            cancellationToken.ThrowIfCancellationRequested();
+            var incompletePart = CompletionState.NextIncompletePart;
+            [loop (phase:phases)]
+                [if (phase.IsLocked)]
+            if (incompletePart == CompletionPart.[phase.Start()] || incompletePart == CompletionPart.[phase.Finish()])
+            {
+                if (CompletionState.NotePartComplete(CompletionPart.[phase.Start()]))
+                {
+                    [if (phase.JoinsPhase != null)]
+                    [GenerateJoinPhase(phase)]
+                    [else]
+                    Complete[phase.Name]();
+                    var thisThreadCompleted = CompletionState.NotePartComplete(CompletionPart.[phase.Finish()]);
+                    Debug.Assert(thisThreadCompleted);
+                    [end if]
+                }
+            }
+                [else]
+            if (incompletePart == CompletionPart.[phase.Name])
+            {
+                    [if (phase.JoinsPhase != null)]
+                [GenerateJoinPhase(phase)]
+                    [else]
+                Complete[phase.Name]();
+                    [end if]
+            }
+                [end if]
+            else
+            [end loop]
+            if (incompletePart == null)
+            {
+                goto done;
+            }
+            else
+            {
+                // This assert will trigger if we forgot to handle any of the completion parts
+                Debug.Assert(!CompletionPart.[symbol.Name]All.Contains(incompletePart));
+                // any other values are completion parts intended for other kinds of symbols
+                CompletionState.NotePartComplete(incompletePart);
+            }
+            CompletionState.SpinWaitComplete(incompletePart, cancellationToken);
+        }
+
+    done:
+        // Don't return until we've seen all of the CompletionParts. This ensures all
+        // diagnostics have been reported (not necessarily on this thread).
+        CompletionState.SpinWaitComplete(CompletionPart.[symbol.Name]All, cancellationToken);
+    }
+
+    public override bool HasComplete(CompletionPart part)
+    {
+        return CompletionState.HasComplete(part);
+    }
+
+    private static void ForceCompleteMemberByLocation(CompletionPart part, SourceLocation locationOpt, Symbol child, CancellationToken cancellationToken)
+    {
+        if (locationOpt == null || child.IsDefinedInSourceTree(locationOpt.SourceTree, locationOpt.SourceSpan, cancellationToken))
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            child.ForceComplete(part, locationOpt, cancellationToken);
+        }
+    }
+}
+end template
+
+template GenerateJoinPhase(Phase phase)
+var children = this.GetChildSymbols();
+
+bool allCompleted = true;
+
+if (this.DeclaringCompilation.Options.ConcurrentBuild)
+{
+    var po = cancellationToken.CanBeCanceled
+        ? new ParallelOptions() { CancellationToken = cancellationToken }
+        : LanguageCompilation.DefaultParallelOptions;
+
+    Parallel.For(0, children.Length, po, UICultureUtilities.WithCurrentUICulture<int>(i =>
+    {
+        var child = children["[i]"];
+        ForceCompleteChildByLocation(CompletionPart.[phase.JoinsPhase.Finish()], locationOpt, child, cancellationToken);
+    }));
+
+    foreach (var child in children)
+    {
+        if (!child.HasComplete(CompletionPart.[phase.JoinsPhase.Finish()]))
+        {
+            allCompleted = false;
+            break;
+        }
+    }
+}
+else
+{
+    foreach (var child in children)
+    {
+        ForceCompleteChildByLocation(CompletionPart.[phase.JoinsPhase.Finish()], locationOpt, child, cancellationToken);
+        allCompleted = allCompleted && child.HasComplete(CompletionPart.[phase.JoinsPhase.Finish()]);
+    }
+}
+
+if (allCompleted)
+{
+    [if (phase.IsLocked)]
+    var thisThreadCompleted = CompletionState.NotePartComplete(CompletionPart.[phase.Finish()]);
+    Debug.Assert(thisThreadCompleted);
+    [else]
+    CompletionState.NotePartComplete(CompletionPart.[phase.Name]);
+    [end if]
+}
+else
+{
+    // NOTE: we're going to kick out of the completion part loop after this,
+    // so not making progress isn't a problem.
+    goto done;
+}
+end template
+
+template GenerateMetaSymbolClass(Class symbol)
+public partial class Meta[symbol.Name] : [symbol.Name]
+{
+}
+end template
+
+template GenerateSourceSymbolClass(Class symbol)
+public partial class Source[symbol.Name] : [symbol.Name]
+{
+}
+end template
+

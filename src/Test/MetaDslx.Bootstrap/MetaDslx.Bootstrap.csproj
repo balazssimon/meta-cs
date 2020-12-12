@@ -18,12 +18,13 @@
   </ItemGroup-->
 
   <ItemGroup>
-    <!--ProjectReference Include="..\..\Main\MetaDslx.CodeAnalysis.Antlr4\MetaDslx.CodeAnalysis.Antlr4.csproj" />
+    <ProjectReference Include="..\..\Main\MetaDslx.CodeAnalysis.Antlr4\MetaDslx.CodeAnalysis.Antlr4.csproj" />
     <ProjectReference Include="..\..\Main\MetaDslx.CodeAnalysis.Common\MetaDslx.CodeAnalysis.Common.csproj" />
     <ProjectReference Include="..\..\Main\MetaDslx.CodeAnalysis.CSharp\MetaDslx.CodeAnalysis.CSharp.csproj" />
     <ProjectReference Include="..\..\Main\MetaDslx.CodeAnalysis.Meta\MetaDslx.CodeAnalysis.Meta.csproj" />
     <ProjectReference Include="..\..\Main\MetaDslx.Languages.Meta\MetaDslx.Languages.Meta.csproj" />
-    <ProjectReference Include="..\MetaDslx.Tests\MetaDslx.Tests.csproj" />
+    <ProjectReference Include="..\..\Main\MetaDslx.Languages.MetaCompiler\MetaDslx.Languages.MetaCompiler.csproj" />
+    <!--ProjectReference Include="..\MetaDslx.Tests\MetaDslx.Tests.csproj" />
     <ProjectReference Include="..\..\Languages\MetaDslx.Languages.Mof\MetaDslx.Languages.Mof.csproj" />
     <ProjectReference Include="..\..\Languages\MetaDslx.Languages.Uml\MetaDslx.Languages.Uml.csproj" />
     <ProjectReference Include="..\..\Languages\MetaDslx.Languages.Ecore\MetaDslx.Languages.Ecore.csproj" />
@@ -31,8 +32,8 @@
   </ItemGroup>
   
   <ItemGroup>
-    <PackageReference Include="MetaDslx.BuildTasks" Version="$(BootstrapVersion)" PrivateAssets="All"/>
-    <PackageReference Include="MetaDslx.CodeAnalysis" Version="$(BootstrapVersion)" />
+    <!--PackageReference Include="MetaDslx.BuildTasks" Version="$(BootstrapVersion)" PrivateAssets="All"/-->
+    <!--PackageReference Include="MetaDslx.CodeAnalysis" Version="$(BootstrapVersion)" /-->
   </ItemGroup>
 
 </Project>

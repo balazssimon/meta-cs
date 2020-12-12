@@ -6,11 +6,6 @@ using MetaDslx.Languages.Meta.Model;
 using System.Collections.Immutable;
 using Roslyn.Utilities;
 
-properties Properties
-	string Namespace = "";
-	string ModelName = "";
-end properties
-
 extern function string GenerateDefaultValue(MetaProperty property)
 extern function IEnumerable<ValueTuple<MetaProperty,MetaProperty>> GetAssociations(IEnumerable<ImmutableObject> objects)
 

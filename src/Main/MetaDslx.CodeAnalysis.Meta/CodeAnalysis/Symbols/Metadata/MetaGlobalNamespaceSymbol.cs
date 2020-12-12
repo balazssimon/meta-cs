@@ -102,8 +102,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
                         {
                             if (ms.MParent == null)
                             {
-                                var symbol = (DeclaredSymbol)MetaSymbolMap.GetSymbol(ms);
-                                symbols.Add(symbol);
+                                var symbol = MetaSymbolMap.GetSymbol(ms);
+                                if (symbol is DeclaredSymbol ds) symbols.Add(ds);
                             }
                         }
                     }

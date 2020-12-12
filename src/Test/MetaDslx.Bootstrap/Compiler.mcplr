@@ -1,0 +1,41 @@
+﻿namespace MetaDslx.CodeAnalysis.Symbols
+{
+	compiler Main;
+
+	phase None;
+	phase All;
+	phase Attributes;
+	phase Module;
+	locked phase ValidatingReferencedAssemblies;
+	locked phase ValidatingAddedModules;
+	locked phase AttributeChecks;
+	locked phase BaseTypes;
+	phase Members;
+	phase TypeMembers;
+	locked phase ValidatingImports;
+	phase MembersCompleted joins All;
+	phase AliasTarget;
+
+	symbol Symbol
+	{
+	}
+
+	symbol NamespaceOrTypeSymbol : Symbol
+	{
+	}
+
+	symbol NamespaceSymbol : NamespaceOrTypeSymbol
+	{
+		object Attributes phase Attributes;
+		object MembersByName phase Members;
+		object Members phase MembersCompleted;
+	}
+
+	symbol TypeSymbol : NamespaceOrTypeSymbol
+	{
+	}
+
+	symbol NamedTypeSymbol : NamespaceOrTypeSymbol
+	{
+	}
+}

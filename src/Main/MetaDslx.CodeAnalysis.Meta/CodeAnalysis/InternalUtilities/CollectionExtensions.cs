@@ -6,8 +6,15 @@ using System.Text;
 
 namespace Roslyn.Utilities
 {
-    internal static class CollectionExtensions
+    public static class CollectionExtensions
     {
+        public static HashSet<T> ToHashSet<T>(
+            this IEnumerable<T> source,
+            IEqualityComparer<T> comparer = null)
+        {
+            return new HashSet<T>(source, comparer);
+        }
+
         internal static Dictionary<K, ImmutableArray<T>> ToDictionaryWithImmutableArray<K, T>(this ImmutableArray<T> items, Func<T, K> keySelector, IEqualityComparer<K> comparer = null)
         {
             if (items.Length == 1)

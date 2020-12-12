@@ -25,7 +25,7 @@ namespace MetaDslx.Bootstrap
             }
             try
             {
-                MetaGeneratorCompiler compiler = new MetaGeneratorCompiler(_mgenFileName, Path.GetDirectoryName(_mgenFileName));
+                MetaGeneratorCompiler compiler = new MetaGeneratorCompiler(Path.GetDirectoryName(_mgenFileName), null, _mgenFileName);
                 compiler.Compile();
                 if (compiler.HasErrors)
                 {

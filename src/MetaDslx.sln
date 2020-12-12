@@ -52,7 +52,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfDiagramDesigner", "Exper
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antlr4Intellisense", "Experiments\Antlr4Intellisense\Antlr4Intellisense.csproj", "{9273912C-6FBB-4545-8CEF-17B186F97FD5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.BuildTools", "Main\MetaDslx.BuildTools\MetaDslx.BuildTools.csproj", "{BD01C76B-61B2-4E78-B57C-0D5258B8BC37}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.BuildTools", "Main\MetaDslx.BuildTools\MetaDslx.BuildTools.csproj", "{BD01C76B-61B2-4E78-B57C-0D5258B8BC37}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.Languages.MetaCompiler", "Main\MetaDslx.Languages.MetaCompiler\MetaDslx.Languages.MetaCompiler.csproj", "{1A3CE8C2-274C-42EF-9186-34459E3D9660}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -156,6 +158,10 @@ Global
 		{BD01C76B-61B2-4E78-B57C-0D5258B8BC37}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD01C76B-61B2-4E78-B57C-0D5258B8BC37}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BD01C76B-61B2-4E78-B57C-0D5258B8BC37}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A3CE8C2-274C-42EF-9186-34459E3D9660}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A3CE8C2-274C-42EF-9186-34459E3D9660}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A3CE8C2-274C-42EF-9186-34459E3D9660}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A3CE8C2-274C-42EF-9186-34459E3D9660}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -5333,7 +5333,6 @@ switch (node.[elem.RedName()].GetKind().Switch())
 end template
 
 template GenerateBinderFactoryVisitor()
-using System;
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -5561,7 +5560,6 @@ namespace [Properties.DefaultNamespace].Binding
 end template
 
 template GenerateBoundNodeFactoryVisitor()
-using System;
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.Collections.Immutable;

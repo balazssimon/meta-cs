@@ -9,6 +9,9 @@ using MetaDslx.Languages.Meta.Binding;
 using MetaDslx.Languages.Meta.Generator;
 using MetaDslx.Languages.Meta.Model;
 using MetaDslx.Languages.Meta.Symbols;
+using MetaDslx.Languages.MetaCompiler;
+using MetaDslx.Languages.MetaCompiler.Generator;
+using MetaDslx.Languages.MetaCompiler.Model;
 //using MetaDslx.Languages.Mof.Generator;
 //using MetaDslx.Languages.Mof.Model;
 //using MetaDslx.Languages.Uml.Generator;
@@ -77,7 +80,7 @@ namespace MetaDslx.Bootstrap
             Console.WriteLine(test.SayHello("me"));
             //*/
 
-            //*/
+            /*/
             ImmutableModel coreModel = MetaInstance.MModel;
             Console.WriteLine(coreModel);
 
@@ -336,6 +339,65 @@ namespace MetaDslx.Bootstrap
             }
 
             //*/
+
+            //*/
+            ImmutableModel coreModel = MetaCompilerInstance.MModel;
+            Console.WriteLine(coreModel);
+
+            string text = File.ReadAllText(@"..\..\..\Compiler.mcplr");
+            var tree = MetaCompilerSyntaxTree.ParseText(text);
+
+            var formatter = new DiagnosticFormatter();
+            BinderFlags binderFlags = BinderFlags.IgnoreAccessibility;
+            BinderFlags binderFlags2 = BinderFlags.IgnoreMetaLibraryDuplicatedTypes;
+            binderFlags = binderFlags.UnionWith(binderFlags2);
+            MetaCompilerCompilationOptions options = new MetaCompilerCompilationOptions(OutputKind.NetModule, deterministic: true, concurrentBuild: false, topLevelBinderFlags: binderFlags);
+            var compilation = MetaCompilerCompilation.
+                Create("MetaCompilerTest").
+                AddSyntaxTrees(tree).
+                AddReferences(ModelReference.CreateFromModel(coreModel)).
+                WithOptions(options);
+
+            var compiledModel = compilation.Model;
+            Console.WriteLine(compiledModel);
+            using (StreamWriter writer = new StreamWriter("Model.txt"))
+            {
+                foreach (var symbol in compiledModel.Objects)
+                {
+                    writer.WriteLine(symbol);
+                    foreach (var prop in symbol.MProperties)
+                    {
+                        object value = symbol.MGet(prop);
+                        if (value is IEnumerable<object> collection)
+                        {
+                            writer.WriteLine("  {0} = ({1})", prop.Name, collection.Count());
+                            foreach (var item in collection)
+                            {
+                                writer.WriteLine("    {0}", item);
+                            }
+                        }
+                        else
+                        {
+                            writer.WriteLine("  {0} = {1}", prop.Name, value);
+                        }
+                    }
+                }
+            }
+
+            foreach (var diag in compilation.GetDiagnostics())
+            {
+                Console.WriteLine(diag.Location.SourceSpan);
+                Console.WriteLine(formatter.Format(diag));
+            }
+
+            //*/
+
+            //*/
+            SymbolGenerator sgen = new SymbolGenerator(compiledModel.Objects);
+            string generatedCsharpModel = sgen.Generate();
+            File.WriteAllText("Symbols.cs.txt", generatedCsharpModel);
+            //*/
+
         }
 
         /*/
