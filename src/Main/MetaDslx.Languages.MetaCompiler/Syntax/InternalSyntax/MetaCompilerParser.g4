@@ -39,7 +39,9 @@ declaration : compilerDeclaration | phaseDeclaration | enumDeclaration | classDe
 compilerDeclaration : attribute* KCompiler name TSemicolon;
 
                  
-phaseDeclaration : attribute*                                     KLocked? KPhase name phaseJoin? afterPhases? beforePhases? TSemicolon;
+phaseDeclaration : attribute* locked? KPhase name phaseJoin? afterPhases? beforePhases? TSemicolon;
+                                   
+locked: KLocked;
                      
 phaseJoin: KJoins phaseRef;
                       
@@ -58,7 +60,9 @@ enumValue : attribute* name;
 enumMemberDeclaration :                       operationDeclaration;
 
                  
-classDeclaration : attribute*                                       KAbstract? classKind name (TColon                         classAncestors)? classBody;
+classDeclaration : attribute* abstract_? classKind name (TColon                         classAncestors)? classBody;
+                                     
+abstract_: KAbstract;
 classAncestors : classAncestor (TComma classAncestor)*;
 classAncestor :                        qualifier;
       
@@ -102,7 +106,7 @@ returnType : typeReference | voidType;
                     
 typeOfReference : typeReference;
                     
-typeReference : genericType | simpleType;
+typeReference : genericType | arrayType | simpleType;
                     
 simpleType : primitiveType | objectType | nullableType | classType;
 
@@ -133,11 +137,13 @@ voidType
                         
 nullableType :                      primitiveType TQuestion;
 
+                     
+arrayType :                      simpleType TOpenBracket TCloseBracket;
+
                        
-genericType :                 genericTypeName TLessThan                          typeArguments TGreaterThan;
-genericTypeName :                   qualifier;
-typeArguments : typeArgument (TComma typeArgument)*;
-typeArgument :                   qualifier;
+genericType :                 classType TLessThan typeArguments TGreaterThan;
+                        
+typeArguments : typeReference (TComma typeReference)*;
 	
                      
 operationDeclaration : attribute*                       returnType name TOpenParen                       parameterList? TCloseParen TSemicolon;

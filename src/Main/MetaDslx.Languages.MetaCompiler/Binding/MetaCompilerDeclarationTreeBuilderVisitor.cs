@@ -195,11 +195,7 @@ namespace MetaDslx.Languages.MetaCompiler.Binding
 				        this.Visit(child);
 					}
 				}
-				switch (node.KLocked.GetKind().Switch())
-				{
-					default:
-						break;
-				}
+				this.Visit(node.Locked);
 				this.Visit(node.Name);
 				this.Visit(node.PhaseJoin);
 				this.Visit(node.AfterPhases);
@@ -208,6 +204,18 @@ namespace MetaDslx.Languages.MetaCompiler.Binding
 			finally
 			{
 				this.EndSymbolDef();
+			}
+		}
+		
+		public virtual void VisitLocked(LockedSyntax node)
+		{
+			this.BeginProperty(node, name: "IsLocked", value: true);
+			try
+			{
+			}
+			finally
+			{
+				this.EndProperty();
 			}
 		}
 		
@@ -380,11 +388,7 @@ namespace MetaDslx.Languages.MetaCompiler.Binding
 				        this.Visit(child);
 					}
 				}
-				switch (node.KAbstract.GetKind().Switch())
-				{
-					default:
-						break;
-				}
+				this.Visit(node.Abstract_);
 				this.Visit(node.ClassKind);
 				this.Visit(node.Name);
 				this.BeginProperty(node.ClassAncestors, name: "SuperClasses");
@@ -401,6 +405,18 @@ namespace MetaDslx.Languages.MetaCompiler.Binding
 			finally
 			{
 				this.EndSymbolDef();
+			}
+		}
+		
+		public virtual void VisitAbstract_(Abstract_Syntax node)
+		{
+			this.BeginProperty(node, name: "IsAbstract", value: true);
+			try
+			{
+			}
+			finally
+			{
+				this.EndProperty();
 			}
 		}
 		
@@ -629,7 +645,7 @@ namespace MetaDslx.Languages.MetaCompiler.Binding
 		
 		public virtual void VisitTypedefValue(TypedefValueSyntax node)
 		{
-			this.BeginProperty(node, name: "DotNetName");
+			this.BeginProperty(node, name: "DotNetType");
 			try
 			{
 				this.Visit(node.StringLiteral);
@@ -673,6 +689,7 @@ namespace MetaDslx.Languages.MetaCompiler.Binding
 			try
 			{
 				this.Visit(node.GenericType);
+				this.Visit(node.ArrayType);
 				this.Visit(node.SimpleType);
 			}
 			finally
@@ -746,24 +763,15 @@ namespace MetaDslx.Languages.MetaCompiler.Binding
 			}
 		}
 		
-		public virtual void VisitGenericType(GenericTypeSyntax node)
+		public virtual void VisitArrayType(ArrayTypeSyntax node)
 		{
-			this.BeginSymbolDef(node, type: typeof(GenericType));
+			this.BeginSymbolDef(node, type: typeof(ArrayType));
 			try
 			{
-				this.BeginProperty(node.GenericTypeName, name: "Type");
+				this.BeginProperty(node.SimpleType, name: "InnerType");
 				try
 				{
-					this.Visit(node.GenericTypeName);
-				}
-				finally
-				{
-					this.EndProperty();
-				}
-				this.BeginProperty(node.TypeArguments, name: "TypeArguments");
-				try
-				{
-					this.Visit(node.TypeArguments);
+					this.Visit(node.SimpleType);
 				}
 				finally
 				{
@@ -776,40 +784,44 @@ namespace MetaDslx.Languages.MetaCompiler.Binding
 			}
 		}
 		
-		public virtual void VisitGenericTypeName(GenericTypeNameSyntax node)
+		public virtual void VisitGenericType(GenericTypeSyntax node)
 		{
-			this.BeginSymbolUse(node.Qualifier, types: ImmutableArray.Create(typeof(Class)));
+			this.BeginSymbolDef(node, type: typeof(GenericType));
 			try
 			{
-				this.Visit(node.Qualifier);
+				this.BeginProperty(node.ClassType, name: "Type");
+				try
+				{
+					this.Visit(node.ClassType);
+				}
+				finally
+				{
+					this.EndProperty();
+				}
+				this.Visit(node.TypeArguments);
 			}
 			finally
 			{
-				this.EndSymbolUse();
+				this.EndSymbolDef();
 			}
 		}
 		
 		public virtual void VisitTypeArguments(TypeArgumentsSyntax node)
 		{
-			if (node.TypeArgument != null)
-			{
-				foreach (var child in node.TypeArgument)
-				{
-			        this.Visit(child);
-				}
-			}
-		}
-		
-		public virtual void VisitTypeArgument(TypeArgumentSyntax node)
-		{
-			this.BeginSymbolUse(node.Qualifier, types: ImmutableArray.Create(typeof(Class)));
+			this.BeginProperty(node, name: "TypeArguments");
 			try
 			{
-				this.Visit(node.Qualifier);
+				if (node.TypeReference != null)
+				{
+					foreach (var child in node.TypeReference)
+					{
+				        this.Visit(child);
+					}
+				}
 			}
 			finally
 			{
-				this.EndSymbolUse();
+				this.EndProperty();
 			}
 		}
 		

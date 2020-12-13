@@ -16,6 +16,10 @@ namespace MetaDslx.Languages.MetaCompiler
 {
     public class MetaCompilerLanguageServices : MetaCompilerLanguageServicesBase
     {
+        public override SymbolFacts CreateSymbolFacts()
+        {
+            return new CustomSymbolFacts();
+        }
     }
 }
 

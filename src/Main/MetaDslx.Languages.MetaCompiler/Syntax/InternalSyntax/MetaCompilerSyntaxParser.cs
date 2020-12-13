@@ -513,6 +513,53 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 		    return context;
 		}
 		
+		public GreenNode ParseLocked(ref ParserState state)
+		{
+		    RestoreParserState(state);
+			try
+			{
+				var context = this.Antlr4Parser.locked();
+		        if (TryGetGreenNode(context, out var green)) return green;
+		        else return _visitor.Visit(context);
+			}
+			finally
+			{
+				state = this.State;
+			}
+		}
+		
+		protected virtual bool CanReuseLocked(LockedSyntax node)
+		{
+			return node != null;
+		}
+		
+		internal MetaCompilerParser.LockedContext _Antlr4ParseLocked()
+		{
+			BeginNode();
+		    MetaCompilerParser.LockedContext context = null;
+		    GreenNode green = null;
+		    try
+		    {
+				if (IsIncremental && CanReuseLocked(CurrentNode as LockedSyntax))
+				{
+					green = EatNode();
+					context = new MetaCompilerParser.LockedContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+				}
+				else
+				{
+					context = this.Antlr4Parser._DoParseLocked();
+					green = _visitor.Visit(context);
+				}
+		    }
+		    finally
+		    {
+		        EndNode(ref green);
+		        CacheGreenNode(context, green);
+		    }
+		    return context;
+		}
+		
 		public GreenNode ParsePhaseJoin(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -972,6 +1019,53 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 				else
 				{
 					context = this.Antlr4Parser._DoParseClassDeclaration();
+					green = _visitor.Visit(context);
+				}
+		    }
+		    finally
+		    {
+		        EndNode(ref green);
+		        CacheGreenNode(context, green);
+		    }
+		    return context;
+		}
+		
+		public GreenNode ParseAbstract_(ref ParserState state)
+		{
+		    RestoreParserState(state);
+			try
+			{
+				var context = this.Antlr4Parser.abstract_();
+		        if (TryGetGreenNode(context, out var green)) return green;
+		        else return _visitor.Visit(context);
+			}
+			finally
+			{
+				state = this.State;
+			}
+		}
+		
+		protected virtual bool CanReuseAbstract_(Abstract_Syntax node)
+		{
+			return node != null;
+		}
+		
+		internal MetaCompilerParser.Abstract_Context _Antlr4ParseAbstract_()
+		{
+			BeginNode();
+		    MetaCompilerParser.Abstract_Context context = null;
+		    GreenNode green = null;
+		    try
+		    {
+				if (IsIncremental && CanReuseAbstract_(CurrentNode as Abstract_Syntax))
+				{
+					green = EatNode();
+					context = new MetaCompilerParser.Abstract_Context_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+				}
+				else
+				{
+					context = this.Antlr4Parser._DoParseAbstract_();
 					green = _visitor.Visit(context);
 				}
 		    }
@@ -2017,6 +2111,53 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 		    return context;
 		}
 		
+		public GreenNode ParseArrayType(ref ParserState state)
+		{
+		    RestoreParserState(state);
+			try
+			{
+				var context = this.Antlr4Parser.arrayType();
+		        if (TryGetGreenNode(context, out var green)) return green;
+		        else return _visitor.Visit(context);
+			}
+			finally
+			{
+				state = this.State;
+			}
+		}
+		
+		protected virtual bool CanReuseArrayType(ArrayTypeSyntax node)
+		{
+			return node != null;
+		}
+		
+		internal MetaCompilerParser.ArrayTypeContext _Antlr4ParseArrayType()
+		{
+			BeginNode();
+		    MetaCompilerParser.ArrayTypeContext context = null;
+		    GreenNode green = null;
+		    try
+		    {
+				if (IsIncremental && CanReuseArrayType(CurrentNode as ArrayTypeSyntax))
+				{
+					green = EatNode();
+					context = new MetaCompilerParser.ArrayTypeContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+				}
+				else
+				{
+					context = this.Antlr4Parser._DoParseArrayType();
+					green = _visitor.Visit(context);
+				}
+		    }
+		    finally
+		    {
+		        EndNode(ref green);
+		        CacheGreenNode(context, green);
+		    }
+		    return context;
+		}
+		
 		public GreenNode ParseGenericType(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -2064,53 +2205,6 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 		    return context;
 		}
 		
-		public GreenNode ParseGenericTypeName(ref ParserState state)
-		{
-		    RestoreParserState(state);
-			try
-			{
-				var context = this.Antlr4Parser.genericTypeName();
-		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return _visitor.Visit(context);
-			}
-			finally
-			{
-				state = this.State;
-			}
-		}
-		
-		protected virtual bool CanReuseGenericTypeName(GenericTypeNameSyntax node)
-		{
-			return node != null;
-		}
-		
-		internal MetaCompilerParser.GenericTypeNameContext _Antlr4ParseGenericTypeName()
-		{
-			BeginNode();
-		    MetaCompilerParser.GenericTypeNameContext context = null;
-		    GreenNode green = null;
-		    try
-		    {
-				if (IsIncremental && CanReuseGenericTypeName(CurrentNode as GenericTypeNameSyntax))
-				{
-					green = EatNode();
-					context = new MetaCompilerParser.GenericTypeNameContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
-				}
-				else
-				{
-					context = this.Antlr4Parser._DoParseGenericTypeName();
-					green = _visitor.Visit(context);
-				}
-		    }
-		    finally
-		    {
-		        EndNode(ref green);
-		        CacheGreenNode(context, green);
-		    }
-		    return context;
-		}
-		
 		public GreenNode ParseTypeArguments(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -2147,53 +2241,6 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 				else
 				{
 					context = this.Antlr4Parser._DoParseTypeArguments();
-					green = _visitor.Visit(context);
-				}
-		    }
-		    finally
-		    {
-		        EndNode(ref green);
-		        CacheGreenNode(context, green);
-		    }
-		    return context;
-		}
-		
-		public GreenNode ParseTypeArgument(ref ParserState state)
-		{
-		    RestoreParserState(state);
-			try
-			{
-				var context = this.Antlr4Parser.typeArgument();
-		        if (TryGetGreenNode(context, out var green)) return green;
-		        else return _visitor.Visit(context);
-			}
-			finally
-			{
-				state = this.State;
-			}
-		}
-		
-		protected virtual bool CanReuseTypeArgument(TypeArgumentSyntax node)
-		{
-			return node != null;
-		}
-		
-		internal MetaCompilerParser.TypeArgumentContext _Antlr4ParseTypeArgument()
-		{
-			BeginNode();
-		    MetaCompilerParser.TypeArgumentContext context = null;
-		    GreenNode green = null;
-		    try
-		    {
-				if (IsIncremental && CanReuseTypeArgument(CurrentNode as TypeArgumentSyntax))
-				{
-					green = EatNode();
-					context = new MetaCompilerParser.TypeArgumentContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
-					this.Antlr4Parser.Context.AddChild(context);
-				}
-				else
-				{
-					context = this.Antlr4Parser._DoParseTypeArgument();
 					green = _visitor.Visit(context);
 				}
 		    }
@@ -2945,7 +2992,9 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 			    }
 				var attribute = attributeBuilder.ToList();
 				_pool.Free(attributeBuilder);
-				InternalSyntaxToken kLocked = (InternalSyntaxToken)this.VisitTerminal(context.KLocked());
+				MetaCompilerParser.LockedContext lockedContext = context.locked();
+				LockedGreen locked = null;
+				if (lockedContext != null) locked = (LockedGreen)this.Visit(lockedContext);
 				InternalSyntaxToken kPhase = (InternalSyntaxToken)this.VisitTerminal(context.KPhase(), MetaCompilerSyntaxKind.KPhase);
 				MetaCompilerParser.NameContext nameContext = context.name();
 				NameGreen name = null;
@@ -2961,7 +3010,14 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 				BeforePhasesGreen beforePhases = null;
 				if (beforePhasesContext != null) beforePhases = (BeforePhasesGreen)this.Visit(beforePhasesContext);
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), MetaCompilerSyntaxKind.TSemicolon);
-				return _factory.PhaseDeclaration(attribute, kLocked, kPhase, name, phaseJoin, afterPhases, beforePhases, tSemicolon);
+				return _factory.PhaseDeclaration(attribute, locked, kPhase, name, phaseJoin, afterPhases, beforePhases, tSemicolon);
+			}
+			
+			public override GreenNode VisitLocked(MetaCompilerParser.LockedContext context)
+			{
+				if (context == null) return LockedGreen.__Missing;
+				InternalSyntaxToken kLocked = (InternalSyntaxToken)this.VisitTerminal(context.KLocked(), MetaCompilerSyntaxKind.KLocked);
+				return _factory.Locked(kLocked);
 			}
 			
 			public override GreenNode VisitPhaseJoin(MetaCompilerParser.PhaseJoinContext context)
@@ -3127,7 +3183,9 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 			    }
 				var attribute = attributeBuilder.ToList();
 				_pool.Free(attributeBuilder);
-				InternalSyntaxToken kAbstract = (InternalSyntaxToken)this.VisitTerminal(context.KAbstract());
+				MetaCompilerParser.Abstract_Context abstract_Context = context.abstract_();
+				Abstract_Green abstract_ = null;
+				if (abstract_Context != null) abstract_ = (Abstract_Green)this.Visit(abstract_Context);
 				MetaCompilerParser.ClassKindContext classKindContext = context.classKind();
 				ClassKindGreen classKind = null;
 				if (classKindContext != null) classKind = (ClassKindGreen)this.Visit(classKindContext);
@@ -3144,7 +3202,14 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 				ClassBodyGreen classBody = null;
 				if (classBodyContext != null) classBody = (ClassBodyGreen)this.Visit(classBodyContext);
 				if (classBody == null) classBody = ClassBodyGreen.__Missing;
-				return _factory.ClassDeclaration(attribute, kAbstract, classKind, name, tColon, classAncestors, classBody);
+				return _factory.ClassDeclaration(attribute, abstract_, classKind, name, tColon, classAncestors, classBody);
+			}
+			
+			public override GreenNode VisitAbstract_(MetaCompilerParser.Abstract_Context context)
+			{
+				if (context == null) return Abstract_Green.__Missing;
+				InternalSyntaxToken kAbstract = (InternalSyntaxToken)this.VisitTerminal(context.KAbstract(), MetaCompilerSyntaxKind.KAbstract);
+				return _factory.Abstract_(kAbstract);
 			}
 			
 			public override GreenNode VisitClassAncestors(MetaCompilerParser.ClassAncestorsContext context)
@@ -3398,6 +3463,11 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 				{
 					return _factory.TypeReference((GenericTypeGreen)this.Visit(genericTypeContext));
 				}
+				MetaCompilerParser.ArrayTypeContext arrayTypeContext = context.arrayType();
+				if (arrayTypeContext != null) 
+				{
+					return _factory.TypeReference((ArrayTypeGreen)this.Visit(arrayTypeContext));
+				}
 				MetaCompilerParser.SimpleTypeContext simpleTypeContext = context.simpleType();
 				if (simpleTypeContext != null) 
 				{
@@ -3514,59 +3584,51 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 				return _factory.NullableType(primitiveType, tQuestion);
 			}
 			
+			public override GreenNode VisitArrayType(MetaCompilerParser.ArrayTypeContext context)
+			{
+				if (context == null) return ArrayTypeGreen.__Missing;
+				MetaCompilerParser.SimpleTypeContext simpleTypeContext = context.simpleType();
+				SimpleTypeGreen simpleType = null;
+				if (simpleTypeContext != null) simpleType = (SimpleTypeGreen)this.Visit(simpleTypeContext);
+				if (simpleType == null) simpleType = SimpleTypeGreen.__Missing;
+				InternalSyntaxToken tOpenBracket = (InternalSyntaxToken)this.VisitTerminal(context.TOpenBracket(), MetaCompilerSyntaxKind.TOpenBracket);
+				InternalSyntaxToken tCloseBracket = (InternalSyntaxToken)this.VisitTerminal(context.TCloseBracket(), MetaCompilerSyntaxKind.TCloseBracket);
+				return _factory.ArrayType(simpleType, tOpenBracket, tCloseBracket);
+			}
+			
 			public override GreenNode VisitGenericType(MetaCompilerParser.GenericTypeContext context)
 			{
 				if (context == null) return GenericTypeGreen.__Missing;
-				MetaCompilerParser.GenericTypeNameContext genericTypeNameContext = context.genericTypeName();
-				GenericTypeNameGreen genericTypeName = null;
-				if (genericTypeNameContext != null) genericTypeName = (GenericTypeNameGreen)this.Visit(genericTypeNameContext);
-				if (genericTypeName == null) genericTypeName = GenericTypeNameGreen.__Missing;
+				MetaCompilerParser.ClassTypeContext classTypeContext = context.classType();
+				ClassTypeGreen classType = null;
+				if (classTypeContext != null) classType = (ClassTypeGreen)this.Visit(classTypeContext);
+				if (classType == null) classType = ClassTypeGreen.__Missing;
 				InternalSyntaxToken tLessThan = (InternalSyntaxToken)this.VisitTerminal(context.TLessThan(), MetaCompilerSyntaxKind.TLessThan);
 				MetaCompilerParser.TypeArgumentsContext typeArgumentsContext = context.typeArguments();
 				TypeArgumentsGreen typeArguments = null;
 				if (typeArgumentsContext != null) typeArguments = (TypeArgumentsGreen)this.Visit(typeArgumentsContext);
 				if (typeArguments == null) typeArguments = TypeArgumentsGreen.__Missing;
 				InternalSyntaxToken tGreaterThan = (InternalSyntaxToken)this.VisitTerminal(context.TGreaterThan(), MetaCompilerSyntaxKind.TGreaterThan);
-				return _factory.GenericType(genericTypeName, tLessThan, typeArguments, tGreaterThan);
-			}
-			
-			public override GreenNode VisitGenericTypeName(MetaCompilerParser.GenericTypeNameContext context)
-			{
-				if (context == null) return GenericTypeNameGreen.__Missing;
-				MetaCompilerParser.QualifierContext qualifierContext = context.qualifier();
-				QualifierGreen qualifier = null;
-				if (qualifierContext != null) qualifier = (QualifierGreen)this.Visit(qualifierContext);
-				if (qualifier == null) qualifier = QualifierGreen.__Missing;
-				return _factory.GenericTypeName(qualifier);
+				return _factory.GenericType(classType, tLessThan, typeArguments, tGreaterThan);
 			}
 			
 			public override GreenNode VisitTypeArguments(MetaCompilerParser.TypeArgumentsContext context)
 			{
 				if (context == null) return TypeArgumentsGreen.__Missing;
-			    MetaCompilerParser.TypeArgumentContext[] typeArgumentContext = context.typeArgument();
+			    MetaCompilerParser.TypeReferenceContext[] typeReferenceContext = context.typeReference();
 			    ITerminalNode[] tCommaContext = context.TComma();
-			    var typeArgumentBuilder = _pool.AllocateSeparated<TypeArgumentGreen>();
-			    for (int i = 0; i < typeArgumentContext.Length; i++)
+			    var typeReferenceBuilder = _pool.AllocateSeparated<TypeReferenceGreen>();
+			    for (int i = 0; i < typeReferenceContext.Length; i++)
 			    {
-			        typeArgumentBuilder.Add((TypeArgumentGreen)this.Visit(typeArgumentContext[i]));
+			        typeReferenceBuilder.Add((TypeReferenceGreen)this.Visit(typeReferenceContext[i]));
 			        if (i < tCommaContext.Length)
 			        {
-			            typeArgumentBuilder.AddSeparator((InternalSyntaxToken)this.VisitTerminal(tCommaContext[i], MetaCompilerSyntaxKind.TComma));
+			            typeReferenceBuilder.AddSeparator((InternalSyntaxToken)this.VisitTerminal(tCommaContext[i], MetaCompilerSyntaxKind.TComma));
 			        }
 			    }
-				var typeArgument = typeArgumentBuilder.ToList();
-				_pool.Free(typeArgumentBuilder);
-				return _factory.TypeArguments(typeArgument);
-			}
-			
-			public override GreenNode VisitTypeArgument(MetaCompilerParser.TypeArgumentContext context)
-			{
-				if (context == null) return TypeArgumentGreen.__Missing;
-				MetaCompilerParser.QualifierContext qualifierContext = context.qualifier();
-				QualifierGreen qualifier = null;
-				if (qualifierContext != null) qualifier = (QualifierGreen)this.Visit(qualifierContext);
-				if (qualifier == null) qualifier = QualifierGreen.__Missing;
-				return _factory.TypeArgument(qualifier);
+				var typeReference = typeReferenceBuilder.ToList();
+				_pool.Free(typeReferenceBuilder);
+				return _factory.TypeArguments(typeReference);
 			}
 			
 			public override GreenNode VisitOperationDeclaration(MetaCompilerParser.OperationDeclarationContext context)
@@ -3861,6 +3923,17 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 		    public GreenNode CachedNode => _cachedNode;
 		}
 		
+		internal class LockedContext_Cached : LockedContext, ICachedRuleContext
+		{
+		    private GreenNode _cachedNode;
+		    public LockedContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+				: base(parent, invokingState)
+		    {
+		        _cachedNode = cachedNode;
+		    }
+		    public GreenNode CachedNode => _cachedNode;
+		}
+		
 		internal class PhaseJoinContext_Cached : PhaseJoinContext, ICachedRuleContext
 		{
 		    private GreenNode _cachedNode;
@@ -3964,6 +4037,17 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 		{
 		    private GreenNode _cachedNode;
 		    public ClassDeclarationContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+				: base(parent, invokingState)
+		    {
+		        _cachedNode = cachedNode;
+		    }
+		    public GreenNode CachedNode => _cachedNode;
+		}
+		
+		internal class Abstract_Context_Cached : Abstract_Context, ICachedRuleContext
+		{
+		    private GreenNode _cachedNode;
+		    public Abstract_Context_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
 				: base(parent, invokingState)
 		    {
 		        _cachedNode = cachedNode;
@@ -4213,6 +4297,17 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 		    public GreenNode CachedNode => _cachedNode;
 		}
 		
+		internal class ArrayTypeContext_Cached : ArrayTypeContext, ICachedRuleContext
+		{
+		    private GreenNode _cachedNode;
+		    public ArrayTypeContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+				: base(parent, invokingState)
+		    {
+		        _cachedNode = cachedNode;
+		    }
+		    public GreenNode CachedNode => _cachedNode;
+		}
+		
 		internal class GenericTypeContext_Cached : GenericTypeContext, ICachedRuleContext
 		{
 		    private GreenNode _cachedNode;
@@ -4224,32 +4319,10 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 		    public GreenNode CachedNode => _cachedNode;
 		}
 		
-		internal class GenericTypeNameContext_Cached : GenericTypeNameContext, ICachedRuleContext
-		{
-		    private GreenNode _cachedNode;
-		    public GenericTypeNameContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
-				: base(parent, invokingState)
-		    {
-		        _cachedNode = cachedNode;
-		    }
-		    public GreenNode CachedNode => _cachedNode;
-		}
-		
 		internal class TypeArgumentsContext_Cached : TypeArgumentsContext, ICachedRuleContext
 		{
 		    private GreenNode _cachedNode;
 		    public TypeArgumentsContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
-				: base(parent, invokingState)
-		    {
-		        _cachedNode = cachedNode;
-		    }
-		    public GreenNode CachedNode => _cachedNode;
-		}
-		
-		internal class TypeArgumentContext_Cached : TypeArgumentContext, ICachedRuleContext
-		{
-		    private GreenNode _cachedNode;
-		    public TypeArgumentContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
 				: base(parent, invokingState)
 		    {
 		        _cachedNode = cachedNode;

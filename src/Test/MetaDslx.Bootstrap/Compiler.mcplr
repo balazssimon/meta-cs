@@ -1,9 +1,13 @@
 ﻿namespace MetaDslx.CodeAnalysis.Symbols
 {
+	typedef Dictionary = "Dictionary";
+	typedef LanguageSymbolKind = "MetaDslx.CodeAnalysis.Symbols.LanguageSymbolKind";
+	typedef ImmutableArray = "System.Collections.Immutable.ImmutableArray";
+	typedef Location = "MetaDslx.CodeAnalysis.Location";
+	typedef AttributeData = "AttributeData";
+
 	compiler Main;
 
-	phase None;
-	phase All;
 	phase Attributes;
 	phase Module;
 	locked phase ValidatingReferencedAssemblies;
@@ -16,22 +20,32 @@
 	phase MembersCompleted joins All;
 	phase AliasTarget;
 
-	symbol Symbol
+	abstract symbol Symbol
 	{
+		string Name;
+		string MetadataName;
+		Symbol ContainingSymbol;
+		LanguageSymbolKind Kind;
+		Location[] Locations;
 	}
 
-	symbol NamespaceOrTypeSymbol : Symbol
+	abstract symbol DeclaredSymbol : Symbol
+	{
+		Dictionary<string, DeclaredSymbol[]> MembersByName phase Members;
+		DeclaredSymbol[] Members phase MembersCompleted;
+		NamedTypeSymbol[] TypeMembers phase MembersCompleted;
+	}
+
+	abstract symbol NamespaceOrTypeSymbol : DeclaredSymbol
 	{
 	}
 
 	symbol NamespaceSymbol : NamespaceOrTypeSymbol
 	{
-		object Attributes phase Attributes;
-		object MembersByName phase Members;
-		object Members phase MembersCompleted;
+		AttributeData[] Attributes phase Attributes;
 	}
 
-	symbol TypeSymbol : NamespaceOrTypeSymbol
+	abstract symbol TypeSymbol : NamespaceOrTypeSymbol
 	{
 	}
 

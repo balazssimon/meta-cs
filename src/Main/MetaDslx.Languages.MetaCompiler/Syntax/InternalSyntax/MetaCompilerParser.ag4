@@ -39,7 +39,9 @@ $SymbolDef(EnumType)
 compilerDeclaration : attribute* KCompiler name TSemicolon;
 
 $SymbolDef(Phase)
-phaseDeclaration : attribute* $Property(name=IsLocked,value=true) KLocked? KPhase name phaseJoin? afterPhases? beforePhases? TSemicolon;
+phaseDeclaration : attribute* locked? KPhase name phaseJoin? afterPhases? beforePhases? TSemicolon;
+$Property(name=IsLocked,value=true)
+locked: KLocked;
 $Property(JoinsPhase)
 phaseJoin: KJoins phaseRef;
 $Property(AfterPhases)
@@ -58,7 +60,9 @@ enumValue : attribute* name;
 enumMemberDeclaration : $Property(Operations) operationDeclaration;
 
 $SymbolDef(Class)
-classDeclaration : attribute* $Property(name=IsAbstract,value=true) KAbstract? classKind name (TColon $Property(SuperClasses) classAncestors)? classBody;
+classDeclaration : attribute* abstract_? classKind name (TColon $Property(SuperClasses) classAncestors)? classBody;
+$Property(name=IsAbstract,value=true)
+abstract_: KAbstract;
 classAncestors : classAncestor (TComma classAncestor)*;
 classAncestor : $SymbolUse(type=Class) qualifier;
 $Scope
@@ -94,7 +98,7 @@ nameUseList : qualifier (TComma qualifier)*;
 
 $SymbolDef(TypeDefType)
 typedefDeclaration : KTypeDef name typedefValue TSemicolon;
-$Property(DotNetName)
+$Property(DotNetType)
 typedefValue : TAssign $Value stringLiteral;
 
 $SymbolUse(DataType)
@@ -102,7 +106,7 @@ returnType : typeReference | voidType;
 $SymbolUse(DataType)
 typeOfReference : typeReference;
 $SymbolUse(DataType)
-typeReference : genericType | simpleType;
+typeReference : genericType | arrayType | simpleType;
 $SymbolUse(DataType)
 simpleType : primitiveType | objectType | nullableType | classType;
 
@@ -133,11 +137,13 @@ voidType
 $SymbolDef(NullableType)
 nullableType : $Property(InnerType) primitiveType TQuestion;
 
+$SymbolDef(ArrayType)
+arrayType : $Property(InnerType) simpleType TOpenBracket TCloseBracket;
+
 $SymbolDef(GenericType)
-genericType : $Property(Type) genericTypeName TLessThan $Property(TypeArguments) typeArguments TGreaterThan;
-genericTypeName : $SymbolUse(Class) qualifier;
-typeArguments : typeArgument (TComma typeArgument)*;
-typeArgument : $SymbolUse(Class) qualifier;
+genericType : $Property(Type) classType TLessThan typeArguments TGreaterThan;
+$Property(TypeArguments)
+typeArguments : typeReference (TComma typeReference)*;
 	
 $SymbolDef(Operation)
 operationDeclaration : attribute* $Property(ReturnType) returnType name TOpenParen $Property(Parameters) parameterList? TCloseParen TSemicolon;

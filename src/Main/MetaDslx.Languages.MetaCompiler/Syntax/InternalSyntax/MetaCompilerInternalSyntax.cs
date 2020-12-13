@@ -2098,7 +2098,7 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 	{
 	    internal static readonly PhaseDeclarationGreen __Missing = new PhaseDeclarationGreen();
 	    private GreenNode attribute;
-	    private InternalSyntaxToken kLocked;
+	    private LockedGreen locked;
 	    private InternalSyntaxToken kPhase;
 	    private NameGreen name;
 	    private PhaseJoinGreen phaseJoin;
@@ -2106,7 +2106,7 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 	    private BeforePhasesGreen beforePhases;
 	    private InternalSyntaxToken tSemicolon;
 	
-	    public PhaseDeclarationGreen(MetaCompilerSyntaxKind kind, GreenNode attribute, InternalSyntaxToken kLocked, InternalSyntaxToken kPhase, NameGreen name, PhaseJoinGreen phaseJoin, AfterPhasesGreen afterPhases, BeforePhasesGreen beforePhases, InternalSyntaxToken tSemicolon)
+	    public PhaseDeclarationGreen(MetaCompilerSyntaxKind kind, GreenNode attribute, LockedGreen locked, InternalSyntaxToken kPhase, NameGreen name, PhaseJoinGreen phaseJoin, AfterPhasesGreen afterPhases, BeforePhasesGreen beforePhases, InternalSyntaxToken tSemicolon)
 	        : base(kind, null, null)
 	    {
 			this.SlotCount = 8;
@@ -2115,10 +2115,10 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 				this.AdjustFlagsAndWidth(attribute);
 				this.attribute = attribute;
 			}
-			if (kLocked != null)
+			if (locked != null)
 			{
-				this.AdjustFlagsAndWidth(kLocked);
-				this.kLocked = kLocked;
+				this.AdjustFlagsAndWidth(locked);
+				this.locked = locked;
 			}
 			if (kPhase != null)
 			{
@@ -2152,7 +2152,7 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 			}
 	    }
 	
-	    public PhaseDeclarationGreen(MetaCompilerSyntaxKind kind, GreenNode attribute, InternalSyntaxToken kLocked, InternalSyntaxToken kPhase, NameGreen name, PhaseJoinGreen phaseJoin, AfterPhasesGreen afterPhases, BeforePhasesGreen beforePhases, InternalSyntaxToken tSemicolon, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	    public PhaseDeclarationGreen(MetaCompilerSyntaxKind kind, GreenNode attribute, LockedGreen locked, InternalSyntaxToken kPhase, NameGreen name, PhaseJoinGreen phaseJoin, AfterPhasesGreen afterPhases, BeforePhasesGreen beforePhases, InternalSyntaxToken tSemicolon, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
 	        : base(kind, diagnostics, annotations)
 	    {
 			this.SlotCount = 8;
@@ -2161,10 +2161,10 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 				this.AdjustFlagsAndWidth(attribute);
 				this.attribute = attribute;
 			}
-			if (kLocked != null)
+			if (locked != null)
 			{
-				this.AdjustFlagsAndWidth(kLocked);
-				this.kLocked = kLocked;
+				this.AdjustFlagsAndWidth(locked);
+				this.locked = locked;
 			}
 			if (kPhase != null)
 			{
@@ -2205,7 +2205,7 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 		}
 	
 	    public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> Attribute { get { return new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen>(this.attribute); } }
-	    public InternalSyntaxToken KLocked { get { return this.kLocked; } }
+	    public LockedGreen Locked { get { return this.locked; } }
 	    public InternalSyntaxToken KPhase { get { return this.kPhase; } }
 	    public NameGreen Name { get { return this.name; } }
 	    public PhaseJoinGreen PhaseJoin { get { return this.phaseJoin; } }
@@ -2223,7 +2223,7 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 	        switch (index)
 	        {
 	            case 0: return this.attribute;
-	            case 1: return this.kLocked;
+	            case 1: return this.locked;
 	            case 2: return this.kPhase;
 	            case 3: return this.name;
 	            case 4: return this.phaseJoin;
@@ -2240,18 +2240,18 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 	
 	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
 	    {
-	        return new PhaseDeclarationGreen(this.Kind, this.attribute, this.kLocked, this.kPhase, this.name, this.phaseJoin, this.afterPhases, this.beforePhases, this.tSemicolon, diagnostics, this.GetAnnotations());
+	        return new PhaseDeclarationGreen(this.Kind, this.attribute, this.locked, this.kPhase, this.name, this.phaseJoin, this.afterPhases, this.beforePhases, this.tSemicolon, diagnostics, this.GetAnnotations());
 	    }
 	
 	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
 	    {
-	        return new PhaseDeclarationGreen(this.Kind, this.attribute, this.kLocked, this.kPhase, this.name, this.phaseJoin, this.afterPhases, this.beforePhases, this.tSemicolon, this.GetDiagnostics(), annotations);
+	        return new PhaseDeclarationGreen(this.Kind, this.attribute, this.locked, this.kPhase, this.name, this.phaseJoin, this.afterPhases, this.beforePhases, this.tSemicolon, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public PhaseDeclarationGreen Update(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, InternalSyntaxToken kLocked, InternalSyntaxToken kPhase, NameGreen name, PhaseJoinGreen phaseJoin, AfterPhasesGreen afterPhases, BeforePhasesGreen beforePhases, InternalSyntaxToken tSemicolon)
+	    public PhaseDeclarationGreen Update(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, LockedGreen locked, InternalSyntaxToken kPhase, NameGreen name, PhaseJoinGreen phaseJoin, AfterPhasesGreen afterPhases, BeforePhasesGreen beforePhases, InternalSyntaxToken tSemicolon)
 	    {
 	        if (this.Attribute != attribute ||
-				this.KLocked != kLocked ||
+				this.Locked != locked ||
 				this.KPhase != kPhase ||
 				this.Name != name ||
 				this.PhaseJoin != phaseJoin ||
@@ -2259,7 +2259,7 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 				this.BeforePhases != beforePhases ||
 				this.TSemicolon != tSemicolon)
 	        {
-	            InternalSyntaxNode newNode = MetaCompilerLanguage.Instance.InternalSyntaxFactory.PhaseDeclaration(attribute, kLocked, kPhase, name, phaseJoin, afterPhases, beforePhases, tSemicolon);
+	            InternalSyntaxNode newNode = MetaCompilerLanguage.Instance.InternalSyntaxFactory.PhaseDeclaration(attribute, locked, kPhase, name, phaseJoin, afterPhases, beforePhases, tSemicolon);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
@@ -2267,6 +2267,86 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
 				return (PhaseDeclarationGreen)newNode;
+	        }
+	        return this;
+	    }
+	}
+	
+	internal class LockedGreen : GreenSyntaxNode
+	{
+	    internal static readonly LockedGreen __Missing = new LockedGreen();
+	    private InternalSyntaxToken kLocked;
+	
+	    public LockedGreen(MetaCompilerSyntaxKind kind, InternalSyntaxToken kLocked)
+	        : base(kind, null, null)
+	    {
+			this.SlotCount = 1;
+			if (kLocked != null)
+			{
+				this.AdjustFlagsAndWidth(kLocked);
+				this.kLocked = kLocked;
+			}
+	    }
+	
+	    public LockedGreen(MetaCompilerSyntaxKind kind, InternalSyntaxToken kLocked, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	        : base(kind, diagnostics, annotations)
+	    {
+			this.SlotCount = 1;
+			if (kLocked != null)
+			{
+				this.AdjustFlagsAndWidth(kLocked);
+				this.kLocked = kLocked;
+			}
+	    }
+	
+		private LockedGreen()
+			: base((MetaCompilerSyntaxKind)MetaCompilerSyntaxKind.Locked, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
+	
+	    public InternalSyntaxToken KLocked { get { return this.kLocked; } }
+	
+	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
+	    {
+	        return new global::MetaDslx.Languages.MetaCompiler.Syntax.LockedSyntax(this, (MetaCompilerSyntaxNode)parent, position);
+	    }
+	
+	    protected override GreenNode GetSlot(int index)
+	    {
+	        switch (index)
+	        {
+	            case 0: return this.kLocked;
+	            default: return null;
+	        }
+	    }
+	
+	    public override TResult Accept<TResult>(MetaCompilerSyntaxVisitor<TResult> visitor) => visitor.VisitLockedGreen(this);
+	
+	    public override void Accept(MetaCompilerSyntaxVisitor visitor) => visitor.VisitLockedGreen(this);
+	
+	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
+	    {
+	        return new LockedGreen(this.Kind, this.kLocked, diagnostics, this.GetAnnotations());
+	    }
+	
+	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
+	    {
+	        return new LockedGreen(this.Kind, this.kLocked, this.GetDiagnostics(), annotations);
+	    }
+	
+	    public LockedGreen Update(InternalSyntaxToken kLocked)
+	    {
+	        if (this.KLocked != kLocked)
+	        {
+	            InternalSyntaxNode newNode = MetaCompilerLanguage.Instance.InternalSyntaxFactory.Locked(kLocked);
+	            var diags = this.GetDiagnostics();
+	            if (diags != null && diags.Length > 0)
+	               newNode = newNode.WithDiagnostics(diags);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (LockedGreen)newNode;
 	        }
 	        return this;
 	    }
@@ -3150,14 +3230,14 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 	{
 	    internal static readonly ClassDeclarationGreen __Missing = new ClassDeclarationGreen();
 	    private GreenNode attribute;
-	    private InternalSyntaxToken kAbstract;
+	    private Abstract_Green abstract_;
 	    private ClassKindGreen classKind;
 	    private NameGreen name;
 	    private InternalSyntaxToken tColon;
 	    private ClassAncestorsGreen classAncestors;
 	    private ClassBodyGreen classBody;
 	
-	    public ClassDeclarationGreen(MetaCompilerSyntaxKind kind, GreenNode attribute, InternalSyntaxToken kAbstract, ClassKindGreen classKind, NameGreen name, InternalSyntaxToken tColon, ClassAncestorsGreen classAncestors, ClassBodyGreen classBody)
+	    public ClassDeclarationGreen(MetaCompilerSyntaxKind kind, GreenNode attribute, Abstract_Green abstract_, ClassKindGreen classKind, NameGreen name, InternalSyntaxToken tColon, ClassAncestorsGreen classAncestors, ClassBodyGreen classBody)
 	        : base(kind, null, null)
 	    {
 			this.SlotCount = 7;
@@ -3166,10 +3246,10 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 				this.AdjustFlagsAndWidth(attribute);
 				this.attribute = attribute;
 			}
-			if (kAbstract != null)
+			if (abstract_ != null)
 			{
-				this.AdjustFlagsAndWidth(kAbstract);
-				this.kAbstract = kAbstract;
+				this.AdjustFlagsAndWidth(abstract_);
+				this.abstract_ = abstract_;
 			}
 			if (classKind != null)
 			{
@@ -3198,7 +3278,7 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 			}
 	    }
 	
-	    public ClassDeclarationGreen(MetaCompilerSyntaxKind kind, GreenNode attribute, InternalSyntaxToken kAbstract, ClassKindGreen classKind, NameGreen name, InternalSyntaxToken tColon, ClassAncestorsGreen classAncestors, ClassBodyGreen classBody, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	    public ClassDeclarationGreen(MetaCompilerSyntaxKind kind, GreenNode attribute, Abstract_Green abstract_, ClassKindGreen classKind, NameGreen name, InternalSyntaxToken tColon, ClassAncestorsGreen classAncestors, ClassBodyGreen classBody, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
 	        : base(kind, diagnostics, annotations)
 	    {
 			this.SlotCount = 7;
@@ -3207,10 +3287,10 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 				this.AdjustFlagsAndWidth(attribute);
 				this.attribute = attribute;
 			}
-			if (kAbstract != null)
+			if (abstract_ != null)
 			{
-				this.AdjustFlagsAndWidth(kAbstract);
-				this.kAbstract = kAbstract;
+				this.AdjustFlagsAndWidth(abstract_);
+				this.abstract_ = abstract_;
 			}
 			if (classKind != null)
 			{
@@ -3246,7 +3326,7 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 		}
 	
 	    public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> Attribute { get { return new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen>(this.attribute); } }
-	    public InternalSyntaxToken KAbstract { get { return this.kAbstract; } }
+	    public Abstract_Green Abstract_ { get { return this.abstract_; } }
 	    public ClassKindGreen ClassKind { get { return this.classKind; } }
 	    public NameGreen Name { get { return this.name; } }
 	    public InternalSyntaxToken TColon { get { return this.tColon; } }
@@ -3263,7 +3343,7 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 	        switch (index)
 	        {
 	            case 0: return this.attribute;
-	            case 1: return this.kAbstract;
+	            case 1: return this.abstract_;
 	            case 2: return this.classKind;
 	            case 3: return this.name;
 	            case 4: return this.tColon;
@@ -3279,25 +3359,25 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 	
 	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
 	    {
-	        return new ClassDeclarationGreen(this.Kind, this.attribute, this.kAbstract, this.classKind, this.name, this.tColon, this.classAncestors, this.classBody, diagnostics, this.GetAnnotations());
+	        return new ClassDeclarationGreen(this.Kind, this.attribute, this.abstract_, this.classKind, this.name, this.tColon, this.classAncestors, this.classBody, diagnostics, this.GetAnnotations());
 	    }
 	
 	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
 	    {
-	        return new ClassDeclarationGreen(this.Kind, this.attribute, this.kAbstract, this.classKind, this.name, this.tColon, this.classAncestors, this.classBody, this.GetDiagnostics(), annotations);
+	        return new ClassDeclarationGreen(this.Kind, this.attribute, this.abstract_, this.classKind, this.name, this.tColon, this.classAncestors, this.classBody, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public ClassDeclarationGreen Update(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, InternalSyntaxToken kAbstract, ClassKindGreen classKind, NameGreen name, InternalSyntaxToken tColon, ClassAncestorsGreen classAncestors, ClassBodyGreen classBody)
+	    public ClassDeclarationGreen Update(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, Abstract_Green abstract_, ClassKindGreen classKind, NameGreen name, InternalSyntaxToken tColon, ClassAncestorsGreen classAncestors, ClassBodyGreen classBody)
 	    {
 	        if (this.Attribute != attribute ||
-				this.KAbstract != kAbstract ||
+				this.Abstract_ != abstract_ ||
 				this.ClassKind != classKind ||
 				this.Name != name ||
 				this.TColon != tColon ||
 				this.ClassAncestors != classAncestors ||
 				this.ClassBody != classBody)
 	        {
-	            InternalSyntaxNode newNode = MetaCompilerLanguage.Instance.InternalSyntaxFactory.ClassDeclaration(attribute, kAbstract, classKind, name, tColon, classAncestors, classBody);
+	            InternalSyntaxNode newNode = MetaCompilerLanguage.Instance.InternalSyntaxFactory.ClassDeclaration(attribute, abstract_, classKind, name, tColon, classAncestors, classBody);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
@@ -3305,6 +3385,86 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
 				return (ClassDeclarationGreen)newNode;
+	        }
+	        return this;
+	    }
+	}
+	
+	internal class Abstract_Green : GreenSyntaxNode
+	{
+	    internal static readonly Abstract_Green __Missing = new Abstract_Green();
+	    private InternalSyntaxToken kAbstract;
+	
+	    public Abstract_Green(MetaCompilerSyntaxKind kind, InternalSyntaxToken kAbstract)
+	        : base(kind, null, null)
+	    {
+			this.SlotCount = 1;
+			if (kAbstract != null)
+			{
+				this.AdjustFlagsAndWidth(kAbstract);
+				this.kAbstract = kAbstract;
+			}
+	    }
+	
+	    public Abstract_Green(MetaCompilerSyntaxKind kind, InternalSyntaxToken kAbstract, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	        : base(kind, diagnostics, annotations)
+	    {
+			this.SlotCount = 1;
+			if (kAbstract != null)
+			{
+				this.AdjustFlagsAndWidth(kAbstract);
+				this.kAbstract = kAbstract;
+			}
+	    }
+	
+		private Abstract_Green()
+			: base((MetaCompilerSyntaxKind)MetaCompilerSyntaxKind.Abstract_, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
+	
+	    public InternalSyntaxToken KAbstract { get { return this.kAbstract; } }
+	
+	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
+	    {
+	        return new global::MetaDslx.Languages.MetaCompiler.Syntax.Abstract_Syntax(this, (MetaCompilerSyntaxNode)parent, position);
+	    }
+	
+	    protected override GreenNode GetSlot(int index)
+	    {
+	        switch (index)
+	        {
+	            case 0: return this.kAbstract;
+	            default: return null;
+	        }
+	    }
+	
+	    public override TResult Accept<TResult>(MetaCompilerSyntaxVisitor<TResult> visitor) => visitor.VisitAbstract_Green(this);
+	
+	    public override void Accept(MetaCompilerSyntaxVisitor visitor) => visitor.VisitAbstract_Green(this);
+	
+	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
+	    {
+	        return new Abstract_Green(this.Kind, this.kAbstract, diagnostics, this.GetAnnotations());
+	    }
+	
+	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
+	    {
+	        return new Abstract_Green(this.Kind, this.kAbstract, this.GetDiagnostics(), annotations);
+	    }
+	
+	    public Abstract_Green Update(InternalSyntaxToken kAbstract)
+	    {
+	        if (this.KAbstract != kAbstract)
+	        {
+	            InternalSyntaxNode newNode = MetaCompilerLanguage.Instance.InternalSyntaxFactory.Abstract_(kAbstract);
+	            var diags = this.GetDiagnostics();
+	            if (diags != null && diags.Length > 0)
+	               newNode = newNode.WithDiagnostics(diags);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (Abstract_Green)newNode;
 	        }
 	        return this;
 	    }
@@ -4782,16 +4942,22 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 	{
 	    internal static readonly TypeReferenceGreen __Missing = new TypeReferenceGreen();
 	    private GenericTypeGreen genericType;
+	    private ArrayTypeGreen arrayType;
 	    private SimpleTypeGreen simpleType;
 	
-	    public TypeReferenceGreen(MetaCompilerSyntaxKind kind, GenericTypeGreen genericType, SimpleTypeGreen simpleType)
+	    public TypeReferenceGreen(MetaCompilerSyntaxKind kind, GenericTypeGreen genericType, ArrayTypeGreen arrayType, SimpleTypeGreen simpleType)
 	        : base(kind, null, null)
 	    {
-			this.SlotCount = 2;
+			this.SlotCount = 3;
 			if (genericType != null)
 			{
 				this.AdjustFlagsAndWidth(genericType);
 				this.genericType = genericType;
+			}
+			if (arrayType != null)
+			{
+				this.AdjustFlagsAndWidth(arrayType);
+				this.arrayType = arrayType;
 			}
 			if (simpleType != null)
 			{
@@ -4800,14 +4966,19 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 			}
 	    }
 	
-	    public TypeReferenceGreen(MetaCompilerSyntaxKind kind, GenericTypeGreen genericType, SimpleTypeGreen simpleType, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	    public TypeReferenceGreen(MetaCompilerSyntaxKind kind, GenericTypeGreen genericType, ArrayTypeGreen arrayType, SimpleTypeGreen simpleType, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
 	        : base(kind, diagnostics, annotations)
 	    {
-			this.SlotCount = 2;
+			this.SlotCount = 3;
 			if (genericType != null)
 			{
 				this.AdjustFlagsAndWidth(genericType);
 				this.genericType = genericType;
+			}
+			if (arrayType != null)
+			{
+				this.AdjustFlagsAndWidth(arrayType);
+				this.arrayType = arrayType;
 			}
 			if (simpleType != null)
 			{
@@ -4823,6 +4994,7 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 		}
 	
 	    public GenericTypeGreen GenericType { get { return this.genericType; } }
+	    public ArrayTypeGreen ArrayType { get { return this.arrayType; } }
 	    public SimpleTypeGreen SimpleType { get { return this.simpleType; } }
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
@@ -4835,7 +5007,8 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 	        switch (index)
 	        {
 	            case 0: return this.genericType;
-	            case 1: return this.simpleType;
+	            case 1: return this.arrayType;
+	            case 2: return this.simpleType;
 	            default: return null;
 	        }
 	    }
@@ -4846,12 +5019,12 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 	
 	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
 	    {
-	        return new TypeReferenceGreen(this.Kind, this.genericType, this.simpleType, diagnostics, this.GetAnnotations());
+	        return new TypeReferenceGreen(this.Kind, this.genericType, this.arrayType, this.simpleType, diagnostics, this.GetAnnotations());
 	    }
 	
 	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
 	    {
-	        return new TypeReferenceGreen(this.Kind, this.genericType, this.simpleType, this.GetDiagnostics(), annotations);
+	        return new TypeReferenceGreen(this.Kind, this.genericType, this.arrayType, this.simpleType, this.GetDiagnostics(), annotations);
 	    }
 	
 	    public TypeReferenceGreen Update(GenericTypeGreen genericType)
@@ -4859,6 +5032,22 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 	        if (this.genericType != genericType)
 	        {
 	            InternalSyntaxNode newNode = MetaCompilerLanguage.Instance.InternalSyntaxFactory.TypeReference(genericType);
+	            var diags = this.GetDiagnostics();
+	            if (diags != null && diags.Length > 0)
+	               newNode = newNode.WithDiagnostics(diags);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (TypeReferenceGreen)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public TypeReferenceGreen Update(ArrayTypeGreen arrayType)
+	    {
+	        if (this.arrayType != arrayType)
+	        {
+	            InternalSyntaxNode newNode = MetaCompilerLanguage.Instance.InternalSyntaxFactory.TypeReference(arrayType);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
@@ -5468,22 +5657,130 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 	    }
 	}
 	
+	internal class ArrayTypeGreen : GreenSyntaxNode
+	{
+	    internal static readonly ArrayTypeGreen __Missing = new ArrayTypeGreen();
+	    private SimpleTypeGreen simpleType;
+	    private InternalSyntaxToken tOpenBracket;
+	    private InternalSyntaxToken tCloseBracket;
+	
+	    public ArrayTypeGreen(MetaCompilerSyntaxKind kind, SimpleTypeGreen simpleType, InternalSyntaxToken tOpenBracket, InternalSyntaxToken tCloseBracket)
+	        : base(kind, null, null)
+	    {
+			this.SlotCount = 3;
+			if (simpleType != null)
+			{
+				this.AdjustFlagsAndWidth(simpleType);
+				this.simpleType = simpleType;
+			}
+			if (tOpenBracket != null)
+			{
+				this.AdjustFlagsAndWidth(tOpenBracket);
+				this.tOpenBracket = tOpenBracket;
+			}
+			if (tCloseBracket != null)
+			{
+				this.AdjustFlagsAndWidth(tCloseBracket);
+				this.tCloseBracket = tCloseBracket;
+			}
+	    }
+	
+	    public ArrayTypeGreen(MetaCompilerSyntaxKind kind, SimpleTypeGreen simpleType, InternalSyntaxToken tOpenBracket, InternalSyntaxToken tCloseBracket, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	        : base(kind, diagnostics, annotations)
+	    {
+			this.SlotCount = 3;
+			if (simpleType != null)
+			{
+				this.AdjustFlagsAndWidth(simpleType);
+				this.simpleType = simpleType;
+			}
+			if (tOpenBracket != null)
+			{
+				this.AdjustFlagsAndWidth(tOpenBracket);
+				this.tOpenBracket = tOpenBracket;
+			}
+			if (tCloseBracket != null)
+			{
+				this.AdjustFlagsAndWidth(tCloseBracket);
+				this.tCloseBracket = tCloseBracket;
+			}
+	    }
+	
+		private ArrayTypeGreen()
+			: base((MetaCompilerSyntaxKind)MetaCompilerSyntaxKind.ArrayType, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
+	
+	    public SimpleTypeGreen SimpleType { get { return this.simpleType; } }
+	    public InternalSyntaxToken TOpenBracket { get { return this.tOpenBracket; } }
+	    public InternalSyntaxToken TCloseBracket { get { return this.tCloseBracket; } }
+	
+	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
+	    {
+	        return new global::MetaDslx.Languages.MetaCompiler.Syntax.ArrayTypeSyntax(this, (MetaCompilerSyntaxNode)parent, position);
+	    }
+	
+	    protected override GreenNode GetSlot(int index)
+	    {
+	        switch (index)
+	        {
+	            case 0: return this.simpleType;
+	            case 1: return this.tOpenBracket;
+	            case 2: return this.tCloseBracket;
+	            default: return null;
+	        }
+	    }
+	
+	    public override TResult Accept<TResult>(MetaCompilerSyntaxVisitor<TResult> visitor) => visitor.VisitArrayTypeGreen(this);
+	
+	    public override void Accept(MetaCompilerSyntaxVisitor visitor) => visitor.VisitArrayTypeGreen(this);
+	
+	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
+	    {
+	        return new ArrayTypeGreen(this.Kind, this.simpleType, this.tOpenBracket, this.tCloseBracket, diagnostics, this.GetAnnotations());
+	    }
+	
+	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
+	    {
+	        return new ArrayTypeGreen(this.Kind, this.simpleType, this.tOpenBracket, this.tCloseBracket, this.GetDiagnostics(), annotations);
+	    }
+	
+	    public ArrayTypeGreen Update(SimpleTypeGreen simpleType, InternalSyntaxToken tOpenBracket, InternalSyntaxToken tCloseBracket)
+	    {
+	        if (this.SimpleType != simpleType ||
+				this.TOpenBracket != tOpenBracket ||
+				this.TCloseBracket != tCloseBracket)
+	        {
+	            InternalSyntaxNode newNode = MetaCompilerLanguage.Instance.InternalSyntaxFactory.ArrayType(simpleType, tOpenBracket, tCloseBracket);
+	            var diags = this.GetDiagnostics();
+	            if (diags != null && diags.Length > 0)
+	               newNode = newNode.WithDiagnostics(diags);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (ArrayTypeGreen)newNode;
+	        }
+	        return this;
+	    }
+	}
+	
 	internal class GenericTypeGreen : GreenSyntaxNode
 	{
 	    internal static readonly GenericTypeGreen __Missing = new GenericTypeGreen();
-	    private GenericTypeNameGreen genericTypeName;
+	    private ClassTypeGreen classType;
 	    private InternalSyntaxToken tLessThan;
 	    private TypeArgumentsGreen typeArguments;
 	    private InternalSyntaxToken tGreaterThan;
 	
-	    public GenericTypeGreen(MetaCompilerSyntaxKind kind, GenericTypeNameGreen genericTypeName, InternalSyntaxToken tLessThan, TypeArgumentsGreen typeArguments, InternalSyntaxToken tGreaterThan)
+	    public GenericTypeGreen(MetaCompilerSyntaxKind kind, ClassTypeGreen classType, InternalSyntaxToken tLessThan, TypeArgumentsGreen typeArguments, InternalSyntaxToken tGreaterThan)
 	        : base(kind, null, null)
 	    {
 			this.SlotCount = 4;
-			if (genericTypeName != null)
+			if (classType != null)
 			{
-				this.AdjustFlagsAndWidth(genericTypeName);
-				this.genericTypeName = genericTypeName;
+				this.AdjustFlagsAndWidth(classType);
+				this.classType = classType;
 			}
 			if (tLessThan != null)
 			{
@@ -5502,14 +5799,14 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 			}
 	    }
 	
-	    public GenericTypeGreen(MetaCompilerSyntaxKind kind, GenericTypeNameGreen genericTypeName, InternalSyntaxToken tLessThan, TypeArgumentsGreen typeArguments, InternalSyntaxToken tGreaterThan, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	    public GenericTypeGreen(MetaCompilerSyntaxKind kind, ClassTypeGreen classType, InternalSyntaxToken tLessThan, TypeArgumentsGreen typeArguments, InternalSyntaxToken tGreaterThan, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
 	        : base(kind, diagnostics, annotations)
 	    {
 			this.SlotCount = 4;
-			if (genericTypeName != null)
+			if (classType != null)
 			{
-				this.AdjustFlagsAndWidth(genericTypeName);
-				this.genericTypeName = genericTypeName;
+				this.AdjustFlagsAndWidth(classType);
+				this.classType = classType;
 			}
 			if (tLessThan != null)
 			{
@@ -5534,7 +5831,7 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 			this.flags &= ~NodeFlags.IsNotMissing;
 		}
 	
-	    public GenericTypeNameGreen GenericTypeName { get { return this.genericTypeName; } }
+	    public ClassTypeGreen ClassType { get { return this.classType; } }
 	    public InternalSyntaxToken TLessThan { get { return this.tLessThan; } }
 	    public TypeArgumentsGreen TypeArguments { get { return this.typeArguments; } }
 	    public InternalSyntaxToken TGreaterThan { get { return this.tGreaterThan; } }
@@ -5548,7 +5845,7 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 	    {
 	        switch (index)
 	        {
-	            case 0: return this.genericTypeName;
+	            case 0: return this.classType;
 	            case 1: return this.tLessThan;
 	            case 2: return this.typeArguments;
 	            case 3: return this.tGreaterThan;
@@ -5562,22 +5859,22 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 	
 	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
 	    {
-	        return new GenericTypeGreen(this.Kind, this.genericTypeName, this.tLessThan, this.typeArguments, this.tGreaterThan, diagnostics, this.GetAnnotations());
+	        return new GenericTypeGreen(this.Kind, this.classType, this.tLessThan, this.typeArguments, this.tGreaterThan, diagnostics, this.GetAnnotations());
 	    }
 	
 	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
 	    {
-	        return new GenericTypeGreen(this.Kind, this.genericTypeName, this.tLessThan, this.typeArguments, this.tGreaterThan, this.GetDiagnostics(), annotations);
+	        return new GenericTypeGreen(this.Kind, this.classType, this.tLessThan, this.typeArguments, this.tGreaterThan, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public GenericTypeGreen Update(GenericTypeNameGreen genericTypeName, InternalSyntaxToken tLessThan, TypeArgumentsGreen typeArguments, InternalSyntaxToken tGreaterThan)
+	    public GenericTypeGreen Update(ClassTypeGreen classType, InternalSyntaxToken tLessThan, TypeArgumentsGreen typeArguments, InternalSyntaxToken tGreaterThan)
 	    {
-	        if (this.GenericTypeName != genericTypeName ||
+	        if (this.ClassType != classType ||
 				this.TLessThan != tLessThan ||
 				this.TypeArguments != typeArguments ||
 				this.TGreaterThan != tGreaterThan)
 	        {
-	            InternalSyntaxNode newNode = MetaCompilerLanguage.Instance.InternalSyntaxFactory.GenericType(genericTypeName, tLessThan, typeArguments, tGreaterThan);
+	            InternalSyntaxNode newNode = MetaCompilerLanguage.Instance.InternalSyntaxFactory.GenericType(classType, tLessThan, typeArguments, tGreaterThan);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
@@ -5590,110 +5887,30 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 	    }
 	}
 	
-	internal class GenericTypeNameGreen : GreenSyntaxNode
-	{
-	    internal static readonly GenericTypeNameGreen __Missing = new GenericTypeNameGreen();
-	    private QualifierGreen qualifier;
-	
-	    public GenericTypeNameGreen(MetaCompilerSyntaxKind kind, QualifierGreen qualifier)
-	        : base(kind, null, null)
-	    {
-			this.SlotCount = 1;
-			if (qualifier != null)
-			{
-				this.AdjustFlagsAndWidth(qualifier);
-				this.qualifier = qualifier;
-			}
-	    }
-	
-	    public GenericTypeNameGreen(MetaCompilerSyntaxKind kind, QualifierGreen qualifier, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
-	        : base(kind, diagnostics, annotations)
-	    {
-			this.SlotCount = 1;
-			if (qualifier != null)
-			{
-				this.AdjustFlagsAndWidth(qualifier);
-				this.qualifier = qualifier;
-			}
-	    }
-	
-		private GenericTypeNameGreen()
-			: base((MetaCompilerSyntaxKind)MetaCompilerSyntaxKind.GenericTypeName, null, null)
-		{
-			this.flags &= ~NodeFlags.IsNotMissing;
-		}
-	
-	    public QualifierGreen Qualifier { get { return this.qualifier; } }
-	
-	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
-	    {
-	        return new global::MetaDslx.Languages.MetaCompiler.Syntax.GenericTypeNameSyntax(this, (MetaCompilerSyntaxNode)parent, position);
-	    }
-	
-	    protected override GreenNode GetSlot(int index)
-	    {
-	        switch (index)
-	        {
-	            case 0: return this.qualifier;
-	            default: return null;
-	        }
-	    }
-	
-	    public override TResult Accept<TResult>(MetaCompilerSyntaxVisitor<TResult> visitor) => visitor.VisitGenericTypeNameGreen(this);
-	
-	    public override void Accept(MetaCompilerSyntaxVisitor visitor) => visitor.VisitGenericTypeNameGreen(this);
-	
-	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
-	    {
-	        return new GenericTypeNameGreen(this.Kind, this.qualifier, diagnostics, this.GetAnnotations());
-	    }
-	
-	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
-	    {
-	        return new GenericTypeNameGreen(this.Kind, this.qualifier, this.GetDiagnostics(), annotations);
-	    }
-	
-	    public GenericTypeNameGreen Update(QualifierGreen qualifier)
-	    {
-	        if (this.Qualifier != qualifier)
-	        {
-	            InternalSyntaxNode newNode = MetaCompilerLanguage.Instance.InternalSyntaxFactory.GenericTypeName(qualifier);
-	            var diags = this.GetDiagnostics();
-	            if (diags != null && diags.Length > 0)
-	               newNode = newNode.WithDiagnostics(diags);
-	            var annotations = this.GetAnnotations();
-	            if (annotations != null && annotations.Length > 0)
-	               newNode = newNode.WithAnnotations(annotations);
-				return (GenericTypeNameGreen)newNode;
-	        }
-	        return this;
-	    }
-	}
-	
 	internal class TypeArgumentsGreen : GreenSyntaxNode
 	{
 	    internal static readonly TypeArgumentsGreen __Missing = new TypeArgumentsGreen();
-	    private GreenNode typeArgument;
+	    private GreenNode typeReference;
 	
-	    public TypeArgumentsGreen(MetaCompilerSyntaxKind kind, GreenNode typeArgument)
+	    public TypeArgumentsGreen(MetaCompilerSyntaxKind kind, GreenNode typeReference)
 	        : base(kind, null, null)
 	    {
 			this.SlotCount = 1;
-			if (typeArgument != null)
+			if (typeReference != null)
 			{
-				this.AdjustFlagsAndWidth(typeArgument);
-				this.typeArgument = typeArgument;
+				this.AdjustFlagsAndWidth(typeReference);
+				this.typeReference = typeReference;
 			}
 	    }
 	
-	    public TypeArgumentsGreen(MetaCompilerSyntaxKind kind, GreenNode typeArgument, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	    public TypeArgumentsGreen(MetaCompilerSyntaxKind kind, GreenNode typeReference, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
 	        : base(kind, diagnostics, annotations)
 	    {
 			this.SlotCount = 1;
-			if (typeArgument != null)
+			if (typeReference != null)
 			{
-				this.AdjustFlagsAndWidth(typeArgument);
-				this.typeArgument = typeArgument;
+				this.AdjustFlagsAndWidth(typeReference);
+				this.typeReference = typeReference;
 			}
 	    }
 	
@@ -5703,7 +5920,7 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 			this.flags &= ~NodeFlags.IsNotMissing;
 		}
 	
-	    public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<TypeArgumentGreen> TypeArgument { get { return new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<TypeArgumentGreen>(this.typeArgument); } }
+	    public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<TypeReferenceGreen> TypeReference { get { return new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<TypeReferenceGreen>(this.typeReference); } }
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
@@ -5714,7 +5931,7 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 	    {
 	        switch (index)
 	        {
-	            case 0: return this.typeArgument;
+	            case 0: return this.typeReference;
 	            default: return null;
 	        }
 	    }
@@ -5725,19 +5942,19 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 	
 	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
 	    {
-	        return new TypeArgumentsGreen(this.Kind, this.typeArgument, diagnostics, this.GetAnnotations());
+	        return new TypeArgumentsGreen(this.Kind, this.typeReference, diagnostics, this.GetAnnotations());
 	    }
 	
 	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
 	    {
-	        return new TypeArgumentsGreen(this.Kind, this.typeArgument, this.GetDiagnostics(), annotations);
+	        return new TypeArgumentsGreen(this.Kind, this.typeReference, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public TypeArgumentsGreen Update(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<TypeArgumentGreen> typeArgument)
+	    public TypeArgumentsGreen Update(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<TypeReferenceGreen> typeReference)
 	    {
-	        if (this.TypeArgument != typeArgument)
+	        if (this.TypeReference != typeReference)
 	        {
-	            InternalSyntaxNode newNode = MetaCompilerLanguage.Instance.InternalSyntaxFactory.TypeArguments(typeArgument);
+	            InternalSyntaxNode newNode = MetaCompilerLanguage.Instance.InternalSyntaxFactory.TypeArguments(typeReference);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
@@ -5745,86 +5962,6 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
 				return (TypeArgumentsGreen)newNode;
-	        }
-	        return this;
-	    }
-	}
-	
-	internal class TypeArgumentGreen : GreenSyntaxNode
-	{
-	    internal static readonly TypeArgumentGreen __Missing = new TypeArgumentGreen();
-	    private QualifierGreen qualifier;
-	
-	    public TypeArgumentGreen(MetaCompilerSyntaxKind kind, QualifierGreen qualifier)
-	        : base(kind, null, null)
-	    {
-			this.SlotCount = 1;
-			if (qualifier != null)
-			{
-				this.AdjustFlagsAndWidth(qualifier);
-				this.qualifier = qualifier;
-			}
-	    }
-	
-	    public TypeArgumentGreen(MetaCompilerSyntaxKind kind, QualifierGreen qualifier, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
-	        : base(kind, diagnostics, annotations)
-	    {
-			this.SlotCount = 1;
-			if (qualifier != null)
-			{
-				this.AdjustFlagsAndWidth(qualifier);
-				this.qualifier = qualifier;
-			}
-	    }
-	
-		private TypeArgumentGreen()
-			: base((MetaCompilerSyntaxKind)MetaCompilerSyntaxKind.TypeArgument, null, null)
-		{
-			this.flags &= ~NodeFlags.IsNotMissing;
-		}
-	
-	    public QualifierGreen Qualifier { get { return this.qualifier; } }
-	
-	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
-	    {
-	        return new global::MetaDslx.Languages.MetaCompiler.Syntax.TypeArgumentSyntax(this, (MetaCompilerSyntaxNode)parent, position);
-	    }
-	
-	    protected override GreenNode GetSlot(int index)
-	    {
-	        switch (index)
-	        {
-	            case 0: return this.qualifier;
-	            default: return null;
-	        }
-	    }
-	
-	    public override TResult Accept<TResult>(MetaCompilerSyntaxVisitor<TResult> visitor) => visitor.VisitTypeArgumentGreen(this);
-	
-	    public override void Accept(MetaCompilerSyntaxVisitor visitor) => visitor.VisitTypeArgumentGreen(this);
-	
-	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
-	    {
-	        return new TypeArgumentGreen(this.Kind, this.qualifier, diagnostics, this.GetAnnotations());
-	    }
-	
-	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
-	    {
-	        return new TypeArgumentGreen(this.Kind, this.qualifier, this.GetDiagnostics(), annotations);
-	    }
-	
-	    public TypeArgumentGreen Update(QualifierGreen qualifier)
-	    {
-	        if (this.Qualifier != qualifier)
-	        {
-	            InternalSyntaxNode newNode = MetaCompilerLanguage.Instance.InternalSyntaxFactory.TypeArgument(qualifier);
-	            var diags = this.GetDiagnostics();
-	            if (diags != null && diags.Length > 0)
-	               newNode = newNode.WithDiagnostics(diags);
-	            var annotations = this.GetAnnotations();
-	            if (annotations != null && annotations.Length > 0)
-	               newNode = newNode.WithAnnotations(annotations);
-				return (TypeArgumentGreen)newNode;
 	        }
 	        return this;
 	    }
@@ -6980,6 +7117,7 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 		public virtual void VisitDeclarationGreen(DeclarationGreen node) => this.DefaultVisit(node);
 		public virtual void VisitCompilerDeclarationGreen(CompilerDeclarationGreen node) => this.DefaultVisit(node);
 		public virtual void VisitPhaseDeclarationGreen(PhaseDeclarationGreen node) => this.DefaultVisit(node);
+		public virtual void VisitLockedGreen(LockedGreen node) => this.DefaultVisit(node);
 		public virtual void VisitPhaseJoinGreen(PhaseJoinGreen node) => this.DefaultVisit(node);
 		public virtual void VisitAfterPhasesGreen(AfterPhasesGreen node) => this.DefaultVisit(node);
 		public virtual void VisitBeforePhasesGreen(BeforePhasesGreen node) => this.DefaultVisit(node);
@@ -6990,6 +7128,7 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 		public virtual void VisitEnumValueGreen(EnumValueGreen node) => this.DefaultVisit(node);
 		public virtual void VisitEnumMemberDeclarationGreen(EnumMemberDeclarationGreen node) => this.DefaultVisit(node);
 		public virtual void VisitClassDeclarationGreen(ClassDeclarationGreen node) => this.DefaultVisit(node);
+		public virtual void VisitAbstract_Green(Abstract_Green node) => this.DefaultVisit(node);
 		public virtual void VisitClassAncestorsGreen(ClassAncestorsGreen node) => this.DefaultVisit(node);
 		public virtual void VisitClassAncestorGreen(ClassAncestorGreen node) => this.DefaultVisit(node);
 		public virtual void VisitClassBodyGreen(ClassBodyGreen node) => this.DefaultVisit(node);
@@ -7012,10 +7151,9 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 		public virtual void VisitPrimitiveTypeGreen(PrimitiveTypeGreen node) => this.DefaultVisit(node);
 		public virtual void VisitVoidTypeGreen(VoidTypeGreen node) => this.DefaultVisit(node);
 		public virtual void VisitNullableTypeGreen(NullableTypeGreen node) => this.DefaultVisit(node);
+		public virtual void VisitArrayTypeGreen(ArrayTypeGreen node) => this.DefaultVisit(node);
 		public virtual void VisitGenericTypeGreen(GenericTypeGreen node) => this.DefaultVisit(node);
-		public virtual void VisitGenericTypeNameGreen(GenericTypeNameGreen node) => this.DefaultVisit(node);
 		public virtual void VisitTypeArgumentsGreen(TypeArgumentsGreen node) => this.DefaultVisit(node);
-		public virtual void VisitTypeArgumentGreen(TypeArgumentGreen node) => this.DefaultVisit(node);
 		public virtual void VisitOperationDeclarationGreen(OperationDeclarationGreen node) => this.DefaultVisit(node);
 		public virtual void VisitParameterListGreen(ParameterListGreen node) => this.DefaultVisit(node);
 		public virtual void VisitParameterGreen(ParameterGreen node) => this.DefaultVisit(node);
@@ -7042,6 +7180,7 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 		public virtual TResult VisitDeclarationGreen(DeclarationGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitCompilerDeclarationGreen(CompilerDeclarationGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitPhaseDeclarationGreen(PhaseDeclarationGreen node) => this.DefaultVisit(node);
+		public virtual TResult VisitLockedGreen(LockedGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitPhaseJoinGreen(PhaseJoinGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitAfterPhasesGreen(AfterPhasesGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitBeforePhasesGreen(BeforePhasesGreen node) => this.DefaultVisit(node);
@@ -7052,6 +7191,7 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 		public virtual TResult VisitEnumValueGreen(EnumValueGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitEnumMemberDeclarationGreen(EnumMemberDeclarationGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitClassDeclarationGreen(ClassDeclarationGreen node) => this.DefaultVisit(node);
+		public virtual TResult VisitAbstract_Green(Abstract_Green node) => this.DefaultVisit(node);
 		public virtual TResult VisitClassAncestorsGreen(ClassAncestorsGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitClassAncestorGreen(ClassAncestorGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitClassBodyGreen(ClassBodyGreen node) => this.DefaultVisit(node);
@@ -7074,10 +7214,9 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 		public virtual TResult VisitPrimitiveTypeGreen(PrimitiveTypeGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitVoidTypeGreen(VoidTypeGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitNullableTypeGreen(NullableTypeGreen node) => this.DefaultVisit(node);
+		public virtual TResult VisitArrayTypeGreen(ArrayTypeGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitGenericTypeGreen(GenericTypeGreen node) => this.DefaultVisit(node);
-		public virtual TResult VisitGenericTypeNameGreen(GenericTypeNameGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitTypeArgumentsGreen(TypeArgumentsGreen node) => this.DefaultVisit(node);
-		public virtual TResult VisitTypeArgumentGreen(TypeArgumentGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitOperationDeclarationGreen(OperationDeclarationGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitParameterListGreen(ParameterListGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitParameterGreen(ParameterGreen node) => this.DefaultVisit(node);
@@ -7555,17 +7694,33 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 	        return new CompilerDeclarationGreen(MetaCompilerSyntaxKind.CompilerDeclaration, attribute.Node, kCompiler, name, tSemicolon);
 	    }
 	
-		public PhaseDeclarationGreen PhaseDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, InternalSyntaxToken kLocked, InternalSyntaxToken kPhase, NameGreen name, PhaseJoinGreen phaseJoin, AfterPhasesGreen afterPhases, BeforePhasesGreen beforePhases, InternalSyntaxToken tSemicolon)
+		public PhaseDeclarationGreen PhaseDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, LockedGreen locked, InternalSyntaxToken kPhase, NameGreen name, PhaseJoinGreen phaseJoin, AfterPhasesGreen afterPhases, BeforePhasesGreen beforePhases, InternalSyntaxToken tSemicolon)
 	    {
 	#if DEBUG
-			if (kLocked != null && kLocked.Kind != MetaCompilerSyntaxKind.KLocked) throw new ArgumentException(nameof(kLocked));
 			if (kPhase == null) throw new ArgumentNullException(nameof(kPhase));
 			if (kPhase.Kind != MetaCompilerSyntaxKind.KPhase) throw new ArgumentException(nameof(kPhase));
 			if (name == null) throw new ArgumentNullException(nameof(name));
 			if (tSemicolon == null) throw new ArgumentNullException(nameof(tSemicolon));
 			if (tSemicolon.Kind != MetaCompilerSyntaxKind.TSemicolon) throw new ArgumentException(nameof(tSemicolon));
 	#endif
-	        return new PhaseDeclarationGreen(MetaCompilerSyntaxKind.PhaseDeclaration, attribute.Node, kLocked, kPhase, name, phaseJoin, afterPhases, beforePhases, tSemicolon);
+	        return new PhaseDeclarationGreen(MetaCompilerSyntaxKind.PhaseDeclaration, attribute.Node, locked, kPhase, name, phaseJoin, afterPhases, beforePhases, tSemicolon);
+	    }
+	
+		public LockedGreen Locked(InternalSyntaxToken kLocked)
+	    {
+	#if DEBUG
+			if (kLocked == null) throw new ArgumentNullException(nameof(kLocked));
+			if (kLocked.Kind != MetaCompilerSyntaxKind.KLocked) throw new ArgumentException(nameof(kLocked));
+	#endif
+			int hash;
+			var cached = SyntaxNodeCache.TryGetNode((int)(MetaCompilerSyntaxKind)MetaCompilerSyntaxKind.Locked, kLocked, out hash);
+			if (cached != null) return (LockedGreen)cached;
+			var result = new LockedGreen(MetaCompilerSyntaxKind.Locked, kLocked);
+			if (hash >= 0)
+			{
+				SyntaxNodeCache.AddNode(result, hash);
+			}
+			return result;
 	    }
 	
 		public PhaseJoinGreen PhaseJoin(InternalSyntaxToken kJoins, PhaseRefGreen phaseRef)
@@ -7707,16 +7862,32 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 			return result;
 	    }
 	
-		public ClassDeclarationGreen ClassDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, InternalSyntaxToken kAbstract, ClassKindGreen classKind, NameGreen name, InternalSyntaxToken tColon, ClassAncestorsGreen classAncestors, ClassBodyGreen classBody)
+		public ClassDeclarationGreen ClassDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, Abstract_Green abstract_, ClassKindGreen classKind, NameGreen name, InternalSyntaxToken tColon, ClassAncestorsGreen classAncestors, ClassBodyGreen classBody)
 	    {
 	#if DEBUG
-			if (kAbstract != null && kAbstract.Kind != MetaCompilerSyntaxKind.KAbstract) throw new ArgumentException(nameof(kAbstract));
 			if (classKind == null) throw new ArgumentNullException(nameof(classKind));
 			if (name == null) throw new ArgumentNullException(nameof(name));
 			if (tColon != null && tColon.Kind != MetaCompilerSyntaxKind.TColon) throw new ArgumentException(nameof(tColon));
 			if (classBody == null) throw new ArgumentNullException(nameof(classBody));
 	#endif
-	        return new ClassDeclarationGreen(MetaCompilerSyntaxKind.ClassDeclaration, attribute.Node, kAbstract, classKind, name, tColon, classAncestors, classBody);
+	        return new ClassDeclarationGreen(MetaCompilerSyntaxKind.ClassDeclaration, attribute.Node, abstract_, classKind, name, tColon, classAncestors, classBody);
+	    }
+	
+		public Abstract_Green Abstract_(InternalSyntaxToken kAbstract)
+	    {
+	#if DEBUG
+			if (kAbstract == null) throw new ArgumentNullException(nameof(kAbstract));
+			if (kAbstract.Kind != MetaCompilerSyntaxKind.KAbstract) throw new ArgumentException(nameof(kAbstract));
+	#endif
+			int hash;
+			var cached = SyntaxNodeCache.TryGetNode((int)(MetaCompilerSyntaxKind)MetaCompilerSyntaxKind.Abstract_, kAbstract, out hash);
+			if (cached != null) return (Abstract_Green)cached;
+			var result = new Abstract_Green(MetaCompilerSyntaxKind.Abstract_, kAbstract);
+			if (hash >= 0)
+			{
+				SyntaxNodeCache.AddNode(result, hash);
+			}
+			return result;
 	    }
 	
 		public ClassAncestorsGreen ClassAncestors(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<ClassAncestorGreen> classAncestor)
@@ -7999,7 +8170,23 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 			int hash;
 			var cached = SyntaxNodeCache.TryGetNode((int)(MetaCompilerSyntaxKind)MetaCompilerSyntaxKind.TypeReference, genericType, out hash);
 			if (cached != null) return (TypeReferenceGreen)cached;
-			var result = new TypeReferenceGreen(MetaCompilerSyntaxKind.TypeReference, genericType, null);
+			var result = new TypeReferenceGreen(MetaCompilerSyntaxKind.TypeReference, genericType, null, null);
+			if (hash >= 0)
+			{
+				SyntaxNodeCache.AddNode(result, hash);
+			}
+			return result;
+	    }
+	
+		public TypeReferenceGreen TypeReference(ArrayTypeGreen arrayType)
+	    {
+	#if DEBUG
+		    if (arrayType == null) throw new ArgumentNullException(nameof(arrayType));
+	#endif
+			int hash;
+			var cached = SyntaxNodeCache.TryGetNode((int)(MetaCompilerSyntaxKind)MetaCompilerSyntaxKind.TypeReference, arrayType, out hash);
+			if (cached != null) return (TypeReferenceGreen)cached;
+			var result = new TypeReferenceGreen(MetaCompilerSyntaxKind.TypeReference, null, arrayType, null);
 			if (hash >= 0)
 			{
 				SyntaxNodeCache.AddNode(result, hash);
@@ -8015,7 +8202,7 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 			int hash;
 			var cached = SyntaxNodeCache.TryGetNode((int)(MetaCompilerSyntaxKind)MetaCompilerSyntaxKind.TypeReference, simpleType, out hash);
 			if (cached != null) return (TypeReferenceGreen)cached;
-			var result = new TypeReferenceGreen(MetaCompilerSyntaxKind.TypeReference, null, simpleType);
+			var result = new TypeReferenceGreen(MetaCompilerSyntaxKind.TypeReference, null, null, simpleType);
 			if (hash >= 0)
 			{
 				SyntaxNodeCache.AddNode(result, hash);
@@ -8138,59 +8325,47 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 			return result;
 	    }
 	
-		public GenericTypeGreen GenericType(GenericTypeNameGreen genericTypeName, InternalSyntaxToken tLessThan, TypeArgumentsGreen typeArguments, InternalSyntaxToken tGreaterThan)
+		public ArrayTypeGreen ArrayType(SimpleTypeGreen simpleType, InternalSyntaxToken tOpenBracket, InternalSyntaxToken tCloseBracket)
 	    {
 	#if DEBUG
-			if (genericTypeName == null) throw new ArgumentNullException(nameof(genericTypeName));
+			if (simpleType == null) throw new ArgumentNullException(nameof(simpleType));
+			if (tOpenBracket == null) throw new ArgumentNullException(nameof(tOpenBracket));
+			if (tOpenBracket.Kind != MetaCompilerSyntaxKind.TOpenBracket) throw new ArgumentException(nameof(tOpenBracket));
+			if (tCloseBracket == null) throw new ArgumentNullException(nameof(tCloseBracket));
+			if (tCloseBracket.Kind != MetaCompilerSyntaxKind.TCloseBracket) throw new ArgumentException(nameof(tCloseBracket));
+	#endif
+			int hash;
+			var cached = SyntaxNodeCache.TryGetNode((int)(MetaCompilerSyntaxKind)MetaCompilerSyntaxKind.ArrayType, simpleType, tOpenBracket, tCloseBracket, out hash);
+			if (cached != null) return (ArrayTypeGreen)cached;
+			var result = new ArrayTypeGreen(MetaCompilerSyntaxKind.ArrayType, simpleType, tOpenBracket, tCloseBracket);
+			if (hash >= 0)
+			{
+				SyntaxNodeCache.AddNode(result, hash);
+			}
+			return result;
+	    }
+	
+		public GenericTypeGreen GenericType(ClassTypeGreen classType, InternalSyntaxToken tLessThan, TypeArgumentsGreen typeArguments, InternalSyntaxToken tGreaterThan)
+	    {
+	#if DEBUG
+			if (classType == null) throw new ArgumentNullException(nameof(classType));
 			if (tLessThan == null) throw new ArgumentNullException(nameof(tLessThan));
 			if (tLessThan.Kind != MetaCompilerSyntaxKind.TLessThan) throw new ArgumentException(nameof(tLessThan));
 			if (typeArguments == null) throw new ArgumentNullException(nameof(typeArguments));
 			if (tGreaterThan == null) throw new ArgumentNullException(nameof(tGreaterThan));
 			if (tGreaterThan.Kind != MetaCompilerSyntaxKind.TGreaterThan) throw new ArgumentException(nameof(tGreaterThan));
 	#endif
-	        return new GenericTypeGreen(MetaCompilerSyntaxKind.GenericType, genericTypeName, tLessThan, typeArguments, tGreaterThan);
+	        return new GenericTypeGreen(MetaCompilerSyntaxKind.GenericType, classType, tLessThan, typeArguments, tGreaterThan);
 	    }
 	
-		public GenericTypeNameGreen GenericTypeName(QualifierGreen qualifier)
-	    {
-	#if DEBUG
-			if (qualifier == null) throw new ArgumentNullException(nameof(qualifier));
-	#endif
-			int hash;
-			var cached = SyntaxNodeCache.TryGetNode((int)(MetaCompilerSyntaxKind)MetaCompilerSyntaxKind.GenericTypeName, qualifier, out hash);
-			if (cached != null) return (GenericTypeNameGreen)cached;
-			var result = new GenericTypeNameGreen(MetaCompilerSyntaxKind.GenericTypeName, qualifier);
-			if (hash >= 0)
-			{
-				SyntaxNodeCache.AddNode(result, hash);
-			}
-			return result;
-	    }
-	
-		public TypeArgumentsGreen TypeArguments(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<TypeArgumentGreen> typeArgument)
+		public TypeArgumentsGreen TypeArguments(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<TypeReferenceGreen> typeReference)
 	    {
 	#if DEBUG
 	#endif
 			int hash;
-			var cached = SyntaxNodeCache.TryGetNode((int)(MetaCompilerSyntaxKind)MetaCompilerSyntaxKind.TypeArguments, typeArgument.Node, out hash);
+			var cached = SyntaxNodeCache.TryGetNode((int)(MetaCompilerSyntaxKind)MetaCompilerSyntaxKind.TypeArguments, typeReference.Node, out hash);
 			if (cached != null) return (TypeArgumentsGreen)cached;
-			var result = new TypeArgumentsGreen(MetaCompilerSyntaxKind.TypeArguments, typeArgument.Node);
-			if (hash >= 0)
-			{
-				SyntaxNodeCache.AddNode(result, hash);
-			}
-			return result;
-	    }
-	
-		public TypeArgumentGreen TypeArgument(QualifierGreen qualifier)
-	    {
-	#if DEBUG
-			if (qualifier == null) throw new ArgumentNullException(nameof(qualifier));
-	#endif
-			int hash;
-			var cached = SyntaxNodeCache.TryGetNode((int)(MetaCompilerSyntaxKind)MetaCompilerSyntaxKind.TypeArgument, qualifier, out hash);
-			if (cached != null) return (TypeArgumentGreen)cached;
-			var result = new TypeArgumentGreen(MetaCompilerSyntaxKind.TypeArgument, qualifier);
+			var result = new TypeArgumentsGreen(MetaCompilerSyntaxKind.TypeArguments, typeReference.Node);
 			if (hash >= 0)
 			{
 				SyntaxNodeCache.AddNode(result, hash);
@@ -8423,6 +8598,7 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 				typeof(DeclarationGreen),
 				typeof(CompilerDeclarationGreen),
 				typeof(PhaseDeclarationGreen),
+				typeof(LockedGreen),
 				typeof(PhaseJoinGreen),
 				typeof(AfterPhasesGreen),
 				typeof(BeforePhasesGreen),
@@ -8433,6 +8609,7 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 				typeof(EnumValueGreen),
 				typeof(EnumMemberDeclarationGreen),
 				typeof(ClassDeclarationGreen),
+				typeof(Abstract_Green),
 				typeof(ClassAncestorsGreen),
 				typeof(ClassAncestorGreen),
 				typeof(ClassBodyGreen),
@@ -8455,10 +8632,9 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 				typeof(PrimitiveTypeGreen),
 				typeof(VoidTypeGreen),
 				typeof(NullableTypeGreen),
+				typeof(ArrayTypeGreen),
 				typeof(GenericTypeGreen),
-				typeof(GenericTypeNameGreen),
 				typeof(TypeArgumentsGreen),
-				typeof(TypeArgumentGreen),
 				typeof(OperationDeclarationGreen),
 				typeof(ParameterListGreen),
 				typeof(ParameterGreen),

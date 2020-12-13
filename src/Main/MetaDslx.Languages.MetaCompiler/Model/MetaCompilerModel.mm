@@ -11,6 +11,9 @@
 	const PrimitiveType Byte = "byte";
 	const PrimitiveType Bool = "bool";
 	const PrimitiveType Void = "void";
+
+	const Phase None = "None";
+	const Phase All = "All";
 	
 	class Compiler : Declaration
 	{
@@ -72,6 +75,11 @@
 	}
 
 	class NullableType : NamedType
+	{
+		DataType InnerType;
+	}
+
+	class ArrayType : DataType
 	{
 		DataType InnerType;
 	}

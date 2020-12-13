@@ -457,11 +457,18 @@ namespace MetaDslx.Languages.MetaCompiler.Binding
 						}
 					}
 				}
-				if (state == BoundNodeFactoryState.InNode || (state == BoundNodeFactoryState.InParent && LookupPosition.IsInNode(this.Position, node.KLocked)))
+				if (node.Locked != null)
 				{
-					if (node.KLocked.GetKind() == MetaCompilerSyntaxKind.KLocked)
+					if (state == BoundNodeFactoryState.InParent)
 					{
-						return true;
+						if (LookupPosition.IsInNode(this.Position, node.Locked))
+						{
+							if (this.Visit(node.Locked)) return true;
+						}
+					}
+					else
+					{
+						if (this.Visit(node.Locked)) return true;
 					}
 				}
 				if (node.Name != null)
@@ -519,6 +526,26 @@ namespace MetaDslx.Languages.MetaCompiler.Binding
 					{
 						if (this.Visit(node.BeforePhases)) return true;
 					}
+				}
+				return false;
+			}
+			finally
+			{
+				this.State = state;
+			}
+		}
+		
+		public bool VisitLocked(LockedSyntax node)
+		{
+			var state = this.State;
+			if (this.State == BoundNodeFactoryState.InParent) this.State = BoundNodeFactoryState.InNode;
+			else if (this.State == BoundNodeFactoryState.InNode) this.State = BoundNodeFactoryState.InChild;
+			try
+			{
+				if (state == BoundNodeFactoryState.InChild) return false;
+				if (state == BoundNodeFactoryState.InNode) 
+				{
+					return true;
 				}
 				return false;
 			}
@@ -897,11 +924,18 @@ namespace MetaDslx.Languages.MetaCompiler.Binding
 						}
 					}
 				}
-				if (state == BoundNodeFactoryState.InNode || (state == BoundNodeFactoryState.InParent && LookupPosition.IsInNode(this.Position, node.KAbstract)))
+				if (node.Abstract_ != null)
 				{
-					if (node.KAbstract.GetKind() == MetaCompilerSyntaxKind.KAbstract)
+					if (state == BoundNodeFactoryState.InParent)
 					{
-						return true;
+						if (LookupPosition.IsInNode(this.Position, node.Abstract_))
+						{
+							if (this.Visit(node.Abstract_)) return true;
+						}
+					}
+					else
+					{
+						if (this.Visit(node.Abstract_)) return true;
 					}
 				}
 				if (node.ClassKind != null)
@@ -959,6 +993,26 @@ namespace MetaDslx.Languages.MetaCompiler.Binding
 					{
 						if (this.Visit(node.ClassBody)) return true;
 					}
+				}
+				return false;
+			}
+			finally
+			{
+				this.State = state;
+			}
+		}
+		
+		public bool VisitAbstract_(Abstract_Syntax node)
+		{
+			var state = this.State;
+			if (this.State == BoundNodeFactoryState.InParent) this.State = BoundNodeFactoryState.InNode;
+			else if (this.State == BoundNodeFactoryState.InNode) this.State = BoundNodeFactoryState.InChild;
+			try
+			{
+				if (state == BoundNodeFactoryState.InChild) return false;
+				if (state == BoundNodeFactoryState.InNode) 
+				{
+					return true;
 				}
 				return false;
 			}
@@ -1592,6 +1646,20 @@ namespace MetaDslx.Languages.MetaCompiler.Binding
 						if (this.Visit(node.GenericType)) return true;
 					}
 				}
+				if (node.ArrayType != null)
+				{
+					if (state == BoundNodeFactoryState.InParent)
+					{
+						if (LookupPosition.IsInNode(this.Position, node.ArrayType))
+						{
+							if (this.Visit(node.ArrayType)) return true;
+						}
+					}
+					else
+					{
+						if (this.Visit(node.ArrayType)) return true;
+					}
+				}
 				if (node.SimpleType != null)
 				{
 					if (state == BoundNodeFactoryState.InParent)
@@ -1818,6 +1886,40 @@ namespace MetaDslx.Languages.MetaCompiler.Binding
 			}
 		}
 		
+		public bool VisitArrayType(ArrayTypeSyntax node)
+		{
+			var state = this.State;
+			if (this.State == BoundNodeFactoryState.InParent) this.State = BoundNodeFactoryState.InNode;
+			else if (this.State == BoundNodeFactoryState.InNode) this.State = BoundNodeFactoryState.InChild;
+			try
+			{
+				if (state == BoundNodeFactoryState.InChild) return false;
+				if (state == BoundNodeFactoryState.InNode) 
+				{
+					return true;
+				}
+				if (node.SimpleType != null)
+				{
+					if (state == BoundNodeFactoryState.InParent)
+					{
+						if (LookupPosition.IsInNode(this.Position, node.SimpleType))
+						{
+							return true;
+						}
+					}
+					else
+					{
+						if (this.Visit(node.SimpleType)) return true;
+					}
+				}
+				return false;
+			}
+			finally
+			{
+				this.State = state;
+			}
+		}
+		
 		public bool VisitGenericType(GenericTypeSyntax node)
 		{
 			var state = this.State;
@@ -1830,18 +1932,18 @@ namespace MetaDslx.Languages.MetaCompiler.Binding
 				{
 					return true;
 				}
-				if (node.GenericTypeName != null)
+				if (node.ClassType != null)
 				{
 					if (state == BoundNodeFactoryState.InParent)
 					{
-						if (LookupPosition.IsInNode(this.Position, node.GenericTypeName))
+						if (LookupPosition.IsInNode(this.Position, node.ClassType))
 						{
 							return true;
 						}
 					}
 					else
 					{
-						if (this.Visit(node.GenericTypeName)) return true;
+						if (this.Visit(node.ClassType)) return true;
 					}
 				}
 				if (node.TypeArguments != null)
@@ -1850,42 +1952,12 @@ namespace MetaDslx.Languages.MetaCompiler.Binding
 					{
 						if (LookupPosition.IsInNode(this.Position, node.TypeArguments))
 						{
-							return true;
+							if (this.Visit(node.TypeArguments)) return true;
 						}
 					}
 					else
 					{
 						if (this.Visit(node.TypeArguments)) return true;
-					}
-				}
-				return false;
-			}
-			finally
-			{
-				this.State = state;
-			}
-		}
-		
-		public bool VisitGenericTypeName(GenericTypeNameSyntax node)
-		{
-			var state = this.State;
-			if (this.State == BoundNodeFactoryState.InParent) this.State = BoundNodeFactoryState.InNode;
-			else if (this.State == BoundNodeFactoryState.InNode) this.State = BoundNodeFactoryState.InChild;
-			try
-			{
-				if (state == BoundNodeFactoryState.InChild) return false;
-				if (node.Qualifier != null)
-				{
-					if (state == BoundNodeFactoryState.InParent)
-					{
-						if (LookupPosition.IsInNode(this.Position, node.Qualifier))
-						{
-							return true;
-						}
-					}
-					else
-					{
-						if (this.Visit(node.Qualifier)) return true;
 					}
 				}
 				return false;
@@ -1904,47 +1976,21 @@ namespace MetaDslx.Languages.MetaCompiler.Binding
 			try
 			{
 				if (state == BoundNodeFactoryState.InChild) return false;
-				if (node.TypeArgument != null)
+				if (state == BoundNodeFactoryState.InNode) 
 				{
-					if (state != BoundNodeFactoryState.InParent || LookupPosition.IsInNode(this.Position, node.TypeArgument.Node))
+					return true;
+				}
+				if (node.TypeReference != null)
+				{
+					if (state != BoundNodeFactoryState.InParent || LookupPosition.IsInNode(this.Position, node.TypeReference.Node))
 					{
-						foreach (var item in node.TypeArgument)
+						foreach (var item in node.TypeReference)
 						{
 							if (state != BoundNodeFactoryState.InParent || LookupPosition.IsInNode(this.Position, item))
 							{
 								if (this.Visit(item)) return true;
 							}
 						}
-					}
-				}
-				return false;
-			}
-			finally
-			{
-				this.State = state;
-			}
-		}
-		
-		public bool VisitTypeArgument(TypeArgumentSyntax node)
-		{
-			var state = this.State;
-			if (this.State == BoundNodeFactoryState.InParent) this.State = BoundNodeFactoryState.InNode;
-			else if (this.State == BoundNodeFactoryState.InNode) this.State = BoundNodeFactoryState.InChild;
-			try
-			{
-				if (state == BoundNodeFactoryState.InChild) return false;
-				if (node.Qualifier != null)
-				{
-					if (state == BoundNodeFactoryState.InParent)
-					{
-						if (LookupPosition.IsInNode(this.Position, node.Qualifier))
-						{
-							return true;
-						}
-					}
-					else
-					{
-						if (this.Visit(node.Qualifier)) return true;
 					}
 				}
 				return false;

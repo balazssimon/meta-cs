@@ -35,6 +35,7 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax
 		public const string Declaration = nameof(Declaration);
 		public const string CompilerDeclaration = nameof(CompilerDeclaration);
 		public const string PhaseDeclaration = nameof(PhaseDeclaration);
+		public const string Locked = nameof(Locked);
 		public const string PhaseJoin = nameof(PhaseJoin);
 		public const string AfterPhases = nameof(AfterPhases);
 		public const string BeforePhases = nameof(BeforePhases);
@@ -45,6 +46,7 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax
 		public const string EnumValue = nameof(EnumValue);
 		public const string EnumMemberDeclaration = nameof(EnumMemberDeclaration);
 		public const string ClassDeclaration = nameof(ClassDeclaration);
+		public const string Abstract_ = nameof(Abstract_);
 		public const string ClassAncestors = nameof(ClassAncestors);
 		public const string ClassAncestor = nameof(ClassAncestor);
 		public const string ClassBody = nameof(ClassBody);
@@ -67,10 +69,9 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax
 		public const string PrimitiveType = nameof(PrimitiveType);
 		public const string VoidType = nameof(VoidType);
 		public const string NullableType = nameof(NullableType);
+		public const string ArrayType = nameof(ArrayType);
 		public const string GenericType = nameof(GenericType);
-		public const string GenericTypeName = nameof(GenericTypeName);
 		public const string TypeArguments = nameof(TypeArguments);
-		public const string TypeArgument = nameof(TypeArgument);
 		public const string OperationDeclaration = nameof(OperationDeclaration);
 		public const string ParameterList = nameof(ParameterList);
 		public const string Parameter = nameof(Parameter);

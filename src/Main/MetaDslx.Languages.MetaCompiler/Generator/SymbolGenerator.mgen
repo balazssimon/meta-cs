@@ -10,11 +10,17 @@ extern function string GenerateDefaultValue(Property property)
 extern function string GenerateType(DataType typ)
 extern function string Start(Phase phase)
 extern function string Finish(Phase phase)
+extern function string SymbolNamespace()
+extern function string TrimSymbolSuffix(string name)
 
 template Generate()
+[GenerateCompletionGraph()]
+^
 [loop (Instances->ns:typeof(Namespace))]
 [GenerateNamespace(ns)]
 [end loop]
+^
+[GenerateSymbolVisitor()]
 end template
 
 template GenerateNamespace(Namespace ns)
@@ -22,10 +28,6 @@ template GenerateNamespace(Namespace ns)
 [var compilers = ns.Declarations.OfType<Compiler>()]
 namespace [ns.FullName]
 {
-	[loop(compiler:compilers)]
-	[GenerateCompletionGraph(compiler.Namespace.FullName)]
-	[end loop]
-	^
 	[loop(symbol:symbols)]
 	[GenerateSymbol(symbol)]
 	[end loop]
@@ -37,16 +39,18 @@ template GenerateSymbol(Class symbol)
 ^
 [GenerateSymbolClass(symbol)]
 ^
+[if (!symbol.IsAbstract)]
 [GenerateMetaSymbolClass(symbol)]
 ^
 [GenerateSourceSymbolClass(symbol)]
 ^
+[end if]
 end template
 
-template GenerateCompletionGraph(string ns)
+template GenerateCompletionGraph()
 using MetaDslx.CodeAnalysis.Symbols;
 ^
-namespace [ns]
+namespace [SymbolNamespace()]
 {
 	public static class SymbolCompletionGraph
 	{
@@ -64,17 +68,26 @@ namespace [ns]
 		public static readonly ImmutableHashSet<CompletionPart> [symbol.Name]All = CompletionPart.Combine([loop(symbol->prop:GetAllProperties() where prop.Phase != null; separator comma = ", ")][if (prop.Phase.IsLocked)][prop.Phase.Start()], [prop.Phase.Finish()][else][prop.Phase.Name][end if][comma][end loop]);
 			[end if]
 		[end loop]
-
+        ^
 		public static CompletionGraphBuilder ConstructCompletionGraph()
 		{
 			CompletionGraphBuilder builder = new CompletionGraphBuilder();
 			[loop(Instances->phase:typeof(Phase))]
-            [if (phase.IsLocked)]
+                [if (phase.AfterPhases.Count+phase.BeforePhases.Count > 0)]
+                    [if (phase.IsLocked)]
 			builder.Add([phase.Start()]);
-			builder.Add([phase.Finish()]);
-            [else]
+		   	builder.Add([phase.Finish()]);
+                    [else]
 			builder.Add([phase.Name]);
-            [end if]
+                    [end if]
+                [else]
+                    [if (phase.IsLocked)]
+			builder.AddLast([phase.Start()]);
+		   	builder.AddLast([phase.Finish()]);
+                    [else]
+			builder.AddLast([phase.Name]);
+                    [end if]
+                [end if]
 			[end loop]
 			[loop(Instances->phase:typeof(Phase))]
                 [if (phase.IsLocked)]
@@ -105,29 +118,17 @@ end template
 template GenerateSymbolClass(Class symbol)
 [var props = symbol.GetAllProperties().Where(p => p.Phase != null).ToList()]
 [var phases = props.Select(p => p.Phase).ToHashSet()]
-public partial class [symbol.Name] : [if (symbol.Name != "Symbol")]Symbol, [end if] I[symbol.Name]
+public abstract partial class [symbol.Name] : [if (symbol.SuperClasses.Count > 0)][loop(symbol->sup:SuperClasses; separator comma = ", ")][sup.Name][end loop], [else][if (symbol.Name != "Symbol")]Symbol, [end if][end if]I[symbol.Name]
 {
-	[if (props.Count > 0)]
-    private readonly SymbolCompletionState _state;
-	[end if]
-	[loop(symbol->prop:Properties)]
+	[loop(symbol->prop:Properties where prop.Phase != null)]
 	private [GenerateType(prop.Type)] _[prop.Name.ToCamelCase()]Lazy;
 	[end loop]
 	^
-	[if (props.Count > 0)]
-	public sealed override bool RequiresCompletion => true;
-
-    private SymbolCompletionState CompletionState
-    {
-        get
-        {
-            if (_state == null) Interlocked.CompareExchange(ref _state, SymbolCompletionState.Create(this.Language), null);
-            return _state;
-        }
-    }
-	[end if]
+	[loop(symbol->prop:Properties where prop.Phase == null)]
+	public abstract [GenerateType(prop.Type)] [prop.Name] { get; }
+	[end loop]
 	^
-	[loop(symbol->prop:Properties)]
+	[loop(symbol->prop:Properties where prop.Phase != null)]
 	public [GenerateType(prop.Type)] [prop.Name] 
 	{
 		get
@@ -138,11 +139,25 @@ public partial class [symbol.Name] : [if (symbol.Name != "Symbol")]Symbol, [end 
 	}
 	[end loop]
 	^
-    public override void ForceComplete(CompletionPart part, SourceLocation locationOpt, CancellationToken cancellationToken)
+	[if (props.Count > 0)]
+    private readonly SymbolCompletionState _state;
+    ^
+	public sealed override bool RequiresCompletion => true;
+    ^
+    private SymbolCompletionState CompletionState
+    {
+        get
+        {
+            if (_state == null) Interlocked.CompareExchange(ref _state, SymbolCompletionState.Create(this.Language), null);
+            return _state;
+        }
+    }
+    ^
+    public override void ForceComplete(CompletionPart part = CompletionPart.All, SourceLocation locationOpt = null, CancellationToken cancellationToken = default)
     {
         while (true)
         {
-            if (part != null && HasComplete(part))
+            if (part != null && HasComplete(part)) goto done;
             cancellationToken.ThrowIfCancellationRequested();
             var incompletePart = CompletionState.NextIncompletePart;
             [loop (phase:phases)]
@@ -151,10 +166,10 @@ public partial class [symbol.Name] : [if (symbol.Name != "Symbol")]Symbol, [end 
             {
                 if (CompletionState.NotePartComplete(CompletionPart.[phase.Start()]))
                 {
-                    [if (phase.JoinsPhase != null)]
-                    [GenerateJoinPhase(phase)]
-                    [else]
                     Complete[phase.Name]();
+                    [if (phase.JoinsPhase != null)]
+                    [GenerateJoinPhase(phase, props.Where(p => p.Phase == phase))]
+                    [else]
                     var thisThreadCompleted = CompletionState.NotePartComplete(CompletionPart.[phase.Finish()]);
                     Debug.Assert(thisThreadCompleted);
                     [end if]
@@ -163,10 +178,9 @@ public partial class [symbol.Name] : [if (symbol.Name != "Symbol")]Symbol, [end 
                 [else]
             if (incompletePart == CompletionPart.[phase.Name])
             {
-                    [if (phase.JoinsPhase != null)]
-                [GenerateJoinPhase(phase)]
-                    [else]
                 Complete[phase.Name]();
+                    [if (phase.JoinsPhase != null)]
+                [GenerateJoinPhase(phase, props.Where(p => p.Phase == phase))]
                     [end if]
             }
                 [end if]
@@ -185,19 +199,19 @@ public partial class [symbol.Name] : [if (symbol.Name != "Symbol")]Symbol, [end 
             }
             CompletionState.SpinWaitComplete(incompletePart, cancellationToken);
         }
-
+        ^
     done:
         // Don't return until we've seen all of the CompletionParts. This ensures all
         // diagnostics have been reported (not necessarily on this thread).
-        CompletionState.SpinWaitComplete(CompletionPart.[symbol.Name]All, cancellationToken);
+        CompletionState.SpinWaitComplete(part, cancellationToken);
     }
-
+    ^
     public override bool HasComplete(CompletionPart part)
     {
         return CompletionState.HasComplete(part);
     }
-
-    private static void ForceCompleteMemberByLocation(CompletionPart part, SourceLocation locationOpt, Symbol child, CancellationToken cancellationToken)
+    ^
+    private static void ForceCompleteChildByLocation(CompletionPart part, SourceLocation locationOpt, Symbol child, CancellationToken cancellationToken)
     {
         if (locationOpt == null || child.IsDefinedInSourceTree(locationOpt.SourceTree, locationOpt.SourceSpan, cancellationToken))
         {
@@ -205,26 +219,66 @@ public partial class [symbol.Name] : [if (symbol.Name != "Symbol")]Symbol, [end 
             child.ForceComplete(part, locationOpt, cancellationToken);
         }
     }
+        [loop (phase:phases)]
+    ^
+    protected void Complete[phase.Name](CancellationToken cancellationToken)
+    {
+        ComputePhase[phase.Name](CancellationToken cancellationToken);
+        [loop (prop:props where prop.Phase == phase)]
+        Debug.Assert(_[prop.Name.ToCamelCase()]Lazy != default);
+        [end loop]
+    }
+    ^
+    protected abstract void ComputePhase[phase.Name](CancellationToken cancellationToken);
+        [end loop]
+	[end if]
+    [if (symbol.Name == "Symbol")]
+    ^
+    public abstract void Accept(SymbolVisitor visitor);
+    ^
+    public abstract TResult Accept<TResult>(SymbolVisitor<TResult> visitor);
+    ^
+    public abstract TResult Accept<TArgument, TResult>(SymbolVisitor<TArgument, TResult> visitor, TArgument argument);
+    [else if (!symbol.IsAbstract)]
+    ^
+    public override void Accept(SymbolVisitor visitor)
+    {
+        visitor.Visit[symbol.Name.TrimSymbolSuffix()](this);
+    }
+    ^
+    public override TResult Accept<TResult>(SymbolVisitor<TResult> visitor)
+    {
+        return visitor.Visit[symbol.Name.TrimSymbolSuffix()](this);
+    }
+    ^
+    public override TResult Accept<TArgument, TResult>(SymbolVisitor<TArgument, TResult> visitor, TArgument argument)
+    {
+        return visitor.Visit[symbol.Name.TrimSymbolSuffix()](this, argument);
+    }
+    [end if]
 }
 end template
 
-template GenerateJoinPhase(Phase phase)
-var children = this.GetChildSymbols();
-
+template GenerateJoinPhase(Phase phase, IEnumerable<Property> joinedProps)
+var children = ArrayBuilder<Symbol>.GetInstance();
+[loop(prop:joinedProps)]
+children.AddRange([prop.Name]);
+[end loop]
+^
 bool allCompleted = true;
-
+^
 if (this.DeclaringCompilation.Options.ConcurrentBuild)
 {
     var po = cancellationToken.CanBeCanceled
         ? new ParallelOptions() { CancellationToken = cancellationToken }
         : LanguageCompilation.DefaultParallelOptions;
-
+    ^
     Parallel.For(0, children.Length, po, UICultureUtilities.WithCurrentUICulture<int>(i =>
     {
         var child = children["[i]"];
         ForceCompleteChildByLocation(CompletionPart.[phase.JoinsPhase.Finish()], locationOpt, child, cancellationToken);
     }));
-
+    ^
     foreach (var child in children)
     {
         if (!child.HasComplete(CompletionPart.[phase.JoinsPhase.Finish()]))
@@ -242,7 +296,7 @@ else
         allCompleted = allCompleted && child.HasComplete(CompletionPart.[phase.JoinsPhase.Finish()]);
     }
 }
-
+^
 if (allCompleted)
 {
     [if (phase.IsLocked)]
@@ -269,6 +323,143 @@ end template
 template GenerateSourceSymbolClass(Class symbol)
 public partial class Source[symbol.Name] : [symbol.Name]
 {
+}
+end template
+
+template GenerateSymbolVisitor()
+namespace [SymbolNamespace()]
+{
+    /// <summary>
+    /// Virtual dispatch based on a symbol's particular class. 
+    /// </summary>
+    public class SymbolVisitor
+    {
+        /// <summary>
+        /// Call the correct VisitXXX method in this class based on the particular type of symbol that is passed in.
+        /// </summary>
+        public virtual void Visit(Symbol symbol)
+        {
+            if ((object)symbol != null)
+            {
+                symbol.Accept(this);
+            }
+        }
+        ^
+        /// <summary>
+        /// The default Visit method called when visiting any <see cref="Symbol" /> and 
+        /// if visiting specific symbol method VisitXXX is not overridden
+        /// </summary>
+        /// <param name="symbol">The visited symbol</param>
+        public virtual void DefaultVisit(Symbol symbol)
+        {
+        }
+        [loop(Instances->symbol:typeof(Class) where symbol.Kind == ClassKind.Symbol && !symbol.IsAbstract && symbol.Name != "Symbol")]
+        ^
+        /// <summary>
+        /// Called when visiting an <see cref="[symbol.Name]" />; Override this method with
+        /// specific implementation; Calling default <see cref="DefaultVisit" /> if it's not
+        /// overridden 
+        /// </summary>
+        /// <param name="symbol">The visited symbol</param>
+        public virtual void Visit[symbol.Name.TrimSymbolSuffix()]([symbol.Name] symbol)
+        {
+            DefaultVisit(symbol);
+        }
+        [end loop]
+    }
+    ^
+    /// <summary>
+    /// Virtual dispatch based on a symbol's particular class. 
+    /// </summary>
+    /// <typeparam name="TResult">Result type</typeparam>
+    public class SymbolVisitor<TResult>
+    {
+        /// <summary>
+        /// Call the correct VisitXXX method in this class based on the particular type of symbol that is passed in.
+        /// Return default(TResult) if symbol is null
+        /// </summary>
+        public virtual TResult Visit(Symbol symbol)
+        {
+            return (object)symbol == null
+                ? default(TResult)
+                : symbol.Accept(this);
+        }
+        ^
+        /// <summary>
+        /// The default Visit method called when visiting any <see cref="Symbol" /> and 
+        /// if visiting specific symbol method VisitXXX is not overridden
+        /// </summary>
+        /// <param name="symbol">The visited symbol</param>
+        /// <returns></returns>
+        public virtual TResult DefaultVisit(Symbol symbol)
+        {
+            return default(TResult);
+        }
+        [loop(Instances->symbol:typeof(Class) where symbol.Kind == ClassKind.Symbol && !symbol.IsAbstract && symbol.Name != "Symbol")]
+        ^
+        /// <summary>
+        /// Called when visiting an <see cref="[symbol.Name]" />; Override this method with
+        /// specific implementation; Calling default <see cref="DefaultVisit" /> if it's not
+        /// overridden 
+        /// </summary>
+        /// <param name="symbol">The visited symbol</param>
+        /// <returns></returns>
+        public virtual TResult Visit[symbol.Name.TrimSymbolSuffix()]([symbol.Name] symbol)
+        {
+            return DefaultVisit(symbol);
+        }
+        [end loop]
+    }
+    ^
+    /// <summary>
+    /// Virtual dispatch based on a symbol's particular class. 
+    /// </summary>
+    /// <typeparam name="TArgument">Additional argument type</typeparam>
+    /// <typeparam name="TResult">Result type</typeparam>
+    public class SymbolVisitor<TArgument, TResult>
+    {
+        /// <summary>
+        /// Call the correct VisitXXX method in this class based on the particular type of symbol that is passed in.
+        /// Return default(TResult) if symbol is null
+        /// </summary>
+        public virtual TResult Visit(Symbol symbol, TArgument argument = default(TArgument))
+        {
+            if ((object)symbol == null)
+            {
+                return default(TResult);
+            }
+
+            return symbol.Accept(this, argument);
+        }
+
+        /// <summary>
+        /// The default Visit method called when visiting any <see cref="Symbol" /> and 
+        /// if visiting specific symbol method VisitXXX is not overridden
+        /// </summary>
+        /// <param name="symbol">The visited symbol</param>
+        /// <param name="argument">Additional argument</param>
+        /// <returns></returns>
+        public virtual TResult DefaultVisit(Symbol symbol, TArgument argument)
+        {
+            return default(TResult);
+        }
+
+        [loop(Instances->symbol:typeof(Class) where symbol.Kind == ClassKind.Symbol && !symbol.IsAbstract && symbol.Name != "Symbol")]
+        ^
+        /// <summary>
+        /// Called when visiting an <see cref="[symbol.Name]" />; Override this method with
+        /// specific implementation; Calling default <see cref="DefaultVisit" /> if it's not
+        /// overridden 
+        /// </summary>
+        /// <param name="symbol">The visited symbol</param>
+        /// <param name="argument">Additional argument</param>
+        /// <returns></returns>
+        public virtual TResult Visit[symbol.Name.TrimSymbolSuffix()]([symbol.Name] symbol, TArgument argument)
+        {
+            return DefaultVisit(symbol, argument);
+        }
+        [end loop]
+    }
 }
 end template
 
