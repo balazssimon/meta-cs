@@ -18,14 +18,14 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
     public sealed class Members
     {
         private readonly DeclaredSymbol _symbol;
-        private readonly SymbolCompletionState _state;
+        private readonly CompletionState _state;
 
         public readonly ImmutableArray<DeclaredSymbol> NamedNonTypeMembers;
         public readonly ImmutableArray<NamedTypeSymbol> NamedTypeMembers;
         public readonly ImmutableArray<DeclaredSymbol> AnonymousNonTypeMembers;
         public readonly ImmutableArray<NamedTypeSymbol> AnonymousTypeMembers;
 
-        public Members(DeclaredSymbol symbol, SymbolCompletionState state,
+        public Members(DeclaredSymbol symbol, CompletionState state,
             ImmutableArray<DeclaredSymbol> nonTypeMembers, ImmutableArray<NamedTypeSymbol> typeMembers)
         {
             Debug.Assert(!nonTypeMembers.IsDefault);

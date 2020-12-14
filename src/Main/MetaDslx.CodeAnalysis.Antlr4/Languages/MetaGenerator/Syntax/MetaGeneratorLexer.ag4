@@ -76,6 +76,7 @@ $Token(kind=Operator, first=TSemicolon, last=TQuestionQuestion)
 TSemicolon : ';';
 TColon : ':';
 TDot : '.';
+TQuestionDot : '?.';
 $Token(defaultSeparator=true)
 TComma : ',';
 TAssign : '=';

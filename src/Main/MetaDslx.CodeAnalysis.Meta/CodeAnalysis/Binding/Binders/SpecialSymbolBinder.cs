@@ -26,7 +26,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
 
         protected override void AddLookupSymbolsInfoInSingleBinder(LookupSymbolsInfo result, LookupConstraints constraints)
         {
-            foreach (var symbol in Compilation.SourceAssembly.SpecialSymbols)
+            foreach (var symbol in Compilation.SourceAssembly.DeclaredSpecialSymbols)
             {
                 if (symbol is DeclaredSymbol ds)
                 {

@@ -47,6 +47,10 @@ namespace MetaDslx.Languages.MetaCompiler.Generator //1:1
             {
                 return $"ImmutableArray<{GenerateType(at.InnerType)}>";
             }
+            if (typ is DictionaryType dt)
+            {
+                return $"ImmutableDictionary<{GenerateType(dt.KeyType)}, {GenerateType(dt.ValueType)}>";
+            }
             return typ.MName;
         }
 
@@ -70,6 +74,28 @@ namespace MetaDslx.Languages.MetaCompiler.Generator //1:1
             if (name == null) return null;
             if (name.EndsWith("Symbol")) return name.Substring(0, name.Length - 6);
             return name;
+        }
+
+        public string VirtualModifier(MemberDeclaration member, string defaultValue)
+        {
+            var result = new StringBuilder();
+            if (member.IsNew) result.Append("new ");
+            if (member.IsStatic) result.Append("static ");
+            if (member.IsSealed) result.Append("sealed ");
+            if (member.IsOverride) result.Append("override ");
+            if (member.IsVirtual) result.Append("virtual ");
+            if (member.IsAbstract) result.Append("abstract ");
+            if (result.Length == 0 && defaultValue.Length > 0)
+            {
+                result.Append(defaultValue);
+                result.Append(" ");
+            }
+            return result.ToString();
+        }
+
+        public string Visibility(MemberDeclaration member, string defaultValue)
+        {
+            return member.Visibility == VisibilityKind.None ? defaultValue + " " : member.Visibility.ToString()?.ToLower() + " ";
         }
     }
 }

@@ -395,7 +395,9 @@ namespace MetaDslx.Bootstrap
             //*/
             SymbolGenerator sgen = new SymbolGenerator(compiledModel.Objects);
             string generatedCsharpModel = sgen.Generate();
-            File.WriteAllText("Symbols.cs.txt", generatedCsharpModel);
+            //var outputFile = "Symbols.cs.txt";
+            var outputFile = @"..\..\..\..\..\Main\MetaDslx.CodeAnalysis.Meta\CodeAnalysis\Symbols\Symbols.Generated.cs";
+            File.WriteAllText(outputFile, generatedCsharpModel);
             //*/
 
         }

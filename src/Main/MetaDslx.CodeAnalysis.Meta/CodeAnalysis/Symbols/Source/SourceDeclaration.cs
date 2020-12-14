@@ -16,7 +16,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
     {
         private readonly DeclaredSymbol _symbol;
         private readonly MergedDeclaration _declaration;
-        private readonly SymbolCompletionState _state;
+        private readonly CompletionState _state;
         private Members _lazyMembers;
 
         private Dictionary<string, ImmutableArray<DeclaredSymbol>> _lazyMembersDictionary;
@@ -28,7 +28,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         private static readonly Dictionary<string, ImmutableArray<NamedTypeSymbol>> s_emptyTypeMembers = new Dictionary<string, ImmutableArray<NamedTypeSymbol>>(EmptyComparer.Instance);
 
-        public SourceDeclaration(DeclaredSymbol symbol, MergedDeclaration declaration, SymbolCompletionState state)
+        public SourceDeclaration(DeclaredSymbol symbol, MergedDeclaration declaration, CompletionState state)
         {
             _symbol = symbol;
             _state = state;

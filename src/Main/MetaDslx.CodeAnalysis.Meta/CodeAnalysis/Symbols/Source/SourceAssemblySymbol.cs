@@ -33,7 +33,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         /// </summary>
         private readonly Language _language;
 
-        private SymbolCompletionState _state;
+        private CompletionState _state;
 
         /// <summary>
         /// Assembly's identity.
@@ -177,7 +177,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 _lazyStrongNameKeys = StrongNameKeys.Create(compilation.Options.CryptoPublicKey, privateKey: null, hasCounterSignature: false, MessageProvider.Instance);
             }
 
-            _state = SymbolCompletionState.Create(_language);
+            _state = CompletionState.Create(_language);
         }
 
         public override string Name

@@ -15,9 +15,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
     public class MembersBuilder
     {
         private readonly DeclaredSymbol _symbol;
-        private readonly SymbolCompletionState _state;
+        private readonly CompletionState _state;
 
-        public MembersBuilder(DeclaredSymbol symbol, SymbolCompletionState state)
+        public MembersBuilder(DeclaredSymbol symbol, CompletionState state)
         {
             _symbol = symbol;
             _state = state;

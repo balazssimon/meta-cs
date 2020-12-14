@@ -36,7 +36,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         private readonly DiagnosticBag _diagnostics;
 
         // completion state that tracks whether validation was done/not done/currently in process. 
-        private SymbolCompletionState _state;
+        private CompletionState _state;
 
         public readonly ImmutableDictionary<string, AliasAndUsingDirective> UsingAliases;
         public readonly ImmutableArray<NamespaceOrTypeAndUsingDirective> Usings;
@@ -59,7 +59,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             _diagnostics = diagnostics;
             this.ExternAliases = externs;
 
-            if (_compilation != null) _state = SymbolCompletionState.Create(_compilation.Language);
+            if (_compilation != null) _state = CompletionState.Create(_compilation.Language);
             else _state = null;
         }
 

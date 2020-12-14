@@ -1250,7 +1250,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
         public override object VisitMemberAccessExpression(MetaGeneratorParser.MemberAccessExpressionContext context)
         {
             Visit(context.expression());
-            Write(".");
+            Write(context.dot.Text);
             Write(context.identifier().GetText());
             if (context.typeArgumentList() != null)
             {
@@ -2030,7 +2030,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
         public override object VisitLoopChainMemberAccessExpression(MetaGeneratorParser.LoopChainMemberAccessExpressionContext context)
         {
             Visit(context.loopChainExpression());
-            Write(".");
+            Write(context.dot.Text);
             Write(context.identifier().GetText());
             if (context.typeArgumentList() != null)
             {

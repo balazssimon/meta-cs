@@ -62,7 +62,7 @@ namespace MetaDslx.Languages.MetaCompiler.Model.Internal
             return result;
         }
 
-        public override IReadOnlyList<PropertyBuilder> Class_GetAllSuperProperties(ClassBuilder _this, bool includeSelf)
+        public override IReadOnlyList<PropertyBuilder> Class_GetAllProperties(ClassBuilder _this, bool includeSelf)
         {
             var result = new List<PropertyBuilder>();
             var supers = _this.GetAllSuperClasses(includeSelf);
@@ -76,7 +76,7 @@ namespace MetaDslx.Languages.MetaCompiler.Model.Internal
             return result;
         }
 
-        public override IReadOnlyList<OperationBuilder> Class_GetAllSuperOperations(ClassBuilder _this, bool includeSelf)
+        public override IReadOnlyList<OperationBuilder> Class_GetAllOperations(ClassBuilder _this, bool includeSelf)
         {
             var result = new List<OperationBuilder>();
             var supers = _this.GetAllSuperClasses(includeSelf);
@@ -90,19 +90,9 @@ namespace MetaDslx.Languages.MetaCompiler.Model.Internal
             return result;
         }
 
-        public override IReadOnlyList<PropertyBuilder> Class_GetAllProperties(ClassBuilder _this)
-        {
-            return _this.GetAllSuperProperties(true);
-        }
-
-        public override IReadOnlyList<OperationBuilder> Class_GetAllOperations(ClassBuilder _this)
-        {
-            return _this.GetAllSuperOperations(true);
-        }
-
         public override IReadOnlyList<PropertyBuilder> Class_GetAllFinalProperties(ClassBuilder _this)
         {
-            var props = _this.GetAllProperties();
+            var props = _this.GetAllProperties(true);
             var result = new List<PropertyBuilder>(props);
             result.Reverse();
             int i = result.Count - 1;
@@ -121,7 +111,7 @@ namespace MetaDslx.Languages.MetaCompiler.Model.Internal
 
         public override IReadOnlyList<OperationBuilder> Class_GetAllFinalOperations(ClassBuilder _this)
         {
-            var ops = _this.GetAllOperations();
+            var ops = _this.GetAllOperations(true);
             var result = new List<OperationBuilder>(ops);
             result.Reverse();
             int i = result.Count - 1;
@@ -174,7 +164,16 @@ namespace MetaDslx.Languages.MetaCompiler.Model.Internal
             if (!_this.Type.ConformsTo(property.Type) && !property.Type.ConformsTo(_this.Type)) return false;
             return true;
         }
-	
-	}
+
+        public override IReadOnlyList<PhaseBuilder> Class_GetPhases(ClassBuilder _this)
+        {
+            return _this.Properties.Where(p => p.Phase != null).Select(p => p.Phase).Union(_this.Phases).ToList();
+        }
+
+        public override IReadOnlyList<PhaseBuilder> Class_GetAllPhases(ClassBuilder _this, bool includeSelf)
+        {
+            return _this.GetAllSuperClasses(includeSelf).SelectMany(cls => cls.GetPhases()).Distinct().ToList();
+        }
+    }
 }
 

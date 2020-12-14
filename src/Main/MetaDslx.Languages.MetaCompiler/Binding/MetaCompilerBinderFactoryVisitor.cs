@@ -1,7 +1,6 @@
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-using System;
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -25,6 +24,10 @@ namespace MetaDslx.Languages.MetaCompiler.Binding
 		public static object UseQualifier = new object();
 		public static object UseEnumValues = new object();
 		public static object UseOperationDeclaration = new object();
+		public static object UseKPrivate = new object();
+		public static object UseKProtected = new object();
+		public static object UseKPublic = new object();
+		public static object UseKInternal = new object();
 		public static object UseClassAncestors = new object();
 		public static object UseFieldDeclaration = new object();
 		public static object UseKClass = new object();
@@ -36,8 +39,10 @@ namespace MetaDslx.Languages.MetaCompiler.Binding
 		public static object UseKDerived = new object();
 		public static object UseStringLiteral = new object();
 		public static object UsePrimitiveType = new object();
-		public static object UseSimpleType = new object();
 		public static object UseClassType = new object();
+		public static object UseSimpleOrGenericType = new object();
+		public static object UseKey = new object();
+		public static object UseValue = new object();
 		public static object UseReturnType = new object();
 		public static object UseParameterList = new object();
 		public static object UseNamespaceDeclaration = new object();
@@ -58,31 +63,46 @@ namespace MetaDslx.Languages.MetaCompiler.Binding
 		public static object UseBeforePhases = new object();
 		public static object UseEnumBody = new object();
 		public static object UseEnumValue = new object();
-		public static object UseAbstract_ = new object();
+		public static object UseVisibility = new object();
 		public static object UseClassKind = new object();
 		public static object Use = new object();
 		public static object UseClassBody = new object();
+		public static object UseAbstract_ = new object();
+		public static object UseSealed_ = new object();
+		public static object UseFixed_ = new object();
+		public static object UsePartial_ = new object();
+		public static object UseStatic_ = new object();
+		public static object UseClassPhases = new object();
+		public static object UsePhaseRef = new object();
 		public static object UseFieldContainment = new object();
-		public static object UseFieldModifier = new object();
+		public static object UseFieldKind = new object();
 		public static object UseDefaultValue = new object();
 		public static object UsePhase = new object();
+		public static object UseVirtual_ = new object();
+		public static object UseNew_ = new object();
+		public static object UseOverride_ = new object();
 		public static object UseTypedefValue = new object();
 		public static object UseVoidType = new object();
-		public static object UseGenericType = new object();
+		public static object UseDictionaryType = new object();
 		public static object UseArrayType = new object();
+		public static object UseSimpleType = new object();
+		public static object UseGenericType = new object();
 		public static object UseObjectType = new object();
 		public static object UseNullableType = new object();
 		public static object UseTypeArguments = new object();
+		public static object UseMemberModifier = new object();
 		public static object UseParameter = new object();
 		public static object UseNullLiteral = new object();
 		public static object UseBooleanLiteral = new object();
 		public static object UseIntegerLiteral = new object();
 		public static object UseDecimalLiteral = new object();
 		public static object UseScientificLiteral = new object();
-		public static object UsePhaseRef = new object();
 		public static object UseEnumMemberDeclaration = new object();
+		public static object UseClassModifier = new object();
 		public static object UseClassAncestor = new object();
 		public static object UseClassMemberDeclaration = new object();
+		public static object UseSimpleOrDictionaryType = new object();
+		public static object UseSimpleOrArrayType = new object();
 
         public MetaCompilerBinderFactoryVisitor(BinderFactory symbolBuilder)
 			: base(symbolBuilder)
@@ -470,6 +490,23 @@ namespace MetaDslx.Languages.MetaCompiler.Binding
 			return resultBinder;
 		}
 		
+		public Binder VisitVisibility(VisibilitySyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "Visibility");
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+			}
+			return resultBinder;
+		}
+		
 		public Binder VisitClassDeclaration(ClassDeclarationSyntax parent)
 		{
 		    if (!parent.FullSpan.Contains(this.Position))
@@ -496,7 +533,7 @@ namespace MetaDslx.Languages.MetaCompiler.Binding
 			return resultBinder;
 		}
 		
-		public Binder VisitAbstract_(Abstract_Syntax parent)
+		public Binder VisitClassModifier(ClassModifierSyntax parent)
 		{
 		    if (!parent.FullSpan.Contains(this.Position))
 		    {
@@ -507,7 +544,6 @@ namespace MetaDslx.Languages.MetaCompiler.Binding
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitParent(parent);
-				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "IsAbstract", value: true);
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 			}
 			return resultBinder;
@@ -566,6 +602,23 @@ namespace MetaDslx.Languages.MetaCompiler.Binding
 			{
 				resultBinder = VisitParent(parent);
 				resultBinder = this.CreateScopeBinder(resultBinder, parent);
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitClassPhases(ClassPhasesSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "Phases");
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 			}
 			return resultBinder;
@@ -662,7 +715,7 @@ namespace MetaDslx.Languages.MetaCompiler.Binding
 			return resultBinder;
 		}
 		
-		public Binder VisitFieldModifier(FieldModifierSyntax parent)
+		public Binder VisitFieldKind(FieldKindSyntax parent)
 		{
 		    if (!parent.FullSpan.Contains(this.Position))
 		    {
@@ -674,6 +727,22 @@ namespace MetaDslx.Languages.MetaCompiler.Binding
 			{
 				resultBinder = VisitParent(parent);
 				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "Kind");
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitMemberModifier(MemberModifierSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 			}
 			return resultBinder;
@@ -712,21 +781,12 @@ namespace MetaDslx.Languages.MetaCompiler.Binding
 		        return VisitParent(parent);
 		    }
 			object use = null;
-			if (this.ForChild)
-			{
-				if (LookupPosition.IsInNode(this.Position, parent.Qualifier)) use = UseQualifier;
-			}
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitParent(parent);
 				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "Phase");
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
-				if (use == UseQualifier)
-				{
-					resultBinder = this.CreateSymbolUseBinder(resultBinder, parent.Qualifier, types: ImmutableArray.Create(typeof(Phase)));
-					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
-				}
 			}
 			return resultBinder;
 		}
@@ -837,6 +897,54 @@ namespace MetaDslx.Languages.MetaCompiler.Binding
 			{
 				resultBinder = VisitParent(parent);
 				resultBinder = this.CreateSymbolUseBinder(resultBinder, parent, types: ImmutableArray.Create(typeof(DataType)));
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitSimpleOrDictionaryType(SimpleOrDictionaryTypeSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitSimpleOrArrayType(SimpleOrArrayTypeSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitSimpleOrGenericType(SimpleOrGenericTypeSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 			}
 			return resultBinder;
@@ -953,32 +1061,6 @@ namespace MetaDslx.Languages.MetaCompiler.Binding
 			return resultBinder;
 		}
 		
-		public Binder VisitArrayType(ArrayTypeSyntax parent)
-		{
-		    if (!parent.FullSpan.Contains(this.Position))
-		    {
-		        return VisitParent(parent);
-		    }
-			object use = null;
-			if (this.ForChild)
-			{
-				if (LookupPosition.IsInNode(this.Position, parent.SimpleType)) use = UseSimpleType;
-			}
-			Binder resultBinder = null;
-			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
-			{
-				resultBinder = VisitParent(parent);
-				resultBinder = this.CreateSymbolDefBinder(resultBinder, parent, type: typeof(ArrayType));
-				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
-				if (use == UseSimpleType)
-				{
-					resultBinder = this.CreatePropertyBinder(resultBinder, parent.SimpleType, name: "InnerType");
-					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
-				}
-			}
-			return resultBinder;
-		}
-		
 		public Binder VisitGenericType(GenericTypeSyntax parent)
 		{
 		    if (!parent.FullSpan.Contains(this.Position))
@@ -1018,6 +1100,64 @@ namespace MetaDslx.Languages.MetaCompiler.Binding
 				resultBinder = VisitParent(parent);
 				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "TypeArguments");
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitArrayType(ArrayTypeSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, parent.SimpleOrGenericType)) use = UseSimpleOrGenericType;
+			}
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.CreateSymbolDefBinder(resultBinder, parent, type: typeof(ArrayType));
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UseSimpleOrGenericType)
+				{
+					resultBinder = this.CreatePropertyBinder(resultBinder, parent.SimpleOrGenericType, name: "InnerType");
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitDictionaryType(DictionaryTypeSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, parent.Key)) use = UseKey;
+				if (LookupPosition.IsInNode(this.Position, parent.Value)) use = UseValue;
+			}
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.CreateSymbolDefBinder(resultBinder, parent, type: typeof(DictionaryType));
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UseKey)
+				{
+					resultBinder = this.CreatePropertyBinder(resultBinder, parent.Key, name: "KeyType");
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+				if (use == UseValue)
+				{
+					resultBinder = this.CreatePropertyBinder(resultBinder, parent.Value, name: "ValueType");
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
 			}
 			return resultBinder;
 		}
@@ -1092,6 +1232,142 @@ namespace MetaDslx.Languages.MetaCompiler.Binding
 					resultBinder = this.CreatePropertyBinder(resultBinder, parent.TypeReference, name: "Type");
 					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
 				}
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitStatic_(Static_Syntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "IsStatic", value: true);
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitFixed_(Fixed_Syntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "IsFixed", value: true);
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitPartial_(Partial_Syntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "IsPartial", value: true);
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitAbstract_(Abstract_Syntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "IsAbstract", value: true);
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitVirtual_(Virtual_Syntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "IsVirtual", value: true);
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitSealed_(Sealed_Syntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "IsSealed", value: true);
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitOverride_(Override_Syntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "IsOverride", value: true);
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitNew_(New_Syntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "IsNew", value: true);
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 			}
 			return resultBinder;
 		}

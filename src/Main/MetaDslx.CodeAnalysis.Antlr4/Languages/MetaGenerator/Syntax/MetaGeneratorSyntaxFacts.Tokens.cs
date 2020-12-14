@@ -123,6 +123,7 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 				case MetaGeneratorTokensSyntaxKind.TSemicolon:
 				case MetaGeneratorTokensSyntaxKind.TColon:
 				case MetaGeneratorTokensSyntaxKind.TDot:
+				case MetaGeneratorTokensSyntaxKind.TQuestionDot:
 				case MetaGeneratorTokensSyntaxKind.TComma:
 				case MetaGeneratorTokensSyntaxKind.TAssign:
 				case MetaGeneratorTokensSyntaxKind.TAssignPlus:
@@ -263,6 +264,7 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 				case MetaGeneratorTokensSyntaxKind.TSemicolon:
 				case MetaGeneratorTokensSyntaxKind.TColon:
 				case MetaGeneratorTokensSyntaxKind.TDot:
+				case MetaGeneratorTokensSyntaxKind.TQuestionDot:
 				case MetaGeneratorTokensSyntaxKind.TComma:
 				case MetaGeneratorTokensSyntaxKind.TAssign:
 				case MetaGeneratorTokensSyntaxKind.TAssignPlus:
@@ -427,6 +429,8 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 					return MetaGeneratorTokensSyntaxKind.TColon;
 				case ".":
 					return MetaGeneratorTokensSyntaxKind.TDot;
+				case "?.":
+					return MetaGeneratorTokensSyntaxKind.TQuestionDot;
 				case ",":
 					return MetaGeneratorTokensSyntaxKind.TComma;
 				case "=":
@@ -634,6 +638,8 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 					return ":";
 				case MetaGeneratorTokensSyntaxKind.TDot:
 					return ".";
+				case MetaGeneratorTokensSyntaxKind.TQuestionDot:
+					return "?.";
 				case MetaGeneratorTokensSyntaxKind.TComma:
 					return ",";
 				case MetaGeneratorTokensSyntaxKind.TAssign:
@@ -792,6 +798,7 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 				case MetaGeneratorTokensSyntaxKind.TSemicolon:
 				case MetaGeneratorTokensSyntaxKind.TColon:
 				case MetaGeneratorTokensSyntaxKind.TDot:
+				case MetaGeneratorTokensSyntaxKind.TQuestionDot:
 				case MetaGeneratorTokensSyntaxKind.TComma:
 				case MetaGeneratorTokensSyntaxKind.TAssign:
 				case MetaGeneratorTokensSyntaxKind.TAssignPlus:
@@ -1242,6 +1249,7 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 				case MetaGeneratorTokensSyntaxKind.TSemicolon:
 				case MetaGeneratorTokensSyntaxKind.TColon:
 				case MetaGeneratorTokensSyntaxKind.TDot:
+				case MetaGeneratorTokensSyntaxKind.TQuestionDot:
 				case MetaGeneratorTokensSyntaxKind.TComma:
 				case MetaGeneratorTokensSyntaxKind.TAssign:
 				case MetaGeneratorTokensSyntaxKind.TAssignPlus:

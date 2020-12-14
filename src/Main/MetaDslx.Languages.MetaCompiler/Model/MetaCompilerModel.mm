@@ -14,6 +14,15 @@
 
 	const Phase None = "None";
 	const Phase All = "All";
+
+	enum VisibilityKind
+	{
+		None,
+		Public,
+		Protected,
+		Private,
+		Internal
+	}
 	
 	class Compiler : Declaration
 	{
@@ -84,6 +93,12 @@
 		DataType InnerType;
 	}
 
+	class DictionaryType : DataType
+	{
+		DataType KeyType;
+		DataType ValueType;
+	}
+
 	class GenericType : NamedType
 	{
 		DataType Type;
@@ -114,18 +129,25 @@
 	[Scope]
 	class Class : NamedType
 	{
-		ClassKind Kind;
+		ClassKind Kind = "ClassKind.Class";
+		VisibilityKind Visibility = "VisibilityKind.Public";
 		bool IsAbstract;
+		bool IsStatic;
+		bool IsSealed;
+		bool IsPartial;
+		bool IsFixed;
 		[BaseScope]
 		list<Class> SuperClasses;
 		containment list<Property> Properties;
 		containment list<Operation> Operations;
+		list<Phase> Phases;
+
 		bool ConformsTo(DataType type);
+		list<Phase> GetPhases();
+		list<Phase> GetAllPhases(bool includeSelf);
 		list<Class> GetAllSuperClasses(bool includeSelf);
-		list<Property> GetAllSuperProperties(bool includeSelf);
-		list<Operation> GetAllSuperOperations(bool includeSelf);
-		list<Property> GetAllProperties();
-		list<Operation> GetAllOperations();
+		list<Property> GetAllProperties(bool includeSelf);
+		list<Operation> GetAllOperations(bool includeSelf);
 		list<Property> GetAllFinalProperties();
 		list<Operation> GetAllFinalOperations();
 	}
@@ -138,8 +160,21 @@
 		list<Phase> BeforePhases;
 	}
 
+	class MemberDeclaration : NamedElement
+	{
+		PropertyKind Kind = "PropertyKind.Normal";
+		VisibilityKind Visibility = "VisibilityKind.Public";
+		bool IsSealed;
+		bool IsPartial;
+		bool IsStatic;
+		bool IsAbstract;
+		bool IsVirtual;
+		bool IsOverride;
+		bool IsNew;
+	}
+
 	[LocalScope]
-	class Operation : NamedElement
+	class Operation : MemberDeclaration
 	{
 		Class Class;
 		EnumType Enum;
@@ -154,6 +189,7 @@
 	class Parameter : NamedElement, TypedElement
 	{
 		Operation Operation;
+		string DefaultValue;
 	}
 
 	association Operation.Parameters with Parameter.Operation;
@@ -166,9 +202,8 @@
 		Derived
 	}
 
-	class Property : NamedElement, TypedElement
+	class Property : MemberDeclaration, TypedElement
 	{
-		PropertyKind Kind;
 		Class Class;
 		string DefaultValue;
 		Phase Phase;

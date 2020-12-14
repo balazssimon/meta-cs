@@ -70,6 +70,15 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax
 				case MetaCompilerTokensSyntaxKind.KExtern:
 				case MetaCompilerTokensSyntaxKind.KTypeDef:
 				case MetaCompilerTokensSyntaxKind.KAbstract:
+				case MetaCompilerTokensSyntaxKind.KPrivate:
+				case MetaCompilerTokensSyntaxKind.KProtected:
+				case MetaCompilerTokensSyntaxKind.KPublic:
+				case MetaCompilerTokensSyntaxKind.KInternal:
+				case MetaCompilerTokensSyntaxKind.KVirtual:
+				case MetaCompilerTokensSyntaxKind.KOverride:
+				case MetaCompilerTokensSyntaxKind.KSealed:
+				case MetaCompilerTokensSyntaxKind.KPartial:
+				case MetaCompilerTokensSyntaxKind.KFixed:
 				case MetaCompilerTokensSyntaxKind.KClass:
 				case MetaCompilerTokensSyntaxKind.KStruct:
 				case MetaCompilerTokensSyntaxKind.KEnum:
@@ -116,6 +125,7 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax
 				case MetaCompilerTokensSyntaxKind.TLessThan:
 				case MetaCompilerTokensSyntaxKind.TGreaterThan:
 				case MetaCompilerTokensSyntaxKind.TQuestion:
+				case MetaCompilerTokensSyntaxKind.TRightArrow:
 				case MetaCompilerTokensSyntaxKind.TQuestionQuestion:
 				case MetaCompilerTokensSyntaxKind.TAmpersand:
 				case MetaCompilerTokensSyntaxKind.THat:
@@ -185,6 +195,15 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax
 				case MetaCompilerTokensSyntaxKind.KExtern:
 				case MetaCompilerTokensSyntaxKind.KTypeDef:
 				case MetaCompilerTokensSyntaxKind.KAbstract:
+				case MetaCompilerTokensSyntaxKind.KPrivate:
+				case MetaCompilerTokensSyntaxKind.KProtected:
+				case MetaCompilerTokensSyntaxKind.KPublic:
+				case MetaCompilerTokensSyntaxKind.KInternal:
+				case MetaCompilerTokensSyntaxKind.KVirtual:
+				case MetaCompilerTokensSyntaxKind.KOverride:
+				case MetaCompilerTokensSyntaxKind.KSealed:
+				case MetaCompilerTokensSyntaxKind.KPartial:
+				case MetaCompilerTokensSyntaxKind.KFixed:
 				case MetaCompilerTokensSyntaxKind.KClass:
 				case MetaCompilerTokensSyntaxKind.KStruct:
 				case MetaCompilerTokensSyntaxKind.KEnum:
@@ -231,6 +250,7 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax
 				case MetaCompilerTokensSyntaxKind.TLessThan:
 				case MetaCompilerTokensSyntaxKind.TGreaterThan:
 				case MetaCompilerTokensSyntaxKind.TQuestion:
+				case MetaCompilerTokensSyntaxKind.TRightArrow:
 				case MetaCompilerTokensSyntaxKind.TQuestionQuestion:
 				case MetaCompilerTokensSyntaxKind.TAmpersand:
 				case MetaCompilerTokensSyntaxKind.THat:
@@ -290,6 +310,24 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax
 					return MetaCompilerTokensSyntaxKind.KTypeDef;
 				case "abstract":
 					return MetaCompilerTokensSyntaxKind.KAbstract;
+				case "private":
+					return MetaCompilerTokensSyntaxKind.KPrivate;
+				case "protected":
+					return MetaCompilerTokensSyntaxKind.KProtected;
+				case "public":
+					return MetaCompilerTokensSyntaxKind.KPublic;
+				case "internal":
+					return MetaCompilerTokensSyntaxKind.KInternal;
+				case "virtual":
+					return MetaCompilerTokensSyntaxKind.KVirtual;
+				case "override":
+					return MetaCompilerTokensSyntaxKind.KOverride;
+				case "sealed":
+					return MetaCompilerTokensSyntaxKind.KSealed;
+				case "partial":
+					return MetaCompilerTokensSyntaxKind.KPartial;
+				case "fixed":
+					return MetaCompilerTokensSyntaxKind.KFixed;
 				case "class":
 					return MetaCompilerTokensSyntaxKind.KClass;
 				case "struct":
@@ -382,6 +420,8 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax
 					return MetaCompilerTokensSyntaxKind.TGreaterThan;
 				case "?":
 					return MetaCompilerTokensSyntaxKind.TQuestion;
+				case "->":
+					return MetaCompilerTokensSyntaxKind.TRightArrow;
 				case "??":
 					return MetaCompilerTokensSyntaxKind.TQuestionQuestion;
 				case "&":
@@ -473,6 +513,24 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax
 					return "typedef";
 				case MetaCompilerTokensSyntaxKind.KAbstract:
 					return "abstract";
+				case MetaCompilerTokensSyntaxKind.KPrivate:
+					return "private";
+				case MetaCompilerTokensSyntaxKind.KProtected:
+					return "protected";
+				case MetaCompilerTokensSyntaxKind.KPublic:
+					return "public";
+				case MetaCompilerTokensSyntaxKind.KInternal:
+					return "internal";
+				case MetaCompilerTokensSyntaxKind.KVirtual:
+					return "virtual";
+				case MetaCompilerTokensSyntaxKind.KOverride:
+					return "override";
+				case MetaCompilerTokensSyntaxKind.KSealed:
+					return "sealed";
+				case MetaCompilerTokensSyntaxKind.KPartial:
+					return "partial";
+				case MetaCompilerTokensSyntaxKind.KFixed:
+					return "fixed";
 				case MetaCompilerTokensSyntaxKind.KClass:
 					return "class";
 				case MetaCompilerTokensSyntaxKind.KStruct:
@@ -565,6 +623,8 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax
 					return ">";
 				case MetaCompilerTokensSyntaxKind.TQuestion:
 					return "?";
+				case MetaCompilerTokensSyntaxKind.TRightArrow:
+					return "->";
 				case MetaCompilerTokensSyntaxKind.TQuestionQuestion:
 					return "??";
 				case MetaCompilerTokensSyntaxKind.TAmpersand:
@@ -653,6 +713,15 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax
 				case MetaCompilerTokensSyntaxKind.KExtern:
 				case MetaCompilerTokensSyntaxKind.KTypeDef:
 				case MetaCompilerTokensSyntaxKind.KAbstract:
+				case MetaCompilerTokensSyntaxKind.KPrivate:
+				case MetaCompilerTokensSyntaxKind.KProtected:
+				case MetaCompilerTokensSyntaxKind.KPublic:
+				case MetaCompilerTokensSyntaxKind.KInternal:
+				case MetaCompilerTokensSyntaxKind.KVirtual:
+				case MetaCompilerTokensSyntaxKind.KOverride:
+				case MetaCompilerTokensSyntaxKind.KSealed:
+				case MetaCompilerTokensSyntaxKind.KPartial:
+				case MetaCompilerTokensSyntaxKind.KFixed:
 				case MetaCompilerTokensSyntaxKind.KClass:
 				case MetaCompilerTokensSyntaxKind.KStruct:
 				case MetaCompilerTokensSyntaxKind.KEnum:
@@ -780,6 +849,15 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax
 				case MetaCompilerTokensSyntaxKind.KExtern:
 				case MetaCompilerTokensSyntaxKind.KTypeDef:
 				case MetaCompilerTokensSyntaxKind.KAbstract:
+				case MetaCompilerTokensSyntaxKind.KPrivate:
+				case MetaCompilerTokensSyntaxKind.KProtected:
+				case MetaCompilerTokensSyntaxKind.KPublic:
+				case MetaCompilerTokensSyntaxKind.KInternal:
+				case MetaCompilerTokensSyntaxKind.KVirtual:
+				case MetaCompilerTokensSyntaxKind.KOverride:
+				case MetaCompilerTokensSyntaxKind.KSealed:
+				case MetaCompilerTokensSyntaxKind.KPartial:
+				case MetaCompilerTokensSyntaxKind.KFixed:
 				case MetaCompilerTokensSyntaxKind.KClass:
 				case MetaCompilerTokensSyntaxKind.KStruct:
 				case MetaCompilerTokensSyntaxKind.KEnum:
@@ -828,6 +906,15 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax
 				yield return MetaCompilerTokensSyntaxKind.KExtern;
 				yield return MetaCompilerTokensSyntaxKind.KTypeDef;
 				yield return MetaCompilerTokensSyntaxKind.KAbstract;
+				yield return MetaCompilerTokensSyntaxKind.KPrivate;
+				yield return MetaCompilerTokensSyntaxKind.KProtected;
+				yield return MetaCompilerTokensSyntaxKind.KPublic;
+				yield return MetaCompilerTokensSyntaxKind.KInternal;
+				yield return MetaCompilerTokensSyntaxKind.KVirtual;
+				yield return MetaCompilerTokensSyntaxKind.KOverride;
+				yield return MetaCompilerTokensSyntaxKind.KSealed;
+				yield return MetaCompilerTokensSyntaxKind.KPartial;
+				yield return MetaCompilerTokensSyntaxKind.KFixed;
 				yield return MetaCompilerTokensSyntaxKind.KClass;
 				yield return MetaCompilerTokensSyntaxKind.KStruct;
 				yield return MetaCompilerTokensSyntaxKind.KEnum;
@@ -882,6 +969,24 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax
 					return MetaCompilerTokensSyntaxKind.KTypeDef;
 				case "abstract":
 					return MetaCompilerTokensSyntaxKind.KAbstract;
+				case "private":
+					return MetaCompilerTokensSyntaxKind.KPrivate;
+				case "protected":
+					return MetaCompilerTokensSyntaxKind.KProtected;
+				case "public":
+					return MetaCompilerTokensSyntaxKind.KPublic;
+				case "internal":
+					return MetaCompilerTokensSyntaxKind.KInternal;
+				case "virtual":
+					return MetaCompilerTokensSyntaxKind.KVirtual;
+				case "override":
+					return MetaCompilerTokensSyntaxKind.KOverride;
+				case "sealed":
+					return MetaCompilerTokensSyntaxKind.KSealed;
+				case "partial":
+					return MetaCompilerTokensSyntaxKind.KPartial;
+				case "fixed":
+					return MetaCompilerTokensSyntaxKind.KFixed;
 				case "class":
 					return MetaCompilerTokensSyntaxKind.KClass;
 				case "struct":

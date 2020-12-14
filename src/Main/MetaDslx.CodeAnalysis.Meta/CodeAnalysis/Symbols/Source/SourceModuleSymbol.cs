@@ -32,7 +32,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         /// </summary>
         private readonly DeclarationTable _sources;
 
-        private SymbolCompletionState _state;
+        private CompletionState _state;
         private CustomAttributesBag<AttributeData> _lazyCustomAttributesBag;
         private ImmutableArray<Location> _locations;
         private NamespaceSymbol _globalNamespace;
@@ -58,7 +58,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
             _csharpSymbolMap = new CSharpSymbolMap(this);
 
-            _state = SymbolCompletionState.Create(assemblySymbol.Language);
+            _state = CompletionState.Create(assemblySymbol.Language);
         }
 
         public override Language Language => _assemblySymbol.Language;
@@ -317,7 +317,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         /// </summary>
         private readonly string _name;
 
-        public override string Name
+        public string Name
         {
             get
             {

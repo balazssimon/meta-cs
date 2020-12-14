@@ -49,7 +49,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         private readonly string _aliasName;
         private readonly Binder _binder;
 
-        private SymbolCompletionState _state;
+        private CompletionState _state;
         private NamespaceOrTypeSymbol _aliasTarget;
         private readonly ImmutableArray<Location> _locations;  // NOTE: can be empty for the "global" alias.
 
@@ -64,7 +64,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             _locations = locations;
             _aliasTarget = target;
             _binder = binder;
-            _state = SymbolCompletionState.Create(binder.Language);
+            _state = CompletionState.Create(binder.Language);
             _state.NotePartComplete(CompletionPart.AliasTarget);
         }
 

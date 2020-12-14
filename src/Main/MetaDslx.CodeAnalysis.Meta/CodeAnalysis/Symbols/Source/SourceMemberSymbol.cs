@@ -19,7 +19,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
     {
         private readonly DeclaredSymbol _containingSymbol;
         private readonly MergedDeclaration _declaration;
-        private readonly SymbolCompletionState _state;
+        private readonly CompletionState _state;
         private readonly MutableObjectBase _modelObject;
         private SourceDeclaration _sourceDeclaration;
 
@@ -42,7 +42,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             {
                 diagnostics.AddRange(singleDeclaration.Diagnostics);
             }
-            _state = SymbolCompletionState.Create(containingSymbol.ContainingModule.Language);
+            _state = CompletionState.Create(containingSymbol.ContainingModule.Language);
         }
 
         public override Language Language => _containingSymbol.Language;

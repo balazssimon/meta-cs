@@ -127,7 +127,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
             }
         }
 
-        public override string Name
+        public string Name
         {
             get
             {

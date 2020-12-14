@@ -59,14 +59,23 @@ enumValues : enumValue (TComma enumValue)*;
 enumValue : attribute* name;
 enumMemberDeclaration :                       operationDeclaration;
 
+                     
+visibility 
+	:                                KPrivate 
+	|                                  KProtected
+	|                               KPublic
+	|                                 KInternal
+	;
+
                  
-classDeclaration : attribute* abstract_? classKind name (TColon                         classAncestors)? classBody;
-                                     
-abstract_: KAbstract;
+classDeclaration : attribute* visibility? classModifier* classKind name (TColon                         classAncestors)? classBody;
+classModifier : abstract_ | sealed_ | fixed_ | partial_ | static_;
 classAncestors : classAncestor (TComma classAncestor)*;
 classAncestor :                        qualifier;
       
-classBody : TOpenBrace classMemberDeclaration* TCloseBrace;
+classBody : TOpenBrace classPhases? classMemberDeclaration* TCloseBrace;
+                 
+classPhases: KPhase phaseRef (TComma phaseRef)* TSemicolon;
 classMemberDeclaration 
 	:                       fieldDeclaration 
 	|                       operationDeclaration
@@ -79,19 +88,20 @@ classKind
 	;
 
                     
-fieldDeclaration : attribute* fieldContainment? fieldModifier?                 typeReference name defaultValue? phase? TSemicolon;
+fieldDeclaration : attribute* visibility? memberModifier* fieldContainment? fieldKind?                 typeReference name defaultValue? phase? TSemicolon;
                                         
 fieldContainment : KContainment;
                
-fieldModifier 
+fieldKind
 	:                               KReadonly 
 	|                           KLazy 
 	|                              KDerived
 	;
+memberModifier : partial_ | static_ | virtual_ | abstract_ | sealed_ | new_ | override_;
                        
 defaultValue : TAssign        stringLiteral;
                 
-phase: KPhase                   qualifier;
+phase: KPhase phaseRef;
 
                     
 nameUseList : qualifier (TComma qualifier)*;
@@ -106,7 +116,10 @@ returnType : typeReference | voidType;
                     
 typeOfReference : typeReference;
                     
-typeReference : genericType | arrayType | simpleType;
+typeReference : simpleOrDictionaryType;
+simpleOrDictionaryType : simpleOrArrayType | dictionaryType;
+simpleOrArrayType : simpleOrGenericType | arrayType;
+simpleOrGenericType: simpleType | genericType;
                     
 simpleType : primitiveType | objectType | nullableType | classType;
 
@@ -137,21 +150,41 @@ voidType
                         
 nullableType :                      primitiveType TQuestion;
 
-                     
-arrayType :                      simpleType TOpenBracket TCloseBracket;
-
                        
 genericType :                 classType TLessThan typeArguments TGreaterThan;
                         
 typeArguments : typeReference (TComma typeReference)*;
 	
                      
-operationDeclaration : attribute*                       returnType name TOpenParen                       parameterList? TCloseParen TSemicolon;
+arrayType :                      simpleOrGenericType TOpenBracket TCloseBracket;
+
+                          
+dictionaryType :                    key=simpleOrArrayType TRightArrow                      value=simpleOrArrayType;
+
+                     
+operationDeclaration : attribute* visibility? memberModifier*                       returnType name TOpenParen                       parameterList? TCloseParen TSemicolon;
 
 parameterList : parameter (TComma parameter)*;
 
                      
-parameter : attribute*                 typeReference name;
+parameter : attribute*                 typeReference name defaultValue?;
+
+                                   
+static_ : KStatic;
+                                  
+fixed_ : KFixed;
+                                    
+partial_ : KPartial;
+                                     
+abstract_ : KAbstract;
+                                    
+virtual_ : KVirtual;
+                                   
+sealed_ : KSealed;
+                                     
+override_ : KOverride;
+                                
+new_ : KNew;
 
 // Additional rules for lexer:
 

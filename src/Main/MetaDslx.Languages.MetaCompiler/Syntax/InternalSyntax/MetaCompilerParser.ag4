@@ -59,14 +59,23 @@ $SymbolDef(EnumLiteral)
 enumValue : attribute* name;
 enumMemberDeclaration : $Property(Operations) operationDeclaration;
 
+$Property(Visibility)
+visibility 
+	: $Value(VisibilityKind.Private) KPrivate 
+	| $Value(VisibilityKind.Protected) KProtected
+	| $Value(VisibilityKind.Public) KPublic
+	| $Value(VisibilityKind.Internal) KInternal
+	;
+
 $SymbolDef(Class)
-classDeclaration : attribute* abstract_? classKind name (TColon $Property(SuperClasses) classAncestors)? classBody;
-$Property(name=IsAbstract,value=true)
-abstract_: KAbstract;
+classDeclaration : attribute* visibility? classModifier* classKind name (TColon $Property(SuperClasses) classAncestors)? classBody;
+classModifier : abstract_ | sealed_ | fixed_ | partial_ | static_;
 classAncestors : classAncestor (TComma classAncestor)*;
 classAncestor : $SymbolUse(type=Class) qualifier;
 $Scope
-classBody : TOpenBrace classMemberDeclaration* TCloseBrace;
+classBody : TOpenBrace classPhases? classMemberDeclaration* TCloseBrace;
+$Property(Phases)
+classPhases: KPhase phaseRef (TComma phaseRef)* TSemicolon;
 classMemberDeclaration 
 	: $Property(Properties) fieldDeclaration 
 	| $Property(Operations) operationDeclaration
@@ -79,19 +88,20 @@ classKind
 	;
 
 $SymbolDef(Property)
-fieldDeclaration : attribute* fieldContainment? fieldModifier? $Property(Type) typeReference name defaultValue? phase? TSemicolon;
+fieldDeclaration : attribute* visibility? memberModifier* fieldContainment? fieldKind? $Property(Type) typeReference name defaultValue? phase? TSemicolon;
 $Property(name=IsContainment,value=true)
 fieldContainment : KContainment;
 $Property(Kind)
-fieldModifier 
+fieldKind
 	: $Value(PropertyKind.Readonly) KReadonly 
 	| $Value(PropertyKind.Lazy) KLazy 
 	| $Value(PropertyKind.Derived) KDerived
 	;
+memberModifier : partial_ | static_ | virtual_ | abstract_ | sealed_ | new_ | override_;
 $Property(DefaultValue)
 defaultValue : TAssign $Value stringLiteral;
 $Property(Phase)
-phase: KPhase $SymbolUse(Phase) qualifier;
+phase: KPhase phaseRef;
 
 $SymbolUse(Property)
 nameUseList : qualifier (TComma qualifier)*;
@@ -106,7 +116,10 @@ returnType : typeReference | voidType;
 $SymbolUse(DataType)
 typeOfReference : typeReference;
 $SymbolUse(DataType)
-typeReference : genericType | arrayType | simpleType;
+typeReference : simpleOrDictionaryType;
+simpleOrDictionaryType : simpleOrArrayType | dictionaryType;
+simpleOrArrayType : simpleOrGenericType | arrayType;
+simpleOrGenericType: simpleType | genericType;
 $SymbolUse(DataType)
 simpleType : primitiveType | objectType | nullableType | classType;
 
@@ -137,21 +150,41 @@ voidType
 $SymbolDef(NullableType)
 nullableType : $Property(InnerType) primitiveType TQuestion;
 
-$SymbolDef(ArrayType)
-arrayType : $Property(InnerType) simpleType TOpenBracket TCloseBracket;
-
 $SymbolDef(GenericType)
 genericType : $Property(Type) classType TLessThan typeArguments TGreaterThan;
 $Property(TypeArguments)
 typeArguments : typeReference (TComma typeReference)*;
 	
+$SymbolDef(ArrayType)
+arrayType : $Property(InnerType) simpleOrGenericType TOpenBracket TCloseBracket;
+
+$SymbolDef(DictionaryType)
+dictionaryType : $Property(KeyType) key=simpleOrArrayType TRightArrow $Property(ValueType) value=simpleOrArrayType;
+
 $SymbolDef(Operation)
-operationDeclaration : attribute* $Property(ReturnType) returnType name TOpenParen $Property(Parameters) parameterList? TCloseParen TSemicolon;
+operationDeclaration : attribute* visibility? memberModifier* $Property(ReturnType) returnType name TOpenParen $Property(Parameters) parameterList? TCloseParen TSemicolon;
 
 parameterList : parameter (TComma parameter)*;
 
 $SymbolDef(Parameter)
-parameter : attribute* $Property(Type) typeReference name;
+parameter : attribute* $Property(Type) typeReference name defaultValue?;
+
+$Property(name=IsStatic,value=true)
+static_ : KStatic;
+$Property(name=IsFixed,value=true)
+fixed_ : KFixed;
+$Property(name=IsPartial,value=true)
+partial_ : KPartial;
+$Property(name=IsAbstract,value=true)
+abstract_ : KAbstract;
+$Property(name=IsVirtual,value=true)
+virtual_ : KVirtual;
+$Property(name=IsSealed,value=true)
+sealed_ : KSealed;
+$Property(name=IsOverride,value=true)
+override_ : KOverride;
+$Property(name=IsNew,value=true)
+new_ : KNew;
 
 // Additional rules for lexer:
 

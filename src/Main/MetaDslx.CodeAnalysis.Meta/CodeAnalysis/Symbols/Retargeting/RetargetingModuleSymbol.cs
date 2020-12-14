@@ -133,7 +133,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
             }
         }
 
-        public override string Name
+        public string Name
         {
             get
             {

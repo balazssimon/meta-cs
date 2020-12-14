@@ -156,17 +156,23 @@ public interface IMetaCompilerParserVisitor<Result> : IParseTreeVisitor<Result> 
 	/// <return>The visitor result.</return>
 	Result VisitEnumMemberDeclaration([NotNull] MetaCompilerParser.EnumMemberDeclarationContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaCompilerParser.visibility"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitVisibility([NotNull] MetaCompilerParser.VisibilityContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="MetaCompilerParser.classDeclaration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitClassDeclaration([NotNull] MetaCompilerParser.ClassDeclarationContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="MetaCompilerParser.abstract_"/>.
+	/// Visit a parse tree produced by <see cref="MetaCompilerParser.classModifier"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitAbstract_([NotNull] MetaCompilerParser.Abstract_Context context);
+	Result VisitClassModifier([NotNull] MetaCompilerParser.ClassModifierContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="MetaCompilerParser.classAncestors"/>.
 	/// </summary>
@@ -185,6 +191,12 @@ public interface IMetaCompilerParserVisitor<Result> : IParseTreeVisitor<Result> 
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitClassBody([NotNull] MetaCompilerParser.ClassBodyContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaCompilerParser.classPhases"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitClassPhases([NotNull] MetaCompilerParser.ClassPhasesContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="MetaCompilerParser.classMemberDeclaration"/>.
 	/// </summary>
@@ -210,11 +222,17 @@ public interface IMetaCompilerParserVisitor<Result> : IParseTreeVisitor<Result> 
 	/// <return>The visitor result.</return>
 	Result VisitFieldContainment([NotNull] MetaCompilerParser.FieldContainmentContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="MetaCompilerParser.fieldModifier"/>.
+	/// Visit a parse tree produced by <see cref="MetaCompilerParser.fieldKind"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitFieldModifier([NotNull] MetaCompilerParser.FieldModifierContext context);
+	Result VisitFieldKind([NotNull] MetaCompilerParser.FieldKindContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaCompilerParser.memberModifier"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitMemberModifier([NotNull] MetaCompilerParser.MemberModifierContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="MetaCompilerParser.defaultValue"/>.
 	/// </summary>
@@ -264,6 +282,24 @@ public interface IMetaCompilerParserVisitor<Result> : IParseTreeVisitor<Result> 
 	/// <return>The visitor result.</return>
 	Result VisitTypeReference([NotNull] MetaCompilerParser.TypeReferenceContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaCompilerParser.simpleOrDictionaryType"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitSimpleOrDictionaryType([NotNull] MetaCompilerParser.SimpleOrDictionaryTypeContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaCompilerParser.simpleOrArrayType"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitSimpleOrArrayType([NotNull] MetaCompilerParser.SimpleOrArrayTypeContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaCompilerParser.simpleOrGenericType"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitSimpleOrGenericType([NotNull] MetaCompilerParser.SimpleOrGenericTypeContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="MetaCompilerParser.simpleType"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -300,12 +336,6 @@ public interface IMetaCompilerParserVisitor<Result> : IParseTreeVisitor<Result> 
 	/// <return>The visitor result.</return>
 	Result VisitNullableType([NotNull] MetaCompilerParser.NullableTypeContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="MetaCompilerParser.arrayType"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitArrayType([NotNull] MetaCompilerParser.ArrayTypeContext context);
-	/// <summary>
 	/// Visit a parse tree produced by <see cref="MetaCompilerParser.genericType"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -317,6 +347,18 @@ public interface IMetaCompilerParserVisitor<Result> : IParseTreeVisitor<Result> 
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitTypeArguments([NotNull] MetaCompilerParser.TypeArgumentsContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaCompilerParser.arrayType"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitArrayType([NotNull] MetaCompilerParser.ArrayTypeContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaCompilerParser.dictionaryType"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitDictionaryType([NotNull] MetaCompilerParser.DictionaryTypeContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="MetaCompilerParser.operationDeclaration"/>.
 	/// </summary>
@@ -335,6 +377,54 @@ public interface IMetaCompilerParserVisitor<Result> : IParseTreeVisitor<Result> 
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitParameter([NotNull] MetaCompilerParser.ParameterContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaCompilerParser.static_"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitStatic_([NotNull] MetaCompilerParser.Static_Context context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaCompilerParser.fixed_"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitFixed_([NotNull] MetaCompilerParser.Fixed_Context context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaCompilerParser.partial_"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitPartial_([NotNull] MetaCompilerParser.Partial_Context context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaCompilerParser.abstract_"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitAbstract_([NotNull] MetaCompilerParser.Abstract_Context context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaCompilerParser.virtual_"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitVirtual_([NotNull] MetaCompilerParser.Virtual_Context context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaCompilerParser.sealed_"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitSealed_([NotNull] MetaCompilerParser.Sealed_Context context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaCompilerParser.override_"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitOverride_([NotNull] MetaCompilerParser.Override_Context context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaCompilerParser.new_"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitNew_([NotNull] MetaCompilerParser.New_Context context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="MetaCompilerParser.identifier"/>.
 	/// </summary>

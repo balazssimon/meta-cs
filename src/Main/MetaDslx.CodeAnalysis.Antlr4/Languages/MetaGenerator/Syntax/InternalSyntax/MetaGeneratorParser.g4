@@ -95,7 +95,7 @@ loopChainItem : (typeReference? identifier TColon)? loopChainExpression;
 loopChainExpression 
     : KTypeof TOpenParenthesis typeReference TCloseParenthesis	#loopChainTypeofExpression
     | identifier typeArgumentList?								#loopChainIdentifierExpression
-    | loopChainExpression TDot identifier typeArgumentList?		#loopChainMemberAccessExpression
+    | loopChainExpression dot=(TDot | TQuestionDot) identifier typeArgumentList?		#loopChainMemberAccessExpression
     | loopChainExpression TOpenParenthesis expressionList? TCloseParenthesis #loopChainMethodCallExpression;
 loopWhereExpression : KWhere expression;
 //loopOrderByExpression : KOrderBy expression KDescending?;
@@ -200,7 +200,7 @@ expression
     | expression TOpenBracket expressionList TCloseBracket #elementAccessExpression
     | expression TOpenParenthesis expressionList? TCloseParenthesis #functionCallExpression
     | predefinedType TDot identifier typeArgumentList? #predefinedTypeMemberAccessExpression
-    | expression TDot identifier typeArgumentList? #memberAccessExpression
+    | expression dot=(TDot | TQuestionDot) identifier typeArgumentList? #memberAccessExpression
     | TOpenParenthesis typeReference TCloseParenthesis expression #typecastExpression
     | op=(TPlus | TMinus | TExclamation | TTilde | TPlusPlus | TMinusMinus) expression #unaryExpression
     | expression op=(TPlusPlus | TMinusMinus) #postExpression

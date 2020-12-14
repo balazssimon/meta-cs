@@ -76,6 +76,7 @@ KDefault : 'default';
 TSemicolon : ';';
 TColon : ':';
 TDot : '.';
+TQuestionDot : '?.';
                              
 TComma : ',';
 TAssign : '=';

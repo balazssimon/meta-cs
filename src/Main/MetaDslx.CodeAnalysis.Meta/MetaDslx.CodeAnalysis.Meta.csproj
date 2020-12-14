@@ -47,4 +47,15 @@
     </MetaModel>
   </ItemGroup>
 
+  <ItemGroup>
+    <!--
+    -->
+    <Compile Remove="CodeAnalysis\Symbols\Symbols.Generated.cs" />
+    <!--
+    <Compile Remove="CodeAnalysis\Symbols\SymbolKind.cs" />
+    <Compile Remove="CodeAnalysis\Symbols\SymbolVisitor.cs" />
+    <Compile Remove="CodeAnalysis\Symbols\SymbolVisitor`1.cs" />
+    <Compile Remove="CodeAnalysis\Symbols\SymbolVisitor`2.cs" />
+    -->
+  </ItemGroup>
 </Project>

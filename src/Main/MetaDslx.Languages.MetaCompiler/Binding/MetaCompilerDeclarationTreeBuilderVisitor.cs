@@ -376,6 +376,31 @@ namespace MetaDslx.Languages.MetaCompiler.Binding
 			}
 		}
 		
+		public virtual void VisitVisibility(VisibilitySyntax node)
+		{
+			this.BeginProperty(node, name: "Visibility");
+			try
+			{
+				switch (node.Visibility.GetKind().Switch())
+				{
+					case MetaCompilerSyntaxKind.KPrivate:
+						break;
+					case MetaCompilerSyntaxKind.KProtected:
+						break;
+					case MetaCompilerSyntaxKind.KPublic:
+						break;
+					case MetaCompilerSyntaxKind.KInternal:
+						break;
+					default:
+						break;
+				}
+			}
+			finally
+			{
+				this.EndProperty();
+			}
+		}
+		
 		public virtual void VisitClassDeclaration(ClassDeclarationSyntax node)
 		{
 			this.BeginSymbolDef(node, type: typeof(Class));
@@ -388,7 +413,14 @@ namespace MetaDslx.Languages.MetaCompiler.Binding
 				        this.Visit(child);
 					}
 				}
-				this.Visit(node.Abstract_);
+				this.Visit(node.Visibility);
+				if (node.ClassModifier != null)
+				{
+					foreach (var child in node.ClassModifier)
+					{
+				        this.Visit(child);
+					}
+				}
 				this.Visit(node.ClassKind);
 				this.Visit(node.Name);
 				this.BeginProperty(node.ClassAncestors, name: "SuperClasses");
@@ -408,16 +440,13 @@ namespace MetaDslx.Languages.MetaCompiler.Binding
 			}
 		}
 		
-		public virtual void VisitAbstract_(Abstract_Syntax node)
+		public virtual void VisitClassModifier(ClassModifierSyntax node)
 		{
-			this.BeginProperty(node, name: "IsAbstract", value: true);
-			try
-			{
-			}
-			finally
-			{
-				this.EndProperty();
-			}
+			this.Visit(node.Abstract_);
+			this.Visit(node.Sealed_);
+			this.Visit(node.Fixed_);
+			this.Visit(node.Partial_);
+			this.Visit(node.Static_);
 		}
 		
 		public virtual void VisitClassAncestors(ClassAncestorsSyntax node)
@@ -449,6 +478,7 @@ namespace MetaDslx.Languages.MetaCompiler.Binding
 			this.BeginScope(node);
 			try
 			{
+				this.Visit(node.ClassPhases);
 				if (node.ClassMemberDeclaration != null)
 				{
 					foreach (var child in node.ClassMemberDeclaration)
@@ -460,6 +490,25 @@ namespace MetaDslx.Languages.MetaCompiler.Binding
 			finally
 			{
 				this.EndScope();
+			}
+		}
+		
+		public virtual void VisitClassPhases(ClassPhasesSyntax node)
+		{
+			this.BeginProperty(node, name: "Phases");
+			try
+			{
+				if (node.PhaseRef != null)
+				{
+					foreach (var child in node.PhaseRef)
+					{
+				        this.Visit(child);
+					}
+				}
+			}
+			finally
+			{
+				this.EndProperty();
 			}
 		}
 		
@@ -520,8 +569,16 @@ namespace MetaDslx.Languages.MetaCompiler.Binding
 				        this.Visit(child);
 					}
 				}
+				this.Visit(node.Visibility);
+				if (node.MemberModifier != null)
+				{
+					foreach (var child in node.MemberModifier)
+					{
+				        this.Visit(child);
+					}
+				}
 				this.Visit(node.FieldContainment);
-				this.Visit(node.FieldModifier);
+				this.Visit(node.FieldKind);
 				this.BeginProperty(node.TypeReference, name: "Type");
 				try
 				{
@@ -553,12 +610,12 @@ namespace MetaDslx.Languages.MetaCompiler.Binding
 			}
 		}
 		
-		public virtual void VisitFieldModifier(FieldModifierSyntax node)
+		public virtual void VisitFieldKind(FieldKindSyntax node)
 		{
 			this.BeginProperty(node, name: "Kind");
 			try
 			{
-				switch (node.FieldModifier.GetKind().Switch())
+				switch (node.FieldKind.GetKind().Switch())
 				{
 					case MetaCompilerSyntaxKind.KReadonly:
 						break;
@@ -574,6 +631,17 @@ namespace MetaDslx.Languages.MetaCompiler.Binding
 			{
 				this.EndProperty();
 			}
+		}
+		
+		public virtual void VisitMemberModifier(MemberModifierSyntax node)
+		{
+			this.Visit(node.Partial_);
+			this.Visit(node.Static_);
+			this.Visit(node.Virtual_);
+			this.Visit(node.Abstract_);
+			this.Visit(node.Sealed_);
+			this.Visit(node.New_);
+			this.Visit(node.Override_);
 		}
 		
 		public virtual void VisitDefaultValue(DefaultValueSyntax node)
@@ -594,15 +662,7 @@ namespace MetaDslx.Languages.MetaCompiler.Binding
 			this.BeginProperty(node, name: "Phase");
 			try
 			{
-				this.BeginSymbolUse(node.Qualifier, types: ImmutableArray.Create(typeof(Phase)));
-				try
-				{
-					this.Visit(node.Qualifier);
-				}
-				finally
-				{
-					this.EndSymbolUse();
-				}
+				this.Visit(node.PhaseRef);
 			}
 			finally
 			{
@@ -688,14 +748,30 @@ namespace MetaDslx.Languages.MetaCompiler.Binding
 			this.BeginSymbolUse(node, types: ImmutableArray.Create(typeof(DataType)));
 			try
 			{
-				this.Visit(node.GenericType);
-				this.Visit(node.ArrayType);
-				this.Visit(node.SimpleType);
+				this.Visit(node.SimpleOrDictionaryType);
 			}
 			finally
 			{
 				this.EndSymbolUse();
 			}
+		}
+		
+		public virtual void VisitSimpleOrDictionaryType(SimpleOrDictionaryTypeSyntax node)
+		{
+			this.Visit(node.SimpleOrArrayType);
+			this.Visit(node.DictionaryType);
+		}
+		
+		public virtual void VisitSimpleOrArrayType(SimpleOrArrayTypeSyntax node)
+		{
+			this.Visit(node.SimpleOrGenericType);
+			this.Visit(node.ArrayType);
+		}
+		
+		public virtual void VisitSimpleOrGenericType(SimpleOrGenericTypeSyntax node)
+		{
+			this.Visit(node.SimpleType);
+			this.Visit(node.GenericType);
 		}
 		
 		public virtual void VisitSimpleType(SimpleTypeSyntax node)
@@ -763,27 +839,6 @@ namespace MetaDslx.Languages.MetaCompiler.Binding
 			}
 		}
 		
-		public virtual void VisitArrayType(ArrayTypeSyntax node)
-		{
-			this.BeginSymbolDef(node, type: typeof(ArrayType));
-			try
-			{
-				this.BeginProperty(node.SimpleType, name: "InnerType");
-				try
-				{
-					this.Visit(node.SimpleType);
-				}
-				finally
-				{
-					this.EndProperty();
-				}
-			}
-			finally
-			{
-				this.EndSymbolDef();
-			}
-		}
-		
 		public virtual void VisitGenericType(GenericTypeSyntax node)
 		{
 			this.BeginSymbolDef(node, type: typeof(GenericType));
@@ -825,6 +880,57 @@ namespace MetaDslx.Languages.MetaCompiler.Binding
 			}
 		}
 		
+		public virtual void VisitArrayType(ArrayTypeSyntax node)
+		{
+			this.BeginSymbolDef(node, type: typeof(ArrayType));
+			try
+			{
+				this.BeginProperty(node.SimpleOrGenericType, name: "InnerType");
+				try
+				{
+					this.Visit(node.SimpleOrGenericType);
+				}
+				finally
+				{
+					this.EndProperty();
+				}
+			}
+			finally
+			{
+				this.EndSymbolDef();
+			}
+		}
+		
+		public virtual void VisitDictionaryType(DictionaryTypeSyntax node)
+		{
+			this.BeginSymbolDef(node, type: typeof(DictionaryType));
+			try
+			{
+				this.BeginProperty(node.Key, name: "KeyType");
+				try
+				{
+					this.Visit(node.Key);
+				}
+				finally
+				{
+					this.EndProperty();
+				}
+				this.BeginProperty(node.Value, name: "ValueType");
+				try
+				{
+					this.Visit(node.Value);
+				}
+				finally
+				{
+					this.EndProperty();
+				}
+			}
+			finally
+			{
+				this.EndSymbolDef();
+			}
+		}
+		
 		public virtual void VisitOperationDeclaration(OperationDeclarationSyntax node)
 		{
 			this.BeginSymbolDef(node, type: typeof(Operation));
@@ -833,6 +939,14 @@ namespace MetaDslx.Languages.MetaCompiler.Binding
 				if (node.Attribute != null)
 				{
 					foreach (var child in node.Attribute)
+					{
+				        this.Visit(child);
+					}
+				}
+				this.Visit(node.Visibility);
+				if (node.MemberModifier != null)
+				{
+					foreach (var child in node.MemberModifier)
 					{
 				        this.Visit(child);
 					}
@@ -896,10 +1010,107 @@ namespace MetaDslx.Languages.MetaCompiler.Binding
 					this.EndProperty();
 				}
 				this.Visit(node.Name);
+				this.Visit(node.DefaultValue);
 			}
 			finally
 			{
 				this.EndSymbolDef();
+			}
+		}
+		
+		public virtual void VisitStatic_(Static_Syntax node)
+		{
+			this.BeginProperty(node, name: "IsStatic", value: true);
+			try
+			{
+			}
+			finally
+			{
+				this.EndProperty();
+			}
+		}
+		
+		public virtual void VisitFixed_(Fixed_Syntax node)
+		{
+			this.BeginProperty(node, name: "IsFixed", value: true);
+			try
+			{
+			}
+			finally
+			{
+				this.EndProperty();
+			}
+		}
+		
+		public virtual void VisitPartial_(Partial_Syntax node)
+		{
+			this.BeginProperty(node, name: "IsPartial", value: true);
+			try
+			{
+			}
+			finally
+			{
+				this.EndProperty();
+			}
+		}
+		
+		public virtual void VisitAbstract_(Abstract_Syntax node)
+		{
+			this.BeginProperty(node, name: "IsAbstract", value: true);
+			try
+			{
+			}
+			finally
+			{
+				this.EndProperty();
+			}
+		}
+		
+		public virtual void VisitVirtual_(Virtual_Syntax node)
+		{
+			this.BeginProperty(node, name: "IsVirtual", value: true);
+			try
+			{
+			}
+			finally
+			{
+				this.EndProperty();
+			}
+		}
+		
+		public virtual void VisitSealed_(Sealed_Syntax node)
+		{
+			this.BeginProperty(node, name: "IsSealed", value: true);
+			try
+			{
+			}
+			finally
+			{
+				this.EndProperty();
+			}
+		}
+		
+		public virtual void VisitOverride_(Override_Syntax node)
+		{
+			this.BeginProperty(node, name: "IsOverride", value: true);
+			try
+			{
+			}
+			finally
+			{
+				this.EndProperty();
+			}
+		}
+		
+		public virtual void VisitNew_(New_Syntax node)
+		{
+			this.BeginProperty(node, name: "IsNew", value: true);
+			try
+			{
+			}
+			finally
+			{
+				this.EndProperty();
 			}
 		}
 		
