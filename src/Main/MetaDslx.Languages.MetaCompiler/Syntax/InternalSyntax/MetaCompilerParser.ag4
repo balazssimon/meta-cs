@@ -33,7 +33,7 @@ $Scope
 namespaceBody : TOpenBrace declaration* TCloseBrace;
 
 $Property(Declarations) 
-declaration : compilerDeclaration | phaseDeclaration | enumDeclaration | classDeclaration | typedefDeclaration;
+declaration : typedefDeclaration | compilerDeclaration | phaseDeclaration | enumDeclaration | classDeclaration | symbolDeclaration;
 
 $SymbolDef(EnumType)
 compilerDeclaration : attribute* KCompiler name TSemicolon;
@@ -68,8 +68,8 @@ visibility
 	;
 
 $SymbolDef(Class)
-classDeclaration : attribute* visibility? classModifier* classKind name (TColon $Property(SuperClasses) classAncestors)? classBody;
-classModifier : abstract_ | sealed_ | fixed_ | partial_ | static_;
+classDeclaration : attribute* visibility? classModifier* class_ name (TColon $Property(SuperClasses) classAncestors)? classBody;
+classModifier : abstract_ | sealed_ | partial_ | static_;
 classAncestors : classAncestor (TComma classAncestor)*;
 classAncestor : $SymbolUse(type=Class) qualifier;
 $Scope
@@ -81,11 +81,14 @@ classMemberDeclaration
 	| $Property(Operations) operationDeclaration
 	;
 $Property(Kind)
-classKind
-	: $Value(ClassKind.Class) KClass 
-	| $Value(ClassKind.Symbol) KSymbol
-	| $Value(ClassKind.Binder) KBinder
-	;
+class_ : $Value(ClassKind.Class) KClass;
+
+$SymbolDef(Symbol)
+symbolDeclaration : attribute* visibility? visit_? classModifier* /*symbolKind*/ symbol_ name (TColon $Property(SuperClasses) classAncestors)? classBody;
+//symbolKind : base_ | meta_ | source_;
+$Property(Kind)
+symbol_ : $Value(ClassKind.Symbol) KSymbol;
+
 
 $SymbolDef(Property)
 fieldDeclaration : attribute* visibility? memberModifier* fieldContainment? fieldKind? $Property(Type) typeReference name defaultValue? phase? TSemicolon;
@@ -171,8 +174,14 @@ parameter : attribute* $Property(Type) typeReference name defaultValue?;
 
 $Property(name=IsStatic,value=true)
 static_ : KStatic;
-$Property(name=IsFixed,value=true)
-fixed_ : KFixed;
+$Property(SymbolModifier)
+base_ : $Value(SymbolModifierKind.Base) KBase;
+$Property(SymbolModifier)
+meta_ : $Value(SymbolModifierKind.Meta) KMeta;
+$Property(SymbolModifier)
+source_ : $Value(SymbolModifierKind.Source) KSource;
+$Property(name=IsVisit,value=true)
+visit_ : KVisit;
 $Property(name=IsPartial,value=true)
 partial_ : KPartial;
 $Property(name=IsAbstract,value=true)

@@ -1359,12 +1359,12 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 		    return context;
 		}
 		
-		public GreenNode ParseClassKind(ref ParserState state)
+		public GreenNode ParseClass_(ref ParserState state)
 		{
 		    RestoreParserState(state);
 			try
 			{
-				var context = this.Antlr4Parser.classKind();
+				var context = this.Antlr4Parser.class_();
 		        if (TryGetGreenNode(context, out var green)) return green;
 		        else return _visitor.Visit(context);
 			}
@@ -1374,27 +1374,121 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 			}
 		}
 		
-		protected virtual bool CanReuseClassKind(ClassKindSyntax node)
+		protected virtual bool CanReuseClass_(Class_Syntax node)
 		{
 			return node != null;
 		}
 		
-		internal MetaCompilerParser.ClassKindContext _Antlr4ParseClassKind()
+		internal MetaCompilerParser.Class_Context _Antlr4ParseClass_()
 		{
 			BeginNode();
-		    MetaCompilerParser.ClassKindContext context = null;
+		    MetaCompilerParser.Class_Context context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseClassKind(CurrentNode as ClassKindSyntax))
+				if (IsIncremental && CanReuseClass_(CurrentNode as Class_Syntax))
 				{
 					green = EatNode();
-					context = new MetaCompilerParser.ClassKindContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					context = new MetaCompilerParser.Class_Context_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
 					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
-					context = this.Antlr4Parser._DoParseClassKind();
+					context = this.Antlr4Parser._DoParseClass_();
+					green = _visitor.Visit(context);
+				}
+		    }
+		    finally
+		    {
+		        EndNode(ref green);
+		        CacheGreenNode(context, green);
+		    }
+		    return context;
+		}
+		
+		public GreenNode ParseSymbolDeclaration(ref ParserState state)
+		{
+		    RestoreParserState(state);
+			try
+			{
+				var context = this.Antlr4Parser.symbolDeclaration();
+		        if (TryGetGreenNode(context, out var green)) return green;
+		        else return _visitor.Visit(context);
+			}
+			finally
+			{
+				state = this.State;
+			}
+		}
+		
+		protected virtual bool CanReuseSymbolDeclaration(SymbolDeclarationSyntax node)
+		{
+			return node != null;
+		}
+		
+		internal MetaCompilerParser.SymbolDeclarationContext _Antlr4ParseSymbolDeclaration()
+		{
+			BeginNode();
+		    MetaCompilerParser.SymbolDeclarationContext context = null;
+		    GreenNode green = null;
+		    try
+		    {
+				if (IsIncremental && CanReuseSymbolDeclaration(CurrentNode as SymbolDeclarationSyntax))
+				{
+					green = EatNode();
+					context = new MetaCompilerParser.SymbolDeclarationContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+				}
+				else
+				{
+					context = this.Antlr4Parser._DoParseSymbolDeclaration();
+					green = _visitor.Visit(context);
+				}
+		    }
+		    finally
+		    {
+		        EndNode(ref green);
+		        CacheGreenNode(context, green);
+		    }
+		    return context;
+		}
+		
+		public GreenNode ParseSymbol_(ref ParserState state)
+		{
+		    RestoreParserState(state);
+			try
+			{
+				var context = this.Antlr4Parser.symbol_();
+		        if (TryGetGreenNode(context, out var green)) return green;
+		        else return _visitor.Visit(context);
+			}
+			finally
+			{
+				state = this.State;
+			}
+		}
+		
+		protected virtual bool CanReuseSymbol_(Symbol_Syntax node)
+		{
+			return node != null;
+		}
+		
+		internal MetaCompilerParser.Symbol_Context _Antlr4ParseSymbol_()
+		{
+			BeginNode();
+		    MetaCompilerParser.Symbol_Context context = null;
+		    GreenNode green = null;
+		    try
+		    {
+				if (IsIncremental && CanReuseSymbol_(CurrentNode as Symbol_Syntax))
+				{
+					green = EatNode();
+					context = new MetaCompilerParser.Symbol_Context_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+				}
+				else
+				{
+					context = this.Antlr4Parser._DoParseSymbol_();
 					green = _visitor.Visit(context);
 				}
 		    }
@@ -2769,12 +2863,12 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 		    return context;
 		}
 		
-		public GreenNode ParseFixed_(ref ParserState state)
+		public GreenNode ParseBase_(ref ParserState state)
 		{
 		    RestoreParserState(state);
 			try
 			{
-				var context = this.Antlr4Parser.fixed_();
+				var context = this.Antlr4Parser.base_();
 		        if (TryGetGreenNode(context, out var green)) return green;
 		        else return _visitor.Visit(context);
 			}
@@ -2784,27 +2878,168 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 			}
 		}
 		
-		protected virtual bool CanReuseFixed_(Fixed_Syntax node)
+		protected virtual bool CanReuseBase_(Base_Syntax node)
 		{
 			return node != null;
 		}
 		
-		internal MetaCompilerParser.Fixed_Context _Antlr4ParseFixed_()
+		internal MetaCompilerParser.Base_Context _Antlr4ParseBase_()
 		{
 			BeginNode();
-		    MetaCompilerParser.Fixed_Context context = null;
+		    MetaCompilerParser.Base_Context context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseFixed_(CurrentNode as Fixed_Syntax))
+				if (IsIncremental && CanReuseBase_(CurrentNode as Base_Syntax))
 				{
 					green = EatNode();
-					context = new MetaCompilerParser.Fixed_Context_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					context = new MetaCompilerParser.Base_Context_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
 					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
-					context = this.Antlr4Parser._DoParseFixed_();
+					context = this.Antlr4Parser._DoParseBase_();
+					green = _visitor.Visit(context);
+				}
+		    }
+		    finally
+		    {
+		        EndNode(ref green);
+		        CacheGreenNode(context, green);
+		    }
+		    return context;
+		}
+		
+		public GreenNode ParseMeta_(ref ParserState state)
+		{
+		    RestoreParserState(state);
+			try
+			{
+				var context = this.Antlr4Parser.meta_();
+		        if (TryGetGreenNode(context, out var green)) return green;
+		        else return _visitor.Visit(context);
+			}
+			finally
+			{
+				state = this.State;
+			}
+		}
+		
+		protected virtual bool CanReuseMeta_(Meta_Syntax node)
+		{
+			return node != null;
+		}
+		
+		internal MetaCompilerParser.Meta_Context _Antlr4ParseMeta_()
+		{
+			BeginNode();
+		    MetaCompilerParser.Meta_Context context = null;
+		    GreenNode green = null;
+		    try
+		    {
+				if (IsIncremental && CanReuseMeta_(CurrentNode as Meta_Syntax))
+				{
+					green = EatNode();
+					context = new MetaCompilerParser.Meta_Context_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+				}
+				else
+				{
+					context = this.Antlr4Parser._DoParseMeta_();
+					green = _visitor.Visit(context);
+				}
+		    }
+		    finally
+		    {
+		        EndNode(ref green);
+		        CacheGreenNode(context, green);
+		    }
+		    return context;
+		}
+		
+		public GreenNode ParseSource_(ref ParserState state)
+		{
+		    RestoreParserState(state);
+			try
+			{
+				var context = this.Antlr4Parser.source_();
+		        if (TryGetGreenNode(context, out var green)) return green;
+		        else return _visitor.Visit(context);
+			}
+			finally
+			{
+				state = this.State;
+			}
+		}
+		
+		protected virtual bool CanReuseSource_(Source_Syntax node)
+		{
+			return node != null;
+		}
+		
+		internal MetaCompilerParser.Source_Context _Antlr4ParseSource_()
+		{
+			BeginNode();
+		    MetaCompilerParser.Source_Context context = null;
+		    GreenNode green = null;
+		    try
+		    {
+				if (IsIncremental && CanReuseSource_(CurrentNode as Source_Syntax))
+				{
+					green = EatNode();
+					context = new MetaCompilerParser.Source_Context_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+				}
+				else
+				{
+					context = this.Antlr4Parser._DoParseSource_();
+					green = _visitor.Visit(context);
+				}
+		    }
+		    finally
+		    {
+		        EndNode(ref green);
+		        CacheGreenNode(context, green);
+		    }
+		    return context;
+		}
+		
+		public GreenNode ParseVisit_(ref ParserState state)
+		{
+		    RestoreParserState(state);
+			try
+			{
+				var context = this.Antlr4Parser.visit_();
+		        if (TryGetGreenNode(context, out var green)) return green;
+		        else return _visitor.Visit(context);
+			}
+			finally
+			{
+				state = this.State;
+			}
+		}
+		
+		protected virtual bool CanReuseVisit_(Visit_Syntax node)
+		{
+			return node != null;
+		}
+		
+		internal MetaCompilerParser.Visit_Context _Antlr4ParseVisit_()
+		{
+			BeginNode();
+		    MetaCompilerParser.Visit_Context context = null;
+		    GreenNode green = null;
+		    try
+		    {
+				if (IsIncremental && CanReuseVisit_(CurrentNode as Visit_Syntax))
+				{
+					green = EatNode();
+					context = new MetaCompilerParser.Visit_Context_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+				}
+				else
+				{
+					context = this.Antlr4Parser._DoParseVisit_();
 					green = _visitor.Visit(context);
 				}
 		    }
@@ -3638,6 +3873,11 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 			public override GreenNode VisitDeclaration(MetaCompilerParser.DeclarationContext context)
 			{
 				if (context == null) return DeclarationGreen.__Missing;
+				MetaCompilerParser.TypedefDeclarationContext typedefDeclarationContext = context.typedefDeclaration();
+				if (typedefDeclarationContext != null) 
+				{
+					return _factory.Declaration((TypedefDeclarationGreen)this.Visit(typedefDeclarationContext));
+				}
 				MetaCompilerParser.CompilerDeclarationContext compilerDeclarationContext = context.compilerDeclaration();
 				if (compilerDeclarationContext != null) 
 				{
@@ -3658,10 +3898,10 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 				{
 					return _factory.Declaration((ClassDeclarationGreen)this.Visit(classDeclarationContext));
 				}
-				MetaCompilerParser.TypedefDeclarationContext typedefDeclarationContext = context.typedefDeclaration();
-				if (typedefDeclarationContext != null) 
+				MetaCompilerParser.SymbolDeclarationContext symbolDeclarationContext = context.symbolDeclaration();
+				if (symbolDeclarationContext != null) 
 				{
-					return _factory.Declaration((TypedefDeclarationGreen)this.Visit(typedefDeclarationContext));
+					return _factory.Declaration((SymbolDeclarationGreen)this.Visit(symbolDeclarationContext));
 				}
 				return DeclarationGreen.__Missing;
 			}
@@ -3926,10 +4166,10 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 			    }
 				var classModifier = classModifierBuilder.ToList();
 				_pool.Free(classModifierBuilder);
-				MetaCompilerParser.ClassKindContext classKindContext = context.classKind();
-				ClassKindGreen classKind = null;
-				if (classKindContext != null) classKind = (ClassKindGreen)this.Visit(classKindContext);
-				if (classKind == null) classKind = ClassKindGreen.__Missing;
+				MetaCompilerParser.Class_Context class_Context = context.class_();
+				Class_Green class_ = null;
+				if (class_Context != null) class_ = (Class_Green)this.Visit(class_Context);
+				if (class_ == null) class_ = Class_Green.__Missing;
 				MetaCompilerParser.NameContext nameContext = context.name();
 				NameGreen name = null;
 				if (nameContext != null) name = (NameGreen)this.Visit(nameContext);
@@ -3942,7 +4182,7 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 				ClassBodyGreen classBody = null;
 				if (classBodyContext != null) classBody = (ClassBodyGreen)this.Visit(classBodyContext);
 				if (classBody == null) classBody = ClassBodyGreen.__Missing;
-				return _factory.ClassDeclaration(attribute, visibility, classModifier, classKind, name, tColon, classAncestors, classBody);
+				return _factory.ClassDeclaration(attribute, visibility, classModifier, class_, name, tColon, classAncestors, classBody);
 			}
 			
 			public override GreenNode VisitClassModifier(MetaCompilerParser.ClassModifierContext context)
@@ -3957,11 +4197,6 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 				if (sealed_Context != null) 
 				{
 					return _factory.ClassModifier((Sealed_Green)this.Visit(sealed_Context));
-				}
-				MetaCompilerParser.Fixed_Context fixed_Context = context.fixed_();
-				if (fixed_Context != null) 
-				{
-					return _factory.ClassModifier((Fixed_Green)this.Visit(fixed_Context));
 				}
 				MetaCompilerParser.Partial_Context partial_Context = context.partial_();
 				if (partial_Context != null) 
@@ -4061,27 +4296,62 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 				return ClassMemberDeclarationGreen.__Missing;
 			}
 			
-			public override GreenNode VisitClassKind(MetaCompilerParser.ClassKindContext context)
+			public override GreenNode VisitClass_(MetaCompilerParser.Class_Context context)
 			{
-				if (context == null) return ClassKindGreen.__Missing;
-				InternalSyntaxToken classKind = null;
-				if (context.KClass() != null)
-				{
-					classKind = (InternalSyntaxToken)this.VisitTerminal(context.KClass());
-				}
-				else 	if (context.KSymbol() != null)
-				{
-					classKind = (InternalSyntaxToken)this.VisitTerminal(context.KSymbol());
-				}
-				else 	if (context.KBinder() != null)
-				{
-					classKind = (InternalSyntaxToken)this.VisitTerminal(context.KBinder());
-				}
-				else
-				{
-					classKind = _factory.MissingToken(SyntaxKind.MissingToken);
-				}
-				return _factory.ClassKind(classKind);
+				if (context == null) return Class_Green.__Missing;
+				InternalSyntaxToken kClass = (InternalSyntaxToken)this.VisitTerminal(context.KClass(), MetaCompilerSyntaxKind.KClass);
+				return _factory.Class_(kClass);
+			}
+			
+			public override GreenNode VisitSymbolDeclaration(MetaCompilerParser.SymbolDeclarationContext context)
+			{
+				if (context == null) return SymbolDeclarationGreen.__Missing;
+			    MetaCompilerParser.AttributeContext[] attributeContext = context.attribute();
+			    var attributeBuilder = _pool.Allocate<AttributeGreen>();
+			    for (int i = 0; i < attributeContext.Length; i++)
+			    {
+			        attributeBuilder.Add((AttributeGreen)this.Visit(attributeContext[i]));
+			    }
+				var attribute = attributeBuilder.ToList();
+				_pool.Free(attributeBuilder);
+				MetaCompilerParser.VisibilityContext visibilityContext = context.visibility();
+				VisibilityGreen visibility = null;
+				if (visibilityContext != null) visibility = (VisibilityGreen)this.Visit(visibilityContext);
+				MetaCompilerParser.Visit_Context visit_Context = context.visit_();
+				Visit_Green visit_ = null;
+				if (visit_Context != null) visit_ = (Visit_Green)this.Visit(visit_Context);
+			    MetaCompilerParser.ClassModifierContext[] classModifierContext = context.classModifier();
+			    var classModifierBuilder = _pool.Allocate<ClassModifierGreen>();
+			    for (int i = 0; i < classModifierContext.Length; i++)
+			    {
+			        classModifierBuilder.Add((ClassModifierGreen)this.Visit(classModifierContext[i]));
+			    }
+				var classModifier = classModifierBuilder.ToList();
+				_pool.Free(classModifierBuilder);
+				MetaCompilerParser.Symbol_Context symbol_Context = context.symbol_();
+				Symbol_Green symbol_ = null;
+				if (symbol_Context != null) symbol_ = (Symbol_Green)this.Visit(symbol_Context);
+				if (symbol_ == null) symbol_ = Symbol_Green.__Missing;
+				MetaCompilerParser.NameContext nameContext = context.name();
+				NameGreen name = null;
+				if (nameContext != null) name = (NameGreen)this.Visit(nameContext);
+				if (name == null) name = NameGreen.__Missing;
+				InternalSyntaxToken tColon = (InternalSyntaxToken)this.VisitTerminal(context.TColon());
+				MetaCompilerParser.ClassAncestorsContext classAncestorsContext = context.classAncestors();
+				ClassAncestorsGreen classAncestors = null;
+				if (classAncestorsContext != null) classAncestors = (ClassAncestorsGreen)this.Visit(classAncestorsContext);
+				MetaCompilerParser.ClassBodyContext classBodyContext = context.classBody();
+				ClassBodyGreen classBody = null;
+				if (classBodyContext != null) classBody = (ClassBodyGreen)this.Visit(classBodyContext);
+				if (classBody == null) classBody = ClassBodyGreen.__Missing;
+				return _factory.SymbolDeclaration(attribute, visibility, visit_, classModifier, symbol_, name, tColon, classAncestors, classBody);
+			}
+			
+			public override GreenNode VisitSymbol_(MetaCompilerParser.Symbol_Context context)
+			{
+				if (context == null) return Symbol_Green.__Missing;
+				InternalSyntaxToken kSymbol = (InternalSyntaxToken)this.VisitTerminal(context.KSymbol(), MetaCompilerSyntaxKind.KSymbol);
+				return _factory.Symbol_(kSymbol);
 			}
 			
 			public override GreenNode VisitFieldDeclaration(MetaCompilerParser.FieldDeclarationContext context)
@@ -4613,11 +4883,32 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 				return _factory.Static_(kStatic);
 			}
 			
-			public override GreenNode VisitFixed_(MetaCompilerParser.Fixed_Context context)
+			public override GreenNode VisitBase_(MetaCompilerParser.Base_Context context)
 			{
-				if (context == null) return Fixed_Green.__Missing;
-				InternalSyntaxToken kFixed = (InternalSyntaxToken)this.VisitTerminal(context.KFixed(), MetaCompilerSyntaxKind.KFixed);
-				return _factory.Fixed_(kFixed);
+				if (context == null) return Base_Green.__Missing;
+				InternalSyntaxToken kBase = (InternalSyntaxToken)this.VisitTerminal(context.KBase(), MetaCompilerSyntaxKind.KBase);
+				return _factory.Base_(kBase);
+			}
+			
+			public override GreenNode VisitMeta_(MetaCompilerParser.Meta_Context context)
+			{
+				if (context == null) return Meta_Green.__Missing;
+				InternalSyntaxToken kMeta = (InternalSyntaxToken)this.VisitTerminal(context.KMeta(), MetaCompilerSyntaxKind.KMeta);
+				return _factory.Meta_(kMeta);
+			}
+			
+			public override GreenNode VisitSource_(MetaCompilerParser.Source_Context context)
+			{
+				if (context == null) return Source_Green.__Missing;
+				InternalSyntaxToken kSource = (InternalSyntaxToken)this.VisitTerminal(context.KSource(), MetaCompilerSyntaxKind.KSource);
+				return _factory.Source_(kSource);
+			}
+			
+			public override GreenNode VisitVisit_(MetaCompilerParser.Visit_Context context)
+			{
+				if (context == null) return Visit_Green.__Missing;
+				InternalSyntaxToken kVisit = (InternalSyntaxToken)this.VisitTerminal(context.KVisit(), MetaCompilerSyntaxKind.KVisit);
+				return _factory.Visit_(kVisit);
 			}
 			
 			public override GreenNode VisitPartial_(MetaCompilerParser.Partial_Context context)
@@ -5083,10 +5374,32 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 		    public GreenNode CachedNode => _cachedNode;
 		}
 		
-		internal class ClassKindContext_Cached : ClassKindContext, ICachedRuleContext
+		internal class Class_Context_Cached : Class_Context, ICachedRuleContext
 		{
 		    private GreenNode _cachedNode;
-		    public ClassKindContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+		    public Class_Context_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+				: base(parent, invokingState)
+		    {
+		        _cachedNode = cachedNode;
+		    }
+		    public GreenNode CachedNode => _cachedNode;
+		}
+		
+		internal class SymbolDeclarationContext_Cached : SymbolDeclarationContext, ICachedRuleContext
+		{
+		    private GreenNode _cachedNode;
+		    public SymbolDeclarationContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+				: base(parent, invokingState)
+		    {
+		        _cachedNode = cachedNode;
+		    }
+		    public GreenNode CachedNode => _cachedNode;
+		}
+		
+		internal class Symbol_Context_Cached : Symbol_Context, ICachedRuleContext
+		{
+		    private GreenNode _cachedNode;
+		    public Symbol_Context_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
 				: base(parent, invokingState)
 		    {
 		        _cachedNode = cachedNode;
@@ -5413,10 +5726,43 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax
 		    public GreenNode CachedNode => _cachedNode;
 		}
 		
-		internal class Fixed_Context_Cached : Fixed_Context, ICachedRuleContext
+		internal class Base_Context_Cached : Base_Context, ICachedRuleContext
 		{
 		    private GreenNode _cachedNode;
-		    public Fixed_Context_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+		    public Base_Context_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+				: base(parent, invokingState)
+		    {
+		        _cachedNode = cachedNode;
+		    }
+		    public GreenNode CachedNode => _cachedNode;
+		}
+		
+		internal class Meta_Context_Cached : Meta_Context, ICachedRuleContext
+		{
+		    private GreenNode _cachedNode;
+		    public Meta_Context_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+				: base(parent, invokingState)
+		    {
+		        _cachedNode = cachedNode;
+		    }
+		    public GreenNode CachedNode => _cachedNode;
+		}
+		
+		internal class Source_Context_Cached : Source_Context, ICachedRuleContext
+		{
+		    private GreenNode _cachedNode;
+		    public Source_Context_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+				: base(parent, invokingState)
+		    {
+		        _cachedNode = cachedNode;
+		    }
+		    public GreenNode CachedNode => _cachedNode;
+		}
+		
+		internal class Visit_Context_Cached : Visit_Context, ICachedRuleContext
+		{
+		    private GreenNode _cachedNode;
+		    public Visit_Context_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
 				: base(parent, invokingState)
 		    {
 		        _cachedNode = cachedNode;

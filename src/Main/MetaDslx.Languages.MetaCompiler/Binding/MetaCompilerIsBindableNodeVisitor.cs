@@ -307,6 +307,20 @@ namespace MetaDslx.Languages.MetaCompiler.Binding
 				{
 					return true;
 				}
+				if (node.TypedefDeclaration != null)
+				{
+					if (state == BoundNodeFactoryState.InParent)
+					{
+						if (LookupPosition.IsInNode(this.Position, node.TypedefDeclaration))
+						{
+							if (this.Visit(node.TypedefDeclaration)) return true;
+						}
+					}
+					else
+					{
+						if (this.Visit(node.TypedefDeclaration)) return true;
+					}
+				}
 				if (node.CompilerDeclaration != null)
 				{
 					if (state == BoundNodeFactoryState.InParent)
@@ -363,18 +377,18 @@ namespace MetaDslx.Languages.MetaCompiler.Binding
 						if (this.Visit(node.ClassDeclaration)) return true;
 					}
 				}
-				if (node.TypedefDeclaration != null)
+				if (node.SymbolDeclaration != null)
 				{
 					if (state == BoundNodeFactoryState.InParent)
 					{
-						if (LookupPosition.IsInNode(this.Position, node.TypedefDeclaration))
+						if (LookupPosition.IsInNode(this.Position, node.SymbolDeclaration))
 						{
-							if (this.Visit(node.TypedefDeclaration)) return true;
+							if (this.Visit(node.SymbolDeclaration)) return true;
 						}
 					}
 					else
 					{
-						if (this.Visit(node.TypedefDeclaration)) return true;
+						if (this.Visit(node.SymbolDeclaration)) return true;
 					}
 				}
 				return false;
@@ -982,18 +996,18 @@ namespace MetaDslx.Languages.MetaCompiler.Binding
 						}
 					}
 				}
-				if (node.ClassKind != null)
+				if (node.Class_ != null)
 				{
 					if (state == BoundNodeFactoryState.InParent)
 					{
-						if (LookupPosition.IsInNode(this.Position, node.ClassKind))
+						if (LookupPosition.IsInNode(this.Position, node.Class_))
 						{
-							if (this.Visit(node.ClassKind)) return true;
+							if (this.Visit(node.Class_)) return true;
 						}
 					}
 					else
 					{
-						if (this.Visit(node.ClassKind)) return true;
+						if (this.Visit(node.Class_)) return true;
 					}
 				}
 				if (node.Name != null)
@@ -1080,20 +1094,6 @@ namespace MetaDslx.Languages.MetaCompiler.Binding
 					else
 					{
 						if (this.Visit(node.Sealed_)) return true;
-					}
-				}
-				if (node.Fixed_ != null)
-				{
-					if (state == BoundNodeFactoryState.InParent)
-					{
-						if (LookupPosition.IsInNode(this.Position, node.Fixed_))
-						{
-							if (this.Visit(node.Fixed_)) return true;
-						}
-					}
-					else
-					{
-						if (this.Visit(node.Fixed_)) return true;
 					}
 				}
 				if (node.Partial_ != null)
@@ -1315,7 +1315,7 @@ namespace MetaDslx.Languages.MetaCompiler.Binding
 			}
 		}
 		
-		public bool VisitClassKind(ClassKindSyntax node)
+		public bool VisitClass_(Class_Syntax node)
 		{
 			var state = this.State;
 			if (this.State == BoundNodeFactoryState.InParent) this.State = BoundNodeFactoryState.InNode;
@@ -1327,14 +1327,168 @@ namespace MetaDslx.Languages.MetaCompiler.Binding
 				{
 					return true;
 				}
-				if (state == BoundNodeFactoryState.InNode || (state == BoundNodeFactoryState.InParent && LookupPosition.IsInNode(this.Position, node.ClassKind)))
+				if (state == BoundNodeFactoryState.InNode || (state == BoundNodeFactoryState.InParent && LookupPosition.IsInNode(this.Position, node.KClass)))
 				{
-					switch (node.ClassKind.GetKind().Switch())
+					if (node.KClass.GetKind() == MetaCompilerSyntaxKind.KClass)
 					{
-						case MetaCompilerSyntaxKind.KClass:
-						case MetaCompilerSyntaxKind.KSymbol:
-						case MetaCompilerSyntaxKind.KBinder:
+						return true;
+					}
+				}
+				return false;
+			}
+			finally
+			{
+				this.State = state;
+			}
+		}
+		
+		public bool VisitSymbolDeclaration(SymbolDeclarationSyntax node)
+		{
+			var state = this.State;
+			if (this.State == BoundNodeFactoryState.InParent) this.State = BoundNodeFactoryState.InNode;
+			else if (this.State == BoundNodeFactoryState.InNode) this.State = BoundNodeFactoryState.InChild;
+			try
+			{
+				if (state == BoundNodeFactoryState.InChild) return false;
+				if (state == BoundNodeFactoryState.InNode) 
+				{
+					return true;
+				}
+				if (node.Attribute != null)
+				{
+					if (state != BoundNodeFactoryState.InParent || LookupPosition.IsInNode(this.Position, node.Attribute.Node))
+					{
+						foreach (var item in node.Attribute)
+						{
+							if (state != BoundNodeFactoryState.InParent || LookupPosition.IsInNode(this.Position, item))
+							{
+								if (this.Visit(item)) return true;
+							}
+						}
+					}
+				}
+				if (node.Visibility != null)
+				{
+					if (state == BoundNodeFactoryState.InParent)
+					{
+						if (LookupPosition.IsInNode(this.Position, node.Visibility))
+						{
+							if (this.Visit(node.Visibility)) return true;
+						}
+					}
+					else
+					{
+						if (this.Visit(node.Visibility)) return true;
+					}
+				}
+				if (node.Visit_ != null)
+				{
+					if (state == BoundNodeFactoryState.InParent)
+					{
+						if (LookupPosition.IsInNode(this.Position, node.Visit_))
+						{
+							if (this.Visit(node.Visit_)) return true;
+						}
+					}
+					else
+					{
+						if (this.Visit(node.Visit_)) return true;
+					}
+				}
+				if (node.ClassModifier != null)
+				{
+					if (state != BoundNodeFactoryState.InParent || LookupPosition.IsInNode(this.Position, node.ClassModifier.Node))
+					{
+						foreach (var item in node.ClassModifier)
+						{
+							if (state != BoundNodeFactoryState.InParent || LookupPosition.IsInNode(this.Position, item))
+							{
+								if (this.Visit(item)) return true;
+							}
+						}
+					}
+				}
+				if (node.Symbol_ != null)
+				{
+					if (state == BoundNodeFactoryState.InParent)
+					{
+						if (LookupPosition.IsInNode(this.Position, node.Symbol_))
+						{
+							if (this.Visit(node.Symbol_)) return true;
+						}
+					}
+					else
+					{
+						if (this.Visit(node.Symbol_)) return true;
+					}
+				}
+				if (node.Name != null)
+				{
+					if (state == BoundNodeFactoryState.InParent)
+					{
+						if (LookupPosition.IsInNode(this.Position, node.Name))
+						{
+							if (this.Visit(node.Name)) return true;
+						}
+					}
+					else
+					{
+						if (this.Visit(node.Name)) return true;
+					}
+				}
+				if (node.ClassAncestors != null)
+				{
+					if (state == BoundNodeFactoryState.InParent)
+					{
+						if (LookupPosition.IsInNode(this.Position, node.ClassAncestors))
+						{
 							return true;
+						}
+					}
+					else
+					{
+						if (this.Visit(node.ClassAncestors)) return true;
+					}
+				}
+				if (node.ClassBody != null)
+				{
+					if (state == BoundNodeFactoryState.InParent)
+					{
+						if (LookupPosition.IsInNode(this.Position, node.ClassBody))
+						{
+							if (this.Visit(node.ClassBody)) return true;
+						}
+					}
+					else
+					{
+						if (this.Visit(node.ClassBody)) return true;
+					}
+				}
+				return false;
+			}
+			finally
+			{
+				this.State = state;
+			}
+		}
+		
+		public bool VisitSymbol_(Symbol_Syntax node)
+		{
+			var state = this.State;
+			if (this.State == BoundNodeFactoryState.InParent) this.State = BoundNodeFactoryState.InNode;
+			else if (this.State == BoundNodeFactoryState.InNode) this.State = BoundNodeFactoryState.InChild;
+			try
+			{
+				if (state == BoundNodeFactoryState.InChild) return false;
+				if (state == BoundNodeFactoryState.InNode) 
+				{
+					return true;
+				}
+				if (state == BoundNodeFactoryState.InNode || (state == BoundNodeFactoryState.InParent && LookupPosition.IsInNode(this.Position, node.KSymbol)))
+				{
+					if (node.KSymbol.GetKind() == MetaCompilerSyntaxKind.KSymbol)
+					{
+						return true;
 					}
 				}
 				return false;
@@ -2677,7 +2831,88 @@ namespace MetaDslx.Languages.MetaCompiler.Binding
 			}
 		}
 		
-		public bool VisitFixed_(Fixed_Syntax node)
+		public bool VisitBase_(Base_Syntax node)
+		{
+			var state = this.State;
+			if (this.State == BoundNodeFactoryState.InParent) this.State = BoundNodeFactoryState.InNode;
+			else if (this.State == BoundNodeFactoryState.InNode) this.State = BoundNodeFactoryState.InChild;
+			try
+			{
+				if (state == BoundNodeFactoryState.InChild) return false;
+				if (state == BoundNodeFactoryState.InNode) 
+				{
+					return true;
+				}
+				if (state == BoundNodeFactoryState.InNode || (state == BoundNodeFactoryState.InParent && LookupPosition.IsInNode(this.Position, node.KBase)))
+				{
+					if (node.KBase.GetKind() == MetaCompilerSyntaxKind.KBase)
+					{
+						return true;
+					}
+				}
+				return false;
+			}
+			finally
+			{
+				this.State = state;
+			}
+		}
+		
+		public bool VisitMeta_(Meta_Syntax node)
+		{
+			var state = this.State;
+			if (this.State == BoundNodeFactoryState.InParent) this.State = BoundNodeFactoryState.InNode;
+			else if (this.State == BoundNodeFactoryState.InNode) this.State = BoundNodeFactoryState.InChild;
+			try
+			{
+				if (state == BoundNodeFactoryState.InChild) return false;
+				if (state == BoundNodeFactoryState.InNode) 
+				{
+					return true;
+				}
+				if (state == BoundNodeFactoryState.InNode || (state == BoundNodeFactoryState.InParent && LookupPosition.IsInNode(this.Position, node.KMeta)))
+				{
+					if (node.KMeta.GetKind() == MetaCompilerSyntaxKind.KMeta)
+					{
+						return true;
+					}
+				}
+				return false;
+			}
+			finally
+			{
+				this.State = state;
+			}
+		}
+		
+		public bool VisitSource_(Source_Syntax node)
+		{
+			var state = this.State;
+			if (this.State == BoundNodeFactoryState.InParent) this.State = BoundNodeFactoryState.InNode;
+			else if (this.State == BoundNodeFactoryState.InNode) this.State = BoundNodeFactoryState.InChild;
+			try
+			{
+				if (state == BoundNodeFactoryState.InChild) return false;
+				if (state == BoundNodeFactoryState.InNode) 
+				{
+					return true;
+				}
+				if (state == BoundNodeFactoryState.InNode || (state == BoundNodeFactoryState.InParent && LookupPosition.IsInNode(this.Position, node.KSource)))
+				{
+					if (node.KSource.GetKind() == MetaCompilerSyntaxKind.KSource)
+					{
+						return true;
+					}
+				}
+				return false;
+			}
+			finally
+			{
+				this.State = state;
+			}
+		}
+		
+		public bool VisitVisit_(Visit_Syntax node)
 		{
 			var state = this.State;
 			if (this.State == BoundNodeFactoryState.InParent) this.State = BoundNodeFactoryState.InNode;

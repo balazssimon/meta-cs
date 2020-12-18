@@ -35,6 +35,7 @@ namespace MetaDslx.CodeAnalysis
                 // A symbol's Obsoleteness may not have been calculated yet if the symbol is coming
                 // from a different compilation's source. In that case, force completion of attributes.
                 _symbol.ForceCompleteObsoleteAttribute();
+                //_symbol.ForceComplete(CompletionPart.ObsoleteAttribute);
 
                 var kind = ObsoleteAttributeHelpers.GetObsoleteDiagnosticKind(_symbol, _containingSymbol, forceComplete: true);
                 Debug.Assert(kind != ObsoleteDiagnosticKind.Lazy);

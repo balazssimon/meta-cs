@@ -54,6 +54,26 @@ namespace MetaDslx.Languages.MetaCompiler.Generator //1:1
             return typ.MName;
         }
 
+        public bool IsBaseSymbol(Symbol symbol)
+        {
+            return symbol.Kind == ClassKind.Symbol && symbol.SymbolModifier == SymbolModifierKind.Base;
+        }
+
+        public bool IsMetaSymbol(Symbol symbol)
+        {
+            return symbol.Kind == ClassKind.Symbol && symbol.SymbolModifier == SymbolModifierKind.Meta;
+        }
+
+        public bool IsSourceSymbol(Symbol symbol)
+        {
+            return symbol.Kind == ClassKind.Symbol && symbol.SymbolModifier == SymbolModifierKind.Source;
+        }
+
+        public bool VisitSymbol(Symbol symbol)
+        {
+            return symbol.Kind == ClassKind.Symbol && symbol.IsVisit;
+        }
+
         public string Start(Phase phase)
         {
             if (phase.IsLocked) return "Start" + phase.Name;
@@ -64,16 +84,9 @@ namespace MetaDslx.Languages.MetaCompiler.Generator //1:1
         {
             if (_symbolNamespace == null)
             {
-                _symbolNamespace = _generator.Instances.OfType<Class>().Where(cls => cls.Kind == ClassKind.Symbol).FirstOrDefault()?.Namespace?.FullName;
+                _symbolNamespace = _generator.Instances.OfType<Symbol>().Where(cls => cls.Kind == ClassKind.Symbol).FirstOrDefault()?.Namespace?.FullName;
             }
             return _symbolNamespace;
-        }
-
-        public string TrimSymbolSuffix(string name)
-        {
-            if (name == null) return null;
-            if (name.EndsWith("Symbol")) return name.Substring(0, name.Length - 6);
-            return name;
         }
 
         public string VirtualModifier(MemberDeclaration member, string defaultValue)
@@ -97,6 +110,15 @@ namespace MetaDslx.Languages.MetaCompiler.Generator //1:1
         {
             return member.Visibility == VisibilityKind.None ? defaultValue + " " : member.Visibility.ToString()?.ToLower() + " ";
         }
+
+        public string GetVisitName(Symbol symbol)
+        {
+            if (symbol == null || symbol.Name == null) return null;
+            var name = symbol.Name;
+            if (name.EndsWith("Symbol")) return name.Substring(0, name.Length - 6);
+            return name;
+        }
+
     }
 }
 

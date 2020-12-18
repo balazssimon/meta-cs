@@ -151,11 +151,12 @@ namespace MetaDslx.Languages.MetaCompiler.Binding
 			this.BeginProperty(node, name: "Declarations");
 			try
 			{
+				this.Visit(node.TypedefDeclaration);
 				this.Visit(node.CompilerDeclaration);
 				this.Visit(node.PhaseDeclaration);
 				this.Visit(node.EnumDeclaration);
 				this.Visit(node.ClassDeclaration);
-				this.Visit(node.TypedefDeclaration);
+				this.Visit(node.SymbolDeclaration);
 			}
 			finally
 			{
@@ -421,7 +422,7 @@ namespace MetaDslx.Languages.MetaCompiler.Binding
 				        this.Visit(child);
 					}
 				}
-				this.Visit(node.ClassKind);
+				this.Visit(node.Class_);
 				this.Visit(node.Name);
 				this.BeginProperty(node.ClassAncestors, name: "SuperClasses");
 				try
@@ -444,7 +445,6 @@ namespace MetaDslx.Languages.MetaCompiler.Binding
 		{
 			this.Visit(node.Abstract_);
 			this.Visit(node.Sealed_);
-			this.Visit(node.Fixed_);
 			this.Visit(node.Partial_);
 			this.Visit(node.Static_);
 		}
@@ -534,19 +534,70 @@ namespace MetaDslx.Languages.MetaCompiler.Binding
 			}
 		}
 		
-		public virtual void VisitClassKind(ClassKindSyntax node)
+		public virtual void VisitClass_(Class_Syntax node)
 		{
 			this.BeginProperty(node, name: "Kind");
 			try
 			{
-				switch (node.ClassKind.GetKind().Switch())
+				switch (node.KClass.GetKind().Switch())
 				{
-					case MetaCompilerSyntaxKind.KClass:
+					default:
 						break;
-					case MetaCompilerSyntaxKind.KSymbol:
-						break;
-					case MetaCompilerSyntaxKind.KBinder:
-						break;
+				}
+			}
+			finally
+			{
+				this.EndProperty();
+			}
+		}
+		
+		public virtual void VisitSymbolDeclaration(SymbolDeclarationSyntax node)
+		{
+			this.BeginSymbolDef(node, type: typeof(Symbol));
+			try
+			{
+				if (node.Attribute != null)
+				{
+					foreach (var child in node.Attribute)
+					{
+				        this.Visit(child);
+					}
+				}
+				this.Visit(node.Visibility);
+				this.Visit(node.Visit_);
+				if (node.ClassModifier != null)
+				{
+					foreach (var child in node.ClassModifier)
+					{
+				        this.Visit(child);
+					}
+				}
+				this.Visit(node.Symbol_);
+				this.Visit(node.Name);
+				this.BeginProperty(node.ClassAncestors, name: "SuperClasses");
+				try
+				{
+					this.Visit(node.ClassAncestors);
+				}
+				finally
+				{
+					this.EndProperty();
+				}
+				this.Visit(node.ClassBody);
+			}
+			finally
+			{
+				this.EndSymbolDef();
+			}
+		}
+		
+		public virtual void VisitSymbol_(Symbol_Syntax node)
+		{
+			this.BeginProperty(node, name: "Kind");
+			try
+			{
+				switch (node.KSymbol.GetKind().Switch())
+				{
 					default:
 						break;
 				}
@@ -1030,9 +1081,60 @@ namespace MetaDslx.Languages.MetaCompiler.Binding
 			}
 		}
 		
-		public virtual void VisitFixed_(Fixed_Syntax node)
+		public virtual void VisitBase_(Base_Syntax node)
 		{
-			this.BeginProperty(node, name: "IsFixed", value: true);
+			this.BeginProperty(node, name: "SymbolModifier");
+			try
+			{
+				switch (node.KBase.GetKind().Switch())
+				{
+					default:
+						break;
+				}
+			}
+			finally
+			{
+				this.EndProperty();
+			}
+		}
+		
+		public virtual void VisitMeta_(Meta_Syntax node)
+		{
+			this.BeginProperty(node, name: "SymbolModifier");
+			try
+			{
+				switch (node.KMeta.GetKind().Switch())
+				{
+					default:
+						break;
+				}
+			}
+			finally
+			{
+				this.EndProperty();
+			}
+		}
+		
+		public virtual void VisitSource_(Source_Syntax node)
+		{
+			this.BeginProperty(node, name: "SymbolModifier");
+			try
+			{
+				switch (node.KSource.GetKind().Switch())
+				{
+					default:
+						break;
+				}
+			}
+			finally
+			{
+				this.EndProperty();
+			}
+		}
+		
+		public virtual void VisitVisit_(Visit_Syntax node)
+		{
+			this.BeginProperty(node, name: "IsVisit", value: true);
 			try
 			{
 			}

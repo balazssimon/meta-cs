@@ -79,6 +79,11 @@ namespace MetaDslx.CodeAnalysis
             private CommonReferenceManager<CSharpCompilation, CSharpSymbols.AssemblySymbol> _lazyCSharpReferenceManager;
 
             /// <summary>
+            /// Maps C# symbols to MetaDslx symbols
+            /// </summary>
+            private CSharpSymbolMap _csharpSymbolMap;
+
+            /// <summary>
             /// If the compilation being built represents an assembly its assembly name.
             /// If the compilation being built represents a module, the name of the 
             /// containing assembly or <see cref="Compilation.UnspecifiedModuleAssemblyName"/>
@@ -124,6 +129,7 @@ namespace MetaDslx.CodeAnalysis
             internal ReferenceManager(string simpleAssemblyName)
             {
                 this.SimpleAssemblyName = simpleAssemblyName;
+                _csharpSymbolMap = new CSharpSymbolMap();
             }
 
             internal ImmutableArray<Diagnostic> Diagnostics
@@ -434,7 +440,7 @@ namespace MetaDslx.CodeAnalysis
                 Debug.Assert(!HasCircularReference);
 
                 string moduleName = compilation.MakeSourceModuleName();
-                var assemblySymbol = new SourceAssemblySymbol(compilation, this.SimpleAssemblyName, moduleName, this.ReferencedModules, CustomReferences(compilation.ExternalReferences));
+                var assemblySymbol = new SourceAssemblySymbol(compilation, this.SimpleAssemblyName, moduleName, _csharpSymbolMap, this.ReferencedModules, CustomReferences(compilation.ExternalReferences));
 
                 InitializeAssemblyReuseData(assemblySymbol, this.ReferencedAssemblies, this.UnifiedAssemblies);
 
@@ -481,7 +487,7 @@ namespace MetaDslx.CodeAnalysis
             {
                 var csharpCompilation = compilation.CSharpCompilationForReferenceManager;
                 var csharpReferenceManager = csharpCompilation.GetBoundReferenceManager();
-                var assemblySymbol = new SourceAssemblySymbol(compilation, SimpleAssemblyName, compilation.MakeSourceModuleName(), netModules: csharpReferenceManager.ReferencedModules, CustomReferences(compilation.ExternalReferences));
+                var assemblySymbol = new SourceAssemblySymbol(compilation, SimpleAssemblyName, compilation.MakeSourceModuleName(), _csharpSymbolMap, netModules: csharpReferenceManager.ReferencedModules, CustomReferences(compilation.ExternalReferences));
                 if ((object)compilation._lazyAssemblySymbol == null)
                 {
                     lock (SymbolCacheAndReferenceManagerStateGuard)

@@ -33,7 +33,7 @@ namespaceDeclaration: attribute* KNamespace qualifiedName namespaceBody;
 namespaceBody : TOpenBrace declaration* TCloseBrace;
 
                         
-declaration : compilerDeclaration | phaseDeclaration | enumDeclaration | classDeclaration | typedefDeclaration;
+declaration : typedefDeclaration | compilerDeclaration | phaseDeclaration | enumDeclaration | classDeclaration | symbolDeclaration;
 
                     
 compilerDeclaration : attribute* KCompiler name TSemicolon;
@@ -68,8 +68,8 @@ visibility
 	;
 
                  
-classDeclaration : attribute* visibility? classModifier* classKind name (TColon                         classAncestors)? classBody;
-classModifier : abstract_ | sealed_ | fixed_ | partial_ | static_;
+classDeclaration : attribute* visibility? classModifier* class_ name (TColon                         classAncestors)? classBody;
+classModifier : abstract_ | sealed_ | partial_ | static_;
 classAncestors : classAncestor (TComma classAncestor)*;
 classAncestor :                        qualifier;
       
@@ -81,11 +81,14 @@ classMemberDeclaration
 	|                       operationDeclaration
 	;
                
-classKind
-	:                         KClass 
-	|                          KSymbol
-	|                          KBinder
-	;
+class_ :                         KClass;
+
+                  
+symbolDeclaration : attribute* visibility? visit_? classModifier* /*symbolKind*/ symbol_ name (TColon                         classAncestors)? classBody;
+//symbolKind : base_ | meta_ | source_;
+               
+symbol_ :                          KSymbol;
+
 
                     
 fieldDeclaration : attribute* visibility? memberModifier* fieldContainment? fieldKind?                 typeReference name defaultValue? phase? TSemicolon;
@@ -171,8 +174,14 @@ parameter : attribute*                 typeReference name defaultValue?;
 
                                    
 static_ : KStatic;
+                         
+base_ :                                 KBase;
+                         
+meta_ :                                 KMeta;
+                         
+source_ :                                   KSource;
                                   
-fixed_ : KFixed;
+visit_ : KVisit;
                                     
 partial_ : KPartial;
                                      

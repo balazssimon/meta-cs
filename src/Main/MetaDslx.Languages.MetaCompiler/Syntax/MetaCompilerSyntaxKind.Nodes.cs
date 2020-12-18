@@ -53,7 +53,9 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax
 		public const string ClassBody = nameof(ClassBody);
 		public const string ClassPhases = nameof(ClassPhases);
 		public const string ClassMemberDeclaration = nameof(ClassMemberDeclaration);
-		public const string ClassKind = nameof(ClassKind);
+		public const string Class_ = nameof(Class_);
+		public const string SymbolDeclaration = nameof(SymbolDeclaration);
+		public const string Symbol_ = nameof(Symbol_);
 		public const string FieldDeclaration = nameof(FieldDeclaration);
 		public const string FieldContainment = nameof(FieldContainment);
 		public const string FieldKind = nameof(FieldKind);
@@ -83,7 +85,10 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax
 		public const string ParameterList = nameof(ParameterList);
 		public const string Parameter = nameof(Parameter);
 		public const string Static_ = nameof(Static_);
-		public const string Fixed_ = nameof(Fixed_);
+		public const string Base_ = nameof(Base_);
+		public const string Meta_ = nameof(Meta_);
+		public const string Source_ = nameof(Source_);
+		public const string Visit_ = nameof(Visit_);
 		public const string Partial_ = nameof(Partial_);
 		public const string Abstract_ = nameof(Abstract_);
 		public const string Virtual_ = nameof(Virtual_);

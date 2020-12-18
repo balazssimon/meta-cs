@@ -808,11 +808,12 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax
 	
 	public sealed class DeclarationSyntax : MetaCompilerSyntaxNode
 	{
+	    private TypedefDeclarationSyntax typedefDeclaration;
 	    private CompilerDeclarationSyntax compilerDeclaration;
 	    private PhaseDeclarationSyntax phaseDeclaration;
 	    private EnumDeclarationSyntax enumDeclaration;
 	    private ClassDeclarationSyntax classDeclaration;
-	    private TypedefDeclarationSyntax typedefDeclaration;
+	    private SymbolDeclarationSyntax symbolDeclaration;
 	
 	    public DeclarationSyntax(InternalSyntaxNode green, MetaCompilerSyntaxTree syntaxTree, int position)
 	        : base(green, syntaxTree, position)
@@ -824,36 +825,41 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax
 	    {
 	    }
 	
+	    public TypedefDeclarationSyntax TypedefDeclaration 
+		{ 
+			get { return this.GetRed(ref this.typedefDeclaration, 0); } 
+		}
 	    public CompilerDeclarationSyntax CompilerDeclaration 
 		{ 
-			get { return this.GetRed(ref this.compilerDeclaration, 0); } 
+			get { return this.GetRed(ref this.compilerDeclaration, 1); } 
 		}
 	    public PhaseDeclarationSyntax PhaseDeclaration 
 		{ 
-			get { return this.GetRed(ref this.phaseDeclaration, 1); } 
+			get { return this.GetRed(ref this.phaseDeclaration, 2); } 
 		}
 	    public EnumDeclarationSyntax EnumDeclaration 
 		{ 
-			get { return this.GetRed(ref this.enumDeclaration, 2); } 
+			get { return this.GetRed(ref this.enumDeclaration, 3); } 
 		}
 	    public ClassDeclarationSyntax ClassDeclaration 
 		{ 
-			get { return this.GetRed(ref this.classDeclaration, 3); } 
+			get { return this.GetRed(ref this.classDeclaration, 4); } 
 		}
-	    public TypedefDeclarationSyntax TypedefDeclaration 
+	    public SymbolDeclarationSyntax SymbolDeclaration 
 		{ 
-			get { return this.GetRed(ref this.typedefDeclaration, 4); } 
+			get { return this.GetRed(ref this.symbolDeclaration, 5); } 
 		}
 	
 	    public override SyntaxNode GetNodeSlot(int index)
 	    {
 	        switch (index)
 	        {
-				case 0: return this.GetRed(ref this.compilerDeclaration, 0);
-				case 1: return this.GetRed(ref this.phaseDeclaration, 1);
-				case 2: return this.GetRed(ref this.enumDeclaration, 2);
-				case 3: return this.GetRed(ref this.classDeclaration, 3);
-				case 4: return this.GetRed(ref this.typedefDeclaration, 4);
+				case 0: return this.GetRed(ref this.typedefDeclaration, 0);
+				case 1: return this.GetRed(ref this.compilerDeclaration, 1);
+				case 2: return this.GetRed(ref this.phaseDeclaration, 2);
+				case 3: return this.GetRed(ref this.enumDeclaration, 3);
+				case 4: return this.GetRed(ref this.classDeclaration, 4);
+				case 5: return this.GetRed(ref this.symbolDeclaration, 5);
 				default: return null;
 	        }
 	    }
@@ -862,14 +868,20 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax
 	    {
 	        switch (index)
 	        {
-				case 0: return this.compilerDeclaration;
-				case 1: return this.phaseDeclaration;
-				case 2: return this.enumDeclaration;
-				case 3: return this.classDeclaration;
-				case 4: return this.typedefDeclaration;
+				case 0: return this.typedefDeclaration;
+				case 1: return this.compilerDeclaration;
+				case 2: return this.phaseDeclaration;
+				case 3: return this.enumDeclaration;
+				case 4: return this.classDeclaration;
+				case 5: return this.symbolDeclaration;
 				default: return null;
 	        }
 	    }
+	
+	    public DeclarationSyntax WithTypedefDeclaration(TypedefDeclarationSyntax typedefDeclaration)
+		{
+			return this.Update(typedefDeclaration);
+		}
 	
 	    public DeclarationSyntax WithCompilerDeclaration(CompilerDeclarationSyntax compilerDeclaration)
 		{
@@ -891,10 +903,23 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax
 			return this.Update(classDeclaration);
 		}
 	
-	    public DeclarationSyntax WithTypedefDeclaration(TypedefDeclarationSyntax typedefDeclaration)
+	    public DeclarationSyntax WithSymbolDeclaration(SymbolDeclarationSyntax symbolDeclaration)
 		{
-			return this.Update(typedefDeclaration);
+			return this.Update(symbolDeclaration);
 		}
+	
+	    public DeclarationSyntax Update(TypedefDeclarationSyntax typedefDeclaration)
+	    {
+	        if (this.TypedefDeclaration != typedefDeclaration)
+	        {
+	            var newNode = MetaCompilerLanguage.Instance.SyntaxFactory.Declaration(typedefDeclaration);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (DeclarationSyntax)newNode;
+	        }
+	        return this;
+	    }
 	
 	    public DeclarationSyntax Update(CompilerDeclarationSyntax compilerDeclaration)
 	    {
@@ -948,11 +973,11 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax
 	        return this;
 	    }
 	
-	    public DeclarationSyntax Update(TypedefDeclarationSyntax typedefDeclaration)
+	    public DeclarationSyntax Update(SymbolDeclarationSyntax symbolDeclaration)
 	    {
-	        if (this.TypedefDeclaration != typedefDeclaration)
+	        if (this.SymbolDeclaration != symbolDeclaration)
 	        {
-	            var newNode = MetaCompilerLanguage.Instance.SyntaxFactory.Declaration(typedefDeclaration);
+	            var newNode = MetaCompilerLanguage.Instance.SyntaxFactory.Declaration(symbolDeclaration);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -2293,7 +2318,7 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax
 	    private SyntaxNode attribute;
 	    private VisibilitySyntax visibility;
 	    private SyntaxNode classModifier;
-	    private ClassKindSyntax classKind;
+	    private Class_Syntax class_;
 	    private NameSyntax name;
 	    private ClassAncestorsSyntax classAncestors;
 	    private ClassBodySyntax classBody;
@@ -2330,9 +2355,9 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax
 				return default;
 			} 
 		}
-	    public ClassKindSyntax ClassKind 
+	    public Class_Syntax Class_ 
 		{ 
-			get { return this.GetRed(ref this.classKind, 3); } 
+			get { return this.GetRed(ref this.class_, 3); } 
 		}
 	    public NameSyntax Name 
 		{ 
@@ -2363,7 +2388,7 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax
 				case 0: return this.GetRed(ref this.attribute, 0);
 				case 1: return this.GetRed(ref this.visibility, 1);
 				case 2: return this.GetRed(ref this.classModifier, 2);
-				case 3: return this.GetRed(ref this.classKind, 3);
+				case 3: return this.GetRed(ref this.class_, 3);
 				case 4: return this.GetRed(ref this.name, 4);
 				case 6: return this.GetRed(ref this.classAncestors, 6);
 				case 7: return this.GetRed(ref this.classBody, 7);
@@ -2378,7 +2403,7 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax
 				case 0: return this.attribute;
 				case 1: return this.visibility;
 				case 2: return this.classModifier;
-				case 3: return this.classKind;
+				case 3: return this.class_;
 				case 4: return this.name;
 				case 6: return this.classAncestors;
 				case 7: return this.classBody;
@@ -2388,7 +2413,7 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax
 	
 	    public ClassDeclarationSyntax WithAttribute(SyntaxList<AttributeSyntax> attribute)
 		{
-			return this.Update(Attribute, this.Visibility, this.ClassModifier, this.ClassKind, this.Name, this.TColon, this.ClassAncestors, this.ClassBody);
+			return this.Update(Attribute, this.Visibility, this.ClassModifier, this.Class_, this.Name, this.TColon, this.ClassAncestors, this.ClassBody);
 		}
 	
 	    public ClassDeclarationSyntax AddAttribute(params AttributeSyntax[] attribute)
@@ -2398,12 +2423,12 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax
 	
 	    public ClassDeclarationSyntax WithVisibility(VisibilitySyntax visibility)
 		{
-			return this.Update(this.Attribute, Visibility, this.ClassModifier, this.ClassKind, this.Name, this.TColon, this.ClassAncestors, this.ClassBody);
+			return this.Update(this.Attribute, Visibility, this.ClassModifier, this.Class_, this.Name, this.TColon, this.ClassAncestors, this.ClassBody);
 		}
 	
 	    public ClassDeclarationSyntax WithClassModifier(SyntaxList<ClassModifierSyntax> classModifier)
 		{
-			return this.Update(this.Attribute, this.Visibility, ClassModifier, this.ClassKind, this.Name, this.TColon, this.ClassAncestors, this.ClassBody);
+			return this.Update(this.Attribute, this.Visibility, ClassModifier, this.Class_, this.Name, this.TColon, this.ClassAncestors, this.ClassBody);
 		}
 	
 	    public ClassDeclarationSyntax AddClassModifier(params ClassModifierSyntax[] classModifier)
@@ -2411,43 +2436,43 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax
 			return this.WithClassModifier(this.ClassModifier.AddRange(classModifier));
 		}
 	
-	    public ClassDeclarationSyntax WithClassKind(ClassKindSyntax classKind)
+	    public ClassDeclarationSyntax WithClass_(Class_Syntax class_)
 		{
-			return this.Update(this.Attribute, this.Visibility, this.ClassModifier, ClassKind, this.Name, this.TColon, this.ClassAncestors, this.ClassBody);
+			return this.Update(this.Attribute, this.Visibility, this.ClassModifier, Class_, this.Name, this.TColon, this.ClassAncestors, this.ClassBody);
 		}
 	
 	    public ClassDeclarationSyntax WithName(NameSyntax name)
 		{
-			return this.Update(this.Attribute, this.Visibility, this.ClassModifier, this.ClassKind, Name, this.TColon, this.ClassAncestors, this.ClassBody);
+			return this.Update(this.Attribute, this.Visibility, this.ClassModifier, this.Class_, Name, this.TColon, this.ClassAncestors, this.ClassBody);
 		}
 	
 	    public ClassDeclarationSyntax WithTColon(SyntaxToken tColon)
 		{
-			return this.Update(this.Attribute, this.Visibility, this.ClassModifier, this.ClassKind, this.Name, TColon, this.ClassAncestors, this.ClassBody);
+			return this.Update(this.Attribute, this.Visibility, this.ClassModifier, this.Class_, this.Name, TColon, this.ClassAncestors, this.ClassBody);
 		}
 	
 	    public ClassDeclarationSyntax WithClassAncestors(ClassAncestorsSyntax classAncestors)
 		{
-			return this.Update(this.Attribute, this.Visibility, this.ClassModifier, this.ClassKind, this.Name, this.TColon, ClassAncestors, this.ClassBody);
+			return this.Update(this.Attribute, this.Visibility, this.ClassModifier, this.Class_, this.Name, this.TColon, ClassAncestors, this.ClassBody);
 		}
 	
 	    public ClassDeclarationSyntax WithClassBody(ClassBodySyntax classBody)
 		{
-			return this.Update(this.Attribute, this.Visibility, this.ClassModifier, this.ClassKind, this.Name, this.TColon, this.ClassAncestors, ClassBody);
+			return this.Update(this.Attribute, this.Visibility, this.ClassModifier, this.Class_, this.Name, this.TColon, this.ClassAncestors, ClassBody);
 		}
 	
-	    public ClassDeclarationSyntax Update(SyntaxList<AttributeSyntax> attribute, VisibilitySyntax visibility, SyntaxList<ClassModifierSyntax> classModifier, ClassKindSyntax classKind, NameSyntax name, SyntaxToken tColon, ClassAncestorsSyntax classAncestors, ClassBodySyntax classBody)
+	    public ClassDeclarationSyntax Update(SyntaxList<AttributeSyntax> attribute, VisibilitySyntax visibility, SyntaxList<ClassModifierSyntax> classModifier, Class_Syntax class_, NameSyntax name, SyntaxToken tColon, ClassAncestorsSyntax classAncestors, ClassBodySyntax classBody)
 	    {
 	        if (this.Attribute != attribute ||
 				this.Visibility != visibility ||
 				this.ClassModifier != classModifier ||
-				this.ClassKind != classKind ||
+				this.Class_ != class_ ||
 				this.Name != name ||
 				this.TColon != tColon ||
 				this.ClassAncestors != classAncestors ||
 				this.ClassBody != classBody)
 	        {
-	            var newNode = MetaCompilerLanguage.Instance.SyntaxFactory.ClassDeclaration(attribute, visibility, classModifier, classKind, name, tColon, classAncestors, classBody);
+	            var newNode = MetaCompilerLanguage.Instance.SyntaxFactory.ClassDeclaration(attribute, visibility, classModifier, class_, name, tColon, classAncestors, classBody);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -2476,7 +2501,6 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax
 	{
 	    private Abstract_Syntax abstract_;
 	    private Sealed_Syntax sealed_;
-	    private Fixed_Syntax fixed_;
 	    private Partial_Syntax partial_;
 	    private Static_Syntax static_;
 	
@@ -2498,17 +2522,13 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax
 		{ 
 			get { return this.GetRed(ref this.sealed_, 1); } 
 		}
-	    public Fixed_Syntax Fixed_ 
-		{ 
-			get { return this.GetRed(ref this.fixed_, 2); } 
-		}
 	    public Partial_Syntax Partial_ 
 		{ 
-			get { return this.GetRed(ref this.partial_, 3); } 
+			get { return this.GetRed(ref this.partial_, 2); } 
 		}
 	    public Static_Syntax Static_ 
 		{ 
-			get { return this.GetRed(ref this.static_, 4); } 
+			get { return this.GetRed(ref this.static_, 3); } 
 		}
 	
 	    public override SyntaxNode GetNodeSlot(int index)
@@ -2517,9 +2537,8 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax
 	        {
 				case 0: return this.GetRed(ref this.abstract_, 0);
 				case 1: return this.GetRed(ref this.sealed_, 1);
-				case 2: return this.GetRed(ref this.fixed_, 2);
-				case 3: return this.GetRed(ref this.partial_, 3);
-				case 4: return this.GetRed(ref this.static_, 4);
+				case 2: return this.GetRed(ref this.partial_, 2);
+				case 3: return this.GetRed(ref this.static_, 3);
 				default: return null;
 	        }
 	    }
@@ -2530,9 +2549,8 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax
 	        {
 				case 0: return this.abstract_;
 				case 1: return this.sealed_;
-				case 2: return this.fixed_;
-				case 3: return this.partial_;
-				case 4: return this.static_;
+				case 2: return this.partial_;
+				case 3: return this.static_;
 				default: return null;
 	        }
 	    }
@@ -2545,11 +2563,6 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax
 	    public ClassModifierSyntax WithSealed_(Sealed_Syntax sealed_)
 		{
 			return this.Update(sealed_);
-		}
-	
-	    public ClassModifierSyntax WithFixed_(Fixed_Syntax fixed_)
-		{
-			return this.Update(fixed_);
 		}
 	
 	    public ClassModifierSyntax WithPartial_(Partial_Syntax partial_)
@@ -2580,19 +2593,6 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax
 	        if (this.Sealed_ != sealed_)
 	        {
 	            var newNode = MetaCompilerLanguage.Instance.SyntaxFactory.ClassModifier(sealed_);
-	            var annotations = this.GetAnnotations();
-	            if (annotations != null && annotations.Length > 0)
-	               newNode = newNode.WithAnnotations(annotations);
-				return (ClassModifierSyntax)newNode;
-	        }
-	        return this;
-	    }
-	
-	    public ClassModifierSyntax Update(Fixed_Syntax fixed_)
-	    {
-	        if (this.Fixed_ != fixed_)
-	        {
-	            var newNode = MetaCompilerLanguage.Instance.SyntaxFactory.ClassModifier(fixed_);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -3132,25 +3132,25 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax
 	    }
 	}
 	
-	public sealed class ClassKindSyntax : MetaCompilerSyntaxNode
+	public sealed class Class_Syntax : MetaCompilerSyntaxNode
 	{
 	
-	    public ClassKindSyntax(InternalSyntaxNode green, MetaCompilerSyntaxTree syntaxTree, int position)
+	    public Class_Syntax(InternalSyntaxNode green, MetaCompilerSyntaxTree syntaxTree, int position)
 	        : base(green, syntaxTree, position)
 	    {
 	    }
 	
-	    public ClassKindSyntax(InternalSyntaxNode green, MetaCompilerSyntaxNode parent, int position)
+	    public Class_Syntax(InternalSyntaxNode green, MetaCompilerSyntaxNode parent, int position)
 	        : base(green, parent, position)
 	    {
 	    }
 	
-	    public SyntaxToken ClassKind 
+	    public SyntaxToken KClass 
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax.ClassKindGreen)this.Green;
-				var greenToken = green.ClassKind;
+				var green = (global::MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax.Class_Green)this.Green;
+				var greenToken = green.KClass;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
 		}
@@ -3171,37 +3171,307 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax
 	        }
 	    }
 	
-	    public ClassKindSyntax WithClassKind(SyntaxToken classKind)
+	    public Class_Syntax WithKClass(SyntaxToken kClass)
 		{
-			return this.Update(ClassKind);
+			return this.Update(KClass);
 		}
 	
-	    public ClassKindSyntax Update(SyntaxToken classKind)
+	    public Class_Syntax Update(SyntaxToken kClass)
 	    {
-	        if (this.ClassKind != classKind)
+	        if (this.KClass != kClass)
 	        {
-	            var newNode = MetaCompilerLanguage.Instance.SyntaxFactory.ClassKind(classKind);
+	            var newNode = MetaCompilerLanguage.Instance.SyntaxFactory.Class_(kClass);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
-				return (ClassKindSyntax)newNode;
+				return (Class_Syntax)newNode;
 	        }
 	        return this;
 	    }
 	
 	    public override TResult Accept<TArg, TResult>(IMetaCompilerSyntaxVisitor<TArg, TResult> visitor, TArg argument)
 	    {
-	        return visitor.VisitClassKind(this, argument);
+	        return visitor.VisitClass_(this, argument);
 	    }
 	
 	    public override TResult Accept<TResult>(IMetaCompilerSyntaxVisitor<TResult> visitor)
 	    {
-	        return visitor.VisitClassKind(this);
+	        return visitor.VisitClass_(this);
 	    }
 	
 	    public override void Accept(IMetaCompilerSyntaxVisitor visitor)
 	    {
-	        visitor.VisitClassKind(this);
+	        visitor.VisitClass_(this);
+	    }
+	}
+	
+	public sealed class SymbolDeclarationSyntax : MetaCompilerSyntaxNode
+	{
+	    private SyntaxNode attribute;
+	    private VisibilitySyntax visibility;
+	    private Visit_Syntax visit_;
+	    private SyntaxNode classModifier;
+	    private Symbol_Syntax symbol_;
+	    private NameSyntax name;
+	    private ClassAncestorsSyntax classAncestors;
+	    private ClassBodySyntax classBody;
+	
+	    public SymbolDeclarationSyntax(InternalSyntaxNode green, MetaCompilerSyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
+	
+	    public SymbolDeclarationSyntax(InternalSyntaxNode green, MetaCompilerSyntaxNode parent, int position)
+	        : base(green, parent, position)
+	    {
+	    }
+	
+	    public SyntaxList<AttributeSyntax> Attribute 
+		{ 
+			get
+			{
+				var red = this.GetRed(ref this.attribute, 0);
+				if (red != null) return new SyntaxList<AttributeSyntax>(red);
+				return default;
+			} 
+		}
+	    public VisibilitySyntax Visibility 
+		{ 
+			get { return this.GetRed(ref this.visibility, 1); } 
+		}
+	    public Visit_Syntax Visit_ 
+		{ 
+			get { return this.GetRed(ref this.visit_, 2); } 
+		}
+	    public SyntaxList<ClassModifierSyntax> ClassModifier 
+		{ 
+			get
+			{
+				var red = this.GetRed(ref this.classModifier, 3);
+				if (red != null) return new SyntaxList<ClassModifierSyntax>(red);
+				return default;
+			} 
+		}
+	    public Symbol_Syntax Symbol_ 
+		{ 
+			get { return this.GetRed(ref this.symbol_, 4); } 
+		}
+	    public NameSyntax Name 
+		{ 
+			get { return this.GetRed(ref this.name, 5); } 
+		}
+	    public SyntaxToken TColon 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax.SymbolDeclarationGreen)this.Green;
+				var greenToken = green.TColon;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(6), this.GetChildIndex(6));
+			}
+		}
+	    public ClassAncestorsSyntax ClassAncestors 
+		{ 
+			get { return this.GetRed(ref this.classAncestors, 7); } 
+		}
+	    public ClassBodySyntax ClassBody 
+		{ 
+			get { return this.GetRed(ref this.classBody, 8); } 
+		}
+	
+	    public override SyntaxNode GetNodeSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 0: return this.GetRed(ref this.attribute, 0);
+				case 1: return this.GetRed(ref this.visibility, 1);
+				case 2: return this.GetRed(ref this.visit_, 2);
+				case 3: return this.GetRed(ref this.classModifier, 3);
+				case 4: return this.GetRed(ref this.symbol_, 4);
+				case 5: return this.GetRed(ref this.name, 5);
+				case 7: return this.GetRed(ref this.classAncestors, 7);
+				case 8: return this.GetRed(ref this.classBody, 8);
+				default: return null;
+	        }
+	    }
+	
+	    public override SyntaxNode GetCachedSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 0: return this.attribute;
+				case 1: return this.visibility;
+				case 2: return this.visit_;
+				case 3: return this.classModifier;
+				case 4: return this.symbol_;
+				case 5: return this.name;
+				case 7: return this.classAncestors;
+				case 8: return this.classBody;
+				default: return null;
+	        }
+	    }
+	
+	    public SymbolDeclarationSyntax WithAttribute(SyntaxList<AttributeSyntax> attribute)
+		{
+			return this.Update(Attribute, this.Visibility, this.Visit_, this.ClassModifier, this.Symbol_, this.Name, this.TColon, this.ClassAncestors, this.ClassBody);
+		}
+	
+	    public SymbolDeclarationSyntax AddAttribute(params AttributeSyntax[] attribute)
+		{
+			return this.WithAttribute(this.Attribute.AddRange(attribute));
+		}
+	
+	    public SymbolDeclarationSyntax WithVisibility(VisibilitySyntax visibility)
+		{
+			return this.Update(this.Attribute, Visibility, this.Visit_, this.ClassModifier, this.Symbol_, this.Name, this.TColon, this.ClassAncestors, this.ClassBody);
+		}
+	
+	    public SymbolDeclarationSyntax WithVisit_(Visit_Syntax visit_)
+		{
+			return this.Update(this.Attribute, this.Visibility, Visit_, this.ClassModifier, this.Symbol_, this.Name, this.TColon, this.ClassAncestors, this.ClassBody);
+		}
+	
+	    public SymbolDeclarationSyntax WithClassModifier(SyntaxList<ClassModifierSyntax> classModifier)
+		{
+			return this.Update(this.Attribute, this.Visibility, this.Visit_, ClassModifier, this.Symbol_, this.Name, this.TColon, this.ClassAncestors, this.ClassBody);
+		}
+	
+	    public SymbolDeclarationSyntax AddClassModifier(params ClassModifierSyntax[] classModifier)
+		{
+			return this.WithClassModifier(this.ClassModifier.AddRange(classModifier));
+		}
+	
+	    public SymbolDeclarationSyntax WithSymbol_(Symbol_Syntax symbol_)
+		{
+			return this.Update(this.Attribute, this.Visibility, this.Visit_, this.ClassModifier, Symbol_, this.Name, this.TColon, this.ClassAncestors, this.ClassBody);
+		}
+	
+	    public SymbolDeclarationSyntax WithName(NameSyntax name)
+		{
+			return this.Update(this.Attribute, this.Visibility, this.Visit_, this.ClassModifier, this.Symbol_, Name, this.TColon, this.ClassAncestors, this.ClassBody);
+		}
+	
+	    public SymbolDeclarationSyntax WithTColon(SyntaxToken tColon)
+		{
+			return this.Update(this.Attribute, this.Visibility, this.Visit_, this.ClassModifier, this.Symbol_, this.Name, TColon, this.ClassAncestors, this.ClassBody);
+		}
+	
+	    public SymbolDeclarationSyntax WithClassAncestors(ClassAncestorsSyntax classAncestors)
+		{
+			return this.Update(this.Attribute, this.Visibility, this.Visit_, this.ClassModifier, this.Symbol_, this.Name, this.TColon, ClassAncestors, this.ClassBody);
+		}
+	
+	    public SymbolDeclarationSyntax WithClassBody(ClassBodySyntax classBody)
+		{
+			return this.Update(this.Attribute, this.Visibility, this.Visit_, this.ClassModifier, this.Symbol_, this.Name, this.TColon, this.ClassAncestors, ClassBody);
+		}
+	
+	    public SymbolDeclarationSyntax Update(SyntaxList<AttributeSyntax> attribute, VisibilitySyntax visibility, Visit_Syntax visit_, SyntaxList<ClassModifierSyntax> classModifier, Symbol_Syntax symbol_, NameSyntax name, SyntaxToken tColon, ClassAncestorsSyntax classAncestors, ClassBodySyntax classBody)
+	    {
+	        if (this.Attribute != attribute ||
+				this.Visibility != visibility ||
+				this.Visit_ != visit_ ||
+				this.ClassModifier != classModifier ||
+				this.Symbol_ != symbol_ ||
+				this.Name != name ||
+				this.TColon != tColon ||
+				this.ClassAncestors != classAncestors ||
+				this.ClassBody != classBody)
+	        {
+	            var newNode = MetaCompilerLanguage.Instance.SyntaxFactory.SymbolDeclaration(attribute, visibility, visit_, classModifier, symbol_, name, tColon, classAncestors, classBody);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (SymbolDeclarationSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(IMetaCompilerSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitSymbolDeclaration(this, argument);
+	    }
+	
+	    public override TResult Accept<TResult>(IMetaCompilerSyntaxVisitor<TResult> visitor)
+	    {
+	        return visitor.VisitSymbolDeclaration(this);
+	    }
+	
+	    public override void Accept(IMetaCompilerSyntaxVisitor visitor)
+	    {
+	        visitor.VisitSymbolDeclaration(this);
+	    }
+	}
+	
+	public sealed class Symbol_Syntax : MetaCompilerSyntaxNode
+	{
+	
+	    public Symbol_Syntax(InternalSyntaxNode green, MetaCompilerSyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
+	
+	    public Symbol_Syntax(InternalSyntaxNode green, MetaCompilerSyntaxNode parent, int position)
+	        : base(green, parent, position)
+	    {
+	    }
+	
+	    public SyntaxToken KSymbol 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax.Symbol_Green)this.Green;
+				var greenToken = green.KSymbol;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
+			}
+		}
+	
+	    public override SyntaxNode GetNodeSlot(int index)
+	    {
+	        switch (index)
+	        {
+				default: return null;
+	        }
+	    }
+	
+	    public override SyntaxNode GetCachedSlot(int index)
+	    {
+	        switch (index)
+	        {
+				default: return null;
+	        }
+	    }
+	
+	    public Symbol_Syntax WithKSymbol(SyntaxToken kSymbol)
+		{
+			return this.Update(KSymbol);
+		}
+	
+	    public Symbol_Syntax Update(SyntaxToken kSymbol)
+	    {
+	        if (this.KSymbol != kSymbol)
+	        {
+	            var newNode = MetaCompilerLanguage.Instance.SyntaxFactory.Symbol_(kSymbol);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (Symbol_Syntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(IMetaCompilerSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitSymbol_(this, argument);
+	    }
+	
+	    public override TResult Accept<TResult>(IMetaCompilerSyntaxVisitor<TResult> visitor)
+	    {
+	        return visitor.VisitSymbol_(this);
+	    }
+	
+	    public override void Accept(IMetaCompilerSyntaxVisitor visitor)
+	    {
+	        visitor.VisitSymbol_(this);
 	    }
 	}
 	
@@ -6162,25 +6432,25 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax
 	    }
 	}
 	
-	public sealed class Fixed_Syntax : MetaCompilerSyntaxNode
+	public sealed class Base_Syntax : MetaCompilerSyntaxNode
 	{
 	
-	    public Fixed_Syntax(InternalSyntaxNode green, MetaCompilerSyntaxTree syntaxTree, int position)
+	    public Base_Syntax(InternalSyntaxNode green, MetaCompilerSyntaxTree syntaxTree, int position)
 	        : base(green, syntaxTree, position)
 	    {
 	    }
 	
-	    public Fixed_Syntax(InternalSyntaxNode green, MetaCompilerSyntaxNode parent, int position)
+	    public Base_Syntax(InternalSyntaxNode green, MetaCompilerSyntaxNode parent, int position)
 	        : base(green, parent, position)
 	    {
 	    }
 	
-	    public SyntaxToken KFixed 
+	    public SyntaxToken KBase 
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax.Fixed_Green)this.Green;
-				var greenToken = green.KFixed;
+				var green = (global::MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax.Base_Green)this.Green;
+				var greenToken = green.KBase;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
 		}
@@ -6201,37 +6471,256 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax
 	        }
 	    }
 	
-	    public Fixed_Syntax WithKFixed(SyntaxToken kFixed)
+	    public Base_Syntax WithKBase(SyntaxToken kBase)
 		{
-			return this.Update(KFixed);
+			return this.Update(KBase);
 		}
 	
-	    public Fixed_Syntax Update(SyntaxToken kFixed)
+	    public Base_Syntax Update(SyntaxToken kBase)
 	    {
-	        if (this.KFixed != kFixed)
+	        if (this.KBase != kBase)
 	        {
-	            var newNode = MetaCompilerLanguage.Instance.SyntaxFactory.Fixed_(kFixed);
+	            var newNode = MetaCompilerLanguage.Instance.SyntaxFactory.Base_(kBase);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
-				return (Fixed_Syntax)newNode;
+				return (Base_Syntax)newNode;
 	        }
 	        return this;
 	    }
 	
 	    public override TResult Accept<TArg, TResult>(IMetaCompilerSyntaxVisitor<TArg, TResult> visitor, TArg argument)
 	    {
-	        return visitor.VisitFixed_(this, argument);
+	        return visitor.VisitBase_(this, argument);
 	    }
 	
 	    public override TResult Accept<TResult>(IMetaCompilerSyntaxVisitor<TResult> visitor)
 	    {
-	        return visitor.VisitFixed_(this);
+	        return visitor.VisitBase_(this);
 	    }
 	
 	    public override void Accept(IMetaCompilerSyntaxVisitor visitor)
 	    {
-	        visitor.VisitFixed_(this);
+	        visitor.VisitBase_(this);
+	    }
+	}
+	
+	public sealed class Meta_Syntax : MetaCompilerSyntaxNode
+	{
+	
+	    public Meta_Syntax(InternalSyntaxNode green, MetaCompilerSyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
+	
+	    public Meta_Syntax(InternalSyntaxNode green, MetaCompilerSyntaxNode parent, int position)
+	        : base(green, parent, position)
+	    {
+	    }
+	
+	    public SyntaxToken KMeta 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax.Meta_Green)this.Green;
+				var greenToken = green.KMeta;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
+			}
+		}
+	
+	    public override SyntaxNode GetNodeSlot(int index)
+	    {
+	        switch (index)
+	        {
+				default: return null;
+	        }
+	    }
+	
+	    public override SyntaxNode GetCachedSlot(int index)
+	    {
+	        switch (index)
+	        {
+				default: return null;
+	        }
+	    }
+	
+	    public Meta_Syntax WithKMeta(SyntaxToken kMeta)
+		{
+			return this.Update(KMeta);
+		}
+	
+	    public Meta_Syntax Update(SyntaxToken kMeta)
+	    {
+	        if (this.KMeta != kMeta)
+	        {
+	            var newNode = MetaCompilerLanguage.Instance.SyntaxFactory.Meta_(kMeta);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (Meta_Syntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(IMetaCompilerSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitMeta_(this, argument);
+	    }
+	
+	    public override TResult Accept<TResult>(IMetaCompilerSyntaxVisitor<TResult> visitor)
+	    {
+	        return visitor.VisitMeta_(this);
+	    }
+	
+	    public override void Accept(IMetaCompilerSyntaxVisitor visitor)
+	    {
+	        visitor.VisitMeta_(this);
+	    }
+	}
+	
+	public sealed class Source_Syntax : MetaCompilerSyntaxNode
+	{
+	
+	    public Source_Syntax(InternalSyntaxNode green, MetaCompilerSyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
+	
+	    public Source_Syntax(InternalSyntaxNode green, MetaCompilerSyntaxNode parent, int position)
+	        : base(green, parent, position)
+	    {
+	    }
+	
+	    public SyntaxToken KSource 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax.Source_Green)this.Green;
+				var greenToken = green.KSource;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
+			}
+		}
+	
+	    public override SyntaxNode GetNodeSlot(int index)
+	    {
+	        switch (index)
+	        {
+				default: return null;
+	        }
+	    }
+	
+	    public override SyntaxNode GetCachedSlot(int index)
+	    {
+	        switch (index)
+	        {
+				default: return null;
+	        }
+	    }
+	
+	    public Source_Syntax WithKSource(SyntaxToken kSource)
+		{
+			return this.Update(KSource);
+		}
+	
+	    public Source_Syntax Update(SyntaxToken kSource)
+	    {
+	        if (this.KSource != kSource)
+	        {
+	            var newNode = MetaCompilerLanguage.Instance.SyntaxFactory.Source_(kSource);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (Source_Syntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(IMetaCompilerSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitSource_(this, argument);
+	    }
+	
+	    public override TResult Accept<TResult>(IMetaCompilerSyntaxVisitor<TResult> visitor)
+	    {
+	        return visitor.VisitSource_(this);
+	    }
+	
+	    public override void Accept(IMetaCompilerSyntaxVisitor visitor)
+	    {
+	        visitor.VisitSource_(this);
+	    }
+	}
+	
+	public sealed class Visit_Syntax : MetaCompilerSyntaxNode
+	{
+	
+	    public Visit_Syntax(InternalSyntaxNode green, MetaCompilerSyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
+	
+	    public Visit_Syntax(InternalSyntaxNode green, MetaCompilerSyntaxNode parent, int position)
+	        : base(green, parent, position)
+	    {
+	    }
+	
+	    public SyntaxToken KVisit 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax.Visit_Green)this.Green;
+				var greenToken = green.KVisit;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
+			}
+		}
+	
+	    public override SyntaxNode GetNodeSlot(int index)
+	    {
+	        switch (index)
+	        {
+				default: return null;
+	        }
+	    }
+	
+	    public override SyntaxNode GetCachedSlot(int index)
+	    {
+	        switch (index)
+	        {
+				default: return null;
+	        }
+	    }
+	
+	    public Visit_Syntax WithKVisit(SyntaxToken kVisit)
+		{
+			return this.Update(KVisit);
+		}
+	
+	    public Visit_Syntax Update(SyntaxToken kVisit)
+	    {
+	        if (this.KVisit != kVisit)
+	        {
+	            var newNode = MetaCompilerLanguage.Instance.SyntaxFactory.Visit_(kVisit);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (Visit_Syntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(IMetaCompilerSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitVisit_(this, argument);
+	    }
+	
+	    public override TResult Accept<TResult>(IMetaCompilerSyntaxVisitor<TResult> visitor)
+	    {
+	        return visitor.VisitVisit_(this);
+	    }
+	
+	    public override void Accept(IMetaCompilerSyntaxVisitor visitor)
+	    {
+	        visitor.VisitVisit_(this);
 	    }
 	}
 	
@@ -7448,7 +7937,11 @@ namespace MetaDslx.Languages.MetaCompiler
 		
 		void VisitClassMemberDeclaration(ClassMemberDeclarationSyntax node);
 		
-		void VisitClassKind(ClassKindSyntax node);
+		void VisitClass_(Class_Syntax node);
+		
+		void VisitSymbolDeclaration(SymbolDeclarationSyntax node);
+		
+		void VisitSymbol_(Symbol_Syntax node);
 		
 		void VisitFieldDeclaration(FieldDeclarationSyntax node);
 		
@@ -7508,7 +8001,13 @@ namespace MetaDslx.Languages.MetaCompiler
 		
 		void VisitStatic_(Static_Syntax node);
 		
-		void VisitFixed_(Fixed_Syntax node);
+		void VisitBase_(Base_Syntax node);
+		
+		void VisitMeta_(Meta_Syntax node);
+		
+		void VisitSource_(Source_Syntax node);
+		
+		void VisitVisit_(Visit_Syntax node);
 		
 		void VisitPartial_(Partial_Syntax node);
 		
@@ -7686,7 +8185,17 @@ namespace MetaDslx.Languages.MetaCompiler
 		    this.DefaultVisit(node);
 		}
 		
-		public virtual void VisitClassKind(ClassKindSyntax node)
+		public virtual void VisitClass_(Class_Syntax node)
+		{
+		    this.DefaultVisit(node);
+		}
+		
+		public virtual void VisitSymbolDeclaration(SymbolDeclarationSyntax node)
+		{
+		    this.DefaultVisit(node);
+		}
+		
+		public virtual void VisitSymbol_(Symbol_Syntax node)
 		{
 		    this.DefaultVisit(node);
 		}
@@ -7836,7 +8345,22 @@ namespace MetaDslx.Languages.MetaCompiler
 		    this.DefaultVisit(node);
 		}
 		
-		public virtual void VisitFixed_(Fixed_Syntax node)
+		public virtual void VisitBase_(Base_Syntax node)
+		{
+		    this.DefaultVisit(node);
+		}
+		
+		public virtual void VisitMeta_(Meta_Syntax node)
+		{
+		    this.DefaultVisit(node);
+		}
+		
+		public virtual void VisitSource_(Source_Syntax node)
+		{
+		    this.DefaultVisit(node);
+		}
+		
+		public virtual void VisitVisit_(Visit_Syntax node)
 		{
 		    this.DefaultVisit(node);
 		}
@@ -7974,7 +8498,11 @@ namespace MetaDslx.Languages.MetaCompiler
 		
 		TResult VisitClassMemberDeclaration(ClassMemberDeclarationSyntax node, TArg argument);
 		
-		TResult VisitClassKind(ClassKindSyntax node, TArg argument);
+		TResult VisitClass_(Class_Syntax node, TArg argument);
+		
+		TResult VisitSymbolDeclaration(SymbolDeclarationSyntax node, TArg argument);
+		
+		TResult VisitSymbol_(Symbol_Syntax node, TArg argument);
 		
 		TResult VisitFieldDeclaration(FieldDeclarationSyntax node, TArg argument);
 		
@@ -8034,7 +8562,13 @@ namespace MetaDslx.Languages.MetaCompiler
 		
 		TResult VisitStatic_(Static_Syntax node, TArg argument);
 		
-		TResult VisitFixed_(Fixed_Syntax node, TArg argument);
+		TResult VisitBase_(Base_Syntax node, TArg argument);
+		
+		TResult VisitMeta_(Meta_Syntax node, TArg argument);
+		
+		TResult VisitSource_(Source_Syntax node, TArg argument);
+		
+		TResult VisitVisit_(Visit_Syntax node, TArg argument);
 		
 		TResult VisitPartial_(Partial_Syntax node, TArg argument);
 		
@@ -8212,7 +8746,17 @@ namespace MetaDslx.Languages.MetaCompiler
 		    return this.DefaultVisit(node, argument);
 		}
 		
-		public virtual TResult VisitClassKind(ClassKindSyntax node, TArg argument)
+		public virtual TResult VisitClass_(Class_Syntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitSymbolDeclaration(SymbolDeclarationSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitSymbol_(Symbol_Syntax node, TArg argument)
 		{
 		    return this.DefaultVisit(node, argument);
 		}
@@ -8362,7 +8906,22 @@ namespace MetaDslx.Languages.MetaCompiler
 		    return this.DefaultVisit(node, argument);
 		}
 		
-		public virtual TResult VisitFixed_(Fixed_Syntax node, TArg argument)
+		public virtual TResult VisitBase_(Base_Syntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitMeta_(Meta_Syntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitSource_(Source_Syntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitVisit_(Visit_Syntax node, TArg argument)
 		{
 		    return this.DefaultVisit(node, argument);
 		}
@@ -8498,7 +9057,11 @@ namespace MetaDslx.Languages.MetaCompiler
 		
 		TResult VisitClassMemberDeclaration(ClassMemberDeclarationSyntax node);
 		
-		TResult VisitClassKind(ClassKindSyntax node);
+		TResult VisitClass_(Class_Syntax node);
+		
+		TResult VisitSymbolDeclaration(SymbolDeclarationSyntax node);
+		
+		TResult VisitSymbol_(Symbol_Syntax node);
 		
 		TResult VisitFieldDeclaration(FieldDeclarationSyntax node);
 		
@@ -8558,7 +9121,13 @@ namespace MetaDslx.Languages.MetaCompiler
 		
 		TResult VisitStatic_(Static_Syntax node);
 		
-		TResult VisitFixed_(Fixed_Syntax node);
+		TResult VisitBase_(Base_Syntax node);
+		
+		TResult VisitMeta_(Meta_Syntax node);
+		
+		TResult VisitSource_(Source_Syntax node);
+		
+		TResult VisitVisit_(Visit_Syntax node);
 		
 		TResult VisitPartial_(Partial_Syntax node);
 		
@@ -8736,7 +9305,17 @@ namespace MetaDslx.Languages.MetaCompiler
 		    return this.DefaultVisit(node);
 		}
 		
-		public virtual TResult VisitClassKind(ClassKindSyntax node)
+		public virtual TResult VisitClass_(Class_Syntax node)
+		{
+		    return this.DefaultVisit(node);
+		}
+		
+		public virtual TResult VisitSymbolDeclaration(SymbolDeclarationSyntax node)
+		{
+		    return this.DefaultVisit(node);
+		}
+		
+		public virtual TResult VisitSymbol_(Symbol_Syntax node)
 		{
 		    return this.DefaultVisit(node);
 		}
@@ -8886,7 +9465,22 @@ namespace MetaDslx.Languages.MetaCompiler
 		    return this.DefaultVisit(node);
 		}
 		
-		public virtual TResult VisitFixed_(Fixed_Syntax node)
+		public virtual TResult VisitBase_(Base_Syntax node)
+		{
+		    return this.DefaultVisit(node);
+		}
+		
+		public virtual TResult VisitMeta_(Meta_Syntax node)
+		{
+		    return this.DefaultVisit(node);
+		}
+		
+		public virtual TResult VisitSource_(Source_Syntax node)
+		{
+		    return this.DefaultVisit(node);
+		}
+		
+		public virtual TResult VisitVisit_(Visit_Syntax node)
 		{
 		    return this.DefaultVisit(node);
 		}
@@ -9027,6 +9621,12 @@ namespace MetaDslx.Languages.MetaCompiler
 		
 		public virtual SyntaxNode VisitDeclaration(DeclarationSyntax node)
 		{
+			var oldTypedefDeclaration = node.TypedefDeclaration;
+			if (oldTypedefDeclaration != null)
+			{
+			    var newTypedefDeclaration = (TypedefDeclarationSyntax)this.Visit(oldTypedefDeclaration);
+				return node.Update(newTypedefDeclaration);
+			}
 			var oldCompilerDeclaration = node.CompilerDeclaration;
 			if (oldCompilerDeclaration != null)
 			{
@@ -9051,11 +9651,11 @@ namespace MetaDslx.Languages.MetaCompiler
 			    var newClassDeclaration = (ClassDeclarationSyntax)this.Visit(oldClassDeclaration);
 				return node.Update(newClassDeclaration);
 			}
-			var oldTypedefDeclaration = node.TypedefDeclaration;
-			if (oldTypedefDeclaration != null)
+			var oldSymbolDeclaration = node.SymbolDeclaration;
+			if (oldSymbolDeclaration != null)
 			{
-			    var newTypedefDeclaration = (TypedefDeclarationSyntax)this.Visit(oldTypedefDeclaration);
-				return node.Update(newTypedefDeclaration);
+			    var newSymbolDeclaration = (SymbolDeclarationSyntax)this.Visit(oldSymbolDeclaration);
+				return node.Update(newSymbolDeclaration);
 			}
 			return node;   
 		}
@@ -9164,12 +9764,12 @@ namespace MetaDslx.Languages.MetaCompiler
 		    var attribute = this.VisitList(node.Attribute);
 		    var visibility = (VisibilitySyntax)this.Visit(node.Visibility);
 		    var classModifier = this.VisitList(node.ClassModifier);
-		    var classKind = (ClassKindSyntax)this.Visit(node.ClassKind);
+		    var class_ = (Class_Syntax)this.Visit(node.Class_);
 		    var name = (NameSyntax)this.Visit(node.Name);
 		    var tColon = this.VisitToken(node.TColon);
 		    var classAncestors = (ClassAncestorsSyntax)this.Visit(node.ClassAncestors);
 		    var classBody = (ClassBodySyntax)this.Visit(node.ClassBody);
-			return node.Update(attribute, visibility, classModifier, classKind, name, tColon, classAncestors, classBody);
+			return node.Update(attribute, visibility, classModifier, class_, name, tColon, classAncestors, classBody);
 		}
 		
 		public virtual SyntaxNode VisitClassModifier(ClassModifierSyntax node)
@@ -9185,12 +9785,6 @@ namespace MetaDslx.Languages.MetaCompiler
 			{
 			    var newSealed_ = (Sealed_Syntax)this.Visit(oldSealed_);
 				return node.Update(newSealed_);
-			}
-			var oldFixed_ = node.Fixed_;
-			if (oldFixed_ != null)
-			{
-			    var newFixed_ = (Fixed_Syntax)this.Visit(oldFixed_);
-				return node.Update(newFixed_);
 			}
 			var oldPartial_ = node.Partial_;
 			if (oldPartial_ != null)
@@ -9253,10 +9847,30 @@ namespace MetaDslx.Languages.MetaCompiler
 			return node;   
 		}
 		
-		public virtual SyntaxNode VisitClassKind(ClassKindSyntax node)
+		public virtual SyntaxNode VisitClass_(Class_Syntax node)
 		{
-		    var classKind = this.VisitToken(node.ClassKind);
-			return node.Update(classKind);
+		    var kClass = this.VisitToken(node.KClass);
+			return node.Update(kClass);
+		}
+		
+		public virtual SyntaxNode VisitSymbolDeclaration(SymbolDeclarationSyntax node)
+		{
+		    var attribute = this.VisitList(node.Attribute);
+		    var visibility = (VisibilitySyntax)this.Visit(node.Visibility);
+		    var visit_ = (Visit_Syntax)this.Visit(node.Visit_);
+		    var classModifier = this.VisitList(node.ClassModifier);
+		    var symbol_ = (Symbol_Syntax)this.Visit(node.Symbol_);
+		    var name = (NameSyntax)this.Visit(node.Name);
+		    var tColon = this.VisitToken(node.TColon);
+		    var classAncestors = (ClassAncestorsSyntax)this.Visit(node.ClassAncestors);
+		    var classBody = (ClassBodySyntax)this.Visit(node.ClassBody);
+			return node.Update(attribute, visibility, visit_, classModifier, symbol_, name, tColon, classAncestors, classBody);
+		}
+		
+		public virtual SyntaxNode VisitSymbol_(Symbol_Syntax node)
+		{
+		    var kSymbol = this.VisitToken(node.KSymbol);
+			return node.Update(kSymbol);
 		}
 		
 		public virtual SyntaxNode VisitFieldDeclaration(FieldDeclarationSyntax node)
@@ -9575,10 +10189,28 @@ namespace MetaDslx.Languages.MetaCompiler
 			return node.Update(kStatic);
 		}
 		
-		public virtual SyntaxNode VisitFixed_(Fixed_Syntax node)
+		public virtual SyntaxNode VisitBase_(Base_Syntax node)
 		{
-		    var kFixed = this.VisitToken(node.KFixed);
-			return node.Update(kFixed);
+		    var kBase = this.VisitToken(node.KBase);
+			return node.Update(kBase);
+		}
+		
+		public virtual SyntaxNode VisitMeta_(Meta_Syntax node)
+		{
+		    var kMeta = this.VisitToken(node.KMeta);
+			return node.Update(kMeta);
+		}
+		
+		public virtual SyntaxNode VisitSource_(Source_Syntax node)
+		{
+		    var kSource = this.VisitToken(node.KSource);
+			return node.Update(kSource);
+		}
+		
+		public virtual SyntaxNode VisitVisit_(Visit_Syntax node)
+		{
+		    var kVisit = this.VisitToken(node.KVisit);
+			return node.Update(kVisit);
 		}
 		
 		public virtual SyntaxNode VisitPartial_(Partial_Syntax node)
@@ -10004,6 +10636,12 @@ namespace MetaDslx.Languages.MetaCompiler
 			return this.NamespaceBody(this.Token(MetaCompilerSyntaxKind.TOpenBrace), default, this.Token(MetaCompilerSyntaxKind.TCloseBrace));
 		}
 		
+		public DeclarationSyntax Declaration(TypedefDeclarationSyntax typedefDeclaration)
+		{
+		    if (typedefDeclaration == null) throw new ArgumentNullException(nameof(typedefDeclaration));
+		    return (DeclarationSyntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.Declaration((Syntax.InternalSyntax.TypedefDeclarationGreen)typedefDeclaration.Green).CreateRed();
+		}
+		
 		public DeclarationSyntax Declaration(CompilerDeclarationSyntax compilerDeclaration)
 		{
 		    if (compilerDeclaration == null) throw new ArgumentNullException(nameof(compilerDeclaration));
@@ -10028,10 +10666,10 @@ namespace MetaDslx.Languages.MetaCompiler
 		    return (DeclarationSyntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.Declaration((Syntax.InternalSyntax.ClassDeclarationGreen)classDeclaration.Green).CreateRed();
 		}
 		
-		public DeclarationSyntax Declaration(TypedefDeclarationSyntax typedefDeclaration)
+		public DeclarationSyntax Declaration(SymbolDeclarationSyntax symbolDeclaration)
 		{
-		    if (typedefDeclaration == null) throw new ArgumentNullException(nameof(typedefDeclaration));
-		    return (DeclarationSyntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.Declaration((Syntax.InternalSyntax.TypedefDeclarationGreen)typedefDeclaration.Green).CreateRed();
+		    if (symbolDeclaration == null) throw new ArgumentNullException(nameof(symbolDeclaration));
+		    return (DeclarationSyntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.Declaration((Syntax.InternalSyntax.SymbolDeclarationGreen)symbolDeclaration.Green).CreateRed();
 		}
 		
 		public CompilerDeclarationSyntax CompilerDeclaration(SyntaxList<AttributeSyntax> attribute, SyntaxToken kCompiler, NameSyntax name, SyntaxToken tSemicolon)
@@ -10180,18 +10818,18 @@ namespace MetaDslx.Languages.MetaCompiler
 		    return (VisibilitySyntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.Visibility((InternalSyntaxToken)visibility.Node).CreateRed();
 		}
 		
-		public ClassDeclarationSyntax ClassDeclaration(SyntaxList<AttributeSyntax> attribute, VisibilitySyntax visibility, SyntaxList<ClassModifierSyntax> classModifier, ClassKindSyntax classKind, NameSyntax name, SyntaxToken tColon, ClassAncestorsSyntax classAncestors, ClassBodySyntax classBody)
+		public ClassDeclarationSyntax ClassDeclaration(SyntaxList<AttributeSyntax> attribute, VisibilitySyntax visibility, SyntaxList<ClassModifierSyntax> classModifier, Class_Syntax class_, NameSyntax name, SyntaxToken tColon, ClassAncestorsSyntax classAncestors, ClassBodySyntax classBody)
 		{
-		    if (classKind == null) throw new ArgumentNullException(nameof(classKind));
+		    if (class_ == null) throw new ArgumentNullException(nameof(class_));
 		    if (name == null) throw new ArgumentNullException(nameof(name));
 		    if (tColon != null && tColon.GetKind() != MetaCompilerSyntaxKind.TColon) throw new ArgumentException(nameof(tColon));
 		    if (classBody == null) throw new ArgumentNullException(nameof(classBody));
-		    return (ClassDeclarationSyntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.ClassDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), visibility == null ? null : (Syntax.InternalSyntax.VisibilityGreen)visibility.Green, Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<ClassModifierGreen>(classModifier.Node), (Syntax.InternalSyntax.ClassKindGreen)classKind.Green, (Syntax.InternalSyntax.NameGreen)name.Green, (InternalSyntaxToken)tColon.Node, classAncestors == null ? null : (Syntax.InternalSyntax.ClassAncestorsGreen)classAncestors.Green, (Syntax.InternalSyntax.ClassBodyGreen)classBody.Green).CreateRed();
+		    return (ClassDeclarationSyntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.ClassDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), visibility == null ? null : (Syntax.InternalSyntax.VisibilityGreen)visibility.Green, Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<ClassModifierGreen>(classModifier.Node), (Syntax.InternalSyntax.Class_Green)class_.Green, (Syntax.InternalSyntax.NameGreen)name.Green, (InternalSyntaxToken)tColon.Node, classAncestors == null ? null : (Syntax.InternalSyntax.ClassAncestorsGreen)classAncestors.Green, (Syntax.InternalSyntax.ClassBodyGreen)classBody.Green).CreateRed();
 		}
 		
-		public ClassDeclarationSyntax ClassDeclaration(ClassKindSyntax classKind, NameSyntax name, ClassBodySyntax classBody)
+		public ClassDeclarationSyntax ClassDeclaration(Class_Syntax class_, NameSyntax name, ClassBodySyntax classBody)
 		{
-			return this.ClassDeclaration(default, default, default, classKind, name, default, default, classBody);
+			return this.ClassDeclaration(default, default, default, class_, name, default, default, classBody);
 		}
 		
 		public ClassModifierSyntax ClassModifier(Abstract_Syntax abstract_)
@@ -10204,12 +10842,6 @@ namespace MetaDslx.Languages.MetaCompiler
 		{
 		    if (sealed_ == null) throw new ArgumentNullException(nameof(sealed_));
 		    return (ClassModifierSyntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.ClassModifier((Syntax.InternalSyntax.Sealed_Green)sealed_.Green).CreateRed();
-		}
-		
-		public ClassModifierSyntax ClassModifier(Fixed_Syntax fixed_)
-		{
-		    if (fixed_ == null) throw new ArgumentNullException(nameof(fixed_));
-		    return (ClassModifierSyntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.ClassModifier((Syntax.InternalSyntax.Fixed_Green)fixed_.Green).CreateRed();
 		}
 		
 		public ClassModifierSyntax ClassModifier(Partial_Syntax partial_)
@@ -10277,10 +10909,42 @@ namespace MetaDslx.Languages.MetaCompiler
 		    return (ClassMemberDeclarationSyntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.ClassMemberDeclaration((Syntax.InternalSyntax.OperationDeclarationGreen)operationDeclaration.Green).CreateRed();
 		}
 		
-		public ClassKindSyntax ClassKind(SyntaxToken classKind)
+		public Class_Syntax Class_(SyntaxToken kClass)
 		{
-		    if (classKind == null) throw new ArgumentNullException(nameof(classKind));
-		    return (ClassKindSyntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.ClassKind((InternalSyntaxToken)classKind.Node).CreateRed();
+		    if (kClass == null) throw new ArgumentNullException(nameof(kClass));
+		    if (kClass.GetKind() != MetaCompilerSyntaxKind.KClass) throw new ArgumentException(nameof(kClass));
+		    return (Class_Syntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.Class_((InternalSyntaxToken)kClass.Node).CreateRed();
+		}
+		
+		public Class_Syntax Class_()
+		{
+			return this.Class_(this.Token(MetaCompilerSyntaxKind.KClass));
+		}
+		
+		public SymbolDeclarationSyntax SymbolDeclaration(SyntaxList<AttributeSyntax> attribute, VisibilitySyntax visibility, Visit_Syntax visit_, SyntaxList<ClassModifierSyntax> classModifier, Symbol_Syntax symbol_, NameSyntax name, SyntaxToken tColon, ClassAncestorsSyntax classAncestors, ClassBodySyntax classBody)
+		{
+		    if (symbol_ == null) throw new ArgumentNullException(nameof(symbol_));
+		    if (name == null) throw new ArgumentNullException(nameof(name));
+		    if (tColon != null && tColon.GetKind() != MetaCompilerSyntaxKind.TColon) throw new ArgumentException(nameof(tColon));
+		    if (classBody == null) throw new ArgumentNullException(nameof(classBody));
+		    return (SymbolDeclarationSyntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.SymbolDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), visibility == null ? null : (Syntax.InternalSyntax.VisibilityGreen)visibility.Green, visit_ == null ? null : (Syntax.InternalSyntax.Visit_Green)visit_.Green, Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<ClassModifierGreen>(classModifier.Node), (Syntax.InternalSyntax.Symbol_Green)symbol_.Green, (Syntax.InternalSyntax.NameGreen)name.Green, (InternalSyntaxToken)tColon.Node, classAncestors == null ? null : (Syntax.InternalSyntax.ClassAncestorsGreen)classAncestors.Green, (Syntax.InternalSyntax.ClassBodyGreen)classBody.Green).CreateRed();
+		}
+		
+		public SymbolDeclarationSyntax SymbolDeclaration(Symbol_Syntax symbol_, NameSyntax name, ClassBodySyntax classBody)
+		{
+			return this.SymbolDeclaration(default, default, default, default, symbol_, name, default, default, classBody);
+		}
+		
+		public Symbol_Syntax Symbol_(SyntaxToken kSymbol)
+		{
+		    if (kSymbol == null) throw new ArgumentNullException(nameof(kSymbol));
+		    if (kSymbol.GetKind() != MetaCompilerSyntaxKind.KSymbol) throw new ArgumentException(nameof(kSymbol));
+		    return (Symbol_Syntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.Symbol_((InternalSyntaxToken)kSymbol.Node).CreateRed();
+		}
+		
+		public Symbol_Syntax Symbol_()
+		{
+			return this.Symbol_(this.Token(MetaCompilerSyntaxKind.KSymbol));
 		}
 		
 		public FieldDeclarationSyntax FieldDeclaration(SyntaxList<AttributeSyntax> attribute, VisibilitySyntax visibility, SyntaxList<MemberModifierSyntax> memberModifier, FieldContainmentSyntax fieldContainment, FieldKindSyntax fieldKind, TypeReferenceSyntax typeReference, NameSyntax name, DefaultValueSyntax defaultValue, PhaseSyntax phase, SyntaxToken tSemicolon)
@@ -10644,16 +11308,52 @@ namespace MetaDslx.Languages.MetaCompiler
 			return this.Static_(this.Token(MetaCompilerSyntaxKind.KStatic));
 		}
 		
-		public Fixed_Syntax Fixed_(SyntaxToken kFixed)
+		public Base_Syntax Base_(SyntaxToken kBase)
 		{
-		    if (kFixed == null) throw new ArgumentNullException(nameof(kFixed));
-		    if (kFixed.GetKind() != MetaCompilerSyntaxKind.KFixed) throw new ArgumentException(nameof(kFixed));
-		    return (Fixed_Syntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.Fixed_((InternalSyntaxToken)kFixed.Node).CreateRed();
+		    if (kBase == null) throw new ArgumentNullException(nameof(kBase));
+		    if (kBase.GetKind() != MetaCompilerSyntaxKind.KBase) throw new ArgumentException(nameof(kBase));
+		    return (Base_Syntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.Base_((InternalSyntaxToken)kBase.Node).CreateRed();
 		}
 		
-		public Fixed_Syntax Fixed_()
+		public Base_Syntax Base_()
 		{
-			return this.Fixed_(this.Token(MetaCompilerSyntaxKind.KFixed));
+			return this.Base_(this.Token(MetaCompilerSyntaxKind.KBase));
+		}
+		
+		public Meta_Syntax Meta_(SyntaxToken kMeta)
+		{
+		    if (kMeta == null) throw new ArgumentNullException(nameof(kMeta));
+		    if (kMeta.GetKind() != MetaCompilerSyntaxKind.KMeta) throw new ArgumentException(nameof(kMeta));
+		    return (Meta_Syntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.Meta_((InternalSyntaxToken)kMeta.Node).CreateRed();
+		}
+		
+		public Meta_Syntax Meta_()
+		{
+			return this.Meta_(this.Token(MetaCompilerSyntaxKind.KMeta));
+		}
+		
+		public Source_Syntax Source_(SyntaxToken kSource)
+		{
+		    if (kSource == null) throw new ArgumentNullException(nameof(kSource));
+		    if (kSource.GetKind() != MetaCompilerSyntaxKind.KSource) throw new ArgumentException(nameof(kSource));
+		    return (Source_Syntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.Source_((InternalSyntaxToken)kSource.Node).CreateRed();
+		}
+		
+		public Source_Syntax Source_()
+		{
+			return this.Source_(this.Token(MetaCompilerSyntaxKind.KSource));
+		}
+		
+		public Visit_Syntax Visit_(SyntaxToken kVisit)
+		{
+		    if (kVisit == null) throw new ArgumentNullException(nameof(kVisit));
+		    if (kVisit.GetKind() != MetaCompilerSyntaxKind.KVisit) throw new ArgumentException(nameof(kVisit));
+		    return (Visit_Syntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.Visit_((InternalSyntaxToken)kVisit.Node).CreateRed();
+		}
+		
+		public Visit_Syntax Visit_()
+		{
+			return this.Visit_(this.Token(MetaCompilerSyntaxKind.KVisit));
 		}
 		
 		public Partial_Syntax Partial_(SyntaxToken kPartial)
@@ -10847,7 +11547,9 @@ namespace MetaDslx.Languages.MetaCompiler
 				typeof(ClassBodySyntax),
 				typeof(ClassPhasesSyntax),
 				typeof(ClassMemberDeclarationSyntax),
-				typeof(ClassKindSyntax),
+				typeof(Class_Syntax),
+				typeof(SymbolDeclarationSyntax),
+				typeof(Symbol_Syntax),
 				typeof(FieldDeclarationSyntax),
 				typeof(FieldContainmentSyntax),
 				typeof(FieldKindSyntax),
@@ -10877,7 +11579,10 @@ namespace MetaDslx.Languages.MetaCompiler
 				typeof(ParameterListSyntax),
 				typeof(ParameterSyntax),
 				typeof(Static_Syntax),
-				typeof(Fixed_Syntax),
+				typeof(Base_Syntax),
+				typeof(Meta_Syntax),
+				typeof(Source_Syntax),
+				typeof(Visit_Syntax),
 				typeof(Partial_Syntax),
 				typeof(Abstract_Syntax),
 				typeof(Virtual_Syntax),

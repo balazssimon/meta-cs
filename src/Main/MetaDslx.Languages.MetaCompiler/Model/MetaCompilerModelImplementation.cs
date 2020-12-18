@@ -165,14 +165,14 @@ namespace MetaDslx.Languages.MetaCompiler.Model.Internal
             return true;
         }
 
-        public override IReadOnlyList<PhaseBuilder> Class_GetPhases(ClassBuilder _this)
+        public override IReadOnlyList<PhaseBuilder> Symbol_GetPhases(SymbolBuilder _this)
         {
             return _this.Properties.Where(p => p.Phase != null).Select(p => p.Phase).Union(_this.Phases).ToList();
         }
 
-        public override IReadOnlyList<PhaseBuilder> Class_GetAllPhases(ClassBuilder _this, bool includeSelf)
+        public override IReadOnlyList<PhaseBuilder> Symbol_GetAllPhases(SymbolBuilder _this, bool includeSelf)
         {
-            return _this.GetAllSuperClasses(includeSelf).SelectMany(cls => cls.GetPhases()).Distinct().ToList();
+            return _this.GetAllSuperClasses(includeSelf).OfType<SymbolBuilder>().SelectMany(cls => cls.GetPhases()).Distinct().ToList();
         }
     }
 }

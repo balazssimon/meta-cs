@@ -78,7 +78,9 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax
 				case MetaCompilerTokensSyntaxKind.KOverride:
 				case MetaCompilerTokensSyntaxKind.KSealed:
 				case MetaCompilerTokensSyntaxKind.KPartial:
-				case MetaCompilerTokensSyntaxKind.KFixed:
+				case MetaCompilerTokensSyntaxKind.KMeta:
+				case MetaCompilerTokensSyntaxKind.KSource:
+				case MetaCompilerTokensSyntaxKind.KVisit:
 				case MetaCompilerTokensSyntaxKind.KClass:
 				case MetaCompilerTokensSyntaxKind.KStruct:
 				case MetaCompilerTokensSyntaxKind.KEnum:
@@ -203,7 +205,9 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax
 				case MetaCompilerTokensSyntaxKind.KOverride:
 				case MetaCompilerTokensSyntaxKind.KSealed:
 				case MetaCompilerTokensSyntaxKind.KPartial:
-				case MetaCompilerTokensSyntaxKind.KFixed:
+				case MetaCompilerTokensSyntaxKind.KMeta:
+				case MetaCompilerTokensSyntaxKind.KSource:
+				case MetaCompilerTokensSyntaxKind.KVisit:
 				case MetaCompilerTokensSyntaxKind.KClass:
 				case MetaCompilerTokensSyntaxKind.KStruct:
 				case MetaCompilerTokensSyntaxKind.KEnum:
@@ -326,8 +330,12 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax
 					return MetaCompilerTokensSyntaxKind.KSealed;
 				case "partial":
 					return MetaCompilerTokensSyntaxKind.KPartial;
-				case "fixed":
-					return MetaCompilerTokensSyntaxKind.KFixed;
+				case "meta":
+					return MetaCompilerTokensSyntaxKind.KMeta;
+				case "source":
+					return MetaCompilerTokensSyntaxKind.KSource;
+				case "visit":
+					return MetaCompilerTokensSyntaxKind.KVisit;
 				case "class":
 					return MetaCompilerTokensSyntaxKind.KClass;
 				case "struct":
@@ -529,8 +537,12 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax
 					return "sealed";
 				case MetaCompilerTokensSyntaxKind.KPartial:
 					return "partial";
-				case MetaCompilerTokensSyntaxKind.KFixed:
-					return "fixed";
+				case MetaCompilerTokensSyntaxKind.KMeta:
+					return "meta";
+				case MetaCompilerTokensSyntaxKind.KSource:
+					return "source";
+				case MetaCompilerTokensSyntaxKind.KVisit:
+					return "visit";
 				case MetaCompilerTokensSyntaxKind.KClass:
 					return "class";
 				case MetaCompilerTokensSyntaxKind.KStruct:
@@ -721,7 +733,9 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax
 				case MetaCompilerTokensSyntaxKind.KOverride:
 				case MetaCompilerTokensSyntaxKind.KSealed:
 				case MetaCompilerTokensSyntaxKind.KPartial:
-				case MetaCompilerTokensSyntaxKind.KFixed:
+				case MetaCompilerTokensSyntaxKind.KMeta:
+				case MetaCompilerTokensSyntaxKind.KSource:
+				case MetaCompilerTokensSyntaxKind.KVisit:
 				case MetaCompilerTokensSyntaxKind.KClass:
 				case MetaCompilerTokensSyntaxKind.KStruct:
 				case MetaCompilerTokensSyntaxKind.KEnum:
@@ -857,7 +871,9 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax
 				case MetaCompilerTokensSyntaxKind.KOverride:
 				case MetaCompilerTokensSyntaxKind.KSealed:
 				case MetaCompilerTokensSyntaxKind.KPartial:
-				case MetaCompilerTokensSyntaxKind.KFixed:
+				case MetaCompilerTokensSyntaxKind.KMeta:
+				case MetaCompilerTokensSyntaxKind.KSource:
+				case MetaCompilerTokensSyntaxKind.KVisit:
 				case MetaCompilerTokensSyntaxKind.KClass:
 				case MetaCompilerTokensSyntaxKind.KStruct:
 				case MetaCompilerTokensSyntaxKind.KEnum:
@@ -914,7 +930,9 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax
 				yield return MetaCompilerTokensSyntaxKind.KOverride;
 				yield return MetaCompilerTokensSyntaxKind.KSealed;
 				yield return MetaCompilerTokensSyntaxKind.KPartial;
-				yield return MetaCompilerTokensSyntaxKind.KFixed;
+				yield return MetaCompilerTokensSyntaxKind.KMeta;
+				yield return MetaCompilerTokensSyntaxKind.KSource;
+				yield return MetaCompilerTokensSyntaxKind.KVisit;
 				yield return MetaCompilerTokensSyntaxKind.KClass;
 				yield return MetaCompilerTokensSyntaxKind.KStruct;
 				yield return MetaCompilerTokensSyntaxKind.KEnum;
@@ -985,8 +1003,12 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax
 					return MetaCompilerTokensSyntaxKind.KSealed;
 				case "partial":
 					return MetaCompilerTokensSyntaxKind.KPartial;
-				case "fixed":
-					return MetaCompilerTokensSyntaxKind.KFixed;
+				case "meta":
+					return MetaCompilerTokensSyntaxKind.KMeta;
+				case "source":
+					return MetaCompilerTokensSyntaxKind.KSource;
+				case "visit":
+					return MetaCompilerTokensSyntaxKind.KVisit;
 				case "class":
 					return MetaCompilerTokensSyntaxKind.KClass;
 				case "struct":

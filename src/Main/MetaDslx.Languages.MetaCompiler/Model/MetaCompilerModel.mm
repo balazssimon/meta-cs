@@ -23,6 +23,14 @@
 		Private,
 		Internal
 	}
+
+	/*enum SymbolModifierKind
+	{
+		None,
+		Base,
+		Meta,
+		Source
+	}*/
 	
 	class Compiler : Declaration
 	{
@@ -135,21 +143,28 @@
 		bool IsStatic;
 		bool IsSealed;
 		bool IsPartial;
-		bool IsFixed;
+
 		[BaseScope]
 		list<Class> SuperClasses;
 		containment list<Property> Properties;
 		containment list<Operation> Operations;
-		list<Phase> Phases;
 
 		bool ConformsTo(DataType type);
-		list<Phase> GetPhases();
-		list<Phase> GetAllPhases(bool includeSelf);
 		list<Class> GetAllSuperClasses(bool includeSelf);
 		list<Property> GetAllProperties(bool includeSelf);
 		list<Operation> GetAllOperations(bool includeSelf);
 		list<Property> GetAllFinalProperties();
 		list<Operation> GetAllFinalOperations();
+	}
+
+	class Symbol : Class
+	{
+		ClassKind Kind = "ClassKind.Symbol";
+		list<Phase> Phases;
+		bool IsVisit;
+		//SymbolModifierKind SymbolModifier;
+		list<Phase> GetPhases();
+		list<Phase> GetAllPhases(bool includeSelf);
 	}
 
 	class Phase : Declaration
