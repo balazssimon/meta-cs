@@ -22,10 +22,12 @@
 	typedef LanguageTypeKind = "LanguageTypeKind";
 	typedef SpecialType = "SpecialType";
 	typedef ConsList = "ConsList";
+	typedef TypedConstant = "TypedConstant";
 
 	compiler Main;
 
 	phase Attributes;
+  phase ObsoleteAttribute;
 	phase Module;
 	locked phase ValidatingReferencedAssemblies;
 	locked phase ValidatingAddedModules;
@@ -39,194 +41,126 @@
 
 	abstract symbol Symbol
 	{
-    abstract Language Language;
-		virtual string Name = "string.Empty";
-		virtual string MetadataName = "this.Name";
-		abstract Symbol ContainingSymbol;
-		abstract Location[] Locations;
-    virtual bool IsImplicitlyDeclared = "false";
-    abstract SyntaxReference[] DeclaringSyntaxReferences;
-		abstract AttributeData[] Attributes;
-    
-    partial virtual AssemblySymbol ContainingAssembly;
-    partial virtual ModuleSymbol ContainingModule;
-    partial virtual LanguageCompilation DeclaringCompilation;
-    partial virtual LexicalSortKey GetLexicalSortKey();
-    partial virtual bool HasUnsupportedMetadata;
+		string Name;
+
+		AttributeSymbol[] Attributes phase Attributes;
 	}
   
-	fixed symbol AssemblySymbol : Symbol
-	{
-    phase Attributes, AttributeChecks, Module, ValidatingAddedModules;
-    
-    override string Name;
-		override AttributeData[] Attributes phase Attributes;
-    internal AssemblySymbol CorLibrary;
-    abstract AssemblyIdentity Identity;
-    abstract Version AssemblyVersionPattern;
-    abstract NamespaceSymbol GlobalNamespace;
-    abstract ModuleSymbol[] Modules;
-    abstract bool IsMissing;
-    abstract bool IsLinked;
-    virtual bool IsInteractive = "false";
-    abstract DeclaredSymbol[] DeclaredSpecialSymbols;
-    abstract ICollection<string> TypeNames;
-    abstract ICollection<string> NamespaceNames;
-
-    internal void SetCorLibrary(AssemblySymbol corLibrary);
-    abstract DeclaredSymbol GetDeclaredSpecialSymbol(object key);
-
-    sealed override Symbol ContainingSymbol = "null";
-    sealed override AssemblySymbol ContainingAssembly = "null";
-    DeclaredSymbol[] SpecialSymbols = "DeclaredSpecialSymbols";
-
-    static TypeSymbol DynamicType = "DynamicTypeSymbol.Instance";
-    
-    partial Machine Machine;
-    partial bool Bit32Required;
-    partial NamedTypeSymbol ObjectType;
-
-    partial Symbol GetSpecialSymbol(object key);
-	}  
-  
-	fixed symbol ModuleSymbol : Symbol
-	{
-    phase Attributes, ValidatingReferencedAssemblies, MembersCompleted;
-
-		override AttributeData[] Attributes phase Attributes;
-    abstract int Ordinal;
-    abstract Machine Machine;
-    abstract bool Bit32Required;
-    abstract bool IsMissing;
-    abstract AssemblyIdentity[] ReferencedAssemblies;
-    abstract AssemblySymbol[] ReferencedAssemblySymbols;
-    abstract bool HasUnifiedReferences;
-    abstract ICollection<string> TypeNames;
-    abstract ICollection<string> NamespaceNames;
-    abstract NamespaceSymbol GlobalNamespace;
-    
-    abstract ModuleMetadata GetMetadata();
-    
-    sealed override AssemblySymbol ContainingAssembly = "(AssemblySymbol)ContainingSymbol";
-    sealed override ModuleSymbol ContainingModule = "null";
-    sealed override ObsoleteAttributeData ObsoleteAttributeData = "null";
-	}
-
 	abstract symbol DeclaredSymbol : Symbol
 	{
-		override AttributeData[] Attributes phase Attributes;
+    bool IsStatic;
+    bool IsVirtual;
+    bool IsOverride;
+    bool IsAbstract;
+    bool IsSealed;
+    bool IsNew;
+    bool IsExtern;
+    bool IsImplicitlyDeclared;
+    Accessibility DeclaredAccessibility;
+
+    DeclaredSymbol ConstructedFrom;
+    
 		protected string->DeclaredSymbol[] MembersByName phase Members;
 		DeclaredSymbol[] Members phase MembersCompleted;
 		NamedTypeSymbol[] TypeMembers phase MembersCompleted;
-    abstract bool IsStatic;
-    virtual bool IsVirtual = "false";
-    virtual bool IsOverride = "false";
-    virtual bool IsAbstract = "false";
-    virtual bool IsSealed = "false";
-    virtual bool IsExtern = "false";
-    abstract MergedDeclaration MergedDeclaration;
-    virtual DeclaredSymbol ConstructedFrom = "this";
-    virtual Accessibility DeclaredAccessibility = "Accessibility.Public";
-    
-    partial DeclaredSymbol ContainingDeclaration;
-    partial NamedTypeSymbol ContainingType;
-    partial NamespaceSymbol ContainingNamespace;
-    partial DeclaredSymbol OriginalDefinition;
-    partial bool IsDefinition;
-    partial bool CanBeReferencedByName;
-    partial ImmutableArray<DeclaredSymbol> GetMembersUnordered();
-    partial ImmutableArray<DeclaredSymbol> GetMembers();
-    partial ImmutableArray<DeclaredSymbol> GetMembers(string name);
-    partial ImmutableArray<DeclaredSymbol> GetMembers(string name, string metadataName);
-    partial ImmutableArray<NamedTypeSymbol> GetTypeMembersUnordered();
-    partial ImmutableArray<NamedTypeSymbol> GetTypeMembers();
-    partial ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name);
-    partial ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name, string metadataName);
-    
 	}
 
-	abstract symbol NamespaceOrTypeSymbol : DeclaredSymbol
+	symbol NamespaceSymbol : DeclaredSymbol
 	{
-    partial bool IsNamespace;
-    partial bool IsType;
 	}
-
-	fixed abstract symbol NamespaceSymbol : NamespaceOrTypeSymbol
-	{
-    abstract NamespaceExtent Extent;
     
-    override bool IsImplicitlyDeclared = "this.IsGlobalNamespace";
-    override Accessibility DeclaredAccessibility = "Accessibility.Public";
-    override bool IsStatic = "true";
-    
-    partial virtual bool IsGlobalNamespace;
-    partial NamespaceKind NamespaceKind;
-    partial LanguageCompilation ContainingCompilation;
-    partial override ModuleSymbol ContainingModule;
-    
-    partial NamespaceSymbol LookupNestedNamespace(string[] names);
-    partial NamespaceSymbol GetNestedNamespace(string name);
-	}
-
-	abstract symbol TypeSymbol : NamespaceOrTypeSymbol
-	{
-    virtual bool IsReferenceType = "false";
-    virtual bool IsValueType = "false";
-    virtual bool IsAnonymousType = "false";
-    virtual bool IsTupleType = "false";
-    virtual bool IsRefLikeType = "false";
-    virtual bool IsUnmanagedType = "false";
-    virtual bool IsReadOnly = "false";
-    new TypeSymbol OriginalDefinition = "OriginalTypeSymbolDefinition";
-    protected virtual TypeSymbol OriginalTypeSymbolDefinition = "this";
-    protected sealed override DeclaredSymbol OriginalSymbolDefinition = "OriginalTypeSymbolDefinition";
+  symbol MergedNamespaceSymbol : NamespaceSymbol
+  {
+  }
   
-    partial virtual LanguageTypeKind TypeKind;
-    partial virtual SpecialType SpecialType;
-    partial virtual NamedTypeSymbol[] BaseTypesNoUseSiteDiagnostics;
-    partial virtual NamedTypeSymbol[] AllBaseTypesNoUseSiteDiagnostics;
-    partial TypeSymbol EffectiveTypeNoUseSiteDiagnostics;
+	symbol TypeSymbol : DeclaredSymbol
+	{
+    bool IsReferenceType;
+    bool IsValueType;
+    bool IsAnonymousType;
+    bool IsTupleType;
+    bool IsRefLikeType;
+    bool IsUnmanagedType;
+    bool IsReadOnly;
+  
+    LanguageTypeKind TypeKind;
+    SpecialType SpecialType;
+    NamedTypeSymbol[] BaseTypesNoUseSiteDiagnostics phase BaseTypes;
+    NamedTypeSymbol[] AllBaseTypesNoUseSiteDiagnostics phase BaseTypes;
+    TypeSymbol EffectiveTypeNoUseSiteDiagnostics;
 	}
 
-	fixed abstract symbol NamedTypeSymbol : NamespaceOrTypeSymbol
+	symbol NamedTypeSymbol : TypeSymbol
 	{
     phase BaseTypes;
 
-    virtual int Arity = "0";
+    int Arity = "0";
     abstract IEnumerable<string> MemberNames;
-    
-    abstract ImmutableArray<NamedTypeSymbol> GetDeclaredBaseTypes(ConsList<TypeSymbol> basesBeingResolved);
-    
-    override abstract ImmutableArray<DeclaredSymbol> GetMembers();
-    override abstract ImmutableArray<DeclaredSymbol> GetMembers(string name);
-    override abstract ImmutableArray<DeclaredSymbol> GetMembers(string name, string metadataName);
-    override abstract ImmutableArray<NamedTypeSymbol> GetTypeMembers();
-    override abstract ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name);
-    override abstract ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name, string metadataName);
-    
-    partial virtual ImmutableArray<DeclaredSymbol> GetInstanceMembers();
-    partial virtual ImmutableArray<DeclaredSymbol> GetStaticMembers();
-    partial virtual MethodSymbol GetScriptInitializer();
-    partial virtual MethodSymbol GetScriptEntryPoint();
-    partial virtual MethodSymbol[] GetOperators(string metadataName);
-    partial MethodSymbol[] InstanceConstructors;
-    partial MethodSymbol[] StaticConstructors;
-    partial MethodSymbol[] Constructors;
+    DeclaredSymbol[] InstanceMembers;
+    DeclaredSymbol[] StaticMembers;
+    MethodSymbol ScriptInitializer;
+    MethodSymbol ScriptEntryPoint;
+    MethodSymbol[] Operators;
+    MethodSymbol[] InstanceConstructors;
+    MethodSymbol[] StaticConstructors;
+    MethodSymbol[] Constructors;
 	}
-  
-  abstract symbol MemberSymbol : DeclaredSymbol
+
+  symbol AttributeSymbol : Symbol
+  {
+    NamedTypeSymbol AttributeClass;
+    MethodSymbol AttributeConstructor;
+    TypedConstant[] ConstructorArguments;
+    KeyValuePair<string, TypedConstant>[] NamedArguments;
+  }
+    
+  symbol ErrorTypeSymbol : NamedTypeSymbol
   {
   }
   
-  fixed symbol FieldSymbol : MemberSymbol
+  symbol UnsupportedSymbol : Symbol
   {
   }
   
-  fixed symbol PropertySymbol : MemberSymbol
+  symbol DiscardSymbol : Symbol
   {
   }
   
-  fixed symbol MethodSymbol : MemberSymbol
+  symbol MemberSymbol : DeclaredSymbol
   {
   }
+  
+  symbol FieldSymbol : MemberSymbol
+  {
+  }
+  
+  symbol PropertySymbol : MemberSymbol
+  {
+  }
+  
+  symbol MethodSymbol : MemberSymbol
+  {
+  }
+  
+  symbol OperationSymbol : Symbol
+  {
+  }
+  
+  symbol StatementSymbol : OperationSymbol
+  {
+  }
+  
+  symbol ExpressionSymbol : OperationSymbol
+  {
+  }
+  
+    
+  symbol AliasSymbol : DeclaredSymbol
+  {
+  }
+
+  symbol DynamicTypeSymbol : TypeSymbol
+  {
+  }
+
 }

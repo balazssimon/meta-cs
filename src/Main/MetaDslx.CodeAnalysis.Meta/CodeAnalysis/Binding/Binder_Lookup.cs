@@ -852,7 +852,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                 diagInfo = diagnose ? new LanguageDiagnosticInfo(InternalErrorCode.ERR_LabelNotFound, unwrappedSymbol.Name) : null;
                 return LookupResult.NotLabel(symbol, diagInfo);
             }*/
-            else if (!constraints.Kinds.IsDefault && !constraints.Kinds.IsEmpty && !constraints.Kinds.Any(st => st.ImmutableType.IsAssignableFrom(symbol.ModelSymbolInfo.ImmutableType)))
+            else if (constraints.IsViable(symbol))
             {
                 return LookupResult.WrongSymbol(symbol, symbol, constraints.Kinds, true);
             }

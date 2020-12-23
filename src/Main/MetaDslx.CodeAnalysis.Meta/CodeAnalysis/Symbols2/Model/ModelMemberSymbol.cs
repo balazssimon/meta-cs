@@ -74,5 +74,20 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
         {
             return GetTypeMembers().WhereAsArray(m => m.Name == name && m.MetadataName == metadataName);
         }
+
+        public override bool CanOverrideOrHide(MemberSymbol other)
+        {
+            var otherMember = other as IModelSymbol;
+            if ((object)otherMember == null) return false;
+            return this.Kind == other.Kind && this.ModelSymbolInfo == otherMember.ModelSymbolInfo;
+        }
+
+        protected override bool MatchesOverride(DeclaredSymbol otherMember)
+        {
+            var other = otherMember as IModelSymbol;
+            if ((object)other == null) return false;
+            return this.Kind == otherMember.Kind && this.ModelSymbolInfo == other.ModelSymbolInfo && this.Name == otherMember.Name;
+        }
+
     }
 }

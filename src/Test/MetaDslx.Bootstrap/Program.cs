@@ -394,10 +394,10 @@ namespace MetaDslx.Bootstrap
 
             //*/
             SymbolGenerator sgen = new SymbolGenerator(compiledModel.Objects);
-            string generatedCsharpModel = sgen.Generate();
-            //var outputFile = "Symbols.cs.txt";
-            var outputFile = @"..\..\..\..\..\Main\MetaDslx.CodeAnalysis.Meta\CodeAnalysis\Symbols\Symbols.Generated.cs";
-            File.WriteAllText(outputFile, generatedCsharpModel);
+            var outputPath = @"..\..\..\..\..\Main\MetaDslx.CodeAnalysis.Meta\CodeAnalysis\Symbols2";
+            File.WriteAllText(Path.Combine(outputPath, "Symbols.Generated.cs"), sgen.GenerateSymbols());
+            File.WriteAllText(Path.Combine(outputPath, @"Metadata\Symbols.Generated.cs"), sgen.GenerateMetaSymbols());
+            File.WriteAllText(Path.Combine(outputPath, @"Source\Symbols.Generated.cs"), sgen.GenerateSourceSymbols());
             //*/
 
         }
