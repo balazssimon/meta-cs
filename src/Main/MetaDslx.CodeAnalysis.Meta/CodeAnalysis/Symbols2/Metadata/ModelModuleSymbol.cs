@@ -19,37 +19,40 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
     {
         private ModelGlobalNamespaceSymbol _globalNamespace;
         private AssemblySymbol _owningAssembly;
-        private ImmutableArray<IModel> _models;
+        private ObjectFactory _objectFactory;
+        private SymbolFactory _symbolFactory;
+        private object _model;
         private readonly int _ordinal;
-        private readonly ModelSymbolMap _symbolMap;
 
-        public ModelModuleSymbol(AssemblySymbol owningAssembly, ImmutableArray<IModel> models, int ordinal)
+        public ModelModuleSymbol(AssemblySymbol owningAssembly, object model, int ordinal)
         {
             _owningAssembly = owningAssembly;
-            _models = models;
+            _model = model;
+            _objectFactory = Language.CompilationFactory.CreateObjectFactory(this);
             _ordinal = ordinal;
-            _symbolMap = new ModelSymbolMap(this);
         }
 
-        public ModelModuleSymbol(AssemblySymbol owningAssembly, IModelGroup modelGroup, int ordinal)
+        public object Model => _model;
+
+        public object ModelObject => null;
+
+        public ObjectFactory ObjectFactory => _objectFactory;
+
+        public SymbolFactory SymbolFactory
         {
-            _owningAssembly = owningAssembly;
-            _models = modelGroup.Models.ToImmutableArray();
-            _ordinal = ordinal;
-            _symbolMap = new ModelSymbolMap(this);
+            get
+            {
+                if (_symbolFactory == null)
+                {
+                    Interlocked.CompareExchange(ref _symbolFactory, Language.CompilationFactory.CreateSymbolFactory(_objectFactory), null);
+                }
+                return _symbolFactory;
+            }
         }
-
-        public ImmutableArray<IModel> Models => _models;
-
-        public ModelSymbolMap ModelSymbolMap => _symbolMap;
 
         public override int Ordinal => _ordinal;
 
         public override bool HasUnifiedReferences => false;
-
-        public ModelObjectDescriptor ModelSymbolInfo => null;
-
-        public IModelObject ModelObject => null;
 
         public override NamespaceSymbol GlobalNamespace
         {
@@ -86,15 +89,5 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             return null;
         }
 
-        public override bool TryGetSymbol(IModelObject modelObject, out Symbol symbol)
-        {
-            Debug.Assert(modelObject != null);
-            if (_models.Contains(modelObject.MModel))
-            {
-                return this.ModelSymbolMap.TryGetSymbol(modelObject, out symbol);
-            }
-            symbol = null;
-            return false;
-        }
     }
 }

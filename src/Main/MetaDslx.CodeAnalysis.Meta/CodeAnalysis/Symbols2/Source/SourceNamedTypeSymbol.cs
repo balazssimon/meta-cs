@@ -23,42 +23,25 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
     /// <summary>
     /// Represents a named type symbol whose members are declared in source.
     /// </summary>
-    public abstract class SourceNamedTypeSymbol : ModelNamedTypeSymbol
+    public class SourceNamedTypeSymbol : ModelNamedTypeSymbol
     {
         private readonly MergedDeclaration _declaration;
         private readonly CompletionState _state;
-        private readonly MutableObjectBase _modelObject;
         private SourceDeclaration _sourceDeclaration;
         private ImmutableArray<NamedTypeSymbol> _lazyDeclaredBases;
         private ImmutableArray<NamedTypeSymbol> _lazyBaseTypes;
 
         public SourceNamedTypeSymbol(
-            DeclaredSymbol containingSymbol,
-            MergedDeclaration declaration,
-            DiagnosticBag diagnostics)
-            : base(containingSymbol)
+            Symbol containingSymbol,
+            object modelObject,
+            MergedDeclaration declaration)
+            : base(containingSymbol, modelObject)
         {
-            Debug.Assert(declaration != null);
             Debug.Assert(containingSymbol is IModelSourceSymbol);
+            Debug.Assert(declaration != null);
             _declaration = declaration;
-
-            if (declaration.Kind != null && containingSymbol is IModelSourceSymbol mss)
-            {
-                _modelObject = declaration.GetModelObject(mss.ModelObject as MutableObjectBase, mss.ModelBuilder, diagnostics);
-                Debug.Assert(_modelObject != null);
-                ModelSymbolMap.RegisterSymbol(_modelObject, this);
-            }
-
-            foreach (var singleDeclaration in declaration.Declarations)
-            {
-                diagnostics.AddRange(singleDeclaration.Diagnostics);
-            }
             _state = CompletionState.Create(containingSymbol.Language);
         }
-
-        internal protected MutableModel ModelBuilder => ((IModelSourceSymbol)ContainingModule).ModelBuilder;
-
-        public override IModelObject ModelObject => _modelObject;
 
         public override MergedDeclaration MergedDeclaration => _declaration;
 
@@ -172,6 +155,13 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         public override void ForceComplete(SourceLocation locationOpt, CancellationToken cancellationToken)
         {
+            // TODO: add declaration diagnostics
+            /*
+            foreach (var singleDeclaration in declaration.Declarations)
+            {
+                diagnostics.AddRange(singleDeclaration.Diagnostics);
+            }
+             */
             while (true)
             {
                 // NOTE: cases that depend on GetMembers[ByName] should call RequireCompletionPartMembers.

@@ -8,8 +8,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 {
     public class SourceAnonymousTypeSymbol : SourceNamedTypeSymbol
     {
-        public SourceAnonymousTypeSymbol(DeclaredSymbol containingSymbol, MergedDeclaration declaration, DiagnosticBag diagnostics) 
-            : base(containingSymbol, declaration, diagnostics)
+        public SourceAnonymousTypeSymbol(Symbol containingSymbol, object modelObject, MergedDeclaration declaration) 
+            : base(containingSymbol, modelObject, declaration)
         {
         }
 

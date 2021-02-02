@@ -111,7 +111,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         /// </summary>
         private ImmutableArray<Diagnostic> _unusedFieldWarnings;
 
-        private MutableModelGroup _modelGroupBuilder;
+        private ImmutableArray<object> _models;
 
         internal SourceAssemblySymbol(
             LanguageCompilation compilation,
@@ -129,12 +129,12 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             _compilation = compilation;
             _language = _compilation.Language;
             _assemblySimpleName = assemblySimpleName;
-            _modelGroupBuilder = new MutableModelGroup();
-            var modelBuilder = _modelGroupBuilder.CreateModel(moduleName);
 
+            ArrayBuilder<object> modelBuilder0 = new ArrayBuilder<object>(1 + netModules.Length);
             ArrayBuilder<ModuleSymbol> moduleBuilder = new ArrayBuilder<ModuleSymbol>(1 + netModules.Length);
 
-            moduleBuilder.Add(new SourceModuleSymbol(this, modelBuilder, compilation.Declarations, moduleName));
+            var sourceModule = new SourceModuleSymbol(this, null, compilation.Declarations, moduleName);
+            moduleBuilder.Add(sourceModule);
 
             var importOptions = (compilation.Options.MetadataImportOptions == MetadataImportOptions.All) ?
                 MetadataImportOptions.All : MetadataImportOptions.Internal;
@@ -159,14 +159,12 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                     if (metadata is ModelMetadata modelMetadata)
                     {
                         var model = modelMetadata.Model;
-                        moduleBuilder.Add(new MetaModuleSymbol(this, ImmutableArray.Create((IModel)model), moduleBuilder.Count));
-                        _modelGroupBuilder.AddReference(model);
+                        moduleBuilder.Add(new ModelModuleSymbol(this, model, moduleBuilder.Count));
                     }
                     if (metadata is ModelGroupMetadata modelGroupMetadata)
                     {
                         var modelGroup = modelGroupMetadata.ModelGroup;
-                        moduleBuilder.Add(new MetaModuleSymbol(this, modelGroup, moduleBuilder.Count));
-                        _modelGroupBuilder.AddReference(modelGroup);
+                        moduleBuilder.Add(new ModelModuleSymbol(this, modelGroup, moduleBuilder.Count));
                     }
                 }
             }
@@ -191,9 +189,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         public override Language Language => _language;
 
-        internal protected MutableModelGroup ModelGroupBuilder => _modelGroupBuilder;
-
-        internal protected MutableModel ModelBuilder => SourceModule.ModelBuilder;
+        public object Model => SourceModule.Model;
 
         /// <remarks>
         /// This override is essential - it's a base case of the recursive definition.

@@ -952,16 +952,14 @@ namespace MetaDslx.CodeAnalysis
 
         #region Symbols
 
-        public ImmutableModel Model
+        public object Model
         {
             get
             {
                 this.ForceComplete();
-                return this.ModelBuilder.ToImmutable();
+                return this.SourceAssembly.SourceModule.Model;
             }
         }
-
-        public MutableModel ModelBuilder => this.SourceAssembly.SourceModule.ModelBuilder;
 
         /// <summary>
         /// The AssemblySymbol that represents the assembly being created.
@@ -2174,7 +2172,6 @@ namespace MetaDslx.CodeAnalysis
                 var boundTree = GetBoundTree(syntaxTree);
                 boundTree.ForceComplete(cancellationToken);
             }
-            this.ModelBuilder.EvaluateLazyValues(cancellationToken);
         }
 
         private static bool IsDefinedOrImplementedInSourceTree(DeclaredSymbol symbol, SyntaxTree tree, TextSpan? span)
@@ -2570,29 +2567,6 @@ namespace MetaDslx.CodeAnalysis
         internal void SymbolDeclaredEvent(DeclaredSymbol symbol)
         {
             EventQueue?.TryEnqueue(new SymbolDeclaredCompilationEvent(this, symbol));
-        }
-
-        public ImmutableDictionary<IModelObject, Symbol> BuildModelObjectToSymbolMap()
-        {
-            var builder = ImmutableDictionary.CreateBuilder<IModelObject, Symbol>();
-            Stack<Symbol> stack = new Stack<Symbol>();
-            stack.Push(this.GlobalNamespace);
-            while (stack.Count > 0)
-            {
-                var currentSymbol = stack.Pop();
-                if (currentSymbol.ModelObject != null)
-                {
-                    builder.Add(currentSymbol.ModelObject, currentSymbol);
-                }
-                if (currentSymbol is DeclaredSymbol currentDeclaredSymbol)
-                {
-                    foreach (var childDeclaredSymbol in currentDeclaredSymbol.GetMembers())
-                    {
-                        stack.Push(childDeclaredSymbol);
-                    }
-                }
-            }
-            return builder.ToImmutable();
         }
 
 

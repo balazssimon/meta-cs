@@ -69,7 +69,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             get { return this.parentPropertyToAddTo; }
         }
 
-        public abstract ModelObjectDescriptor Kind { get; }
+        public abstract Type ModelObjectType { get; }
 
         public ImmutableArray<Declaration> Children
         {
@@ -85,17 +85,17 @@ namespace MetaDslx.CodeAnalysis.Declarations
 
         public bool IsType
         {
-            get { return this.Kind?.IsType ?? false; }
+            get { return this.ModelObjectType?.IsType ?? false; }
         }
 
         public bool IsNamespace
         {
-            get { return this.Kind?.IsNamespace ?? false; }
+            get { return this.ModelObjectType?.IsNamespace ?? false; }
         }
 
         public bool IsName
         {
-            get { return this.Kind?.IsName ?? false; }
+            get { return this.ModelObjectType?.IsName ?? false; }
         }
 
         public bool IsScript
@@ -154,7 +154,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
                 else if (declaration.IsType) kind = "type";
                 else if (declaration.IsName) kind = "name";
                 else kind = "unknown";
-                sb.AppendFormat("{0}{1} ({2}): {3}", indent, declaration.Name, kind, declaration.Kind?.ImmutableType.Name ?? "<root>");
+                sb.AppendFormat("{0}{1} ({2}): {3}", indent, declaration.Name, kind, declaration.ModelObjectType.Name ?? "<root>");
                 sb.AppendLine();
                 foreach (var child in declaration.GetDeclarationChildren())
                 {

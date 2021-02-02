@@ -7,20 +7,22 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 {
-    public class UnsupportedMetaSymbol : Symbol, IMetaErrorSymbol
+    public sealed class UnsupportedModelSymbol : Symbol, IMetaErrorSymbol
     {
-        private IModelObject _symbol;
+        private Symbol _container;
+        private object _modelObject;
 
-        internal UnsupportedMetaSymbol(IModelObject symbol)
+        internal UnsupportedModelSymbol(Symbol container, object modelObject)
         {
-            _symbol = symbol;
+            _container = container;
+            _modelObject = modelObject;
         }
 
-        public IModelObject Symbol => _symbol;
+        public object ModelObject => _modelObject;
 
         public override LanguageSymbolKind Kind => LanguageSymbolKind.ErrorType;
 
-        public override Symbol ContainingSymbol => null;
+        public override Symbol ContainingSymbol => _container;
 
         public override ImmutableArray<Location> Locations => ImmutableArray<Location>.Empty;
 

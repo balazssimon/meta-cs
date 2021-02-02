@@ -16,7 +16,7 @@ using System.Threading;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Source
 {
-    public class SourceModuleSymbol : ModelModuleSymbol, IModelSourceSymbol
+    public class SourceModuleSymbol : ModelModuleSymbol
     {
         /// <summary>
         /// Owning assembly.
@@ -39,21 +39,20 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         private bool _hasBadAttributes;
 
-        private MutableModel _modelBuilder;
-
-        private CSharpSymbolMap _csharpSymbolMap;
+        private object _model;
 
         internal SourceModuleSymbol(
             SourceAssemblySymbol assemblySymbol,
-            MutableModel modelBuilder,
+            object model,
             DeclarationTable declarations,
             string moduleName)
-            : base(assemblySymbol, ImmutableArray.Create((IModel)modelBuilder), 0)
+            : base(assemblySymbol, model, 0)
         {
             Debug.Assert((object)assemblySymbol != null);
+            Debug.Assert(model == null);
 
             _assemblySymbol = assemblySymbol;
-            _modelBuilder = modelBuilder;
+            _model = model;
             _sources = declarations;
             _name = moduleName;
 
@@ -62,9 +61,10 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         public override Language Language => _assemblySymbol.Language;
 
-        internal protected MutableModel ModelBuilder => _modelBuilder;
-
-        MutableModel IModelSourceSymbol.ModelBuilder => ModelBuilder;
+        internal void SetModelByObjectFactory(object model)
+        {
+            _model = model;
+        }
 
         internal void RecordPresenceOfBadAttributes()
         {
@@ -201,8 +201,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 if ((object)_globalNamespace == null)
                 {
                     var diagnostics = DiagnosticBag.GetInstance();
-                    var globalNS = new SourceNamespaceSymbol(
-                        this, this, DeclaringCompilation.MergedRootDeclaration, diagnostics);
+                    var globalNS = new SourceNamespaceSymbol(this, this, null, DeclaringCompilation.MergedRootDeclaration, diagnostics);
                     Debug.Assert(diagnostics.IsEmptyWithoutResolution);
                     diagnostics.Free();
                     Interlocked.CompareExchange(ref _globalNamespace, globalNS, null);

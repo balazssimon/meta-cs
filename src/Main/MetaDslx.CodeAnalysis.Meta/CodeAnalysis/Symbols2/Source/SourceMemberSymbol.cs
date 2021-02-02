@@ -24,34 +24,18 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         private SourceDeclaration _sourceDeclaration;
 
         public SourceMemberSymbol(
-            DeclaredSymbol containingSymbol,
-            MergedDeclaration declaration,
-            DiagnosticBag diagnostics)
-            : base(containingSymbol)
+            Symbol containingSymbol,
+            object modelObject,
+            MergedDeclaration declaration)
+            : base(containingSymbol, modelObject)
         {
-            Debug.Assert(declaration != null);
             Debug.Assert(containingSymbol is IModelSourceSymbol);
+            Debug.Assert(declaration != null);
             _declaration = declaration;
-
-            if (declaration.Kind != null && containingSymbol is IModelSourceSymbol mss)
-            {
-                _modelObject = declaration.GetModelObject(mss.ModelObject as MutableObjectBase, mss.ModelBuilder, diagnostics);
-                Debug.Assert(_modelObject != null);
-                ModelSymbolMap.RegisterSymbol(_modelObject, this);
-            }
-
-            foreach (var singleDeclaration in declaration.Declarations)
-            {
-                diagnostics.AddRange(singleDeclaration.Diagnostics);
-            }
             _state = CompletionState.Create(containingSymbol.ContainingModule.Language);
         }
 
         public override Language Language => ContainingSymbol.Language;
-
-        internal protected MutableModel ModelBuilder => ((IModelSourceSymbol)ContainingModule).ModelBuilder;
-
-        public override IModelObject ModelObject => _modelObject;
 
         public override MergedDeclaration MergedDeclaration => _declaration;
 
@@ -143,6 +127,13 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         public override void ForceComplete(SourceLocation locationOpt, CancellationToken cancellationToken)
         {
+            // TODO: add declaration diagnostics
+            /*
+            foreach (var singleDeclaration in declaration.Declarations)
+            {
+                diagnostics.AddRange(singleDeclaration.Diagnostics);
+            }
+             */
             while (true)
             {
                 cancellationToken.ThrowIfCancellationRequested();

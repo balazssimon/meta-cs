@@ -18,7 +18,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
 
     public class SingleDeclaration : Declaration
     {
-        private readonly ModelObjectDescriptor _kind;
+        private readonly Type _modelObjectType;
         private readonly SyntaxReference _syntaxReference;
         private readonly SourceLocation _nameLocation;
         private readonly ImmutableArray<SingleDeclaration> _children;
@@ -34,7 +34,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
 
         public SingleDeclaration(
             string name, 
-            ModelObjectDescriptor kind,
+            Type modelObjectType,
             SyntaxReference syntaxReference,
             SourceLocation nameLocation,
             bool canMerge,
@@ -44,7 +44,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             ImmutableArray<Diagnostic> diagnostics)
             : base(name, canMerge, parentPropertyToAddTo)
         {
-            this._kind = kind;
+            this._modelObjectType = modelObjectType;
             this._syntaxReference = syntaxReference;
             this._nameLocation = nameLocation;
             this._children = children;
@@ -52,9 +52,9 @@ namespace MetaDslx.CodeAnalysis.Declarations
             this.Diagnostics = diagnostics;
         }
 
-        public override ModelObjectDescriptor Kind
+        public override Type ModelObjectType
         {
-            get { return this._kind; }
+            get { return this._modelObjectType; }
         }
 
         public Location Location
@@ -150,7 +150,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
                 if (otherDecl.Name == null) return false;
 
                 // kind and name must match
-                if ((thisDecl.Kind != otherDecl.Kind) ||
+                if ((thisDecl.ModelObjectType != otherDecl.ModelObjectType) ||
                     (thisDecl.Name != otherDecl.Name))
                 {
                     return false;
@@ -163,7 +163,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             public override int GetHashCode()
             {
                 var thisDecl = _decl;
-                return Hash.Combine(thisDecl.Name?.GetHashCode() ?? 0, thisDecl.Kind?.GetHashCode() ?? 0);
+                return Hash.Combine(thisDecl.Name?.GetHashCode() ?? 0, thisDecl.ModelObjectType?.GetHashCode() ?? 0);
             }
         }
     }

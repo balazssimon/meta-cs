@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using MetaDslx.Modeling;
@@ -8,20 +9,25 @@ using Microsoft.CodeAnalysis;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 {
-    public abstract class ModelNamespaceSymbol : NamespaceSymbol, IModelSymbol
+    public class ModelNamespaceSymbol : NamespaceSymbol, IModelSymbol
     {
         private Symbol _container;
+        private object _modelObject;
         private ImmutableArray<DeclaredSymbol> _lazyMembers;
         private ImmutableArray<NamedTypeSymbol> _lazyTypeMembers;
 
-        public ModelNamespaceSymbol(Symbol container)
+        public ModelNamespaceSymbol(Symbol container, object modelObject)
         {
+            Debug.Assert(container is IModelSymbol);
             _container = container;
+            _modelObject = modelObject;
         }
 
-        public ModelSymbolMap ModelSymbolMap => ((IModelSymbol)_container).ModelSymbolMap;
+        public ObjectFactory ObjectFactory => ((IModelSymbol)_container).ObjectFactory;
 
-        public abstract IModelObject ModelObject { get; }
+        public SymbolFactory SymbolFactory => ((IModelSymbol)_container).SymbolFactory;
+
+        public object ModelObject => _modelObject;
 
         public override NamespaceExtent Extent
         {
@@ -39,46 +45,24 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 
         public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => ImmutableArray<SyntaxReference>.Empty;
 
-        public sealed override string Name => ModelObject.MName;
-
-        public ModelObjectDescriptor ModelSymbolInfo => ModelObject.MId.Descriptor;
+        public sealed override string Name => ObjectFactory.GetName(_modelObject);
 
         public override ImmutableArray<DeclaredSymbol> GetMembers()
         {
             if (_lazyMembers.IsDefault)
             {
-                ImmutableInterlocked.InterlockedInitialize(ref _lazyMembers, ModelSymbolMap.GetMemberSymbols(ModelObject.MChildren));
+                ImmutableInterlocked.InterlockedInitialize(ref _lazyMembers, SymbolFactory.CreateMetaMemberSymbols(this, ModelObject));
             }
             return _lazyMembers;
-        }
-
-        public override ImmutableArray<DeclaredSymbol> GetMembers(string name)
-        {
-            return GetMembers().WhereAsArray(m => m.Name == name);
-        }
-
-        public override ImmutableArray<DeclaredSymbol> GetMembers(string name, string metadataName)
-        {
-            return GetMembers().WhereAsArray(m => m.Name == name && m.MetadataName == metadataName);
         }
 
         public override ImmutableArray<NamedTypeSymbol> GetTypeMembers()
         {
             if (_lazyTypeMembers.IsDefault)
             {
-                ImmutableInterlocked.InterlockedInitialize(ref _lazyTypeMembers, ModelSymbolMap.GetNamedTypeSymbols(ModelObject.MChildren.Where(child => child.MId.Descriptor.IsNamedType)));
+                ImmutableInterlocked.InterlockedInitialize(ref _lazyTypeMembers, GetMembers().OfType<NamedTypeSymbol>().ToImmutableArray());
             }
             return _lazyTypeMembers;
-        }
-
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name)
-        {
-            return GetTypeMembers().WhereAsArray(m => m.Name == name);
-        }
-
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name, string metadataName)
-        {
-            return GetTypeMembers().WhereAsArray(m => m.Name == name && m.MetadataName == metadataName);
         }
 
     }

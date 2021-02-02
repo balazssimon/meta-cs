@@ -17,7 +17,6 @@ namespace MetaDslx.CodeAnalysis.Declarations
         private readonly ImmutableArray<SingleDeclaration> _declarations;
         private ImmutableArray<MergedDeclaration> _lazyChildren;
         private ImmutableArray<string> _lazyChildNames;
-        private MutableObjectBase _modelObject;
 
         public MergedDeclaration(ImmutableArray<SingleDeclaration> declarations)
             : base(declarations.IsEmpty ? null : declarations[0].Name,
@@ -43,11 +42,11 @@ namespace MetaDslx.CodeAnalysis.Declarations
             }
         }
 
-        public override ModelObjectDescriptor Kind
+        public override Type ModelObjectType
         {
             get
             {
-                return this._declarations.IsEmpty ? null : this._declarations[0].Kind;
+                return this._declarations.IsEmpty ? null : this._declarations[0].ModelObjectType;
             }
         }
 
@@ -164,34 +163,5 @@ namespace MetaDslx.CodeAnalysis.Declarations
             return new MergedDeclaration(mergedDeclaration._declarations.Add(declaration));
         }
 
-        public MutableObjectBase GetModelObject(MutableObjectBase parentObject, MutableModel model, DiagnosticBag diagnostics)
-        {
-            if (_modelObject == null)
-            {
-                lock (this) // We must lock, we do not want to create multiple symbols for the same declaration
-                {
-                    if (_modelObject != null) return _modelObject;
-                    var modelObject = this.Kind.CreateMutable(model);
-                    modelObject.MName = this.Name;
-                    if (parentObject != null && !string.IsNullOrEmpty(this.ParentPropertyToAddTo))
-                    {
-                        var property = parentObject.MGetProperty(this.ParentPropertyToAddTo);
-                        if (property != null)
-                        {
-                            try
-                            {
-                                parentObject.MAdd(property, modelObject);
-                            }
-                            catch (ModelException me)
-                            {
-                                diagnostics.Add(ModelErrorCode.ERR_CannotSetValueToProperty, this.NameLocations[0], property, modelObject, me.ToString());
-                            }
-                        }
-                    }
-                    Interlocked.CompareExchange(ref _modelObject, modelObject, null);
-                }
-            }
-            return _modelObject;
-        }
     }
 }

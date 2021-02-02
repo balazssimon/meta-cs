@@ -46,7 +46,7 @@ using Roslyn.Utilities;
 end template
 
 template GenerateSymbolsNamespace(Namespace ns)
-[var symbols = ns.Declarations.OfType<Symbol>())]
+[var symbols = ns.Declarations.OfType<Symbol>()]
 namespace [ns.FullName].Base
 {
 	[loop(symbol:symbols)]

@@ -17,14 +17,12 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
         private ImmutableArray<string> _lazyNamespaceNames;
 
         public ModelGlobalNamespaceSymbol(ModelModuleSymbol module)
-            : base(module)
+            : base(module, null)
         {
             _module = module;
         }
 
         public override NamespaceExtent Extent => new NamespaceExtent(_module);
-
-        public override IModelObject ModelObject => null;
 
         public override ImmutableArray<Location> Locations => _module.Locations;
 

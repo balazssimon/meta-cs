@@ -5,8 +5,12 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 {
-    public interface IModelSourceSymbol : IModelSymbol
+    public interface IModelSymbol
     {
-        MutableModel ModelBuilder { get; }
+        ObjectFactory ObjectFactory { get; }
+        SymbolFactory SymbolFactory { get; }
+        object ModelObject { get; }
     }
+
+
 }

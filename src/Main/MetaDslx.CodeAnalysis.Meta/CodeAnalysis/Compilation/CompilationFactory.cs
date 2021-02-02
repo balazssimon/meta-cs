@@ -105,5 +105,15 @@ namespace MetaDslx.CodeAnalysis
         public abstract BoundNodeFactoryVisitor CreateBoundNodeFactoryVisitor(BoundTree boundTree);
         public abstract IsBindableNodeVisitor CreateIsBindableNodeVisitor(BoundTree boundTree);
 
+        public virtual ObjectFactory CreateObjectFactory(ModelModuleSymbol module)
+        {
+            return new MetaObjectFactory(module, null);
+        }
+
+        public virtual SymbolFactory CreateSymbolFactory(ObjectFactory objectFactory)
+        {
+            return new MetaSymbolFactory((MetaObjectFactory)objectFactory);
+        }
+
     }
 }

@@ -16,12 +16,12 @@ namespace MetaDslx.CodeAnalysis.Declarations
         private readonly ImmutableArray<ReferenceDirective> _referenceDirectives;
 
         public RootSingleDeclaration(
-            ModelObjectDescriptor kind,
+            Type modelObjectType,
             SyntaxReference treeNode, 
             ImmutableArray<SingleDeclaration> children, 
             ImmutableArray<ReferenceDirective> referenceDirectives,
             ImmutableArray<Diagnostic> diagnostics) 
-            : base(string.Empty, kind, treeNode, new SourceLocation(treeNode), true, null, children, ImmutableArray<DeclarationTreeInfo.Property>.Empty, diagnostics)
+            : base(string.Empty, modelObjectType, treeNode, new SourceLocation(treeNode), true, null, children, ImmutableArray<DeclarationTreeInfo.Property>.Empty, diagnostics)
         {
             _referenceDirectives = referenceDirectives;
         }

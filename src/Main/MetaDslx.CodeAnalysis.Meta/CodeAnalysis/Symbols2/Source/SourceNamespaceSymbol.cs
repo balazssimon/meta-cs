@@ -23,40 +23,23 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         private readonly SourceModuleSymbol _module;
         private readonly MergedDeclaration _declaration;
         private readonly CompletionState _state;
-        private readonly MutableObjectBase _modelObject;
         private SourceDeclaration _sourceDeclaration;
 
         public SourceNamespaceSymbol(
             SourceModuleSymbol module, 
             Symbol containingSymbol,
-            MergedDeclaration declaration,
-            DiagnosticBag diagnostics)
-            : base(containingSymbol)
+            object modelObject,
+            MergedDeclaration declaration)
+            : base(containingSymbol, modelObject)
         {
-            Debug.Assert(declaration != null);
             Debug.Assert(containingSymbol is IModelSourceSymbol);
+            Debug.Assert(declaration != null);
             _module = module;
             _declaration = declaration;
-
-            if (declaration.Kind != null && containingSymbol is IModelSourceSymbol mss)
-            {
-                _modelObject = declaration.GetModelObject(mss.ModelObject as MutableObjectBase, mss.ModelBuilder, diagnostics);
-                Debug.Assert(_modelObject != null);
-                ModelSymbolMap.RegisterSymbol(_modelObject, this);
-            }
-
-            foreach (var singleDeclaration in declaration.Declarations)
-            {
-                diagnostics.AddRange(singleDeclaration.Diagnostics);
-            }
             _state = CompletionState.Create(module.Language);
         }
 
         public override Language Language => _module.Language;
-
-        internal protected MutableModel ModelBuilder => _module.ModelBuilder;
-
-        public override IModelObject ModelObject => _modelObject;
 
         public override MergedDeclaration MergedDeclaration => _declaration;
 
@@ -223,6 +206,13 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         public override void ForceComplete(SourceLocation locationOpt, CancellationToken cancellationToken)
         {
+            // TODO: add declaration diagnostics
+            /*
+            foreach (var singleDeclaration in declaration.Declarations)
+            {
+                diagnostics.AddRange(singleDeclaration.Diagnostics);
+            }
+             */
             while (true)
             {
                 cancellationToken.ThrowIfCancellationRequested();

@@ -408,49 +408,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             return builder.ToReadOnlyAndFree();
         }
 
-        protected virtual NamespaceSymbol BuildNamespaceSymbol(MergedDeclaration declaration, DiagnosticBag diagnostics)
-        {
-            Debug.Assert(declaration.IsNamespace);
-            return new SourceNamespaceSymbol((SourceModuleSymbol)_symbol.ContainingModule, _symbol, declaration, diagnostics);
-        }
-
-        protected virtual NamedTypeSymbol BuildTypeSymbol(MergedDeclaration declaration, DiagnosticBag diagnostics)
-        {
-            Debug.Assert(declaration.IsType);
-            if (declaration.Name != null) return BuildNamedTypeSymbol(declaration, diagnostics);
-            else return BuildAnonymousTypeSymbol(declaration, diagnostics);
-        }
-
-        protected virtual NamedTypeSymbol BuildNamedTypeSymbol(MergedDeclaration declaration, DiagnosticBag diagnostics)
-        {
-            Debug.Assert(declaration.IsType && declaration.Name != null);
-            return new SourceNamedTypeSymbol(_symbol, declaration, diagnostics);
-        }
-
-        protected virtual NamedTypeSymbol BuildAnonymousTypeSymbol(MergedDeclaration declaration, DiagnosticBag diagnostics)
-        {
-            Debug.Assert(declaration.IsType && declaration.Name == null);
-            return new SourceAnonymousTypeSymbol(_symbol, declaration, diagnostics);
-        }
-
-        protected virtual DeclaredSymbol BuildMemberSymbol(MergedDeclaration declaration, DiagnosticBag diagnostics)
-        {
-            Debug.Assert(!declaration.IsType, "Use BuildTypeSymbol to create type symbols.");
-            Debug.Assert(!declaration.IsNamespace, "Use BuildNamespaceSymbol to create namespace symbols.");
-            if (declaration.Name != null) return BuildNamedMemberSymbol(declaration, diagnostics);
-            else return BuildAnonymousMemberSymbol(declaration, diagnostics);
-        }
-
-        protected virtual DeclaredSymbol BuildNamedMemberSymbol(MergedDeclaration declaration, DiagnosticBag diagnostics)
-        {
-            return new SourceMemberSymbol(_symbol, declaration, diagnostics);
-        }
-
-        protected virtual DeclaredSymbol BuildAnonymousMemberSymbol(MergedDeclaration declaration, DiagnosticBag diagnostics)
-        {
-            return new SourceMemberSymbol(_symbol, declaration, diagnostics);
-        }
-
         private void AddTypeMembers(ArrayBuilder<NamedTypeSymbol> builder, DiagnosticBag diagnostics)
         {
             foreach (var decl in this.Declaration.Children)

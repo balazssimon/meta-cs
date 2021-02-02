@@ -128,7 +128,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         {
             get
             {
-                return ModelSymbolInfo?.HasName ?? false;
+                return !string.IsNullOrEmpty(Name);
             }
         }
 
@@ -289,7 +289,10 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         /// <returns>An ImmutableArray containing all the members of this symbol with the given name. If there are
         /// no members with this name, returns an empty ImmutableArray. Never returns null.</returns>
-        public abstract ImmutableArray<DeclaredSymbol> GetMembers(string name);
+        public virtual ImmutableArray<DeclaredSymbol> GetMembers(string name)
+        {
+            return GetMembers().WhereAsArray(m => m.Name == name);
+        }
 
         /// <summary>
         /// Get all the members of this symbol that are types that have a particular name and arity
@@ -330,7 +333,12 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <returns>An ImmutableArray containing all the types that are members of this symbol with the given name.
         /// If this symbol has no type members with this name,
         /// returns an empty ImmutableArray. Never returns null.</returns>
-        public abstract ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name);
+        public virtual ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name)
+        {
+            // default implementation does a post-filter. We can override this if its a performance burden, but 
+            // experience is that it won't be.
+            return GetTypeMembers().WhereAsArray(t => t.Name == name);
+        }
 
         /// <summary>
         /// Get all the members of this symbol that are types that have a particular name and arity
