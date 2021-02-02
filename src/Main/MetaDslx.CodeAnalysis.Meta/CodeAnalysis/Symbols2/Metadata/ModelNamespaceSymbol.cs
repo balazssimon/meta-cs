@@ -23,8 +23,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             _modelObject = modelObject;
         }
 
-        public ObjectFactory ObjectFactory => ((IModelSymbol)_container).ObjectFactory;
-
         public SymbolFactory SymbolFactory => ((IModelSymbol)_container).SymbolFactory;
 
         public object ModelObject => _modelObject;
@@ -45,13 +43,13 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 
         public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => ImmutableArray<SyntaxReference>.Empty;
 
-        public sealed override string Name => ObjectFactory.GetName(_modelObject);
+        public sealed override string Name => Language.SymbolFacts.GetName(_modelObject);
 
         public override ImmutableArray<DeclaredSymbol> GetMembers()
         {
             if (_lazyMembers.IsDefault)
             {
-                ImmutableInterlocked.InterlockedInitialize(ref _lazyMembers, SymbolFactory.CreateMetaMemberSymbols(this, ModelObject));
+                ImmutableInterlocked.InterlockedInitialize(ref _lazyMembers, SymbolFactory.GetChildDeclaredSymbols(ModelObject));
             }
             return _lazyMembers;
         }

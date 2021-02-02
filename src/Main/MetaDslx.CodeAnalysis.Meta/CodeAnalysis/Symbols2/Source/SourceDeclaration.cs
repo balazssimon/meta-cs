@@ -77,6 +77,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         public string MetadataName => _symbol.MetadataName;
 
+        public IModelSourceSymbol SourceSymbol => (IModelSourceSymbol)_symbol;
+
         public IEnumerable<string> MemberNames
         {
             get { return this.Declaration.ChildNames; }
@@ -136,7 +138,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 {
                     if (childDeclaration.IsType && childDeclaration.Name != null)
                     {
-                        var t = new SourceNamedTypeSymbol(_symbol, childDeclaration, diagnostics);
+                        var mobj = _symbol.DeclaringCompilation.ObjectFactory.CreateObject(childDeclaration.ModelObjectType);
+                        var t = (SourceNamedTypeSymbol)SourceSymbol.SymbolFactory.MakeSourceSymbol(_symbol, mobj, childDeclaration);
                         this.CheckMemberNameDistinctFromType(t, diagnostics);
 
                         var key = (t.Name, t.MetadataName);
@@ -410,6 +413,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         private void AddTypeMembers(ArrayBuilder<NamedTypeSymbol> builder, DiagnosticBag diagnostics)
         {
+            var symbolFactory = SourceSymbol.SymbolFactory;
+            var objectFactory = _symbol.DeclaringCompilation.ObjectFactory;
             foreach (var decl in this.Declaration.Children)
             {
                 if (_lazyMembers != null)
@@ -420,7 +425,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
                 if (decl.IsType)
                 {
-                    var symbol = BuildTypeSymbol(decl, diagnostics);
+                    var mobj = objectFactory.CreateObject(decl.ModelObjectType);
+                    var symbol = (NamedTypeSymbol)symbolFactory.MakeSourceSymbol(_symbol, mobj, decl);
                     builder.Add(symbol);
                 }
             }
@@ -428,6 +434,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         private void AddNonTypeMembers(ArrayBuilder<DeclaredSymbol> builder, DiagnosticBag diagnostics)
         {
+            var symbolFactory = SourceSymbol.SymbolFactory;
+            var objectFactory = _symbol.DeclaringCompilation.ObjectFactory;
             foreach (var decl in this.Declaration.Children)
             {
                 if (_lazyMembers != null)
@@ -438,16 +446,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
                 if (decl.IsType) continue;
 
-                if (decl.IsNamespace)
-                {
-                    var symbol = BuildNamespaceSymbol(decl, diagnostics);
-                    builder.Add(symbol);
-                }
-                else // Member
-                {
-                    var symbol = BuildMemberSymbol(decl, diagnostics);
-                    builder.Add(symbol);
-                }
+                var mobj = objectFactory.CreateObject(decl.ModelObjectType);
+                var symbol = (DeclaredSymbol)symbolFactory.MakeSourceSymbol(_symbol, mobj, decl);
+                builder.Add(symbol);
             }
         }
 
@@ -456,6 +457,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             Dictionary<string, ImmutableArray<DeclaredSymbol>> membersByName,
             DiagnosticBag diagnostics)
         {
+            var symbolFacts = _symbol.Language.SymbolFacts;
             //key and value will be the same object
             var symbolMap = new Dictionary<Symbol, Symbol>();
 
@@ -464,10 +466,14 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 symbolMap.Clear();
                 foreach (var symbol in membersByName[name])
                 {
+                    var modelSymbol = symbol as IModelSourceSymbol;
+                    var symbolType = symbolFacts.GetModelObjectType(modelSymbol.ModelObject);
                     Symbol prev;
                     if (symbolMap.TryGetValue(symbol, out prev))
                     {
-                        if (prev.ModelSymbolInfo == symbol.ModelSymbolInfo)
+                        var modelPrevSymbol = prev as IModelSourceSymbol;
+                        var prevType = symbolFacts.GetModelObjectType(modelPrevSymbol.ModelObject);
+                        if (prevType == symbolType)
                         {
                             diagnostics.Add(InternalErrorCode.ERR_DuplicateNameInClass, symbol.Locations[0], this, symbol.Name);
                         }

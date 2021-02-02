@@ -40,13 +40,13 @@ namespace MetaDslx.CodeAnalysis.Declarations
     {
         private readonly string name;
         private readonly DeclarationFlags flags;
-        private readonly string parentPropertyToAddTo;
+        private DeclarationKind kind;
 
-        protected Declaration(string name, bool merge, string parentPropertyToAddTo)
+        protected Declaration(string name, DeclarationKind kind, bool merge)
         {
             this.name = name;
             if (merge) this.flags |= DeclarationFlags.Merge;
-            this.parentPropertyToAddTo = parentPropertyToAddTo;
+            this.kind = kind;
         }
 
         public string Name
@@ -64,11 +64,6 @@ namespace MetaDslx.CodeAnalysis.Declarations
             get { return this.flags.HasFlag(DeclarationFlags.Merge); }
         }
 
-        public string ParentPropertyToAddTo
-        {
-            get { return this.parentPropertyToAddTo; }
-        }
-
         public abstract Type ModelObjectType { get; }
 
         public ImmutableArray<Declaration> Children
@@ -83,35 +78,17 @@ namespace MetaDslx.CodeAnalysis.Declarations
 
         protected abstract ImmutableArray<Declaration> GetDeclarationChildren();
 
-        public bool IsType
-        {
-            get { return this.ModelObjectType?.IsType ?? false; }
-        }
+        public DeclarationKind Kind => kind;
 
-        public bool IsNamespace
-        {
-            get { return this.ModelObjectType?.IsNamespace ?? false; }
-        }
+        public bool IsType => kind == DeclarationKind.Type;
 
-        public bool IsName
-        {
-            get { return this.ModelObjectType?.IsName ?? false; }
-        }
+        public bool IsNamespace => kind == DeclarationKind.Namespace;
 
-        public bool IsScript
-        {
-            get { return false; } // TODO:MetaDslx - for scripts, submissions and implicit classes
-        }
+        public bool IsScript => kind == DeclarationKind.Script;
 
-        public bool IsSubmission
-        {
-            get { return false; } // TODO:MetaDslx - for scripts, submissions and implicit classes
-        }
+        public bool IsSubmission => kind == DeclarationKind.Submission;
 
-        public bool IsImplicit
-        {
-            get { return false; } // TODO:MetaDslx - for scripts, submissions and implicit classes
-        }
+        public bool IsImplicit => kind == DeclarationKind.Implicit;
 
         public bool HasUsings
         {
@@ -131,8 +108,9 @@ namespace MetaDslx.CodeAnalysis.Declarations
         [Flags]
         private enum DeclarationFlags : byte
         {
-            Merge = 1,
+            Merge = 0x01,
         }
+
 
 #if DEBUG
         private class DeclarationTreeDumper
@@ -149,12 +127,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             private static void Dump(StringBuilder sb, string indent, Declaration declaration)
             {
                 if (declaration == null) return;
-                string kind;
-                if (declaration.IsNamespace) kind = "namespace";
-                else if (declaration.IsType) kind = "type";
-                else if (declaration.IsName) kind = "name";
-                else kind = "unknown";
-                sb.AppendFormat("{0}{1} ({2}): {3}", indent, declaration.Name, kind, declaration.ModelObjectType.Name ?? "<root>");
+                sb.AppendFormat("{0}{1} {2}: {3}", indent, declaration.Kind.ToString().ToLower(), declaration.Name, declaration.ModelObjectType.Name ?? "<root>");
                 sb.AppendLine();
                 foreach (var child in declaration.GetDeclarationChildren())
                 {

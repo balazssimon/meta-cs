@@ -34,6 +34,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public static readonly CompletionPart None = new CompletionPart(nameof(None));
         public static readonly CompletionPart All = new CompletionPart(nameof(All));
 
+        public static readonly CompletionPart Created = new CompletionPart(nameof(Created));
+        public static readonly CompletionPart ChildrenCreated = new CompletionPart(nameof(ChildrenCreated));
+
         //*/
         public static readonly CompletionPart Attributes = new CompletionPart(nameof(Attributes));
         public static readonly CompletionPart Module = new CompletionPart(nameof(Module));

@@ -15,10 +15,6 @@ namespace MetaDslx.CodeAnalysis
         public abstract InternalSyntaxFactory CreateInternalSyntaxFactory(SyntaxFacts syntaxFacts);
         public abstract SyntaxFactory CreateSyntaxFactory(InternalSyntaxFactory internalSyntaxFactory);
         public abstract SymbolFacts CreateSymbolFacts();
-        public virtual SymbolFactory CreateSymbolFactory()
-        {
-            return new MetaSymbolFactory();
-        }
         public abstract CompilationFactory CreateCompilationFactory();
 
         internal void RegisterDefaultServices(ServiceCollection services)
@@ -29,7 +25,6 @@ namespace MetaDslx.CodeAnalysis
             services.AddSingleton(internalSyntaxFactory);
             services.AddSingleton(this.CreateSyntaxFactory(internalSyntaxFactory));
             services.AddSingleton(this.CreateSymbolFacts());
-            services.AddSingleton(this.CreateSymbolFactory());
             services.AddSingleton(this.CreateCompilationFactory());
         }
 

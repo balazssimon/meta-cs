@@ -39,10 +39,6 @@ namespace MetaDslx.CodeAnalysis.Declarations
         public DeclarationTreeInfo Parent { get; private set; }
         public LanguageSyntaxNode Node { get; private set; }
         public Type ModelObjectType { get; private set; }
-        public ModelObjectDescriptor Kind
-        {
-            get { return ModelObjectDescriptor.GetDescriptor(this.ModelObjectType); }
-        }
         public bool Merge { get; private set; }
         public bool Detached { get; private set; }
         public string NestingProperty { get; private set; }

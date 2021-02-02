@@ -34,15 +34,15 @@ namespace MetaDslx.CodeAnalysis.Declarations
 
         public SingleDeclaration(
             string name, 
+            DeclarationKind kind,
             Type modelObjectType,
             SyntaxReference syntaxReference,
             SourceLocation nameLocation,
             bool canMerge,
-            string parentPropertyToAddTo,
             ImmutableArray<SingleDeclaration> children,
             ImmutableArray<DeclarationTreeInfo.Property> properties,
             ImmutableArray<Diagnostic> diagnostics)
-            : base(name, canMerge, parentPropertyToAddTo)
+            : base(name, kind, canMerge)
         {
             this._modelObjectType = modelObjectType;
             this._syntaxReference = syntaxReference;
@@ -150,7 +150,8 @@ namespace MetaDslx.CodeAnalysis.Declarations
                 if (otherDecl.Name == null) return false;
 
                 // kind and name must match
-                if ((thisDecl.ModelObjectType != otherDecl.ModelObjectType) ||
+                if ((thisDecl.Kind != otherDecl.Kind) ||
+                    (thisDecl.ModelObjectType != otherDecl.ModelObjectType) ||
                     (thisDecl.Name != otherDecl.Name))
                 {
                     return false;
@@ -163,7 +164,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             public override int GetHashCode()
             {
                 var thisDecl = _decl;
-                return Hash.Combine(thisDecl.Name?.GetHashCode() ?? 0, thisDecl.ModelObjectType?.GetHashCode() ?? 0);
+                return Hash.Combine(thisDecl.Kind.GetHashCode(), Hash.Combine(thisDecl.Name?.GetHashCode() ?? 0, thisDecl.ModelObjectType?.GetHashCode() ?? 0));
             }
         }
     }

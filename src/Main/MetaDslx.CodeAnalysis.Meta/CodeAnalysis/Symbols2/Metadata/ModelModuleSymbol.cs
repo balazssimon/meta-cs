@@ -19,7 +19,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
     {
         private ModelGlobalNamespaceSymbol _globalNamespace;
         private AssemblySymbol _owningAssembly;
-        private ObjectFactory _objectFactory;
         private SymbolFactory _symbolFactory;
         private object _model;
         private readonly int _ordinal;
@@ -28,15 +27,14 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
         {
             _owningAssembly = owningAssembly;
             _model = model;
-            _objectFactory = Language.CompilationFactory.CreateObjectFactory(this);
             _ordinal = ordinal;
         }
 
-        public object Model => _model;
+        public virtual object Model => _model;
 
         public object ModelObject => null;
 
-        public ObjectFactory ObjectFactory => _objectFactory;
+        public virtual ObjectFactory ObjectFactory => null;
 
         public SymbolFactory SymbolFactory
         {
@@ -44,7 +42,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             {
                 if (_symbolFactory == null)
                 {
-                    Interlocked.CompareExchange(ref _symbolFactory, Language.CompilationFactory.CreateSymbolFactory(_objectFactory), null);
+                    Interlocked.CompareExchange(ref _symbolFactory, Language.CompilationFactory.CreateSymbolFactory(this), null);
                 }
                 return _symbolFactory;
             }

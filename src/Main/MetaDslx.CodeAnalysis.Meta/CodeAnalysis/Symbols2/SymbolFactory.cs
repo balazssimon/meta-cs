@@ -7,89 +7,93 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-    public abstract class SymbolFactory
+    public class SymbolFactory
     {
-        private ObjectFactory _objectFactory;
-        private ConcurrentDictionary<object, Symbol> _map = new ConcurrentDictionary<object, Symbol>();
+        private ModuleSymbol _module;
+        private SymbolFacts _symbolFacts;
+        private ConditionalWeakTable<object, Symbol> _map = new ConditionalWeakTable<object, Symbol>();
 
-        public SymbolFactory(ObjectFactory objectFactory)
+        public SymbolFactory(ModuleSymbol module)
         {
-            _objectFactory = objectFactory;
+            _module = module;
+            _symbolFacts = module.Language.SymbolFacts;
+        }
+
+        public bool IsSourceSymbolFactory => _module.Ordinal == 0;
+        public ModuleSymbol Module => _module;
+
+        public bool TryGetSymbol(object modelObject, out Symbol symbol)
+        {
+            return _map.TryGetValue(modelObject, out symbol);
         }
 
         public Symbol GetSymbol(object modelObject)
         {
-            _map.TryGetValue(modelObject, out var symbol);
-            return symbol;
+            if (_map.TryGetValue(modelObject, out var symbol)) return symbol;
+            return CreateSymbol(modelObject);
         }
 
-        public ImmutableArray<DeclaredSymbol> CreateMetaMemberSymbols(Symbol container, object modelObject)
-        {
-            var builder = ArrayBuilder<DeclaredSymbol>.GetInstance();
-            foreach (var child in _objectFactory.GetChildren(modelObject))
-            {
-                var sym = GetOrCreateMetaSymbol(child);
-                var dsym = sym as DeclaredSymbol;
-                if (dsym != null) builder.Add(dsym);
-            }
-            return builder.ToImmutableAndFree();
-        }
-
-        public ImmutableArray<DeclaredSymbol> CreateSourceMemberSymbols(Symbol container, MergedDeclaration declaration)
-        {
-            var builder = ArrayBuilder<DeclaredSymbol>.GetInstance();
-            foreach (var decl in declaration.Children)
-            {
-                var obj = _objectFactory.CreateObject(declaration.ModelObjectType);
-                var sym = CreateSourceDeclaredSymbol(container, obj, decl);
-                var dsym = sym as DeclaredSymbol;
-                if (dsym != null) builder.Add(dsym);
-                _map.TryAdd(obj, sym);
-            }
-            return builder.ToImmutableAndFree();
-        }
-
-        public Symbol ResolveMetaSymbol(object modelObject)
+        public Symbol MakeSourceSymbol(Symbol container, object modelObject, MergedDeclaration declaration)
         {
             if (_map.TryGetValue(modelObject, out var symbol)) return symbol;
-            var of = _objectFactory.GetObjectFactory(modelObject);
-            if (of != _objectFactory) return of.Module.SymbolFactory.ResolveMetaSymbol(modelObject);
-            return CreateMetaSymbol(modelObject);
+            symbol = CreateSourceSymbol(container, modelObject, declaration);
+            return GetOrAddSymbol(modelObject, symbol);
         }
 
-        public IEnumerable<Symbol> ResolveMetaSymbols(IEnumerable<object> modelObjects)
+        public ImmutableArray<Symbol> GetChildSymbols(object modelObject)
         {
             var builder = ArrayBuilder<Symbol>.GetInstance();
-            foreach (var mobj in modelObjects)
+            foreach (var child in _symbolFacts.GetChildren(modelObject))
             {
-                var sym = ResolveMetaSymbol(mobj);
-                if (sym != null) builder.Add(sym);
+                var sym = GetSymbol(child);
+                builder.Add(sym);
             }
             return builder.ToImmutableAndFree();
         }
 
-        public Symbol GetOrCreateMetaSymbol(object modelObject)
+        public ImmutableArray<DeclaredSymbol> GetChildDeclaredSymbols(object modelObject)
         {
-            if (_map.TryGetValue(modelObject, out var symbol)) return symbol;
-            return CreateMetaSymbol(modelObject);
+            var builder = ArrayBuilder<DeclaredSymbol>.GetInstance();
+            foreach (var child in _symbolFacts.GetChildren(modelObject))
+            {
+                var sym = GetSymbol(child);
+                var dsym = sym as DeclaredSymbol;
+                if (dsym != null) builder.Add(dsym);
+            }
+            return builder.ToImmutableAndFree();
         }
 
-        protected Symbol CreateMetaSymbol(object modelObject)
+        protected Symbol CreateSymbol(object modelObject)
         {
-            var pobj = _objectFactory.GetParent(modelObject);
-            var psym = pobj != null ? GetOrCreateMetaSymbol(pobj) : _objectFactory.Module;
-            var sym = CreateMetaSymbol(psym, modelObject);
-            return _map.GetOrAdd(modelObject, sym);
+            var pobj = _symbolFacts.GetParent(modelObject);
+            var psym = pobj != null ? GetSymbol(pobj) : _module;
+            var sym = CreateSymbol(psym, pobj, modelObject);
+            return GetOrAddSymbol(modelObject, sym);
+        }
+
+        protected Symbol CreateSymbol(Symbol container, object containerObject, object modelObject)
+        {
+            if (IsSourceSymbolFactory)
+            {
+                Debug.Assert(false);
+                return CreateSourceSymbol(container, modelObject, null);
+            }
+            else
+            {
+                return CreateMetaSymbol(container, modelObject);
+            }
         }
 
         protected virtual Symbol CreateMetaSymbol(Symbol container, object modelObject)
         {
-            var kind = this.GetSymbolKind(modelObject);
-            switch(kind.Switch())
+            var kind = _symbolFacts.GetSymbolKind(modelObject);
+            switch (kind.Switch())
             {
                 case LanguageSymbolKind.Namespace:
                     return new ModelNamespaceSymbol(container, modelObject);
@@ -102,51 +106,58 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
         }
 
-        protected virtual Symbol CreateSourceDeclaredSymbol(Symbol container, object modelObject, MergedDeclaration declaration)
+        protected virtual Symbol CreateSourceSymbol(Symbol container, object modelObject, MergedDeclaration declaration)
         {
-            var kind = this.GetSymbolKind(modelObject);
+            var kind = _symbolFacts.GetSymbolKind(modelObject);
             switch (kind.Switch())
             {
                 case LanguageSymbolKind.Namespace:
                     return new SourceNamespaceSymbol((SourceModuleSymbol)container.ContainingModule, container, modelObject, declaration);
                 case LanguageSymbolKind.NamedType:
-                    if (_objectFactory.GetName(modelObject) == null) return new SourceAnonymousTypeSymbol(container, modelObject, declaration);
+                    if (_symbolFacts.GetName(modelObject) == null) return new SourceAnonymousTypeSymbol(container, modelObject, declaration);
                     else return new SourceNamedTypeSymbol(container, modelObject, declaration);
                 case LanguageSymbolKind.Name:
                     return new SourceMemberSymbol(container, modelObject, declaration);
                 default:
-                    throw new NotImplementedException($"Unsupported source declaration symbol {kind.GetName()} for model object {modelObject.GetType().FullName}.");
+                    throw new NotImplementedException($"Unsupported source symbol {kind.GetName()} for model object {modelObject.GetType().FullName}.");
             }
         }
 
-        protected virtual Symbol CreateSourceSymbol(Symbol container, object modelObject, DiagnosticBag diagnostics)
+        public Symbol ResolveSymbol(object modelObject)
         {
-            var kind = this.GetSymbolKind(modelObject);
-            throw new NotImplementedException($"Unsupported source symbol {kind.GetName()} for model object {modelObject.GetType().FullName}.");
-        }
-
-        public virtual LanguageSymbolKind GetSymbolKind(object modelObject)
-        {
-            return GetSymbolKind(modelObject.GetType());
-        }
-
-        public abstract LanguageSymbolKind GetSymbolKind(Type modelObjectType);
-
-        public virtual IEnumerable<object> GetProperties(object modelObject, string symbolProperty)
-        {
-            return GetProperties(modelObject.GetType(), symbolProperty);
-        }
-
-        public virtual IEnumerable<object> GetProperties(Type modelObjectType, string symbolProperty)
-        {
-            foreach (var prop in _objectFactory.GetProperties(modelObjectType))
+            if (_map.TryGetValue(modelObject, out var symbol)) return symbol;
+            if (ModuleContainsObject(_module, modelObject)) return GetSymbol(modelObject);
+            if (_module.ContainingAssembly == null) return null;
+            foreach (var module in _module.ContainingAssembly.Modules)
             {
-                var sprop = GetSymbolProperty(modelObjectType, prop);
-                if (sprop == symbolProperty) yield return prop;
+                if (module != _module && module is ModelModuleSymbol ms && ModuleContainsObject(module, modelObject))
+                {
+                    return ms.SymbolFactory.GetSymbol(modelObject);
+                }
             }
+            return null;
         }
 
-        public abstract string GetSymbolProperty(Type modelObjectType, object property);
+        private bool ModuleContainsObject(ModuleSymbol module, object modelObject)
+        {
+            return module is ModelModuleSymbol ms && _symbolFacts.ContainsObject(ms.Model, modelObject);
+        }
+
+        public IEnumerable<Symbol> ResolveSymbols(IEnumerable<object> modelObjects)
+        {
+            var builder = ArrayBuilder<Symbol>.GetInstance();
+            foreach (var mobj in modelObjects)
+            {
+                var sym = ResolveSymbol(mobj);
+                if (sym != null) builder.Add(sym);
+            }
+            return builder.ToImmutableAndFree();
+        }
+
+        private Symbol GetOrAddSymbol(object modelObject, Symbol symbol)
+        {
+            return _map.GetValue(modelObject, mobj => symbol);
+        }
 
     }
 }

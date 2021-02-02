@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Text;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
@@ -37,14 +38,12 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
                     HashSet<string> names = new HashSet<string>();
                     try
                     {
-                        foreach (var model in _module.Models)
+                        var symbolFacts = Language.SymbolFacts;
+                        foreach (var ms in symbolFacts.GetRootObjects(_module.Model))
                         {
-                            foreach (var ms in model.Objects)
+                            if (symbolFacts.GetSymbolKind(ms) == LanguageSymbolKind.Namespace)
                             {
-                                if (ms.MParent == null && ms.MId.Descriptor.IsNamespace)
-                                {
-                                    names.Add(ms.MName);
-                                }
+                                names.Add(symbolFacts.GetName(ms));
                             }
                         }
                     }
@@ -66,14 +65,12 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
                     HashSet<string> names = new HashSet<string>();
                     try
                     {
-                        foreach (var model in _module.Models)
+                        var symbolFacts = Language.SymbolFacts;
+                        foreach (var ms in symbolFacts.GetRootObjects(_module.Model))
                         {
-                            foreach (var ms in model.Objects)
+                            if (symbolFacts.GetSymbolKind(ms) == LanguageSymbolKind.NamedType)
                             {
-                                if (ms.MParent == null && ms.MId.Descriptor.IsType) 
-                                {
-                                    names.Add(ms.MName);
-                                }
+                                names.Add(symbolFacts.GetName(ms));
                             }
                         }
                     }
@@ -93,15 +90,14 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
                 HashSet<DeclaredSymbol> symbols = new HashSet<DeclaredSymbol>();
                 try
                 {
-                    foreach (var model in _module.Models)
+                    var symbolFacts = Language.SymbolFacts;
+                    var symbolFactory = _module.SymbolFactory;
+                    foreach (var ms in symbolFacts.GetRootObjects(_module.Model))
                     {
-                        foreach (var ms in model.Objects)
+                        if (symbolFacts.GetParent(ms) == null)
                         {
-                            if (ms.MParent == null)
-                            {
-                                var symbol = ModelSymbolMap.GetSymbol(ms);
-                                if (symbol is DeclaredSymbol ds) symbols.Add(ds);
-                            }
+                            var symbol = symbolFactory.GetSymbol(ms);
+                            if (symbol is DeclaredSymbol ds) symbols.Add(ds);
                         }
                     }
                 }
@@ -130,15 +126,14 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
                 HashSet<NamedTypeSymbol> symbols = new HashSet<NamedTypeSymbol>();
                 try
                 {
-                    foreach (var model in _module.Models)
+                    var symbolFacts = Language.SymbolFacts;
+                    var symbolFactory = _module.SymbolFactory;
+                    foreach (var ms in symbolFacts.GetRootObjects(_module.Model))
                     {
-                        foreach (var ms in model.Objects)
+                        if (symbolFacts.GetSymbolKind(ms) == LanguageSymbolKind.NamedType)
                         {
-                            if (ms.MParent == null && ms.MId.Descriptor.IsNamedType)
-                            {
-                                var symbol = ModelSymbolMap.GetNamedTypeSymbol(ms);
-                                symbols.Add(symbol);
-                            }
+                            var symbol = symbolFactory.GetSymbol(ms);
+                            if (symbol is NamedTypeSymbol nts) symbols.Add(nts);
                         }
                     }
                 }

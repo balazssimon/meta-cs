@@ -961,6 +961,20 @@ namespace MetaDslx.CodeAnalysis
             }
         }
 
+        private ObjectFactory _objectFactory;
+        public ObjectFactory ObjectFactory 
+        {
+            get
+            {
+                if (_objectFactory == null)
+                {
+                    Interlocked.CompareExchange(ref _objectFactory, Language.CompilationFactory.CreateObjectFactory(this), null);
+                }
+                return _objectFactory;
+            }
+        }
+
+
         /// <summary>
         /// The AssemblySymbol that represents the assembly being created.
         /// </summary>
@@ -989,11 +1003,11 @@ namespace MetaDslx.CodeAnalysis
         /// By getting the GlobalNamespace property of that module, all of the namespaces and types
         /// defined in source code can be obtained.
         /// </summary>
-        internal new ModuleSymbol SourceModule
+        internal new SourceModuleSymbol SourceModule
         {
             get
             {
-                return Assembly.Modules[0];
+                return (SourceModuleSymbol)Assembly.Modules[0];
             }
         }
 
@@ -2748,7 +2762,7 @@ namespace MetaDslx.CodeAnalysis
                         continue;
                     }
 
-                    var sourceType = symbol as SourceMemberContainerTypeSymbol;
+                    var sourceType = symbol as SourceNamedTypeSymbol;
                     if ((object)sourceType != null)
                     {
                         _cache[sourceType.MergedDeclaration] = sourceType;

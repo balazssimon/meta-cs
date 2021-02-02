@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Text;
+using MetaDslx.CodeAnalysis.Declarations;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 
@@ -130,6 +131,77 @@ namespace MetaDslx.CodeAnalysis.Symbols
                     throw new ArgumentException("Unexpected type kind: " + kind.ToString(), nameof(kind));
             }
         }
+
+        public virtual DeclarationKind ToDeclarationKind(LanguageSymbolKind kind)
+        {
+            switch (kind.Switch())
+            {
+                case LanguageSymbolKind.Assembly:
+                    return DeclarationKind.None;
+                case LanguageSymbolKind.NetModule:
+                    return DeclarationKind.None;
+                case LanguageSymbolKind.Alias:
+                    return DeclarationKind.None;
+                case LanguageSymbolKind.Namespace:
+                    return DeclarationKind.Namespace;
+                case LanguageSymbolKind.NamedType:
+                    return DeclarationKind.Type;
+                case LanguageSymbolKind.Property:
+                    return DeclarationKind.None; 
+                case LanguageSymbolKind.Operation:
+                    return DeclarationKind.None;
+                case LanguageSymbolKind.ErrorType:
+                    return DeclarationKind.Type;
+                case LanguageSymbolKind.Name:
+                    return DeclarationKind.None;
+                case LanguageSymbolKind.DynamicType:
+                    return DeclarationKind.Type;
+                case LanguageSymbolKind.ConstructedType:
+                    return DeclarationKind.Type;
+                case LanguageSymbolKind.None:
+                    return DeclarationKind.None;
+                default:
+                    throw new ArgumentException("Unexpected symbol kind: " + kind.ToString(), nameof(kind));
+            }
+        }
+
+        public abstract object GetModel(object modelObject);
+        public abstract bool ContainsObject(object model, object modelObject);
+        public abstract IEnumerable<object> GetRootObjects(object model);
+        public abstract string GetName(object modelObject);
+        public abstract object GetParent(object modelObject);
+        public abstract Type GetModelObjectType(object modelObject);
+        public abstract IEnumerable<object> GetChildren(object modelObject);
+        public abstract IEnumerable<object> GetProperties(Type modelObjectType);
+        public virtual IEnumerable<object> GetProperties(object modelObject)
+        {
+            return GetProperties(modelObject.GetType());
+        }
+        public abstract IEnumerable<object> GetPropertyValues(object modelObject, object property);
+        public abstract void SetOrAddPropertyValue(object modelObject, object property, object value, DiagnosticBag diagnostics);
+
+        public virtual LanguageSymbolKind GetSymbolKind(object modelObject)
+        {
+            return GetSymbolKind(modelObject.GetType());
+        }
+
+        public virtual IEnumerable<object> GetProperties(object modelObject, string symbolProperty)
+        {
+            return GetProperties(modelObject.GetType(), symbolProperty);
+        }
+
+        public virtual IEnumerable<object> GetProperties(Type modelObjectType, string symbolProperty)
+        {
+            foreach (var prop in GetProperties(modelObjectType))
+            {
+                var sprop = GetSymbolProperty(modelObjectType, prop);
+                if (sprop == symbolProperty) yield return prop;
+            }
+        }
+
+        public abstract string GetSymbolProperty(Type modelObjectType, object property);
+
+        public abstract LanguageSymbolKind GetSymbolKind(Type modelObjectType);
 
         public virtual IEnumerable<IModelObject> GetBuiltInObjects()
         {

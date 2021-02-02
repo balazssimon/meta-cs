@@ -7,54 +7,61 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Text;
+using System.Threading;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
     public abstract class ObjectFactory
     {
-        private ModelModuleSymbol _module;
-        private ObjectFactory _sourceObjectFactory;
+        private LanguageCompilation _compilation;
+        private object _model;
+        private ImmutableArray<object> _referencedModels;
 
-        public ObjectFactory(ModelModuleSymbol module, ObjectFactory sourceObjectFactory)
+        public ObjectFactory(LanguageCompilation compilation)
         {
-            _module = module;
-            _sourceObjectFactory = sourceObjectFactory;
+            _compilation = compilation;
         }
 
-        public LanguageCompilation Compilation => _module.DeclaringCompilation;
-        public Language Language => _module.Language;
-        public ModelModuleSymbol Module => _module;
-        public object Model => _module.Model;
-        public ObjectFactory SourceObjectFactory => _sourceObjectFactory;
+        public LanguageCompilation Compilation => _compilation;
+        public Language Language => _compilation.Language;
 
-        public virtual ObjectFactory GetObjectFactory(object modelObject)
+        public object Model
         {
-            if (this.ContainsObject(modelObject)) return this;
-            foreach (var module in _sourceObjectFactory.Module.ContainingAssembly.Modules)
+            get
             {
-                if (module is ModelModuleSymbol mms)
+                if (_model == null)
                 {
-                    var of = mms.ObjectFactory;
-                    if (of != this && of.ContainsObject(modelObject)) return of;
+                    Interlocked.CompareExchange(ref _model, this.CreateModel(), null);
                 }
+                return _model;
             }
-            return null;
+        }
+
+        public ImmutableArray<object> ReferencedModels
+        {
+            get
+            {
+                if (_referencedModels.IsDefault)
+                {
+                    var models = ArrayBuilder<object>.GetInstance();
+                    foreach (var module in _compilation.SourceAssembly.Modules)
+                    {
+                        if (module is ModelModuleSymbol mms && mms.Model != null)
+                        {
+                            if (!models.Contains(mms.Model))
+                            {
+                                models.Add(mms.Model);
+                            }
+                        }
+                    }
+                    ImmutableInterlocked.InterlockedInitialize(ref _referencedModels, models.ToImmutableAndFree());
+                }
+                return _referencedModels;
+            }
         }
 
         public abstract object CreateModel();
         public abstract object CreateObject(Type type);
-        public abstract bool ContainsObject(object modelObject);
-        public abstract object GetModel(object modelObject);
-        public abstract string GetName(object modelObject);
-        public abstract object GetParent(object modelObject);
-        public abstract IEnumerable<object> GetChildren(object modelObject);
-        public abstract IEnumerable<object> GetProperties(Type modelObjectType);
-        public virtual IEnumerable<object> GetProperties(object modelObject)
-        {
-            return GetProperties(modelObject.GetType());
-        }
-        public abstract IEnumerable<object> GetPropertyValues(object modelObject, object property);
-        public abstract void SetOrAddPropertyValue(object modelObject, object property, object value, DiagnosticBag diagnostics);
 
     }
 }

@@ -381,30 +381,21 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         protected virtual ImmutableArray<NamedTypeSymbol> ResolveBaseTypes(ConsList<TypeSymbol> newBasesBeingResolved, SingleDeclaration decl, DiagnosticBag diagnostics)
         {
             var result = ArrayBuilder<NamedTypeSymbol>.GetInstance();
-            var boundNode = this.DeclaringCompilation.GetBoundNode<BoundSymbolDef>(decl.SyntaxReference.GetSyntax());
-            Debug.Assert(boundNode != null);
-            foreach (var prop in this.ModelSymbolInfo.Properties)
+            var symbolFacts = Language.SymbolFacts;
+            foreach (var prop in symbolFacts.GetProperties(this.ModelObject, SymbolConstants.BaseTypesProperty))
             {
-                if (prop.IsBaseScope)
+                var baseTypeObjects = symbolFacts.GetPropertyValues(this.ModelObject, prop);
+                var baseTypeSymbols = SymbolFactory.ResolveSymbols(baseTypeObjects);
+                foreach (var value in baseTypeSymbols)
                 {
-                    var boundProperties = boundNode.GetChildProperties(prop.Name);
-                    foreach (var boundProperty in boundProperties)
+                    var symbol = value as NamedTypeSymbol;
+                    if (symbol != null)
                     {
-                        foreach (var boundValue in boundProperty.BoundValues)
-                        {
-                            foreach (var value in boundValue.Values)
-                            {
-                                var symbol = value as NamedTypeSymbol;
-                                if (symbol != null)
-                                {
-                                    result.Add(symbol);
-                                }
-                                else
-                                {
-                                    diagnostics.Add(ModelErrorCode.ERR_InvalidBaseType, boundValue.Syntax.Location, value);
-                                }
-                            }
-                        }
+                        result.Add(symbol);
+                    }
+                    else
+                    {
+                        diagnostics.Add(ModelErrorCode.ERR_InvalidBaseType, Location.None, value); // TODO: MetaDslx location
                     }
                 }
             }

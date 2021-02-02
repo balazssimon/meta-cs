@@ -133,7 +133,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             ArrayBuilder<object> modelBuilder0 = new ArrayBuilder<object>(1 + netModules.Length);
             ArrayBuilder<ModuleSymbol> moduleBuilder = new ArrayBuilder<ModuleSymbol>(1 + netModules.Length);
 
-            var sourceModule = new SourceModuleSymbol(this, null, compilation.Declarations, moduleName);
+            var sourceModule = new SourceModuleSymbol(this, compilation.Declarations, moduleName);
             moduleBuilder.Add(sourceModule);
 
             var importOptions = (compilation.Options.MetadataImportOptions == MetadataImportOptions.All) ?

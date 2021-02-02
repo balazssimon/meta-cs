@@ -20,10 +20,22 @@ namespace MetaDslx.CodeAnalysis.Declarations
 
         public MergedDeclaration(ImmutableArray<SingleDeclaration> declarations)
             : base(declarations.IsEmpty ? null : declarations[0].Name,
-                  declarations.IsEmpty ? false : declarations[0].Merge,
-                  declarations.IsEmpty ? string.Empty : declarations[0].ParentPropertyToAddTo)
+                  declarations.IsEmpty ? DeclarationKind.None : declarations[0].Kind,
+                  declarations.IsEmpty ? false : declarations[0].Merge)
         {
             this._declarations = declarations;
+        }
+
+        public bool HasDiagnostics
+        {
+            get
+            {
+                foreach (var decl in _declarations)
+                {
+                    if (!decl.Diagnostics.IsEmpty) return true;
+                }
+                return false;
+            }
         }
 
         public ImmutableArray<SingleDeclaration> Declarations

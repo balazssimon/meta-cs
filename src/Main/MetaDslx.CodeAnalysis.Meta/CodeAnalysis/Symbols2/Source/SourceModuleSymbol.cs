@@ -39,32 +39,24 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         private bool _hasBadAttributes;
 
-        private object _model;
-
         internal SourceModuleSymbol(
             SourceAssemblySymbol assemblySymbol,
-            object model,
             DeclarationTable declarations,
             string moduleName)
-            : base(assemblySymbol, model, 0)
+            : base(assemblySymbol, null, 0)
         {
             Debug.Assert((object)assemblySymbol != null);
-            Debug.Assert(model == null);
 
             _assemblySymbol = assemblySymbol;
-            _model = model;
             _sources = declarations;
             _name = moduleName;
 
             _state = CompletionState.Create(assemblySymbol.Language);
         }
 
-        public override Language Language => _assemblySymbol.Language;
+        public override object Model => DeclaringCompilation.Model;
 
-        internal void SetModelByObjectFactory(object model)
-        {
-            _model = model;
-        }
+        public override Language Language => _assemblySymbol.Language;
 
         internal void RecordPresenceOfBadAttributes()
         {
@@ -200,10 +192,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             {
                 if ((object)_globalNamespace == null)
                 {
-                    var diagnostics = DiagnosticBag.GetInstance();
-                    var globalNS = new SourceNamespaceSymbol(this, this, null, DeclaringCompilation.MergedRootDeclaration, diagnostics);
-                    Debug.Assert(diagnostics.IsEmptyWithoutResolution);
-                    diagnostics.Free();
+                    Debug.Assert(!DeclaringCompilation.MergedRootDeclaration.HasDiagnostics);
+                    var globalNS = new SourceNamespaceSymbol(this, this, null, DeclaringCompilation.MergedRootDeclaration);
                     Interlocked.CompareExchange(ref _globalNamespace, globalNS, null);
                 }
 

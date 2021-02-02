@@ -2,6 +2,7 @@
 using MetaDslx.CodeAnalysis.Binding.BoundNodes;
 using MetaDslx.CodeAnalysis.Declarations;
 using MetaDslx.CodeAnalysis.Symbols;
+using MetaDslx.CodeAnalysis.Symbols.CSharp;
 using MetaDslx.CodeAnalysis.Symbols.Metadata;
 using MetaDslx.CodeAnalysis.Symbols.Source;
 using MetaDslx.Modeling;
@@ -105,14 +106,14 @@ namespace MetaDslx.CodeAnalysis
         public abstract BoundNodeFactoryVisitor CreateBoundNodeFactoryVisitor(BoundTree boundTree);
         public abstract IsBindableNodeVisitor CreateIsBindableNodeVisitor(BoundTree boundTree);
 
-        public virtual ObjectFactory CreateObjectFactory(ModelModuleSymbol module)
+        public virtual ObjectFactory CreateObjectFactory(LanguageCompilation compilation)
         {
-            return new MetaObjectFactory(module, null);
+            return new MetaObjectFactory(compilation);
         }
 
-        public virtual SymbolFactory CreateSymbolFactory(ObjectFactory objectFactory)
+        public virtual SymbolFactory CreateSymbolFactory(ModuleSymbol module)
         {
-            return new MetaSymbolFactory((MetaObjectFactory)objectFactory);
+            return new SymbolFactory(module);
         }
 
     }
