@@ -7,7 +7,6 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using MetaDslx.CodeAnalysis.Binding;
-using MetaDslx.CodeAnalysis.Binding.BoundNodes;
 using MetaDslx.CodeAnalysis.Declarations;
 using MetaDslx.CodeAnalysis.Symbols.Metadata;
 using MetaDslx.Modeling;

@@ -1,5 +1,4 @@
-﻿using MetaDslx.CodeAnalysis.Binding.BoundNodes;
-using MetaDslx.CodeAnalysis.Symbols;
+﻿using MetaDslx.CodeAnalysis.Symbols;
 using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;

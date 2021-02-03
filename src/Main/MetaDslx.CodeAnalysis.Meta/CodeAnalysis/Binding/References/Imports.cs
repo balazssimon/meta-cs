@@ -14,7 +14,6 @@ using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Symbols.Source;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.CodeAnalysis.Binding.Binders;
-using MetaDslx.CodeAnalysis.Binding.BoundNodes;
 using MetaDslx.Modeling;
 
 namespace MetaDslx.CodeAnalysis.Binding
@@ -234,6 +233,8 @@ namespace MetaDslx.CodeAnalysis.Binding
                 uniqueUsings.Free();
             }
 
+            // TODO:MetaDslx
+            /*
             var boundSymbolDef = compilation.GetBoundNode<BoundSymbolDef>(declarationSyntax);
             if (boundSymbolDef != null)
             {
@@ -266,7 +267,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                     
                 }
             }
-
+            */
             if (diagnostics.IsEmptyWithoutResolution)
             {
                 diagnostics = null;

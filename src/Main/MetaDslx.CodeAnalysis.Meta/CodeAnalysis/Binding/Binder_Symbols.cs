@@ -6,9 +6,9 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using MetaDslx.CodeAnalysis.Binding.BoundNodes;
 using MetaDslx.CodeAnalysis.Declarations;
 using MetaDslx.CodeAnalysis.Symbols;
+using MetaDslx.CodeAnalysis.Symbols.Metadata;
 using MetaDslx.CodeAnalysis.Symbols.Source;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.Languages.Meta.Model;
@@ -1026,7 +1026,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             {
                 return (symbol.ContainingModule == compilation.SourceModule) ?
                     BestSymbolLocation.FromSourceModule :
-                    object.ReferenceEquals(symbol.ModelObject.MModel, MetaInstance.MModel) ?
+                    symbol.Language.SymbolFacts.ContainsObject(MetaInstance.MModel, (symbol as IModelSymbol).ModelObject) ?
                     BestSymbolLocation.FromMetaLibrary :
                     BestSymbolLocation.FromAddedModule;
             }
@@ -1082,11 +1082,6 @@ namespace MetaDslx.CodeAnalysis.Binding
         public DeclaredSymbol GetParentDeclarationSymbol()
         {
             return this.Next.GetDeclarationSymbol();
-        }
-
-        public virtual void InitializeQualifierSymbol(BoundQualifier qualifier)
-        {
-            this.Next.InitializeQualifierSymbol(qualifier);
         }
     }
 }

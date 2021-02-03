@@ -1,5 +1,4 @@
-﻿using MetaDslx.CodeAnalysis.Binding.BoundNodes;
-using Microsoft.CodeAnalysis;
+﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 using System;
@@ -33,27 +32,5 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             throw ExceptionUtilities.Unreachable;
         }
 
-        public override void InitializeQualifierSymbol(BoundQualifier qualifier)
-        {
-            var length = qualifier.Identifiers.Length;
-            if (length == 1)
-            {
-                qualifier.InitializeValues(qualifier.Identifiers, ImmutableArray.Create(this.Value));
-            }
-            else if (length > 1)
-            {
-                var values = ArrayBuilder<object>.GetInstance();
-                for (int i = 0; i < length; i++)
-                {
-                    if (i < length - 1) values.Add(null);
-                    else values.Add(this.Value);
-                }
-                qualifier.InitializeValues(qualifier.Identifiers, values.ToImmutableAndFree());
-            }
-            else
-            {
-                qualifier.InitializeValues(qualifier.Identifiers, ImmutableArray<object>.Empty);
-            }
-        }
     }
 }

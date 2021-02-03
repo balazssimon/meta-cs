@@ -34,6 +34,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 
         public object ModelObject => null;
 
+        public Type ModelObjectType => null;
+
         public virtual ObjectFactory ObjectFactory => null;
 
         public SymbolFactory SymbolFactory

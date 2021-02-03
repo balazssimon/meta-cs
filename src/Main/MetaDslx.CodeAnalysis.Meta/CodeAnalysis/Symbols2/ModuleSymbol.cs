@@ -230,12 +230,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
         }
 
-        public virtual bool TryGetSymbol(IModelObject modelObject, out Symbol symbol)
-        {
-            symbol = null;
-            return false;
-        }
-
         #region IModuleSymbol Members
 
         INamespaceSymbol IModuleSymbol.GlobalNamespace

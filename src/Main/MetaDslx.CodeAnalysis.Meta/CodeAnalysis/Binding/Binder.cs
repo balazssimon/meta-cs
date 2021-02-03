@@ -1,5 +1,4 @@
-﻿using MetaDslx.CodeAnalysis.Binding.BoundNodes;
-using MetaDslx.CodeAnalysis.Symbols;
+﻿using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Symbols.Source;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
@@ -475,56 +474,9 @@ namespace MetaDslx.CodeAnalysis.Binding
             }
         }
 
-        public BoundNode Bind(LanguageSyntaxNode node, BoundTree boundTree)
+        public virtual BoundNode Bind(SyntaxNodeOrToken node, BoundTree boundTree)
         {
-            if (boundTree == null) boundTree = this.Compilation.GetBoundTree(node);
-            return boundTree.GetUpperBoundNode(node);
-        }
-
-        public BoundExpression BindExpression(LanguageSyntaxNode node, BoundTree boundTree)
-        {
-            Debug.Assert(Language.SyntaxFacts.IsExpression(node));
-            return (BoundExpression)this.Bind(node, boundTree);
-        }
-
-        public BoundStatement BindStatement(LanguageSyntaxNode node, BoundTree boundTree)
-        {
-            Debug.Assert(Language.SyntaxFacts.IsStatement(node));
-            return (BoundStatement)this.Bind(node, boundTree);
-        }
-
-        protected virtual BoundNode BindCore(LanguageSyntaxNode node, BoundTree boundTree)
-        {
-            if (boundTree == null) boundTree = this.Compilation.GetBoundTree(node);
-            return boundTree.CreateBoundNode(node, this);
-        }
-
-        protected virtual BoundExpression BindExpressionCore(LanguageSyntaxNode node, BoundTree boundTree)
-        {
-            Debug.Assert(Language.SyntaxFacts.IsExpression(node));
-            return (BoundExpression)this.BindCore(node, boundTree);
-        }
-
-        protected virtual BoundStatement BindStatementCore(LanguageSyntaxNode node, BoundTree boundTree)
-        {
-            Debug.Assert(Language.SyntaxFacts.IsStatement(node));
-            return (BoundStatement)this.BindCore(node, boundTree);
-        }
-
-        internal protected virtual BoundNode CreateBoundNodeForBoundTree(LanguageSyntaxNode node, BoundTree boundTree)
-        {
-            if (Language.SyntaxFacts.IsExpression(node))
-            {
-                return this.BindExpressionCore(node, boundTree);
-            }
-            else if (Language.SyntaxFacts.IsStatement(node))
-            {
-                return this.BindStatementCore(node, boundTree);
-            }
-            else
-            {
-                return this.BindCore(node, boundTree);
-            }
+            return default;
         }
 
     }

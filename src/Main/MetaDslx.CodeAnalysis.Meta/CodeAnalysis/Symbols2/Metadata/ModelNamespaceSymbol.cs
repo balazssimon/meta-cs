@@ -27,6 +27,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 
         public object ModelObject => _modelObject;
 
+        public Type ModelObjectType => Language.SymbolFacts.GetModelObjectType(_modelObject);
+
         public override NamespaceExtent Extent
         {
             get

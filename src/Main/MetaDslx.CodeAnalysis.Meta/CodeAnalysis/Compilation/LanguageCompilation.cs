@@ -13,7 +13,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Binding.Binders;
-using MetaDslx.CodeAnalysis.Binding.BoundNodes;
 using MetaDslx.CodeAnalysis.Declarations;
 using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Symbols.Source;
@@ -1761,83 +1760,6 @@ namespace MetaDslx.CodeAnalysis
             return GetBinderFactory(syntax.SyntaxTree).GetBinder(syntax);
         }
 
-        // Bound trees containing computed semantic information.
-        // We store them using weak references so that GC pressure will cause them to be recycled.
-        private WeakReference<BoundTree>[] _boundTrees;
-
-        public BoundTree GetBoundTree(SyntaxTree syntaxTree)
-        {
-            var treeNum = GetSyntaxTreeOrdinal(syntaxTree);
-            var boundTrees = _boundTrees;
-            if (boundTrees == null)
-            {
-                boundTrees = new WeakReference<BoundTree>[this.SyntaxTrees.Length];
-                boundTrees = Interlocked.CompareExchange(ref _boundTrees, boundTrees, null) ?? boundTrees;
-            }
-
-            BoundTree previousBoundTree;
-            var previousWeakReference = boundTrees[treeNum];
-            if (previousWeakReference != null && previousWeakReference.TryGetTarget(out previousBoundTree))
-            {
-                return previousBoundTree;
-            }
-
-            return AddNewBoundTree((LanguageSyntaxTree)syntaxTree, ref boundTrees[treeNum]);
-        }
-
-        internal BoundTree GetBoundTree(SyntaxNodeOrToken syntax)
-        {
-            var boundTree = GetBoundTree(syntax.SyntaxTree);
-            return boundTree.GetEnclosingBoundTree(syntax);
-        }
-
-        private BoundTree AddNewBoundTree(LanguageSyntaxTree syntaxTree, ref WeakReference<BoundTree> slot)
-        {
-            var newBoundTree = new BoundTree(this, syntaxTree, GetBinder(syntaxTree.GetRootNode()), new DiagnosticBag());
-            var newWeakReference = new WeakReference<BoundTree>(newBoundTree);
-
-            while (true)
-            {
-                BoundTree previousBoundTree;
-                WeakReference<BoundTree> previousWeakReference = slot;
-                if (previousWeakReference != null && previousWeakReference.TryGetTarget(out previousBoundTree))
-                {
-                    return previousBoundTree;
-                }
-
-                if (Interlocked.CompareExchange(ref slot, newWeakReference, previousWeakReference) == previousWeakReference)
-                {
-                    return newBoundTree;
-                }
-            }
-        }
-
-        public T GetBoundNode<T>(SyntaxNode syntax)
-            where T: BoundNode
-        {
-            var boundTree = GetBoundTree((LanguageSyntaxTree)syntax.SyntaxTree);
-            var bindableNode = boundTree.GetBindableSyntaxNode((LanguageSyntaxNode)syntax);
-            var boundNodes = boundTree.GetBoundNodes(bindableNode);
-            var current = (LanguageSyntaxNode)syntax;
-            while (current != null)
-            {
-                var currentBoundNodes = boundTree.GetBoundNodes(current);
-                for (int i = currentBoundNodes.Length - 1; i >= 0; i--)
-                {
-                    if (currentBoundNodes[i] is T typedBoundNode) return typedBoundNode;
-                }
-                current = current.Parent;
-            }
-            return null;
-        }
-
-        public ImmutableArray<BoundNode> GetBoundNodes(SyntaxNode syntax)
-        {
-            var boundTree = GetBoundTree((LanguageSyntaxTree)syntax.SyntaxTree);
-            var bindableNode = boundTree.GetBindableSyntaxNode((LanguageSyntaxNode)syntax);
-            return boundTree.GetBoundNodes(bindableNode);
-        }
-
         /// <summary>
         /// Returns imported symbols for the given declaration.
         /// </summary>
@@ -2170,22 +2092,12 @@ namespace MetaDslx.CodeAnalysis
         private void GetDiagnosticsForAllSymbols(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             this.ForceComplete(cancellationToken);
-            foreach (var syntaxTree in this.SyntaxTrees)
-            {
-                var boundTree = GetBoundTree(syntaxTree);
-                diagnostics.AddRange(boundTree.DiagnosticBag);
-            }
             this.ReportUnusedImports(null, diagnostics, cancellationToken);
         }
 
         public void ForceComplete(CancellationToken cancellationToken = default)
         {
             this.GlobalNamespace.ForceComplete(null, cancellationToken);
-            foreach (var syntaxTree in this.SyntaxTrees)
-            {
-                var boundTree = GetBoundTree(syntaxTree);
-                boundTree.ForceComplete(cancellationToken);
-            }
         }
 
         private static bool IsDefinedOrImplementedInSourceTree(DeclaredSymbol symbol, SyntaxTree tree, TextSpan? span)

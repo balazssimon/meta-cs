@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
-using MetaDslx.CodeAnalysis.Binding.BoundNodes;
 using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Symbols.Source;
 using Microsoft.CodeAnalysis;
@@ -62,11 +61,6 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             {
                 return Compilation.GlobalNamespace;
             }
-        }
-
-        public override void InitializeQualifierSymbol(BoundQualifier qualifier)
-        {
-            
         }
 
     }

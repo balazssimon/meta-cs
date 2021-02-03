@@ -7,7 +7,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using MetaDslx.CodeAnalysis.Binding;
-using MetaDslx.CodeAnalysis.Binding.BoundNodes;
 using MetaDslx.CodeAnalysis.Operations;
 using MetaDslx.CodeAnalysis.Symbols;
 using Microsoft.CodeAnalysis;
@@ -62,7 +61,7 @@ namespace MetaDslx.CodeAnalysis
             _parentSemanticModelOpt = parentSemanticModelOpt;
             _speculatedPosition = speculatedPosition;
 
-            _boundTree = new BoundTree(this.Compilation, (LanguageSyntaxTree)root.SyntaxTree, rootBinder, _ignoredDiagnostics);
+            _boundTree = new BoundTree(this.Compilation, root, rootBinder, _ignoredDiagnostics);
 
             _operationFactory = new Lazy<LanguageOperationFactory>(() => new LanguageOperationFactory(this));
         }
@@ -181,8 +180,8 @@ namespace MetaDslx.CodeAnalysis
 
             var binder = this.GetEnclosingBinderInternal(expression, GetAdjustedNodePosition(expression));
             LanguageSyntaxNode bindableNode = this.GetBindableSyntaxNode(expression);
-            var boundExpression = this.GetLowerBoundNode(bindableNode) as BoundExpression;
-            if (binder == null || boundExpression == null)
+            var boundExpression = this.GetLowerBoundNode(bindableNode);
+            if (binder == null || boundExpression.Symbol == null)
             {
                 return Conversion.NoConversion;
             }
@@ -204,8 +203,8 @@ namespace MetaDslx.CodeAnalysis
 
             var binder = this.GetEnclosingBinderInternal(expression, GetAdjustedNodePosition(expression));
             LanguageSyntaxNode bindableNode = this.GetBindableSyntaxNode(expression);
-            var boundExpression = this.GetLowerBoundNode(bindableNode) as BoundExpression;
-            if (binder == null || boundExpression == null)
+            var boundExpression = this.GetLowerBoundNode(bindableNode);
+            if (binder == null || boundExpression.Symbol == null)
             {
                 return Conversion.NoConversion;
             }
@@ -227,7 +226,8 @@ namespace MetaDslx.CodeAnalysis
         /// </summary>
         internal BoundNode GetUpperBoundNode(LanguageSyntaxNode node, bool promoteToBindable = false)
         {
-            return _boundTree.GetUpperBoundNode(node, promoteToBindable);
+            var boundNodes = _boundTree.GetBoundNodes(node);
+            return boundNodes[0];
         }
 
         /// <summary>
@@ -236,7 +236,8 @@ namespace MetaDslx.CodeAnalysis
         /// </summary>
         internal BoundNode GetLowerBoundNode(LanguageSyntaxNode node)
         {
-            return _boundTree.GetLowerBoundNode(node);
+            var boundNodes = _boundTree.GetBoundNodes(node);
+            return boundNodes[boundNodes.Length-1];
         }
 
         public override ImmutableArray<Diagnostic> GetSyntaxDiagnostics(TextSpan? span = null, CancellationToken cancellationToken = default(CancellationToken))
@@ -298,12 +299,12 @@ namespace MetaDslx.CodeAnalysis
         {
             Debug.Assert(node == GetBindingRoot(node));
 
-            BoundNode highestBoundNode;
-            GetBoundNodes(node, out _, out _, out highestBoundNode, out _);
+            ImmutableArray<BoundNode> boundNodes;
+            GetBoundNodes(node, out _, out boundNodes, out _);
 
             // decide whether we should use highest or lowest bound node here 
             // https://github.com/dotnet/roslyn/issues/22179
-            BoundNode result = highestBoundNode;
+            BoundNode result = boundNodes[0];
             return _operationFactory.Value.Create(result);
         }
 
@@ -311,55 +312,47 @@ namespace MetaDslx.CodeAnalysis
         {
             ValidateSymbolInfoOptions(options);
 
-            LanguageSyntaxNode bindableNode;
-            BoundNode lowestBoundNode;
-            BoundNode highestBoundNode;
+            SyntaxNodeOrToken bindableNode;
+            ImmutableArray<BoundNode> boundNodes;
             BoundNode boundParent;
-            GetBoundNodes(node, out bindableNode, out lowestBoundNode, out highestBoundNode, out boundParent);
+            GetBoundNodes(node, out bindableNode, out boundNodes, out boundParent);
 
             Debug.Assert(IsInTree(node), "Since the node is in the tree, we can always recompute the binder later");
-            return base.GetSymbolInfoForNode(options, lowestBoundNode, highestBoundNode, boundParent, binderOpt: null);
+            return base.GetSymbolInfoForNode(options, boundNodes, boundParent, binderOpt: null);
         }
 
         internal override LanguageTypeInfo GetTypeInfoWorker(LanguageSyntaxNode node, CancellationToken cancellationToken = default(CancellationToken))
         {
-            LanguageSyntaxNode bindableNode;
-            BoundNode lowestBoundNode;
-            BoundNode highestBoundNode;
+            SyntaxNodeOrToken bindableNode;
+            ImmutableArray<BoundNode> boundNodes;
             BoundNode boundParent;
-            GetBoundNodes(node, out bindableNode, out lowestBoundNode, out highestBoundNode, out boundParent);
+            GetBoundNodes(node, out bindableNode, out boundNodes, out boundParent);
 
-            return GetTypeInfoForNode(lowestBoundNode, highestBoundNode, boundParent);
+            return GetTypeInfoForNode(boundNodes, boundParent);
         }
 
         internal override ImmutableArray<Symbol> GetMemberGroupWorker(LanguageSyntaxNode node, SymbolInfoOptions options, CancellationToken cancellationToken = default(CancellationToken))
         {
-            LanguageSyntaxNode bindableNode;
-            BoundNode lowestBoundNode;
-            BoundNode highestBoundNode;
+            SyntaxNodeOrToken bindableNode;
+            ImmutableArray<BoundNode> boundNodes;
             BoundNode boundParent;
-            GetBoundNodes(node, out bindableNode, out lowestBoundNode, out highestBoundNode, out boundParent);
+            GetBoundNodes(node, out bindableNode, out boundNodes, out boundParent);
 
             Debug.Assert(IsInTree(node), "Since the node is in the tree, we can always recompute the binder later");
-            return base.GetMemberGroupForNode(options, lowestBoundNode, boundParent, binderOpt: null);
+            return base.GetMemberGroupForNode(options, boundNodes[boundNodes.Length-1], boundParent, binderOpt: null);
         }
 
         internal override Optional<object> GetConstantValueWorker(LanguageSyntaxNode node, CancellationToken cancellationToken)
         {
             LanguageSyntaxNode bindableNode = this.GetBindableSyntaxNode(node);
-            BoundExpression boundExpr = this.GetLowerBoundNode(bindableNode) as BoundExpression;
-
-            if (boundExpr == null) return default(Optional<object>);
-
-            ConstantValue constantValue = boundExpr.ConstantValue;
-            return constantValue == null || constantValue.IsBad
-                ? default(Optional<object>)
-                : new Optional<object>(constantValue.Value);
+            BoundNode boundExpr = this.GetLowerBoundNode(bindableNode);
+            // TODO:MetaDslx
+            return default(Optional<object>);
         }
 
-        private void GetBoundNodes(LanguageSyntaxNode node, out LanguageSyntaxNode bindableNode, out BoundNode lowestBoundNode, out BoundNode highestBoundNode, out BoundNode boundParent)
+        private void GetBoundNodes(SyntaxNodeOrToken node, out SyntaxNodeOrToken bindableNode, out ImmutableArray<BoundNode> boundNodes, out BoundNode boundParent)
         {
-            _boundTree.GetBoundNodes(node, out bindableNode, out lowestBoundNode, out highestBoundNode, out boundParent);
+            _boundTree.GetBoundNodes(node, out bindableNode, out boundNodes, out boundParent);
         }
 
         // We might not have actually been given a bindable expression or statement; the caller can

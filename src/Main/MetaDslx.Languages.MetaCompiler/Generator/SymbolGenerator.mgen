@@ -78,7 +78,7 @@ using Roslyn.Utilities;
 end template
 
 template GenerateMetaSymbolsNamespace(Namespace ns)
-[var symbols = ns.Declarations.OfType<Symbol>())]
+[var symbols = ns.Declarations.OfType<Symbol>()]
 namespace [ns.FullName].Metadata
 {
     using [ns.FullName];

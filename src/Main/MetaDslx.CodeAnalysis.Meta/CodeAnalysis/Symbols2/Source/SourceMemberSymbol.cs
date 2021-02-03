@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using MetaDslx.CodeAnalysis.Binding.BoundNodes;
 using MetaDslx.CodeAnalysis.Declarations;
 using MetaDslx.CodeAnalysis.Symbols.Metadata;
 using MetaDslx.Modeling;
@@ -233,14 +232,5 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         #endregion
 
-        protected void CompleteBoundNode(DiagnosticBag diagnostics, CancellationToken cancellationToken)
-        {
-            foreach (var syntaxRef in _declaration.SyntaxReferences)
-            {
-                if (cancellationToken.IsCancellationRequested) return;
-                var boundNode = this.DeclaringCompilation.GetBoundNode<BoundSymbolDef>(syntaxRef.GetSyntax());
-                boundNode?.ForceComplete(cancellationToken);
-            }
-        }
     }
 }

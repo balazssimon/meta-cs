@@ -16,7 +16,6 @@ using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Symbols.Source;
 using MetaDslx.CodeAnalysis.Syntax;
-using MetaDslx.CodeAnalysis.Binding.BoundNodes;
 
 namespace MetaDslx.CodeAnalysis
 {
@@ -139,7 +138,7 @@ namespace MetaDslx.CodeAnalysis
             return binder;
         }
 
-        private static BoundExpression GetSpeculativelyBoundExpressionHelper(Binder binder, LanguageSyntaxNode expression, SpeculativeBindingOption bindingOption, DiagnosticBag diagnostics)
+        private static BoundNode GetSpeculativelyBoundExpressionHelper(Binder binder, LanguageSyntaxNode expression, SpeculativeBindingOption bindingOption, DiagnosticBag diagnostics)
         {
             Debug.Assert(binder != null);
             Debug.Assert(binder.IsSemanticModelBinder);
@@ -163,7 +162,7 @@ namespace MetaDslx.CodeAnalysis
 
             node = this.Language.SyntaxFactory.GetStandaloneNode(node);
             binder = this.GetSpeculativeBinder(position, node, bindingOption);
-            if (binder == null) return null;
+            if (binder == null) return default;
             var diagnostics = DiagnosticBag.GetInstance();
             var boundNode = GetSpeculativelyBoundExpressionHelper(binder, node, bindingOption, diagnostics);
             diagnostics.Free();
@@ -237,7 +236,7 @@ namespace MetaDslx.CodeAnalysis
 
             Binder binder;
             BoundNode boundNode = GetSpeculativelyBoundNode(position, node, bindingOption, out binder); //calls CheckAndAdjustPosition
-            var symbolInfo = this.GetSymbolInfoForNode(SymbolInfoOptions.DefaultOptions, boundNode, boundNode, boundNodeForSyntacticParent: null, binderOpt: binder);
+            var symbolInfo = this.GetSymbolInfoForNode(SymbolInfoOptions.DefaultOptions, ImmutableArray.Create(boundNode), boundNodeForSyntacticParent: default, binderOpt: binder);
             return symbolInfo;
         }
 
@@ -307,7 +306,7 @@ namespace MetaDslx.CodeAnalysis
             }
             Binder binder;
             BoundNode boundNode = GetSpeculativelyBoundNode(position, node, bindingOption, out binder); //calls CheckAndAdjustPosition
-            var typeInfo = GetTypeInfoForNode(boundNode, boundNode, boundNodeForSyntacticParent: null);
+            var typeInfo = GetTypeInfoForNode(ImmutableArray.Create(boundNode), boundNodeForSyntacticParent: default);
             return typeInfo;
         }
 
@@ -390,7 +389,7 @@ namespace MetaDslx.CodeAnalysis
             BoundNode boundNode = GetSpeculativelyBoundNode(position, aliasSyntax, bindingOption, out binder); //calls CheckAndAdjustPosition
 
             var symbolInfo = this.GetSymbolInfoForNode(SymbolInfoOptions.PreferTypeToConstructors | SymbolInfoOptions.PreserveAliases,
-                boundNode, boundNode, boundNodeForSyntacticParent: null, binderOpt: binder);
+                ImmutableArray.Create(boundNode), boundNodeForSyntacticParent: default, binderOpt: binder);
 
             return symbolInfo.Symbol as AliasSymbol;
         }
@@ -889,21 +888,11 @@ namespace MetaDslx.CodeAnalysis
             Constraint = "Provide " + nameof(ArrayBuilder<Symbol>) + " capacity to reduce number of allocations.")]
         internal SymbolInfo GetSymbolInfoForNode(
             SymbolInfoOptions options,
-            BoundNode lowestBoundNode,
-            BoundNode highestBoundNode,
+            ImmutableArray<BoundNode> boundNodes,
             BoundNode boundNodeForSyntacticParent,
             Binder binderOpt)
         {
-            BoundExpression boundExpr;
-
-            switch (lowestBoundNode)
-            {
-                case BoundExpression boundExpr2:
-                    boundExpr = boundExpr2;
-                    break;
-                default:
-                    return SymbolInfo.None;
-            }
+            if (boundNodes.Length == 0) return SymbolInfo.None;
 
             // TODO: Should parenthesized expression really not have symbols? At least for C#, I'm not sure that
             // is right. For example, C# allows the assignment statement:
@@ -913,9 +902,9 @@ namespace MetaDslx.CodeAnalysis
             // Get symbols and result kind from the lowest and highest nodes associated with the
             // syntax node.
             ImmutableArray<Symbol> symbols = GetSemanticSymbols(
-                boundExpr, boundNodeForSyntacticParent, binderOpt, options, out bool isDynamic, out LookupResultKind resultKind, out ImmutableArray<Symbol> unusedMemberGroup);
+                boundNodes[0], boundNodeForSyntacticParent, binderOpt, options, out bool isDynamic, out LookupResultKind resultKind, out ImmutableArray<Symbol> unusedMemberGroup);
 
-            if (highestBoundNode is BoundExpression highestBoundExpr)
+            /*if (highestBoundNode is BoundExpression highestBoundExpr)
             {
                 LookupResultKind highestResultKind;
                 bool highestIsDynamic;
@@ -940,7 +929,7 @@ namespace MetaDslx.CodeAnalysis
                     resultKind = highestResultKind;
                     isDynamic = highestIsDynamic;
                 }
-            }
+            }*/
 
             if (resultKind == LookupResultKind.Empty)
             {
@@ -992,14 +981,10 @@ namespace MetaDslx.CodeAnalysis
         // highestBoundNode: The highest node in the bound tree associated with node
         // boundNodeForSyntacticParent: The lowest node in the bound tree associated with node.Parent.
         internal LanguageTypeInfo GetTypeInfoForNode(
-            BoundNode lowestBoundNode,
-            BoundNode highestBoundNode,
+            ImmutableArray<BoundNode> boundNodes,
             BoundNode boundNodeForSyntacticParent)
         {
-            var boundExpr = lowestBoundNode as BoundExpression;
-            var highestBoundExpr = highestBoundNode as BoundExpression;
-
-            if (boundExpr != null)
+            if (boundNodes.Length > 0)
             {
                 // TODO: Should parenthesized expression really not have symbols? At least for C#, I'm not sure that 
                 // is right. For example, C# allows the assignment statement:
@@ -1020,21 +1005,15 @@ namespace MetaDslx.CodeAnalysis
         // boundNodeForSyntacticParent: The lowest node in the bound tree associated with node.Parent.
         internal ImmutableArray<Symbol> GetMemberGroupForNode(
             SymbolInfoOptions options,
-            BoundNode lowestBoundNode,
+            BoundNode boundNode,
             BoundNode boundNodeForSyntacticParent,
             Binder binderOpt)
         {
-            if (lowestBoundNode is BoundExpression boundExpr)
-            {
-                LookupResultKind resultKind;
-                ImmutableArray<Symbol> memberGroup;
-                bool isDynamic;
-                GetSemanticSymbols(boundExpr, boundNodeForSyntacticParent, binderOpt, options, out isDynamic, out resultKind, out memberGroup);
-
-                return memberGroup;
-            }
-
-            return ImmutableArray<Symbol>.Empty;
+            LookupResultKind resultKind;
+            ImmutableArray<Symbol> memberGroup;
+            bool isDynamic;
+            GetSemanticSymbols(boundNode, boundNodeForSyntacticParent, binderOpt, options, out isDynamic, out resultKind, out memberGroup);
+            return memberGroup;
         }
 
         // Gets symbol info for a type or namespace or alias reference. It is assumed that any error cases will come in
@@ -1283,9 +1262,9 @@ namespace MetaDslx.CodeAnalysis
             var binder = this.GetEnclosingBinder(position);
             if (binder != null)
             {
-                var bnode = binder.BindExpression(expression, BoundTree);
+                var bnode = binder.Bind(expression, BoundTree);
 
-                if (bnode != null && !cdestination.IsErrorType())
+                if (bnode.Symbol != null && !cdestination.IsErrorType())
                 {
                     HashSet<DiagnosticInfo> useSiteDiagnostics = null;
                     return binder.Conversions.ClassifyConversionFromExpression(bnode, cdestination, ref useSiteDiagnostics);
@@ -1334,9 +1313,9 @@ namespace MetaDslx.CodeAnalysis
             var binder = this.GetEnclosingBinder(position);
             if (binder != null)
             {
-                var bnode = binder.BindExpression(expression, BoundTree);
+                var bnode = binder.Bind(expression, BoundTree);
 
-                if (bnode != null && !destination.IsErrorType())
+                if (bnode.Symbol != null && !destination.IsErrorType())
                 {
                     HashSet<DiagnosticInfo> useSiteDiagnostics = null;
                     return binder.Conversions.ClassifyConversionFromExpression(bnode, destination, ref useSiteDiagnostics, forCast: true);
@@ -1375,7 +1354,7 @@ namespace MetaDslx.CodeAnalysis
         // they should be exposed through GetSemanticInfo.
         // NB: It is not safe to pass a null binderOpt during speculative binding.
         private ImmutableArray<Symbol> GetSemanticSymbols(
-            BoundExpression boundNode,
+            BoundNode boundNode,
             BoundNode boundNodeForSyntacticParent,
             Binder binderOpt,
             SymbolInfoOptions options,
@@ -1504,11 +1483,11 @@ namespace MetaDslx.CodeAnalysis
         private SymbolInfo GetSymbolInfoFromNode(SyntaxNode node, CancellationToken cancellationToken)
         {
             if (node == null) throw new ArgumentNullException(nameof(node));
-            var boundNode = this.Compilation.GetBoundNode<BoundIdentifier>(node);
-            if (boundNode != null)
+            var syntaxNode = (LanguageSyntaxNode)node;
+            var boundNode = this.Compilation.GetBinder(syntaxNode).Bind(syntaxNode, BoundTree);
+            if (boundNode.Symbol != null)
             {
-                var symbol = boundNode.Value as ISymbol;
-                return new SymbolInfo(symbol);
+                return new SymbolInfo(boundNode.Symbol);
             }
             return SymbolInfo.None;
         }
@@ -1516,10 +1495,10 @@ namespace MetaDslx.CodeAnalysis
         private TypeInfo GetTypeInfoFromNode(SyntaxNode node, CancellationToken cancellationToken)
         {
             if (node == null) throw new ArgumentNullException(nameof(node));
-            var boundNode = this.Compilation.GetBoundNode<BoundIdentifier>(node);
-            if (boundNode != null)
+            var syntaxNode = (LanguageSyntaxNode)node;
+            var boundNode = this.Compilation.GetBinder(syntaxNode).Bind(syntaxNode, BoundTree);
+            if (boundNode.Symbol is TypeSymbol typeSymbol)
             {
-                var typeSymbol = boundNode.Value as TypeSymbol;
                 return new LanguageTypeInfo(typeSymbol, typeSymbol, Conversion.NoConversion);
             }
             return LanguageTypeInfo.None;

@@ -16,7 +16,6 @@ using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.FlowAnalysis;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.CodeAnalysis.Binding.Binders;
-using MetaDslx.CodeAnalysis.Binding.BoundNodes;
 
 namespace MetaDslx.CodeAnalysis
 {
@@ -52,7 +51,8 @@ namespace MetaDslx.CodeAnalysis
                 throw new ArgumentOutOfRangeException(nameof(syntaxTree), CSharpResources.TreeNotPartOfCompilation);
             }
 
-            _boundTree = new BoundTree(compilation, syntaxTree, compilation.GetBinder(syntaxTree.GetRootNode()), _ignoredDiagnostics);
+            var rootNode = syntaxTree.GetRootNode();
+            _boundTree = new BoundTree(compilation, rootNode, compilation.GetBinder(rootNode), _ignoredDiagnostics);
 
             _binderFactory = compilation.GetBinderFactory(SyntaxTree);
         }
@@ -60,7 +60,8 @@ namespace MetaDslx.CodeAnalysis
         internal SyntaxTreeSemanticModel(LanguageCompilation parentCompilation, LanguageSyntaxTree parentSyntaxTree, LanguageSyntaxTree speculatedSyntaxTree)
         {
             _compilation = parentCompilation;
-            _boundTree = new BoundTree(parentCompilation, speculatedSyntaxTree, parentCompilation.GetBinder(speculatedSyntaxTree.GetRootNode()), _ignoredDiagnostics);
+            var rootNode = speculatedSyntaxTree.GetRootNode();
+            _boundTree = new BoundTree(parentCompilation, rootNode, parentCompilation.GetBinder(rootNode), _ignoredDiagnostics);
             _binderFactory = _compilation.GetBinderFactory(parentSyntaxTree);
         }
 
@@ -235,9 +236,9 @@ namespace MetaDslx.CodeAnalysis
                         // will be one in the binder chain and one isn't necessarily required for the batch case.
                         binder = new LocalScopeBinder(binder);
 
-                        BoundExpression bound = binder.BindExpression(node, _boundTree);
+                        BoundNode bound = binder.Bind(node, _boundTree);
 
-                        SymbolInfo info = GetSymbolInfoForNode(options, bound, bound, boundNodeForSyntacticParent: null, binderOpt: null);
+                        SymbolInfo info = GetSymbolInfoForNode(options, ImmutableArray.Create(bound), boundNodeForSyntacticParent: default, binderOpt: null);
                         if ((object)info.Symbol != null)
                         {
                             result = new SymbolInfo(null, ImmutableArray.Create<ISymbol>(info.Symbol), CandidateReason.NotATypeOrNamespace);
@@ -782,7 +783,9 @@ namespace MetaDslx.CodeAnalysis
             if (memberModel == null)
             {
                 // Recover from error cases
-                var node = new BoundBadStatement(BoundTree, ImmutableArray<object>.Empty, expression, hasErrors: true);
+                // TODO:MetaDslx
+                //var node = new BoundBadStatement(BoundTree, ImmutableArray<object>.Empty, expression, hasErrors: true);
+                var node = new BoundNode(null, expression);
                 return new RegionAnalysisContext(Compilation, null, node, node, node);
             }
 
@@ -799,7 +802,9 @@ namespace MetaDslx.CodeAnalysis
             if (memberModel == null)
             {
                 // Recover from error cases
-                var node = new BoundBadStatement(BoundTree, ImmutableArray<object>.Empty, firstStatement, hasErrors: true);
+                // TODO:MetaDslx
+                // var node = new BoundBadStatement(BoundTree, ImmutableArray<object>.Empty, firstStatement, hasErrors: true);
+                var node = new BoundNode(null, firstStatement);
                 return new RegionAnalysisContext(Compilation, null, node, node, node);
             }
 

@@ -1,5 +1,4 @@
 ﻿using MetaDslx.CodeAnalysis.Binding.Binders;
-using MetaDslx.CodeAnalysis.Binding.BoundNodes;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
@@ -19,35 +18,17 @@ namespace MetaDslx.CodeAnalysis.Binding
 
     public class BoundTree
     {
-        private const int NotCompleted = 0;
-        private const int Completing = 1;
-        private const int Completed = 2;
-
-        private int _completionState;
-
         private readonly LanguageCompilation _compilation;
         private readonly LanguageSyntaxTree _syntaxTree;
-        private readonly DiagnosticBag _diagnostics;
+        private readonly SyntaxNodeOrToken _root;
         private readonly Binder _rootBinder;
 
-        // The bound nodes associated with a syntax node, from highest in the tree to lowest.
-        private ConcurrentDictionary<SyntaxNode, ImmutableArray<BoundNode>> _map = new ConcurrentDictionary<SyntaxNode, ImmutableArray<BoundNode>>();
-
-        // In a typing scenario, GetBoundNode is regularly called with a non-zero position.
-        // This results in a lot of allocations of BoundNodeFactoryVisitors. Pooling them
-        // reduces this churn to almost nothing.
-        private readonly ObjectPool<BoundNodeFactoryVisitor> _boundNodeFactoryVisitorPool;
-        private readonly ObjectPool<IsBindableNodeVisitor> _isBindableNodeVisitorPool;
-
-        public BoundTree(LanguageCompilation compilation, LanguageSyntaxTree syntaxTree, Binder rootBinder, DiagnosticBag diagnostics)
+        public BoundTree(LanguageCompilation compilation, SyntaxNodeOrToken root, Binder rootBinder, DiagnosticBag diagnostics)
         {
             _compilation = compilation;
-            _syntaxTree = syntaxTree;
+            _syntaxTree = (LanguageSyntaxTree)root.SyntaxTree;
+            _root = root;
             _rootBinder = rootBinder;
-            _diagnostics = diagnostics;
-
-            _boundNodeFactoryVisitorPool = new ObjectPool<BoundNodeFactoryVisitor>(() => Language.CompilationFactory.CreateBoundNodeFactoryVisitor(this), 64);
-            _isBindableNodeVisitorPool = new ObjectPool<IsBindableNodeVisitor>(() => Language.CompilationFactory.CreateIsBindableNodeVisitor(this), 64);
         }
 
         public Language Language => _compilation.Language;
@@ -61,10 +42,6 @@ namespace MetaDslx.CodeAnalysis.Binding
         public virtual LanguageSyntaxNode Root => _syntaxTree.GetRootNode();
 
         protected SyntaxFacts SyntaxFacts => _compilation.Language.SyntaxFacts;
-
-        public DiagnosticBag DiagnosticBag => _diagnostics;
-
-        internal MutableModel ModelBuilder => _compilation.ModelBuilder;
 
         internal bool IsInTree(SyntaxNode node)
         {
@@ -226,117 +203,8 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// </summary> 
         public virtual BoundNode GetBoundRoot()
         {
-            return GetUpperBoundNode(GetBindableSyntaxNode(this.Root));
-        }
-
-        /// <summary>
-        /// Get the highest bound node in the tree associated with a particular syntax node.
-        /// </summary>
-        internal BoundNode GetUpperBoundNode(LanguageSyntaxNode node, bool promoteToBindable = false)
-        {
-            if (promoteToBindable)
-            {
-                node = GetBindableSyntaxNode(node);
-            }
-            else
-            {
-                Debug.Assert(node == GetBindableSyntaxNode(node));
-            }
-
-            // The bound nodes are stored in the map from highest to lowest, so the first bound node is the highest.
-            var boundNodes = GetBoundNodes(node);
-
-            if (boundNodes.Length == 0)
-            {
-                return null;
-            }
-            else
-            {
-                return boundNodes[0];
-            }
-        }
-
-        /// <summary>
-        /// Get the lowest bound node in the tree associated with a particular syntax node. Lowest is defined as last
-        /// in a pre-order traversal of the bound tree.
-        /// </summary>
-        internal BoundNode GetLowerBoundNode(LanguageSyntaxNode node)
-        {
-            Debug.Assert(node == GetBindableSyntaxNode(node));
-
-            // The bound nodes are stored in the map from highest to lowest, so the last bound node is the lowest.
-            var boundNodes = GetBoundNodes(node);
-
-            if (boundNodes.Length == 0)
-            {
-                return null;
-            }
-            else
-            {
-                return GetLowerBoundNode(boundNodes);
-            }
-        }
-
-        private static BoundNode GetLowerBoundNode(ImmutableArray<BoundNode> boundNodes)
-        {
-            return boundNodes[boundNodes.Length - 1];
-        }
-
-        private ImmutableArray<BoundNode> GetBoundNodesFromMap(LanguageSyntaxNode node)
-        {
-            ImmutableArray<BoundNode> result;
-            return _map.TryGetValue(node, out result) ? result : default(ImmutableArray<BoundNode>);
-        }
-
-        // Adds every syntax/bound pair in a tree rooted at the given bound node to the map, and the
-        // performs a lookup of the given syntax node in the map. 
-        private ImmutableArray<BoundNode> AddBoundTreeAndGetBoundNodeFromMap(LanguageSyntaxNode syntax, BoundNode bound)
-        {
-            bool alreadyInTree = false;
-
-            if (bound != null)
-            {
-                alreadyInTree = _map.ContainsKey(bound.Syntax);
-            }
-
-            // check if we already have node in the cache.
-            // this may happen if we have races and in such case we are no longer interested in adding
-            if (!alreadyInTree)
-            {
-                BoundNodeMapBuilder.AddToMap(bound, _map);
-            }
-
-            ImmutableArray<BoundNode> result;
-            return _map.TryGetValue(syntax, out result) ? result : default(ImmutableArray<BoundNode>);
-        }
-
-        private void AddBoundTreeForStandaloneSyntax(LanguageSyntaxNode syntax, BoundNode bound)
-        {
-            bool alreadyInTree = false;
-
-            // check if we already have node in the cache.
-            // this may happen if we have races and in such case we are no longer interested in adding
-            if (bound != null)
-            {
-                alreadyInTree = _map.ContainsKey(bound.Syntax);
-            }
-
-            if (!alreadyInTree)
-            {
-                if (syntax == this.Root || this.IsBindableNode(syntax))
-                {
-                    // Note: For speculative model we want to always cache the entire bound tree.
-                    // If syntax is a statement, we need to add all its children.
-                    // Node cache assumes that if statement is cached, then all 
-                    // its children are cached too.
-                    BoundNodeMapBuilder.AddToMap(bound, _map);
-                }
-                else
-                {
-                    // expressions can be added individually.
-                    BoundNodeMapBuilder.AddToMap(bound, _map, syntax);
-                }
-            }
+            // TODO:MetaDslx
+            return _rootBinder.Bind(_root, this);
         }
 
         // We might not have actually been given a bindable expression or statement; the caller can
@@ -345,29 +213,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         public LanguageSyntaxNode GetBindingRoot(LanguageSyntaxNode node)
         {
             Debug.Assert(node != null);
-
-#if DEBUG
-            for (LanguageSyntaxNode current = node; current != this.Root; current = current.ParentOrStructuredTriviaParent)
-            {
-                // make sure we never go out of Root
-                Debug.Assert(current != null, "How did we get outside the root?");
-            }
-#endif
-
-            IsBindableNodeVisitor visitor = _isBindableNodeVisitorPool.Allocate();
-            bool isBindable = false;
-            while ((object)node != null)
-            {
-                int position = node.Position;
-                var state = node.Parent != null ? BoundNodeFactoryState.InParent : BoundNodeFactoryState.InNode;
-                var nodeToVisit = node.Parent != null ? node.Parent : node;
-                visitor.Initialize(position, true, state);
-                isBindable = visitor.Visit(nodeToVisit);
-                if (isBindable) break;
-                else node = node.ParentOrStructuredTriviaParent;
-            }
-            _isBindableNodeVisitorPool.Free(visitor);
-
+            // TODO:MetaDslx
             return node ?? this.Root;
         }
 
@@ -376,21 +222,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         internal protected LanguageSyntaxNode GetBindableSyntaxNode(LanguageSyntaxNode node)
         {
             Debug.Assert(node != null);
-
-            IsBindableNodeVisitor visitor = _isBindableNodeVisitorPool.Allocate();
-            bool isBindable = false;
-            while ((object)node != null)
-            {
-                int position = node.Position;
-                var state = node.Parent != null ? BoundNodeFactoryState.InParent : BoundNodeFactoryState.InNode;
-                var nodeToVisit = node.Parent != null ? node.Parent : node;
-                visitor.Initialize(position, false, state);
-                isBindable = visitor.Visit(nodeToVisit);
-                if (isBindable) break;
-                else node = node.ParentOrStructuredTriviaParent;
-            }
-            _isBindableNodeVisitorPool.Free(visitor);
-
+            // TODO:MetaDslx
             return node ?? this.Root;
         }
 
@@ -415,36 +247,6 @@ namespace MetaDslx.CodeAnalysis.Binding
             var bindableParent = this.GetBindableSyntaxNode(parent);
             Debug.Assert(bindableParent != null);
             return bindableParent;
-        }
-
-        protected virtual bool IsBindableRoot(LanguageSyntaxNode node)
-        {
-            Debug.Assert(node != null);
-
-            IsBindableNodeVisitor visitor = _isBindableNodeVisitorPool.Allocate();
-            int position = node.Position;
-            var state = node.Parent != null ? BoundNodeFactoryState.InParent : BoundNodeFactoryState.InNode;
-            var nodeToVisit = node.Parent != null ? node.Parent : node;
-            visitor.Initialize(position, true, state);
-            bool result = visitor.Visit(nodeToVisit);
-            _isBindableNodeVisitorPool.Free(visitor);
-
-            return result;
-        }
-
-        protected virtual bool IsBindableNode(LanguageSyntaxNode node)
-        {
-            Debug.Assert(node != null);
-
-            IsBindableNodeVisitor visitor = _isBindableNodeVisitorPool.Allocate();
-            int position = node.Position;
-            var state = node.Parent != null ? BoundNodeFactoryState.InParent : BoundNodeFactoryState.InNode;
-            var nodeToVisit = node.Parent != null ? node.Parent : node;
-            visitor.Initialize(position, true, state);
-            bool result = visitor.Visit(nodeToVisit);
-            _isBindableNodeVisitorPool.Free(visitor);
-
-            return result;
         }
 
         // We want the binder in which this syntax node is going to be bound, NOT the binder which
@@ -495,211 +297,20 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// Get all bounds nodes associated with a node, ordered from highest to lowest in the bound tree.
         /// Strictly speaking, the order is that of a pre-order traversal of the bound tree.
         /// </summary>
-        public ImmutableArray<BoundNode> GetBoundNodes(LanguageSyntaxNode node)
+        public ImmutableArray<BoundNode> GetBoundNodes(SyntaxNodeOrToken node)
         {
-            // If this method is called with a null parameter, that implies that the Root should be
-            // bound, but make sure that the Root is bindable.
-            if (node == null)
-            {
-                node = GetBindableSyntaxNode(Root);
-            }
-            //Debug.Assert(node == GetBindableSyntaxNode(node));
-
-            // We have one SemanticModel for each method.
-            //
-            // The SemanticModel contains a lazily-built immutable map from scope-introducing 
-            // syntactic statements (such as blocks) to binders, but not from lambdas to binders.
-            //
-            // The SemanticModel also contains a mutable map from syntax to bound nodes; that is 
-            // declared here. Since the map is not thread-safe we ensure that it is guarded with a
-            // reader-writer lock.
-            //
-            // Have we already got the desired bound node in the mutable map? If so, return it.
-            ImmutableArray<BoundNode> results = GetBoundNodesFromMap(node);
-
-            if (!results.IsDefaultOrEmpty)
-            {
-                return results;
-            }
-
-            // We might not actually have been given an expression or statement even though we were
-            // allegedly given something that is "bindable".
-
-            // If we didn't find in the cached bound nodes, find a binding root and bind it.
-            // This will cache bound nodes under the binding root.
-            LanguageSyntaxNode nodeToBind = GetBindingRoot(node);
-            var nodeBinder = GetEnclosingBinder(GetAdjustedNodePosition(nodeToBind));
-
-            BoundNode boundNode = nodeBinder.CreateBoundNodeForBoundTree(nodeToBind, this); 
-            results = AddBoundTreeAndGetBoundNodeFromMap(node, boundNode);
-
-            if (!results.IsDefaultOrEmpty)
-            {
-                return results;
-            }
-
-            // If we still didn't find it, its still possible we could bind it directly.
-            // For example, types are usually not represented by bound nodes, and some error conditions and
-            // not yet implemented features do not create bound nodes for everything underneath them.
-            //
-            // In this case, however, we only add the single bound node we found to the map, not any child bound nodes,
-            // to avoid duplicates in the map if a parent of this node comes through this code path also.
-
-            var binder = GetEnclosingBinder(GetAdjustedNodePosition(node));
-
-            results = GetBoundNodesFromMap(node);
-
-            if (!results.IsDefaultOrEmpty)
-            {
-                return results;
-            }
-            /*else
-            {
-                var directlyBoundNode = binder.CreateBoundNodeForBoundTree(node, this);
-                AddBoundTreeForStandaloneSyntax(node, directlyBoundNode);
-                results = GetBoundNodesFromMap(node);
-
-                if (!results.IsDefaultOrEmpty)
-                {
-                    return results;
-                }
-            }*/
-
+            // TODO:MetaDslx
             return ImmutableArray<BoundNode>.Empty;
         }
 
-        public void GetBoundNodes(LanguageSyntaxNode node, out LanguageSyntaxNode bindableNode, out BoundNode lowestBoundNode, out BoundNode highestBoundNode, out BoundNode boundParent)
+        public void GetBoundNodes(SyntaxNodeOrToken node, out SyntaxNodeOrToken bindableNode, out ImmutableArray<BoundNode> boundNodes, out BoundNode boundParent)
         {
-            bindableNode = this.GetBindableSyntaxNode(node);
-
-            LanguageSyntaxNode bindableParent = this.GetBindableParentNode(bindableNode);
-
-            /* TODO:MetaDslx
-            // Special handling for the Color Color case.
-            //
-            // Suppose we have:
-            // public class Color {
-            //   public void M(int x) {}
-            //   public static void M(params int[] x) {}
-            // }
-            // public class C {
-            //   public void Test() {
-            //     Color Color = new Color();
-            //     System.Action<int> d = Color.M;
-            //   }
-            // }
-            //
-            // We actually don't know how to interpret the "Color" in "Color.M" until we
-            // perform overload resolution on the method group.  Now, if we were getting
-            // the semantic info for the method group, then bindableParent would be the
-            // variable declarator "d = Color.M" and so we would be able to pull the result
-            // of overload resolution out of the bound (method group) conversion.  However,
-            // if we are getting the semantic info for just the "Color" part, then
-            // bindableParent will be the member access, which doesn't have enough information
-            // to determine which "Color" to use (since no overload resolution has been
-            // performed).  We resolve this problem by detecting the case where we're looking
-            // up the LHS of a member access and calling GetBindableParentNode one more time.
-            // This gets us up to the level where the method group conversion occurs.
-            if (bindableParent != null && bindableParent.Kind() == SyntaxKind.SimpleMemberAccessExpression && ((MemberAccessExpressionSyntax)bindableParent).Expression == bindableNode)
-            {
-                bindableParent = this.GetBindableParentNode(bindableParent);
-            }*/
-
-            boundParent = bindableParent == null ? null : this.GetLowerBoundNode(bindableParent);
-
-            lowestBoundNode = this.GetLowerBoundNode(bindableNode);
-            highestBoundNode = this.GetUpperBoundNode(bindableNode);
-        }
-
-        public ImmutableArray<BoundNode> ComputeChildren(LanguageSyntaxNode node)
-        {
-            var childBoundNodes = ArrayBuilder<BoundNode>.GetInstance();
-            foreach(var child in node.DescendantNodes(d => GetBoundNodes((LanguageSyntaxNode)d).IsDefaultOrEmpty))
-            {
-                var boundChild = GetBoundNodes((LanguageSyntaxNode)child);
-                childBoundNodes.Add(boundChild[0]);
-            }
-            return childBoundNodes.ToImmutableAndFree();
-        }
-
-        public void ForceComplete(CancellationToken cancellationToken)
-        {
-            if (Interlocked.CompareExchange(ref _completionState, Completing, NotCompleted) == NotCompleted)
-            {
-                var boundRoot = this.GetBoundRoot();
-                boundRoot.ForceComplete(cancellationToken);
-                Interlocked.CompareExchange(ref _completionState, Completed, Completing);
-            }
+            bindableNode = node;
+            boundNodes = ImmutableArray<BoundNode>.Empty;
+            boundParent = default;
+            // TODO:MetaDslx
         }
 
 
-        /// <summary>
-        /// Return bound node for a syntax node.
-        /// </summary>
-        public BoundNode CreateBoundNode(LanguageSyntaxNode node, Binder binder)
-        {
-            Debug.Assert(node != null);
-            if (node.IsMissing) return null;
-
-            var childBoundNodes = ArrayBuilder<object>.GetInstance();
-            int position = node.Position;
-            var state = node.Parent != null ? BoundNodeFactoryState.InParent : BoundNodeFactoryState.InNode;
-            var nodeToVisit = node.Parent != null ? node.Parent : node;
-
-            BoundNodeFactoryVisitor visitor = _boundNodeFactoryVisitorPool.Allocate();
-            visitor.Initialize(position, state);
-            BoundNode result = visitor.Visit(nodeToVisit, childBoundNodes);
-            _boundNodeFactoryVisitorPool.Free(visitor);
-
-            if (node == this.Root && !(result is BoundRoot))
-            {
-                Debug.Assert(result == null || childBoundNodes.Count == 0);
-                if (result != null)
-                {
-                    result = new BoundRoot(BoundKind.Root, this, ImmutableArray.Create<object>(result), node);
-                }
-                else
-                {
-                    result = new BoundRoot(BoundKind.Root, this, childBoundNodes.ToImmutable(), node);
-                }
-            }
-            else if (result == null)
-            {
-                Debug.Assert(false);
-                result = (BoundNode)childBoundNodes[0];
-            }
-
-            childBoundNodes.Free();
-
-            BoundNodeMapBuilder.AddToMap(result, _map, node);
-
-            ImmutableArray<BoundNode> results = GetBoundNodesFromMap(node);
-            if (results.IsDefaultOrEmpty)
-            {
-                Debug.Assert(false);
-                return null;
-            }
-            else
-            {
-                return results[0];
-            }
-        }
-
-        public bool TryGetBoundNode(LanguageSyntaxNode node, out BoundNode boundNode)
-        {
-            Debug.Assert(node != null);
-
-            ImmutableArray<BoundNode> results = GetBoundNodesFromMap(node);
-            if (results.IsDefaultOrEmpty)
-            {
-                boundNode = null;
-                return false;
-            }
-            else
-            {
-                boundNode = results[0];
-                return true;
-            }
-        }
     }
 }

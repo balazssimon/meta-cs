@@ -854,7 +854,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             }*/
             else if (constraints.IsViable(symbol))
             {
-                return LookupResult.WrongSymbol(symbol, symbol, constraints.Kinds, true);
+                return LookupResult.WrongSymbol(symbol, symbol, constraints.Types, true);
             }
             else
             {

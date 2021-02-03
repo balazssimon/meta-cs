@@ -9,6 +9,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
     {
         SymbolFactory SymbolFactory { get; }
         object ModelObject { get; }
+        Type ModelObjectType { get; }
     }
 
 

@@ -1,5 +1,4 @@
-﻿using MetaDslx.CodeAnalysis.Binding.BoundNodes;
-using MetaDslx.CodeAnalysis.Symbols;
+﻿using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.Languages.Meta.Model;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
@@ -41,45 +40,6 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             }
         }
 
-        public override void InitializeQualifierSymbol(BoundQualifier qualifier)
-        {
-            if (qualifier.IsInitialized()) return;
-            var boundNode = this.Compilation.GetBoundNode<BoundSymbolUse>(qualifier.Syntax);
-            if (boundNode == null) return;
-            var qualifiers = boundNode.GetChildQualifiers();
-            foreach (var child in qualifiers)
-            {
-                if (child.Syntax.Span.Contains(qualifier.Syntax.Span))
-                {
-                    this.InitializeFullQualifierSymbol(child);
-                    return;
-                }
-            }
-            qualifier.BoundTree.DiagnosticBag.Add(ModelErrorCode.WRN_QualifierNotFound, qualifier.Syntax.Location, qualifier.Syntax.ToString(), qualifier.Syntax.GetType().FullName, boundNode.Syntax.GetType().FullName);
-            this.InitializeFullQualifierSymbol(qualifier);
-        }
-
-        private void InitializeFullQualifierSymbol(BoundQualifier qualifier)
-        {
-            if (qualifier.IsInitialized()) return;
-            var result = ArrayBuilder<object>.GetInstance();
-            var identifiers = qualifier.Identifiers;
-            NamespaceOrTypeSymbol qualifierOpt = null;
-            for (int i = 0; i < identifiers.Length; i++)
-            {
-                bool last = i == identifiers.Length - 1;
-                var types = last ? _types : _nestingTypes;
-                var identifier = identifiers[i];
-                LookupResult lookupResult = LookupResult.GetInstance();
-                this.LookupSymbolsSimpleName(lookupResult, new LookupConstraints(identifier.Name, identifier.MetadataName, types, qualifierOpt));
-                var symbol = this.ResultSymbol(lookupResult, identifier.Name, identifier.MetadataName, identifier.Syntax, identifier.BoundTree.DiagnosticBag, false, out bool wasError, qualifierOpt, LookupOptions.Default);
-                Debug.Assert(symbol != null);
-                result.Add(symbol);
-                lookupResult.Free();
-                qualifierOpt = symbol as NamespaceOrTypeSymbol;
-            }
-            qualifier.InitializeValues(identifiers, result.ToImmutableAndFree());
-        }
 
         protected override LookupConstraints AdjustConstraints(LookupConstraints constraints)
         {

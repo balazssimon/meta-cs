@@ -1,5 +1,4 @@
 ﻿using MetaDslx.CodeAnalysis.Binding;
-using MetaDslx.CodeAnalysis.Binding.BoundNodes;
 using MetaDslx.CodeAnalysis.Declarations;
 using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Symbols.CSharp;
@@ -80,17 +79,12 @@ namespace MetaDslx.CodeAnalysis
 
         public virtual Symbol CreateSpecialSymbol(ModuleSymbol module, object key)
         {
-            if (module is MetaModuleSymbol metaModule)
+            if (module is ModelModuleSymbol modelModule)
             {
-                var specialSymbol = Language.SymbolFacts.GetBuiltInObjects().FirstOrDefault(c => c.MName == key.ToString());
-                if (specialSymbol != null && metaModule.Models.Contains(specialSymbol.MModel))
+                var symbolFacts = Language.SymbolFacts;
+                if (key != null && symbolFacts.GetBuiltInObjects().Contains(key) && symbolFacts.ContainsObject(modelModule.Model, key))
                 {
-                    Symbol symbol;
-                    if (specialSymbol.MId.Descriptor.IsNamedType) symbol = new MetaNamedTypeSymbol(specialSymbol, module);
-                    else if (specialSymbol.MId.Descriptor.IsNamespace) symbol = new MetaNamespaceSymbol(specialSymbol, module);
-                    else if (specialSymbol.MId.Descriptor.IsName) symbol = new MetaMemberSymbol(specialSymbol, module);
-                    else symbol = null;
-                    return symbol;
+                    return modelModule.SymbolFactory.GetSymbol(key);
                 }
             }
             return null;
@@ -103,8 +97,6 @@ namespace MetaDslx.CodeAnalysis
 
         public abstract RootSingleDeclaration CreateDeclarationTree(LanguageSyntaxTree syntaxTree, string scriptClassName, bool isSubmission);
         public abstract BinderFactoryVisitor CreateBinderFactoryVisitor(BinderFactory binderFactory);
-        public abstract BoundNodeFactoryVisitor CreateBoundNodeFactoryVisitor(BoundTree boundTree);
-        public abstract IsBindableNodeVisitor CreateIsBindableNodeVisitor(BoundTree boundTree);
 
         public virtual ObjectFactory CreateObjectFactory(LanguageCompilation compilation)
         {
