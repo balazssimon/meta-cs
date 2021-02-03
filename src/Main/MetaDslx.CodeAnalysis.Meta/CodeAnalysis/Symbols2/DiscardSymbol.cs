@@ -25,6 +25,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public override Symbol ContainingSymbol => null;
         public override LanguageSymbolKind Kind => LanguageSymbolKind.Discard;
         public override ImmutableArray<Location> Locations => ImmutableArray<Location>.Empty;
+        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => ImmutableArray<SyntaxReference>.Empty;
+
         public override void Accept(SymbolVisitor visitor) => visitor.VisitDiscard(this);
         public override TResult Accept<TResult>(SymbolVisitor<TResult> visitor) => visitor.VisitDiscard(this);
 

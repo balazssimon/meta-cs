@@ -158,13 +158,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
             }
         }
 
-        public override ImmutableArray<Location> Locations
-        {
-            get
-            {
-                return _underlyingAssembly.Locations;
-            }
-        }
+        public override ImmutableArray<Location> Locations => _underlyingAssembly.Locations;
+
+        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => _underlyingAssembly.DeclaringSyntaxReferences;
 
         internal override IEnumerable<ImmutableArray<byte>> GetInternalsVisibleToPublicKeys(string simpleName)
         {

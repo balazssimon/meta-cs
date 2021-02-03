@@ -601,6 +601,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             }
         }
 
+        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => ImmutableArray<SyntaxReference>.Empty;
+
         private void ValidateAttributeSemantics(DiagnosticBag diagnostics)
         {
             //diagnostics that come from computing the public key.

@@ -138,6 +138,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
             }
         }
 
+        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => _underlyingAssembly.DeclaringSyntaxReferences;
+
         internal override IEnumerable<ImmutableArray<byte>> GetInternalsVisibleToPublicKeys(string simpleName)
         {
             return _underlyingAssembly.GetInternalsVisibleToPublicKeys(simpleName);

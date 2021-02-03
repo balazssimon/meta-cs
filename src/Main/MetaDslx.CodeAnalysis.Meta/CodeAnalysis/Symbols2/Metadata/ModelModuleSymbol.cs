@@ -22,12 +22,14 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
         private SymbolFactory _symbolFactory;
         private object _model;
         private readonly int _ordinal;
+        private readonly ImmutableArray<MetadataLocation> _metadataLocation;
 
         public ModelModuleSymbol(AssemblySymbol owningAssembly, object model, int ordinal)
         {
             _owningAssembly = owningAssembly;
             _model = model;
             _ordinal = ordinal;
+            _metadataLocation = ImmutableArray.Create<MetadataLocation>(new MetadataLocation(this));
         }
 
         public virtual object Model => _model;
@@ -70,7 +72,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 
         public override ICollection<string> NamespaceNames => _globalNamespace.NamespaceNames;
 
-        public override ImmutableArray<Location> Locations => ImmutableArray<Location>.Empty;
+        public override ImmutableArray<Location> Locations => _metadataLocation.Cast<MetadataLocation, Location>();
+
+        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => ImmutableArray<SyntaxReference>.Empty;
 
         public override Machine Machine => Machine.Unknown;
 

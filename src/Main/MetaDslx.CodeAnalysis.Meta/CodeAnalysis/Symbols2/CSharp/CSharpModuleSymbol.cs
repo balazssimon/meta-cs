@@ -159,6 +159,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
             }
         }
 
+        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => _underlyingModule.DeclaringSyntaxReferences;
+
         /// <summary>
         /// A helper method for ReferenceManager to set AssemblySymbols for assemblies 
         /// referenced by this module.

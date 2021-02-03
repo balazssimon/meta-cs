@@ -133,65 +133,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         }
 
         /// <summary>
-        /// <para>
-        /// Get the syntax node(s) where this symbol was declared in source. Some symbols (for
-        /// example, partial classes) may be defined in more than one location. This property should
-        /// return one or more syntax nodes only if the symbol was declared in source code and also
-        /// was not implicitly declared (see the <see cref="IsImplicitlyDeclared"/> property). 
-        /// </para>
-        /// <para>
-        /// Note that for namespace symbol, the declaring syntax might be declaring a nested
-        /// namespace. For example, the declaring syntax node for N1 in "namespace N1.N2 {...}" is
-        /// the entire <see cref="NamespaceDeclarationSyntax"/> for N1.N2. For the global namespace, the declaring
-        /// syntax will be the <see cref="CompilationUnitSyntax"/>.
-        /// </para>
-        /// </summary>
-        /// <returns>
-        /// The syntax node(s) that declared the symbol. If the symbol was declared in metadata or
-        /// was implicitly declared, returns an empty read-only array.
-        /// </returns>
-        /// <remarks>
-        /// To go the opposite direction (from syntax node to symbol), see <see
-        /// cref="CSharpSemanticModel.GetDeclaredSymbol(MemberDeclarationSyntax, CancellationToken)"/>.
-        /// </remarks>
-        public abstract ImmutableArray<SyntaxReference> DeclaringSyntaxReferences { get; }
-
-        /// <summary>
-        /// Helper for implementing <see cref="DeclaringSyntaxReferences"/> for derived classes that store a location but not a 
-        /// <see cref="CSharpSyntaxNode"/> or <see cref="SyntaxReference"/>.
-        /// </summary>
-        internal static ImmutableArray<SyntaxReference> GetDeclaringSyntaxReferenceHelper<TNode>(ImmutableArray<Location> locations)
-            where TNode : LanguageSyntaxNode
-        {
-            if (locations.IsEmpty)
-            {
-                return ImmutableArray<SyntaxReference>.Empty;
-            }
-
-            ArrayBuilder<SyntaxReference> builder = ArrayBuilder<SyntaxReference>.GetInstance();
-            foreach (Location location in locations)
-            {
-                // Location may be null. See https://github.com/dotnet/roslyn/issues/28862.
-                if (location == null)
-                {
-                    continue;
-                }
-                if (location.IsInSource)
-                {
-                    SyntaxToken token = (SyntaxToken)location.SourceTree.GetRoot().FindToken(location.SourceSpan.Start);
-                    if (token.GetKind() != SyntaxKind.None)
-                    {
-                        LanguageSyntaxNode node = token.Parent.FirstAncestorOrSelf<TNode>();
-                        if (node != null)
-                            builder.Add(node.GetReference());
-                    }
-                }
-            }
-
-            return builder.ToImmutableAndFree();
-        }
-
-        /// <summary>
         /// Get this accessibility that was declared on this symbol. For symbols that do not have
         /// accessibility declared on them, returns <see cref="Accessibility.NotApplicable"/>.
         /// </summary>

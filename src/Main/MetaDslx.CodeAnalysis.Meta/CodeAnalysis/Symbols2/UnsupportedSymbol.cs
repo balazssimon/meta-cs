@@ -25,6 +25,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         public override ImmutableArray<Location> Locations => _symbol.Locations;
 
+        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => ImmutableArray<SyntaxReference>.Empty;
+
         public override void Accept(SymbolVisitor visitor)
         {
             // nop
