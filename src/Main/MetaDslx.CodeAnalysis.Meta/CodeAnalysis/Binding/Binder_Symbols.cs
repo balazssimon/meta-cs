@@ -1074,14 +1074,9 @@ namespace MetaDslx.CodeAnalysis.Binding
             return info != null && Symbol.ReportUseSiteDiagnostic(info, diagnostics, location);
         }
 
-        public virtual DeclaredSymbol GetDeclarationSymbol()
+        public virtual Symbol GetDefinedSymbol()
         {
-            return this.Next.GetDeclarationSymbol();
-        }
-
-        public DeclaredSymbol GetParentDeclarationSymbol()
-        {
-            return this.Next.GetDeclarationSymbol();
+            return null;
         }
     }
 }

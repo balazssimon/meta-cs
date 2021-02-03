@@ -16,21 +16,32 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
     {
         private readonly Type _type;
         private readonly Type _nestingType;
-        private ImmutableArray<DeclaredSymbol> _declaredSymbols;
-        private readonly LanguageSyntaxNode _syntax;
+        private Symbol _definedSymbol;
+        private readonly SyntaxNodeOrToken _syntax;
 
-        public SymbolDefBinder(Binder next, LanguageSyntaxNode syntax, Type type, Type nestingType) 
+        public SymbolDefBinder(Binder next, SyntaxNodeOrToken syntax, Type type, Type nestingType) 
             : base(next)
         {
             _type = type;
             _nestingType = nestingType;
             _syntax = syntax;
-            _declaredSymbols = default;
+            _definedSymbol = null;
         }
 
-        public override DeclaredSymbol GetDeclarationSymbol()
+        public override Symbol GetDefinedSymbol()
         {
-            throw new NotImplementedException("TODO:MetaDslx");
+            if (_definedSymbol == null)
+            {
+                var symbol = this.Bind(_syntax, default).Symbol;
+                Interlocked.CompareExchange(ref _definedSymbol, symbol, null);
+            }
+            return _definedSymbol;
+        }
+
+        public override SymbolDefBinder FindSymbolDefBinder(SyntaxNodeOrToken syntax, Symbol symbol)
+        {
+            if (this.ContainingSymbol == symbol.ContainingSymbol && _syntax == syntax) return this;
+            else return Next.FindSymbolDefBinder(syntax, symbol);
         }
     }
 }

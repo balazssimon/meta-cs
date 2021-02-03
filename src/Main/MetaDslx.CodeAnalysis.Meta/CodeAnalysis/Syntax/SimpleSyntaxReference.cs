@@ -11,18 +11,18 @@ namespace MetaDslx.CodeAnalysis
     /// </summary>
     public class SimpleSyntaxReference : SyntaxReference
     {
-        private readonly SyntaxNode _node;
+        private readonly SyntaxNodeOrToken _nodeOrToken;
 
-        public SimpleSyntaxReference(SyntaxNode node)
+        public SimpleSyntaxReference(SyntaxNodeOrToken node)
         {
-            _node = node;
+            _nodeOrToken = node;
         }
 
         public override SyntaxTree SyntaxTree
         {
             get
             {
-                return _node.SyntaxTree;
+                return _nodeOrToken.SyntaxTree;
             }
         }
 
@@ -30,13 +30,13 @@ namespace MetaDslx.CodeAnalysis
         {
             get
             {
-                return _node.Span;
+                return _nodeOrToken.Span;
             }
         }
 
         public override SyntaxNode GetSyntax(CancellationToken cancellationToken)
         {
-            return _node;
+            return _nodeOrToken.NodeOrParent;
         }
     }
 }

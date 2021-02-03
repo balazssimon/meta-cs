@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using MetaDslx.CodeAnalysis.Binding;
+using MetaDslx.CodeAnalysis.Binding.Binders;
 using MetaDslx.CodeAnalysis.Declarations;
 using MetaDslx.CodeAnalysis.Symbols.Metadata;
 using MetaDslx.Modeling;
@@ -17,9 +18,10 @@ using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Source
 {
-    public class SourceNamespaceSymbol : ModelNamespaceSymbol
+    public class SourceNamespaceSymbol : ModelNamespaceSymbol, IModelSourceSymbol
     {
         private readonly SourceModuleSymbol _module;
+        private readonly SourceSymbol _source;
         private readonly MergedDeclaration _declaration;
         private readonly CompletionState _state;
         private SourceDeclaration _sourceDeclaration;
@@ -35,6 +37,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             Debug.Assert(declaration != null);
             _module = module;
             _declaration = declaration;
+            _source = new SourceSymbol(this);
             _state = CompletionState.Create(module.Language);
         }
 
@@ -194,6 +197,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                     }
                 }
             }
+        }
+
+        public SymbolDefBinder GetBinder(SyntaxReference syntax)
+        {
+            return _source.GetBinder(syntax);
         }
 
         #region completion

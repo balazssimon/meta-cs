@@ -110,11 +110,23 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// The member containing the binding context.  Note that for the purposes of the compiler,
         /// a lambda expression is considered a "member" of its enclosing method, field, or lambda.
         /// </summary>
-        public virtual NamespaceOrTypeSymbol ContainingSymbol
+        public virtual Symbol ContainingSymbol
         {
             get
             {
                 return Next.ContainingSymbol;
+            }
+        }
+
+        /// <summary>
+        /// The member containing the binding context.  Note that for the purposes of the compiler,
+        /// a lambda expression is considered a "member" of its enclosing method, field, or lambda.
+        /// </summary>
+        public virtual DeclaredSymbol ContainingDeclaration
+        {
+            get
+            {
+                return Next.ContainingDeclaration;
             }
         }
 
@@ -140,7 +152,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         {
             get
             {
-                var member = this.ContainingSymbol;
+                var member = this.ContainingDeclaration;
                 Debug.Assert((object)member == null || member.Kind != LanguageSymbolKind.ErrorType);
                 return (object)member == null
                     ? null
@@ -157,7 +169,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         {
             get
             {
-                var containingMember = this.GetParentDeclarationSymbol();
+                var containingMember = this.ContainingDeclaration;
                 switch (containingMember?.Kind.Switch())
                 {
                     case LanguageSymbolKind.Operation:
@@ -265,7 +277,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                 case LanguageSymbolKind.Name:
                 case LanguageSymbolKind.Operation:
                 case LanguageSymbolKind.Property:
-                    ReportDiagnosticsIfObsolete(diagnostics, symbol, node, hasBaseReceiver, this.ContainingSymbol, this.ContainingType, this.Flags);
+                    ReportDiagnosticsIfObsolete(diagnostics, symbol, node, hasBaseReceiver, this.ContainingDeclaration, this.ContainingType, this.Flags);
                     break;
             }
         }
@@ -478,6 +490,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         {
             return default;
         }
+
 
     }
 }

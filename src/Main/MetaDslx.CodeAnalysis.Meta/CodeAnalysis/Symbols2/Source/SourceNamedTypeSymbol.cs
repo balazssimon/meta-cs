@@ -8,6 +8,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using MetaDslx.CodeAnalysis.Binding;
+using MetaDslx.CodeAnalysis.Binding.Binders;
 using MetaDslx.CodeAnalysis.Declarations;
 using MetaDslx.CodeAnalysis.Symbols.Metadata;
 using MetaDslx.Modeling;
@@ -22,9 +23,10 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
     /// <summary>
     /// Represents a named type symbol whose members are declared in source.
     /// </summary>
-    public class SourceNamedTypeSymbol : ModelNamedTypeSymbol
+    public class SourceNamedTypeSymbol : ModelNamedTypeSymbol, IModelSourceSymbol
     {
         private readonly MergedDeclaration _declaration;
+        private readonly SourceSymbol _source;
         private readonly CompletionState _state;
         private SourceDeclaration _sourceDeclaration;
         private ImmutableArray<NamedTypeSymbol> _lazyDeclaredBases;
@@ -39,6 +41,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             Debug.Assert(containingSymbol is IModelSourceSymbol);
             Debug.Assert(declaration != null);
             _declaration = declaration;
+            _source = new SourceSymbol(this);
             _state = CompletionState.Create(containingSymbol.Language);
         }
 
@@ -129,6 +132,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name, string metadataName)
         {
             return this.SourceDeclaration.GetTypeMembers(name, metadataName);
+        }
+
+        public SymbolDefBinder GetBinder(SyntaxReference syntax)
+        {
+            return _source.GetBinder(syntax);
         }
 
         #endregion

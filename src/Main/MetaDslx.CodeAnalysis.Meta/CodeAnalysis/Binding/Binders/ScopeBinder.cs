@@ -11,48 +11,54 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
 {
     public class ScopeBinder : Binder
     {
-        private DeclaredSymbol _declaredSymbol;
+        private DeclaredSymbol _container;
 
         public ScopeBinder(Binder next, LanguageSyntaxNode syntax)
             : base(next)
         {
         }
 
-        public DeclaredSymbol DeclaredSymbol
+        public DeclaredSymbol Container
         {
             get
             {
-                if (_declaredSymbol == null)
+                if (_container == null)
                 {
-                    var container = this.GetDeclarationSymbol();
-                    Interlocked.CompareExchange(ref _declaredSymbol, container, null);
+                    Binder binder = this.Next;
+                    var container = this.GetDefinedSymbol() as DeclaredSymbol;
+                    while (binder != null && container == null)
+                    {
+                        container = binder.GetDefinedSymbol() as DeclaredSymbol;
+                        binder = binder.Next;
+                    }
+                    Interlocked.CompareExchange(ref _container, container, null);
                 }
-                return _declaredSymbol;
+                return _container;
             }
         }
 
-        public override NamespaceOrTypeSymbol ContainingSymbol
+        public override DeclaredSymbol ContainingDeclaration
         {
             get
             {
-                var merged = this.DeclaredSymbol as MergedNamespaceSymbol;
-                return ((object)merged != null) ? merged.GetConstituentForCompilation(this.Compilation) : this.DeclaredSymbol as NamespaceOrTypeSymbol;
+                var merged = this.Container as MergedNamespaceSymbol;
+                return ((object)merged != null) ? merged.GetConstituentForCompilation(this.Compilation) : this.Container as NamespaceOrTypeSymbol;
             }
         }
 
         private bool IsSubmission
         {
-            get { return (this.DeclaredSymbol?.Kind == LanguageSymbolKind.NamedType) && ((NamedTypeSymbol)this.DeclaredSymbol).IsSubmission; }
+            get { return (this.Container?.Kind == LanguageSymbolKind.NamedType) && ((NamedTypeSymbol)this.Container).IsSubmission; }
         }
 
         private bool IsScript
         {
-            get { return (this.DeclaredSymbol?.Kind == LanguageSymbolKind.NamedType) && ((NamedTypeSymbol)this.DeclaredSymbol).IsScript; }
+            get { return (this.Container?.Kind == LanguageSymbolKind.NamedType) && ((NamedTypeSymbol)this.Container).IsScript; }
         }
 
         public override bool IsAccessibleHelper(DeclaredSymbol symbol, TypeSymbol accessThroughType, out bool failedThroughTypeCheck, ref HashSet<DiagnosticInfo> useSiteDiagnostics, ConsList<TypeSymbol> basesBeingResolved)
         {
-            var type = this.DeclaredSymbol as NamedTypeSymbol;
+            var type = this.Container as NamedTypeSymbol;
             if ((object)type != null)
             {
                 return this.IsSymbolAccessibleConditional(symbol, type, accessThroughType, out failedThroughTypeCheck, ref useSiteDiagnostics);
@@ -72,14 +78,14 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
 
             if (IsSubmission)
             {
-                this.LookupMembersInternal(result, constraints.WithQualifier(this.ContainingSymbol));
+                this.LookupMembersInternal(result, constraints.WithQualifier(this.Container));
                 return;
             }
 
             // first lookup members of the namespace
             if ((constraints.Options & LookupOptions.NamespaceAliasesOnly) == 0)
             {
-                this.LookupMembersInternal(result, constraints.WithQualifier(this.ContainingSymbol));
+                this.LookupMembersInternal(result, constraints.WithQualifier(this.Container));
             }
         }
 
@@ -87,7 +93,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
         {
             if (this.ContainingSymbol != null)
             {
-                this.AddMemberLookupSymbolsInfo(result, constraints.WithQualifier(this.ContainingSymbol));
+                this.AddMemberLookupSymbolsInfo(result, constraints.WithQualifier(this.Container));
             }
         }
 

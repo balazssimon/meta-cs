@@ -134,13 +134,14 @@ namespace MetaDslx.CodeAnalysis.Binding
         protected void LookupMembersInternal(LookupResult result, LookupConstraints constraints)
         {
             Debug.Assert(constraints.AreValid());
-            if (constraints.QualifierOpt.IsNamespace)
+            var qualifier = constraints.QualifierOpt as NamespaceOrTypeSymbol;
+            if (qualifier == null || qualifier.IsNamespace)
             {
                 LookupMembersInNamespace(result, constraints);
             }
             else
             {
-                this.LookupMembersInType(result, constraints);
+                LookupMembersInType(result, constraints);
             }
         }
 
@@ -1101,13 +1102,14 @@ namespace MetaDslx.CodeAnalysis.Binding
         public void AddMemberLookupSymbolsInfo(LookupSymbolsInfo result, LookupConstraints constraints)
         {
             constraints = this.AdjustConstraints(constraints);
-            if (constraints.QualifierOpt.IsNamespace)
+            var qualifier = constraints.QualifierOpt as NamespaceOrTypeSymbol;
+            if (qualifier == null || qualifier.IsNamespace)
             {
                 AddMemberLookupSymbolsInfoInNamespace(result, constraints);
             }
             else
             {
-                this.AddMemberLookupSymbolsInfoInType(result, constraints);
+                AddMemberLookupSymbolsInfoInType(result, constraints);
             }
         }
 

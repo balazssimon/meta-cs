@@ -13,7 +13,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 {
     public class LookupConstraints
     {
-        public readonly NamespaceOrTypeSymbol QualifierOpt;
+        public readonly DeclaredSymbol QualifierOpt;
         public readonly string Name;
         public readonly ImmutableArray<Type> Types;
         public readonly string MetadataName;
@@ -28,7 +28,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             string name = null,
             string metadataName = null,
             ImmutableArray<Type> types = default,
-            NamespaceOrTypeSymbol qualifierOpt = null,
+            DeclaredSymbol qualifierOpt = null,
             ConsList<TypeSymbol> basesBeingResolved = null,
             Binder originalBinder = null,
             TypeSymbol accessThroughType = null,
@@ -52,7 +52,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             string name,
             string metadataName,
             ImmutableArray<Type> types,
-            NamespaceOrTypeSymbol qualifierOpt,
+            DeclaredSymbol qualifierOpt,
             ConsList<TypeSymbol> basesBeingResolved,
             Binder originalBinder,
             TypeSymbol accessThroughType,
@@ -80,7 +80,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             return Update(this.Name, this.MetadataName, types, this.QualifierOpt, this.BasesBeingResolved, this.OriginalBinder, this.AccessThroughType, this.Options, this.Diagnose, this.UseSiteDiagnostics);
         }
 
-        public LookupConstraints WithQualifier(NamespaceOrTypeSymbol qualifierOpt)
+        public LookupConstraints WithQualifier(DeclaredSymbol qualifierOpt)
         {
             return Update(this.Name, this.MetadataName, this.Types, qualifierOpt, this.BasesBeingResolved, this.OriginalBinder, this.AccessThroughType, this.Options, this.Diagnose, this.UseSiteDiagnostics);
         }

@@ -84,7 +84,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// <remarks>
         /// Note, there is no guarantee that the factory always gives back the same binder instance for the same node.
         /// </remarks>
-        public Binder GetBinder(SyntaxNode node)
+        public Binder GetBinder(SyntaxNodeOrToken node)
         {
             int position = node.SpanStart;
 
@@ -96,7 +96,8 @@ namespace MetaDslx.CodeAnalysis.Binding
                 node = node.Parent;
             }*/
 
-            return GetBinder(node, position, false);
+            if (node.IsToken) return GetBinder(node.AsToken());
+            else return GetBinder(node.AsNode(), position, false);
         }
 
         public Binder GetBinder(SyntaxToken token)

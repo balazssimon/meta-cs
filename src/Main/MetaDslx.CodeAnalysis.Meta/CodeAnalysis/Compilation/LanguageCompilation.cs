@@ -1755,7 +1755,7 @@ namespace MetaDslx.CodeAnalysis
             }
         }
 
-        internal Binder GetBinder(LanguageSyntaxNode syntax)
+        internal Binder GetBinder(SyntaxNodeOrToken syntax)
         {
             return GetBinderFactory(syntax.SyntaxTree).GetBinder(syntax);
         }

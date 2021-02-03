@@ -138,7 +138,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         public virtual Accessibility DeclaredAccessibility => Accessibility.Public;
 
-
         /// <summary>
         /// Returns true if this symbol is "static"; i.e., declared with the <c>static</c> modifier or
         /// implicitly static.

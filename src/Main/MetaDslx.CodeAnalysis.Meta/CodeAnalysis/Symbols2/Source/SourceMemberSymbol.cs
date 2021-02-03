@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using MetaDslx.CodeAnalysis.Binding.Binders;
 using MetaDslx.CodeAnalysis.Declarations;
 using MetaDslx.CodeAnalysis.Symbols.Metadata;
 using MetaDslx.Modeling;
@@ -15,11 +16,11 @@ using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Source
 {
-    public class SourceMemberSymbol : ModelMemberSymbol
+    public class SourceMemberSymbol : ModelMemberSymbol, IModelSourceSymbol
     {
         private readonly MergedDeclaration _declaration;
+        private readonly SourceSymbol _source;
         private readonly CompletionState _state;
-        private readonly MutableObjectBase _modelObject;
         private SourceDeclaration _sourceDeclaration;
 
         public SourceMemberSymbol(
@@ -31,6 +32,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             Debug.Assert(containingSymbol is IModelSourceSymbol);
             Debug.Assert(declaration != null);
             _declaration = declaration;
+            _source = new SourceSymbol(this);
             _state = CompletionState.Create(containingSymbol.ContainingModule.Language);
         }
 
@@ -115,6 +117,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             // TODO:MetaDslx
             _state.NotePartComplete(CompletionPart.Attributes);
             return ImmutableArray<AttributeData>.Empty;
+        }
+
+        public SymbolDefBinder GetBinder(SyntaxReference syntax)
+        {
+            return _source.GetBinder(syntax);
         }
 
         #region completion

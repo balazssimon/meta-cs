@@ -40,7 +40,9 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             return IsSymbolAccessibleConditional(symbol, Compilation.Assembly, ref useSiteDiagnostics);
         }
 
-        public override NamespaceOrTypeSymbol ContainingSymbol => this.GetDeclarationSymbol() as NamespaceOrTypeSymbol;
+        public override Symbol ContainingSymbol => this.ContainingDeclaration;
+
+        public override DeclaredSymbol ContainingDeclaration => this.GetDefinedSymbol() as DeclaredSymbol;
 
         public override ImmutableArray<Symbol> ChildSymbols => ImmutableArray<Symbol>.Empty;
 
@@ -51,7 +53,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             return Compilation.GetBinder((LanguageSyntaxNode)node);
         }
 
-        public override DeclaredSymbol GetDeclarationSymbol()
+        public virtual Symbol GetDefinedSymbol()
         {
             if (Compilation.IsSubmission)
             {
