@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.CodeAnalysis;
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Text;
@@ -7,8 +8,8 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
 {
     public class AttributeBinder : SymbolUseBinder
     {
-        public AttributeBinder(Binder next, LanguageSyntaxNode syntax, ImmutableArray<Type> types, ImmutableArray<Type> nestingTypes) 
-            : base(next, syntax, types, nestingTypes)
+        public AttributeBinder(SyntaxNodeOrToken syntax, Binder next, ImmutableArray<Type> types, ImmutableArray<Type> nestingTypes) 
+            : base(syntax, next, types, nestingTypes)
         {
             
         }

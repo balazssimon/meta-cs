@@ -28,7 +28,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
         /// retrieved from <paramref name="declarationSyntax"/>.
         /// </summary>
         public InContainerBinder(NamespaceOrTypeSymbol container, Binder next, LanguageSyntaxNode declarationSyntax, bool inUsing)
-            : base(next)
+            : base(null, next)
         {
             Debug.Assert((object)container != null);
             Debug.Assert(declarationSyntax != null);
@@ -41,7 +41,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
         /// Creates a binder with given imports.
         /// </summary>
         public InContainerBinder(NamespaceOrTypeSymbol container, Binder next, Imports imports = null)
-            : base(next, null)
+            : base(null, next, null)
         {
             Debug.Assert((object)container != null || imports != null);
 
@@ -53,7 +53,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
         /// Creates a binder with given import computation function.
         /// </summary>
         public InContainerBinder(Binder next, Func<ConsList<TypeSymbol>, Imports> computeImports)
-            : base(next, null)
+            : base(null, next, null)
         {
             Debug.Assert(computeImports != null);
 

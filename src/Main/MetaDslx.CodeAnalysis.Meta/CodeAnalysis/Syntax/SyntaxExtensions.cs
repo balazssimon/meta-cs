@@ -442,5 +442,11 @@ namespace MetaDslx.CodeAnalysis
 
         #endregion
 
+        public static SyntaxNodeOrToken Resolve(this SyntaxReference reference)
+        {
+            var node = reference.GetSyntax();
+            if (node.Span == reference.Span) return node;
+            else return node.FindToken(node.SpanStart);
+        }
     }
 }

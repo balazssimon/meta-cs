@@ -1,4 +1,5 @@
 ﻿using MetaDslx.CodeAnalysis.Symbols;
+using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -8,8 +9,8 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
 {
     public class SpecialSymbolBinder : Binder
     {
-        public SpecialSymbolBinder(Binder next, Conversions conversions = null) 
-            : base(next, conversions)
+        public SpecialSymbolBinder(SyntaxNodeOrToken syntax, Binder next, Conversions conversions = null) 
+            : base(syntax, next, conversions)
         {
         }
 

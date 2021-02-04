@@ -1,4 +1,5 @@
-﻿using MetaDslx.CodeAnalysis.Binding.Binders;
+﻿using MetaDslx.CodeAnalysis.Binding;
+using MetaDslx.CodeAnalysis.Binding.Binders;
 using MetaDslx.CodeAnalysis.Declarations;
 using MetaDslx.CodeAnalysis.Symbols.Metadata;
 using Microsoft.CodeAnalysis;
@@ -11,6 +12,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 {
     public interface IModelSourceSymbol : IModelSymbol
     {
-        SymbolDefBinder GetBinder(SyntaxReference syntax);
+        BinderPosition GetBinder(SyntaxReference syntax);
     }
 }

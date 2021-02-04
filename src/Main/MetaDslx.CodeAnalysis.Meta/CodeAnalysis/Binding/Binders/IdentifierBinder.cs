@@ -6,14 +6,15 @@ using System.Threading;
 
 namespace MetaDslx.CodeAnalysis.Binding.Binders
 {
-    public class IdentifierBinder : Binder
+    public class IdentifierBinder : ValueBinder
     {
-        public IdentifierBinder(Binder next, SyntaxNodeOrToken syntax)
-            : base(next)
+        public IdentifierBinder(SyntaxNodeOrToken syntax, Binder next)
+            : base(syntax, next)
         {
             string name = Language.SyntaxFacts.ExtractName(syntax);
             string metadataName = Language.SyntaxFacts.ExtractMetadataName(syntax);
         }
 
+        public IEnumerable<object> Values => throw new NotImplementedException();
     }
 }

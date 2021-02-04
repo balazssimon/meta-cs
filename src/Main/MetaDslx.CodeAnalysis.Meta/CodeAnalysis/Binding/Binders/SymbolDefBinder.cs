@@ -12,36 +12,33 @@ using System.Threading;
 
 namespace MetaDslx.CodeAnalysis.Binding.Binders
 {
-    public class SymbolDefBinder : Binder
+    public class SymbolDefBinder : ValueBinder
     {
         private readonly Type _type;
         private readonly Type _nestingType;
         private Symbol _definedSymbol;
-        private readonly SyntaxNodeOrToken _syntax;
 
-        public SymbolDefBinder(Binder next, SyntaxNodeOrToken syntax, Type type, Type nestingType) 
-            : base(next)
+        public SymbolDefBinder(SyntaxNodeOrToken syntax, Binder next, Type type, Type nestingType) 
+            : base(syntax, next)
         {
             _type = type;
             _nestingType = nestingType;
-            _syntax = syntax;
             _definedSymbol = null;
         }
+
+        public Symbol DefinedSymbol => throw new NotImplementedException();
+
+        public IEnumerable<object> Values => throw new NotImplementedException();
 
         public override Symbol GetDefinedSymbol()
         {
             if (_definedSymbol == null)
             {
-                var symbol = this.Bind(_syntax, default).Symbol;
+                var symbol = this.Bind(Syntax, default).Symbol;
                 Interlocked.CompareExchange(ref _definedSymbol, symbol, null);
             }
             return _definedSymbol;
         }
 
-        public override SymbolDefBinder FindSymbolDefBinder(SyntaxNodeOrToken syntax, Symbol symbol)
-        {
-            if (this.ContainingSymbol == symbol.ContainingSymbol && _syntax == syntax) return this;
-            else return Next.FindSymbolDefBinder(syntax, symbol);
-        }
     }
 }

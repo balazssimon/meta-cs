@@ -73,114 +73,114 @@ namespace MetaDslx.CodeAnalysis.Binding
             return VisitCore(node.Parent);
         }
 
-        protected virtual Binder CreateScopeBinder(Binder parentBinder, LanguageSyntaxNode syntax)
+        protected virtual Binder CreateScopeBinder(SyntaxNodeOrToken syntax, Binder parentBinder)
         {
-            return this.CreateScopeBinderCore(parentBinder, syntax);
+            return this.CreateScopeBinderCore(syntax, parentBinder);
         }
 
-        protected virtual Binder CreateScopeBinderCore(Binder parentBinder, LanguageSyntaxNode syntax)
+        protected virtual Binder CreateScopeBinderCore(SyntaxNodeOrToken syntax, Binder parentBinder)
         {
-            return new ScopeBinder(parentBinder, syntax);
+            return new ScopeBinder(syntax, parentBinder);
         }
 
-        protected virtual Binder CreateSymbolDefBinder(Binder parentBinder, LanguageSyntaxNode syntax, Type type, string nestingProperty = null, bool merge = false)
+        protected virtual Binder CreateSymbolDefBinder(SyntaxNodeOrToken syntax, Binder parentBinder, Type type, string nestingProperty = null, bool merge = false)
         {
-            return this.CreateSymbolDefBinderCore(parentBinder, syntax, type);
+            return this.CreateSymbolDefBinderCore(syntax, parentBinder, type);
         }
 
-        protected virtual Binder CreateSymbolDefBinderCore(Binder parentBinder, LanguageSyntaxNode syntax, Type type)
+        protected virtual Binder CreateSymbolDefBinderCore(SyntaxNodeOrToken syntax, Binder parentBinder, Type type)
         {
-            return new SymbolDefBinder(parentBinder, syntax, type, type);
+            return new SymbolDefBinder(syntax, parentBinder, type, type);
         }
 
-        protected virtual Binder CreateSymbolUseBinder(Binder parentBinder, LanguageSyntaxNode syntax, ImmutableArray<Type> types)
+        protected virtual Binder CreateSymbolUseBinder(SyntaxNodeOrToken syntax, Binder parentBinder, ImmutableArray<Type> types)
         {
-            return this.CreateSymbolUseBinderCore(parentBinder, syntax, types, ImmutableArray<Type>.Empty);
+            return this.CreateSymbolUseBinderCore(syntax, parentBinder, types, ImmutableArray<Type>.Empty);
         }
 
-        protected virtual Binder CreateSymbolUseBinderCore(Binder parentBinder, LanguageSyntaxNode syntax, ImmutableArray<Type> types, ImmutableArray<Type> nestingTypes)
+        protected virtual Binder CreateSymbolUseBinderCore(SyntaxNodeOrToken syntax, Binder parentBinder, ImmutableArray<Type> types, ImmutableArray<Type> nestingTypes)
         {
-            return new SymbolUseBinder(parentBinder, syntax, types, nestingTypes);
+            return new SymbolUseBinder(syntax, parentBinder, types, nestingTypes);
         }
 
-        protected virtual Binder CreateAttributeBinder(Binder parentBinder, LanguageSyntaxNode syntax, ImmutableArray<Type> types)
+        protected virtual Binder CreateAttributeBinder(SyntaxNodeOrToken syntax, Binder parentBinder, ImmutableArray<Type> types)
         {
-            return this.CreateAttributeBinderCore(parentBinder, syntax, types, ImmutableArray<Type>.Empty);
+            return this.CreateAttributeBinderCore(syntax, parentBinder, types, ImmutableArray<Type>.Empty);
         }
 
-        protected virtual Binder CreateAttributeBinderCore(Binder parentBinder, LanguageSyntaxNode syntax, ImmutableArray<Type> types, ImmutableArray<Type> nestingTypes)
+        protected virtual Binder CreateAttributeBinderCore(SyntaxNodeOrToken syntax, Binder parentBinder, ImmutableArray<Type> types, ImmutableArray<Type> nestingTypes)
         {
-            return new AttributeBinder(parentBinder, syntax, types, nestingTypes);
+            return new AttributeBinder(syntax, parentBinder, types, nestingTypes);
         }
 
-        protected virtual Binder CreatePropertyBinder(Binder parentBinder, SyntaxNodeOrToken syntax, string name, SymbolPropertyOwner owner = SymbolPropertyOwner.CurrentSymbol, Type ownerType = null)
+        protected virtual Binder CreatePropertyBinder(SyntaxNodeOrToken syntax, Binder parentBinder, string name, SymbolPropertyOwner owner = SymbolPropertyOwner.CurrentSymbol, Type ownerType = null)
         {
-            return this.CreatePropertyBinderCore(parentBinder, syntax, name, default, owner, ownerType);
+            return this.CreatePropertyBinderCore(syntax, parentBinder, name, default, owner, ownerType);
         }
 
-        protected virtual Binder CreatePropertyBinder(Binder parentBinder, SyntaxNodeOrToken syntax, string name, object value, SymbolPropertyOwner owner = SymbolPropertyOwner.CurrentSymbol, Type ownerType = null)
+        protected virtual Binder CreatePropertyBinder(SyntaxNodeOrToken syntax, Binder parentBinder, string name, object value, SymbolPropertyOwner owner = SymbolPropertyOwner.CurrentSymbol, Type ownerType = null)
         {
-            return this.CreatePropertyBinderCore(parentBinder, syntax, name, new Optional<object>(value), owner, ownerType);
+            return this.CreatePropertyBinderCore(syntax, parentBinder, name, new Optional<object>(value), owner, ownerType);
         }
 
-        protected virtual Binder CreatePropertyBinderCore(Binder parentBinder, SyntaxNodeOrToken syntax, string name, Optional<object> valueOpt, SymbolPropertyOwner owner, Type ownerType)
+        protected virtual Binder CreatePropertyBinderCore(SyntaxNodeOrToken syntax, Binder parentBinder, string name, Optional<object> valueOpt, SymbolPropertyOwner owner, Type ownerType)
         {
-            return new PropertyBinder(parentBinder, name, valueOpt, owner, ownerType);
+            return new PropertyBinder(syntax, parentBinder, name, valueOpt, owner, ownerType);
         }
 
-        protected virtual Binder CreateIdentifierBinder(Binder parentBinder, SyntaxNodeOrToken syntax)
+        protected virtual Binder CreateIdentifierBinder(SyntaxNodeOrToken syntax, Binder parentBinder)
         {
-            return this.CreateIdentifierBinderCore(parentBinder, syntax);
+            return this.CreateIdentifierBinderCore(syntax, parentBinder);
         }
 
-        protected virtual Binder CreateIdentifierBinderCore(Binder parentBinder, SyntaxNodeOrToken syntax)
+        protected virtual Binder CreateIdentifierBinderCore(SyntaxNodeOrToken syntax, Binder parentBinder)
         {
-            return new IdentifierBinder(parentBinder, syntax);
+            return new IdentifierBinder(syntax, parentBinder);
         }
 
-        protected virtual Binder CreateQualifierBinder(Binder parentBinder, LanguageSyntaxNode syntax)
+        protected virtual Binder CreateQualifierBinder(SyntaxNodeOrToken syntax, Binder parentBinder)
         {
-            return this.CreateQualifierBinderCore(parentBinder, syntax);
+            return this.CreateQualifierBinderCore(syntax, parentBinder);
         }
 
-        protected virtual Binder CreateQualifierBinderCore(Binder parentBinder, LanguageSyntaxNode syntax)
+        protected virtual Binder CreateQualifierBinderCore(SyntaxNodeOrToken syntax, Binder parentBinder)
         {
-            return new QualifierBinder(parentBinder, syntax);
+            return new QualifierBinder(syntax, parentBinder);
         }
 
-        protected virtual Binder CreateNameBinder(Binder parentBinder, SyntaxNodeOrToken syntax)
+        protected virtual Binder CreateNameBinder(SyntaxNodeOrToken syntax, Binder parentBinder)
         {
-            return this.CreateNameBinderCore(parentBinder, syntax);
+            return this.CreateNameBinderCore(syntax, parentBinder);
         }
 
-        protected virtual Binder CreateNameBinderCore(Binder parentBinder, SyntaxNodeOrToken syntax)
+        protected virtual Binder CreateNameBinderCore(SyntaxNodeOrToken syntax, Binder parentBinder)
         {
-            return new NameBinder(parentBinder);
+            return new NameBinder(syntax, parentBinder);
         }
 
-        protected virtual Binder CreateValueBinder(Binder parentBinder, SyntaxNodeOrToken syntax)
+        protected virtual Binder CreateValueBinder(SyntaxNodeOrToken syntax, Binder parentBinder)
         {
-            return this.CreateValueBinderCore(parentBinder, syntax, Language.SyntaxFacts.ExtractValue(syntax));
+            return this.CreateValueBinderCore(syntax, parentBinder, Language.SyntaxFacts.ExtractValue(syntax));
         }
 
-        protected virtual Binder CreateValueBinder(Binder parentBinder, SyntaxNodeOrToken syntax, object value)
+        protected virtual Binder CreateValueBinder(SyntaxNodeOrToken syntax, Binder parentBinder, object value)
         {
-            return this.CreateValueBinderCore(parentBinder, syntax, value);
+            return this.CreateValueBinderCore(syntax, parentBinder, value);
         }
 
-        protected virtual Binder CreateValueBinderCore(Binder parentBinder, SyntaxNodeOrToken syntax, object value)
+        protected virtual Binder CreateValueBinderCore(SyntaxNodeOrToken syntax, Binder parentBinder, object value)
         {
-            return new ValueBinder(parentBinder, value);
+            return new ValueBinder(syntax, parentBinder, value);
         }
 
-        protected virtual Binder CreateEnumValueBinder(Binder parentBinder, SyntaxNodeOrToken syntax, Type enumType)
+        protected virtual Binder CreateEnumValueBinder(SyntaxNodeOrToken syntax, Binder parentBinder, Type enumType)
         {
-            return this.CreateEnumValueBinderCore(parentBinder, syntax, enumType);
+            return this.CreateEnumValueBinderCore(syntax, parentBinder, enumType);
         }
 
-        protected virtual Binder CreateEnumValueBinderCore(Binder parentBinder, SyntaxNodeOrToken syntax, Type enumType)
+        protected virtual Binder CreateEnumValueBinderCore(SyntaxNodeOrToken syntax, Binder parentBinder, Type enumType)
         {
-            return new EnumValueBinder(parentBinder, Language.SyntaxFacts.ExtractName(syntax), enumType);
+            return new EnumValueBinder(syntax, parentBinder, Language.SyntaxFacts.ExtractName(syntax), enumType);
         }
 
         protected Binder GetParentBinder(LanguageSyntaxNode node)
@@ -260,7 +260,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             Binder result;
             if (!this.BinderFactory.TryGetBinder(compilationUnit, extraInfo, out result))
             {
-                result = new SpecialSymbolBinder(this.BuckStopsHereBinder);
+                result = new SpecialSymbolBinder(null, this.BuckStopsHereBinder);
 
                 if (inScript)
                 {

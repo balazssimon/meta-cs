@@ -9,15 +9,13 @@ using System.Threading;
 
 namespace MetaDslx.CodeAnalysis.Binding.Binders
 {
-    public class QualifierBinder : Binder
+    public class QualifierBinder : ValueBinder
     {
-        private LanguageSyntaxNode _syntax;
-
-        public QualifierBinder(Binder next, LanguageSyntaxNode syntax) 
-            : base(next)
+        public QualifierBinder(SyntaxNodeOrToken syntax, Binder next) 
+            : base(syntax, next)
         {
-            _syntax = syntax;
         }
 
+        public IEnumerable<object> Values => throw new NotImplementedException();
     }
 }

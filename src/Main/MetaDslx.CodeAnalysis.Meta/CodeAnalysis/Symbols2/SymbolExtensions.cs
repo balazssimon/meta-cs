@@ -1,4 +1,5 @@
-﻿using MetaDslx.CodeAnalysis.Symbols.Metadata;
+﻿using MetaDslx.CodeAnalysis.Binding;
+using MetaDslx.CodeAnalysis.Symbols.Metadata;
 using MetaDslx.CodeAnalysis.Symbols.Source;
 using Microsoft.CodeAnalysis;
 using System;
@@ -79,5 +80,12 @@ namespace MetaDslx.CodeAnalysis.Symbols
         }
 
         private static readonly Func<TypeSymbol, object, bool, bool> s_containsDynamicPredicate = (type, unused1, unused2) => type.TypeKind == LanguageTypeKind.Dynamic;
+
+        public static BinderPosition ToBinderPosition(this SyntaxReference reference, LanguageCompilation compilation)
+        {
+            var syntax = reference.Resolve();
+            var binder = compilation.GetBinder(syntax);
+            return new BinderPosition(binder, binder, syntax);
+        }
     }
 }

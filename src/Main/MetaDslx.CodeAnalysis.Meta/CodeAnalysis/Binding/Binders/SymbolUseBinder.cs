@@ -17,13 +17,11 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
     {
         private readonly ImmutableArray<ModelObjectDescriptor> _types;
         private readonly ImmutableArray<ModelObjectDescriptor> _nestingTypes;
-        private readonly LanguageSyntaxNode _syntax;
         private readonly bool _attributeTypeOnly;
 
-        public SymbolUseBinder(Binder next, LanguageSyntaxNode syntax, ImmutableArray<Type> types, ImmutableArray<Type> nestingTypes)
-            : base(next)
+        public SymbolUseBinder(SyntaxNodeOrToken syntax, Binder next, ImmutableArray<Type> types, ImmutableArray<Type> nestingTypes)
+            : base(syntax, next)
         {
-            _syntax = syntax;
             _types = types.Select(type => ModelObjectDescriptor.GetDescriptor(type)).ToImmutableArray();
             _nestingTypes = nestingTypes.Select(type => ModelObjectDescriptor.GetDescriptor(type)).ToImmutableArray();
             if (types.Length > 0)
@@ -40,6 +38,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             }
         }
 
+        public IEnumerable<object> Values => throw new NotImplementedException();
 
         protected override LookupConstraints AdjustConstraints(LookupConstraints constraints)
         {

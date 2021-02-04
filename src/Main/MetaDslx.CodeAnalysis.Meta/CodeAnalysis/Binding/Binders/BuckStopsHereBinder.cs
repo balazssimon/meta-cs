@@ -48,9 +48,9 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
 
         protected override bool InExecutableBinder => false;
 
-        public override Binder GetBinder(SyntaxNode node)
+        public override Binder GetBinder(SyntaxNodeOrToken node)
         {
-            return Compilation.GetBinder((LanguageSyntaxNode)node);
+            return Compilation.GetBinder(node);
         }
 
         public virtual Symbol GetDefinedSymbol()

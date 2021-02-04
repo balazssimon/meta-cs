@@ -8,7 +8,7 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Binding.Binders
 {
-    public class PropertyBinder : Binder
+    public class PropertyBinder : ValueBinder
     {
         private readonly string _propertyName;
         private readonly Optional<object> _propertyValueOpt;
@@ -16,8 +16,8 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
         private SymbolPropertyOwner _owner;
         private Type _ownerType;
 
-        public PropertyBinder(Binder next, string propertyName, Optional<object> propertyValueOpt, SymbolPropertyOwner owner, Type ownerType)
-            : base(next)
+        public PropertyBinder(SyntaxNodeOrToken syntax, Binder next, string propertyName, Optional<object> propertyValueOpt, SymbolPropertyOwner owner, Type ownerType)
+            : base(syntax, next)
         {
             _propertyName = propertyName;
             _propertyValueOpt = propertyValueOpt;
@@ -33,5 +33,8 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             }
         }
 
+        public string PropertyName => _propertyName;
+
+        public Optional<object> PropertyValueOpt => _propertyValueOpt;
     }
 }

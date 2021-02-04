@@ -199,7 +199,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             }
         }
 
-        public SymbolDefBinder GetBinder(SyntaxReference syntax)
+        public BinderPosition GetBinder(SyntaxReference syntax)
         {
             return _source.GetBinder(syntax);
         }
@@ -213,20 +213,35 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         public override void ForceComplete(SourceLocation locationOpt, CancellationToken cancellationToken)
         {
-            // TODO: add declaration diagnostics
-            /*
-            foreach (var singleDeclaration in declaration.Declarations)
-            {
-                diagnostics.AddRange(singleDeclaration.Diagnostics);
-            }
-             */
             while (true)
             {
                 cancellationToken.ThrowIfCancellationRequested();
                 var incompletePart = _state.NextIncompletePart;
-                if (incompletePart == CompletionPart.Attributes)
+                if (incompletePart == CompletionPart.StartCreated || incompletePart == CompletionPart.FinishCreated)
+                {
+                    if (_state.NotePartComplete(CompletionPart.StartCreated))
+                    {
+                        var diagnostics = DiagnosticBag.GetInstance();
+                        foreach (var singleDeclaration in _declaration.Declarations)
+                        {
+                            diagnostics.AddRange(singleDeclaration.Diagnostics);
+                        }
+                        AddDeclarationDiagnostics(diagnostics);
+                        _state.NotePartComplete(CompletionPart.FinishCreated);
+                        diagnostics.Free();
+                    }
+                }
+                else if (incompletePart == CompletionPart.Attributes)
                 {
                     GetAttributes();
+                }
+                else if (incompletePart == CompletionPart.StartChildrenCreated || incompletePart == CompletionPart.FinishChildrenCreated)
+                {
+                    if (_state.NotePartComplete(CompletionPart.StartChildrenCreated))
+                    {
+                        // TODO
+                        _state.NotePartComplete(CompletionPart.FinishChildrenCreated);
+                    }
                 }
                 else if (incompletePart == CompletionPart.Members)
                 {

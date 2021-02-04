@@ -24,6 +24,7 @@ namespace MetaDslx.CodeAnalysis.Binding
     public partial class Binder
     {
         private readonly LanguageCompilation _compilation;
+        private readonly SyntaxNodeOrToken _syntax;
         private readonly Binder _next;
 
         public readonly BinderFlags Flags;
@@ -38,9 +39,10 @@ namespace MetaDslx.CodeAnalysis.Binding
             _compilation = compilation;
         }
 
-        public Binder(Binder next, Conversions conversions = null)
+        public Binder(SyntaxNodeOrToken syntax, Binder next, Conversions conversions = null)
         {
             Debug.Assert(next != null);
+            _syntax = syntax;
             _next = next;
             this.Flags = next.Flags;
             _compilation = next._compilation;
@@ -51,6 +53,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         {
             Debug.Assert(next != null);
             _next = next;
+            _syntax = next._syntax;
             this.Flags = flags;
             _compilation = next._compilation;
         }
@@ -58,6 +61,8 @@ namespace MetaDslx.CodeAnalysis.Binding
         public LanguageCompilation Compilation => _compilation;
 
         public Language Language => _compilation.Language;
+
+        public SyntaxNodeOrToken Syntax => _syntax.NodeOrParent != null ? _syntax : (_next?.Syntax ?? default);
 
         public Binder WithFlags(params BinderFlags[] flags)
         {
@@ -87,7 +92,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// <summary>
         /// Some nodes have special binders for their contents (like Blocks)
         /// </summary>
-        public virtual Binder GetBinder(SyntaxNode node)
+        public virtual Binder GetBinder(SyntaxNodeOrToken node)
         {
             return this.Next.GetBinder(node);
         }

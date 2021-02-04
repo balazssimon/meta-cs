@@ -34,8 +34,10 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public static readonly CompletionPart None = new CompletionPart(nameof(None));
         public static readonly CompletionPart All = new CompletionPart(nameof(All));
 
-        public static readonly CompletionPart Created = new CompletionPart(nameof(Created));
-        public static readonly CompletionPart ChildrenCreated = new CompletionPart(nameof(ChildrenCreated));
+        public static readonly CompletionPart StartCreated = new CompletionPart(nameof(StartCreated));
+        public static readonly CompletionPart FinishCreated = new CompletionPart(nameof(FinishCreated));
+        public static readonly CompletionPart StartChildrenCreated = new CompletionPart(nameof(StartChildrenCreated));
+        public static readonly CompletionPart FinishChildrenCreated = new CompletionPart(nameof(FinishChildrenCreated));
 
         //*/
         public static readonly CompletionPart Attributes = new CompletionPart(nameof(Attributes));
@@ -91,11 +93,15 @@ namespace MetaDslx.CodeAnalysis.Symbols
         internal static CompletionGraphBuilder ConstructDefaultCompletionGraph()
         {
             CompletionGraphBuilder builder = new CompletionGraphBuilder();
+            builder.AddLast(CompletionPart.StartCreated);
+            builder.AddLast(CompletionPart.FinishCreated);
             builder.AddLast(CompletionPart.Attributes);
             builder.AddLast(CompletionPart.StartAttributeChecks);
             builder.AddLast(CompletionPart.FinishAttributeChecks);
             builder.AddLast(CompletionPart.StartBaseTypes);
             builder.AddLast(CompletionPart.FinishBaseTypes);
+            builder.AddLast(CompletionPart.StartChildrenCreated);
+            builder.AddLast(CompletionPart.FinishChildrenCreated);
             builder.AddLast(CompletionPart.Members);
             builder.AddLast(CompletionPart.TypeMembers);
             builder.AddLast(CompletionPart.StartValidatingImports);

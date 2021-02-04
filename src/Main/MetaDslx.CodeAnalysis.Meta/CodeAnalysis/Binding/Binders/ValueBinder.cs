@@ -13,19 +13,21 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
     {
         private Lazy<object> _lazyValue;
 
-        public ValueBinder(Binder next, object value)
-            : base(next)
+        public ValueBinder(SyntaxNodeOrToken syntax, Binder next, object value)
+            : base(syntax, next)
         {
             _lazyValue = new Lazy<object>(() => value);
         }
 
-        protected ValueBinder(Binder next)
-            : base(next)
+        protected ValueBinder(SyntaxNodeOrToken syntax, Binder next)
+            : base(syntax, next)
         {
             _lazyValue = new Lazy<object>(this.ComputeValue, true);
         }
 
         public object Value => _lazyValue.Value;
+
+        public IEnumerable<object> Values => ImmutableArray.Create(this.Value);
 
         protected virtual object ComputeValue()
         {
