@@ -42,10 +42,11 @@ namespace MetaDslx.CodeAnalysis.Declarations
         private readonly DeclarationFlags flags;
         private DeclarationKind kind;
 
-        protected Declaration(string name, DeclarationKind kind, bool merge)
+        protected Declaration(string name, DeclarationKind kind, bool merge, bool isNestingParent)
         {
             this.name = name;
             if (merge) this.flags |= DeclarationFlags.Merge;
+            if (isNestingParent) this.flags |= DeclarationFlags.IsNestingParent;
             this.kind = kind;
         }
 
@@ -62,6 +63,11 @@ namespace MetaDslx.CodeAnalysis.Declarations
         public bool Merge
         {
             get { return this.flags.HasFlag(DeclarationFlags.Merge); }
+        }
+
+        public bool IsNestingParent
+        {
+            get { return this.flags.HasFlag(DeclarationFlags.IsNestingParent); }
         }
 
         public abstract Type ModelObjectType { get; }
@@ -109,6 +115,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
         private enum DeclarationFlags : byte
         {
             Merge = 0x01,
+            IsNestingParent = 0x02
         }
 
 

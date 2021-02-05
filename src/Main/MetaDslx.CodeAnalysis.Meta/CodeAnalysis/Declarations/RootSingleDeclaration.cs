@@ -21,7 +21,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             ImmutableArray<SingleDeclaration> children, 
             ImmutableArray<ReferenceDirective> referenceDirectives,
             ImmutableArray<Diagnostic> diagnostics) 
-            : base(string.Empty, DeclarationKind.None, modelObjectType, treeNode, new SourceLocation(treeNode), true, children, ImmutableArray<DeclarationTreeInfo.Property>.Empty, diagnostics)
+            : base(string.Empty, DeclarationKind.None, modelObjectType, treeNode, new SourceLocation(treeNode), true, true, null, children, ImmutableArray<DeclarationTreeInfo.Property>.Empty, diagnostics)
         {
             _referenceDirectives = referenceDirectives;
         }

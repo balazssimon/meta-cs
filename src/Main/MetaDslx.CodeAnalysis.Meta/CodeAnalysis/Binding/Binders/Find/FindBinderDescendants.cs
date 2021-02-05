@@ -38,6 +38,9 @@ namespace MetaDslx.CodeAnalysis.Binding
                 if (!skipMove)
                 {
                     if (!walker.MoveToNextDescendant()) break;
+                }
+                else
+                {
                     skipMove = false;
                 }
                 var current = walker.Binder;

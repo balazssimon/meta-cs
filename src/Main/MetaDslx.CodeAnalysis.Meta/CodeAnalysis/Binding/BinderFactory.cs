@@ -96,15 +96,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                 node = node.Parent;
             }*/
 
-            if (node.IsToken) return GetBinder(node.AsToken());
-            else return GetBinder(node.AsNode(), position, false);
-        }
-
-        public Binder GetBinder(SyntaxToken token)
-        {
-            int position = token.SpanStart;
-
-            return GetBinder(token.Parent, position, true);
+            return GetBinder(node.NodeOrParent, position, node.IsToken);
         }
 
         public Binder GetBinder(SyntaxNode node, int position, bool forChild)

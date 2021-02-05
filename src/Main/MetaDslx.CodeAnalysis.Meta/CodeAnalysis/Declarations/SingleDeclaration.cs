@@ -21,6 +21,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
         private readonly Type _modelObjectType;
         private readonly SyntaxReference _syntaxReference;
         private readonly SourceLocation _nameLocation;
+        private readonly string _nestingProperty;
         private readonly ImmutableArray<SingleDeclaration> _children;
         private ImmutableArray<string> _lazyChildNames;
         private readonly ImmutableArray<DeclarationTreeInfo.Property> _properties;
@@ -39,14 +40,17 @@ namespace MetaDslx.CodeAnalysis.Declarations
             SyntaxReference syntaxReference,
             SourceLocation nameLocation,
             bool canMerge,
+            bool isNestingParent,
+            string nestingProperty,
             ImmutableArray<SingleDeclaration> children,
             ImmutableArray<DeclarationTreeInfo.Property> properties,
             ImmutableArray<Diagnostic> diagnostics)
-            : base(name, kind, canMerge)
+            : base(name, kind, canMerge, isNestingParent)
         {
             this._modelObjectType = modelObjectType;
             this._syntaxReference = syntaxReference;
             this._nameLocation = nameLocation;
+            this._nestingProperty = nestingProperty;
             this._children = children;
             this._properties = properties;
             this.Diagnostics = diagnostics;
@@ -70,6 +74,11 @@ namespace MetaDslx.CodeAnalysis.Declarations
         public Location NameLocation
         {
             get { return this._nameLocation; }
+        }
+
+        public string NestingProperty
+        {
+            get { return this._nestingProperty; }
         }
 
         public ImmutableArray<DeclarationTreeInfo.Property> Properties

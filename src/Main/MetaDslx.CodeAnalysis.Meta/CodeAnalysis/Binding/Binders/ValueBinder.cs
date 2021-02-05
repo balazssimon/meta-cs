@@ -1,4 +1,5 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using MetaDslx.CodeAnalysis.Binding.Binders.Find;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 using System;
@@ -9,7 +10,7 @@ using System.Threading;
 
 namespace MetaDslx.CodeAnalysis.Binding.Binders
 {
-    public class ValueBinder : Binder
+    public class ValueBinder : Binder, IValueBoundary
     {
         private Lazy<object> _lazyValue;
 

@@ -110,11 +110,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             return this.SourceDeclaration.GetTypeMembers(name, metadataName);
         }
 
-        public override bool IsDefinedInSourceTree(SyntaxTree tree, TextSpan? definedWithinSpan, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return this.SourceDeclaration.IsDefinedInSourceTree(tree, definedWithinSpan, cancellationToken);
-        }
-
         public override ImmutableArray<AttributeData> GetAttributes()
         {
             // TODO:MetaDslx

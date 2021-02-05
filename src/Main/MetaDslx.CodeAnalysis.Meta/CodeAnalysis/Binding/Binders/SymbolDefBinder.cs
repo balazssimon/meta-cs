@@ -10,10 +10,12 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using Roslyn.Utilities;
+using MetaDslx.CodeAnalysis.Binding.Binders.Find;
 
 namespace MetaDslx.CodeAnalysis.Binding.Binders
 {
-    public class SymbolDefBinder : ValueBinder
+    public class SymbolDefBinder : ValueBinder, IPropertyBoundary
+
     {
         private readonly Type _type;
         private Symbol _definedSymbol;
@@ -33,8 +35,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             {
                 if (_definedSymbol == null)
                 {
-                    var container = this.ContainingDeclaration as IModelSourceSymbol;
-                    var symbol = container.GetChildSymbol(this.Syntax.GetReference());
+                    var symbol = SourceSymbol.GetInnermostNestedDeclaredSymbol(this.Syntax, this.ContainingDeclaration);
                     Interlocked.CompareExchange(ref _definedSymbol, symbol, null);
                 }
                 return _definedSymbol;

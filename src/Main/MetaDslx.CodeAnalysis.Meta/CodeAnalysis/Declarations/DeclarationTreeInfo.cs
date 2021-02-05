@@ -19,7 +19,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
         private int qualifierStack;
         private ArrayBuilder<Identifier> currentName;
 
-        public DeclarationTreeInfo(DeclarationTreeInfo parentScope, DeclarationTreeInfo parentDeclaration, DeclarationTreeInfo parent, string parentPropertyToAddTo, Type type, LanguageSyntaxNode node)
+        public DeclarationTreeInfo(DeclarationTreeInfo parentScope, DeclarationTreeInfo parentDeclaration, DeclarationTreeInfo parent, string parentPropertyToAddTo, Type type, SyntaxNodeOrToken node)
         {
             this.ParentScope = parentScope;
             this.ParentDeclaration = parentDeclaration;
@@ -37,7 +37,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
         public DeclarationTreeInfo ParentScope { get; private set; }
         public DeclarationTreeInfo ParentDeclaration { get; private set; }
         public DeclarationTreeInfo Parent { get; private set; }
-        public LanguageSyntaxNode Node { get; private set; }
+        public SyntaxNodeOrToken Node { get; private set; }
         public Type ModelObjectType { get; private set; }
         public bool Merge { get; private set; }
         public bool Detached { get; private set; }
@@ -102,13 +102,9 @@ namespace MetaDslx.CodeAnalysis.Declarations
             Debug.Assert(this.qualifierStack >= 0);
         }
 
-        public void RegisterIdentifier(SyntaxToken token)
+        public void RegisterIdentifier(SyntaxNodeOrToken syntax)
         {
-            this.RegisterIdentifier(new Identifier(token.Text, token));
-        }
-
-        public void RegisterIdentifier(LanguageSyntaxNode node)
-        {
+            var node = (LanguageSyntaxNode)syntax.NodeOrParent;
             this.RegisterIdentifier(new Identifier(node.Language.SyntaxFacts.ExtractName(node), node));
         }
 

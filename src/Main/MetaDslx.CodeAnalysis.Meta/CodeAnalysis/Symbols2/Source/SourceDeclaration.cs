@@ -80,6 +80,12 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         public IModelSourceSymbol SourceSymbol => (IModelSourceSymbol)_symbol;
 
+        public bool IsImplicitlyDeclared => _symbol.IsImplicitlyDeclared;
+
+        public Symbol ContainingSymbol => _symbol.ContainingSymbol;
+
+        public DeclaredSymbol ContainingDeclaration => _symbol.ContainingDeclaration;
+
         public IEnumerable<string> MemberNames
         {
             get { return this.Declaration.ChildNames; }
@@ -297,34 +303,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 membersByName.Add(member);
             }
             return membersByName.ToImmutableAndFree().ToDictionaryWithImmutableArray(m => m.Name);
-        }
-
-        public bool IsDefinedInSourceTree(SyntaxTree tree, TextSpan? definedWithinSpan, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            // Check if any namespace declaration block intersects with the given tree/span.
-            foreach (var declaration in this.Declaration.Declarations)
-            {
-                cancellationToken.ThrowIfCancellationRequested();
-
-                var declarationSyntaxRef = declaration.SyntaxReference;
-                if (declarationSyntaxRef.SyntaxTree != tree)
-                {
-                    continue;
-                }
-
-                if (!definedWithinSpan.HasValue)
-                {
-                    return true;
-                }
-
-                var syntax = declarationSyntaxRef.GetSyntax(cancellationToken);
-                if (syntax.FullSpan.IntersectsWith(definedWithinSpan.Value))
-                {
-                    return true;
-                }
-            }
-
-            return false;
         }
 
         /// <summary>

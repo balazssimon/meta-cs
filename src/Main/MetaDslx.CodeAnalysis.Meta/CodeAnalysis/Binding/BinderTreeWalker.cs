@@ -66,8 +66,9 @@ namespace MetaDslx.CodeAnalysis.Binding
                 if (_cursor.HasChildren) _cursor = _cursor.MoveToFirstChild();
                 else _cursor = _cursor.MoveToNextSibling();
                 var lowestBinder = GetLowestBinder(_cursor.CurrentNodeOrToken);
-                if (lowestBinder != null && lowestBinder != _lowestBinder)
+                if (lowestBinder != null && lowestBinder != _lowestBinder && lowestBinder.Syntax == _cursor.CurrentNodeOrToken)
                 {
+                    _binder = GetLowestBinder(_cursor.CurrentNodeOrToken.Parent);
                     _lowestBinder = lowestBinder;
                     MoveToPreviousBinder();
                     return true;
@@ -78,11 +79,6 @@ namespace MetaDslx.CodeAnalysis.Binding
         public bool MoveToNextSibling()
         {
             if (_binder == null || _cursor.CurrentNodeOrToken == null) return false;
-            if (_binder != _lowestBinder)
-            {
-                MoveToPreviousBinder();
-                return true;
-            }
             var first = true;
             while (true)
             {
@@ -90,8 +86,9 @@ namespace MetaDslx.CodeAnalysis.Binding
                 if (!first && _cursor.HasChildren) _cursor = _cursor.MoveToFirstChild();
                 else _cursor = _cursor.MoveToNextSibling();
                 var lowestBinder = GetLowestBinder(_cursor.CurrentNodeOrToken);
-                if (lowestBinder != null && lowestBinder != _lowestBinder)
+                if (lowestBinder != null && lowestBinder != _lowestBinder && lowestBinder.Syntax == _cursor.CurrentNodeOrToken)
                 {
+                    _binder = GetLowestBinder(_cursor.CurrentNodeOrToken.Parent);
                     _lowestBinder = lowestBinder;
                     MoveToPreviousBinder();
                     return true;

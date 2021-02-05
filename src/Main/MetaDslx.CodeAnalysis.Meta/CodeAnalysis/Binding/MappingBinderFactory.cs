@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.CodeAnalysis;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace MetaDslx.CodeAnalysis.Binding
     {
         private ConcurrentDictionary<BinderCacheKey, Binder> _map;
 
-        internal MappingBinderFactory(LanguageCompilation compilation, LanguageSyntaxTree syntaxTree) 
+        internal MappingBinderFactory(LanguageCompilation compilation, SyntaxTree syntaxTree) 
             : base(compilation, syntaxTree)
         {
             _map = new ConcurrentDictionary<BinderCacheKey, Binder>();

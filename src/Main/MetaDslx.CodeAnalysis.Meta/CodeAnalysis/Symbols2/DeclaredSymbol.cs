@@ -343,7 +343,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public virtual bool IsDefinedInSourceTree(SyntaxTree tree, TextSpan? definedWithinSpan, CancellationToken cancellationToken = default(CancellationToken))
         {
             var declaringReferences = this.DeclaringSyntaxReferences;
-            var container = this.ContainingSymbol as DeclaredSymbol;
+            var container = this.ContainingDeclaration;
             if (this.IsImplicitlyDeclared && declaringReferences.Length == 0 && container != null)
             {
                 return container.IsDefinedInSourceTree(tree, definedWithinSpan, cancellationToken);

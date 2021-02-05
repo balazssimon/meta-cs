@@ -16,6 +16,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders.Find
             if (binder is PropertyBinder propertyBinder)
             {
                 if (propertyBinder.PropertyValueOpt.HasValue) return propertyBinder == this.Origin.Binder;
+                else return false;
             }
             return true;
         }
@@ -27,7 +28,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders.Find
                 if (propertyBinder.PropertyValueOpt.HasValue) return propertyBinder == this.Origin.Binder;
                 else return propertyBinder != this.Origin.Binder;
             }
-            return binder is ValueBinder || binder is NameBinder;
+            return binder is IValueBoundary;
         }
     }
 }

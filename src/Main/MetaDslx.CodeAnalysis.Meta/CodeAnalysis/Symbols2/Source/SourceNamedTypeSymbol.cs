@@ -95,12 +95,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => SyntaxReferences;
 
-        // This method behaves the same was as the base class, but avoids allocations associated with DeclaringSyntaxReferences
-        public override bool IsDefinedInSourceTree(SyntaxTree tree, TextSpan? definedWithinSpan, CancellationToken cancellationToken)
-        {
-            return this.SourceDeclaration.IsDefinedInSourceTree(tree, definedWithinSpan, cancellationToken);
-        }
-
         #endregion
 
         #region members

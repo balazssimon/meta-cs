@@ -1,9 +1,11 @@
 ﻿using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Binding.Binders;
+using MetaDslx.CodeAnalysis.Declarations;
 using MetaDslx.CodeAnalysis.Symbols.Metadata;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
+using Microsoft.CodeAnalysis.Text;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -73,46 +75,86 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         public ImmutableArray<Symbol> CreateChildSymbols(DiagnosticBag diagnostics)
         {
             Debug.Assert(_symbol.ContainingSymbol is IModelSourceSymbol);
+            var childDeclarations = (_symbol as DeclaredSymbol).MergedDeclaration != null ? new Dictionary<MergedDeclaration, Symbol>() : null;
             var result = ArrayBuilder<Symbol>.GetInstance();
-            var symbolFacts = SymbolFacts;
-            var symbolFactory = SymbolFactory;
             foreach (var reference in _symbol.DeclaringSyntaxReferences)
             {
-                var symbolDef = GetBinder(reference);
+                CreateChildSymbols(reference, childDeclarations, result, diagnostics);
+            }
+            return result.ToImmutableAndFree();
+        }
+
+        public void CreateChildSymbols(SyntaxReference symbolPartReference, Dictionary<MergedDeclaration, Symbol> childDeclarations, ArrayBuilder<Symbol> result, DiagnosticBag diagnostics)
+        {
+            Debug.Assert(_symbol.ContainingSymbol is IModelSourceSymbol);
+            var symbolFacts = SymbolFacts;
+            var symbolFactory = SymbolFactory;
+            var declaredSymbol = _symbol as DeclaredSymbol;
+            var symbolPartSyntax = symbolPartReference.Resolve();
+            var nestingDeclaration = NestingParentDeclaration(symbolPartSyntax, declaredSymbol);
+            if (nestingDeclaration != null)
+            {
+                Debug.Assert(nestingDeclaration.Children.Length == 1);
+                var childSingleDeclaration = (SingleDeclaration)nestingDeclaration.Children[0];
+                Debug.Assert(childSingleDeclaration != null);
+                var childDeclaration = GetChildDeclaration(symbolPartSyntax, declaredSymbol);
+                Debug.Assert(childDeclaration != null);
+                if (!childDeclarations.ContainsKey(childDeclaration))
+                {
+                    var objectProperty = symbolFacts.GetProperty(ModelObject, childSingleDeclaration.NestingProperty);
+                    if (objectProperty == null)
+                    {
+                        AssertionDiagnostic(diagnostics, ModelErrorCode.ERR_PropertyDoesNotExist.ToDiagnostic(childSingleDeclaration.SyntaxReference.GetLocation(), childSingleDeclaration.NestingProperty, ModelObject));
+                        return;
+                    }
+                    var childObject = Compilation.ObjectFactory.CreateObject(childSingleDeclaration.ModelObjectType);
+                    symbolFacts.SetOrAddPropertyValue(ModelObject, objectProperty, childObject, diagnostics);
+                    var childSymbol = symbolFactory.MakeSourceSymbol(_symbol, childObject, childDeclaration);
+                    result.Add(childSymbol);
+                    childDeclarations.Add(childDeclaration, childSymbol);
+                }
+            }
+            else
+            { 
+                var symbolDef = GetBinder(symbolPartReference);
                 var properties = FindPropertyBinders(symbolDef);
                 foreach (var property in properties)
                 {
                     var objectProperty = symbolFacts.GetProperty(ModelObject, property.Binder.PropertyName);
                     var isContainmentProperty = objectProperty != null && symbolFacts.IsContainmentProperty(objectProperty);
-                    var values = FindValueBinders(property);
-                    foreach (var value in values)
+                    if (isContainmentProperty)
                     {
-                        if (objectProperty == null) AssertionDiagnostic(diagnostics, ModelErrorCode.ERR_PropertyDoesNotExist.ToDiagnostic(value.Syntax.GetLocation(), property.Binder.PropertyName, ModelObject));
-                        if (!isContainmentProperty) AssertionDiagnostic(diagnostics, ModelErrorCode.ERR_NotContainmentProperty.ToDiagnostic(value.Syntax.GetLocation(), property.Binder.PropertyName, ModelObject));
-                        var childBinder = value.Binder as SymbolDefBinder;
-                        if (childBinder == null)
+                        var values = FindValueBinders(property);
+                        foreach (var value in values)
                         {
-                            AssertionDiagnostic(diagnostics, ModelErrorCode.ERR_MustBeSymbolDefBound.ToDiagnostic(value.Syntax.GetLocation(), property.Binder.PropertyName));
-                        }
-                        else
-                        {
+                            if (objectProperty == null)
+                            {
+                                AssertionDiagnostic(diagnostics, ModelErrorCode.ERR_PropertyDoesNotExist.ToDiagnostic(value.Syntax.GetLocation(), property.Binder.PropertyName, ModelObject));
+                                continue;
+                            }
+                            if (!isContainmentProperty)
+                            {
+                                AssertionDiagnostic(diagnostics, ModelErrorCode.ERR_NotContainmentProperty.ToDiagnostic(value.Syntax.GetLocation(), property.Binder.PropertyName, ModelObject));
+                                continue;
+                            }
+                            var childBinder = value.Binder as SymbolDefBinder;
+                            if (childBinder == null)
+                            {
+                                AssertionDiagnostic(diagnostics, ModelErrorCode.ERR_MustBeSymbolDefBound.ToDiagnostic(value.Syntax.GetLocation(), property.Binder.PropertyName));
+                                continue;
+                            }
                             object childObject = null;
                             Symbol childSymbol = null;
                             var container = childBinder.ContainingDeclaration;
-                            if (container != null)
+                            var childDeclaration = GetChildDeclaration(childBinder.Syntax, container);
+                            if (childDeclaration != null && !childDeclarations.TryGetValue(childDeclaration, out childSymbol))
                             {
-                                foreach (var decl in container.MergedDeclaration.Children)
-                                {
-                                    if (decl.SyntaxReferences.Any(sr => sr.GetLocation() == childBinder.Syntax.GetLocation()))
-                                    {
-                                        Debug.Assert(decl.ModelObjectType == childBinder.ModelObjectType);
-                                        childObject = Compilation.ObjectFactory.CreateObject(decl.ModelObjectType);
-                                        symbolFacts.SetOrAddPropertyValue(ModelObject, objectProperty, childObject, diagnostics);
-                                        childSymbol = symbolFactory.MakeSourceSymbol(_symbol, childObject, decl);
-                                        result.Add(childSymbol);
-                                        break;
-                                    }
-                                }
+                                Debug.Assert(childDeclaration.ModelObjectType == childBinder.ModelObjectType);
+                                childObject = Compilation.ObjectFactory.CreateObject(childDeclaration.ModelObjectType);
+                                symbolFacts.SetOrAddPropertyValue(ModelObject, objectProperty, childObject, diagnostics);
+                                childSymbol = symbolFactory.MakeSourceSymbol(_symbol, childObject, childDeclaration);
+                                result.Add(childSymbol);
+                                break;
                             }
                             if (childObject == null && childSymbol == null)
                             {
@@ -127,7 +169,68 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                     }
                 }
             }
-            return result.ToImmutableAndFree();
+        }
+
+        private static SingleDeclaration NestingParentDeclaration(SyntaxNodeOrToken symbolPartReference, DeclaredSymbol declaredSymbol)
+        {
+            if (declaredSymbol == null) return null;
+            foreach (var singleDeclaration in declaredSymbol.MergedDeclaration.Declarations)
+            {
+                if (singleDeclaration.SyntaxReference.SyntaxTree == symbolPartReference.SyntaxTree && singleDeclaration.SyntaxReference.Span == symbolPartReference.Span)
+                {
+                    if (singleDeclaration.IsNestingParent) return singleDeclaration;
+                    else return null;
+                }
+            }
+            return null;
+        }
+
+        private static MergedDeclaration GetChildDeclaration(SyntaxNodeOrToken childSyntax, DeclaredSymbol declaredSymbol)
+        {
+            if (declaredSymbol == null || declaredSymbol.MergedDeclaration == null) return null;
+            foreach (var childDeclaration in declaredSymbol.MergedDeclaration.Children)
+            {
+                foreach (var childReference in childDeclaration.SyntaxReferences)
+                {
+                    if (childReference.SyntaxTree == childSyntax.SyntaxTree && childSyntax.Span.Equals(childReference.Span))
+                    {
+                        return childDeclaration;
+                    }
+                }
+            }
+            return null;
+        }
+
+        public static DeclaredSymbol GetChildDeclaredSymbol(SyntaxNodeOrToken childSyntax, DeclaredSymbol declaredSymbol)
+        {
+            if (declaredSymbol == null) return null;
+            var childDeclaration = GetChildDeclaration(childSyntax, declaredSymbol);
+            Debug.Assert(childDeclaration != null);
+            if (childDeclaration != null)
+            {
+                foreach (var childSymbol in declaredSymbol.ChildSymbols)
+                {
+                    if (childSymbol is DeclaredSymbol dsim && dsim.MergedDeclaration == childDeclaration)
+                    {
+                        return dsim;
+                    }
+                }
+            }
+            return null;
+        }
+
+        public static DeclaredSymbol GetInnermostNestedDeclaredSymbol(SyntaxNodeOrToken childSyntax, DeclaredSymbol declaredSymbol)
+        {
+            if (declaredSymbol == null) return null;
+            var childSymbol = GetChildDeclaredSymbol(childSyntax, declaredSymbol);
+            var nestingDeclaration = NestingParentDeclaration(childSyntax, childSymbol);
+            while (nestingDeclaration != null && childSymbol != null)
+            {
+                declaredSymbol = childSymbol;
+                childSymbol = GetChildDeclaredSymbol(childSyntax, declaredSymbol);
+                nestingDeclaration = NestingParentDeclaration(childSyntax, childSymbol);
+            }
+            return childSymbol;
         }
 
         public void AssignNameProperty(DiagnosticBag diagnostics)
@@ -210,5 +313,68 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             return null;
         }
 
+        public static Symbol GetChildSymbol(string childName, Location childLocation, NamedTypeSymbol container, Type modelObjectType)
+        {
+            foreach (Symbol sym in container.ChildSymbols)
+            {
+                if ((sym as IModelSymbol)?.ModelObjectType != modelObjectType)
+                {
+                    continue;
+                }
+                if (sym.Name != childName)
+                {
+                    continue;
+                }
+
+                if (sym.Locations.Contains(childLocation))
+                {
+                    return sym;
+                }
+            }
+
+            return null;
+        }
+
+        public static Symbol GetChildSymbol(Location childLocation, NamedTypeSymbol container, Type modelObjectType)
+        {
+            foreach (Symbol sym in container.ChildSymbols)
+            {
+                if ((sym as IModelSymbol)?.ModelObjectType != modelObjectType)
+                {
+                    continue;
+                }
+                if (sym.Locations.Contains(childLocation))
+                {
+                    return sym;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Returns true if the location is within the syntax tree and span.
+        /// </summary>
+        private static bool InSpan(Location location, SyntaxTree syntaxTree, TextSpan span)
+        {
+            Debug.Assert(syntaxTree != null);
+            return (location.SourceTree == syntaxTree) && span.Contains(location.SourceSpan);
+        }
+
+        /// <summary>
+        /// Returns true if one of the locations is within the syntax tree and span.
+        /// </summary>
+        private static bool InSpan(ImmutableArray<Location> locations, SyntaxTree syntaxTree, TextSpan span)
+        {
+            Debug.Assert(syntaxTree != null);
+            foreach (var loc in locations)
+            {
+                if (InSpan(loc, syntaxTree, span))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }

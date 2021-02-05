@@ -1,4 +1,5 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using MetaDslx.CodeAnalysis.Binding.Binders.Find;
+using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading;
 
 namespace MetaDslx.CodeAnalysis.Binding.Binders
 {
-    public class IdentifierBinder : ValueBinder
+    public class IdentifierBinder : ValueBinder, IIdentifierBoundary
     {
         public IdentifierBinder(SyntaxNodeOrToken syntax, Binder next)
             : base(syntax, next)

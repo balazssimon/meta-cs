@@ -1736,7 +1736,8 @@ namespace MetaDslx.CodeAnalysis
 
         private BinderFactory AddNewFactory(SyntaxTree syntaxTree, ref WeakReference<BinderFactory> slot)
         {
-            var newFactory = new CachingBinderFactory(this, syntaxTree);
+            //var newFactory = new CachingBinderFactory(this, syntaxTree);
+            var newFactory = new MappingBinderFactory(this, syntaxTree);
             var newWeakReference = new WeakReference<BinderFactory>(newFactory);
 
             while (true)
