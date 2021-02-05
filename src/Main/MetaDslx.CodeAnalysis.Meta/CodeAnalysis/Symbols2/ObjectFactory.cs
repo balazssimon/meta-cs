@@ -46,7 +46,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                     var models = ArrayBuilder<object>.GetInstance();
                     foreach (var module in _compilation.SourceAssembly.Modules)
                     {
-                        if (module is ModelModuleSymbol mms && mms.Model != null)
+                        if (module.Ordinal > 0 && module is ModelModuleSymbol mms && mms.Model != null)
                         {
                             if (!models.Contains(mms.Model))
                             {

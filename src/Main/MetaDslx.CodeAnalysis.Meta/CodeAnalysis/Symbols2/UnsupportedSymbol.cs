@@ -19,6 +19,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         public ISymbol Symbol => _symbol;
 
+        public override ImmutableArray<Symbol> ChildSymbols => ImmutableArray<Symbol>.Empty;
+
         public override LanguageSymbolKind Kind => LanguageSymbolKind.None;
 
         public override Symbol ContainingSymbol => _containingSymbol;

@@ -110,6 +110,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         private Binder GetLowestBinder(SyntaxNodeOrToken syntax)
         {
+            if (syntax.NodeOrParent == null) return null;
             if (!_lowestBinders.TryGetValue(syntax, out var binder))
             {
                 var parentLowestBinder = GetLowestBinder(syntax.Parent);

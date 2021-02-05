@@ -4,6 +4,7 @@ using Microsoft.CodeAnalysis.PooledObjects;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Metadata
@@ -129,19 +130,19 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             return LanguageSymbolKind.None;
         }
 
-        public override IEnumerable<object> GetProperties(Type modelObjectType, string symbolProperty)
+        public override IEnumerable<object> GetPropertiesForSymbol(Type modelObjectType, string symbolProperty)
         {
             var mdesc = ModelObjectDescriptor.GetDescriptor(modelObjectType);
-            return GetProperties(mdesc, symbolProperty);
+            return GetPropertiesForSymbol(mdesc, symbolProperty);
         }
 
-        public override IEnumerable<object> GetProperties(object modelObject, string symbolProperty)
+        public override IEnumerable<object> GetPropertiesForSymbol(object modelObject, string symbolProperty)
         {
             var mobj = (IModelObject)modelObject;
-            return GetProperties(mobj.MId.Descriptor, symbolProperty);
+            return GetPropertiesForSymbol(mobj.MId.Descriptor, symbolProperty);
         }
 
-        protected IEnumerable<object> GetProperties(ModelObjectDescriptor descriptor, string symbolProperty)
+        protected IEnumerable<object> GetPropertiesForSymbol(ModelObjectDescriptor descriptor, string symbolProperty)
         {
             if (descriptor != null)
             {
@@ -151,6 +152,33 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
                     if (sprop == symbolProperty) yield return prop;
                 }
             }
+        }
+
+        public override object GetProperty(Type modelObjectType, string modelObjectPropertyName)
+        {
+            var mdesc = ModelObjectDescriptor.GetDescriptor(modelObjectType);
+            return GetProperty(mdesc, modelObjectPropertyName);
+        }
+
+        public override object GetProperty(object modelObject, string modelObjectPropertyName)
+        {
+            var mobj = (IModelObject)modelObject;
+            return GetProperty(mobj.MId.Descriptor, modelObjectPropertyName);
+        }
+
+        protected object GetProperty(ModelObjectDescriptor descriptor, string modelObjectPropertyName)
+        {
+            if (descriptor != null)
+            {
+                return descriptor.Properties.FirstOrDefault(p => p.Name == modelObjectPropertyName);
+            }
+            return null;
+        }
+
+        public override bool IsContainmentProperty(object property)
+        {
+            var prop = (ModelProperty)property;
+            return prop.IsContainment;
         }
 
         public override string GetSymbolProperty(Type modelObjectType, object property)

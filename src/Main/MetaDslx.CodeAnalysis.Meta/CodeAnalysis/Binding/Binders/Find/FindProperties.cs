@@ -11,6 +11,11 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders.Find
         {
         }
 
+        public override bool IsValidBinder(PropertyBinder binder)
+        {
+            return true;
+        }
+
         public override bool IsSearchBoundary(Binder binder)
         {
             return binder is SymbolDefBinder;

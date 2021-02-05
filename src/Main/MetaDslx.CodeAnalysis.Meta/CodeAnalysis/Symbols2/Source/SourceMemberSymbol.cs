@@ -23,6 +23,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         private readonly SourceSymbol _source;
         private readonly CompletionState _state;
         private SourceDeclaration _sourceDeclaration;
+        private ImmutableArray<Symbol> _childSymbols;
 
         public SourceMemberSymbol(
             Symbol containingSymbol,
@@ -31,15 +32,16 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             : base(containingSymbol, modelObject)
         {
             Debug.Assert(containingSymbol is IModelSourceSymbol);
+            Debug.Assert(modelObject != null);
             Debug.Assert(declaration != null);
             _declaration = declaration;
             _source = new SourceSymbol(this);
             _state = CompletionState.Create(containingSymbol.ContainingModule.Language);
         }
 
-        public override Language Language => ContainingSymbol.Language;
-
         public override MergedDeclaration MergedDeclaration => _declaration;
+
+        public override ImmutableArray<Symbol> ChildSymbols => _childSymbols;
 
         public override AssemblySymbol ContainingAssembly => ContainingSymbol.ContainingAssembly;
 
@@ -120,9 +122,14 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             return ImmutableArray<AttributeData>.Empty;
         }
 
-        public BinderPosition GetBinder(SyntaxReference syntax)
+        public BinderPosition<SymbolDefBinder> GetBinder(SyntaxReference syntax)
         {
             return _source.GetBinder(syntax);
+        }
+
+        public Symbol GetChildSymbol(SyntaxReference syntax)
+        {
+            return _source.GetChildSymbol(syntax);
         }
 
         #region completion
@@ -148,6 +155,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                             diagnostics.AddRange(singleDeclaration.Diagnostics);
                         }
                         AddDeclarationDiagnostics(diagnostics);
+                        _source.AssignNameProperty(diagnostics);
                         _state.NotePartComplete(CompletionPart.FinishCreated);
                         diagnostics.Free();
                     }
@@ -160,8 +168,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 {
                     if (_state.NotePartComplete(CompletionPart.StartChildrenCreated))
                     {
-                        // TODO
+                        var diagnostics = DiagnosticBag.GetInstance();
+                        ImmutableInterlocked.InterlockedInitialize(ref _childSymbols, _source.CreateChildSymbols(diagnostics));
+                        AddDeclarationDiagnostics(diagnostics);
                         _state.NotePartComplete(CompletionPart.FinishChildrenCreated);
+                        diagnostics.Free();
                     }
                 }
                 else if (incompletePart == CompletionPart.Members)

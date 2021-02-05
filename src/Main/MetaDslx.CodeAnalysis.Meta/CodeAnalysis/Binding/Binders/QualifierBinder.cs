@@ -16,6 +16,5 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
         {
         }
 
-        public IEnumerable<object> Values => throw new NotImplementedException();
     }
 }

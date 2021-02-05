@@ -9,35 +9,51 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis.Binding.Binders
 {
     public class SymbolDefBinder : ValueBinder
     {
         private readonly Type _type;
-        private readonly Type _nestingType;
         private Symbol _definedSymbol;
 
-        public SymbolDefBinder(SyntaxNodeOrToken syntax, Binder next, Type type, Type nestingType) 
+        public SymbolDefBinder(SyntaxNodeOrToken syntax, Binder next, Type type) 
             : base(syntax, next)
         {
             _type = type;
-            _nestingType = nestingType;
             _definedSymbol = null;
         }
 
-        public Symbol DefinedSymbol => throw new NotImplementedException();
+        public Type ModelObjectType => _type;
 
-        public IEnumerable<object> Values => throw new NotImplementedException();
+        public Symbol DefinedSymbol
+        {
+            get
+            {
+                if (_definedSymbol == null)
+                {
+                    var container = this.ContainingDeclaration as IModelSourceSymbol;
+                    var symbol = container.GetChildSymbol(this.Syntax.GetReference());
+                    Interlocked.CompareExchange(ref _definedSymbol, symbol, null);
+                }
+                return _definedSymbol;
+            }
+        }
+
+        public override ImmutableArray<object> Values
+        {
+            get
+            {
+                if (DefinedSymbol != null) return ImmutableArray.Create<object>(DefinedSymbol);
+                else return ImmutableArray<object>.Empty; 
+            }
+
+        }
 
         public override Symbol GetDefinedSymbol()
         {
-            if (_definedSymbol == null)
-            {
-                var symbol = this.Bind(Syntax, default).Symbol;
-                Interlocked.CompareExchange(ref _definedSymbol, symbol, null);
-            }
-            return _definedSymbol;
+            return this.DefinedSymbol;
         }
 
     }

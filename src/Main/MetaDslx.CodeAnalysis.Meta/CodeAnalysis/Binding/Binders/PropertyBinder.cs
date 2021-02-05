@@ -12,7 +12,6 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
     {
         private readonly string _propertyName;
         private readonly Optional<object> _propertyValueOpt;
-        private ImmutableArray<object> _lazyValues;
         private SymbolPropertyOwner _owner;
         private Type _ownerType;
 
@@ -23,18 +22,15 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             _propertyValueOpt = propertyValueOpt;
             _owner = owner;
             _ownerType = ownerType;
-            if (_propertyValueOpt.HasValue)
-            {
-                _lazyValues = ImmutableArray.Create(_propertyValueOpt.Value);
-            }
-            else
-            {
-                _lazyValues = default(ImmutableArray<object>);
-            }
         }
 
         public string PropertyName => _propertyName;
 
         public Optional<object> PropertyValueOpt => _propertyValueOpt;
+
+        protected override object ComputeValue()
+        {
+            return _propertyValueOpt.Value;
+        }
     }
 }

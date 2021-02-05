@@ -448,5 +448,10 @@ namespace MetaDslx.CodeAnalysis
             if (node.Span == reference.Span) return node;
             else return node.FindToken(node.SpanStart);
         }
+
+        public static SyntaxReference GetReference(this SyntaxNodeOrToken syntax)
+        {
+            return new SimpleSyntaxReference(syntax);
+        }
     }
 }

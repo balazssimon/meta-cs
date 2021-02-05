@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using System.Threading;
 
@@ -138,8 +139,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 {
                     if (childDeclaration.IsType && childDeclaration.Name != null)
                     {
-                        var mobj = _symbol.DeclaringCompilation.ObjectFactory.CreateObject(childDeclaration.ModelObjectType);
-                        var t = (SourceNamedTypeSymbol)SourceSymbol.SymbolFactory.MakeSourceSymbol(_symbol, mobj, childDeclaration);
+                        var t = _symbol.ChildSymbols.OfType<SourceNamedTypeSymbol>().FirstOrDefault(nts => nts.MergedDeclaration == childDeclaration);
                         this.CheckMemberNameDistinctFromType(t, diagnostics);
 
                         var key = (t.Name, t.MetadataName);
@@ -415,6 +415,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         {
             var symbolFactory = SourceSymbol.SymbolFactory;
             var objectFactory = _symbol.DeclaringCompilation.ObjectFactory;
+            Debug.Assert(_symbol.ChildSymbols.Length >= this.Declaration.Children.Length);
             foreach (var decl in this.Declaration.Children)
             {
                 if (_lazyMembers != null)
@@ -425,9 +426,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
                 if (decl.IsType)
                 {
-                    var mobj = objectFactory.CreateObject(decl.ModelObjectType);
-                    var symbol = (NamedTypeSymbol)symbolFactory.MakeSourceSymbol(_symbol, mobj, decl);
-                    builder.Add(symbol);
+                    var symbol = _symbol.ChildSymbols.OfType<SourceNamedTypeSymbol>().FirstOrDefault(nts => nts.MergedDeclaration == decl);
+                    Debug.Assert(symbol != null);
+                    if (symbol != null) builder.Add(symbol);
                 }
             }
         }
@@ -436,6 +437,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         {
             var symbolFactory = SourceSymbol.SymbolFactory;
             var objectFactory = _symbol.DeclaringCompilation.ObjectFactory;
+            Debug.Assert(_symbol.ChildSymbols.Length >= this.Declaration.Children.Length);
             foreach (var decl in this.Declaration.Children)
             {
                 if (_lazyMembers != null)
@@ -446,9 +448,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
                 if (decl.IsType) continue;
 
-                var mobj = objectFactory.CreateObject(decl.ModelObjectType);
-                var symbol = (DeclaredSymbol)symbolFactory.MakeSourceSymbol(_symbol, mobj, decl);
-                builder.Add(symbol);
+                var symbol = _symbol.ChildSymbols.OfType<DeclaredSymbol>().FirstOrDefault(ds => ds.MergedDeclaration == decl);
+                Debug.Assert(symbol != null);
+                if (symbol != null) builder.Add(symbol);
             }
         }
 

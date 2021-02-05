@@ -27,13 +27,13 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             _modelObject = modelObject;
         }
 
+        public sealed override Language Language => ContainingModule.Language;
+
         public SymbolFactory SymbolFactory => ((IModelSymbol)_container).SymbolFactory;
 
         public object ModelObject => _modelObject;
 
         public Type ModelObjectType => Language.SymbolFacts.GetModelObjectType(_modelObject);
-
-        public sealed override Language Language => _container.Language;
 
         public sealed override string Name => Language.SymbolFacts.GetName(_modelObject);
 
@@ -43,7 +43,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             {
                 if (_lazyMemberNames.IsDefault)
                 {
-                    var sf = Language.SymbolFactory;
+                    var sf = this.SymbolFactory;
                     ImmutableInterlocked.InterlockedInitialize(ref _lazyMemberNames, Language.SymbolFacts.GetChildren(_modelObject).Select(child => Language.SymbolFacts.GetName(child)).ToImmutableArray());
                 }
                 return _lazyMemberNames;
@@ -67,7 +67,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
         {
             var result = ArrayBuilder<NamedTypeSymbol>.GetInstance();
             var symbolFacts = Language.SymbolFacts;
-            foreach (var prop in symbolFacts.GetProperties(this.ModelObject, SymbolConstants.BaseTypesProperty))
+            foreach (var prop in symbolFacts.GetPropertiesForSymbol(this.ModelObject, SymbolConstants.BaseTypesProperty))
             {
                 var baseTypeObjects = symbolFacts.GetPropertyValues(this.ModelObject, prop);
                 var baseTypeSymbols = SymbolFactory.ResolveSymbols(baseTypeObjects).OfType<NamedTypeSymbol>();

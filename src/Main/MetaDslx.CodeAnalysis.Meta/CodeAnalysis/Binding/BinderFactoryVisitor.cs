@@ -90,7 +90,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         protected virtual Binder CreateSymbolDefBinderCore(SyntaxNodeOrToken syntax, Binder parentBinder, Type type)
         {
-            return new SymbolDefBinder(syntax, parentBinder, type, type);
+            return new SymbolDefBinder(syntax, parentBinder, type);
         }
 
         protected virtual Binder CreateSymbolUseBinder(SyntaxNodeOrToken syntax, Binder parentBinder, ImmutableArray<Type> types)

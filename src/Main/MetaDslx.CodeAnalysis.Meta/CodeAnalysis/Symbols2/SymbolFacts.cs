@@ -177,6 +177,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
         {
             return GetProperties(modelObject.GetType());
         }
+        public abstract object GetProperty(Type modelObjectType, string propertyName);
+        public abstract object GetProperty(object modelObject, string propertyName);
+        public abstract bool IsContainmentProperty(object property);
         public abstract IEnumerable<object> GetPropertyValues(object modelObject, object property);
         public abstract void SetOrAddPropertyValue(object modelObject, object property, object value, DiagnosticBag diagnostics);
 
@@ -185,12 +188,12 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return GetSymbolKind(modelObject.GetType());
         }
 
-        public virtual IEnumerable<object> GetProperties(object modelObject, string symbolProperty)
+        public virtual IEnumerable<object> GetPropertiesForSymbol(object modelObject, string symbolProperty)
         {
-            return GetProperties(modelObject.GetType(), symbolProperty);
+            return GetPropertiesForSymbol(modelObject.GetType(), symbolProperty);
         }
 
-        public virtual IEnumerable<object> GetProperties(Type modelObjectType, string symbolProperty)
+        public virtual IEnumerable<object> GetPropertiesForSymbol(Type modelObjectType, string symbolProperty)
         {
             foreach (var prop in GetProperties(modelObjectType))
             {

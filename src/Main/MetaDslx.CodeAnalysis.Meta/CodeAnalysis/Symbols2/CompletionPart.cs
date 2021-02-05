@@ -72,22 +72,22 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public static readonly CompletionPart AliasTarget = new CompletionPart(nameof(AliasTarget));
 
         public static readonly ImmutableHashSet<CompletionPart> AssemblySymbolAll =
-            Combine(Attributes, StartAttributeChecks, FinishAttributeChecks, Module, StartValidatingAddedModules, FinishValidatingAddedModules);
+            Combine(StartCreated, FinishCreated, Attributes, StartAttributeChecks, FinishAttributeChecks, Module, StartValidatingAddedModules, FinishValidatingAddedModules);
         public static readonly ImmutableHashSet<CompletionPart> ModuleSymbolAll =
-            Combine(Attributes, StartValidatingReferencedAssemblies, FinishValidatingReferencedAssemblies, MembersCompleted);
+            Combine(StartCreated, FinishCreated, Attributes, StartValidatingReferencedAssemblies, FinishValidatingReferencedAssemblies, MembersCompleted);
 
         public static readonly ImmutableHashSet<CompletionPart> NamedTypeSymbolWithLocationAll =
-            Combine(Attributes, StartBaseTypes, FinishBaseTypes, Members, TypeMembers);
+            Combine(StartCreated, FinishCreated, Attributes, StartBaseTypes, FinishBaseTypes, StartChildrenCreated, FinishChildrenCreated, Members, TypeMembers);
         public static readonly ImmutableHashSet<CompletionPart> NamedTypeSymbolAll = 
-            Combine(Attributes, StartBaseTypes, FinishBaseTypes, Members, TypeMembers, MembersCompleted);
+            Combine(StartCreated, FinishCreated, Attributes, StartBaseTypes, FinishBaseTypes, StartChildrenCreated, FinishChildrenCreated, Members, TypeMembers, MembersCompleted);
 
         public static readonly ImmutableHashSet<CompletionPart> ImportsAll =
             Combine(StartValidatingImports, FinishValidatingImports);
 
         public static readonly ImmutableHashSet<CompletionPart> NamespaceSymbolWithLocationAll =
-            Combine(Attributes, Members);
+            Combine(StartCreated, FinishCreated, Attributes, StartChildrenCreated, FinishChildrenCreated, Members);
         public static readonly ImmutableHashSet<CompletionPart> NamespaceSymbolAll =
-            Combine(Attributes, Members, MembersCompleted);
+            Combine(StartCreated, FinishCreated, Attributes, StartChildrenCreated, FinishChildrenCreated, Members, MembersCompleted);
 
 
         internal static CompletionGraphBuilder ConstructDefaultCompletionGraph()

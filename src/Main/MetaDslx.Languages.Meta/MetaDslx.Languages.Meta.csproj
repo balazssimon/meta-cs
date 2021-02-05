@@ -12,6 +12,13 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <MetaDslxDisableAntlr4RoslynGenerator>false</MetaDslxDisableAntlr4RoslynGenerator>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Binding\BoundDocumentation.cs" />
+    <Compile Remove="Binding\BoundOpposite.cs" />
+    <Compile Remove="Binding\MetaBoundKind.cs" />
+    <Compile Remove="Binding\MetaBoundNodeFactoryVisitor.cs" />
+    <Compile Remove="Binding\MetaIsBindableNodeVisitor.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="System.Collections.Immutable" Version="$(SystemCollectionsImmutableVersion)" />

@@ -15,6 +15,5 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             string metadataName = Language.SyntaxFacts.ExtractMetadataName(syntax);
         }
 
-        public IEnumerable<object> Values => throw new NotImplementedException();
     }
 }

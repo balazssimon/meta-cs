@@ -38,8 +38,6 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             }
         }
 
-        public IEnumerable<object> Values => throw new NotImplementedException();
-
         protected override LookupConstraints AdjustConstraints(LookupConstraints constraints)
         {
             LookupConstraints result = base.AdjustConstraints(constraints);

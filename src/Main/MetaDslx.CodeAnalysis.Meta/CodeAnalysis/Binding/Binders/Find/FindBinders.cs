@@ -14,7 +14,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         public static BinderPosition<SymbolDefBinder> FindSymbolDefBinder(Symbol symbol, SyntaxReference reference)
         {
             var origin = reference.ToBinderPosition(symbol.DeclaringCompilation);
-            return new FindSymbolDef(origin, symbol).FindOne();
+            return new FindSymbolDef(origin, symbol).FindOne(includeSelf: true);
         }
 
         public static ImmutableArray<BinderPosition<PropertyBinder>> FindPropertyBinders(BinderPosition<SymbolDefBinder> symbolDefBinder)
@@ -31,5 +31,6 @@ namespace MetaDslx.CodeAnalysis.Binding
         {
             return new FindIdentifiers(qualifierBinder).FindAll();
         }
+
     }
 }

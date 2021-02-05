@@ -74,8 +74,9 @@ namespace MetaDslx.Languages.Meta
         {
             if (!this.HasErrors)
             {
-                var compiledModel = _compilation.Model;
-                ImmutableMetaModelGenerator mmgen = new ImmutableMetaModelGenerator(compiledModel.Objects);
+                var compiledModel = _compilation.Model as MutableModel;
+                var immutableModel = compiledModel.ToImmutable();
+                ImmutableMetaModelGenerator mmgen = new ImmutableMetaModelGenerator(immutableModel.Objects);
                 mmgen.Properties.MetaNs = "global::" + _metaModelCoreNamespace;
 
                 var bareFilePath = Path.ChangeExtension(_inputFilePath, null);

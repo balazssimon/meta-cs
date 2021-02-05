@@ -90,5 +90,7 @@ namespace MetaDslx.Modeling
         public static readonly ModelErrorCode WRN_ImportWarning = new ModelErrorCode(45, "Import warning", "{0}", DiagnosticSeverity.Warning);
         public static readonly ModelErrorCode INF_ImportInfo = new ModelErrorCode(46, "Import info", "{0}", DiagnosticSeverity.Warning);
         public static readonly ModelErrorCode ERR_ModelConversionError = new ModelErrorCode(47, "Model conversion error", "Model conversion error: {0}", DiagnosticSeverity.Error);
+        public static readonly ModelErrorCode ERR_NotContainmentProperty = new ModelErrorCode(48, "Not a containment property", "Property '{0}' of the object '{1}' is not a containment property.", DiagnosticSeverity.Error);
+        public static readonly ModelErrorCode ERR_MustBeSymbolDefBound = new ModelErrorCode(49, "Must be SymbolDef bound", "Values of the containment property '{0}' must be bound by a SymbolDef binder.", DiagnosticSeverity.Error);
     }
 }

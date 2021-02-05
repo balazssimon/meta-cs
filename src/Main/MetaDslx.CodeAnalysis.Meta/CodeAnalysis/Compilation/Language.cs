@@ -23,7 +23,6 @@ namespace MetaDslx.CodeAnalysis
         private InternalSyntaxFactory _internalSyntaxFactory;
         private SyntaxFactory _syntaxFactory;
         private SymbolFacts _symbolFacts;
-        private SymbolFactory _symbolFactory;
         private CompilationFactory _compilationFactory;
 
         public Language()
@@ -35,7 +34,6 @@ namespace MetaDslx.CodeAnalysis
             _internalSyntaxFactory = _serviceProvider.GetRequiredService<InternalSyntaxFactory>();
             _syntaxFactory = _serviceProvider.GetRequiredService<SyntaxFactory>();
             _symbolFacts = _serviceProvider.GetRequiredService<SymbolFacts>();
-            _symbolFactory = _serviceProvider.GetRequiredService<SymbolFactory>();
             _compilationFactory = _serviceProvider.GetRequiredService<CompilationFactory>();
         }
 
@@ -54,7 +52,6 @@ namespace MetaDslx.CodeAnalysis
         public InternalSyntaxFactory InternalSyntaxFactory => _internalSyntaxFactory;
         public SyntaxFactory SyntaxFactory => _syntaxFactory;
         public SymbolFacts SymbolFacts => _symbolFacts;
-        public SymbolFactory SymbolFactory => _symbolFactory;
         public CompilationFactory CompilationFactory => _compilationFactory;
 
         public LanguageParseOptions DefaultParseOptions => this.SyntaxFactory.DefaultParseOptions;

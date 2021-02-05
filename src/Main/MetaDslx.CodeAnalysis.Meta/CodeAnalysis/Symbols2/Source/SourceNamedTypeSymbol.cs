@@ -31,7 +31,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         private SourceDeclaration _sourceDeclaration;
         private ImmutableArray<NamedTypeSymbol> _lazyDeclaredBases;
         private ImmutableArray<NamedTypeSymbol> _lazyBaseTypes;
-
+        private ImmutableArray<Symbol> _childSymbols;
         public SourceNamedTypeSymbol(
             Symbol containingSymbol,
             object modelObject,
@@ -39,6 +39,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             : base(containingSymbol, modelObject)
         {
             Debug.Assert(containingSymbol is IModelSourceSymbol);
+            Debug.Assert(modelObject != null);
             Debug.Assert(declaration != null);
             _declaration = declaration;
             _source = new SourceSymbol(this);
@@ -46,6 +47,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         }
 
         public override MergedDeclaration MergedDeclaration => _declaration;
+
+        public override ImmutableArray<Symbol> ChildSymbols => _childSymbols;
 
         public virtual bool IsPartial => _declaration.Merge;
 
@@ -134,9 +137,14 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             return this.SourceDeclaration.GetTypeMembers(name, metadataName);
         }
 
-        public BinderPosition GetBinder(SyntaxReference syntax)
+        public BinderPosition<SymbolDefBinder> GetBinder(SyntaxReference syntax)
         {
             return _source.GetBinder(syntax);
+        }
+
+        public Symbol GetChildSymbol(SyntaxReference syntax)
+        {
+            return _source.GetChildSymbol(syntax);
         }
 
         #endregion
@@ -176,6 +184,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                         {
                             diagnostics.AddRange(singleDeclaration.Diagnostics);
                         }
+                        _source.AssignNameProperty(diagnostics);
                         AddDeclarationDiagnostics(diagnostics);
                         _state.NotePartComplete(CompletionPart.FinishCreated);
                         diagnostics.Free();
@@ -200,8 +209,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 {
                     if (_state.NotePartComplete(CompletionPart.StartChildrenCreated))
                     {
-                        // TODO
+                        var diagnostics = DiagnosticBag.GetInstance();
+                        ImmutableInterlocked.InterlockedInitialize(ref _childSymbols, _source.CreateChildSymbols(diagnostics));
+                        AddDeclarationDiagnostics(diagnostics);
                         _state.NotePartComplete(CompletionPart.FinishChildrenCreated);
+                        diagnostics.Free();
                     }
                 }
                 else if (incompletePart == CompletionPart.Members)
@@ -404,7 +416,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         {
             var result = ArrayBuilder<NamedTypeSymbol>.GetInstance();
             var symbolFacts = Language.SymbolFacts;
-            foreach (var prop in symbolFacts.GetProperties(this.ModelObject, SymbolConstants.BaseTypesProperty))
+            foreach (var prop in symbolFacts.GetPropertiesForSymbol(this.ModelObject, SymbolConstants.BaseTypesProperty))
             {
                 var baseTypeObjects = symbolFacts.GetPropertyValues(this.ModelObject, prop);
                 var baseTypeSymbols = SymbolFactory.ResolveSymbols(baseTypeObjects);

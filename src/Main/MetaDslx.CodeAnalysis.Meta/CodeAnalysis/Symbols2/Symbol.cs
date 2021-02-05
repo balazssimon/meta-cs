@@ -90,6 +90,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public abstract Symbol ContainingSymbol { get; }
 
         /// <summary>
+        /// Get the symbols that are directly contained by this symbol. 
+        /// </summary>
+        public abstract ImmutableArray<Symbol> ChildSymbols { get; }
+
+        /// <summary>
         /// Returns the assembly containing this symbol. If this symbol is shared across multiple
         /// assemblies, or doesn't belong to an assembly, returns null.
         /// </summary>

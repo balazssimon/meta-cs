@@ -11,6 +11,11 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders.Find
         {
         }
 
+        public override bool IsValidBinder(IdentifierBinder binder)
+        {
+            return true;
+        }
+
         public override bool IsSearchBoundary(Binder binder)
         {
             return binder is IdentifierBinder;

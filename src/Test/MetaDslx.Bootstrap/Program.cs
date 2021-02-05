@@ -9,9 +9,9 @@ using MetaDslx.Languages.Meta.Binding;
 using MetaDslx.Languages.Meta.Generator;
 using MetaDslx.Languages.Meta.Model;
 using MetaDslx.Languages.Meta.Symbols;
-using MetaDslx.Languages.MetaCompiler;
-using MetaDslx.Languages.MetaCompiler.Generator;
-using MetaDslx.Languages.MetaCompiler.Model;
+//using MetaDslx.Languages.MetaCompiler;
+//using MetaDslx.Languages.MetaCompiler.Generator;
+//using MetaDslx.Languages.MetaCompiler.Model;
 //using MetaDslx.Languages.Mof.Generator;
 //using MetaDslx.Languages.Mof.Model;
 //using MetaDslx.Languages.Uml.Generator;
@@ -80,7 +80,7 @@ namespace MetaDslx.Bootstrap
             Console.WriteLine(test.SayHello("me"));
             //*/
 
-            /*/
+            //*/
             ImmutableModel coreModel = MetaInstance.MModel;
             Console.WriteLine(coreModel);
 
@@ -153,7 +153,7 @@ namespace MetaDslx.Bootstrap
             //    ++index;
             //}
 
-            var compiledModel = compilation.Model;
+            var compiledModel = compilation.Model as MutableModel;
             Console.WriteLine(compiledModel);
             using (StreamWriter writer = new StreamWriter("Model.txt"))
             {
@@ -185,10 +185,10 @@ namespace MetaDslx.Bootstrap
                 Console.WriteLine(formatter.Format(diag));
             }
 
-            var boundTree = compilation.GetBoundTree(tree);
+            /*var boundTree = compilation.GetBoundTree(tree);
             Console.WriteLine(boundTree);
             var boundRoot = boundTree.GetBoundRoot();
-            File.WriteAllText("BoundTree.txt", boundRoot.Dump());
+            File.WriteAllText("BoundTree.txt", boundRoot.Dump());*/
 
             //*/
 
@@ -340,7 +340,7 @@ namespace MetaDslx.Bootstrap
 
             //*/
 
-            //*/
+            /*/
             ImmutableModel coreModel = MetaCompilerInstance.MModel;
             Console.WriteLine(coreModel);
 
@@ -392,7 +392,7 @@ namespace MetaDslx.Bootstrap
 
             //*/
 
-            //*/
+            /*/
             SymbolGenerator sgen = new SymbolGenerator(compiledModel.Objects);
             var outputPath = @"..\..\..\..\..\Main\MetaDslx.CodeAnalysis.Meta\CodeAnalysis\Symbols2";
             File.WriteAllText(Path.Combine(outputPath, "Symbols.Generated.cs"), sgen.GenerateSymbols());

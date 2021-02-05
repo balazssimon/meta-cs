@@ -35,7 +35,7 @@ namespace MetaDslx.Languages.Meta.Symbols
             }
         }
 
-        public ImmutableDictionary<string, Symbol> Annotations
+        /*public ImmutableDictionary<string, Symbol> Annotations
         {
             get
             {
@@ -51,7 +51,7 @@ namespace MetaDslx.Languages.Meta.Symbols
                 }
                 return _annotations;
             }
-        }
+        }*/
 
         private static ImmutableModel CreateModel()
         {

@@ -42,6 +42,16 @@ namespace MetaDslx.CodeAnalysis.Symbols
             throw new NotImplementedException();
         }
 
+        public override object GetProperty(Type modelObjectType, string propertyName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override object GetProperty(object modelObject, string propertyName)
+        {
+            throw new NotImplementedException();
+        }
+
         public override IEnumerable<object> GetPropertyValues(object modelObject, object property)
         {
             throw new NotImplementedException();
@@ -58,6 +68,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
         }
 
         public override string GetSymbolProperty(Type modelObjectType, object property)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool IsContainmentProperty(object property)
         {
             throw new NotImplementedException();
         }

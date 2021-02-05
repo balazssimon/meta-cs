@@ -25,13 +25,11 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             _lazyValue = new Lazy<object>(this.ComputeValue, true);
         }
 
-        public object Value => _lazyValue.Value;
-
-        public IEnumerable<object> Values => ImmutableArray.Create(this.Value);
+        public virtual ImmutableArray<object> Values => ImmutableArray.Create(_lazyValue.Value);
 
         protected virtual object ComputeValue()
         {
-            throw ExceptionUtilities.Unreachable;
+            return Language.SyntaxFacts.ExtractValue(this.Syntax);
         }
 
     }

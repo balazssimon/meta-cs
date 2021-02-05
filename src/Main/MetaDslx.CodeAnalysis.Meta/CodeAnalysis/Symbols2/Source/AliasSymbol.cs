@@ -133,6 +133,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             }
         }
 
+        public override ImmutableArray<Symbol> ChildSymbols => ImmutableArray<Symbol>.Empty;
+
         /// <summary>
         /// Gets the <see cref="NamespaceOrTypeSymbol"/> for the
         /// namespace or type referenced by the alias.

@@ -13,7 +13,7 @@ using MetaDslx.Languages.Meta.Model;
 
 namespace MetaDslx.Languages.Meta.Symbols
 {
-    public class MetaSymbolFacts : SymbolFacts
+    public class MetaSymbolFacts : MetaDslx.CodeAnalysis.Symbols.Metadata.MetaSymbolFacts
     {
     }
 }

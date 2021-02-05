@@ -32,6 +32,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             _metadataLocation = ImmutableArray.Create<MetadataLocation>(new MetadataLocation(this));
         }
 
+        public override Language Language => _owningAssembly.Language;
+
         public virtual object Model => _model;
 
         public object ModelObject => null;

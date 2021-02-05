@@ -38,6 +38,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         private NamespaceSymbol _globalNamespace;
 
         private bool _hasBadAttributes;
+        private object _model;
 
         internal SourceModuleSymbol(
             SourceAssemblySymbol assemblySymbol,
@@ -54,7 +55,17 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             _state = CompletionState.Create(assemblySymbol.Language);
         }
 
-        public override object Model => DeclaringCompilation.Model;
+        public override object Model
+        {
+            get
+            {
+                if (_model == null)
+                {
+                    Interlocked.CompareExchange(ref _model, DeclaringCompilation.ObjectFactory.Model, null);
+                }
+                return _model;
+            }
+        }
 
         public override Language Language => _assemblySymbol.Language;
 

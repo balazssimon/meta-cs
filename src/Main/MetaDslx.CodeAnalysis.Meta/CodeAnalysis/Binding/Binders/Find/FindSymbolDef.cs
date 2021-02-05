@@ -19,5 +19,10 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders.Find
         {
             return binder.DefinedSymbol == _symbol;
         }
+
+        public override bool IsSearchBoundary(Binder binder)
+        {
+            return Results.Count > 0;
+        }
     }
 }

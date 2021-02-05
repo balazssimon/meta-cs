@@ -88,16 +88,6 @@ namespace MetaDslx.Languages.Meta
             return new MetaBinderFactoryVisitor(binderFactory);
         }
 
-        public override BoundNodeFactoryVisitor CreateBoundNodeFactoryVisitor(BoundTree boundTree)
-        {
-            return new MetaBoundNodeFactoryVisitor(boundTree);
-        }
-
-		public override IsBindableNodeVisitor CreateIsBindableNodeVisitor(BoundTree boundTree)
-        {
-            return new MetaIsBindableNodeVisitor(boundTree);
-        }
-
         public override RootSingleDeclaration CreateDeclarationTree(LanguageSyntaxTree syntaxTree, string scriptClassName, bool isSubmission)
         {
             return MetaDeclarationTreeBuilderVisitor.ForTree((MetaSyntaxTree)syntaxTree, scriptClassName, isSubmission);

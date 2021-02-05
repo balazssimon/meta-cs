@@ -12,6 +12,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 {
     public interface IModelSourceSymbol : IModelSymbol
     {
-        BinderPosition GetBinder(SyntaxReference syntax);
+        BinderPosition<SymbolDefBinder> GetBinder(SyntaxReference syntax);
+        Symbol GetChildSymbol(SyntaxReference syntax);
     }
 }

@@ -18,6 +18,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             _modelObject = modelObject;
         }
 
+        public override ImmutableArray<Symbol> ChildSymbols => ImmutableArray<Symbol>.Empty;
+
         public object ModelObject => _modelObject;
 
         public override LanguageSymbolKind Kind => LanguageSymbolKind.ErrorType;

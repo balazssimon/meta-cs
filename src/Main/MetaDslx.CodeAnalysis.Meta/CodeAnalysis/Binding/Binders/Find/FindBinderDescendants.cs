@@ -7,10 +7,11 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Binding
 {
-    public class FindBinderDescendants<T> : IBinderSearch<T>
+    public abstract class FindBinderDescendants<T> : IBinderSearch<T>
         where T : Binder
     {
         private BinderPosition _origin;
+        private ArrayBuilder<BinderPosition<T>> _results;
 
         public FindBinderDescendants(BinderPosition origin)
         {
@@ -18,6 +19,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         }
 
         public BinderPosition Origin => _origin;
+        protected ArrayBuilder<BinderPosition<T>> Results => _results;
 
         public BinderPosition<T> FindOne(bool includeSelf = false)
         {
@@ -28,31 +30,29 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         public ImmutableArray<BinderPosition<T>> FindAll(bool includeSelf = false)
         {
-            var results = new ArrayBuilder<BinderPosition<T>>();
+            _results = new ArrayBuilder<BinderPosition<T>>();
             var walker = new BinderTreeWalker(_origin);
             var skipMove = includeSelf;
             while (true)
             {
-                if (!skipMove && !walker.MoveToNextDescendant()) break;
+                if (!skipMove)
+                {
+                    if (!walker.MoveToNextDescendant()) break;
+                    skipMove = false;
+                }
                 var current = walker.Binder;
-                if (current is T typedBinder && IsValidBinder(typedBinder)) results.Add(new BinderPosition<T>(typedBinder, walker.LowestBinder, walker.Syntax));
+                if (current is T typedBinder && IsValidBinder(typedBinder)) _results.Add(new BinderPosition<T>(typedBinder, walker.LowestBinder, walker.Syntax));
                 if (IsSearchBoundary(current))
                 {
                     if (!walker.MoveToNextSibling()) break;
                     skipMove = true;
                 }
             }
-            return results.ToImmutableAndFree();
+            return _results.ToImmutableAndFree();
         }
 
-        public virtual bool IsValidBinder(T binder)
-        {
-            return false;
-        }
+        public abstract bool IsValidBinder(T binder);
 
-        public virtual bool IsSearchBoundary(Binder binder)
-        {
-            return false;
-        }
+        public abstract bool IsSearchBoundary(Binder binder);
     }
 }
