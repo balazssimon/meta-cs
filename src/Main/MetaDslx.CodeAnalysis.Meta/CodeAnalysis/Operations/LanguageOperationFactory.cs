@@ -31,7 +31,7 @@ namespace MetaDslx.CodeAnalysis.Operations
 
         public IOperation Create(BoundNode boundNode)
         {
-            if (boundNode.Symbol == null)
+            if (boundNode == null)
             {
                 return null;
             }

@@ -26,6 +26,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         private readonly LanguageCompilation _compilation;
         private readonly SyntaxNodeOrToken _syntax;
         private readonly Binder _next;
+        private Lazy<BoundNode> _boundNode;
 
         public readonly BinderFlags Flags;
 
@@ -37,6 +38,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             Debug.Assert(compilation != null);
             this.Flags = compilation.Options.TopLevelBinderFlags;
             _compilation = compilation;
+            _boundNode = new Lazy<BoundNode>(GetOrCreateBoundNode, true);
         }
 
         public Binder(SyntaxNodeOrToken syntax, Binder next, Conversions conversions = null)
@@ -47,6 +49,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             this.Flags = next.Flags;
             _compilation = next._compilation;
             _lazyConversions = conversions;
+            _boundNode = new Lazy<BoundNode>(GetOrCreateBoundNode, true);
         }
 
         private Binder(Binder next, BinderFlags flags)
@@ -56,6 +59,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             _syntax = next._syntax;
             this.Flags = flags;
             _compilation = next._compilation;
+            _boundNode = new Lazy<BoundNode>(GetOrCreateBoundNode, true);
         }
 
         public LanguageCompilation Compilation => _compilation;
@@ -89,12 +93,33 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// </summary>
         public Binder Next => _next;
 
+        public BoundNode ContainingBoundNode => Next?.BoundNode ?? _compilation.GetBoundTree(Syntax)?.RootNode;
+
+        public BoundNode BoundNode => _boundNode.Value;
+
         /// <summary>
         /// Some nodes have special binders for their contents (like Blocks)
         /// </summary>
         public virtual Binder GetBinder(SyntaxNodeOrToken node)
         {
             return this.Next.GetBinder(node);
+        }
+
+        private BoundNode GetOrCreateBoundNode()
+        {
+            var parent = this.ContainingBoundNode;
+            var result = parent?.GetChild(this.Syntax);
+            if (result == null)
+            {
+                result = CreateBoundNode();
+                if (parent != null && result != null) parent.TryAddChild(this.Syntax, result);
+            }
+            return result;
+        }
+
+        protected virtual BoundNode CreateBoundNode()
+        {
+            return null;
         }
 
         /// <summary>
@@ -491,9 +516,10 @@ namespace MetaDslx.CodeAnalysis.Binding
             }
         }
 
-        public virtual BoundNode Bind(SyntaxNodeOrToken node, BoundTree boundTree)
+        public virtual BoundNode Bind(SyntaxNodeOrToken node)
         {
-            return default;
+            if (node == this.Syntax) return this.BoundNode;
+            else return null;
         }
 
 

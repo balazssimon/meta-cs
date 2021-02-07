@@ -61,7 +61,7 @@ namespace MetaDslx.CodeAnalysis
             _parentSemanticModelOpt = parentSemanticModelOpt;
             _speculatedPosition = speculatedPosition;
 
-            _boundTree = new BoundTree(this.Compilation, root, rootBinder, _ignoredDiagnostics);
+            _boundTree = new BoundTree(this.Compilation, root, rootBinder);
 
             _operationFactory = new Lazy<LanguageOperationFactory>(() => new LanguageOperationFactory(this));
         }
@@ -78,7 +78,7 @@ namespace MetaDslx.CodeAnalysis
         {
             get
             {
-                return _boundTree.Root;
+                return (LanguageSyntaxNode)_boundTree.RootSyntax.NodeOrParent;
             }
         }
 
@@ -152,7 +152,7 @@ namespace MetaDslx.CodeAnalysis
         private Binder GetEnclosingBinderInternalWithinRoot(SyntaxNode node, int position)
         {
             AssertPositionAdjusted(position);
-            return BoundTree.GetEnclosingBinderInternalWithinRoot(node, position, RootBinder, _boundTree.Root).WithAdditionalFlags(GetSemanticModelBinderFlags());
+            return BoundTree.GetEnclosingBinderInternalWithinRoot(node, position, RootBinder, _boundTree.RootSyntax).WithAdditionalFlags(GetSemanticModelBinderFlags());
         }
 
         public override Conversion ClassifyConversion(
@@ -181,7 +181,7 @@ namespace MetaDslx.CodeAnalysis
             var binder = this.GetEnclosingBinderInternal(expression, GetAdjustedNodePosition(expression));
             LanguageSyntaxNode bindableNode = this.GetBindableSyntaxNode(expression);
             var boundExpression = this.GetLowerBoundNode(bindableNode);
-            if (binder == null || boundExpression.Symbol == null)
+            if (binder == null || boundExpression == null)
             {
                 return Conversion.NoConversion;
             }
@@ -204,7 +204,7 @@ namespace MetaDslx.CodeAnalysis
             var binder = this.GetEnclosingBinderInternal(expression, GetAdjustedNodePosition(expression));
             LanguageSyntaxNode bindableNode = this.GetBindableSyntaxNode(expression);
             var boundExpression = this.GetLowerBoundNode(bindableNode);
-            if (binder == null || boundExpression.Symbol == null)
+            if (binder == null || boundExpression == null)
             {
                 return Conversion.NoConversion;
             }
@@ -360,7 +360,7 @@ namespace MetaDslx.CodeAnalysis
         // statement, back up until we find one.
         private LanguageSyntaxNode GetBindingRoot(LanguageSyntaxNode node)
         {
-            return _boundTree.GetBindingRoot(node);
+            return (LanguageSyntaxNode)_boundTree.GetBindingRoot(node).NodeOrParent;
         }
 
         // We want the binder in which this syntax node is going to be bound, NOT the binder which
@@ -409,7 +409,7 @@ namespace MetaDslx.CodeAnalysis
         // some nodes don't have direct semantic meaning by themselves and so we need to bind a different node that does
         internal protected virtual LanguageSyntaxNode GetBindableSyntaxNode(LanguageSyntaxNode node)
         {
-            return _boundTree.GetBindableSyntaxNode(node);
+            return (LanguageSyntaxNode)_boundTree.GetBindableSyntaxNode(node).NodeOrParent;
         }
 
         /// <summary>
@@ -418,7 +418,7 @@ namespace MetaDslx.CodeAnalysis
         /// </summary>
         protected LanguageSyntaxNode GetBindableParentNode(LanguageSyntaxNode node)
         {
-            return _boundTree.GetBindableParentNode(node, this.IsSpeculativeSemanticModel);
+            return (LanguageSyntaxNode)_boundTree.GetBindableParentNode(node, this.IsSpeculativeSemanticModel).NodeOrParent;
         }
 
     }

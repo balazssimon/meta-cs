@@ -16,6 +16,7 @@ using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Symbols.Source;
 using MetaDslx.CodeAnalysis.Syntax;
+using MetaDslx.CodeAnalysis.Binding.BoundNodes;
 
 namespace MetaDslx.CodeAnalysis
 {
@@ -1262,9 +1263,9 @@ namespace MetaDslx.CodeAnalysis
             var binder = this.GetEnclosingBinder(position);
             if (binder != null)
             {
-                var bnode = binder.Bind(expression, BoundTree);
+                var bnode = binder.Bind(expression) as BoundSymbol;
 
-                if (bnode.Symbol != null && !cdestination.IsErrorType())
+                if (bnode != null && !cdestination.IsErrorType())
                 {
                     HashSet<DiagnosticInfo> useSiteDiagnostics = null;
                     return binder.Conversions.ClassifyConversionFromExpression(bnode, cdestination, ref useSiteDiagnostics);
@@ -1313,9 +1314,9 @@ namespace MetaDslx.CodeAnalysis
             var binder = this.GetEnclosingBinder(position);
             if (binder != null)
             {
-                var bnode = binder.Bind(expression, BoundTree);
+                var bnode = binder.Bind(expression) as BoundSymbol;
 
-                if (bnode.Symbol != null && !destination.IsErrorType())
+                if (bnode != null && !destination.IsErrorType())
                 {
                     HashSet<DiagnosticInfo> useSiteDiagnostics = null;
                     return binder.Conversions.ClassifyConversionFromExpression(bnode, destination, ref useSiteDiagnostics, forCast: true);
@@ -1484,10 +1485,10 @@ namespace MetaDslx.CodeAnalysis
         {
             if (node == null) throw new ArgumentNullException(nameof(node));
             var syntaxNode = (LanguageSyntaxNode)node;
-            var boundNode = this.Compilation.GetBinder(syntaxNode).Bind(syntaxNode, BoundTree);
-            if (boundNode.Symbol != null)
+            var boundNode = this.Compilation.GetBinder(syntaxNode).Bind(syntaxNode) as BoundSymbol;
+            if (boundNode != null)
             {
-                return new SymbolInfo(boundNode.Symbol);
+                return new SymbolInfo(boundNode.Symbols.Cast<Symbol, ISymbol>(), boundNode.CandidateReason);
             }
             return SymbolInfo.None;
         }
@@ -1496,8 +1497,8 @@ namespace MetaDslx.CodeAnalysis
         {
             if (node == null) throw new ArgumentNullException(nameof(node));
             var syntaxNode = (LanguageSyntaxNode)node;
-            var boundNode = this.Compilation.GetBinder(syntaxNode).Bind(syntaxNode, BoundTree);
-            if (boundNode.Symbol is TypeSymbol typeSymbol)
+            var boundNode = this.Compilation.GetBinder(syntaxNode).Bind(syntaxNode) as BoundSymbol;
+            if (boundNode?.Symbols.FirstOrDefault() is TypeSymbol typeSymbol)
             {
                 return new LanguageTypeInfo(typeSymbol, typeSymbol, Conversion.NoConversion);
             }

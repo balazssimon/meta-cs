@@ -37,9 +37,9 @@ namespace MetaDslx.CodeAnalysis.FlowAnalysis
             this.FirstInRegion = firstInRegion;
             this.LastInRegion = lastInRegion;
             this.Failed =
-                boundNode.Symbol == null ||
-                firstInRegion.Symbol == null ||
-                lastInRegion.Symbol == null ||
+                boundNode == null ||
+                firstInRegion == null ||
+                lastInRegion == null ||
                 firstInRegion.Syntax.SpanStart > lastInRegion.Syntax.Span.End;
 
             if (!this.Failed && ReferenceEquals(firstInRegion, lastInRegion))

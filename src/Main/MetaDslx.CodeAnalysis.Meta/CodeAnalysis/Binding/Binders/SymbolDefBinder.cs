@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading;
 using Roslyn.Utilities;
 using MetaDslx.CodeAnalysis.Binding.Binders.Find;
+using MetaDslx.CodeAnalysis.Binding.BoundNodes;
 
 namespace MetaDslx.CodeAnalysis.Binding.Binders
 {
@@ -29,28 +30,17 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
 
         public Type ModelObjectType => _type;
 
-        public Symbol DefinedSymbol
+        protected override BoundNode CreateBoundNode()
         {
-            get
-            {
-                if (_definedSymbol == null)
-                {
-                    var symbol = SourceSymbol.GetInnermostNestedDeclaredSymbol(this.Syntax, this.ContainingDeclaration);
-                    Interlocked.CompareExchange(ref _definedSymbol, symbol, null);
-                }
-                return _definedSymbol;
-            }
+            var symbol = SourceSymbol.GetInnermostNestedDeclaredSymbol(this.Syntax, this.ContainingDeclaration);
+            return new BoundSymbol(this.Syntax, this.ContainingBoundNode, ImmutableArray.Create<Symbol>(symbol), CandidateReason.None);
         }
 
-        public override ImmutableArray<object> Values
-        {
-            get
-            {
-                if (DefinedSymbol != null) return ImmutableArray.Create<object>(DefinedSymbol);
-                else return ImmutableArray<object>.Empty; 
-            }
+        public ImmutableArray<Symbol> DefinedSymbols => ((BoundSymbol)this.BoundNode).Symbols;
 
-        }
+        public Symbol DefinedSymbol => DefinedSymbols.FirstOrDefault();
+
+        public override ImmutableArray<object> Values => DefinedSymbols.Cast<Symbol, object>();
 
         public override Symbol GetDefinedSymbol()
         {

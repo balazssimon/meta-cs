@@ -20,15 +20,17 @@ namespace MetaDslx.CodeAnalysis.Binding
     {
         private readonly LanguageCompilation _compilation;
         private readonly LanguageSyntaxTree _syntaxTree;
-        private readonly SyntaxNodeOrToken _root;
+        private readonly SyntaxNodeOrToken _rootSyntax;
+        private readonly BoundNode _rootNode;
         private readonly Binder _rootBinder;
 
-        public BoundTree(LanguageCompilation compilation, SyntaxNodeOrToken root, Binder rootBinder, DiagnosticBag diagnostics)
+        public BoundTree(LanguageCompilation compilation, SyntaxNodeOrToken rootSyntax, Binder rootBinder)
         {
             _compilation = compilation;
-            _syntaxTree = (LanguageSyntaxTree)root.SyntaxTree;
-            _root = root;
-            _rootBinder = rootBinder;
+            _syntaxTree = (LanguageSyntaxTree)rootSyntax.SyntaxTree;
+            _rootSyntax = rootSyntax;
+            _rootNode = new BoundNode(this);
+            _rootBinder = new BoundTreeRootBinder(rootSyntax, rootBinder, _rootNode);
         }
 
         public Language Language => _compilation.Language;
@@ -39,11 +41,13 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         public bool InScript => _syntaxTree.Options.Kind == SourceCodeKind.Script;
 
-        public virtual LanguageSyntaxNode Root => _syntaxTree.GetRootNode();
+        public SyntaxNodeOrToken RootSyntax => _rootSyntax;
+
+        public BoundNode RootNode => _rootNode;
 
         protected SyntaxFacts SyntaxFacts => _compilation.Language.SyntaxFacts;
 
-        internal bool IsInTree(SyntaxNode node)
+        internal bool IsInTree(SyntaxNodeOrToken node)
         {
             return node.SyntaxTree == this.SyntaxTree;
         }
@@ -66,13 +70,13 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         internal protected int CheckAndAdjustPosition(int position, out SyntaxToken token)
         {
-            int fullStart = this.Root.Position;
-            int fullEnd = this.Root.FullSpan.End;
+            int fullStart = this.RootSyntax.Position;
+            int fullEnd = this.RootSyntax.FullSpan.End;
             bool atEOF = position == fullEnd && position == this.SyntaxTree.GetRoot().FullSpan.End;
 
             if ((fullStart <= position && position < fullEnd) || atEOF) // allow for EOF
             {
-                token = (atEOF ? (LanguageSyntaxNode)this.SyntaxTree.GetRoot() : Root).FindToken(position);
+                token = ((LanguageSyntaxNode)(atEOF ?this.SyntaxTree.GetRoot() : RootSyntax.NodeOrParent)).FindToken(position);
 
                 if (position < token.SpanStart) // NB: Span, not FullSpan
                 {
@@ -95,22 +99,22 @@ namespace MetaDslx.CodeAnalysis.Binding
             }
 
             throw new ArgumentOutOfRangeException(nameof(position), position,
-                string.Format(CSharpResources.PositionIsNotWithinSyntax, Root.FullSpan));
+                string.Format(CSharpResources.PositionIsNotWithinSyntax, RootSyntax.FullSpan));
         }
 
         /// <summary>
         /// A convenience method that determines a position from a node.  If the node is missing,
         /// then its position will be adjusted using CheckAndAdjustPosition.
         /// </summary>
-        internal protected int GetAdjustedNodePosition(SyntaxNode node)
+        internal protected int GetAdjustedNodePosition(SyntaxNodeOrToken node)
         {
             Debug.Assert(IsInTree(node));
 
-            var fullSpan = this.Root.FullSpan;
+            var fullSpan = this.RootSyntax.FullSpan;
             var position = node.SpanStart;
 
             // skip zero-width tokens to get the position, but never get past the end of the node
-            int betterPosition = node.GetFirstToken(includeZeroWidth: false).SpanStart;
+            int betterPosition = node.NodeOrParent.GetFirstToken(includeZeroWidth: false).SpanStart;
             if (betterPosition < node.Span.End)
             {
                 position = betterPosition;
@@ -131,7 +135,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                 // check and adjust the preceding position.
                 return CheckAndAdjustPosition(position - 1);
             }
-            else if (node.IsMissing || node.HasErrors || node.Width == 0 || node.IsPartOfStructuredTrivia())
+            else if (node.IsMissing || node.NodeOrParent.HasErrors || node.Width == 0 || node.NodeOrParent.IsPartOfStructuredTrivia())
             {
                 return CheckAndAdjustPosition(position);
             }
@@ -148,7 +152,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             Debug.Assert(position == CheckAndAdjustPosition(position), "Expected adjusted position");
         }
 
-        internal protected void CheckSyntaxNode(LanguageSyntaxNode syntax)
+        internal protected void CheckSyntaxNode(SyntaxNodeOrToken syntax)
         {
             if (syntax == null)
             {
@@ -169,17 +173,17 @@ namespace MetaDslx.CodeAnalysis.Binding
         public Binder GetEnclosingBinderWithinRoot(SyntaxNode node, int position)
         {
             AssertPositionAdjusted(position);
-            return GetEnclosingBinderInternalWithinRoot(node, position, _rootBinder, this.Root);
+            return GetEnclosingBinderInternalWithinRoot(node, position, _rootBinder, this.RootSyntax);
         }
 
-        internal static Binder GetEnclosingBinderInternalWithinRoot(SyntaxNode node, int position, Binder rootBinder, SyntaxNode root)
+        internal static Binder GetEnclosingBinderInternalWithinRoot(SyntaxNode node, int position, Binder rootBinder, SyntaxNodeOrToken root)
         {
             if (node == root)
             {
                 return rootBinder.GetBinder(node) ?? rootBinder;
             }
 
-            Debug.Assert(root.Contains(node));
+            Debug.Assert(root.NodeOrParent.Contains(node));
 
             Binder binder = null;
             for (var current = node; binder == null; current = current.ParentOrStructuredTriviaParent)
@@ -204,39 +208,41 @@ namespace MetaDslx.CodeAnalysis.Binding
         public virtual BoundNode GetBoundRoot()
         {
             // TODO:MetaDslx
-            return _rootBinder.Bind(_root, this);
+            return _rootBinder.Bind(_rootSyntax);
         }
 
         // We might not have actually been given a bindable expression or statement; the caller can
         // give us variable declaration nodes, for example. If we're not at an expression or
         // statement, back up until we find one.
-        public LanguageSyntaxNode GetBindingRoot(LanguageSyntaxNode node)
+        public SyntaxNodeOrToken GetBindingRoot(SyntaxNodeOrToken node)
         {
             Debug.Assert(node != null);
             // TODO:MetaDslx
-            return node ?? this.Root;
+            if (node == null) return this.RootSyntax;
+            else return node;
         }
 
 
         // some nodes don't have direct semantic meaning by themselves and so we need to bind a different node that does
-        internal protected LanguageSyntaxNode GetBindableSyntaxNode(LanguageSyntaxNode node)
+        internal protected SyntaxNodeOrToken GetBindableSyntaxNode(SyntaxNodeOrToken node)
         {
             Debug.Assert(node != null);
             // TODO:MetaDslx
-            return node ?? this.Root;
+            if (node == null) return this.RootSyntax;
+            else return node;
         }
 
         /// <summary>
         /// Return the nearest parent node with semantic meaning.
         /// </summary>
-        internal protected LanguageSyntaxNode GetBindableParentNode(LanguageSyntaxNode node, bool allowNullParent = false)
+        internal protected SyntaxNodeOrToken GetBindableParentNode(SyntaxNodeOrToken node, bool allowNullParent = false)
         {
             // The node is an expression, but its parent is null
-            LanguageSyntaxNode parent = node.Parent;
+            LanguageSyntaxNode parent = (LanguageSyntaxNode)node.NodeOrParent;
             if (parent == null)
             {
                 // For speculative model, expression might be the root of the syntax tree, in which case it can have a null parent.
-                if (allowNullParent && this.Root == node)
+                if (allowNullParent && this.RootSyntax == node)
                 {
                     return null;
                 }
@@ -264,10 +270,10 @@ namespace MetaDslx.CodeAnalysis.Binding
 
             // If we have a root binder with no tokens in it, position can be outside the span event
             // after position is adjusted. If this happens, there can't be any 
-            if (!this.Root.FullSpan.Contains(position))
+            if (!this.RootSyntax.FullSpan.Contains(position))
                 return _rootBinder;
 
-            SyntaxToken token = this.Root.FindToken(position);
+            SyntaxToken token = this.RootSyntax.NodeOrParent.FindToken(position);
             LanguageSyntaxNode node = (LanguageSyntaxNode)token.Parent;
 
             return GetEnclosingBinderInternal(node, position);

@@ -39,7 +39,6 @@ namespace MetaDslx.CodeAnalysis
         private readonly BinderFactory _binderFactory;
         private Func<LanguageSyntaxNode, MemberSemanticModel> _createMemberModelFunction;
         private readonly bool _ignoresAccessibility;
-        private readonly DiagnosticBag _ignoredDiagnostics = new DiagnosticBag();
 
         internal SyntaxTreeSemanticModel(LanguageCompilation compilation, LanguageSyntaxTree syntaxTree, bool ignoreAccessibility = false)
         {
@@ -52,7 +51,7 @@ namespace MetaDslx.CodeAnalysis
             }
 
             var rootNode = syntaxTree.GetRootNode();
-            _boundTree = new BoundTree(compilation, rootNode, compilation.GetBinder(rootNode), _ignoredDiagnostics);
+            _boundTree = new BoundTree(compilation, rootNode, compilation.GetBinder(rootNode));
 
             _binderFactory = compilation.GetBinderFactory(SyntaxTree);
         }
@@ -61,7 +60,7 @@ namespace MetaDslx.CodeAnalysis
         {
             _compilation = parentCompilation;
             var rootNode = speculatedSyntaxTree.GetRootNode();
-            _boundTree = new BoundTree(parentCompilation, rootNode, parentCompilation.GetBinder(rootNode), _ignoredDiagnostics);
+            _boundTree = new BoundTree(parentCompilation, rootNode, parentCompilation.GetBinder(rootNode));
             _binderFactory = _compilation.GetBinderFactory(parentSyntaxTree);
         }
 
@@ -85,7 +84,7 @@ namespace MetaDslx.CodeAnalysis
         {
             get
             {
-                return _boundTree.Root;
+                return (LanguageSyntaxNode)_boundTree.RootSyntax.NodeOrParent;
             }
         }
 
@@ -236,7 +235,7 @@ namespace MetaDslx.CodeAnalysis
                         // will be one in the binder chain and one isn't necessarily required for the batch case.
                         binder = new LocalScopeBinder(node, binder);
 
-                        BoundNode bound = binder.Bind(node, _boundTree);
+                        BoundNode bound = binder.Bind(node);
 
                         SymbolInfo info = GetSymbolInfoForNode(options, ImmutableArray.Create(bound), boundNodeForSyntacticParent: default, binderOpt: null);
                         if ((object)info.Symbol != null)
@@ -785,7 +784,7 @@ namespace MetaDslx.CodeAnalysis
                 // Recover from error cases
                 // TODO:MetaDslx
                 //var node = new BoundBadStatement(BoundTree, ImmutableArray<object>.Empty, expression, hasErrors: true);
-                var node = new BoundNode(null, expression);
+                BoundNode node = null;
                 return new RegionAnalysisContext(Compilation, null, node, node, node);
             }
 
@@ -804,7 +803,7 @@ namespace MetaDslx.CodeAnalysis
                 // Recover from error cases
                 // TODO:MetaDslx
                 // var node = new BoundBadStatement(BoundTree, ImmutableArray<object>.Empty, firstStatement, hasErrors: true);
-                var node = new BoundNode(null, firstStatement);
+                BoundNode node = null;
                 return new RegionAnalysisContext(Compilation, null, node, node, node);
             }
 

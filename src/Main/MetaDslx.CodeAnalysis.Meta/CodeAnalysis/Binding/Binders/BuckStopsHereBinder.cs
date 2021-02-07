@@ -16,10 +16,13 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
     /// </summary>
     public class BuckStopsHereBinder : Binder
     {
+
         public BuckStopsHereBinder(LanguageCompilation compilation)
             : base(compilation)
         {
         }
+
+
 
         public override ImportChain ImportChain
         {

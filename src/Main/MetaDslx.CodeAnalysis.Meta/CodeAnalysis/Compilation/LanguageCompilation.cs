@@ -1761,6 +1761,60 @@ namespace MetaDslx.CodeAnalysis
             return GetBinderFactory(syntax.SyntaxTree).GetBinder(syntax);
         }
 
+
+        // Bound trees containing computed semantic information.
+        // We store them using weak references so that GC pressure will cause them to be recycled.
+        private WeakReference<BoundTree>[] _boundTrees;
+
+        public BoundTree GetBoundTree(SyntaxTree syntaxTree)
+        {
+            if (syntaxTree == null) return null;
+            var treeNum = GetSyntaxTreeOrdinal(syntaxTree);
+            var boundTrees = _boundTrees;
+            if (boundTrees == null)
+            {
+                boundTrees = new WeakReference<BoundTree>[this.SyntaxTrees.Length];
+                boundTrees = Interlocked.CompareExchange(ref _boundTrees, boundTrees, null) ?? boundTrees;
+            }
+
+            BoundTree previousBoundTree;
+            var previousWeakReference = boundTrees[treeNum];
+            if (previousWeakReference != null && previousWeakReference.TryGetTarget(out previousBoundTree))
+            {
+                return previousBoundTree;
+            }
+
+            return AddNewBoundTree((LanguageSyntaxTree)syntaxTree, ref boundTrees[treeNum]);
+        }
+
+        internal BoundTree GetBoundTree(SyntaxNodeOrToken syntax)
+        {
+            if (syntax == null || syntax.SyntaxTree == null) return null;
+            var boundTree = GetBoundTree(syntax.SyntaxTree);
+            return boundTree.GetEnclosingBoundTree(syntax);
+        }
+
+        private BoundTree AddNewBoundTree(LanguageSyntaxTree syntaxTree, ref WeakReference<BoundTree> slot)
+        {
+            var newBoundTree = new BoundTree(this, syntaxTree.GetRoot(), GetBinder(syntaxTree.GetRootNode()));
+            var newWeakReference = new WeakReference<BoundTree>(newBoundTree);
+
+            while (true)
+            {
+                BoundTree previousBoundTree;
+                WeakReference<BoundTree> previousWeakReference = slot;
+                if (previousWeakReference != null && previousWeakReference.TryGetTarget(out previousBoundTree))
+                {
+                    return previousBoundTree;
+                }
+
+                if (Interlocked.CompareExchange(ref slot, newWeakReference, previousWeakReference) == previousWeakReference)
+                {
+                    return newBoundTree;
+                }
+            }
+        }
+
         /// <summary>
         /// Returns imported symbols for the given declaration.
         /// </summary>
