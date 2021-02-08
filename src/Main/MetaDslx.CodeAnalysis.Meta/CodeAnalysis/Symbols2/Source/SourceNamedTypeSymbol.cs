@@ -32,6 +32,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         private ImmutableArray<NamedTypeSymbol> _lazyDeclaredBases;
         private ImmutableArray<NamedTypeSymbol> _lazyBaseTypes;
         private ImmutableArray<Symbol> _childSymbols;
+        private DiagnosticBag _diagnostics;
         public SourceNamedTypeSymbol(
             Symbol containingSymbol,
             object modelObject,
@@ -49,6 +50,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         public override MergedDeclaration MergedDeclaration => _declaration;
 
         public override ImmutableArray<Symbol> ChildSymbols => _childSymbols;
+
+        public ImmutableArray<Diagnostic> Diagnostics => _diagnostics != null ? _diagnostics.ToReadOnly() : ImmutableArray<Diagnostic>.Empty;
 
         public virtual bool IsPartial => _declaration.Merge;
 
@@ -217,6 +220,17 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 else if (incompletePart == CompletionPart.TypeMembers)
                 {
                     this.SourceDeclaration.GetTypeMembersUnordered();
+                }
+                else if (incompletePart == CompletionPart.StartProperties || incompletePart == CompletionPart.FinishProperties)
+                {
+                    if (_state.NotePartComplete(CompletionPart.StartProperties))
+                    {
+                        var diagnostics = DiagnosticBag.GetInstance();
+                        _source.ComputeObjectProperties(diagnostics);
+                        AddSymbolDiagnostics(diagnostics);
+                        _state.NotePartComplete(CompletionPart.FinishProperties);
+                        diagnostics.Free();
+                    }
                 }
                 else if (incompletePart == CompletionPart.MembersCompleted)
                 {
@@ -435,5 +449,15 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             // TODO: MetaDslx
         }
 
+        private void AddSymbolDiagnostics(DiagnosticBag diagnostics)
+        {
+            if (!diagnostics.IsEmptyWithoutResolution)
+            {
+                LanguageCompilation compilation = this.DeclaringCompilation;
+                Debug.Assert(compilation != null);
+                if (_diagnostics == null) _diagnostics = new DiagnosticBag();
+                _diagnostics.AddRange(diagnostics);
+            }
+        }
     }
 }

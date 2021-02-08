@@ -7,7 +7,7 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
 {
-    public abstract class BoundSymbol : BoundNode
+    public abstract class BoundSymbol : BoundValue
     {
         public BoundSymbol(SyntaxNodeOrToken syntax, BoundNode parent) 
             : base(syntax, parent)
@@ -15,5 +15,7 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
         }
 
         public abstract ImmutableArray<Symbol> Symbols { get; }
+
+        public override ImmutableArray<object> Values => this.Symbols.Cast<Symbol, object>();
     }
 }

@@ -1,11 +1,13 @@
 ﻿using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Binding.Binders;
+using MetaDslx.CodeAnalysis.Binding.BoundNodes;
 using MetaDslx.CodeAnalysis.Declarations;
 using MetaDslx.CodeAnalysis.Symbols.Metadata;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
 using Microsoft.CodeAnalysis.Text;
+using Roslyn.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -37,6 +39,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         public SymbolFactory SymbolFactory => ((IModelSymbol)_symbol).SymbolFactory;
 
         public Type ModelObjectType => ((IModelSymbol)_symbol).ModelObjectType;
+
+        public ImmutableArray<Diagnostic> Diagnostics => throw ExceptionUtilities.Unreachable;
 
         public BinderPosition<SymbolDefBinder> GetBinder(SyntaxReference reference)
         {
@@ -350,6 +354,72 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
             return null;
         }
+
+        public ImmutableArray<Symbol> ComputeObjectProperties(DiagnosticBag diagnostics)
+        {
+            Debug.Assert(_symbol.ContainingSymbol is IModelSourceSymbol);
+            var result = ArrayBuilder<Symbol>.GetInstance();
+            foreach (var reference in _symbol.DeclaringSyntaxReferences)
+            {
+                ComputeObjectProperties(reference, result, diagnostics);
+            }
+            return result.ToImmutableAndFree();
+        }
+
+        public void ComputeObjectProperties(SyntaxReference symbolPartReference, ArrayBuilder<Symbol> result, DiagnosticBag diagnostics)
+        {
+            Debug.Assert(_symbol.ContainingSymbol is IModelSourceSymbol);
+            var symbolFacts = SymbolFacts;
+            var symbolFactory = SymbolFactory;
+            var declaredSymbol = _symbol as DeclaredSymbol;
+            var symbolPartSyntax = symbolPartReference.Resolve();
+            var symbolDef = GetBinder(symbolPartReference);
+            var properties = FindPropertyBinders(symbolDef);
+            foreach (var property in properties)
+            {
+                var objectProperty = symbolFacts.GetProperty(ModelObject, property.Binder.PropertyName);
+                var symbolProperty = symbolFacts.GetSymbolProperty(ModelObjectType, objectProperty);
+                var isContainmentProperty = objectProperty != null && symbolFacts.IsContainmentProperty(objectProperty);
+                if (symbolProperty == null && !isContainmentProperty)
+                {
+                    var values = FindValueBinders(property);
+                    foreach (var valueBinder in values)
+                    {
+                        if (objectProperty == null)
+                        {
+                            AssertionDiagnostic(diagnostics, ModelErrorCode.ERR_PropertyDoesNotExist.ToDiagnostic(valueBinder.Syntax.GetLocation(), property.Binder.PropertyName, ModelObject));
+                            continue;
+                        }
+                        var childBinder = valueBinder.Binder as SymbolDefBinder;
+                        if (childBinder != null)
+                        {
+                            var childObject = Compilation.ObjectFactory.CreateObject(childBinder.ModelObjectType);
+                            if (childObject != null)
+                            {
+                                symbolFacts.SetOrAddPropertyValue(ModelObject, objectProperty, childObject, diagnostics);
+                                var childSymbol = symbolFactory.MakeSourceSymbol(_symbol, childObject, null);
+                                if (childSymbol != null) result.Add(childSymbol);
+                                Debug.Assert(childSymbol != null);
+                            }
+                            Debug.Assert(childObject != null);
+                        }
+                        else
+                        {
+                            var boundNode = valueBinder.Binder.Bind(valueBinder.Syntax);
+                            if (boundNode is BoundValue boundValue)
+                            {
+                                foreach (var value in boundValue.Values)
+                                {
+                                    symbolFacts.SetOrAddPropertyValue(ModelObject, objectProperty, value, diagnostics);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
 
         /// <summary>
         /// Returns true if the location is within the syntax tree and span.

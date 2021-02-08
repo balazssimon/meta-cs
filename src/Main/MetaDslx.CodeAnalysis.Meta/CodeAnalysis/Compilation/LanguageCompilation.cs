@@ -2175,7 +2175,7 @@ namespace MetaDslx.CodeAnalysis
         {
             throw new NotImplementedException("TODO:MetaDslx");
 
-            /*DiagnosticBag diagnostics = DiagnosticBag.GetInstance();
+            DiagnosticBag diagnostics = DiagnosticBag.GetInstance();
 
             // Report unused directives only if computing diagnostics for the entire tree.
             // Otherwise we cannot determine if a particular directive is used outside of the given sub-span within the tree.
@@ -2184,7 +2184,34 @@ namespace MetaDslx.CodeAnalysis
                 ReportUnusedImports(tree, diagnostics, cancellationToken);
             }
 
-            return diagnostics.ToReadOnlyAndFree();*/
+            var rootSymbol = GlobalNamespace;
+            var queue = new List<Symbol>();
+            queue.Add(rootSymbol);
+            int index = 0;
+            while (index < queue.Count)
+            {
+                var symbol = queue[index];
+                if (symbol is IModelSourceSymbol sourceSymbol)
+                {
+                    foreach (var diagnostic in sourceSymbol.Diagnostics)
+                    {
+                        if (diagnostic.Location.SourceTree == tree && (!span.HasValue || span.Value.IntersectsWith(diagnostic.Location.SourceSpan)))
+                        {
+                            diagnostics.Add(diagnostic);
+                        }
+                    }
+                }
+                foreach (var child in symbol.ChildSymbols)
+                {
+                    if (child.DeclaringSyntaxReferences.Any(sr => sr.SyntaxTree == tree && (!span.HasValue || span.Value.IntersectsWith(sr.Span))))
+                    {
+                        if (!queue.Contains(child)) queue.Add(child);
+                    }
+                }
+                ++index;
+            }
+
+            return diagnostics.ToReadOnlyAndFree();
         }
 
         private ImmutableArray<Diagnostic> GetSourceDeclarationDiagnostics(SyntaxTree syntaxTree = null, TextSpan? filterSpanWithinTree = null, Func<IEnumerable<Diagnostic>, SyntaxTree, TextSpan?, IEnumerable<Diagnostic>> locationFilterOpt = null, CancellationToken cancellationToken = default(CancellationToken))

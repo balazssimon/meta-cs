@@ -670,5 +670,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 compilation.DeclarationDiagnostics.AddRange(diagnostics);
             }
         }
+
     }
 }

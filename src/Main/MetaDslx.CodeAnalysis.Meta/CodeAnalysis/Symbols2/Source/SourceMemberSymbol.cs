@@ -24,6 +24,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         private readonly CompletionState _state;
         private SourceDeclaration _sourceDeclaration;
         private ImmutableArray<Symbol> _childSymbols;
+        private DiagnosticBag _diagnostics;
 
         public SourceMemberSymbol(
             Symbol containingSymbol,
@@ -44,6 +45,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         public override ImmutableArray<Symbol> ChildSymbols => _childSymbols;
 
         public override AssemblySymbol ContainingAssembly => ContainingSymbol.ContainingAssembly;
+
+        public ImmutableArray<Diagnostic> Diagnostics => _diagnostics != null ? _diagnostics.ToReadOnly() : ImmutableArray<Diagnostic>.Empty;
 
         public override bool IsStatic => false;
 
@@ -174,6 +177,17 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 {
                     this.SourceDeclaration.GetMembersByName();
                 }
+                else if (incompletePart == CompletionPart.StartProperties || incompletePart == CompletionPart.FinishProperties)
+                {
+                    if (_state.NotePartComplete(CompletionPart.StartProperties))
+                    {
+                        var diagnostics = DiagnosticBag.GetInstance();
+                        _source.ComputeObjectProperties(diagnostics);
+                        AddSymbolDiagnostics(diagnostics);
+                        _state.NotePartComplete(CompletionPart.FinishProperties);
+                        diagnostics.Free();
+                    }
+                }
                 else if (incompletePart == CompletionPart.MembersCompleted)
                 {
                     // ensure relevant imports are complete.
@@ -261,5 +275,15 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         #endregion
 
+        private void AddSymbolDiagnostics(DiagnosticBag diagnostics)
+        {
+            if (!diagnostics.IsEmptyWithoutResolution)
+            {
+                LanguageCompilation compilation = this.DeclaringCompilation;
+                Debug.Assert(compilation != null);
+                if (_diagnostics == null) _diagnostics = new DiagnosticBag();
+                _diagnostics.AddRange(diagnostics);
+            }
+        }
     }
 }
