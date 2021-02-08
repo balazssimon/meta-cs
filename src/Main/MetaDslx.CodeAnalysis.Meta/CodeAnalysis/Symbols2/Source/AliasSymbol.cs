@@ -50,7 +50,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         private readonly Binder _binder;
 
         private CompletionState _state;
-        private NamespaceOrTypeSymbol _aliasTarget;
+        private DeclaredSymbol _aliasTarget;
         private readonly ImmutableArray<Location> _locations;  // NOTE: can be empty for the "global" alias.
 
         // lazy binding
@@ -58,7 +58,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         private readonly bool _isExtern;
         private DiagnosticBag _aliasTargetDiagnostics;
 
-        private AliasSymbol(Binder binder, NamespaceOrTypeSymbol target, string aliasName, ImmutableArray<Location> locations)
+        private AliasSymbol(Binder binder, DeclaredSymbol target, string aliasName, ImmutableArray<Location> locations)
         {
             _aliasName = aliasName;
             _locations = locations;
@@ -139,7 +139,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         /// Gets the <see cref="NamespaceOrTypeSymbol"/> for the
         /// namespace or type referenced by the alias.
         /// </summary>
-        public NamespaceOrTypeSymbol Target
+        public DeclaredSymbol Target
         {
             get
             {
@@ -233,7 +233,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         }
 
         // basesBeingResolved is only used to break circular references.
-        public NamespaceOrTypeSymbol GetAliasTarget(ConsList<TypeSymbol> basesBeingResolved)
+        public DeclaredSymbol GetAliasTarget(ConsList<TypeSymbol> basesBeingResolved)
         {
             if (!_state.HasComplete(CompletionPart.AliasTarget))
             {
@@ -241,7 +241,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 // symbol. If it is an extern alias then find the target in the list of metadata references.
                 var newDiagnostics = DiagnosticBag.GetInstance();
 
-                NamespaceOrTypeSymbol symbol = this.IsExtern ?
+                DeclaredSymbol symbol = this.IsExtern ?
                     ResolveExternAliasTarget(newDiagnostics) :
                     ResolveAliasTarget(_binder, _aliasTargetName, newDiagnostics, basesBeingResolved);
 
@@ -301,9 +301,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             return target;
         }
 
-        private static NamespaceOrTypeSymbol ResolveAliasTarget(Binder binder, SyntaxNodeOrToken syntax, DiagnosticBag diagnostics, ConsList<TypeSymbol> basesBeingResolved)
+        private static DeclaredSymbol ResolveAliasTarget(Binder binder, SyntaxNodeOrToken syntax, DiagnosticBag diagnostics, ConsList<TypeSymbol> basesBeingResolved)
         {
-            return (NamespaceOrTypeSymbol)binder.BindNamespaceOrTypeSymbol(syntax, diagnostics, basesBeingResolved);
+            return binder.BindDeclaredSymbol(syntax, diagnostics, basesBeingResolved);
         }
 
         public override bool Equals(object obj)
@@ -342,7 +342,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         INamespaceOrTypeSymbol IAliasSymbol.Target
         {
-            get { return this.Target; }
+            get { return this.Target as INamespaceOrTypeSymbol; }
         }
 
         #endregion

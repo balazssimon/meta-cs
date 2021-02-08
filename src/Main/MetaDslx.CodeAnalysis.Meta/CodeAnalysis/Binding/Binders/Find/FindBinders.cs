@@ -27,7 +27,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             return new FindValues(propertyBinder).FindAll(includeSelf: true);
         }
 
-        public static ImmutableArray<BinderPosition<IdentifierBinder>> FindIdentifierBinders(BinderPosition<QualifierBinder> qualifierBinder)
+        public static ImmutableArray<BinderPosition<IdentifierBinder>> FindIdentifierBinders(BinderPosition qualifierBinder)
         {
             return new FindIdentifiers(qualifierBinder).FindAll();
         }

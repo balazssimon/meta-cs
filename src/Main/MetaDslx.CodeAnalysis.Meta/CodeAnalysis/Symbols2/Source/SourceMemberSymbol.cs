@@ -33,7 +33,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         {
             Debug.Assert(containingSymbol is IModelSourceSymbol);
             Debug.Assert(modelObject != null);
-            Debug.Assert(declaration != null);
+            //Debug.Assert(declaration != null);
             _declaration = declaration;
             _source = new SourceSymbol(this);
             _state = CompletionState.Create(containingSymbol.ContainingModule.Language);

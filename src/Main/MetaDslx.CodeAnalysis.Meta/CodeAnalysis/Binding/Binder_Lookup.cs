@@ -1201,5 +1201,11 @@ namespace MetaDslx.CodeAnalysis.Binding
         {
             return constraints.WithOriginalBinder(this);
         }
+
+        protected virtual LookupConstraints AdjustConstraintsFor(SyntaxNodeOrToken lookupSyntax, LookupConstraints constraints)
+        {
+            return Next.AdjustConstraintsFor(lookupSyntax, constraints);
+        }
+
     }
 }

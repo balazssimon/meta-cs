@@ -95,22 +95,22 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         protected virtual Binder CreateSymbolUseBinder(SyntaxNodeOrToken syntax, Binder parentBinder, ImmutableArray<Type> types)
         {
-            return this.CreateSymbolUseBinderCore(syntax, parentBinder, types, ImmutableArray<Type>.Empty);
+            return this.CreateSymbolUseBinderCore(syntax, parentBinder, types);
         }
 
-        protected virtual Binder CreateSymbolUseBinderCore(SyntaxNodeOrToken syntax, Binder parentBinder, ImmutableArray<Type> types, ImmutableArray<Type> nestingTypes)
+        protected virtual Binder CreateSymbolUseBinderCore(SyntaxNodeOrToken syntax, Binder parentBinder, ImmutableArray<Type> types)
         {
-            return new SymbolUseBinder(syntax, parentBinder, types, nestingTypes);
+            return new SymbolUseBinder(syntax, parentBinder, types);
         }
 
         protected virtual Binder CreateAttributeBinder(SyntaxNodeOrToken syntax, Binder parentBinder, ImmutableArray<Type> types)
         {
-            return this.CreateAttributeBinderCore(syntax, parentBinder, types, ImmutableArray<Type>.Empty);
+            return this.CreateAttributeBinderCore(syntax, parentBinder, types);
         }
 
-        protected virtual Binder CreateAttributeBinderCore(SyntaxNodeOrToken syntax, Binder parentBinder, ImmutableArray<Type> types, ImmutableArray<Type> nestingTypes)
+        protected virtual Binder CreateAttributeBinderCore(SyntaxNodeOrToken syntax, Binder parentBinder, ImmutableArray<Type> types)
         {
-            return new AttributeBinder(syntax, parentBinder, types, nestingTypes);
+            return new AttributeBinder(syntax, parentBinder, types);
         }
 
         protected virtual Binder CreatePropertyBinder(SyntaxNodeOrToken syntax, Binder parentBinder, string name, SymbolPropertyOwner owner = SymbolPropertyOwner.CurrentSymbol, Type ownerType = null)

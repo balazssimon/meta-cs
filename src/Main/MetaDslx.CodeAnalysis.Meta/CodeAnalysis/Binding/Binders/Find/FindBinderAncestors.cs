@@ -45,6 +45,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                 {
                     skipMove = false;
                 }
+                if (!walker.Syntax.Span.Contains(_origin.Syntax.Span)) break;
                 var current = walker.Binder;
                 if (current is T typedBinder && IsValidBinder(typedBinder)) _results.Add(new BinderPosition<T>(typedBinder, walker.LowestBinder, walker.Syntax));
                 if (IsSearchBoundary(current)) break;

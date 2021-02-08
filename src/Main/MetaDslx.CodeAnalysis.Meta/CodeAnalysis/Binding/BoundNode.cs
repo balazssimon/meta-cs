@@ -41,6 +41,8 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         public SyntaxNodeOrToken Syntax => _syntax;
 
+        public virtual ImmutableArray<Diagnostic> Diagnostics => ImmutableArray<Diagnostic>.Empty;
+
         public Binder GetBinder()
         {
             var result = _boundTree.Compilation.GetBinder(_syntax);
@@ -54,10 +56,11 @@ namespace MetaDslx.CodeAnalysis.Binding
             else return null;
         }
 
-        internal bool TryAddChild(SyntaxNodeOrToken syntax, BoundNode child)
+        internal BoundNode TryAddChild(SyntaxNodeOrToken syntax, BoundNode child)
         {
             if (_children == null) _children = new ConcurrentDictionary<SyntaxNodeOrToken, BoundNode>();
-            return _children.TryAdd(syntax, child);
+            _children.TryAdd(syntax, child);
+            return _children[syntax];
         }
     }
 }

@@ -1488,7 +1488,7 @@ namespace MetaDslx.CodeAnalysis
             var boundNode = this.Compilation.GetBinder(syntaxNode).Bind(syntaxNode) as BoundSymbol;
             if (boundNode != null)
             {
-                return new SymbolInfo(boundNode.Symbols.Cast<Symbol, ISymbol>(), boundNode.CandidateReason);
+                return new SymbolInfo(boundNode?.Symbols.FirstOrDefault());
             }
             return SymbolInfo.None;
         }

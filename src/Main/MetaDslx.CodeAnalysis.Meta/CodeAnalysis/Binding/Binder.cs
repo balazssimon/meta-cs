@@ -1,4 +1,5 @@
-﻿using MetaDslx.CodeAnalysis.Symbols;
+﻿using MetaDslx.CodeAnalysis.Binding.BoundNodes;
+using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Symbols.Source;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
@@ -93,9 +94,14 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// </summary>
         public Binder Next => _next;
 
-        public BoundNode ContainingBoundNode => Next?.BoundNode ?? _compilation.GetBoundTree(Syntax)?.RootNode;
+        public BinderPosition GetBinderPosition()
+        {
+            return new BinderPosition(this, GetBinder(this.Syntax), this.Syntax);
+        }
 
-        public BoundNode BoundNode => _boundNode.Value;
+        protected BoundNode ContainingBoundNode => Next?.BoundNode ?? _compilation.GetBoundTree(Syntax)?.RootNode;
+
+        internal protected BoundNode BoundNode => _boundNode.Value;
 
         /// <summary>
         /// Some nodes have special binders for their contents (like Blocks)
@@ -112,7 +118,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             if (result == null)
             {
                 result = CreateBoundNode();
-                if (parent != null && result != null) parent.TryAddChild(this.Syntax, result);
+                if (parent != null && result != null) result = parent.TryAddChild(this.Syntax, result);
             }
             return result;
         }
@@ -120,6 +126,11 @@ namespace MetaDslx.CodeAnalysis.Binding
         protected virtual BoundNode CreateBoundNode()
         {
             return null;
+        }
+
+        public virtual BoundQualifier GetBoundQualifier()
+        {
+            return Next?.GetBoundQualifier();
         }
 
         /// <summary>
@@ -144,7 +155,10 @@ namespace MetaDslx.CodeAnalysis.Binding
         {
             get
             {
-                return Next.ContainingSymbol;
+                if (_next == null) return null;
+                var symbol = Next.GetDefinedSymbol();
+                if (symbol != null) return symbol;
+                else return Next.ContainingSymbol;
             }
         }
 
@@ -156,7 +170,10 @@ namespace MetaDslx.CodeAnalysis.Binding
         {
             get
             {
-                return Next.ContainingDeclaration;
+                if (_next == null) return null;
+                var symbol = Next.GetDefinedSymbol() as DeclaredSymbol;
+                if (symbol != null) return symbol;
+                else return Next.ContainingDeclaration;
             }
         }
 

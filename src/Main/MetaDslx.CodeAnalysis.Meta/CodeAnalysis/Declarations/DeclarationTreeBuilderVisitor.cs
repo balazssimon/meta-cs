@@ -272,30 +272,34 @@ namespace MetaDslx.CodeAnalysis.Declarations
                 var rootDeclaration = new RootSingleDeclaration(declaration.ModelObjectType, declaration.Node.GetReference(), declaration.Members.ToImmutable(), declaration.ReferenceDirectives.ToImmutable(), diagnostics);
                 return rootDeclaration;
             }
-            if (declaration.Names.Count == 0)
+            var parentProp = Language.SymbolFacts.GetProperty(parent.ModelObjectType, declaration.ParentPropertyToAddTo);
+            if (parent.ModelObjectType == null && declaration.ParentPropertyToAddTo == null || parentProp != null && Language.SymbolFacts.IsContainmentProperty(parentProp))
             {
-                //var diagnostics = ImmutableArray.Create<Diagnostic>(new LanguageDiagnostic(new LanguageDiagnosticInfo(ModelErrorCode.ERR_DeclarationHasNoName), declaration.Node.Location));
-                SingleDeclaration anonymousDeclaration = new SingleDeclaration(null, kind, declaration.ModelObjectType, declaration.Node.GetReference(), new SourceLocation(declaration.Node), false, false, null, declaration.Members.ToImmutable(), declaration.Properties.ToImmutable(), diagnostics);
-                parent.Members.Add(anonymousDeclaration);
-                return anonymousDeclaration;
-            }
-            foreach (var qualifier in declaration.Names)
-            {
-                int count = qualifier.Count;
-                if (count > 0)
+                if (declaration.Names.Count == 0)
                 {
-                    var identifier = qualifier[count - 1];
-                    var parentProperty = count == 1 ? declaration.ParentPropertyToAddTo : declaration.NestingProperty;
-                    var decl = new SingleDeclaration(identifier.Text, kind, declaration.ModelObjectType, declaration.Node.GetReference(), new SourceLocation(identifier.Syntax), declaration.Merge, false, parentProperty, declaration.Members.ToImmutable(), declaration.Properties.ToImmutable(), diagnostics);
-                    var deepestDecl = decl;
-                    for (int i = count - 2; i >= 0; i--)
+                    //var diagnostics = ImmutableArray.Create<Diagnostic>(new LanguageDiagnostic(new LanguageDiagnosticInfo(ModelErrorCode.ERR_DeclarationHasNoName), declaration.Node.Location));
+                    SingleDeclaration anonymousDeclaration = new SingleDeclaration(null, kind, declaration.ModelObjectType, declaration.Node.GetReference(), new SourceLocation(declaration.Node), false, false, declaration.ParentPropertyToAddTo, declaration.Members.ToImmutable(), declaration.Properties.ToImmutable(), diagnostics);
+                    parent.Members.Add(anonymousDeclaration);
+                    return anonymousDeclaration;
+                }
+                foreach (var qualifier in declaration.Names)
+                {
+                    int count = qualifier.Count;
+                    if (count > 0)
                     {
-                        parentProperty = i == 0 ? declaration.ParentPropertyToAddTo : declaration.NestingProperty;
-                        identifier = qualifier[i];
-                        decl = new SingleDeclaration(identifier.Text, kind, declaration.ModelObjectType, declaration.Node.GetReference(), new SourceLocation(identifier.Syntax), declaration.Merge, true, parentProperty, ImmutableArray.Create(decl), ImmutableArray<DeclarationTreeInfo.Property>.Empty, ImmutableArray<Diagnostic>.Empty);
+                        var identifier = qualifier[count - 1];
+                        var parentProperty = count == 1 ? declaration.ParentPropertyToAddTo : declaration.NestingProperty;
+                        var decl = new SingleDeclaration(identifier.Text, kind, declaration.ModelObjectType, declaration.Node.GetReference(), new SourceLocation(identifier.Syntax), declaration.Merge, false, parentProperty, declaration.Members.ToImmutable(), declaration.Properties.ToImmutable(), diagnostics);
+                        var deepestDecl = decl;
+                        for (int i = count - 2; i >= 0; i--)
+                        {
+                            parentProperty = i == 0 ? declaration.ParentPropertyToAddTo : declaration.NestingProperty;
+                            identifier = qualifier[i];
+                            decl = new SingleDeclaration(identifier.Text, kind, declaration.ModelObjectType, declaration.Node.GetReference(), new SourceLocation(identifier.Syntax), declaration.Merge, true, parentProperty, ImmutableArray.Create(decl), ImmutableArray<DeclarationTreeInfo.Property>.Empty, ImmutableArray<Diagnostic>.Empty);
+                        }
+                        parent.Members.Add(decl);
+                        return deepestDecl;
                     }
-                    parent.Members.Add(decl);
-                    return deepestDecl;
                 }
             }
             return null;

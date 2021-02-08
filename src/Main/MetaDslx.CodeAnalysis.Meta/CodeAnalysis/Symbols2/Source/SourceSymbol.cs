@@ -154,7 +154,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                                 symbolFacts.SetOrAddPropertyValue(ModelObject, objectProperty, childObject, diagnostics);
                                 childSymbol = symbolFactory.MakeSourceSymbol(_symbol, childObject, childDeclaration);
                                 result.Add(childSymbol);
-                                break;
                             }
                             if (childObject == null && childSymbol == null)
                             {

@@ -27,7 +27,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         public static readonly Imports Empty = new Imports(
             null,
             ImmutableDictionary<string, AliasAndUsingDirective>.Empty,
-            ImmutableArray<NamespaceOrTypeAndUsingDirective>.Empty,
+            ImmutableArray<DeclaredSymbolAndUsingDirective>.Empty,
             ImmutableArray<AliasAndExternAliasDirective>.Empty,
             null);
 
@@ -38,13 +38,13 @@ namespace MetaDslx.CodeAnalysis.Binding
         private CompletionState _state;
 
         public readonly ImmutableDictionary<string, AliasAndUsingDirective> UsingAliases;
-        public readonly ImmutableArray<NamespaceOrTypeAndUsingDirective> Usings;
+        public readonly ImmutableArray<DeclaredSymbolAndUsingDirective> Usings;
         public readonly ImmutableArray<AliasAndExternAliasDirective> ExternAliases;
 
         private Imports(
             LanguageCompilation compilation,
             ImmutableDictionary<string, AliasAndUsingDirective> usingAliases,
-            ImmutableArray<NamespaceOrTypeAndUsingDirective> usings,
+            ImmutableArray<DeclaredSymbolAndUsingDirective> usings,
             ImmutableArray<AliasAndExternAliasDirective> externs,
             DiagnosticBag diagnostics)
         {
@@ -66,7 +66,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         {
             return string.Join("; ",
                 UsingAliases.OrderBy(x => x.Value.UsingDirective.Location.SourceSpan.Start).Select(ua => $"{ua.Key} = {ua.Value.Alias.Target}").Concat(
-                Usings.Select(u => u.NamespaceOrType.ToString())).Concat(
+                Usings.Select(u => u.DeclaredSymbol.ToString())).Concat(
                 ExternAliases.Select(ea => $"extern alias {ea.Alias.Name}")));
 
         }
@@ -97,7 +97,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             var compilation = binder.Compilation;
 
             var externAliases = BuildExternAliases(externAliasDirectives, binder, diagnostics);
-            var usings = ArrayBuilder<NamespaceOrTypeAndUsingDirective>.GetInstance();
+            var usings = ArrayBuilder<DeclaredSymbolAndUsingDirective>.GetInstance();
             ImmutableDictionary<string, AliasAndUsingDirective>.Builder usingAliases = null;
             if (usingDirectives.Length > 0)
             {
@@ -115,13 +115,13 @@ namespace MetaDslx.CodeAnalysis.Binding
                         : new Imports(
                             compilation,
                             ImmutableDictionary<string, AliasAndUsingDirective>.Empty,
-                            ImmutableArray<NamespaceOrTypeAndUsingDirective>.Empty,
+                            ImmutableArray<DeclaredSymbolAndUsingDirective>.Empty,
                             externAliases,
                             diagnostics: null);
                     usingsBinder = new InContainerBinder(binder.Container, binder.Next, imports);
                 }
 
-                var uniqueUsings = PooledHashSet<NamespaceOrTypeSymbol>.GetInstance();
+                var uniqueUsings = PooledHashSet<DeclaredSymbol>.GetInstance();
 
                 foreach (var usingDirective in usingDirectives)
                 {
@@ -181,7 +181,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                         }
 
                         var declarationBinder = usingsBinder.WithAdditionalFlags(BinderFlags.SuppressConstraintChecks);
-                        var imported = declarationBinder.BindNamespaceOrTypeSymbol(usingDirective.TargetName, diagnostics, basesBeingResolved);
+                        var imported = declarationBinder.BindDeclaredSymbol(usingDirective.TargetName, diagnostics, basesBeingResolved);
                         if (imported.Kind == LanguageSymbolKind.Namespace)
                         {
                             if (usingDirective.IsStatic)
@@ -195,7 +195,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                             else
                             {
                                 uniqueUsings.Add(imported);
-                                usings.Add(new NamespaceOrTypeAndUsingDirective(imported, usingDirective));
+                                usings.Add(new DeclaredSymbolAndUsingDirective(imported, usingDirective));
                             }
                         }
                         else if (imported.Kind == LanguageSymbolKind.NamedType)
@@ -216,7 +216,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                                     declarationBinder.ReportDiagnosticsIfObsolete(diagnostics, importedType, usingDirective.TargetName, hasBaseReceiver: false);
 
                                     uniqueUsings.Add(importedType);
-                                    usings.Add(new NamespaceOrTypeAndUsingDirective(importedType, usingDirective));
+                                    usings.Add(new DeclaredSymbolAndUsingDirective(importedType, usingDirective));
                                 }
                             }
                         }
@@ -254,7 +254,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                                     if (symbol != null)
                                     {
                                         bool isStaticImport = importedSymbol is NamedTypeSymbol;
-                                        usings.Add(new NamespaceOrTypeAndUsingDirective(importedSymbol, new UsingDirective(declarationSyntax, null, boundValue.Syntax, isStaticImport, false)));
+                                        usings.Add(new DeclaredSymbolAndUsingDirective(importedSymbol, new UsingDirective(declarationSyntax, null, boundValue.Syntax, isStaticImport, false)));
                                     }
                                     else
                                     {
@@ -287,8 +287,8 @@ namespace MetaDslx.CodeAnalysis.Binding
 
             var diagnostics = new DiagnosticBag();
             var usingsBinder = new InContainerBinder(compilation.GlobalNamespace, new BuckStopsHereBinder(compilation));
-            var boundUsings = ArrayBuilder<NamespaceOrTypeAndUsingDirective>.GetInstance();
-            var uniqueUsings = PooledHashSet<NamespaceOrTypeSymbol>.GetInstance();
+            var boundUsings = ArrayBuilder<DeclaredSymbolAndUsingDirective>.GetInstance();
+            var uniqueUsings = PooledHashSet<DeclaredSymbol>.GetInstance();
 
             var syntaxFacts = compilation.Language.SyntaxFacts;
 
@@ -299,10 +299,10 @@ namespace MetaDslx.CodeAnalysis.Binding
                     continue;
                 }
                 var qualifiedName = syntaxFacts.ExtractQualifiedName(@using);
-                var imported = usingsBinder.BindNamespaceOrTypeSymbol(qualifiedName, diagnostics);
+                var imported = usingsBinder.BindDeclaredSymbol(qualifiedName, diagnostics).LastOrDefault();
                 if (uniqueUsings.Add(imported))
                 {
-                    boundUsings.Add(new NamespaceOrTypeAndUsingDirective(imported, null));
+                    boundUsings.Add(new DeclaredSymbolAndUsingDirective(imported, null));
                 }
             }
 
@@ -322,7 +322,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
                 foreach (var previousUsing in expandedImports.Usings)
                 {
-                    if (uniqueUsings.Add(previousUsing.NamespaceOrType))
+                    if (uniqueUsings.Add(previousUsing.DeclaredSymbol))
                     {
                         boundUsings.Add(previousUsing);
                     }
@@ -367,21 +367,21 @@ namespace MetaDslx.CodeAnalysis.Binding
                 expandedAliases = expandedAliasesBuilder.ToImmutable();
             }
 
-            var expandedUsings = ImmutableArray<NamespaceOrTypeAndUsingDirective>.Empty;
+            var expandedUsings = ImmutableArray<DeclaredSymbolAndUsingDirective>.Empty;
             if (!previousSubmissionImports.Usings.IsEmpty)
             {
-                var expandedUsingsBuilder = ArrayBuilder<NamespaceOrTypeAndUsingDirective>.GetInstance(previousSubmissionImports.Usings.Length);
+                var expandedUsingsBuilder = ArrayBuilder<DeclaredSymbolAndUsingDirective>.GetInstance(previousSubmissionImports.Usings.Length);
                 foreach (var previousUsing in previousSubmissionImports.Usings)
                 {
-                    var previousTarget = previousUsing.NamespaceOrType;
-                    if (previousTarget.IsType)
+                    var previousTarget = previousUsing.DeclaredSymbol;
+                    if (previousTarget is NamespaceSymbol previousNamespace)
                     {
-                        expandedUsingsBuilder.Add(previousUsing);
+                        var expandedNamespace = ExpandPreviousSubmissionNamespace(previousNamespace, expandedGlobalNamespace);
+                        expandedUsingsBuilder.Add(new DeclaredSymbolAndUsingDirective(expandedNamespace, previousUsing.UsingDirective));
                     }
                     else
                     {
-                        var expandedNamespace = ExpandPreviousSubmissionNamespace((NamespaceSymbol)previousTarget, expandedGlobalNamespace);
-                        expandedUsingsBuilder.Add(new NamespaceOrTypeAndUsingDirective(expandedNamespace, previousUsing.UsingDirective));
+                        expandedUsingsBuilder.Add(previousUsing);
                     }
                 }
                 expandedUsings = expandedUsingsBuilder.ToImmutableAndFree();
@@ -427,7 +427,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         public static Imports FromCustomDebugInfo(
             LanguageCompilation compilation,
             ImmutableDictionary<string, AliasAndUsingDirective> usingAliases,
-            ImmutableArray<NamespaceOrTypeAndUsingDirective> usings,
+            ImmutableArray<DeclaredSymbolAndUsingDirective> usings,
             ImmutableArray<AliasAndExternAliasDirective> externs)
         {
             return new Imports(compilation, usingAliases, usings, externs, diagnostics: null);
@@ -604,9 +604,8 @@ namespace MetaDslx.CodeAnalysis.Binding
             foreach (var @using in Usings)
             {
                 // Check if `using static` directives meet constraints.
-                if (@using.NamespaceOrType.IsType)
+                if (@using.DeclaredSymbol is TypeSymbol typeSymbol)
                 {
-                    var typeSymbol = (TypeSymbol)@using.NamespaceOrType;
                     var location = @using.UsingDirective?.TargetName.GetLocation() ?? NoLocation.Singleton;
                     typeSymbol.CheckAllConstraints(_compilation, conversions, location, semanticDiagnostics);
                 }
@@ -688,7 +687,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         }
 
         internal static void LookupSymbolInUsings(
-            ImmutableArray<NamespaceOrTypeAndUsingDirective> usings,
+            ImmutableArray<DeclaredSymbolAndUsingDirective> usings,
             LookupResult result,
             LookupConstraints constraints)
         {
@@ -701,7 +700,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
             foreach (var typeOrNamespace in usings)
             {
-                ImmutableArray<DeclaredSymbol> candidates = Binder.GetCandidateMembers(constraints.WithQualifier(typeOrNamespace.NamespaceOrType));
+                ImmutableArray<DeclaredSymbol> candidates = Binder.GetCandidateMembers(constraints.WithQualifier(typeOrNamespace.DeclaredSymbol));
                 foreach (DeclaredSymbol symbol in candidates)
                 {
                     if (!IsValidLookupCandidateInUsings(symbol))
@@ -795,7 +794,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         }
 
         private static void AddLookupSymbolsInfoInUsings(
-            ImmutableArray<NamespaceOrTypeAndUsingDirective> usings, LookupSymbolsInfo result, LookupConstraints constraints)
+            ImmutableArray<DeclaredSymbolAndUsingDirective> usings, LookupSymbolsInfo result, LookupConstraints constraints)
         {
             if (constraints.OriginalBinder.Flags.Includes(BinderFlags.InScriptUsing))
             {
@@ -807,7 +806,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             // look in all using namespaces
             foreach (var namespaceSymbol in usings)
             {
-                foreach (var member in namespaceSymbol.NamespaceOrType.GetMembersUnordered())
+                foreach (var member in namespaceSymbol.DeclaredSymbol.GetMembersUnordered())
                 {
                     if (IsValidLookupCandidateInUsings(member) && constraints.OriginalBinder.CanAddLookupSymbolInfo(member, result, constraints, null))
                     {
@@ -817,20 +816,20 @@ namespace MetaDslx.CodeAnalysis.Binding
             }
         }
 
-        private class UsingTargetComparer : IEqualityComparer<NamespaceOrTypeAndUsingDirective>
+        private class UsingTargetComparer : IEqualityComparer<DeclaredSymbolAndUsingDirective>
         {
-            public static readonly IEqualityComparer<NamespaceOrTypeAndUsingDirective> Instance = new UsingTargetComparer();
+            public static readonly IEqualityComparer<DeclaredSymbolAndUsingDirective> Instance = new UsingTargetComparer();
 
             private UsingTargetComparer() { }
 
-            bool IEqualityComparer<NamespaceOrTypeAndUsingDirective>.Equals(NamespaceOrTypeAndUsingDirective x, NamespaceOrTypeAndUsingDirective y)
+            bool IEqualityComparer<DeclaredSymbolAndUsingDirective>.Equals(DeclaredSymbolAndUsingDirective x, DeclaredSymbolAndUsingDirective y)
             {
-                return x.NamespaceOrType.Equals(y.NamespaceOrType);
+                return x.DeclaredSymbol.Equals(y.DeclaredSymbol);
             }
 
-            int IEqualityComparer<NamespaceOrTypeAndUsingDirective>.GetHashCode(NamespaceOrTypeAndUsingDirective obj)
+            int IEqualityComparer<DeclaredSymbolAndUsingDirective>.GetHashCode(DeclaredSymbolAndUsingDirective obj)
             {
-                return obj.NamespaceOrType.GetHashCode();
+                return obj.DeclaredSymbol.GetHashCode();
             }
         }
     }

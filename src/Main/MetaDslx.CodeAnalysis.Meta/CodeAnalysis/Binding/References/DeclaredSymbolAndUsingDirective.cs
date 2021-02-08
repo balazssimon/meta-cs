@@ -6,14 +6,14 @@ using Microsoft.CodeAnalysis;
 
 namespace MetaDslx.CodeAnalysis.Binding
 {
-    public struct NamespaceOrTypeAndUsingDirective
+    public struct DeclaredSymbolAndUsingDirective
     {
-        public readonly NamespaceOrTypeSymbol NamespaceOrType;
+        public readonly DeclaredSymbol DeclaredSymbol;
         public readonly UsingDirective UsingDirective;
 
-        public NamespaceOrTypeAndUsingDirective(NamespaceOrTypeSymbol namespaceOrType, UsingDirective usingDirective)
+        public DeclaredSymbolAndUsingDirective(DeclaredSymbol symbol, UsingDirective usingDirective)
         {
-            this.NamespaceOrType = namespaceOrType;
+            this.DeclaredSymbol = symbol;
             this.UsingDirective = usingDirective;
         }
     }

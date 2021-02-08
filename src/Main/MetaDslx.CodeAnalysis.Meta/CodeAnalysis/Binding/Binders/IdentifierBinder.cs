@@ -1,4 +1,6 @@
 ﻿using MetaDslx.CodeAnalysis.Binding.Binders.Find;
+using MetaDslx.CodeAnalysis.Binding.BoundNodes;
+using MetaDslx.CodeAnalysis.Symbols;
 using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
@@ -9,11 +11,43 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
 {
     public class IdentifierBinder : ValueBinder, IIdentifierBoundary
     {
+        private string _name;
+        private string _metadataName;
+
         public IdentifierBinder(SyntaxNodeOrToken syntax, Binder next)
             : base(syntax, next)
         {
-            string name = Language.SyntaxFacts.ExtractName(syntax);
-            string metadataName = Language.SyntaxFacts.ExtractMetadataName(syntax);
+        }
+
+        public string Name
+        {
+            get
+            {
+                if (_name == null)
+                {
+                    var name = Language.SyntaxFacts.ExtractName(this.Syntax);
+                    Interlocked.CompareExchange(ref _name, name, null);
+                }
+                return _name;
+            }
+        }
+
+        public string MetadataName
+        {
+            get
+            {
+                if (_metadataName == null)
+                {
+                    var metadataName = Language.SyntaxFacts.ExtractMetadataName(this.Syntax);
+                    Interlocked.CompareExchange(ref _metadataName, metadataName, null);
+                }
+                return _metadataName;
+            }
+        }
+
+        protected override BoundNode CreateBoundNode()
+        {
+            return new BoundIdentifier(this.Syntax, this.ContainingBoundNode); 
         }
 
     }

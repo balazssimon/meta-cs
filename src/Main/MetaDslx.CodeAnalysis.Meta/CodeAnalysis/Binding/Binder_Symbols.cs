@@ -32,12 +32,17 @@ namespace MetaDslx.CodeAnalysis.Binding
             return symbol.ContainingNamespaceOrType() ?? this.Compilation.Assembly.GlobalNamespace;
         }
 
-        public NamespaceOrTypeSymbol BindNamespaceOrTypeSymbol(ImmutableArray<string> qualifiedName, DiagnosticBag diagnostics)
+        public ImmutableArray<DeclaredSymbol> BindDeclaredSymbol(ImmutableArray<SyntaxNodeOrToken> qualifiedName, DiagnosticBag diagnostics, ConsList<TypeSymbol> basesBeingResolved = null)
         {
-            return (NamespaceOrTypeSymbol)BindQualifiedName(qualifiedName, diagnostics);
+            return BindQualifiedName(qualifiedName, diagnostics, basesBeingResolved, basesBeingResolved != null);
         }
 
-        public NamespaceOrTypeSymbol BindNamespaceOrTypeSymbol(SyntaxNodeOrToken syntax, DiagnosticBag diagnostics, ConsList<TypeSymbol> basesBeingResolved = null)
+        public ImmutableArray<DeclaredSymbol> BindDeclaredSymbol(ImmutableArray<string> qualifiedName, DiagnosticBag diagnostics)
+        {
+            return BindQualifiedName(qualifiedName, diagnostics);
+        }
+
+        public DeclaredSymbol BindDeclaredSymbol(SyntaxNodeOrToken syntax, DiagnosticBag diagnostics, ConsList<TypeSymbol> basesBeingResolved = null)
         {
             return BindNamespaceOrTypeSymbol(syntax, diagnostics, basesBeingResolved, basesBeingResolved != null);
         }
@@ -178,15 +183,15 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         }
 
-        private DeclaredSymbol[] BindQualifiedName(
-            SyntaxNodeOrToken[] qualifiedName,
+        private ImmutableArray<DeclaredSymbol> BindQualifiedName(
+            ImmutableArray<SyntaxNodeOrToken> qualifiedName,
             DiagnosticBag diagnostics,
             ConsList<TypeSymbol> basesBeingResolved,
             bool suppressUseSiteDiagnostics)
         {
-            DeclaredSymbol[] result = new DeclaredSymbol[qualifiedName.Length];
-            if (qualifiedName.Length == 0) return result;
-            result[0] = BindNamespaceOrTypeSymbol(qualifiedName[0], diagnostics, basesBeingResolved, suppressUseSiteDiagnostics: false);
+            if (qualifiedName.Length == 0) return ImmutableArray<DeclaredSymbol>.Empty;
+            var result = ArrayBuilder<DeclaredSymbol>.GetInstance();
+            result.Add(BindNamespaceOrTypeSymbol(qualifiedName[0], diagnostics, basesBeingResolved, suppressUseSiteDiagnostics: false));
             ReportDiagnosticsIfObsolete(diagnostics, result[0], qualifiedName[0], hasBaseReceiver: false);
 
             var last = result[0];
@@ -194,27 +199,18 @@ namespace MetaDslx.CodeAnalysis.Binding
             {
                 if (last == null) break;
                 // since the name is qualified, it cannot result in a using alias symbol, only a type or namespace
-                result[i] = this.BindNamespaceOrTypeOrAliasSymbol(qualifiedName[i], true, diagnostics, basesBeingResolved, suppressUseSiteDiagnostics, (NamespaceOrTypeSymbol)last);
+                result.Add(this.BindNamespaceOrTypeOrAliasSymbol(qualifiedName[i], true, diagnostics, basesBeingResolved, suppressUseSiteDiagnostics, (NamespaceOrTypeSymbol)last));
                 last = result[i];
             }
 
-            return result;
+            return result.ToImmutableAndFree();
         }
 
-        private Symbol BindQualifiedName(
+        private ImmutableArray<DeclaredSymbol> BindQualifiedName(
             ImmutableArray<string> qualifiedName,
             DiagnosticBag diagnostics)
         {
-            if (qualifiedName.Length == 0) return null;
-            var syntaxFactory = Language.SyntaxFactory;
-            var kind = Language.SyntaxFacts.DefaultIdentifierKind;
-            SyntaxNodeOrToken[] identifiers = new SyntaxNodeOrToken[qualifiedName.Length];
-            for (int i = 0; i < identifiers.Length; i++)
-            {
-                identifiers[i] = syntaxFactory.Identifier(SyntaxTriviaList.Empty, kind, qualifiedName[i], qualifiedName[i], SyntaxTriviaList.Empty);
-            }
-            var result = BindQualifiedName(identifiers, diagnostics, null, false);
-            return result[result.Length - 1];
+            throw new NotImplementedException("TODO:MetaDslx");
         }
 
         protected virtual void ReportUseSiteDiagnosticForDynamic(DiagnosticBag diagnostics, SyntaxNodeOrToken node)

@@ -15,37 +15,27 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
 {
     public class SymbolUseBinder : Binder
     {
-        private readonly ImmutableArray<ModelObjectDescriptor> _types;
-        private readonly ImmutableArray<ModelObjectDescriptor> _nestingTypes;
-        private readonly bool _attributeTypeOnly;
+        private readonly ImmutableArray<Type> _types;
 
-        public SymbolUseBinder(SyntaxNodeOrToken syntax, Binder next, ImmutableArray<Type> types, ImmutableArray<Type> nestingTypes)
+        public SymbolUseBinder(SyntaxNodeOrToken syntax, Binder next, ImmutableArray<Type> types)
             : base(syntax, next)
         {
-            _types = types.Select(type => ModelObjectDescriptor.GetDescriptor(type)).ToImmutableArray();
-            _nestingTypes = nestingTypes.Select(type => ModelObjectDescriptor.GetDescriptor(type)).ToImmutableArray();
-            if (types.Length > 0)
-            {
-                _attributeTypeOnly = true;
-                foreach (var type in types)
-                {
-                    if (!typeof(MetaAttribute).IsAssignableFrom(type))
-                    {
-                        _attributeTypeOnly = false;
-                        break;
-                    }
-                }
-            }
+            _types = types;
         }
 
         protected override LookupConstraints AdjustConstraints(LookupConstraints constraints)
         {
-            LookupConstraints result = base.AdjustConstraints(constraints);
-            if (!result.IsMemberLookup && _attributeTypeOnly)
+            LookupConstraints result = constraints;
+            if (!_types.IsEmpty)
             {
-                result = result.WithOptions(result.Options | LookupOptions.AttributeTypeOnly);
+                result = result.WithTypes(_types);
             }
             return result;
+        }
+
+        protected override LookupConstraints AdjustConstraintsFor(SyntaxNodeOrToken lookupSyntax, LookupConstraints constraints)
+        {
+            return this.AdjustConstraints(constraints);
         }
     }
 }

@@ -43,10 +43,6 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             return IsSymbolAccessibleConditional(symbol, Compilation.Assembly, ref useSiteDiagnostics);
         }
 
-        public override Symbol ContainingSymbol => this.ContainingDeclaration;
-
-        public override DeclaredSymbol ContainingDeclaration => this.GetDefinedSymbol() as DeclaredSymbol;
-
         public override ImmutableArray<Symbol> ChildSymbols => ImmutableArray<Symbol>.Empty;
 
         protected override bool InExecutableBinder => false;
@@ -67,6 +63,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
                 return Compilation.GlobalNamespace;
             }
         }
+
 
     }
 }

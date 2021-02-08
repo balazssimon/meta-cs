@@ -7,20 +7,13 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
 {
-    public class BoundSymbol : BoundNode
+    public abstract class BoundSymbol : BoundNode
     {
-        private ImmutableArray<Symbol> _symbols;
-        private CandidateReason _candidateReason;
-
-        public BoundSymbol(SyntaxNodeOrToken syntax, BoundNode parent, ImmutableArray<Symbol> symbols, CandidateReason candidateReason) 
+        public BoundSymbol(SyntaxNodeOrToken syntax, BoundNode parent) 
             : base(syntax, parent)
         {
-            _symbols = symbols;
-            _candidateReason = candidateReason;
         }
 
-        public ImmutableArray<Symbol> Symbols => _symbols;
-
-        public CandidateReason CandidateReason => _candidateReason;
+        public abstract ImmutableArray<Symbol> Symbols { get; }
     }
 }
