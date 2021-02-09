@@ -77,7 +77,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             throw new NotImplementedException();
         }
 
-        public override void SetOrAddPropertyValue(object modelObject, object property, object value, DiagnosticBag diagnostics)
+        public override void SetOrAddPropertyValue(object modelObject, object property, object value, Location location, DiagnosticBag diagnostics)
         {
             throw new NotImplementedException();
         }

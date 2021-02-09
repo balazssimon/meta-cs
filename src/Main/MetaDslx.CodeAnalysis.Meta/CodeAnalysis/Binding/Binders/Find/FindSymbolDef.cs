@@ -17,7 +17,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders.Find
 
         public override bool IsValidBinder(SymbolDefBinder binder)
         {
-            return binder.DefinedSymbol == _symbol;
+            return binder.DefinedSymbols.Contains(_symbol);
         }
 
         public override bool IsSearchBoundary(Binder binder)

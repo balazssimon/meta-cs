@@ -37,6 +37,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 
         public sealed override string Name => Language.SymbolFacts.GetName(_modelObject);
 
+        public override LanguageTypeKind TypeKind => LanguageTypeKind.NamedType;
+
         public override IEnumerable<string> MemberNames
         {
             get

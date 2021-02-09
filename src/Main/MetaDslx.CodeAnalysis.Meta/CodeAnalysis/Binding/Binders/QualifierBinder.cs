@@ -23,7 +23,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             if (Next.GetBoundQualifier() != null) return null;
             var position = this.GetBinderPosition();
             var identifiers = FindBinders.FindIdentifierBinders(position).Select(ib => ib.Syntax).ToImmutableArray();
-            return new BoundQualifier(this.Syntax, this.ContainingBoundNode, identifiers);
+            return new BoundQualifier(this.Syntax, this.ParentBoundNode, identifiers);
         }
 
         public override BoundQualifier GetBoundQualifier()

@@ -17,7 +17,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
     {
         private ModuleSymbol _module;
         private SymbolFacts _symbolFacts;
-        private ConditionalWeakTable<object, Symbol> _map = new ConditionalWeakTable<object, Symbol>();
+        private ConditionalWeakTable<MergedDeclaration, object> _objectMap = new ConditionalWeakTable<MergedDeclaration, object>();
+        private ConditionalWeakTable<object, Symbol> _symbolMap = new ConditionalWeakTable<object, Symbol>();
 
         public SymbolFactory(ModuleSymbol module)
         {
@@ -30,18 +31,27 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         public bool TryGetSymbol(object modelObject, out Symbol symbol)
         {
-            return _map.TryGetValue(modelObject, out symbol);
+            return _symbolMap.TryGetValue(modelObject, out symbol);
         }
 
         public Symbol GetSymbol(object modelObject)
         {
-            if (_map.TryGetValue(modelObject, out var symbol)) return symbol;
+            if (_symbolMap.TryGetValue(modelObject, out var symbol)) return symbol;
             return CreateSymbol(modelObject);
         }
 
-        public Symbol MakeSourceSymbol(Symbol container, object modelObject, MergedDeclaration declaration)
+        public Symbol MakeSourceSymbol(Symbol container, Type modelObjectType, MergedDeclaration declaration)
         {
-            if (_map.TryGetValue(modelObject, out var symbol)) return symbol;
+            object modelObject = null;
+            if (declaration != null)
+            {
+                modelObject = _objectMap.GetValue(declaration, decl => _module.DeclaringCompilation.ObjectFactory.CreateObject(modelObjectType));
+            }
+            else
+            {
+                modelObject = _module.DeclaringCompilation.ObjectFactory.CreateObject(modelObjectType);
+            }
+            if (_symbolMap.TryGetValue(modelObject, out var symbol)) return symbol;
             symbol = CreateSourceSymbol(container, modelObject, declaration);
             return GetOrAddSymbol(modelObject, symbol);
         }
@@ -114,7 +124,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 case LanguageSymbolKind.Namespace:
                     return new SourceNamespaceSymbol((SourceModuleSymbol)container.ContainingModule, container, modelObject, declaration);
                 case LanguageSymbolKind.NamedType:
-                    if (_symbolFacts.GetName(modelObject) == null) return new SourceAnonymousTypeSymbol(container, modelObject, declaration);
+                    if (declaration == null || declaration.NameLocations.IsDefaultOrEmpty) return new SourceAnonymousTypeSymbol(container, modelObject, declaration);
                     else return new SourceNamedTypeSymbol(container, modelObject, declaration);
                 case LanguageSymbolKind.Name:
                     return new SourceMemberSymbol(container, modelObject, declaration);
@@ -125,7 +135,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         public Symbol ResolveSymbol(object modelObject)
         {
-            if (_map.TryGetValue(modelObject, out var symbol)) return symbol;
+            if (_symbolMap.TryGetValue(modelObject, out var symbol)) return symbol;
             if (ModuleContainsObject(_module, modelObject)) return GetSymbol(modelObject);
             if (_module.ContainingAssembly == null) return null;
             foreach (var module in _module.ContainingAssembly.Modules)
@@ -156,7 +166,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         private Symbol GetOrAddSymbol(object modelObject, Symbol symbol)
         {
-            return _map.GetValue(modelObject, mobj => symbol);
+            return _symbolMap.GetValue(modelObject, mobj => symbol);
         }
 
     }

@@ -2148,6 +2148,10 @@ namespace MetaDslx.CodeAnalysis
         {
             this.ForceComplete(cancellationToken);
             this.ReportUnusedImports(null, diagnostics, cancellationToken);
+            foreach (var syntaxTree in this.SyntaxTrees)
+            {
+                this.GetDiagnosticsForSymbolsInTree(syntaxTree, null, diagnostics, cancellationToken);
+            }
         }
 
         public void ForceComplete(CancellationToken cancellationToken = default)
@@ -2171,12 +2175,8 @@ namespace MetaDslx.CodeAnalysis
             return false;
         }
 
-        private ImmutableArray<Diagnostic> GetDiagnosticsForSymbolsInTree(SyntaxTree tree, TextSpan? span, CancellationToken cancellationToken)
+        private void GetDiagnosticsForSymbolsInTree(SyntaxTree tree, TextSpan? span, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException("TODO:MetaDslx");
-
-            DiagnosticBag diagnostics = DiagnosticBag.GetInstance();
-
             // Report unused directives only if computing diagnostics for the entire tree.
             // Otherwise we cannot determine if a particular directive is used outside of the given sub-span within the tree.
             if (!span.HasValue || span.Value == tree.GetRoot(cancellationToken).FullSpan)
@@ -2210,8 +2210,6 @@ namespace MetaDslx.CodeAnalysis
                 }
                 ++index;
             }
-
-            return diagnostics.ToReadOnlyAndFree();
         }
 
         private ImmutableArray<Diagnostic> GetSourceDeclarationDiagnostics(SyntaxTree syntaxTree = null, TextSpan? filterSpanWithinTree = null, Func<IEnumerable<Diagnostic>, SyntaxTree, TextSpan?, IEnumerable<Diagnostic>> locationFilterOpt = null, CancellationToken cancellationToken = default(CancellationToken))
@@ -2296,7 +2294,9 @@ namespace MetaDslx.CodeAnalysis
                 //initializers which can result in 'field is never initialized' warnings for fields in partial
                 //types when the field is in a different source file than the one for which we're getting diagnostics.
                 //For that reason the bag must be also filtered by tree.
-                IEnumerable<Diagnostic> symbolDiagnostics = GetDiagnosticsForSymbolsInTree(syntaxTree, filterSpanWithinTree, cancellationToken);
+                var symbolDiagnosticBag = DiagnosticBag.GetInstance();
+                GetDiagnosticsForSymbolsInTree(syntaxTree, filterSpanWithinTree, symbolDiagnosticBag, cancellationToken);
+                IEnumerable<Diagnostic> symbolDiagnostics = symbolDiagnosticBag.ToReadOnlyAndFree();
 
                 // TODO: Enable the below commented assert and remove the filtering code in the next line.
                 //       GetDiagnosticsForMethodBodiesInTree seems to be returning diagnostics with locations that don't satisfy the filter tree/span, this must be fixed.

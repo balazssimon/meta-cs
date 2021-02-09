@@ -181,7 +181,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                         {
                             diagnostics.AddRange(singleDeclaration.Diagnostics);
                         }
-                        _source.AssignNameProperty(diagnostics);
+                        _source.AssignPropertyValues(SymbolConstants.NameProperty, diagnostics);
                         AddDeclarationDiagnostics(diagnostics);
                         _state.NotePartComplete(CompletionPart.FinishCreated);
                         diagnostics.Free();
@@ -226,7 +226,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                     if (_state.NotePartComplete(CompletionPart.StartProperties))
                     {
                         var diagnostics = DiagnosticBag.GetInstance();
-                        _source.ComputeObjectProperties(diagnostics);
+                        _source.AssignPropertyValues(null, diagnostics);
                         AddSymbolDiagnostics(diagnostics);
                         _state.NotePartComplete(CompletionPart.FinishProperties);
                         diagnostics.Free();

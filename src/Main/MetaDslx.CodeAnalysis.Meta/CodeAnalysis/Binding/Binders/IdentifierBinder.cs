@@ -47,7 +47,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
 
         protected override BoundNode CreateBoundNode()
         {
-            return new BoundIdentifier(this.Syntax, this.ContainingBoundNode); 
+            return new BoundIdentifier(this.Syntax, this.ParentBoundNode); 
         }
 
     }

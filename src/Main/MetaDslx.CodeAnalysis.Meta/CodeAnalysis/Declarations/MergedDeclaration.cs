@@ -159,6 +159,26 @@ namespace MetaDslx.CodeAnalysis.Declarations
             return StaticCast<Declaration>.From(this.Children);
         }
 
+        public SingleDeclaration GetSingleDeclaration(SyntaxNodeOrToken childSyntax)
+        {
+            if (childSyntax == null) return null;
+            foreach (var decl in _declarations)
+            {
+                if (decl.SyntaxReference.SyntaxTree == childSyntax.SyntaxTree && decl.SyntaxReference.Span == childSyntax.Span) return decl;
+            }
+            return null;
+        }
+
+        public SingleDeclaration GetSingleDeclaration(SyntaxReference childSyntaxReference)
+        {
+            if (childSyntaxReference == null) return null;
+            foreach (var decl in _declarations)
+            {
+                if (decl.SyntaxReference.SyntaxTree == childSyntaxReference.SyntaxTree && decl.SyntaxReference.Span == childSyntaxReference.Span) return decl;
+            }
+            return null;
+        }
+
         public static MergedDeclaration Create(ImmutableArray<SingleDeclaration> declarations)
         {
             return new MergedDeclaration(declarations);

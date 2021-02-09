@@ -68,12 +68,19 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             else return ImmutableArray.Create(value);
         }
 
-        public override void SetOrAddPropertyValue(object modelObject, object property, object value, DiagnosticBag diagnostics)
+        public override void SetOrAddPropertyValue(object modelObject, object property, object value, Location location, DiagnosticBag diagnostics)
         {
-            var mobj = (MutableObject)modelObject;
-            var mprop = (ModelProperty)property;
-            if (mprop.IsCollection) mobj.MAdd(mprop, value);
-            else mobj.MSet(mprop, value);
+            try
+            {
+                var mobj = (MutableObject)modelObject;
+                var mprop = (ModelProperty)property;
+                if (mprop.IsCollection) mobj.MAdd(mprop, value);
+                else mobj.MSet(mprop, value);
+            }
+            catch(ModelException ex)
+            {
+                diagnostics.Add(ModelErrorCode.ERR_Exception.ToDiagnostic(location, ex.ToString()));
+            }
         }
 
         public override bool ContainsObject(object model, object modelObject)

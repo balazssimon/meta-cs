@@ -230,7 +230,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                         {
                             diagnostics.AddRange(singleDeclaration.Diagnostics);
                         }
-                        if (ModelObject != null) _source.AssignNameProperty(diagnostics);
+                        if (ModelObject != null) _source.AssignPropertyValues(SymbolConstants.NameProperty, diagnostics);
                         AddDeclarationDiagnostics(diagnostics);
                         _state.NotePartComplete(CompletionPart.FinishCreated);
                         diagnostics.Free();
@@ -260,7 +260,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                     if (_state.NotePartComplete(CompletionPart.StartProperties))
                     {
                         var diagnostics = DiagnosticBag.GetInstance();
-                        if (ModelObject != null) _source.ComputeObjectProperties(diagnostics);
+                        if (ModelObject != null) _source.AssignPropertyValues(null, diagnostics);
                         AddSymbolDiagnostics(diagnostics);
                         _state.NotePartComplete(CompletionPart.FinishProperties);
                         diagnostics.Free();

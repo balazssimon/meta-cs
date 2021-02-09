@@ -99,7 +99,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             return new BinderPosition(this, GetBinder(this.Syntax), this.Syntax);
         }
 
-        protected BoundNode ContainingBoundNode => Next?.BoundNode ?? _compilation.GetBoundTree(Syntax)?.RootNode;
+        protected BoundNode ParentBoundNode => Next?.BoundNode ?? _compilation.GetBoundTree(Syntax)?.RootNode;
 
         internal protected BoundNode BoundNode => _boundNode.Value;
 
@@ -113,7 +113,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         private BoundNode GetOrCreateBoundNode()
         {
-            var parent = this.ContainingBoundNode;
+            var parent = this.ParentBoundNode;
             var result = parent?.GetChild(this.Syntax);
             if (result == null)
             {

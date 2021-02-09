@@ -32,9 +32,8 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
 
         protected override BoundNode CreateBoundNode()
         {
-            var symbol = SourceSymbol.GetInnermostNestedDeclaredSymbol(this.Syntax, this.ContainingDeclaration);
-            Debug.Assert(symbol != null);
-            return new BoundIdentifier(this.Syntax, this.ContainingBoundNode, symbol);
+            var symbols = SourceSymbol.GetInnermostNestedDeclaredSymbols(this.Syntax.GetReference(), this.ContainingDeclaration).Cast<DeclaredSymbol, Symbol>();
+            return new BoundSymbols(this.Syntax, this.ParentBoundNode, symbols);
         }
 
         public ImmutableArray<Symbol> DefinedSymbols => ((BoundSymbol)this.BoundNode).Symbols;

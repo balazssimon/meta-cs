@@ -1,4 +1,5 @@
 ﻿using MetaDslx.CodeAnalysis.Binding.Binders.Find;
+using MetaDslx.CodeAnalysis.Binding.BoundNodes;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
@@ -33,5 +34,9 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             return Language.SyntaxFacts.ExtractValue(this.Syntax);
         }
 
+        protected override BoundNode CreateBoundNode()
+        {
+            return new BoundValues(this.Syntax, this.ParentBoundNode, this.Values);
+        }
     }
 }

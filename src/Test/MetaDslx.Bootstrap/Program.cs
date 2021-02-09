@@ -181,7 +181,7 @@ namespace MetaDslx.Bootstrap
 
             foreach (var diag in compilation.GetDiagnostics())
             {
-                Console.WriteLine(diag.Location.SourceSpan);
+                //Console.WriteLine(diag.Location.SourceSpan);
                 Console.WriteLine(formatter.Format(diag));
             }
 

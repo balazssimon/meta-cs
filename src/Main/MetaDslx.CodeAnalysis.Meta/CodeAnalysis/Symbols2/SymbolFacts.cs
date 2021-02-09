@@ -181,7 +181,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public abstract object GetProperty(object modelObject, string propertyName);
         public abstract bool IsContainmentProperty(object property);
         public abstract IEnumerable<object> GetPropertyValues(object modelObject, object property);
-        public abstract void SetOrAddPropertyValue(object modelObject, object property, object value, DiagnosticBag diagnostics);
+        public abstract void SetOrAddPropertyValue(object modelObject, object property, object value, Location location, DiagnosticBag diagnostics);
 
         public virtual LanguageSymbolKind GetSymbolKind(object modelObject)
         {
