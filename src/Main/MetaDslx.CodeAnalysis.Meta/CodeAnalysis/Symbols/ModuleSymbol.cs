@@ -30,6 +30,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         public abstract NamespaceSymbol GlobalNamespace { get; }
 
+        public override ImmutableArray<Symbol> ChildSymbols => ImmutableArray.Create<Symbol>(GlobalNamespace);
+
         /// <summary>
         /// Returns the containing assembly. Modules are always directly contained by an assembly,
         /// so this property always returns the same as ContainingSymbol.
@@ -228,12 +230,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 }
                 return null;
             }
-        }
-
-        public virtual bool TryGetSymbol(IModelObject modelObject, out Symbol symbol)
-        {
-            symbol = null;
-            return false;
         }
 
         #region IModuleSymbol Members

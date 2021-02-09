@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MetaDslx.CodeAnalysis.Symbols
+namespace MetaDslx.CodeAnalysis.Binding.Binders.Find
 {
-    public interface IMetaErrorSymbol
+    public interface ISymbolBoundary
     {
     }
 }

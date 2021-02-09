@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using System.Threading;
 
@@ -77,6 +78,14 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         public string MetadataName => _symbol.MetadataName;
 
+        public IModelSourceSymbol SourceSymbol => (IModelSourceSymbol)_symbol;
+
+        public bool IsImplicitlyDeclared => _symbol.IsImplicitlyDeclared;
+
+        public Symbol ContainingSymbol => _symbol.ContainingSymbol;
+
+        public DeclaredSymbol ContainingDeclaration => _symbol.ContainingDeclaration;
+
         public IEnumerable<string> MemberNames
         {
             get { return this.Declaration.ChildNames; }
@@ -136,7 +145,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 {
                     if (childDeclaration.IsType && childDeclaration.Name != null)
                     {
-                        var t = new SourceNamedTypeSymbol(_symbol, childDeclaration, diagnostics);
+                        var t = _symbol.ChildSymbols.OfType<SourceNamedTypeSymbol>().FirstOrDefault(nts => nts.MergedDeclaration == childDeclaration);
                         this.CheckMemberNameDistinctFromType(t, diagnostics);
 
                         var key = (t.Name, t.MetadataName);
@@ -296,34 +305,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             return membersByName.ToImmutableAndFree().ToDictionaryWithImmutableArray(m => m.Name);
         }
 
-        public bool IsDefinedInSourceTree(SyntaxTree tree, TextSpan? definedWithinSpan, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            // Check if any namespace declaration block intersects with the given tree/span.
-            foreach (var declaration in this.Declaration.Declarations)
-            {
-                cancellationToken.ThrowIfCancellationRequested();
-
-                var declarationSyntaxRef = declaration.SyntaxReference;
-                if (declarationSyntaxRef.SyntaxTree != tree)
-                {
-                    continue;
-                }
-
-                if (!definedWithinSpan.HasValue)
-                {
-                    return true;
-                }
-
-                var syntax = declarationSyntaxRef.GetSyntax(cancellationToken);
-                if (syntax.FullSpan.IntersectsWith(definedWithinSpan.Value))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
         /// <summary>
         /// Merge (already ordered) members with other (already ordered) members.
         /// </summary>
@@ -408,51 +389,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             return builder.ToReadOnlyAndFree();
         }
 
-        protected virtual NamespaceSymbol BuildNamespaceSymbol(MergedDeclaration declaration, DiagnosticBag diagnostics)
-        {
-            Debug.Assert(declaration.IsNamespace);
-            return new SourceNamespaceSymbol((SourceModuleSymbol)_symbol.ContainingModule, _symbol, declaration, diagnostics);
-        }
-
-        protected virtual NamedTypeSymbol BuildTypeSymbol(MergedDeclaration declaration, DiagnosticBag diagnostics)
-        {
-            Debug.Assert(declaration.IsType);
-            if (declaration.Name != null) return BuildNamedTypeSymbol(declaration, diagnostics);
-            else return BuildAnonymousTypeSymbol(declaration, diagnostics);
-        }
-
-        protected virtual NamedTypeSymbol BuildNamedTypeSymbol(MergedDeclaration declaration, DiagnosticBag diagnostics)
-        {
-            Debug.Assert(declaration.IsType && declaration.Name != null);
-            return new SourceNamedTypeSymbol(_symbol, declaration, diagnostics);
-        }
-
-        protected virtual NamedTypeSymbol BuildAnonymousTypeSymbol(MergedDeclaration declaration, DiagnosticBag diagnostics)
-        {
-            Debug.Assert(declaration.IsType && declaration.Name == null);
-            return new SourceAnonymousTypeSymbol(_symbol, declaration, diagnostics);
-        }
-
-        protected virtual DeclaredSymbol BuildMemberSymbol(MergedDeclaration declaration, DiagnosticBag diagnostics)
-        {
-            Debug.Assert(!declaration.IsType, "Use BuildTypeSymbol to create type symbols.");
-            Debug.Assert(!declaration.IsNamespace, "Use BuildNamespaceSymbol to create namespace symbols.");
-            if (declaration.Name != null) return BuildNamedMemberSymbol(declaration, diagnostics);
-            else return BuildAnonymousMemberSymbol(declaration, diagnostics);
-        }
-
-        protected virtual DeclaredSymbol BuildNamedMemberSymbol(MergedDeclaration declaration, DiagnosticBag diagnostics)
-        {
-            return new SourceMemberSymbol(_symbol, declaration, diagnostics);
-        }
-
-        protected virtual DeclaredSymbol BuildAnonymousMemberSymbol(MergedDeclaration declaration, DiagnosticBag diagnostics)
-        {
-            return new SourceMemberSymbol(_symbol, declaration, diagnostics);
-        }
-
         private void AddTypeMembers(ArrayBuilder<NamedTypeSymbol> builder, DiagnosticBag diagnostics)
         {
+            var symbolFactory = SourceSymbol.SymbolFactory;
+            var objectFactory = _symbol.DeclaringCompilation.ObjectFactory;
+            Debug.Assert(_symbol.ChildSymbols.Length >= this.Declaration.Children.Length);
             foreach (var decl in this.Declaration.Children)
             {
                 if (_lazyMembers != null)
@@ -463,14 +404,18 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
                 if (decl.IsType)
                 {
-                    var symbol = BuildTypeSymbol(decl, diagnostics);
-                    builder.Add(symbol);
+                    var symbol = _symbol.ChildSymbols.OfType<SourceNamedTypeSymbol>().FirstOrDefault(nts => nts.MergedDeclaration == decl);
+                    Debug.Assert(symbol != null);
+                    if (symbol != null) builder.Add(symbol);
                 }
             }
         }
 
         private void AddNonTypeMembers(ArrayBuilder<DeclaredSymbol> builder, DiagnosticBag diagnostics)
         {
+            var symbolFactory = SourceSymbol.SymbolFactory;
+            var objectFactory = _symbol.DeclaringCompilation.ObjectFactory;
+            Debug.Assert(_symbol.ChildSymbols.Length >= this.Declaration.Children.Length);
             foreach (var decl in this.Declaration.Children)
             {
                 if (_lazyMembers != null)
@@ -481,16 +426,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
                 if (decl.IsType) continue;
 
-                if (decl.IsNamespace)
-                {
-                    var symbol = BuildNamespaceSymbol(decl, diagnostics);
-                    builder.Add(symbol);
-                }
-                else // Member
-                {
-                    var symbol = BuildMemberSymbol(decl, diagnostics);
-                    builder.Add(symbol);
-                }
+                var symbol = _symbol.ChildSymbols.OfType<DeclaredSymbol>().FirstOrDefault(ds => ds.MergedDeclaration == decl);
+                Debug.Assert(symbol != null);
+                if (symbol != null) builder.Add(symbol);
             }
         }
 
@@ -499,6 +437,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             Dictionary<string, ImmutableArray<DeclaredSymbol>> membersByName,
             DiagnosticBag diagnostics)
         {
+            var symbolFacts = _symbol.Language.SymbolFacts;
             //key and value will be the same object
             var symbolMap = new Dictionary<Symbol, Symbol>();
 
@@ -507,10 +446,14 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 symbolMap.Clear();
                 foreach (var symbol in membersByName[name])
                 {
+                    var modelSymbol = symbol as IModelSourceSymbol;
+                    var symbolType = symbolFacts.GetModelObjectType(modelSymbol.ModelObject);
                     Symbol prev;
                     if (symbolMap.TryGetValue(symbol, out prev))
                     {
-                        if (prev.ModelSymbolInfo == symbol.ModelSymbolInfo)
+                        var modelPrevSymbol = prev as IModelSourceSymbol;
+                        var prevType = symbolFacts.GetModelObjectType(modelPrevSymbol.ModelObject);
+                        if (prevType == symbolType)
                         {
                             diagnostics.Add(InternalErrorCode.ERR_DuplicateNameInClass, symbol.Locations[0], this, symbol.Name);
                         }

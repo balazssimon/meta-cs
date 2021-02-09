@@ -7,8 +7,9 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using MetaDslx.CodeAnalysis.Binding;
-using MetaDslx.CodeAnalysis.Binding.BoundNodes;
+using MetaDslx.CodeAnalysis.Binding.Binders;
 using MetaDslx.CodeAnalysis.Declarations;
+using MetaDslx.CodeAnalysis.Symbols.Metadata;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
@@ -17,52 +18,39 @@ using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Source
 {
-    public class SourceNamespaceSymbol : NamespaceSymbol
+    public class SourceNamespaceSymbol : ModelNamespaceSymbol, IModelSourceSymbol
     {
         private readonly SourceModuleSymbol _module;
-        private readonly Symbol _container;
+        private readonly SourceSymbol _source;
         private readonly MergedDeclaration _declaration;
         private readonly CompletionState _state;
-        private readonly MutableObjectBase _modelObject;
         private SourceDeclaration _sourceDeclaration;
+        private ImmutableArray<Symbol> _childSymbols;
+        private ImmutableArray<(CompletionPart start, CompletionPart finish)> _phaseBinders;
+        private DiagnosticBag _diagnostics;
 
         public SourceNamespaceSymbol(
             SourceModuleSymbol module, 
-            Symbol container,
-            MergedDeclaration declaration,
-            DiagnosticBag diagnostics)
+            Symbol containingSymbol,
+            object modelObject,
+            MergedDeclaration declaration)
+            : base(containingSymbol, modelObject)
         {
             Debug.Assert(declaration != null);
+            Debug.Assert(containingSymbol == module || modelObject != null);
             _module = module;
-            _container = container;
             _declaration = declaration;
-
-            if (declaration.Kind != null)
-            {
-                _modelObject = declaration.GetModelObject(container?.ModelObject as MutableObjectBase, module.ModelBuilder, diagnostics);
-                Debug.Assert(_modelObject != null);
-            }
-
-            foreach (var singleDeclaration in declaration.Declarations)
-            {
-                diagnostics.AddRange(singleDeclaration.Diagnostics);
-            }
+            _source = new SourceSymbol(this);
             _state = CompletionState.Create(module.Language);
         }
 
-        public override Language Language => _module.Language;
-
-        internal protected override MutableModel ModelBuilder => _module.ModelBuilder;
-
-        public override IModelObject ModelObject => _modelObject;
-
-        public override ModelObjectDescriptor ModelSymbolInfo => _declaration.Kind;
-
         public override MergedDeclaration MergedDeclaration => _declaration;
 
-        public override Symbol ContainingSymbol => _container;
+        public override ImmutableArray<Symbol> ChildSymbols => _childSymbols;
 
         public override AssemblySymbol ContainingAssembly => _module.ContainingAssembly;
+
+        public ImmutableArray<Diagnostic> Diagnostics => _diagnostics != null ? _diagnostics.ToReadOnly() : ImmutableArray<Diagnostic>.Empty;
 
         internal IEnumerable<Imports> GetBoundImportsMerged()
         {
@@ -75,8 +63,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 }
             }
         }
-
-        public override string Name => _declaration.Name;
 
         protected SourceDeclaration SourceDeclaration
         {
@@ -137,11 +123,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name, string metadataName)
         {
             return this.SourceDeclaration.GetTypeMembers(name, metadataName);
-        }
-
-        public override bool IsDefinedInSourceTree(SyntaxTree tree, TextSpan? definedWithinSpan, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return this.SourceDeclaration.IsDefinedInSourceTree(tree, definedWithinSpan, cancellationToken);
         }
 
         public override ImmutableArray<AttributeData> GetAttributes()
@@ -218,6 +199,16 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             }
         }
 
+        public BinderPosition<SymbolDefBinder> GetBinder(SyntaxReference syntax)
+        {
+            return _source.GetBinder(syntax);
+        }
+
+        public Symbol GetChildSymbol(SyntaxReference syntax)
+        {
+            return _source.GetChildSymbol(syntax);
+        }
+
         #region completion
 
         public sealed override bool RequiresCompletion
@@ -225,19 +216,64 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             get { return true; }
         }
 
-        public override void ForceComplete(SourceLocation locationOpt, CancellationToken cancellationToken)
+        public override void ForceComplete(CompletionPart completionPart, SourceLocation locationOpt, CancellationToken cancellationToken)
         {
+            if (completionPart != null && _state.HasComplete(completionPart)) return;
             while (true)
             {
                 cancellationToken.ThrowIfCancellationRequested();
                 var incompletePart = _state.NextIncompletePart;
-                if (incompletePart == CompletionPart.Attributes)
+                if (incompletePart == CompletionPart.StartCreated || incompletePart == CompletionPart.FinishCreated)
+                {
+                    if (_state.NotePartComplete(CompletionPart.StartCreated))
+                    {
+                        var diagnostics = DiagnosticBag.GetInstance();
+                        foreach (var singleDeclaration in _declaration.Declarations)
+                        {
+                            diagnostics.AddRange(singleDeclaration.Diagnostics);
+                        }
+                        if (ModelObject != null)
+                        {
+                            _source.AssignPropertyValues(SymbolConstants.NameProperty, diagnostics, cancellationToken);
+                        }
+                        AddDeclarationDiagnostics(diagnostics);
+                        _state.NotePartComplete(CompletionPart.FinishCreated);
+                        diagnostics.Free();
+                    }
+                }
+                else if (incompletePart == CompletionPart.Attributes)
                 {
                     GetAttributes();
+                }
+                else if (incompletePart == CompletionPart.StartChildrenCreated || incompletePart == CompletionPart.FinishChildrenCreated)
+                {
+                    if (_state.NotePartComplete(CompletionPart.StartChildrenCreated))
+                    {
+                        var diagnostics = DiagnosticBag.GetInstance();
+                        ImmutableInterlocked.InterlockedInitialize(ref _childSymbols, (ModelObject != null) ? _source.CreateChildSymbols(diagnostics, cancellationToken) : _source.CreateRootSymbols(diagnostics, cancellationToken));
+                        AddDeclarationDiagnostics(diagnostics);
+                        _state.NotePartComplete(CompletionPart.FinishChildrenCreated);
+                        diagnostics.Free();
+                    }
                 }
                 else if (incompletePart == CompletionPart.Members)
                 {
                     this.SourceDeclaration.GetMembersByName();
+                }
+                else if (incompletePart == CompletionPart.StartProperties || incompletePart == CompletionPart.FinishProperties)
+                {
+                    if (_state.NotePartComplete(CompletionPart.StartProperties))
+                    {
+                        var diagnostics = DiagnosticBag.GetInstance();
+                        if (ModelObject != null)
+                        {
+                            _source.AssignPropertyValues(null, diagnostics, cancellationToken);
+                            _phaseBinders = _source.CollectPhases();
+                        }
+                        AddSymbolDiagnostics(diagnostics);
+                        _state.NotePartComplete(CompletionPart.FinishProperties);
+                        diagnostics.Free();
+                    }
                 }
                 else if (incompletePart == CompletionPart.MembersCompleted)
                 {
@@ -304,11 +340,28 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 }
                 else
                 {
+                    if (!_phaseBinders.IsDefaultOrEmpty)
+                    {
+                        foreach (var phaseBinder in _phaseBinders)
+                        {
+                            if (incompletePart == phaseBinder.start || incompletePart == phaseBinder.finish)
+                            {
+                                if (_state.NotePartComplete(phaseBinder.start))
+                                {
+                                    var diagnostics = DiagnosticBag.GetInstance();
+                                    _source.ExecutePhases(phaseBinder.start, phaseBinder.finish, _diagnostics, cancellationToken);
+                                    _state.NotePartComplete(phaseBinder.finish);
+                                    diagnostics.Free();
+                                }
+                            }
+                        }
+                    }
                     // This assert will trigger if we forgot to handle any of the completion parts
                     Debug.Assert(!CompletionPart.NamespaceSymbolAll.Contains(incompletePart));
                     // any other values are completion parts intended for other kinds of symbols
                     _state.NotePartComplete(incompletePart);
                 }
+                if (completionPart != null && _state.HasComplete(completionPart)) return;
                 _state.SpinWaitComplete(incompletePart, cancellationToken);
             }
 
@@ -325,5 +378,16 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         }
 
         #endregion
+
+        private void AddSymbolDiagnostics(DiagnosticBag diagnostics)
+        {
+            if (!diagnostics.IsEmptyWithoutResolution)
+            {
+                LanguageCompilation compilation = this.DeclaringCompilation;
+                Debug.Assert(compilation != null);
+                if (_diagnostics == null) _diagnostics = new DiagnosticBag();
+                _diagnostics.AddRange(diagnostics);
+            }
+        }
     }
 }

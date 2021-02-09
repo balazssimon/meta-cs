@@ -17,8 +17,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
     /// </summary>
     public abstract class NonMissingModuleSymbol : ModuleSymbol
     {
-        internal abstract CSharpSymbolMap CSharpSymbolMap { get; }
-
         /// <summary>
         /// An array of <see cref="AssemblySymbol"/> objects corresponding to assemblies directly referenced by this module.
         /// </summary>

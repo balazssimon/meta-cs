@@ -53,7 +53,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
             }
         }
 
-        internal override CSharpSymbolMap CSharpSymbolMap
+        internal CSharpSymbolMap CSharpSymbolMap
         {
             get
             {
@@ -137,6 +137,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
                 return _underlyingAssembly.Locations;
             }
         }
+
+        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => _underlyingAssembly.DeclaringSyntaxReferences;
 
         internal override IEnumerable<ImmutableArray<byte>> GetInternalsVisibleToPublicKeys(string simpleName)
         {

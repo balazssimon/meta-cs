@@ -26,6 +26,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         bool INamespaceOrTypeSymbol.IsType => this.IsType;
 
+        public override ImmutableArray<Symbol> ChildSymbols => GetMembers().Cast<DeclaredSymbol, Symbol>();
+
         ImmutableArray<IDeclaredSymbol> INamespaceOrTypeSymbol.GetMembers()
         {
             return StaticCast<IDeclaredSymbol>.From(this.GetMembers());

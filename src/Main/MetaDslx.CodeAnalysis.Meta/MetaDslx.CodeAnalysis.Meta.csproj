@@ -14,7 +14,6 @@
     <MetaDslxMetaModelCoreNamespace>MetaDslx.Languages.Meta.Model</MetaDslxMetaModelCoreNamespace>
     <MetaDslxDisableMetaModelGenerator>false</MetaDslxDisableMetaModelGenerator>
     <MetaDslxDisableMetaGeneratorGenerator>false</MetaDslxDisableMetaGeneratorGenerator>
-    <IgnoredSymbolsFolder>CodeAnalysis\Symbols</IgnoredSymbolsFolder>
   </PropertyGroup>
 
   <ItemGroup>
@@ -48,12 +47,4 @@
     </MetaModel>
   </ItemGroup>
 
-  <ItemGroup>
-    <Antlr4Roslyn Remove="$(IgnoredSymbolsFolder)\**" />
-    <Compile Remove="$(IgnoredSymbolsFolder)\**" />
-    <EmbeddedResource Remove="$(IgnoredSymbolsFolder)\**" />
-    <MetaGenerator Remove="$(IgnoredSymbolsFolder)\**" />
-    <MetaModel Remove="$(IgnoredSymbolsFolder)\**" />
-    <None Remove="$(IgnoredSymbolsFolder)\**" />
-  </ItemGroup>
 </Project>

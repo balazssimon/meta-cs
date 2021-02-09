@@ -115,13 +115,10 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return (object)other != null && assembly.Equals(other.assembly);
         }
 
-        public override ImmutableArray<Location> Locations
-        {
-            get
-            {
-                return ImmutableArray<Location>.Empty;
-            }
-        }
+        public override ImmutableArray<Location> Locations => ImmutableArray<Location>.Empty;
+
+        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => ImmutableArray<SyntaxReference>.Empty;
+
 
         public override ICollection<string> NamespaceNames
         {

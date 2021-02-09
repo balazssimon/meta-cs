@@ -1,4 +1,6 @@
-﻿using MetaDslx.CodeAnalysis.Symbols.Source;
+﻿using MetaDslx.CodeAnalysis.Binding;
+using MetaDslx.CodeAnalysis.Symbols.Metadata;
+using MetaDslx.CodeAnalysis.Symbols.Source;
 using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
@@ -11,7 +13,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
     {
         public static string GetKindText(this Symbol symbol)
         {
-            return symbol.ModelSymbolInfo.ImmutableType.Name;
+            if (symbol is IModelSymbol ms && ms.ModelObject != null) return ms.ModelObject.GetType().Name;
+            else return symbol.Kind.ToString();
         }
 
         internal static TDestination EnsureLanguageSymbolOrNull<TSource, TDestination>(this TSource symbol, string paramName)
@@ -77,5 +80,12 @@ namespace MetaDslx.CodeAnalysis.Symbols
         }
 
         private static readonly Func<TypeSymbol, object, bool, bool> s_containsDynamicPredicate = (type, unused1, unused2) => type.TypeKind == LanguageTypeKind.Dynamic;
+
+        public static BinderPosition ToBinderPosition(this SyntaxReference reference, LanguageCompilation compilation)
+        {
+            var syntax = reference.Resolve();
+            var binder = compilation.GetBinder(syntax);
+            return new BinderPosition(binder, binder, syntax);
+        }
     }
 }

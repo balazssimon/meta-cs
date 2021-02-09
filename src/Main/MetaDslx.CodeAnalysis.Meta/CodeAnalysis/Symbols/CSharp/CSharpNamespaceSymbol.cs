@@ -12,10 +12,10 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
 
     public class CSharpNamespaceSymbol : NamespaceSymbol
     {
-        private NonMissingModuleSymbol _module;
+        private CSharpModuleSymbol _module;
         private CSharpSymbols.NamespaceSymbol _csharpSymbol;
 
-        internal CSharpNamespaceSymbol(NonMissingModuleSymbol module, CSharpSymbols.NamespaceSymbol csharpSymbol)
+        internal CSharpNamespaceSymbol(CSharpModuleSymbol module, CSharpSymbols.NamespaceSymbol csharpSymbol)
         {
             _module = module;
             _csharpSymbol = csharpSymbol;

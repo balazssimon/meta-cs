@@ -18,10 +18,10 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
     /// <summary>
     /// Represents implicit, script and submission classes.
     /// </summary>
-    public sealed class ImplicitNamedTypeSymbol : SourceMemberContainerTypeSymbol
+    public sealed class ImplicitNamedTypeSymbol : SourceNamedTypeSymbol
     {
-        internal ImplicitNamedTypeSymbol(NamespaceOrTypeSymbol containingSymbol, MergedDeclaration declaration, DiagnosticBag diagnostics)
-            : base(containingSymbol, declaration, diagnostics)
+        internal ImplicitNamedTypeSymbol(NamespaceOrTypeSymbol containingSymbol, object modelObject, MergedDeclaration declaration)
+            : base(containingSymbol, modelObject, declaration)
         {
             Debug.Assert(declaration.IsImplicit || declaration.IsSubmission || declaration.IsScript);
         }

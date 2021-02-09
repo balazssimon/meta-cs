@@ -2156,7 +2156,7 @@ namespace MetaDslx.CodeAnalysis
 
         public void ForceComplete(CancellationToken cancellationToken = default)
         {
-            this.GlobalNamespace.ForceComplete(null, cancellationToken);
+            this.GlobalNamespace.ForceComplete(null, null, cancellationToken);
         }
 
         private static bool IsDefinedOrImplementedInSourceTree(DeclaredSymbol symbol, SyntaxTree tree, TextSpan? span)
@@ -2225,7 +2225,7 @@ namespace MetaDslx.CodeAnalysis
                     new SourceLocation(root);
             }
 
-            Assembly.ForceComplete(location, cancellationToken);
+            Assembly.ForceComplete(null, location, cancellationToken);
 
             if (syntaxTree is null)
             {

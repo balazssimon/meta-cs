@@ -111,12 +111,13 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         /// </summary>
         private ImmutableArray<Diagnostic> _unusedFieldWarnings;
 
-        private MutableModelGroup _modelGroupBuilder;
+        private ImmutableArray<object> _models;
 
         internal SourceAssemblySymbol(
             LanguageCompilation compilation,
             string assemblySimpleName,
             string moduleName,
+            CSharpSymbolMap csharpSymbolMap,
             ImmutableArray<PEModule> netModules,
             ImmutableArray<CustomReference> customReferences)
         {
@@ -128,12 +129,12 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             _compilation = compilation;
             _language = _compilation.Language;
             _assemblySimpleName = assemblySimpleName;
-            _modelGroupBuilder = new MutableModelGroup();
-            var modelBuilder = _modelGroupBuilder.CreateModel(moduleName);
 
+            ArrayBuilder<object> modelBuilder0 = new ArrayBuilder<object>(1 + netModules.Length);
             ArrayBuilder<ModuleSymbol> moduleBuilder = new ArrayBuilder<ModuleSymbol>(1 + netModules.Length);
 
-            moduleBuilder.Add(new SourceModuleSymbol(this, modelBuilder, compilation.Declarations, moduleName));
+            var sourceModule = new SourceModuleSymbol(this, compilation.Declarations, moduleName);
+            moduleBuilder.Add(sourceModule);
 
             var importOptions = (compilation.Options.MetadataImportOptions == MetadataImportOptions.All) ?
                 MetadataImportOptions.All : MetadataImportOptions.Internal;
@@ -143,7 +144,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 foreach (PEModule netModule in netModules)
                 {
                     var moduleSymbol = new CSharpModuleSymbol(this, new CSharpSymbols.Metadata.PE.PEModuleSymbol(compilation.CSharpCompilationForReferenceManager.SourceAssembly, netModule, importOptions, moduleBuilder.Count), moduleBuilder.Count);
-                    moduleBuilder.Add(CSharpSymbolMap.RegisterModuleSymbol(moduleSymbol));
+                    moduleBuilder.Add(csharpSymbolMap.RegisterModuleSymbol(moduleSymbol));
                     // SetReferences will be called later by the ReferenceManager (in CreateSourceAssemblyFullBind for 
                     // a fresh manager, in CreateSourceAssemblyReuseData for a reused one).
                 }
@@ -158,14 +159,12 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                     if (metadata is ModelMetadata modelMetadata)
                     {
                         var model = modelMetadata.Model;
-                        moduleBuilder.Add(new MetaModuleSymbol(this, ImmutableArray.Create(model), moduleBuilder.Count));
-                        _modelGroupBuilder.AddReference(model);
+                        moduleBuilder.Add(new ModelModuleSymbol(this, model, moduleBuilder.Count));
                     }
                     if (metadata is ModelGroupMetadata modelGroupMetadata)
                     {
                         var modelGroup = modelGroupMetadata.ModelGroup;
-                        moduleBuilder.Add(new MetaModuleSymbol(this, modelGroup, moduleBuilder.Count));
-                        _modelGroupBuilder.AddReference(modelGroup);
+                        moduleBuilder.Add(new ModelModuleSymbol(this, modelGroup, moduleBuilder.Count));
                     }
                 }
             }
@@ -190,17 +189,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         public override Language Language => _language;
 
-        internal protected MutableModelGroup ModelGroupBuilder => _modelGroupBuilder;
-
-        internal protected override MutableModel ModelBuilder => this.SourceModule.ModelBuilder;
-
-        internal override CSharpSymbolMap CSharpSymbolMap
-        {
-            get
-            {
-                return this.SourceModule.CSharpSymbolMap;
-            }
-        }
+        public object Model => SourceModule.Model;
 
         /// <remarks>
         /// This override is essential - it's a base case of the recursive definition.
@@ -612,6 +601,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             }
         }
 
+        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => ImmutableArray<SyntaxReference>.Empty;
+
         private void ValidateAttributeSemantics(DiagnosticBag diagnostics)
         {
             //diagnostics that come from computing the public key.
@@ -758,8 +749,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             return _state.HasComplete(part);
         }
 
-        public override void ForceComplete(SourceLocation locationOpt, CancellationToken cancellationToken)
+        public override void ForceComplete(CompletionPart completionPart, SourceLocation locationOpt, CancellationToken cancellationToken)
         {
+            if (completionPart != null && _state.HasComplete(completionPart)) return;
             while (true)
             {
                 cancellationToken.ThrowIfCancellationRequested();
@@ -782,7 +774,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 }
                 else if (incompletePart == CompletionPart.Module)
                 {
-                    SourceModule.ForceComplete(locationOpt, cancellationToken);
+                    SourceModule.ForceComplete(null, locationOpt, cancellationToken);
                     if (SourceModule.HasComplete(CompletionPart.MembersCompleted))
                     {
                         _state.NotePartComplete(CompletionPart.Module);
@@ -813,6 +805,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                     _state.NotePartComplete(incompletePart);
                 }
 
+                if (completionPart != null && _state.HasComplete(completionPart)) return;
                 _state.SpinWaitComplete(incompletePart, cancellationToken);
             }
         }
@@ -1566,7 +1559,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         internal void NoteSymbolAccess(DeclaredSymbol symbol, bool read, bool write)
         {
-            var container = symbol.ContainingSymbol as SourceMemberContainerTypeSymbol;
+            var container = symbol.ContainingSymbol as SourceNamedTypeSymbol;
             if ((object)container == null)
             {
                 // field is not in source.
@@ -1622,7 +1615,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             if (_unusedFieldWarnings.IsDefault)
             {
                 //Our maps of unread and unassigned fields won't be done until the assembly is complete.
-                this.ForceComplete(locationOpt: null, cancellationToken: cancellationToken);
+                this.ForceComplete(completionPart: null, locationOpt: null, cancellationToken: cancellationToken);
 
                 Debug.Assert(this.HasComplete(CompletionPart.Module),
                     "Don't consume unused field information if there are still types to be processed.");
@@ -1801,33 +1794,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         }
 
         public override AssemblyMetadata GetMetadata() => null;
-
-        public bool TryGetSymbol(IModelObject modelObject, out Symbol symbol)
-        {
-            if (modelObject == null)
-            {
-                symbol = null;
-                return false;
-            }
-            foreach (var module in _modules)
-            {
-                if (module.TryGetSymbol(modelObject, out symbol))
-                {
-                    return true;
-                }
-            }
-            symbol = null;
-            return false;
-        }
-
-        public Symbol GetSymbol(IModelObject modelObject)
-        {
-            if (this.TryGetSymbol(modelObject, out Symbol symbol))
-            {
-                return symbol;
-            }
-            return null;
-        }
 
         Compilation ISourceAssemblySymbol.Compilation => _compilation;
     }

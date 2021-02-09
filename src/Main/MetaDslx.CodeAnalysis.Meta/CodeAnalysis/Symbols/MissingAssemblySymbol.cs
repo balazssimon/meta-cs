@@ -104,13 +104,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return identity.Equals(other.Identity);
         }
 
-        public override ImmutableArray<Location> Locations
-        {
-            get
-            {
-                return ImmutableArray<Location>.Empty;
-            }
-        }
+        public override ImmutableArray<Location> Locations => ImmutableArray<Location>.Empty;
+
+        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => ImmutableArray<SyntaxReference>.Empty;
 
         internal override void SetLinkedReferencedAssemblies(ImmutableArray<AssemblySymbol> assemblies)
         {

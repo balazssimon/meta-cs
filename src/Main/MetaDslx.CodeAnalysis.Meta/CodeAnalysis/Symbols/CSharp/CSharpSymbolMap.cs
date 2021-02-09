@@ -17,12 +17,16 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
 
         private ConditionalWeakTable<CSharpSymbol, Symbol> map = new ConditionalWeakTable<CSharpSymbol, Symbol>();
 
-        private NonMissingModuleSymbol _module;
+        private CSharpModuleSymbol _module;
 
-        public CSharpSymbolMap(NonMissingModuleSymbol module)
+        public CSharpSymbolMap(CSharpModuleSymbol module)
         {
             if (module == null) throw new ArgumentNullException(nameof(module));
             _module = module;
+        }
+
+        public CSharpSymbolMap()
+        {
         }
 
         public static bool TryGetAssemblySymbol(CSharpSymbols.AssemblySymbol csharpSymbol, out CSharpAssemblySymbol symbol)
@@ -149,6 +153,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
 
         public NamespaceSymbol GetNamespaceSymbol(CSharpSymbols.NamespaceSymbol csharpSymbol)
         {
+            if (_module == null) return null;
             return GetSymbol(csharpSymbol, cs => new CSharpNamespaceSymbol(_module, cs));
         }
 
@@ -159,6 +164,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
 
         public NamedTypeSymbol GetNamedTypeSymbol(CSharpSymbols.NamedTypeSymbol csharpSymbol)
         {
+            if (_module == null) return null;
             return GetSymbol(csharpSymbol, cs => new CSharpNamedTypeSymbol(_module, cs));
         }
 

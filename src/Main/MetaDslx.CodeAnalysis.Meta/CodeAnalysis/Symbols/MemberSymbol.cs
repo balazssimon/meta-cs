@@ -11,6 +11,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
 {
     public abstract class MemberSymbol : DeclaredSymbol, IMetaMemberSymbol
     {
+        public override ImmutableArray<Symbol> ChildSymbols => GetMembers().Cast<DeclaredSymbol, Symbol>();
+
         public virtual bool IsImplementableMember => !this.IsStatic;
 
         /// <summary>
@@ -107,7 +109,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public virtual bool CanOverrideOrHide(MemberSymbol other)
         {
             if ((object)other == null) return false;
-            return this.Kind == other.Kind && this.ModelSymbolInfo == other.ModelSymbolInfo;
+            return this.Kind == other.Kind;
         }
 
         /// <summary>
@@ -184,7 +186,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
             {
                 bool unused;
                 FindOverriddenOrHiddenMembersInType(
-                    this,
                     isFromSomeCompilation,
                     containingType,
                     currType,
@@ -207,7 +208,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <summary>
         /// Look for overridden or hidden members in a specific type.
         /// </summary>
-        /// <param name="member">Member that is hiding or overriding.</param>
         /// <param name="memberIsFromSomeCompilation">True if member is from the current compilation.</param>
         /// <param name="memberContainingType">The type that contains member (member.ContainingType).</param>
         /// <param name="currType">The type to search.</param>
@@ -223,8 +223,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// 
         /// In incorrect or imported code, it is possible that both currTypeBestMatch and hiddenBuilder will be populated.
         /// </remarks>
-        private static void FindOverriddenOrHiddenMembersInType(
-            DeclaredSymbol member,
+        protected virtual void FindOverriddenOrHiddenMembersInType(
             bool memberIsFromSomeCompilation,
             NamedTypeSymbol memberContainingType,
             NamedTypeSymbol currType,
@@ -237,9 +236,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
             hiddenBuilder = null;
 
             bool currTypeHasExactMatch = false;
-            LanguageSymbolKind memberKind = member.Kind;
+            LanguageSymbolKind memberKind = this.Kind;
 
-            foreach (DeclaredSymbol otherMember in currType.GetMembers(member.Name))
+            foreach (DeclaredSymbol otherMember in currType.GetMembers(this.Name))
             {
                 if (!IsOverriddenSymbolAccessible(otherMember, memberContainingType))
                 {
@@ -251,7 +250,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 }
                 else if (!currTypeHasExactMatch)
                 {
-                    if (MatchesOverride(member, otherMember))
+                    if (this.MatchesOverride(otherMember))
                     {
                         currTypeHasExactMatch = true;
                         currTypeBestMatch = otherMember;
@@ -405,9 +404,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
             Debug.Assert((object)representativeMember != null);
         }
 
-        private static bool MatchesOverride(DeclaredSymbol member, DeclaredSymbol otherMember)
+        protected virtual bool MatchesOverride(DeclaredSymbol otherMember)
         {
-            return member.Kind == otherMember.Kind && member.ModelSymbolInfo == otherMember.ModelSymbolInfo && member.Name == otherMember.Name;
+            return this.Kind == otherMember.Kind && this.Name == otherMember.Name;
         }
 
         /// <remarks>

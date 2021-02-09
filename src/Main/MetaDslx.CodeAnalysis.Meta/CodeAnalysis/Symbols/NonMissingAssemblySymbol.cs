@@ -18,8 +18,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
     /// </summary>
     public abstract class NonMissingAssemblySymbol : AssemblySymbol
     {
-        internal abstract CSharpSymbolMap CSharpSymbolMap { get; }
-
         /// <summary>
         /// This is a cache similar to the one used by MetaImport::GetTypeByName
         /// in native compiler. The difference is that native compiler pre-populates 

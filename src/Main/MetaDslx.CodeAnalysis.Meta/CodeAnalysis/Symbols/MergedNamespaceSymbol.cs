@@ -115,12 +115,12 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return null;
         }
 
-        public override void ForceComplete(SourceLocation locationOpt, CancellationToken cancellationToken)
+        public override void ForceComplete(CompletionPart completionPart, SourceLocation locationOpt, CancellationToken cancellationToken)
         {
             foreach (var part in _namespacesToMerge)
             {
                 cancellationToken.ThrowIfCancellationRequested();
-                part.ForceComplete(locationOpt, cancellationToken);
+                part.ForceComplete(completionPart, locationOpt, cancellationToken);
             }
         }
 
@@ -191,8 +191,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
             return members.ToImmutableAndFree();
         }
-
-        public override ModelObjectDescriptor ModelSymbolInfo => _namespacesToMerge[0].ModelSymbolInfo;
 
         public override string Name
         {

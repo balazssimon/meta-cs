@@ -46,7 +46,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
 
         internal CSharpSymbols.ModuleSymbol CSharpModule => _underlyingModule;
 
-        internal override CSharpSymbolMap CSharpSymbolMap => _csharpSymbolMap;
+        internal CSharpSymbolMap CSharpSymbolMap => _csharpSymbolMap;
 
         /// <summary>
         /// Owning <see cref="AssemblySymbol"/>.
@@ -158,6 +158,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
                 return _underlyingModule.Locations;
             }
         }
+
+        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => _underlyingModule.DeclaringSyntaxReferences;
 
         /// <summary>
         /// A helper method for ReferenceManager to set AssemblySymbols for assemblies 

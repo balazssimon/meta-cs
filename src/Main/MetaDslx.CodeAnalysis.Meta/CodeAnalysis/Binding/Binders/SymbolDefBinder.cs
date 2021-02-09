@@ -15,7 +15,7 @@ using MetaDslx.CodeAnalysis.Binding.BoundNodes;
 
 namespace MetaDslx.CodeAnalysis.Binding.Binders
 {
-    public class SymbolDefBinder : ValueBinder, IPropertyBoundary
+    public class SymbolDefBinder : ValueBinder, ISymbolBoundary
 
     {
         private readonly Type _type;

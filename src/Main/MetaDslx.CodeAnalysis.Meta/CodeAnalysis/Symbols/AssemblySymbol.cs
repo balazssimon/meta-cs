@@ -74,6 +74,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
         }
 
+        public override ImmutableArray<Symbol> ChildSymbols => Modules.Cast<ModuleSymbol, Symbol>();
+
         /// <summary>
         /// Gets the identity of this assembly.
         /// </summary>

@@ -17,6 +17,11 @@ namespace MetaDslx.CodeAnalysis.Binding
             return new FindSymbolDef(origin, symbol).FindOne(includeSelf: true);
         }
 
+        public static ImmutableArray<BinderPosition<PhaseBinder>> FindPhaseBinders(BinderPosition<SymbolDefBinder> symbolDefBinder, CompletionPart startPhase, CompletionPart finishPhase)
+        {
+            return new FindPhases(symbolDefBinder, startPhase, finishPhase).FindAll();
+        }
+
         public static ImmutableArray<BinderPosition<PropertyBinder>> FindPropertyBinders(BinderPosition<SymbolDefBinder> symbolDefBinder)
         {
             return new FindProperties(symbolDefBinder).FindAll();

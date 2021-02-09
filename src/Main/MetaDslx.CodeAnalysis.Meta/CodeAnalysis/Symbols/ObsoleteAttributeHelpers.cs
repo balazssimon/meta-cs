@@ -76,6 +76,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         internal static ObsoleteDiagnosticKind GetObsoleteDiagnosticKind(Symbol symbol, Symbol containingMember, bool forceComplete = false)
         {
+            if (symbol == null) return ObsoleteDiagnosticKind.NotObsolete;
             switch (symbol.ObsoleteKind)
             {
                 case ObsoleteAttributeKind.None:

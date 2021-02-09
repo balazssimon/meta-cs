@@ -18,7 +18,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders.Find
 
         public override bool IsSearchBoundary(Binder binder)
         {
-            return binder is IPropertyBoundary;
+            return binder is ISymbolBoundary;
         }
     }
 }

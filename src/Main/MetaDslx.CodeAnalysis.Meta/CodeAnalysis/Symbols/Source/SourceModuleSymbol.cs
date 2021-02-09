@@ -16,7 +16,7 @@ using System.Threading;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Source
 {
-    public class SourceModuleSymbol : NonMissingModuleSymbol
+    public class SourceModuleSymbol : ModelModuleSymbol
     {
         /// <summary>
         /// Owning assembly.
@@ -38,34 +38,36 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         private NamespaceSymbol _globalNamespace;
 
         private bool _hasBadAttributes;
-
-        private MutableModel _modelBuilder;
-
-        private CSharpSymbolMap _csharpSymbolMap;
+        private object _model;
 
         internal SourceModuleSymbol(
             SourceAssemblySymbol assemblySymbol,
-            MutableModel modelBuilder,
             DeclarationTable declarations,
             string moduleName)
+            : base(assemblySymbol, null, 0)
         {
             Debug.Assert((object)assemblySymbol != null);
 
             _assemblySymbol = assemblySymbol;
-            _modelBuilder = modelBuilder;
             _sources = declarations;
             _name = moduleName;
-
-            _csharpSymbolMap = new CSharpSymbolMap(this);
 
             _state = CompletionState.Create(assemblySymbol.Language);
         }
 
+        public override object Model
+        {
+            get
+            {
+                if (_model == null)
+                {
+                    Interlocked.CompareExchange(ref _model, DeclaringCompilation.ObjectFactory.Model, null);
+                }
+                return _model;
+            }
+        }
+
         public override Language Language => _assemblySymbol.Language;
-
-        internal override CSharpSymbolMap CSharpSymbolMap => _csharpSymbolMap;
-
-        internal protected override MutableModel ModelBuilder => _modelBuilder;
 
         internal void RecordPresenceOfBadAttributes()
         {
@@ -201,11 +203,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             {
                 if ((object)_globalNamespace == null)
                 {
-                    var diagnostics = DiagnosticBag.GetInstance();
-                    var globalNS = new SourceNamespaceSymbol(
-                        this, this, DeclaringCompilation.MergedRootDeclaration, diagnostics);
-                    Debug.Assert(diagnostics.IsEmptyWithoutResolution);
-                    diagnostics.Free();
+                    Debug.Assert(!DeclaringCompilation.MergedRootDeclaration.HasDiagnostics);
+                    var globalNS = new SourceNamespaceSymbol(this, this, null, DeclaringCompilation.MergedRootDeclaration);
                     Interlocked.CompareExchange(ref _globalNamespace, globalNS, null);
                 }
 
@@ -223,8 +222,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             return _state.HasComplete(part);
         }
 
-        public override void ForceComplete(SourceLocation locationOpt, CancellationToken cancellationToken)
+        public override void ForceComplete(CompletionPart completionPart, SourceLocation locationOpt, CancellationToken cancellationToken)
         {
+            if (completionPart != null && _state.HasComplete(completionPart)) return;
             while (true)
             {
                 cancellationToken.ThrowIfCancellationRequested();
@@ -267,7 +267,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 }
                 else if (incompletePart == CompletionPart.MembersCompleted)
                 {
-                    this.GlobalNamespace.ForceComplete(locationOpt, cancellationToken);
+                    this.GlobalNamespace.ForceComplete(null, locationOpt, cancellationToken);
 
                     if (this.GlobalNamespace.HasComplete(CompletionPart.MembersCompleted))
                     {
@@ -288,6 +288,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                     // any other values are completion parts intended for other kinds of symbols
                     _state.NotePartComplete(incompletePart);
                 }
+                if (completionPart != null && _state.HasComplete(completionPart)) return;
                 _state.SpinWaitComplete(incompletePart, cancellationToken);
             }
         }
@@ -463,10 +464,5 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             return null;
         }
 
-        public override bool TryGetSymbol(IModelObject modelObject, out Symbol symbol)
-        {
-            symbol = null;
-            return false;
-        }
     }
 }

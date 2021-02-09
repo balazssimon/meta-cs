@@ -1263,7 +1263,7 @@ namespace MetaDslx.CodeAnalysis
             var binder = this.GetEnclosingBinder(position);
             if (binder != null)
             {
-                var bnode = binder.Bind(expression) as BoundSymbol;
+                var bnode = binder.Bind(expression, default) as BoundSymbol;
 
                 if (bnode != null && !cdestination.IsErrorType())
                 {
@@ -1314,7 +1314,7 @@ namespace MetaDslx.CodeAnalysis
             var binder = this.GetEnclosingBinder(position);
             if (binder != null)
             {
-                var bnode = binder.Bind(expression) as BoundSymbol;
+                var bnode = binder.Bind(expression, default) as BoundSymbol;
 
                 if (bnode != null && !destination.IsErrorType())
                 {
@@ -1485,7 +1485,7 @@ namespace MetaDslx.CodeAnalysis
         {
             if (node == null) throw new ArgumentNullException(nameof(node));
             var syntaxNode = (LanguageSyntaxNode)node;
-            var boundNode = this.Compilation.GetBinder(syntaxNode).Bind(syntaxNode) as BoundSymbol;
+            var boundNode = this.Compilation.GetBinder(syntaxNode).Bind(syntaxNode, cancellationToken) as BoundSymbol;
             if (boundNode != null)
             {
                 return new SymbolInfo(boundNode?.Symbols.FirstOrDefault());
@@ -1497,7 +1497,7 @@ namespace MetaDslx.CodeAnalysis
         {
             if (node == null) throw new ArgumentNullException(nameof(node));
             var syntaxNode = (LanguageSyntaxNode)node;
-            var boundNode = this.Compilation.GetBinder(syntaxNode).Bind(syntaxNode) as BoundSymbol;
+            var boundNode = this.Compilation.GetBinder(syntaxNode).Bind(syntaxNode, cancellationToken) as BoundSymbol;
             if (boundNode?.Symbols.FirstOrDefault() is TypeSymbol typeSymbol)
             {
                 return new LanguageTypeInfo(typeSymbol, typeSymbol, Conversion.NoConversion);

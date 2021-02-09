@@ -128,67 +128,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
         {
             get
             {
-                return ModelSymbolInfo?.HasName ?? false;
+                return !string.IsNullOrEmpty(Name);
             }
-        }
-
-        /// <summary>
-        /// <para>
-        /// Get the syntax node(s) where this symbol was declared in source. Some symbols (for
-        /// example, partial classes) may be defined in more than one location. This property should
-        /// return one or more syntax nodes only if the symbol was declared in source code and also
-        /// was not implicitly declared (see the <see cref="IsImplicitlyDeclared"/> property). 
-        /// </para>
-        /// <para>
-        /// Note that for namespace symbol, the declaring syntax might be declaring a nested
-        /// namespace. For example, the declaring syntax node for N1 in "namespace N1.N2 {...}" is
-        /// the entire <see cref="NamespaceDeclarationSyntax"/> for N1.N2. For the global namespace, the declaring
-        /// syntax will be the <see cref="CompilationUnitSyntax"/>.
-        /// </para>
-        /// </summary>
-        /// <returns>
-        /// The syntax node(s) that declared the symbol. If the symbol was declared in metadata or
-        /// was implicitly declared, returns an empty read-only array.
-        /// </returns>
-        /// <remarks>
-        /// To go the opposite direction (from syntax node to symbol), see <see
-        /// cref="CSharpSemanticModel.GetDeclaredSymbol(MemberDeclarationSyntax, CancellationToken)"/>.
-        /// </remarks>
-        public abstract ImmutableArray<SyntaxReference> DeclaringSyntaxReferences { get; }
-
-        /// <summary>
-        /// Helper for implementing <see cref="DeclaringSyntaxReferences"/> for derived classes that store a location but not a 
-        /// <see cref="CSharpSyntaxNode"/> or <see cref="SyntaxReference"/>.
-        /// </summary>
-        internal static ImmutableArray<SyntaxReference> GetDeclaringSyntaxReferenceHelper<TNode>(ImmutableArray<Location> locations)
-            where TNode : LanguageSyntaxNode
-        {
-            if (locations.IsEmpty)
-            {
-                return ImmutableArray<SyntaxReference>.Empty;
-            }
-
-            ArrayBuilder<SyntaxReference> builder = ArrayBuilder<SyntaxReference>.GetInstance();
-            foreach (Location location in locations)
-            {
-                // Location may be null. See https://github.com/dotnet/roslyn/issues/28862.
-                if (location == null)
-                {
-                    continue;
-                }
-                if (location.IsInSource)
-                {
-                    SyntaxToken token = (SyntaxToken)location.SourceTree.GetRoot().FindToken(location.SourceSpan.Start);
-                    if (token.GetKind() != SyntaxKind.None)
-                    {
-                        LanguageSyntaxNode node = token.Parent.FirstAncestorOrSelf<TNode>();
-                        if (node != null)
-                            builder.Add(node.GetReference());
-                    }
-                }
-            }
-
-            return builder.ToImmutableAndFree();
         }
 
         /// <summary>
@@ -196,7 +137,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// accessibility declared on them, returns <see cref="Accessibility.NotApplicable"/>.
         /// </summary>
         public virtual Accessibility DeclaredAccessibility => Accessibility.Public;
-
 
         /// <summary>
         /// Returns true if this symbol is "static"; i.e., declared with the <c>static</c> modifier or
@@ -289,7 +229,10 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         /// <returns>An ImmutableArray containing all the members of this symbol with the given name. If there are
         /// no members with this name, returns an empty ImmutableArray. Never returns null.</returns>
-        public abstract ImmutableArray<DeclaredSymbol> GetMembers(string name);
+        public virtual ImmutableArray<DeclaredSymbol> GetMembers(string name)
+        {
+            return GetMembers().WhereAsArray(m => m.Name == name);
+        }
 
         /// <summary>
         /// Get all the members of this symbol that are types that have a particular name and arity
@@ -330,7 +273,12 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <returns>An ImmutableArray containing all the types that are members of this symbol with the given name.
         /// If this symbol has no type members with this name,
         /// returns an empty ImmutableArray. Never returns null.</returns>
-        public abstract ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name);
+        public virtual ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name)
+        {
+            // default implementation does a post-filter. We can override this if its a performance burden, but 
+            // experience is that it won't be.
+            return GetTypeMembers().WhereAsArray(t => t.Name == name);
+        }
 
         /// <summary>
         /// Get all the members of this symbol that are types that have a particular name and arity
@@ -395,7 +343,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public virtual bool IsDefinedInSourceTree(SyntaxTree tree, TextSpan? definedWithinSpan, CancellationToken cancellationToken = default(CancellationToken))
         {
             var declaringReferences = this.DeclaringSyntaxReferences;
-            var container = this.ContainingSymbol as DeclaredSymbol;
+            var container = this.ContainingDeclaration;
             if (this.IsImplicitlyDeclared && declaringReferences.Length == 0 && container != null)
             {
                 return container.IsDefinedInSourceTree(tree, definedWithinSpan, cancellationToken);
@@ -420,7 +368,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             if (locationOpt == null || member.IsDefinedInSourceTree(locationOpt.SourceTree, locationOpt.SourceSpan, cancellationToken))
             {
                 cancellationToken.ThrowIfCancellationRequested();
-                member.ForceComplete(locationOpt, cancellationToken);
+                member.ForceComplete(null, locationOpt, cancellationToken);
             }
         }
 

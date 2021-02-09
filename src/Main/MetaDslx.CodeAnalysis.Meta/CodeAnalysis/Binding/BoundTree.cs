@@ -208,7 +208,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         public virtual BoundNode GetBoundRoot()
         {
             // TODO:MetaDslx
-            return _rootBinder.Bind(_rootSyntax);
+            return _rootBinder.Bind(_rootSyntax, default);
         }
 
         // We might not have actually been given a bindable expression or statement; the caller can

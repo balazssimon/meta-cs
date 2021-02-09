@@ -13,11 +13,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
 
     public class CSharpNamedTypeSymbol : NamedTypeSymbol
     {
-        private NonMissingModuleSymbol _module;
+        private CSharpModuleSymbol _module;
         private CSharpSymbols.NamedTypeSymbol _csharpSymbol;
         private ImmutableArray<NamedTypeSymbol> _lazyBaseTypes;
 
-        internal CSharpNamedTypeSymbol(NonMissingModuleSymbol module, CSharpSymbols.NamedTypeSymbol csharpSymbol)
+        internal CSharpNamedTypeSymbol(CSharpModuleSymbol module, CSharpSymbols.NamedTypeSymbol csharpSymbol)
         {
             _module = module;
             _csharpSymbol = csharpSymbol;

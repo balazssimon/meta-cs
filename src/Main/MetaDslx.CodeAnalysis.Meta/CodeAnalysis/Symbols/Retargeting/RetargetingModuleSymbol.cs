@@ -87,8 +87,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
             _createRetargetingMember = CreateRetargetingMember;
         }
 
-        internal override CSharpSymbolMap CSharpSymbolMap => _underlyingModule.CSharpSymbolMap;
-
         public override int Ordinal
         {
             get
@@ -164,6 +162,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
                 return _underlyingModule.Locations;
             }
         }
+
+        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => _underlyingModule.DeclaringSyntaxReferences;
 
         /// <summary>
         /// A helper method for ReferenceManager to set AssemblySymbols for assemblies 
@@ -282,9 +282,5 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
             return _underlyingModule.GetMetadata();
         }
 
-        public override bool TryGetSymbol(IModelObject modelObject, out Symbol symbol)
-        {
-            return _underlyingModule.TryGetSymbol(modelObject, out symbol);
-        }
     }
 }

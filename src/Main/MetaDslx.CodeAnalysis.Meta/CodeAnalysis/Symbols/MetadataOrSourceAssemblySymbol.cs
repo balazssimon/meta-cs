@@ -56,17 +56,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
                         result = null;
                     }
                 }
-                else if (key is IModelObject metaSymbol)
-                {
-                    foreach (var module in this.Modules)
-                    {
-                        if (module.TryGetSymbol(metaSymbol, out Symbol symbol) && symbol is DeclaredSymbol ds)
-                        {
-                            result = ds;
-                            break;
-                        }
-                    }
-                }
                 if (result == null)
                 {
                     foreach (var module in this.Modules)

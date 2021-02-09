@@ -19,11 +19,15 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         public ISymbol Symbol => _symbol;
 
+        public override ImmutableArray<Symbol> ChildSymbols => ImmutableArray<Symbol>.Empty;
+
         public override LanguageSymbolKind Kind => LanguageSymbolKind.None;
 
         public override Symbol ContainingSymbol => _containingSymbol;
 
         public override ImmutableArray<Location> Locations => _symbol.Locations;
+
+        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => ImmutableArray<SyntaxReference>.Empty;
 
         public override void Accept(SymbolVisitor visitor)
         {
