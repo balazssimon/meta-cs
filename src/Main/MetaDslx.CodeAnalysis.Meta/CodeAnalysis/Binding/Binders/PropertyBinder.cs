@@ -32,5 +32,10 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
         {
             return _propertyValueOpt.Value;
         }
+
+        public override string ToString()
+        {
+            return $"PropertyBinder: {PropertyName}";
+        }
     }
 }

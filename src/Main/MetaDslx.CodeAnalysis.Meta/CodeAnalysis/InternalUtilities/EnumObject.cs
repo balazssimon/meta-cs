@@ -513,6 +513,11 @@ namespace Roslyn.Utilities
             return this.GetName();
         }
 
+        public static void Init(Type enumObjectType)
+        {
+            RuntimeHelpers.RunClassConstructor(enumObjectType.TypeHandle);
+        }
+
         internal class EnumObjectDescriptor
         {
             public static readonly EnumObjectDescriptor Root = CreateRoot();

@@ -717,10 +717,12 @@ namespace MetaDslx.Languages.Meta.Generator
             return false;
         }
 
-        public string GetAttributeName(MetaAnnotation mannot)
+        public string GetAttributeName(MetaElement element, MetaAnnotation mannot)
         {
-            if (mannot.Name.EndsWith("Attribute")) return mannot.Name;
-            else return mannot.Name + "Attribute";
+            var name = mannot.Name.EndsWith("Attribute") ? mannot.Name.Substring(0, mannot.Name.Length - 9) : mannot.Name;
+            if (element is MetaNamedType) return "global::MetaDslx.CodeAnalysis.Symbols.SymbolAttribute(global::MetaDslx.CodeAnalysis.Symbols.LanguageSymbolKind." + name+")";
+            if (element is MetaProperty) return "global::MetaDslx.CodeAnalysis.Symbols.SymbolPropertyAttribute(global::MetaDslx.CodeAnalysis.Symbols.SymbolConstants." + name + "Property)";
+            return name + "Attribute";
         }
 
         public string GetImmBldCallParameterNames(MetaModel mmodel, MetaOperation operation, ClassKind kind)

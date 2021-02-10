@@ -147,8 +147,8 @@ namespace MetaDslx.Languages.Meta.Model.Internal
             while (i >= 0)
             {
                 var currentOp = result[i];
-                MetaOperationBuilder op = result.First(o => o.ConformsTo(currentOp));
-                if (op != currentOp)
+                MetaOperationBuilder op = result.FirstOrDefault(o => o.ConformsTo(currentOp));
+                if (op != null && op != currentOp)
                 {
                     result.RemoveAt(i);
                 }
@@ -164,12 +164,12 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 
         public override bool MetaCollectionType_ConformsTo(MetaCollectionTypeBuilder _this, MetaTypeBuilder type)
         {
-            return type is MetaCollectionTypeBuilder typeBuilder && _this.InnerType.ConformsTo(typeBuilder.InnerType);
+            return type is MetaCollectionTypeBuilder typeBuilder && _this.InnerType != null && _this.InnerType.ConformsTo(typeBuilder.InnerType);
         }
 
         public override bool MetaNullableType_ConformsTo(MetaNullableTypeBuilder _this, MetaTypeBuilder type)
         {
-            return type is MetaNullableTypeBuilder typeBuilder && _this.InnerType.ConformsTo(typeBuilder.InnerType);
+            return type is MetaNullableTypeBuilder typeBuilder && _this.InnerType != null && _this.InnerType.ConformsTo(typeBuilder.InnerType);
         }
 
         public override bool MetaPrimitiveType_ConformsTo(MetaPrimitiveTypeBuilder _this, MetaTypeBuilder type)
@@ -202,7 +202,9 @@ namespace MetaDslx.Languages.Meta.Model.Internal
             if (_this.Parameters.Count != operation.Parameters.Count) return false;
             if (_this.Class != null && !_this.Class.ConformsTo(operation.Class)) return false;
             if (_this.Enum != null && !_this.Enum.ConformsTo(operation.Enum)) return false;
-            if (!_this.ReturnType.ConformsTo(operation.ReturnType)) return false;
+            if (_this.ReturnType == null && operation.ReturnType != null) return false;
+            if (_this.ReturnType != null && operation.ReturnType == null) return false;
+            if (_this.ReturnType != null && !_this.ReturnType.ConformsTo(operation.ReturnType)) return false;
             for (int i = 0; i < _this.Parameters.Count; i++)
             {
                 var thisParam = _this.Parameters[i];

@@ -133,6 +133,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
                 if (descriptor.IsNamespace) return LanguageSymbolKind.Namespace;
                 else if (descriptor.IsNamedType) return LanguageSymbolKind.NamedType;
                 else if (descriptor.IsName) return LanguageSymbolKind.Name;
+                else if (descriptor.IsType) return LanguageSymbolKind.NamedType;
             }
             return LanguageSymbolKind.None;
         }

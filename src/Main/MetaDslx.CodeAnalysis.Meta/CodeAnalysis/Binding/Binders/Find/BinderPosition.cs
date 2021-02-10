@@ -1,10 +1,12 @@
 ﻿using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Binding
 {
+    [DebuggerDisplay("{ToString(), nq}")]
     public struct BinderPosition
     {
         public readonly Binder Binder;
@@ -17,8 +19,14 @@ namespace MetaDslx.CodeAnalysis.Binding
             LowestBinderInSyntax = lowestBinder;
             Syntax = syntax;
         }
+
+        public override string ToString()
+        {
+            return $"{Syntax.GetKind()} {Binder.ToString()}";
+        }
     }
 
+    [DebuggerDisplay("{ToString(), nq}")]
     public struct BinderPosition<T>
         where T : Binder
     {
@@ -36,6 +44,11 @@ namespace MetaDslx.CodeAnalysis.Binding
         public static implicit operator BinderPosition(BinderPosition<T> node)
         {
             return new BinderPosition(node.Binder, node.LowestBinderInSyntax, node.Syntax);
+        }
+
+        public override string ToString()
+        {
+            return $"{Syntax.GetKind()} {Binder.ToString()}";
         }
     }
 }

@@ -34,7 +34,10 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
         {
             var mmodel = (MutableModel)Model;
             var mdesc = ModelObjectDescriptor.GetDescriptor(modelObjectType);
-            return mmodel.CreateObject(mdesc.CreateObjectId(), false);
+            var mobj = mmodel.CreateObject(mdesc.CreateObjectId(), false);
+            mobj.MCallInit();
+            mobj.MMakeCreated();
+            return mobj;
         }
 
     }

@@ -88,6 +88,11 @@ namespace Microsoft.CodeAnalysis
         }
 
         /// <summary>
+        /// Returns true if this node or token is null
+        /// </summary>
+        public bool IsNull => _nodeOrParent == null && _token  == null;
+
+        /// <summary>
         /// An integer representing the language specific kind of the underlying node or token.
         /// </summary>
         public int RawKind => _token?.RawKind ?? _nodeOrParent?.RawKind ?? 0;

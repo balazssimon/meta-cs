@@ -35,7 +35,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
         bool IsMetaMetaModel(MetaModel mmodel); //47:8
         string GetEnumValueOf(MetaModel mmodel, Enum menum); //48:8
         string GetAttributeValueOf(MetaModel mmodel, MetaAttribute mattr); //49:8
-        string GetAttributeName(MetaAttribute mattr); //50:8
+        string GetAttributeName(MetaElement element, MetaAttribute mattr); //50:8
         string CSharpName(MetaNamespace mnamespace, NamespaceKind kind = NamespaceKind.Public, bool fullName = false); //51:8
         string CSharpName(IMetaModel mmodel, ModelKind kind = ModelKind.None, bool fullName = false); //52:8
         string CSharpName(MetaType mtype, MetaModel mmodel, ClassKind kind = ClassKind.None, bool fullName = false); //53:8
@@ -241,9 +241,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             return this.extensionFunctions.GetAttributeValueOf(mmodel, mattr); //49:8
         }
 
-        internal string GetAttributeName(MetaAttribute mattr) //50:8
+        internal string GetAttributeName(MetaElement element, MetaAttribute mattr) //50:8
         {
-            return this.extensionFunctions.GetAttributeName(mattr); //50:8
+            return this.extensionFunctions.GetAttributeName(element, mattr); //50:8
         }
 
         internal string CSharpName(MetaNamespace mnamespace, NamespaceKind kind = NamespaceKind.Public, bool fullName = false) //51:8
@@ -385,7 +385,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     }
                 }
                 StringBuilder __tmp5 = new StringBuilder();
-                __tmp5.Append(Properties.CoreNs);
+                __tmp5.Append(GetAttributeName(elem, attr));
                 using(StreamReader __tmp5Reader = new StreamReader(this.__ToStream(__tmp5.ToString())))
                 {
                     bool __tmp5_last = __tmp5Reader.EndOfStream;
@@ -401,49 +401,26 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         if (!__tmp5_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp6_line = "."; //75:25
-                if (!string.IsNullOrEmpty(__tmp6_line))
+                StringBuilder __tmp6 = new StringBuilder();
+                __tmp6.Append("]");
+                using(StreamReader __tmp6Reader = new StreamReader(this.__ToStream(__tmp6.ToString())))
                 {
-                    __out.Append(__tmp6_line);
-                    __tmp3_outputWritten = true;
-                }
-                StringBuilder __tmp7 = new StringBuilder();
-                __tmp7.Append(GetAttributeName(attr));
-                using(StreamReader __tmp7Reader = new StreamReader(this.__ToStream(__tmp7.ToString())))
-                {
-                    bool __tmp7_last = __tmp7Reader.EndOfStream;
-                    while(!__tmp7_last)
+                    bool __tmp6_last = __tmp6Reader.EndOfStream;
+                    while(!__tmp6_last)
                     {
-                        string __tmp7_line = __tmp7Reader.ReadLine();
-                        __tmp7_last = __tmp7Reader.EndOfStream;
-                        if ((__tmp7_last && !string.IsNullOrEmpty(__tmp7_line)) || (!__tmp7_last && __tmp7_line != null))
+                        string __tmp6_line = __tmp6Reader.ReadLine();
+                        __tmp6_last = __tmp6Reader.EndOfStream;
+                        if ((__tmp6_last && !string.IsNullOrEmpty(__tmp6_line)) || (!__tmp6_last && __tmp6_line != null))
                         {
-                            __out.Append(__tmp7_line);
+                            __out.Append(__tmp6_line);
                             __tmp3_outputWritten = true;
                         }
-                        if (!__tmp7_last) __out.AppendLine(true);
-                    }
-                }
-                StringBuilder __tmp8 = new StringBuilder();
-                __tmp8.Append("]");
-                using(StreamReader __tmp8Reader = new StreamReader(this.__ToStream(__tmp8.ToString())))
-                {
-                    bool __tmp8_last = __tmp8Reader.EndOfStream;
-                    while(!__tmp8_last)
-                    {
-                        string __tmp8_line = __tmp8Reader.ReadLine();
-                        __tmp8_last = __tmp8Reader.EndOfStream;
-                        if ((__tmp8_last && !string.IsNullOrEmpty(__tmp8_line)) || (!__tmp8_last && __tmp8_line != null))
-                        {
-                            __out.Append(__tmp8_line);
-                            __tmp3_outputWritten = true;
-                        }
-                        if (!__tmp8_last || __tmp3_outputWritten) __out.AppendLine(true);
+                        if (!__tmp6_last || __tmp3_outputWritten) __out.AppendLine(true);
                     }
                 }
                 if (__tmp3_outputWritten)
                 {
-                    __out.AppendLine(false); //75:55
+                    __out.AppendLine(false); //75:41
                 }
             }
             return __out.ToString();

@@ -21,6 +21,7 @@ using [Properties.DefaultNamespace];
 using [Properties.DefaultNamespace].Symbols;
 using [Properties.DefaultNamespace].Syntax;
 using [Properties.DefaultNamespace].Syntax.InternalSyntax;
+using Roslyn.Utilities;
 [Instances.ParserHeader]
 ^
 [var lang = Properties.LanguageName]
@@ -32,6 +33,9 @@ namespace [Properties.DefaultNamespace]
 ^
 		private [lang]Language()
 		{
+            EnumObject.Init(typeof([lang]LanguageVersion));
+            EnumObject.Init(typeof([lang]TokensSyntaxKind));
+            EnumObject.Init(typeof([lang]SyntaxKind));
 		}
 ^
         public override string Name => "[lang]";

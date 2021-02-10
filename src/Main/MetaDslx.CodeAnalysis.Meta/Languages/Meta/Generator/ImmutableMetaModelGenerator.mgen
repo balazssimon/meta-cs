@@ -47,7 +47,7 @@ extern function string EscapeText(string text)
 extern function bool IsMetaMetaModel(MetaModel mmodel)
 extern function string GetEnumValueOf(MetaModel mmodel, Enum menum)
 extern function string GetAttributeValueOf(MetaModel mmodel, MetaAttribute mattr)
-extern function string GetAttributeName(MetaAttribute mattr)
+extern function string GetAttributeName(MetaElement element, MetaAttribute mattr)
 extern function string CSharpName(MetaNamespace mnamespace, NamespaceKind kind = NamespaceKind.Public, bool fullName = false)
 extern function string CSharpName(IMetaModel mmodel, ModelKind kind = ModelKind.None, bool fullName = false)
 extern function string CSharpName(MetaType mtype, MetaModel mmodel, ClassKind kind = ClassKind.None, bool fullName = false)
@@ -72,7 +72,7 @@ end template
 
 template GenerateAttributes(MetaElement elem)
 [loop(elem->attr:Attributes)]
-["["][Properties.CoreNs].[GetAttributeName(attr)]["]"]
+["["][GetAttributeName(elem, attr)]["]"]
 [end loop]
 end template
 

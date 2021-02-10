@@ -193,8 +193,9 @@ namespace MetaDslx.Bootstrap
 
             //*/
 
-            /*/
-            ImmutableMetaModelGenerator mmgen = new ImmutableMetaModelGenerator(compiledModel.Objects);
+            //*/
+            var immutableModel = compiledModel.ToImmutable();
+            ImmutableMetaModelGenerator mmgen = new ImmutableMetaModelGenerator(immutableModel.Objects);
             string generatedCsharpModel = mmgen.Generate();
             File.WriteAllText("Model.cs.txt", generatedCsharpModel);
             //File.WriteAllText("Soal.txt", generatedCsharpModel);

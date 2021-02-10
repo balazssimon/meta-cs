@@ -42,7 +42,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         public bool MoveToNextAncestor()
         {
-            if (_binder == null || _cursor.CurrentNodeOrToken == null) return false;
+            if (_binder == null || _cursor.CurrentNodeOrToken.IsNull) return false;
             _binder = _binder.Next;
             if (_binder != null && _cursor.CurrentNodeOrToken != _binder.Syntax)
             {
@@ -54,19 +54,19 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         public bool MoveToNextDescendant()
         {
-            if (_binder == null || _cursor.CurrentNodeOrToken == null) return false;
-            if (_binder != _lowestBinder)
+            if (_binder == null || _cursor.CurrentNodeOrToken.IsNull) return false;
+            if (!_binder.Equals(_lowestBinder))
             {
                 MoveToPreviousBinder();
                 return true;
             }
             while (true)
             {
-                if (_cursor.CurrentNodeOrToken == null || !_originalSyntax.Span.Contains(_cursor.CurrentNodeOrToken.Span)) return false;
+                if (_cursor.CurrentNodeOrToken.IsNull || !_originalSyntax.Span.Contains(_cursor.CurrentNodeOrToken.Span)) return false;
                 if (_cursor.HasChildren) _cursor = _cursor.MoveToFirstChild();
                 else _cursor = _cursor.MoveToNextSibling();
                 var lowestBinder = GetLowestBinder(_cursor.CurrentNodeOrToken);
-                if (lowestBinder != null && lowestBinder != _lowestBinder && lowestBinder.Syntax == _cursor.CurrentNodeOrToken)
+                if (lowestBinder != null && !lowestBinder.Equals(_lowestBinder) && lowestBinder.Syntax == _cursor.CurrentNodeOrToken)
                 {
                     _binder = GetLowestBinder(_cursor.CurrentNodeOrToken.Parent);
                     _lowestBinder = lowestBinder;
@@ -78,15 +78,15 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         public bool MoveToNextSibling()
         {
-            if (_binder == null || _cursor.CurrentNodeOrToken == null) return false;
+            if (_binder == null || _cursor.CurrentNodeOrToken.IsNull) return false;
             var first = true;
             while (true)
             {
-                if (_cursor.CurrentNodeOrToken == null || !_originalSyntax.Span.Contains(_cursor.CurrentNodeOrToken.Span)) return false;
+                if (_cursor.CurrentNodeOrToken.IsNull || !_originalSyntax.Span.Contains(_cursor.CurrentNodeOrToken.Span)) return false;
                 if (!first && _cursor.HasChildren) _cursor = _cursor.MoveToFirstChild();
                 else _cursor = _cursor.MoveToNextSibling();
                 var lowestBinder = GetLowestBinder(_cursor.CurrentNodeOrToken);
-                if (lowestBinder != null && lowestBinder != _lowestBinder && lowestBinder.Syntax == _cursor.CurrentNodeOrToken)
+                if (lowestBinder != null && !lowestBinder.Equals(_lowestBinder) && lowestBinder.Syntax == _cursor.CurrentNodeOrToken)
                 {
                     _binder = GetLowestBinder(_cursor.CurrentNodeOrToken.Parent);
                     _lowestBinder = lowestBinder;
@@ -99,15 +99,19 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         private void MoveToPreviousBinder()
         {
-            Debug.Assert(_binder != _lowestBinder);
+            Debug.Assert(!_binder.Equals(_lowestBinder));
             var binder = _lowestBinder;
-            while (binder != null && binder.Next != _binder) binder = binder.Next;
+            while (binder != null && !_binder.Equals(binder.Next))
+            {
+                Debug.Assert(binder.Next != null);
+                binder = binder.Next;
+            }
             _binder = binder;
         }
 
         private Binder GetLowestBinder(SyntaxNodeOrToken syntax)
         {
-            if (syntax.NodeOrParent == null) return null;
+            if (syntax.IsNull) return null;
             if (!_lowestBinders.TryGetValue(syntax, out var binder))
             {
                 var parentLowestBinder = GetLowestBinder(syntax.Parent);

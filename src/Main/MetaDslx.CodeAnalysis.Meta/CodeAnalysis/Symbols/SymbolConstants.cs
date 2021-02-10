@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MetaDslx.CodeAnalysis.Symbols.Metadata
+namespace MetaDslx.CodeAnalysis.Symbols
 {
     public static class SymbolConstants
     {

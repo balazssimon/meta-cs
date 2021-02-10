@@ -47,5 +47,10 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             return this.DefinedSymbol;
         }
 
+        public override string ToString()
+        {
+            return $"SymbolDefBinder: {_type.Name}";
+        }
+
     }
 }

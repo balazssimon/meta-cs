@@ -28,7 +28,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders.Find
                 if (propertyBinder.PropertyValueOpt.HasValue) return propertyBinder == this.Origin.Binder;
                 else return propertyBinder != this.Origin.Binder;
             }
-            return binder is IValueBoundary;
+            return binder is IValueBoundary || binder is ISymbolBoundary;
         }
     }
 }

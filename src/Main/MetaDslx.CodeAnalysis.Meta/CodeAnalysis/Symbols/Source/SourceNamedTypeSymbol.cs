@@ -179,9 +179,12 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                     if (_state.NotePartComplete(CompletionPart.StartCreated))
                     {
                         var diagnostics = DiagnosticBag.GetInstance();
-                        foreach (var singleDeclaration in _declaration.Declarations)
+                        if (_declaration != null)
                         {
-                            diagnostics.AddRange(singleDeclaration.Diagnostics);
+                            foreach (var singleDeclaration in _declaration.Declarations)
+                            {
+                                diagnostics.AddRange(singleDeclaration.Diagnostics);
+                            }
                         }
                         _source.AssignPropertyValues(SymbolConstants.NameProperty, diagnostics, cancellationToken);
                         AddDeclarationDiagnostics(diagnostics);

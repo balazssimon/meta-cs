@@ -111,7 +111,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                         if (childSingleDeclaration != null)
                         {
                             var objectProperty = symbolFacts.GetProperty(ModelObject, childSingleDeclaration.NestingProperty);
-                            CreateChildSymbol(childDeclaration, symbolPartReference, childSingleDeclaration.ModelObjectType, objectProperty, diagnostics, childMap, result, cancellationToken);
+                            CreateChildSymbol(childSingleDeclaration.Location, childDeclaration, symbolPartReference, childSingleDeclaration.ModelObjectType, childSingleDeclaration.NestingProperty, objectProperty, diagnostics, childMap, result, cancellationToken);
                         }
                     }
                 }
@@ -135,7 +135,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                                 AssertionDiagnostic(diagnostics, ModelErrorCode.ERR_MustBeSymbolDefBound.ToDiagnostic(value.Syntax.GetLocation(), property.Binder.PropertyName));
                                 continue;
                             }
-                            CreateChildSymbols(childBinder, objectProperty, diagnostics, childMap, result, cancellationToken);
+                            CreateChildSymbols(childBinder, property.Binder.PropertyName, objectProperty, diagnostics, childMap, result, cancellationToken);
                         }
                     }
                 }
@@ -262,7 +262,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                             var values = FindValueBinders(property);
                             foreach (var value in values)
                             {
-                                AssignObjectProperty(value, objectProperty, diagnostics, cancellationToken);
+                                AssignObjectProperty(value, property.Binder.PropertyName, objectProperty, diagnostics, cancellationToken);
                             }
                         }
                     }
@@ -293,18 +293,18 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                                 AssertionDiagnostic(diagnostics, ModelErrorCode.ERR_PropertyDoesNotExist.ToDiagnostic(value.Syntax.GetLocation(), property.Binder.PropertyName, ModelObject));
                                 continue;
                             }
-                            AssignObjectProperty(value, objectProperty, diagnostics, cancellationToken);
+                            AssignObjectProperty(value, property.Binder.PropertyName, objectProperty, diagnostics, cancellationToken);
                         }
                     }
                 }
             }
         }
 
-        private void AssignObjectProperty(BinderPosition<ValueBinder> valueBinder, object objectProperty, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        private void AssignObjectProperty(BinderPosition<ValueBinder> valueBinder, string propertyName, object objectProperty, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             if (valueBinder.Binder is SymbolDefBinder valueSymbolDef)
             {
-                CreateChildSymbols(valueSymbolDef, objectProperty, diagnostics, null, null, cancellationToken);
+                CreateChildSymbols(valueSymbolDef, propertyName, objectProperty, diagnostics, null, null, cancellationToken);
             }
             else
             {
@@ -339,40 +339,48 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             }
         }
 
-        private void CreateChildSymbols(SymbolDefBinder childBinder, object objectProperty, DiagnosticBag diagnostics, Dictionary<MergedDeclaration, Symbol> childMap, ArrayBuilder<Symbol> result, CancellationToken cancellationToken)
+        private void CreateChildSymbols(SymbolDefBinder childBinder, string propertyName, object objectProperty, DiagnosticBag diagnostics, Dictionary<MergedDeclaration, Symbol> childMap, ArrayBuilder<Symbol> result, CancellationToken cancellationToken)
         {
             var container = childBinder.ContainingDeclaration;
             var symbolPartReference = childBinder.Syntax.GetReference();
             var childDeclarations = GetChildDeclarations(symbolPartReference, container);
-            foreach (var childDeclaration in childDeclarations)
+            if (childDeclarations.Length > 0)
             {
-                if (childMap == null || !childMap.TryGetValue(childDeclaration, out _))
+                foreach (var childDeclaration in childDeclarations)
                 {
-                    CreateChildSymbol(childDeclaration, symbolPartReference, childBinder.ModelObjectType, objectProperty, diagnostics, childMap, result, cancellationToken);
+                    if (childMap == null || !childMap.TryGetValue(childDeclaration, out _))
+                    {
+                        Debug.Assert(childDeclaration.ModelObjectType == childBinder.ModelObjectType);
+                        var childSingleDeclaration = childDeclaration.GetSingleDeclaration(symbolPartReference);
+                        Debug.Assert(childSingleDeclaration != null);
+                        CreateChildSymbol(childSingleDeclaration.SyntaxReference.GetLocation(), childDeclaration, symbolPartReference, childBinder.ModelObjectType, propertyName, objectProperty, diagnostics, childMap, result, cancellationToken);
+                    }
                 }
+            }
+            else
+            {
+                // TODO
+                CreateChildSymbol(childBinder.Syntax.GetLocation(), null, symbolPartReference, childBinder.ModelObjectType, propertyName, objectProperty, diagnostics, childMap, result, cancellationToken);
             }
         }
 
-        private void CreateChildSymbol(MergedDeclaration childDeclaration, SyntaxReference symbolPartReference, Type modelObjectType, object objectProperty, DiagnosticBag diagnostics, Dictionary<MergedDeclaration, Symbol> childMap, ArrayBuilder<Symbol> result, CancellationToken cancellationToken)
+        private void CreateChildSymbol(Location location, MergedDeclaration childDeclaration, SyntaxReference symbolPartReference, Type modelObjectType, string propertyName, object objectProperty, DiagnosticBag diagnostics, Dictionary<MergedDeclaration, Symbol> childMap, ArrayBuilder<Symbol> result, CancellationToken cancellationToken)
         {
-            Debug.Assert(childDeclaration.ModelObjectType == modelObjectType);
-            var childSingleDeclaration = childDeclaration.GetSingleDeclaration(symbolPartReference);
-            Debug.Assert(childSingleDeclaration != null);
             if (objectProperty == null)
             {
-                AssertionDiagnostic(diagnostics, ModelErrorCode.ERR_PropertyDoesNotExist.ToDiagnostic(childSingleDeclaration.SyntaxReference.GetLocation(), childSingleDeclaration.NestingProperty, ModelObject));
+                AssertionDiagnostic(diagnostics, ModelErrorCode.ERR_PropertyDoesNotExist.ToDiagnostic(location, propertyName, ModelObject));
                 return;
             }
             var isContainmentProperty = objectProperty != null && SymbolFacts.IsContainmentProperty(objectProperty);
             if (childMap != null && !isContainmentProperty)
             {
-                AssertionDiagnostic(diagnostics, ModelErrorCode.ERR_NotContainmentProperty.ToDiagnostic(childSingleDeclaration.SyntaxReference.GetLocation(), childSingleDeclaration.NestingProperty, ModelObject));
+                AssertionDiagnostic(diagnostics, ModelErrorCode.ERR_NotContainmentProperty.ToDiagnostic(location, propertyName, ModelObject));
                 return;
             }
             var childSymbol = SymbolFactory.MakeSourceSymbol(_symbol, modelObjectType, childDeclaration);
             var childObject = (childSymbol as IModelSourceSymbol)?.ModelObject;
             Debug.Assert(childObject != null);
-            SymbolFacts.SetOrAddPropertyValue(ModelObject, objectProperty, childObject, childSingleDeclaration.Location, diagnostics);
+            SymbolFacts.SetOrAddPropertyValue(ModelObject, objectProperty, childObject, location, diagnostics);
             Debug.Assert(childSymbol != null);
             if (childSymbol != null)
             {

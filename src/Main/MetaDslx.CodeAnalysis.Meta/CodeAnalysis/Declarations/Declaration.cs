@@ -118,6 +118,10 @@ namespace MetaDslx.CodeAnalysis.Declarations
             IsNestingParent = 0x02
         }
 
+        public override string ToString()
+        {
+            return $"{ModelObjectType?.Name} {Name}";
+        }
 
 #if DEBUG
         private class DeclarationTreeDumper

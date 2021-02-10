@@ -22,11 +22,13 @@ namespace MetaDslx.CodeAnalysis.Binding
     /// A Binder converts names in to symbols and syntax nodes into bound trees. It is context
     /// dependent, relative to a location in source code.
     /// </summary>
+    [DebuggerDisplay("{ToString(), nq}")]
     public partial class Binder
     {
         private readonly LanguageCompilation _compilation;
         private readonly SyntaxNodeOrToken _syntax;
         private readonly Binder _next;
+        private readonly int _index;
         private Lazy<BoundNode> _boundNode;
 
         public readonly BinderFlags Flags;
@@ -39,13 +41,17 @@ namespace MetaDslx.CodeAnalysis.Binding
             Debug.Assert(compilation != null);
             this.Flags = compilation.Options.TopLevelBinderFlags;
             _compilation = compilation;
+            _index = 0;
             _boundNode = new Lazy<BoundNode>(GetOrCreateBoundNode, true);
         }
 
         public Binder(Binder next, SyntaxNodeOrToken syntax, Conversions conversions = null)
         {
             Debug.Assert(next != null);
-            _syntax = syntax;
+            if (syntax.IsNull) _syntax = next.Syntax;
+            else _syntax = syntax;
+            if (_syntax == next.Syntax) _index = next._index + 1;
+            else _index = 0;
             _next = next;
             this.Flags = next.Flags;
             _compilation = next._compilation;
@@ -56,8 +62,9 @@ namespace MetaDslx.CodeAnalysis.Binding
         private Binder(Binder next, BinderFlags flags)
         {
             Debug.Assert(next != null);
+            _index = next._index + 1;
             _next = next;
-            _syntax = next._syntax;
+            _syntax = next.Syntax;
             this.Flags = flags;
             _compilation = next._compilation;
             _boundNode = new Lazy<BoundNode>(GetOrCreateBoundNode, true);
@@ -67,7 +74,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         public Language Language => _compilation.Language;
 
-        public SyntaxNodeOrToken Syntax => _syntax.NodeOrParent != null ? _syntax : (_next?.Syntax ?? default);
+        public SyntaxNodeOrToken Syntax => !_syntax.IsNull ? _syntax : (_next?.Syntax ?? null);
 
         public Binder WithFlags(params BinderFlags[] flags)
         {
@@ -82,6 +89,22 @@ namespace MetaDslx.CodeAnalysis.Binding
             return this.Flags.IncludesAll(flags)
                 ? this
                 : new Binder(this, this.Flags.UnionWith(flags));
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is Binder other)
+            {
+                return Syntax == other.Syntax && _index == other._index;
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            var syntaxHash = 0;
+            if (Syntax != null) syntaxHash = Syntax.GetHashCode();
+            return Hash.Combine(syntaxHash, _index.GetHashCode());
         }
 
         public bool IsSemanticModelBinder => this.Flags.Includes(BinderFlags.SemanticModel);
@@ -113,6 +136,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         private BoundNode GetOrCreateBoundNode()
         {
+            if (this.Syntax.IsNull) return null;
             var parent = this.ParentBoundNode;
             var result = parent?.GetChild(this.Syntax);
             if (result == null)
@@ -539,6 +563,9 @@ namespace MetaDslx.CodeAnalysis.Binding
             else return null;
         }
 
-
+        public override string ToString()
+        {
+            return this.GetType().Name;
+        }
     }
 }

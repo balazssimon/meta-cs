@@ -713,6 +713,11 @@ namespace Roslyn.Utilities
             return descriptor.GetValue(value);
         }
 
+        public static void Init(Type flagsObjectType)
+        {
+            RuntimeHelpers.RunClassConstructor(flagsObjectType.TypeHandle);
+        }
+
         internal class FlagsObjectDescriptor
         {
             public static readonly FlagsObjectDescriptor Root = CreateRoot();

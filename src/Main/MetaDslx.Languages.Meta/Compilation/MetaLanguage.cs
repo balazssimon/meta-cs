@@ -13,6 +13,7 @@ using MetaDslx.Languages.Meta.Syntax;
 using MetaDslx.Languages.Meta.Syntax.InternalSyntax;
 
 using MetaDslx.Languages.Meta.Model;
+using Roslyn.Utilities;
 
 namespace MetaDslx.Languages.Meta
 {
@@ -22,7 +23,10 @@ namespace MetaDslx.Languages.Meta
 
 		private MetaLanguage()
 		{
-		}
+            EnumObject.Init(typeof(MetaLanguageVersion));
+            EnumObject.Init(typeof(MetaTokensSyntaxKind));
+            EnumObject.Init(typeof(MetaSyntaxKind));
+        }
 
         public override string Name => "Meta";
 

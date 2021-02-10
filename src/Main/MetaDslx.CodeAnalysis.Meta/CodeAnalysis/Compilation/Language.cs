@@ -4,6 +4,7 @@ using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 using Microsoft.Extensions.DependencyInjection;
+using Roslyn.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -27,6 +28,10 @@ namespace MetaDslx.CodeAnalysis
 
         public Language()
         {
+            EnumObject.Init(typeof(LanguageVersion));
+            EnumObject.Init(typeof(SyntaxKind));
+            EnumObject.Init(typeof(LanguageSymbolKind));
+            EnumObject.Init(typeof(LanguageTypeKind));
             _serviceCollection = new ServiceCollection();
             RegisterServices(_serviceCollection);
             _serviceProvider = _serviceCollection.BuildServiceProvider();
