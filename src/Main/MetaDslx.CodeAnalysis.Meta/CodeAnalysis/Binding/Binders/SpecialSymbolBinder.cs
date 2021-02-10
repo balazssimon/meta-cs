@@ -9,8 +9,8 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
 {
     public class SpecialSymbolBinder : Binder
     {
-        public SpecialSymbolBinder(SyntaxNodeOrToken syntax, Binder next, Conversions conversions = null) 
-            : base(syntax, next, conversions)
+        public SpecialSymbolBinder(Binder next, SyntaxNodeOrToken syntax, Conversions conversions = null) 
+            : base(next, syntax, conversions)
         {
         }
 

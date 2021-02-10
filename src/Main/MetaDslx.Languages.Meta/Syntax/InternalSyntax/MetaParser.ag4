@@ -23,7 +23,7 @@ $Qualifier
 qualifier : identifier (TDot identifier)*;
 
 $Property(Attributes)
-$SymbolUse(MetaAttribute)
+$Attribute(MetaAttribute)
 attribute : TOpenBracket qualifier TCloseBracket;
 
 $SymbolDef(type=MetaNamespace,nestingProperty=Declarations,merge=true)

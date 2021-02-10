@@ -11,8 +11,8 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
         private readonly Type _enumType;
         private readonly string _enumLiteral;
 
-        public EnumValueBinder(SyntaxNodeOrToken syntax, Binder next, string enumLiteral, Type enumType)
-            : base(syntax, next)
+        public EnumValueBinder(Binder next, SyntaxNodeOrToken syntax, string enumLiteral, Type enumType)
+            : base(next, syntax)
         {
             _enumType = enumType;
             _enumLiteral = enumLiteral;

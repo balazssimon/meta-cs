@@ -21,8 +21,8 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
         private readonly Type _type;
         private Symbol _definedSymbol;
 
-        public SymbolDefBinder(SyntaxNodeOrToken syntax, Binder next, Type type) 
-            : base(syntax, next)
+        public SymbolDefBinder(Binder next, SyntaxNodeOrToken syntax, Type type) 
+            : base(next, syntax)
         {
             _type = type;
             _definedSymbol = null;
@@ -33,7 +33,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
         protected override BoundNode CreateBoundNode()
         {
             var symbols = SourceSymbol.GetInnermostNestedDeclaredSymbols(this.Syntax.GetReference(), this.ContainingDeclaration).Cast<DeclaredSymbol, Symbol>();
-            return new BoundSymbols(this.Syntax, this.ParentBoundNode, symbols);
+            return new BoundSymbols(this.ParentBoundNode, this.Syntax, symbols);
         }
 
         public ImmutableArray<Symbol> DefinedSymbols => ((BoundSymbol)this.BoundNode).Symbols;

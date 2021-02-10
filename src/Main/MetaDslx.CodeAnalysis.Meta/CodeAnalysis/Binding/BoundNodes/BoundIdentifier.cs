@@ -13,13 +13,13 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
         private DeclaredSymbol _symbol;
         private ImmutableArray<Diagnostic> _diagnostics;
 
-        public BoundIdentifier(SyntaxNodeOrToken syntax, BoundNode parent)
-            : base(syntax, parent)
+        public BoundIdentifier(BoundNode parent, SyntaxNodeOrToken syntax)
+            : base(parent, syntax)
         {
         }
 
-        public BoundIdentifier(SyntaxNodeOrToken syntax, BoundNode parent, DeclaredSymbol symbol)
-            : base(syntax, parent)
+        public BoundIdentifier(BoundNode parent, SyntaxNodeOrToken syntax, DeclaredSymbol symbol)
+            : base(parent, syntax)
         {
             _symbol = symbol;
             _diagnostics = ImmutableArray<Diagnostic>.Empty;

@@ -12,8 +12,8 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
 {
     public class QualifierBinder : ValueBinder
     {
-        public QualifierBinder(SyntaxNodeOrToken syntax, Binder next) 
-            : base(syntax, next)
+        public QualifierBinder(Binder next, SyntaxNodeOrToken syntax) 
+            : base(next, syntax)
         {
         }
 
@@ -23,7 +23,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             if (Next.GetBoundQualifier() != null) return null;
             var position = this.GetBinderPosition();
             var identifiers = FindBinders.FindIdentifierBinders(position).Select(ib => ib.Syntax).ToImmutableArray();
-            return new BoundQualifier(this.Syntax, this.ParentBoundNode, identifiers);
+            return new BoundQualifier(this.ParentBoundNode, this.Syntax, identifiers);
         }
 
         public override BoundQualifier GetBoundQualifier()

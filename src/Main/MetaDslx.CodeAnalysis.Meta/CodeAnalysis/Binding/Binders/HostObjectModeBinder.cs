@@ -12,7 +12,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
     internal sealed class HostObjectModelBinder : Binder
     {
         public HostObjectModelBinder(Binder next)
-            : base(null, next, null)
+            : base(next, null, null)
         {
         }
 

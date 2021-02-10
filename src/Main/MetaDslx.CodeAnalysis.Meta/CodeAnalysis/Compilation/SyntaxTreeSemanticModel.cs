@@ -233,7 +233,7 @@ namespace MetaDslx.CodeAnalysis
                     {
                         // Wrap the binder in a LocalScopeBinder because Binder.BindExpression assumes there
                         // will be one in the binder chain and one isn't necessarily required for the batch case.
-                        binder = new LocalScopeBinder(node, binder);
+                        binder = new LocalScopeBinder(binder, node);
 
                         BoundNode bound = binder.Bind(node, cancellationToken);
 

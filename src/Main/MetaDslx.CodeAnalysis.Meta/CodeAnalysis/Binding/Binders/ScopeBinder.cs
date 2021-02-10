@@ -13,8 +13,8 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
     {
         private DeclaredSymbol _container;
 
-        public ScopeBinder(SyntaxNodeOrToken syntax, Binder next)
-            : base(syntax, next)
+        public ScopeBinder(Binder next, SyntaxNodeOrToken syntax)
+            : base(next, syntax)
         {
         }
 

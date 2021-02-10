@@ -30,7 +30,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             _syntaxTree = (LanguageSyntaxTree)rootSyntax.SyntaxTree;
             _rootSyntax = rootSyntax;
             _rootNode = new BoundNode(this);
-            _rootBinder = new BoundTreeRootBinder(rootSyntax, rootBinder, _rootNode);
+            _rootBinder = new BoundTreeRootBinder(rootBinder, rootSyntax, _rootNode);
         }
 
         public Language Language => _compilation.Language;

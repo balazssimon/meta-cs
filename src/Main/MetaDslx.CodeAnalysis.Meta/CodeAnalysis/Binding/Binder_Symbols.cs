@@ -148,7 +148,9 @@ namespace MetaDslx.CodeAnalysis.Binding
             LookupOptions options = allowMembers ? LookupOptions.Default : LookupOptions.NamespacesOrTypesOnly;
 
             var constraints = new LookupConstraints(identifierValueText, identifierValueText, qualifierOpt: qualifierOpt, basesBeingResolved: basesBeingResolved, options: options, diagnose: true);
-            this.LookupSymbolsSimpleName(result, constraints);
+            var identifierBinder = this.GetBinder(node);
+            constraints = identifierBinder.AdjustConstraintsFor(node, constraints);
+            identifierBinder.LookupSymbolsSimpleName(result, constraints);
             diagnostics.Add(node.GetLocation(), constraints.UseSiteDiagnostics);
 
             DeclaredSymbol bindingResult;

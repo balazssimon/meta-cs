@@ -17,8 +17,8 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
     {
         private readonly ImmutableArray<Type> _types;
 
-        public SymbolUseBinder(SyntaxNodeOrToken syntax, Binder next, ImmutableArray<Type> types)
-            : base(syntax, next)
+        public SymbolUseBinder(Binder next, SyntaxNodeOrToken syntax, ImmutableArray<Type> types)
+            : base(next, syntax)
         {
             _types = types;
         }

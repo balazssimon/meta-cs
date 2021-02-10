@@ -11,8 +11,8 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
     {
         private ImmutableArray<Symbol> _symbols;
 
-        public BoundSymbols(SyntaxNodeOrToken syntax, BoundNode parent, ImmutableArray<Symbol> symbols)
-            : base(syntax, parent)
+        public BoundSymbols(BoundNode parent, SyntaxNodeOrToken syntax, ImmutableArray<Symbol> symbols)
+            : base(parent, syntax)
         {
             _symbols = symbols;
         }

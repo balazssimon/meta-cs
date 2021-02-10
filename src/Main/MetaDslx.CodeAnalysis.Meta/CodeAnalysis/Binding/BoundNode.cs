@@ -27,7 +27,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             _boundTree = boundTree;
         }
 
-        public BoundNode(SyntaxNodeOrToken syntax, BoundNode parent)
+        public BoundNode(BoundNode parent, SyntaxNodeOrToken syntax)
         {
             Debug.Assert(parent != null);
             _boundTree = parent._boundTree;

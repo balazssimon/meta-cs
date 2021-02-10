@@ -10,8 +10,8 @@ namespace MetaDslx.Languages.Meta.Binding
 {
     public class DocumentationBinder : Binder
     {
-        public DocumentationBinder(SyntaxNodeOrToken syntax, Binder next)
-            : base(syntax, next)
+        public DocumentationBinder(Binder next, SyntaxNodeOrToken syntax)
+            : base(next, syntax)
         {
         }
 

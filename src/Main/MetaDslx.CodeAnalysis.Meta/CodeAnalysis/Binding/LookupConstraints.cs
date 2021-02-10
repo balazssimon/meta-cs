@@ -164,7 +164,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         {
             var modelSymbol = symbol as IModelSymbol;
             if (modelSymbol == null) return false;
-            if (Types.IsDefaultOrEmpty) return false;
+            if (Types.IsDefaultOrEmpty) return true;
             var type = modelSymbol.ModelObjectType;
             return Types.Any(t => t.IsAssignableFrom(type));
         }

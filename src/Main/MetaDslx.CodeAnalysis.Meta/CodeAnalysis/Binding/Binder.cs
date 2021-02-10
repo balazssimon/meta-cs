@@ -42,7 +42,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             _boundNode = new Lazy<BoundNode>(GetOrCreateBoundNode, true);
         }
 
-        public Binder(SyntaxNodeOrToken syntax, Binder next, Conversions conversions = null)
+        public Binder(Binder next, SyntaxNodeOrToken syntax, Conversions conversions = null)
         {
             Debug.Assert(next != null);
             _syntax = syntax;

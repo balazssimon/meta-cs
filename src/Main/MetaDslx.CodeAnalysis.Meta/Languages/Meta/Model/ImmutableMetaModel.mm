@@ -18,10 +18,17 @@
 	
 	const MetaAttribute NameAttribute = "NameAttribute";
 	const MetaAttribute TypeAttribute = "TypeAttribute";
+	const MetaAttribute MembersAttribute = "MembersAttribute";
+	const MetaAttribute BaseTypesAttribute = "BaseTypesAttribute";
+	const MetaAttribute TypeSymbolAttribute = "TypeSymbolAttribute";
+	const MetaAttribute AnonymousTypeSymbolAttribute = "AnonymousTypeSymbolAttribute";
+	const MetaAttribute NamedTypeSymbolAttribute = "NamedTypeSymbolAttribute";
+	const MetaAttribute NamespaceSymbolAttribute = "NamespaceSymbolAttribute";
+	const MetaAttribute MemberSymbolAttribute = "MemberSymbolAttribute";
+	
 	const MetaAttribute ScopeAttribute = "ScopeAttribute";
 	const MetaAttribute BaseScopeAttribute = "BaseScopeAttribute";
 	const MetaAttribute LocalScopeAttribute = "LocalScopeAttribute";
-	
 	/**
 	Represents an element.
 	*/
@@ -58,7 +65,7 @@
 	{
 	}
 
-	class MetaAttribute : MetaNamedElement
+	class MetaAttribute : MetaNamedType
 	{
 	}
 

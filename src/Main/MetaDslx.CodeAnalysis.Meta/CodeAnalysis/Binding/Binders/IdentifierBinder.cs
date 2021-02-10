@@ -14,8 +14,8 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
         private string _name;
         private string _metadataName;
 
-        public IdentifierBinder(SyntaxNodeOrToken syntax, Binder next)
-            : base(syntax, next)
+        public IdentifierBinder(Binder next, SyntaxNodeOrToken syntax)
+            : base(next, syntax)
         {
         }
 
@@ -47,7 +47,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
 
         protected override BoundNode CreateBoundNode()
         {
-            return new BoundIdentifier(this.Syntax, this.ParentBoundNode); 
+            return new BoundIdentifier(this.ParentBoundNode, this.Syntax); 
         }
 
     }

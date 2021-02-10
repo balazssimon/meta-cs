@@ -265,7 +265,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                                 if (_state.NotePartComplete(phaseBinder.start))
                                 {
                                     var diagnostics = DiagnosticBag.GetInstance();
-                                    _source.ExecutePhases(phaseBinder.start, phaseBinder.finish, _diagnostics, cancellationToken);
+                                    _source.ExecutePhases(phaseBinder.start, phaseBinder.finish, diagnostics, cancellationToken);
+                                    AddSymbolDiagnostics(diagnostics);
                                     _state.NotePartComplete(phaseBinder.finish);
                                     diagnostics.Free();
                                 }

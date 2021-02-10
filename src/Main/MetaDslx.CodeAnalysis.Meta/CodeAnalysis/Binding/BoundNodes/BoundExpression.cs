@@ -8,8 +8,8 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
 {
     public class BoundExpression : BoundNode
     {
-        public BoundExpression(SyntaxNodeOrToken syntax, BoundNode parent)
-            : base(syntax, parent)
+        public BoundExpression(BoundNode parent, SyntaxNodeOrToken syntax)
+            : base(parent, syntax)
         {
         }
 

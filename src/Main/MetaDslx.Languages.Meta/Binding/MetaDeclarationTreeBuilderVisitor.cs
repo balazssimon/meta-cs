@@ -90,15 +90,7 @@ namespace MetaDslx.Languages.Meta.Binding
 			this.BeginProperty(node, name: "Attributes");
 			try
 			{
-				this.BeginSymbolUse(node, types: ImmutableArray.Create(typeof(MetaAttribute)));
-				try
-				{
-					this.Visit(node.Qualifier);
-				}
-				finally
-				{
-					this.EndSymbolUse();
-				}
+				this.Visit(node.Qualifier);
 			}
 			finally
 			{

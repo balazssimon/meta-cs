@@ -7,8 +7,8 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
 {
     public class BoundStatement : BoundNode
     {
-        public BoundStatement(SyntaxNodeOrToken syntax, BoundNode parent)
-            : base(syntax, parent)
+        public BoundStatement(BoundNode parent, SyntaxNodeOrToken syntax)
+            : base(parent, syntax)
         {
         }
     }

@@ -15,8 +15,8 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
         private SymbolPropertyOwner _owner;
         private Type _ownerType;
 
-        public PropertyBinder(SyntaxNodeOrToken syntax, Binder next, string propertyName, Optional<object> propertyValueOpt, SymbolPropertyOwner owner, Type ownerType)
-            : base(syntax, next)
+        public PropertyBinder(Binder next, SyntaxNodeOrToken syntax, string propertyName, Optional<object> propertyValueOpt, SymbolPropertyOwner owner, Type ownerType)
+            : base(next, syntax)
         {
             _propertyName = propertyName;
             _propertyValueOpt = propertyValueOpt;

@@ -1,7 +1,6 @@
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-using System;
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -334,7 +333,7 @@ namespace MetaDslx.Languages.Meta.Binding
 				else if (state == BoundNodeFactoryState.InNode)
 				{
 					BoundNode resultNode;
-					resultNode = this.CreateBoundSymbolUse(this.BoundTree, childBoundNodes.ToImmutableAndFree(), types: ImmutableArray.Create(typeof(MetaAttribute)), syntax: node, hasErrors: false);
+					resultNode = this.CreateBoundAttribute(this.BoundTree, childBoundNodes.ToImmutableAndFree(), types: ImmutableArray.Create(typeof(MetaAttribute)), syntax: node, hasErrors: false);
 					resultNode = this.CreateBoundProperty(this.BoundTree, ImmutableArray.Create<object>(resultNode), name: "Attributes", syntax: node, hasErrors: false);
 					childBoundNodesForParent.Add(resultNode); 
 					return resultNode;

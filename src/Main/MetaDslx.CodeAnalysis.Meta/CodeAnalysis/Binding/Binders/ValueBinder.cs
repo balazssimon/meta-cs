@@ -15,14 +15,14 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
     {
         private Lazy<object> _lazyValue;
 
-        public ValueBinder(SyntaxNodeOrToken syntax, Binder next, object value)
-            : base(syntax, next)
+        public ValueBinder(Binder next, SyntaxNodeOrToken syntax, object value)
+            : base(next, syntax)
         {
             _lazyValue = new Lazy<object>(() => value);
         }
 
-        protected ValueBinder(SyntaxNodeOrToken syntax, Binder next)
-            : base(syntax, next)
+        protected ValueBinder(Binder next, SyntaxNodeOrToken syntax)
+            : base(next, syntax)
         {
             _lazyValue = new Lazy<object>(this.ComputeValue, true);
         }
@@ -36,7 +36,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
 
         protected override BoundNode CreateBoundNode()
         {
-            return new BoundValues(this.Syntax, this.ParentBoundNode, this.Values);
+            return new BoundValues(this.ParentBoundNode, this.Syntax, this.Values);
         }
     }
 }

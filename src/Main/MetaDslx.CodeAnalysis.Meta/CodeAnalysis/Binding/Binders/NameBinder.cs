@@ -9,8 +9,8 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
 {
     public class NameBinder : Binder, IValueBoundary
     {
-        public NameBinder(SyntaxNodeOrToken syntax, Binder next) 
-            : base(syntax, next)
+        public NameBinder(Binder next, SyntaxNodeOrToken syntax) 
+            : base(next, syntax)
         {
         }
     }

@@ -10,8 +10,8 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
     {
         private BoundNode _boundRoot;
 
-        public BoundTreeRootBinder(SyntaxNodeOrToken syntax, Binder next, BoundNode boundRoot) 
-            : base(syntax, next, null)
+        public BoundTreeRootBinder(Binder next, SyntaxNodeOrToken syntax, BoundNode boundRoot) 
+            : base(next, syntax, null)
         {
             Debug.Assert(boundRoot != null);
             _boundRoot = boundRoot;

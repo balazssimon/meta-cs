@@ -16,8 +16,8 @@ namespace MetaDslx.Languages.Meta.Binding
 {
     public class OppositeBinder : CustomBinder, IValueBoundary, ISymbolBoundary
     {
-        public OppositeBinder(SyntaxNodeOrToken syntax, Binder next) 
-            : base(syntax, next)
+        public OppositeBinder(Binder next, SyntaxNodeOrToken syntax) 
+            : base(next, syntax)
         {
         }
 

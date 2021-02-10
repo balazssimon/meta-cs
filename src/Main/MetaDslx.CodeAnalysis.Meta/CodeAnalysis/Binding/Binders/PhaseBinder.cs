@@ -11,8 +11,8 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
         private CompletionPart _startPhase;
         private CompletionPart _finishPhase;
 
-        public PhaseBinder(SyntaxNodeOrToken syntax, Binder next, CompletionPart startPhase, CompletionPart finishPhase)
-            : base(syntax, next)
+        public PhaseBinder(Binder next, SyntaxNodeOrToken syntax, CompletionPart startPhase, CompletionPart finishPhase)
+            : base(next, syntax)
         {
             _startPhase = startPhase;
             _finishPhase = finishPhase;

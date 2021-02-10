@@ -9,8 +9,8 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
 {
     public abstract class BoundSymbol : BoundValue
     {
-        public BoundSymbol(SyntaxNodeOrToken syntax, BoundNode parent) 
-            : base(syntax, parent)
+        public BoundSymbol(BoundNode parent, SyntaxNodeOrToken syntax) 
+            : base(parent, syntax)
         {
         }
 
