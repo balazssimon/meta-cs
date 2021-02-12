@@ -647,12 +647,35 @@ namespace MetaDslx.Languages.Meta.Binding
 		        return VisitParent(parent);
 		    }
 			object use = null;
+			if (LookupPosition.IsInNode(this.Position, parent.FieldModifier)) use = UseFieldModifier;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitParent(parent);
 				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "Kind");
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UseFieldModifier)
+				{
+					switch (parent.FieldModifier.GetKind().Switch())
+					{
+						case MetaSyntaxKind.KReadonly:
+							resultBinder = this.CreateValueBinder(resultBinder, parent, MetaPropertyKind.Readonly);
+							this.BinderFactory.TryAddBinder(parent, UseFieldModifier, ref resultBinder);
+							break;
+						case MetaSyntaxKind.KLazy:
+							resultBinder = this.CreateValueBinder(resultBinder, parent, MetaPropertyKind.Lazy);
+							this.BinderFactory.TryAddBinder(parent, UseFieldModifier, ref resultBinder);
+							break;
+						case MetaSyntaxKind.KDerived:
+							resultBinder = this.CreateValueBinder(resultBinder, parent, MetaPropertyKind.Derived);
+							this.BinderFactory.TryAddBinder(parent, UseFieldModifier, ref resultBinder);
+							break;
+						case MetaSyntaxKind.KUnion:
+							resultBinder = this.CreateValueBinder(resultBinder, parent, MetaPropertyKind.DerivedUnion);
+							this.BinderFactory.TryAddBinder(parent, UseFieldModifier, ref resultBinder);
+							break;
+					}
+				}
 			}
 			return resultBinder;
 		}

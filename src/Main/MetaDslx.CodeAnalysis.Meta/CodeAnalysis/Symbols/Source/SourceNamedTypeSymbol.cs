@@ -31,7 +31,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         private SourceDeclaration _sourceDeclaration;
         private ImmutableArray<NamedTypeSymbol> _lazyDeclaredBases;
         private ImmutableArray<NamedTypeSymbol> _lazyBaseTypes;
-        private ImmutableArray<Symbol> _childSymbols;
         private ImmutableArray<(CompletionPart start, CompletionPart finish)> _phaseBinders;
         private DiagnosticBag _diagnostics;
         public SourceNamedTypeSymbol(
@@ -50,7 +49,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         public override MergedDeclaration MergedDeclaration => _declaration;
 
-        public override ImmutableArray<Symbol> ChildSymbols => _childSymbols;
+        public override ImmutableArray<Symbol> ChildSymbols => _declaration.Children.Where(decl => decl.Symbol != null).Select(decl => decl.Symbol).ToImmutableArray();
 
         public ImmutableArray<Diagnostic> Diagnostics => _diagnostics != null ? _diagnostics.ToReadOnly() : ImmutableArray<Diagnostic>.Empty;
 
@@ -213,7 +212,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                     if (_state.NotePartComplete(CompletionPart.StartChildrenCreated))
                     {
                         var diagnostics = DiagnosticBag.GetInstance();
-                        ImmutableInterlocked.InterlockedInitialize(ref _childSymbols, _source.CreateChildSymbols(diagnostics, cancellationToken));
+                        _source.CreateContainedChildSymbols(diagnostics, cancellationToken);
                         AddDeclarationDiagnostics(diagnostics);
                         _state.NotePartComplete(CompletionPart.FinishChildrenCreated);
                         diagnostics.Free();
@@ -241,24 +240,36 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 }
                 else if (incompletePart == CompletionPart.MembersCompleted)
                 {
-                    ImmutableArray<DeclaredSymbol> members = this.GetMembersUnordered();
+                    // ensure relevant imports are complete.
+                    foreach (var declaration in _declaration.Declarations)
+                    {
+                        if (locationOpt == null || locationOpt.SourceTree == declaration.SyntaxReference.SyntaxTree)
+                        {
+                            if (declaration.HasUsings || declaration.HasExternAliases)
+                            {
+                                this.DeclaringCompilation.GetImports(declaration).Complete(cancellationToken);
+                            }
+                        }
+                    }
 
+                    var childSymbols = _declaration.Children.Select(decl => decl.Symbol).ToArray();
+                    Debug.Assert(!childSymbols.Any(s => s == null));
                     bool allCompleted = true;
 
                     if (locationOpt == null)
                     {
-                        foreach (var member in members)
+                        foreach (var child in childSymbols)
                         {
                             cancellationToken.ThrowIfCancellationRequested();
-                            member.ForceComplete(null, locationOpt, cancellationToken);
+                            child.ForceComplete(null, locationOpt, cancellationToken);
                         }
                     }
                     else
                     {
-                        foreach (var member in members)
+                        foreach (var child in childSymbols)
                         {
-                            ForceCompleteMemberByLocation(locationOpt, member, cancellationToken);
-                            allCompleted = allCompleted && member.HasComplete(CompletionPart.All);
+                            ForceCompleteChildByLocation(locationOpt, child, cancellationToken);
+                            allCompleted = allCompleted && child.HasComplete(CompletionPart.All);
                         }
                     }
 

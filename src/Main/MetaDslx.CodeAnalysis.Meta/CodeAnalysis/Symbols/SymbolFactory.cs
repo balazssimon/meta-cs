@@ -164,6 +164,13 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return builder.ToImmutableAndFree();
         }
 
+        public void RemoveSymbol(Symbol symbol)
+        {
+            var mobj = (symbol as IModelSourceSymbol)?.ModelObject;
+            _symbolMap.Remove(mobj);
+            _module.DeclaringCompilation.ObjectFactory.RemoveObject(mobj);
+        }
+
         private Symbol GetOrAddSymbol(object modelObject, Symbol symbol)
         {
             return _symbolMap.GetValue(modelObject, mobj => symbol);

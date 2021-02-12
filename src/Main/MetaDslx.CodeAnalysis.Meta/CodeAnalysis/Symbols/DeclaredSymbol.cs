@@ -340,38 +340,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return null;
         }
 
-        public virtual bool IsDefinedInSourceTree(SyntaxTree tree, TextSpan? definedWithinSpan, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            var declaringReferences = this.DeclaringSyntaxReferences;
-            var container = this.ContainingDeclaration;
-            if (this.IsImplicitlyDeclared && declaringReferences.Length == 0 && container != null)
-            {
-                return container.IsDefinedInSourceTree(tree, definedWithinSpan, cancellationToken);
-            }
-
-            foreach (var syntaxRef in declaringReferences)
-            {
-                cancellationToken.ThrowIfCancellationRequested();
-
-                if (syntaxRef.SyntaxTree == tree &&
-                    (!definedWithinSpan.HasValue || syntaxRef.Span.IntersectsWith(definedWithinSpan.Value)))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        internal static void ForceCompleteMemberByLocation(SourceLocation locationOpt, DeclaredSymbol member, CancellationToken cancellationToken)
-        {
-            if (locationOpt == null || member.IsDefinedInSourceTree(locationOpt.SourceTree, locationOpt.SourceSpan, cancellationToken))
-            {
-                cancellationToken.ThrowIfCancellationRequested();
-                member.ForceComplete(null, locationOpt, cancellationToken);
-            }
-        }
-
         /// <summary>
         /// Returns the Documentation Comment ID for the symbol, or null if the symbol doesn't
         /// support documentation comments.

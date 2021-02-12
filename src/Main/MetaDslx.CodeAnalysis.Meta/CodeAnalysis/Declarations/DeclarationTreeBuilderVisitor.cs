@@ -57,11 +57,6 @@ namespace MetaDslx.CodeAnalysis.Declarations
             get { return this.PropertyStack.Count > 0 ? this.PropertyStack.Peek() : default; }
         }
 
-        private RootSingleDeclaration CreateRoot(LanguageSyntaxNode node, ModelObjectDescriptor kind)
-        {
-            return this.CreateRoot(node, kind.ImmutableType);
-        }
-
         protected RootSingleDeclaration CreateRoot(LanguageSyntaxNode node, Type type)
         {
             if (_syntaxTree.Options.Kind != SourceCodeKind.Regular)
@@ -107,9 +102,9 @@ namespace MetaDslx.CodeAnalysis.Declarations
             return this.CreateRootDeclaration(node, type);
         }
 
-        protected virtual DeclarationTreeInfo CreateDeclarationInfo(DeclarationTreeInfo parentScope, DeclarationTreeInfo parentDeclaration, DeclarationTreeInfo parent, Property parentPropertyToAddTo, Type type, LanguageSyntaxNode node)
+        protected virtual DeclarationTreeInfo CreateDeclarationInfo(DeclarationTreeInfo parentScope, DeclarationTreeInfo parentDeclaration, DeclarationTreeInfo parent, Property parentProperty, Type type, LanguageSyntaxNode node)
         {
-            return new DeclarationTreeInfo(parentScope, parentDeclaration, parent, parentPropertyToAddTo.Name, type, node);
+            return new DeclarationTreeInfo(parentScope, parentDeclaration, parent, parentProperty.Name, type, node);
         }
 
         //***
@@ -258,27 +253,19 @@ namespace MetaDslx.CodeAnalysis.Declarations
             ImmutableArray<Diagnostic> diagnostics;
             var symbolFacts = Language.SymbolFacts;
             var kind = symbolFacts.ToDeclarationKind(symbolFacts.GetSymbolKind(declaration.ModelObjectType));
-            /*if (kind == null && declaration.ModelObjectType != null)
-            {
-                diagnostics = ImmutableArray.Create((Diagnostic)new LanguageDiagnostic(new LanguageDiagnosticInfo(ModelErrorCode.ERR_ModelObjectDescriptorNotFound, declaration.ModelObjectType), new SourceLocation(declaration.Node)));
-            }
-            else
-            {
-                diagnostics = ImmutableArray<Diagnostic>.Empty;
-            }*/
             diagnostics = ImmutableArray<Diagnostic>.Empty;
             if (parent == null)
             {
                 var rootDeclaration = new RootSingleDeclaration(declaration.ModelObjectType, declaration.Node.GetReference(), declaration.Members.ToImmutable(), declaration.ReferenceDirectives.ToImmutable(), diagnostics);
                 return rootDeclaration;
             }
-            var parentProp = Language.SymbolFacts.GetProperty(parent.ModelObjectType, declaration.ParentPropertyToAddTo);
-            if (parent.ModelObjectType == null && declaration.ParentPropertyToAddTo == null || parentProp != null && Language.SymbolFacts.IsContainmentProperty(parentProp))
+            var parentProp = Language.SymbolFacts.GetProperty(parent.ModelObjectType, declaration.ParentProperty);
+            if (parent.ModelObjectType == null && declaration.ParentProperty == null || parentProp != null)
             {
+                var isContainment = parentProp != null && Language.SymbolFacts.IsContainmentProperty(parentProp);
                 if (declaration.Names.Count == 0)
                 {
-                    //var diagnostics = ImmutableArray.Create<Diagnostic>(new LanguageDiagnostic(new LanguageDiagnosticInfo(ModelErrorCode.ERR_DeclarationHasNoName), declaration.Node.Location));
-                    SingleDeclaration anonymousDeclaration = new SingleDeclaration(null, kind, declaration.ModelObjectType, declaration.Node.GetReference(), new SourceLocation(declaration.Node), false, false, declaration.ParentPropertyToAddTo, declaration.Members.ToImmutable(), declaration.Properties.ToImmutable(), diagnostics);
+                    SingleDeclaration anonymousDeclaration = new SingleDeclaration(null, kind, declaration.ModelObjectType, declaration.Node.GetReference(), new SourceLocation(declaration.Node), false, false, declaration.ParentProperty, declaration.Members.ToImmutable(), declaration.Properties.ToImmutable(), diagnostics);
                     parent.Members.Add(anonymousDeclaration);
                     return anonymousDeclaration;
                 }
@@ -288,20 +275,21 @@ namespace MetaDslx.CodeAnalysis.Declarations
                     if (count > 0)
                     {
                         var identifier = qualifier[count - 1];
-                        var parentProperty = count == 1 ? declaration.ParentPropertyToAddTo : declaration.NestingProperty;
-                        var decl = new SingleDeclaration(identifier.Text, kind, declaration.ModelObjectType, declaration.Node.GetReference(), new SourceLocation(identifier.Syntax), declaration.Merge, false, parentProperty, declaration.Members.ToImmutable(), declaration.Properties.ToImmutable(), diagnostics);
+                        var parentProperty = count == 1 ? declaration.ParentProperty : declaration.NestingProperty;
+                        var decl = new SingleDeclaration(identifier.Text, kind, declaration.ModelObjectType, declaration.Node.GetReference(), new SourceLocation(identifier.Syntax), isContainment && declaration.Merge, false, parentProperty, declaration.Members.ToImmutable(), declaration.Properties.ToImmutable(), diagnostics);
                         var deepestDecl = decl;
                         for (int i = count - 2; i >= 0; i--)
                         {
-                            parentProperty = i == 0 ? declaration.ParentPropertyToAddTo : declaration.NestingProperty;
+                            parentProperty = i == 0 ? declaration.ParentProperty : declaration.NestingProperty;
                             identifier = qualifier[i];
-                            decl = new SingleDeclaration(identifier.Text, kind, declaration.ModelObjectType, declaration.Node.GetReference(), new SourceLocation(identifier.Syntax), declaration.Merge, true, parentProperty, ImmutableArray.Create(decl), ImmutableArray<DeclarationTreeInfo.Property>.Empty, ImmutableArray<Diagnostic>.Empty);
+                            decl = new SingleDeclaration(identifier.Text, kind, declaration.ModelObjectType, declaration.Node.GetReference(), new SourceLocation(identifier.Syntax), isContainment && declaration.Merge, true, parentProperty, ImmutableArray.Create(decl), ImmutableArray<DeclarationTreeInfo.Property>.Empty, ImmutableArray<Diagnostic>.Empty);
                         }
                         parent.Members.Add(decl);
                         return deepestDecl;
                     }
                 }
             }
+            Debug.Assert(false);
             return null;
         }
         

@@ -22,5 +22,10 @@ namespace MetaDslx.CodeAnalysis.Symbols
         {
             throw new NotImplementedException();
         }
+
+        public override void RemoveObject(object modelObject)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

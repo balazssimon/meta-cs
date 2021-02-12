@@ -19,13 +19,13 @@ namespace MetaDslx.CodeAnalysis.Declarations
         private int qualifierStack;
         private ArrayBuilder<Identifier> currentName;
 
-        public DeclarationTreeInfo(DeclarationTreeInfo parentScope, DeclarationTreeInfo parentDeclaration, DeclarationTreeInfo parent, string parentPropertyToAddTo, Type type, SyntaxNodeOrToken node)
+        public DeclarationTreeInfo(DeclarationTreeInfo parentScope, DeclarationTreeInfo parentDeclaration, DeclarationTreeInfo parent, string parentProperty, Type type, SyntaxNodeOrToken node)
         {
             this.ParentScope = parentScope;
             this.ParentDeclaration = parentDeclaration;
             this.Parent = parent;
             this.Parent = parent;
-            this.ParentPropertyToAddTo = parentPropertyToAddTo;
+            this.ParentProperty = parentProperty;
             this.ModelObjectType = type;
             this.Node = node;
             this.Names = new ArrayBuilder<ArrayBuilder<Identifier>>();
@@ -42,7 +42,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
         public bool Merge { get; private set; }
         public bool Detached { get; private set; }
         public string NestingProperty { get; private set; }
-        public string ParentPropertyToAddTo { get; private set; }
+        public string ParentProperty { get; private set; }
         public ArrayBuilder<ArrayBuilder<Identifier>> Names { get; private set; }
         public ArrayBuilder<SingleDeclaration> Members { get; private set; }
         public ArrayBuilder<ReferenceDirective> ReferenceDirectives { get; private set; }

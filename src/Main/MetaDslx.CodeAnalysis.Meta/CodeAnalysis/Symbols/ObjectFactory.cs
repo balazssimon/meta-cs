@@ -62,6 +62,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         public abstract object CreateModel();
         public abstract object CreateObject(Type type);
-
+        public abstract void RemoveObject(object modelObject);
     }
 }

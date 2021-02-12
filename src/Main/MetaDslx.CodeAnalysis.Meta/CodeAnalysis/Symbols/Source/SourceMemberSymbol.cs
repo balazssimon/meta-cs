@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,7 +24,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         private readonly SourceSymbol _source;
         private readonly CompletionState _state;
         private SourceDeclaration _sourceDeclaration;
-        private ImmutableArray<Symbol> _childSymbols;
         private ImmutableArray<(CompletionPart start, CompletionPart finish)> _phaseBinders;
         private DiagnosticBag _diagnostics;
 
@@ -35,7 +35,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         {
             Debug.Assert(containingSymbol is IModelSourceSymbol);
             Debug.Assert(modelObject != null);
-            //Debug.Assert(declaration != null);
+            Debug.Assert(declaration != null);
             _declaration = declaration;
             _source = new SourceSymbol(this);
             _state = CompletionState.Create(containingSymbol.ContainingModule.Language);
@@ -43,7 +43,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         public override MergedDeclaration MergedDeclaration => _declaration;
 
-        public override ImmutableArray<Symbol> ChildSymbols => _childSymbols;
+        public override ImmutableArray<Symbol> ChildSymbols => _declaration.Children.Where(decl => decl.Symbol != null).Select(decl => decl.Symbol).ToImmutableArray();
 
         public override AssemblySymbol ContainingAssembly => ContainingSymbol.ContainingAssembly;
 
@@ -169,7 +169,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                     if (_state.NotePartComplete(CompletionPart.StartChildrenCreated))
                     {
                         var diagnostics = DiagnosticBag.GetInstance();
-                        ImmutableInterlocked.InterlockedInitialize(ref _childSymbols, _source.CreateChildSymbols(diagnostics, cancellationToken));
+                        _source.CreateContainedChildSymbols(diagnostics, cancellationToken);
                         AddDeclarationDiagnostics(diagnostics);
                         _state.NotePartComplete(CompletionPart.FinishChildrenCreated);
                         diagnostics.Free();
@@ -205,8 +205,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                         }
                     }
 
-                    var members = this.GetMembers();
-
+                    var childSymbols = _declaration.Children.Select(decl => decl.Symbol).ToArray();
+                    Debug.Assert(!childSymbols.Any(s => s == null));
                     bool allCompleted = true;
 
                     if (this.DeclaringCompilation.Options.ConcurrentBuild)
@@ -215,15 +215,15 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                             ? new ParallelOptions() { CancellationToken = cancellationToken }
                             : LanguageCompilation.DefaultParallelOptions;
 
-                        Parallel.For(0, members.Length, po, UICultureUtilities.WithCurrentUICulture<int>(i =>
+                        Parallel.For(0, childSymbols.Length, po, UICultureUtilities.WithCurrentUICulture<int>(i =>
                         {
-                            var member = members[i];
-                            ForceCompleteMemberByLocation(locationOpt, member, cancellationToken);
+                            var child = childSymbols[i];
+                            ForceCompleteChildByLocation(locationOpt, child, cancellationToken);
                         }));
 
-                        foreach (var member in members)
+                        foreach (var child in childSymbols)
                         {
-                            if (!member.HasComplete(CompletionPart.All))
+                            if (!child.HasComplete(CompletionPart.All))
                             {
                                 allCompleted = false;
                                 break;
@@ -232,10 +232,10 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                     }
                     else
                     {
-                        foreach (var member in members)
+                        foreach (var child in childSymbols)
                         {
-                            ForceCompleteMemberByLocation(locationOpt, member, cancellationToken);
-                            allCompleted = allCompleted && member.HasComplete(CompletionPart.All);
+                            ForceCompleteChildByLocation(locationOpt, child, cancellationToken);
+                            allCompleted = allCompleted && child.HasComplete(CompletionPart.All);
                         }
                     }
 

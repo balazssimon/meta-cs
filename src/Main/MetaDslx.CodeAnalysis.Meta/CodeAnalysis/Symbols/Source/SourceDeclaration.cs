@@ -393,7 +393,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         {
             var symbolFactory = SourceSymbol.SymbolFactory;
             var objectFactory = _symbol.DeclaringCompilation.ObjectFactory;
-            Debug.Assert(_symbol.ChildSymbols.Length >= this.Declaration.Children.Length);
+            var childSymbols = _symbol.ChildSymbols;
+            //Debug.Assert(childSymbols.Length >= this.Declaration.Children.Length);
             foreach (var decl in this.Declaration.Children)
             {
                 if (_lazyMembers != null)
@@ -402,9 +403,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                     return;
                 }
 
+                if (decl.Name == null) continue;
+
                 if (decl.IsType)
                 {
-                    var symbol = _symbol.ChildSymbols.OfType<SourceNamedTypeSymbol>().FirstOrDefault(nts => nts.MergedDeclaration == decl);
+                    var symbol = childSymbols.OfType<SourceNamedTypeSymbol>().FirstOrDefault(nts => nts.MergedDeclaration == decl);
                     Debug.Assert(symbol != null);
                     if (symbol != null) builder.Add(symbol);
                 }
@@ -415,7 +418,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         {
             var symbolFactory = SourceSymbol.SymbolFactory;
             var objectFactory = _symbol.DeclaringCompilation.ObjectFactory;
-            Debug.Assert(_symbol.ChildSymbols.Length >= this.Declaration.Children.Length);
+            var childSymbols = _symbol.ChildSymbols;
+            //Debug.Assert(childSymbols.Length >= this.Declaration.Children.Length);
             foreach (var decl in this.Declaration.Children)
             {
                 if (_lazyMembers != null)
@@ -424,9 +428,10 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                     return;
                 }
 
+                if (decl.Name == null) continue;
                 if (decl.IsType) continue;
 
-                var symbol = _symbol.ChildSymbols.OfType<DeclaredSymbol>().FirstOrDefault(ds => ds.MergedDeclaration == decl);
+                var symbol = childSymbols.OfType<DeclaredSymbol>().FirstOrDefault(ds => ds.MergedDeclaration == decl);
                 Debug.Assert(symbol != null);
                 if (symbol != null) builder.Add(symbol);
             }

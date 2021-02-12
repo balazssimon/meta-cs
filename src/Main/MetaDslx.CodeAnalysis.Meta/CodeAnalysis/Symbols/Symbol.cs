@@ -670,6 +670,37 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 compilation.DeclarationDiagnostics.AddRange(diagnostics);
             }
         }
+        public virtual bool IsDefinedInSourceTree(SyntaxTree tree, TextSpan? definedWithinSpan, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var declaringReferences = this.DeclaringSyntaxReferences;
+            var container = this.ContainingSymbol;
+            if (declaringReferences.Length == 0 && container != null)
+            {
+                return container.IsDefinedInSourceTree(tree, definedWithinSpan, cancellationToken);
+            }
+
+            foreach (var syntaxRef in declaringReferences)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+
+                if (syntaxRef.SyntaxTree == tree &&
+                    (!definedWithinSpan.HasValue || syntaxRef.Span.IntersectsWith(definedWithinSpan.Value)))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public static void ForceCompleteChildByLocation(SourceLocation locationOpt, Symbol member, CancellationToken cancellationToken)
+        {
+            if (locationOpt == null || member.IsDefinedInSourceTree(locationOpt.SourceTree, locationOpt.SourceSpan, cancellationToken))
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                member.ForceComplete(null, locationOpt, cancellationToken);
+            }
+        }
 
     }
 }

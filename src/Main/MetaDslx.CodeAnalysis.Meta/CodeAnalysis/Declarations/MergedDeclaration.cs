@@ -9,6 +9,8 @@ using Microsoft.CodeAnalysis;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis.PooledObjects;
 using MetaDslx.CodeAnalysis.Symbols;
+using System.Diagnostics;
+using MetaDslx.CodeAnalysis.Symbols.Source;
 
 namespace MetaDslx.CodeAnalysis.Declarations
 {
@@ -17,6 +19,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
         private readonly ImmutableArray<SingleDeclaration> _declarations;
         private ImmutableArray<MergedDeclaration> _lazyChildren;
         private ImmutableArray<string> _lazyChildNames;
+        private Symbol _symbol;
 
         public MergedDeclaration(ImmutableArray<SingleDeclaration> declarations)
             : base(declarations.IsEmpty ? null : declarations[0].Name,
@@ -61,6 +64,37 @@ namespace MetaDslx.CodeAnalysis.Declarations
             {
                 return this._declarations.IsEmpty ? null : this._declarations[0].ModelObjectType;
             }
+        }
+
+        public Symbol Symbol => _symbol;
+
+        public Symbol CreateSymbol(Symbol container, SymbolFactory symbolFactory)
+        {
+            if (_symbol != null)
+            {
+                Debug.Assert(_symbol.ContainingSymbol == container);
+                return _symbol;
+            }
+            var symbol = symbolFactory.MakeSourceSymbol(container, ModelObjectType, this);
+            var mobj = (symbol as IModelSourceSymbol)?.ModelObject;
+            Debug.Assert(mobj != null);
+            if (Interlocked.CompareExchange(ref _symbol, symbol, null) != null)
+            {
+                symbolFactory.RemoveSymbol(symbol);
+            }
+            return _symbol;
+        }
+
+        /// <summary>
+        /// Used by the Symbol API to set the symbol corresponding to this merged declaration.
+        /// Do not call this method from anywhere else.
+        /// </summary>
+        /// <param name="symbol"></param>
+        internal void DangerousSetSymbol(Symbol symbol)
+        {
+            Debug.Assert(_symbol == null);
+            Debug.Assert(symbol != null);
+            Interlocked.CompareExchange(ref _symbol, symbol, null);
         }
 
         public LexicalSortKey GetLexicalSortKey(LanguageCompilation compilation)

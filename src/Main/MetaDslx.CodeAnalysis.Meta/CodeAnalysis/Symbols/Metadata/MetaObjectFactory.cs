@@ -40,5 +40,13 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             return mobj;
         }
 
+        public override void RemoveObject(object modelObject)
+        {
+            var mobj = (MutableObject)modelObject;
+            if (mobj != null)
+            {
+                mobj.MModel.RemoveObject(mobj);
+            }
+        }
     }
 }
