@@ -458,9 +458,6 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
 
             this.GeneratedDeclarationTreeBuilder = generator.GenerateDeclarationTreeBuilder();
             this.GeneratedBinderFactoryVisitor = generator.GenerateBinderFactoryVisitor();
-            this.GeneratedBoundKind = generator.GenerateBoundKind();
-            this.GeneratedBoundNodeFactoryVisitor = generator.GenerateBoundNodeFactoryVisitor();
-            this.GeneratedIsBindableNodeVisitor = generator.GenerateIsBindableNodeVisitor();
 
             if (this.AutomaticOutputDirectory == null || this.ManualOutputDirectory == null) return;
 
@@ -489,9 +486,6 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                 this.WriteOutputFile(Path.Combine(CompilationDirectory, this.LanguageName + @"LanguageServices.cs"), this.GeneratedLanguageServices, automatic: false);
                 this.WriteOutputFile(Path.Combine(BindingDirectory, this.LanguageName + @"DeclarationTreeBuilderVisitor.cs"), this.GeneratedDeclarationTreeBuilder);
                 this.WriteOutputFile(Path.Combine(BindingDirectory, this.LanguageName + @"BinderFactoryVisitor.cs"), this.GeneratedBinderFactoryVisitor);
-                this.WriteOutputFile(Path.Combine(BindingDirectory, this.LanguageName + @"BoundKind.cs"), this.GeneratedBoundKind);
-                this.WriteOutputFile(Path.Combine(BindingDirectory, this.LanguageName + @"BoundNodeFactoryVisitor.cs"), this.GeneratedBoundNodeFactoryVisitor);
-                this.WriteOutputFile(Path.Combine(BindingDirectory, this.LanguageName + @"IsBindableNodeVisitor.cs"), this.GeneratedIsBindableNodeVisitor);
                 /*this.WriteOutputFile(Path.Combine(this.AutomaticManualOutputDirectory, @"Compilation\" + this.LanguageName + @"ScriptCompilationInfo.cs"), this.GeneratedScriptCompilationInfo);
                 this.WriteOutputFile(Path.Combine(this.AutomaticManualOutputDirectory, @"Compilation\" + this.LanguageName + @"Feature.cs"), this.GeneratedFeature);*/
             }
@@ -1945,6 +1939,11 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         {
             return this.ParserRules.FirstOrDefault(rule => rule.Name == type);
         }
+
+        public override string ToString()
+        {
+            return this.Name;
+        }
     }
     public class Antlr4ParserRule : Antlr4AnnotatedObject
     {
@@ -1986,6 +1985,10 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             }
         }
 
+        public override string ToString()
+        {
+            return this.Name;
+        }
     }
     public class Antlr4ParserRuleElement : Antlr4AnnotatedObject
     {
@@ -2061,6 +2064,11 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             }
             return false;
         }
+
+        public override string ToString()
+        {
+            return this.Name;
+        }
     }
     public class Antlr4LexerMode : Antlr4AnnotatedObject
     {
@@ -2074,6 +2082,11 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         public string Name { get; set; }
         public int Kind { get; set; }
         public List<Antlr4LexerRule> LexerRules { get; private set; }
+
+        public override string ToString()
+        {
+            return this.Name;
+        }
     }
     public class Antlr4LexerRule : Antlr4AnnotatedObject
     {
@@ -2088,6 +2101,11 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         public string FixedToken { get; set; }
         public int Kind { get; set; }
         public bool Artificial { get; set; }
+
+        public override string ToString()
+        {
+            return this.Name;
+        }
     }
 
 

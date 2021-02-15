@@ -13,8 +13,8 @@ namespace MetaDslx.CodeGeneration
 
         public CodeGenerator(string manualOutputDirectory, string automaticOutputDirectory)
         {
-            ManualOutputDirectory = manualOutputDirectory;
-            AutomaticOutputDirectory = automaticOutputDirectory;
+            ManualOutputDirectory = manualOutputDirectory ?? string.Empty;
+            AutomaticOutputDirectory = automaticOutputDirectory ?? string.Empty;
             _generatedFiles = new ArrayBuilder<string>();
         }
 

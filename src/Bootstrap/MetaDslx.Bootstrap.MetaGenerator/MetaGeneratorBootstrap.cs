@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace MetaDslx.Bootstrap
+namespace MetaDslx.Bootstrap.MetaGenerator
 {
     public class MetaGeneratorBootstrap
     {

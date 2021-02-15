@@ -195,7 +195,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             get
             {
                 if (_next == null) return null;
-                var symbol = Next.GetDefinedSymbol() as DeclaredSymbol;
+                var symbol = _next.GetDefinedSymbol() as DeclaredSymbol;
                 if (symbol != null) return symbol;
                 else return Next.ContainingDeclaration;
             }

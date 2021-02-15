@@ -132,37 +132,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
         }
 
-        public virtual DeclarationKind ToDeclarationKind(LanguageSymbolKind kind)
+        public virtual DeclarationKind ToDeclarationKind(Type symbolType)
         {
-            switch (kind.Switch())
-            {
-                case LanguageSymbolKind.Assembly:
-                    return DeclarationKind.None;
-                case LanguageSymbolKind.NetModule:
-                    return DeclarationKind.None;
-                case LanguageSymbolKind.Alias:
-                    return DeclarationKind.None;
-                case LanguageSymbolKind.Namespace:
-                    return DeclarationKind.Namespace;
-                case LanguageSymbolKind.NamedType:
-                    return DeclarationKind.Type;
-                case LanguageSymbolKind.Property:
-                    return DeclarationKind.None; 
-                case LanguageSymbolKind.Operation:
-                    return DeclarationKind.None;
-                case LanguageSymbolKind.ErrorType:
-                    return DeclarationKind.Type;
-                case LanguageSymbolKind.Name:
-                    return DeclarationKind.None;
-                case LanguageSymbolKind.DynamicType:
-                    return DeclarationKind.Type;
-                case LanguageSymbolKind.ConstructedType:
-                    return DeclarationKind.Type;
-                case LanguageSymbolKind.None:
-                    return DeclarationKind.None;
-                default:
-                    throw new ArgumentException("Unexpected symbol kind: " + kind.ToString(), nameof(kind));
-            }
+            if (typeof(NamespaceSymbol).IsAssignableFrom(symbolType)) return DeclarationKind.Namespace;
+            if (typeof(TypeSymbol).IsAssignableFrom(symbolType)) return DeclarationKind.Type;
+            return DeclarationKind.None;
         }
 
         public abstract object GetModel(object modelObject);
@@ -183,9 +157,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public abstract IEnumerable<object> GetPropertyValues(object modelObject, object property);
         public abstract void SetOrAddPropertyValue(object modelObject, object property, object value, Location location, DiagnosticBag diagnostics);
 
-        public virtual LanguageSymbolKind GetSymbolKind(object modelObject)
+        public virtual Type GetSymbolType(object modelObject)
         {
-            return GetSymbolKind(modelObject.GetType());
+            return GetSymbolType(modelObject.GetType());
         }
 
         public virtual IEnumerable<object> GetPropertiesForSymbol(object modelObject, string symbolProperty)
@@ -204,7 +178,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         public abstract string GetSymbolProperty(Type modelObjectType, object property);
 
-        public abstract LanguageSymbolKind GetSymbolKind(Type modelObjectType);
+        public abstract Type GetSymbolType(Type modelObjectType);
 
         public virtual IEnumerable<IModelObject> GetBuiltInObjects()
         {

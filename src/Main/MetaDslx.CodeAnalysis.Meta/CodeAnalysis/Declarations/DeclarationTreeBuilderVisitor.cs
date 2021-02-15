@@ -252,7 +252,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             DeclarationTreeInfo parent = declaration.Parent;
             ImmutableArray<Diagnostic> diagnostics;
             var symbolFacts = Language.SymbolFacts;
-            var kind = symbolFacts.ToDeclarationKind(symbolFacts.GetSymbolKind(declaration.ModelObjectType));
+            var kind = symbolFacts.ToDeclarationKind(symbolFacts.GetSymbolType(declaration.ModelObjectType));
             diagnostics = ImmutableArray<Diagnostic>.Empty;
             if (parent == null)
             {

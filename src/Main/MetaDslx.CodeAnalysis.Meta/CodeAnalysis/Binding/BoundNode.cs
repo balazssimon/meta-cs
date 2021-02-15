@@ -14,7 +14,6 @@ using System.Threading;
 
 namespace MetaDslx.CodeAnalysis.Binding
 {
-    [DebuggerDisplay("{GetDebuggerDisplay(), nq}")]
     public class BoundNode
     {
         private BoundTree _boundTree;
@@ -61,6 +60,11 @@ namespace MetaDslx.CodeAnalysis.Binding
             if (_children == null) _children = new ConcurrentDictionary<SyntaxNodeOrToken, BoundNode>();
             _children.TryAdd(syntax, child);
             return _children[syntax];
+        }
+
+        public override string ToString()
+        {
+            return this.GetType().Name;
         }
     }
 }

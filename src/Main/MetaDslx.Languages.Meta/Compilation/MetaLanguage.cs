@@ -11,9 +11,9 @@ using MetaDslx.Languages.Meta;
 using MetaDslx.Languages.Meta.Symbols;
 using MetaDslx.Languages.Meta.Syntax;
 using MetaDslx.Languages.Meta.Syntax.InternalSyntax;
+using Roslyn.Utilities;
 
 using MetaDslx.Languages.Meta.Model;
-using Roslyn.Utilities;
 
 namespace MetaDslx.Languages.Meta
 {
@@ -26,7 +26,7 @@ namespace MetaDslx.Languages.Meta
             EnumObject.Init(typeof(MetaLanguageVersion));
             EnumObject.Init(typeof(MetaTokensSyntaxKind));
             EnumObject.Init(typeof(MetaSyntaxKind));
-        }
+		}
 
         public override string Name => "Meta";
 

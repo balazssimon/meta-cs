@@ -52,11 +52,6 @@ namespace MetaDslx.Modeling
         IModelObject IModelObject.MParent { get { return this.model.MParent(this.id); } }
         IReadOnlyList<IModelObject> IModelObject.MChildren { get { return this.model.MChildren(this.id); } }
 
-        public IReadOnlyList<IModelObject> MGetImports() { return this.model.MGetImports(this); }
-        public IReadOnlyList<IModelObject> MGetBases() { return this.model.MGetBases(this); }
-        public IReadOnlyList<IModelObject> MGetAllBases() { return this.model.MGetAllBases(this); }
-        public IReadOnlyList<IModelObject> MGetMembers() { return this.model.MGetMembers(this); }
-
         public IReadOnlyList<ModelProperty> MProperties { get { return this.model.MProperties(this.id); } }
         public IReadOnlyList<ModelProperty> MAllProperties { get { return this.model.MAllProperties(this.id); } }
         public ModelProperty MGetProperty(string name)
@@ -98,41 +93,6 @@ namespace MetaDslx.Modeling
                 {
                     this.SetReference(nameProperty, value);
                 }
-            }
-        }
-        public MutableObject MType
-        {
-            get
-            {
-                ModelProperty typeProperty = this.id.Descriptor.TypeProperty;
-                if (typeProperty != null && this.model.MHasConcreteValue(this.id, typeProperty))
-                {
-                    object typeObj = this.MGet(typeProperty);
-                    return typeObj as MutableObject;
-                }
-                return null;
-            }
-            set
-            {
-                ModelProperty typeProperty = this.id.Descriptor.TypeProperty;
-                if (typeProperty != null)
-                {
-                    this.SetReference(typeProperty, value);
-                }
-            }
-        }
-        public bool MIsNamespace { get { return this.id.Descriptor.IsNamespace; } }
-        public bool MIsType { get { return this.id.Descriptor.IsType; } }
-        public bool MIsNamedType { get { return this.id.Descriptor.IsNamedType; } }
-
-        public bool MIsScope { get { return this.id.Descriptor.IsScope; } }
-        public bool MIsLocalScope { get { return this.id.Descriptor.IsLocalScope; } }
-
-        IModelObject IModelObject.MType
-        {
-            get
-            {
-                return this.MType;
             }
         }
 
@@ -391,9 +351,7 @@ namespace MetaDslx.Modeling
         {
             string metaType = this.id.DisplayTypeName;
             string name = this.MName;
-            string type = this.MType?.MName;
-            if (type != null) return $"[{metaType}] {name}: {type}";
-            else if (name != null) return $"[{metaType}] {name}";
+            if (name != null) return $"[{metaType}] {name}";
             else return $"[{metaType}]";
         }
     }

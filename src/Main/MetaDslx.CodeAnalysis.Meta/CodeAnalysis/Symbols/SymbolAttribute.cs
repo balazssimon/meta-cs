@@ -7,13 +7,13 @@ namespace MetaDslx.CodeAnalysis.Symbols
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class SymbolAttribute : Attribute
     {
-        private LanguageSymbolKind _symbolKind;
+        private Type _symbolType;
 
-        public SymbolAttribute(LanguageSymbolKind symbolKind)
+        public SymbolAttribute(Type symbolType)
         {
-            _symbolKind = symbolKind;
+            _symbolType = symbolType;
         }
 
-        public LanguageSymbolKind SymbolKind => _symbolKind;
+        public Type SymbolType => _symbolType;
     }
 }

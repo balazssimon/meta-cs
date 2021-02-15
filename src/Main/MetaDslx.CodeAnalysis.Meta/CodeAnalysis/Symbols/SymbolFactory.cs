@@ -102,35 +102,21 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         protected virtual Symbol CreateMetaSymbol(Symbol container, object modelObject)
         {
-            var kind = _symbolFacts.GetSymbolKind(modelObject);
-            switch (kind.Switch())
-            {
-                case LanguageSymbolKind.Namespace:
-                    return new ModelNamespaceSymbol(container, modelObject);
-                case LanguageSymbolKind.NamedType:
-                    return new ModelNamedTypeSymbol(container, modelObject);
-                case LanguageSymbolKind.Name:
-                    return new ModelMemberSymbol(container, modelObject);
-                default:
-                    return new UnsupportedModelSymbol(container, modelObject);
-            }
+            var type = _symbolFacts.GetSymbolType(modelObject);
+            if (type == typeof(NamespaceSymbol)) return new ModelNamespaceSymbol(container, modelObject);
+            if (type == typeof(NamedTypeSymbol)) return new ModelNamedTypeSymbol(container, modelObject);
+            if (type == typeof(MemberSymbol)) return new ModelMemberSymbol(container, modelObject);
+            return new UnsupportedModelSymbol(container, modelObject);
         }
 
         protected virtual Symbol CreateSourceSymbol(Symbol container, object modelObject, MergedDeclaration declaration)
         {
-            var kind = _symbolFacts.GetSymbolKind(modelObject);
-            switch (kind.Switch())
-            {
-                case LanguageSymbolKind.Namespace:
-                    return new SourceNamespaceSymbol((SourceModuleSymbol)container.ContainingModule, container, modelObject, declaration);
-                case LanguageSymbolKind.NamedType:
-                    if (declaration == null || declaration.NameLocations.IsDefaultOrEmpty) return new SourceAnonymousTypeSymbol(container, modelObject, declaration);
-                    else return new SourceNamedTypeSymbol(container, modelObject, declaration);
-                case LanguageSymbolKind.Name:
-                    return new SourceMemberSymbol(container, modelObject, declaration);
-                default:
-                    throw new NotImplementedException($"Unsupported source symbol {kind.GetName()} for model object {modelObject.GetType().FullName}.");
-            }
+            var type = _symbolFacts.GetSymbolType(modelObject);
+            if (type == typeof(NamespaceSymbol)) return new SourceNamespaceSymbol((SourceModuleSymbol)container.ContainingModule, container, modelObject, declaration);
+            if (type == typeof(NamedTypeSymbol)) return new SourceNamedTypeSymbol(container, modelObject, declaration);
+            if (type == typeof(TypeSymbol)) return new SourceAnonymousTypeSymbol(container, modelObject, declaration);
+            if (type == typeof(MemberSymbol)) return new SourceMemberSymbol(container, modelObject, declaration);
+            return null;
         }
 
         public Symbol ResolveSymbol(object modelObject)

@@ -17,7 +17,6 @@ namespace MetaDslx.Modeling
         void MAttachProperty(ModelProperty property);
 
         new string MName { get; set; }
-        new MutableObject MType { get; set; }
 
 
         // TODO:MetaDslx - provide initialization, e.g. MInit, MTrySet, etc.

@@ -875,16 +875,6 @@ namespace [Properties.DefaultNamespace]
             return new [Properties.LanguageName]BinderFactoryVisitor(binderFactory);
         }
 ^
-        public override BoundNodeFactoryVisitor CreateBoundNodeFactoryVisitor(BoundTree boundTree)
-        {
-            return new [Properties.LanguageName]BoundNodeFactoryVisitor(boundTree);
-        }
-^
-		public override IsBindableNodeVisitor CreateIsBindableNodeVisitor(BoundTree boundTree)
-        {
-            return new [Properties.LanguageName]IsBindableNodeVisitor(boundTree);
-        }
-^
         public override RootSingleDeclaration CreateDeclarationTree(LanguageSyntaxTree syntaxTree, string scriptClassName, bool isSubmission)
         {
             return [Properties.LanguageName]DeclarationTreeBuilderVisitor.ForTree(([Properties.LanguageName]SyntaxTree)syntaxTree, scriptClassName, isSubmission);
@@ -5448,11 +5438,19 @@ end template
 
 
 template GenerateBinderFactoryVisitBody(Antlr4ParserRule rule)
-[if (rule.ContainsBinderAnnotations && hasloop(elem:rule.AllElements where elem.HasBinderAnnotations))]
+[if (rule.ContainsBinderAnnotations && hasloop(elem:rule.AllElements where elem.HasBinderAnnotations || elem.BlockItems.Any(bi => bi.HasBinderAnnotations)))]
 	[loop(elem:rule.AllElements where elem.ContainsBinderAnnotations)]
 [GenerateBinderFactoryVisitElement(rule, elem)]
 	[end loop]    
 [end if]
+end template
+
+template GenerateBinderFactoryVisitElement(Antlr4ParserRule rule, Antlr4ParserRuleElement elem)
+	[if (elem.IsFixedTokenAltBlock)]
+[GenerateBinderFactoryVisitTokenAltBody(rule, elem)]
+	[else]
+[GenerateBinderFactoryVisitElementBody(rule, elem)]
+	[end if]
 end template
 
 template GenerateBinderFactoryVisitElementBody(Antlr4ParserRule rule, Antlr4ParserRuleElement elem)
@@ -5472,7 +5470,7 @@ if (use == Use[elem.RedName()])
 end template
 
 template GenerateBinderFactoryVisitTokenAltBody(Antlr4ParserRule rule, Antlr4ParserRuleElement elem)
-	[if (elem.HasBinderAnnotations)]
+	[if (elem.BlockItems.Any(bi => bi.HasBinderAnnotations))]
 if (use == Use[elem.RedName()])
 {
 	switch (parent.[elem.RedName()].GetKind().Switch())
@@ -5493,10 +5491,10 @@ if (use == Use[elem.RedName()])
 end template
 
 template GenerateBinderFactoryVisitElemUses(Antlr4ParserRule rule)
-[if (rule.ContainsBinderAnnotations && hasloop(elem:rule.AllElements where elem.HasBinderAnnotations))]
+[if (rule.ContainsBinderAnnotations && hasloop(elem:rule.AllElements where elem.HasBinderAnnotations || elem.BlockItems.Any(bi => bi.HasBinderAnnotations)))]
 if (this.ForChild)
 {
-	[loop(elem:rule.AllElements where elem.HasBinderAnnotations)]
+	[loop(elem:rule.AllElements where elem.HasBinderAnnotations || elem.BlockItems.Any(bi => bi.HasBinderAnnotations))]
 		[if (elem.IsList)]
 	if (LookupPosition.IsInNode(this.Position, parent.[elem.RedName()].Node)) use = Use[elem.RedName()];
 		[else]
@@ -5505,489 +5503,6 @@ if (this.ForChild)
 	[end loop]    
 }
 [end if]
-end template
-
-template GenerateBinderFactoryVisitElement(Antlr4ParserRule rule, Antlr4ParserRuleElement elem)
-	[if (elem.IsFixedTokenAltBlock)]
-[GenerateBinderFactoryVisitTokenAltBody(rule, elem)]
-	[else]
-[GenerateBinderFactoryVisitElementBody(rule, elem)]
-	[end if]
-end template
-
-template GenerateBoundKind()
-using System;
-using System.Diagnostics;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MetaDslx.CodeAnalysis.Binding;
-using Roslyn.Utilities;
-^
-[var lang = Properties.LanguageName]
-namespace [Properties.DefaultNamespace].Binding
-{
-    public class [lang]BoundKind : BoundKind
-    {
-		[loop(annot:Instances.CustomAnnotations)]
-        public const string [annot.Name] = nameof([annot.Name]);
-		[end loop]
-^
-        protected [lang]BoundKind(string name)
-            : base(name)
-        {
-        }
-^
-        protected [lang]BoundKind(EnumObject retargetedValue)
-            : base(retargetedValue)
-        {
-        }
-^
-        static [lang]BoundKind()
-        {
-            EnumObject.AutoInit<[lang]BoundKind>();
-        }
-^
-        public static implicit operator [lang]BoundKind(string name)
-        {
-            return FromString<[lang]BoundKind>(name);
-        }
-^
-        public static explicit operator [lang]BoundKind(int value)
-        {
-            return FromIntUnsafe<[lang]BoundKind>(value);
-        }
-    }
-}
-end template
-
-template GenerateBoundNodeFactoryVisitor()
-using System.Diagnostics;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.PooledObjects;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.Binding;
-using MetaDslx.CodeAnalysis.Syntax;
-using Roslyn.Utilities;
-using [Properties.DefaultNamespace];
-using [Properties.DefaultNamespace].Syntax;
-using [Properties.DefaultNamespace].Symbols;
-[Instances.ParserHeader]
-^
-[var lang = Properties.LanguageName]
-namespace [Properties.DefaultNamespace].Binding
-{
-	// Make sure to keep this in sync with [lang]IsBindableNodeVisitor
-    public class [lang]BoundNodeFactoryVisitor : BoundNodeFactoryVisitor, I[lang]SyntaxVisitor<ArrayBuilder<object>, BoundNode>
-    {
-        public [lang]BoundNodeFactoryVisitor(BoundTree boundTree)
-			: base(boundTree)
-        {
-^
-        }
-		[loop(annot:Instances.CustomAnnotations)]
-^
-        protected BoundNode CreateBound[annot.Name](BoundTree boundTree, ImmutableArray<object> childBoundNodes, LanguageSyntaxNode syntax, bool hasErrors)
-        {
-            return this.CreateBound[annot.Name]Core(boundTree, childBoundNodes, syntax, hasErrors);
-        }
-^
-        protected virtual BoundNode CreateBound[annot.Name]Core(BoundTree boundTree, ImmutableArray<object> childBoundNodes, LanguageSyntaxNode syntax, bool hasErrors)
-        {
-            return new Bound[annot.Name]([lang]BoundKind.[annot.Name], boundTree, childBoundNodes, syntax, hasErrors);
-        }
-		[end loop]
-^
-		public BoundNode VisitSkippedTokensTrivia([lang]SkippedTokensTriviaSyntax node, ArrayBuilder<object> childBoundNodesForParent)
-		{
-			return null;
-		}
-^		
-		[loop(rule:Instances.ParserRules)]
-			[if (rule.Alternatives.Count > 0)]
-				[loop(alt:rule.Alternatives)]
-		[GenerateBoundNodeFactoryVisit(alt)]
-				[end loop]
-			[else]
-		[GenerateBoundNodeFactoryVisit(rule)]
-			[end if]
-		[end loop]
-    }
-}
-end template
-
-
-template GenerateBoundNodeFactoryVisit(Antlr4ParserRule rule)
-^
-public BoundNode Visit[rule.PlainName()]([rule.RedName()] node, ArrayBuilder<object> childBoundNodesForParent)
-{
-	if (node == null || node.IsMissing) return null;
-	var state = this.State;
-	if (this.State == BoundNodeFactoryState.InParent) this.State = BoundNodeFactoryState.InNode;
-	else if (this.State == BoundNodeFactoryState.InNode) this.State = BoundNodeFactoryState.InChild;
-	try
-	{
-		if (state == BoundNodeFactoryState.InChild)
-		{
-			if (this.BoundTree.TryGetBoundNode(node, out BoundNode cachedBoundNode))
-			{
-				childBoundNodesForParent.Add(cachedBoundNode);
-				return cachedBoundNode;
-			}
-			[if (rule.HasBoundNodeAnnotations)]
-			else
-			{
-				childBoundNodesForParent.Add(node);
-				return null;
-			}
-			[end if]
-		}
-		[if (rule.HasBoundNodeAnnotations)]
-		var childBoundNodes = ArrayBuilder<object>.GetInstance();
-		[GenerateBoundNodeFactoryVisitChildren(rule)]
-		if (state == BoundNodeFactoryState.InParent)
-		{
-			Debug.Assert(childBoundNodes.Count == 1 && childBoundNodes["[0]"] is BoundNode);
-			if (childBoundNodes.Count == 1 && childBoundNodes["[0]"] is BoundNode) return (BoundNode)childBoundNodes["[0]"];
-			else return null;
-		}
-		else if (state == BoundNodeFactoryState.InNode)
-		{
-			BoundNode resultNode;
-				[string children = "childBoundNodes.ToImmutableAndFree()"]
-				[loop (annot:rule.Annotations.BoundNodeAnnotations.Reverse())]
-			resultNode = this.CreateBound[annot.Name](this.BoundTree, [children][annot.GetAnnotationParams()], syntax: node, hasErrors: false);
-				[children = "ImmutableArray.Create<object>(resultNode)"]
-				[end loop]
-			childBoundNodesForParent.Add(resultNode); 
-			return resultNode;
-		}
-		else
-		{
-			Debug.Assert(false);
-			childBoundNodesForParent.Add(node);
-			return null;
-		}
-		[else]
-		[GenerateBoundNodeFactoryVisitChildren(rule)]
-		if (state == BoundNodeFactoryState.InParent)
-		{
-			Debug.Assert(childBoundNodesForParent.Count == 1 && childBoundNodesForParent["[0]"] is BoundNode);
-			if (childBoundNodesForParent.Count == 1 && childBoundNodesForParent["[0]"] is BoundNode) return (BoundNode)childBoundNodesForParent["[0]"];
-			else return null;
-		}
-		else
-		{
-			return null;
-		}
-		[end if]
-	}
-	finally
-	{
-		this.State = state;
-	}
-}
-end template
-
-template GenerateBoundNodeFactoryVisitChildren(Antlr4ParserRule rule)
-[string childBoundNodesName = rule.HasBoundNodeAnnotations ? "childBoundNodes" : "childBoundNodesForParent"]
-[loop(elem:rule.AllElements)]
-[GenerateBoundNodeFactoryVisitChildrenElementWithNullCheck(elem, childBoundNodesName)]
-[end loop]    
-end template
-
-template GenerateBoundNodeFactoryVisitChildrenElementWithNullCheck(Antlr4ParserRuleElement elem, string childBoundNodesName)
-[if (elem.ContainsBoundNodeAnnotations)]
-	[if (!elem.IsToken && !elem.IsFixedTokenAltBlock)]
-if (node.[elem.RedName()] != null)
-{
-	[GenerateBoundNodeFactoryVisitChildrenElementWithLookupPosition(elem, childBoundNodesName)]
-}
-	[else]
-[GenerateBoundNodeFactoryVisitChildrenElementWithLookupPosition(elem, childBoundNodesName)]
-	[end if]
-[end if]
-end template
-
-template GenerateBoundNodeFactoryVisitChildrenElementWithLookupPosition(Antlr4ParserRuleElement elem, string childBoundNodesName)
-	[if (elem.IsList)]
-if (state != BoundNodeFactoryState.InParent || LookupPosition.IsInNode(this.Position, node.[elem.RedName()].Node))
-{
-	[GenerateBoundNodeFactoryVisitChildrenElementWithBoundChildren(elem, childBoundNodesName)]
-}
-	[else if (elem.IsToken || elem.IsFixedTokenAltBlock)]
-if (state == BoundNodeFactoryState.InNode || (state == BoundNodeFactoryState.InParent && LookupPosition.IsInNode(this.Position, node.[elem.RedName()])))
-{
-	[GenerateBoundNodeFactoryVisitChildrenElementWithBoundChildren(elem, childBoundNodesName)]
-}
-	[else]
-if (state == BoundNodeFactoryState.InParent)
-{
-	if (LookupPosition.IsInNode(this.Position, node.[elem.RedName()]))
-	{
-		[GenerateBoundNodeFactoryVisitChildrenElementWithBoundChildren(elem, childBoundNodesName)]
-	}
-}
-else
-{
-		[if (elem.HasBoundNodeAnnotations)]
-			[if (elem.IsList)]
-	[childBoundNodesName].Add(node.[elem.RedName()].Node);
-			[else]
-	[childBoundNodesName].Add(node.[elem.RedName()]);
-			[end if]
-		[else]
-	this.Visit(node.[elem.RedName()], [childBoundNodesName]);
-		[end if]
-}
-	[end if]
-end template
-
-template GenerateBoundNodeFactoryVisitChildrenElementWithBoundChildren(Antlr4ParserRuleElement elem, string childBoundNodesName)
-[if (elem.HasBoundNodeAnnotations && !elem.IsToken && !elem.IsFixedTokenAltBlock)]
-var childBoundNodesOf[elem.RedName()] = ArrayBuilder<object>.GetInstance();
-[GenerateBoundNodeFactoryVisitChildrenElement(elem, "childBoundNodesOf"+elem.RedName())]
-BoundNode bound[elem.RedName()];
-	[string children = "childBoundNodesOf"+elem.RedName()+".ToImmutableAndFree()"]
-	[loop (annot:elem.Annotations.BoundNodeAnnotations.Reverse())]
-		[if (elem.IsList)]
-bound[elem.RedName()] = this.CreateBound[annot.Name](this.BoundTree, [children][annot.GetAnnotationParams()], syntax: (LanguageSyntaxNode)node.[elem.RedName()].Node, hasErrors: false);
-		[else]
-bound[elem.RedName()] = this.CreateBound[annot.Name](this.BoundTree, [children][annot.GetAnnotationParams()], syntax: node.[elem.RedName()], hasErrors: false);
-		[end if]
-	[children = "ImmutableArray.Create<object>(bound"+elem.RedName()+")"]
-	[end loop]
-[childBoundNodesName].Add(bound[elem.RedName()]);
-[else]
-[GenerateBoundNodeFactoryVisitChildrenElement(elem, childBoundNodesName)]
-[end if]
-end template
-
-template GenerateBoundNodeFactoryVisitChildrenElement(Antlr4ParserRuleElement elem, string childBoundNodesName)
-	[if (elem.IsList)]
-foreach (var item in node.[elem.RedName()])
-{
-	if (state != BoundNodeFactoryState.InParent || LookupPosition.IsInNode(this.Position, item))
-	{
-		this.Visit(item, [childBoundNodesName]);
-	}
-}
-	[else if (elem.IsFixedTokenAltBlock)]
-[GenerateBoundNodeFactoryVisitTokenAltBody(elem, childBoundNodesName)]
-	[else if (elem.IsToken)]
-[GenerateBoundNodeFactoryVisitTokenBody(elem, childBoundNodesName)]
-	[else]
-this.Visit(node.[elem.RedName()], [childBoundNodesName]);
-	[end if]
-end template
-
-template GenerateBoundNodeFactoryVisitTokenAltBody(Antlr4ParserRuleElement elem, string childBoundNodesName)
-[if (elem.ContainsBoundNodeAnnotations)]
-switch (node.[elem.RedName()].GetKind().Switch())
-{
-		[loop (alt:elem.BlockItems where alt.HasBoundNodeAnnotations)]
-	case [Properties.LanguageName]SyntaxKind.[alt.RedName()]:
-		BoundNode bound[alt.RedName()];
-			[string children = "ImmutableArray<object>.Empty"]
-			[loop (annot:alt.Annotations.BoundNodeAnnotations.Reverse())]
-		bound[alt.RedName()] = this.CreateBound[annot.Name](this.BoundTree, [children][annot.GetAnnotationParams()], syntax: node, hasErrors: false);
-			[children = "ImmutableArray.Create<object>(bound"+alt.RedName()+")"]
-			[end loop]
-		[childBoundNodesName].Add(bound[alt.RedName()]);
-		break;
-		[end loop]
-	default:
-		break;
-}
-[end if]
-end template
-
-template GenerateBoundNodeFactoryVisitTokenBody(Antlr4ParserRuleElement elem, string childBoundNodesName)
-[if (elem.HasBoundNodeAnnotations)]
-if (node.[elem.RedName()].GetKind() == [Properties.LanguageName]SyntaxKind.[elem.Type])
-{
-	BoundNode bound[elem.RedName()];
-	[string children = "ImmutableArray<object>.Empty"]
-	[loop (annot:elem.Annotations.BoundNodeAnnotations.Reverse())]
-	bound[elem.RedName()] = this.CreateBound[annot.Name](this.BoundTree, [children][annot.GetAnnotationParams()], syntax: node, hasErrors: false);
-	[children = "ImmutableArray.Create<object>(bound"+elem.RedName()+")"]
-	[end loop]
-	[childBoundNodesName].Add(bound[elem.RedName()]);
-}
-[end if]
-end template
-
-
-template GenerateIsBindableNodeVisitor()
-using System;
-using System.Diagnostics;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.CodeAnalysis;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.Binding;
-using MetaDslx.CodeAnalysis.Syntax;
-using Roslyn.Utilities;
-using [Properties.DefaultNamespace];
-using [Properties.DefaultNamespace].Syntax;
-using [Properties.DefaultNamespace].Symbols;
-[Instances.ParserHeader]
-^
-[var lang = Properties.LanguageName]
-namespace [Properties.DefaultNamespace].Binding
-{
-	// Make sure to keep this in sync with [lang]BoundNodeFactoryVisitor
-    public class [lang]IsBindableNodeVisitor : IsBindableNodeVisitor, I[lang]SyntaxVisitor<bool>
-    {
-        public [lang]IsBindableNodeVisitor(BoundTree boundTree)
-			: base(boundTree)
-        {
-^
-        }
-^
-		public virtual bool VisitSkippedTokensTrivia([lang]SkippedTokensTriviaSyntax node)
-		{
-            return false;
-		}
-^		
-		[loop(rule:Instances.ParserRules)]
-			[if (rule.Alternatives.Count > 0)]
-				[loop(alt:rule.Alternatives)]
-		[GenerateIsBindableNodeVisit(alt)]
-				[end loop]
-			[else]
-		[GenerateIsBindableNodeVisit(rule)]
-			[end if]
-		[end loop]
-    }
-}
-end template
-
-
-template GenerateIsBindableNodeVisit(Antlr4ParserRule rule)
-^
-public bool Visit[rule.PlainName()]([rule.RedName()] node)
-{
-	var state = this.State;
-	if (this.State == BoundNodeFactoryState.InParent) this.State = BoundNodeFactoryState.InNode;
-	else if (this.State == BoundNodeFactoryState.InNode) this.State = BoundNodeFactoryState.InChild;
-	try
-	{
-		if (state == BoundNodeFactoryState.InChild) return false;
-	[if (rule.HasBoundNodeAnnotations)]
-		if (state == BoundNodeFactoryState.InNode) 
-		{
-			return true;
-		}
-	[end if]
-		[GenerateIsBindableNodeVisitChildren(rule)]
-		return false;
-	}
-	finally
-	{
-		this.State = state;
-	}
-}
-end template
-
-template GenerateIsBindableNodeVisitChildren(Antlr4ParserRule rule)
-[loop(elem:rule.AllElements where elem.ContainsBoundNodeAnnotations)]
-[GenerateIsBindableNodeVisitChildrenElementWithNullCheck(elem)]
-[end loop]    
-end template
-
-template GenerateIsBindableNodeVisitChildrenElementWithNullCheck(Antlr4ParserRuleElement elem)
-[if (elem.ContainsBoundNodeAnnotations)]
-	[if (!elem.IsToken && !elem.IsFixedTokenAltBlock)]
-if (node.[elem.RedName()] != null)
-{
-	[GenerateIsBindableNodeVisitChildrenElementWithLookupPosition(elem)]
-}
-	[else]
-[GenerateIsBindableNodeVisitChildrenElementWithLookupPosition(elem)]
-	[end if]
-[end if]
-end template
-
-template GenerateIsBindableNodeVisitChildrenElementWithLookupPosition(Antlr4ParserRuleElement elem)
-	[if (elem.IsList)]
-if (state != BoundNodeFactoryState.InParent || LookupPosition.IsInNode(this.Position, node.[elem.RedName()].Node))
-{
-	[GenerateIsBindableNodeVisitChildrenElementWithBoundChildren(elem)]
-}
-	[else if (elem.IsToken || elem.IsFixedTokenAltBlock)]
-if (state == BoundNodeFactoryState.InNode || (state == BoundNodeFactoryState.InParent && LookupPosition.IsInNode(this.Position, node.[elem.RedName()])))
-{
-	[GenerateIsBindableNodeVisitChildrenElementWithBoundChildren(elem)]
-}
-	[else]
-if (state == BoundNodeFactoryState.InParent)
-{
-	if (LookupPosition.IsInNode(this.Position, node.[elem.RedName()]))
-	{
-		[GenerateIsBindableNodeVisitChildrenElementWithBoundChildren(elem)]
-	}
-}
-else
-{
-	if (this.Visit(node.[elem.RedName()])) return true;
-}
-	[end if]
-end template
-
-template GenerateIsBindableNodeVisitChildrenElementWithBoundChildren(Antlr4ParserRuleElement elem)
-[if (elem.HasBoundNodeAnnotations && !elem.IsToken && !elem.IsFixedTokenAltBlock)]
-return true;
-[else]
-[GenerateIsBindableNodeVisitChildrenElement(elem)]
-[end if]
-end template
-
-template GenerateIsBindableNodeVisitChildrenElement(Antlr4ParserRuleElement elem)
-	[if (elem.IsList)]
-foreach (var item in node.[elem.RedName()])
-{
-	if (state != BoundNodeFactoryState.InParent || LookupPosition.IsInNode(this.Position, item))
-	{
-		if (this.Visit(item)) return true;
-	}
-}
-	[else if (elem.IsFixedTokenAltBlock)]
-[GenerateIsBindableNodeVisitTokenAltBody(elem)]
-	[else if (elem.IsToken)]
-[GenerateIsBindableNodeVisitTokenBody(elem)]
-	[else]
-if (this.Visit(node.[elem.RedName()])) return true;
-	[end if]
-end template
-
-template GenerateIsBindableNodeVisitTokenAltBody(Antlr4ParserRuleElement elem)
-[if (hasloop(alt:elem.BlockItems where alt.HasBoundNodeAnnotations))]
-switch (node.[elem.RedName()].GetKind().Switch())
-{
-		[loop (alt:elem.BlockItems where alt.HasBoundNodeAnnotations)]
-	case [Properties.LanguageName]SyntaxKind.[alt.RedName()]:
-		[end loop]
-		return true;
-}
-[end if]
-end template
-
-template GenerateIsBindableNodeVisitTokenBody(Antlr4ParserRuleElement elem)
-if (node.[elem.RedName()].GetKind() == [Properties.LanguageName]SyntaxKind.[elem.Type])
-{
-	return true;
-}
 end template
 
 template GenerateSymbolFacts()
@@ -6003,7 +5518,7 @@ using [Properties.DefaultNamespace].Syntax.InternalSyntax;
 [var lang = Properties.LanguageName]
 namespace [Properties.DefaultNamespace].Symbols
 {
-    public class [lang]SymbolFacts : SymbolFacts
+    public class [lang]SymbolFacts : global::MetaDslx.CodeAnalysis.Symbols.Metadata.MetaSymbolFacts
     {
     }
 }

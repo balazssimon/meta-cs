@@ -8,6 +8,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.Languages.Meta.Model;
 using MetaDslx.Modeling.Internal;
 using Microsoft.CodeAnalysis.PooledObjects;
@@ -29,20 +30,6 @@ namespace MetaDslx.Modeling
         Containment = 0x0100
     }
 
-    [Flags]
-    internal enum MetaModelPropertyFlags : uint
-    {
-        None = 0x0000,
-        Name = 0x0001,
-        Type = 0x0002,
-        Member = 0x0004,
-        NonMember = 0x0008,
-        Import = 0x0010,
-        BaseScope = 0x0020,
-        Local = 0x0040,
-        Static = 0x0080
-    }
-
     internal enum ModelPropertyInitState
     {
         None,
@@ -57,7 +44,7 @@ namespace MetaDslx.Modeling
         private ModelObjectDescriptor declaringDescriptor;
         private string name;
         private ModelPropertyFlags flags;
-        private MetaModelPropertyFlags metaFlags;
+        private string symbolProperty;
         private Type immutableType;
         private Type mutableType;
         private ImmutableArray<Attribute> annotations;
@@ -181,83 +168,6 @@ namespace MetaDslx.Modeling
             }
         }
 
-        public bool IsName
-        {
-            get
-            {
-                if (this.state == ModelPropertyInitState.None) this.InitializeFlags();
-                return this.metaFlags.HasFlag(MetaModelPropertyFlags.Name);
-            }
-        }
-        public bool IsType
-        {
-            get
-            {
-                if (this.state == ModelPropertyInitState.None) this.InitializeFlags();
-                return this.metaFlags.HasFlag(MetaModelPropertyFlags.Type);
-            }
-        }
-        public bool IsLocal
-        {
-            get
-            {
-                if (this.state == ModelPropertyInitState.None) this.InitializeFlags();
-                return this.metaFlags.HasFlag(MetaModelPropertyFlags.Local);
-            }
-        }
-        public bool CanResolve
-        {
-            get
-            {
-                return (this.IsContainment && !this.IsNonMember) || this.IsMember;
-            }
-        }
-        public bool IsMember
-        {
-            get
-            {
-                if (this.state == ModelPropertyInitState.None) this.InitializeFlags();
-                return this.metaFlags.HasFlag(MetaModelPropertyFlags.Member);
-            }
-        }
-        public bool IsStatic
-        {
-            get
-            {
-                if (this.state == ModelPropertyInitState.None) this.InitializeFlags();
-                return this.metaFlags.HasFlag(MetaModelPropertyFlags.Static);
-            }
-        }
-        public bool IsStaticMember
-        {
-            get { return this.IsMember && this.IsStatic; }
-        }
-        public bool IsNonMember
-        {
-            get
-            {
-                if (this.state == ModelPropertyInitState.None) this.InitializeFlags();
-                return this.metaFlags.HasFlag(MetaModelPropertyFlags.NonMember);
-            }
-        }
-        public bool IsImport
-        {
-            get
-            {
-                if (this.state == ModelPropertyInitState.None) this.InitializeFlags();
-                return this.metaFlags.HasFlag(MetaModelPropertyFlags.Import);
-            }
-        }
-        public bool IsBaseScope
-        {
-            get
-            {
-                if (this.state == ModelPropertyInitState.None) this.InitializeFlags();
-                return this.metaFlags.HasFlag(MetaModelPropertyFlags.BaseScope);
-            }
-        }
-
-
         public Type ImmutableType { get { return this.immutableType; } }
         public Type MutableType { get { return this.mutableType; } }
 
@@ -306,6 +216,13 @@ namespace MetaDslx.Modeling
             get { return this.metaProperty.Value; }
         }
 
+        public string SymbolProperty
+        {
+            get { return this.symbolProperty; }
+        }
+
+        public bool IsName => this.symbolProperty == "Name";
+
         private void InitializeFlags()
         {
             if (this.state == ModelPropertyInitState.Initialized) return;
@@ -342,29 +259,9 @@ namespace MetaDslx.Modeling
                     {
                         this.flags |= ModelPropertyFlags.Containment;
                     }
-                    else if (annot is NameAttribute)
+                    else if (annot is SymbolPropertyAttribute spa)
                     {
-                        this.metaFlags |= MetaModelPropertyFlags.Name;
-                    }
-                    else if (annot is TypeAttribute)
-                    {
-                        this.metaFlags |= MetaModelPropertyFlags.Type;
-                    }
-                    else if (annot is MemberAttribute)
-                    {
-                        this.metaFlags |= MetaModelPropertyFlags.Member;
-                    }
-                    else if (annot is NonMemberAttribute)
-                    {
-                        this.metaFlags |= MetaModelPropertyFlags.NonMember;
-                    }
-                    else if (annot is ImportAttribute)
-                    {
-                        this.metaFlags |= MetaModelPropertyFlags.Import;
-                    }
-                    else if (annot is BaseScopeAttribute)
-                    {
-                        this.metaFlags |= MetaModelPropertyFlags.BaseScope;
+                        this.symbolProperty = spa.PropertyName;
                     }
                 }
                 this.state = ModelPropertyInitState.FlagsSet;

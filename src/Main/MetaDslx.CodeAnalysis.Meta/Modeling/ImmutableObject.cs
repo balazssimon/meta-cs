@@ -10,8 +10,6 @@ namespace MetaDslx.Modeling
         new ImmutableObject MParent { get; }
         new ImmutableModelList<ImmutableObject> MChildren { get; }
 
-        new ImmutableObject MType { get; }
-
         MutableObject ToMutable();
         MutableObject ToMutable(MutableModel mutableModel);
     }

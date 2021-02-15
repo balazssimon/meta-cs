@@ -114,28 +114,21 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             return ImmutableArray<object>.Empty;
         }
 
-        public override LanguageSymbolKind GetSymbolKind(Type modelObjectType)
+        public override Type GetSymbolType(Type modelObjectType)
         {
             var mdesc = ModelObjectDescriptor.GetDescriptor(modelObjectType);
-            return GetSymbolKind(mdesc);
+            return GetSymbolType(mdesc);
         }
 
-        public override LanguageSymbolKind GetSymbolKind(object modelObject)
+        public override Type GetSymbolType(object modelObject)
         {
             var mobj = (IModelObject)modelObject;
-            return GetSymbolKind(mobj.MId.Descriptor);
+            return GetSymbolType(mobj.MId.Descriptor);
         }
 
-        protected LanguageSymbolKind GetSymbolKind(ModelObjectDescriptor descriptor)
+        protected Type GetSymbolType(ModelObjectDescriptor descriptor)
         {
-            if (descriptor != null)
-            {
-                if (descriptor.IsNamespace) return LanguageSymbolKind.Namespace;
-                else if (descriptor.IsNamedType) return LanguageSymbolKind.NamedType;
-                else if (descriptor.IsName) return LanguageSymbolKind.Name;
-                else if (descriptor.IsType) return LanguageSymbolKind.NamedType;
-            }
-            return LanguageSymbolKind.None;
+            return descriptor?.SymbolType ?? typeof(MemberSymbol);
         }
 
         public override IEnumerable<object> GetPropertiesForSymbol(Type modelObjectType, string symbolProperty)
@@ -192,9 +185,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
         public override string GetSymbolProperty(Type modelObjectType, object property)
         {
             var mprop = (ModelProperty)property;
-            if (mprop.IsName) return "Name";
-            else if (mprop.IsBaseScope) return "DeclaredBaseTypes";
-            else if (mprop.IsContainment) return "Members";
+            if (mprop != null) return mprop.SymbolProperty;
             else return null;
         }
 

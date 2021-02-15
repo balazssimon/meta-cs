@@ -13,8 +13,9 @@ using System.Diagnostics;
 namespace MetaDslx.Languages.Meta.Model
 {
 	using global::MetaDslx.Languages.Meta.Model.Internal;
+    using MetaDslx.CodeAnalysis.Symbols;
 
-	internal class MetaMetaModel : global::MetaDslx.Modeling.IMetaModel
+    internal class MetaMetaModel : global::MetaDslx.Modeling.IMetaModel
 	{
 		internal MetaMetaModel()
 		{
@@ -1498,7 +1499,7 @@ namespace MetaDslx.Languages.Meta.Model
 				get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaNamedElement; }
 			}
 			
-			[global::MetaDslx.Modeling.NameAttribute]
+			[SymbolPropertyAttribute("Name")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty NameProperty =
 			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaNamedElement), name: "Name",
 			        immutableType: typeof(string),
@@ -1530,8 +1531,8 @@ namespace MetaDslx.Languages.Meta.Model
 			{
 				get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaTypedElement; }
 			}
-			
-			[global::MetaDslx.Modeling.TypeAttribute]
+
+			[SymbolPropertyAttribute("Type")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty TypeProperty =
 			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaTypedElement), name: "Type",
 			        immutableType: typeof(global::MetaDslx.Languages.Meta.Model.MetaType),
@@ -1539,8 +1540,8 @@ namespace MetaDslx.Languages.Meta.Model
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaTypedElement_Type,
 					defaultValue: null);
 		}
-	
-		[global::MetaDslx.Modeling.TypeAttribute]
+
+		[SymbolAttribute(typeof(TypeSymbol))]
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Model.Internal.MetaTypeId), typeof(global::MetaDslx.Languages.Meta.Model.MetaType), typeof(global::MetaDslx.Languages.Meta.Model.MetaTypeBuilder))]
 		public static class MetaType
 		{
@@ -1565,7 +1566,8 @@ namespace MetaDslx.Languages.Meta.Model
 				get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaType; }
 			}
 		}
-	
+
+		[SymbolAttribute(typeof(NamedTypeSymbol))]
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Model.Internal.MetaNamedTypeId), typeof(global::MetaDslx.Languages.Meta.Model.MetaNamedType), typeof(global::MetaDslx.Languages.Meta.Model.MetaNamedTypeBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaType), typeof(MetaDescriptor.MetaDeclaration) })]
 		public static class MetaNamedType
 		{
@@ -1666,8 +1668,9 @@ namespace MetaDslx.Languages.Meta.Model
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaDeclaration_FullName,
 					defaultValue: null);
 		}
-	
-		[global::MetaDslx.Modeling.ScopeAttribute]
+
+
+		[SymbolAttribute(typeof(NamespaceSymbol))]
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Model.Internal.MetaNamespaceId), typeof(global::MetaDslx.Languages.Meta.Model.MetaNamespace), typeof(global::MetaDslx.Languages.Meta.Model.MetaNamespaceBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaDeclaration) })]
 		public static class MetaNamespace
 		{
@@ -1712,7 +1715,8 @@ namespace MetaDslx.Languages.Meta.Model
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaNamespace_Declarations,
 					defaultValue: null);
 		}
-	
+
+		[SymbolAttribute(typeof(MemberSymbol))]
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Model.Internal.MetaModelId), typeof(global::MetaDslx.Languages.Meta.Model.MetaModel), typeof(global::MetaDslx.Languages.Meta.Model.MetaModelBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedElement) })]
 		public static class MetaModel
 		{
@@ -1856,7 +1860,7 @@ namespace MetaDslx.Languages.Meta.Model
 			}
 		}
 	
-		[global::MetaDslx.Modeling.ScopeAttribute]
+		
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Model.Internal.MetaEnumId), typeof(global::MetaDslx.Languages.Meta.Model.MetaEnum), typeof(global::MetaDslx.Languages.Meta.Model.MetaEnumBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedType) })]
 		public static class MetaEnum
 		{
@@ -1937,7 +1941,7 @@ namespace MetaDslx.Languages.Meta.Model
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaEnumLiteral_Enum,
 					defaultValue: null);
 		}
-	
+
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Model.Internal.MetaConstantId), typeof(global::MetaDslx.Languages.Meta.Model.MetaConstant), typeof(global::MetaDslx.Languages.Meta.Model.MetaConstantBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedType), typeof(MetaDescriptor.MetaTypedElement) })]
 		public static class MetaConstant
 		{
@@ -1978,7 +1982,7 @@ namespace MetaDslx.Languages.Meta.Model
 					defaultValue: null);
 		}
 	
-		[global::MetaDslx.Modeling.ScopeAttribute]
+		
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Model.Internal.MetaClassId), typeof(global::MetaDslx.Languages.Meta.Model.MetaClass), typeof(global::MetaDslx.Languages.Meta.Model.MetaClassBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedType) })]
 		public static class MetaClass
 		{
@@ -2009,8 +2013,8 @@ namespace MetaDslx.Languages.Meta.Model
 			        mutableType: typeof(bool),
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaClass_IsAbstract,
 					defaultValue: null);
-			
-			[global::MetaDslx.Modeling.BaseScopeAttribute]
+
+			[SymbolPropertyAttribute("DeclaredBaseTypes")]
 			[global::MetaDslx.Modeling.CollectionAttribute]
 			[global::MetaDslx.Modeling.OrderedAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty SuperClassesProperty =
@@ -2042,8 +2046,8 @@ namespace MetaDslx.Languages.Meta.Model
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaClass_Operations,
 					defaultValue: null);
 		}
-	
-		[global::MetaDslx.Modeling.LocalScopeAttribute]
+
+		[SymbolAttribute(typeof(MemberSymbol))]
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Model.Internal.MetaOperationId), typeof(global::MetaDslx.Languages.Meta.Model.MetaOperation), typeof(global::MetaDslx.Languages.Meta.Model.MetaOperationBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedElement) })]
 		public static class MetaOperation
 		{
@@ -2149,7 +2153,8 @@ namespace MetaDslx.Languages.Meta.Model
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaParameter_Operation,
 					defaultValue: null);
 		}
-	
+
+		[SymbolAttribute(typeof(MemberSymbol))]
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Model.Internal.MetaPropertyId), typeof(global::MetaDslx.Languages.Meta.Model.MetaProperty), typeof(global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedElement), typeof(MetaDescriptor.MetaTypedElement) })]
 		public static class MetaProperty
 		{

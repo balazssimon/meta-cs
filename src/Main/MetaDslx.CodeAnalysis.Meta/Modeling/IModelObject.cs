@@ -14,7 +14,6 @@ namespace MetaDslx.Modeling
         IModel MModel { get; }
 
         string MName { get; }
-        IModelObject MType { get; }
 
         IModelObject MParent { get; }
         IReadOnlyList<IModelObject> MChildren { get; }

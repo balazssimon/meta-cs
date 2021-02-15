@@ -1,4 +1,5 @@
-﻿using MetaDslx.Modeling.Internal;
+﻿using MetaDslx.CodeAnalysis.Symbols;
+using MetaDslx.Modeling.Internal;
 using Microsoft.CodeAnalysis.PooledObjects;
 using System;
 using System.Collections.Generic;
@@ -13,16 +14,6 @@ using System.Threading;
 namespace MetaDslx.Modeling
 {
 
-    [Flags]
-    internal enum MetaModelObjectFlags : uint
-    {
-        None = 0x0000,
-        Scope = 0x0001,
-        LocalScope = 0x0002,
-        Type = 0x0004,
-        Local = 0x0008
-    }
-
     public sealed class ModelObjectDescriptor
     {
         private static Type[] EmptyTypeArray = new Type[0];
@@ -36,13 +27,12 @@ namespace MetaDslx.Modeling
         private bool initializedBaseDescriptors;
         private Type descriptorType;
         private GreenObject emptyGreenObject;
-        private MetaModelObjectFlags metaFlags;
         private ConstructorInfo _idConstructor;
         private Type idType;
         private Type immutableType;
         private Type mutableType;
+        private Type symbolType;
         private ModelProperty nameProperty;
-        private ModelProperty typeProperty;
         private ImmutableArray<Attribute> annotations;
         private ImmutableArray<ModelObjectDescriptor> baseDescriptors;
         private ImmutableArray<ModelProperty> declaredProperties;
@@ -57,35 +47,20 @@ namespace MetaDslx.Modeling
             this.initializedBaseDescriptors = false;
             this.descriptorType = descriptorType;
             this.annotations = descriptorType.GetCustomAttributes(false).OfType<Attribute>().ToImmutableArray();
-            this.metaFlags = MetaModelObjectFlags.None;
             foreach (var annot in this.annotations)
             {
-                if (annot is ModelObjectDescriptorAttribute)
+                if (annot is ModelObjectDescriptorAttribute da)
                 {
-                    ModelObjectDescriptorAttribute da = (ModelObjectDescriptorAttribute)annot;
                     this.idType = da.IdType;
                     this.immutableType = da.ImmutableType;
                     this.mutableType = da.MutableType;
                 }
-                else if (annot is LocalAttribute)
+                if (annot is SymbolAttribute sa)
                 {
-                    this.metaFlags |= MetaModelObjectFlags.Local;
-                }
-                else if (annot is ScopeAttribute)
-                {
-                    this.metaFlags |= MetaModelObjectFlags.Scope;
-                }
-                else if (annot is LocalScopeAttribute)
-                {
-                    this.metaFlags |= MetaModelObjectFlags.LocalScope;
-                }
-                else if (annot is TypeAttribute)
-                {
-                    this.metaFlags |= MetaModelObjectFlags.Type;
+                    this.symbolType = sa.SymbolType;
                 }
             }
             this.nameProperty = null;
-            this.typeProperty = null;
             this.emptyGreenObject = GreenObject.Empty;
             this.baseDescriptors = ImmutableArray<ModelObjectDescriptor>.Empty;
             this.declaredProperties = ImmutableArray<ModelProperty>.Empty;
@@ -192,14 +167,6 @@ namespace MetaDslx.Modeling
                     newBaseDescriptors = oldBaseDescriptors;
                 }
             } while (ImmutableInterlocked.InterlockedCompareExchange(ref this.baseDescriptors, newBaseDescriptors, oldBaseDescriptors) != oldBaseDescriptors);
-            if (baseDescriptor.IsScope)
-            {
-                this.metaFlags |= MetaModelObjectFlags.Scope;
-            }
-            if (baseDescriptor.IsType)
-            {
-                this.metaFlags |= MetaModelObjectFlags.Type;
-            }
         }
 
         internal void AddProperty(ModelProperty property)
@@ -226,6 +193,8 @@ namespace MetaDslx.Modeling
         public ImmutableArray<Attribute> Annotations { get { return this.annotations; } }
 
         public string Name => this.ImmutableType.Name;
+
+        public Type SymbolType => this.symbolType;
 
         public Type ImmutableType
         {
@@ -324,77 +293,12 @@ namespace MetaDslx.Modeling
         public ImmutableArray<ModelProperty> AllProperties { get { return this.allProperties; } }
         public ImmutableArray<ModelProperty> Properties { get { return this.properties; } }
 
-        public bool IsLocal
-        {
-            get
-            {
-                if (!this.initialized) this.Initialize();
-                return this.metaFlags.HasFlag(MetaModelObjectFlags.Local);
-            }
-        }
-        public bool IsScope
-        {
-            get
-            {
-                if (!this.initialized) this.Initialize();
-                return this.metaFlags.HasFlag(MetaModelObjectFlags.Scope);
-            }
-        }
-        public bool IsLocalScope
-        {
-            get
-            {
-                if (!this.initialized) this.Initialize();
-                return this.metaFlags.HasFlag(MetaModelObjectFlags.LocalScope);
-            }
-        }
-        public bool IsType
-        {
-            get
-            {
-                if (!this.initialized) this.Initialize();
-                return this.metaFlags.HasFlag(MetaModelObjectFlags.Type);
-            }
-        }
-        public bool HasName
-        {
-            get { return this.NameProperty != null; }
-        }
-        public bool HasType
-        {
-            get { return this.TypeProperty != null; }
-        }
-        public bool IsName
-        {
-            get { return this.HasName && !this.IsScope && !this.IsType; }
-        }
-        public bool IsNamespace
-        {
-            get { return this.HasName && this.IsScope && !this.IsType; }
-        }
-        public bool IsNamedType
-        {
-            get { return this.HasName && this.IsType; }
-        }
-        public bool IsAnonymousType
-        {
-            get { return !this.HasName && this.IsType; }
-        }
-
         public ModelProperty NameProperty
         {
             get
             {
                 if (!this.initialized) this.Initialize();
                 return this.nameProperty;
-            }
-        }
-        public ModelProperty TypeProperty
-        {
-            get
-            {
-                if (!this.initialized) this.Initialize();
-                return this.typeProperty;
             }
         }
         internal ImmutableArray<Slot> Slots
@@ -464,9 +368,14 @@ namespace MetaDslx.Modeling
             var properties = ArrayBuilder<ModelProperty>.GetInstance();
             try
             {
+                foreach (var baseDescriptor in this.AllBaseDescriptors)
+                {
+                    if (this.symbolType == null) this.symbolType = baseDescriptor.SymbolType;
+                }
                 foreach (var baseDescriptor in this.AllBaseDescriptors.Reverse())
                 {
-                    foreach (var prop in baseDescriptor.allProperties)
+                    baseDescriptor.Initialize();
+                    foreach (var prop in baseDescriptor.AllProperties)
                     {
                         if (!allProperties.Contains(prop))
                         {
@@ -474,10 +383,6 @@ namespace MetaDslx.Modeling
                             if (prop.IsName)
                             {
                                 this.nameProperty = prop;
-                            }
-                            if (prop.IsType)
-                            {
-                                this.typeProperty = prop;
                             }
                         }
                     }
@@ -488,10 +393,6 @@ namespace MetaDslx.Modeling
                     if (prop.IsName)
                     {
                         this.nameProperty = prop;
-                    }
-                    if (prop.IsType)
-                    {
-                        this.typeProperty = prop;
                     }
                 }
                 foreach (var prop in allProperties)

@@ -62,7 +62,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             throw new NotImplementedException();
         }
 
-        public override LanguageSymbolKind GetSymbolKind(Type modelObjectType)
+        public override Type GetSymbolType(Type modelObjectType)
         {
             throw new NotImplementedException();
         }

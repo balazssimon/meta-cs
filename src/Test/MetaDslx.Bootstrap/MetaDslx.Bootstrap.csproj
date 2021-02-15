@@ -10,12 +10,7 @@
     <ApplyNgenOptimization>partial</ApplyNgenOptimization>
     <LangVersion>preview</LangVersion>
     <IsPackable>false</IsPackable>
-    <!--Antlr4ToolPath>c:\Users\Balazs\.nuget\packages\metadslx.buildtools\0.10.375\tools\antlr-4.8-complete.jar</Antlr4ToolPath-->
   </PropertyGroup>
-
-  <!--ItemGroup>
-    <PackageReference Include="Antlr4.Runtime" Version="4.6.6" />
-  </ItemGroup-->
 
   <ItemGroup>
     <ProjectReference Include="..\..\Main\MetaDslx.CodeAnalysis.Antlr4\MetaDslx.CodeAnalysis.Antlr4.csproj" />

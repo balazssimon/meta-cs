@@ -147,7 +147,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         private static ImmutableArray<MergedDeclaration> GetChildDeclarations(SyntaxReference childSyntax, DeclaredSymbol declaredSymbol)
         {
-            if (declaredSymbol == null || declaredSymbol.MergedDeclaration == null) return default;
+            if (declaredSymbol == null || declaredSymbol.MergedDeclaration == null) return ImmutableArray<MergedDeclaration>.Empty;
             var result = ArrayBuilder<MergedDeclaration>.GetInstance();
             foreach (var childDeclaration in declaredSymbol.MergedDeclaration.Children)
             {
@@ -371,8 +371,18 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 AssertionDiagnostic(diagnostics, ModelErrorCode.ERR_NotContainmentProperty.ToDiagnostic(location, propertyName, ModelObject));
                 return;
             }*/
-            var childSymbol = childDeclaration.CreateSymbol(_symbol.ContainingSymbol, SymbolFactory);
-            var childObject = (childSymbol as IModelSourceSymbol)?.ModelObject;
+            Symbol childSymbol;
+            object childObject;
+            if (childDeclaration != null)
+            {
+                childSymbol = childDeclaration.CreateSymbol(_symbol.ContainingSymbol, SymbolFactory);
+                childObject = (childSymbol as IModelSourceSymbol)?.ModelObject;
+            }
+            else
+            {
+                childSymbol = SymbolFactory.MakeSourceSymbol(_symbol, modelObjectType, null);
+                childObject = (childSymbol as IModelSourceSymbol)?.ModelObject;
+            }
             Debug.Assert(childObject != null);
             SymbolFacts.SetOrAddPropertyValue(ModelObject, objectProperty, childObject, location, diagnostics);
             Debug.Assert(childSymbol != null);

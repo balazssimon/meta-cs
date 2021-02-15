@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
+using MetaDslx.CodeAnalysis.Declarations;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
@@ -41,7 +42,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
                         var symbolFacts = Language.SymbolFacts;
                         foreach (var ms in symbolFacts.GetRootObjects(_module.Model))
                         {
-                            if (symbolFacts.GetSymbolKind(ms) == LanguageSymbolKind.Namespace)
+                            if (symbolFacts.ToDeclarationKind(symbolFacts.GetSymbolType(ms)) == DeclarationKind.Namespace)
                             {
                                 names.Add(symbolFacts.GetName(ms));
                             }
@@ -68,9 +69,10 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
                         var symbolFacts = Language.SymbolFacts;
                         foreach (var ms in symbolFacts.GetRootObjects(_module.Model))
                         {
-                            if (symbolFacts.GetSymbolKind(ms) == LanguageSymbolKind.NamedType)
+                            if (symbolFacts.ToDeclarationKind(symbolFacts.GetSymbolType(ms)) == DeclarationKind.Type)
                             {
-                                names.Add(symbolFacts.GetName(ms));
+                                var name = symbolFacts.GetName(ms);
+                                if (!string.IsNullOrEmpty(name)) names.Add(symbolFacts.GetName(ms));
                             }
                         }
                     }
@@ -130,7 +132,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
                     var symbolFactory = _module.SymbolFactory;
                     foreach (var ms in symbolFacts.GetRootObjects(_module.Model))
                     {
-                        if (symbolFacts.GetSymbolKind(ms) == LanguageSymbolKind.NamedType)
+                        if (symbolFacts.ToDeclarationKind(symbolFacts.GetSymbolType(ms)) == DeclarationKind.Type)
                         {
                             var symbol = symbolFactory.GetSymbol(ms);
                             if (symbol is NamedTypeSymbol nts) symbols.Add(nts);
