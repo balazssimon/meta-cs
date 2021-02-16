@@ -1,5 +1,6 @@
 ﻿using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Binding;
+using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.Languages.Meta;
 using MetaDslx.Languages.Meta.Binding;
 using MetaDslx.Languages.Meta.Generator;
@@ -60,6 +61,7 @@ namespace MetaDslx.Bootstrap.MetaModel
                 Create("MetaTest").
                 AddSyntaxTrees(tree).
                 AddReferences(ModelReference.CreateFromModel(coreModel)).
+                AddReferences(ModelReference.CreateFromModel(LanguageSymbolModel.Instance.Model)).
                 WithOptions(options);
 
             var compiledModel = compilation.Model as MutableModel;

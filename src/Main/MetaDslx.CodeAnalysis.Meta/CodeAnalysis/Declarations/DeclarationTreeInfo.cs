@@ -17,6 +17,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
         private int nonDeclarationStack;
         private int collectNameStack;
         private int qualifierStack;
+        private int importStack;
         private ArrayBuilder<Identifier> currentName;
 
         public DeclarationTreeInfo(DeclarationTreeInfo parentScope, DeclarationTreeInfo parentDeclaration, DeclarationTreeInfo parent, string parentProperty, Type type, SyntaxNodeOrToken node)
@@ -30,6 +31,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             this.Node = node;
             this.Names = new ArrayBuilder<ArrayBuilder<Identifier>>();
             this.Members = new ArrayBuilder<SingleDeclaration>();
+            this.Imports = new ArrayBuilder<SyntaxReference>();
             this.ReferenceDirectives = new ArrayBuilder<ReferenceDirective>();
             this.Properties = new ArrayBuilder<Property>();
         }
@@ -43,6 +45,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
         public bool Detached { get; private set; }
         public string NestingProperty { get; private set; }
         public string ParentProperty { get; private set; }
+        public ArrayBuilder<SyntaxReference> Imports { get; private set; }
         public ArrayBuilder<ArrayBuilder<Identifier>> Names { get; private set; }
         public ArrayBuilder<SingleDeclaration> Members { get; private set; }
         public ArrayBuilder<ReferenceDirective> ReferenceDirectives { get; private set; }
@@ -54,6 +57,8 @@ namespace MetaDslx.CodeAnalysis.Declarations
         }
 
         public bool IsNonDeclaration => nonDeclarationStack > 0;
+        public bool IsImport => importStack > 0;
+
 
         public void BeginNoDeclaration()
         {
@@ -70,7 +75,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
         public void BeginName()
         {
             Debug.Assert(this.collectNameStack >= 0);
-            Debug.Assert(this.qualifierStack == 0);
+            Debug.Assert(this.nonDeclarationStack == 0);
             ++this.collectNameStack;
             if (this.collectNameStack == 1 && this.nonDeclarationStack == 0)
             {
@@ -83,11 +88,29 @@ namespace MetaDslx.CodeAnalysis.Declarations
         {
             --this.collectNameStack;
             Debug.Assert(this.collectNameStack >= 0);
-            Debug.Assert(this.qualifierStack == 0);
+            Debug.Assert(this.nonDeclarationStack == 0);
             if (this.collectNameStack <= 0)
             {
                 this.currentName = null;
             }
+        }
+
+        public void BeginImport(SyntaxNodeOrToken syntax)
+        {
+            Debug.Assert(this.importStack >= 0);
+            Debug.Assert(this.collectNameStack == 0);
+            Debug.Assert(this.qualifierStack == 0);
+            ++this.importStack;
+            BeginNoDeclaration();
+        }
+
+        public void EndImport()
+        {
+            --this.importStack;
+            EndNoDeclaration();
+            Debug.Assert(this.collectNameStack == 0);
+            Debug.Assert(this.qualifierStack == 0);
+            Debug.Assert(this.importStack >= 0);
         }
 
         public void BeginQualifier()
@@ -105,7 +128,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
         public void RegisterIdentifier(SyntaxNodeOrToken syntax)
         {
             var node = (LanguageSyntaxNode)syntax.NodeOrParent;
-            this.RegisterIdentifier(new Identifier(node.Language.SyntaxFacts.ExtractName(node), node));
+            this.RegisterIdentifier(new Identifier(node.Language.SyntaxFacts.ExtractName(syntax), syntax));
         }
 
         private void RegisterIdentifier(in Identifier identifier)

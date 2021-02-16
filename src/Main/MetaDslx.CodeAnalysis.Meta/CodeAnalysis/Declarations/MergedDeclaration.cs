@@ -58,6 +58,27 @@ namespace MetaDslx.CodeAnalysis.Declarations
             }
         }
 
+        public ImmutableArray<SyntaxReference> Imports
+        {
+            get
+            {
+                if (Declarations.Length == 1)
+                {
+                    return Declarations[0].Imports;
+                }
+                else
+                {
+                    var builder = ArrayBuilder<SyntaxReference>.GetInstance();
+                    foreach (var decl in Declarations)
+                    {
+                        var imports = decl.Imports;
+                        builder.AddRange(imports);
+                    }
+                    return builder.ToImmutableAndFree();
+                }
+            }
+        }
+
         public override Type ModelObjectType
         {
             get

@@ -72,14 +72,39 @@ namespace MetaDslx.CodeAnalysis.Binding
         }
 
         public static Imports FromSyntax(
-            LanguageSyntaxNode declarationSyntax,
-            InContainerBinder binder,
+            SyntaxNodeOrToken syntax,
+            DeclaredSymbol container,
+            Binder binder,
             ConsList<TypeSymbol> basesBeingResolved,
             bool inUsing)
         {
-            SyntaxFacts syntaxFacts = declarationSyntax.Language.SyntaxFacts;
-            ImmutableArray<UsingDirective> usingDirectives = inUsing ? ImmutableArray<UsingDirective>.Empty : syntaxFacts.GetUsingDirectives(declarationSyntax);
-            ImmutableArray<ExternAliasDirective> externAliasDirectives = syntaxFacts.GetExternAliasDirectives(declarationSyntax);
+            var diagnostics = new DiagnosticBag();
+            Binder containerBinder;
+            SyntaxNodeOrToken containerSyntax;
+
+            var symbolDefBinder = FindBinders.FindSymbolDefBinder(container, syntax.GetReference());
+            if (symbolDefBinder.Binder != null)
+            {
+                containerBinder = symbolDefBinder.Binder;
+                containerSyntax = symbolDefBinder.Syntax;
+            }
+            else
+            {
+                var rootBinder = FindBinders.FindCompilationUnitRootBinder(binder.GetBinderPosition());
+                Debug.Assert(rootBinder.Binder != null);
+                if (rootBinder.Binder != null)
+                {
+                    containerBinder = rootBinder.Binder;
+                    containerSyntax = rootBinder.Syntax;
+                }
+                else
+                {
+                    return Imports.Empty;
+                }
+            }
+
+            ImmutableArray<UsingDirective> usingDirectives = inUsing ? ImmutableArray<UsingDirective>.Empty : BuildUsingDirectives(containerSyntax, containerBinder, diagnostics);
+            ImmutableArray<ExternAliasDirective> externAliasDirectives = BuildExternAliasDirectives(containerSyntax, containerBinder, diagnostics);
 
             if (usingDirectives.Length == 0 && externAliasDirectives.Length == 0)
             {
@@ -92,9 +117,8 @@ namespace MetaDslx.CodeAnalysis.Binding
             // using Goo::Baz;
             // extern alias Goo;
 
-            var diagnostics = new DiagnosticBag();
-
             var compilation = binder.Compilation;
+            var language = compilation.Language;
 
             var externAliases = BuildExternAliases(externAliasDirectives, binder, diagnostics);
             var usings = ArrayBuilder<DeclaredSymbolAndUsingDirective>.GetInstance();
@@ -104,9 +128,9 @@ namespace MetaDslx.CodeAnalysis.Binding
                 // A binder that contains the extern aliases but not the usings. The resolution of the target of a using directive or alias 
                 // should not make use of other peer usings.
                 Binder usingsBinder;
-                if (declarationSyntax.SyntaxTree.Options.Kind != SourceCodeKind.Regular)
+                if (containerSyntax.SyntaxTree.Options.Kind != SourceCodeKind.Regular)
                 {
-                    usingsBinder = compilation.GetBinderFactory(declarationSyntax.SyntaxTree).GetImportsBinder(declarationSyntax, inUsing: true);
+                    usingsBinder = binder.Next;
                 }
                 else
                 {
@@ -118,7 +142,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                             ImmutableArray<DeclaredSymbolAndUsingDirective>.Empty,
                             externAliases,
                             diagnostics: null);
-                    usingsBinder = new InContainerBinder(binder.Container, binder.Next, imports);
+                    usingsBinder = new ScopeBinder(container, binder.Next, imports);
                 }
 
                 var uniqueUsings = PooledHashSet<DeclaredSymbol>.GetInstance();
@@ -139,7 +163,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                             diagnostics.Add(InternalErrorCode.ERR_NoAliasHere, usingDirective.AliasName.GetLocation());
                         }
 
-                        string identifierValueText = syntaxFacts.ExtractName(usingDirective.AliasName);
+                        string identifierValueText = language.SyntaxFacts.ExtractName(usingDirective.AliasName);
                         if (usingAliases != null && usingAliases.ContainsKey(identifierValueText))
                         {
                             // Suppress diagnostics if we're already broken.
@@ -476,9 +500,67 @@ namespace MetaDslx.CodeAnalysis.Binding
             return externs1.WhereAsArray(e => !replacedExternAliases.Contains(e.Alias.Name)).AddRange(externs2);
         }
 
+        private static ImmutableArray<ExternAliasDirective> BuildExternAliasDirectives(
+            SyntaxNodeOrToken syntax,
+            Binder binder,
+            DiagnosticBag diagnostics)
+        {
+            LanguageCompilation compilation = binder.Compilation;
+            SyntaxFacts syntaxFacts = compilation.Language.SyntaxFacts;
+
+            var builder = ArrayBuilder<ExternAliasDirective>.GetInstance();
+
+            var binderPosition = binder.GetBinderPosition();
+            var importBinders = FindBinders.FindImportBinders(binderPosition);
+            foreach (var importBinder in importBinders.Where(ib => ib.Binder.IsExtern))
+            {
+                var names = FindBinders.FindNameBinders(binderPosition);
+                if (names.Length > 0)
+                {
+                    foreach (var name in names)
+                    {
+                        builder.Add(new ExternAliasDirective((LanguageSyntaxNode)importBinder.Syntax.NodeOrParent, name.Syntax));
+                    }
+                }
+            }
+            return builder.ToImmutableAndFree();
+        }
+
+        private static ImmutableArray<UsingDirective> BuildUsingDirectives(
+            SyntaxNodeOrToken syntax,
+            Binder binder,
+            DiagnosticBag diagnostics)
+        {
+            LanguageCompilation compilation = binder.Compilation;
+            SyntaxFacts syntaxFacts = compilation.Language.SyntaxFacts;
+
+            var builder = ArrayBuilder<UsingDirective>.GetInstance();
+
+            var binderPosition = binder.GetBinderPosition();
+            var importBinders = FindBinders.FindImportBinders(binderPosition);
+            foreach (var importBinder in importBinders.Where(ib => !ib.Binder.IsExtern))
+            {
+                var names = FindBinders.FindNameBinders(binderPosition);
+                if (names.Length > 0)
+                {
+                    foreach (var name in names)
+                    {
+                        var values = FindBinders.FindValueBinders(binderPosition);
+                        Debug.Assert(values.Length == 1);
+                        if (values.Length >= 1)
+                        {
+                            var isGlobal = syntaxFacts.IsGlobalAlias(name.Syntax);
+                            builder.Add(new UsingDirective((LanguageSyntaxNode)importBinder.Syntax.NodeOrParent, name.Syntax, values[0].Syntax, importBinder.Binder.IsStatic, isGlobal));
+                        }
+                    }
+                }
+            }
+            return builder.ToImmutableAndFree();
+        }
+
         private static ImmutableArray<AliasAndExternAliasDirective> BuildExternAliases(
             ImmutableArray<ExternAliasDirective> directiveList,
-            InContainerBinder binder,
+            Binder binder,
             DiagnosticBag diagnostics)
         {
             LanguageCompilation compilation = binder.Compilation;
@@ -508,12 +590,10 @@ namespace MetaDslx.CodeAnalysis.Binding
                     }
                 }
 
-                /* TODO:MetaDslx?
-                if (aliasSyntax.Identifier.ContextualKind() == SyntaxKind.GlobalKeyword)
+                if (syntaxFacts.IsGlobalAlias(aliasSyntax.AliasName))
                 {
-                    diagnostics.Add(InternalErrorCode.ERR_GlobalExternAlias, aliasSyntax.Identifier.GetLocation());
+                    diagnostics.Add(InternalErrorCode.ERR_GlobalExternAlias, aliasSyntax.AliasName.GetLocation());
                 }
-                */
 
                 builder.Add(new AliasAndExternAliasDirective(AliasSymbol.CreateExternAlias(aliasName, aliasSyntax, binder), aliasSyntax));
             }

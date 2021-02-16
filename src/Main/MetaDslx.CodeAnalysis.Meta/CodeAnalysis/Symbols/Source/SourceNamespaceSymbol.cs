@@ -57,7 +57,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             var compilation = this.DeclaringCompilation;
             foreach (var declaration in _declaration.Declarations)
             {
-                if (declaration.HasUsings || declaration.HasExternAliases)
+                if (declaration.Imports.Length > 0)
                 {
                     yield return compilation.GetImports(declaration);
                 }
@@ -279,16 +279,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 else if (incompletePart == CompletionPart.MembersCompleted)
                 {
                     // ensure relevant imports are complete.
-                    foreach (var declaration in _declaration.Declarations)
-                    {
-                        if (locationOpt == null || locationOpt.SourceTree == declaration.SyntaxReference.SyntaxTree)
-                        {
-                            if (declaration.HasUsings || declaration.HasExternAliases)
-                            {
-                                this.DeclaringCompilation.GetImports(declaration).Complete(cancellationToken);
-                            }
-                        }
-                    }
+                    _source.CompleteImports(locationOpt, cancellationToken);
 
                     var childSymbols = _declaration.Children.Select(decl => decl.Symbol).ToArray();
                     Debug.Assert(!childSymbols.Any(s => s == null));

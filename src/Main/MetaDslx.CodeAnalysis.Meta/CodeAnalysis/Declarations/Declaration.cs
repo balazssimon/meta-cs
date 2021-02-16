@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using MetaDslx.Modeling;
+using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -96,15 +97,8 @@ namespace MetaDslx.CodeAnalysis.Declarations
 
         public bool IsImplicit => kind == DeclarationKind.Implicit;
 
-        public bool HasUsings
-        {
-            get { return false; } // TODO:MetaDslx 
-        }
+        public virtual ImmutableArray<SyntaxReference> Imports => ImmutableArray<SyntaxReference>.Empty;
 
-        public bool HasExternAliases
-        {
-            get { return false; } // TODO:MetaDslx
-        }
         /*
         public DeclarationModifiers Modifiers
         {

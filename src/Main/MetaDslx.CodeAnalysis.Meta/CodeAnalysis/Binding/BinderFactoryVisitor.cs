@@ -93,6 +93,16 @@ namespace MetaDslx.CodeAnalysis.Binding
             return new SymbolDefBinder(parentBinder, syntax, type);
         }
 
+        protected virtual Binder CreateImportBinder(Binder parentBinder, SyntaxNodeOrToken syntax, bool isExtern = false, bool isStatic = false)
+        {
+            return this.CreateImportBinderCore(parentBinder, syntax, isExtern, isStatic);
+        }
+
+        protected virtual Binder CreateImportBinderCore(Binder parentBinder, SyntaxNodeOrToken syntax, bool isExtern, bool isStatic)
+        {
+            return new ImportBinder(parentBinder, syntax, isExtern, isStatic);
+        }
+
         protected virtual Binder CreateSymbolUseBinder(Binder parentBinder, SyntaxNodeOrToken syntax, ImmutableArray<Type> types)
         {
             return this.CreateSymbolUseBinderCore(parentBinder, syntax, types);
@@ -197,8 +207,6 @@ namespace MetaDslx.CodeAnalysis.Binding
                 return VisitCore(node.Parent);
             }
         }
-
-        public abstract Binder GetImportsBinder(LanguageSyntaxNode unit, bool inUsing);
 
         /// <summary>
         /// Returns true if containingNode has a child that contains the specified position

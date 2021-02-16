@@ -77,38 +77,5 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
             return _identifierSymbols[index];
         }
 
-        /*
-        internal BoundIdentifier GetBoundIdentifierContextOf(SyntaxNodeOrToken identifier)
-        {
-            Debug.Assert(identifier != null);
-            var index = _identifiers.IndexOf(identifier);
-            Debug.Assert(index >= 0);
-            var prevIndex = index - 1;
-            if (prevIndex < 0) return null;
-            return GetBoundIdentifier(prevIndex, _identifiers[prevIndex]);
-        }
-
-        internal BoundIdentifier GetBoundIdentifier(SyntaxNodeOrToken identifier)
-        {
-            Debug.Assert(identifier != null);
-            var index = _identifiers.IndexOf(identifier);
-            return GetBoundIdentifier(index, identifier);
-        }
-
-        protected BoundIdentifier GetBoundIdentifier(int index, SyntaxNodeOrToken identifier)
-        {
-            Debug.Assert(identifier != null);
-            Debug.Assert(index >= 0);
-            if (index < 0) return null;
-            if (_boundIdentifiers[index] != null) return _boundIdentifiers[index];
-            var boundIdentifierNode = this.GetBinder()?.GetBinder(identifier)?.B
-            Debug.Assert(boundIdentifierNode != null);
-            while (boundIdentifierNode != null && !(boundIdentifierNode is BoundIdentifier)) boundIdentifierNode = boundIdentifierNode.ParentBoundNode;
-            var boundSymbol = boundIdentifierNode as BoundIdentifier;
-            Debug.Assert(boundSymbol != null);
-            Interlocked.CompareExchange(ref _boundIdentifiers[index], boundSymbol, null);
-            return boundSymbol;
-        }
-        */
     }
 }

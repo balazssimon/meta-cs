@@ -111,23 +111,6 @@ namespace MetaDslx.CodeAnalysis.Binding
             return result;
         }
 
-        /// <summary>
-        /// Returns binder that binds usings and aliases 
-        /// </summary>
-        /// <param name="unit">
-        /// Specify <see cref="NamespaceDeclarationSyntax"/> imports in the corresponding namespace, or
-        /// <see cref="CompilationUnitSyntax"/> for top-level imports.
-        /// </param>
-        /// <param name="inUsing">True if the binder will be used to bind a using directive.</param>
-        public virtual Binder GetImportsBinder(LanguageSyntaxNode unit, bool inUsing = false)
-        {
-            BinderFactoryVisitor visitor = _binderFactoryVisitorPool.Allocate();
-            visitor.Initialize(0, false);
-            Binder result = visitor.GetImportsBinder(unit, inUsing: inUsing);
-            _binderFactoryVisitorPool.Free(visitor);
-            return result;
-        }
-
         public abstract bool TryGetBinder(LanguageSyntaxNode node, object usage, out Binder binder);
         public abstract bool TryAddBinder(LanguageSyntaxNode node, object usage, ref Binder binder);
 

@@ -70,9 +70,9 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
                 {
                     var diagnostics = DiagnosticBag.GetInstance();
                     symbol = binder.BindDeclaredSymbol(this.Syntax, diagnostics);
-                    Interlocked.CompareExchange(ref _symbol, symbol, null);
                     ImmutableInterlocked.InterlockedInitialize(ref _diagnostics, diagnostics.ToReadOnlyAndFree());
                 }
+                Interlocked.CompareExchange(ref _symbol, symbol, null);
             }
         }
     }

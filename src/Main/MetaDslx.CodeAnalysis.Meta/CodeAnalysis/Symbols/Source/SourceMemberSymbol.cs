@@ -198,7 +198,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                     {
                         if (locationOpt == null || locationOpt.SourceTree == declaration.SyntaxReference.SyntaxTree)
                         {
-                            if (declaration.HasUsings || declaration.HasExternAliases)
+                            if (declaration.Imports.Length > 0)
                             {
                                 this.DeclaringCompilation.GetImports(declaration).Complete(cancellationToken);
                             }

@@ -29,6 +29,8 @@ namespace MetaDslx.Languages.Meta
         public const string SymbolDef = nameof(SymbolDef);
         public const string SymbolUse = nameof(SymbolUse);
 
+        public const string Import = nameof(Import);
+
         public const string Token = nameof(Token);
 
 
@@ -39,6 +41,7 @@ namespace MetaDslx.Languages.Meta
                 Identifier, Qualifier, Value, EnumValue,
                 Property, Name, Scope,
                 SymbolDef, SymbolUse, 
+                Import,
                 Token
             };
 
@@ -59,6 +62,7 @@ namespace MetaDslx.Languages.Meta
             new string[] { "local" },
             new string[] { "type", "nestingProperty", "merge" },
             new string[] { "type", "types" },
+            new string[] { "extern", "static" },
             new string[] { "kind", "first", "last", "defaultSeparator", "defaultIdentifier", "defaultWhitespace", "defaultEndOfLine", "endOfLine" },
         };
 
@@ -345,6 +349,17 @@ namespace MetaDslx.Languages.Meta
                 else
                 {
                     result = ", types: ImmutableArray<Type>.Empty";
+                }
+            }
+            if (this.Name == MetaCompilerAnnotationInfo.Import)
+            {
+                if (this.HasProperty("extern"))
+                {
+                    result = ", isExtern: " + this.GetValue("extern");
+                }
+                if (this.HasProperty("static"))
+                {
+                    result = ", isStatic: " + this.GetValue("static");
                 }
             }
             if (this.Name == MetaCompilerAnnotationInfo.Property)

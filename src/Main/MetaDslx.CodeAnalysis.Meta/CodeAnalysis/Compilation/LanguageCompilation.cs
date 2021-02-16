@@ -1159,7 +1159,7 @@ namespace MetaDslx.CodeAnalysis
                 return Imports.Empty;
             }
 
-            var binder = GetBinderFactory(tree).GetImportsBinder((LanguageSyntaxNode)tree.GetRoot());
+            var binder = GetBinder((LanguageSyntaxNode)tree.GetRoot());
             return binder.GetImports(basesBeingResolved: null);
         }
 
@@ -1820,7 +1820,7 @@ namespace MetaDslx.CodeAnalysis
         /// </summary>
         internal Imports GetImports(SingleDeclaration declaration)
         {
-            return GetBinderFactory(declaration.SyntaxReference.SyntaxTree).GetImportsBinder((LanguageSyntaxNode)declaration.SyntaxReference.GetSyntax()).GetImports(basesBeingResolved: null);
+            return GetBinder((LanguageSyntaxNode)declaration.SyntaxReference.GetSyntax()).GetImports(basesBeingResolved: null);
         }
 
         private AliasSymbol CreateGlobalNamespaceAlias()

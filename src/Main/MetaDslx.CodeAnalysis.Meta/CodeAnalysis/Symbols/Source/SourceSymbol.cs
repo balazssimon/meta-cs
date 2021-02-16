@@ -41,7 +41,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         public Type ModelObjectType => ((IModelSymbol)_symbol).ModelObjectType;
 
-        public ImmutableArray<Diagnostic> Diagnostics => throw ExceptionUtilities.Unreachable;
+        public ImmutableArray<Diagnostic> Diagnostics => ((IModelSourceSymbol)_symbol).Diagnostics;
+
+        public DeclaredSymbol DeclaredSymbol => _symbol as DeclaredSymbol;
 
         public BinderPosition<SymbolDefBinder> GetBinder(SyntaxReference reference)
         {
@@ -56,14 +58,14 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         public ImmutableArray<BinderPosition<ValueBinder>> FindValueBinders(BinderPosition<PropertyBinder> propertyBinder)
         {
-            return FindBinders.FindValueBinders(propertyBinder);
+            return FindBinders.FindPropertyValueBinders(propertyBinder);
         }
 
         public void CreateRootSymbols(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             Debug.Assert(_symbol.ContainingSymbol is SourceModuleSymbol);
             var symbolFactory = SymbolFactory;
-            var declaredSymbol = _symbol as DeclaredSymbol;
+            var declaredSymbol = DeclaredSymbol;
             if (declaredSymbol != null)
             {
                 foreach (var decl in declaredSymbol.MergedDeclaration.Children)
@@ -92,8 +94,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         {
             Debug.Assert(_symbol.ContainingSymbol is IModelSourceSymbol);
             var symbolFacts = SymbolFacts;
-            var symbolFactory = SymbolFactory;
-            var declaredSymbol = _symbol as DeclaredSymbol;
+            var declaredSymbol = DeclaredSymbol;
             var nestingDeclaration = NestingParentDeclaration(symbolPartReference, declaredSymbol);
             if (nestingDeclaration != null)
             {
@@ -380,6 +381,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             }
             else
             {
+                Debug.Assert(false);
                 childSymbol = SymbolFactory.MakeSourceSymbol(_symbol, modelObjectType, null);
                 childObject = (childSymbol as IModelSourceSymbol)?.ModelObject;
             }
@@ -406,6 +408,37 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 }
             }
             return null;
+        }
+
+        public void CompleteImports(Location locationOpt, CancellationToken cancellationToken)
+        {
+            var declaredSymbol = DeclaredSymbol;
+            if (declaredSymbol != null)
+            {
+                foreach (var declaration in declaredSymbol.MergedDeclaration.Declarations)
+                {
+                    if (locationOpt == null || locationOpt.SourceTree == declaration.SyntaxReference.SyntaxTree)
+                    {
+                        if (declaration.Imports.Length > 0)
+                        {
+                            this.GetImports(declaration).Complete(cancellationToken);
+                        }
+                    }
+                }
+            }
+        }
+
+        private Imports GetImports(SingleDeclaration declaration)
+        {
+            var symbolDef = GetBinder(declaration.SyntaxReference);
+            if (symbolDef.Binder != null)
+            {
+                return symbolDef.Binder.GetImports(null);
+            }
+            else
+            {
+                return Imports.Empty;
+            }
         }
 
         public ImmutableArray<(CompletionPart start,CompletionPart finish)> CollectPhases()

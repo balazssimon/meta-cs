@@ -19,13 +19,13 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
 
     {
         private readonly Type _type;
-        private Symbol _definedSymbol;
+        private Imports _lazyImports;
+        private ImportChain _lazyImportChain;
 
         public SymbolDefBinder(Binder next, SyntaxNodeOrToken syntax, Type type) 
             : base(next, syntax)
         {
             _type = type;
-            _definedSymbol = null;
         }
 
         public Type ModelObjectType => _type;
@@ -46,6 +46,39 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
         {
             return this.DefinedSymbol;
         }
+
+        public override Imports GetImports(ConsList<TypeSymbol> basesBeingResolved)
+        {
+            if (_lazyImports == null)
+            {
+                var imports = Imports.FromSyntax(this.Syntax, this.DefinedSymbol as DeclaredSymbol, this, basesBeingResolved, false);
+                Interlocked.CompareExchange(ref _lazyImports, imports, null);
+            }
+
+            return _lazyImports;
+        }
+
+        public override ImportChain ImportChain
+        {
+            get
+            {
+                if (_lazyImportChain == null)
+                {
+                    ImportChain importChain = this.Next.ImportChain;
+                    if ((object)DefinedSymbol == null || DefinedSymbol.Kind == LanguageSymbolKind.Namespace)
+                    {
+                        importChain = new ImportChain(GetImports(basesBeingResolved: null), importChain);
+                    }
+
+                    Interlocked.CompareExchange(ref _lazyImportChain, importChain, null);
+                }
+
+                Debug.Assert(_lazyImportChain != null);
+
+                return _lazyImportChain;
+            }
+        }
+
 
         public override string ToString()
         {
