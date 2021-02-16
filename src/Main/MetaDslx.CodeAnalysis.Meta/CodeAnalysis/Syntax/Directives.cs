@@ -302,14 +302,16 @@ namespace MetaDslx.CodeAnalysis.Syntax
     {
         private SyntaxNodeOrToken _aliasName;
         private SyntaxNodeOrToken _targetName;
+        private ImmutableArray<SyntaxNodeOrToken> _targetQualifiedName;
         private bool _isStatic;
         private bool _isGlobal;
 
-        public UsingDirective(LanguageSyntaxNode node, SyntaxNodeOrToken aliasName, SyntaxNodeOrToken targetName, bool isStatic, bool isGlobal)
+        public UsingDirective(LanguageSyntaxNode node, SyntaxNodeOrToken aliasName, SyntaxNodeOrToken targetName, ImmutableArray<SyntaxNodeOrToken> targetQualifiedName, bool isStatic, bool isGlobal)
             : base(node, true)
         {
             _aliasName = aliasName;
             _targetName = targetName;
+            _targetQualifiedName = targetQualifiedName;
             _isStatic = isStatic;
             _isGlobal = isGlobal;
         }
@@ -317,6 +319,7 @@ namespace MetaDslx.CodeAnalysis.Syntax
         public override DirectiveKind Kind => DirectiveKind.Using;
         public SyntaxNodeOrToken AliasName => _aliasName;
         public SyntaxNodeOrToken TargetName => _targetName;
+        public ImmutableArray<SyntaxNodeOrToken> TargetQualifiedName => _targetQualifiedName;
         public bool IsStatic => _isStatic;
         public bool IsGlobal => _isGlobal;
     }

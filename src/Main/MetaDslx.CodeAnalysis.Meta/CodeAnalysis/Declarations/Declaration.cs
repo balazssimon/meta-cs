@@ -43,10 +43,11 @@ namespace MetaDslx.CodeAnalysis.Declarations
         private readonly DeclarationFlags flags;
         private DeclarationKind kind;
 
-        protected Declaration(string name, DeclarationKind kind, bool merge, bool isNestingParent)
+        protected Declaration(string name, DeclarationKind kind, bool merge, bool hasUsings, bool isNestingParent)
         {
             this.name = name;
             if (merge) this.flags |= DeclarationFlags.Merge;
+            if (hasUsings) this.flags |= DeclarationFlags.HasImports;
             if (isNestingParent) this.flags |= DeclarationFlags.IsNestingParent;
             this.kind = kind;
         }
@@ -97,7 +98,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
 
         public bool IsImplicit => kind == DeclarationKind.Implicit;
 
-        public virtual ImmutableArray<SyntaxReference> Imports => ImmutableArray<SyntaxReference>.Empty;
+        public bool HasImports => this.flags.HasFlag(DeclarationFlags.HasImports);
 
         /*
         public DeclarationModifiers Modifiers
@@ -109,7 +110,8 @@ namespace MetaDslx.CodeAnalysis.Declarations
         private enum DeclarationFlags : byte
         {
             Merge = 0x01,
-            IsNestingParent = 0x02
+            IsNestingParent = 0x02,
+            HasImports = 0x04
         }
 
         public override string ToString()

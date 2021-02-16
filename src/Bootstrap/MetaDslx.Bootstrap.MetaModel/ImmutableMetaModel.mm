@@ -1,7 +1,6 @@
 ﻿namespace MetaDslx.Languages.Meta.Model
 {
 	using MetaDslx.CodeAnalysis.Symbols;
-	using MetaDslx.CodeAnalysis.Symbolsx;
 
 	/**
 	Represents the MetaModel.

@@ -241,16 +241,10 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 else if (incompletePart == CompletionPart.MembersCompleted)
                 {
                     // ensure relevant imports are complete.
-                    foreach (var declaration in _declaration.Declarations)
-                    {
-                        if (locationOpt == null || locationOpt.SourceTree == declaration.SyntaxReference.SyntaxTree)
-                        {
-                            if (declaration.Imports.Length > 0)
-                            {
-                                this.DeclaringCompilation.GetImports(declaration).Complete(cancellationToken);
-                            }
-                        }
-                    }
+                    var diagnostics = DiagnosticBag.GetInstance();
+                    _source.CompleteImports(locationOpt, diagnostics, cancellationToken);
+                    AddSymbolDiagnostics(diagnostics);
+                    diagnostics.Free();
 
                     var childSymbols = _declaration.Children.Select(decl => decl.Symbol).ToArray();
                     Debug.Assert(!childSymbols.Any(s => s == null));

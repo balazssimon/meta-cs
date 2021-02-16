@@ -17,7 +17,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
         private int nonDeclarationStack;
         private int collectNameStack;
         private int qualifierStack;
-        private int importStack;
+        private int importCount;
         private ArrayBuilder<Identifier> currentName;
 
         public DeclarationTreeInfo(DeclarationTreeInfo parentScope, DeclarationTreeInfo parentDeclaration, DeclarationTreeInfo parent, string parentProperty, Type type, SyntaxNodeOrToken node)
@@ -57,7 +57,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
         }
 
         public bool IsNonDeclaration => nonDeclarationStack > 0;
-        public bool IsImport => importStack > 0;
+        public bool HasImports => importCount > 0;
 
 
         public void BeginNoDeclaration()
@@ -97,20 +97,11 @@ namespace MetaDslx.CodeAnalysis.Declarations
 
         public void BeginImport(SyntaxNodeOrToken syntax)
         {
-            Debug.Assert(this.importStack >= 0);
-            Debug.Assert(this.collectNameStack == 0);
-            Debug.Assert(this.qualifierStack == 0);
-            ++this.importStack;
-            BeginNoDeclaration();
+            ++this.importCount;
         }
 
         public void EndImport()
         {
-            --this.importStack;
-            EndNoDeclaration();
-            Debug.Assert(this.collectNameStack == 0);
-            Debug.Assert(this.qualifierStack == 0);
-            Debug.Assert(this.importStack >= 0);
         }
 
         public void BeginQualifier()

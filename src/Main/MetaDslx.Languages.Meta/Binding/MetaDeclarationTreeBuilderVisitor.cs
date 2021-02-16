@@ -107,7 +107,15 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public virtual void VisitUsingNamespace(UsingNamespaceSyntax node)
 		{
-			this.Visit(node.Qualifier);
+			this.BeginImport(node);
+			try
+			{
+				this.Visit(node.Qualifier);
+			}
+			finally
+			{
+				this.EndImport();
+			}
 		}
 		
 		public virtual void VisitNamespaceDeclaration(NamespaceDeclarationSyntax node)

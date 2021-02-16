@@ -372,8 +372,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 AssertionDiagnostic(diagnostics, ModelErrorCode.ERR_NotContainmentProperty.ToDiagnostic(location, propertyName, ModelObject));
                 return;
             }*/
-            Symbol childSymbol;
-            object childObject;
+            Symbol childSymbol = null;
+            object childObject = null;
             if (childDeclaration != null)
             {
                 childSymbol = childDeclaration.CreateSymbol(_symbol.ContainingSymbol, SymbolFactory);
@@ -386,9 +386,12 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 childObject = (childSymbol as IModelSourceSymbol)?.ModelObject;
             }
             Debug.Assert(childObject != null);
-            SymbolFacts.SetOrAddPropertyValue(ModelObject, objectProperty, childObject, location, diagnostics);
             Debug.Assert(childSymbol != null);
-            if (childSymbol != null) childSymbol.ForceComplete(CompletionPart.FinishCreated, null, cancellationToken);
+            if (childObject != null)
+            {
+                SymbolFacts.SetOrAddPropertyValue(ModelObject, objectProperty, childObject, location, diagnostics);
+                if (childSymbol != null) childSymbol.ForceComplete(CompletionPart.FinishCreated, null, cancellationToken);
+            }
         }
 
         private void AssertionDiagnostic(DiagnosticBag diagnostics, Diagnostic diagnostic)
@@ -410,7 +413,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             return null;
         }
 
-        public void CompleteImports(Location locationOpt, CancellationToken cancellationToken)
+        public void CompleteImports(Location locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             var declaredSymbol = DeclaredSymbol;
             if (declaredSymbol != null)
@@ -419,9 +422,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 {
                     if (locationOpt == null || locationOpt.SourceTree == declaration.SyntaxReference.SyntaxTree)
                     {
-                        if (declaration.Imports.Length > 0)
+                        if (declaration.HasImports)
                         {
-                            this.GetImports(declaration).Complete(cancellationToken);
+                            var imports = this.GetImports(declaration);
+                            imports.Complete(cancellationToken);
+                            diagnostics.AddRange(imports.Diagnostics);
                         }
                     }
                 }

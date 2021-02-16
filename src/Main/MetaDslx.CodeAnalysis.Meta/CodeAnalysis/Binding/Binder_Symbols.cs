@@ -150,7 +150,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             var constraints = new LookupConstraints(identifierValueText, identifierValueText, qualifierOpt: qualifierOpt, basesBeingResolved: basesBeingResolved, options: options, diagnose: true);
             var identifierBinder = this.GetBinder(node);
             constraints = identifierBinder.AdjustConstraintsFor(node, constraints);
-            identifierBinder.LookupSymbolsSimpleName(result, constraints);
+            LookupSymbolsSimpleName(result, constraints);
             diagnostics.Add(node.GetLocation(), constraints.UseSiteDiagnostics);
 
             DeclaredSymbol bindingResult;

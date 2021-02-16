@@ -15,6 +15,7 @@ using MetaDslx.CodeAnalysis.Symbols.Source;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.CodeAnalysis.Binding.Binders;
 using MetaDslx.Modeling;
+using MetaDslx.CodeAnalysis.Binding.BoundNodes;
 
 namespace MetaDslx.CodeAnalysis.Binding
 {
@@ -61,6 +62,8 @@ namespace MetaDslx.CodeAnalysis.Binding
             if (_compilation != null) _state = CompletionState.Create(_compilation.Language);
             else _state = null;
         }
+
+        public ImmutableArray<Diagnostic> Diagnostics => _diagnostics != null ? _diagnostics.ToReadOnly() : ImmutableArray<Diagnostic>.Empty;
 
         internal string GetDebuggerDisplay()
         {
@@ -145,7 +148,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                             ImmutableArray<DeclaredSymbolAndUsingDirective>.Empty,
                             externAliases,
                             diagnostics: null);
-                    usingsBinder = new InContainerBinder(containerBinder.ContainingDeclaration, containerBinder.Next, imports);
+                    usingsBinder = new InContainerBinder(container, containerBinder.Next, imports);
                 }
 
                 var uniqueUsings = PooledHashSet<DeclaredSymbol>.GetInstance();
@@ -201,14 +204,17 @@ namespace MetaDslx.CodeAnalysis.Binding
                     }
                     else
                     {
-                        if (usingDirective.TargetName.IsMissing)
+                        if (usingDirective.TargetName.IsMissing || usingDirective.TargetQualifiedName.IsDefaultOrEmpty)
                         {
                             //don't try to lookup namespaces inserted by parser error recovery
                             continue;
                         }
 
                         var declarationBinder = usingsBinder.WithAdditionalFlags(BinderFlags.SuppressConstraintChecks);
-                        var imported = declarationBinder.BindDeclaredSymbol(usingDirective.TargetName, diagnostics, basesBeingResolved);
+                        var target = declarationBinder.BindDeclaredSymbol(usingDirective.TargetQualifiedName, diagnostics, basesBeingResolved);
+                        var imported = target.Length > 0 ? target[target.Length - 1] : null;
+                        if (imported == null) continue;
+
                         if (imported.Kind == LanguageSymbolKind.Namespace)
                         {
                             if (usingDirective.IsStatic)
@@ -260,41 +266,6 @@ namespace MetaDslx.CodeAnalysis.Binding
                 uniqueUsings.Free();
             }
 
-            // TODO:MetaDslx
-            /*
-            var boundSymbolDef = compilation.GetBoundNode<BoundSymbolDef>(declarationSyntax);
-            if (boundSymbolDef != null)
-            {
-                foreach (var symbol in boundSymbolDef.Symbols)
-                {
-                    var importProps = symbol.ModelSymbolInfo.Properties.Where(p => p.IsImport).ToImmutableArray();
-                    foreach (var prop in importProps)
-                    {
-                        var boundProps = boundSymbolDef.GetChildProperties(prop.Name);
-                        foreach (var boundProp in boundProps)
-                        {
-                            foreach (var boundValue in boundProp.BoundValues)
-                            {
-                                foreach (var value in boundValue.Values)
-                                {
-                                    var importedSymbol = value as NamespaceOrTypeSymbol;
-                                    if (symbol != null)
-                                    {
-                                        bool isStaticImport = importedSymbol is NamedTypeSymbol;
-                                        usings.Add(new DeclaredSymbolAndUsingDirective(importedSymbol, new UsingDirective(declarationSyntax, null, boundValue.Syntax, isStaticImport, false)));
-                                    }
-                                    else
-                                    {
-                                        diagnostics.Add(ModelErrorCode.ERR_InvalidImport, boundValue.Syntax.Location, value);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    
-                }
-            }
-            */
             if (diagnostics.IsEmptyWithoutResolution)
             {
                 diagnostics = null;
@@ -548,22 +519,28 @@ namespace MetaDslx.CodeAnalysis.Binding
                 {
                     foreach (var nameBinder in nameBinders)
                     {
-                        var values = FindBinders.FindValueBinders(importBinder);
-                        Debug.Assert(values.Length == 1);
-                        if (values.Length >= 1)
+                        var valueBinders = FindBinders.FindValueBinders(importBinder);
+                        Debug.Assert(valueBinders.Length == 1);
+                        if (valueBinders.Length >= 1)
                         {
                             var isGlobal = syntaxFacts.IsGlobalAlias(nameBinder.Syntax);
-                            builder.Add(new UsingDirective((LanguageSyntaxNode)importBinder.Syntax.NodeOrParent, nameBinder.Syntax, values[0].Syntax, importBinder.Binder.IsStatic, isGlobal));
+                            var valueBinder = valueBinders[0];
+                            var identifierBinders = FindBinders.FindIdentifierBinders(valueBinders[0]);
+                            var identifiers = identifierBinders.SelectAsArray(ib => ib.Syntax);
+                            builder.Add(new UsingDirective((LanguageSyntaxNode)importBinder.Syntax.NodeOrParent, nameBinder.Syntax, valueBinders[0].Syntax, identifiers, importBinder.Binder.IsStatic, isGlobal));
                         }
                     }
                 }
                 else
                 {
-                    var values = FindBinders.FindValueBinders(importBinder);
-                    Debug.Assert(values.Length == 1);
-                    if (values.Length >= 1)
+                    var valueBinders = FindBinders.FindValueBinders(importBinder);
+                    Debug.Assert(valueBinders.Length == 1);
+                    if (valueBinders.Length >= 1)
                     {
-                        builder.Add(new UsingDirective((LanguageSyntaxNode)importBinder.Syntax.NodeOrParent, null, values[0].Syntax, importBinder.Binder.IsStatic, false));
+                        var valueBinder = valueBinders[0];
+                        var identifierBinders = FindBinders.FindIdentifierBinders(valueBinders[0]);
+                        var identifiers = identifierBinders.SelectAsArray(ib => ib.Syntax);
+                        builder.Add(new UsingDirective((LanguageSyntaxNode)importBinder.Syntax.NodeOrParent, null, valueBinders[0].Syntax, identifiers, importBinder.Binder.IsStatic, false));
                     }
                 }
             }

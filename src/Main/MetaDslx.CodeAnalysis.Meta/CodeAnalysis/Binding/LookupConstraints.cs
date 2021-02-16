@@ -162,11 +162,26 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         public virtual bool IsViable(Symbol symbol)
         {
-            var modelSymbol = symbol as IModelSymbol;
-            if (modelSymbol == null) return false;
             if (Types.IsDefaultOrEmpty) return true;
-            var type = modelSymbol.ModelObjectType;
-            return Types.Any(t => t.IsAssignableFrom(type));
+            if (symbol is MergedNamespaceSymbol mns)
+            {
+                foreach (var ns in mns.ConstituentNamespaces)
+                {
+                    if (ns is IModelSymbol modelSymbol)
+                    {
+                        var type = modelSymbol.ModelObjectType;
+                        return Types.Any(t => t.IsAssignableFrom(type));
+                    }
+                }
+                return false;
+            }
+            else
+            {
+                var modelSymbol = symbol as IModelSymbol;
+                if (modelSymbol == null) return false;
+                var type = modelSymbol.ModelObjectType;
+                return Types.Any(t => t.IsAssignableFrom(type));
+            }
         }
 
     }

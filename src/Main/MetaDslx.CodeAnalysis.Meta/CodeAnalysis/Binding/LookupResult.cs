@@ -216,10 +216,13 @@ namespace MetaDslx.CodeAnalysis.Binding
         {
             var psb = PooledStringBuilder.GetInstance();
             var sb = psb.Builder;
-            foreach (var type in expectedTypes)
+            if (!expectedTypes.IsDefaultOrEmpty)
             {
-                if (sb.Length > 0) sb.Append(", ");
-                sb.Append(type.Name);
+                foreach (var type in expectedTypes)
+                {
+                    if (sb.Length > 0) sb.Append(", ");
+                    sb.Append(type.Name);
+                }
             }
             var modelSymbol = unwrappedSymbol as IModelSymbol;
             var diagInfo = diagnose ? new LanguageDiagnosticInfo(ModelErrorCode.ERR_BadModelObject, unwrappedSymbol.Name, modelSymbol?.ModelObjectType?.Name, sb.ToString()) : null;

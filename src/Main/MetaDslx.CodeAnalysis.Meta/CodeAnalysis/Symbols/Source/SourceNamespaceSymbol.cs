@@ -57,7 +57,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             var compilation = this.DeclaringCompilation;
             foreach (var declaration in _declaration.Declarations)
             {
-                if (declaration.Imports.Length > 0)
+                if (declaration.HasImports)
                 {
                     yield return compilation.GetImports(declaration);
                 }
@@ -279,7 +279,10 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 else if (incompletePart == CompletionPart.MembersCompleted)
                 {
                     // ensure relevant imports are complete.
-                    _source.CompleteImports(locationOpt, cancellationToken);
+                    var diagnostics = DiagnosticBag.GetInstance();
+                    _source.CompleteImports(locationOpt, diagnostics, cancellationToken);
+                    AddSymbolDiagnostics(diagnostics);
+                    diagnostics.Free();
 
                     var childSymbols = _declaration.Children.Select(decl => decl.Symbol).ToArray();
                     Debug.Assert(!childSymbols.Any(s => s == null));

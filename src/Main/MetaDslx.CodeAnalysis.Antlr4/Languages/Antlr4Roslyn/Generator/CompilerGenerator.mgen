@@ -5184,6 +5184,18 @@ finally
 }
 end template
 
+template GenerateDeclarationTreeBuilderImport(MetaCompilerAnnotation annot, string name, string body)
+this.BeginImport([name][annot.GetAnnotationParams()]);
+try
+{
+	[body]
+}
+finally
+{
+	this.EndImport();
+}
+end template
+
 template GenerateDeclarationTreeBuilderSymbolUse(MetaCompilerAnnotation annot, string name, string body)
 this.BeginSymbolUse([name][annot.GetAnnotationParams()]);
 try
@@ -5270,6 +5282,9 @@ function string GetDeclarationTreeBuilderVisitBody(Antlr4ParserRule rule)
 		if (annot.Name == MetaCompilerAnnotationInfo.SymbolUse)
 			body = GenerateDeclarationTreeBuilderSymbolUse(annot, "node", body);
 		end if
+		if (annot.Name == MetaCompilerAnnotationInfo.Import)
+			body = GenerateDeclarationTreeBuilderImport(annot, "node", body);
+		end if
 		if (annot.Name == MetaCompilerAnnotationInfo.Property)
 			body = GenerateDeclarationTreeBuilderProperty(annot, "node", body);
 		end if
@@ -5301,6 +5316,9 @@ function string GetDeclarationTreeBuilderVisitElement(Antlr4ParserRule rule, Ant
 		end if
 		if (annot.Name == MetaCompilerAnnotationInfo.SymbolUse)
 			body = GenerateDeclarationTreeBuilderSymbolUse(annot, name, body);
+		end if
+		if (annot.Name == MetaCompilerAnnotationInfo.Import)
+			body = GenerateDeclarationTreeBuilderImport(annot, name, body);
 		end if
 		if (annot.Name == MetaCompilerAnnotationInfo.Property && !annot.HasProperty("value"))
 			body = GenerateDeclarationTreeBuilderProperty(annot, name, body);

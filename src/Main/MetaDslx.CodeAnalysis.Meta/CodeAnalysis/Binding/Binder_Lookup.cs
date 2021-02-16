@@ -1204,7 +1204,8 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         protected virtual LookupConstraints AdjustConstraintsFor(SyntaxNodeOrToken lookupSyntax, LookupConstraints constraints)
         {
-            return Next.AdjustConstraintsFor(lookupSyntax, constraints);
+            if (Next == null) return constraints;
+            else return Next.AdjustConstraintsFor(lookupSyntax, constraints);
         }
 
     }
