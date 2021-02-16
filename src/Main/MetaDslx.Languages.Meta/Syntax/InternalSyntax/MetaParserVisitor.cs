@@ -66,6 +66,12 @@ public interface IMetaParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitAttribute([NotNull] MetaParser.AttributeContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaParser.usingNamespace"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitUsingNamespace([NotNull] MetaParser.UsingNamespaceContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="MetaParser.namespaceDeclaration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

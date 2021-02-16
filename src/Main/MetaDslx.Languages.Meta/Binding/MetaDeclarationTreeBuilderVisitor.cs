@@ -37,6 +37,13 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public virtual void VisitMain(MainSyntax node)
 		{
+			if (node.UsingNamespace != null)
+			{
+				foreach (var child in node.UsingNamespace)
+				{
+			        this.Visit(child);
+				}
+			}
 			this.Visit(node.NamespaceDeclaration);
 		}
 		
@@ -98,6 +105,11 @@ namespace MetaDslx.Languages.Meta.Binding
 			}
 		}
 		
+		public virtual void VisitUsingNamespace(UsingNamespaceSyntax node)
+		{
+			this.Visit(node.Qualifier);
+		}
+		
 		public virtual void VisitNamespaceDeclaration(NamespaceDeclarationSyntax node)
 		{
 			this.BeginSymbolDef(node, type: typeof(MetaNamespace), nestingProperty: "Declarations", merge: true);
@@ -124,6 +136,13 @@ namespace MetaDslx.Languages.Meta.Binding
 			this.BeginScope(node);
 			try
 			{
+				if (node.UsingNamespace != null)
+				{
+					foreach (var child in node.UsingNamespace)
+					{
+				        this.Visit(child);
+					}
+				}
 				this.Visit(node.MetamodelDeclaration);
 				if (node.Declaration != null)
 				{

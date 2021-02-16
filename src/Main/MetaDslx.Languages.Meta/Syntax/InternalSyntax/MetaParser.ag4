@@ -11,7 +11,7 @@ options
 	generateCompiler=true;
 }
 
-main: namespaceDeclaration EOF;
+main: usingNamespace* namespaceDeclaration EOF;
 
 $Name
 name : identifier;
@@ -26,11 +26,14 @@ $Property(Attributes)
 $Attribute(MetaAttribute)
 attribute : TOpenBracket qualifier TCloseBracket;
 
+$Import
+usingNamespace: KUsing qualifier TSemicolon;
+
 $SymbolDef(type=MetaNamespace,nestingProperty=Declarations,merge=true)
 namespaceDeclaration: attribute* KNamespace qualifiedName namespaceBody;
 
 $Scope
-namespaceBody : TOpenBrace metamodelDeclaration declaration* TCloseBrace;
+namespaceBody : TOpenBrace usingNamespace* metamodelDeclaration declaration* TCloseBrace;
 
 $Property(DefinedMetaModel)
 $SymbolDef(MetaModel)

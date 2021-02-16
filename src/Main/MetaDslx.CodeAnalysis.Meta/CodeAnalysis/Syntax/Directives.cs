@@ -16,7 +16,7 @@ namespace MetaDslx.CodeAnalysis.Syntax
 
         protected Directive(LanguageSyntaxNode node, bool isActive)
         {
-            Debug.Assert(node is IDirectiveTriviaSyntax);
+            //Debug.Assert(node is IDirectiveTriviaSyntax);
             _node = node;
             _isActive = isActive;
         }

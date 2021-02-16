@@ -162,6 +162,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 	
 	public sealed class MainSyntax : MetaSyntaxNode, ICompilationUnitSyntax
 	{
+	    private SyntaxNode usingNamespace;
 	    private NamespaceDeclarationSyntax namespaceDeclaration;
 	
 	    public MainSyntax(InternalSyntaxNode green, MetaSyntaxTree syntaxTree, int position)
@@ -174,9 +175,18 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    {
 	    }
 	
+	    public SyntaxList<UsingNamespaceSyntax> UsingNamespace 
+		{ 
+			get
+			{
+				var red = this.GetRed(ref this.usingNamespace, 0);
+				if (red != null) return new SyntaxList<UsingNamespaceSyntax>(red);
+				return default;
+			} 
+		}
 	    public NamespaceDeclarationSyntax NamespaceDeclaration 
 		{ 
-			get { return this.GetRed(ref this.namespaceDeclaration, 0); } 
+			get { return this.GetRed(ref this.namespaceDeclaration, 1); } 
 		}
 	    public SyntaxToken EndOfFileToken 
 		{ 
@@ -184,7 +194,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 			{ 
 				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.MainGreen)this.Green;
 				var greenToken = green.EndOfFileToken;
-				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
 		}
 	
@@ -192,7 +202,8 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    {
 	        switch (index)
 	        {
-				case 0: return this.GetRed(ref this.namespaceDeclaration, 0);
+				case 0: return this.GetRed(ref this.usingNamespace, 0);
+				case 1: return this.GetRed(ref this.namespaceDeclaration, 1);
 				default: return null;
 	        }
 	    }
@@ -201,27 +212,39 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    {
 	        switch (index)
 	        {
-				case 0: return this.namespaceDeclaration;
+				case 0: return this.usingNamespace;
+				case 1: return this.namespaceDeclaration;
 				default: return null;
 	        }
 	    }
 	
+	    public MainSyntax WithUsingNamespace(SyntaxList<UsingNamespaceSyntax> usingNamespace)
+		{
+			return this.Update(UsingNamespace, this.NamespaceDeclaration, this.EndOfFileToken);
+		}
+	
+	    public MainSyntax AddUsingNamespace(params UsingNamespaceSyntax[] usingNamespace)
+		{
+			return this.WithUsingNamespace(this.UsingNamespace.AddRange(usingNamespace));
+		}
+	
 	    public MainSyntax WithNamespaceDeclaration(NamespaceDeclarationSyntax namespaceDeclaration)
 		{
-			return this.Update(NamespaceDeclaration, this.EndOfFileToken);
+			return this.Update(this.UsingNamespace, NamespaceDeclaration, this.EndOfFileToken);
 		}
 	
 	    public MainSyntax WithEndOfFileToken(SyntaxToken eOF)
 		{
-			return this.Update(this.NamespaceDeclaration, EndOfFileToken);
+			return this.Update(this.UsingNamespace, this.NamespaceDeclaration, EndOfFileToken);
 		}
 	
-	    public MainSyntax Update(NamespaceDeclarationSyntax namespaceDeclaration, SyntaxToken eOF)
+	    public MainSyntax Update(SyntaxList<UsingNamespaceSyntax> usingNamespace, NamespaceDeclarationSyntax namespaceDeclaration, SyntaxToken eOF)
 	    {
-	        if (this.NamespaceDeclaration != namespaceDeclaration ||
+	        if (this.UsingNamespace != usingNamespace ||
+				this.NamespaceDeclaration != namespaceDeclaration ||
 				this.EndOfFileToken != eOF)
 	        {
-	            var newNode = MetaLanguage.Instance.SyntaxFactory.Main(namespaceDeclaration, eOF);
+	            var newNode = MetaLanguage.Instance.SyntaxFactory.Main(usingNamespace, namespaceDeclaration, eOF);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -573,6 +596,107 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    }
 	}
 	
+	public sealed class UsingNamespaceSyntax : MetaSyntaxNode
+	{
+	    private QualifierSyntax qualifier;
+	
+	    public UsingNamespaceSyntax(InternalSyntaxNode green, MetaSyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
+	
+	    public UsingNamespaceSyntax(InternalSyntaxNode green, MetaSyntaxNode parent, int position)
+	        : base(green, parent, position)
+	    {
+	    }
+	
+	    public SyntaxToken KUsing 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.UsingNamespaceGreen)this.Green;
+				var greenToken = green.KUsing;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
+			}
+		}
+	    public QualifierSyntax Qualifier 
+		{ 
+			get { return this.GetRed(ref this.qualifier, 1); } 
+		}
+	    public SyntaxToken TSemicolon 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.UsingNamespaceGreen)this.Green;
+				var greenToken = green.TSemicolon;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
+			}
+		}
+	
+	    public override SyntaxNode GetNodeSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 1: return this.GetRed(ref this.qualifier, 1);
+				default: return null;
+	        }
+	    }
+	
+	    public override SyntaxNode GetCachedSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 1: return this.qualifier;
+				default: return null;
+	        }
+	    }
+	
+	    public UsingNamespaceSyntax WithKUsing(SyntaxToken kUsing)
+		{
+			return this.Update(KUsing, this.Qualifier, this.TSemicolon);
+		}
+	
+	    public UsingNamespaceSyntax WithQualifier(QualifierSyntax qualifier)
+		{
+			return this.Update(this.KUsing, Qualifier, this.TSemicolon);
+		}
+	
+	    public UsingNamespaceSyntax WithTSemicolon(SyntaxToken tSemicolon)
+		{
+			return this.Update(this.KUsing, this.Qualifier, TSemicolon);
+		}
+	
+	    public UsingNamespaceSyntax Update(SyntaxToken kUsing, QualifierSyntax qualifier, SyntaxToken tSemicolon)
+	    {
+	        if (this.KUsing != kUsing ||
+				this.Qualifier != qualifier ||
+				this.TSemicolon != tSemicolon)
+	        {
+	            var newNode = MetaLanguage.Instance.SyntaxFactory.UsingNamespace(kUsing, qualifier, tSemicolon);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (UsingNamespaceSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitUsingNamespace(this, argument);
+	    }
+	
+	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
+	    {
+	        return visitor.VisitUsingNamespace(this);
+	    }
+	
+	    public override void Accept(IMetaSyntaxVisitor visitor)
+	    {
+	        visitor.VisitUsingNamespace(this);
+	    }
+	}
+	
 	public sealed class NamespaceDeclarationSyntax : MetaSyntaxNode
 	{
 	    private SyntaxNode attribute;
@@ -697,6 +821,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 	
 	public sealed class NamespaceBodySyntax : MetaSyntaxNode
 	{
+	    private SyntaxNode usingNamespace;
 	    private MetamodelDeclarationSyntax metamodelDeclaration;
 	    private SyntaxNode declaration;
 	
@@ -719,15 +844,24 @@ namespace MetaDslx.Languages.Meta.Syntax
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
 		}
+	    public SyntaxList<UsingNamespaceSyntax> UsingNamespace 
+		{ 
+			get
+			{
+				var red = this.GetRed(ref this.usingNamespace, 1);
+				if (red != null) return new SyntaxList<UsingNamespaceSyntax>(red);
+				return default;
+			} 
+		}
 	    public MetamodelDeclarationSyntax MetamodelDeclaration 
 		{ 
-			get { return this.GetRed(ref this.metamodelDeclaration, 1); } 
+			get { return this.GetRed(ref this.metamodelDeclaration, 2); } 
 		}
 	    public SyntaxList<DeclarationSyntax> Declaration 
 		{ 
 			get
 			{
-				var red = this.GetRed(ref this.declaration, 2);
+				var red = this.GetRed(ref this.declaration, 3);
 				if (red != null) return new SyntaxList<DeclarationSyntax>(red);
 				return default;
 			} 
@@ -738,7 +872,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 			{ 
 				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.NamespaceBodyGreen)this.Green;
 				var greenToken = green.TCloseBrace;
-				return new SyntaxToken(this, greenToken, this.GetChildPosition(3), this.GetChildIndex(3));
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(4), this.GetChildIndex(4));
 			}
 		}
 	
@@ -746,8 +880,9 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    {
 	        switch (index)
 	        {
-				case 1: return this.GetRed(ref this.metamodelDeclaration, 1);
-				case 2: return this.GetRed(ref this.declaration, 2);
+				case 1: return this.GetRed(ref this.usingNamespace, 1);
+				case 2: return this.GetRed(ref this.metamodelDeclaration, 2);
+				case 3: return this.GetRed(ref this.declaration, 3);
 				default: return null;
 	        }
 	    }
@@ -756,25 +891,36 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    {
 	        switch (index)
 	        {
-				case 1: return this.metamodelDeclaration;
-				case 2: return this.declaration;
+				case 1: return this.usingNamespace;
+				case 2: return this.metamodelDeclaration;
+				case 3: return this.declaration;
 				default: return null;
 	        }
 	    }
 	
 	    public NamespaceBodySyntax WithTOpenBrace(SyntaxToken tOpenBrace)
 		{
-			return this.Update(TOpenBrace, this.MetamodelDeclaration, this.Declaration, this.TCloseBrace);
+			return this.Update(TOpenBrace, this.UsingNamespace, this.MetamodelDeclaration, this.Declaration, this.TCloseBrace);
+		}
+	
+	    public NamespaceBodySyntax WithUsingNamespace(SyntaxList<UsingNamespaceSyntax> usingNamespace)
+		{
+			return this.Update(this.TOpenBrace, UsingNamespace, this.MetamodelDeclaration, this.Declaration, this.TCloseBrace);
+		}
+	
+	    public NamespaceBodySyntax AddUsingNamespace(params UsingNamespaceSyntax[] usingNamespace)
+		{
+			return this.WithUsingNamespace(this.UsingNamespace.AddRange(usingNamespace));
 		}
 	
 	    public NamespaceBodySyntax WithMetamodelDeclaration(MetamodelDeclarationSyntax metamodelDeclaration)
 		{
-			return this.Update(this.TOpenBrace, MetamodelDeclaration, this.Declaration, this.TCloseBrace);
+			return this.Update(this.TOpenBrace, this.UsingNamespace, MetamodelDeclaration, this.Declaration, this.TCloseBrace);
 		}
 	
 	    public NamespaceBodySyntax WithDeclaration(SyntaxList<DeclarationSyntax> declaration)
 		{
-			return this.Update(this.TOpenBrace, this.MetamodelDeclaration, Declaration, this.TCloseBrace);
+			return this.Update(this.TOpenBrace, this.UsingNamespace, this.MetamodelDeclaration, Declaration, this.TCloseBrace);
 		}
 	
 	    public NamespaceBodySyntax AddDeclaration(params DeclarationSyntax[] declaration)
@@ -784,17 +930,18 @@ namespace MetaDslx.Languages.Meta.Syntax
 	
 	    public NamespaceBodySyntax WithTCloseBrace(SyntaxToken tCloseBrace)
 		{
-			return this.Update(this.TOpenBrace, this.MetamodelDeclaration, this.Declaration, TCloseBrace);
+			return this.Update(this.TOpenBrace, this.UsingNamespace, this.MetamodelDeclaration, this.Declaration, TCloseBrace);
 		}
 	
-	    public NamespaceBodySyntax Update(SyntaxToken tOpenBrace, MetamodelDeclarationSyntax metamodelDeclaration, SyntaxList<DeclarationSyntax> declaration, SyntaxToken tCloseBrace)
+	    public NamespaceBodySyntax Update(SyntaxToken tOpenBrace, SyntaxList<UsingNamespaceSyntax> usingNamespace, MetamodelDeclarationSyntax metamodelDeclaration, SyntaxList<DeclarationSyntax> declaration, SyntaxToken tCloseBrace)
 	    {
 	        if (this.TOpenBrace != tOpenBrace ||
+				this.UsingNamespace != usingNamespace ||
 				this.MetamodelDeclaration != metamodelDeclaration ||
 				this.Declaration != declaration ||
 				this.TCloseBrace != tCloseBrace)
 	        {
-	            var newNode = MetaLanguage.Instance.SyntaxFactory.NamespaceBody(tOpenBrace, metamodelDeclaration, declaration, tCloseBrace);
+	            var newNode = MetaLanguage.Instance.SyntaxFactory.NamespaceBody(tOpenBrace, usingNamespace, metamodelDeclaration, declaration, tCloseBrace);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -6006,6 +6153,8 @@ namespace MetaDslx.Languages.Meta
 		
 		void VisitAttribute(AttributeSyntax node);
 		
+		void VisitUsingNamespace(UsingNamespaceSyntax node);
+		
 		void VisitNamespaceDeclaration(NamespaceDeclarationSyntax node);
 		
 		void VisitNamespaceBody(NamespaceBodySyntax node);
@@ -6143,6 +6292,11 @@ namespace MetaDslx.Languages.Meta
 		}
 		
 		public virtual void VisitAttribute(AttributeSyntax node)
+		{
+		    this.DefaultVisit(node);
+		}
+		
+		public virtual void VisitUsingNamespace(UsingNamespaceSyntax node)
 		{
 		    this.DefaultVisit(node);
 		}
@@ -6434,6 +6588,8 @@ namespace MetaDslx.Languages.Meta
 		
 		TResult VisitAttribute(AttributeSyntax node, TArg argument);
 		
+		TResult VisitUsingNamespace(UsingNamespaceSyntax node, TArg argument);
+		
 		TResult VisitNamespaceDeclaration(NamespaceDeclarationSyntax node, TArg argument);
 		
 		TResult VisitNamespaceBody(NamespaceBodySyntax node, TArg argument);
@@ -6571,6 +6727,11 @@ namespace MetaDslx.Languages.Meta
 		}
 		
 		public virtual TResult VisitAttribute(AttributeSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitUsingNamespace(UsingNamespaceSyntax node, TArg argument)
 		{
 		    return this.DefaultVisit(node, argument);
 		}
@@ -6860,6 +7021,8 @@ namespace MetaDslx.Languages.Meta
 		
 		TResult VisitAttribute(AttributeSyntax node);
 		
+		TResult VisitUsingNamespace(UsingNamespaceSyntax node);
+		
 		TResult VisitNamespaceDeclaration(NamespaceDeclarationSyntax node);
 		
 		TResult VisitNamespaceBody(NamespaceBodySyntax node);
@@ -6997,6 +7160,11 @@ namespace MetaDslx.Languages.Meta
 		}
 		
 		public virtual TResult VisitAttribute(AttributeSyntax node)
+		{
+		    return this.DefaultVisit(node);
+		}
+		
+		public virtual TResult VisitUsingNamespace(UsingNamespaceSyntax node)
 		{
 		    return this.DefaultVisit(node);
 		}
@@ -7287,9 +7455,10 @@ namespace MetaDslx.Languages.Meta
 		
 		public virtual SyntaxNode VisitMain(MainSyntax node)
 		{
+		    var usingNamespace = this.VisitList(node.UsingNamespace);
 		    var namespaceDeclaration = (NamespaceDeclarationSyntax)this.Visit(node.NamespaceDeclaration);
 		    var eOF = this.VisitToken(node.EndOfFileToken);
-			return node.Update(namespaceDeclaration, eOF);
+			return node.Update(usingNamespace, namespaceDeclaration, eOF);
 		}
 		
 		public virtual SyntaxNode VisitName(NameSyntax node)
@@ -7318,6 +7487,14 @@ namespace MetaDslx.Languages.Meta
 			return node.Update(tOpenBracket, qualifier, tCloseBracket);
 		}
 		
+		public virtual SyntaxNode VisitUsingNamespace(UsingNamespaceSyntax node)
+		{
+		    var kUsing = this.VisitToken(node.KUsing);
+		    var qualifier = (QualifierSyntax)this.Visit(node.Qualifier);
+		    var tSemicolon = this.VisitToken(node.TSemicolon);
+			return node.Update(kUsing, qualifier, tSemicolon);
+		}
+		
 		public virtual SyntaxNode VisitNamespaceDeclaration(NamespaceDeclarationSyntax node)
 		{
 		    var attribute = this.VisitList(node.Attribute);
@@ -7330,10 +7507,11 @@ namespace MetaDslx.Languages.Meta
 		public virtual SyntaxNode VisitNamespaceBody(NamespaceBodySyntax node)
 		{
 		    var tOpenBrace = this.VisitToken(node.TOpenBrace);
+		    var usingNamespace = this.VisitList(node.UsingNamespace);
 		    var metamodelDeclaration = (MetamodelDeclarationSyntax)this.Visit(node.MetamodelDeclaration);
 		    var declaration = this.VisitList(node.Declaration);
 		    var tCloseBrace = this.VisitToken(node.TCloseBrace);
-			return node.Update(tOpenBrace, metamodelDeclaration, declaration, tCloseBrace);
+			return node.Update(tOpenBrace, usingNamespace, metamodelDeclaration, declaration, tCloseBrace);
 		}
 		
 		public virtual SyntaxNode VisitMetamodelDeclaration(MetamodelDeclarationSyntax node)
@@ -8089,12 +8267,17 @@ namespace MetaDslx.Languages.Meta
 	        return new SyntaxToken(MetaLanguage.Instance.InternalSyntaxFactory.LComment(text, value));
 	    }
 		
-		public MainSyntax Main(NamespaceDeclarationSyntax namespaceDeclaration, SyntaxToken eOF)
+		public MainSyntax Main(SyntaxList<UsingNamespaceSyntax> usingNamespace, NamespaceDeclarationSyntax namespaceDeclaration, SyntaxToken eOF)
 		{
 		    if (namespaceDeclaration == null) throw new ArgumentNullException(nameof(namespaceDeclaration));
 		    if (eOF == null) throw new ArgumentNullException(nameof(eOF));
 		    if (eOF.GetKind() != MetaSyntaxKind.Eof) throw new ArgumentException(nameof(eOF));
-		    return (MainSyntax)MetaLanguage.Instance.InternalSyntaxFactory.Main((Syntax.InternalSyntax.NamespaceDeclarationGreen)namespaceDeclaration.Green, (InternalSyntaxToken)eOF.Node).CreateRed();
+		    return (MainSyntax)MetaLanguage.Instance.InternalSyntaxFactory.Main(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<UsingNamespaceGreen>(usingNamespace.Node), (Syntax.InternalSyntax.NamespaceDeclarationGreen)namespaceDeclaration.Green, (InternalSyntaxToken)eOF.Node).CreateRed();
+		}
+		
+		public MainSyntax Main(NamespaceDeclarationSyntax namespaceDeclaration, SyntaxToken eOF)
+		{
+			return this.Main(default, namespaceDeclaration, eOF);
 		}
 		
 		public NameSyntax Name(IdentifierSyntax identifier)
@@ -8130,6 +8313,21 @@ namespace MetaDslx.Languages.Meta
 			return this.Attribute(this.Token(MetaSyntaxKind.TOpenBracket), qualifier, this.Token(MetaSyntaxKind.TCloseBracket));
 		}
 		
+		public UsingNamespaceSyntax UsingNamespace(SyntaxToken kUsing, QualifierSyntax qualifier, SyntaxToken tSemicolon)
+		{
+		    if (kUsing == null) throw new ArgumentNullException(nameof(kUsing));
+		    if (kUsing.GetKind() != MetaSyntaxKind.KUsing) throw new ArgumentException(nameof(kUsing));
+		    if (qualifier == null) throw new ArgumentNullException(nameof(qualifier));
+		    if (tSemicolon == null) throw new ArgumentNullException(nameof(tSemicolon));
+		    if (tSemicolon.GetKind() != MetaSyntaxKind.TSemicolon) throw new ArgumentException(nameof(tSemicolon));
+		    return (UsingNamespaceSyntax)MetaLanguage.Instance.InternalSyntaxFactory.UsingNamespace((InternalSyntaxToken)kUsing.Node, (Syntax.InternalSyntax.QualifierGreen)qualifier.Green, (InternalSyntaxToken)tSemicolon.Node).CreateRed();
+		}
+		
+		public UsingNamespaceSyntax UsingNamespace(QualifierSyntax qualifier)
+		{
+			return this.UsingNamespace(this.Token(MetaSyntaxKind.KUsing), qualifier, this.Token(MetaSyntaxKind.TSemicolon));
+		}
+		
 		public NamespaceDeclarationSyntax NamespaceDeclaration(SyntaxList<AttributeSyntax> attribute, SyntaxToken kNamespace, QualifiedNameSyntax qualifiedName, NamespaceBodySyntax namespaceBody)
 		{
 		    if (kNamespace == null) throw new ArgumentNullException(nameof(kNamespace));
@@ -8144,19 +8342,19 @@ namespace MetaDslx.Languages.Meta
 			return this.NamespaceDeclaration(default, this.Token(MetaSyntaxKind.KNamespace), qualifiedName, namespaceBody);
 		}
 		
-		public NamespaceBodySyntax NamespaceBody(SyntaxToken tOpenBrace, MetamodelDeclarationSyntax metamodelDeclaration, SyntaxList<DeclarationSyntax> declaration, SyntaxToken tCloseBrace)
+		public NamespaceBodySyntax NamespaceBody(SyntaxToken tOpenBrace, SyntaxList<UsingNamespaceSyntax> usingNamespace, MetamodelDeclarationSyntax metamodelDeclaration, SyntaxList<DeclarationSyntax> declaration, SyntaxToken tCloseBrace)
 		{
 		    if (tOpenBrace == null) throw new ArgumentNullException(nameof(tOpenBrace));
 		    if (tOpenBrace.GetKind() != MetaSyntaxKind.TOpenBrace) throw new ArgumentException(nameof(tOpenBrace));
 		    if (metamodelDeclaration == null) throw new ArgumentNullException(nameof(metamodelDeclaration));
 		    if (tCloseBrace == null) throw new ArgumentNullException(nameof(tCloseBrace));
 		    if (tCloseBrace.GetKind() != MetaSyntaxKind.TCloseBrace) throw new ArgumentException(nameof(tCloseBrace));
-		    return (NamespaceBodySyntax)MetaLanguage.Instance.InternalSyntaxFactory.NamespaceBody((InternalSyntaxToken)tOpenBrace.Node, (Syntax.InternalSyntax.MetamodelDeclarationGreen)metamodelDeclaration.Green, Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<DeclarationGreen>(declaration.Node), (InternalSyntaxToken)tCloseBrace.Node).CreateRed();
+		    return (NamespaceBodySyntax)MetaLanguage.Instance.InternalSyntaxFactory.NamespaceBody((InternalSyntaxToken)tOpenBrace.Node, Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<UsingNamespaceGreen>(usingNamespace.Node), (Syntax.InternalSyntax.MetamodelDeclarationGreen)metamodelDeclaration.Green, Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<DeclarationGreen>(declaration.Node), (InternalSyntaxToken)tCloseBrace.Node).CreateRed();
 		}
 		
 		public NamespaceBodySyntax NamespaceBody(MetamodelDeclarationSyntax metamodelDeclaration)
 		{
-			return this.NamespaceBody(this.Token(MetaSyntaxKind.TOpenBrace), metamodelDeclaration, default, this.Token(MetaSyntaxKind.TCloseBrace));
+			return this.NamespaceBody(this.Token(MetaSyntaxKind.TOpenBrace), default, metamodelDeclaration, default, this.Token(MetaSyntaxKind.TCloseBrace));
 		}
 		
 		public MetamodelDeclarationSyntax MetamodelDeclaration(SyntaxList<AttributeSyntax> attribute, SyntaxToken kMetamodel, NameSyntax name, SyntaxToken tOpenParen, MetamodelPropertyListSyntax metamodelPropertyList, SyntaxToken tCloseParen, SyntaxToken tSemicolon)
@@ -8776,6 +8974,7 @@ namespace MetaDslx.Languages.Meta
 				typeof(QualifiedNameSyntax),
 				typeof(QualifierSyntax),
 				typeof(AttributeSyntax),
+				typeof(UsingNamespaceSyntax),
 				typeof(NamespaceDeclarationSyntax),
 				typeof(NamespaceBodySyntax),
 				typeof(MetamodelDeclarationSyntax),

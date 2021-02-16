@@ -74,7 +74,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         public static Imports FromSyntax(
             SyntaxNodeOrToken syntax,
             DeclaredSymbol container,
-            Binder binder,
+            Binder scopeBinder,
             ConsList<TypeSymbol> basesBeingResolved,
             bool inUsing)
         {
@@ -82,7 +82,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             Binder containerBinder;
             SyntaxNodeOrToken containerSyntax;
 
-            var symbolDefBinder = FindBinders.FindSymbolDefBinder(container, syntax.GetReference());
+            var symbolDefBinder = FindBinders.FindFirstOrDefaultSymbolDefBinder(container, syntax.GetReference());
             if (symbolDefBinder.Binder != null)
             {
                 containerBinder = symbolDefBinder.Binder;
@@ -90,6 +90,9 @@ namespace MetaDslx.CodeAnalysis.Binding
             }
             else
             {
+                return Imports.Empty;
+                // TODO:MetaDslx
+                /*
                 var rootBinder = FindBinders.FindCompilationUnitRootBinder(binder.GetBinderPosition());
                 Debug.Assert(rootBinder.Binder != null);
                 if (rootBinder.Binder != null)
@@ -100,7 +103,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                 else
                 {
                     return Imports.Empty;
-                }
+                }*/
             }
 
             ImmutableArray<UsingDirective> usingDirectives = inUsing ? ImmutableArray<UsingDirective>.Empty : BuildUsingDirectives(containerSyntax, containerBinder, diagnostics);
@@ -117,10 +120,10 @@ namespace MetaDslx.CodeAnalysis.Binding
             // using Goo::Baz;
             // extern alias Goo;
 
-            var compilation = binder.Compilation;
+            var compilation = scopeBinder.Compilation;
             var language = compilation.Language;
 
-            var externAliases = BuildExternAliases(externAliasDirectives, binder, diagnostics);
+            var externAliases = BuildExternAliases(externAliasDirectives, containerBinder, diagnostics);
             var usings = ArrayBuilder<DeclaredSymbolAndUsingDirective>.GetInstance();
             ImmutableDictionary<string, AliasAndUsingDirective>.Builder usingAliases = null;
             if (usingDirectives.Length > 0)
@@ -130,7 +133,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                 Binder usingsBinder;
                 if (containerSyntax.SyntaxTree.Options.Kind != SourceCodeKind.Regular)
                 {
-                    usingsBinder = binder.Next;
+                    usingsBinder = containerBinder.Next;
                 }
                 else
                 {
@@ -142,7 +145,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                             ImmutableArray<DeclaredSymbolAndUsingDirective>.Empty,
                             externAliases,
                             diagnostics: null);
-                    usingsBinder = new ScopeBinder(container, binder.Next, imports);
+                    usingsBinder = new InContainerBinder(containerBinder.ContainingDeclaration, containerBinder.Next, imports);
                 }
 
                 var uniqueUsings = PooledHashSet<DeclaredSymbol>.GetInstance();
@@ -514,7 +517,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             var importBinders = FindBinders.FindImportBinders(binderPosition);
             foreach (var importBinder in importBinders.Where(ib => ib.Binder.IsExtern))
             {
-                var names = FindBinders.FindNameBinders(binderPosition);
+                var names = FindBinders.FindNameBinders(importBinder);
                 if (names.Length > 0)
                 {
                     foreach (var name in names)
@@ -540,18 +543,27 @@ namespace MetaDslx.CodeAnalysis.Binding
             var importBinders = FindBinders.FindImportBinders(binderPosition);
             foreach (var importBinder in importBinders.Where(ib => !ib.Binder.IsExtern))
             {
-                var names = FindBinders.FindNameBinders(binderPosition);
-                if (names.Length > 0)
+                var nameBinders = FindBinders.FindNameBinders(importBinder);
+                if (nameBinders.Length > 0)
                 {
-                    foreach (var name in names)
+                    foreach (var nameBinder in nameBinders)
                     {
-                        var values = FindBinders.FindValueBinders(binderPosition);
+                        var values = FindBinders.FindValueBinders(importBinder);
                         Debug.Assert(values.Length == 1);
                         if (values.Length >= 1)
                         {
-                            var isGlobal = syntaxFacts.IsGlobalAlias(name.Syntax);
-                            builder.Add(new UsingDirective((LanguageSyntaxNode)importBinder.Syntax.NodeOrParent, name.Syntax, values[0].Syntax, importBinder.Binder.IsStatic, isGlobal));
+                            var isGlobal = syntaxFacts.IsGlobalAlias(nameBinder.Syntax);
+                            builder.Add(new UsingDirective((LanguageSyntaxNode)importBinder.Syntax.NodeOrParent, nameBinder.Syntax, values[0].Syntax, importBinder.Binder.IsStatic, isGlobal));
                         }
+                    }
+                }
+                else
+                {
+                    var values = FindBinders.FindValueBinders(importBinder);
+                    Debug.Assert(values.Length == 1);
+                    if (values.Length >= 1)
+                    {
+                        builder.Add(new UsingDirective((LanguageSyntaxNode)importBinder.Syntax.NodeOrParent, null, values[0].Syntax, importBinder.Binder.IsStatic, false));
                     }
                 }
             }

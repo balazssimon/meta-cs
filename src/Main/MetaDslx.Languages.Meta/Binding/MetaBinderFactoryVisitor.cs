@@ -45,6 +45,7 @@ namespace MetaDslx.Languages.Meta.Binding
 		public static object UseParameterList = new object();
 		public static object UseSource = new object();
 		public static object UseTarget = new object();
+		public static object UseUsingNamespace = new object();
 		public static object UseNamespaceDeclaration = new object();
 		public static object UseIdentifier = new object();
 		public static object UseAttribute = new object();
@@ -114,27 +115,6 @@ namespace MetaDslx.Languages.Meta.Binding
         protected virtual Binder CreateOppositeBinderCore(Binder parentBinder, LanguageSyntaxNode syntax)
         {
             return new OppositeBinder(parentBinder, syntax);
-        }
-
-        /// <summary>
-        /// Returns binder that binds usings and aliases 
-        /// </summary>
-        /// <param name="unit">
-        /// Specify <see cref="LanguageSyntaxNode"/> imports in the corresponding syntax node, or
-        /// <see cref="CompilationUnitSyntax"/> for top-level imports.
-        /// </param>
-        /// <param name="inUsing">True if the binder will be used to bind a using directive.</param>
-        public override Binder GetImportsBinder(LanguageSyntaxNode unit, bool inUsing)
-        {
-            if (unit.Kind == MetaSyntaxKind.Main)
-            {
-                return this.GetCompilationUnitBinder(unit, inUsing: inUsing, inScript: InScript);
-            }
-            else
-            {
-                // TODO:MetaDslx - non-compilation-unit imports
-                return null;
-            }
         }
 
         public Binder VisitSkippedTokensTrivia(MetaSkippedTokensTriviaSyntax parent)
@@ -212,6 +192,23 @@ namespace MetaDslx.Languages.Meta.Binding
 				resultBinder = VisitParent(parent);
 				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "Attributes");
 				resultBinder = this.CreateAttributeBinder(resultBinder, parent, types: ImmutableArray.Create(typeof(MetaAttribute)));
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitUsingNamespace(UsingNamespaceSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.CreateImportBinder(resultBinder, parent);
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 			}
 			return resultBinder;

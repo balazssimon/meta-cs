@@ -22,6 +22,14 @@ namespace MetaDslx.CodeAnalysis.Binding
             return new FindSymbolDef(origin, symbol).FindOne(includeSelf: true);
         }
 
+        public static BinderPosition<SymbolDefBinder> FindFirstOrDefaultSymbolDefBinder(Symbol symbol, SyntaxReference reference)
+        {
+            var origin = reference.ToBinderPosition(symbol.DeclaringCompilation);
+            var result = new FindSymbolDef(origin, symbol).FindAll(includeSelf: true);
+            if (result.Length == 0) return default;
+            else return result[0];
+        }
+
         public static ImmutableArray<BinderPosition<ImportBinder>> FindImportBinders(BinderPosition symbolDefBinder)
         {
             return new FindImports(symbolDefBinder).FindAll();

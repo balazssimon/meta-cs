@@ -30,6 +30,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 		public const string QualifiedName = nameof(QualifiedName);
 		public const string Qualifier = nameof(Qualifier);
 		public const string Attribute = nameof(Attribute);
+		public const string UsingNamespace = nameof(UsingNamespace);
 		public const string NamespaceDeclaration = nameof(NamespaceDeclaration);
 		public const string NamespaceBody = nameof(NamespaceBody);
 		public const string MetamodelDeclaration = nameof(MetamodelDeclaration);

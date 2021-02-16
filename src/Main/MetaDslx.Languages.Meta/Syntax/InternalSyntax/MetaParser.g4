@@ -11,7 +11,7 @@ options
 	                      
 }
 
-main: namespaceDeclaration EOF;
+main: usingNamespace* namespaceDeclaration EOF;
 
      
 name : identifier;
@@ -26,11 +26,14 @@ qualifier : identifier (TDot identifier)*;
                          
 attribute : TOpenBracket qualifier TCloseBracket;
 
+       
+usingNamespace: KUsing qualifier TSemicolon;
+
                                                                       
 namespaceDeclaration: attribute* KNamespace qualifiedName namespaceBody;
 
       
-namespaceBody : TOpenBrace metamodelDeclaration declaration* TCloseBrace;
+namespaceBody : TOpenBrace usingNamespace* metamodelDeclaration declaration* TCloseBrace;
 
                            
                      

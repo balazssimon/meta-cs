@@ -278,6 +278,53 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    return context;
 		}
 		
+		public GreenNode ParseUsingNamespace(ref ParserState state)
+		{
+		    RestoreParserState(state);
+			try
+			{
+				var context = this.Antlr4Parser.usingNamespace();
+		        if (TryGetGreenNode(context, out var green)) return green;
+		        else return _visitor.Visit(context);
+			}
+			finally
+			{
+				state = this.State;
+			}
+		}
+		
+		protected virtual bool CanReuseUsingNamespace(UsingNamespaceSyntax node)
+		{
+			return node != null;
+		}
+		
+		internal MetaParser.UsingNamespaceContext _Antlr4ParseUsingNamespace()
+		{
+			BeginNode();
+		    MetaParser.UsingNamespaceContext context = null;
+		    GreenNode green = null;
+		    try
+		    {
+				if (IsIncremental && CanReuseUsingNamespace(CurrentNode as UsingNamespaceSyntax))
+				{
+					green = EatNode();
+					context = new MetaParser.UsingNamespaceContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+				}
+				else
+				{
+					context = this.Antlr4Parser._DoParseUsingNamespace();
+					green = _visitor.Visit(context);
+				}
+		    }
+		    finally
+		    {
+		        EndNode(ref green);
+		        CacheGreenNode(context, green);
+		    }
+		    return context;
+		}
+		
 		public GreenNode ParseNamespaceDeclaration(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -2879,12 +2926,20 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			public override GreenNode VisitMain(MetaParser.MainContext context)
 			{
 				if (context == null) return MainGreen.__Missing;
+			    MetaParser.UsingNamespaceContext[] usingNamespaceContext = context.usingNamespace();
+			    var usingNamespaceBuilder = _pool.Allocate<UsingNamespaceGreen>();
+			    for (int i = 0; i < usingNamespaceContext.Length; i++)
+			    {
+			        usingNamespaceBuilder.Add((UsingNamespaceGreen)this.Visit(usingNamespaceContext[i]));
+			    }
+				var usingNamespace = usingNamespaceBuilder.ToList();
+				_pool.Free(usingNamespaceBuilder);
 				MetaParser.NamespaceDeclarationContext namespaceDeclarationContext = context.namespaceDeclaration();
 				NamespaceDeclarationGreen namespaceDeclaration = null;
 				if (namespaceDeclarationContext != null) namespaceDeclaration = (NamespaceDeclarationGreen)this.Visit(namespaceDeclarationContext);
 				if (namespaceDeclaration == null) namespaceDeclaration = NamespaceDeclarationGreen.__Missing;
 				InternalSyntaxToken eOF = (InternalSyntaxToken)this.VisitTerminal(context.Eof(), MetaSyntaxKind.Eof);
-				return _factory.Main(namespaceDeclaration, eOF);
+				return _factory.Main(usingNamespace, namespaceDeclaration, eOF);
 			}
 			
 			public override GreenNode VisitName(MetaParser.NameContext context)
@@ -2938,6 +2993,18 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				return _factory.Attribute(tOpenBracket, qualifier, tCloseBracket);
 			}
 			
+			public override GreenNode VisitUsingNamespace(MetaParser.UsingNamespaceContext context)
+			{
+				if (context == null) return UsingNamespaceGreen.__Missing;
+				InternalSyntaxToken kUsing = (InternalSyntaxToken)this.VisitTerminal(context.KUsing(), MetaSyntaxKind.KUsing);
+				MetaParser.QualifierContext qualifierContext = context.qualifier();
+				QualifierGreen qualifier = null;
+				if (qualifierContext != null) qualifier = (QualifierGreen)this.Visit(qualifierContext);
+				if (qualifier == null) qualifier = QualifierGreen.__Missing;
+				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), MetaSyntaxKind.TSemicolon);
+				return _factory.UsingNamespace(kUsing, qualifier, tSemicolon);
+			}
+			
 			public override GreenNode VisitNamespaceDeclaration(MetaParser.NamespaceDeclarationContext context)
 			{
 				if (context == null) return NamespaceDeclarationGreen.__Missing;
@@ -2965,6 +3032,14 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				if (context == null) return NamespaceBodyGreen.__Missing;
 				InternalSyntaxToken tOpenBrace = (InternalSyntaxToken)this.VisitTerminal(context.TOpenBrace(), MetaSyntaxKind.TOpenBrace);
+			    MetaParser.UsingNamespaceContext[] usingNamespaceContext = context.usingNamespace();
+			    var usingNamespaceBuilder = _pool.Allocate<UsingNamespaceGreen>();
+			    for (int i = 0; i < usingNamespaceContext.Length; i++)
+			    {
+			        usingNamespaceBuilder.Add((UsingNamespaceGreen)this.Visit(usingNamespaceContext[i]));
+			    }
+				var usingNamespace = usingNamespaceBuilder.ToList();
+				_pool.Free(usingNamespaceBuilder);
 				MetaParser.MetamodelDeclarationContext metamodelDeclarationContext = context.metamodelDeclaration();
 				MetamodelDeclarationGreen metamodelDeclaration = null;
 				if (metamodelDeclarationContext != null) metamodelDeclaration = (MetamodelDeclarationGreen)this.Visit(metamodelDeclarationContext);
@@ -2978,7 +3053,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				var declaration = declarationBuilder.ToList();
 				_pool.Free(declarationBuilder);
 				InternalSyntaxToken tCloseBrace = (InternalSyntaxToken)this.VisitTerminal(context.TCloseBrace(), MetaSyntaxKind.TCloseBrace);
-				return _factory.NamespaceBody(tOpenBrace, metamodelDeclaration, declaration, tCloseBrace);
+				return _factory.NamespaceBody(tOpenBrace, usingNamespace, metamodelDeclaration, declaration, tCloseBrace);
 			}
 			
 			public override GreenNode VisitMetamodelDeclaration(MetaParser.MetamodelDeclarationContext context)
@@ -3939,6 +4014,17 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		{
 		    private GreenNode _cachedNode;
 		    public AttributeContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+				: base(parent, invokingState)
+		    {
+		        _cachedNode = cachedNode;
+		    }
+		    public GreenNode CachedNode => _cachedNode;
+		}
+		
+		internal class UsingNamespaceContext_Cached : UsingNamespaceContext, ICachedRuleContext
+		{
+		    private GreenNode _cachedNode;
+		    public UsingNamespaceContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
 				: base(parent, invokingState)
 		    {
 		        _cachedNode = cachedNode;

@@ -83,6 +83,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         public static BinderPosition ToBinderPosition(this SyntaxReference reference, LanguageCompilation compilation)
         {
+            if (reference == null || compilation == null) return default;
             var syntax = reference.Resolve();
             var binder = compilation.GetBinder(syntax);
             return new BinderPosition(binder, binder, syntax);

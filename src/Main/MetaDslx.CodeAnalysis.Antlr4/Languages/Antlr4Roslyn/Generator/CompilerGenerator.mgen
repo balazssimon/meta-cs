@@ -5368,27 +5368,6 @@ namespace [Properties.DefaultNamespace].Binding
         }
 		[end loop]
 ^
-        /// <summary>
-        /// Returns binder that binds usings and aliases 
-        /// </summary>
-        /// <param name="unit">
-        /// Specify <see cref="LanguageSyntaxNode"/> imports in the corresponding syntax node, or
-        /// <see cref="CompilationUnitSyntax"/> for top-level imports.
-        /// </param>
-        /// <param name="inUsing">True if the binder will be used to bind a using directive.</param>
-        public override Binder GetImportsBinder(LanguageSyntaxNode unit, bool inUsing)
-        {
-            if (unit.Kind == [Properties.LanguageName]SyntaxKind.[Instances.MainRule().PlainName()])
-            {
-                return this.GetCompilationUnitBinder(unit, inUsing: inUsing, inScript: InScript);
-            }
-            else
-            {
-                // TODO:MetaDslx - non-compilation-unit imports
-                return null;
-            }
-        }
-^
         public Binder VisitSkippedTokensTrivia([Properties.LanguageName]SkippedTokensTriviaSyntax parent)
         {
             return null;
