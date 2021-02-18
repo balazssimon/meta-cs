@@ -1,5 +1,6 @@
 ﻿using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Binding;
+using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
 using MetaDslx.Languages.Meta;
 using MetaDslx.Languages.Meta.Model;
@@ -28,13 +29,14 @@ namespace MetaDslx.VisualStudio.Languages.Meta.Compilation
         public ICompilation CreateCompilation(BackgroundCompilation backgroundCompilation, IEnumerable<LanguageSyntaxTree> syntaxTrees, CancellationToken cancellationToken)
         {
             var metaModelReference = ModelReference.CreateFromModel(MetaInstance.MModel);
+            var symbolsReference = MetadataReference.CreateFromFile(typeof(Symbol).Assembly.Location);
             BinderFlags binderFlags = BinderFlags.IgnoreAccessibility;
             BinderFlags binderFlags2 = BinderFlags.IgnoreMetaLibraryDuplicatedTypes;
             binderFlags = binderFlags.UnionWith(binderFlags2);
             MetaCompilationOptions options = new MetaCompilationOptions(OutputKind.NetModule,
-                deterministic: true, concurrentBuild: true,
+                deterministic: true, concurrentBuild: false,
                 topLevelBinderFlags: binderFlags);
-            var compilation = MetaCompilation.Create("MetaBackgroundCompilation").AddReferences(metaModelReference).AddSyntaxTrees(syntaxTrees).WithOptions(options);
+            var compilation = MetaCompilation.Create("MetaBackgroundCompilation").AddReferences(symbolsReference, metaModelReference).AddSyntaxTrees(syntaxTrees).WithOptions(options);
             return compilation;
         }
 

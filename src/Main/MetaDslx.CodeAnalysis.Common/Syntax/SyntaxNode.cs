@@ -61,7 +61,7 @@ namespace Microsoft.CodeAnalysis
         /// </summary>
         public abstract string Language { get; }
 
-        internal GreenNode Green { get; }
+        public GreenNode Green { get; }
 
         internal int Position { get; }
 

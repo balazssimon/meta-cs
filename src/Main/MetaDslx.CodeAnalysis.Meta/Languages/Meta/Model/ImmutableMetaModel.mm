@@ -1,5 +1,7 @@
 ﻿namespace MetaDslx.Languages.Meta.Model
 {
+	using MetaDslx.CodeAnalysis.Symbols;
+
 	/**
 	Represents the MetaModel.
 	*/
@@ -15,22 +17,8 @@
 	const MetaPrimitiveType Bool = "bool";
 	const MetaPrimitiveType Void = "void";
 	const MetaPrimitiveType SystemType = "global::System.Type";
-	const MetaPrimitiveType SymbolType = "global::MetaDslx.CodeAnalysis.Symbols.Symbol";
 	const MetaPrimitiveType ModelObject = "global::MetaDslx.Modeling.IModelObject";
 	
-	const MetaAttribute NameAttribute = "NameAttribute";
-	const MetaAttribute TypeAttribute = "TypeAttribute";
-	const MetaAttribute MembersAttribute = "MembersAttribute";
-	const MetaAttribute BaseTypesAttribute = "BaseTypesAttribute";
-	const MetaAttribute TypeSymbolAttribute = "TypeSymbolAttribute";
-	const MetaAttribute AnonymousTypeSymbolAttribute = "AnonymousTypeSymbolAttribute";
-	const MetaAttribute NamedTypeSymbolAttribute = "NamedTypeSymbolAttribute";
-	const MetaAttribute NamespaceSymbolAttribute = "NamespaceSymbolAttribute";
-	const MetaAttribute MemberSymbolAttribute = "MemberSymbolAttribute";
-	
-	const MetaAttribute ScopeAttribute = "ScopeAttribute";
-	const MetaAttribute BaseScopeAttribute = "BaseScopeAttribute";
-	const MetaAttribute LocalScopeAttribute = "LocalScopeAttribute";
 	/**
 	Represents an element.
 	*/
@@ -45,25 +33,22 @@
 		string Documentation;
 	}
 
-	abstract class MetaNamedElement : MetaDocumentedElement
+	abstract class MetaNamedElement[MemberSymbol] : MetaDocumentedElement
 	{
-		[Name]
-		string Name;
+		string Name["Name"];
 	}
 
 	abstract class MetaTypedElement : MetaElement
 	{
-		[Type]
 		MetaType Type;
 	}
 
-	[Type]
-	abstract class MetaType
+	abstract class MetaType[TypeSymbol]
 	{
 		bool ConformsTo(MetaType type);
 	}
 
-	class MetaNamedType : MetaType, MetaDeclaration
+	class MetaNamedType[NamedTypeSymbol] : MetaType, MetaDeclaration
 	{
 	}
 
@@ -78,11 +63,10 @@
 		derived string FullName;
 	}
 	
-	[Scope]
-	class MetaNamespace : MetaDeclaration
+	class MetaNamespace[NamespaceSymbol] : MetaDeclaration
 	{
-		containment MetaModel DefinedMetaModel;
-		containment list<MetaDeclaration> Declarations;
+		containment MetaModel DefinedMetaModel["Members"];
+		containment list<MetaDeclaration> Declarations["Members"];
 	}
 
 	association MetaNamespace.Declarations with MetaDeclaration.Namespace;
@@ -104,14 +88,14 @@
 		MultiSet
 	}
 
-	class MetaCollectionType : MetaType
+	class MetaCollectionType[NamedTypeSymbol] : MetaType
 	{
 		MetaCollectionKind Kind;
 		MetaType InnerType;
 		bool ConformsTo(MetaType type);
 	}
 
-	class MetaNullableType : MetaType
+	class MetaNullableType[NamedTypeSymbol] : MetaType
 	{
 		MetaType InnerType;
 		bool ConformsTo(MetaType type);
@@ -122,11 +106,10 @@
 		bool ConformsTo(MetaType type);
 	}
 
-	[Scope]
 	class MetaEnum : MetaNamedType
 	{
-		containment list<MetaEnumLiteral> EnumLiterals;
-		containment list<MetaOperation> Operations;
+		containment list<MetaEnumLiteral> EnumLiterals["Members"];
+		containment list<MetaOperation> Operations["Members"];
 	}
 
 	class MetaEnumLiteral : MetaNamedElement, MetaTypedElement
@@ -143,15 +126,13 @@
 		bool ConformsTo(MetaType type);
 	}
 
-	[Scope]
 	class MetaClass : MetaNamedType
 	{
 		SystemType SymbolType;
 		bool IsAbstract;
-		[BaseScope]
-		list<MetaClass> SuperClasses;
-		containment list<MetaProperty> Properties;
-		containment list<MetaOperation> Operations;
+		list<MetaClass> SuperClasses["DeclaredBaseTypes"];
+		containment list<MetaProperty> Properties["Members"];
+		containment list<MetaOperation> Operations["Members"];
 		bool ConformsTo(MetaType type);
 		list<MetaClass> GetAllSuperClasses(bool includeSelf);
 		list<MetaProperty> GetAllSuperProperties(bool includeSelf);
@@ -162,7 +143,6 @@
 		list<MetaOperation> GetAllFinalOperations();
 	}
 	
-	[LocalScope]
 	class MetaOperation : MetaNamedElement
 	{
 		MetaClass Class;

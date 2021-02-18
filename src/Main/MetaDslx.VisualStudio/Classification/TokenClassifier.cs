@@ -2,6 +2,7 @@
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.VisualStudio.Compilation;
 using MetaDslx.VisualStudio.Utilities;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 using Microsoft.VisualStudio.Language.StandardClassification;
 using Microsoft.VisualStudio.Text;
@@ -61,16 +62,42 @@ namespace MetaDslx.VisualStudio.Classification
             if (startPosition < 0) startPosition = 0;
             if (endPosition > root.FullSpan.End) endPosition = root.FullSpan.End;
             if (endPosition <= startPosition) return result;
-            var tokens = root.FindTokens(TextSpan.FromBounds(startPosition, endPosition), true); // TODO perf: do this on the green tree
-            foreach (var token in tokens)
+            var node = root.FindNode(new TextSpan(startPosition, endPosition), false, true);
+            foreach (var token in GetTokens(node))
             {
                 if (token.Span.Length > 0)
                 {
-                    var classificationType = GetClassificationType(token.GetKind());
+                    var classificationType = GetClassificationType(token.Token.GetKind());
                     result.Add(new ClassificationSpan(new SnapshotSpan(span.Snapshot, new Span(token.Span.Start, token.Span.Length)), classificationType));
                 }
             }
             return result;
+        }
+
+        private IEnumerable<(GreenNode Token, TextSpan Span)> GetTokens(SyntaxNode node)
+        {
+            if (node == null) yield break;
+            var stack = new Stack<(GreenNode green, TextSpan span)>();
+            stack.Push((node.Green, node.FullSpan));
+            while (stack.Count > 0)
+            {
+                var top = stack.Pop();
+                if (top.green.IsToken)
+                {
+                    yield return top;
+                }
+                else
+                {
+                    var end = top.span.End;
+                    for (int i = top.green.SlotCount - 1; i >= 0; --i)
+                    {
+                        var slot = top.green.GetSlot(i);
+                        var start = end - slot.FullWidth;
+                        stack.Push((slot, new TextSpan(start, end)));
+                        end = start;
+                    }
+                }
+            }
         }
     }
 }

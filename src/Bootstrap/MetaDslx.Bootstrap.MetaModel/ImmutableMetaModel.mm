@@ -16,6 +16,7 @@
 	const MetaPrimitiveType Byte = "byte";
 	const MetaPrimitiveType Bool = "bool";
 	const MetaPrimitiveType Void = "void";
+	const MetaPrimitiveType SystemType = "global::System.Type";
 	const MetaPrimitiveType ModelObject = "global::MetaDslx.Modeling.IModelObject";
 	
 	/**
@@ -32,15 +33,13 @@
 		string Documentation;
 	}
 
-	abstract class MetaNamedElement : MetaDocumentedElement
+	abstract class MetaNamedElement[MemberSymbol] : MetaDocumentedElement
 	{
-		[Name]
-		string Name;
+		string Name["Name"];
 	}
 
 	abstract class MetaTypedElement : MetaElement
 	{
-		[Type]
 		MetaType Type;
 	}
 
@@ -66,10 +65,8 @@
 	
 	class MetaNamespace[NamespaceSymbol] : MetaDeclaration
 	{
-		[Members]
-		containment MetaModel DefinedMetaModel;
-		[Members]
-		containment list<MetaDeclaration> Declarations;
+		containment MetaModel DefinedMetaModel["Members"];
+		containment list<MetaDeclaration> Declarations["Members"];
 	}
 
 	association MetaNamespace.Declarations with MetaDeclaration.Namespace;
@@ -111,10 +108,8 @@
 
 	class MetaEnum : MetaNamedType
 	{
-		[Members]
-		containment list<MetaEnumLiteral> EnumLiterals;
-		[Members]
-		containment list<MetaOperation> Operations;
+		containment list<MetaEnumLiteral> EnumLiterals["Members"];
+		containment list<MetaOperation> Operations["Members"];
 	}
 
 	class MetaEnumLiteral : MetaNamedElement, MetaTypedElement
@@ -133,13 +128,11 @@
 
 	class MetaClass : MetaNamedType
 	{
+		SystemType SymbolType;
 		bool IsAbstract;
-		[BaseTypes]
-		list<MetaClass> SuperClasses;
-		[Members]
-		containment list<MetaProperty> Properties;
-		[Members]
-		containment list<MetaOperation> Operations;
+		list<MetaClass> SuperClasses["DeclaredBaseTypes"];
+		containment list<MetaProperty> Properties["Members"];
+		containment list<MetaOperation> Operations["Members"];
 		bool ConformsTo(MetaType type);
 		list<MetaClass> GetAllSuperClasses(bool includeSelf);
 		list<MetaProperty> GetAllSuperProperties(bool includeSelf);
@@ -182,6 +175,7 @@
 
 	class MetaProperty : MetaNamedElement, MetaTypedElement
 	{
+		string SymbolProperty;
 		MetaPropertyKind Kind;
 		MetaClass Class;
 		string DefaultValue;
