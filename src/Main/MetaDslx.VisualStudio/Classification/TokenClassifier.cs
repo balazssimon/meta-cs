@@ -62,8 +62,7 @@ namespace MetaDslx.VisualStudio.Classification
             if (startPosition < 0) startPosition = 0;
             if (endPosition > root.FullSpan.End) endPosition = root.FullSpan.End;
             if (endPosition <= startPosition) return result;
-            var node = root.FindNode(new TextSpan(startPosition, endPosition), false, true);
-            foreach (var token in GetTokens(node))
+            foreach (var token in GetTokens(root.Green, new TextSpan(startPosition, endPosition)))
             {
                 if (token.Span.Length > 0)
                 {
@@ -74,11 +73,11 @@ namespace MetaDslx.VisualStudio.Classification
             return result;
         }
 
-        private IEnumerable<(GreenNode Token, TextSpan Span)> GetTokens(SyntaxNode node)
+        private IEnumerable<(GreenNode Token, TextSpan Span)> GetTokens(GreenNode node, TextSpan span)
         {
             if (node == null) yield break;
             var stack = new Stack<(GreenNode green, TextSpan span)>();
-            stack.Push((node.Green, node.FullSpan));
+            stack.Push((node, new TextSpan(0, node.FullWidth)));
             while (stack.Count > 0)
             {
                 var top = stack.Pop();
@@ -93,7 +92,8 @@ namespace MetaDslx.VisualStudio.Classification
                     {
                         var slot = top.green.GetSlot(i);
                         var start = end - slot.FullWidth;
-                        stack.Push((slot, new TextSpan(start, end)));
+                        var childSpan = new TextSpan(start, end);
+                        if (span.IntersectsWith(childSpan)) stack.Push((slot, childSpan));
                         end = start;
                     }
                 }

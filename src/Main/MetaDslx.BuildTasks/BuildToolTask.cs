@@ -112,37 +112,7 @@ namespace MetaDslx.BuildTasks
             {
                 if (!HandleErrorData(data) && ForwardLogs)
                 {
-                    Match match = MsBuildMessageFormat.Match(data);
-                    if (!match.Success)
-                    {
-                        Log.LogError(data);
-                        return;
-                    }
-                    string origin = match.Groups["ORIGIN"].Value;
-                    string subcategory = match.Groups["SUBCATEGORY"].Value;
-                    string category = match.Groups["CATEGORY"].Value;
-                    string code = match.Groups["CODE"].Value;
-                    string text = match.Groups["TEXT"].Value;
-                    string line1 = match.Groups["LINE1"].Value;
-                    string column1 = match.Groups["COLUMN1"].Value;
-                    string line2 = match.Groups["LINE2"].Value;
-                    string column2 = match.Groups["COLUMN2"].Value;
-                    int.TryParse(line1, out var l1);
-                    int.TryParse(column1, out var c1);
-                    int.TryParse(line2, out var l2);
-                    int.TryParse(column2, out var c2);
-                    switch (category)
-                    {
-                        case "error":
-                            Log.LogError(subcategory, code, null, origin, l1, c1, l2, c2, text);
-                            break;
-                        case "warning":
-                            Log.LogWarning(subcategory, code, null, origin, l1, c1, l2, c2, text);
-                            break;
-                        default:
-                            Log.LogMessage(MessageImportance.High, subcategory, code, null, origin, l1, c1, l2, c2, text);
-                            break;
-                    }
+                    LogData(data);
                 }
                 else
                 {
@@ -169,7 +139,7 @@ namespace MetaDslx.BuildTasks
             {
                 if (!HandleOutputData(data) && ForwardLogs)
                 {
-                    Log.LogMessage(MessageImportance.High, data);
+                    LogData(data);
                 }
                 else
                 {
@@ -179,6 +149,43 @@ namespace MetaDslx.BuildTasks
             catch (Exception ex)
             {
                 ProcessException(ex);
+            }
+        }
+
+        private void LogData(string data)
+        {
+            Match match = MsBuildMessageFormat.Match(data);
+            if (!match.Success)
+            {
+                _logs.Add((LogSeverity.Info, data));
+                //Log.LogError(data);
+                return;
+            }
+            string origin = match.Groups["ORIGIN"].Value;
+            string subcategory = match.Groups["SUBCATEGORY"].Value;
+            string category = match.Groups["CATEGORY"].Value;
+            string code = match.Groups["CODE"].Value;
+            string text = match.Groups["TEXT"].Value;
+            string line1 = match.Groups["LINE1"].Value;
+            string column1 = match.Groups["COLUMN1"].Value;
+            string line2 = match.Groups["LINE2"].Value;
+            string column2 = match.Groups["COLUMN2"].Value;
+            int.TryParse(line1, out var l1);
+            int.TryParse(column1, out var c1);
+            int.TryParse(line2, out var l2);
+            int.TryParse(column2, out var c2);
+            switch (category)
+            {
+                case "error":
+                    Log.LogError(subcategory, code, null, origin, l1, c1, l2, c2, text);
+                    break;
+                case "warning":
+                    Log.LogWarning(subcategory, code, null, origin, l1, c1, l2, c2, text);
+                    break;
+                default:
+                    _logs.Add((LogSeverity.Info, data));
+                    //Log.LogMessage(subcategory, code, null, origin, l1, c1, l2, c2, text);
+                    break;
             }
         }
 

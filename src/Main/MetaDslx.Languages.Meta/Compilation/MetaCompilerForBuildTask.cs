@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using MetaDslx.CodeGeneration;
+using MetaDslx.CodeAnalysis.Symbols;
 
 namespace MetaDslx.Languages.Meta
 {
@@ -55,15 +56,15 @@ namespace MetaDslx.Languages.Meta
                     BinderFlags binderFlags2 = BinderFlags.IgnoreMetaLibraryDuplicatedTypes;
                     binderFlags = binderFlags.UnionWith(binderFlags2);
                 }
-                MetaCompilationOptions options = new MetaCompilationOptions(OutputKind.NetModule, deterministic: true, concurrentBuild: true,
+                MetaCompilationOptions options = new MetaCompilationOptions(OutputKind.NetModule, deterministic: true, concurrentBuild: false,
                     topLevelBinderFlags: binderFlags);
                 //MetaCompilationOptions options = new MetaCompilationOptions(MetaLanguage.Instance, OutputKind.NetModule, deterministic: true, concurrentBuild: false);
                 var compilation = MetaCompilation.
                     Create("MetaModelCompilation").
                     AddSyntaxTrees(tree).
                     AddReferences(
-                        ModelReference.CreateFromModel(coreModel)
-                        ).
+                        MetadataReference.CreateFromFile(typeof(Symbol).Assembly.Location),
+                        ModelReference.CreateFromModel(coreModel)).
                     WithOptions(options);
                 Interlocked.CompareExchange(ref _compilation, compilation, null);
             }
