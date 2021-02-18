@@ -363,6 +363,8 @@ template GenerateInstancePropertyValue(MetaModel model, bool metaMetaModel, Immu
 [name].[prop.Name] = [GetAttributeValueOf(model, (MetaAttribute)value)];
 [else if (value is Enum)]
 [name].[prop.Name] = [GetEnumValueOf(model, (Enum)value)];
+[else if (value is Type)]
+[name].[prop.Name] = typeof([((Type)value).FullName]);
 [else if (value is MetaExternalType)]
 [name].Set[prop.Name]Lazy(() => [((MetaExternalType)value).Name.ToPascalCase()]);
 [else if (value is MetaPrimitiveType/* && MetaConstants.Types.Contains((MetaType)value)*/)]
@@ -407,6 +409,8 @@ template GenerateInstancePropertyCollectionValue(MetaModel model, bool metaMetaM
 [name].[prop.Name].Add([GetAttributeValueOf(model, (MetaAttribute)value)]);
 [else if (value is Enum)]
 [name].[prop.Name].Add([GetEnumValueOf(model, (Enum)value)]);
+[else if (value is Type)]
+[name].[prop.Name] = typeof([((Type)value).FullName]);
 [else if (value is MetaExternalType)]
 [name].[prop.Name].AddLazy(() => [((MetaExternalType)value).Name.ToPascalCase()]);
 [else if (value is MetaPrimitiveType/* && MetaConstants.Types.Contains((MetaType)value)*/)]
@@ -506,6 +510,9 @@ end template
 template GenerateDescriptorClass(MetaModel model, MetaClass cls)
 [GenerateDocumentation(cls)]
 [GenerateAttributes(cls)]
+[if (cls.SymbolType != null)]
+["["]global::MetaDslx.CodeAnalysis.Symbols.SymbolAttribute(typeof([cls.SymbolType.FullName]))["]"]
+[end if]
 ["["+Properties.CoreNs].ModelObjectDescriptorAttribute(typeof([cls.CSharpName(null, ClassKind.Id, true)]), typeof([cls.CSharpName(null, ClassKind.Immutable, true)]), typeof([cls.CSharpName(null, ClassKind.Builder, true)])[GetDescriptorAncestors(model, cls)])["]"]
 public static class [cls.CSharpName(model, ClassKind.Descriptor)]
 {
@@ -550,6 +557,9 @@ template GenerateDescriptorProperty(MetaModel model, MetaClass cls, MetaProperty
 ^
 [GenerateDocumentation(prop)]
 [GenerateAttributes(prop)]
+[if (prop.SymbolProperty != null)]
+["["]global::MetaDslx.CodeAnalysis.Symbols.SymbolPropertyAttribute("[prop.SymbolProperty]")["]"]
+[end if]
 [GenerateDescriptorPropertyAttributes(model, cls, prop)]
 public static readonly [Properties.CoreNs].ModelProperty [prop.CSharpName(model, PropertyKind.Descriptor)] =
     [Properties.CoreNs].ModelProperty.Register(declaringType: typeof([cls.CSharpName(model, ClassKind.Descriptor)]), name: "[prop.CSharpName(model)]",
@@ -730,10 +740,6 @@ internal abstract class [model.CSharpName(ModelKind.ImplementationBase)]
 	public abstract [prop.Type.CSharpName(model, ClassKind.BuilderOperation, true)] [cls.CSharpName(model, ClassKind.Immutable)]_ComputeProperty_[prop.CSharpName(model)]([cls.CSharpName(model, ClassKind.Builder)] _this);
 		[end if]
 	[end loop]
-	^
-	public virtual void [cls.CSharpName(model, ClassKind.Immutable)]_MValidate([cls.CSharpName(model, ClassKind.Builder)] _this, global::Microsoft.CodeAnalysis.DiagnosticBag diagnostics, global::System.Threading.CancellationToken cancellationToken = default)
-	{
-	}
 	^
 	[loop(cls->op:Operations)]
 		[if (!op.IsBuilder)]
@@ -1219,11 +1225,6 @@ internal class [cls.CSharpName(model, ClassKind.BuilderImpl)] : [Properties.Core
 	protected override void MInit()
 	{
 		[model.CSharpName(ModelKind.ImplementationProvider)].Implementation.[cls.CSharpName(model, ClassKind.Immutable)](this);
-	}
-	^
-	public override void MValidate(global::Microsoft.CodeAnalysis.DiagnosticBag diagnostics, global::System.Threading.CancellationToken cancellationToken = default)
-	{
-		[model.CSharpName(ModelKind.ImplementationProvider)].Implementation.[cls.CSharpName(model, ClassKind.Immutable)]_MValidate(this, diagnostics, cancellationToken);
 	}
 	^
 	public override [Properties.CoreNs].IMetaModel MMetaModel

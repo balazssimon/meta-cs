@@ -11,6 +11,7 @@ using MetaDslx.Languages.Meta;
 using MetaDslx.Languages.Meta.Syntax;
 using MetaDslx.Languages.Meta.Symbols;
 
+using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.Languages.Meta.Model;
 
 namespace MetaDslx.Languages.Meta.Binding
@@ -107,7 +108,15 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public virtual void VisitUsingNamespace(UsingNamespaceSyntax node)
 		{
-			this.Visit(node.Qualifier);
+			this.BeginImport(node);
+			try
+			{
+				this.Visit(node.Qualifier);
+			}
+			finally
+			{
+				this.EndImport();
+			}
 		}
 		
 		public virtual void VisitNamespaceDeclaration(NamespaceDeclarationSyntax node)
@@ -380,7 +389,7 @@ namespace MetaDslx.Languages.Meta.Binding
 			this.BeginProperty(node, name: "SymbolType");
 			try
 			{
-				this.BeginSymbolUse(node, types: ImmutableArray.Create(typeof(System.Type)));
+				this.BeginSymbolUse(node, types: ImmutableArray.Create(typeof(Symbol)));
 				try
 				{
 					this.Visit(node.Qualifier);
@@ -485,6 +494,7 @@ namespace MetaDslx.Languages.Meta.Binding
 					this.EndProperty();
 				}
 				this.Visit(node.Name);
+				this.Visit(node.FieldSymbolProperty);
 				this.Visit(node.DefaultValue);
 				if (node.RedefinitionsOrSubsettings != null)
 				{
@@ -497,6 +507,19 @@ namespace MetaDslx.Languages.Meta.Binding
 			finally
 			{
 				this.EndSymbolDef();
+			}
+		}
+		
+		public virtual void VisitFieldSymbolProperty(FieldSymbolPropertySyntax node)
+		{
+			this.BeginProperty(node, name: "SymbolProperty");
+			try
+			{
+				this.Visit(node.StringLiteral);
+			}
+			finally
+			{
+				this.EndProperty();
 			}
 		}
 		

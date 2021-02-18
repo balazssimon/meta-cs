@@ -28,8 +28,6 @@ namespace MetaDslx.Modeling
         void MAddRangeLazy(ModelProperty property, IEnumerable<LazyValue> value);
         void MMakeCreated();
 
-        void MValidate(DiagnosticBag diagnostics, CancellationToken cancellationToken = default);
-
         ImmutableObject ToImmutable();
         ImmutableObject ToImmutable(ImmutableModel immutableModel);
     }

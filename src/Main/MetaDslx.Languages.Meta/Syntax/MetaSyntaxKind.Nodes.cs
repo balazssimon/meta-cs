@@ -51,6 +51,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 		public const string ClassAncestor = nameof(ClassAncestor);
 		public const string ClassMemberDeclaration = nameof(ClassMemberDeclaration);
 		public const string FieldDeclaration = nameof(FieldDeclaration);
+		public const string FieldSymbolProperty = nameof(FieldSymbolProperty);
 		public const string FieldContainment = nameof(FieldContainment);
 		public const string FieldModifier = nameof(FieldModifier);
 		public const string DefaultValue = nameof(DefaultValue);

@@ -2,6 +2,7 @@ parser grammar MetaParser;
 
 @header 
 {
+using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.Languages.Meta.Model;
 }
 
@@ -67,7 +68,7 @@ enumMemberDeclaration :                       operationDeclaration;
               
 classDeclaration : attribute*                                       KAbstract? KClass name symbolType? (TColon                         classAncestors)? classBody;
                      
-                
+                  
 symbolType : TOpenBracket qualifier TCloseBracket;
       
 classBody : TOpenBrace classMemberDeclaration* TCloseBrace;
@@ -80,7 +81,9 @@ classMemberDeclaration
 
                         
               
-fieldDeclaration : attribute* fieldContainment? fieldModifier?                 typeReference name defaultValue? redefinitionsOrSubsettings* TSemicolon;
+fieldDeclaration : attribute* fieldContainment? fieldModifier?                 typeReference name fieldSymbolProperty? defaultValue? redefinitionsOrSubsettings* TSemicolon;
+                         
+fieldSymbolProperty : TOpenBracket stringLiteral TCloseBracket;
                                         
 fieldContainment : KContainment;
                

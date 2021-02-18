@@ -2819,6 +2819,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    private FieldModifierSyntax fieldModifier;
 	    private TypeReferenceSyntax typeReference;
 	    private NameSyntax name;
+	    private FieldSymbolPropertySyntax fieldSymbolProperty;
 	    private DefaultValueSyntax defaultValue;
 	    private SyntaxNode redefinitionsOrSubsettings;
 	
@@ -2857,15 +2858,19 @@ namespace MetaDslx.Languages.Meta.Syntax
 		{ 
 			get { return this.GetRed(ref this.name, 4); } 
 		}
+	    public FieldSymbolPropertySyntax FieldSymbolProperty 
+		{ 
+			get { return this.GetRed(ref this.fieldSymbolProperty, 5); } 
+		}
 	    public DefaultValueSyntax DefaultValue 
 		{ 
-			get { return this.GetRed(ref this.defaultValue, 5); } 
+			get { return this.GetRed(ref this.defaultValue, 6); } 
 		}
 	    public SyntaxList<RedefinitionsOrSubsettingsSyntax> RedefinitionsOrSubsettings 
 		{ 
 			get
 			{
-				var red = this.GetRed(ref this.redefinitionsOrSubsettings, 6);
+				var red = this.GetRed(ref this.redefinitionsOrSubsettings, 7);
 				if (red != null) return new SyntaxList<RedefinitionsOrSubsettingsSyntax>(red);
 				return default;
 			} 
@@ -2876,7 +2881,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 			{ 
 				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.FieldDeclarationGreen)this.Green;
 				var greenToken = green.TSemicolon;
-				return new SyntaxToken(this, greenToken, this.GetChildPosition(7), this.GetChildIndex(7));
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(8), this.GetChildIndex(8));
 			}
 		}
 	
@@ -2889,8 +2894,9 @@ namespace MetaDslx.Languages.Meta.Syntax
 				case 2: return this.GetRed(ref this.fieldModifier, 2);
 				case 3: return this.GetRed(ref this.typeReference, 3);
 				case 4: return this.GetRed(ref this.name, 4);
-				case 5: return this.GetRed(ref this.defaultValue, 5);
-				case 6: return this.GetRed(ref this.redefinitionsOrSubsettings, 6);
+				case 5: return this.GetRed(ref this.fieldSymbolProperty, 5);
+				case 6: return this.GetRed(ref this.defaultValue, 6);
+				case 7: return this.GetRed(ref this.redefinitionsOrSubsettings, 7);
 				default: return null;
 	        }
 	    }
@@ -2904,15 +2910,16 @@ namespace MetaDslx.Languages.Meta.Syntax
 				case 2: return this.fieldModifier;
 				case 3: return this.typeReference;
 				case 4: return this.name;
-				case 5: return this.defaultValue;
-				case 6: return this.redefinitionsOrSubsettings;
+				case 5: return this.fieldSymbolProperty;
+				case 6: return this.defaultValue;
+				case 7: return this.redefinitionsOrSubsettings;
 				default: return null;
 	        }
 	    }
 	
 	    public FieldDeclarationSyntax WithAttribute(SyntaxList<AttributeSyntax> attribute)
 		{
-			return this.Update(Attribute, this.FieldContainment, this.FieldModifier, this.TypeReference, this.Name, this.DefaultValue, this.RedefinitionsOrSubsettings, this.TSemicolon);
+			return this.Update(Attribute, this.FieldContainment, this.FieldModifier, this.TypeReference, this.Name, this.FieldSymbolProperty, this.DefaultValue, this.RedefinitionsOrSubsettings, this.TSemicolon);
 		}
 	
 	    public FieldDeclarationSyntax AddAttribute(params AttributeSyntax[] attribute)
@@ -2922,32 +2929,37 @@ namespace MetaDslx.Languages.Meta.Syntax
 	
 	    public FieldDeclarationSyntax WithFieldContainment(FieldContainmentSyntax fieldContainment)
 		{
-			return this.Update(this.Attribute, FieldContainment, this.FieldModifier, this.TypeReference, this.Name, this.DefaultValue, this.RedefinitionsOrSubsettings, this.TSemicolon);
+			return this.Update(this.Attribute, FieldContainment, this.FieldModifier, this.TypeReference, this.Name, this.FieldSymbolProperty, this.DefaultValue, this.RedefinitionsOrSubsettings, this.TSemicolon);
 		}
 	
 	    public FieldDeclarationSyntax WithFieldModifier(FieldModifierSyntax fieldModifier)
 		{
-			return this.Update(this.Attribute, this.FieldContainment, FieldModifier, this.TypeReference, this.Name, this.DefaultValue, this.RedefinitionsOrSubsettings, this.TSemicolon);
+			return this.Update(this.Attribute, this.FieldContainment, FieldModifier, this.TypeReference, this.Name, this.FieldSymbolProperty, this.DefaultValue, this.RedefinitionsOrSubsettings, this.TSemicolon);
 		}
 	
 	    public FieldDeclarationSyntax WithTypeReference(TypeReferenceSyntax typeReference)
 		{
-			return this.Update(this.Attribute, this.FieldContainment, this.FieldModifier, TypeReference, this.Name, this.DefaultValue, this.RedefinitionsOrSubsettings, this.TSemicolon);
+			return this.Update(this.Attribute, this.FieldContainment, this.FieldModifier, TypeReference, this.Name, this.FieldSymbolProperty, this.DefaultValue, this.RedefinitionsOrSubsettings, this.TSemicolon);
 		}
 	
 	    public FieldDeclarationSyntax WithName(NameSyntax name)
 		{
-			return this.Update(this.Attribute, this.FieldContainment, this.FieldModifier, this.TypeReference, Name, this.DefaultValue, this.RedefinitionsOrSubsettings, this.TSemicolon);
+			return this.Update(this.Attribute, this.FieldContainment, this.FieldModifier, this.TypeReference, Name, this.FieldSymbolProperty, this.DefaultValue, this.RedefinitionsOrSubsettings, this.TSemicolon);
+		}
+	
+	    public FieldDeclarationSyntax WithFieldSymbolProperty(FieldSymbolPropertySyntax fieldSymbolProperty)
+		{
+			return this.Update(this.Attribute, this.FieldContainment, this.FieldModifier, this.TypeReference, this.Name, FieldSymbolProperty, this.DefaultValue, this.RedefinitionsOrSubsettings, this.TSemicolon);
 		}
 	
 	    public FieldDeclarationSyntax WithDefaultValue(DefaultValueSyntax defaultValue)
 		{
-			return this.Update(this.Attribute, this.FieldContainment, this.FieldModifier, this.TypeReference, this.Name, DefaultValue, this.RedefinitionsOrSubsettings, this.TSemicolon);
+			return this.Update(this.Attribute, this.FieldContainment, this.FieldModifier, this.TypeReference, this.Name, this.FieldSymbolProperty, DefaultValue, this.RedefinitionsOrSubsettings, this.TSemicolon);
 		}
 	
 	    public FieldDeclarationSyntax WithRedefinitionsOrSubsettings(SyntaxList<RedefinitionsOrSubsettingsSyntax> redefinitionsOrSubsettings)
 		{
-			return this.Update(this.Attribute, this.FieldContainment, this.FieldModifier, this.TypeReference, this.Name, this.DefaultValue, RedefinitionsOrSubsettings, this.TSemicolon);
+			return this.Update(this.Attribute, this.FieldContainment, this.FieldModifier, this.TypeReference, this.Name, this.FieldSymbolProperty, this.DefaultValue, RedefinitionsOrSubsettings, this.TSemicolon);
 		}
 	
 	    public FieldDeclarationSyntax AddRedefinitionsOrSubsettings(params RedefinitionsOrSubsettingsSyntax[] redefinitionsOrSubsettings)
@@ -2957,21 +2969,22 @@ namespace MetaDslx.Languages.Meta.Syntax
 	
 	    public FieldDeclarationSyntax WithTSemicolon(SyntaxToken tSemicolon)
 		{
-			return this.Update(this.Attribute, this.FieldContainment, this.FieldModifier, this.TypeReference, this.Name, this.DefaultValue, this.RedefinitionsOrSubsettings, TSemicolon);
+			return this.Update(this.Attribute, this.FieldContainment, this.FieldModifier, this.TypeReference, this.Name, this.FieldSymbolProperty, this.DefaultValue, this.RedefinitionsOrSubsettings, TSemicolon);
 		}
 	
-	    public FieldDeclarationSyntax Update(SyntaxList<AttributeSyntax> attribute, FieldContainmentSyntax fieldContainment, FieldModifierSyntax fieldModifier, TypeReferenceSyntax typeReference, NameSyntax name, DefaultValueSyntax defaultValue, SyntaxList<RedefinitionsOrSubsettingsSyntax> redefinitionsOrSubsettings, SyntaxToken tSemicolon)
+	    public FieldDeclarationSyntax Update(SyntaxList<AttributeSyntax> attribute, FieldContainmentSyntax fieldContainment, FieldModifierSyntax fieldModifier, TypeReferenceSyntax typeReference, NameSyntax name, FieldSymbolPropertySyntax fieldSymbolProperty, DefaultValueSyntax defaultValue, SyntaxList<RedefinitionsOrSubsettingsSyntax> redefinitionsOrSubsettings, SyntaxToken tSemicolon)
 	    {
 	        if (this.Attribute != attribute ||
 				this.FieldContainment != fieldContainment ||
 				this.FieldModifier != fieldModifier ||
 				this.TypeReference != typeReference ||
 				this.Name != name ||
+				this.FieldSymbolProperty != fieldSymbolProperty ||
 				this.DefaultValue != defaultValue ||
 				this.RedefinitionsOrSubsettings != redefinitionsOrSubsettings ||
 				this.TSemicolon != tSemicolon)
 	        {
-	            var newNode = MetaLanguage.Instance.SyntaxFactory.FieldDeclaration(attribute, fieldContainment, fieldModifier, typeReference, name, defaultValue, redefinitionsOrSubsettings, tSemicolon);
+	            var newNode = MetaLanguage.Instance.SyntaxFactory.FieldDeclaration(attribute, fieldContainment, fieldModifier, typeReference, name, fieldSymbolProperty, defaultValue, redefinitionsOrSubsettings, tSemicolon);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -2993,6 +3006,107 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    public override void Accept(IMetaSyntaxVisitor visitor)
 	    {
 	        visitor.VisitFieldDeclaration(this);
+	    }
+	}
+	
+	public sealed class FieldSymbolPropertySyntax : MetaSyntaxNode
+	{
+	    private StringLiteralSyntax stringLiteral;
+	
+	    public FieldSymbolPropertySyntax(InternalSyntaxNode green, MetaSyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
+	
+	    public FieldSymbolPropertySyntax(InternalSyntaxNode green, MetaSyntaxNode parent, int position)
+	        : base(green, parent, position)
+	    {
+	    }
+	
+	    public SyntaxToken TOpenBracket 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.FieldSymbolPropertyGreen)this.Green;
+				var greenToken = green.TOpenBracket;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
+			}
+		}
+	    public StringLiteralSyntax StringLiteral 
+		{ 
+			get { return this.GetRed(ref this.stringLiteral, 1); } 
+		}
+	    public SyntaxToken TCloseBracket 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.FieldSymbolPropertyGreen)this.Green;
+				var greenToken = green.TCloseBracket;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
+			}
+		}
+	
+	    public override SyntaxNode GetNodeSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 1: return this.GetRed(ref this.stringLiteral, 1);
+				default: return null;
+	        }
+	    }
+	
+	    public override SyntaxNode GetCachedSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 1: return this.stringLiteral;
+				default: return null;
+	        }
+	    }
+	
+	    public FieldSymbolPropertySyntax WithTOpenBracket(SyntaxToken tOpenBracket)
+		{
+			return this.Update(TOpenBracket, this.StringLiteral, this.TCloseBracket);
+		}
+	
+	    public FieldSymbolPropertySyntax WithStringLiteral(StringLiteralSyntax stringLiteral)
+		{
+			return this.Update(this.TOpenBracket, StringLiteral, this.TCloseBracket);
+		}
+	
+	    public FieldSymbolPropertySyntax WithTCloseBracket(SyntaxToken tCloseBracket)
+		{
+			return this.Update(this.TOpenBracket, this.StringLiteral, TCloseBracket);
+		}
+	
+	    public FieldSymbolPropertySyntax Update(SyntaxToken tOpenBracket, StringLiteralSyntax stringLiteral, SyntaxToken tCloseBracket)
+	    {
+	        if (this.TOpenBracket != tOpenBracket ||
+				this.StringLiteral != stringLiteral ||
+				this.TCloseBracket != tCloseBracket)
+	        {
+	            var newNode = MetaLanguage.Instance.SyntaxFactory.FieldSymbolProperty(tOpenBracket, stringLiteral, tCloseBracket);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (FieldSymbolPropertySyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitFieldSymbolProperty(this, argument);
+	    }
+	
+	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
+	    {
+	        return visitor.VisitFieldSymbolProperty(this);
+	    }
+	
+	    public override void Accept(IMetaSyntaxVisitor visitor)
+	    {
+	        visitor.VisitFieldSymbolProperty(this);
 	    }
 	}
 	
@@ -6309,6 +6423,8 @@ namespace MetaDslx.Languages.Meta
 		
 		void VisitFieldDeclaration(FieldDeclarationSyntax node);
 		
+		void VisitFieldSymbolProperty(FieldSymbolPropertySyntax node);
+		
 		void VisitFieldContainment(FieldContainmentSyntax node);
 		
 		void VisitFieldModifier(FieldModifierSyntax node);
@@ -6513,6 +6629,11 @@ namespace MetaDslx.Languages.Meta
 		}
 		
 		public virtual void VisitFieldDeclaration(FieldDeclarationSyntax node)
+		{
+		    this.DefaultVisit(node);
+		}
+		
+		public virtual void VisitFieldSymbolProperty(FieldSymbolPropertySyntax node)
 		{
 		    this.DefaultVisit(node);
 		}
@@ -6751,6 +6872,8 @@ namespace MetaDslx.Languages.Meta
 		
 		TResult VisitFieldDeclaration(FieldDeclarationSyntax node, TArg argument);
 		
+		TResult VisitFieldSymbolProperty(FieldSymbolPropertySyntax node, TArg argument);
+		
 		TResult VisitFieldContainment(FieldContainmentSyntax node, TArg argument);
 		
 		TResult VisitFieldModifier(FieldModifierSyntax node, TArg argument);
@@ -6955,6 +7078,11 @@ namespace MetaDslx.Languages.Meta
 		}
 		
 		public virtual TResult VisitFieldDeclaration(FieldDeclarationSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitFieldSymbolProperty(FieldSymbolPropertySyntax node, TArg argument)
 		{
 		    return this.DefaultVisit(node, argument);
 		}
@@ -7191,6 +7319,8 @@ namespace MetaDslx.Languages.Meta
 		
 		TResult VisitFieldDeclaration(FieldDeclarationSyntax node);
 		
+		TResult VisitFieldSymbolProperty(FieldSymbolPropertySyntax node);
+		
 		TResult VisitFieldContainment(FieldContainmentSyntax node);
 		
 		TResult VisitFieldModifier(FieldModifierSyntax node);
@@ -7395,6 +7525,11 @@ namespace MetaDslx.Languages.Meta
 		}
 		
 		public virtual TResult VisitFieldDeclaration(FieldDeclarationSyntax node)
+		{
+		    return this.DefaultVisit(node);
+		}
+		
+		public virtual TResult VisitFieldSymbolProperty(FieldSymbolPropertySyntax node)
 		{
 		    return this.DefaultVisit(node);
 		}
@@ -7832,10 +7967,19 @@ namespace MetaDslx.Languages.Meta
 		    var fieldModifier = (FieldModifierSyntax)this.Visit(node.FieldModifier);
 		    var typeReference = (TypeReferenceSyntax)this.Visit(node.TypeReference);
 		    var name = (NameSyntax)this.Visit(node.Name);
+		    var fieldSymbolProperty = (FieldSymbolPropertySyntax)this.Visit(node.FieldSymbolProperty);
 		    var defaultValue = (DefaultValueSyntax)this.Visit(node.DefaultValue);
 		    var redefinitionsOrSubsettings = this.VisitList(node.RedefinitionsOrSubsettings);
 		    var tSemicolon = this.VisitToken(node.TSemicolon);
-			return node.Update(attribute, fieldContainment, fieldModifier, typeReference, name, defaultValue, redefinitionsOrSubsettings, tSemicolon);
+			return node.Update(attribute, fieldContainment, fieldModifier, typeReference, name, fieldSymbolProperty, defaultValue, redefinitionsOrSubsettings, tSemicolon);
+		}
+		
+		public virtual SyntaxNode VisitFieldSymbolProperty(FieldSymbolPropertySyntax node)
+		{
+		    var tOpenBracket = this.VisitToken(node.TOpenBracket);
+		    var stringLiteral = (StringLiteralSyntax)this.Visit(node.StringLiteral);
+		    var tCloseBracket = this.VisitToken(node.TCloseBracket);
+			return node.Update(tOpenBracket, stringLiteral, tCloseBracket);
 		}
 		
 		public virtual SyntaxNode VisitFieldContainment(FieldContainmentSyntax node)
@@ -8712,18 +8856,33 @@ namespace MetaDslx.Languages.Meta
 		    return (ClassMemberDeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.ClassMemberDeclaration((Syntax.InternalSyntax.OperationDeclarationGreen)operationDeclaration.Green).CreateRed();
 		}
 		
-		public FieldDeclarationSyntax FieldDeclaration(SyntaxList<AttributeSyntax> attribute, FieldContainmentSyntax fieldContainment, FieldModifierSyntax fieldModifier, TypeReferenceSyntax typeReference, NameSyntax name, DefaultValueSyntax defaultValue, SyntaxList<RedefinitionsOrSubsettingsSyntax> redefinitionsOrSubsettings, SyntaxToken tSemicolon)
+		public FieldDeclarationSyntax FieldDeclaration(SyntaxList<AttributeSyntax> attribute, FieldContainmentSyntax fieldContainment, FieldModifierSyntax fieldModifier, TypeReferenceSyntax typeReference, NameSyntax name, FieldSymbolPropertySyntax fieldSymbolProperty, DefaultValueSyntax defaultValue, SyntaxList<RedefinitionsOrSubsettingsSyntax> redefinitionsOrSubsettings, SyntaxToken tSemicolon)
 		{
 		    if (typeReference == null) throw new ArgumentNullException(nameof(typeReference));
 		    if (name == null) throw new ArgumentNullException(nameof(name));
 		    if (tSemicolon == null) throw new ArgumentNullException(nameof(tSemicolon));
 		    if (tSemicolon.GetKind() != MetaSyntaxKind.TSemicolon) throw new ArgumentException(nameof(tSemicolon));
-		    return (FieldDeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.FieldDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), fieldContainment == null ? null : (Syntax.InternalSyntax.FieldContainmentGreen)fieldContainment.Green, fieldModifier == null ? null : (Syntax.InternalSyntax.FieldModifierGreen)fieldModifier.Green, (Syntax.InternalSyntax.TypeReferenceGreen)typeReference.Green, (Syntax.InternalSyntax.NameGreen)name.Green, defaultValue == null ? null : (Syntax.InternalSyntax.DefaultValueGreen)defaultValue.Green, Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<RedefinitionsOrSubsettingsGreen>(redefinitionsOrSubsettings.Node), (InternalSyntaxToken)tSemicolon.Node).CreateRed();
+		    return (FieldDeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.FieldDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), fieldContainment == null ? null : (Syntax.InternalSyntax.FieldContainmentGreen)fieldContainment.Green, fieldModifier == null ? null : (Syntax.InternalSyntax.FieldModifierGreen)fieldModifier.Green, (Syntax.InternalSyntax.TypeReferenceGreen)typeReference.Green, (Syntax.InternalSyntax.NameGreen)name.Green, fieldSymbolProperty == null ? null : (Syntax.InternalSyntax.FieldSymbolPropertyGreen)fieldSymbolProperty.Green, defaultValue == null ? null : (Syntax.InternalSyntax.DefaultValueGreen)defaultValue.Green, Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<RedefinitionsOrSubsettingsGreen>(redefinitionsOrSubsettings.Node), (InternalSyntaxToken)tSemicolon.Node).CreateRed();
 		}
 		
 		public FieldDeclarationSyntax FieldDeclaration(TypeReferenceSyntax typeReference, NameSyntax name)
 		{
-			return this.FieldDeclaration(default, default, default, typeReference, name, default, default, this.Token(MetaSyntaxKind.TSemicolon));
+			return this.FieldDeclaration(default, default, default, typeReference, name, default, default, default, this.Token(MetaSyntaxKind.TSemicolon));
+		}
+		
+		public FieldSymbolPropertySyntax FieldSymbolProperty(SyntaxToken tOpenBracket, StringLiteralSyntax stringLiteral, SyntaxToken tCloseBracket)
+		{
+		    if (tOpenBracket == null) throw new ArgumentNullException(nameof(tOpenBracket));
+		    if (tOpenBracket.GetKind() != MetaSyntaxKind.TOpenBracket) throw new ArgumentException(nameof(tOpenBracket));
+		    if (stringLiteral == null) throw new ArgumentNullException(nameof(stringLiteral));
+		    if (tCloseBracket == null) throw new ArgumentNullException(nameof(tCloseBracket));
+		    if (tCloseBracket.GetKind() != MetaSyntaxKind.TCloseBracket) throw new ArgumentException(nameof(tCloseBracket));
+		    return (FieldSymbolPropertySyntax)MetaLanguage.Instance.InternalSyntaxFactory.FieldSymbolProperty((InternalSyntaxToken)tOpenBracket.Node, (Syntax.InternalSyntax.StringLiteralGreen)stringLiteral.Green, (InternalSyntaxToken)tCloseBracket.Node).CreateRed();
+		}
+		
+		public FieldSymbolPropertySyntax FieldSymbolProperty(StringLiteralSyntax stringLiteral)
+		{
+			return this.FieldSymbolProperty(this.Token(MetaSyntaxKind.TOpenBracket), stringLiteral, this.Token(MetaSyntaxKind.TCloseBracket));
 		}
 		
 		public FieldContainmentSyntax FieldContainment(SyntaxToken kContainment)
@@ -9154,6 +9313,7 @@ namespace MetaDslx.Languages.Meta
 				typeof(ClassAncestorSyntax),
 				typeof(ClassMemberDeclarationSyntax),
 				typeof(FieldDeclarationSyntax),
+				typeof(FieldSymbolPropertySyntax),
 				typeof(FieldContainmentSyntax),
 				typeof(FieldModifierSyntax),
 				typeof(DefaultValueSyntax),

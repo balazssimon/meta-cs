@@ -2,6 +2,7 @@
 
 @header 
 {
+using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.Languages.Meta.Model;
 }
 
@@ -67,7 +68,7 @@ $SymbolDef(MetaClass)
 $Documentation
 classDeclaration : attribute* $Property(name=IsAbstract,value=true) KAbstract? KClass name symbolType? (TColon $Property(SuperClasses) classAncestors)? classBody;
 $Property(SymbolType)
-$SymbolUse(Type)
+$SymbolUse(Symbol)
 symbolType : TOpenBracket qualifier TCloseBracket;
 $Scope
 classBody : TOpenBrace classMemberDeclaration* TCloseBrace;
@@ -80,7 +81,9 @@ classMemberDeclaration
 
 $SymbolDef(MetaProperty)
 $Documentation
-fieldDeclaration : attribute* fieldContainment? fieldModifier? $Property(Type) typeReference name defaultValue? redefinitionsOrSubsettings* TSemicolon;
+fieldDeclaration : attribute* fieldContainment? fieldModifier? $Property(Type) typeReference name fieldSymbolProperty? defaultValue? redefinitionsOrSubsettings* TSemicolon;
+$Property(SymbolProperty)
+fieldSymbolProperty : TOpenBracket stringLiteral TCloseBracket;
 $Property(name=IsContainment,value=true)
 fieldContainment : KContainment;
 $Property(Kind)

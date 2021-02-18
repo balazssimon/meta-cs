@@ -15,6 +15,7 @@ using MetaDslx.Languages.Meta;
 using MetaDslx.Languages.Meta.Syntax;
 using MetaDslx.Languages.Meta.Symbols;
 
+using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.Languages.Meta.Model;
 
 namespace MetaDslx.Languages.Meta.Binding
@@ -67,6 +68,7 @@ namespace MetaDslx.Languages.Meta.Binding
 		public static object UseClassBody = new object();
 		public static object UseFieldContainment = new object();
 		public static object UseFieldModifier = new object();
+		public static object UseFieldSymbolProperty = new object();
 		public static object UseDefaultValue = new object();
 		public static object UseConstValue = new object();
 		public static object UseVoidType = new object();
@@ -517,7 +519,7 @@ namespace MetaDslx.Languages.Meta.Binding
 			{
 				resultBinder = VisitParent(parent);
 				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "SymbolType");
-				resultBinder = this.CreateSymbolUseBinder(resultBinder, parent, types: ImmutableArray.Create(typeof(System.Type)));
+				resultBinder = this.CreateSymbolUseBinder(resultBinder, parent, types: ImmutableArray.Create(typeof(Symbol)));
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 			}
 			return resultBinder;
@@ -639,6 +641,23 @@ namespace MetaDslx.Languages.Meta.Binding
 			return resultBinder;
 		}
 		
+		public Binder VisitFieldSymbolProperty(FieldSymbolPropertySyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "SymbolProperty");
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+			}
+			return resultBinder;
+		}
+		
 		public Binder VisitFieldContainment(FieldContainmentSyntax parent)
 		{
 		    if (!parent.FullSpan.Contains(this.Position))
@@ -663,12 +682,37 @@ namespace MetaDslx.Languages.Meta.Binding
 		        return VisitParent(parent);
 		    }
 			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, parent.FieldModifier)) use = UseFieldModifier;
+			}
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitParent(parent);
 				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "Kind");
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UseFieldModifier)
+				{
+					switch (parent.FieldModifier.GetKind().Switch())
+					{
+						case MetaSyntaxKind.KReadonly:
+							resultBinder = this.CreateValueBinder(resultBinder, parent.FieldModifier, value: MetaPropertyKind.Readonly);
+							break;
+						case MetaSyntaxKind.KLazy:
+							resultBinder = this.CreateValueBinder(resultBinder, parent.FieldModifier, value: MetaPropertyKind.Lazy);
+							break;
+						case MetaSyntaxKind.KDerived:
+							resultBinder = this.CreateValueBinder(resultBinder, parent.FieldModifier, value: MetaPropertyKind.Derived);
+							break;
+						case MetaSyntaxKind.KUnion:
+							resultBinder = this.CreateValueBinder(resultBinder, parent.FieldModifier, value: MetaPropertyKind.DerivedUnion);
+							break;
+						default:
+							break;
+					}
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
 			}
 			return resultBinder;
 		}
@@ -1035,11 +1079,36 @@ namespace MetaDslx.Languages.Meta.Binding
 		        return VisitParent(parent);
 		    }
 			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, parent.CollectionKind)) use = UseCollectionKind;
+			}
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitParent(parent);
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UseCollectionKind)
+				{
+					switch (parent.CollectionKind.GetKind().Switch())
+					{
+						case MetaSyntaxKind.KSet:
+							resultBinder = this.CreateValueBinder(resultBinder, parent.CollectionKind, value: MetaCollectionKind.Set);
+							break;
+						case MetaSyntaxKind.KList:
+							resultBinder = this.CreateValueBinder(resultBinder, parent.CollectionKind, value: MetaCollectionKind.List);
+							break;
+						case MetaSyntaxKind.KMultiSet:
+							resultBinder = this.CreateValueBinder(resultBinder, parent.CollectionKind, value: MetaCollectionKind.MultiSet);
+							break;
+						case MetaSyntaxKind.KMultiList:
+							resultBinder = this.CreateValueBinder(resultBinder, parent.CollectionKind, value: MetaCollectionKind.MultiList);
+							break;
+						default:
+							break;
+					}
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
 			}
 			return resultBinder;
 		}

@@ -394,16 +394,6 @@ namespace MetaDslx.Modeling
             }
         }
 
-        public bool Validate(DiagnosticBag diagnostics, CancellationToken cancellationToken = default)
-        {
-            foreach (var model in this.Models)
-            {
-                if (cancellationToken.IsCancellationRequested) return false;
-                model.Validate(diagnostics, cancellationToken);
-            }
-            return !diagnostics.HasAnyErrors();
-        }
-
         public void PurgeWeakObjects()
         {
             GreenModelUpdateContext ctx = null;

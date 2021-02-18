@@ -19,6 +19,7 @@ using MetaDslx.Languages.Meta.Syntax;
 using MetaDslx.Languages.Meta.Binding;
 using MetaDslx.Languages.Meta.Symbols;
 
+using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.Languages.Meta.Model;
 
 namespace MetaDslx.Languages.Meta

@@ -1265,6 +1265,53 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    return context;
 		}
 		
+		public GreenNode ParseFieldSymbolProperty(ref ParserState state)
+		{
+		    RestoreParserState(state);
+			try
+			{
+				var context = this.Antlr4Parser.fieldSymbolProperty();
+		        if (TryGetGreenNode(context, out var green)) return green;
+		        else return _visitor.Visit(context);
+			}
+			finally
+			{
+				state = this.State;
+			}
+		}
+		
+		protected virtual bool CanReuseFieldSymbolProperty(FieldSymbolPropertySyntax node)
+		{
+			return node != null;
+		}
+		
+		internal MetaParser.FieldSymbolPropertyContext _Antlr4ParseFieldSymbolProperty()
+		{
+			BeginNode();
+		    MetaParser.FieldSymbolPropertyContext context = null;
+		    GreenNode green = null;
+		    try
+		    {
+				if (IsIncremental && CanReuseFieldSymbolProperty(CurrentNode as FieldSymbolPropertySyntax))
+				{
+					green = EatNode();
+					context = new MetaParser.FieldSymbolPropertyContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+				}
+				else
+				{
+					context = this.Antlr4Parser._DoParseFieldSymbolProperty();
+					green = _visitor.Visit(context);
+				}
+		    }
+		    finally
+		    {
+		        EndNode(ref green);
+		        CacheGreenNode(context, green);
+		    }
+		    return context;
+		}
+		
 		public GreenNode ParseFieldContainment(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -3433,6 +3480,9 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				NameGreen name = null;
 				if (nameContext != null) name = (NameGreen)this.Visit(nameContext);
 				if (name == null) name = NameGreen.__Missing;
+				MetaParser.FieldSymbolPropertyContext fieldSymbolPropertyContext = context.fieldSymbolProperty();
+				FieldSymbolPropertyGreen fieldSymbolProperty = null;
+				if (fieldSymbolPropertyContext != null) fieldSymbolProperty = (FieldSymbolPropertyGreen)this.Visit(fieldSymbolPropertyContext);
 				MetaParser.DefaultValueContext defaultValueContext = context.defaultValue();
 				DefaultValueGreen defaultValue = null;
 				if (defaultValueContext != null) defaultValue = (DefaultValueGreen)this.Visit(defaultValueContext);
@@ -3445,7 +3495,19 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				var redefinitionsOrSubsettings = redefinitionsOrSubsettingsBuilder.ToList();
 				_pool.Free(redefinitionsOrSubsettingsBuilder);
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), MetaSyntaxKind.TSemicolon);
-				return _factory.FieldDeclaration(attribute, fieldContainment, fieldModifier, typeReference, name, defaultValue, redefinitionsOrSubsettings, tSemicolon);
+				return _factory.FieldDeclaration(attribute, fieldContainment, fieldModifier, typeReference, name, fieldSymbolProperty, defaultValue, redefinitionsOrSubsettings, tSemicolon);
+			}
+			
+			public override GreenNode VisitFieldSymbolProperty(MetaParser.FieldSymbolPropertyContext context)
+			{
+				if (context == null) return FieldSymbolPropertyGreen.__Missing;
+				InternalSyntaxToken tOpenBracket = (InternalSyntaxToken)this.VisitTerminal(context.TOpenBracket(), MetaSyntaxKind.TOpenBracket);
+				MetaParser.StringLiteralContext stringLiteralContext = context.stringLiteral();
+				StringLiteralGreen stringLiteral = null;
+				if (stringLiteralContext != null) stringLiteral = (StringLiteralGreen)this.Visit(stringLiteralContext);
+				if (stringLiteral == null) stringLiteral = StringLiteralGreen.__Missing;
+				InternalSyntaxToken tCloseBracket = (InternalSyntaxToken)this.VisitTerminal(context.TCloseBracket(), MetaSyntaxKind.TCloseBracket);
+				return _factory.FieldSymbolProperty(tOpenBracket, stringLiteral, tCloseBracket);
 			}
 			
 			public override GreenNode VisitFieldContainment(MetaParser.FieldContainmentContext context)
@@ -4307,6 +4369,17 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		{
 		    private GreenNode _cachedNode;
 		    public FieldDeclarationContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+				: base(parent, invokingState)
+		    {
+		        _cachedNode = cachedNode;
+		    }
+		    public GreenNode CachedNode => _cachedNode;
+		}
+		
+		internal class FieldSymbolPropertyContext_Cached : FieldSymbolPropertyContext, ICachedRuleContext
+		{
+		    private GreenNode _cachedNode;
+		    public FieldSymbolPropertyContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
 				: base(parent, invokingState)
 		    {
 		        _cachedNode = cachedNode;
