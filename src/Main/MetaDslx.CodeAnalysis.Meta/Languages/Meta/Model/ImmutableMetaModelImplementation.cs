@@ -32,11 +32,6 @@ namespace MetaDslx.Languages.Meta.Model
                     typesBuilder.Add(MetaInstance.Bool);
                     typesBuilder.Add(MetaInstance.Void);
                     typesBuilder.Add(MetaInstance.ModelObject);
-                    typesBuilder.Add(MetaInstance.NameAttribute);
-                    typesBuilder.Add(MetaInstance.TypeAttribute);
-                    typesBuilder.Add(MetaInstance.ScopeAttribute);
-                    typesBuilder.Add(MetaInstance.BaseScopeAttribute);
-                    typesBuilder.Add(MetaInstance.LocalScopeAttribute);
                     Interlocked.Exchange(ref MetaConstants.types, typesBuilder.ToImmutable());
                 }
                 return MetaConstants.types;

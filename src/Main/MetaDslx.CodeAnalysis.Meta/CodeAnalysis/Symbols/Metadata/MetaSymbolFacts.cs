@@ -1,9 +1,11 @@
-﻿using MetaDslx.Modeling;
+﻿using MetaDslx.CodeAnalysis.Symbols.CSharp;
+using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -68,18 +70,24 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             else return ImmutableArray.Create(value);
         }
 
-        public override void SetOrAddPropertyValue(object modelObject, object property, object value, Location location, DiagnosticBag diagnostics)
+        public override void SetOrAddPropertyValue(object modelObject, object property, object symbolValue, Location location, DiagnosticBag diagnostics)
         {
             try
             {
                 var mobj = (MutableObject)modelObject;
                 var mprop = (ModelProperty)property;
-                if (mprop.IsCollection) mobj.MAdd(mprop, value);
-                else mobj.MSet(mprop, value);
+                var mvalue = symbolValue;
+                if (symbolValue is Symbol symbol && !mprop.MutableType.IsAssignableFrom(symbol.GetType()))
+                {
+                    if (mprop.MutableType == typeof(Type) && symbol is CSharpNamedTypeSymbol cnts) mvalue = Type.GetType(GetFullMetadataName(cnts));
+                    else if (symbol is IModelSymbol ms) mvalue = ms.ModelObject;
+                }
+                if (mprop.IsCollection) mobj.MAdd(mprop, mvalue);
+                else mobj.MSet(mprop, mvalue);
             }
             catch(ModelException ex)
             {
-                diagnostics.Add(ModelErrorCode.ERR_Exception.ToDiagnostic(location, ex.ToString()));
+                diagnostics.Add(ModelErrorCode.ERR_Exception.ToDiagnostic(location, ex.Message));
             }
         }
 
@@ -189,5 +197,26 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             else return null;
         }
 
+        public virtual object GetSymbolValue(Symbol symbol, Type expectedType)
+        {
+            if (!expectedType.IsAssignableFrom(symbol.GetType()))
+            {
+                if (expectedType == typeof(Type) && symbol is CSharpNamedTypeSymbol cnts) return Type.GetType(GetFullMetadataName(cnts));
+                else if (symbol is IModelSymbol ms) return ms.ModelObject;
+            }
+            return symbol;
+        }
+
+        private string GetFullMetadataName(CSharpNamedTypeSymbol symbol)
+        {
+            var result = symbol.MetadataName;
+            var ns = symbol.ContainingNamespaceOrType();
+            while (ns != null)
+            {
+                result = ns.MetadataName + "." + result;
+                ns = ns.ContainingNamespaceOrType();
+            }
+            return result;
+        }
     }
 }

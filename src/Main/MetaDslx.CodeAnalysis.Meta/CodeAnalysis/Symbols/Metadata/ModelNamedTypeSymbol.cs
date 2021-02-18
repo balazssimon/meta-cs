@@ -69,7 +69,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
         {
             var result = ArrayBuilder<NamedTypeSymbol>.GetInstance();
             var symbolFacts = Language.SymbolFacts;
-            foreach (var prop in symbolFacts.GetPropertiesForSymbol(this.ModelObject, SymbolConstants.BaseTypesProperty))
+            foreach (var prop in symbolFacts.GetPropertiesForSymbol(this.ModelObject, SymbolConstants.DeclaredBaseTypesProperty))
             {
                 var baseTypeObjects = symbolFacts.GetPropertyValues(this.ModelObject, prop);
                 var baseTypeSymbols = SymbolFactory.ResolveSymbols(baseTypeObjects).OfType<NamedTypeSymbol>();

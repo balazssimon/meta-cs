@@ -200,7 +200,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                     if (_state.NotePartComplete(CompletionPart.StartBaseTypes))
                     {
                         var diagnostics = DiagnosticBag.GetInstance();
-                        _source.AssignPropertyValues(SymbolConstants.BaseTypesProperty, diagnostics, cancellationToken);
+                        _source.AssignPropertyValues(SymbolConstants.DeclaredBaseTypesProperty, diagnostics, cancellationToken);
                         CheckBaseTypes(diagnostics);
                         AddDeclarationDiagnostics(diagnostics);
                         _state.NotePartComplete(CompletionPart.FinishBaseTypes);
@@ -454,7 +454,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         {
             var result = ArrayBuilder<NamedTypeSymbol>.GetInstance();
             var symbolFacts = Language.SymbolFacts;
-            foreach (var prop in symbolFacts.GetPropertiesForSymbol(this.ModelObject, SymbolConstants.BaseTypesProperty))
+            foreach (var prop in symbolFacts.GetPropertiesForSymbol(this.ModelObject, SymbolConstants.DeclaredBaseTypesProperty))
             {
                 var baseTypeObjects = symbolFacts.GetPropertyValues(this.ModelObject, prop);
                 var baseTypeSymbols = SymbolFactory.ResolveSymbols(baseTypeObjects);

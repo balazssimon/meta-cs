@@ -61,7 +61,7 @@ namespace MetaDslx.Bootstrap.MetaModel
                 Create("MetaTest").
                 AddSyntaxTrees(tree).
                 AddReferences(ModelReference.CreateFromModel(coreModel)).
-                AddReferences(ModelReference.CreateFromModel(LanguageSymbolModel.Instance.Model)).
+                AddReferences(MetadataReference.CreateFromFile(typeof(Symbol).Assembly.Location)).
                 WithOptions(options);
 
             var compiledModel = compilation.Model as MutableModel;

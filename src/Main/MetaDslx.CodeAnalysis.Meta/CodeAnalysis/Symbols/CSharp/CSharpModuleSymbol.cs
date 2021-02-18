@@ -44,6 +44,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
             _csharpSymbolMap = new CSharpSymbolMap(this);
         }
 
+        public override Language Language => CSharpLanguage.Instance;
+
         internal CSharpSymbols.ModuleSymbol CSharpModule => _underlyingModule;
 
         internal CSharpSymbolMap CSharpSymbolMap => _csharpSymbolMap;

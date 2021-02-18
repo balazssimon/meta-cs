@@ -62,6 +62,7 @@ namespace MetaDslx.Languages.Meta.Binding
 		public static object UseConstDeclaration = new object();
 		public static object UseEnumBody = new object();
 		public static object UseEnumValue = new object();
+		public static object UseSymbolType = new object();
 		public static object Use = new object();
 		public static object UseClassBody = new object();
 		public static object UseFieldContainment = new object();
@@ -504,6 +505,24 @@ namespace MetaDslx.Languages.Meta.Binding
 			return resultBinder;
 		}
 		
+		public Binder VisitSymbolType(SymbolTypeSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "SymbolType");
+				resultBinder = this.CreateSymbolUseBinder(resultBinder, parent, types: ImmutableArray.Create(typeof(System.Type)));
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+			}
+			return resultBinder;
+		}
+		
 		public Binder VisitClassBody(ClassBodySyntax parent)
 		{
 		    if (!parent.FullSpan.Contains(this.Position))
@@ -644,37 +663,12 @@ namespace MetaDslx.Languages.Meta.Binding
 		        return VisitParent(parent);
 		    }
 			object use = null;
-			if (this.ForChild)
-			{
-				if (LookupPosition.IsInNode(this.Position, parent.FieldModifier)) use = UseFieldModifier;
-			}
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitParent(parent);
 				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "Kind");
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
-				if (use == UseFieldModifier)
-				{
-					switch (parent.FieldModifier.GetKind().Switch())
-					{
-						case MetaSyntaxKind.KReadonly:
-							resultBinder = this.CreateValueBinder(resultBinder, parent.FieldModifier, value: MetaPropertyKind.Readonly);
-							break;
-						case MetaSyntaxKind.KLazy:
-							resultBinder = this.CreateValueBinder(resultBinder, parent.FieldModifier, value: MetaPropertyKind.Lazy);
-							break;
-						case MetaSyntaxKind.KDerived:
-							resultBinder = this.CreateValueBinder(resultBinder, parent.FieldModifier, value: MetaPropertyKind.Derived);
-							break;
-						case MetaSyntaxKind.KUnion:
-							resultBinder = this.CreateValueBinder(resultBinder, parent.FieldModifier, value: MetaPropertyKind.DerivedUnion);
-							break;
-						default:
-							break;
-					}
-					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
-				}
 			}
 			return resultBinder;
 		}
@@ -1041,36 +1035,11 @@ namespace MetaDslx.Languages.Meta.Binding
 		        return VisitParent(parent);
 		    }
 			object use = null;
-			if (this.ForChild)
-			{
-				if (LookupPosition.IsInNode(this.Position, parent.CollectionKind)) use = UseCollectionKind;
-			}
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitParent(parent);
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
-				if (use == UseCollectionKind)
-				{
-					switch (parent.CollectionKind.GetKind().Switch())
-					{
-						case MetaSyntaxKind.KSet:
-							resultBinder = this.CreateValueBinder(resultBinder, parent.CollectionKind, value: MetaCollectionKind.Set);
-							break;
-						case MetaSyntaxKind.KList:
-							resultBinder = this.CreateValueBinder(resultBinder, parent.CollectionKind, value: MetaCollectionKind.List);
-							break;
-						case MetaSyntaxKind.KMultiSet:
-							resultBinder = this.CreateValueBinder(resultBinder, parent.CollectionKind, value: MetaCollectionKind.MultiSet);
-							break;
-						case MetaSyntaxKind.KMultiList:
-							resultBinder = this.CreateValueBinder(resultBinder, parent.CollectionKind, value: MetaCollectionKind.MultiList);
-							break;
-						default:
-							break;
-					}
-					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
-				}
 			}
 			return resultBinder;
 		}

@@ -1,4 +1,5 @@
 ﻿using MetaDslx.CodeAnalysis.Symbols;
+using MetaDslx.CodeAnalysis.Symbols.CSharp;
 using MetaDslx.CodeAnalysis.Symbols.Metadata;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
@@ -162,26 +163,31 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         public virtual bool IsViable(Symbol symbol)
         {
+            if (symbol == null) return false;
             if (Types.IsDefaultOrEmpty) return true;
             if (symbol is MergedNamespaceSymbol mns)
             {
+                if (Types.Any(t => t.IsAssignableFrom(mns.GetType()))) return true;
                 foreach (var ns in mns.ConstituentNamespaces)
                 {
-                    if (ns is IModelSymbol modelSymbol)
+                    if (ns is IModelSymbol nms)
                     {
-                        var type = modelSymbol.ModelObjectType;
-                        return Types.Any(t => t.IsAssignableFrom(type));
+                        var mtype = nms.ModelObjectType;
+                        return mtype != null && Types.Any(t => t.IsAssignableFrom(mtype));
                     }
                 }
                 return false;
             }
-            else
+            else if (symbol is CSharpNamedTypeSymbol cnts)
             {
-                var modelSymbol = symbol as IModelSymbol;
-                if (modelSymbol == null) return false;
-                var type = modelSymbol.ModelObjectType;
-                return Types.Any(t => t.IsAssignableFrom(type));
+                return Types.Any(t => t == typeof(Type) || t.IsAssignableFrom(cnts.GetType()));
             }
+            if (symbol is IModelSymbol ms)
+            {
+                var mtype = ms.ModelObjectType;
+                return mtype != null && Types.Any(t => t.IsAssignableFrom(mtype));
+            }
+            return false;
         }
 
     }

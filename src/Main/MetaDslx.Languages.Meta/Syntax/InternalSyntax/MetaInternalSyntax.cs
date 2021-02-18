@@ -3181,14 +3181,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	    private InternalSyntaxToken kAbstract;
 	    private InternalSyntaxToken kClass;
 	    private NameGreen name;
+	    private SymbolTypeGreen symbolType;
 	    private InternalSyntaxToken tColon;
 	    private ClassAncestorsGreen classAncestors;
 	    private ClassBodyGreen classBody;
 	
-	    public ClassDeclarationGreen(MetaSyntaxKind kind, GreenNode attribute, InternalSyntaxToken kAbstract, InternalSyntaxToken kClass, NameGreen name, InternalSyntaxToken tColon, ClassAncestorsGreen classAncestors, ClassBodyGreen classBody)
+	    public ClassDeclarationGreen(MetaSyntaxKind kind, GreenNode attribute, InternalSyntaxToken kAbstract, InternalSyntaxToken kClass, NameGreen name, SymbolTypeGreen symbolType, InternalSyntaxToken tColon, ClassAncestorsGreen classAncestors, ClassBodyGreen classBody)
 	        : base(kind, null, null)
 	    {
-			this.SlotCount = 7;
+			this.SlotCount = 8;
 			if (attribute != null)
 			{
 				this.AdjustFlagsAndWidth(attribute);
@@ -3208,6 +3209,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				this.AdjustFlagsAndWidth(name);
 				this.name = name;
+			}
+			if (symbolType != null)
+			{
+				this.AdjustFlagsAndWidth(symbolType);
+				this.symbolType = symbolType;
 			}
 			if (tColon != null)
 			{
@@ -3226,10 +3232,10 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			}
 	    }
 	
-	    public ClassDeclarationGreen(MetaSyntaxKind kind, GreenNode attribute, InternalSyntaxToken kAbstract, InternalSyntaxToken kClass, NameGreen name, InternalSyntaxToken tColon, ClassAncestorsGreen classAncestors, ClassBodyGreen classBody, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	    public ClassDeclarationGreen(MetaSyntaxKind kind, GreenNode attribute, InternalSyntaxToken kAbstract, InternalSyntaxToken kClass, NameGreen name, SymbolTypeGreen symbolType, InternalSyntaxToken tColon, ClassAncestorsGreen classAncestors, ClassBodyGreen classBody, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
 	        : base(kind, diagnostics, annotations)
 	    {
-			this.SlotCount = 7;
+			this.SlotCount = 8;
 			if (attribute != null)
 			{
 				this.AdjustFlagsAndWidth(attribute);
@@ -3249,6 +3255,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				this.AdjustFlagsAndWidth(name);
 				this.name = name;
+			}
+			if (symbolType != null)
+			{
+				this.AdjustFlagsAndWidth(symbolType);
+				this.symbolType = symbolType;
 			}
 			if (tColon != null)
 			{
@@ -3277,6 +3288,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	    public InternalSyntaxToken KAbstract { get { return this.kAbstract; } }
 	    public InternalSyntaxToken KClass { get { return this.kClass; } }
 	    public NameGreen Name { get { return this.name; } }
+	    public SymbolTypeGreen SymbolType { get { return this.symbolType; } }
 	    public InternalSyntaxToken TColon { get { return this.tColon; } }
 	    public ClassAncestorsGreen ClassAncestors { get { return this.classAncestors; } }
 	    public ClassBodyGreen ClassBody { get { return this.classBody; } }
@@ -3294,9 +3306,10 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	            case 1: return this.kAbstract;
 	            case 2: return this.kClass;
 	            case 3: return this.name;
-	            case 4: return this.tColon;
-	            case 5: return this.classAncestors;
-	            case 6: return this.classBody;
+	            case 4: return this.symbolType;
+	            case 5: return this.tColon;
+	            case 6: return this.classAncestors;
+	            case 7: return this.classBody;
 	            default: return null;
 	        }
 	    }
@@ -3307,25 +3320,26 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
 	    {
-	        return new ClassDeclarationGreen(this.Kind, this.attribute, this.kAbstract, this.kClass, this.name, this.tColon, this.classAncestors, this.classBody, diagnostics, this.GetAnnotations());
+	        return new ClassDeclarationGreen(this.Kind, this.attribute, this.kAbstract, this.kClass, this.name, this.symbolType, this.tColon, this.classAncestors, this.classBody, diagnostics, this.GetAnnotations());
 	    }
 	
 	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
 	    {
-	        return new ClassDeclarationGreen(this.Kind, this.attribute, this.kAbstract, this.kClass, this.name, this.tColon, this.classAncestors, this.classBody, this.GetDiagnostics(), annotations);
+	        return new ClassDeclarationGreen(this.Kind, this.attribute, this.kAbstract, this.kClass, this.name, this.symbolType, this.tColon, this.classAncestors, this.classBody, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public ClassDeclarationGreen Update(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, InternalSyntaxToken kAbstract, InternalSyntaxToken kClass, NameGreen name, InternalSyntaxToken tColon, ClassAncestorsGreen classAncestors, ClassBodyGreen classBody)
+	    public ClassDeclarationGreen Update(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, InternalSyntaxToken kAbstract, InternalSyntaxToken kClass, NameGreen name, SymbolTypeGreen symbolType, InternalSyntaxToken tColon, ClassAncestorsGreen classAncestors, ClassBodyGreen classBody)
 	    {
 	        if (this.Attribute != attribute ||
 				this.KAbstract != kAbstract ||
 				this.KClass != kClass ||
 				this.Name != name ||
+				this.SymbolType != symbolType ||
 				this.TColon != tColon ||
 				this.ClassAncestors != classAncestors ||
 				this.ClassBody != classBody)
 	        {
-	            InternalSyntaxNode newNode = MetaLanguage.Instance.InternalSyntaxFactory.ClassDeclaration(attribute, kAbstract, kClass, name, tColon, classAncestors, classBody);
+	            InternalSyntaxNode newNode = MetaLanguage.Instance.InternalSyntaxFactory.ClassDeclaration(attribute, kAbstract, kClass, name, symbolType, tColon, classAncestors, classBody);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
@@ -3333,6 +3347,114 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
 				return (ClassDeclarationGreen)newNode;
+	        }
+	        return this;
+	    }
+	}
+	
+	internal class SymbolTypeGreen : GreenSyntaxNode
+	{
+	    internal static readonly SymbolTypeGreen __Missing = new SymbolTypeGreen();
+	    private InternalSyntaxToken tOpenBracket;
+	    private QualifierGreen qualifier;
+	    private InternalSyntaxToken tCloseBracket;
+	
+	    public SymbolTypeGreen(MetaSyntaxKind kind, InternalSyntaxToken tOpenBracket, QualifierGreen qualifier, InternalSyntaxToken tCloseBracket)
+	        : base(kind, null, null)
+	    {
+			this.SlotCount = 3;
+			if (tOpenBracket != null)
+			{
+				this.AdjustFlagsAndWidth(tOpenBracket);
+				this.tOpenBracket = tOpenBracket;
+			}
+			if (qualifier != null)
+			{
+				this.AdjustFlagsAndWidth(qualifier);
+				this.qualifier = qualifier;
+			}
+			if (tCloseBracket != null)
+			{
+				this.AdjustFlagsAndWidth(tCloseBracket);
+				this.tCloseBracket = tCloseBracket;
+			}
+	    }
+	
+	    public SymbolTypeGreen(MetaSyntaxKind kind, InternalSyntaxToken tOpenBracket, QualifierGreen qualifier, InternalSyntaxToken tCloseBracket, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	        : base(kind, diagnostics, annotations)
+	    {
+			this.SlotCount = 3;
+			if (tOpenBracket != null)
+			{
+				this.AdjustFlagsAndWidth(tOpenBracket);
+				this.tOpenBracket = tOpenBracket;
+			}
+			if (qualifier != null)
+			{
+				this.AdjustFlagsAndWidth(qualifier);
+				this.qualifier = qualifier;
+			}
+			if (tCloseBracket != null)
+			{
+				this.AdjustFlagsAndWidth(tCloseBracket);
+				this.tCloseBracket = tCloseBracket;
+			}
+	    }
+	
+		private SymbolTypeGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.SymbolType, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
+	
+	    public InternalSyntaxToken TOpenBracket { get { return this.tOpenBracket; } }
+	    public QualifierGreen Qualifier { get { return this.qualifier; } }
+	    public InternalSyntaxToken TCloseBracket { get { return this.tCloseBracket; } }
+	
+	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
+	    {
+	        return new global::MetaDslx.Languages.Meta.Syntax.SymbolTypeSyntax(this, (MetaSyntaxNode)parent, position);
+	    }
+	
+	    protected override GreenNode GetSlot(int index)
+	    {
+	        switch (index)
+	        {
+	            case 0: return this.tOpenBracket;
+	            case 1: return this.qualifier;
+	            case 2: return this.tCloseBracket;
+	            default: return null;
+	        }
+	    }
+	
+	    public override TResult Accept<TResult>(MetaSyntaxVisitor<TResult> visitor) => visitor.VisitSymbolTypeGreen(this);
+	
+	    public override void Accept(MetaSyntaxVisitor visitor) => visitor.VisitSymbolTypeGreen(this);
+	
+	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
+	    {
+	        return new SymbolTypeGreen(this.Kind, this.tOpenBracket, this.qualifier, this.tCloseBracket, diagnostics, this.GetAnnotations());
+	    }
+	
+	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
+	    {
+	        return new SymbolTypeGreen(this.Kind, this.tOpenBracket, this.qualifier, this.tCloseBracket, this.GetDiagnostics(), annotations);
+	    }
+	
+	    public SymbolTypeGreen Update(InternalSyntaxToken tOpenBracket, QualifierGreen qualifier, InternalSyntaxToken tCloseBracket)
+	    {
+	        if (this.TOpenBracket != tOpenBracket ||
+				this.Qualifier != qualifier ||
+				this.TCloseBracket != tCloseBracket)
+	        {
+	            InternalSyntaxNode newNode = MetaLanguage.Instance.InternalSyntaxFactory.SymbolType(tOpenBracket, qualifier, tCloseBracket);
+	            var diags = this.GetDiagnostics();
+	            if (diags != null && diags.Length > 0)
+	               newNode = newNode.WithDiagnostics(diags);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (SymbolTypeGreen)newNode;
 	        }
 	        return this;
 	    }
@@ -7428,6 +7550,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		public virtual void VisitEnumValueGreen(EnumValueGreen node) => this.DefaultVisit(node);
 		public virtual void VisitEnumMemberDeclarationGreen(EnumMemberDeclarationGreen node) => this.DefaultVisit(node);
 		public virtual void VisitClassDeclarationGreen(ClassDeclarationGreen node) => this.DefaultVisit(node);
+		public virtual void VisitSymbolTypeGreen(SymbolTypeGreen node) => this.DefaultVisit(node);
 		public virtual void VisitClassBodyGreen(ClassBodyGreen node) => this.DefaultVisit(node);
 		public virtual void VisitClassAncestorsGreen(ClassAncestorsGreen node) => this.DefaultVisit(node);
 		public virtual void VisitClassAncestorGreen(ClassAncestorGreen node) => this.DefaultVisit(node);
@@ -7493,6 +7616,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		public virtual TResult VisitEnumValueGreen(EnumValueGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitEnumMemberDeclarationGreen(EnumMemberDeclarationGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitClassDeclarationGreen(ClassDeclarationGreen node) => this.DefaultVisit(node);
+		public virtual TResult VisitSymbolTypeGreen(SymbolTypeGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitClassBodyGreen(ClassBodyGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitClassAncestorsGreen(ClassAncestorsGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitClassAncestorGreen(ClassAncestorGreen node) => this.DefaultVisit(node);
@@ -8164,7 +8288,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			return result;
 	    }
 	
-		public ClassDeclarationGreen ClassDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, InternalSyntaxToken kAbstract, InternalSyntaxToken kClass, NameGreen name, InternalSyntaxToken tColon, ClassAncestorsGreen classAncestors, ClassBodyGreen classBody)
+		public ClassDeclarationGreen ClassDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, InternalSyntaxToken kAbstract, InternalSyntaxToken kClass, NameGreen name, SymbolTypeGreen symbolType, InternalSyntaxToken tColon, ClassAncestorsGreen classAncestors, ClassBodyGreen classBody)
 	    {
 	#if DEBUG
 			if (kAbstract != null && kAbstract.Kind != MetaSyntaxKind.KAbstract) throw new ArgumentException(nameof(kAbstract));
@@ -8174,7 +8298,27 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			if (tColon != null && tColon.Kind != MetaSyntaxKind.TColon) throw new ArgumentException(nameof(tColon));
 			if (classBody == null) throw new ArgumentNullException(nameof(classBody));
 	#endif
-	        return new ClassDeclarationGreen(MetaSyntaxKind.ClassDeclaration, attribute.Node, kAbstract, kClass, name, tColon, classAncestors, classBody);
+	        return new ClassDeclarationGreen(MetaSyntaxKind.ClassDeclaration, attribute.Node, kAbstract, kClass, name, symbolType, tColon, classAncestors, classBody);
+	    }
+	
+		public SymbolTypeGreen SymbolType(InternalSyntaxToken tOpenBracket, QualifierGreen qualifier, InternalSyntaxToken tCloseBracket)
+	    {
+	#if DEBUG
+			if (tOpenBracket == null) throw new ArgumentNullException(nameof(tOpenBracket));
+			if (tOpenBracket.Kind != MetaSyntaxKind.TOpenBracket) throw new ArgumentException(nameof(tOpenBracket));
+			if (qualifier == null) throw new ArgumentNullException(nameof(qualifier));
+			if (tCloseBracket == null) throw new ArgumentNullException(nameof(tCloseBracket));
+			if (tCloseBracket.Kind != MetaSyntaxKind.TCloseBracket) throw new ArgumentException(nameof(tCloseBracket));
+	#endif
+			int hash;
+			var cached = SyntaxNodeCache.TryGetNode((int)(MetaSyntaxKind)MetaSyntaxKind.SymbolType, tOpenBracket, qualifier, tCloseBracket, out hash);
+			if (cached != null) return (SymbolTypeGreen)cached;
+			var result = new SymbolTypeGreen(MetaSyntaxKind.SymbolType, tOpenBracket, qualifier, tCloseBracket);
+			if (hash >= 0)
+			{
+				SyntaxNodeCache.AddNode(result, hash);
+			}
+			return result;
 	    }
 	
 		public ClassBodyGreen ClassBody(InternalSyntaxToken tOpenBrace, Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<ClassMemberDeclarationGreen> classMemberDeclaration, InternalSyntaxToken tCloseBrace)
@@ -8973,6 +9117,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				typeof(EnumValueGreen),
 				typeof(EnumMemberDeclarationGreen),
 				typeof(ClassDeclarationGreen),
+				typeof(SymbolTypeGreen),
 				typeof(ClassBodyGreen),
 				typeof(ClassAncestorsGreen),
 				typeof(ClassAncestorGreen),

@@ -317,18 +317,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                     {
                         foreach (var value in boundValue.Values)
                         {
-                            if (value is Symbol)
-                            {
-                                Debug.Assert(value is IModelSymbol);
-                                if (value is IModelSymbol modelSymbol)
-                                {
-                                    SymbolFacts.SetOrAddPropertyValue(ModelObject, objectProperty, modelSymbol.ModelObject, location, diagnostics);
-                                }
-                            }
-                            else
-                            {
-                                SymbolFacts.SetOrAddPropertyValue(ModelObject, objectProperty, value, location, diagnostics);
-                            }
+                            SymbolFacts.SetOrAddPropertyValue(ModelObject, objectProperty, value, location, diagnostics);
                         }
                     }
                 }
@@ -372,25 +361,21 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 AssertionDiagnostic(diagnostics, ModelErrorCode.ERR_NotContainmentProperty.ToDiagnostic(location, propertyName, ModelObject));
                 return;
             }*/
-            Symbol childSymbol = null;
-            object childObject = null;
+            Symbol childSymbol;
             if (childDeclaration != null)
             {
                 childSymbol = childDeclaration.CreateSymbol(_symbol.ContainingSymbol, SymbolFactory);
-                childObject = (childSymbol as IModelSourceSymbol)?.ModelObject;
             }
             else
             {
                 Debug.Assert(false);
                 childSymbol = SymbolFactory.MakeSourceSymbol(_symbol, modelObjectType, null);
-                childObject = (childSymbol as IModelSourceSymbol)?.ModelObject;
             }
-            Debug.Assert(childObject != null);
             Debug.Assert(childSymbol != null);
-            if (childObject != null)
+            if (childSymbol != null)
             {
-                SymbolFacts.SetOrAddPropertyValue(ModelObject, objectProperty, childObject, location, diagnostics);
-                if (childSymbol != null) childSymbol.ForceComplete(CompletionPart.FinishCreated, null, cancellationToken);
+                childSymbol.ForceComplete(CompletionPart.FinishCreated, null, cancellationToken);
+                SymbolFacts.SetOrAddPropertyValue(ModelObject, objectProperty, childSymbol, location, diagnostics);
             }
         }
 

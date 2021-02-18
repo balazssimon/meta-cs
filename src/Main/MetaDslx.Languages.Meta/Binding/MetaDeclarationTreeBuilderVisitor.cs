@@ -107,15 +107,7 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public virtual void VisitUsingNamespace(UsingNamespaceSyntax node)
 		{
-			this.BeginImport(node);
-			try
-			{
-				this.Visit(node.Qualifier);
-			}
-			finally
-			{
-				this.EndImport();
-			}
+			this.Visit(node.Qualifier);
 		}
 		
 		public virtual void VisitNamespaceDeclaration(NamespaceDeclarationSyntax node)
@@ -365,6 +357,7 @@ namespace MetaDslx.Languages.Meta.Binding
 						break;
 				}
 				this.Visit(node.Name);
+				this.Visit(node.SymbolType);
 				this.BeginProperty(node.ClassAncestors, name: "SuperClasses");
 				try
 				{
@@ -379,6 +372,27 @@ namespace MetaDslx.Languages.Meta.Binding
 			finally
 			{
 				this.EndSymbolDef();
+			}
+		}
+		
+		public virtual void VisitSymbolType(SymbolTypeSyntax node)
+		{
+			this.BeginProperty(node, name: "SymbolType");
+			try
+			{
+				this.BeginSymbolUse(node, types: ImmutableArray.Create(typeof(System.Type)));
+				try
+				{
+					this.Visit(node.Qualifier);
+				}
+				finally
+				{
+					this.EndSymbolUse();
+				}
+			}
+			finally
+			{
+				this.EndProperty();
 			}
 		}
 		

@@ -65,7 +65,10 @@ enumMemberDeclaration : $Property(Operations) operationDeclaration;
 
 $SymbolDef(MetaClass)
 $Documentation
-classDeclaration : attribute* $Property(name=IsAbstract,value=true) KAbstract? KClass name (TColon $Property(SuperClasses) classAncestors)? classBody;
+classDeclaration : attribute* $Property(name=IsAbstract,value=true) KAbstract? KClass name symbolType? (TColon $Property(SuperClasses) classAncestors)? classBody;
+$Property(SymbolType)
+$SymbolUse(Type)
+symbolType : TOpenBracket qualifier TCloseBracket;
 $Scope
 classBody : TOpenBrace classMemberDeclaration* TCloseBrace;
 classAncestors : classAncestor (TComma classAncestor)*;

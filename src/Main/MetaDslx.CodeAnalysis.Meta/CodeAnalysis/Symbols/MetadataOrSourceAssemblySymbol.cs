@@ -38,7 +38,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 #if DEBUG
             foreach (var module in this.Modules)
             {
-                Debug.Assert(module.ReferencedAssemblies.Length == 0);
+                //Debug.Assert(module.ReferencedAssemblies.Length == 0);
             }
 #endif
 

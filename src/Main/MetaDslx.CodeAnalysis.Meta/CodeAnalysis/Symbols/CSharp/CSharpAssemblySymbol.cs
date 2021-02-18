@@ -53,6 +53,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
             }
         }
 
+        public override Language Language => CSharpLanguage.Instance;
+
         internal CSharpSymbolMap CSharpSymbolMap
         {
             get

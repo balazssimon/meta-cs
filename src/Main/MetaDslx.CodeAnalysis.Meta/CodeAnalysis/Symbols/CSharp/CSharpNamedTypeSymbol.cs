@@ -23,6 +23,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
             _csharpSymbol = csharpSymbol;
         }
 
+        public override Language Language => CSharpLanguage.Instance;
+
         internal CSharpSymbolMap CSharpSymbolMap => _module.CSharpSymbolMap;
 
         public override LanguageSymbolKind Kind => Language.SymbolFacts.FromCSharpKind(_csharpSymbol.Kind);

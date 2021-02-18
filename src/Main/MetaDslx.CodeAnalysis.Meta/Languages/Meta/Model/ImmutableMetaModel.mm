@@ -14,6 +14,8 @@
 	const MetaPrimitiveType Byte = "byte";
 	const MetaPrimitiveType Bool = "bool";
 	const MetaPrimitiveType Void = "void";
+	const MetaPrimitiveType SystemType = "global::System.Type";
+	const MetaPrimitiveType SymbolType = "global::MetaDslx.CodeAnalysis.Symbols.Symbol";
 	const MetaPrimitiveType ModelObject = "global::MetaDslx.Modeling.IModelObject";
 	
 	const MetaAttribute NameAttribute = "NameAttribute";
@@ -144,6 +146,7 @@
 	[Scope]
 	class MetaClass : MetaNamedType
 	{
+		SystemType SymbolType;
 		bool IsAbstract;
 		[BaseScope]
 		list<MetaClass> SuperClasses;
@@ -192,6 +195,7 @@
 
 	class MetaProperty : MetaNamedElement, MetaTypedElement
 	{
+		string SymbolProperty;
 		MetaPropertyKind Kind;
 		MetaClass Class;
 		string DefaultValue;

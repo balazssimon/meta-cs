@@ -983,6 +983,53 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    return context;
 		}
 		
+		public GreenNode ParseSymbolType(ref ParserState state)
+		{
+		    RestoreParserState(state);
+			try
+			{
+				var context = this.Antlr4Parser.symbolType();
+		        if (TryGetGreenNode(context, out var green)) return green;
+		        else return _visitor.Visit(context);
+			}
+			finally
+			{
+				state = this.State;
+			}
+		}
+		
+		protected virtual bool CanReuseSymbolType(SymbolTypeSyntax node)
+		{
+			return node != null;
+		}
+		
+		internal MetaParser.SymbolTypeContext _Antlr4ParseSymbolType()
+		{
+			BeginNode();
+		    MetaParser.SymbolTypeContext context = null;
+		    GreenNode green = null;
+		    try
+		    {
+				if (IsIncremental && CanReuseSymbolType(CurrentNode as SymbolTypeSyntax))
+				{
+					green = EatNode();
+					context = new MetaParser.SymbolTypeContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					this.Antlr4Parser.Context.AddChild(context);
+				}
+				else
+				{
+					context = this.Antlr4Parser._DoParseSymbolType();
+					green = _visitor.Visit(context);
+				}
+		    }
+		    finally
+		    {
+		        EndNode(ref green);
+		        CacheGreenNode(context, green);
+		    }
+		    return context;
+		}
+		
 		public GreenNode ParseClassBody(ref ParserState state)
 		{
 		    RestoreParserState(state);
@@ -3274,6 +3321,9 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				NameGreen name = null;
 				if (nameContext != null) name = (NameGreen)this.Visit(nameContext);
 				if (name == null) name = NameGreen.__Missing;
+				MetaParser.SymbolTypeContext symbolTypeContext = context.symbolType();
+				SymbolTypeGreen symbolType = null;
+				if (symbolTypeContext != null) symbolType = (SymbolTypeGreen)this.Visit(symbolTypeContext);
 				InternalSyntaxToken tColon = (InternalSyntaxToken)this.VisitTerminal(context.TColon());
 				MetaParser.ClassAncestorsContext classAncestorsContext = context.classAncestors();
 				ClassAncestorsGreen classAncestors = null;
@@ -3282,7 +3332,19 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				ClassBodyGreen classBody = null;
 				if (classBodyContext != null) classBody = (ClassBodyGreen)this.Visit(classBodyContext);
 				if (classBody == null) classBody = ClassBodyGreen.__Missing;
-				return _factory.ClassDeclaration(attribute, kAbstract, kClass, name, tColon, classAncestors, classBody);
+				return _factory.ClassDeclaration(attribute, kAbstract, kClass, name, symbolType, tColon, classAncestors, classBody);
+			}
+			
+			public override GreenNode VisitSymbolType(MetaParser.SymbolTypeContext context)
+			{
+				if (context == null) return SymbolTypeGreen.__Missing;
+				InternalSyntaxToken tOpenBracket = (InternalSyntaxToken)this.VisitTerminal(context.TOpenBracket(), MetaSyntaxKind.TOpenBracket);
+				MetaParser.QualifierContext qualifierContext = context.qualifier();
+				QualifierGreen qualifier = null;
+				if (qualifierContext != null) qualifier = (QualifierGreen)this.Visit(qualifierContext);
+				if (qualifier == null) qualifier = QualifierGreen.__Missing;
+				InternalSyntaxToken tCloseBracket = (InternalSyntaxToken)this.VisitTerminal(context.TCloseBracket(), MetaSyntaxKind.TCloseBracket);
+				return _factory.SymbolType(tOpenBracket, qualifier, tCloseBracket);
 			}
 			
 			public override GreenNode VisitClassBody(MetaParser.ClassBodyContext context)
@@ -4179,6 +4241,17 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		{
 		    private GreenNode _cachedNode;
 		    public ClassDeclarationContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+				: base(parent, invokingState)
+		    {
+		        _cachedNode = cachedNode;
+		    }
+		    public GreenNode CachedNode => _cachedNode;
+		}
+		
+		internal class SymbolTypeContext_Cached : SymbolTypeContext, ICachedRuleContext
+		{
+		    private GreenNode _cachedNode;
+		    public SymbolTypeContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
 				: base(parent, invokingState)
 		    {
 		        _cachedNode = cachedNode;

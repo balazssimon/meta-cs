@@ -65,7 +65,10 @@ enumMemberDeclaration :                       operationDeclaration;
 
                      
               
-classDeclaration : attribute*                                       KAbstract? KClass name (TColon                         classAncestors)? classBody;
+classDeclaration : attribute*                                       KAbstract? KClass name symbolType? (TColon                         classAncestors)? classBody;
+                     
+                
+symbolType : TOpenBracket qualifier TCloseBracket;
       
 classBody : TOpenBrace classMemberDeclaration* TCloseBrace;
 classAncestors : classAncestor (TComma classAncestor)*;
