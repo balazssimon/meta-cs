@@ -38,10 +38,10 @@ namespace MetaDslx.VisualStudio.Classification
     {
         public LexerState(Lexer lexer)
         {
-            this.Mode = lexer._mode;
-            if (lexer._modeStack != null)
+            this.Mode = lexer.CurrentMode;
+            if (lexer.ModeStack != null)
             {
-                this.ModeStack = lexer._modeStack.Count > 0 ? new List<int>(lexer._modeStack) : null;
+                this.ModeStack = lexer.ModeStack.Count > 0 ? new List<int>(lexer.ModeStack) : null;
             }
         }
         public int Mode { get; private set; }
@@ -76,11 +76,14 @@ namespace MetaDslx.VisualStudio.Classification
 
         public virtual void Restore(Lexer lexer)
         {
-            lexer._mode = this.Mode;
-            lexer._modeStack.Clear();
+            lexer.CurrentMode = this.Mode;
+            lexer.ModeStack.Clear();
             if (this.ModeStack != null && this.ModeStack.Count > 0)
             {
-                lexer._modeStack.AddRange(this.ModeStack);
+                foreach (var mode in this.ModeStack.Reverse<int>())
+                {
+                    lexer.ModeStack.Push(mode);
+                }
             }
         }
 
@@ -359,7 +362,7 @@ namespace MetaDslx.VisualStudio.Classification
                 LexerState state = this.SaveLexerState();
                 token = lexer.NextToken();
 
-                if (lexer._hitEOF)
+                if (lexer.HitEOF)
                 {
                     tokenType = -1;
                     endPosition = textSpan.End;
@@ -387,7 +390,7 @@ namespace MetaDslx.VisualStudio.Classification
 
                         token = lexer.NextToken();
 
-                        if (lexer._hitEOF)
+                        if (lexer.HitEOF)
                         {
                             endPosition = startPosition + textLength;
                         }
@@ -405,7 +408,7 @@ namespace MetaDslx.VisualStudio.Classification
 
                 if (cache)
                 {
-                    var classification = this.GetClassificationType(tokenType, this.lexer._mode);
+                    var classification = this.GetClassificationType(tokenType, this.lexer.CurrentMode);
                     var tokenSpan = this.CreateSnapshotSpan(span, startPosition, endPosition);
                     var classificationSpan = new ClassificationSpan(tokenSpan, classification);
                     block.CacheClassification(classificationSpan);

@@ -54,7 +54,7 @@ namespace Microsoft.CodeAnalysis.Syntax.InternalSyntax
                 writer.WriteValue(_child1);
             }
 
-            internal override GreenNode GetSlot(int index)
+            public override GreenNode GetSlot(int index)
             {
                 switch (index)
                 {

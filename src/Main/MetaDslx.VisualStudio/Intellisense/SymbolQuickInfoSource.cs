@@ -1,5 +1,7 @@
 ﻿using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Symbols;
+using MetaDslx.CodeAnalysis.Symbols.Metadata;
+using MetaDslx.Modeling;
 using MetaDslx.VisualStudio.Compilation;
 using MetaDslx.VisualStudio.Editor;
 using MetaDslx.VisualStudio.Utilities;
@@ -112,9 +114,9 @@ namespace MetaDslx.VisualStudio.Intellisense
                     containingSymbol = containingSymbol.ContainingSymbol;
                 }
                 header.Reverse();
-                if (symbol.ModelSymbolInfo != null)
+                if (symbol is IModelSymbol modelSymbol && modelSymbol.ModelObject is IModelObject modelObject)
                 {
-                    header.Insert(0, new ClassifiedTextRun(PredefinedClassificationTypeNames.Keyword, symbol.ModelSymbolInfo.Name + " "));
+                    header.Insert(0, new ClassifiedTextRun(PredefinedClassificationTypeNames.Keyword, modelObject.MMetaClass.Name + " "));
                 }
                 header.Add(new ClassifiedTextRun(symbol.Kind == LanguageSymbolKind.NamedType ? PredefinedClassificationTypeNames.SymbolDefinition : PredefinedClassificationTypeNames.Identifier, symbol.Name));
 
@@ -123,15 +125,18 @@ namespace MetaDslx.VisualStudio.Intellisense
                     new ImageElement(symbol.Kind == LanguageSymbolKind.Namespace ? StandardIcons.NamespaceIcon : symbol.Kind == LanguageSymbolKind.NamedType ? StandardIcons.ClassIcon : StandardIcons.PropertyIcon),
                     new ClassifiedTextElement(header));
 
-                var docComment = symbol.GetDocumentationCommentXml(cancellationToken: cancellationToken);
-                if (!string.IsNullOrWhiteSpace(docComment))
+                if (symbol is IDeclaredSymbol declaredSymbol)
                 {
-                    elm = new ContainerElement(
-                        ContainerElementStyle.Stacked,
-                        elm,
-                        new ClassifiedTextElement(
-                            new ClassifiedTextRun(PredefinedClassificationTypeNames.Identifier, symbol.GetDocumentationCommentXml(cancellationToken: cancellationToken))
-                        ));
+                    var docComment = declaredSymbol.GetDocumentationCommentXml(cancellationToken: cancellationToken);
+                    if (!string.IsNullOrWhiteSpace(docComment))
+                    {
+                        elm = new ContainerElement(
+                            ContainerElementStyle.Stacked,
+                            elm,
+                            new ClassifiedTextElement(
+                                new ClassifiedTextRun(PredefinedClassificationTypeNames.Identifier, declaredSymbol.GetDocumentationCommentXml(cancellationToken: cancellationToken))
+                            ));
+                    }
                 }
                 return new QuickInfoItem(tokenSpan, elm);
             });

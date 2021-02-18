@@ -33,8 +33,8 @@ namespace MetaDslx.VisualStudio.Compilation
             foreach (var token in collectedSymbols.TokensWithSymbols)
             {
                 var tokenSpan = new SnapshotSpan(textSnapshot, new Span(token.Span.Start, token.Span.Length));
-                var symbol = collectedSymbols.GetSymbol(token);
-                if (symbol.Locations.Any(loc => loc.SourceSpan == token.Span))
+                var symbol = collectedSymbols.GetSymbol(token) as IDeclaredSymbol;
+                if (symbol != null && symbol.Locations.Any(loc => loc.SourceSpan == token.Span))
                 {
                     var nameDefinitions = ArrayBuilder<SnapshotSpan>.GetInstance();
                     var definitions = ArrayBuilder<SnapshotSpan>.GetInstance();

@@ -67,7 +67,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         public override string KindText => Kind.GetName();
 
-        internal override GreenNode GetSlot(int index)
+        public override GreenNode GetSlot(int index)
         {
             return this.GetSlotCore(index);
         }

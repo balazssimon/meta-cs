@@ -76,7 +76,7 @@ namespace Microsoft.CodeAnalysis.Syntax.InternalSyntax
                 return children.Length;
             }
 
-            internal override GreenNode GetSlot(int index)
+            public override GreenNode GetSlot(int index)
             {
                 return this.children[index];
             }

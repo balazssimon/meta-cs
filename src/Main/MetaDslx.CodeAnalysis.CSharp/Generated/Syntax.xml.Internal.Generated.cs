@@ -84,7 +84,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>SyntaxToken representing the keyword for the kind of the identifier name.</summary>
     public override SyntaxToken Identifier => this.identifier;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -199,7 +199,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>SimpleNameSyntax node representing the name on the right side of the dot token of the qualified name.</summary>
     public SimpleNameSyntax Right => this.right;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -321,7 +321,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>TypeArgumentListSyntax node representing the list of type arguments of the generic name.</summary>
     public TypeArgumentListSyntax TypeArgumentList => this.typeArgumentList;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -453,7 +453,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>SyntaxToken representing greater than.</summary>
     public SyntaxToken GreaterThanToken => this.greaterThanToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -584,7 +584,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>SimpleNameSyntax node representing the name that is being alias qualified.</summary>
     public SimpleNameSyntax Name => this.name;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -715,7 +715,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>SyntaxToken which represents the keyword corresponding to the predefined type.</summary>
     public SyntaxToken Keyword => this.keyword;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -830,7 +830,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>SyntaxList of ArrayRankSpecifierSyntax nodes representing the list of rank specifiers for the array.</summary>
     public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<ArrayRankSpecifierSyntax> RankSpecifiers => new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<ArrayRankSpecifierSyntax>(this.rankSpecifiers);
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -958,7 +958,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<ExpressionSyntax> Sizes => new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<ExpressionSyntax>(new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<CSharpSyntaxNode>(this.sizes));
     public SyntaxToken CloseBracketToken => this.closeBracketToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -1080,7 +1080,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>SyntaxToken representing the asterisk.</summary>
     public SyntaxToken AsteriskToken => this.asteriskToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -1194,7 +1194,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>SyntaxToken representing the question mark.</summary>
     public SyntaxToken QuestionToken => this.questionToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -1325,7 +1325,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>SyntaxToken representing the close parenthesis.</summary>
     public SyntaxToken CloseParenToken => this.closeParenToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -1456,7 +1456,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>Gets the name of the tuple element.</summary>
     public SyntaxToken Identifier => this.identifier;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -1561,7 +1561,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>SyntaxToken representing the omitted type argument.</summary>
     public SyntaxToken OmittedTypeArgumentToken => this.omittedTypeArgumentToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -1683,7 +1683,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public SyntaxToken ReadOnlyKeyword => this.readOnlyKeyword;
     public TypeSyntax Type => this.type;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -1832,7 +1832,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>SyntaxToken representing the close parenthesis.</summary>
     public SyntaxToken CloseParenToken => this.closeParenToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -1972,7 +1972,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>SyntaxToken representing the close parenthesis.</summary>
     public SyntaxToken CloseParenToken => this.closeParenToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -2094,7 +2094,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>ExpressionSyntax representing the operand of the prefix unary expression.</summary>
     public ExpressionSyntax Operand => this.operand;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -2208,7 +2208,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>ExpressionSyntax representing the operand of the "await" operator.</summary>
     public ExpressionSyntax Expression => this.expression;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -2322,7 +2322,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>SyntaxToken representing the kind of the operator of the postfix unary expression.</summary>
     public SyntaxToken OperatorToken => this.operatorToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -2445,7 +2445,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>SimpleNameSyntax node representing the member being accessed.</summary>
     public SimpleNameSyntax Name => this.name;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -2576,7 +2576,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>ExpressionSyntax node representing the access expression to be executed when the object is not null.</summary>
     public ExpressionSyntax WhenNotNull => this.whenNotNull;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -2698,7 +2698,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>SimpleNameSyntax node representing the member being bound to.</summary>
     public SimpleNameSyntax Name => this.name;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -2803,7 +2803,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>BracketedArgumentListSyntax node representing the list of arguments of the element binding expression.</summary>
     public BracketedArgumentListSyntax ArgumentList => this.argumentList;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -2936,7 +2936,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>ExpressionSyntax node representing the expression on the right of the range operator.</summary>
     public ExpressionSyntax RightOperand => this.rightOperand;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -3049,7 +3049,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>BracketedArgumentListSyntax node representing the list of arguments of the implicit element access expression.</summary>
     public BracketedArgumentListSyntax ArgumentList => this.argumentList;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -3164,7 +3164,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>ExpressionSyntax node representing the expression on the right of the binary operator.</summary>
     public ExpressionSyntax Right => this.right;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -3295,7 +3295,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>ExpressionSyntax node representing the expression on the right of the assignment operator.</summary>
     public ExpressionSyntax Right => this.right;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -3444,7 +3444,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>ExpressionSyntax node representing the expression to be executed when the condition is false.</summary>
     public ExpressionSyntax WhenFalse => this.whenFalse;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -3591,7 +3591,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>SyntaxToken representing the this keyword.</summary>
     public SyntaxToken Token => this.token;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -3706,7 +3706,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>Gets the close paren token.</summary>
     public SyntaxToken CloseParenToken => this.closeParenToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -3836,7 +3836,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public SyntaxToken Token => this.token;
     public BaseExpressionTypeClauseSyntax TypeClause => this.typeClause;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -3941,7 +3941,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>SyntaxToken representing the keyword corresponding to the kind of the literal expression.</summary>
     public SyntaxToken Token => this.token;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -4065,7 +4065,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>SyntaxToken representing close parenthesis.</summary>
     public SyntaxToken CloseParenToken => this.closeParenToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -4213,7 +4213,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>SyntaxToken representing close parenthesis.</summary>
     public SyntaxToken CloseParenToken => this.closeParenToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -4379,7 +4379,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>SyntaxToken representing close parenthesis.</summary>
     public SyntaxToken CloseParenToken => this.closeParenToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -4543,7 +4543,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>SyntaxToken representing close parenthesis.</summary>
     public SyntaxToken CloseParenToken => this.closeParenToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -4691,7 +4691,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>SyntaxToken representing close parenthesis.</summary>
     public SyntaxToken CloseParenToken => this.closeParenToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -4839,7 +4839,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>SyntaxToken representing close parenthesis.</summary>
     public SyntaxToken CloseParenToken => this.closeParenToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -4987,7 +4987,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>SyntaxToken representing close parenthesis.</summary>
     public SyntaxToken CloseParenToken => this.closeParenToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -5117,7 +5117,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>ArgumentListSyntax node representing the list of arguments of the invocation expression.</summary>
     public ArgumentListSyntax ArgumentList => this.argumentList;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -5231,7 +5231,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>BracketedArgumentListSyntax node representing the list of arguments of the element access expression.</summary>
     public BracketedArgumentListSyntax ArgumentList => this.argumentList;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -5384,7 +5384,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>SyntaxToken representing close parenthesis.</summary>
     public SyntaxToken CloseParenToken => this.closeParenToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -5524,7 +5524,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>SyntaxToken representing close bracket.</summary>
     public SyntaxToken CloseBracketToken => this.closeBracketToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -5673,7 +5673,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>ExpressionSyntax node representing the argument.</summary>
     public ExpressionSyntax Expression => this.expression;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -5795,7 +5795,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>SyntaxToken representing colon.</summary>
     public SyntaxToken ColonToken => this.colonToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -5908,7 +5908,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>Declaration representing the variable declared in an out parameter or deconstruction.</summary>
     public VariableDesignationSyntax Designation => this.designation;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -6040,7 +6040,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>ExpressionSyntax node representing the expression that is being casted.</summary>
     public ExpressionSyntax Expression => this.expression;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -6230,7 +6230,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>BlockSyntax node representing the body of the anonymous method.</summary>
     public override CSharpSyntaxNode Body => this.body;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -6408,7 +6408,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>SyntaxNode representing the body of the lambda expression.</summary>
     public override CSharpSyntaxNode Body => this.body;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -6535,7 +6535,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public SyntaxToken RefKeyword => this.refKeyword;
     public ExpressionSyntax Expression => this.expression;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -6676,7 +6676,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>SyntaxNode representing the body of the lambda expression.</summary>
     public override CSharpSyntaxNode Body => this.body;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -6824,7 +6824,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>SyntaxToken representing the close brace.</summary>
     public SyntaxToken CloseBraceToken => this.closeBraceToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -6982,7 +6982,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>InitializerExpressionSyntax representing the initializer expression for the object being created.</summary>
     public InitializerExpressionSyntax Initializer => this.initializer;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -7120,7 +7120,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>ExpressionSyntax representing the value the member is initialized with.</summary>
     public ExpressionSyntax Expression => this.expression;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -7261,7 +7261,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>SyntaxToken representing the close brace.</summary>
     public SyntaxToken CloseBraceToken => this.closeBraceToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -7409,7 +7409,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>InitializerExpressionSyntax node representing the initializer of the array creation expression.</summary>
     public InitializerExpressionSyntax Initializer => this.initializer;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -7567,7 +7567,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>InitializerExpressionSyntax representing the initializer expression of the implicit array creation expression.</summary>
     public InitializerExpressionSyntax Initializer => this.initializer;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -7723,7 +7723,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>InitializerExpressionSyntax node representing the initializer of the stackalloc array creation expression.</summary>
     public InitializerExpressionSyntax Initializer => this.initializer;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -7863,7 +7863,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>InitializerExpressionSyntax representing the initializer expression of the implicit stackalloc array creation expression.</summary>
     public InitializerExpressionSyntax Initializer => this.initializer;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -8024,7 +8024,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public FromClauseSyntax FromClause => this.fromClause;
     public QueryBodySyntax Body => this.body;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -8161,7 +8161,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public SelectOrGroupClauseSyntax SelectOrGroup => this.selectOrGroup;
     public QueryContinuationSyntax Continuation => this.continuation;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -8314,7 +8314,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public SyntaxToken InKeyword => this.inKeyword;
     public ExpressionSyntax Expression => this.expression;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -8466,7 +8466,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public SyntaxToken EqualsToken => this.equalsToken;
     public ExpressionSyntax Expression => this.expression;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -8676,7 +8676,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public ExpressionSyntax RightExpression => this.rightExpression;
     public JoinIntoClauseSyntax Into => this.into;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -8852,7 +8852,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>Gets the identifier.</summary>
     public SyntaxToken Identifier => this.identifier;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -8963,7 +8963,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public SyntaxToken WhereKeyword => this.whereKeyword;
     public ExpressionSyntax Condition => this.condition;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -9083,7 +9083,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public SyntaxToken OrderByKeyword => this.orderByKeyword;
     public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<OrderingSyntax> Orderings => new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<OrderingSyntax>(new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<CSharpSyntaxNode>(this.orderings));
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -9203,7 +9203,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public ExpressionSyntax Expression => this.expression;
     public SyntaxToken AscendingOrDescendingKeyword => this.ascendingOrDescendingKeyword;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -9314,7 +9314,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public SyntaxToken SelectKeyword => this.selectKeyword;
     public ExpressionSyntax Expression => this.expression;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -9441,7 +9441,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public SyntaxToken ByKeyword => this.byKeyword;
     public ExpressionSyntax ByExpression => this.byExpression;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -9577,7 +9577,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public SyntaxToken Identifier => this.identifier;
     public QueryBodySyntax Body => this.body;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -9690,7 +9690,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>SyntaxToken representing the omitted array size expression.</summary>
     public SyntaxToken OmittedArraySizeExpressionToken => this.omittedArraySizeExpressionToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -9813,7 +9813,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>The closing quote of the interpolated string.</summary>
     public SyntaxToken StringEndToken => this.stringEndToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -9943,7 +9943,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>PatternSyntax node representing the pattern on the right of the "is" operator.</summary>
     public PatternSyntax Pattern => this.pattern;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -10062,7 +10062,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public SyntaxToken ThrowKeyword => this.throwKeyword;
     public ExpressionSyntax Expression => this.expression;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -10173,7 +10173,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public SyntaxToken WhenKeyword => this.whenKeyword;
     public ExpressionSyntax Condition => this.condition;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -10293,7 +10293,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
 
     public SyntaxToken UnderscoreToken => this.underscoreToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -10396,7 +10396,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public TypeSyntax Type => this.type;
     public VariableDesignationSyntax Designation => this.designation;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -10507,7 +10507,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public SyntaxToken VarKeyword => this.varKeyword;
     public VariableDesignationSyntax Designation => this.designation;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -10670,7 +10670,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public PropertyPatternClauseSyntax PropertyPatternClause => this.propertyPatternClause;
     public VariableDesignationSyntax Designation => this.designation;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -10814,7 +10814,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<SubpatternSyntax> Subpatterns => new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<SubpatternSyntax>(new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<CSharpSyntaxNode>(this.subpatterns));
     public SyntaxToken CloseParenToken => this.closeParenToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -10950,7 +10950,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<SubpatternSyntax> Subpatterns => new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<SubpatternSyntax>(new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<CSharpSyntaxNode>(this.subpatterns));
     public SyntaxToken CloseBraceToken => this.closeBraceToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -11078,7 +11078,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public NameColonSyntax NameColon => this.nameColon;
     public PatternSyntax Pattern => this.pattern;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -11182,7 +11182,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>ExpressionSyntax node representing the constant expression.</summary>
     public ExpressionSyntax Expression => this.expression;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -11295,7 +11295,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>The text contents of a part of the interpolated string.</summary>
     public SyntaxToken TextToken => this.textToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -11440,7 +11440,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public InterpolationFormatClauseSyntax FormatClause => this.formatClause;
     public SyntaxToken CloseBraceToken => this.closeBraceToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -11575,7 +11575,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public SyntaxToken CommaToken => this.commaToken;
     public ExpressionSyntax Value => this.value;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -11687,7 +11687,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>The text contents of the format specifier for an interpolation.</summary>
     public SyntaxToken FormatStringToken => this.formatStringToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -11790,7 +11790,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
 
     public StatementSyntax Statement => this.statement;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -11928,7 +11928,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<StatementSyntax> Statements => new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<StatementSyntax>(this.statements);
     public SyntaxToken CloseBraceToken => this.closeBraceToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -12159,7 +12159,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>Gets the optional semicolon token.</summary>
     public SyntaxToken SemicolonToken => this.semicolonToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -12378,7 +12378,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public VariableDeclarationSyntax Declaration => this.declaration;
     public SyntaxToken SemicolonToken => this.semicolonToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -12522,7 +12522,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public TypeSyntax Type => this.type;
     public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<VariableDeclaratorSyntax> Variables => new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<VariableDeclaratorSyntax>(new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<CSharpSyntaxNode>(this.variables));
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -12660,7 +12660,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public BracketedArgumentListSyntax ArgumentList => this.argumentList;
     public EqualsValueClauseSyntax Initializer => this.initializer;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -12779,7 +12779,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public SyntaxToken EqualsToken => this.equalsToken;
     public ExpressionSyntax Value => this.value;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -12899,7 +12899,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
 
     public SyntaxToken Identifier => this.identifier;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -12994,7 +12994,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
 
     public SyntaxToken UnderscoreToken => this.underscoreToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -13114,7 +13114,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<VariableDesignationSyntax> Variables => new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<VariableDesignationSyntax>(new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<CSharpSyntaxNode>(this.variables));
     public SyntaxToken CloseParenToken => this.closeParenToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -13233,7 +13233,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public ExpressionSyntax Expression => this.expression;
     public SyntaxToken SemicolonToken => this.semicolonToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -13336,7 +13336,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
 
     public SyntaxToken SemicolonToken => this.semicolonToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -13450,7 +13450,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public SyntaxToken ColonToken => this.colonToken;
     public StatementSyntax Statement => this.statement;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -13618,7 +13618,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// </summary>
     public SyntaxToken SemicolonToken => this.semicolonToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -13745,7 +13745,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public SyntaxToken BreakKeyword => this.breakKeyword;
     public SyntaxToken SemicolonToken => this.semicolonToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -13856,7 +13856,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public SyntaxToken ContinueKeyword => this.continueKeyword;
     public SyntaxToken SemicolonToken => this.semicolonToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -13984,7 +13984,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public ExpressionSyntax Expression => this.expression;
     public SyntaxToken SemicolonToken => this.semicolonToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -14120,7 +14120,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public ExpressionSyntax Expression => this.expression;
     public SyntaxToken SemicolonToken => this.semicolonToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -14264,7 +14264,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public ExpressionSyntax Expression => this.expression;
     public SyntaxToken SemicolonToken => this.semicolonToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -14415,7 +14415,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public SyntaxToken CloseParenToken => this.closeParenToken;
     public StatementSyntax Statement => this.statement;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -14590,7 +14590,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public SyntaxToken CloseParenToken => this.closeParenToken;
     public SyntaxToken SemicolonToken => this.semicolonToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -14841,7 +14841,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public SyntaxToken CloseParenToken => this.closeParenToken;
     public StatementSyntax Statement => this.statement;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -15113,7 +15113,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public override SyntaxToken CloseParenToken => this.closeParenToken;
     public override StatementSyntax Statement => this.statement;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -15343,7 +15343,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public override SyntaxToken CloseParenToken => this.closeParenToken;
     public override StatementSyntax Statement => this.statement;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -15569,7 +15569,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public SyntaxToken CloseParenToken => this.closeParenToken;
     public StatementSyntax Statement => this.statement;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -15744,7 +15744,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public SyntaxToken CloseParenToken => this.closeParenToken;
     public StatementSyntax Statement => this.statement;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -15879,7 +15879,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public SyntaxToken Keyword => this.keyword;
     public BlockSyntax Block => this.block;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -15990,7 +15990,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public SyntaxToken UnsafeKeyword => this.unsafeKeyword;
     public BlockSyntax Block => this.block;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -16125,7 +16125,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public SyntaxToken CloseParenToken => this.closeParenToken;
     public StatementSyntax Statement => this.statement;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -16322,7 +16322,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// </summary>
     public ElseClauseSyntax Else => this.@else;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -16469,7 +16469,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public SyntaxToken ElseKeyword => this.elseKeyword;
     public StatementSyntax Statement => this.statement;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -16669,7 +16669,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// </summary>
     public SyntaxToken CloseBraceToken => this.closeBraceToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -16845,7 +16845,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// </summary>
     public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<StatementSyntax> Statements => new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<StatementSyntax>(this.statements);
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -17014,7 +17014,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public WhenClauseSyntax WhenClause => this.whenClause;
     public override SyntaxToken ColonToken => this.colonToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -17154,7 +17154,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public ExpressionSyntax Value => this.value;
     public override SyntaxToken ColonToken => this.colonToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -17275,7 +17275,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public override SyntaxToken Keyword => this.keyword;
     public override SyntaxToken ColonToken => this.colonToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -17419,7 +17419,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<SwitchExpressionArmSyntax> Arms => new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<SwitchExpressionArmSyntax>(new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<CSharpSyntaxNode>(this.arms));
     public SyntaxToken CloseBraceToken => this.closeBraceToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -17579,7 +17579,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public SyntaxToken EqualsGreaterThanToken => this.equalsGreaterThanToken;
     public ExpressionSyntax Expression => this.expression;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -17740,7 +17740,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<CatchClauseSyntax> Catches => new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<CatchClauseSyntax>(this.catches);
     public FinallyClauseSyntax Finally => this.@finally;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -17901,7 +17901,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public CatchFilterClauseSyntax Filter => this.filter;
     public BlockSyntax Block => this.block;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -18053,7 +18053,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public SyntaxToken Identifier => this.identifier;
     public SyntaxToken CloseParenToken => this.closeParenToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -18196,7 +18196,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public ExpressionSyntax FilterExpression => this.filterExpression;
     public SyntaxToken CloseParenToken => this.closeParenToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -18323,7 +18323,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public SyntaxToken FinallyKeyword => this.finallyKeyword;
     public BlockSyntax Block => this.block;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -18495,7 +18495,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<MemberDeclarationSyntax> Members => new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<MemberDeclarationSyntax>(this.members);
     public SyntaxToken EndOfFileToken => this.endOfFileToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -18653,7 +18653,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>SyntaxToken representing the semicolon token.</summary>
     public SyntaxToken SemicolonToken => this.semicolonToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -18822,7 +18822,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public NameSyntax Name => this.name;
     public SyntaxToken SemicolonToken => this.semicolonToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -19060,7 +19060,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>Gets the optional semicolon token.</summary>
     public SyntaxToken SemicolonToken => this.semicolonToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -19258,7 +19258,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>Gets the close bracket token.</summary>
     public SyntaxToken CloseBracketToken => this.closeBracketToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -19388,7 +19388,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>Gets the colon token.</summary>
     public SyntaxToken ColonToken => this.colonToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -19510,7 +19510,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public NameSyntax Name => this.name;
     public AttributeArgumentListSyntax ArgumentList => this.argumentList;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -19642,7 +19642,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>Gets the close paren token.</summary>
     public SyntaxToken CloseParenToken => this.closeParenToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -19789,7 +19789,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>Gets the expression.</summary>
     public ExpressionSyntax Expression => this.expression;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -19910,7 +19910,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public IdentifierNameSyntax Name => this.name;
     public SyntaxToken EqualsToken => this.equalsToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -20042,7 +20042,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>Gets the &gt; token.</summary>
     public SyntaxToken GreaterThanToken => this.greaterThanToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -20190,7 +20190,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>Gets the identifier.</summary>
     public SyntaxToken Identifier => this.identifier;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -20514,7 +20514,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public override SyntaxToken CloseBraceToken => this.closeBraceToken;
     public override SyntaxToken SemicolonToken => this.semicolonToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -20834,7 +20834,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public override SyntaxToken CloseBraceToken => this.closeBraceToken;
     public override SyntaxToken SemicolonToken => this.semicolonToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -21154,7 +21154,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public override SyntaxToken CloseBraceToken => this.closeBraceToken;
     public override SyntaxToken SemicolonToken => this.semicolonToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -21442,7 +21442,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>Gets the optional semicolon token.</summary>
     public override SyntaxToken SemicolonToken => this.semicolonToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -21710,7 +21710,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>Gets the semicolon token.</summary>
     public SyntaxToken SemicolonToken => this.semicolonToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -21905,7 +21905,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public SyntaxToken Identifier => this.identifier;
     public EqualsValueClauseSyntax EqualsValue => this.equalsValue;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -22036,7 +22036,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>Gets the base type references.</summary>
     public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<BaseTypeSyntax> Types => new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<BaseTypeSyntax>(new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<CSharpSyntaxNode>(this.types));
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -22159,7 +22159,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
 
     public override TypeSyntax Type => this.type;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -22291,7 +22291,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>Gets the constraints list.</summary>
     public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<TypeParameterConstraintSyntax> Constraints => new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<TypeParameterConstraintSyntax>(new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<CSharpSyntaxNode>(this.constraints));
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -22448,7 +22448,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>Gets the close paren keyword.</summary>
     public SyntaxToken CloseParenToken => this.closeParenToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -22579,7 +22579,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>SyntaxToken representing the question mark.</summary>
     public SyntaxToken QuestionToken => this.questionToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -22684,7 +22684,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>Gets the type syntax.</summary>
     public TypeSyntax Type => this.type;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -22850,7 +22850,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public override VariableDeclarationSyntax Declaration => this.declaration;
     public override SyntaxToken SemicolonToken => this.semicolonToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -23021,7 +23021,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public override VariableDeclarationSyntax Declaration => this.declaration;
     public override SyntaxToken SemicolonToken => this.semicolonToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -23156,7 +23156,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public NameSyntax Name => this.name;
     public SyntaxToken DotToken => this.dotToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -23450,7 +23450,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>Gets the optional semicolon token.</summary>
     public override SyntaxToken SemicolonToken => this.semicolonToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -23738,7 +23738,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public override ArrowExpressionClauseSyntax ExpressionBody => this.expressionBody;
     public override SyntaxToken SemicolonToken => this.semicolonToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -24011,7 +24011,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>Gets the optional semicolon token.</summary>
     public override SyntaxToken SemicolonToken => this.semicolonToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -24283,7 +24283,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>Gets the optional semicolon token.</summary>
     public override SyntaxToken SemicolonToken => this.semicolonToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -24453,7 +24453,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public SyntaxToken ThisOrBaseKeyword => this.thisOrBaseKeyword;
     public ArgumentListSyntax ArgumentList => this.argumentList;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -24669,7 +24669,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>Gets the optional semicolon token.</summary>
     public override SyntaxToken SemicolonToken => this.semicolonToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -24980,7 +24980,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public EqualsValueClauseSyntax Initializer => this.initializer;
     public SyntaxToken SemicolonToken => this.semicolonToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -25148,7 +25148,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public SyntaxToken ArrowToken => this.arrowToken;
     public ExpressionSyntax Expression => this.expression;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -25327,7 +25327,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public SyntaxToken Identifier => this.identifier;
     public override AccessorListSyntax AccessorList => this.accessorList;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -25589,7 +25589,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public ArrowExpressionClauseSyntax ExpressionBody => this.expressionBody;
     public SyntaxToken SemicolonToken => this.semicolonToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -25773,7 +25773,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AccessorDeclarationSyntax> Accessors => new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AccessorDeclarationSyntax>(this.accessors);
     public SyntaxToken CloseBraceToken => this.closeBraceToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -25975,7 +25975,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>Gets the optional semicolon token.</summary>
     public SyntaxToken SemicolonToken => this.semicolonToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -26159,7 +26159,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>Gets the close paren token.</summary>
     public SyntaxToken CloseParenToken => this.closeParenToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -26298,7 +26298,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>Gets the close bracket token.</summary>
     public SyntaxToken CloseBracketToken => this.closeBracketToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -26481,7 +26481,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public SyntaxToken Identifier => this.identifier;
     public EqualsValueClauseSyntax Default => this.@default;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -26653,7 +26653,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<SyntaxToken> Modifiers => new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<SyntaxToken>(this.modifiers);
     public TypeSyntax Type => this.type;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -26773,7 +26773,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
 
     public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<SyntaxToken> Tokens => new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<SyntaxToken>(this.tokens);
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -26885,7 +26885,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<XmlNodeSyntax> Content => new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<XmlNodeSyntax>(this.content);
     public SyntaxToken EndOfComment => this.endOfComment;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -27016,7 +27016,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
 
     public TypeSyntax Type => this.type;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -27134,7 +27134,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public SyntaxToken DotToken => this.dotToken;
     public MemberCrefSyntax Member => this.member;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -27292,7 +27292,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public TypeSyntax Name => this.name;
     public CrefParameterListSyntax Parameters => this.parameters;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -27416,7 +27416,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public SyntaxToken ThisKeyword => this.thisKeyword;
     public CrefBracketedParameterListSyntax Parameters => this.parameters;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -27550,7 +27550,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public SyntaxToken OperatorToken => this.operatorToken;
     public CrefParameterListSyntax Parameters => this.parameters;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -27698,7 +27698,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public TypeSyntax Type => this.type;
     public CrefParameterListSyntax Parameters => this.parameters;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -27871,7 +27871,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>Gets the close paren token.</summary>
     public SyntaxToken CloseParenToken => this.closeParenToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -28012,7 +28012,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     /// <summary>Gets the close bracket token.</summary>
     public SyntaxToken CloseBracketToken => this.closeBracketToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -28145,7 +28145,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public SyntaxToken RefKindKeyword => this.refKindKeyword;
     public TypeSyntax Type => this.type;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -28290,7 +28290,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<XmlNodeSyntax> Content => new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<XmlNodeSyntax>(this.content);
     public XmlElementEndTagSyntax EndTag => this.endTag;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -28434,7 +28434,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<XmlAttributeSyntax> Attributes => new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<XmlAttributeSyntax>(this.attributes);
     public SyntaxToken GreaterThanToken => this.greaterThanToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -28569,7 +28569,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public XmlNameSyntax Name => this.name;
     public SyntaxToken GreaterThanToken => this.greaterThanToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -28713,7 +28713,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<XmlAttributeSyntax> Attributes => new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<XmlAttributeSyntax>(this.attributes);
     public SyntaxToken SlashGreaterThanToken => this.slashGreaterThanToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -28849,7 +28849,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public XmlPrefixSyntax Prefix => this.prefix;
     public SyntaxToken LocalName => this.localName;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -28960,7 +28960,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public SyntaxToken Prefix => this.prefix;
     public SyntaxToken ColonToken => this.colonToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -29129,7 +29129,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<SyntaxToken> TextTokens => new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<SyntaxToken>(this.textTokens);
     public override SyntaxToken EndQuoteToken => this.endQuoteToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -29288,7 +29288,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public CrefSyntax Cref => this.cref;
     public override SyntaxToken EndQuoteToken => this.endQuoteToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -29447,7 +29447,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public IdentifierNameSyntax Identifier => this.identifier;
     public override SyntaxToken EndQuoteToken => this.endQuoteToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -29583,7 +29583,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
 
     public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<SyntaxToken> TextTokens => new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<SyntaxToken>(this.textTokens);
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -29703,7 +29703,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<SyntaxToken> TextTokens => new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<SyntaxToken>(this.textTokens);
     public SyntaxToken EndCDataToken => this.endCDataToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -29847,7 +29847,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<SyntaxToken> TextTokens => new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<SyntaxToken>(this.textTokens);
     public SyntaxToken EndProcessingInstructionToken => this.endProcessingInstructionToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -29991,7 +29991,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<SyntaxToken> TextTokens => new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<SyntaxToken>(this.textTokens);
     public SyntaxToken MinusMinusGreaterThanToken => this.minusMinusGreaterThanToken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -30207,7 +30207,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public override bool BranchTaken => this.branchTaken;
     public override bool ConditionValue => this.conditionValue;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -30371,7 +30371,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public override bool BranchTaken => this.branchTaken;
     public override bool ConditionValue => this.conditionValue;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -30522,7 +30522,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public override bool IsActive => this.isActive;
     public override bool BranchTaken => this.branchTaken;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -30658,7 +30658,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public override SyntaxToken EndOfDirectiveToken => this.endOfDirectiveToken;
     public override bool IsActive => this.isActive;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -30792,7 +30792,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public override SyntaxToken EndOfDirectiveToken => this.endOfDirectiveToken;
     public override bool IsActive => this.isActive;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -30926,7 +30926,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public override SyntaxToken EndOfDirectiveToken => this.endOfDirectiveToken;
     public override bool IsActive => this.isActive;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -31060,7 +31060,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public override SyntaxToken EndOfDirectiveToken => this.endOfDirectiveToken;
     public override bool IsActive => this.isActive;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -31194,7 +31194,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public override SyntaxToken EndOfDirectiveToken => this.endOfDirectiveToken;
     public override bool IsActive => this.isActive;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -31328,7 +31328,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public override SyntaxToken EndOfDirectiveToken => this.endOfDirectiveToken;
     public override bool IsActive => this.isActive;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -31470,7 +31470,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public override SyntaxToken EndOfDirectiveToken => this.endOfDirectiveToken;
     public override bool IsActive => this.isActive;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -31620,7 +31620,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public override SyntaxToken EndOfDirectiveToken => this.endOfDirectiveToken;
     public override bool IsActive => this.isActive;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -31787,7 +31787,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public override SyntaxToken EndOfDirectiveToken => this.endOfDirectiveToken;
     public override bool IsActive => this.isActive;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -31987,7 +31987,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public override SyntaxToken EndOfDirectiveToken => this.endOfDirectiveToken;
     public override bool IsActive => this.isActive;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -32185,7 +32185,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public override SyntaxToken EndOfDirectiveToken => this.endOfDirectiveToken;
     public override bool IsActive => this.isActive;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -32359,7 +32359,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public override SyntaxToken EndOfDirectiveToken => this.endOfDirectiveToken;
     public override bool IsActive => this.isActive;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -32509,7 +32509,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public override SyntaxToken EndOfDirectiveToken => this.endOfDirectiveToken;
     public override bool IsActive => this.isActive;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -32651,7 +32651,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public override SyntaxToken EndOfDirectiveToken => this.endOfDirectiveToken;
     public override bool IsActive => this.isActive;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {
@@ -32793,7 +32793,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public override SyntaxToken EndOfDirectiveToken => this.endOfDirectiveToken;
     public override bool IsActive => this.isActive;
 
-    internal override GreenNode GetSlot(int index)
+    public override GreenNode GetSlot(int index)
     {
         switch (index)
         {

@@ -560,6 +560,8 @@ namespace MetaDslx.CodeAnalysis.Binding
         public virtual BoundNode Bind(SyntaxNodeOrToken node, CancellationToken cancellationToken)
         {
             if (node == this.Syntax) return this.BoundNode;
+            var boundNode = this.ParentBoundNode;
+            if (boundNode.Syntax == this.Syntax) return boundNode;
             else return null;
         }
 

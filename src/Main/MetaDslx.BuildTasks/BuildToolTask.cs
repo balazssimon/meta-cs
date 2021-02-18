@@ -146,7 +146,7 @@ namespace MetaDslx.BuildTasks
                 }
                 else
                 {
-                    _logs.Add((LogSeverity.Error, data));
+                    _logs.Add((LogSeverity.Info, data));
                 }
             }
             catch (Exception ex)

@@ -58,7 +58,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
             return this.Text;
         }
 
-        internal override GreenNode GetSlot(int index)
+        public override GreenNode GetSlot(int index)
         {
             throw ExceptionUtilities.Unreachable;
         }

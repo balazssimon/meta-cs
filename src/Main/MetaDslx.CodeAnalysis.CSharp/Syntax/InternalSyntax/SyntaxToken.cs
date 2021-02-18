@@ -73,7 +73,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
 
         public override bool IsToken => true;
 
-        internal override GreenNode GetSlot(int index)
+        public override GreenNode GetSlot(int index)
         {
             throw ExceptionUtilities.Unreachable;
         }
