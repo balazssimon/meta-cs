@@ -208,7 +208,7 @@ namespace MetaDslx.VisualStudio.Compilation
                         allChanges.Free();
                         sourceText = SourceText.From(textSnapshot.GetText());
                         string filePath = this.FilePath;
-                        syntaxTree = language.SyntaxFactory.ParseSyntaxTree(sourceText, language.SyntaxFactory.DefaultParseOptions.WithIncremental(true), filePath);
+                        syntaxTree = language.SyntaxFactory.ParseSyntaxTree(sourceText, language.SyntaxFactory.DefaultParseOptions/*.WithIncremental(true)*/, filePath);
                     }
                     else
                     {

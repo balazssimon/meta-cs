@@ -14,7 +14,7 @@ namespace MetaDslx.CodeAnalysis
 {
     public abstract class Language
     {
-        public static readonly Language None = new NoLanguage();
+        public static readonly Language None = NoLanguage.Instance;
 
         private ServiceCollection _serviceCollection;
         private ServiceProvider _serviceProvider;
@@ -118,17 +118,4 @@ namespace MetaDslx.CodeAnalysis
 
     }
 
-    internal class NoLanguage : Language
-    {
-        public NoLanguage()
-        {
-        }
-
-        public override string Name => string.Empty;
-
-        protected override LanguageServices CreateLanguageServices()
-        {
-            throw new NotImplementedException();
-        }
-    }
 }

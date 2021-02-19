@@ -63,9 +63,15 @@ namespace MetaDslx.Bootstrap.MetaModel
                 AddReferences(ModelReference.CreateFromModel(coreModel)).
                 AddReferences(MetadataReference.CreateFromFile(typeof(Symbol).Assembly.Location)).
                 WithOptions(options);
-
             var compiledModel = compilation.Model as MutableModel;
             Console.WriteLine(compiledModel);
+
+            //var node = tree.GetCompilationUnitRoot().NamespaceDeclaration.NamespaceBody.Declaration[0].ConstDeclaration;
+            //var node = tree.GetCompilationUnitRoot().NamespaceDeclaration.NamespaceBody.Declaration[0].ConstDeclaration.TypeReference.SimpleType.ClassType.Qualifier.Identifier[0];
+            var node = tree.GetCompilationUnitRoot().NamespaceDeclaration.NamespaceBody.Declaration[0].ConstDeclaration.Name.Identifier;
+            var info = compilation.GetSemanticModel(tree, true).GetSymbolInfo(node);
+            Console.WriteLine(info.Symbol);
+
             using (StreamWriter writer = new StreamWriter("Model.txt"))
             {
                 foreach (var symbol in compiledModel.Objects)
