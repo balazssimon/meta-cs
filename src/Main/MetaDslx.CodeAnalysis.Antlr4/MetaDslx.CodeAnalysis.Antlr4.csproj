@@ -5,8 +5,8 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>MetaDslx</RootNamespace>
     <IsPackable>false</IsPackable>
-    <MetaDslxDisableMetaGeneratorGenerator>false</MetaDslxDisableMetaGeneratorGenerator>
-    <MetaDslxDisableAntlr4RoslynGenerator>false</MetaDslxDisableAntlr4RoslynGenerator>
+    <MetaDslxDisableMetaGeneratorGenerator>true</MetaDslxDisableMetaGeneratorGenerator>
+    <MetaDslxDisableAntlr4RoslynGenerator>true</MetaDslxDisableAntlr4RoslynGenerator>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 

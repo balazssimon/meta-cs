@@ -27,19 +27,4 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             _greenToken = greenToken;
         }
     }
-
-    public class IncrementalTokenFactory : ITokenFactory
-    {
-        [return: NotNull]
-        public IToken Create(Tuple<ITokenSource, ICharStream> source, int type, string text, int channel, int start, int stop, int line, int charPositionInLine)
-        {
-            return new IncrementalToken(source, type, channel, start, stop) { Line = line, Column = charPositionInLine };
-        }
-
-        [return: NotNull]
-        public IToken Create(int type, string text)
-        {
-            return new IncrementalToken(type, text);
-        }
-    }
 }

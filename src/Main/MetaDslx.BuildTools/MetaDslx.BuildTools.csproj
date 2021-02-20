@@ -4,7 +4,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <RootNamespace>MetaDslx.BuildTools</RootNamespace>
-    <TargetFrameworks>netcoreapp2.2</TargetFrameworks>
+    <TargetFrameworks>net5.0</TargetFrameworks>
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>metadslx</ToolCommandName>
 
@@ -29,7 +29,7 @@
 
   <ItemGroup>
     <None Include="license.txt" Pack="true" PackagePath="" />
-    <None Include="tools\antlr-4.8-complete.jar" Pack="true" PackagePath="tools" />
+    <None Include="tools\antlr-4.9.1-complete.jar" Pack="true" PackagePath="tools" />
   </ItemGroup>
   
   <ItemGroup>

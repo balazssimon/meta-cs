@@ -57,7 +57,7 @@ namespace MetaDslx.BuildTasks
                 if (string.IsNullOrWhiteSpace(ToolPath))
                 {
                     string assemblyPath = Path.GetDirectoryName(typeof(Antlr4BuildTool).Assembly.Location);
-                    ToolPath = Path.Combine(assemblyPath, "..", "..", "antlr-4.8-complete.jar");
+                    ToolPath = Path.Combine(assemblyPath, "..", "..", "antlr-4.9.1-complete.jar");
                 }
 
                 if (string.IsNullOrWhiteSpace(ToolPath) || !File.Exists(ToolPath))
