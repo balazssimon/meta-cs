@@ -29,7 +29,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 
         public object ModelObject => _modelObject;
 
-        public Type ModelObjectType => Language.SymbolFacts.GetModelObjectType(_modelObject);
+        public Type ModelObjectType => _modelObject != null ? Language.SymbolFacts.GetModelObjectType(_modelObject) : null;
 
         public override NamespaceExtent Extent
         {
@@ -47,7 +47,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 
         public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => ImmutableArray<SyntaxReference>.Empty;
 
-        public sealed override string Name => Language.SymbolFacts.GetName(_modelObject);
+        public sealed override string Name => _modelObject != null ? Language.SymbolFacts.GetName(_modelObject) : string.Empty;
 
         public override ImmutableArray<DeclaredSymbol> GetMembers()
         {

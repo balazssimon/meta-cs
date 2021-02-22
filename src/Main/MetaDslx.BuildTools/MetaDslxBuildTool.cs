@@ -1,5 +1,4 @@
-﻿using MetaDslx.BuildTasks;
-using MetaDslx.Languages.Antlr4Roslyn.Compilation;
+﻿using MetaDslx.Languages.Antlr4Roslyn.Compilation;
 using MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax;
 using MetaDslx.Languages.Meta;
 using MetaDslx.Languages.MetaGenerator.Compilation;
@@ -176,7 +175,7 @@ namespace MetaDslx.BuildTools
                         else
                         {
                             string assemblyPath = Path.GetDirectoryName(typeof(Antlr4BuildTool).Assembly.Location);
-                            antlr4BuildTool.ToolPath = Path.Combine(assemblyPath, "..", "..", "antlr-4.8-complete.jar");
+                            antlr4BuildTool.ToolPath = Path.Combine(assemblyPath, "..", "..", Resources.Antlr4JarName.Trim());
                         }
                         var compiler = new Antlr4RoslynCompiler(manualOutputPath, automaticOutputPath, inputFile.ToString(), targetNamespace, antlr4BuildTool);
                         compiler.Compile();

@@ -30,11 +30,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 
         public object ModelObject => _modelObject;
 
-        public Type ModelObjectType => Language.SymbolFacts.GetModelObjectType(_modelObject);
+        public Type ModelObjectType => _modelObject != null ? Language.SymbolFacts.GetModelObjectType(_modelObject) : null;
 
         public sealed override LanguageSymbolKind Kind => LanguageSymbolKind.Name;
 
-        public sealed override string Name => Language.SymbolFacts.GetName(_modelObject);
+        public sealed override string Name => _modelObject != null ? Language.SymbolFacts.GetName(_modelObject) : string.Empty;
 
         public sealed override Symbol ContainingSymbol => _container;
 

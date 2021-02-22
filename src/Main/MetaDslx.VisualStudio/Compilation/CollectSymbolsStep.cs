@@ -11,6 +11,7 @@ using Microsoft.VisualStudio.Utilities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -60,17 +61,24 @@ namespace MetaDslx.VisualStudio.Compilation
 
         private ISymbol GetSymbol(SyntaxToken token, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
-            SyntaxNode node = token.Parent;
-            while (node != null && node.SlotCount == 1)
+            try
             {
-                if (cancellationToken.IsCancellationRequested) return null;
-                var ti = semanticModel.GetTypeInfo(node, cancellationToken);
-                if (ti.Type != null) return ti.Type;
-                var si = semanticModel.GetSymbolInfo(node, cancellationToken);
-                if (si.Symbol != null) return si.Symbol;
-                node = node.Parent;
+                SyntaxNode node = token.Parent;
+                if (node != null && node.SlotCount == 1)
+                {
+                    if (cancellationToken.IsCancellationRequested) return null;
+                    var ti = semanticModel.GetTypeInfo(node, cancellationToken);
+                    if (ti.Type != null) return ti.Type;
+                    //var si = semanticModel.GetSymbolInfo(node, cancellationToken);
+                    //if (si.Symbol != null) return si.Symbol;
+                }
+                return null;
             }
-            return null;
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                return null;
+            }
         }
 
         private IClassificationType GetSymbolClassificationType(ISymbol symbol, SyntaxToken token, SemanticModel semanticModel, CancellationToken cancellationToken)

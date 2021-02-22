@@ -13,7 +13,7 @@ using FileAttributes = System.IO.FileAttributes;
 using Path = System.IO.Path;
 using StringBuilder = System.Text.StringBuilder;
 
-namespace MetaDslx.BuildTasks
+namespace MetaDslx.BuildTools
 {
     public class Antlr4BuildTool : Antlr4Tool
     {
@@ -57,7 +57,7 @@ namespace MetaDslx.BuildTasks
                 if (string.IsNullOrWhiteSpace(ToolPath))
                 {
                     string assemblyPath = Path.GetDirectoryName(typeof(Antlr4BuildTool).Assembly.Location);
-                    ToolPath = Path.Combine(assemblyPath, "..", "..", "antlr-4.9.1-complete.jar");
+                    ToolPath = Path.Combine(assemblyPath, "..", "..", Resources.Antlr4JarName.Trim());
                 }
 
                 if (string.IsNullOrWhiteSpace(ToolPath) || !File.Exists(ToolPath))

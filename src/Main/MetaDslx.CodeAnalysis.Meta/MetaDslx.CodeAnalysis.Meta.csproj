@@ -12,8 +12,8 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <MetaDslxCompileMetaModelCore>true</MetaDslxCompileMetaModelCore>
     <MetaDslxMetaModelCoreNamespace>MetaDslx.Languages.Meta.Model</MetaDslxMetaModelCoreNamespace>
-    <MetaDslxDisableMetaModelGenerator>true</MetaDslxDisableMetaModelGenerator>
-    <MetaDslxDisableMetaGeneratorGenerator>true</MetaDslxDisableMetaGeneratorGenerator>
+    <MetaDslxDisableMetaModelGenerator>false</MetaDslxDisableMetaModelGenerator>
+    <MetaDslxDisableMetaGeneratorGenerator>false</MetaDslxDisableMetaGeneratorGenerator>
   </PropertyGroup>
 
   <ItemGroup>

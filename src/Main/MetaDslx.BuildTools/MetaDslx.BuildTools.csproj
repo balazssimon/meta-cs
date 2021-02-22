@@ -25,11 +25,18 @@
     <!-- Optional: Embed source files that are not tracked by the source control manager to the PDB -->
     <!-- This is useful if you generate files during the build -->
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <Antlr4JarName>antlr-4.9.1-complete.jar</Antlr4JarName>
   </PropertyGroup>
+
+  <Target Name="WriteAntlr4JarName" BeforeTargets="Build">
+    <Exec Command="echo $(Antlr4JarName) &gt;&quot;$(ProjectDir)Resources\Antlr4JarName.txt&quot;" />
+    <Message Text="Writing $(Antlr4JarName) to resource file." Importance="High"/>
+  </Target>
+
 
   <ItemGroup>
     <None Include="license.txt" Pack="true" PackagePath="" />
-    <None Include="tools\antlr-4.9.1-complete.jar" Pack="true" PackagePath="tools" />
+    <None Include="tools\$(Antlr4JarName)" Pack="true" PackagePath="tools" />
   </ItemGroup>
   
   <ItemGroup>
@@ -37,6 +44,21 @@
     <PackageReference Include="System.CommandLine.DragonFruit" Version="0.3.0-alpha.20574.7" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
     <PackageReference Include="MetaDslx.CodeAnalysis" Version="$(MetaDslxTargetVersion)" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Compile Update="Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <EmbeddedResource Update="Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>
