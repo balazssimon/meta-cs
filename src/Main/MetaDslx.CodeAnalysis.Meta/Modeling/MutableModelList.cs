@@ -18,18 +18,27 @@ namespace MetaDslx.Modeling
         public abstract int LazyCount { get; }
         public abstract bool IsReadOnly { get; }
         public abstract void Add(T item);
+        public abstract void Add(T item, object tag);
         public abstract void AddRange(IEnumerable<T> items);
+        public abstract void AddRange(IEnumerable<T> items, object tag);
         public abstract void AddLazy(LazyValue<T> item);
         public abstract void AddRangeLazy(IEnumerable<LazyValue<T>> items);
         public abstract void Clear();
         public abstract void ClearLazy();
         public abstract bool Contains(T item);
+        public abstract bool Contains(T item, object tag);
         public abstract void CopyTo(T[] array, int arrayIndex);
         public abstract IEnumerator<T> GetEnumerator();
         public abstract int IndexOf(T item);
+        public abstract int IndexOf(T item, object tag);
+        public abstract object GetTagAt(int index);
+        public abstract object GetTagOf(T item);
         public abstract void Insert(int index, T item);
+        public abstract void Insert(int index, T item, object tag);
         public abstract bool Remove(T item);
+        public abstract bool Remove(T item, object tag);
         public abstract bool RemoveAll(T item);
+        public abstract bool RemoveAll(T item, object tag);
         public abstract void RemoveAt(int index);
 
         public void AddLazy(Func<T> item)
@@ -111,20 +120,30 @@ namespace MetaDslx.Modeling
             }
             set
             {
-                this.obj.MModel.ReplaceItem(this.obj.MId, this.slot.EffectiveProperty, index, value, this.obj.MIsBeingCreated);
+                this.obj.MModel.ReplaceItem(this.obj.MId, this.slot.EffectiveProperty, index, value, null, this.obj.MIsBeingCreated);
             }
         }
 
         public override void Add(T item)
         {
-            this.obj.MModel.AddItem(this.obj.MId, this.slot.EffectiveProperty, item, this.obj.MIsBeingCreated);
+            this.Add(item, null);
+        }
+
+        public override void Add(T item, object tag)
+        {
+            this.obj.MModel.AddItem(this.obj.MId, this.slot.EffectiveProperty, item, tag, this.obj.MIsBeingCreated);
         }
 
         public override void AddRange(IEnumerable<T> items)
         {
+            this.AddRange(items, null);
+        }
+
+        public override void AddRange(IEnumerable<T> items, object tag)
+        {
             foreach (var item in items)
             {
-                this.Add(item);
+                this.Add(item, tag);
             }
         }
 
@@ -153,8 +172,13 @@ namespace MetaDslx.Modeling
 
         public override bool Contains(T item)
         {
+            return this.Contains(item, null);
+        }
+
+        public override bool Contains(T item, object tag)
+        {
             GreenList green = this.GetGreen(true);
-            object greenItem = this.obj.MModel.ToGreenValue(item);
+            object greenItem = MutableModel.ToGreenValue(item, tag);
             return green.Contains(greenItem);
         }
 
@@ -180,24 +204,58 @@ namespace MetaDslx.Modeling
 
         public override int IndexOf(T item)
         {
+            return this.IndexOf(item, null);
+        }
+
+        public override int IndexOf(T item, object tag)
+        {
             GreenList green = this.GetGreen(true);
-            object greenItem = this.obj.MModel.ToGreenValue(item);
-            return green.IndexOf(item);
+            object greenItem = MutableModel.ToGreenValue(item, tag);
+            return green.IndexOf(greenItem);
+        }
+
+        public override object GetTagOf(T item)
+        {
+            var index = this.IndexOf(item);
+            if (index < 0) return null;
+            else return this.GetTagAt(index);
+        }
+
+        public override object GetTagAt(int index)
+        {
+            var green = this.GetGreen(false);
+            var value = green[index];
+            return GreenObject.ExtractTag(value);
         }
 
         public override void Insert(int index, T item)
         {
-            this.obj.MModel.InsertItem(this.obj.MId, this.slot.EffectiveProperty, index, item, this.obj.MIsBeingCreated);
+            this.Insert(index, item, null);
+        }
+
+        public override void Insert(int index, T item, object tag)
+        {
+            this.obj.MModel.InsertItem(this.obj.MId, this.slot.EffectiveProperty, index, item, tag, this.obj.MIsBeingCreated);
         }
 
         public override bool Remove(T item)
         {
-            return this.obj.MModel.RemoveItem(this.obj.MId, this.slot.EffectiveProperty, item, this.obj.MIsBeingCreated);
+            return this.Remove(item, null);
+        }
+
+        public override bool Remove(T item, object tag)
+        {
+            return this.obj.MModel.RemoveItem(this.obj.MId, this.slot.EffectiveProperty, item, tag, this.obj.MIsBeingCreated);
         }
 
         public override bool RemoveAll(T item)
         {
-            return this.obj.MModel.RemoveAllItems(this.obj.MId, this.slot.EffectiveProperty, item, this.obj.MIsBeingCreated);
+            return this.RemoveAll(item, null);
+        }
+
+        public override bool RemoveAll(T item, object tag)
+        {
+            return this.obj.MModel.RemoveAllItems(this.obj.MId, this.slot.EffectiveProperty, item, tag, this.obj.MIsBeingCreated);
         }
 
         public override void RemoveAt(int index)
@@ -238,7 +296,7 @@ namespace MetaDslx.Modeling
             }
             set
             {
-                if (index == 0) this.obj.MModel.SetValue<T>(this.obj.MId, this.slot.EffectiveProperty, value, this.obj.MIsBeingCreated);
+                if (index == 0) this.obj.MModel.SetValue<T>(this.obj.MId, this.slot.EffectiveProperty, value, null, this.obj.MIsBeingCreated);
                 else throw new IndexOutOfRangeException(string.Format("Invalid index: {0}", index));
             }
         }
@@ -246,11 +304,11 @@ namespace MetaDslx.Modeling
         public bool HasValue => !this.obj.MModel.MHasDefaultValue(this.obj.MId, this.slot.EffectiveProperty);
         public bool HasLazyValue => this.obj.MModel.GetLazyValue(this.obj.MId, this.slot.EffectiveProperty) != null;
 
-        private bool HasKnownValue(T value)
+        private bool HasKnownValue(T value, object tag)
         {
             object green = this.GetGreen(true);
-            object greenItem = this.obj.MModel.ToGreenValue(value);
-            return (green == null && greenItem == null) || (green != null && green.Equals(greenItem));
+            object greenItem = MutableModel.ToGreenValue(value, tag);
+            return GreenObject.Equals(green, greenItem);
         }
 
         private T GetRed(bool lazyEval)
@@ -261,7 +319,8 @@ namespace MetaDslx.Modeling
         private object GetGreen(bool lazyEval)
         {
             var redValue = this.obj.MModel.GetValue(this.obj.MId, this.slot.EffectiveProperty);
-            return this.obj.MModel.ToGreenValue(redValue);
+            var tag = this.obj.MModel.GetTag(this.obj.MId, this.slot.EffectiveProperty);
+            return MutableModel.ToGreenValue(redValue, tag);
         }
 
         public override int Count
@@ -281,21 +340,31 @@ namespace MetaDslx.Modeling
 
         public override void Add(T item)
         {
-            if (this.HasValue && !this.HasKnownValue(item)) throw new ModelException(ModelErrorCode.ERR_CannotAddMultipleValuesToNonCollectionProperty.ToDiagnosticWithNoLocation(this.slot, this.obj));
-            this.obj.MModel.SetValue<T>(this.obj.MId, this.slot.EffectiveProperty, item, this.obj.MIsBeingCreated);
+            this.Add(item, null);
+        }
+
+        public override void Add(T item, object tag)
+        {
+            if (this.HasValue && !this.HasKnownValue(item, tag)) throw new ModelException(ModelErrorCode.ERR_CannotAddMultipleValuesToNonCollectionProperty.ToDiagnostic(GreenObject.ExtractLocation(tag), this.slot, this.obj));
+            this.obj.MModel.SetValue<T>(this.obj.MId, this.slot.EffectiveProperty, item, tag, this.obj.MIsBeingCreated);
         }
 
         public override void AddRange(IEnumerable<T> items)
         {
+            this.AddRange(items, null);
+        }
+
+        public override void AddRange(IEnumerable<T> items, object tag)
+        {
             foreach (var item in items)
             {
-                this.Add(item);
+                this.Add(item, tag);
             }
         }
 
         public override void AddLazy(LazyValue<T> item)
         {
-            if (this.HasLazyValue) throw new ModelException(ModelErrorCode.ERR_CannotAddMultipleValuesToNonCollectionProperty.ToDiagnosticWithNoLocation(this.slot, this.obj));
+            if (this.HasLazyValue) throw new ModelException(ModelErrorCode.ERR_CannotAddMultipleValuesToNonCollectionProperty.ToDiagnostic(GreenObject.ExtractLocation(item.Tag), this.slot, this.obj));
             this.obj.MModel.AddLazyItem(this.obj.MId, this.slot.EffectiveProperty, item, this.obj.MIsBeingCreated);
         }
 
@@ -309,17 +378,22 @@ namespace MetaDslx.Modeling
 
         public override void Clear()
         {
-            this.obj.MModel.SetValue(this.obj.MId, this.slot.EffectiveProperty, GreenObject.Unassigned, this.obj.MIsBeingCreated);
+            this.obj.MModel.SetValue(this.obj.MId, this.slot.EffectiveProperty, GreenObject.Unassigned, null, this.obj.MIsBeingCreated);
         }
 
         public override void ClearLazy()
         {
-            this.obj.MModel.SetValue(this.obj.MId, this.slot.EffectiveProperty, GreenObject.Unassigned, this.obj.MIsBeingCreated);
+            this.obj.MModel.SetValue(this.obj.MId, this.slot.EffectiveProperty, GreenObject.Unassigned, null, this.obj.MIsBeingCreated);
         }
 
         public override bool Contains(T item)
         {
-            return this.HasKnownValue(item);
+            return this.Contains(item, null);
+        }
+
+        public override bool Contains(T item, object tag)
+        {
+            return this.HasKnownValue(item, tag);
         }
 
         public override void CopyTo(T[] array, int arrayIndex)
@@ -344,28 +418,57 @@ namespace MetaDslx.Modeling
 
         public override int IndexOf(T item)
         {
-            if (this.HasKnownValue(item)) return 0;
+            return this.IndexOf(item, null);
+        }
+
+        public override int IndexOf(T item, object tag)
+        {
+            if (this.HasKnownValue(item, tag)) return 0;
             else return -1;
+        }
+
+        public override object GetTagOf(T item)
+        {
+            var index = this.IndexOf(item);
+            if (index < 0) return null;
+            else return this.GetTagAt(index);
+        }
+
+        public override object GetTagAt(int index)
+        {
+            if (index != 0) throw new ArgumentOutOfRangeException(nameof(index));
+            var value = this.GetGreen(false);
+            return GreenObject.ExtractTag(value);
         }
 
         public override void Insert(int index, T item)
         {
+            this.Insert(index, item, null);
+        }
+
+        public override void Insert(int index, T item, object tag)
+        {
             if (index != 0) throw new IndexOutOfRangeException(string.Format("Invalid index: {0}", index));
             if (!this.HasValue)
             {
-                this.obj.MModel.SetValue<T>(this.obj.MId, this.slot.EffectiveProperty, item, this.obj.MIsBeingCreated);
+                this.obj.MModel.SetValue<T>(this.obj.MId, this.slot.EffectiveProperty, item, tag, this.obj.MIsBeingCreated);
             }
-            else if (!this.HasKnownValue(item))
+            else if (!this.HasKnownValue(item, tag))
             {
-                throw new ModelException(ModelErrorCode.ERR_CannotAddMultipleValuesToNonCollectionProperty.ToDiagnosticWithNoLocation(this.slot, this.obj));
+                throw new ModelException(ModelErrorCode.ERR_CannotAddMultipleValuesToNonCollectionProperty.ToDiagnostic(GreenObject.ExtractLocation(tag), this.slot, this.obj));
             }
         }
 
         public override bool Remove(T item)
         {
-            if (this.HasValue && this.HasKnownValue(item))
+            return this.Remove(item, null);
+        }
+
+        public override bool Remove(T item, object tag)
+        {
+            if (this.HasValue && this.HasKnownValue(item, tag))
             {
-                this.obj.MModel.SetValue(this.obj.MId, this.slot.EffectiveProperty, GreenObject.Unassigned, this.obj.MIsBeingCreated);
+                this.obj.MModel.SetValue(this.obj.MId, this.slot.EffectiveProperty, GreenObject.Unassigned, tag, this.obj.MIsBeingCreated);
                 return true;
             }
             return false;
@@ -373,13 +476,18 @@ namespace MetaDslx.Modeling
 
         public override bool RemoveAll(T item)
         {
-            return this.Remove(item);
+            return this.RemoveAll(item, null);
+        }
+
+        public override bool RemoveAll(T item, object tag)
+        {
+            return this.Remove(item, tag);
         }
 
         public override void RemoveAt(int index)
         {
             if (index != 0) throw new IndexOutOfRangeException(string.Format("Invalid index: {0}", index));
-            this.obj.MModel.SetValue(this.obj.MId, this.slot.EffectiveProperty, GreenObject.Unassigned, this.obj.MIsBeingCreated);
+            this.obj.MModel.SetValue(this.obj.MId, this.slot.EffectiveProperty, GreenObject.Unassigned, null, this.obj.MIsBeingCreated);
         }
 
         private string DebuggerDisplay

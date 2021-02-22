@@ -178,7 +178,7 @@ namespace MetaDslx.Modeling
 
         public override bool Contains(T item)
         {
-            return this.green.Contains(this.model.ToGreenValue(item));
+            return this.green.Contains(MutableModel.ToGreenValue(item, null));
         }
 
         public override IEnumerator<T> GetEnumerator()
@@ -258,7 +258,7 @@ namespace MetaDslx.Modeling
 
         public override bool Contains(T item)
         {
-            return this.green.Contains(this.model.ToGreenValue(item));
+            return this.green.Contains(MutableModel.ToGreenValue(item, null));
         }
 
         public override IEnumerator<T> GetEnumerator()

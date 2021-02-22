@@ -59,7 +59,7 @@ namespace MetaDslx.Modeling.Internal
         public void MakeLazyEvalException(List<GreenLazyEvalEntry> evaluationStack, Exception innerException, LazyValue lazy, ErrorCode errorCode, params object[] args)
         {
             this.ArgsToRedMessageSerializable(args);
-            var diagnostic = LanguageDiagnostic.Create(new LazyEvaluationDiagnosticInfo(LazyEvalStackToRed(evaluationStack), errorCode, args)).WithLocation(lazy.Location);
+            var diagnostic = LanguageDiagnostic.Create(new LazyEvaluationDiagnosticInfo(LazyEvalStackToRed(evaluationStack), errorCode, args)).WithLocation(lazy.GetLocation());
             throw new LazyEvaluationException(diagnostic);
         }
 
@@ -423,7 +423,7 @@ namespace MetaDslx.Modeling.Internal
                         {
                             this.SetValue(mid, targetOid, slot, false, partValue);
                         }
-                        else if (targetValue != partValue)
+                        else if (!GreenObject.Equals(targetValue, partValue))
                         {
                             this.MakeException(Location.None, ModelErrorCode.ERR_CannotMergeObjectsProperty, partOid, targetOid, slot.Name, partValue, targetValue);
                         }
@@ -534,9 +534,10 @@ namespace MetaDslx.Modeling.Internal
         public bool SetValue(ModelId mid, ObjectId oid, Slot slot, bool reassign, object value)
         {
             Debug.Assert(!slot.IsCollection);
-            if (value is ObjectId)
+            var plainValue = GreenObject.ExtractValue(value);
+            if (plainValue is ObjectId)
             {
-                if (!this.ObjectExists((ObjectId)value))
+                if (!this.ObjectExists((ObjectId)plainValue))
                 {
                     if (this.group != null) this.MakeException(Location.None, ModelErrorCode.ERR_ObjectCannotBeAssignedToPropertyModelGroup, value, slot, oid);
                     else this.MakeException(Location.None, ModelErrorCode.ERR_ObjectCannotBeAssignedToPropertyModel, value, slot, oid);
@@ -546,7 +547,7 @@ namespace MetaDslx.Modeling.Internal
             Debug.Assert(objectRef != null);
             GreenObject green = objectRef.Object;
             object oldValue;
-            if (green.Slots.TryGetValue(slot, out oldValue) && value != oldValue)
+            if (green.Slots.TryGetValue(slot, out oldValue) && !GreenObject.EqualsWithTag(oldValue, value))
             {
                 bool result;
                 if (slot.IsSimpleSlot || value is LazyValue || value is GreenDerivedValue)
@@ -567,9 +568,10 @@ namespace MetaDslx.Modeling.Internal
         public bool AddItem(ModelId mid, ObjectId oid, Slot slot, bool reassign, bool replace, int index, object value)
         {
             Debug.Assert(slot.IsCollection);
-            if (value is ObjectId)
+            var plainValue = GreenObject.ExtractValue(value);
+            if (plainValue is ObjectId)
             {
-                if (!this.ObjectExists((ObjectId)value))
+                if (!this.ObjectExists((ObjectId)plainValue))
                 {
                     if (this.group != null) this.MakeException(Location.None, ModelErrorCode.ERR_ObjectCannotBeAddedToPropertyModelGroup, value, slot, oid);
                     else this.MakeException(Location.None, ModelErrorCode.ERR_ObjectCannotBeAddedToPropertyModel, value, slot, oid);
@@ -849,25 +851,26 @@ namespace MetaDslx.Modeling.Internal
 
         private bool CheckNewValue(ObjectRef objectRef, Slot slot, ref object value)
         {
-            if (value == null && slot.IsNonNull)
+            var plainValue = GreenObject.ExtractValue(value);
+            if (plainValue == null && slot.IsNonNull)
             {
                 this.MakeException(Location.None, ModelErrorCode.ERR_CannotAssignNullToProperty, slot, objectRef.Id);
                 value = null;
                 return false;
             }
-            if (value == null || value == GreenObject.Unassigned || (value is LazyValue) || (value is GreenDerivedValue))
+            if (plainValue == null || value == GreenObject.Unassigned || (value is LazyValue) || (value is GreenDerivedValue))
             {
                 return true;
             }
-            if ((value is ObjectId) && !slot.IsAssignableFrom(((ObjectId)value).Descriptor.MutableType, out var unassignableProperty))
+            if ((plainValue is ObjectId) && !slot.IsAssignableFrom(((ObjectId)plainValue).Descriptor.MutableType, out var unassignableProperty))
             {
-                this.MakeException(Location.None, ModelErrorCode.ERR_CannotAssignValueToProperty, value, ((ObjectId)value).Descriptor.MutableType, unassignableProperty, unassignableProperty.MutableType, objectRef.Id);
+                this.MakeException(Location.None, ModelErrorCode.ERR_CannotAssignValueToProperty, plainValue, ((ObjectId)plainValue).Descriptor.MutableType, unassignableProperty, unassignableProperty.MutableType, objectRef.Id);
                 value = null;
                 return false;
             }
-            if (!(value is ObjectId) && !slot.IsAssignableFrom(value.GetType(), out unassignableProperty))
+            if (!(plainValue is ObjectId) && !slot.IsAssignableFrom(plainValue.GetType(), out unassignableProperty))
             {
-                this.MakeException(Location.None, ModelErrorCode.ERR_CannotAssignValueToProperty, value, value.GetType(), unassignableProperty, unassignableProperty.MutableType, objectRef.Id);
+                this.MakeException(Location.None, ModelErrorCode.ERR_CannotAssignValueToProperty, plainValue, plainValue.GetType(), unassignableProperty, unassignableProperty.MutableType, objectRef.Id);
                 value = null;
                 return false;
             }
@@ -894,25 +897,26 @@ namespace MetaDslx.Modeling.Internal
 
         private bool CheckNewItem(ObjectRef objectRef, Slot slot, ref object value)
         {
-            if (value == null && slot.IsNonNull)
+            var plainValue = GreenObject.ExtractValue(value);
+            if (plainValue == null && slot.IsNonNull)
             {
                 this.MakeException(Location.None, ModelErrorCode.ERR_CannotAddNullToProperty, slot, objectRef.Id);
                 value = null;
                 return false;
             }
-            if (value == null || value == GreenObject.Unassigned || (value is LazyValue) || (value is GreenDerivedValue))
+            if (plainValue == null || value == GreenObject.Unassigned || (value is LazyValue) || (value is GreenDerivedValue))
             {
                 return true;
             }
-            if ((value is ObjectId) && !slot.IsAssignableFrom(((ObjectId)value).Descriptor.MutableType, out var unassignableProperty))
+            if ((plainValue is ObjectId) && !slot.IsAssignableFrom(((ObjectId)plainValue).Descriptor.MutableType, out var unassignableProperty))
             {
-                this.MakeException(Location.None, ModelErrorCode.ERR_CannotAddValueToProperty, value, ((ObjectId)value).Descriptor.MutableType, unassignableProperty, unassignableProperty.MutableType, objectRef.Id);
+                this.MakeException(Location.None, ModelErrorCode.ERR_CannotAddValueToProperty, plainValue, ((ObjectId)plainValue).Descriptor.MutableType, unassignableProperty, unassignableProperty.MutableType, objectRef.Id);
                 value = null;
                 return false;
             }
-            if (!(value is ObjectId) && !slot.IsAssignableFrom(value.GetType(), out unassignableProperty))
+            if (!(plainValue is ObjectId) && !slot.IsAssignableFrom(plainValue.GetType(), out unassignableProperty))
             {
-                this.MakeException(Location.None, ModelErrorCode.ERR_CannotAddValueToProperty, value, value.GetType(), unassignableProperty, unassignableProperty.MutableType, objectRef.Id);
+                this.MakeException(Location.None, ModelErrorCode.ERR_CannotAddValueToProperty, plainValue, plainValue.GetType(), unassignableProperty, unassignableProperty.MutableType, objectRef.Id);
                 value = null;
                 return false;
             }
@@ -934,33 +938,35 @@ namespace MetaDslx.Modeling.Internal
             Debug.Assert(objectRef.Object.Slots.ContainsKey(slot));
             object oldValue;
             if (!this.TryGetValueCore(objectRef, slot, true, true, out oldValue)) return false;
-            if (value == oldValue) return false;
+            if (GreenObject.EqualsWithTag(value, oldValue)) return false;
             if (!this.CheckOldValue(objectRef, slot, reassign, oldValue)) return false;
             this.CheckNewValue(objectRef, slot, ref value);
-            if (oldValue != null && oldValue != GreenObject.Unassigned)
+            var plainOldValue = GreenObject.ExtractValue(oldValue);
+            if (plainOldValue != null && plainOldValue != GreenObject.Unassigned)
             {
-                if (oldValue is ObjectId)
+                if (plainOldValue is ObjectId)
                 {
-                    this.RemoveReferenceCore(objectRef, slot, (ObjectId)oldValue);
+                    this.RemoveReferenceCore(objectRef, slot, (ObjectId)plainOldValue);
                 }
-                else if ((oldValue is LazyValue) && !(value is LazyValue))
+                else if ((plainOldValue is LazyValue) && !(plainOldValue is LazyValue))
                 {
                     this.RemoveLazyPropertyCore(objectRef, slot);
                 }
             }
-            if (value != null && value != GreenObject.Unassigned)
+            var plainValue = GreenObject.ExtractValue(value);
+            if (plainValue != null && plainValue != GreenObject.Unassigned)
             {
-                if (value is ObjectId)
+                if (plainValue is ObjectId)
                 {
-                    this.AddReferenceCore(objectRef, slot, (ObjectId)value);
+                    this.AddReferenceCore(objectRef, slot, (ObjectId)plainValue);
                 }
-                else if ((value is LazyValue) && !(oldValue is LazyValue))
+                else if ((plainValue is LazyValue) && !(plainValue is LazyValue))
                 {
                     this.AddLazyPropertyCore(objectRef, slot);
                 }
             }
             GreenObject green = objectRef.Object;
-            if (value == slot.DefaultValue) green = green.Update(green.Parent, green.Children, green.Slots.SetItem(slot, GreenObject.Unassigned));
+            if (object.Equals(plainValue, slot.DefaultValue)) green = green.Update(green.Parent, green.Children, green.Slots.SetItem(slot, GreenObject.Unassigned));
             else green = green.Update(green.Parent, green.Children, green.Slots.SetItem(slot, value));
             objectRef.Update(green);
             return true;
@@ -1000,7 +1006,8 @@ namespace MetaDslx.Modeling.Internal
             }
             else
             {
-                newReference = value is ObjectId && !list.Contains(value);
+                var plainValue = GreenObject.ExtractValue(value);
+                newReference = plainValue is ObjectId && !list.Contains(value);
                 if (index >= 0 && index <= list.Count)
                 {
                     list = list.Insert(index, value);
@@ -1011,7 +1018,7 @@ namespace MetaDslx.Modeling.Internal
                 }
                 if (newReference)
                 {
-                    this.AddReferenceCore(objectRef, slot, (ObjectId)value);
+                    this.AddReferenceCore(objectRef, slot, (ObjectId)plainValue);
                 }
             }
             GreenObject green = objectRef.Object;
@@ -1090,11 +1097,12 @@ namespace MetaDslx.Modeling.Internal
                 list = list.Remove(value);
             }
             bool removedAll = !list.Contains(value);
-            if (value is ObjectId)
+            var plainValue = GreenObject.ExtractValue(value);
+            if (plainValue is ObjectId)
             {
                 if (removedAll)
                 {
-                    this.RemoveReferenceCore(objectRef, slot, (ObjectId)value);
+                    this.RemoveReferenceCore(objectRef, slot, (ObjectId)plainValue);
                 }
             }
             GreenObject green = objectRef.Object;
@@ -1119,7 +1127,8 @@ namespace MetaDslx.Modeling.Internal
             if (valueAddedToSelf != null && valueAddedToSelf.Contains(slot)) return false;
             ObjectRef objectRef = this.ResolveObjectRef(oid, true);
             if (objectRef == null) return false;
-            ObjectId valueId = value as ObjectId;
+            var plainValue = GreenObject.ExtractValue(value);
+            ObjectId valueId = plainValue as ObjectId;
             // Checking the value:
             if (!reassign)
             {
@@ -1132,7 +1141,7 @@ namespace MetaDslx.Modeling.Internal
                     this.MakeException(Location.None, ModelErrorCode.ERR_CannotChangeReadOnlyProperty, slot, oid);
                 }
             }
-            if (value == null)
+            if (plainValue == null)
             {
                 if (slot.IsNonNull)
                 {
@@ -1146,18 +1155,18 @@ namespace MetaDslx.Modeling.Internal
                     }
                 }
             }
-            else if (value != GreenObject.Unassigned)
+            else if (plainValue != GreenObject.Unassigned)
             {
-                var valueType = valueId != null ? valueId.Descriptor.MutableType : value.GetType();
+                var valueType = valueId != null ? valueId.Descriptor.MutableType : plainValue.GetType();
                 if (!slot.IsAssignableFrom(valueType, out var unassignableProperty))
                 {
                     if (slot.IsCollection)
                     {
-                        this.MakeException(Location.None, ModelErrorCode.ERR_CannotAddValueToProperty, value, valueId.Descriptor.MutableType, unassignableProperty, unassignableProperty.MutableType, oid);
+                        this.MakeException(Location.None, ModelErrorCode.ERR_CannotAddValueToProperty, plainValue, valueId.Descriptor.MutableType, unassignableProperty, unassignableProperty.MutableType, oid);
                     }
                     else
                     {
-                        this.MakeException(Location.None, ModelErrorCode.ERR_CannotAssignValueToProperty, value, valueId.Descriptor.MutableType, unassignableProperty, unassignableProperty.MutableType, oid);
+                        this.MakeException(Location.None, ModelErrorCode.ERR_CannotAssignValueToProperty, plainValue, valueId.Descriptor.MutableType, unassignableProperty, unassignableProperty.MutableType, oid);
                     }
                 }
             }
@@ -1305,9 +1314,10 @@ namespace MetaDslx.Modeling.Internal
                 }
             }
             // Updating opposite properties:
-            if (allValuesRemoved && value is ObjectId && slot.OppositeProperties.Length > 0)
+            var plainValue = GreenObject.ExtractValue(value);
+            if (allValuesRemoved && plainValue is ObjectId && slot.OppositeProperties.Length > 0)
             {
-                ObjectId valueId = (ObjectId)value;
+                ObjectId valueId = (ObjectId)plainValue;
                 ObjectRef valueObjectRef = this.ResolveObjectRef(valueId, true);
                 if (valueObjectRef != null)
                 {

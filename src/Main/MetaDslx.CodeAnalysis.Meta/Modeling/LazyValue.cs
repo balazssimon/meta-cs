@@ -27,9 +27,15 @@ namespace MetaDslx.Modeling
             get { return false; }
         }
 
-        internal virtual Location Location
+        internal virtual object Tag
         {
-            get { return Location.None; }
+            get { return null; }
+        }
+
+        internal Location GetLocation()
+        {
+            if (this.Tag is Location location) return location;
+            else return Location.None;
         }
 
         internal protected virtual object CreateRedValue(IModel model, ObjectId context)
@@ -45,15 +51,7 @@ namespace MetaDslx.Modeling
         internal object CreateGreenValue(IModel model, ObjectId context)
         {
             object value = this.CreateRedValue(model, context);
-            if (value is MutableObjectBase)
-            {
-                return ((MutableObjectBase)value).MId;
-            }
-            else if (value is ImmutableObjectBase)
-            {
-                return ((ImmutableObjectBase)value).MId;
-            }
-            return value;
+            return MutableModel.ToGreenValue(value, this.Tag);
         }
 
         internal object[] CreateGreenValues(IModel model, ObjectId context)
@@ -61,64 +59,56 @@ namespace MetaDslx.Modeling
             var values = this.CreateRedValues(model, context);
             for (int i = 0; i < values.Length; i++)
             {
-                var value = values[i];
-                if (value is MutableObjectBase)
-                {
-                    values[i] = ((MutableObjectBase)value).MId;
-                }
-                else if (value is ImmutableObjectBase)
-                {
-                    values[i] = ((ImmutableObjectBase)value).MId;
-                }
+                values[i] = MutableModel.ToGreenValue(values[i], this.Tag);
             }
             return values;
         }
 
-        public static LazyValue<T> Create<T>(Func<T> lazy, Location location = null)
+        public static LazyValue<T> Create<T>(Func<T> lazy, object tag = null)
         {
-            return object.ReferenceEquals(location, null) ? new SingleLazyValue<T>(lazy) : new SingleLazyValueWithLocation<T>(lazy, location);
+            return tag == null ? new SingleLazyValue<T>(lazy) : new SingleLazyValueWithTag<T>(lazy, tag);
         }
 
-        public static LazyValue<T> CreateMulti<T>(Func<IEnumerable<T>> lazy, Location location = null)
+        public static LazyValue<T> CreateMulti<T>(Func<IEnumerable<T>> lazy, object tag = null)
         {
-            return object.ReferenceEquals(location, null) ? new MultipleLazyValues<T>(lazy) : new MultipleLazyValuesWithLocation<T>(lazy, location);
+            return tag == null ? new MultipleLazyValues<T>(lazy) : new MultipleLazyValuesWithTag<T>(lazy, tag);
         }
 
-        public static IEnumerable<LazyValue<T>> CreateMulti<T>(IEnumerable<Func<T>> lazy, Location location = null)
+        public static IEnumerable<LazyValue<T>> CreateMulti<T>(IEnumerable<Func<T>> lazy, object tag = null)
         {
-            return lazy.Select(l => Create(l, location));
+            return lazy.Select(l => Create(l, tag));
         }
 
-        public static LazyValue<T> Create<TContext, T>(Func<TContext, T> lazy, Location location = null)
+        public static LazyValue<T> Create<TContext, T>(Func<TContext, T> lazy, object tag = null)
             where TContext: IModelObject
         {
-            return object.ReferenceEquals(location, null) ? new SingleLazyValueWithContext<TContext, T>(lazy) : new SingleLazyValueWithContextAndLocation<TContext, T>(lazy, location);
+            return tag == null ? new SingleLazyValueWithContext<TContext, T>(lazy) : new SingleLazyValueWithContextAndTag<TContext, T>(lazy, tag);
         }
 
-        public static LazyValue<T> CreateMulti<TContext, T>(Func<TContext, IEnumerable<T>> lazy, Location location = null)
+        public static LazyValue<T> CreateMulti<TContext, T>(Func<TContext, IEnumerable<T>> lazy, object tag = null)
             where TContext : IModelObject
         {
-            return object.ReferenceEquals(location, null) ? new MultipleLazyValuesWithContext<TContext, T>(lazy) : new MultipleLazyValuesWithContextAndLocation<TContext, T>(lazy, location);
+            return tag == null ? new MultipleLazyValuesWithContext<TContext, T>(lazy) : new MultipleLazyValuesWithContextAndTag<TContext, T>(lazy, tag);
         }
 
-        public static IEnumerable<LazyValue<T>> CreateMulti<TContext, T>(IEnumerable<Func<TContext, T>> lazy, Location location = null)
+        public static IEnumerable<LazyValue<T>> CreateMulti<TContext, T>(IEnumerable<Func<TContext, T>> lazy, object tag = null)
             where TContext : IModelObject
         {
-            return lazy.Select(l => Create(l, location));
+            return lazy.Select(l => Create(l, tag));
         }
 
-        public static LazyValue Create<TImmutableContext, TMutableContext, TImmutable, TMutable>(Func<TImmutableContext, TImmutable> immutableLazy, Func<TMutableContext, TMutable> mutableLazy, Location location = null)
+        public static LazyValue Create<TImmutableContext, TMutableContext, TImmutable, TMutable>(Func<TImmutableContext, TImmutable> immutableLazy, Func<TMutableContext, TMutable> mutableLazy, object tag = null)
             where TImmutableContext : ImmutableObject
             where TMutableContext : MutableObject
         {
-            return object.ReferenceEquals(location, null) ? new SingleLazyValueWithContext<TImmutableContext, TMutableContext, TImmutable, TMutable>(immutableLazy, mutableLazy) : new SingleLazyValueWithContextAndLocation<TImmutableContext, TMutableContext, TImmutable, TMutable>(immutableLazy, mutableLazy, location);
+            return tag == null ? new SingleLazyValueWithContext<TImmutableContext, TMutableContext, TImmutable, TMutable>(immutableLazy, mutableLazy) : new SingleLazyValueWithContextAndTag<TImmutableContext, TMutableContext, TImmutable, TMutable>(immutableLazy, mutableLazy, tag);
         }
 
-        public static LazyValue CreateMulti<TImmutableContext, TMutableContext, TImmutable, TMutable>(Func<TImmutableContext, IEnumerable<TImmutable>> immutableLazy, Func<TMutableContext, IEnumerable<TMutable>> mutableLazy, Location location = null)
+        public static LazyValue CreateMulti<TImmutableContext, TMutableContext, TImmutable, TMutable>(Func<TImmutableContext, IEnumerable<TImmutable>> immutableLazy, Func<TMutableContext, IEnumerable<TMutable>> mutableLazy, object tag = null)
             where TImmutableContext : ImmutableObject
             where TMutableContext : MutableObject
         {
-            return object.ReferenceEquals(location, null) ? new MultipleLazyValuesWithContext<TImmutableContext, TMutableContext, TImmutable, TMutable>(immutableLazy, mutableLazy) : new MultipleLazyValuesWithContextAndLocation<TImmutableContext, TMutableContext, TImmutable, TMutable>(immutableLazy, mutableLazy, location);
+            return tag == null ? new MultipleLazyValuesWithContext<TImmutableContext, TMutableContext, TImmutable, TMutable>(immutableLazy, mutableLazy) : new MultipleLazyValuesWithContextAndTag<TImmutableContext, TMutableContext, TImmutable, TMutable>(immutableLazy, mutableLazy, tag);
         }
     }
 

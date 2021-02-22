@@ -190,7 +190,11 @@ namespace MetaDslx.Modeling
                 Debug.Assert(false);
                 return null;
             }
-            else if (value is ObjectId)
+            if (value is GreenValueWithTag taggedValue)
+            {
+                value = taggedValue.Value;
+            }
+            if (value is ObjectId)
             {
                 return this.ResolveObject((ObjectId)value);
             }

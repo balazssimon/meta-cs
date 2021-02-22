@@ -130,27 +130,27 @@ namespace MetaDslx.Modeling
             return this.model.MIsSet(this.id, property);
         }
 
-        public void MSet(ModelProperty property, object value)
+        public void MSet(ModelProperty property, object value, object tag = null)
         {
             if (property.IsCollection) throw new ModelException(ModelErrorCode.ERR_CannotReassignCollectionProperty.ToDiagnosticWithNoLocation(property, this));
-            this.model.SetValue(this.id, property, value, this.creating);
+            this.model.SetValue(this.id, property, value, tag, this.creating);
         }
 
         public void MSetLazy(ModelProperty property, LazyValue value)
         {
-            if (property.IsCollection) throw new ModelException(ModelErrorCode.ERR_CannotReassignCollectionProperty.ToDiagnostic(value.Location, property, this));
+            if (property.IsCollection) throw new ModelException(ModelErrorCode.ERR_CannotReassignCollectionProperty.ToDiagnostic(value.GetLocation(), property, this));
             this.model.SetLazyValue(this.id, property, value, this.creating);
         }
 
-        public void MAdd(ModelProperty property, object value)
+        public void MAdd(ModelProperty property, object value, object tag = null)
         {
             if (property.IsCollection)
             {
-                this.model.AddItem(this.id, property, value, this.creating);
+                this.model.AddItem(this.id, property, value, tag, this.creating);
             }
             else
             {
-                this.model.SetValue(this.id, property, value, this.creating);
+                this.model.SetValue(this.id, property, value, tag, this.creating);
             }
         }
 
@@ -166,10 +166,10 @@ namespace MetaDslx.Modeling
             }
         }
 
-        public void MAddRange(ModelProperty property, IEnumerable<object> values)
+        public void MAddRange(ModelProperty property, IEnumerable<object> values, object tag = null)
         {
             if (!property.IsCollection) throw new ModelException(ModelErrorCode.ERR_CannotAddMultipleValuesToNonCollectionProperty.ToDiagnosticWithNoLocation(property, this));
-            this.model.AddItems(this.id, property, values, this.creating);
+            this.model.AddItems(this.id, property, values, tag, this.creating);
         }
 
         public void MAddRangeLazy(ModelProperty property, IEnumerable<LazyValue> values)
@@ -196,10 +196,10 @@ namespace MetaDslx.Modeling
             else return (T)valueObj;
         }
 
-        protected void SetValue<T>(ModelProperty property, T value)
+        protected void SetValue<T>(ModelProperty property, T value, object tag = null)
             where T : struct
         {
-            this.model.SetValue(this.id, property, value, this.creating);
+            this.model.SetValue(this.id, property, value, tag, this.creating);
         }
 
         protected T GetReference<T>(ModelProperty property)
@@ -208,14 +208,14 @@ namespace MetaDslx.Modeling
             return (T)this.model.GetValue(this.id, property);
         }
 
-        protected void SetReference<T>(ModelProperty property, T value)
+        protected void SetReference<T>(ModelProperty property, T value, object tag = null)
             where T : class
         {
             if (value is MutableObjectBase mutableObj && mutableObj.model != this.model)
             {
-                value = (T)this.model.ToRedValue(this.model.ToGreenValue(value), mutableObj.id);
+                value = (T)this.model.ToRedValue(MutableModel.ToGreenValue(value, null), mutableObj.id);
             }
-            this.model.SetValue(this.id, property, value, this.creating);
+            this.model.SetValue(this.id, property, value, tag, this.creating);
         }
 
         protected Func<T> GetLazyValue<T>(ModelProperty property)

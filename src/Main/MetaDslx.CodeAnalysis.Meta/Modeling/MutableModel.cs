@@ -398,17 +398,32 @@ namespace MetaDslx.Modeling
             }
         }
 
-        internal object ToGreenValue(object value)
+        internal static object ToGreenValue(object value, object tag)
         {
-            if (value is ImmutableObjectBase)
+            if (tag != null)
             {
-                return ((ImmutableObjectBase)value).MId;
+                if (value is MutableObjectBase mob)
+                {
+                    return new GreenValueWithTag(mob.MId, tag);
+                }
+                else if (value is ImmutableObjectBase iob)
+                {
+                    return new GreenValueWithTag(iob.MId, tag);
+                }
+                return new GreenValueWithTag(value, tag);
             }
-            if (value is MutableObjectBase)
+            else
             {
-                return ((MutableObjectBase)value).MId;
+                if (value is MutableObjectBase mob)
+                {
+                    return mob.MId;
+                }
+                else if (value is ImmutableObjectBase iob)
+                {
+                    return iob.MId;
+                }
+                return value;
             }
-            return value;
         }
 
         internal object ToRedValue(object value, ObjectId context)
@@ -440,7 +455,11 @@ namespace MetaDslx.Modeling
             {
                 return null;
             }
-            else if (value is ObjectId)
+            if (value is GreenValueWithTag taggedValue)
+            {
+                value = taggedValue.Value;
+            }
+            if (value is ObjectId)
             {
                 return this.ResolveObject((ObjectId)value);
             }
@@ -507,6 +526,12 @@ namespace MetaDslx.Modeling
             return value;
         }
 
+        internal object GetTag(ObjectId oid, ModelProperty property)
+        {
+            object value = this.GetGreenValue(oid, property);
+            return GreenObject.ExtractTag(value);
+        }
+
         private object GetGreenValue(ObjectId oid, ModelProperty property)
         {
             GreenObject green;
@@ -561,7 +586,7 @@ namespace MetaDslx.Modeling
             }
         }
 
-        internal void SetValue<T>(ObjectId oid, ModelProperty property, T value, bool creating)
+        internal void SetValue<T>(ObjectId oid, ModelProperty property, T value, object tag, bool creating)
         {
             GreenModelUpdateContext ctx = null;
             try
@@ -570,7 +595,7 @@ namespace MetaDslx.Modeling
                 do
                 {
                     ctx = this.BeginUpdate();
-                    ctx.Updater.SetValue(this.id, oid, slot, creating, this.ToGreenValue(value));
+                    ctx.Updater.SetValue(this.id, oid, slot, creating, ToGreenValue(value, tag));
                 } while (!this.EndUpdate(ctx));
             }
             finally
@@ -657,7 +682,7 @@ namespace MetaDslx.Modeling
             return MutableModelList<T>.FromGreenList(obj, slot);
         }
 
-        internal bool AddItem(ObjectId oid, ModelProperty property, object value, bool creating)
+        internal bool AddItem(ObjectId oid, ModelProperty property, object value, object tag, bool creating)
         {
             bool changed = false;
             GreenModelUpdateContext ctx = null;
@@ -667,7 +692,7 @@ namespace MetaDslx.Modeling
                 do
                 {
                     ctx = this.BeginUpdate();
-                    changed = ctx.Updater.AddItem(this.id, oid, slot, creating, false, -1, this.ToGreenValue(value));
+                    changed = ctx.Updater.AddItem(this.id, oid, slot, creating, false, -1, ToGreenValue(value, tag));
                 } while (!this.EndUpdate(ctx));
                 return changed;
             }
@@ -697,7 +722,7 @@ namespace MetaDslx.Modeling
             return changed;
         }
 
-        internal bool AddItems(ObjectId oid, ModelProperty property, IEnumerable<object> values, bool creating)
+        internal bool AddItems(ObjectId oid, ModelProperty property, IEnumerable<object> values, object tag, bool creating)
         {
             bool changed = false;
             GreenModelUpdateContext ctx = null;
@@ -709,7 +734,7 @@ namespace MetaDslx.Modeling
                     ctx = this.BeginUpdate();
                     foreach (var value in values)
                     {
-                        changed = ctx.Updater.AddItem(this.id, oid, slot, creating, false, -1, this.ToGreenValue(value));
+                        changed = ctx.Updater.AddItem(this.id, oid, slot, creating, false, -1, ToGreenValue(value, tag));
                     }
                 } while (!this.EndUpdate(ctx));
             }
@@ -763,7 +788,7 @@ namespace MetaDslx.Modeling
             return changed;
         }
 
-        internal bool RemoveItem(ObjectId oid, ModelProperty property, object value, bool creating)
+        internal bool RemoveItem(ObjectId oid, ModelProperty property, object value, object tag, bool creating)
         {
             bool changed = false;
             GreenModelUpdateContext ctx = null;
@@ -773,7 +798,7 @@ namespace MetaDslx.Modeling
                 do
                 {
                     ctx = this.BeginUpdate();
-                    changed = ctx.Updater.RemoveItem(this.id, oid, slot, creating, -1, false, this.ToGreenValue(value));
+                    changed = ctx.Updater.RemoveItem(this.id, oid, slot, creating, -1, false, ToGreenValue(value, tag));
                 } while (!this.EndUpdate(ctx));
             }
             finally
@@ -783,7 +808,7 @@ namespace MetaDslx.Modeling
             return changed;
         }
 
-        internal bool RemoveAllItems(ObjectId oid, ModelProperty property, object value, bool creating)
+        internal bool RemoveAllItems(ObjectId oid, ModelProperty property, object value, object tag, bool creating)
         {
             bool changed = false;
             GreenModelUpdateContext ctx = null;
@@ -793,7 +818,7 @@ namespace MetaDslx.Modeling
                 do
                 {
                     ctx = this.BeginUpdate();
-                    changed = ctx.Updater.RemoveItem(this.id, oid, slot, creating, -1, true, this.ToGreenValue(value));
+                    changed = ctx.Updater.RemoveItem(this.id, oid, slot, creating, -1, true, ToGreenValue(value, tag));
                 } while (!this.EndUpdate(ctx));
             }
             finally
@@ -803,7 +828,7 @@ namespace MetaDslx.Modeling
             return changed;
         }
 
-        internal bool InsertItem(ObjectId oid, ModelProperty property, int index, object value, bool creating)
+        internal bool InsertItem(ObjectId oid, ModelProperty property, int index, object value, object tag, bool creating)
         {
             bool changed = false;
             GreenModelUpdateContext ctx = null;
@@ -813,7 +838,7 @@ namespace MetaDslx.Modeling
                 do
                 {
                     ctx = this.BeginUpdate();
-                    changed = ctx.Updater.AddItem(this.id, oid, slot, creating, false, index, this.ToGreenValue(value));
+                    changed = ctx.Updater.AddItem(this.id, oid, slot, creating, false, index, ToGreenValue(value, tag));
                 } while (!this.EndUpdate(ctx));
             }
             finally
@@ -823,7 +848,7 @@ namespace MetaDslx.Modeling
             return changed;
         }
 
-        internal bool ReplaceItem(ObjectId oid, ModelProperty property, int index, object value, bool creating)
+        internal bool ReplaceItem(ObjectId oid, ModelProperty property, int index, object value, object tag, bool creating)
         {
             bool changed = false;
             GreenModelUpdateContext ctx = null;
@@ -833,7 +858,7 @@ namespace MetaDslx.Modeling
                 do
                 {
                     ctx = this.BeginUpdate();
-                    changed = ctx.Updater.AddItem(this.id, oid, slot, creating, true, index, this.ToGreenValue(value));
+                    changed = ctx.Updater.AddItem(this.id, oid, slot, creating, true, index, ToGreenValue(value, tag));
                 } while (!this.EndUpdate(ctx));
             }
             finally

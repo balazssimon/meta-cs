@@ -82,8 +82,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
                     if (mprop.MutableType == typeof(Type) && symbol is CSharpNamedTypeSymbol cnts) mvalue = Type.GetType(GetFullMetadataName(cnts));
                     else if (symbol is IModelSymbol ms) mvalue = ms.ModelObject;
                 }
-                if (mprop.IsCollection) mobj.MAdd(mprop, mvalue);
-                else mobj.MSet(mprop, mvalue);
+                if (mprop.IsCollection) mobj.MAdd(mprop, mvalue, location);
+                else mobj.MSet(mprop, mvalue, location);
             }
             catch(ModelException ex)
             {
