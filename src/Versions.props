@@ -9,11 +9,11 @@
   -->
   <PropertyGroup>
 	<OfficialBuild>true</OfficialBuild>
-    <MetaDslxTargetVersion>0.10.460</MetaDslxTargetVersion>
+    <MetaDslxTargetVersion>0.10.461</MetaDslxTargetVersion>
     <VersionPrefix>$(MetaDslxTargetVersion)</VersionPrefix>
     <MetaDslxLanguagesTargetVersion>0.2.41</MetaDslxLanguagesTargetVersion>
     <VersionSuffix Condition="'$(OfficialBuild)' != 'true' and '$(DotNetUseShippingVersions)' != 'true'">alpha1</VersionSuffix>
-    <BootstrapVersion>0.10.459</BootstrapVersion>
+    <BootstrapVersion>0.10.460</BootstrapVersion>
     <SemanticVersioningV1>true</SemanticVersioningV1>
     <!-- 
       By default the assembly version in official builds is "$(VersionPrefix).0".
@@ -35,16 +35,16 @@
     <RoslynDiagnosticsNugetPackageVersion>2.9.3</RoslynDiagnosticsNugetPackageVersion>
     <MicrosoftCodeAnalysisAnalyzersVersion>$(RoslynDiagnosticsNugetPackageVersion)</MicrosoftCodeAnalysisAnalyzersVersion>
     <MicrosoftDiaSymReaderNativeVersion>1.7.0</MicrosoftDiaSymReaderNativeVersion>
-    <SystemCollectionsImmutableVersion>1.5.0</SystemCollectionsImmutableVersion>
-    <SystemMemoryVersion>4.5.3</SystemMemoryVersion>
-    <SystemReflectionMetadataVersion>1.6.0</SystemReflectionMetadataVersion>
-    <SystemRuntimeCompilerServicesUnsafeVersion>4.5.3</SystemRuntimeCompilerServicesUnsafeVersion>
-    <SystemTextEncodingCodePagesVersion>4.5.1</SystemTextEncodingCodePagesVersion>
+    <SystemCollectionsImmutableVersion>5.0.0</SystemCollectionsImmutableVersion>
+    <SystemMemoryVersion>4.5.4</SystemMemoryVersion>
+    <SystemReflectionMetadataVersion>5.0.0</SystemReflectionMetadataVersion>
+    <SystemRuntimeCompilerServicesUnsafeVersion>5.0.0</SystemRuntimeCompilerServicesUnsafeVersion>
+    <SystemTextEncodingCodePagesVersion>5.0.0</SystemTextEncodingCodePagesVersion>
     <SystemThreadingTasksExtensionsVersion>4.5.4</SystemThreadingTasksExtensionsVersion>
 	<Antlr4RuntimeStandardVersion>4.9.1</Antlr4RuntimeStandardVersion>
-	<MicrosoftBuildVersion>16.7.0</MicrosoftBuildVersion>
-	<MicrosoftDependencyInjectionVersion>3.1.0</MicrosoftDependencyInjectionVersion>
-	<MicrosoftBclAsyncInterfacesVersion>1.1.1</MicrosoftBclAsyncInterfacesVersion>
+	<MicrosoftBuildVersion>16.8.0</MicrosoftBuildVersion>
+	<MicrosoftDependencyInjectionVersion>5.0.0</MicrosoftDependencyInjectionVersion>
+	<MicrosoftBclAsyncInterfacesVersion>5.0.0</MicrosoftBclAsyncInterfacesVersion>
 	<MicrosoftNetDskTestVersion>16.6.1</MicrosoftNetDskTestVersion>
 	<XUnitVersion>2.4.1</XUnitVersion>
   </PropertyGroup>
