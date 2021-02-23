@@ -162,7 +162,7 @@ namespace MetaDslx.Modeling
             return value;
         }
 
-        internal object ToRedValue(object value, ObjectId context)
+        internal object ToRedValue(object value, ObjectId context, ModelProperty property)
         {
             if (value is GreenDerivedValue)
             {
@@ -183,7 +183,7 @@ namespace MetaDslx.Modeling
             }
             else if (value == GreenObject.Unassigned)
             {
-                return null;
+                return property?.DefaultValue;
             }
             else if (value is GreenList)
             {
@@ -224,7 +224,7 @@ namespace MetaDslx.Modeling
         {
             Debug.Assert(!property.IsCollection);
             var greenValue = this.GetGreenValue(oid, property);
-            return this.ToRedValue(greenValue, oid);
+            return this.ToRedValue(greenValue, oid, property);
         }
 
         internal ImmutableModelSet<T> GetSet<T>(ObjectId oid, ModelProperty property)
@@ -339,7 +339,7 @@ namespace MetaDslx.Modeling
             }
             else
             {
-                return greenValue == GreenObject.Unassigned || (greenValue == null && property.DefaultValue == null) || (property.DefaultValue != null && property.DefaultValue.Equals(greenValue));
+                return greenValue == GreenObject.Unassigned || object.Equals(greenValue, property.DefaultValue);
             }
         }
 

@@ -79,8 +79,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
                 var mvalue = symbolValue;
                 if (symbolValue is Symbol symbol && !mprop.MutableType.IsAssignableFrom(symbol.GetType()))
                 {
-                    if (mprop.MutableType == typeof(Type) && symbol is CSharpNamedTypeSymbol cnts) mvalue = Type.GetType(GetFullMetadataName(cnts));
-                    else if (symbol is IModelSymbol ms) mvalue = ms.ModelObject;
+                    mvalue = this.GetSymbolValue(symbol, mprop.MutableType);
                 }
                 if (mprop.IsCollection) mobj.MAdd(mprop, mvalue, location);
                 else mobj.MSet(mprop, mvalue, location);
@@ -202,6 +201,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             if (!expectedType.IsAssignableFrom(symbol.GetType()))
             {
                 if (expectedType == typeof(Type) && symbol is CSharpNamedTypeSymbol cnts) return Type.GetType(GetFullMetadataName(cnts));
+                else if (expectedType == typeof(string)) return symbol.Name;
                 else if (symbol is IModelSymbol ms) return ms.ModelObject;
             }
             return symbol;

@@ -93,6 +93,18 @@ namespace MetaDslx.Modeling.Internal
             else return this.items.FindIndex(it => GreenObject.Equals(it, value));
         }
 
+        internal object GetTagAt(int index)
+        {
+            if (this.taggedValueCount == 0) return null;
+            else return GreenObject.ExtractTag(this.items[index]);
+        }
+
+        internal object GetTagOf(object value)
+        {
+            if (this.taggedValueCount == 0) return null;
+            else return GreenObject.ExtractTag(this.items.FirstOrDefault(it => GreenObject.Equals(it, value)));
+        }
+
         internal GreenList Add(object value)
         {
             if (value == null) return this;

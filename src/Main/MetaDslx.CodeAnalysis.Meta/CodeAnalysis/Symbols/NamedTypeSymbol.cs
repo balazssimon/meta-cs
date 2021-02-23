@@ -155,6 +155,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return constructors.ToImmutableAndFree();
         }
 
+        public ImmutableArray<NamedTypeSymbol> DeclaredBaseTypes => GetDeclaredBaseTypes(null);
+
         public abstract ImmutableArray<NamedTypeSymbol> GetDeclaredBaseTypes(ConsList<TypeSymbol> basesBeingResolved);
 
         public virtual int Arity => 0;

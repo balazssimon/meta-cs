@@ -83,7 +83,7 @@ classMemberDeclaration
               
 fieldDeclaration : attribute* fieldContainment? fieldModifier?                 typeReference name fieldSymbolProperty? defaultValue? redefinitionsOrSubsettings* TSemicolon;
                          
-fieldSymbolProperty : TOpenBracket stringLiteral TCloseBracket;
+fieldSymbolProperty : TOpenBracket                 identifier TCloseBracket;
                                         
 fieldContainment : KContainment;
                

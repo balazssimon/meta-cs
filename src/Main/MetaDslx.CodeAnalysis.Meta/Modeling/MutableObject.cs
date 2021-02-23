@@ -20,6 +20,8 @@ namespace MetaDslx.Modeling
 
 
         // TODO:MetaDslx - provide initialization, e.g. MInit, MTrySet, etc.
+        object MGetTag(ModelProperty property);
+        object MGetTag(ModelProperty property, object value);
         void MSet(ModelProperty property, object value, object tag = null);
         void MSetLazy(ModelProperty property, LazyValue value);
         void MAdd(ModelProperty property, object value, object tag = null);

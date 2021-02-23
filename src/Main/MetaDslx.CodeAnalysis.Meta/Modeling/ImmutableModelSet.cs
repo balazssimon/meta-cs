@@ -62,7 +62,7 @@ namespace MetaDslx.Modeling
         {
             foreach (var value in this.green)
             {
-                yield return (T)this.model.ToRedValue(value, context);
+                yield return (T)this.model.ToRedValue(value, context, null);
             }
         }
 
@@ -101,7 +101,7 @@ namespace MetaDslx.Modeling
         public override IEnumerator<T> GetEnumerator()
         {
             if (this.greenValue == GreenObject.Unassigned) yield break;
-            else yield return (T)this.model.ToRedValue(this.greenValue, context);
+            else yield return (T)this.model.ToRedValue(this.greenValue, context, null);
         }
 
         private string DebuggerDisplay

@@ -44,7 +44,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         public DeclaredSymbol BindDeclaredSymbol(SyntaxNodeOrToken syntax, DiagnosticBag diagnostics, ConsList<TypeSymbol> basesBeingResolved = null)
         {
-            return BindNamespaceOrTypeSymbol(syntax, diagnostics, basesBeingResolved, basesBeingResolved != null);
+            return BindNamespaceOrTypeOrNameSymbol(syntax, diagnostics, basesBeingResolved, basesBeingResolved != null);
         }
 
         /// <summary>
@@ -147,7 +147,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             var result = LookupResult.GetInstance();
             LookupOptions options = allowMembers ? LookupOptions.Default : LookupOptions.NamespacesOrTypesOnly;
 
-            var constraints = new LookupConstraints(identifierValueText, identifierValueText, qualifierOpt: qualifierOpt, basesBeingResolved: basesBeingResolved, options: options, diagnose: true);
+            var constraints = new LookupConstraints(identifierValueText, identifierValueText, qualifierOpt: qualifierOpt, basesBeingResolved: basesBeingResolved, options: options, diagnose: true, originalBinder: this);
             var identifierBinder = this.GetBinder(node);
             constraints = identifierBinder.AdjustConstraintsFor(node, constraints);
             LookupSymbolsSimpleName(result, constraints);
@@ -193,7 +193,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         {
             if (qualifiedName.Length == 0) return ImmutableArray<DeclaredSymbol>.Empty;
             var result = ArrayBuilder<DeclaredSymbol>.GetInstance();
-            result.Add(BindNamespaceOrTypeSymbol(qualifiedName[0], diagnostics, basesBeingResolved, suppressUseSiteDiagnostics: false));
+            result.Add(BindNamespaceOrTypeOrAliasSymbol(qualifiedName[0], false, diagnostics, basesBeingResolved, suppressUseSiteDiagnostics: false, qualifierOpt: null));
             ReportDiagnosticsIfObsolete(diagnostics, result[0], qualifiedName[0], hasBaseReceiver: false);
 
             var last = result[0];

@@ -83,7 +83,7 @@ $SymbolDef(MetaProperty)
 $Documentation
 fieldDeclaration : attribute* fieldContainment? fieldModifier? $Property(Type) typeReference name fieldSymbolProperty? defaultValue? redefinitionsOrSubsettings* TSemicolon;
 $Property(SymbolProperty)
-fieldSymbolProperty : TOpenBracket stringLiteral TCloseBracket;
+fieldSymbolProperty : TOpenBracket $SymbolProperty identifier TCloseBracket;
 $Property(name=IsContainment,value=true)
 fieldContainment : KContainment;
 $Property(Kind)

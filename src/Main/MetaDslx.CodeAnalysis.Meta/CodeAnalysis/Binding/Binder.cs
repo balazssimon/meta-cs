@@ -195,7 +195,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             get
             {
                 if (_next == null) return null;
-                var symbol = _next.GetDefinedSymbol() as DeclaredSymbol;
+                var symbol = Next.GetDefinedSymbol() as DeclaredSymbol;
                 if (symbol != null) return symbol;
                 else return Next.ContainingDeclaration;
             }
@@ -223,13 +223,17 @@ namespace MetaDslx.CodeAnalysis.Binding
         {
             get
             {
-                var member = this.ContainingDeclaration;
+                if (_next == null) return null;
+                var symbol = Next.GetDefinedSymbol() as NamedTypeSymbol;
+                if (symbol != null) return symbol;
+                else return Next.ContainingType;
+                /*var member = this.ContainingDeclaration;
                 Debug.Assert((object)member == null || member.Kind != LanguageSymbolKind.ErrorType);
                 return (object)member == null
                     ? null
                     : member.Kind == LanguageSymbolKind.NamedType
                         ? (NamedTypeSymbol)member
-                        : member.ContainingType;
+                        : member.ContainingType;*/
             }
         }
 

@@ -3502,12 +3502,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				if (context == null) return FieldSymbolPropertyGreen.__Missing;
 				InternalSyntaxToken tOpenBracket = (InternalSyntaxToken)this.VisitTerminal(context.TOpenBracket(), MetaSyntaxKind.TOpenBracket);
-				MetaParser.StringLiteralContext stringLiteralContext = context.stringLiteral();
-				StringLiteralGreen stringLiteral = null;
-				if (stringLiteralContext != null) stringLiteral = (StringLiteralGreen)this.Visit(stringLiteralContext);
-				if (stringLiteral == null) stringLiteral = StringLiteralGreen.__Missing;
+				MetaParser.IdentifierContext identifierContext = context.identifier();
+				IdentifierGreen identifier = null;
+				if (identifierContext != null) identifier = (IdentifierGreen)this.Visit(identifierContext);
+				if (identifier == null) identifier = IdentifierGreen.__Missing;
 				InternalSyntaxToken tCloseBracket = (InternalSyntaxToken)this.VisitTerminal(context.TCloseBracket(), MetaSyntaxKind.TCloseBracket);
-				return _factory.FieldSymbolProperty(tOpenBracket, stringLiteral, tCloseBracket);
+				return _factory.FieldSymbolProperty(tOpenBracket, identifier, tCloseBracket);
 			}
 			
 			public override GreenNode VisitFieldContainment(MetaParser.FieldContainmentContext context)

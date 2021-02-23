@@ -115,6 +115,16 @@ namespace MetaDslx.Modeling
             return this.model.MGet(this, property);
         }
 
+        public object MGetTag(ModelProperty property)
+        {
+            return this.model.MGetTag(this, property);
+        }
+
+        public object MGetTag(ModelProperty property, object value)
+        {
+            return this.model.MGetTag(this, property, value);
+        }
+
         public bool MHasDefaultValue(ModelProperty property)
         {
             return this.model.MHasDefaultValue(this.id, property);
@@ -213,7 +223,7 @@ namespace MetaDslx.Modeling
         {
             if (value is MutableObjectBase mutableObj && mutableObj.model != this.model)
             {
-                value = (T)this.model.ToRedValue(MutableModel.ToGreenValue(value, null), mutableObj.id);
+                value = (T)this.model.ToRedValue(MutableModel.ToGreenValue(value, null), mutableObj.id, property);
             }
             this.model.SetValue(this.id, property, value, tag, this.creating);
         }

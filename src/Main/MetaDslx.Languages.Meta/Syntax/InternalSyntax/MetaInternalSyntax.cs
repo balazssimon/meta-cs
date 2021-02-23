@@ -4033,10 +4033,10 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	{
 	    internal static readonly FieldSymbolPropertyGreen __Missing = new FieldSymbolPropertyGreen();
 	    private InternalSyntaxToken tOpenBracket;
-	    private StringLiteralGreen stringLiteral;
+	    private IdentifierGreen identifier;
 	    private InternalSyntaxToken tCloseBracket;
 	
-	    public FieldSymbolPropertyGreen(MetaSyntaxKind kind, InternalSyntaxToken tOpenBracket, StringLiteralGreen stringLiteral, InternalSyntaxToken tCloseBracket)
+	    public FieldSymbolPropertyGreen(MetaSyntaxKind kind, InternalSyntaxToken tOpenBracket, IdentifierGreen identifier, InternalSyntaxToken tCloseBracket)
 	        : base(kind, null, null)
 	    {
 			this.SlotCount = 3;
@@ -4045,10 +4045,10 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.AdjustFlagsAndWidth(tOpenBracket);
 				this.tOpenBracket = tOpenBracket;
 			}
-			if (stringLiteral != null)
+			if (identifier != null)
 			{
-				this.AdjustFlagsAndWidth(stringLiteral);
-				this.stringLiteral = stringLiteral;
+				this.AdjustFlagsAndWidth(identifier);
+				this.identifier = identifier;
 			}
 			if (tCloseBracket != null)
 			{
@@ -4057,7 +4057,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			}
 	    }
 	
-	    public FieldSymbolPropertyGreen(MetaSyntaxKind kind, InternalSyntaxToken tOpenBracket, StringLiteralGreen stringLiteral, InternalSyntaxToken tCloseBracket, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	    public FieldSymbolPropertyGreen(MetaSyntaxKind kind, InternalSyntaxToken tOpenBracket, IdentifierGreen identifier, InternalSyntaxToken tCloseBracket, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
 	        : base(kind, diagnostics, annotations)
 	    {
 			this.SlotCount = 3;
@@ -4066,10 +4066,10 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.AdjustFlagsAndWidth(tOpenBracket);
 				this.tOpenBracket = tOpenBracket;
 			}
-			if (stringLiteral != null)
+			if (identifier != null)
 			{
-				this.AdjustFlagsAndWidth(stringLiteral);
-				this.stringLiteral = stringLiteral;
+				this.AdjustFlagsAndWidth(identifier);
+				this.identifier = identifier;
 			}
 			if (tCloseBracket != null)
 			{
@@ -4085,7 +4085,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		}
 	
 	    public InternalSyntaxToken TOpenBracket { get { return this.tOpenBracket; } }
-	    public StringLiteralGreen StringLiteral { get { return this.stringLiteral; } }
+	    public IdentifierGreen Identifier { get { return this.identifier; } }
 	    public InternalSyntaxToken TCloseBracket { get { return this.tCloseBracket; } }
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
@@ -4098,7 +4098,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	        switch (index)
 	        {
 	            case 0: return this.tOpenBracket;
-	            case 1: return this.stringLiteral;
+	            case 1: return this.identifier;
 	            case 2: return this.tCloseBracket;
 	            default: return null;
 	        }
@@ -4110,21 +4110,21 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
 	    {
-	        return new FieldSymbolPropertyGreen(this.Kind, this.tOpenBracket, this.stringLiteral, this.tCloseBracket, diagnostics, this.GetAnnotations());
+	        return new FieldSymbolPropertyGreen(this.Kind, this.tOpenBracket, this.identifier, this.tCloseBracket, diagnostics, this.GetAnnotations());
 	    }
 	
 	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
 	    {
-	        return new FieldSymbolPropertyGreen(this.Kind, this.tOpenBracket, this.stringLiteral, this.tCloseBracket, this.GetDiagnostics(), annotations);
+	        return new FieldSymbolPropertyGreen(this.Kind, this.tOpenBracket, this.identifier, this.tCloseBracket, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public FieldSymbolPropertyGreen Update(InternalSyntaxToken tOpenBracket, StringLiteralGreen stringLiteral, InternalSyntaxToken tCloseBracket)
+	    public FieldSymbolPropertyGreen Update(InternalSyntaxToken tOpenBracket, IdentifierGreen identifier, InternalSyntaxToken tCloseBracket)
 	    {
 	        if (this.TOpenBracket != tOpenBracket ||
-				this.StringLiteral != stringLiteral ||
+				this.Identifier != identifier ||
 				this.TCloseBracket != tCloseBracket)
 	        {
-	            InternalSyntaxNode newNode = MetaLanguage.Instance.InternalSyntaxFactory.FieldSymbolProperty(tOpenBracket, stringLiteral, tCloseBracket);
+	            InternalSyntaxNode newNode = MetaLanguage.Instance.InternalSyntaxFactory.FieldSymbolProperty(tOpenBracket, identifier, tCloseBracket);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
@@ -8538,19 +8538,19 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	        return new FieldDeclarationGreen(MetaSyntaxKind.FieldDeclaration, attribute.Node, fieldContainment, fieldModifier, typeReference, name, fieldSymbolProperty, defaultValue, redefinitionsOrSubsettings.Node, tSemicolon);
 	    }
 	
-		public FieldSymbolPropertyGreen FieldSymbolProperty(InternalSyntaxToken tOpenBracket, StringLiteralGreen stringLiteral, InternalSyntaxToken tCloseBracket)
+		public FieldSymbolPropertyGreen FieldSymbolProperty(InternalSyntaxToken tOpenBracket, IdentifierGreen identifier, InternalSyntaxToken tCloseBracket)
 	    {
 	#if DEBUG
 			if (tOpenBracket == null) throw new ArgumentNullException(nameof(tOpenBracket));
 			if (tOpenBracket.Kind != MetaSyntaxKind.TOpenBracket) throw new ArgumentException(nameof(tOpenBracket));
-			if (stringLiteral == null) throw new ArgumentNullException(nameof(stringLiteral));
+			if (identifier == null) throw new ArgumentNullException(nameof(identifier));
 			if (tCloseBracket == null) throw new ArgumentNullException(nameof(tCloseBracket));
 			if (tCloseBracket.Kind != MetaSyntaxKind.TCloseBracket) throw new ArgumentException(nameof(tCloseBracket));
 	#endif
 			int hash;
-			var cached = SyntaxNodeCache.TryGetNode((int)(MetaSyntaxKind)MetaSyntaxKind.FieldSymbolProperty, tOpenBracket, stringLiteral, tCloseBracket, out hash);
+			var cached = SyntaxNodeCache.TryGetNode((int)(MetaSyntaxKind)MetaSyntaxKind.FieldSymbolProperty, tOpenBracket, identifier, tCloseBracket, out hash);
 			if (cached != null) return (FieldSymbolPropertyGreen)cached;
-			var result = new FieldSymbolPropertyGreen(MetaSyntaxKind.FieldSymbolProperty, tOpenBracket, stringLiteral, tCloseBracket);
+			var result = new FieldSymbolPropertyGreen(MetaSyntaxKind.FieldSymbolProperty, tOpenBracket, identifier, tCloseBracket);
 			if (hash >= 0)
 			{
 				SyntaxNodeCache.AddNode(result, hash);

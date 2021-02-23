@@ -203,6 +203,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         public virtual bool IsImplicitlyDeclared => false;
 
+        public ImmutableArray<DeclaredSymbol> Members => this.GetMembers();
+
         /// <summary>
         /// Get all the members of this symbol.
         /// </summary>

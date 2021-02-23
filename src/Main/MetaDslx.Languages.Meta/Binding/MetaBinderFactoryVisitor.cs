@@ -30,6 +30,7 @@ namespace MetaDslx.Languages.Meta.Binding
 		public static object UseQualifier = new object();
 		public static object UseFieldDeclaration = new object();
 		public static object UseTypeReference = new object();
+		public static object UseIdentifier = new object();
 		public static object UseKReadonly = new object();
 		public static object UseKLazy = new object();
 		public static object UseKDerived = new object();
@@ -48,7 +49,6 @@ namespace MetaDslx.Languages.Meta.Binding
 		public static object UseTarget = new object();
 		public static object UseUsingNamespace = new object();
 		public static object UseNamespaceDeclaration = new object();
-		public static object UseIdentifier = new object();
 		public static object UseAttribute = new object();
 		public static object UseQualifiedName = new object();
 		public static object UseNamespaceBody = new object();
@@ -108,6 +108,16 @@ namespace MetaDslx.Languages.Meta.Binding
         protected virtual Binder CreateDocumentationBinderCore(Binder parentBinder, LanguageSyntaxNode syntax)
         {
             return new DocumentationBinder(parentBinder, syntax);
+        }
+
+        protected virtual Binder CreateSymbolPropertyBinder(Binder parentBinder, LanguageSyntaxNode syntax)
+        {
+            return this.CreateSymbolPropertyBinderCore(parentBinder, syntax);
+        }
+
+        protected virtual Binder CreateSymbolPropertyBinderCore(Binder parentBinder, LanguageSyntaxNode syntax)
+        {
+            return new SymbolPropertyBinder(parentBinder, syntax);
         }
 
         protected virtual Binder CreateOppositeBinder(Binder parentBinder, LanguageSyntaxNode syntax)
@@ -648,12 +658,21 @@ namespace MetaDslx.Languages.Meta.Binding
 		        return VisitParent(parent);
 		    }
 			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, parent.Identifier)) use = UseIdentifier;
+			}
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitParent(parent);
 				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "SymbolProperty");
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UseIdentifier)
+				{
+					resultBinder = this.CreateSymbolPropertyBinder(resultBinder, parent.Identifier);
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
 			}
 			return resultBinder;
 		}

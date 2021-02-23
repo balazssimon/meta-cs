@@ -126,12 +126,13 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
             if (csharpSymbol is CSharpSymbols.ModuleSymbol module) return GetModuleSymbol(module);
             if (csharpSymbol is CSharpSymbols.NamespaceSymbol ns) return GetNamespaceSymbol(ns);
             if (csharpSymbol is CSharpSymbols.NamedTypeSymbol namedType) return GetNamedTypeSymbol(namedType);
+            if (csharpSymbol.CanBeReferencedByName) return GetMemberSymbol(csharpSymbol);
             return new UnsupportedSymbol(csharpSymbol, GetSymbol(csharpSymbol.ContainingSymbol));
         }
 
         public ImmutableArray<DeclaredSymbol> GetMemberSymbols(ImmutableArray<CSharpSymbol> csharpSymbols)
         {
-            return csharpSymbols.Select(symbol => (DeclaredSymbol)GetSymbol(symbol)).ToImmutableArray();
+            return csharpSymbols.Select(symbol => GetSymbol(symbol)).OfType<DeclaredSymbol>().ToImmutableArray();
         }
 
         public CSharpModuleSymbol RegisterModuleSymbol(CSharpModuleSymbol moduleSymbol)
@@ -171,6 +172,12 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
         public ImmutableArray<NamedTypeSymbol> GetNamedTypeSymbols(ImmutableArray<CSharpSymbols.NamedTypeSymbol> csharpSymbols)
         {
             return csharpSymbols.Select(symbol => GetNamedTypeSymbol(symbol)).ToImmutableArray();
+        }
+
+        public MemberSymbol GetMemberSymbol(CSharpSymbol csharpSymbol)
+        {
+            if (_module == null) return null;
+            return GetSymbol(csharpSymbol, cs => new CSharpMemberSymbol(_module, cs));
         }
 
         public ImmutableArray<AttributeData> GetAttributes(ImmutableArray<CSharpSymbols.CSharpAttributeData> attributes, ref ImmutableArray<AttributeData> cachedAttributes)

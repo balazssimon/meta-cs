@@ -204,7 +204,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
             {
                 var thisParam = _this.Parameters[i];
                 var otherParam = operation.Parameters[i];
-                if (!otherParam.Type.ConformsTo(thisParam.Type)) return false;
+                if (otherParam == null || otherParam.Type == null || !otherParam.Type.ConformsTo(thisParam.Type)) return false;
             }
             return true;
         }

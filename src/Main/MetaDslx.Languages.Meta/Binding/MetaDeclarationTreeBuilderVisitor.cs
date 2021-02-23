@@ -515,7 +515,7 @@ namespace MetaDslx.Languages.Meta.Binding
 			this.BeginProperty(node, name: "SymbolProperty");
 			try
 			{
-				this.Visit(node.StringLiteral);
+				this.Visit(node.Identifier);
 			}
 			finally
 			{

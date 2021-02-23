@@ -457,17 +457,20 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             foreach (var prop in symbolFacts.GetPropertiesForSymbol(this.ModelObject, SymbolConstants.DeclaredBaseTypesProperty))
             {
                 var baseTypeObjects = symbolFacts.GetPropertyValues(this.ModelObject, prop);
-                var baseTypeSymbols = SymbolFactory.ResolveSymbols(baseTypeObjects);
-                foreach (var value in baseTypeSymbols)
+                if (baseTypeObjects != null)
                 {
-                    var symbol = value as NamedTypeSymbol;
-                    if (symbol != null)
+                    var baseTypeSymbols = SymbolFactory.ResolveSymbols(baseTypeObjects);
+                    foreach (var value in baseTypeSymbols)
                     {
-                        result.Add(symbol);
-                    }
-                    else
-                    {
-                        diagnostics.Add(ModelErrorCode.ERR_InvalidBaseType, Location.None, value); // TODO: MetaDslx location
+                        var symbol = value as NamedTypeSymbol;
+                        if (symbol != null)
+                        {
+                            result.Add(symbol);
+                        }
+                        else
+                        {
+                            diagnostics.Add(ModelErrorCode.ERR_InvalidBaseType, Location.None, value); // TODO: MetaDslx location
+                        }
                     }
                 }
             }

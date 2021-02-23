@@ -3011,7 +3011,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 	
 	public sealed class FieldSymbolPropertySyntax : MetaSyntaxNode
 	{
-	    private StringLiteralSyntax stringLiteral;
+	    private IdentifierSyntax identifier;
 	
 	    public FieldSymbolPropertySyntax(InternalSyntaxNode green, MetaSyntaxTree syntaxTree, int position)
 	        : base(green, syntaxTree, position)
@@ -3032,9 +3032,9 @@ namespace MetaDslx.Languages.Meta.Syntax
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
 		}
-	    public StringLiteralSyntax StringLiteral 
+	    public IdentifierSyntax Identifier 
 		{ 
-			get { return this.GetRed(ref this.stringLiteral, 1); } 
+			get { return this.GetRed(ref this.identifier, 1); } 
 		}
 	    public SyntaxToken TCloseBracket 
 		{ 
@@ -3050,7 +3050,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    {
 	        switch (index)
 	        {
-				case 1: return this.GetRed(ref this.stringLiteral, 1);
+				case 1: return this.GetRed(ref this.identifier, 1);
 				default: return null;
 	        }
 	    }
@@ -3059,33 +3059,33 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    {
 	        switch (index)
 	        {
-				case 1: return this.stringLiteral;
+				case 1: return this.identifier;
 				default: return null;
 	        }
 	    }
 	
 	    public FieldSymbolPropertySyntax WithTOpenBracket(SyntaxToken tOpenBracket)
 		{
-			return this.Update(TOpenBracket, this.StringLiteral, this.TCloseBracket);
+			return this.Update(TOpenBracket, this.Identifier, this.TCloseBracket);
 		}
 	
-	    public FieldSymbolPropertySyntax WithStringLiteral(StringLiteralSyntax stringLiteral)
+	    public FieldSymbolPropertySyntax WithIdentifier(IdentifierSyntax identifier)
 		{
-			return this.Update(this.TOpenBracket, StringLiteral, this.TCloseBracket);
+			return this.Update(this.TOpenBracket, Identifier, this.TCloseBracket);
 		}
 	
 	    public FieldSymbolPropertySyntax WithTCloseBracket(SyntaxToken tCloseBracket)
 		{
-			return this.Update(this.TOpenBracket, this.StringLiteral, TCloseBracket);
+			return this.Update(this.TOpenBracket, this.Identifier, TCloseBracket);
 		}
 	
-	    public FieldSymbolPropertySyntax Update(SyntaxToken tOpenBracket, StringLiteralSyntax stringLiteral, SyntaxToken tCloseBracket)
+	    public FieldSymbolPropertySyntax Update(SyntaxToken tOpenBracket, IdentifierSyntax identifier, SyntaxToken tCloseBracket)
 	    {
 	        if (this.TOpenBracket != tOpenBracket ||
-				this.StringLiteral != stringLiteral ||
+				this.Identifier != identifier ||
 				this.TCloseBracket != tCloseBracket)
 	        {
-	            var newNode = MetaLanguage.Instance.SyntaxFactory.FieldSymbolProperty(tOpenBracket, stringLiteral, tCloseBracket);
+	            var newNode = MetaLanguage.Instance.SyntaxFactory.FieldSymbolProperty(tOpenBracket, identifier, tCloseBracket);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -7977,9 +7977,9 @@ namespace MetaDslx.Languages.Meta
 		public virtual SyntaxNode VisitFieldSymbolProperty(FieldSymbolPropertySyntax node)
 		{
 		    var tOpenBracket = this.VisitToken(node.TOpenBracket);
-		    var stringLiteral = (StringLiteralSyntax)this.Visit(node.StringLiteral);
+		    var identifier = (IdentifierSyntax)this.Visit(node.Identifier);
 		    var tCloseBracket = this.VisitToken(node.TCloseBracket);
-			return node.Update(tOpenBracket, stringLiteral, tCloseBracket);
+			return node.Update(tOpenBracket, identifier, tCloseBracket);
 		}
 		
 		public virtual SyntaxNode VisitFieldContainment(FieldContainmentSyntax node)
@@ -8870,19 +8870,19 @@ namespace MetaDslx.Languages.Meta
 			return this.FieldDeclaration(default, default, default, typeReference, name, default, default, default, this.Token(MetaSyntaxKind.TSemicolon));
 		}
 		
-		public FieldSymbolPropertySyntax FieldSymbolProperty(SyntaxToken tOpenBracket, StringLiteralSyntax stringLiteral, SyntaxToken tCloseBracket)
+		public FieldSymbolPropertySyntax FieldSymbolProperty(SyntaxToken tOpenBracket, IdentifierSyntax identifier, SyntaxToken tCloseBracket)
 		{
 		    if (tOpenBracket == null) throw new ArgumentNullException(nameof(tOpenBracket));
 		    if (tOpenBracket.GetKind() != MetaSyntaxKind.TOpenBracket) throw new ArgumentException(nameof(tOpenBracket));
-		    if (stringLiteral == null) throw new ArgumentNullException(nameof(stringLiteral));
+		    if (identifier == null) throw new ArgumentNullException(nameof(identifier));
 		    if (tCloseBracket == null) throw new ArgumentNullException(nameof(tCloseBracket));
 		    if (tCloseBracket.GetKind() != MetaSyntaxKind.TCloseBracket) throw new ArgumentException(nameof(tCloseBracket));
-		    return (FieldSymbolPropertySyntax)MetaLanguage.Instance.InternalSyntaxFactory.FieldSymbolProperty((InternalSyntaxToken)tOpenBracket.Node, (Syntax.InternalSyntax.StringLiteralGreen)stringLiteral.Green, (InternalSyntaxToken)tCloseBracket.Node).CreateRed();
+		    return (FieldSymbolPropertySyntax)MetaLanguage.Instance.InternalSyntaxFactory.FieldSymbolProperty((InternalSyntaxToken)tOpenBracket.Node, (Syntax.InternalSyntax.IdentifierGreen)identifier.Green, (InternalSyntaxToken)tCloseBracket.Node).CreateRed();
 		}
 		
-		public FieldSymbolPropertySyntax FieldSymbolProperty(StringLiteralSyntax stringLiteral)
+		public FieldSymbolPropertySyntax FieldSymbolProperty(IdentifierSyntax identifier)
 		{
-			return this.FieldSymbolProperty(this.Token(MetaSyntaxKind.TOpenBracket), stringLiteral, this.Token(MetaSyntaxKind.TCloseBracket));
+			return this.FieldSymbolProperty(this.Token(MetaSyntaxKind.TOpenBracket), identifier, this.Token(MetaSyntaxKind.TCloseBracket));
 		}
 		
 		public FieldContainmentSyntax FieldContainment(SyntaxToken kContainment)

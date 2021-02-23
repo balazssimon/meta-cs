@@ -168,7 +168,7 @@ namespace MetaDslx.Modeling
             GreenList green = this.GetGreen(true);
             for (int i = 0; i < green.Count && arrayIndex + i < array.Length; i++)
             {
-                array[arrayIndex + i] = (T)model.ToRedValue(green[i], this.obj.MId);
+                array[arrayIndex + i] = (T)model.ToRedValue(green[i], this.obj.MId, null);
             }
         }
 
@@ -178,7 +178,7 @@ namespace MetaDslx.Modeling
             GreenList green = this.GetGreen(true);
             foreach (var greenValue in green)
             {
-                yield return (T)model.ToRedValue(greenValue, this.obj.MId);
+                yield return (T)model.ToRedValue(greenValue, this.obj.MId, null);
             }
         }
 
@@ -270,7 +270,7 @@ namespace MetaDslx.Modeling
         private object GetGreen(bool lazyEval)
         {
             var redValue = this.obj.MModel.GetValue(this.obj.MId, this.slot.EffectiveProperty);
-            var tag = this.obj.MModel.GetTag(this.obj.MId, this.slot.EffectiveProperty);
+            var tag = this.obj.MModel.MGetTag(this.obj, this.slot.EffectiveProperty);
             return MutableModel.ToGreenValue(redValue, tag);
         }
 

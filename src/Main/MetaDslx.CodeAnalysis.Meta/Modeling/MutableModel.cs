@@ -426,7 +426,7 @@ namespace MetaDslx.Modeling
             }
         }
 
-        internal object ToRedValue(object value, ObjectId context)
+        internal object ToRedValue(object value, ObjectId context, ModelProperty property)
         {
             if (value is GreenDerivedValue)
             {
@@ -453,7 +453,7 @@ namespace MetaDslx.Modeling
             }
             else if (value == GreenObject.Unassigned)
             {
-                return null;
+                return property?.DefaultValue;
             }
             if (value is GreenValueWithTag taggedValue)
             {
@@ -517,7 +517,7 @@ namespace MetaDslx.Modeling
                     ctx = this.BeginUpdate();
                     value = ctx.Updater.GetValue(this.id, oid, slot, true);
                 } while (!this.EndUpdate(ctx));
-                value = this.ToRedValue(value, oid);
+                value = this.ToRedValue(value, oid, property);
             }
             finally
             {
@@ -526,10 +526,25 @@ namespace MetaDslx.Modeling
             return value;
         }
 
-        internal object GetTag(ObjectId oid, ModelProperty property)
+        internal object MGetTag(MutableObjectBase obj, ModelProperty property)
         {
-            object value = this.GetGreenValue(oid, property);
+            object value = this.GetGreenValue(obj.MId, property);
             return GreenObject.ExtractTag(value);
+        }
+
+        internal object MGetTag(MutableObjectBase obj, ModelProperty property, object value)
+        {
+            if (property.IsCollection)
+            {
+                var greenValue = ToGreenValue(value, null);
+                var greenList = this.GetGreenList(obj.MId, property);
+                return greenList.GetTagOf(greenValue);
+            }
+            else
+            {
+                var greenValue = this.GetGreenValue(obj.MId, property);
+                return GreenObject.ExtractTag(greenValue);
+            }
         }
 
         private object GetGreenValue(ObjectId oid, ModelProperty property)
@@ -556,7 +571,7 @@ namespace MetaDslx.Modeling
             }
             else
             {
-                return greenValue == GreenObject.Unassigned || greenValue == property.DefaultValue;
+                return greenValue == GreenObject.Unassigned || object.Equals(greenValue, property.DefaultValue);
             }
         }
 
