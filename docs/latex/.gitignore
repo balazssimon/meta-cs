@@ -1,0 +1,11 @@
+# Temporary files
+*.~*
+*.bak
+_minted*
+*.aux
+*.bbl
+*.blg
+*.synctex.gz
+*.log
+*.out
+*.toc
