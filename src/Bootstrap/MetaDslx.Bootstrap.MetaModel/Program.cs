@@ -22,7 +22,8 @@ namespace MetaDslx.Bootstrap.MetaModel
             Console.WriteLine(coreModel);
 
             //string text = File.ReadAllText(@"..\..\..\..\..\Main\MetaDslx.CodeAnalysis.Meta\Languages\Meta\Model\ImmutableMetaModel.mm");
-            string text = File.ReadAllText(@"..\..\..\ImmutableMetaModel.mm");
+            //string text = File.ReadAllText(@"..\..\..\ImmutableMetaModel.mm");
+            string text = File.ReadAllText(@"..\..\..\PropertiesTestLang.mm");
             //string text = File.ReadAllText(@"..\..\..\Calculator.mm");
             //string text = File.ReadAllText(@"..\..\..\..\..\..\..\soal-cs\Src\Main\MetaDslx.Languages.Soal\Symbols\Soal.mm");
             //string text = File.ReadAllText(@"..\..\..\..\..\Test\WebSequenceDiagramsModel\Symbols\UmlModel.mm");
@@ -68,9 +69,9 @@ namespace MetaDslx.Bootstrap.MetaModel
 
             //var node = tree.GetCompilationUnitRoot().NamespaceDeclaration.NamespaceBody.Declaration[0].ConstDeclaration;
             //var node = tree.GetCompilationUnitRoot().NamespaceDeclaration.NamespaceBody.Declaration[0].ConstDeclaration.TypeReference.SimpleType.ClassType.Qualifier.Identifier[0];
-            var node = tree.GetCompilationUnitRoot().NamespaceDeclaration.NamespaceBody.Declaration[0].ConstDeclaration.Name.Identifier;
-            var info = compilation.GetSemanticModel(tree, true).GetSymbolInfo(node);
-            Console.WriteLine(info.Symbol);
+            //var node = tree.GetCompilationUnitRoot().NamespaceDeclaration.NamespaceBody.Declaration[0].ConstDeclaration.Name.Identifier;
+            //var info = compilation.GetSemanticModel(tree, true).GetSymbolInfo(node);
+            //Console.WriteLine(info.Symbol);
 
             using (StreamWriter writer = new StreamWriter("Model.txt"))
             {

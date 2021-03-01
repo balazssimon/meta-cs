@@ -193,7 +193,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         {
             if (qualifiedName.Length == 0) return ImmutableArray<DeclaredSymbol>.Empty;
             var result = ArrayBuilder<DeclaredSymbol>.GetInstance();
-            result.Add(BindNamespaceOrTypeOrAliasSymbol(qualifiedName[0], false, diagnostics, basesBeingResolved, suppressUseSiteDiagnostics: false, qualifierOpt: null));
+            result.Add(BindNamespaceOrTypeOrAliasSymbol(qualifiedName[0], true, diagnostics, basesBeingResolved, suppressUseSiteDiagnostics: false, qualifierOpt: null));
             ReportDiagnosticsIfObsolete(diagnostics, result[0], qualifiedName[0], hasBaseReceiver: false);
 
             var last = result[0];
