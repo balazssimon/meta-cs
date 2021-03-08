@@ -1,21 +1,20 @@
 ﻿namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Model
 {
+	using MetaDslx.CodeAnalysis.Symbols;
+
 	metamodel TestLanguageAnnotations;
 
-	class NamedElement
+	class NamedElement[DeclaredSymbol]
 	{
-		[Name]
-		string Name;
+		string Name[Name];
 	}
 
-	[Type]
-	class Type
+	class Type[TypeSymbol]
 	{
 	}
 
 	class TypedElement
 	{
-		[Type]
 		Type Type;
 	}
 
@@ -31,21 +30,20 @@
 	{
 	}
 
-	[Scope]
 	class Scope : Declaration
 	{
 	}
 
-	class Namespace : Scope, NamedDeclaration
+	class Namespace[NamespaceSymbol] : Scope, NamedDeclaration
 	{
 	}
 
-	class Class : Type, NamedDeclaration, Scope
+	class Class[NamedTypeSymbol] : Type, NamedDeclaration, Scope
 	{
-		containment list<Property> Properties subsets Declaration.Declarations;
+		containment list<Property> Properties[Members] subsets Declaration.Declarations;
 	}
 
-	class Member : NamedDeclaration
+	class Member[MemberSymbol] : NamedDeclaration
 	{
 	}
 

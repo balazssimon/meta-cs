@@ -1,5 +1,7 @@
 ﻿namespace PilV2.Symbols
 {
+	using MetaDslx.CodeAnalysis.Symbols;
+
 	metamodel Pil;
 
 	const NamedType String = "string";
@@ -19,7 +21,7 @@
 		PilType TargetType;
 	}
 
-	class NamedElement
+	class NamedElement[DeclaredSymbol]
 	{
 		[Name]
 		string Name;
@@ -34,18 +36,16 @@
 	{
 	}
 
-	[Type]
-	class PilType
+	class PilType[TypeSymbol]
 	{
 	}
 
-	class NamedType : PilType, NamedElement
+	class NamedType[NamedTypeSymbol] : PilType, NamedElement
 	{
 	}
 
 	class TypedElement
 	{
-		[Type]
 		PilType Type;
 	}
 
@@ -63,26 +63,25 @@
 
 	class PilObject : NamedType, Declaration
 	{
-		containment list<Port> Ports;
-		containment list<ExternalParameter> ExternalParameters;
-		containment list<Variable> Fields;
-		containment list<Function> Functions;
+		containment list<Port> Ports[Members];
+		containment list<ExternalParameter> ExternalParameters[Members];
+		containment list<Variable> Fields[Members];
+		containment list<Function> Functions[Members];
 	}
 
 	class Port : NamedElement, TypedElement
 	{
 	}
 
-	[Scope]
-	class Query : NamedElement, Declaration
+	class Query : NamedType, Declaration
 	{
-		containment list<Variable> RequestParameters;
-		containment list<Variable> AcceptParameters;
-		containment list<Variable> RefuseParameters;
-		containment list<Variable> CancelParameters;
-		containment list<ExternalParameter> ExternalParameters;
-		containment list<Variable> Fields;
-		containment list<Function> Functions;
+		containment list<Variable> RequestParameters[Members];
+		containment list<Variable> AcceptParameters[Members];
+		containment list<Variable> RefuseParameters[Members];
+		containment list<Variable> CancelParameters[Members];
+		containment list<ExternalParameter> ExternalParameters[Members];
+		containment list<Variable> Fields[Members];
+		containment list<Function> Functions[Members];
 		containment list<QueryObject> Objects;
 	}
 
@@ -95,14 +94,12 @@
 	{
 	}
 
-	[Scope]
 	class Function : NamedElement, StatementBlock, CommentedElement
 	{
 		PilType ReturnType;
 		containment list<Variable> Parameters;
 	}
 	
-	[Scope]
 	class QueryObject : NamedType, Declaration
 	{
 		Query Query;

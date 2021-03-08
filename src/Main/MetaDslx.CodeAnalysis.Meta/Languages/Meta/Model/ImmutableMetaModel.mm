@@ -35,7 +35,7 @@
 
 	abstract class MetaNamedElement[MemberSymbol] : MetaDocumentedElement
 	{
-		string Name["Name"];
+		string Name[Name];
 	}
 
 	abstract class MetaTypedElement : MetaElement
@@ -65,8 +65,8 @@
 	
 	class MetaNamespace[NamespaceSymbol] : MetaDeclaration
 	{
-		containment MetaModel DefinedMetaModel["Members"];
-		containment list<MetaDeclaration> Declarations["Members"];
+		containment MetaModel DefinedMetaModel[Members];
+		containment list<MetaDeclaration> Declarations[Members];
 	}
 
 	association MetaNamespace.Declarations with MetaDeclaration.Namespace;
@@ -108,8 +108,8 @@
 
 	class MetaEnum : MetaNamedType
 	{
-		containment list<MetaEnumLiteral> EnumLiterals["Members"];
-		containment list<MetaOperation> Operations["Members"];
+		containment list<MetaEnumLiteral> EnumLiterals[Members];
+		containment list<MetaOperation> Operations[Members];
 	}
 
 	class MetaEnumLiteral : MetaNamedElement, MetaTypedElement
@@ -130,9 +130,9 @@
 	{
 		SystemType SymbolType;
 		bool IsAbstract;
-		list<MetaClass> SuperClasses["DeclaredBaseTypes"];
-		containment list<MetaProperty> Properties["Members"];
-		containment list<MetaOperation> Operations["Members"];
+		list<MetaClass> SuperClasses[DeclaredBaseTypes];
+		containment list<MetaProperty> Properties[Members];
+		containment list<MetaOperation> Operations[Members];
 		bool ConformsTo(MetaType type);
 		list<MetaClass> GetAllSuperClasses(bool includeSelf);
 		list<MetaProperty> GetAllSuperProperties(bool includeSelf);

@@ -1,4 +1,4 @@
-// NOTE: This is an auto-generated file. However, it will not be regenerated. If you want it to be regenerated, just delete it.
+// NOTE: This is an auto-generated file. However, it will not be changed or regenerated unless you delete it.
 using System;
 using System.Diagnostics;
 using MetaDslx.CodeAnalysis;

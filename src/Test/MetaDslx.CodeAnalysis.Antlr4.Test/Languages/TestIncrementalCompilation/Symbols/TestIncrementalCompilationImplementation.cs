@@ -9,41 +9,6 @@ using System.Threading.Tasks;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 
-namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation.Symbols
-{
-    public static class MetaConstants
-    {
-        private static ImmutableList<IModelObject> types = ImmutableList<IModelObject>.Empty;
-
-        public static ImmutableList<IModelObject> Types
-        {
-            get
-            {
-                if (MetaConstants.types.Count == 0 && TestIncrementalCompilationInstance.IsInitialized)
-                {
-                    ImmutableList<IModelObject>.Builder typesBuilder = ImmutableList.CreateBuilder<IModelObject>();
-                    typesBuilder.Add(TestIncrementalCompilationInstance.Object);
-                    typesBuilder.Add(TestIncrementalCompilationInstance.String);
-                    typesBuilder.Add(TestIncrementalCompilationInstance.Int);
-                    typesBuilder.Add(TestIncrementalCompilationInstance.Long);
-                    typesBuilder.Add(TestIncrementalCompilationInstance.Float);
-                    typesBuilder.Add(TestIncrementalCompilationInstance.Double);
-                    typesBuilder.Add(TestIncrementalCompilationInstance.Byte);
-                    typesBuilder.Add(TestIncrementalCompilationInstance.Bool);
-                    typesBuilder.Add(TestIncrementalCompilationInstance.Void);
-                    typesBuilder.Add(TestIncrementalCompilationInstance.ModelObject);
-                    typesBuilder.Add(TestIncrementalCompilationInstance.NameAttribute);
-                    typesBuilder.Add(TestIncrementalCompilationInstance.TypeAttribute);
-                    typesBuilder.Add(TestIncrementalCompilationInstance.ScopeAttribute);
-                    typesBuilder.Add(TestIncrementalCompilationInstance.BaseScopeAttribute);
-                    typesBuilder.Add(TestIncrementalCompilationInstance.LocalScopeAttribute);
-                    Interlocked.Exchange(ref MetaConstants.types, typesBuilder.ToImmutable());
-                }
-                return MetaConstants.types;
-            }
-        }
-    }
-}
 namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation.Symbols.Internal
 {
     //*

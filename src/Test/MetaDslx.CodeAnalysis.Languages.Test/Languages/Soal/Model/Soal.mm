@@ -41,7 +41,7 @@
 		list<string> GetDocumentationLines();
 	}
 
-	abstract class NamedElement : DocumentedElement
+	abstract class NamedElement[DeclaredSymbol] : DocumentedElement
 	{
 		[Name]
 		string Name;
@@ -49,12 +49,10 @@
 
 	abstract class TypedElement
 	{
-		[Type]
 		SoalType Type;
 	}
 
-	[Type]
-	abstract class SoalType : Declaration
+	abstract class SoalType[NamedTypeSymbol] : Declaration
 	{
 	}
 
@@ -64,12 +62,11 @@
 		derived string FullName;
 	}
 
-	[Scope]
-	class Namespace : Declaration
+	class Namespace[NamespaceSymbol] : Declaration
 	{
 		string Uri;
 		string Prefix;
-		containment list<Declaration> Declarations;
+		containment list<Declaration> Declarations[Members];
 	}
 
 	association Namespace.Declarations with Declaration.Namespace;
@@ -88,7 +85,6 @@
 	{
 	}
 
-	[Scope]
 	class Enum : SoalType
 	{
 		[BaseScope]
@@ -107,18 +103,15 @@
 	{
 	}
 
-	[Scope]
 	class Struct : SoalType
 	{
-		[BaseScope]
-		Struct BaseType;
-		containment list<Property> Properties;
+		Struct BaseType[DeclaredBaseTypes];
+		containment list<Property> Properties[Members];
 	}
 
-	[Scope]
 	class Interface : SoalType
 	{
-		containment list<Operation> Operations;
+		containment list<Operation> Operations[Members];
 	}
 
 	class Database : Interface
@@ -143,16 +136,14 @@
 		bool IsOneway;
 	}
 
-	[Scope]
 	class Component : Declaration
 	{
-		[BaseScope]
-		Component BaseComponent;
+		Component BaseComponent[DeclaredBaseTypes];
 		bool IsAbstract;
-		containment list<Port> Ports;
+		containment list<Port> Ports[Members];
 		containment list<Service> Services subsets Ports;
 		containment list<Reference> References subsets Ports;
-		containment list<Property> Properties;
+		containment list<Property> Properties[Members];
 		containment Implementation Implementation;
 		containment ProgrammingLanguage Language;
 	}

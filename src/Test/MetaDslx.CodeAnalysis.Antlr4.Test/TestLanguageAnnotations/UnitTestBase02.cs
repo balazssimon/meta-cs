@@ -1,4 +1,5 @@
 ﻿using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Model;
+using MetaDslx.Modeling;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestLanguageAnnotations
         public void File01()
         {
             var comp = Compile(TestId, "01");
-            var model = comp.Model;
+            var model = ((MutableModel)comp.Model).ToImmutable();
             var modelObjects = model.Objects.ToList();
             Assert.Equal(4, modelObjects.Count);
             var ns1 = Assert.IsAssignableFrom<Namespace>(modelObjects[0]);
@@ -35,7 +36,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestLanguageAnnotations
         public void File02()
         {
             var comp = Compile(TestId, "02");
-            var model = comp.Model;
+            var model = ((MutableModel)comp.Model).ToImmutable();
             var modelObjects = model.Objects.ToList();
             Assert.Equal(4, modelObjects.Count);
             var ns1 = Assert.IsAssignableFrom<Namespace>(modelObjects[0]);
@@ -55,7 +56,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestLanguageAnnotations
         public void File03()
         {
             var comp = Compile(TestId, "03");
-            var model = comp.Model;
+            var model = ((MutableModel)comp.Model).ToImmutable();
             var modelObjects = model.Objects.ToList();
             Assert.Equal(8, modelObjects.Count);
             var ns1 = Assert.IsAssignableFrom<Namespace>(modelObjects[0]);
@@ -87,7 +88,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestLanguageAnnotations
         public void File04()
         {
             var comp = Compile(TestId, "04");
-            var model = comp.Model;
+            var model = ((MutableModel)comp.Model).ToImmutable();
             var modelObjects = model.Objects.ToList();
             Assert.Equal(4, modelObjects.Count);
             var ns1 = Assert.IsAssignableFrom<Namespace>(modelObjects[0]);
@@ -107,7 +108,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestLanguageAnnotations
         public void File05()
         {
             var comp = Compile(TestId, "05");
-            var model = comp.Model;
+            var model = ((MutableModel)comp.Model).ToImmutable();
             var modelObjects = model.Objects.ToList();
             Assert.Equal(4, modelObjects.Count);
             var ns1 = Assert.IsAssignableFrom<Namespace>(modelObjects[0]);
@@ -127,7 +128,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestLanguageAnnotations
         public void File06()
         {
             var comp = Compile(TestId, "06");
-            var model = comp.Model;
+            var model = ((MutableModel)comp.Model).ToImmutable();
             var modelObjects = model.Objects.ToList();
             Assert.Equal(4, modelObjects.Count);
             var ns1 = Assert.IsAssignableFrom<Namespace>(modelObjects[0]);
@@ -147,7 +148,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestLanguageAnnotations
         public void File07()
         {
             var comp = Compile(TestId, "07");
-            var model = comp.Model;
+            var model = ((MutableModel)comp.Model).ToImmutable();
             var modelObjects = model.Objects.ToList();
             Assert.Equal(8, modelObjects.Count);
             var ns1 = Assert.IsAssignableFrom<Namespace>(modelObjects[0]);
