@@ -29,23 +29,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Antlr4Roslyn Update="Languages\PilV2\Syntax\InternalSyntax\PilLexer.ag4">
-      <CustomToolNamespace>PilV2.Syntax.InternalSyntax</CustomToolNamespace>
-    </Antlr4Roslyn>
-    <Antlr4Roslyn Update="Languages\PilV2\Syntax\InternalSyntax\PilParser.ag4">
-      <CustomToolNamespace>PilV2.Syntax.InternalSyntax</CustomToolNamespace>
-    </Antlr4Roslyn>
     <Antlr4Roslyn Update="Languages\RailDsl\Syntax\RailDslLexer.ag4">
       <CustomToolNamespace>RailDsl.Syntax</CustomToolNamespace>
     </Antlr4Roslyn>
     <Antlr4Roslyn Update="Languages\RailDsl\Syntax\RailDslParser.ag4">
       <CustomToolNamespace>RailDsl.Syntax</CustomToolNamespace>
     </Antlr4Roslyn>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Languages\PilV2\" />
-    <Folder Include="Languages\PilV2\Errors\" />
   </ItemGroup>
 
 </Project>

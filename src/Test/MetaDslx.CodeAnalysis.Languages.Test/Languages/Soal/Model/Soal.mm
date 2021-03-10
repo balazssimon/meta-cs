@@ -1,5 +1,7 @@
 ﻿namespace MetaDslx.CodeAnalysis.Languages.Test.Languages.Soal.Model
 {
+	using MetaDslx.CodeAnalysis.Symbols;
+
 	metamodel Soal(Uri="http://MetaDslx.Languages.Soal/1.0");
 
 	const PrimitiveType Object;
@@ -43,8 +45,7 @@
 
 	abstract class NamedElement[DeclaredSymbol] : DocumentedElement
 	{
-		[Name]
-		string Name;
+		string Name[Name];
 	}
 
 	abstract class TypedElement
@@ -87,8 +88,7 @@
 
 	class Enum : SoalType
 	{
-		[BaseScope]
-		Enum BaseType;
+		Enum BaseType[DeclaredBaseTypes];
 		containment list<EnumLiteral> EnumLiterals;
 	}
 
@@ -136,7 +136,7 @@
 		bool IsOneway;
 	}
 
-	class Component : Declaration
+	class Component[NamedTypeSymbol] : Declaration
 	{
 		Component BaseComponent[DeclaredBaseTypes];
 		bool IsAbstract;

@@ -373,6 +373,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         private Members BuildMembers(DiagnosticBag diagnostics)
         {
             var builder = new MembersBuilder(_symbol, _state);
+            _symbol.ForceComplete(CompletionPart.FinishChildrenCreated, null, default);
             AddTypeMembers(builder.TypeMembers, diagnostics);
             AddNonTypeMembers(builder.NonTypeMembers, diagnostics);
 
