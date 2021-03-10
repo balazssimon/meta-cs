@@ -48,8 +48,7 @@
 
 	abstract class NamedElement
 	{
-		[Name]
-		string Name;
+		string Name[Name];
 	}
 
 	class Station

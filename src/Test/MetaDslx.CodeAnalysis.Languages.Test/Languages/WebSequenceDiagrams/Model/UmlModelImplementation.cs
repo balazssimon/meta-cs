@@ -9,14 +9,25 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 
 
-namespace RailDsl.Model.Internal
+namespace MetaDslx.CodeAnalysis.Languages.Test.Languages.WebSequenceDiagrams.Model.Internal
 {
 	/// <summary>
 	/// Class for implementing the behavior of the model elements.
 	/// </summary>
-	internal class RailDslImplementation : RailDslImplementationBase
+	internal class UmlImplementation : UmlImplementationBase
 	{
-
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	}
 }

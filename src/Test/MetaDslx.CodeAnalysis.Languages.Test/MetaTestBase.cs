@@ -1,4 +1,5 @@
 ﻿using MetaDslx.CodeAnalysis.Binding;
+using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.Languages.Meta;
 using MetaDslx.Languages.Meta.Model;
 using MetaDslx.Tests;
@@ -31,7 +32,8 @@ namespace MetaDslx.CodeAnalysis.Languages.Test
                 Create("MetaModelCompilation").
                 AddSyntaxTrees(st).
                 AddReferences(
-                    ModelReference.CreateFromModel(MetaInstance.MModel)
+                    ModelReference.CreateFromModel(MetaInstance.MModel),
+                    MetadataReference.CreateFromFile(typeof(Symbol).Assembly.Location)
                     ).
                 WithOptions(options);
             compilation.ForceComplete();

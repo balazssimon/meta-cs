@@ -1,22 +1,22 @@
 ﻿namespace MetaDslx.CodeAnalysis.Languages.Test.Languages.WebSequenceDiagrams.Model
 {
+	using MetaDslx.CodeAnalysis.Symbols;
+
 	metamodel Uml;
 
-	[Scope]
-	class Interaction
+	class Interaction[NamespaceSymbol]
 	{
-		string Name;
-		containment list<Declaration> Declarations;
+		string Name[Name];
+		containment list<Declaration> Declarations[Members];
 	}
 
 	class Declaration
 	{
 	}
 
-	class Lifeline : Declaration
+	class Lifeline[MemberSymbol] : Declaration
 	{
-		[Name]
-		string Name;
+		string Name[Name];
 	}
 
 	enum MessageKind
@@ -61,12 +61,11 @@
 		Ref
 	}
 
-	[Scope]
-	class Fragment : Declaration
+	class Fragment[NamespaceSymbol] : Declaration
 	{
 		FragmentKind Kind;
 		string Text;
-		containment list<Declaration> Declarations;
+		containment list<Declaration> Declarations[Members];
 	}
 
 	class MultiFragment : Declaration
