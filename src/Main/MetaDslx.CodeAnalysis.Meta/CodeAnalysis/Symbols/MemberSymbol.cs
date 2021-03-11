@@ -11,6 +11,10 @@ namespace MetaDslx.CodeAnalysis.Symbols
 {
     public abstract class MemberSymbol : DeclaredSymbol, IMetaMemberSymbol
     {
+        public sealed override LanguageSymbolKind Kind => LanguageSymbolKind.Member;
+
+        public abstract MemberKind MemberKind { get; }
+
         public override ImmutableArray<Symbol> ChildSymbols => GetMembers().Cast<DeclaredSymbol, Symbol>();
 
         public virtual bool IsImplementableMember => !this.IsStatic;

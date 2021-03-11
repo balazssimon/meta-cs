@@ -25,6 +25,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
         {
         }
 
+        public override MemberKind MemberKind => MemberKind.Method;
+
         public abstract MethodKind MethodKind { get; }
 
         bool IMethodSymbolInternal.IsIterator => throw new NotImplementedException();

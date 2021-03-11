@@ -265,13 +265,13 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                     Debug.Assert(_state.HasComplete(CompletionPart.StartValidatingReferencedAssemblies));
                     _state.SpinWaitComplete(CompletionPart.FinishValidatingReferencedAssemblies, cancellationToken);
                 }
-                else if (incompletePart == CompletionPart.MembersCompleted)
+                else if (incompletePart == CompletionPart.ChildrenCompleted)
                 {
                     this.GlobalNamespace.ForceComplete(null, locationOpt, cancellationToken);
 
-                    if (this.GlobalNamespace.HasComplete(CompletionPart.MembersCompleted))
+                    if (this.GlobalNamespace.HasComplete(CompletionPart.ChildrenCompleted))
                     {
-                        _state.NotePartComplete(CompletionPart.MembersCompleted);
+                        _state.NotePartComplete(CompletionPart.ChildrenCompleted);
                     }
                     else
                     {

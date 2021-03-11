@@ -32,7 +32,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         private ImmutableArray<NamedTypeSymbol> _lazyDeclaredBases;
         private ImmutableArray<NamedTypeSymbol> _lazyBaseTypes;
         private ImmutableArray<(CompletionPart start, CompletionPart finish)> _phaseBinders;
+        private ImmutableArray<Symbol> _childSymbols;
         private DiagnosticBag _diagnostics;
+
         public SourceNamedTypeSymbol(
             Symbol containingSymbol,
             object modelObject,
@@ -49,7 +51,19 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         public override MergedDeclaration MergedDeclaration => _declaration;
 
-        public override ImmutableArray<Symbol> ChildSymbols => _declaration.Children.Where(decl => decl.Symbol != null).Select(decl => decl.Symbol).ToImmutableArray();
+        public override ImmutableArray<Symbol> ChildSymbols
+        {
+            get
+            {
+                if (_childSymbols.IsDefault)
+                {
+                    this.ForceComplete(CompletionPart.FinishChildrenCreated, null, default);
+                    var childSymbols = _declaration.Children.Where(decl => decl.Symbol != null).Select(decl => decl.Symbol).ToImmutableArray();
+                    ImmutableInterlocked.InterlockedInitialize(ref _childSymbols, childSymbols);
+                }
+                return _childSymbols;
+            }
+        }
 
         public ImmutableArray<Diagnostic> Diagnostics => _diagnostics != null ? _diagnostics.ToReadOnly() : ImmutableArray<Diagnostic>.Empty;
 
@@ -238,7 +252,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                         diagnostics.Free();
                     }
                 }
-                else if (incompletePart == CompletionPart.MembersCompleted)
+                else if (incompletePart == CompletionPart.ChildrenCompleted)
                 {
                     // ensure relevant imports are complete.
                     var diagnostics = DiagnosticBag.GetInstance();
@@ -278,7 +292,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
                     // We've completed all members, so we're ready for the PointedAtManagedTypeChecks;
                     // proceed to the next iteration.
-                    _state.NotePartComplete(CompletionPart.MembersCompleted);
+                    _state.NotePartComplete(CompletionPart.ChildrenCompleted);
                 }
                 else if (incompletePart == null)
                 {
@@ -459,7 +473,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 var baseTypeObjects = symbolFacts.GetPropertyValues(this.ModelObject, prop);
                 if (baseTypeObjects != null)
                 {
-                    var baseTypeSymbols = SymbolFactory.ResolveSymbols(baseTypeObjects);
+                    var baseTypeSymbols = SymbolFactory.ResolveSymbols(baseTypeObjects.Where(bto => bto != null));
                     foreach (var value in baseTypeSymbols)
                     {
                         var symbol = value as NamedTypeSymbol;

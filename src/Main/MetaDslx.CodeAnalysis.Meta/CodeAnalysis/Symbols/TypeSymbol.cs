@@ -358,7 +358,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <summary>
         /// Gets the kind of this type.
         /// </summary>
-        public virtual LanguageTypeKind TypeKind => LanguageTypeKind.None;
+        public virtual TypeKind TypeKind => TypeKind.None;
 
         /// <summary>
         /// Gets corresponding special TypeId of this type.
@@ -406,7 +406,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         ImmutableArray<INamedTypeSymbol> IMetaTypeSymbol.AllBaseTypes => StaticCast<INamedTypeSymbol>.From(this.AllBaseTypesNoUseSiteDiagnostics);
 
-        TypeKind ITypeSymbol.TypeKind => Language.SymbolFacts.ToCSharpKind(this.TypeKind);
+        Microsoft.CodeAnalysis.TypeKind ITypeSymbol.TypeKind => Language.SymbolFacts.ToCSharpKind(this.TypeKind);
 
         INamedTypeSymbol ITypeSymbol.BaseType => this.BaseTypesNoUseSiteDiagnostics.Where(t => ((ITypeSymbol)t).TypeKind == Microsoft.CodeAnalysis.TypeKind.Class).FirstOrDefault();
 

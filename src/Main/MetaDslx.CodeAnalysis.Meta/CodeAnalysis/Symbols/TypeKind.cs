@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-    public class LanguageTypeKind : EnumObject
+    public class TypeKind : EnumObject
     {
         /// <summary>
         /// Type is an unknown type.
@@ -57,30 +57,30 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         public const string Error = nameof(Error);
 
-        protected LanguageTypeKind(string name)
+        protected TypeKind(string name)
             : base(name)
         {
         }
 
-        protected LanguageTypeKind(EnumObject retargetedValue)
+        protected TypeKind(EnumObject retargetedValue)
             : base(retargetedValue)
         {
         }
 
-        static LanguageTypeKind()
+        static TypeKind()
         {
-            EnumObject.RegisterDefault<LanguageTypeKind>(None);
-            EnumObject.AutoInit<LanguageTypeKind>();
+            EnumObject.RegisterDefault<TypeKind>(None);
+            EnumObject.AutoInit<TypeKind>();
         }
 
-        public static implicit operator LanguageTypeKind(string name)
+        public static implicit operator TypeKind(string name)
         {
-            return FromString<LanguageTypeKind>(name);
+            return FromString<TypeKind>(name);
         }
 
-        public static explicit operator LanguageTypeKind(int value)
+        public static explicit operator TypeKind(int value)
         {
-            return FromIntUnsafe<LanguageTypeKind>(value);
+            return FromIntUnsafe<TypeKind>(value);
         }
     }
 }

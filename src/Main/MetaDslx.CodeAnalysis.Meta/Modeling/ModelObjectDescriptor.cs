@@ -194,7 +194,14 @@ namespace MetaDslx.Modeling
 
         public string Name => this.ImmutableType.Name;
 
-        public Type SymbolType => this.symbolType;
+        public Type SymbolType
+        {
+            get
+            {
+                if (!this.initialized) this.Initialize();
+                return this.symbolType;
+            }
+        }
 
         public Type ImmutableType
         {
@@ -289,11 +296,32 @@ namespace MetaDslx.Modeling
             }
         }
 
-        public ImmutableArray<ModelProperty> DeclaredProperties { get { return this.declaredProperties; } }
-        public ImmutableArray<ModelProperty> AllProperties { get { return this.allProperties; } }
-        public ImmutableArray<ModelProperty> Properties { get { return this.properties; } }
+        public ImmutableArray<ModelProperty> DeclaredProperties
+        {
+            get
+            {
+                if (!this.initialized) this.Initialize();
+                return this.declaredProperties;
+            }
+        }
+        public ImmutableArray<ModelProperty> AllProperties 
+        {
+            get
+            {
+                if (!this.initialized) this.Initialize();
+                return this.allProperties;
+            }
+        }
+        public ImmutableArray<ModelProperty> Properties 
+        {
+            get
+                    {
+                if (!this.initialized) this.Initialize();
+                return this.properties;
+            }
+        }
 
-        public ModelProperty NameProperty
+public ModelProperty NameProperty
         {
             get
             {

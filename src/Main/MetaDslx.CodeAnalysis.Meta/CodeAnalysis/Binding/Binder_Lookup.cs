@@ -151,25 +151,25 @@ namespace MetaDslx.CodeAnalysis.Binding
             TypeSymbol type = (TypeSymbol)constraints.QualifierOpt;
             switch (type.TypeKind.Switch())
             {
-                case LanguageTypeKind.NamedType:
-                case LanguageTypeKind.Enum:
-                case LanguageTypeKind.Dynamic:
+                case Symbols.TypeKind.NamedType:
+                case Symbols.TypeKind.Enum:
+                case Symbols.TypeKind.Dynamic:
                     this.LookupMembersInTypeCore(result, constraints);
                     break;
 
-                case LanguageTypeKind.Submission:
+                case Symbols.TypeKind.Submission:
                     this.LookupMembersInSubmissions(result, constraints);
                     break;
 
-                case LanguageTypeKind.Error:
+                case Symbols.TypeKind.Error:
                     LookupMembersInErrorType(result, constraints);
                     break;
 
-                case LanguageTypeKind.Constructed:
+                case Symbols.TypeKind.Constructed:
                     result.Clear();
                     break;
 
-                case LanguageTypeKind.None:
+                case Symbols.TypeKind.None:
                 default:
                     throw ExceptionUtilities.UnexpectedValue(type.TypeKind);
             }
@@ -751,7 +751,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// </remarks>
         private static bool IsMethodOrIndexer(Symbol symbol)
         {
-            return symbol.Kind == LanguageSymbolKind.Operation; // TODO:MetaDslx || symbol.IsIndexer();
+            return symbol.Kind == LanguageSymbolKind.Member && ((MemberSymbol)symbol).MemberKind == MemberKind.Method; // TODO:MetaDslx || symbol.IsIndexer();
         }
 
         public static ImmutableArray<DeclaredSymbol> GetCandidateMembers(LookupConstraints constraints)
@@ -1024,8 +1024,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         {
             switch (symbol.Kind.Switch())
             {
-                case LanguageSymbolKind.Operation:
-                case LanguageSymbolKind.Property:
+                case LanguageSymbolKind.Member:
                 case LanguageSymbolKind.NamedType:
                     return !IsInvocableMember(symbol);
 
@@ -1043,8 +1042,8 @@ namespace MetaDslx.CodeAnalysis.Binding
 
             switch (symbol.Kind.Switch())
             {
-                case LanguageSymbolKind.Operation:
-                    return true;
+                case LanguageSymbolKind.Member:
+                    return ((MemberSymbol)symbol).MemberKind == MemberKind.Method;
             }
 
             // TODO:MetaDslx - delegate typed members
@@ -1056,9 +1055,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         {
             switch (symbol.Kind.Switch())
             {
-                case LanguageSymbolKind.Name:
-                case LanguageSymbolKind.Property:
-                case LanguageSymbolKind.Operation:
+                case LanguageSymbolKind.Member:
                     return !symbol.IsStatic;
                 default:
                     return false;
@@ -1118,14 +1115,14 @@ namespace MetaDslx.CodeAnalysis.Binding
             TypeSymbol type = (TypeSymbol)constraints.QualifierOpt;
             switch (type.TypeKind.Switch())
             {
-                case LanguageTypeKind.NamedType:
-                case LanguageTypeKind.Enum:
-                case LanguageTypeKind.Dynamic:
-                case LanguageTypeKind.Constructed:
+                case Symbols.TypeKind.NamedType:
+                case Symbols.TypeKind.Enum:
+                case Symbols.TypeKind.Dynamic:
+                case Symbols.TypeKind.Constructed:
                     this.AddMemberLookupSymbolsInfoInTypeCore(result, constraints.WithAccessThroughType(type));
                     break;
 
-                case LanguageTypeKind.Submission:
+                case Symbols.TypeKind.Submission:
                     this.AddMemberLookupSymbolsInfoInSubmissions(result, constraints);
                     break;
             }

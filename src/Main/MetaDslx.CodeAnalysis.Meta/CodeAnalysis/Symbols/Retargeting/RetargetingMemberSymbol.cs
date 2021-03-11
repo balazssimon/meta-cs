@@ -40,6 +40,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
             _retargetingModule = retargetingModule;
         }
 
+        public override MemberKind MemberKind => _underlyingMember.MemberKind;
+
         private RetargetingModuleSymbol.RetargetingSymbolTranslator RetargetingTranslator
         {
             get

@@ -160,5 +160,41 @@ namespace MetaDslx.CodeAnalysis.Symbols
         {
             return DefaultVisit(symbol, argument);
         }
+
+        /// <summary>
+        /// Called when visiting an <see cref="LocalSymbol" />; Override this with specific
+        /// implementation; Calling default <see cref="DefaultVisit" /> if it's not overridden 
+        /// </summary>
+        /// <param name="symbol">The visited symbol</param>
+        /// <param name="argument">Additional argument</param>
+        /// <returns></returns>
+        public virtual TResult VisitLocal(LocalSymbol symbol, TArgument argument)
+        {
+            return DefaultVisit(symbol, argument);
+        }
+
+        /// <summary>
+        /// Called when visiting an <see cref="StatementSymbol" />; Override this with specific
+        /// implementation; Calling default <see cref="DefaultVisit" /> if it's not overridden 
+        /// </summary>
+        /// <param name="symbol">The visited symbol</param>
+        /// <param name="argument">Additional argument</param>
+        /// <returns></returns>
+        public virtual TResult VisitStatement(StatementSymbol symbol, TArgument argument)
+        {
+            return DefaultVisit(symbol, argument);
+        }
+
+        /// <summary>
+        /// Called when visiting an <see cref="ExpressionSymbol" />; Override this with specific
+        /// implementation; Calling default <see cref="DefaultVisit" /> if it's not overridden 
+        /// </summary>
+        /// <param name="symbol">The visited symbol</param>
+        /// <param name="argument">Additional argument</param>
+        /// <returns></returns>
+        public virtual TResult VisitExpression(ExpressionSymbol symbol, TArgument argument)
+        {
+            return DefaultVisit(symbol, argument);
+        }
     }
 }

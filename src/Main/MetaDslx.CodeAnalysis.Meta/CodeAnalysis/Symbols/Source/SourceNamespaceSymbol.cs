@@ -27,6 +27,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         private readonly CompletionState _state;
         private SourceDeclaration _sourceDeclaration;
         private ImmutableArray<(CompletionPart start, CompletionPart finish)> _phaseBinders;
+        private ImmutableArray<Symbol> _childSymbols;
         private DiagnosticBag _diagnostics;
 
         public SourceNamespaceSymbol(
@@ -46,7 +47,19 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         public override MergedDeclaration MergedDeclaration => _declaration;
 
-        public override ImmutableArray<Symbol> ChildSymbols => _declaration.Children.Where(decl => decl.Symbol != null).Select(decl => decl.Symbol).ToImmutableArray();
+        public override ImmutableArray<Symbol> ChildSymbols
+        {
+            get
+            {
+                if (_childSymbols.IsDefault)
+                {
+                    this.ForceComplete(CompletionPart.FinishChildrenCreated, null, default);
+                    var childSymbols = _declaration.Children.Where(decl => decl.Symbol != null).Select(decl => decl.Symbol).ToImmutableArray();
+                    ImmutableInterlocked.InterlockedInitialize(ref _childSymbols, childSymbols);
+                }
+                return _childSymbols;
+            }
+        }
 
         public override AssemblySymbol ContainingAssembly => _module.ContainingAssembly;
 
@@ -276,7 +289,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                         diagnostics.Free();
                     }
                 }
-                else if (incompletePart == CompletionPart.MembersCompleted)
+                else if (incompletePart == CompletionPart.ChildrenCompleted)
                 {
                     // ensure relevant imports are complete.
                     var diagnostics = DiagnosticBag.GetInstance();
@@ -320,7 +333,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
                     if (allCompleted)
                     {
-                        _state.NotePartComplete(CompletionPart.MembersCompleted);
+                        _state.NotePartComplete(CompletionPart.ChildrenCompleted);
                     }
                     else
                     {

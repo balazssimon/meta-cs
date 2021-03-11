@@ -77,11 +77,14 @@ namespace MetaDslx.CodeAnalysis.Declarations
                 return _symbol;
             }
             var symbol = symbolFactory.MakeSourceSymbol(container, ModelObjectType, this);
-            var mobj = (symbol as IModelSourceSymbol)?.ModelObject;
-            Debug.Assert(mobj != null);
             if (Interlocked.CompareExchange(ref _symbol, symbol, null) != null)
             {
                 symbolFactory.RemoveSymbol(symbol);
+            }
+            if (_symbol.Kind != LanguageSymbolKind.ErrorType)
+            {
+                var mobj = (_symbol as IModelSourceSymbol)?.ModelObject;
+                Debug.Assert(mobj != null);
             }
             return _symbol;
         }

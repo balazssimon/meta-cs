@@ -416,9 +416,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 {
                     switch (this.Kind.Switch())
                     {
-                        case LanguageSymbolKind.Name:
-                        case LanguageSymbolKind.Operation:
-                        case LanguageSymbolKind.Property:
+                        case LanguageSymbolKind.Member:
                             info = new LanguageDiagnosticInfo(InternalErrorCode.ERR_BindToBogus, this);
                             break;
                     }

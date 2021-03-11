@@ -107,34 +107,45 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                         if (childSingleDeclaration != null)
                         {
                             var objectProperty = symbolFacts.GetProperty(ModelObject, childSingleDeclaration.NestingProperty);
-                            CreateChildSymbol(childSingleDeclaration.Location, childDeclaration, symbolPartReference, childSingleDeclaration.ModelObjectType, childSingleDeclaration.NestingProperty, objectProperty, diagnostics, cancellationToken);
+                            var childSymbol = CreateChildSymbol(childSingleDeclaration.Location, childDeclaration, diagnostics, cancellationToken);
+                            if (childSymbol is IModelSourceSymbol childSourceSymbol)
+                            {
+                                var childObject = childSourceSymbol.ModelObject;
+                                symbolFacts.SetOrAddPropertyValue(ModelObject, objectProperty, childObject, childDeclaration.NameLocations.FirstOrDefault(), diagnostics);
+                            }
+                            else
+                            {
+                                Debug.Assert(false);
+                            }
+                        }
+                        else
+                        {
+                            CreateChildSymbol(childDeclaration.NameLocations.FirstOrDefault(), childDeclaration, diagnostics, cancellationToken);
+                        }
+                    }
+                }
+            }
+            else if (declaredSymbol != null && declaredSymbol.MergedDeclaration != null)
+            {
+                foreach (var childDeclaration in declaredSymbol.MergedDeclaration.Children)
+                {
+                    if (childDeclaration.Symbol == null)
+                    {
+                        var childSymbol = CreateChildSymbol(childDeclaration.NameLocations.FirstOrDefault(), childDeclaration, diagnostics, cancellationToken);
+                        if (childSymbol is IModelSourceSymbol childSourceSymbol)
+                        {
+                            Debug.Assert(childSourceSymbol.ModelObject != null);
+                        }
+                        else
+                        {
+                            Debug.Assert(false);
                         }
                     }
                 }
             }
             else
-            { 
-                var symbolDef = GetBinder(symbolPartReference);
-                var properties = FindPropertyBinders(symbolDef);
-                foreach (var property in properties)
-                {
-                    var objectProperty = symbolFacts.GetProperty(ModelObject, property.Binder.PropertyName);
-                    var isContainmentProperty = objectProperty != null && symbolFacts.IsContainmentProperty(objectProperty);
-                    if (isContainmentProperty)
-                    {
-                        var values = FindValueBinders(property);
-                        foreach (var value in values)
-                        {
-                            var childBinder = value.Binder as SymbolDefBinder;
-                            if (childBinder == null)
-                            {
-                                AssertionDiagnostic(diagnostics, ModelErrorCode.ERR_MustBeSymbolDefBound.ToDiagnostic(value.Syntax.GetLocation(), property.Binder.PropertyName));
-                                continue;
-                            }
-                            CreateChildSymbols(childBinder, property.Binder.PropertyName, objectProperty, diagnostics, cancellationToken);
-                        }
-                    }
-                }
+            {
+                Debug.Assert(false);
             }
         }
 
@@ -210,10 +221,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             {
                 AssignNameProperty(diagnostics);
             }
-            else if (symbolProperty == SymbolConstants.MembersProperty)
-            {
-                // we have assigned these while child symbols were created
-            }
             else if (symbolProperty != null)
             {
                 AssignSymbolProperty(symbolProperty, diagnostics, cancellationToken);
@@ -252,8 +259,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                     var objectProperty = SymbolFacts.GetProperty(ModelObject, property.Binder.PropertyName);
                     if (objectProperty != null)
                     {
-                        var isContainmentProperty = SymbolFacts.IsContainmentProperty(objectProperty);
-                        if (!isContainmentProperty && objectProperties.Contains(objectProperty))
+                        if (objectProperties.Contains(objectProperty))
                         {
                             var values = FindValueBinders(property);
                             foreach (var value in values)
@@ -278,8 +284,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 foreach (var property in properties)
                 {
                     var objectProperty = SymbolFacts.GetProperty(ModelObject, property.Binder.PropertyName);
-                    var isContainmentProperty = objectProperty != null && SymbolFacts.IsContainmentProperty(objectProperty);
-                    if (!isContainmentProperty && (objectProperty == null || objectProperties.Contains(objectProperty)))
+                    if (objectProperty == null || objectProperties.Contains(objectProperty))
                     {
                         var values = FindValueBinders(property);
                         foreach (var value in values)
@@ -300,7 +305,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         {
             if (valueBinder.Binder is SymbolDefBinder valueSymbolDef)
             {
-                CreateChildSymbols(valueSymbolDef, propertyName, objectProperty, diagnostics, cancellationToken);
+                AssignChildSymbols(valueSymbolDef, propertyName, objectProperty, diagnostics, cancellationToken);
             }
             else
             {
@@ -324,7 +329,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             }
         }
 
-        private void CreateChildSymbols(SymbolDefBinder childBinder, string propertyName, object objectProperty, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        private void AssignChildSymbols(SymbolDefBinder childBinder, string propertyName, object objectProperty, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             var container = childBinder.ContainingDeclaration;
             var symbolPartReference = childBinder.Syntax.GetReference();
@@ -333,34 +338,28 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             {
                 foreach (var childDeclaration in childDeclarations)
                 {
-                    if (childDeclaration.Symbol == null)
+                    if (childDeclaration.Symbol != null)
                     {
                         Debug.Assert(childDeclaration.ModelObjectType == childBinder.ModelObjectType);
                         var childSingleDeclaration = childDeclaration.GetSingleDeclaration(symbolPartReference);
                         Debug.Assert(childSingleDeclaration != null);
-                        CreateChildSymbol(childSingleDeclaration.SyntaxReference.GetLocation(), childDeclaration, symbolPartReference, childBinder.ModelObjectType, propertyName, objectProperty, diagnostics, cancellationToken);
+                        SymbolFacts.SetOrAddPropertyValue(ModelObject, objectProperty, childDeclaration.Symbol, childSingleDeclaration.Location, diagnostics);
+                    }
+                    else
+                    {
+                        Debug.Assert(false);
                     }
                 }
             }
             else
             {
-                CreateChildSymbol(childBinder.Syntax.GetLocation(), null, symbolPartReference, childBinder.ModelObjectType, propertyName, objectProperty, diagnostics, cancellationToken);
+                Debug.Assert(false);
+                //CreateChildSymbol(childBinder.Syntax.GetLocation(), null, symbolPartReference, childBinder.ModelObjectType, propertyName, objectProperty, diagnostics, cancellationToken);
             }
         }
 
-        private void CreateChildSymbol(Location location, MergedDeclaration childDeclaration, SyntaxReference symbolPartReference, Type modelObjectType, string propertyName, object objectProperty, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        private Symbol CreateChildSymbol(Location location, MergedDeclaration childDeclaration, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
-            if (objectProperty == null)
-            {
-                AssertionDiagnostic(diagnostics, ModelErrorCode.ERR_PropertyDoesNotExist.ToDiagnostic(location, propertyName, ModelObject));
-                return;
-            }
-            /*var isContainmentProperty = objectProperty != null && SymbolFacts.IsContainmentProperty(objectProperty);
-            if (!isContainmentProperty)
-            {
-                AssertionDiagnostic(diagnostics, ModelErrorCode.ERR_NotContainmentProperty.ToDiagnostic(location, propertyName, ModelObject));
-                return;
-            }*/
             Symbol childSymbol;
             if (childDeclaration != null)
             {
@@ -369,14 +368,20 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             else
             {
                 Debug.Assert(false);
-                childSymbol = SymbolFactory.MakeSourceSymbol(_symbol, modelObjectType, null);
+                childSymbol = null;
             }
-            Debug.Assert(childSymbol != null);
+            if (childSymbol == null || childSymbol.Kind == LanguageSymbolKind.ErrorType)
+            {
+                if (childDeclaration != null)
+                {
+                    AssertionDiagnostic(diagnostics, ModelErrorCode.ERR_CannotCreateSourceDeclaredSymbol.ToDiagnostic(location, SymbolFacts.GetSymbolType(childDeclaration.ModelObjectType), childDeclaration.Name, childDeclaration.ModelObjectType));
+                }
+            }
             if (childSymbol != null)
             {
                 childSymbol.ForceComplete(CompletionPart.FinishCreated, null, cancellationToken);
-                SymbolFacts.SetOrAddPropertyValue(ModelObject, objectProperty, childSymbol, location, diagnostics);
             }
+            return childSymbol;
         }
 
         private void AssertionDiagnostic(DiagnosticBag diagnostics, Diagnostic diagnostic)

@@ -22,13 +22,13 @@ namespace MetaDslx.Bootstrap.MetaModel
             Console.WriteLine(coreModel);
 
             //string text = File.ReadAllText(@"..\..\..\..\..\Main\MetaDslx.CodeAnalysis.Meta\Languages\Meta\Model\ImmutableMetaModel.mm");
-            //string text = File.ReadAllText(@"..\..\..\ImmutableMetaModel.mm");
+            string text = File.ReadAllText(@"..\..\..\ImmutableMetaModel.mm");
             //string text = File.ReadAllText(@"..\..\..\PropertiesTestLang.mm");
             //string text = File.ReadAllText(@"..\..\..\Calculator.mm");
             //string text = File.ReadAllText(@"..\..\..\..\..\..\..\soal-cs\Src\Main\MetaDslx.Languages.Soal\Symbols\Soal.mm");
             //string text = File.ReadAllText(@"..\..\..\..\..\Test\WebSequenceDiagramsModel\Symbols\UmlModel.mm");
             //string text = File.ReadAllText(@"..\..\..\..\..\Test\MetaDslx.CodeAnalysis.Languages.Test\Languages\Soal\Model\Soal.mm");
-            string text = File.ReadAllText(@"..\..\..\..\..\Test\MetaDslx.CodeAnalysis.Meta.Test\Languages\PropertiesTest\PropertiesTestLang.mm");
+            //string text = File.ReadAllText(@"..\..\..\..\..\Test\MetaDslx.CodeAnalysis.Meta.Test\Languages\PropertiesTest\PropertiesTestLang.mm");
             //string text = File.ReadAllText(@"..\..\..\..\..\Main\MetaDslx.Languages.Omg\Mof\Model\Mof.mm");
             //string text = File.ReadAllText(@"..\..\..\..\..\Languages\MetaDslx.Languages.Uml-v2.5.1\Model\Uml.mm");
             //string text = File.ReadAllText(@"..\..\..\..\..\Languages\MetaDslx.Languages.Ecore\Model\Ecore.mm");

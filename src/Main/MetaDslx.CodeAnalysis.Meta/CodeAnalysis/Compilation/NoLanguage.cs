@@ -301,15 +301,15 @@ namespace MetaDslx.CodeAnalysis
                     case SymbolKind.ErrorType:
                         return LanguageSymbolKind.ErrorType;
                     case SymbolKind.Event:
-                        return LanguageSymbolKind.Name;
+                        return LanguageSymbolKind.Member;
                     case SymbolKind.Field:
-                        return LanguageSymbolKind.Name;
+                        return LanguageSymbolKind.Member;
                     case SymbolKind.Label:
-                        return LanguageSymbolKind.Name;
+                        return LanguageSymbolKind.Local;
                     case SymbolKind.Local:
-                        return LanguageSymbolKind.Name;
+                        return LanguageSymbolKind.Local;
                     case SymbolKind.Method:
-                        return LanguageSymbolKind.Operation;
+                        return LanguageSymbolKind.Member;
                     case SymbolKind.NetModule:
                         return LanguageSymbolKind.NetModule;
                     case SymbolKind.NamedType:
@@ -317,17 +317,17 @@ namespace MetaDslx.CodeAnalysis
                     case SymbolKind.Namespace:
                         return LanguageSymbolKind.Namespace;
                     case SymbolKind.Parameter:
-                        return LanguageSymbolKind.Name;
+                        return LanguageSymbolKind.Local;
                     case SymbolKind.PointerType:
                         return LanguageSymbolKind.ConstructedType;
                     case SymbolKind.Property:
-                        return LanguageSymbolKind.Property;
+                        return LanguageSymbolKind.Member;
                     case SymbolKind.RangeVariable:
-                        return LanguageSymbolKind.Name;
+                        return LanguageSymbolKind.Local;
                     case SymbolKind.TypeParameter:
-                        return LanguageSymbolKind.Name;
+                        return LanguageSymbolKind.Local;
                     case SymbolKind.Preprocessing:
-                        return LanguageSymbolKind.Name;
+                        return LanguageSymbolKind.Local;
                     case SymbolKind.Discard:
                         return LanguageSymbolKind.Discard;
                     default:

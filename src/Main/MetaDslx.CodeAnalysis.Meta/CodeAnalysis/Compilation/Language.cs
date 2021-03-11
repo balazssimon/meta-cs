@@ -31,7 +31,7 @@ namespace MetaDslx.CodeAnalysis
             EnumObject.Init(typeof(LanguageVersion));
             EnumObject.Init(typeof(SyntaxKind));
             EnumObject.Init(typeof(LanguageSymbolKind));
-            EnumObject.Init(typeof(LanguageTypeKind));
+            EnumObject.Init(typeof(Symbols.TypeKind));
             _serviceCollection = new ServiceCollection();
             RegisterServices(_serviceCollection);
             _serviceProvider = _serviceCollection.BuildServiceProvider();

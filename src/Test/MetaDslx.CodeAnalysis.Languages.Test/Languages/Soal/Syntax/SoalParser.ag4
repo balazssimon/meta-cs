@@ -379,8 +379,8 @@ returnType
 	
 $SymbolUse(SoalType)
 typeReference 
-	: $SymbolDef(ArrayType) $Property(InnerType) typeReference TOpenBracket TCloseBracket #arrayTypeReference
-	| $SymbolDef(NullableType) $Property(InnerType) typeReference TQuestion #nullableTypeReference
+	: $Property(InnerType) typeReference TOpenBracket TCloseBracket #arrayTypeReference $SymbolDef(ArrayType)
+	| $Property(InnerType) typeReference TQuestion #nullableTypeReference $SymbolDef(NullableType) 
 	| simpleType #simpleTypeReference
 	| qualifier #qualifierReference
 	;

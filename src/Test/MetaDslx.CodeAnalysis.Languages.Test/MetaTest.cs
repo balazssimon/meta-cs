@@ -15,7 +15,7 @@ namespace MetaDslx.CodeAnalysis.Languages.Test
             var comp = Compile(@"..\..\..\..\..\Main\MetaDslx.CodeAnalysis.Meta\Languages\Meta\Model\ImmutableMetaModel.mm");
             var model = ((MutableModel)comp.Model).ToImmutable();
             var modelSymbols = model.Objects.ToList();
-            Assert.Equal(137, modelSymbols.Count);
+            Assert.Equal(135, modelSymbols.Count);
         }
 
         [Fact]

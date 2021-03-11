@@ -51,15 +51,29 @@ namespace MetaDslx.CodeAnalysis.Symbols
             DefaultVisit(symbol);
         }
 
-        public virtual void VisitNamedType(NamedTypeSymbol symbol)
-        {
-            DefaultVisit(symbol);
-        }
-
         public virtual void VisitNamespace(NamespaceSymbol symbol)
         {
             DefaultVisit(symbol);
         }
 
+        public virtual void VisitNamedType(NamedTypeSymbol symbol)
+        {
+            DefaultVisit(symbol);
+        }
+
+        public virtual void VisitLocal(LocalSymbol symbol)
+        {
+            DefaultVisit(symbol);
+        }
+
+        public virtual void VisitStatement(StatementSymbol symbol)
+        {
+            DefaultVisit(symbol);
+        }
+
+        public virtual void VisitExpression(ExpressionSymbol symbol)
+        {
+            DefaultVisit(symbol);
+        }
     }
 }

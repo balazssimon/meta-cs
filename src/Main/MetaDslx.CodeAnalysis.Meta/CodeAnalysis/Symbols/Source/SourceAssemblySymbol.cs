@@ -775,7 +775,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 else if (incompletePart == CompletionPart.Module)
                 {
                     SourceModule.ForceComplete(null, locationOpt, cancellationToken);
-                    if (SourceModule.HasComplete(CompletionPart.MembersCompleted))
+                    if (SourceModule.HasComplete(CompletionPart.ChildrenCompleted))
                     {
                         _state.NotePartComplete(CompletionPart.Module);
                     }

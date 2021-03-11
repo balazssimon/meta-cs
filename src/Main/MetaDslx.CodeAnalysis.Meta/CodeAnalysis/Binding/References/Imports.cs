@@ -800,7 +800,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                     return false;
 
                 // lookup via "using static" ignores extension methods and non-static methods
-                case LanguageSymbolKind.Operation:
+                case LanguageSymbolKind.Member:
                     if (!symbol.IsStatic)
                     {
                         return false;

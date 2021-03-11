@@ -122,7 +122,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             return new BinderPosition(this, GetBinder(this.Syntax), this.Syntax);
         }
 
-        protected BoundNode ParentBoundNode => Next?.BoundNode ?? _compilation.GetBoundTree(Syntax)?.RootNode;
+        protected BoundNode ParentBoundNode => Next?.BoundNode ?? Next?.ParentBoundNode ?? _compilation.GetBoundTree(Syntax)?.RootNode;
 
         internal protected BoundNode BoundNode => _boundNode.Value;
 
@@ -247,9 +247,17 @@ namespace MetaDslx.CodeAnalysis.Binding
                 var containingMember = this.ContainingDeclaration;
                 switch (containingMember?.Kind.Switch())
                 {
-                    case LanguageSymbolKind.Operation:
-                        // global statements
-                        return ((MethodSymbol)containingMember).IsScriptInitializer;
+                    case LanguageSymbolKind.Member:
+                        var memberSymbol = (MemberSymbol)containingMember;
+                        if (memberSymbol.MemberKind == MemberKind.Method)
+                        {
+                            // global statements
+                            return ((MethodSymbol)containingMember).IsScriptInitializer;
+                        }
+                        else
+                        {
+                            return false;
+                        }
 
                     case LanguageSymbolKind.NamedType:
                         // script variable initializers
@@ -349,9 +357,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             switch (symbol.Kind.Switch())
             {
                 case LanguageSymbolKind.NamedType:
-                case LanguageSymbolKind.Name:
-                case LanguageSymbolKind.Operation:
-                case LanguageSymbolKind.Property:
+                case LanguageSymbolKind.Member:
                     ReportDiagnosticsIfObsolete(diagnostics, symbol, node, hasBaseReceiver, this.ContainingDeclaration, this.ContainingType, this.Flags);
                     break;
             }
@@ -388,7 +394,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             //   2) We don't know what virtual dispatch will do at runtime so an
             //      overriding member is basically a shot in the dark.  Better to
             //      just be consistent and always use the least-overridden member.
-            Symbol leastOverriddenSymbol = symbol.GetConstructedLeastOverriddenMember(containingType);
+            Symbol leastOverriddenSymbol = containingType != null ? symbol.GetConstructedLeastOverriddenMember(containingType) : symbol;
 
             bool checkOverridingSymbol = hasBaseReceiver && !ReferenceEquals(symbol, leastOverriddenSymbol);
             if (checkOverridingSymbol)

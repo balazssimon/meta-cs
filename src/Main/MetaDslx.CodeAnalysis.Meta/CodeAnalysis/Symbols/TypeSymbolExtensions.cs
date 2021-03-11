@@ -43,7 +43,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public static bool IsNamedType(this TypeSymbol type)
         {
             Debug.Assert((object)type != null);
-            return type.TypeKind == LanguageTypeKind.NamedType;
+            return type.TypeKind == TypeKind.NamedType;
         }
 
         public static bool IsErrorType(this TypeSymbol type)
@@ -53,13 +53,13 @@ namespace MetaDslx.CodeAnalysis.Symbols
         }
         public static bool IsDynamic(this TypeSymbol type)
         {
-            return type.TypeKind == LanguageTypeKind.Dynamic;
+            return type.TypeKind == TypeKind.Dynamic;
         }
 
         public static bool IsConstructed(this TypeSymbol type)
         {
             Debug.Assert((object)type != null);
-            return type.TypeKind == LanguageTypeKind.Constructed;
+            return type.TypeKind == TypeKind.Constructed;
         }
 
 

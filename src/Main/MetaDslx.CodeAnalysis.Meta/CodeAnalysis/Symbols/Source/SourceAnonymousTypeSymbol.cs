@@ -13,6 +13,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         {
         }
 
-        public override LanguageTypeKind TypeKind => LanguageTypeKind.AnonymousType;
+        public override TypeKind TypeKind => TypeKind.AnonymousType;
     }
 }

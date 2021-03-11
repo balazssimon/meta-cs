@@ -743,7 +743,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         private bool IsValidWellKnownType(NamedTypeSymbol result)
         {
-            if ((object)result == null || result.TypeKind == LanguageTypeKind.Error)
+            if ((object)result == null || result.TypeKind == TypeKind.Error)
             {
                 return false;
             }

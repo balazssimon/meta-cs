@@ -139,7 +139,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <summary>
         /// Gets the kind of this type.
         /// </summary>
-        public sealed override LanguageTypeKind TypeKind => LanguageTypeKind.Error;
+        public sealed override TypeKind TypeKind => TypeKind.Error;
 
         /// <summary>
         /// Get the symbol that logically contains this symbol. 
@@ -189,18 +189,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             get { return false; }
         }
 
-        #region IErrorTypeSymbol Members
-
-        ImmutableArray<ISymbol> IErrorTypeSymbol.CandidateSymbols
-        {
-            get
-            {
-                return StaticCast<ISymbol>.From(CandidateSymbols);
-            }
-        }
-
-        #endregion IErrorTypeSymbol Members
-
+        ImmutableArray<ISymbol> IErrorTypeSymbol.CandidateSymbols => this.CandidateSymbols.Cast<DeclaredSymbol, ISymbol>();
     }
 
 }

@@ -198,6 +198,10 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 
         public virtual object GetSymbolValue(Symbol symbol, Type expectedType)
         {
+            if (symbol.Kind == LanguageSymbolKind.ErrorType)
+            {
+                return null;
+            }
             if (!expectedType.IsAssignableFrom(symbol.GetType()))
             {
                 if (expectedType == typeof(Type) && symbol is CSharpNamedTypeSymbol cnts) return Type.GetType(GetFullMetadataName(cnts));

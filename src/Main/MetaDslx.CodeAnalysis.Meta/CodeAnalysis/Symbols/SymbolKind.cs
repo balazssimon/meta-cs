@@ -41,19 +41,24 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public const string NamedType = nameof(NamedType);
 
         /// <summary>
-        /// Symbol is a name without members.
+        /// Symbol is a member (e.g. field, property or operation).
         /// </summary>
-        public const string Name = nameof(Name);
+        public const string Member = nameof(Member);
 
         /// <summary>
-        /// Symbol is a property.
+        /// Symbol is a local declaration (e.g. parameter or local variable).
         /// </summary>
-        public const string Property = nameof(Property);
+        public const string Local = nameof(Local);
 
         /// <summary>
-        /// Symbol is an operation.
+        /// Symbol is an expression.
         /// </summary>
-        public const string Operation = nameof(Operation);
+        public const string Expression = nameof(Expression);
+
+        /// <summary>
+        /// Symbol is a statement.
+        /// </summary>
+        public const string Statement = nameof(Statement);
 
         /// <summary>
         /// Symbol is a dynamic type.

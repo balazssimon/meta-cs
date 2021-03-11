@@ -116,7 +116,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             if (type == typeof(NamedTypeSymbol)) return new SourceNamedTypeSymbol(container, modelObject, declaration);
             if (type == typeof(TypeSymbol)) return new SourceAnonymousTypeSymbol(container, modelObject, declaration);
             if (type == typeof(MemberSymbol)) return new SourceMemberSymbol(container, modelObject, declaration);
-            return null;
+            return new UnsupportedModelSymbol(container, modelObject);
         }
 
         public Symbol ResolveSymbol(object modelObject)

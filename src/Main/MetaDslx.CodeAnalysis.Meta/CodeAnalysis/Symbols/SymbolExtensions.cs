@@ -79,7 +79,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return (object)result != null;*/
         }
 
-        private static readonly Func<TypeSymbol, object, bool, bool> s_containsDynamicPredicate = (type, unused1, unused2) => type.TypeKind == LanguageTypeKind.Dynamic;
+        private static readonly Func<TypeSymbol, object, bool, bool> s_containsDynamicPredicate = (type, unused1, unused2) => type.TypeKind == TypeKind.Dynamic;
 
         public static BinderPosition ToBinderPosition(this SyntaxReference reference, LanguageCompilation compilation)
         {

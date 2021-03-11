@@ -1395,7 +1395,7 @@ namespace MetaDslx.CodeAnalysis
                     }
 
                     mainType = mainTypeOrNamespace as NamedTypeSymbol;
-                    if ((object)mainType == null || (mainType.TypeKind != LanguageTypeKind.NamedType))
+                    if ((object)mainType == null || (mainType.TypeKind != Symbols.TypeKind.NamedType))
                     {
                         diagnostics.Add(InternalErrorCode.ERR_MainClassNotClass, mainTypeOrNamespace.Locations.First(), mainTypeOrNamespace);
                         return null;
@@ -2166,7 +2166,7 @@ namespace MetaDslx.CodeAnalysis
                 return true;
             }
 
-            if (symbol.Kind == LanguageSymbolKind.Operation && symbol.IsImplicitlyDeclared && ((MethodSymbol)symbol).MethodKind == MethodKind.Constructor)
+            if (symbol.Kind == LanguageSymbolKind.Member && ((MemberSymbol)symbol).MemberKind == MemberKind.Method && symbol.IsImplicitlyDeclared && ((MethodSymbol)symbol).MethodKind == MethodKind.Constructor)
             {
                 // Include implicitly declared constructor if containing type is included
                 return IsDefinedOrImplementedInSourceTree(symbol.ContainingType, tree, span);

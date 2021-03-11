@@ -26,13 +26,13 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 
         public sealed override Language Language => ContainingModule.Language;
 
+        public override MemberKind MemberKind => MemberKind.None;
+
         public SymbolFactory SymbolFactory => ((IModelSymbol)_container).SymbolFactory;
 
         public object ModelObject => _modelObject;
 
         public Type ModelObjectType => _modelObject != null ? Language.SymbolFacts.GetModelObjectType(_modelObject) : null;
-
-        public sealed override LanguageSymbolKind Kind => LanguageSymbolKind.Name;
 
         public sealed override string Name => _modelObject != null ? Language.SymbolFacts.GetName(_modelObject) : string.Empty;
 

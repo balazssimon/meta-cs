@@ -115,7 +115,6 @@ namespace MetaDslx.CodeAnalysis.Binding
                     // Always assume that error types are accessible.
                     return true;
 
-                case LanguageSymbolKind.Name:
                 case LanguageSymbolKind.Namespace:
                 case LanguageSymbolKind.DynamicType:
                 case LanguageSymbolKind.Assembly:
@@ -123,8 +122,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                     // These types of symbols are always accessible (if visible).
                     return true;
 
-                case LanguageSymbolKind.Operation:
-                case LanguageSymbolKind.Property:
+                case LanguageSymbolKind.Member:
                     if (declaredSymbol.IsStatic)
                     {
                         // static members aren't accessed "through" an "instance" of any type.  So we
@@ -280,7 +278,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                     // type) can access previous submission's private top-level members. Previous
                     // submissions are treated like outer classes for the current submission - the
                     // inner class can access private members of the outer class.
-                    if (containingType.TypeKind == LanguageTypeKind.Submission)
+                    if (containingType.TypeKind == Symbols.TypeKind.Submission)
                     {
                         return true;
                     }
@@ -343,7 +341,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             // It is not an error to define protected member in a sealed Script class, it's just a
             // warning. The member behaves like a private one - it is visible in all subsequent
             // submissions.
-            if (originalContainingType.TypeKind == LanguageTypeKind.Submission)
+            if (originalContainingType.TypeKind == Symbols.TypeKind.Submission)
             {
                 return true;
             }

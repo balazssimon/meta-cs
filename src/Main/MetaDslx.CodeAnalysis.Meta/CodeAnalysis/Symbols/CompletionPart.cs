@@ -64,7 +64,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public static readonly CompletionPart StartProperties = new CompletionPart(nameof(StartProperties));
         public static readonly CompletionPart FinishProperties = new CompletionPart(nameof(FinishProperties));
 
-        public static readonly CompletionPart MembersCompleted = new CompletionPart(nameof(MembersCompleted));
+        public static readonly CompletionPart ChildrenCompleted = new CompletionPart(nameof(ChildrenCompleted));
 
         public static readonly CompletionPart StartCustomBinders = new CompletionPart(nameof(StartCustomBinders));
         public static readonly CompletionPart FinishCustomBinders = new CompletionPart(nameof(FinishCustomBinders));
@@ -74,12 +74,12 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public static readonly ImmutableHashSet<CompletionPart> AssemblySymbolAll =
             Combine(StartCreated, FinishCreated, Attributes, StartAttributeChecks, FinishAttributeChecks, Module, StartValidatingAddedModules, FinishValidatingAddedModules);
         public static readonly ImmutableHashSet<CompletionPart> ModuleSymbolAll =
-            Combine(StartCreated, FinishCreated, Attributes, StartValidatingReferencedAssemblies, FinishValidatingReferencedAssemblies, MembersCompleted);
+            Combine(StartCreated, FinishCreated, Attributes, StartValidatingReferencedAssemblies, FinishValidatingReferencedAssemblies, ChildrenCompleted);
 
         public static readonly ImmutableHashSet<CompletionPart> NamedTypeSymbolWithLocationAll =
             Combine(StartCreated, FinishCreated, Attributes, StartBaseTypes, FinishBaseTypes, StartChildrenCreated, FinishChildrenCreated, Members, TypeMembers, StartProperties, FinishProperties);
         public static readonly ImmutableHashSet<CompletionPart> NamedTypeSymbolAll = 
-            Combine(StartCreated, FinishCreated, Attributes, StartBaseTypes, FinishBaseTypes, StartChildrenCreated, FinishChildrenCreated, Members, TypeMembers, StartProperties, FinishProperties, MembersCompleted);
+            Combine(StartCreated, FinishCreated, Attributes, StartBaseTypes, FinishBaseTypes, StartChildrenCreated, FinishChildrenCreated, Members, TypeMembers, StartProperties, FinishProperties, ChildrenCompleted);
 
         public static readonly ImmutableHashSet<CompletionPart> ImportsAll =
             Combine(StartValidatingImports, FinishValidatingImports);
@@ -87,7 +87,17 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public static readonly ImmutableHashSet<CompletionPart> NamespaceSymbolWithLocationAll =
             Combine(StartCreated, FinishCreated, Attributes, StartChildrenCreated, FinishChildrenCreated, Members, StartProperties, FinishProperties);
         public static readonly ImmutableHashSet<CompletionPart> NamespaceSymbolAll =
-            Combine(StartCreated, FinishCreated, Attributes, StartChildrenCreated, FinishChildrenCreated, Members, StartProperties, FinishProperties, MembersCompleted);
+            Combine(StartCreated, FinishCreated, Attributes, StartChildrenCreated, FinishChildrenCreated, Members, StartProperties, FinishProperties, ChildrenCompleted);
+
+        public static readonly ImmutableHashSet<CompletionPart> MemberSymbolWithLocationAll =
+            Combine(StartCreated, FinishCreated, Attributes, StartChildrenCreated, FinishChildrenCreated, Members, StartProperties, FinishProperties);
+        public static readonly ImmutableHashSet<CompletionPart> MemberSymbolAll =
+            Combine(StartCreated, FinishCreated, Attributes, StartChildrenCreated, FinishChildrenCreated, Members, StartProperties, FinishProperties, ChildrenCompleted);
+
+        public static readonly ImmutableHashSet<CompletionPart> LocalSymbolWithLocationAll =
+            Combine(StartCreated, FinishCreated, Attributes, StartChildrenCreated, FinishChildrenCreated, StartProperties, FinishProperties);
+        public static readonly ImmutableHashSet<CompletionPart> LocalSymbolAll =
+            Combine(StartCreated, FinishCreated, Attributes, StartChildrenCreated, FinishChildrenCreated, StartProperties, FinishProperties, ChildrenCompleted);
 
 
         internal static CompletionGraphBuilder ConstructDefaultCompletionGraph()
@@ -109,7 +119,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             builder.AddLast(CompletionPart.AliasTarget);
             builder.AddLast(CompletionPart.StartProperties);
             builder.AddLast(CompletionPart.FinishProperties);
-            builder.AddLast(CompletionPart.MembersCompleted);
+            builder.AddLast(CompletionPart.ChildrenCompleted);
             builder.AddLast(CompletionPart.StartCustomBinders);
             builder.AddLast(CompletionPart.FinishCustomBinders);
             builder.AddLast(CompletionPart.Module);

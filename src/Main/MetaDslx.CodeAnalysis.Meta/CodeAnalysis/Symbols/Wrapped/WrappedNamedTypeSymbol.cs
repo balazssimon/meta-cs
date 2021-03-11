@@ -96,7 +96,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Wrapped
             }
         }
 
-        public override LanguageTypeKind TypeKind
+        public override TypeKind TypeKind
         {
             get
             {

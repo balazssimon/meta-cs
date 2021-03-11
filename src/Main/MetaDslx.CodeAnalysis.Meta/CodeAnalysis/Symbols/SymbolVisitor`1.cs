@@ -61,5 +61,19 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return DefaultVisit(symbol);
         }
 
+        public virtual TResult VisitLocal(LocalSymbol symbol)
+        {
+            return DefaultVisit(symbol);
+        }
+
+        public virtual TResult VisitStatement(StatementSymbol symbol)
+        {
+            return DefaultVisit(symbol);
+        }
+
+        public virtual TResult VisitExpression(ExpressionSymbol symbol)
+        {
+            return DefaultVisit(symbol);
+        }
     }
 }

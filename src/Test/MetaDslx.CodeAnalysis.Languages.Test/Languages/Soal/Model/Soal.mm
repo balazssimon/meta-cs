@@ -43,7 +43,7 @@
 		list<string> GetDocumentationLines();
 	}
 
-	abstract class NamedElement[DeclaredSymbol] : DocumentedElement
+	abstract class NamedElement[MemberSymbol] : DocumentedElement
 	{
 		string Name[Name];
 	}
@@ -57,7 +57,7 @@
 	{
 	}
 
-	abstract class Declaration : NamedElement, AnnotatedElement
+	abstract class Declaration[MemberSymbol] : NamedElement, AnnotatedElement
 	{
 		Namespace Namespace;
 		derived string FullName;
@@ -92,14 +92,14 @@
 		containment list<EnumLiteral> EnumLiterals;
 	}
 
-	class EnumLiteral : NamedElement, TypedElement, AnnotatedElement
+	class EnumLiteral : Declaration, TypedElement, AnnotatedElement
 	{
 		Enum Enum redefines TypedElement.Type;
 	}
 
 	association EnumLiteral.Enum with Enum.EnumLiterals;
 
-	class Property : NamedElement, TypedElement, AnnotatedElement
+	class Property : Declaration, TypedElement, AnnotatedElement
 	{
 	}
 
@@ -119,7 +119,7 @@
 		list<Struct> Entities;
 	}
 
-	class Operation : NamedElement, AnnotatedElement
+	class Operation : Declaration, AnnotatedElement
 	{
 		string Action;
 		containment list<InputParameter> Parameters;

@@ -26,6 +26,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         private SourceDeclaration _sourceDeclaration;
         private ImmutableArray<(CompletionPart start, CompletionPart finish)> _phaseBinders;
         private DiagnosticBag _diagnostics;
+        private ImmutableArray<Symbol> _childSymbols;
 
         public SourceMemberSymbol(
             Symbol containingSymbol,
@@ -43,7 +44,20 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         public override MergedDeclaration MergedDeclaration => _declaration;
 
-        public override ImmutableArray<Symbol> ChildSymbols => _declaration.Children.Where(decl => decl.Symbol != null).Select(decl => decl.Symbol).ToImmutableArray();
+        public override ImmutableArray<Symbol> ChildSymbols
+        {
+            get
+            {
+                if (_childSymbols.IsDefault)
+                {
+                    this.ForceComplete(CompletionPart.FinishChildrenCreated, null, default);
+                    Debug.Assert(!_declaration.Children.Any(decl => decl.Symbol == null));
+                    var childSymbols = _declaration.Children.Where(decl => decl.Symbol != null).Select(decl => decl.Symbol).ToImmutableArray();
+                    ImmutableInterlocked.InterlockedInitialize(ref _childSymbols, childSymbols);
+                }
+                return _childSymbols;
+            }
+        }
 
         public override AssemblySymbol ContainingAssembly => ContainingSymbol.ContainingAssembly;
 
@@ -191,7 +205,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                         diagnostics.Free();
                     }
                 }
-                else if (incompletePart == CompletionPart.MembersCompleted)
+                else if (incompletePart == CompletionPart.ChildrenCompleted)
                 {
                     // ensure relevant imports are complete.
                     var diagnostics = DiagnosticBag.GetInstance();
@@ -235,7 +249,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
                     if (allCompleted)
                     {
-                        _state.NotePartComplete(CompletionPart.MembersCompleted);
+                        _state.NotePartComplete(CompletionPart.ChildrenCompleted);
                     }
                     else
                     {
@@ -268,7 +282,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                         }
                     }
                     // This assert will trigger if we forgot to handle any of the completion parts
-                    Debug.Assert(!CompletionPart.NamespaceSymbolAll.Contains(incompletePart));
+                    Debug.Assert(!CompletionPart.MemberSymbolAll.Contains(incompletePart));
                     // any other values are completion parts intended for other kinds of symbols
                     _state.NotePartComplete(incompletePart);
                 }
@@ -279,7 +293,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         done:
             // Don't return until we've seen all of the CompletionParts. This ensures all
             // diagnostics have been reported (not necessarily on this thread).
-            var allParts = (locationOpt == null) ? CompletionPart.NamespaceSymbolAll : CompletionPart.NamespaceSymbolWithLocationAll;
+            var allParts = (locationOpt == null) ? CompletionPart.MemberSymbolAll : CompletionPart.MemberSymbolWithLocationAll;
             _state.SpinWaitComplete(allParts, cancellationToken);
         }
 
