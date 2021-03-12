@@ -53,13 +53,21 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
 
         private void ComputeSymbols()
         {
-            if (_identifierSymbols.IsDefault)
+            if (_diagnostics.IsDefault)
             {
                 var binder = this.GetBinder();
-                var diagnostics = DiagnosticBag.GetInstance();
-                var symbols = binder.BindDeclaredSymbol(_identifiers, diagnostics);
-                ImmutableInterlocked.InterlockedInitialize(ref _identifierSymbols, symbols);
-                ImmutableInterlocked.InterlockedInitialize(ref _diagnostics, diagnostics.ToReadOnlyAndFree());
+                if (binder != null)
+                {
+                    var diagnostics = DiagnosticBag.GetInstance();
+                    var symbols = binder.BindDeclaredSymbol(_identifiers, diagnostics);
+                    ImmutableInterlocked.InterlockedInitialize(ref _identifierSymbols, symbols);
+                    ImmutableInterlocked.InterlockedInitialize(ref _diagnostics, diagnostics.ToReadOnlyAndFree());
+                }
+                else
+                {
+                    ImmutableInterlocked.InterlockedInitialize(ref _identifierSymbols, ImmutableArray<DeclaredSymbol>.Empty);
+                    ImmutableInterlocked.InterlockedInitialize(ref _diagnostics, ImmutableArray<Diagnostic>.Empty);
+                }
             }
         }
         

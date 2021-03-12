@@ -51,20 +51,28 @@ namespace MetaDslx.Languages.Meta.Binding
 
         private NamedTypeSymbol GetSymbolTypeSymbol(NamedTypeSymbol symbol)
         {
+            symbol.ForceComplete(CompletionPart.FinishProperties, null, default);
             var mclass = (symbol as IModelSymbol)?.ModelObject as MetaClassBuilder;
-            var symbolType = mclass?.SymbolType;
-            if (symbolType != null)
+            if (mclass != null)
             {
-                var symbolTypeProperty = mclass.MGetProperty("SymbolType");
-                var location = mclass.MGetTag(symbolTypeProperty) as SourceLocation;
-                if (location != null)
+                var symbolType = mclass.MId.Descriptor.SymbolType;
+                if (symbolType != null)
                 {
-                    var syntaxTree = location.SourceTree;
-                    var root = syntaxTree.GetRoot();
-                    var node = root.FindNode(location.SourceSpan);
-                    var symbolTypeBoundNode = this.Compilation.GetBinder(node).Bind(node, default);
-                    var msymbol = (symbolTypeBoundNode as BoundValue).Values.FirstOrDefault() as NamedTypeSymbol;
-                    return msymbol;
+                    var symbolTypeProperty = mclass.MGetProperty("SymbolType");
+                    var location = mclass.MGetTag(symbolTypeProperty) as SourceLocation;
+                    if (location != null)
+                    {
+                        var syntaxTree = location.SourceTree;
+                        var root = syntaxTree.GetRoot();
+                        var node = root.FindNode(location.SourceSpan);
+                        var symbolTypeBoundNode = this.Compilation.GetBinder(node).Bind(node, default);
+                        var msymbol = (symbolTypeBoundNode as BoundValue).Values.FirstOrDefault() as NamedTypeSymbol;
+                        return msymbol;
+                    }
+                }
+                else
+                {
+                    Debug.Assert(false);
                 }
             }
             return null;
@@ -72,7 +80,8 @@ namespace MetaDslx.Languages.Meta.Binding
 
         protected override LookupConstraints AdjustConstraintsFor(SyntaxNodeOrToken lookupSyntax, LookupConstraints constraints)
         {
-            return constraints.WithQualifier(this.SymbolType).WithOptions(LookupOptions.MustBeInstance);
+            var symbolType = this.SymbolType;
+            return constraints.WithQualifier(symbolType).WithOptions(LookupOptions.MustBeInstance);
         }
 
         protected override LookupConstraints AdjustConstraints(LookupConstraints constraints)

@@ -12,6 +12,7 @@ namespace Roslyn.Utilities
     // TODO: make it thread-safe
     public class EnumObject : IEquatable<EnumObject>
     {
+        private static readonly object InitLock = new object();
         private int _value;
         private string _name;
 
@@ -515,7 +516,10 @@ namespace Roslyn.Utilities
 
         public static void Init(Type enumObjectType)
         {
-            RuntimeHelpers.RunClassConstructor(enumObjectType.TypeHandle);
+            lock (InitLock)
+            {
+                RuntimeHelpers.RunClassConstructor(enumObjectType.TypeHandle);
+            }
         }
 
         internal class EnumObjectDescriptor

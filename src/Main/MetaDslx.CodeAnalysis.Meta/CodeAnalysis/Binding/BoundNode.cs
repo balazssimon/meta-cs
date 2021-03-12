@@ -18,6 +18,7 @@ namespace MetaDslx.CodeAnalysis.Binding
     {
         private BoundTree _boundTree;
         private BoundNode _parent;
+        internal int _index;
         private SyntaxNodeOrToken _syntax;
         private ConcurrentDictionary<SyntaxNodeOrToken, BoundNode> _children;
 
@@ -44,8 +45,12 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         public Binder GetBinder()
         {
-            var result = _boundTree.Compilation.GetBinder(_syntax);
-            while (result != null && result.BoundNode != this) result = result.Next;
+            var lowestBinder = _boundTree.Compilation.GetBinder(_syntax);
+            var result = lowestBinder;
+            while (result != null && result._index != _index)
+            {
+                result = result.Next;
+            }
             return result;
         }
 
@@ -57,7 +62,10 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         internal BoundNode TryAddChild(SyntaxNodeOrToken syntax, BoundNode child)
         {
-            if (_children == null) _children = new ConcurrentDictionary<SyntaxNodeOrToken, BoundNode>();
+            if (_children == null)
+            {
+                Interlocked.CompareExchange(ref _children, new ConcurrentDictionary<SyntaxNodeOrToken, BoundNode>(), null);
+            }
             _children.TryAdd(syntax, child);
             return _children[syntax];
         }

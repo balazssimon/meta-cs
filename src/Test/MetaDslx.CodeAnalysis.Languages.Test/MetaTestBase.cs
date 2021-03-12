@@ -26,7 +26,7 @@ namespace MetaDslx.CodeAnalysis.Languages.Test
                 BinderFlags binderFlags2 = BinderFlags.IgnoreMetaLibraryDuplicatedTypes;
                 binderFlags = binderFlags.UnionWith(binderFlags2);
             }
-            MetaCompilationOptions options = new MetaCompilationOptions(OutputKind.NetModule, deterministic: true, concurrentBuild: false,
+            MetaCompilationOptions options = new MetaCompilationOptions(OutputKind.NetModule, //deterministic: true, concurrentBuild: false,
                 topLevelBinderFlags: binderFlags);
             var compilation = MetaCompilation.
                 Create("MetaModelCompilation").

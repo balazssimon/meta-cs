@@ -28,8 +28,8 @@ namespace MetaDslx.CodeAnalysis.Binding
         private readonly LanguageCompilation _compilation;
         private readonly SyntaxNodeOrToken _syntax;
         private readonly Binder _next;
-        private readonly int _index;
-        private Lazy<BoundNode> _boundNode;
+        internal readonly int _index;
+        internal Lazy<BoundNode> _boundNode;
 
         public readonly BinderFlags Flags;
 
@@ -50,8 +50,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             Debug.Assert(next != null);
             if (syntax.IsNull) _syntax = next.Syntax;
             else _syntax = syntax;
-            if (_syntax == next.Syntax) _index = next._index + 1;
-            else _index = 0;
+            _index = next._index + 1;
             _next = next;
             this.Flags = next.Flags;
             _compilation = next._compilation;
@@ -142,7 +141,11 @@ namespace MetaDslx.CodeAnalysis.Binding
             if (result == null)
             {
                 result = CreateBoundNode();
-                if (parent != null && result != null) result = parent.TryAddChild(this.Syntax, result);
+                if (result != null)
+                {
+                    Interlocked.CompareExchange(ref result._index, _index, 0);
+                    if (parent != null) result = parent.TryAddChild(this.Syntax, result);
+                }
             }
             return result;
         }

@@ -10,7 +10,7 @@ namespace MetaDslx.CodeAnalysis.Languages.Test
 {
     public class WebSequenceDiagramsTest : WebSequenceDiagramsTestBase
     {
-        [Fact]
+        /*[Fact]
         public void EverythingTest()
         {
             var comp = Compile("Everything");
@@ -224,6 +224,6 @@ namespace MetaDslx.CodeAnalysis.Languages.Test
             var model = ((MutableModel)comp.Model).ToImmutable();
             var modelObjects = model.Objects.ToList();
             Assert.Equal(11, modelObjects.Count);
-        }
+        }*/
     }
 }

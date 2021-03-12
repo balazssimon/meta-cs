@@ -22,7 +22,7 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
             : base(parent, syntax)
         {
             _symbol = symbol;
-            _diagnostics = ImmutableArray<Diagnostic>.Empty;
+            _diagnostics = default;
         }
 
         public DeclaredSymbol Symbol
@@ -56,23 +56,30 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
 
         private void ComputeSymbol()
         {
-            if (_symbol == null)
+            if (_diagnostics.IsDefault)
             {
                 var binder = this.GetBinder();
-                var boundQualifier = binder.GetBoundQualifier();
-                DeclaredSymbol symbol = null;
-                if (boundQualifier != null)
+                if (binder != null)
                 {
-                    symbol = boundQualifier.GetSymbol(this.Syntax);
-                    ImmutableInterlocked.InterlockedInitialize(ref _diagnostics, ImmutableArray<Diagnostic>.Empty);
+                    var boundQualifier = binder.GetBoundQualifier();
+                    DeclaredSymbol symbol = null;
+                    if (boundQualifier != null)
+                    {
+                        symbol = boundQualifier.GetSymbol(this.Syntax);
+                        ImmutableInterlocked.InterlockedInitialize(ref _diagnostics, ImmutableArray<Diagnostic>.Empty);
+                    }
+                    else
+                    {
+                        var diagnostics = DiagnosticBag.GetInstance();
+                        symbol = binder.BindDeclaredSymbol(this.Syntax, diagnostics);
+                        ImmutableInterlocked.InterlockedInitialize(ref _diagnostics, diagnostics.ToReadOnlyAndFree());
+                    }
+                    Interlocked.CompareExchange(ref _symbol, symbol, null);
                 }
                 else
                 {
-                    var diagnostics = DiagnosticBag.GetInstance();
-                    symbol = binder.BindDeclaredSymbol(this.Syntax, diagnostics);
-                    ImmutableInterlocked.InterlockedInitialize(ref _diagnostics, diagnostics.ToReadOnlyAndFree());
+                    ImmutableInterlocked.InterlockedInitialize(ref _diagnostics, ImmutableArray<Diagnostic>.Empty);
                 }
-                Interlocked.CompareExchange(ref _symbol, symbol, null);
             }
         }
     }

@@ -109,15 +109,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
         {
             if (csharpSymbol == null) return null;
             if (csharpSymbol is CSharpSymbols.AssemblySymbol) throw new ArgumentException("Use GetAssemblySymbol to get an assembly symbol.", nameof(csharpSymbol));
-            if (!map.TryGetValue(csharpSymbol, out Symbol symbol))
-            {
-                symbol = createSymbol(csharpSymbol);
-                if ((object)symbol != null)
-                {
-                    map.Add(csharpSymbol, symbol);
-                }
-            }
-            return (T)symbol;
+            return (T)map.GetValue(csharpSymbol, cs => createSymbol((TCSharp)cs));
         }
 
         public Symbol GetSymbol(CSharpSymbol csharpSymbol)

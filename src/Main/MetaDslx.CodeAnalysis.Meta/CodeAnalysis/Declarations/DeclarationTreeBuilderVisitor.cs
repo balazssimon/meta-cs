@@ -270,7 +270,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             var parentProp = Language.SymbolFacts.GetProperty(parent.ModelObjectType, declaration.ParentProperty);
             if (parent.ModelObjectType == null && declaration.ParentProperty == null || parentProp != null)
             {
-                var isContainment = parentProp != null && Language.SymbolFacts.IsContainmentProperty(parentProp);
+                var isContainment = parentProp == null || Language.SymbolFacts.IsContainmentProperty(parentProp);
                 if (declaration.Names.Count == 0)
                 {
                     SingleDeclaration anonymousDeclaration = new SingleDeclaration(null, kind, declaration.ModelObjectType, declaration.Node.GetReference(), new SourceLocation(declaration.Node), false, declaration.HasImports, false, declaration.ParentProperty, declaration.Members.ToImmutable(), declaration.Properties.ToImmutable(), diagnostics);
