@@ -23,6 +23,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestIncrementalCompilation
     public class IncrementalCompilationTestBase : Antlr4RoslynTestBase
     {
         protected string TestId = string.Empty;
+        public static string InputFileDirectory = @"..\..\..\InputFiles\IncrementalCompilation";
 
         public override Language Language => TestIncrementalCompilationLanguage.Instance;
 

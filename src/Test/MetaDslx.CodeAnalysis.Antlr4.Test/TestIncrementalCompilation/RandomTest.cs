@@ -14,7 +14,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestIncrementalCompilation
         private RandomSourceGenerator _sourceGenerator = new RandomSourceGenerator();
         private static Random s_random = new Random();
 
-        [Fact]
+        [Fact(Skip = "Takes too long")]
         public void TypeRandomSources()
         {
             int count = TestCount;

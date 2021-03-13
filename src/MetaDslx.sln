@@ -56,11 +56,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.BuildTools", "Main
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.Languages.MetaCompiler", "Main\MetaDslx.Languages.MetaCompiler\MetaDslx.Languages.MetaCompiler.csproj", "{1A3CE8C2-274C-42EF-9186-34459E3D9660}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.Bootstrap.MetaModel", "Bootstrap\MetaDslx.Bootstrap.MetaModel\MetaDslx.Bootstrap.MetaModel.csproj", "{85ADE307-270A-4F7F-83B4-2B280B8D551B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.Bootstrap.MetaModel", "Bootstrap\MetaDslx.Bootstrap.MetaModel\MetaDslx.Bootstrap.MetaModel.csproj", "{85ADE307-270A-4F7F-83B4-2B280B8D551B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.Bootstrap.MetaGenerator", "Bootstrap\MetaDslx.Bootstrap.MetaGenerator\MetaDslx.Bootstrap.MetaGenerator.csproj", "{52B362EB-7792-4F90-81C5-487F73F0DF55}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.Bootstrap.MetaGenerator", "Bootstrap\MetaDslx.Bootstrap.MetaGenerator\MetaDslx.Bootstrap.MetaGenerator.csproj", "{52B362EB-7792-4F90-81C5-487F73F0DF55}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.Bootstrap.Antlr4Roslyn", "Bootstrap\MetaDslx.Bootstrap.Antlr4Roslyn\MetaDslx.Bootstrap.Antlr4Roslyn.csproj", "{071978EF-0129-4131-AD91-EB6B0DF151D3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.Bootstrap.Antlr4Roslyn", "Bootstrap\MetaDslx.Bootstrap.Antlr4Roslyn\MetaDslx.Bootstrap.Antlr4Roslyn.csproj", "{071978EF-0129-4131-AD91-EB6B0DF151D3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.Bootstrap.IncrementalCompiler", "Bootstrap\MetaDslx.Bootstrap.IncrementalCompiler\MetaDslx.Bootstrap.IncrementalCompiler.csproj", "{B9BCD87E-7EA0-4ABA-8F3C-145DF8C49826}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -180,6 +182,10 @@ Global
 		{071978EF-0129-4131-AD91-EB6B0DF151D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{071978EF-0129-4131-AD91-EB6B0DF151D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{071978EF-0129-4131-AD91-EB6B0DF151D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9BCD87E-7EA0-4ABA-8F3C-145DF8C49826}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9BCD87E-7EA0-4ABA-8F3C-145DF8C49826}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9BCD87E-7EA0-4ABA-8F3C-145DF8C49826}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9BCD87E-7EA0-4ABA-8F3C-145DF8C49826}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

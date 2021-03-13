@@ -108,7 +108,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 
         string ITokenStream.GetText(Interval interval)
         {
-            return this.Text.ToString(TextSpan.FromBounds(interval.a, interval.b + 1));
+            if (interval.b < interval.a) return string.Empty;
+            else return this.Text.ToString(TextSpan.FromBounds(interval.a, interval.b + 1));
         }
 
         string ITokenStream.GetText()
@@ -118,12 +119,14 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 
         string ITokenStream.GetText(RuleContext ctx)
         {
-            return this.Text.ToString(TextSpan.FromBounds(ctx.SourceInterval.a, ctx.SourceInterval.b + 1));
+            if (ctx.SourceInterval.b < ctx.SourceInterval.a) return string.Empty;
+            else return this.Text.ToString(TextSpan.FromBounds(ctx.SourceInterval.a, ctx.SourceInterval.b + 1));
         }
 
         string ITokenStream.GetText(IToken start, IToken stop)
         {
-            return this.Text.ToString(TextSpan.FromBounds(start.StartIndex, stop.StopIndex + 1));
+            if (stop.StopIndex < start.StartIndex) return string.Empty;
+            else return this.Text.ToString(TextSpan.FromBounds(start.StartIndex, stop.StopIndex + 1));
         }
 
         #endregion
@@ -210,7 +213,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 
         void IAntlrErrorListener<IToken>.SyntaxError(TextWriter output, IRecognizer recognizer, IToken offendingSymbol, int line, int charPositionInLine, string msg, RecognitionException e)
         {
-            this.AddErrorToCurrentToken(Antlr4RoslynErrorCode.ERR_SyntaxError, msg);
+            this.AddError(offendingSymbol.StartIndex, offendingSymbol.StopIndex - offendingSymbol.StartIndex + 1, Antlr4RoslynErrorCode.ERR_SyntaxError, msg);
             CallLogger.Instance.Log("  Parser error: " + msg);
         }
 

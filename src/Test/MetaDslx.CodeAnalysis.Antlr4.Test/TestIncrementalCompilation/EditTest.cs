@@ -17,7 +17,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestIncrementalCompilation
 
         public EditTest()
         {
-            source = SourceText.From(File.ReadAllText($@"..\..\..\InputFiles\IncrementalCompilation\Entities.txt"));
+            source = SourceText.From(File.ReadAllText(Path.Combine(InputFileDirectory, "Entities.txt")));
             rnd = new Random();
         }
 

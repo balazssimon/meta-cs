@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <Import Project="..\..\Versions.props" />
-  
+
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
@@ -12,7 +12,9 @@
     <ProjectReference Include="..\..\Main\MetaDslx.CodeAnalysis.CSharp\MetaDslx.CodeAnalysis.CSharp.csproj" />
     <ProjectReference Include="..\..\Main\MetaDslx.CodeAnalysis.Meta\MetaDslx.CodeAnalysis.Meta.csproj" />
     <ProjectReference Include="..\..\Main\MetaDslx.Languages.Meta\MetaDslx.Languages.Meta.csproj" />
-    <PackageReference Include="MetaDslx.BuildTasks" Version="$(BootstrapVersion)" PrivateAssets="All"/>
-    <PackageReference Include="Antlr4.Runtime.Standard" Version="$(Antlr4RuntimeStandardVersion)" />
-  </ItemGroup>  
+    <ProjectReference Include="..\..\Test\MetaDslx.CodeAnalysis.Antlr4.Test\MetaDslx.CodeAnalysis.Antlr4.Test.csproj" />
+    <ProjectReference Include="..\..\Test\MetaDslx.Tests\MetaDslx.Tests.csproj" />
+    <!--ProjectReference Include="..\..\Main\MetaDslx.Languages.MetaCompiler\MetaDslx.Languages.MetaCompiler.csproj" /-->
+  </ItemGroup>
+
 </Project>

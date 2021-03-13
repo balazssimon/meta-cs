@@ -14,7 +14,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestIncrementalCompilation
         private RandomSourceGenerator _sourceGenerator = new RandomSourceGenerator();
         private static Random s_random = new Random();
 
-        [Fact]
+        [Fact(Skip = "Takes too long")]
         public void TypeRandomSources()
         {
             int count = 10;
@@ -26,7 +26,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestIncrementalCompilation
             }
         }
 
-        [Fact]
+        [Fact(Skip = "Takes too long")]
         public void ParseLongSource()
         {
             int length = 100000;
@@ -39,7 +39,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestIncrementalCompilation
         }
 
 
-        [Fact]
+        [Fact(Skip = "Takes too long")]
         public void ParseVeryLongSource()
         {
             int length = 1000000;

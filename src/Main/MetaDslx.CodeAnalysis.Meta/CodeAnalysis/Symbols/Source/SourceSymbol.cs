@@ -145,7 +145,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                         {
                             Debug.Assert(childSourceSymbol.ModelObject != null);
                         }
-                        else
+                        else if (childSymbol.Kind != LanguageSymbolKind.ErrorType)
                         {
                             Debug.Assert(false);
                         }
@@ -383,7 +383,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             {
                 if (childDeclaration != null)
                 {
-                    AssertionDiagnostic(diagnostics, ModelErrorCode.ERR_CannotCreateSourceDeclaredSymbol.ToDiagnostic(location, SymbolFacts.GetSymbolType(childDeclaration.ModelObjectType), childDeclaration.Name, childDeclaration.ModelObjectType));
+                    diagnostics.Add(ModelErrorCode.ERR_CannotCreateSourceDeclaredSymbol.ToDiagnostic(location, SymbolFacts.GetSymbolType(childDeclaration.ModelObjectType), childDeclaration.Name, childDeclaration.ModelObjectType));
                 }
             }
             if (childSymbol != null)

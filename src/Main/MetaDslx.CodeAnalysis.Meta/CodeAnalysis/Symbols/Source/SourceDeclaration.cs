@@ -394,9 +394,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             var symbolFactory = SourceSymbol.SymbolFactory;
             var objectFactory = _symbol.DeclaringCompilation.ObjectFactory;
             var childSymbols = _symbol.ChildSymbols;
-            //Debug.Assert(childSymbols.Length >= this.Declaration.Children.Length);
+            Debug.Assert(childSymbols.Length == this.Declaration.Children.Length);
+            int index = -1;
             foreach (var decl in this.Declaration.Children)
             {
+                ++index;
                 if (_lazyMembers != null)
                 {
                     // membersAndInitializers is already computed. no point to continue.
@@ -407,9 +409,15 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
                 if (decl.IsType)
                 {
-                    var symbol = childSymbols.OfType<SourceNamedTypeSymbol>().FirstOrDefault(nts => nts.MergedDeclaration == decl);
-                    Debug.Assert(symbol != null);
-                    if (symbol != null) builder.Add(symbol);
+                    //var symbol = childSymbols.OfType<SourceNamedTypeSymbol>().FirstOrDefault(nts => nts.MergedDeclaration == decl);
+                    //Debug.Assert(symbol != null);
+                    //var symbol = childSymbols.OfType<DeclaredSymbol>().FirstOrDefault(ds => ds.MergedDeclaration == decl);
+                    //Debug.Assert(symbol != null);
+                    if (index < childSymbols.Length)
+                    {
+                        var symbol = childSymbols[index] as SourceNamedTypeSymbol;
+                        if (symbol != null && symbol.Kind != LanguageSymbolKind.ErrorType) builder.Add(symbol);
+                    }
                 }
             }
         }
@@ -419,9 +427,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             var symbolFactory = SourceSymbol.SymbolFactory;
             var objectFactory = _symbol.DeclaringCompilation.ObjectFactory;
             var childSymbols = _symbol.ChildSymbols;
-            //Debug.Assert(childSymbols.Length >= this.Declaration.Children.Length);
+            Debug.Assert(childSymbols.Length == this.Declaration.Children.Length);
+            int index = -1;
             foreach (var decl in this.Declaration.Children)
             {
+                ++index;
                 if (_lazyMembers != null)
                 {
                     // membersAndInitializers is already computed. no point to continue.
@@ -431,9 +441,13 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 if (decl.Name == null) continue;
                 if (decl.IsType) continue;
 
-                var symbol = childSymbols.OfType<DeclaredSymbol>().FirstOrDefault(ds => ds.MergedDeclaration == decl);
-                Debug.Assert(symbol != null);
-                if (symbol != null) builder.Add(symbol);
+                //var symbol = childSymbols.OfType<DeclaredSymbol>().FirstOrDefault(ds => ds.MergedDeclaration == decl);
+                //Debug.Assert(symbol != null);
+                if (index < childSymbols.Length)
+                {
+                    var symbol = childSymbols[index] as DeclaredSymbol;
+                    if (symbol != null && symbol.Kind != LanguageSymbolKind.ErrorType) builder.Add(symbol);
+                }
             }
         }
 

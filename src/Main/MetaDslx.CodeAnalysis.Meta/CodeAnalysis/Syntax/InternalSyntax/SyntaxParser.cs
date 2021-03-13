@@ -30,7 +30,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         private GreenNode _prevTokenTrailingTrivia;
         private int _resetCount;
         private int _resetStart;
-        private List<SyntaxDiagnosticInfo> _currentTokenErrors;
+        private int _lastErrorIndex;
+        private List<SyntaxDiagnosticInfo> _syntaxErrors;
         private int _position;
         private int _lastNonSkippedTokenIndex;
 
@@ -60,7 +61,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             IsIncremental = options.Incremental || oldTree != null && changes != null && GetTreeAnnotation(oldTree.Green) != null;
             CancellationToken = cancellationToken;
             _currentNode = default;
-            _currentTokenErrors = new List<SyntaxDiagnosticInfo>();
+            _syntaxErrors = new List<SyntaxDiagnosticInfo>();
             _position = 0;
             _lastNonSkippedTokenIndex = -1;
 #if DEBUG
@@ -142,6 +143,17 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 minLookahead = Math.Min(Lexer.MinLookahead, minLookahead);
                 maxLookahead = Math.Max(Lexer.MaxLookahead, maxLookahead);
                 root = root.WithAdditionalAnnotationsGreen(new SyntaxAnnotation(IncrementalTreeAnnotationKind, new IncrementalTreeAnnotation(null, null, _mode, _state, minLookahead, maxLookahead)));
+                if (_lastErrorIndex < _syntaxErrors.Count)
+                {
+                    root = WithAdditionalDiagnostics(root, _syntaxErrors.GetRange(_lastErrorIndex, _syntaxErrors.Count - _lastErrorIndex).ToArray());
+                }
+            }
+            else
+            {
+                if (_lastErrorIndex < _syntaxErrors.Count)
+                {
+                    root = WithAdditionalDiagnostics(root, _syntaxErrors.GetRange(_lastErrorIndex, _syntaxErrors.Count - _lastErrorIndex).ToArray());
+                }
             }
         }
 
@@ -204,6 +216,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 var minLookahead = Math.Min(incrementalState.minLookahead, _minLookahead);
                 var maxLookahead = Math.Max(incrementalState.maxLookahead, _maxLookahead);
 
+                green = WithCurrentSyntaxErrors(green, incrementalState.position);
+
                 var nodeAnnot = GetNodeAnnotation(green);
                 if (nodeAnnot == null)
                 {
@@ -228,6 +242,35 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             }
 
             return _state;
+        }
+
+        private GreenNode WithCurrentSyntaxErrors(GreenNode green, int position)
+        {
+            if (_lastErrorIndex < _syntaxErrors.Count)
+            {
+                var nodeWidth = green.FullWidth;
+                var startIndex = _lastErrorIndex;
+                var endIndex = startIndex;
+                while (endIndex < _syntaxErrors.Count)
+                {
+                    var error = _syntaxErrors[endIndex];
+                    if (error.Offset >= position && error.Offset + error.Width <= position + nodeWidth)
+                    {
+                        ++endIndex;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                if (startIndex < endIndex)
+                {
+                    var currentErrors = _syntaxErrors.GetRange(startIndex, endIndex - startIndex).Select(err => err.WithOffset(err.Offset - position)).ToArray();
+                    green = WithAdditionalDiagnostics(green, currentErrors);
+                    _lastErrorIndex = endIndex;
+                }
+            }
+            return green;
         }
 
         protected ParserState SaveParserState()
@@ -260,13 +303,14 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 else _lexedTokens.MarkResetPoint();
             }
             _resetCount++;
-            return new ResetPoint(_resetCount, _state, index, _lastNonSkippedTokenIndex, _prevTokenTrailingTrivia);
+            return new ResetPoint(_resetCount, _state, index, _lastNonSkippedTokenIndex, _lastErrorIndex, _prevTokenTrailingTrivia);
         }
 
         protected void Reset(ref ResetPoint point)
         {
             _prevTokenTrailingTrivia = point.PrevTokenTrailingTrivia;
             _lastNonSkippedTokenIndex = point.LastNonSkippedTokenIndex;
+            _lastErrorIndex = point.LastErrorIndex;
             if (_blendedTokens != null)
             {
                 _blendedTokens.ResetTo(point.Index);
@@ -488,7 +532,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             if (_blendedTokens != null)
             {
 #if DEBUG
-                /*if (n < 0)
+                if (n < 0)
                 {
                     for (int i = 0; i >= n; i--)
                     {
@@ -509,7 +553,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                             Debug.Assert(_blendedTokens[index].Token != null);
                         }
                     }
-                }*/
+                }
 #endif
                 RegisterLookahead(n);
                 return _blendedTokens.PeekItem(n).Token;
@@ -545,11 +589,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 }
                 ct = AddSkippedSyntax(ct, skippedTokens.ToListNode(), false);
             }
-            if (_currentTokenErrors.Count > 0)
-            {
-                ct = WithAdditionalDiagnostics(ct, _currentTokenErrors.ToArray());
-                _currentTokenErrors.Clear();
-            }
+            ct = (InternalSyntaxToken)WithCurrentSyntaxErrors(ct, _position);
             _lastNonSkippedTokenIndex = TokenIndex;
             PrintStateStack();
             return ct;
@@ -818,6 +858,23 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             }
         }
 
+        protected void AddError(int position, int width, ErrorCode code, params object[] args)
+        {
+            //Debug.Assert(position <= _position);
+            this.AddSyntaxError(MakeError(position, width, code, args));
+        }
+
+        /*protected void AddError(int position, int width, ErrorCode code)
+        {
+            this.AddSyntaxError(MakeError(position, width, code));
+        }
+
+        protected void AddError(int position, int width, ErrorCode code, params object[] args)
+        {
+            this.AddSyntaxError(MakeError(position, width, code, args));
+        }
+        */
+        /*
         protected void AddErrorToCurrentToken(int position, int width, ErrorCode code)
         {
             this.AddErrorToCurrentToken(MakeError(position, width, code));
@@ -827,7 +884,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         {
             this.AddErrorToCurrentToken(MakeError(position, width, code, args));
         }
-
+        
         protected void AddErrorToCurrentToken(ErrorCode code)
         {
             this.AddErrorToCurrentToken(MakeError(CurrentToken, code));
@@ -842,18 +899,13 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         {
             this.AddErrorToCurrentToken(MakeError(_prevTokenTrailingTrivia != null ? - _prevTokenTrailingTrivia.FullWidth : 0, 1, code, args));
         }
-
-        protected void AddErrorToCurrentToken(SyntaxDiagnosticInfo error)
+        */
+        protected void AddSyntaxError(SyntaxDiagnosticInfo error)
         {
             if (error != null)
             {
-                if (_currentTokenErrors == null)
-                {
-                    _currentTokenErrors = new List<SyntaxDiagnosticInfo>(8);
-                }
-
-                //if (_currentTokenErrors.Any(err => err.ErrorCode == error.ErrorCode && err.Offset == error.Offset)) return;
-                _currentTokenErrors.Add(error);
+                if (_syntaxErrors.Any(err => err.ErrorCode == error.ErrorCode && err.Offset == error.Offset)) return;
+                _syntaxErrors.Add(error);
             }
         }
 
