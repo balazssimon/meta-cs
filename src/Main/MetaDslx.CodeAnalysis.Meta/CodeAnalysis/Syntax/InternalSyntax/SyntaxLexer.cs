@@ -105,8 +105,11 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 _restoreLexerMode = false;
             }
             var token = this.CachedSyntaxToken() ?? this.LexSyntaxToken();
-            CallLogger.Instance.Call(token);
-            CallLogger.Instance.Log("  [" + _position + ".." + (_position + token.FullWidth) + ")");
+            if (token != null)
+            {
+                CallLogger.Instance.Call(token);
+                CallLogger.Instance.Log("  [" + _position + ".." + (_position + token.FullWidth) + ")");
+            }
             return token;
         }
 
@@ -138,13 +141,13 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
             var kind = this.ScanSyntaxToken();
             if (kind == SyntaxKind.None) return null;
-            var errors = this.GetErrors(GetFullWidth(leading));
             var text = TextWindow.GetText(intern: false);
 
             _trailingTriviaCache.Clear();
             this.LexSyntaxTrivia(afterFirstToken: true, isTrailing: true, triviaList: _trailingTriviaCache);
             var trailing = _trailingTriviaCache;
 
+            var errors = this.GetAndClearErrors(GetFullWidth(leading));
             _mode = this.SaveLexerMode();
 
             return Create(kind, text, leading.ToListNode(), trailing.ToListNode(), startMode, _mode, errors);
@@ -306,10 +309,10 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             {
                 trivia = CreateTrivia(kind, TextWindow.GetText(intern: false));
             }
-            if (this.HasErrors)
+            /*if (this.HasErrors)
             {
-                trivia = trivia.WithDiagnosticsGreen(this.GetErrors(leadingTriviaWidth: 0));
-            }
+                trivia = trivia.WithDiagnosticsGreen(this.GetAndClearErrors(leadingTriviaWidth: 0));
+            }*/
             list.Add(trivia);
             return trivia;
         }

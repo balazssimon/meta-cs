@@ -145,14 +145,16 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 root = root.WithAdditionalAnnotationsGreen(new SyntaxAnnotation(IncrementalTreeAnnotationKind, new IncrementalTreeAnnotation(null, null, _mode, _state, minLookahead, maxLookahead)));
                 if (_lastErrorIndex < _syntaxErrors.Count)
                 {
-                    root = WithAdditionalDiagnostics(root, _syntaxErrors.GetRange(_lastErrorIndex, _syntaxErrors.Count - _lastErrorIndex).ToArray());
+                    root = WithCurrentSyntaxErrors(root, 0);
+                    //root = WithAdditionalDiagnostics(root, _syntaxErrors.GetRange(_lastErrorIndex, _syntaxErrors.Count - _lastErrorIndex).ToArray());
                 }
             }
             else
             {
                 if (_lastErrorIndex < _syntaxErrors.Count)
                 {
-                    root = WithAdditionalDiagnostics(root, _syntaxErrors.GetRange(_lastErrorIndex, _syntaxErrors.Count - _lastErrorIndex).ToArray());
+                    root = WithCurrentSyntaxErrors(root, 0);
+                    //root = WithAdditionalDiagnostics(root, _syntaxErrors.GetRange(_lastErrorIndex, _syntaxErrors.Count - _lastErrorIndex).ToArray());
                 }
             }
         }
@@ -904,7 +906,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         {
             if (error != null)
             {
-                if (_syntaxErrors.Any(err => err.ErrorCode == error.ErrorCode && err.Offset == error.Offset)) return;
+                if (_syntaxErrors.Any(err => object.Equals(err, error))) return;
                 _syntaxErrors.Add(error);
             }
         }

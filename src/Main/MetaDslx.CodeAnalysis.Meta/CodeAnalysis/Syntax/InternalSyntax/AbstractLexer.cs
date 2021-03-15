@@ -34,7 +34,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         protected void Start()
         {
             TextWindow.Start();
-            _errors = null;
+            //_errors = null;
         }
 
         protected bool HasErrors
@@ -42,7 +42,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             get { return _errors != null; }
         }
 
-        protected SyntaxDiagnosticInfo[] GetErrors(int leadingTriviaWidth)
+        protected SyntaxDiagnosticInfo[] GetAndClearErrors(int leadingTriviaWidth)
         {
             if (_errors != null)
             {
@@ -54,12 +54,14 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                         // fixup error positioning to account for leading trivia
                         array[i] = _errors[i].WithOffset(_errors[i].Offset + leadingTriviaWidth);
                     }
-
+                    _errors = null;
                     return array;
                 }
                 else
                 {
-                    return _errors.ToArray();
+                    var result = _errors;
+                    _errors = null;
+                    return result.ToArray();
                 }
             }
             else
@@ -118,14 +120,14 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             return position >= TextWindow.LexemeStartPosition ? position - TextWindow.LexemeStartPosition : position;
         }
 
-        protected static SyntaxDiagnosticInfo MakeError(ErrorCode code)
+        protected SyntaxDiagnosticInfo MakeError(ErrorCode code)
         {
-            return new SyntaxDiagnosticInfo(code);
+            return new SyntaxDiagnosticInfo(TextWindow.LexemeStartPosition - this.Position, TextWindow.Width, code);
         }
 
-        protected static SyntaxDiagnosticInfo MakeError(ErrorCode code, params object[] args)
+        protected SyntaxDiagnosticInfo MakeError(ErrorCode code, params object[] args)
         {
-            return new SyntaxDiagnosticInfo(code, args);
+            return new SyntaxDiagnosticInfo(TextWindow.LexemeStartPosition - this.Position, TextWindow.Width, code, args);
         }
 
     }

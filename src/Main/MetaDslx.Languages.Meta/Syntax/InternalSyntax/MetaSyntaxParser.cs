@@ -78,7 +78,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				else
 				{
 					context = this.Antlr4Parser._DoParseMain();
-		            ((ITokenStream)this).Consume(); // Consume EOF, since ANTLR4 does not do that.
 					green = _visitor.Visit(context);
 				}
 		    }
@@ -2974,8 +2973,18 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
             {
 				if (token == null || (token.Type == TokenConstants.EOF && kind != SyntaxKind.Eof))
 				{
-					if (kind != null) return _factory.MissingToken(kind);
-					else return null;
+					if (kind == SyntaxKind.Eof)
+					{
+						return _syntaxParser.EatToken();
+					}
+					else if (kind != null)
+					{
+						return _factory.MissingToken(kind);
+					}
+					else
+					{
+						return null;
+					}
 				}
                 var green = ((IncrementalToken)token).GreenToken;
 				Debug.Assert(kind == null || green.Kind == kind);
@@ -2989,8 +2998,18 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
             {
                 if (node == null || node.Symbol == null || (node.Symbol.Type == TokenConstants.EOF && kind != SyntaxKind.Eof))
 				{
-					if (kind != null) return _factory.MissingToken(kind);
-					else return null;
+					if (kind == SyntaxKind.Eof)
+					{
+						return _syntaxParser.EatToken();
+					}
+					else if (kind != null)
+					{
+						return _factory.MissingToken(kind);
+					}
+					else
+					{
+						return null;
+					}
 				}
 				var green = ((IncrementalToken)node.Symbol).GreenToken;
 				Debug.Assert(kind == null || green.Kind == kind);

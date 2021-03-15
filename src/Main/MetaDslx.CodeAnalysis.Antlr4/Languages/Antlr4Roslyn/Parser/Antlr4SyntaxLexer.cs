@@ -144,12 +144,21 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             CallLogger.Instance.Log("  LexerMode=" + CreateAntlr4LexerModeSnapshot());
             CallLogger.Instance.Log("  _lastMode=" + _lastMode);
             IToken token;
-            if (_readNextToken)
+            if (_eof)
+            {
+                token = null;
+                _readNextToken = false;
+            }
+            else if (_readNextToken)
             {
                 this.Start();
                 _readNextToken = false;
                 token = _lexer.NextToken();
                 /*if (HasAntlr4LexerModeChanged(_lastMode))*/ _lastMode = CreateAntlr4LexerModeSnapshot();
+                if (token.Type == TokenConstants.EOF)
+                {
+                    TextWindow.Start();
+                }
             }
             else
             {
