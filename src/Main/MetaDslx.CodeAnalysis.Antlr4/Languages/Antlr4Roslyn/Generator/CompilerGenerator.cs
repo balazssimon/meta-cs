@@ -12086,20 +12086,20 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             }
             __out.Append("            {"); //1227:1
             __out.AppendLine(false); //1227:14
-            __out.Append("				if (token == null || (token.Type == TokenConstants.EOF && kind != SyntaxKind.Eof))"); //1228:1
-            __out.AppendLine(false); //1228:87
+            __out.Append("				if (kind == SyntaxKind.Eof)"); //1228:1
+            __out.AppendLine(false); //1228:32
             __out.Append("				{"); //1229:1
             __out.AppendLine(false); //1229:6
-            __out.Append("					if (kind == SyntaxKind.Eof)"); //1230:1
-            __out.AppendLine(false); //1230:33
-            __out.Append("					{"); //1231:1
-            __out.AppendLine(false); //1231:7
-            __out.Append("						return _syntaxParser.EatToken();"); //1232:1
-            __out.AppendLine(false); //1232:39
-            __out.Append("					}"); //1233:1
-            __out.AppendLine(false); //1233:7
-            __out.Append("					else if (kind != null)"); //1234:1
-            __out.AppendLine(false); //1234:28
+            __out.Append("					return _syntaxParser.EatToken();"); //1230:1
+            __out.AppendLine(false); //1230:38
+            __out.Append("				}"); //1231:1
+            __out.AppendLine(false); //1231:6
+            __out.Append("				if (token == null)"); //1232:1
+            __out.AppendLine(false); //1232:23
+            __out.Append("				{"); //1233:1
+            __out.AppendLine(false); //1233:6
+            __out.Append("					if (kind != null)"); //1234:1
+            __out.AppendLine(false); //1234:23
             __out.Append("					{"); //1235:1
             __out.AppendLine(false); //1235:7
             __out.Append("						return _factory.MissingToken(kind);"); //1236:1
@@ -12169,20 +12169,20 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             }
             __out.Append("            {"); //1252:1
             __out.AppendLine(false); //1252:14
-            __out.Append("                if (node == null || node.Symbol == null || (node.Symbol.Type == TokenConstants.EOF && kind != SyntaxKind.Eof))"); //1253:1
-            __out.AppendLine(false); //1253:127
+            __out.Append("				if (kind == SyntaxKind.Eof)"); //1253:1
+            __out.AppendLine(false); //1253:32
             __out.Append("				{"); //1254:1
             __out.AppendLine(false); //1254:6
-            __out.Append("					if (kind == SyntaxKind.Eof)"); //1255:1
-            __out.AppendLine(false); //1255:33
-            __out.Append("					{"); //1256:1
-            __out.AppendLine(false); //1256:7
-            __out.Append("						return _syntaxParser.EatToken();"); //1257:1
-            __out.AppendLine(false); //1257:39
-            __out.Append("					}"); //1258:1
-            __out.AppendLine(false); //1258:7
-            __out.Append("					else if (kind != null)"); //1259:1
-            __out.AppendLine(false); //1259:28
+            __out.Append("					return _syntaxParser.EatToken();"); //1255:1
+            __out.AppendLine(false); //1255:38
+            __out.Append("				}"); //1256:1
+            __out.AppendLine(false); //1256:6
+            __out.Append("                if (node == null || node.Symbol == null)"); //1257:1
+            __out.AppendLine(false); //1257:57
+            __out.Append("				{"); //1258:1
+            __out.AppendLine(false); //1258:6
+            __out.Append("					if (kind != null)"); //1259:1
+            __out.AppendLine(false); //1259:23
             __out.Append("					{"); //1260:1
             __out.AppendLine(false); //1260:7
             __out.Append("						return _factory.MissingToken(kind);"); //1261:1

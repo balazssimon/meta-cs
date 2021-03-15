@@ -21,11 +21,13 @@ namespace MetaDslx.Bootstrap.IncrementalCompiler
     {
         static void Main(string[] args)
         {
-            //CompileMeta("file01.txt");
-            //CompileMeta("file02.txt");
-            //CompileMeta("file03.txt");
-            //CompileMeta("file04.txt");
+            CompileMeta("file01.txt");
+            CompileMeta("file02.txt");
+            CompileMeta("file03.txt");
+            CompileMeta("file04.txt");
             CompileMGen("file05.txt");
+            CompileMGen("file06.txt");
+            CompileMGen("file07.txt");
             //RunTest();
         }
 
@@ -44,6 +46,7 @@ namespace MetaDslx.Bootstrap.IncrementalCompiler
             {
                 Console.WriteLine(formatter.Format(diag));
             }
+            Console.WriteLine("====");
         }
 
         public static ImmutableArray<Diagnostic> Antlr4ParseMeta(SourceText text)
@@ -76,6 +79,7 @@ namespace MetaDslx.Bootstrap.IncrementalCompiler
             {
                 Console.WriteLine(formatter.Format(diag));
             }
+            Console.WriteLine("====");
         }
 
         public static ImmutableArray<Diagnostic> Antlr4ParseMGen(SourceText text)
