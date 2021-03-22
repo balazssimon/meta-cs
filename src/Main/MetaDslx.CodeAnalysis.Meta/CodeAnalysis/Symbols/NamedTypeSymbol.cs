@@ -1,5 +1,5 @@
-﻿using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 using System;
 using System.Collections.Generic;
@@ -438,12 +438,12 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return visitor.VisitNamedType(this, argument);
         }
 
-        public override void Accept(Microsoft.CodeAnalysis.SymbolVisitor visitor)
+        public override void Accept(MetaDslx.CodeAnalysis.SymbolVisitor visitor)
         {
             visitor.VisitNamedType(this);
         }
 
-        public override TResult Accept<TResult>(Microsoft.CodeAnalysis.SymbolVisitor<TResult> visitor)
+        public override TResult Accept<TResult>(MetaDslx.CodeAnalysis.SymbolVisitor<TResult> visitor)
         {
             return visitor.VisitNamedType(this);
         }

@@ -1,12 +1,12 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using Microsoft.CodeAnalysis.CSharp.Symbols;
+using MetaDslx.CodeAnalysis.CSharp.Symbols;
 using Roslyn.Utilities;
 using System;
 using System.Collections.Immutable;
 using System.Diagnostics;
 
-namespace Microsoft.CodeAnalysis.CSharp
+namespace MetaDslx.CodeAnalysis.CSharp
 {
     /// <summary>
     /// Some error messages are particularly confusing if multiple placeholders are substituted

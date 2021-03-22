@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -8,13 +8,13 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Reflection;
-using Microsoft.CodeAnalysis.CodeGen;
-using Microsoft.CodeAnalysis.Collections;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.CodeGen;
+using MetaDslx.CodeAnalysis.Collections;
+using MetaDslx.CodeAnalysis.CSharp.Syntax;
+using MetaDslx.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 
-namespace Microsoft.CodeAnalysis.CSharp.Symbols
+namespace MetaDslx.CodeAnalysis.CSharp.Symbols
 {
     /// <summary>
     /// Represents an attribute applied to a Symbol.
@@ -399,7 +399,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         ///
         /// Step 1) is performed in this method, i.e. during binding.
         /// Remaining steps are performed during serialization as we want to avoid retaining the entire file contents throughout the binding/codegen pass.
-        /// See <see cref="Microsoft.CodeAnalysis.CodeGen.PermissionSetAttributeWithFileReference"/> for remaining fixup steps.
+        /// See <see cref="MetaDslx.CodeAnalysis.CodeGen.PermissionSetAttributeWithFileReference"/> for remaining fixup steps.
         /// </remarks>
         /// <returns>String containing the resolved file path if PermissionSetAttribute needs fixup during codegen, null otherwise.</returns>
         private string DecodePermissionSetAttribute(CSharpCompilation compilation, AttributeSyntax nodeOpt, DiagnosticBag diagnostics)

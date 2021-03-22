@@ -1,10 +1,10 @@
-﻿using MetaDslx.CodeAnalysis.Binding;
+using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Declarations;
 using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Text;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Text;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;

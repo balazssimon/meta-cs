@@ -1,4 +1,4 @@
-๏ปฟ// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -10,13 +10,13 @@ using System.Runtime.InteropServices;
 using System.Reflection;
 using System.Reflection.Metadata;
 using System.Threading;
-using Microsoft.CodeAnalysis.CSharp.DocumentationComments;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.CSharp.DocumentationComments;
+using MetaDslx.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
-using Microsoft.CodeAnalysis.CSharp.Emit;
-using Microsoft.CodeAnalysis.Collections;
+using MetaDslx.CodeAnalysis.CSharp.Emit;
+using MetaDslx.CodeAnalysis.Collections;
 
-namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
+namespace MetaDslx.CodeAnalysis.CSharp.Symbols.Metadata.PE
 {
     /// <summary>
     /// The class to represent all types imported from a PE/module.
@@ -1059,15 +1059,15 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
             if ((object)(uncommon.lazyEnumUnderlyingType) == null
                 && this.TypeKind == TypeKind.Enum)
             {
-                // From ยง8.5.2
+                // From ง8.5.2
                 // An enum is considerably more restricted than a true type, as
                 // follows:
                 // - It shall have exactly one instance field, and the type of that field defines the underlying type of
                 // the enumeration.
-                // - It shall not have any static fields unless they are literal. (see ยง8.6.1.2)
+                // - It shall not have any static fields unless they are literal. (see ง8.6.1.2)
 
                 // The underlying type shall be a built-in integer type. Enums shall derive from System.Enum, hence they are
-                // value types. Like all value types, they shall be sealed (see ยง8.9.9).
+                // value types. Like all value types, they shall be sealed (see ง8.9.9).
 
                 var moduleSymbol = this.ContainingPEModule;
                 var module = moduleSymbol.Module;
@@ -1746,14 +1746,14 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
 
             if (this.TypeKind == TypeKind.Struct)
             {
-                if (this.SpecialType == Microsoft.CodeAnalysis.SpecialType.None)
+                if (this.SpecialType == MetaDslx.CodeAnalysis.SpecialType.None)
                 {
                     isOrdinaryStruct = true;
                     isOrdinaryEmbeddableStruct = this.ContainingAssembly.IsLinked;
                 }
                 else
                 {
-                    isOrdinaryStruct = (this.SpecialType == Microsoft.CodeAnalysis.SpecialType.System_Nullable_T);
+                    isOrdinaryStruct = (this.SpecialType == MetaDslx.CodeAnalysis.SpecialType.System_Nullable_T);
                 }
             }
 
@@ -1800,7 +1800,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
             var map = PooledDictionary<MethodDefinitionHandle, PEMethodSymbol>.GetInstance();
 
             // for ordinary embeddable struct types we import private members so that we can report appropriate errors if the structure is used 
-            var isOrdinaryEmbeddableStruct = (this.TypeKind == TypeKind.Struct) && (this.SpecialType == Microsoft.CodeAnalysis.SpecialType.None) && this.ContainingAssembly.IsLinked;
+            var isOrdinaryEmbeddableStruct = (this.TypeKind == TypeKind.Struct) && (this.SpecialType == MetaDslx.CodeAnalysis.SpecialType.None) && this.ContainingAssembly.IsLinked;
 
             try
             {
@@ -2102,7 +2102,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
             get { return (_flags & TypeAttributes.HasSecurity) != 0; }
         }
 
-        internal override IEnumerable<Microsoft.Cci.SecurityAttribute> GetSecurityInformation()
+        internal override IEnumerable<MetaDslx.Cci.SecurityAttribute> GetSecurityInformation()
         {
             throw ExceptionUtilities.Unreachable;
         }

@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -7,13 +7,13 @@ using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
-using Microsoft.CodeAnalysis.CSharp.Emit;
-using Microsoft.CodeAnalysis.CSharp.Symbols;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.CSharp.Emit;
+using MetaDslx.CodeAnalysis.CSharp.Symbols;
+using MetaDslx.CodeAnalysis.CSharp.Syntax;
+using MetaDslx.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 
-namespace Microsoft.CodeAnalysis.CSharp.Symbols
+namespace MetaDslx.CodeAnalysis.CSharp.Symbols
 {
     // This is a type symbol associated with a type definition in source code.
     // That is, for a generic type C<T> this is the instance type C<T>.  
@@ -1040,7 +1040,7 @@ next:;
             }
         }
 
-        internal sealed override IEnumerable<Microsoft.Cci.SecurityAttribute> GetSecurityInformation()
+        internal sealed override IEnumerable<MetaDslx.Cci.SecurityAttribute> GetSecurityInformation()
         {
             var attributesBag = this.GetAttributesBag();
             var wellKnownData = (TypeWellKnownAttributeData)attributesBag.DecodedWellKnownAttributeData;

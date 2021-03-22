@@ -1,4 +1,4 @@
-﻿using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Binding.Binders;
 using MetaDslx.CodeAnalysis.Binding.Binders.Find;
@@ -6,7 +6,7 @@ using MetaDslx.CodeAnalysis.Binding.BoundNodes;
 using MetaDslx.CodeAnalysis.Symbols.Metadata;
 using MetaDslx.Languages.Meta.Model;
 using MetaDslx.Languages.Meta.Syntax;
-using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Text;

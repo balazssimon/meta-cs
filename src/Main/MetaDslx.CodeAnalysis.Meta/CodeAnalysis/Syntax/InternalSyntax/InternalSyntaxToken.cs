@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -6,8 +6,8 @@ using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 {
-    using Microsoft.CodeAnalysis;
-    using Internal = Microsoft.CodeAnalysis.Syntax.InternalSyntax;
+    using MetaDslx.CodeAnalysis;
+    using Internal = MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
 
     public abstract class InternalSyntaxToken : InternalSyntaxNode
     {

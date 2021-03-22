@@ -1,9 +1,9 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Diagnostics;
 using System.Threading;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Text;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Text;
 using Roslyn.Utilities;
 using System;
 
@@ -292,9 +292,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
             public override int GetHashCode()
             {
                 // Inherit special behavior for the object type from NamedTypeSymbol.
-                if (this.SpecialType == Microsoft.CodeAnalysis.SpecialType.System_Object)
+                if (this.SpecialType == MetaDslx.CodeAnalysis.SpecialType.System_Object)
                 {
-                    return (int)Microsoft.CodeAnalysis.SpecialType.System_Object;
+                    return (int)MetaDslx.CodeAnalysis.SpecialType.System_Object;
                 }
 
                 return Hash.Combine(MetadataName, Hash.Combine(_containingModule, Hash.Combine(_namespaceName, arity)));
@@ -311,7 +311,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 if ((comparison & TypeCompareKind.IgnoreDynamic) != 0 &&
                     (object)t2 != null &&
                     t2.TypeKind == TypeKind.Dynamic &&
-                    this.SpecialType == Microsoft.CodeAnalysis.SpecialType.System_Object)
+                    this.SpecialType == MetaDslx.CodeAnalysis.SpecialType.System_Object)
                 {
                     return true;
                 }

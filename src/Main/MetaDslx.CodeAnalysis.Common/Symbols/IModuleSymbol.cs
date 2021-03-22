@@ -1,9 +1,9 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using Microsoft.CodeAnalysis.Text;
+using MetaDslx.CodeAnalysis.Text;
 using System.Collections.Immutable;
 
-namespace Microsoft.CodeAnalysis
+namespace MetaDslx.CodeAnalysis
 {
     /// <summary>
     /// Represents a module within an assembly. Every assembly contains one or more modules.

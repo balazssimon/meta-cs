@@ -1,12 +1,12 @@
-ï»¿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using EmitContext = Microsoft.CodeAnalysis.Emit.EmitContext;
+using EmitContext = MetaDslx.CodeAnalysis.Emit.EmitContext;
 
 
 // Contains support for pseudo-methods on multidimensional arrays.
@@ -26,7 +26,7 @@ using EmitContext = Microsoft.CodeAnalysis.Emit.EmitContext;
 //assumed.
 //
 //* A constructor that takes twice as many int32 arguments as there are dimensions of the array. These
-//arguments occur in pairsâ€”one pair per dimensionâ€”with the first argument of each pair specifying the
+//arguments occur in pairs—one pair per dimension—with the first argument of each pair specifying the
 //lower bound for that dimension, and the second argument specifying the total number of elements in that
 //dimension. Note that vectors are not created with this constructor, since a zero lower bound is assumed for
 //vectors.
@@ -47,7 +47,7 @@ using EmitContext = Microsoft.CodeAnalysis.Emit.EmitContext;
 //managed pointer to a specific element of the array where the arguments specify the index into each
 //dimension, beginning with the first, of the element whose address is to be returned.
 
-namespace Microsoft.CodeAnalysis.CodeGen
+namespace MetaDslx.CodeAnalysis.CodeGen
 {
     /// <summary>
     /// Constructs and caches already created pseudo-methods.

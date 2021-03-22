@@ -1,6 +1,6 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using Microsoft.Cci;
+using MetaDslx.Cci;
 using Roslyn.Utilities;
 using System;
 using System.Collections.Generic;
@@ -8,10 +8,10 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Linq;
-using Microsoft.CodeAnalysis.CSharp.Emit;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.CSharp.Emit;
+using MetaDslx.CodeAnalysis.PooledObjects;
 
-namespace Microsoft.CodeAnalysis.CSharp.Symbols
+namespace MetaDslx.CodeAnalysis.CSharp.Symbols
 {
 
     internal sealed class SynthesizedEmbeddedNullableAttributeSymbol : SynthesizedEmbeddedAttributeSymbolBase

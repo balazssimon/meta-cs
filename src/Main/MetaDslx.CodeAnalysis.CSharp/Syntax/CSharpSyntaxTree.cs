@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -7,13 +7,13 @@ using System.Diagnostics;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.PooledObjects;
-using Microsoft.CodeAnalysis.Text;
+using MetaDslx.CodeAnalysis.CSharp.Syntax;
+using MetaDslx.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.Text;
 using Roslyn.Utilities;
-using InternalSyntax = Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax;
+using InternalSyntax = MetaDslx.CodeAnalysis.CSharp.Syntax.InternalSyntax;
 
-namespace Microsoft.CodeAnalysis.CSharp
+namespace MetaDslx.CodeAnalysis.CSharp
 {
     /// <summary>
     /// The parsed representation of a C# source document.

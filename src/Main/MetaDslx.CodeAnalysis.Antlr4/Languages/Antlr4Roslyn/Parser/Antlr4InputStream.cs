@@ -1,7 +1,7 @@
-﻿using Antlr4.Runtime;
+using Antlr4.Runtime;
 using Antlr4.Runtime.Misc;
 using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
-using Microsoft.CodeAnalysis.Text;
+using MetaDslx.CodeAnalysis.Text;
 using System;
 using System.Collections.Generic;
 using System.Text;

@@ -1,10 +1,10 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Diagnostics;
 using Roslyn.Utilities;
 
-namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
+namespace MetaDslx.CodeAnalysis.CSharp.Syntax.InternalSyntax
 {
     internal class SyntaxTrivia : CSharpSyntaxNode
     {
@@ -107,9 +107,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
             writer.Write(Text);
         }
 
-        public static implicit operator Microsoft.CodeAnalysis.SyntaxTrivia(SyntaxTrivia trivia)
+        public static implicit operator MetaDslx.CodeAnalysis.SyntaxTrivia(SyntaxTrivia trivia)
         {
-            return new Microsoft.CodeAnalysis.SyntaxTrivia(default(Microsoft.CodeAnalysis.SyntaxToken), trivia, position: 0, index: 0);
+            return new MetaDslx.CodeAnalysis.SyntaxTrivia(default(MetaDslx.CodeAnalysis.SyntaxToken), trivia, position: 0, index: 0);
         }
 
         public override bool IsEquivalentTo(GreenNode other)

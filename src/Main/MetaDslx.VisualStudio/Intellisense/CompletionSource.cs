@@ -1,11 +1,11 @@
-﻿using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
 using MetaDslx.VisualStudio.Classification;
 using MetaDslx.VisualStudio.Compilation;
 using MetaDslx.VisualStudio.Editor;
 using MetaDslx.VisualStudio.Utilities;
 using Microsoft.Build.Tasks;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.PooledObjects;
 using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;

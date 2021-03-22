@@ -1,6 +1,6 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using Microsoft.CodeAnalysis.CSharp.Symbols;
+using MetaDslx.CodeAnalysis.CSharp.Symbols;
 using Roslyn.Utilities;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
-namespace Microsoft.CodeAnalysis.CSharp.Symbols
+namespace MetaDslx.CodeAnalysis.CSharp.Symbols
 {
     /// <summary>
     /// An ErrorSymbol is used when the compiler cannot determine a symbol object to return because
@@ -495,7 +495,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             get { return null; }
         }
 
-        internal sealed override IEnumerable<Microsoft.Cci.SecurityAttribute> GetSecurityInformation()
+        internal sealed override IEnumerable<MetaDslx.Cci.SecurityAttribute> GetSecurityInformation()
         {
             throw ExceptionUtilities.Unreachable;
         }

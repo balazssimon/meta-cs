@@ -1,14 +1,14 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Reflection.Metadata;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 
-namespace Microsoft.CodeAnalysis.CodeGen
+namespace MetaDslx.CodeAnalysis.CodeGen
 {
     /// <summary>
     /// Class for emitting the switch jump table for switch statements with integral governing type
@@ -528,7 +528,7 @@ namespace Microsoft.CodeAnalysis.CodeGen
             EmitRangeCheckIfNeeded(startConstant, endConstant, bucketFallThroughLabel);
 
             // truncate key to 32bit
-            _builder.EmitNumericConversion(_keyTypeCode, Microsoft.Cci.PrimitiveTypeCode.UInt32, false);
+            _builder.EmitNumericConversion(_keyTypeCode, MetaDslx.Cci.PrimitiveTypeCode.UInt32, false);
         }
 
         private void EmitRangeCheckIfNeeded(ConstantValue startConstant, ConstantValue endConstant, object bucketFallThroughLabel)

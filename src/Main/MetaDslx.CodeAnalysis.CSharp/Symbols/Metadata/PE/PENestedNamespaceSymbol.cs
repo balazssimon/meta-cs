@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Threading;
 using Roslyn.Utilities;
 using System.Diagnostics;
 
-namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
+namespace MetaDslx.CodeAnalysis.CSharp.Symbols.Metadata.PE
 {
     /// <summary>
     /// The class to represent all, but Global, namespaces imported from a PE/module.

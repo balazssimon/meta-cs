@@ -1,14 +1,14 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Globalization;
 using System.Threading;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.CSharp.Syntax;
+using MetaDslx.CodeAnalysis.PooledObjects;
 
-namespace Microsoft.CodeAnalysis.CSharp.Symbols
+namespace MetaDslx.CodeAnalysis.CSharp.Symbols
 {
     internal abstract class SourceFieldSymbol : FieldSymbolWithAttributesAndModifiers
     {
@@ -150,8 +150,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         private readonly SyntaxReference _syntaxReference;
 
         private string _lazyDocComment;
-        private ConstantValue _lazyConstantEarlyDecodingValue = Microsoft.CodeAnalysis.ConstantValue.Unset;
-        private ConstantValue _lazyConstantValue = Microsoft.CodeAnalysis.ConstantValue.Unset;
+        private ConstantValue _lazyConstantEarlyDecodingValue = MetaDslx.CodeAnalysis.ConstantValue.Unset;
+        private ConstantValue _lazyConstantValue = MetaDslx.CodeAnalysis.ConstantValue.Unset;
 
 
         protected SourceFieldSymbolWithSyntaxReference(SourceMemberContainerTypeSymbol containingType, string name, SyntaxReference syntax, Location location)
@@ -227,7 +227,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         internal sealed override ConstantValue GetConstantValue(ConstantFieldsInProgress inProgress, bool earlyDecodingWellKnownAttributes)
         {
             var value = this.GetLazyConstantValue(earlyDecodingWellKnownAttributes);
-            if (value != Microsoft.CodeAnalysis.ConstantValue.Unset)
+            if (value != MetaDslx.CodeAnalysis.ConstantValue.Unset)
             {
                 return value;
             }
@@ -238,7 +238,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 // return Unset. The outer GetConstantValue caller will call
                 // this method again after evaluating any dependencies.
                 inProgress.AddDependency(this);
-                return Microsoft.CodeAnalysis.ConstantValue.Unset;
+                return MetaDslx.CodeAnalysis.ConstantValue.Unset;
             }
 
             // Order dependencies.
@@ -270,7 +270,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         internal ImmutableHashSet<SourceFieldSymbolWithSyntaxReference> GetConstantValueDependencies(bool earlyDecodingWellKnownAttributes)
         {
             var value = this.GetLazyConstantValue(earlyDecodingWellKnownAttributes);
-            if (value != Microsoft.CodeAnalysis.ConstantValue.Unset)
+            if (value != MetaDslx.CodeAnalysis.ConstantValue.Unset)
             {
                 // Constant value already determined. No need to
                 // compute dependencies since the constant values
@@ -289,7 +289,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             if ((builder.Count == 0) &&
                 (value != null) &&
                 !value.IsBad &&
-                (value != Microsoft.CodeAnalysis.ConstantValue.Unset) &&
+                (value != MetaDslx.CodeAnalysis.ConstantValue.Unset) &&
                 !diagnostics.HasAnyResolvedErrors())
             {
                 this.SetLazyConstantValue(
@@ -311,7 +311,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
         private void BindConstantValueIfNecessary(bool earlyDecodingWellKnownAttributes, bool startsCycle)
         {
-            if (this.GetLazyConstantValue(earlyDecodingWellKnownAttributes) != Microsoft.CodeAnalysis.ConstantValue.Unset)
+            if (this.GetLazyConstantValue(earlyDecodingWellKnownAttributes) != MetaDslx.CodeAnalysis.ConstantValue.Unset)
             {
                 return;
             }
@@ -344,17 +344,17 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             DiagnosticBag diagnostics,
             bool startsCycle)
         {
-            Debug.Assert(value != Microsoft.CodeAnalysis.ConstantValue.Unset);
-            Debug.Assert((GetLazyConstantValue(earlyDecodingWellKnownAttributes) == Microsoft.CodeAnalysis.ConstantValue.Unset) ||
+            Debug.Assert(value != MetaDslx.CodeAnalysis.ConstantValue.Unset);
+            Debug.Assert((GetLazyConstantValue(earlyDecodingWellKnownAttributes) == MetaDslx.CodeAnalysis.ConstantValue.Unset) ||
                 (GetLazyConstantValue(earlyDecodingWellKnownAttributes) == value));
 
             if (earlyDecodingWellKnownAttributes)
             {
-                Interlocked.CompareExchange(ref _lazyConstantEarlyDecodingValue, value, Microsoft.CodeAnalysis.ConstantValue.Unset);
+                Interlocked.CompareExchange(ref _lazyConstantEarlyDecodingValue, value, MetaDslx.CodeAnalysis.ConstantValue.Unset);
             }
             else
             {
-                if (Interlocked.CompareExchange(ref _lazyConstantValue, value, Microsoft.CodeAnalysis.ConstantValue.Unset) == Microsoft.CodeAnalysis.ConstantValue.Unset)
+                if (Interlocked.CompareExchange(ref _lazyConstantValue, value, MetaDslx.CodeAnalysis.ConstantValue.Unset) == MetaDslx.CodeAnalysis.ConstantValue.Unset)
                 {
 #if REPORT_ALL
                     Console.WriteLine("Thread {0}, Field {1}, StartsCycle {2}", Thread.CurrentThread.ManagedThreadId, this, startsCycle);

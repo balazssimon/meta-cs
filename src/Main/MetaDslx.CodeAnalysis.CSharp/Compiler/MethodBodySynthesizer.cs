@@ -1,13 +1,13 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
 using System.Diagnostics;
-using Microsoft.CodeAnalysis.CSharp.Symbols;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.PooledObjects;
-using Microsoft.CodeAnalysis.RuntimeMembers;
+using MetaDslx.CodeAnalysis.CSharp.Symbols;
+using MetaDslx.CodeAnalysis.CSharp.Syntax;
+using MetaDslx.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.RuntimeMembers;
 
-namespace Microsoft.CodeAnalysis.CSharp
+namespace MetaDslx.CodeAnalysis.CSharp
 {
     /// <summary>
     /// Contains methods related to synthesizing bound nodes in initial binding 
@@ -70,7 +70,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         /// Generates a submission initialization part of a Script type constructor that represents an interactive submission.
         /// </summary>
         /// <remarks>
-        /// The constructor takes a parameter of type Microsoft.CodeAnalysis.Scripting.Session - the session reference.
+        /// The constructor takes a parameter of type MetaDslx.CodeAnalysis.Scripting.Session - the session reference.
         /// It adds the object being constructed into the session by calling Microsoft.CSharp.RuntimeHelpers.SessionHelpers.SetSubmission,
         /// and retrieves strongly typed references on all previous submission script classes whose members are referenced by this submission.
         /// The references are stored to fields of the submission (<paramref name="synthesizedFields"/>).

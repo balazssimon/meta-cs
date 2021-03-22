@@ -1,18 +1,18 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
-using Microsoft.CodeAnalysis.CSharp.Emit;
-using Microsoft.CodeAnalysis.CSharp.Symbols;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.PooledObjects;
-using Microsoft.CodeAnalysis.Symbols;
+using MetaDslx.CodeAnalysis.CSharp.Emit;
+using MetaDslx.CodeAnalysis.CSharp.Symbols;
+using MetaDslx.CodeAnalysis.CSharp.Syntax;
+using MetaDslx.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.Symbols;
 using Roslyn.Utilities;
 
-namespace Microsoft.CodeAnalysis.CSharp.Symbols
+namespace MetaDslx.CodeAnalysis.CSharp.Symbols
 {
     /// <summary>
     /// Represents a method or method-like symbol (including constructor,
@@ -114,7 +114,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         /// <summary>
         /// Declaration security information associated with this type, or null if there is none.
         /// </summary>
-        internal abstract IEnumerable<Microsoft.Cci.SecurityAttribute> GetSecurityInformation();
+        internal abstract IEnumerable<MetaDslx.Cci.SecurityAttribute> GetSecurityInformation();
 
         /// <summary>
         /// Marshalling information for return value (FieldMarshal in metadata).
@@ -836,7 +836,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             }
         }
 
-        internal abstract Microsoft.Cci.CallingConvention CallingConvention
+        internal abstract MetaDslx.Cci.CallingConvention CallingConvention
         {
             get;
         }

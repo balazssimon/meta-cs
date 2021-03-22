@@ -1,11 +1,11 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Diagnostics;
 using System.Reflection.Metadata;
 using Roslyn.Utilities;
 
-namespace Microsoft.CodeAnalysis.CodeGen
+namespace MetaDslx.CodeAnalysis.CodeGen
 {
     internal static partial class ILOpCodeExtensions
     {
@@ -155,7 +155,7 @@ namespace Microsoft.CodeAnalysis.CodeGen
         /// </summary>
         public static bool CanFallThrough(this ILOpCode opcode)
         {
-            //12.4.2.8.1  Most instructions can allow control to fall through after their execution—only unconditional branches,
+            //12.4.2.8.1  Most instructions can allow control to fall through after their execution�only unconditional branches,
             //ret, jmp, leave(.s), endfinally, endfault, endfilter, throw, and rethrow do not.
             switch (opcode)
             {

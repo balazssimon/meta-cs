@@ -1,13 +1,13 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 
-namespace Microsoft.CodeAnalysis.CSharp.Symbols
+namespace MetaDslx.CodeAnalysis.CSharp.Symbols
 {
     internal sealed partial class DynamicTypeSymbol : TypeSymbol, IDynamicTypeSymbol
     {
@@ -187,7 +187,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         {
             // return the distinguished value for 'object' because the hash code ignores the distinction
             // between dynamic and object.  It also ignores custom modifiers.
-            return (int)Microsoft.CodeAnalysis.SpecialType.System_Object;
+            return (int)MetaDslx.CodeAnalysis.SpecialType.System_Object;
         }
 
         internal override bool Equals(TypeSymbol t2, TypeCompareKind comparison)
@@ -205,7 +205,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             if ((comparison & TypeCompareKind.IgnoreDynamic) != 0)
             {
                 var other = t2 as NamedTypeSymbol;
-                return (object)other != null && other.SpecialType == Microsoft.CodeAnalysis.SpecialType.System_Object;
+                return (object)other != null && other.SpecialType == MetaDslx.CodeAnalysis.SpecialType.System_Object;
             }
 
             return false;

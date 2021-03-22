@@ -1,16 +1,16 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
-using Microsoft.Cci;
-using Microsoft.CodeAnalysis.CodeGen;
-using Microsoft.CodeAnalysis.Collections;
-using Microsoft.CodeAnalysis.CSharp.Symbols;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.Cci;
+using MetaDslx.CodeAnalysis.CodeGen;
+using MetaDslx.CodeAnalysis.Collections;
+using MetaDslx.CodeAnalysis.CSharp.Symbols;
+using MetaDslx.CodeAnalysis.CSharp.Syntax;
+using MetaDslx.CodeAnalysis.PooledObjects;
 
-namespace Microsoft.CodeAnalysis.CSharp
+namespace MetaDslx.CodeAnalysis.CSharp
 {
     /// <summary>
     /// This type provides means for instrumenting compiled methods for dynamic analysis.

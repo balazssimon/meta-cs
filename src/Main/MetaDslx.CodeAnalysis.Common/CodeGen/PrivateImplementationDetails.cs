@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Concurrent;
@@ -10,11 +10,11 @@ using System.Reflection.Metadata;
 using System.Runtime.InteropServices;
 using System.Threading;
 using Roslyn.Utilities;
-using Microsoft.CodeAnalysis.Emit;
-using Microsoft.CodeAnalysis.Collections;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.Emit;
+using MetaDslx.CodeAnalysis.Collections;
+using MetaDslx.CodeAnalysis.PooledObjects;
 
-namespace Microsoft.CodeAnalysis.CodeGen
+namespace MetaDslx.CodeAnalysis.CodeGen
 {
     /// <summary>
     /// TypeDefinition that represents &lt;PrivateImplementationDetails&gt; class.

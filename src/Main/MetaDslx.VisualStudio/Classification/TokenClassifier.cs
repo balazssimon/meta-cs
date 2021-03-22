@@ -1,9 +1,9 @@
-﻿using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.VisualStudio.Compilation;
 using MetaDslx.VisualStudio.Utilities;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Text;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Text;
 using Microsoft.VisualStudio.Language.StandardClassification;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;

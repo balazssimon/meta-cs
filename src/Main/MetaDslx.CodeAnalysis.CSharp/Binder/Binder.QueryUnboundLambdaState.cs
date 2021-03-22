@@ -1,12 +1,12 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Immutable;
 using System.Diagnostics;
-using Microsoft.CodeAnalysis.CSharp.Symbols;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
+using MetaDslx.CodeAnalysis.CSharp.Symbols;
+using MetaDslx.CodeAnalysis.CSharp.Syntax;
 
-namespace Microsoft.CodeAnalysis.CSharp
+namespace MetaDslx.CodeAnalysis.CSharp
 {
     internal partial class Binder
     {
@@ -31,7 +31,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             public override bool HasExplicitlyTypedParameterList { get { return false; } }
             public override int ParameterCount { get { return _parameters.Length; } }
             public override bool IsAsync { get { return false; } }
-            public override RefKind RefKind(int index) { return Microsoft.CodeAnalysis.RefKind.None; }
+            public override RefKind RefKind(int index) { return MetaDslx.CodeAnalysis.RefKind.None; }
             public override MessageID MessageID { get { return MessageID.IDS_FeatureQueryExpression; } } // TODO: what is the correct ID here?
             public override Location ParameterLocation(int index) { return _parameters[index].Locations[0]; }
             public override TypeWithAnnotations ParameterTypeWithAnnotations(int index) { throw new ArgumentException(); } // implicitly typed

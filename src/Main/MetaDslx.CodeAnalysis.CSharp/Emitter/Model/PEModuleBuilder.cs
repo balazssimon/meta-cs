@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Concurrent;
@@ -9,13 +9,13 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.PortableExecutable;
 using System.Threading;
-using Microsoft.CodeAnalysis.CodeGen;
-using Microsoft.CodeAnalysis.CSharp.Symbols;
-using Microsoft.CodeAnalysis.Emit;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.CodeGen;
+using MetaDslx.CodeAnalysis.CSharp.Symbols;
+using MetaDslx.CodeAnalysis.Emit;
+using MetaDslx.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 
-namespace Microsoft.CodeAnalysis.CSharp.Emit
+namespace MetaDslx.CodeAnalysis.CSharp.Emit
 {
     internal abstract class PEModuleBuilder : PEModuleBuilder<CSharpCompilation, SourceModuleSymbol, AssemblySymbol, TypeSymbol, NamedTypeSymbol, MethodSymbol, SyntaxNode, NoPia.EmbeddedTypesManager, ModuleCompilationState>
     {
@@ -103,7 +103,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Emit
         {
             var specifiedName = sourceModule.MetadataName;
 
-            _metadataName = specifiedName != Microsoft.CodeAnalysis.Compilation.UnspecifiedModuleAssemblyName ?
+            _metadataName = specifiedName != MetaDslx.CodeAnalysis.Compilation.UnspecifiedModuleAssemblyName ?
                             specifiedName :
                             emitOptions.OutputNameOverride ?? specifiedName;
 

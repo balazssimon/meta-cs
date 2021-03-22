@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Diagnostics;
 using Roslyn.Utilities;
 using Word = System.UInt32;
 
-namespace Microsoft.CodeAnalysis
+namespace MetaDslx.CodeAnalysis
 {
     [DebuggerDisplay("{GetDebuggerDisplay(), nq}")]
     internal struct BitVector : IEquatable<BitVector>

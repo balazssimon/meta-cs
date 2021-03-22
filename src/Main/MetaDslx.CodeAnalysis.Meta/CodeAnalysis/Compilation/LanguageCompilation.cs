@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Concurrent;
@@ -18,21 +18,21 @@ using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Symbols.Source;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.Modeling;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CodeGen;
-using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Emit;
-using Microsoft.CodeAnalysis.Operations;
-using Microsoft.CodeAnalysis.PooledObjects;
-using Microsoft.CodeAnalysis.Symbols;
-using Microsoft.CodeAnalysis.Text;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.CodeGen;
+using MetaDslx.CodeAnalysis.Diagnostics;
+using MetaDslx.CodeAnalysis.Emit;
+using MetaDslx.CodeAnalysis.Operations;
+using MetaDslx.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.Symbols;
+using MetaDslx.CodeAnalysis.Text;
 using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis
 {
-    using CSharpResources = Microsoft.CodeAnalysis.CSharp.CSharpResources;
-    using CSharpCompilation = Microsoft.CodeAnalysis.CSharp.CSharpCompilation;
-    using MessageProvider = Microsoft.CodeAnalysis.CSharp.MessageProvider;
+    using CSharpResources = MetaDslx.CodeAnalysis.CSharp.CSharpResources;
+    using CSharpCompilation = MetaDslx.CodeAnalysis.CSharp.CSharpCompilation;
+    using MessageProvider = MetaDslx.CodeAnalysis.CSharp.MessageProvider;
     using Binder = MetaDslx.CodeAnalysis.Binding.Binder;
 
     /// <summary>

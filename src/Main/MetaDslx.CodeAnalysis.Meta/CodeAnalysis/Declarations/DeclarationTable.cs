@@ -1,8 +1,8 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using MetaDslx.CodeAnalysis.Syntax;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 using System;
 using System.Collections.Generic;
@@ -40,7 +40,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
 
         private readonly Lazy<ICollection<string>> _typeNames;
         private readonly Lazy<ICollection<string>> _namespaceNames;
-        private readonly Lazy<ICollection<ReferenceDirective>> _referenceDirectives;
+        private readonly Lazy<ICollection<Syntax.ReferenceDirective>> _referenceDirectives;
 
         private DeclarationTable(
             ImmutableSetWithInsertionOrder<RootSingleDeclaration> allOlderRootDeclarations,
@@ -52,7 +52,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             _cache = cache ?? new Cache(this);
             _typeNames = new Lazy<ICollection<string>>(GetMergedTypeNames);
             _namespaceNames = new Lazy<ICollection<string>>(GetMergedNamespaceNames);
-            _referenceDirectives = new Lazy<ICollection<ReferenceDirective>>(GetMergedReferenceDirectives);
+            _referenceDirectives = new Lazy<ICollection<Syntax.ReferenceDirective>>(GetMergedReferenceDirectives);
         }
 
         public DeclarationTable AddRootDeclaration(Lazy<RootSingleDeclaration> lazyRootDeclaration)
@@ -188,7 +188,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             }
         }
 
-        private ICollection<ReferenceDirective> GetMergedReferenceDirectives()
+        private ICollection<Syntax.ReferenceDirective> GetMergedReferenceDirectives()
         {
             var cachedReferenceDirectives = _cache.ReferenceDirectives.Value;
 
@@ -198,7 +198,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             }
             else
             {
-                return UnionCollection<ReferenceDirective>.Create(cachedReferenceDirectives, _latestLazyRootDeclaration.Value.ReferenceDirectives);
+                return UnionCollection<Syntax.ReferenceDirective>.Create(cachedReferenceDirectives, _latestLazyRootDeclaration.Value.ReferenceDirectives);
             }
         }
 
@@ -259,7 +259,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             }
         }
 
-        public IEnumerable<ReferenceDirective> ReferenceDirectives
+        public IEnumerable<Syntax.ReferenceDirective> ReferenceDirectives
         {
             get
             {

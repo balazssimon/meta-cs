@@ -1,17 +1,17 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Immutable;
 using System.Diagnostics;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.PooledObjects;
 
-namespace Microsoft.CodeAnalysis.CSharp
+namespace MetaDslx.CodeAnalysis.CSharp
 {
 #pragma warning disable CA1200 // Avoid using cref tags with a prefix
     /// <summary>
     /// Displays a symbol in the C# style.
     /// </summary>
-    /// <seealso cref="T:Microsoft.CodeAnalysis.VisualBasic.Symbols.SymbolDisplay"/>
+    /// <seealso cref="T:MetaDslx.CodeAnalysis.VisualBasic.Symbols.SymbolDisplay"/>
 #pragma warning restore CA1200 // Avoid using cref tags with a prefix
     public static class SymbolDisplay
     {

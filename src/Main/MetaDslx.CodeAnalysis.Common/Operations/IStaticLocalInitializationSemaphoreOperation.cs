@@ -1,6 +1,6 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-namespace Microsoft.CodeAnalysis.FlowAnalysis
+namespace MetaDslx.CodeAnalysis.FlowAnalysis
 {
     /// <summary>
     /// Represents the check during initialization of a VB static local that is initialized on the first call of the function, and never again.

@@ -1,13 +1,13 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
-using Microsoft.CodeAnalysis.Collections;
-using Microsoft.CodeAnalysis.PooledObjects;
-using Microsoft.CodeAnalysis.Text;
+using MetaDslx.CodeAnalysis.Collections;
+using MetaDslx.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.Text;
 using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax

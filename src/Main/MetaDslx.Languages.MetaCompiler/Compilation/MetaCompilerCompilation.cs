@@ -8,8 +8,8 @@ using System.Diagnostics;
 using System.Text;
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Declarations;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Diagnostics;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Diagnostics;
 
 namespace MetaDslx.Languages.MetaCompiler
 {

@@ -8,7 +8,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
@@ -7873,7 +7873,7 @@ namespace MetaDslx.Languages.MetaCompiler.Syntax
 namespace MetaDslx.Languages.MetaCompiler
 {
     using System.Threading;
-    using Microsoft.CodeAnalysis.Text;
+    using MetaDslx.CodeAnalysis.Text;
 	using MetaDslx.Languages.MetaCompiler.Syntax;
     using MetaDslx.Languages.MetaCompiler.Syntax.InternalSyntax;
 
@@ -10590,7 +10590,7 @@ namespace MetaDslx.Languages.MetaCompiler
 		public QualifierSyntax Qualifier(SeparatedSyntaxList<IdentifierSyntax> identifier)
 		{
 		    if (identifier == null) throw new ArgumentNullException(nameof(identifier));
-		    return (QualifierSyntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.Qualifier(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenSeparatedList<IdentifierGreen>(identifier.Node)).CreateRed();
+		    return (QualifierSyntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.Qualifier(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenSeparatedList<IdentifierGreen>(identifier.Node)).CreateRed();
 		}
 		
 		public AttributeSyntax Attribute(SyntaxToken tOpenBracket, QualifierSyntax qualifier, SyntaxToken tCloseBracket)
@@ -10614,7 +10614,7 @@ namespace MetaDslx.Languages.MetaCompiler
 		    if (kNamespace.GetKind() != MetaCompilerSyntaxKind.KNamespace) throw new ArgumentException(nameof(kNamespace));
 		    if (qualifiedName == null) throw new ArgumentNullException(nameof(qualifiedName));
 		    if (namespaceBody == null) throw new ArgumentNullException(nameof(namespaceBody));
-		    return (NamespaceDeclarationSyntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.NamespaceDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), (InternalSyntaxToken)kNamespace.Node, (Syntax.InternalSyntax.QualifiedNameGreen)qualifiedName.Green, (Syntax.InternalSyntax.NamespaceBodyGreen)namespaceBody.Green).CreateRed();
+		    return (NamespaceDeclarationSyntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.NamespaceDeclaration(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), (InternalSyntaxToken)kNamespace.Node, (Syntax.InternalSyntax.QualifiedNameGreen)qualifiedName.Green, (Syntax.InternalSyntax.NamespaceBodyGreen)namespaceBody.Green).CreateRed();
 		}
 		
 		public NamespaceDeclarationSyntax NamespaceDeclaration(QualifiedNameSyntax qualifiedName, NamespaceBodySyntax namespaceBody)
@@ -10628,7 +10628,7 @@ namespace MetaDslx.Languages.MetaCompiler
 		    if (tOpenBrace.GetKind() != MetaCompilerSyntaxKind.TOpenBrace) throw new ArgumentException(nameof(tOpenBrace));
 		    if (tCloseBrace == null) throw new ArgumentNullException(nameof(tCloseBrace));
 		    if (tCloseBrace.GetKind() != MetaCompilerSyntaxKind.TCloseBrace) throw new ArgumentException(nameof(tCloseBrace));
-		    return (NamespaceBodySyntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.NamespaceBody((InternalSyntaxToken)tOpenBrace.Node, Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<DeclarationGreen>(declaration.Node), (InternalSyntaxToken)tCloseBrace.Node).CreateRed();
+		    return (NamespaceBodySyntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.NamespaceBody((InternalSyntaxToken)tOpenBrace.Node, MetaDslx.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<DeclarationGreen>(declaration.Node), (InternalSyntaxToken)tCloseBrace.Node).CreateRed();
 		}
 		
 		public NamespaceBodySyntax NamespaceBody()
@@ -10679,7 +10679,7 @@ namespace MetaDslx.Languages.MetaCompiler
 		    if (name == null) throw new ArgumentNullException(nameof(name));
 		    if (tSemicolon == null) throw new ArgumentNullException(nameof(tSemicolon));
 		    if (tSemicolon.GetKind() != MetaCompilerSyntaxKind.TSemicolon) throw new ArgumentException(nameof(tSemicolon));
-		    return (CompilerDeclarationSyntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.CompilerDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), (InternalSyntaxToken)kCompiler.Node, (Syntax.InternalSyntax.NameGreen)name.Green, (InternalSyntaxToken)tSemicolon.Node).CreateRed();
+		    return (CompilerDeclarationSyntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.CompilerDeclaration(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), (InternalSyntaxToken)kCompiler.Node, (Syntax.InternalSyntax.NameGreen)name.Green, (InternalSyntaxToken)tSemicolon.Node).CreateRed();
 		}
 		
 		public CompilerDeclarationSyntax CompilerDeclaration(NameSyntax name)
@@ -10694,7 +10694,7 @@ namespace MetaDslx.Languages.MetaCompiler
 		    if (name == null) throw new ArgumentNullException(nameof(name));
 		    if (tSemicolon == null) throw new ArgumentNullException(nameof(tSemicolon));
 		    if (tSemicolon.GetKind() != MetaCompilerSyntaxKind.TSemicolon) throw new ArgumentException(nameof(tSemicolon));
-		    return (PhaseDeclarationSyntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.PhaseDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), locked == null ? null : (Syntax.InternalSyntax.LockedGreen)locked.Green, (InternalSyntaxToken)kPhase.Node, (Syntax.InternalSyntax.NameGreen)name.Green, phaseJoin == null ? null : (Syntax.InternalSyntax.PhaseJoinGreen)phaseJoin.Green, afterPhases == null ? null : (Syntax.InternalSyntax.AfterPhasesGreen)afterPhases.Green, beforePhases == null ? null : (Syntax.InternalSyntax.BeforePhasesGreen)beforePhases.Green, (InternalSyntaxToken)tSemicolon.Node).CreateRed();
+		    return (PhaseDeclarationSyntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.PhaseDeclaration(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), locked == null ? null : (Syntax.InternalSyntax.LockedGreen)locked.Green, (InternalSyntaxToken)kPhase.Node, (Syntax.InternalSyntax.NameGreen)name.Green, phaseJoin == null ? null : (Syntax.InternalSyntax.PhaseJoinGreen)phaseJoin.Green, afterPhases == null ? null : (Syntax.InternalSyntax.AfterPhasesGreen)afterPhases.Green, beforePhases == null ? null : (Syntax.InternalSyntax.BeforePhasesGreen)beforePhases.Green, (InternalSyntaxToken)tSemicolon.Node).CreateRed();
 		}
 		
 		public PhaseDeclarationSyntax PhaseDeclaration(NameSyntax name)
@@ -10732,7 +10732,7 @@ namespace MetaDslx.Languages.MetaCompiler
 		    if (kAfter == null) throw new ArgumentNullException(nameof(kAfter));
 		    if (kAfter.GetKind() != MetaCompilerSyntaxKind.KAfter) throw new ArgumentException(nameof(kAfter));
 		    if (phaseRef == null) throw new ArgumentNullException(nameof(phaseRef));
-		    return (AfterPhasesSyntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.AfterPhases((InternalSyntaxToken)kAfter.Node, Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenSeparatedList<PhaseRefGreen>(phaseRef.Node)).CreateRed();
+		    return (AfterPhasesSyntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.AfterPhases((InternalSyntaxToken)kAfter.Node, MetaDslx.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenSeparatedList<PhaseRefGreen>(phaseRef.Node)).CreateRed();
 		}
 		
 		public AfterPhasesSyntax AfterPhases(SeparatedSyntaxList<PhaseRefSyntax> phaseRef)
@@ -10745,7 +10745,7 @@ namespace MetaDslx.Languages.MetaCompiler
 		    if (kBefore == null) throw new ArgumentNullException(nameof(kBefore));
 		    if (kBefore.GetKind() != MetaCompilerSyntaxKind.KBefore) throw new ArgumentException(nameof(kBefore));
 		    if (phaseRef == null) throw new ArgumentNullException(nameof(phaseRef));
-		    return (BeforePhasesSyntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.BeforePhases((InternalSyntaxToken)kBefore.Node, Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenSeparatedList<PhaseRefGreen>(phaseRef.Node)).CreateRed();
+		    return (BeforePhasesSyntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.BeforePhases((InternalSyntaxToken)kBefore.Node, MetaDslx.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenSeparatedList<PhaseRefGreen>(phaseRef.Node)).CreateRed();
 		}
 		
 		public BeforePhasesSyntax BeforePhases(SeparatedSyntaxList<PhaseRefSyntax> phaseRef)
@@ -10765,7 +10765,7 @@ namespace MetaDslx.Languages.MetaCompiler
 		    if (kEnum.GetKind() != MetaCompilerSyntaxKind.KEnum) throw new ArgumentException(nameof(kEnum));
 		    if (name == null) throw new ArgumentNullException(nameof(name));
 		    if (enumBody == null) throw new ArgumentNullException(nameof(enumBody));
-		    return (EnumDeclarationSyntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.EnumDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), (InternalSyntaxToken)kEnum.Node, (Syntax.InternalSyntax.NameGreen)name.Green, (Syntax.InternalSyntax.EnumBodyGreen)enumBody.Green).CreateRed();
+		    return (EnumDeclarationSyntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.EnumDeclaration(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), (InternalSyntaxToken)kEnum.Node, (Syntax.InternalSyntax.NameGreen)name.Green, (Syntax.InternalSyntax.EnumBodyGreen)enumBody.Green).CreateRed();
 		}
 		
 		public EnumDeclarationSyntax EnumDeclaration(NameSyntax name, EnumBodySyntax enumBody)
@@ -10781,7 +10781,7 @@ namespace MetaDslx.Languages.MetaCompiler
 		    if (tSemicolon != null && tSemicolon.GetKind() != MetaCompilerSyntaxKind.TSemicolon) throw new ArgumentException(nameof(tSemicolon));
 		    if (tCloseBrace == null) throw new ArgumentNullException(nameof(tCloseBrace));
 		    if (tCloseBrace.GetKind() != MetaCompilerSyntaxKind.TCloseBrace) throw new ArgumentException(nameof(tCloseBrace));
-		    return (EnumBodySyntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.EnumBody((InternalSyntaxToken)tOpenBrace.Node, (Syntax.InternalSyntax.EnumValuesGreen)enumValues.Green, (InternalSyntaxToken)tSemicolon.Node, Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<EnumMemberDeclarationGreen>(enumMemberDeclaration.Node), (InternalSyntaxToken)tCloseBrace.Node).CreateRed();
+		    return (EnumBodySyntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.EnumBody((InternalSyntaxToken)tOpenBrace.Node, (Syntax.InternalSyntax.EnumValuesGreen)enumValues.Green, (InternalSyntaxToken)tSemicolon.Node, MetaDslx.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<EnumMemberDeclarationGreen>(enumMemberDeclaration.Node), (InternalSyntaxToken)tCloseBrace.Node).CreateRed();
 		}
 		
 		public EnumBodySyntax EnumBody(EnumValuesSyntax enumValues)
@@ -10792,13 +10792,13 @@ namespace MetaDslx.Languages.MetaCompiler
 		public EnumValuesSyntax EnumValues(SeparatedSyntaxList<EnumValueSyntax> enumValue)
 		{
 		    if (enumValue == null) throw new ArgumentNullException(nameof(enumValue));
-		    return (EnumValuesSyntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.EnumValues(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenSeparatedList<EnumValueGreen>(enumValue.Node)).CreateRed();
+		    return (EnumValuesSyntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.EnumValues(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenSeparatedList<EnumValueGreen>(enumValue.Node)).CreateRed();
 		}
 		
 		public EnumValueSyntax EnumValue(SyntaxList<AttributeSyntax> attribute, NameSyntax name)
 		{
 		    if (name == null) throw new ArgumentNullException(nameof(name));
-		    return (EnumValueSyntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.EnumValue(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), (Syntax.InternalSyntax.NameGreen)name.Green).CreateRed();
+		    return (EnumValueSyntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.EnumValue(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), (Syntax.InternalSyntax.NameGreen)name.Green).CreateRed();
 		}
 		
 		public EnumValueSyntax EnumValue(NameSyntax name)
@@ -10824,7 +10824,7 @@ namespace MetaDslx.Languages.MetaCompiler
 		    if (name == null) throw new ArgumentNullException(nameof(name));
 		    if (tColon != null && tColon.GetKind() != MetaCompilerSyntaxKind.TColon) throw new ArgumentException(nameof(tColon));
 		    if (classBody == null) throw new ArgumentNullException(nameof(classBody));
-		    return (ClassDeclarationSyntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.ClassDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), visibility == null ? null : (Syntax.InternalSyntax.VisibilityGreen)visibility.Green, Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<ClassModifierGreen>(classModifier.Node), (Syntax.InternalSyntax.Class_Green)class_.Green, (Syntax.InternalSyntax.NameGreen)name.Green, (InternalSyntaxToken)tColon.Node, classAncestors == null ? null : (Syntax.InternalSyntax.ClassAncestorsGreen)classAncestors.Green, (Syntax.InternalSyntax.ClassBodyGreen)classBody.Green).CreateRed();
+		    return (ClassDeclarationSyntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.ClassDeclaration(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), visibility == null ? null : (Syntax.InternalSyntax.VisibilityGreen)visibility.Green, MetaDslx.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<ClassModifierGreen>(classModifier.Node), (Syntax.InternalSyntax.Class_Green)class_.Green, (Syntax.InternalSyntax.NameGreen)name.Green, (InternalSyntaxToken)tColon.Node, classAncestors == null ? null : (Syntax.InternalSyntax.ClassAncestorsGreen)classAncestors.Green, (Syntax.InternalSyntax.ClassBodyGreen)classBody.Green).CreateRed();
 		}
 		
 		public ClassDeclarationSyntax ClassDeclaration(Class_Syntax class_, NameSyntax name, ClassBodySyntax classBody)
@@ -10859,7 +10859,7 @@ namespace MetaDslx.Languages.MetaCompiler
 		public ClassAncestorsSyntax ClassAncestors(SeparatedSyntaxList<ClassAncestorSyntax> classAncestor)
 		{
 		    if (classAncestor == null) throw new ArgumentNullException(nameof(classAncestor));
-		    return (ClassAncestorsSyntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.ClassAncestors(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenSeparatedList<ClassAncestorGreen>(classAncestor.Node)).CreateRed();
+		    return (ClassAncestorsSyntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.ClassAncestors(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenSeparatedList<ClassAncestorGreen>(classAncestor.Node)).CreateRed();
 		}
 		
 		public ClassAncestorSyntax ClassAncestor(QualifierSyntax qualifier)
@@ -10874,7 +10874,7 @@ namespace MetaDslx.Languages.MetaCompiler
 		    if (tOpenBrace.GetKind() != MetaCompilerSyntaxKind.TOpenBrace) throw new ArgumentException(nameof(tOpenBrace));
 		    if (tCloseBrace == null) throw new ArgumentNullException(nameof(tCloseBrace));
 		    if (tCloseBrace.GetKind() != MetaCompilerSyntaxKind.TCloseBrace) throw new ArgumentException(nameof(tCloseBrace));
-		    return (ClassBodySyntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.ClassBody((InternalSyntaxToken)tOpenBrace.Node, classPhases == null ? null : (Syntax.InternalSyntax.ClassPhasesGreen)classPhases.Green, Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<ClassMemberDeclarationGreen>(classMemberDeclaration.Node), (InternalSyntaxToken)tCloseBrace.Node).CreateRed();
+		    return (ClassBodySyntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.ClassBody((InternalSyntaxToken)tOpenBrace.Node, classPhases == null ? null : (Syntax.InternalSyntax.ClassPhasesGreen)classPhases.Green, MetaDslx.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<ClassMemberDeclarationGreen>(classMemberDeclaration.Node), (InternalSyntaxToken)tCloseBrace.Node).CreateRed();
 		}
 		
 		public ClassBodySyntax ClassBody()
@@ -10889,7 +10889,7 @@ namespace MetaDslx.Languages.MetaCompiler
 		    if (phaseRef == null) throw new ArgumentNullException(nameof(phaseRef));
 		    if (tSemicolon == null) throw new ArgumentNullException(nameof(tSemicolon));
 		    if (tSemicolon.GetKind() != MetaCompilerSyntaxKind.TSemicolon) throw new ArgumentException(nameof(tSemicolon));
-		    return (ClassPhasesSyntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.ClassPhases((InternalSyntaxToken)kPhase.Node, Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenSeparatedList<PhaseRefGreen>(phaseRef.Node), (InternalSyntaxToken)tSemicolon.Node).CreateRed();
+		    return (ClassPhasesSyntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.ClassPhases((InternalSyntaxToken)kPhase.Node, MetaDslx.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenSeparatedList<PhaseRefGreen>(phaseRef.Node), (InternalSyntaxToken)tSemicolon.Node).CreateRed();
 		}
 		
 		public ClassPhasesSyntax ClassPhases(SeparatedSyntaxList<PhaseRefSyntax> phaseRef)
@@ -10927,7 +10927,7 @@ namespace MetaDslx.Languages.MetaCompiler
 		    if (name == null) throw new ArgumentNullException(nameof(name));
 		    if (tColon != null && tColon.GetKind() != MetaCompilerSyntaxKind.TColon) throw new ArgumentException(nameof(tColon));
 		    if (classBody == null) throw new ArgumentNullException(nameof(classBody));
-		    return (SymbolDeclarationSyntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.SymbolDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), visibility == null ? null : (Syntax.InternalSyntax.VisibilityGreen)visibility.Green, visit_ == null ? null : (Syntax.InternalSyntax.Visit_Green)visit_.Green, Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<ClassModifierGreen>(classModifier.Node), (Syntax.InternalSyntax.Symbol_Green)symbol_.Green, (Syntax.InternalSyntax.NameGreen)name.Green, (InternalSyntaxToken)tColon.Node, classAncestors == null ? null : (Syntax.InternalSyntax.ClassAncestorsGreen)classAncestors.Green, (Syntax.InternalSyntax.ClassBodyGreen)classBody.Green).CreateRed();
+		    return (SymbolDeclarationSyntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.SymbolDeclaration(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), visibility == null ? null : (Syntax.InternalSyntax.VisibilityGreen)visibility.Green, visit_ == null ? null : (Syntax.InternalSyntax.Visit_Green)visit_.Green, MetaDslx.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<ClassModifierGreen>(classModifier.Node), (Syntax.InternalSyntax.Symbol_Green)symbol_.Green, (Syntax.InternalSyntax.NameGreen)name.Green, (InternalSyntaxToken)tColon.Node, classAncestors == null ? null : (Syntax.InternalSyntax.ClassAncestorsGreen)classAncestors.Green, (Syntax.InternalSyntax.ClassBodyGreen)classBody.Green).CreateRed();
 		}
 		
 		public SymbolDeclarationSyntax SymbolDeclaration(Symbol_Syntax symbol_, NameSyntax name, ClassBodySyntax classBody)
@@ -10953,7 +10953,7 @@ namespace MetaDslx.Languages.MetaCompiler
 		    if (name == null) throw new ArgumentNullException(nameof(name));
 		    if (tSemicolon == null) throw new ArgumentNullException(nameof(tSemicolon));
 		    if (tSemicolon.GetKind() != MetaCompilerSyntaxKind.TSemicolon) throw new ArgumentException(nameof(tSemicolon));
-		    return (FieldDeclarationSyntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.FieldDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), visibility == null ? null : (Syntax.InternalSyntax.VisibilityGreen)visibility.Green, Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<MemberModifierGreen>(memberModifier.Node), fieldContainment == null ? null : (Syntax.InternalSyntax.FieldContainmentGreen)fieldContainment.Green, fieldKind == null ? null : (Syntax.InternalSyntax.FieldKindGreen)fieldKind.Green, (Syntax.InternalSyntax.TypeReferenceGreen)typeReference.Green, (Syntax.InternalSyntax.NameGreen)name.Green, defaultValue == null ? null : (Syntax.InternalSyntax.DefaultValueGreen)defaultValue.Green, phase == null ? null : (Syntax.InternalSyntax.PhaseGreen)phase.Green, (InternalSyntaxToken)tSemicolon.Node).CreateRed();
+		    return (FieldDeclarationSyntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.FieldDeclaration(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), visibility == null ? null : (Syntax.InternalSyntax.VisibilityGreen)visibility.Green, MetaDslx.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<MemberModifierGreen>(memberModifier.Node), fieldContainment == null ? null : (Syntax.InternalSyntax.FieldContainmentGreen)fieldContainment.Green, fieldKind == null ? null : (Syntax.InternalSyntax.FieldKindGreen)fieldKind.Green, (Syntax.InternalSyntax.TypeReferenceGreen)typeReference.Green, (Syntax.InternalSyntax.NameGreen)name.Green, defaultValue == null ? null : (Syntax.InternalSyntax.DefaultValueGreen)defaultValue.Green, phase == null ? null : (Syntax.InternalSyntax.PhaseGreen)phase.Green, (InternalSyntaxToken)tSemicolon.Node).CreateRed();
 		}
 		
 		public FieldDeclarationSyntax FieldDeclaration(TypeReferenceSyntax typeReference, NameSyntax name)
@@ -11050,7 +11050,7 @@ namespace MetaDslx.Languages.MetaCompiler
 		public NameUseListSyntax NameUseList(SeparatedSyntaxList<QualifierSyntax> qualifier)
 		{
 		    if (qualifier == null) throw new ArgumentNullException(nameof(qualifier));
-		    return (NameUseListSyntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.NameUseList(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenSeparatedList<QualifierGreen>(qualifier.Node)).CreateRed();
+		    return (NameUseListSyntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.NameUseList(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenSeparatedList<QualifierGreen>(qualifier.Node)).CreateRed();
 		}
 		
 		public TypedefDeclarationSyntax TypedefDeclaration(SyntaxToken kTypeDef, NameSyntax name, TypedefValueSyntax typedefValue, SyntaxToken tSemicolon)
@@ -11228,7 +11228,7 @@ namespace MetaDslx.Languages.MetaCompiler
 		public TypeArgumentsSyntax TypeArguments(SeparatedSyntaxList<TypeReferenceSyntax> typeReference)
 		{
 		    if (typeReference == null) throw new ArgumentNullException(nameof(typeReference));
-		    return (TypeArgumentsSyntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.TypeArguments(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenSeparatedList<TypeReferenceGreen>(typeReference.Node)).CreateRed();
+		    return (TypeArgumentsSyntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.TypeArguments(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenSeparatedList<TypeReferenceGreen>(typeReference.Node)).CreateRed();
 		}
 		
 		public ArrayTypeSyntax ArrayType(SimpleOrGenericTypeSyntax simpleOrGenericType, SyntaxToken tOpenBracket, SyntaxToken tCloseBracket)
@@ -11270,7 +11270,7 @@ namespace MetaDslx.Languages.MetaCompiler
 		    if (tCloseParen.GetKind() != MetaCompilerSyntaxKind.TCloseParen) throw new ArgumentException(nameof(tCloseParen));
 		    if (tSemicolon == null) throw new ArgumentNullException(nameof(tSemicolon));
 		    if (tSemicolon.GetKind() != MetaCompilerSyntaxKind.TSemicolon) throw new ArgumentException(nameof(tSemicolon));
-		    return (OperationDeclarationSyntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.OperationDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), visibility == null ? null : (Syntax.InternalSyntax.VisibilityGreen)visibility.Green, Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<MemberModifierGreen>(memberModifier.Node), (Syntax.InternalSyntax.ReturnTypeGreen)returnType.Green, (Syntax.InternalSyntax.NameGreen)name.Green, (InternalSyntaxToken)tOpenParen.Node, parameterList == null ? null : (Syntax.InternalSyntax.ParameterListGreen)parameterList.Green, (InternalSyntaxToken)tCloseParen.Node, (InternalSyntaxToken)tSemicolon.Node).CreateRed();
+		    return (OperationDeclarationSyntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.OperationDeclaration(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), visibility == null ? null : (Syntax.InternalSyntax.VisibilityGreen)visibility.Green, MetaDslx.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<MemberModifierGreen>(memberModifier.Node), (Syntax.InternalSyntax.ReturnTypeGreen)returnType.Green, (Syntax.InternalSyntax.NameGreen)name.Green, (InternalSyntaxToken)tOpenParen.Node, parameterList == null ? null : (Syntax.InternalSyntax.ParameterListGreen)parameterList.Green, (InternalSyntaxToken)tCloseParen.Node, (InternalSyntaxToken)tSemicolon.Node).CreateRed();
 		}
 		
 		public OperationDeclarationSyntax OperationDeclaration(ReturnTypeSyntax returnType, NameSyntax name)
@@ -11281,14 +11281,14 @@ namespace MetaDslx.Languages.MetaCompiler
 		public ParameterListSyntax ParameterList(SeparatedSyntaxList<ParameterSyntax> parameter)
 		{
 		    if (parameter == null) throw new ArgumentNullException(nameof(parameter));
-		    return (ParameterListSyntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.ParameterList(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenSeparatedList<ParameterGreen>(parameter.Node)).CreateRed();
+		    return (ParameterListSyntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.ParameterList(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenSeparatedList<ParameterGreen>(parameter.Node)).CreateRed();
 		}
 		
 		public ParameterSyntax Parameter(SyntaxList<AttributeSyntax> attribute, TypeReferenceSyntax typeReference, NameSyntax name, DefaultValueSyntax defaultValue)
 		{
 		    if (typeReference == null) throw new ArgumentNullException(nameof(typeReference));
 		    if (name == null) throw new ArgumentNullException(nameof(name));
-		    return (ParameterSyntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.Parameter(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), (Syntax.InternalSyntax.TypeReferenceGreen)typeReference.Green, (Syntax.InternalSyntax.NameGreen)name.Green, defaultValue == null ? null : (Syntax.InternalSyntax.DefaultValueGreen)defaultValue.Green).CreateRed();
+		    return (ParameterSyntax)MetaCompilerLanguage.Instance.InternalSyntaxFactory.Parameter(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), (Syntax.InternalSyntax.TypeReferenceGreen)typeReference.Green, (Syntax.InternalSyntax.NameGreen)name.Green, defaultValue == null ? null : (Syntax.InternalSyntax.DefaultValueGreen)defaultValue.Green).CreateRed();
 		}
 		
 		public ParameterSyntax Parameter(TypeReferenceSyntax typeReference, NameSyntax name)

@@ -1,17 +1,17 @@
-ï»¿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
-using Microsoft.CodeAnalysis.CSharp.CodeGen;
-using Microsoft.CodeAnalysis.CSharp.Symbols;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.PooledObjects;
-using Microsoft.CodeAnalysis.Text;
+using MetaDslx.CodeAnalysis.CSharp.CodeGen;
+using MetaDslx.CodeAnalysis.CSharp.Symbols;
+using MetaDslx.CodeAnalysis.CSharp.Syntax;
+using MetaDslx.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.Text;
 using Roslyn.Utilities;
 
-namespace Microsoft.CodeAnalysis.CSharp
+namespace MetaDslx.CodeAnalysis.CSharp
 {
     internal partial class Binder
     {
@@ -1136,13 +1136,13 @@ namespace Microsoft.CodeAnalysis.CSharp
             // SPEC: (also applies to the CheckInvocationEscape counterpart)
             //
             //            An lvalue resulting from a ref-returning method invocation e1.M(e2, ...) is ref-safe - to - escape the smallest of the following scopes:
-            //â€¢	The entire enclosing method
-            //â€¢	the ref-safe-to-escape of all ref/out/in argument expressions(excluding the receiver)
-            //â€¢	the safe-to - escape of all argument expressions(including the receiver)
+            //•	The entire enclosing method
+            //•	the ref-safe-to-escape of all ref/out/in argument expressions(excluding the receiver)
+            //•	the safe-to - escape of all argument expressions(including the receiver)
             //
             //            An rvalue resulting from a method invocation e1.M(e2, ...) is safe - to - escape from the smallest of the following scopes:
-            //â€¢	The entire enclosing method
-            //â€¢	the safe-to-escape of all argument expressions(including the receiver)
+            //•	The entire enclosing method
+            //•	the safe-to-escape of all argument expressions(including the receiver)
             //
 
             if (symbol.IsStatic)
@@ -1248,7 +1248,7 @@ moreArguments:
         {
             // SPEC: 
             //            In a method invocation, the following constraints apply:
-            //â€¢	If there is a ref or out argument to a ref struct type (including the receiver), with safe-to-escape E1, then
+            //•	If there is a ref or out argument to a ref struct type (including the receiver), with safe-to-escape E1, then
             //  o no ref or out argument(excluding the receiver and arguments of ref-like types) may have a narrower ref-safe-to-escape than E1; and
             //  o   no argument(including the receiver) may have a narrower safe-to-escape than E1.
 

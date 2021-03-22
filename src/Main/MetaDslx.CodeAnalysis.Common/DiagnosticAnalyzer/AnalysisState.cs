@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -8,12 +8,12 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.CodeAnalysis.Diagnostics.Telemetry;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.Diagnostics.Telemetry;
+using MetaDslx.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
-using static Microsoft.CodeAnalysis.Diagnostics.AnalyzerDriver;
+using static MetaDslx.CodeAnalysis.Diagnostics.AnalyzerDriver;
 
-namespace Microsoft.CodeAnalysis.Diagnostics
+namespace MetaDslx.CodeAnalysis.Diagnostics
 {
     /// <summary>
     /// Stores the partial analysis state for analyzers executed on a specific compilation.

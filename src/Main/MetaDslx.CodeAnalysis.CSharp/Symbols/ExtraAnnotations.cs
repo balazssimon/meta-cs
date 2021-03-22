@@ -1,14 +1,14 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Text;
-using Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE;
-using Microsoft.CodeAnalysis.PooledObjects;
-using static Microsoft.CodeAnalysis.CSharp.Symbols.FlowAnalysisAnnotations;
+using MetaDslx.CodeAnalysis.CSharp.Symbols.Metadata.PE;
+using MetaDslx.CodeAnalysis.PooledObjects;
+using static MetaDslx.CodeAnalysis.CSharp.Symbols.FlowAnalysisAnnotations;
 
-namespace Microsoft.CodeAnalysis.CSharp.Symbols
+namespace MetaDslx.CodeAnalysis.CSharp.Symbols
 {
     // https://github.com/dotnet/roslyn/issues/29821 external annotations should be removed or fully designed/productized
     //  If we choose to stick with an ad-hoc key (rather than annotations as source or as PE/ref assembly),

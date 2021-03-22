@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -12,14 +12,14 @@ using MetaDslx.CodeAnalysis.Symbols.Metadata;
 using MetaDslx.CodeAnalysis.Symbols.Source;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.Languages.Meta.Model;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.PooledObjects;
-using Microsoft.CodeAnalysis.RuntimeMembers;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.RuntimeMembers;
 using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis.Binding
 {
-    using Cci = Microsoft.Cci;
+    using Cci = MetaDslx.Cci;
 
     public partial class Binder
     {

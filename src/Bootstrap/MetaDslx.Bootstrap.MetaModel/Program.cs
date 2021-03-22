@@ -1,4 +1,4 @@
-﻿using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.Languages.Meta;
@@ -6,7 +6,7 @@ using MetaDslx.Languages.Meta.Binding;
 using MetaDslx.Languages.Meta.Generator;
 using MetaDslx.Languages.Meta.Model;
 using MetaDslx.Modeling;
-using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.IO;

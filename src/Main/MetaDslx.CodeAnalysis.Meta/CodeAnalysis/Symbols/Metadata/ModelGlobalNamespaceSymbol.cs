@@ -1,12 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using MetaDslx.CodeAnalysis.Declarations;
 using MetaDslx.Modeling;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.PooledObjects;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 {

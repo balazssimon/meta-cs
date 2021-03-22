@@ -1,13 +1,13 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Roslyn.Utilities;
 
-namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
+namespace MetaDslx.CodeAnalysis.CSharp.Syntax.InternalSyntax
 {
-    using Microsoft.CodeAnalysis.Syntax.InternalSyntax;
+    using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
 
     // TODO: The Xml parser recognizes most commonplace XML, according to the XML spec.
     // It does not recognize the following:

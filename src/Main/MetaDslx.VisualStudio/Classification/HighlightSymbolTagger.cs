@@ -1,6 +1,6 @@
-﻿using MetaDslx.VisualStudio.Compilation;
+using MetaDslx.VisualStudio.Compilation;
 using MetaDslx.VisualStudio.Utilities;
-using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
 using Microsoft.VisualStudio.Language.StandardClassification;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;

@@ -1,15 +1,15 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Text;
 using MetaDslx.CodeAnalysis.Declarations;
 using MetaDslx.Modeling;
-using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-    using CSharpSymbolKind = Microsoft.CodeAnalysis.SymbolKind;
-    using CSharpTypeKind = Microsoft.CodeAnalysis.TypeKind;
+    using CSharpSymbolKind = MetaDslx.CodeAnalysis.SymbolKind;
+    using CSharpTypeKind = MetaDslx.CodeAnalysis.TypeKind;
 
     public abstract class SymbolFacts
     {

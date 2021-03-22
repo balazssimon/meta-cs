@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -8,11 +8,11 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
-using Microsoft.CodeAnalysis.Collections;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.Collections;
+using MetaDslx.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 
-namespace Microsoft.CodeAnalysis
+namespace MetaDslx.CodeAnalysis
 {
     internal static class MetadataHelpers
     {
@@ -733,7 +733,7 @@ ExitDecodeTypeName:
             // A list accumulating information about namespaces immediately contained within this namespace.
             // For each pair:
             //   Key - contains simple name of a child namespace.
-            //   Value – contains a sequence similar to the one passed to this function, but
+            //   Value � contains a sequence similar to the one passed to this function, but
             //           calculated for the child namespace. 
             var nestedNamespaces = new List<KeyValuePair<string, IEnumerable<IGrouping<string, TypeDefinitionHandle>>>>();
             bool possiblyHavePairsWithDuplicateKey = false;

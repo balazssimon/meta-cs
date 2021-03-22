@@ -1,16 +1,16 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.PooledObjects;
-using Microsoft.CodeAnalysis.Text;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.Text;
 using Roslyn.Utilities;
 using System.Diagnostics;
 using System.Globalization;
 using System.Threading;
-using Microsoft.Cci;
+using MetaDslx.Cci;
 using MetaDslx.CodeAnalysis.Binding;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Retargeting

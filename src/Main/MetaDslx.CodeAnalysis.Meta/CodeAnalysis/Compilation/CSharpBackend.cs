@@ -1,5 +1,5 @@
-﻿using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.CSharp;
 using System;
 using System.Collections.Generic;
 using System.Text;

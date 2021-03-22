@@ -1,11 +1,11 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Globalization;
 using System.Threading;
 
-namespace Microsoft.CodeAnalysis.CSharp.Symbols
+namespace MetaDslx.CodeAnalysis.CSharp.Symbols
 {
     /// <summary>
     /// Represents a method that is based on another method.
@@ -210,7 +210,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             get { return UnderlyingMethod.HasDeclarativeSecurity; }
         }
 
-        internal override IEnumerable<Microsoft.Cci.SecurityAttribute> GetSecurityInformation()
+        internal override IEnumerable<MetaDslx.Cci.SecurityAttribute> GetSecurityInformation()
         {
             return UnderlyingMethod.GetSecurityInformation();
         }
@@ -265,7 +265,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             }
         }
 
-        internal override Microsoft.Cci.CallingConvention CallingConvention
+        internal override MetaDslx.Cci.CallingConvention CallingConvention
         {
             get
             {

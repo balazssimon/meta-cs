@@ -1,16 +1,16 @@
-ï»¿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
-using Microsoft.CodeAnalysis.CSharp.Symbols;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.CSharp.Symbols;
+using MetaDslx.CodeAnalysis.CSharp.Syntax;
+using MetaDslx.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 
-namespace Microsoft.CodeAnalysis.CSharp
+namespace MetaDslx.CodeAnalysis.CSharp
 {
     internal partial class Binder
     {
@@ -575,9 +575,9 @@ namespace Microsoft.CodeAnalysis.CSharp
         ///
         /// Spec 7.5.4: Compile-time checking of dynamic overload resolution 
         ///   If F is a static method, the method group must have resulted from a simple-name, a member-access through a type, 
-        ///   or a member-access whose receiver can't be classified as a type or value until after overload resolution (see Â§7.6.4.1). 
+        ///   or a member-access whose receiver can't be classified as a type or value until after overload resolution (see §7.6.4.1). 
         ///   If F is an instance method, the method group must have resulted from a simple-name, a member-access through a variable or value,
-        ///   or a member-access whose receiver can't be classified as a type or value until after overload resolution (see Â§7.6.4.1).
+        ///   or a member-access whose receiver can't be classified as a type or value until after overload resolution (see §7.6.4.1).
         /// </summary>
         /// <returns>
         /// True if there is any error.

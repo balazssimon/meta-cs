@@ -1,13 +1,13 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Threading;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
+using MetaDslx.CodeAnalysis.CSharp.Syntax;
 using Roslyn.Utilities;
 
-namespace Microsoft.CodeAnalysis.CSharp.Symbols
+namespace MetaDslx.CodeAnalysis.CSharp.Symbols
 {
     /// <summary>
     /// Represents a constant field of an enum.
@@ -145,7 +145,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             protected override ConstantValue MakeConstantValue(HashSet<SourceFieldSymbolWithSyntaxReference> dependencies, bool earlyDecodingWellKnownAttributes, DiagnosticBag diagnostics)
             {
                 var constantType = this.ContainingType.EnumUnderlyingType.SpecialType;
-                return Microsoft.CodeAnalysis.ConstantValue.Default(constantType);
+                return MetaDslx.CodeAnalysis.ConstantValue.Default(constantType);
             }
         }
 
@@ -194,13 +194,13 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 var otherValue = _otherConstant.GetConstantValue(new ConstantFieldsInProgress(this, dependencies), earlyDecodingWellKnownAttributes);
                 // Value may be Unset if there are dependencies
                 // that must be evaluated first.
-                if (otherValue == Microsoft.CodeAnalysis.ConstantValue.Unset)
+                if (otherValue == MetaDslx.CodeAnalysis.ConstantValue.Unset)
                 {
-                    return Microsoft.CodeAnalysis.ConstantValue.Unset;
+                    return MetaDslx.CodeAnalysis.ConstantValue.Unset;
                 }
                 if (otherValue.IsBad)
                 {
-                    return Microsoft.CodeAnalysis.ConstantValue.Bad;
+                    return MetaDslx.CodeAnalysis.ConstantValue.Bad;
                 }
                 ConstantValue value;
                 var overflowKind = EnumConstantHelper.OffsetValue(otherValue, _otherConstantOffset, out value);

@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -9,12 +9,12 @@ using System.Reflection;
 using System.Reflection.Metadata;
 using System.Runtime.InteropServices;
 using System.Threading;
-using Microsoft.CodeAnalysis.CSharp.DocumentationComments;
-using Microsoft.CodeAnalysis.CSharp.Emit;
+using MetaDslx.CodeAnalysis.CSharp.DocumentationComments;
+using MetaDslx.CodeAnalysis.CSharp.Emit;
 using Roslyn.Utilities;
 using System.Linq;
 
-namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
+namespace MetaDslx.CodeAnalysis.CSharp.Symbols.Metadata.PE
 {
     /// <summary>
     /// The class to represent all fields imported from a PE/module.
@@ -27,7 +27,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
         private readonly PENamedTypeSymbol _containingType;
         private bool _lazyIsVolatile;
         private ImmutableArray<CSharpAttributeData> _lazyCustomAttributes;
-        private ConstantValue _lazyConstantValue = Microsoft.CodeAnalysis.ConstantValue.Unset; // Indicates an uninitialized ConstantValue
+        private ConstantValue _lazyConstantValue = MetaDslx.CodeAnalysis.ConstantValue.Unset; // Indicates an uninitialized ConstantValue
         private Tuple<CultureInfo, string> _lazyDocComment;
         private DiagnosticInfo _lazyUseSiteDiagnostic = CSDiagnosticInfo.EmptyErrorInfo; // Indicates unknown state. 
 
@@ -332,7 +332,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
 
         internal override ConstantValue GetConstantValue(ConstantFieldsInProgress inProgress, bool earlyDecodingWellKnownAttributes)
         {
-            if (_lazyConstantValue == Microsoft.CodeAnalysis.ConstantValue.Unset)
+            if (_lazyConstantValue == MetaDslx.CodeAnalysis.ConstantValue.Unset)
             {
                 ConstantValue value = null;
 
@@ -356,7 +356,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
                 Interlocked.CompareExchange(
                     ref _lazyConstantValue,
                     value,
-                    Microsoft.CodeAnalysis.ConstantValue.Unset);
+                    MetaDslx.CodeAnalysis.ConstantValue.Unset);
             }
 
             return _lazyConstantValue;

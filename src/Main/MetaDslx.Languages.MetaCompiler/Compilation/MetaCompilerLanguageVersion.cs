@@ -3,7 +3,7 @@
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 using System;
 using MetaDslx.CodeAnalysis;
-using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
 using Roslyn.Utilities;
 
 namespace MetaDslx.Languages.MetaCompiler

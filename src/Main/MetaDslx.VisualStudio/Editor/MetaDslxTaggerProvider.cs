@@ -1,8 +1,8 @@
-﻿using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
 using MetaDslx.VisualStudio.Compilation;
 using MetaDslx.VisualStudio.Editor;
 using MetaDslx.VisualStudio.Utilities;
-using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
 using Microsoft.VisualStudio.Language.StandardClassification;
 using Microsoft.VisualStudio.Shell.TableControl;
 using Microsoft.VisualStudio.Shell.TableManager;

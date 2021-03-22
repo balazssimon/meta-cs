@@ -1,8 +1,8 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using Microsoft.CodeAnalysis.Collections;
-using Microsoft.CodeAnalysis.Emit;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.Collections;
+using MetaDslx.CodeAnalysis.Emit;
+using MetaDslx.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 using System;
 using System.Collections.Immutable;
@@ -11,7 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Microsoft.CodeAnalysis.CodeGen
+namespace MetaDslx.CodeAnalysis.CodeGen
 {
     /// <summary>
     /// This class represents the PermissionSetAttribute specified in source which needs fixup during codegen.

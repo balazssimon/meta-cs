@@ -1,14 +1,14 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
+using MetaDslx.CodeAnalysis.CSharp.Syntax;
 using Roslyn.Utilities;
 
-namespace Microsoft.CodeAnalysis.CSharp.Symbols
+namespace MetaDslx.CodeAnalysis.CSharp.Symbols
 {
     /// <summary>
     /// Represents a local variable in a method body.
@@ -548,7 +548,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             {
                 if (this.IsConst && _constantTuple == null)
                 {
-                    var value = Microsoft.CodeAnalysis.ConstantValue.Bad;
+                    var value = MetaDslx.CodeAnalysis.ConstantValue.Bad;
                     Location initValueNodeLocation = _initializer.Value.Location;
                     var diagnostics = DiagnosticBag.GetInstance();
                     Debug.Assert(inProgress != this);
@@ -573,7 +573,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                         diagnostics.Add(ErrorCode.ERR_CircConstValue, node.GetLocation(), this);
                     }
 
-                    return Microsoft.CodeAnalysis.ConstantValue.Bad;
+                    return MetaDslx.CodeAnalysis.ConstantValue.Bad;
                 }
 
                 MakeConstantTuple(inProgress, boundInitValue: null);

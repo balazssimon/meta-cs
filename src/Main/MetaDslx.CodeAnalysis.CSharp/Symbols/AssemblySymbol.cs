@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -7,11 +7,11 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.PortableExecutable;
-using Microsoft.CodeAnalysis.Collections;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.Collections;
+using MetaDslx.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 
-namespace Microsoft.CodeAnalysis.CSharp.Symbols
+namespace MetaDslx.CodeAnalysis.CSharp.Symbols
 {
     /// <summary>
     /// Represents a .NET assembly, consisting of one or more modules.
@@ -509,7 +509,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        internal NamedTypeSymbol GetPrimitiveType(Microsoft.Cci.PrimitiveTypeCode type)
+        internal NamedTypeSymbol GetPrimitiveType(MetaDslx.Cci.PrimitiveTypeCode type)
         {
             return GetSpecialType(SpecialTypes.GetTypeFromMetadataName(type));
         }

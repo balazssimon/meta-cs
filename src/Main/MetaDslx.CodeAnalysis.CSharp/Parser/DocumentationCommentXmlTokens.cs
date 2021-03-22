@@ -1,9 +1,9 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using Microsoft.CodeAnalysis.Syntax.InternalSyntax;
+using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
 using Roslyn.Utilities;
 
-namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
+namespace MetaDslx.CodeAnalysis.CSharp.Syntax.InternalSyntax
 {
     /// <summary>
     /// Set of well-known SyntaxTokens commonly found within XML doc comments.

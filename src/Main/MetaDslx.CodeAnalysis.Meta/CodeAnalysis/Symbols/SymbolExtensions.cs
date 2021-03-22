@@ -1,7 +1,7 @@
-﻿using MetaDslx.CodeAnalysis.Binding;
+using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Symbols.Metadata;
 using MetaDslx.CodeAnalysis.Symbols.Source;
-using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -25,7 +25,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
             if ((object)csSymbol == null && (object)symbol != null)
             {
-                throw new ArgumentException(Microsoft.CodeAnalysis.CSharp.CSharpResources.NotACSharpSymbol, paramName);
+                throw new ArgumentException(MetaDslx.CodeAnalysis.CSharp.CSharpResources.NotACSharpSymbol, paramName);
             }
 
             return csSymbol;

@@ -1,24 +1,24 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
 using System.Text;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.PooledObjects;
 using ExceptionUtilities = Roslyn.Utilities.ExceptionUtilities;
 
-namespace Microsoft.CodeAnalysis.CSharp
+namespace MetaDslx.CodeAnalysis.CSharp
 {
 #pragma warning disable CA1200 // Avoid using cref tags with a prefix
     /// <summary>
     /// Displays a value in the C# style.
     /// </summary>
     /// <remarks>
-    /// Separate from <see cref="T:Microsoft.CodeAnalysis.CSharp.SymbolDisplay"/> because we want to link this functionality into
+    /// Separate from <see cref="T:MetaDslx.CodeAnalysis.CSharp.SymbolDisplay"/> because we want to link this functionality into
     /// the Formatter project and we don't want it to be public there.
     /// </remarks>
-    /// <seealso cref="T:Microsoft.CodeAnalysis.VisualBasic.Symbols.ObjectDisplay"/>
+    /// <seealso cref="T:MetaDslx.CodeAnalysis.VisualBasic.Symbols.ObjectDisplay"/>
 #pragma warning restore CA1200 // Avoid using cref tags with a prefix
     internal static class ObjectDisplay
     {

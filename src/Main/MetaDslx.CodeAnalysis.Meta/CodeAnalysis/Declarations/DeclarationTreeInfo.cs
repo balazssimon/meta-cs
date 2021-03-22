@@ -1,14 +1,13 @@
-﻿using MetaDslx.CodeAnalysis.Syntax;
+using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.Modeling;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.PooledObjects;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ReferenceDirective = MetaDslx.CodeAnalysis.Syntax.ReferenceDirective;
 
 namespace MetaDslx.CodeAnalysis.Declarations
 {
@@ -32,7 +31,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             this.Names = new ArrayBuilder<ArrayBuilder<Identifier>>();
             this.Members = new ArrayBuilder<SingleDeclaration>();
             this.Imports = new ArrayBuilder<SyntaxReference>();
-            this.ReferenceDirectives = new ArrayBuilder<ReferenceDirective>();
+            this.ReferenceDirectives = new ArrayBuilder<Syntax.ReferenceDirective>();
             this.Properties = new ArrayBuilder<Property>();
         }
 
@@ -48,7 +47,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
         public ArrayBuilder<SyntaxReference> Imports { get; private set; }
         public ArrayBuilder<ArrayBuilder<Identifier>> Names { get; private set; }
         public ArrayBuilder<SingleDeclaration> Members { get; private set; }
-        public ArrayBuilder<ReferenceDirective> ReferenceDirectives { get; private set; }
+        public ArrayBuilder<Syntax.ReferenceDirective> ReferenceDirectives { get; private set; }
         public ArrayBuilder<Property> Properties { get; private set; }
 
         public ArrayBuilder<Identifier> CurrentName
@@ -130,7 +129,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             }
         }
 
-        public void RegisterReferenceDirective(ReferenceDirective directive)
+        public void RegisterReferenceDirective(Syntax.ReferenceDirective directive)
         {
             this.ReferenceDirectives.Add(directive);
         }

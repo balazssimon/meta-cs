@@ -1,23 +1,23 @@
-﻿using MetaDslx.CodeAnalysis.Declarations;
-using Microsoft.CodeAnalysis.Diagnostics;
+using MetaDslx.CodeAnalysis.Declarations;
+using MetaDslx.CodeAnalysis.Diagnostics;
 using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Text;
-using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
 using System.Threading;
-using Microsoft.CodeAnalysis.Emit;
-using Microsoft.CodeAnalysis.CodeGen;
+using MetaDslx.CodeAnalysis.Emit;
+using MetaDslx.CodeAnalysis.CodeGen;
 using System.IO;
 using System.Diagnostics;
 using System.Reflection.Metadata;
 
 namespace MetaDslx.CodeAnalysis
 {
-    public abstract class CompilationAdapter : Microsoft.CodeAnalysis.Compilation
+    public abstract class CompilationAdapter : MetaDslx.CodeAnalysis.Compilation
     {
-        internal CompilationAdapter(string name, ImmutableArray<Microsoft.CodeAnalysis.MetadataReference> references, IReadOnlyDictionary<string, string> features, bool isSubmission, AsyncQueue<CompilationEvent> eventQueue) 
+        internal CompilationAdapter(string name, ImmutableArray<MetaDslx.CodeAnalysis.MetadataReference> references, IReadOnlyDictionary<string, string> features, bool isSubmission, AsyncQueue<CompilationEvent> eventQueue) 
             : base(name, references, features, isSubmission, eventQueue)
         {
         }
@@ -28,7 +28,7 @@ namespace MetaDslx.CodeAnalysis
 
         public abstract DeclarationTable Declarations { get; }
 
-        internal override IEnumerable<Microsoft.CodeAnalysis.ReferenceDirective> ReferenceDirectives
+        internal override IEnumerable<MetaDslx.CodeAnalysis.ReferenceDirective> ReferenceDirectives
         {
             get { return this.ReferenceDirectivesCore.Select(d => d.ToMicrosoft()); }
         }
@@ -37,7 +37,7 @@ namespace MetaDslx.CodeAnalysis
 
         internal override CommonMessageProvider MessageProvider
         {
-            get { return Microsoft.CodeAnalysis.CSharp.MessageProvider.Instance; }
+            get { return MetaDslx.CodeAnalysis.CSharp.MessageProvider.Instance; }
         }
 
         /// <summary>

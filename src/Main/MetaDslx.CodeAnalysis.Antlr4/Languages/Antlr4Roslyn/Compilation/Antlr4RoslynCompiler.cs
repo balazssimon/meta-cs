@@ -1,4 +1,4 @@
-﻿using Antlr4.Runtime;
+using Antlr4.Runtime;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -10,8 +10,8 @@ using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
 using System.Diagnostics;
 using MetaDslx.Languages.Antlr4Roslyn.Generator;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Text;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Text;
 using MetaDslx.Languages.Meta;
 using System.Reflection;
 using MetaDslx.CodeAnalysis.Syntax;

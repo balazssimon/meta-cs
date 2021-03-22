@@ -1,18 +1,18 @@
-๏ปฟ// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 
-namespace Microsoft.CodeAnalysis.CSharp.Symbols
+namespace MetaDslx.CodeAnalysis.CSharp.Symbols
 {
     /// <summary>
     /// <para>
-    /// C# 4.0 ยง10.6: The name, the type parameter list and the formal parameter list of a method define
-    /// the signature (ยง3.6) of the method. Specifically, the signature of a method consists of its
+    /// C# 4.0 ง10.6: The name, the type parameter list and the formal parameter list of a method define
+    /// the signature (ง3.6) of the method. Specifically, the signature of a method consists of its
     /// name, the number of type parameters and the number, modifiers, and types of its formal
     /// parameters. For these purposes, any type parameter of the method that occurs in the type of
     /// a formal parameter is identified not by its name, but by its ordinal position in the type
@@ -20,11 +20,11 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
     /// the names of the type parameters or the formal parameters.
     /// </para>
     /// <para>
-    /// C# 4.0 ยง3.6: For the purposes of signatures, the types object and dynamic are considered the
+    /// C# 4.0 ง3.6: For the purposes of signatures, the types object and dynamic are considered the
     /// same. 
     /// </para>
     /// <para>
-    /// C# 4.0 ยง3.6: We implement the rules for ref/out by mapping both to ref. The caller (i.e.
+    /// C# 4.0 ง3.6: We implement the rules for ref/out by mapping both to ref. The caller (i.e.
     /// checking for proper overrides or partial methods, etc) should check that ref/out are
     /// consistent.
     /// </para>
@@ -232,7 +232,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
         /// <summary>
         /// This instance is intended to reflect the definition of signature equality used by the runtime 
-        /// (<a href="http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-335.pdf">ECMA-335</a>, Partition I, ยง8.6.1.6 Signature Matching).
+        /// (<a href="http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-335.pdf">ECMA-335</a>, Partition I, ง8.6.1.6 Signature Matching).
         /// It considers return type, name, parameters, calling convention, and custom modifiers, but ignores
         /// the difference between <see cref="RefKind.Out"/> and <see cref="RefKind.Ref"/>.
         /// </summary>

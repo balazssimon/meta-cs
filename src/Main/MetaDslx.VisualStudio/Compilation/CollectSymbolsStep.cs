@@ -1,9 +1,9 @@
-﻿using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
 using MetaDslx.Languages.Meta.Model;
 using MetaDslx.VisualStudio.Classification;
 using MetaDslx.VisualStudio.Editor;
 using MetaDslx.VisualStudio.Utilities;
-using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
 using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Text.Tagging;

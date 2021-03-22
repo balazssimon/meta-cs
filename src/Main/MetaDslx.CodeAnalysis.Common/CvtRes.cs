@@ -1,11 +1,11 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Microsoft.CodeAnalysis.Text;
+using MetaDslx.CodeAnalysis.Text;
 using System.Diagnostics;
 using BYTE = System.Byte;
 using DWORD = System.UInt32;
@@ -14,7 +14,7 @@ using WORD = System.UInt16;
 using System.Reflection.PortableExecutable;
 using Roslyn.Utilities;
 
-namespace Microsoft.CodeAnalysis
+namespace MetaDslx.CodeAnalysis
 {
     internal class RESOURCE
     {
@@ -173,7 +173,7 @@ namespace Microsoft.CodeAnalysis
                 throw new ResourceException(CodeAnalysisResources.CoffResourceInvalidSectionSize);
         }
 
-        static internal Microsoft.Cci.ResourceSection ReadWin32ResourcesFromCOFF(Stream stream)
+        static internal MetaDslx.Cci.ResourceSection ReadWin32ResourcesFromCOFF(Stream stream)
         {
             var peHeaders = new PEHeaders(stream);
             var rsrc1 = new SectionHeader();

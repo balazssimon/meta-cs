@@ -1,8 +1,8 @@
-﻿using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations;
+using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations;
 using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageAnnotations.Model;
 using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.Tests;
-using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -21,7 +21,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestLanguageAnnotations
             TestLanguageAnnotationsDescriptor.Initialize();
             string text = File.ReadAllText($@"..\..\..\InputFiles\LanguageAnnotations\Test{testId}-File{fileId}.txt");
             var st = TestLanguageAnnotationsSyntaxTree.ParseText(text);
-            var options = new TestLanguageAnnotationsCompilationOptions(Microsoft.CodeAnalysis.OutputKind.DynamicallyLinkedLibrary, topLevelBinderFlags: (BinderFlags)BinderFlags.IgnoreAccessibility/*, concurrentBuild: false*/);
+            var options = new TestLanguageAnnotationsCompilationOptions(MetaDslx.CodeAnalysis.OutputKind.DynamicallyLinkedLibrary, topLevelBinderFlags: (BinderFlags)BinderFlags.IgnoreAccessibility/*, concurrentBuild: false*/);
             var comp = TestLanguageAnnotationsCompilation.Create("Test").WithOptions(options).AddSyntaxTrees(st);
             comp.ForceComplete();
             if (assertEmptyDiagnostics) AssertEmptyDiagnostics(comp);

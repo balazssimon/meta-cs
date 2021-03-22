@@ -1,4 +1,4 @@
-﻿using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -31,12 +31,12 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return visitor.VisitLocal(this, argument);
         }
 
-        public override void Accept(Microsoft.CodeAnalysis.SymbolVisitor visitor)
+        public override void Accept(MetaDslx.CodeAnalysis.SymbolVisitor visitor)
         {
 
         }
 
-        public override TResult Accept<TResult>(Microsoft.CodeAnalysis.SymbolVisitor<TResult> visitor)
+        public override TResult Accept<TResult>(MetaDslx.CodeAnalysis.SymbolVisitor<TResult> visitor)
         {
             return default;
         }

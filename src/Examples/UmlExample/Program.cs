@@ -1,6 +1,6 @@
-﻿using MetaDslx.Languages.Uml.Model;
+using MetaDslx.Languages.Uml.Model;
 using MetaDslx.Languages.Uml.Serialization;
-using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
 using System;
 using System.Collections.Immutable;
 using System.Linq;

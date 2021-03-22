@@ -1,15 +1,15 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using Microsoft.CodeAnalysis.Collections;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.Collections;
+using MetaDslx.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 
-namespace Microsoft.CodeAnalysis
+namespace MetaDslx.CodeAnalysis
 {
     public partial class CommonReferenceManager<TCompilation, TAssemblySymbol>
     {
@@ -890,7 +890,7 @@ namespace Microsoft.CodeAnalysis
                 var assembly = assemblies[i];
 
                 // The logic about deciding what assembly is a candidate for being a Cor library here and in
-                // Microsoft.CodeAnalysis.VisualBasic.CommandLineCompiler.ResolveMetadataReferencesFromArguments
+                // MetaDslx.CodeAnalysis.VisualBasic.CommandLineCompiler.ResolveMetadataReferencesFromArguments
                 // should be equivalent.
 
                 // Linked references cannot be used as COR library.

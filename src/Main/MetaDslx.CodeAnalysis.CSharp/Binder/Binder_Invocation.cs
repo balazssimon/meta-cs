@@ -1,16 +1,16 @@
-ï»¿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
-using Microsoft.CodeAnalysis.CSharp.Symbols;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.CSharp.Symbols;
+using MetaDslx.CodeAnalysis.CSharp.Syntax;
+using MetaDslx.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 
-namespace Microsoft.CodeAnalysis.CSharp
+namespace MetaDslx.CodeAnalysis.CSharp
 {
     /// <summary>
     /// This portion of the binder converts an <see cref="ExpressionSyntax"/> into a <see cref="BoundExpression"/>.
@@ -817,9 +817,9 @@ namespace Microsoft.CodeAnalysis.CSharp
                     //      ...
                     // * If the type parameters of F were substituted in the step above, their constraints are satisfied.
                     // * If F is a static method, the method group must have resulted from a simple-name, a member-access through a type, 
-                    //   or a member-access whose receiver can't be classified as a type or value until after overload resolution (see Â§7.6.4.1). 
+                    //   or a member-access whose receiver can't be classified as a type or value until after overload resolution (see §7.6.4.1). 
                     // * If F is an instance method, the method group must have resulted from a simple-name, a member-access through a variable or value, 
-                    //   or a member-access whose receiver can't be classified as a type or value until after overload resolution (see Â§7.6.4.1).
+                    //   or a member-access whose receiver can't be classified as a type or value until after overload resolution (see §7.6.4.1).
 
                     if (!MemberGroupFinalValidationAccessibilityChecks(receiverOpt, result.Member, syntax, candidateDiagnostics, invokedAsExtensionMethod: false) &&
                         (typeArgumentsOpt.IsDefault || ((MethodSymbol)(object)result.Member).CheckConstraints(this.Conversions, syntax, this.Compilation, candidateDiagnostics)))

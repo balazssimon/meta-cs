@@ -1,4 +1,4 @@
-﻿using Antlr4.Runtime;
+using Antlr4.Runtime;
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.InternalUtilities;
@@ -19,8 +19,8 @@ using MetaDslx.Languages.Meta.Symbols;
 //using MetaDslx.Languages.Ecore;
 //using MetaDslx.Languages.Ecore.Model;
 using MetaDslx.Modeling;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Text;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Text;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;

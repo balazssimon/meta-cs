@@ -1,7 +1,7 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using Microsoft.CodeAnalysis.CSharp.DocumentationComments;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.CSharp.DocumentationComments;
+using MetaDslx.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 using System;
 using System.Collections.Generic;
@@ -11,9 +11,9 @@ using System.Globalization;
 using System.Reflection;
 using System.Reflection.Metadata;
 using System.Threading;
-using Microsoft.CodeAnalysis.CSharp.Emit;
+using MetaDslx.CodeAnalysis.CSharp.Emit;
 
-namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
+namespace MetaDslx.CodeAnalysis.CSharp.Symbols.Metadata.PE
 {
     /// <summary>
     /// The class to represent all events imported from a PE/module.

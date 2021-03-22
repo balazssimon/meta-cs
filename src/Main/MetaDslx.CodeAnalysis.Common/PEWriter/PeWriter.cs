@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -13,13 +13,13 @@ using System.Reflection.PortableExecutable;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Emit;
-using static Microsoft.CodeAnalysis.SigningUtilities;
-using EmitContext = Microsoft.CodeAnalysis.Emit.EmitContext;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Emit;
+using static MetaDslx.CodeAnalysis.SigningUtilities;
+using EmitContext = MetaDslx.CodeAnalysis.Emit.EmitContext;
 using Microsoft.DiaSymReader;
 
-namespace Microsoft.Cci
+namespace MetaDslx.Cci
 {
     internal sealed class PeWritingException : Exception
     {

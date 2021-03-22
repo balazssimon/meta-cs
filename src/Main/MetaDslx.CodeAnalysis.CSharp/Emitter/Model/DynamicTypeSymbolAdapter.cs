@@ -1,12 +1,12 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Reflection.Metadata;
-using Microsoft.CodeAnalysis.CSharp.Emit;
-using Microsoft.CodeAnalysis.Emit;
+using MetaDslx.CodeAnalysis.CSharp.Emit;
+using MetaDslx.CodeAnalysis.Emit;
 using Roslyn.Utilities;
 
-namespace Microsoft.CodeAnalysis.CSharp.Symbols
+namespace MetaDslx.CodeAnalysis.CSharp.Symbols
 {
     internal partial class DynamicTypeSymbol :
         Cci.ITypeReference,
@@ -114,7 +114,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
         Cci.IUnitReference Cci.INamespaceTypeReference.GetUnit(EmitContext context)
         {
-            var obj = ((PEModuleBuilder)context.Module).GetSpecialType(Microsoft.CodeAnalysis.SpecialType.System_Object,
+            var obj = ((PEModuleBuilder)context.Module).GetSpecialType(MetaDslx.CodeAnalysis.SpecialType.System_Object,
                                                               syntaxNodeOpt: (CSharpSyntaxNode)context.SyntaxNodeOpt,
                                                               diagnostics: context.Diagnostics);
             return ((Cci.INamespaceTypeReference)obj).GetUnit(context);

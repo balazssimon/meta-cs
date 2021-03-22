@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 // define TRACE_LEAKS to get additional diagnostics that can lead to the leak sources. note: it will
 // make everything about 2-3x slower
@@ -18,7 +18,7 @@ using System.Threading;
 using System.Runtime.CompilerServices;
 
 #endif
-namespace Microsoft.CodeAnalysis.PooledObjects
+namespace MetaDslx.CodeAnalysis.PooledObjects
 {
     /// <summary>
     /// Generic implementation of object pooling pattern with predefined pool size limit. The main

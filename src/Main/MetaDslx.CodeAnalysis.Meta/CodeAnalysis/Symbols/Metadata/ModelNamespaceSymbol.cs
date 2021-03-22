@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using MetaDslx.Modeling;
-using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 {

@@ -1,15 +1,15 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.IO;
 using Roslyn.Utilities;
-using Microsoft.CodeAnalysis.Emit;
+using MetaDslx.CodeAnalysis.Emit;
 using System.Reflection;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Security.Cryptography;
 
-namespace Microsoft.CodeAnalysis
+namespace MetaDslx.CodeAnalysis
 {
     /// <summary>
     /// Representation of a resource whose contents are to be embedded in the output assembly.

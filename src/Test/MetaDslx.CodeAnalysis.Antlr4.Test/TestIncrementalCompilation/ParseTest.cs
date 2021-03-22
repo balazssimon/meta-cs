@@ -1,5 +1,5 @@
-﻿using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation;
-using Microsoft.CodeAnalysis.Text;
+using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation;
+using MetaDslx.CodeAnalysis.Text;
 using System;
 using System.Collections.Generic;
 using System.Linq;

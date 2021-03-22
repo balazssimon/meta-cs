@@ -1,16 +1,16 @@
-ï»¿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
-using Microsoft.CodeAnalysis.CodeGen;
-using Microsoft.CodeAnalysis.Collections;
-using Microsoft.CodeAnalysis.CSharp.Symbols;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.CodeGen;
+using MetaDslx.CodeAnalysis.Collections;
+using MetaDslx.CodeAnalysis.CSharp.Symbols;
+using MetaDslx.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 
-namespace Microsoft.CodeAnalysis.CSharp
+namespace MetaDslx.CodeAnalysis.CSharp
 {
     internal abstract class StateMachineRewriter
     {
@@ -418,7 +418,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 }
 
                 makeIterator = F.If(
-                    // if (this.stateÂ ==Â -2 && this.initialThreadId == Thread.CurrentThread.ManagedThreadId)
+                    // if (this.state == -2 && this.initialThreadId == Thread.CurrentThread.ManagedThreadId)
                     condition: F.LogicalAnd(
                         F.IntEqual(F.Field(F.This(), stateField), F.Literal(StateMachineStates.FinishedStateMachine)),
                         F.IntEqual(F.Field(F.This(), initialThreadIdField), managedThreadId)),

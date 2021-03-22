@@ -1,14 +1,14 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
-using Microsoft.CodeAnalysis.CSharp.Symbols;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.CSharp.Symbols;
+using MetaDslx.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 
-namespace Microsoft.CodeAnalysis.CSharp
+namespace MetaDslx.CodeAnalysis.CSharp
 {
     internal partial class Binder
     {
@@ -420,7 +420,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             //  SPEC:   An attribute-name of the form type-name may either include or omit this suffix.
             //  SPEC:   If an attribute class is found both with and without this suffix, an ambiguity 
             //  SPEC:   is present, and a compile-time error results. If the attribute-name is spelled
-            //  SPEC:   such that its right-most identifier is a verbatim identifier (§2.4.2), then only
+            //  SPEC:   such that its right-most identifier is a verbatim identifier (�2.4.2), then only
             //  SPEC:   an attribute without a suffix is matched, thus enabling such an ambiguity to be resolved.
 
             // Roslyn Bug 9681: Compilers incorrectly use the *failure* of binding some subexpression to indicate some other strategy is applicable (attributes, 'var')
@@ -1130,7 +1130,7 @@ symIsHidden:;
                 ? ((AliasSymbol)symbol).GetAliasTarget(basesBeingResolved)
                 : symbol;
 
-            // Check for symbols marked with 'Microsoft.CodeAnalysis.Embedded' attribute
+            // Check for symbols marked with 'MetaDslx.CodeAnalysis.Embedded' attribute
             if (!this.Compilation.SourceModule.Equals(unwrappedSymbol.ContainingModule) && unwrappedSymbol.IsHiddenByCodeAnalysisEmbeddedAttribute())
             {
                 return LookupResult.Empty();

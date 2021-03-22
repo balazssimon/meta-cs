@@ -1,16 +1,16 @@
-๏ปฟ// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Threading;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Symbols;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.CSharp;
+using MetaDslx.CodeAnalysis.CSharp.Symbols;
+using MetaDslx.CodeAnalysis.CSharp.Syntax;
+using MetaDslx.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 
-namespace Microsoft.CodeAnalysis.CSharp
+namespace MetaDslx.CodeAnalysis.CSharp
 {
     internal partial class SwitchBinder : LocalScopeBinder
     {
@@ -234,7 +234,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 // SPEC VIOLATION for Dev10 COMPATIBILITY:
 
                 // Dev10 compiler violates the SPEC comment below:
-                //      "if the constant-expression is not implicitly convertible (ยง6.1) to 
+                //      "if the constant-expression is not implicitly convertible (ง6.1) to 
                 //      the governing type of the nearest enclosing switch statement, 
                 //      a compile-time error occurs"
 
@@ -375,7 +375,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 // SPEC:    1) If the type of the switch expression is sbyte, byte, short, ushort, int, uint,
                 // SPEC:       long, ulong, bool, char, string, or an enum-type, or if it is the nullable type
                 // SPEC:       corresponding to one of these types, then that is the governing type of the switch statement. 
-                // SPEC:    2) Otherwise if exactly one user-defined implicit conversion (ยง6.4) exists from the
+                // SPEC:    2) Otherwise if exactly one user-defined implicit conversion (ง6.4) exists from the
                 // SPEC:       type of the switch expression to one of the following possible governing types:
                 // SPEC:       sbyte, byte, short, ushort, int, uint, long, ulong, char, string, or, a nullable type
                 // SPEC:       corresponding to one of those types, then the result is the switch governing type
@@ -472,7 +472,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 SourceLabelSymbol matchedLabelSymbol;
 
                 // SPEC:    If the goto case statement is not enclosed by a switch statement, if the constant-expression
-                // SPEC:    is not implicitly convertible (ยง6.1) to the governing type of the nearest enclosing switch statement,
+                // SPEC:    is not implicitly convertible (ง6.1) to the governing type of the nearest enclosing switch statement,
                 // SPEC:    or if the nearest enclosing switch statement does not contain a case label with the given constant value,
                 // SPEC:    a compile-time error occurs.
 

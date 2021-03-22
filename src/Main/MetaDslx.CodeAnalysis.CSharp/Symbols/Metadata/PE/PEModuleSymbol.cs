@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Concurrent;
@@ -9,13 +9,13 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Reflection.Metadata;
-using Microsoft.CodeAnalysis.CSharp.Symbols.Retargeting;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.CSharp.Symbols.Retargeting;
+using MetaDslx.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 using System.Reflection.PortableExecutable;
 using System.Reflection;
 
-namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
+namespace MetaDslx.CodeAnalysis.CSharp.Symbols.Metadata.PE
 {
     /// <summary>
     /// Represents a net-module imported from a PE. Can be a primary module of an assembly.

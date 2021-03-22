@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -9,12 +9,12 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Metadata;
 using System.Threading;
-using Microsoft.CodeAnalysis.CSharp.DocumentationComments;
-using Microsoft.CodeAnalysis.CSharp.Emit;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.CSharp.DocumentationComments;
+using MetaDslx.CodeAnalysis.CSharp.Emit;
+using MetaDslx.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 
-namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
+namespace MetaDslx.CodeAnalysis.CSharp.Symbols.Metadata.PE
 {
     /// <summary>
     /// The class to represent all properties imported from a PE/module.
@@ -507,12 +507,12 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
             get { return _setMethod; }
         }
 
-        internal override Microsoft.Cci.CallingConvention CallingConvention
+        internal override MetaDslx.Cci.CallingConvention CallingConvention
         {
             get
             {
                 var metadataDecoder = new MetadataDecoder(_containingType.ContainingPEModule, _containingType);
-                return (Microsoft.Cci.CallingConvention)(metadataDecoder.GetSignatureHeaderForProperty(_handle).RawValue);
+                return (MetaDslx.Cci.CallingConvention)(metadataDecoder.GetSignatureHeaderForProperty(_handle).RawValue);
             }
         }
 

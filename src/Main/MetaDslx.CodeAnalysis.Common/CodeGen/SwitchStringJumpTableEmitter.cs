@@ -1,11 +1,11 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection.Metadata;
-using Microsoft.CodeAnalysis.Emit;
+using MetaDslx.CodeAnalysis.Emit;
 
-namespace Microsoft.CodeAnalysis.CodeGen
+namespace MetaDslx.CodeAnalysis.CodeGen
 {
     // HashBucket used when emitting hash table based string switch.
     // Each hash bucket contains the list of "<string constant, label>" key-value pairs

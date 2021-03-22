@@ -1,11 +1,11 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
 using System.Diagnostics;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
+using MetaDslx.CodeAnalysis.CSharp.Syntax;
 using Roslyn.Utilities;
 
-namespace Microsoft.CodeAnalysis.CSharp.Symbols
+namespace MetaDslx.CodeAnalysis.CSharp.Symbols
 {
     internal sealed partial class AnonymousTypeManager
     {
@@ -145,9 +145,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 get { return ImmutableArray<CustomModifier>.Empty; }
             }
 
-            internal override Microsoft.Cci.CallingConvention CallingConvention
+            internal override MetaDslx.Cci.CallingConvention CallingConvention
             {
-                get { return Microsoft.Cci.CallingConvention.HasThis; }
+                get { return MetaDslx.Cci.CallingConvention.HasThis; }
             }
 
             public override ImmutableArray<PropertySymbol> ExplicitInterfaceImplementations

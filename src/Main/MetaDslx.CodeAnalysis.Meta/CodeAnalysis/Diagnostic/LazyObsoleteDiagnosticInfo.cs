@@ -1,15 +1,13 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Diagnostics;
 using System.Threading;
 using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Symbols;
-using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
 
 namespace MetaDslx.CodeAnalysis
 {
-    using CSharp = Microsoft.CodeAnalysis.CSharp;
-
     internal sealed class LazyObsoleteDiagnosticInfo : DiagnosticInfoWithMessageProvider
     {
         private DiagnosticInfo _lazyActualObsoleteDiagnostic;

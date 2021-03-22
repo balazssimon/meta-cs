@@ -1,9 +1,9 @@
-﻿using Antlr4.Runtime;
+using Antlr4.Runtime;
 using MetaDslx.Languages.Uml.Model;
 using MetaDslx.Languages.Uml.Serialization.Syntax.InternalSyntax;
 using MetaDslx.Modeling;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Text;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Text;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;

@@ -1,6 +1,6 @@
-﻿using MetaDslx.CodeAnalysis.Binding;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.Binding;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.PooledObjects;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -446,12 +446,12 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return visitor.VisitMember(this, argument);
         }
 
-        public override void Accept(Microsoft.CodeAnalysis.SymbolVisitor visitor)
+        public override void Accept(MetaDslx.CodeAnalysis.SymbolVisitor visitor)
         {
             
         }
 
-        public override TResult Accept<TResult>(Microsoft.CodeAnalysis.SymbolVisitor<TResult> visitor)
+        public override TResult Accept<TResult>(MetaDslx.CodeAnalysis.SymbolVisitor<TResult> visitor)
         {
             return default;
         }

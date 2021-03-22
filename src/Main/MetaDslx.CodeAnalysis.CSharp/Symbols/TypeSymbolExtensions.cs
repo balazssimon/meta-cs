@@ -1,13 +1,13 @@
-ï»¿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 
-namespace Microsoft.CodeAnalysis.CSharp.Symbols
+namespace MetaDslx.CodeAnalysis.CSharp.Symbols
 {
     internal static partial class TypeSymbolExtensions
     {
@@ -481,8 +481,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         /// </summary>
         public static ConstantValue GetDefaultValue(this TypeSymbol type)
         {
-            // SPEC:    A default-value-expression is a constant expression (Â§7.19) if the type
-            // SPEC:    is a reference type or a type parameter that is known to be a reference type (Â§10.1.5). 
+            // SPEC:    A default-value-expression is a constant expression (§7.19) if the type
+            // SPEC:    is a reference type or a type parameter that is known to be a reference type (§10.1.5). 
             // SPEC:    In addition, a default-value-expression is a constant expression if the type is
             // SPEC:    one of the following value types:
             // SPEC:    sbyte, byte, short, ushort, int, uint, long, ulong, char, float, double, decimal, bool, or any enumeration type.

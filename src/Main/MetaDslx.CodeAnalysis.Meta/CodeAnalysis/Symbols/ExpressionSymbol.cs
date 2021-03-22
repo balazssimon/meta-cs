@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -24,12 +24,12 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return visitor.VisitExpression(this, argument);
         }
 
-        public override void Accept(Microsoft.CodeAnalysis.SymbolVisitor visitor)
+        public override void Accept(MetaDslx.CodeAnalysis.SymbolVisitor visitor)
         {
 
         }
 
-        public override TResult Accept<TResult>(Microsoft.CodeAnalysis.SymbolVisitor<TResult> visitor)
+        public override TResult Accept<TResult>(MetaDslx.CodeAnalysis.SymbolVisitor<TResult> visitor)
         {
             return default;
         }

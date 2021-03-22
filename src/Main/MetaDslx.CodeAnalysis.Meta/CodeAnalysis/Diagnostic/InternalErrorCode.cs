@@ -1,4 +1,4 @@
-﻿using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
 using Roslyn.Utilities;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis
 {
-    using ErrorFacts = Microsoft.CodeAnalysis.CSharp.ErrorFacts;
+    using ErrorFacts = MetaDslx.CodeAnalysis.CSharp.ErrorFacts;
 
     internal sealed class InternalErrorCode : ErrorCode
     {
@@ -37,27 +37,27 @@ namespace MetaDslx.CodeAnalysis
 
         private static LocalizableString GetTitle(int code)
         {
-            return Microsoft.CodeAnalysis.CSharp.ErrorFacts.GetTitle((Microsoft.CodeAnalysis.CSharp.ErrorCode)code);
+            return MetaDslx.CodeAnalysis.CSharp.ErrorFacts.GetTitle((MetaDslx.CodeAnalysis.CSharp.ErrorCode)code);
         }
 
         private static LocalizableString GetMessageFormat(int code)
         {
-            return Microsoft.CodeAnalysis.CSharp.ErrorFacts.GetMessageFormat((Microsoft.CodeAnalysis.CSharp.ErrorCode)code);
+            return MetaDslx.CodeAnalysis.CSharp.ErrorFacts.GetMessageFormat((MetaDslx.CodeAnalysis.CSharp.ErrorCode)code);
         }
 
         private static string GetCategory(int code)
         {
-            return Microsoft.CodeAnalysis.CSharp.ErrorFacts.GetCategory((Microsoft.CodeAnalysis.CSharp.ErrorCode)code);
+            return MetaDslx.CodeAnalysis.CSharp.ErrorFacts.GetCategory((MetaDslx.CodeAnalysis.CSharp.ErrorCode)code);
         }
 
         private static LocalizableString GetDescription(int code)
         {
-            return Microsoft.CodeAnalysis.CSharp.ErrorFacts.GetDescription((Microsoft.CodeAnalysis.CSharp.ErrorCode)code);
+            return MetaDslx.CodeAnalysis.CSharp.ErrorFacts.GetDescription((MetaDslx.CodeAnalysis.CSharp.ErrorCode)code);
         }
 
         private static string GetHelpLink(int code)
         {
-            return Microsoft.CodeAnalysis.CSharp.ErrorFacts.GetHelpLink((Microsoft.CodeAnalysis.CSharp.ErrorCode)code);
+            return MetaDslx.CodeAnalysis.CSharp.ErrorFacts.GetHelpLink((MetaDslx.CodeAnalysis.CSharp.ErrorCode)code);
         }
 
         private static InternalErrorCode ResolveErrorCode(ObjectReader reader)
@@ -72,12 +72,12 @@ namespace MetaDslx.CodeAnalysis
         /// <summary>
         /// The code has yet to be determined.
         /// </summary>
-        public static readonly InternalErrorCode Unknown = new InternalErrorCode(Microsoft.CodeAnalysis.InternalErrorCode.Unknown, (DiagnosticSeverity)Microsoft.CodeAnalysis.InternalErrorCode.Unknown);
+        public static readonly InternalErrorCode Unknown = new InternalErrorCode(MetaDslx.CodeAnalysis.InternalDiagnosticErrorCode.Unknown, (DiagnosticSeverity)MetaDslx.CodeAnalysis.InternalDiagnosticErrorCode.Unknown);
 
         /// <summary>
         /// The code was lazily determined and does not need to be reported.
         /// </summary>
-        public static readonly InternalErrorCode Void = new InternalErrorCode(Microsoft.CodeAnalysis.InternalErrorCode.Void, (DiagnosticSeverity)Microsoft.CodeAnalysis.InternalErrorCode.Void);
+        public static readonly InternalErrorCode Void = new InternalErrorCode(MetaDslx.CodeAnalysis.InternalDiagnosticErrorCode.Void, (DiagnosticSeverity)MetaDslx.CodeAnalysis.InternalDiagnosticErrorCode.Void);
 
         #region diagnostics introduced in C# 4 and earlier
         //public static readonly InternalErrorCode FTL_InternalError = new InternalErrorCode(1, DiagnosticSeverity.Error);

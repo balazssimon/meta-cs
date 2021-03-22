@@ -1,6 +1,6 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using Microsoft.Cci;
+using MetaDslx.Cci;
 using Roslyn.Utilities;
 using System;
 using System.Collections.Generic;
@@ -8,17 +8,17 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Linq;
-using Microsoft.CodeAnalysis.CSharp.Emit;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.CSharp.Emit;
+using MetaDslx.CodeAnalysis.PooledObjects;
 
-namespace Microsoft.CodeAnalysis.CSharp.Symbols
+namespace MetaDslx.CodeAnalysis.CSharp.Symbols
 {
     /// <summary>
     /// Represents a compiler generated and embedded attribute type.
     /// This type has the following properties:
     /// 1) It is non-generic, sealed, internal, non-static class.
     /// 2) It derives from System.Attribute
-    /// 3) It has Microsoft.CodeAnalysis.EmbeddedAttribute
+    /// 3) It has MetaDslx.CodeAnalysis.EmbeddedAttribute
     /// 4) It has System.Runtime.CompilerServices.CompilerGeneratedAttribute
     /// </summary>
     internal abstract class SynthesizedEmbeddedAttributeSymbolBase : NamedTypeSymbol

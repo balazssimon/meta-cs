@@ -1,10 +1,10 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
-using Microsoft.CodeAnalysis.Text;
+using MetaDslx.CodeAnalysis.Text;
 
-namespace Microsoft.CodeAnalysis.Diagnostics
+namespace MetaDslx.CodeAnalysis.Diagnostics
 {
     /// <summary>
     /// Provides custom values associated with <see cref="SourceText"/> instances using the given computeValue delegate.

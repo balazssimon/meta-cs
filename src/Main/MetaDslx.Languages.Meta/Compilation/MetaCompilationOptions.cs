@@ -7,8 +7,8 @@ using System.Collections.Immutable;
 using System.Text;
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Binding;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.PooledObjects;
 
 namespace MetaDslx.Languages.Meta
 {

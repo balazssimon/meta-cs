@@ -1,6 +1,6 @@
-﻿using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation;
+using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation;
 using MetaDslx.Tests;
-using Microsoft.CodeAnalysis.Text;
+using MetaDslx.CodeAnalysis.Text;
 using Microsoft.VisualBasic.CompilerServices;
 using System;
 using System.Collections.Generic;

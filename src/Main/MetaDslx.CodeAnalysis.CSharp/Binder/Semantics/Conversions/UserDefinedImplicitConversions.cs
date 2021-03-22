@@ -1,17 +1,17 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
-using Microsoft.CodeAnalysis.CSharp.Symbols;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.PooledObjects;
-using Microsoft.CodeAnalysis.Text;
+using MetaDslx.CodeAnalysis.CSharp.Symbols;
+using MetaDslx.CodeAnalysis.CSharp.Syntax;
+using MetaDslx.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.Text;
 using Roslyn.Utilities;
 
-namespace Microsoft.CodeAnalysis.CSharp
+namespace MetaDslx.CodeAnalysis.CSharp
 {
     internal abstract partial class ConversionsBase
     {
@@ -827,7 +827,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             // SPEC:    1) If the type of the switch expression is sbyte, byte, short, ushort, int, uint,
             // SPEC:       long, ulong, bool, char, string, or an enum-type, or if it is the nullable type
             // SPEC:       corresponding to one of these types, then that is the governing type of the switch statement. 
-            // SPEC:    2) Otherwise, exactly one user-defined implicit conversion (§6.4) must exist from the
+            // SPEC:    2) Otherwise, exactly one user-defined implicit conversion (�6.4) must exist from the
             // SPEC:       type of the switch expression to one of the following possible governing types:
             // SPEC:       sbyte, byte, short, ushort, int, uint, long, ulong, char, string, or, a nullable type
             // SPEC:       corresponding to one of those types

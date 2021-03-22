@@ -1,13 +1,13 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
-using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
 using MetaDslx.Modeling;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.PooledObjects;
 using MetaDslx.CodeAnalysis.Symbols;
 using System.Diagnostics;
 using MetaDslx.CodeAnalysis.Symbols.Source;

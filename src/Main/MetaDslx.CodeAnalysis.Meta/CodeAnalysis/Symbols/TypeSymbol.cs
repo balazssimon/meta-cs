@@ -1,6 +1,6 @@
-﻿using MetaDslx.CodeAnalysis.Binding;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.Binding;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 using System;
 using System.Collections.Concurrent;
@@ -370,7 +370,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <summary>
         /// Gets corresponding primitive type code for this type declaration.
         /// </summary>
-        internal Microsoft.Cci.PrimitiveTypeCode PrimitiveTypeCode => SpecialTypes.GetTypeCode(SpecialType);
+        internal MetaDslx.Cci.PrimitiveTypeCode PrimitiveTypeCode => SpecialTypes.GetTypeCode(SpecialType);
 
         #region Use-Site Diagnostics
 
@@ -406,13 +406,13 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         ImmutableArray<INamedTypeSymbol> IMetaTypeSymbol.AllBaseTypes => StaticCast<INamedTypeSymbol>.From(this.AllBaseTypesNoUseSiteDiagnostics);
 
-        Microsoft.CodeAnalysis.TypeKind ITypeSymbol.TypeKind => Language.SymbolFacts.ToCSharpKind(this.TypeKind);
+        MetaDslx.CodeAnalysis.TypeKind ITypeSymbol.TypeKind => Language.SymbolFacts.ToCSharpKind(this.TypeKind);
 
-        INamedTypeSymbol ITypeSymbol.BaseType => this.BaseTypesNoUseSiteDiagnostics.Where(t => ((ITypeSymbol)t).TypeKind == Microsoft.CodeAnalysis.TypeKind.Class).FirstOrDefault();
+        INamedTypeSymbol ITypeSymbol.BaseType => this.BaseTypesNoUseSiteDiagnostics.Where(t => ((ITypeSymbol)t).TypeKind == MetaDslx.CodeAnalysis.TypeKind.Class).FirstOrDefault();
 
-        ImmutableArray<INamedTypeSymbol> ITypeSymbol.Interfaces => StaticCast<INamedTypeSymbol>.From(this.BaseTypesNoUseSiteDiagnostics.WhereAsArray(t => ((ITypeSymbol)t).TypeKind == Microsoft.CodeAnalysis.TypeKind.Interface));
+        ImmutableArray<INamedTypeSymbol> ITypeSymbol.Interfaces => StaticCast<INamedTypeSymbol>.From(this.BaseTypesNoUseSiteDiagnostics.WhereAsArray(t => ((ITypeSymbol)t).TypeKind == MetaDslx.CodeAnalysis.TypeKind.Interface));
 
-        ImmutableArray<INamedTypeSymbol> ITypeSymbol.AllInterfaces => StaticCast<INamedTypeSymbol>.From(this.AllBaseTypesNoUseSiteDiagnostics.WhereAsArray(t => ((ITypeSymbol)t).TypeKind == Microsoft.CodeAnalysis.TypeKind.Interface));
+        ImmutableArray<INamedTypeSymbol> ITypeSymbol.AllInterfaces => StaticCast<INamedTypeSymbol>.From(this.AllBaseTypesNoUseSiteDiagnostics.WhereAsArray(t => ((ITypeSymbol)t).TypeKind == MetaDslx.CodeAnalysis.TypeKind.Interface));
 
         public virtual bool IsReferenceType => false;
 

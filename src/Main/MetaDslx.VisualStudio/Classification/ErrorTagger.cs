@@ -1,7 +1,7 @@
-﻿using MetaDslx.VisualStudio.Compilation;
+using MetaDslx.VisualStudio.Compilation;
 using MetaDslx.VisualStudio.Editor;
 using MetaDslx.VisualStudio.Utilities;
-using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
 using Microsoft.VisualStudio.Shell.TableControl;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Adornments;

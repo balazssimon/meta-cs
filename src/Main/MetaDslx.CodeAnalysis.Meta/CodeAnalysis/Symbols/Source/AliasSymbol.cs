@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
 using System.Diagnostics;
@@ -7,7 +7,7 @@ using System.Threading;
 using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Binding.Binders;
 using MetaDslx.CodeAnalysis.Syntax;
-using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
 using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Source
@@ -364,12 +364,12 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             return visitor.VisitAlias(this, argument);
         }
 
-        public override void Accept(Microsoft.CodeAnalysis.SymbolVisitor visitor)
+        public override void Accept(MetaDslx.CodeAnalysis.SymbolVisitor visitor)
         {
             visitor.VisitAlias(this);
         }
 
-        public override TResult Accept<TResult>(Microsoft.CodeAnalysis.SymbolVisitor<TResult> visitor)
+        public override TResult Accept<TResult>(MetaDslx.CodeAnalysis.SymbolVisitor<TResult> visitor)
         {
             return visitor.VisitAlias(this);
         }

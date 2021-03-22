@@ -1,6 +1,6 @@
-﻿using MetaDslx.CodeAnalysis.Symbols;
+using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.Modeling.Internal;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.PooledObjects;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;

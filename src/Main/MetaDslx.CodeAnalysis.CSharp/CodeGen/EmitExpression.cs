@@ -1,17 +1,17 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Reflection.Metadata;
-using Microsoft.CodeAnalysis.CodeGen;
-using Microsoft.CodeAnalysis.CSharp.Symbols;
+using MetaDslx.CodeAnalysis.CodeGen;
+using MetaDslx.CodeAnalysis.CSharp.Symbols;
 using Roslyn.Utilities;
 
 using static System.Linq.ImmutableArrayExtensions;
-using static Microsoft.CodeAnalysis.CSharp.Binder;
+using static MetaDslx.CodeAnalysis.CSharp.Binder;
 
-namespace Microsoft.CodeAnalysis.CSharp.CodeGen
+namespace MetaDslx.CodeAnalysis.CSharp.CodeGen
 {
     internal partial class CodeGenerator
     {
@@ -883,48 +883,48 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
 
                 switch (elementType.PrimitiveTypeCode)
                 {
-                    case Microsoft.Cci.PrimitiveTypeCode.Int8:
+                    case MetaDslx.Cci.PrimitiveTypeCode.Int8:
                         _builder.EmitOpCode(ILOpCode.Ldelem_i1);
                         break;
 
-                    case Microsoft.Cci.PrimitiveTypeCode.Boolean:
-                    case Microsoft.Cci.PrimitiveTypeCode.UInt8:
+                    case MetaDslx.Cci.PrimitiveTypeCode.Boolean:
+                    case MetaDslx.Cci.PrimitiveTypeCode.UInt8:
                         _builder.EmitOpCode(ILOpCode.Ldelem_u1);
                         break;
 
-                    case Microsoft.Cci.PrimitiveTypeCode.Int16:
+                    case MetaDslx.Cci.PrimitiveTypeCode.Int16:
                         _builder.EmitOpCode(ILOpCode.Ldelem_i2);
                         break;
 
-                    case Microsoft.Cci.PrimitiveTypeCode.Char:
-                    case Microsoft.Cci.PrimitiveTypeCode.UInt16:
+                    case MetaDslx.Cci.PrimitiveTypeCode.Char:
+                    case MetaDslx.Cci.PrimitiveTypeCode.UInt16:
                         _builder.EmitOpCode(ILOpCode.Ldelem_u2);
                         break;
 
-                    case Microsoft.Cci.PrimitiveTypeCode.Int32:
+                    case MetaDslx.Cci.PrimitiveTypeCode.Int32:
                         _builder.EmitOpCode(ILOpCode.Ldelem_i4);
                         break;
 
-                    case Microsoft.Cci.PrimitiveTypeCode.UInt32:
+                    case MetaDslx.Cci.PrimitiveTypeCode.UInt32:
                         _builder.EmitOpCode(ILOpCode.Ldelem_u4);
                         break;
 
-                    case Microsoft.Cci.PrimitiveTypeCode.Int64:
-                    case Microsoft.Cci.PrimitiveTypeCode.UInt64:
+                    case MetaDslx.Cci.PrimitiveTypeCode.Int64:
+                    case MetaDslx.Cci.PrimitiveTypeCode.UInt64:
                         _builder.EmitOpCode(ILOpCode.Ldelem_i8);
                         break;
 
-                    case Microsoft.Cci.PrimitiveTypeCode.IntPtr:
-                    case Microsoft.Cci.PrimitiveTypeCode.UIntPtr:
-                    case Microsoft.Cci.PrimitiveTypeCode.Pointer:
+                    case MetaDslx.Cci.PrimitiveTypeCode.IntPtr:
+                    case MetaDslx.Cci.PrimitiveTypeCode.UIntPtr:
+                    case MetaDslx.Cci.PrimitiveTypeCode.Pointer:
                         _builder.EmitOpCode(ILOpCode.Ldelem_i);
                         break;
 
-                    case Microsoft.Cci.PrimitiveTypeCode.Float32:
+                    case MetaDslx.Cci.PrimitiveTypeCode.Float32:
                         _builder.EmitOpCode(ILOpCode.Ldelem_r4);
                         break;
 
-                    case Microsoft.Cci.PrimitiveTypeCode.Float64:
+                    case MetaDslx.Cci.PrimitiveTypeCode.Float64:
                         _builder.EmitOpCode(ILOpCode.Ldelem_r8);
                         break;
 
@@ -1271,48 +1271,48 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
 
             switch (type.PrimitiveTypeCode)
             {
-                case Microsoft.Cci.PrimitiveTypeCode.Int8:
+                case MetaDslx.Cci.PrimitiveTypeCode.Int8:
                     _builder.EmitOpCode(ILOpCode.Ldind_i1);
                     break;
 
-                case Microsoft.Cci.PrimitiveTypeCode.Boolean:
-                case Microsoft.Cci.PrimitiveTypeCode.UInt8:
+                case MetaDslx.Cci.PrimitiveTypeCode.Boolean:
+                case MetaDslx.Cci.PrimitiveTypeCode.UInt8:
                     _builder.EmitOpCode(ILOpCode.Ldind_u1);
                     break;
 
-                case Microsoft.Cci.PrimitiveTypeCode.Int16:
+                case MetaDslx.Cci.PrimitiveTypeCode.Int16:
                     _builder.EmitOpCode(ILOpCode.Ldind_i2);
                     break;
 
-                case Microsoft.Cci.PrimitiveTypeCode.Char:
-                case Microsoft.Cci.PrimitiveTypeCode.UInt16:
+                case MetaDslx.Cci.PrimitiveTypeCode.Char:
+                case MetaDslx.Cci.PrimitiveTypeCode.UInt16:
                     _builder.EmitOpCode(ILOpCode.Ldind_u2);
                     break;
 
-                case Microsoft.Cci.PrimitiveTypeCode.Int32:
+                case MetaDslx.Cci.PrimitiveTypeCode.Int32:
                     _builder.EmitOpCode(ILOpCode.Ldind_i4);
                     break;
 
-                case Microsoft.Cci.PrimitiveTypeCode.UInt32:
+                case MetaDslx.Cci.PrimitiveTypeCode.UInt32:
                     _builder.EmitOpCode(ILOpCode.Ldind_u4);
                     break;
 
-                case Microsoft.Cci.PrimitiveTypeCode.Int64:
-                case Microsoft.Cci.PrimitiveTypeCode.UInt64:
+                case MetaDslx.Cci.PrimitiveTypeCode.Int64:
+                case MetaDslx.Cci.PrimitiveTypeCode.UInt64:
                     _builder.EmitOpCode(ILOpCode.Ldind_i8);
                     break;
 
-                case Microsoft.Cci.PrimitiveTypeCode.IntPtr:
-                case Microsoft.Cci.PrimitiveTypeCode.UIntPtr:
-                case Microsoft.Cci.PrimitiveTypeCode.Pointer:
+                case MetaDslx.Cci.PrimitiveTypeCode.IntPtr:
+                case MetaDslx.Cci.PrimitiveTypeCode.UIntPtr:
+                case MetaDslx.Cci.PrimitiveTypeCode.Pointer:
                     _builder.EmitOpCode(ILOpCode.Ldind_i);
                     break;
 
-                case Microsoft.Cci.PrimitiveTypeCode.Float32:
+                case MetaDslx.Cci.PrimitiveTypeCode.Float32:
                     _builder.EmitOpCode(ILOpCode.Ldind_r4);
                     break;
 
-                case Microsoft.Cci.PrimitiveTypeCode.Float64:
+                case MetaDslx.Cci.PrimitiveTypeCode.Float64:
                     _builder.EmitOpCode(ILOpCode.Ldind_r8);
                     break;
 
@@ -1822,13 +1822,13 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
         /// cast to native int.
         /// Note that the cast is always checked.
         /// </summary>
-        private void TreatLongsAsNative(Microsoft.Cci.PrimitiveTypeCode tc)
+        private void TreatLongsAsNative(MetaDslx.Cci.PrimitiveTypeCode tc)
         {
-            if (tc == Microsoft.Cci.PrimitiveTypeCode.Int64)
+            if (tc == MetaDslx.Cci.PrimitiveTypeCode.Int64)
             {
                 _builder.EmitOpCode(ILOpCode.Conv_ovf_i);
             }
-            else if (tc == Microsoft.Cci.PrimitiveTypeCode.UInt64)
+            else if (tc == MetaDslx.Cci.PrimitiveTypeCode.UInt64)
             {
                 _builder.EmitOpCode(ILOpCode.Conv_ovf_i_un);
             }
@@ -1856,7 +1856,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
             // NOTE: ldlen returns native uint, but newarr takes native int, so the length value is always 
             //       a positive native int. We can treat it as either signed or unsigned.
             //       We will use whatever typeTo says so we do not need to convert because of sign.
-            var typeFrom = typeTo.IsUnsigned() ? Microsoft.Cci.PrimitiveTypeCode.UIntPtr : Microsoft.Cci.PrimitiveTypeCode.IntPtr;
+            var typeFrom = typeTo.IsUnsigned() ? MetaDslx.Cci.PrimitiveTypeCode.UIntPtr : MetaDslx.Cci.PrimitiveTypeCode.IntPtr;
 
             // NOTE: In Dev10 C# this cast is unchecked.
             // That seems to be wrong since that would cause silent truncation on 64bit platform if that implements large arrays. 
@@ -2678,39 +2678,39 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
 
             switch (elementType.PrimitiveTypeCode)
             {
-                case Microsoft.Cci.PrimitiveTypeCode.Boolean:
-                case Microsoft.Cci.PrimitiveTypeCode.Int8:
-                case Microsoft.Cci.PrimitiveTypeCode.UInt8:
+                case MetaDslx.Cci.PrimitiveTypeCode.Boolean:
+                case MetaDslx.Cci.PrimitiveTypeCode.Int8:
+                case MetaDslx.Cci.PrimitiveTypeCode.UInt8:
                     _builder.EmitOpCode(ILOpCode.Stelem_i1);
                     break;
 
-                case Microsoft.Cci.PrimitiveTypeCode.Char:
-                case Microsoft.Cci.PrimitiveTypeCode.Int16:
-                case Microsoft.Cci.PrimitiveTypeCode.UInt16:
+                case MetaDslx.Cci.PrimitiveTypeCode.Char:
+                case MetaDslx.Cci.PrimitiveTypeCode.Int16:
+                case MetaDslx.Cci.PrimitiveTypeCode.UInt16:
                     _builder.EmitOpCode(ILOpCode.Stelem_i2);
                     break;
 
-                case Microsoft.Cci.PrimitiveTypeCode.Int32:
-                case Microsoft.Cci.PrimitiveTypeCode.UInt32:
+                case MetaDslx.Cci.PrimitiveTypeCode.Int32:
+                case MetaDslx.Cci.PrimitiveTypeCode.UInt32:
                     _builder.EmitOpCode(ILOpCode.Stelem_i4);
                     break;
 
-                case Microsoft.Cci.PrimitiveTypeCode.Int64:
-                case Microsoft.Cci.PrimitiveTypeCode.UInt64:
+                case MetaDslx.Cci.PrimitiveTypeCode.Int64:
+                case MetaDslx.Cci.PrimitiveTypeCode.UInt64:
                     _builder.EmitOpCode(ILOpCode.Stelem_i8);
                     break;
 
-                case Microsoft.Cci.PrimitiveTypeCode.IntPtr:
-                case Microsoft.Cci.PrimitiveTypeCode.UIntPtr:
-                case Microsoft.Cci.PrimitiveTypeCode.Pointer:
+                case MetaDslx.Cci.PrimitiveTypeCode.IntPtr:
+                case MetaDslx.Cci.PrimitiveTypeCode.UIntPtr:
+                case MetaDslx.Cci.PrimitiveTypeCode.Pointer:
                     _builder.EmitOpCode(ILOpCode.Stelem_i);
                     break;
 
-                case Microsoft.Cci.PrimitiveTypeCode.Float32:
+                case MetaDslx.Cci.PrimitiveTypeCode.Float32:
                     _builder.EmitOpCode(ILOpCode.Stelem_r4);
                     break;
 
-                case Microsoft.Cci.PrimitiveTypeCode.Float64:
+                case MetaDslx.Cci.PrimitiveTypeCode.Float64:
                     _builder.EmitOpCode(ILOpCode.Stelem_r8);
                     break;
 
@@ -2767,39 +2767,39 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
 
             switch (type.PrimitiveTypeCode)
             {
-                case Microsoft.Cci.PrimitiveTypeCode.Boolean:
-                case Microsoft.Cci.PrimitiveTypeCode.Int8:
-                case Microsoft.Cci.PrimitiveTypeCode.UInt8:
+                case MetaDslx.Cci.PrimitiveTypeCode.Boolean:
+                case MetaDslx.Cci.PrimitiveTypeCode.Int8:
+                case MetaDslx.Cci.PrimitiveTypeCode.UInt8:
                     _builder.EmitOpCode(ILOpCode.Stind_i1);
                     break;
 
-                case Microsoft.Cci.PrimitiveTypeCode.Char:
-                case Microsoft.Cci.PrimitiveTypeCode.Int16:
-                case Microsoft.Cci.PrimitiveTypeCode.UInt16:
+                case MetaDslx.Cci.PrimitiveTypeCode.Char:
+                case MetaDslx.Cci.PrimitiveTypeCode.Int16:
+                case MetaDslx.Cci.PrimitiveTypeCode.UInt16:
                     _builder.EmitOpCode(ILOpCode.Stind_i2);
                     break;
 
-                case Microsoft.Cci.PrimitiveTypeCode.Int32:
-                case Microsoft.Cci.PrimitiveTypeCode.UInt32:
+                case MetaDslx.Cci.PrimitiveTypeCode.Int32:
+                case MetaDslx.Cci.PrimitiveTypeCode.UInt32:
                     _builder.EmitOpCode(ILOpCode.Stind_i4);
                     break;
 
-                case Microsoft.Cci.PrimitiveTypeCode.Int64:
-                case Microsoft.Cci.PrimitiveTypeCode.UInt64:
+                case MetaDslx.Cci.PrimitiveTypeCode.Int64:
+                case MetaDslx.Cci.PrimitiveTypeCode.UInt64:
                     _builder.EmitOpCode(ILOpCode.Stind_i8);
                     break;
 
-                case Microsoft.Cci.PrimitiveTypeCode.IntPtr:
-                case Microsoft.Cci.PrimitiveTypeCode.UIntPtr:
-                case Microsoft.Cci.PrimitiveTypeCode.Pointer:
+                case MetaDslx.Cci.PrimitiveTypeCode.IntPtr:
+                case MetaDslx.Cci.PrimitiveTypeCode.UIntPtr:
+                case MetaDslx.Cci.PrimitiveTypeCode.Pointer:
                     _builder.EmitOpCode(ILOpCode.Stind_i);
                     break;
 
-                case Microsoft.Cci.PrimitiveTypeCode.Float32:
+                case MetaDslx.Cci.PrimitiveTypeCode.Float32:
                     _builder.EmitOpCode(ILOpCode.Stind_r4);
                     break;
 
-                case Microsoft.Cci.PrimitiveTypeCode.Float64:
+                case MetaDslx.Cci.PrimitiveTypeCode.Float64:
                     _builder.EmitOpCode(ILOpCode.Stind_r8);
                     break;
 
@@ -3124,7 +3124,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
             // Let T be the type from the slot on the newly computed state and S
             // be the type from the corresponding slot on the previously stored state. The merged type, U, shall
             // be computed as follows (recall that S := T is the compatibility function defined
-            // in §III.1.8.1.2.2):
+            // in �III.1.8.1.2.2):
             // 1. if S := T then U=S
             // 2. Otherwise, if T := S then U=T
             // 3. Otherwise, if S and T are both object types, then let V be the closest common supertype of S and T then U=V.

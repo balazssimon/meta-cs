@@ -1,5 +1,5 @@
-﻿using MetaDslx.CodeAnalysis.Symbols.Source;
-using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Symbols.Source;
+using MetaDslx.CodeAnalysis;
 using Roslyn.Utilities;
 using System;
 using System.Collections.Generic;

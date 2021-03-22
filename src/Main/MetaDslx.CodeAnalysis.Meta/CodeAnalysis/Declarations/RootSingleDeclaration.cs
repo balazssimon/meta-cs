@@ -1,6 +1,6 @@
-﻿using MetaDslx.CodeAnalysis.Syntax;
+using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.Modeling;
-using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -13,20 +13,20 @@ namespace MetaDslx.CodeAnalysis.Declarations
 {
     public sealed class RootSingleDeclaration : SingleDeclaration
     {
-        private readonly ImmutableArray<ReferenceDirective> _referenceDirectives;
+        private readonly ImmutableArray<Syntax.ReferenceDirective> _referenceDirectives;
 
         public RootSingleDeclaration(
             Type modelObjectType,
             SyntaxReference treeNode, 
             ImmutableArray<SingleDeclaration> children, 
-            ImmutableArray<ReferenceDirective> referenceDirectives,
+            ImmutableArray<Syntax.ReferenceDirective> referenceDirectives,
             ImmutableArray<Diagnostic> diagnostics) 
             : base(string.Empty, DeclarationKind.None, modelObjectType, treeNode, new SourceLocation(treeNode), true, false, false, null, children, ImmutableArray<DeclarationTreeInfo.Property>.Empty, diagnostics)
         {
             _referenceDirectives = referenceDirectives;
         }
 
-        public ImmutableArray<ReferenceDirective> ReferenceDirectives
+        public ImmutableArray<Syntax.ReferenceDirective> ReferenceDirectives
         {
             get
             {

@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Runtime.InteropServices;
@@ -7,7 +7,7 @@ using System.Text;
 
 #pragma warning disable CS0436 // Type conflicts with imported type: SuppressUnmanagedCodeSecurity
 
-namespace Microsoft.CodeAnalysis.Interop
+namespace MetaDslx.CodeAnalysis.Interop
 {
     [ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("BD39D1D2-BA2F-486A-89B0-B4B0CB466891"), SuppressUnmanagedCodeSecurity]
     internal interface IClrRuntimeInfo

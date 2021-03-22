@@ -1,8 +1,8 @@
-﻿using MetaDslx.CodeAnalysis.Binding;
+using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Languages.Test.Languages.Soal;
 using MetaDslx.CodeAnalysis.Languages.Test.Languages.Soal.Model;
 using MetaDslx.Tests;
-using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,7 +18,7 @@ namespace MetaDslx.CodeAnalysis.Languages.Test
             SoalDescriptor.Initialize();
             string text = File.ReadAllText($@"..\..\..\InputFiles\Soal\{fileId}.soal");
             var st = SoalSyntaxTree.ParseText(text);
-            var options = new SoalCompilationOptions(Microsoft.CodeAnalysis.OutputKind.DynamicallyLinkedLibrary, topLevelBinderFlags: (BinderFlags)BinderFlags.IgnoreAccessibility/*, concurrentBuild: false, deterministic: true*/);
+            var options = new SoalCompilationOptions(MetaDslx.CodeAnalysis.OutputKind.DynamicallyLinkedLibrary, topLevelBinderFlags: (BinderFlags)BinderFlags.IgnoreAccessibility/*, concurrentBuild: false, deterministic: true*/);
             var comp = SoalCompilation.Create("Test").WithOptions(options).AddSyntaxTrees(st).AddReferences(ModelReference.CreateFromModel(SoalInstance.MModel));
             comp.ForceComplete();
             if (assertEmptyDiagnostics) AssertEmptyDiagnostics(comp);

@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -9,14 +9,14 @@ using System.Threading;
 using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Operations;
 using MetaDslx.CodeAnalysis.Symbols;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Operations;
-using Microsoft.CodeAnalysis.Text;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Operations;
+using MetaDslx.CodeAnalysis.Text;
 using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis
 {
-    using CSharpResources = Microsoft.CodeAnalysis.CSharp.CSharpResources;
+    using CSharpResources = MetaDslx.CodeAnalysis.CSharp.CSharpResources;
 
     /// <summary>
     /// Binding info for expressions and statements that are part of a member declaration.

@@ -1,12 +1,12 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Diagnostics;
 using System.Reflection.Metadata;
-using Microsoft.CodeAnalysis.CSharp.Symbols;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.CSharp.Symbols;
+using MetaDslx.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 
-namespace Microsoft.CodeAnalysis.CSharp.CodeGen
+namespace MetaDslx.CodeAnalysis.CSharp.CodeGen
 {
     internal partial class CodeGenerator
     {
@@ -505,11 +505,11 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
 
             // Spec 7.6.2
             // Implementation of unary minus has two overloads:
-            //   int operator –(int x)
-            //   long operator –(long x)
+            //   int operator �(int x)
+            //   long operator �(long x)
             // 
             // The result is computed by subtracting x from zero. 
-            // If the value of x is the smallest representable value of the operand type (−2^31 for int or −2^63 for long),
+            // If the value of x is the smallest representable value of the operand type (-2^31 for int or -2^63 for long),
             // then the mathematical negation of x is not representable within the operand type. If this occurs within a checked context, 
             // a System.OverflowException is thrown; if it occurs within an unchecked context, 
             // the result is the value of the operand and the overflow is not reported.
@@ -595,16 +595,16 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
             switch (type)
             {
                 case SpecialType.System_Byte:
-                    _builder.EmitNumericConversion(Microsoft.Cci.PrimitiveTypeCode.Int32, Microsoft.Cci.PrimitiveTypeCode.UInt8, @checked);
+                    _builder.EmitNumericConversion(MetaDslx.Cci.PrimitiveTypeCode.Int32, MetaDslx.Cci.PrimitiveTypeCode.UInt8, @checked);
                     break;
                 case SpecialType.System_SByte:
-                    _builder.EmitNumericConversion(Microsoft.Cci.PrimitiveTypeCode.Int32, Microsoft.Cci.PrimitiveTypeCode.Int8, @checked);
+                    _builder.EmitNumericConversion(MetaDslx.Cci.PrimitiveTypeCode.Int32, MetaDslx.Cci.PrimitiveTypeCode.Int8, @checked);
                     break;
                 case SpecialType.System_Int16:
-                    _builder.EmitNumericConversion(Microsoft.Cci.PrimitiveTypeCode.Int32, Microsoft.Cci.PrimitiveTypeCode.Int16, @checked);
+                    _builder.EmitNumericConversion(MetaDslx.Cci.PrimitiveTypeCode.Int32, MetaDslx.Cci.PrimitiveTypeCode.Int16, @checked);
                     break;
                 case SpecialType.System_UInt16:
-                    _builder.EmitNumericConversion(Microsoft.Cci.PrimitiveTypeCode.Int32, Microsoft.Cci.PrimitiveTypeCode.UInt16, @checked);
+                    _builder.EmitNumericConversion(MetaDslx.Cci.PrimitiveTypeCode.Int32, MetaDslx.Cci.PrimitiveTypeCode.UInt16, @checked);
                     break;
             }
         }

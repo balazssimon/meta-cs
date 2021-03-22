@@ -1,7 +1,7 @@
-﻿using MetaDslx.CodeAnalysis.Binding.Binders;
+using MetaDslx.CodeAnalysis.Binding.Binders;
 using MetaDslx.CodeAnalysis.Symbols;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Text;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Text;
 using Roslyn.Utilities;
 using System;
 using System.Collections.Generic;

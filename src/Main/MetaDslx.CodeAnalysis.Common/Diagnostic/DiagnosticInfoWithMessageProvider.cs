@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
@@ -7,7 +7,7 @@ using System.Reflection;
 using Roslyn.Utilities;
 using System.Threading;
 
-namespace Microsoft.CodeAnalysis
+namespace MetaDslx.CodeAnalysis
 {
     public class DiagnosticInfoWithMessageProvider : DiagnosticInfo, IFormattable, IObjectWritable
     {
@@ -377,10 +377,10 @@ namespace Microsoft.CodeAnalysis
             // sure we don't call ToString for those.
             switch (Code)
             {
-                case InternalErrorCode.Unknown:
+                case InternalDiagnosticErrorCode.Unknown:
                     return "Unresolved DiagnosticInfoWithMessageProvider";
 
-                case InternalErrorCode.Void:
+                case InternalDiagnosticErrorCode.Void:
                     return "Void DiagnosticInfoWithMessageProvider";
 
                 default:

@@ -1,16 +1,16 @@
-ï»¿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
-using Microsoft.CodeAnalysis.Collections;
-using Microsoft.CodeAnalysis.CSharp.Symbols;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.PooledObjects;
-using Microsoft.CodeAnalysis.Text;
+using MetaDslx.CodeAnalysis.Collections;
+using MetaDslx.CodeAnalysis.CSharp.Symbols;
+using MetaDslx.CodeAnalysis.CSharp.Syntax;
+using MetaDslx.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.Text;
 using Roslyn.Utilities;
 
-namespace Microsoft.CodeAnalysis.CSharp
+namespace MetaDslx.CodeAnalysis.CSharp
 {
     internal sealed partial class OverloadResolution
     {
@@ -593,8 +593,8 @@ namespace Microsoft.CodeAnalysis.CSharp
 
                 case BinaryOperatorKind.Subtraction:
                     // Subtraction either returns underlying type or only accept a single enum type, so operations on non-equal identity-convertible types are not ambiguous. 
-                    //   U operator â€“(E x, E y)
-                    //   E operator â€“(E x, U y)
+                    //   U operator –(E x, E y)
+                    //   E operator –(E x, U y)
                     useIdentityConversion = true;
                     break;
 
@@ -644,7 +644,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
 
             // The only arithmetic operator that is applicable on two distinct pointer types is
-            //   long operator â€“(T* x, T* y)
+            //   long operator –(T* x, T* y)
             // This operator returns long and so it's not ambiguous to apply it on T1 and T2 that are identity convertible to each other.
             if ((object)rightType != null && ((object)leftType == null || !Conversions.HasIdentityConversion(rightType, leftType)))
             {

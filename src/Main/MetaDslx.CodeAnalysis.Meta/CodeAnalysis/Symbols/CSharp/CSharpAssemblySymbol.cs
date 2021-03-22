@@ -1,4 +1,4 @@
-﻿using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -9,11 +9,11 @@ using System.Threading;
 
 namespace MetaDslx.CodeAnalysis.Symbols.CSharp
 {
-    using Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE;
+    using MetaDslx.CodeAnalysis.CSharp.Symbols.Metadata.PE;
     using Roslyn.Utilities;
     using System.Collections.Concurrent;
     using System.Globalization;
-    using CSharpSymbols = Microsoft.CodeAnalysis.CSharp.Symbols;
+    using CSharpSymbols = MetaDslx.CodeAnalysis.CSharp.Symbols;
 
     public class CSharpAssemblySymbol : NonMissingAssemblySymbol
     {

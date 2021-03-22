@@ -1,8 +1,8 @@
-﻿using MetaDslx.CodeAnalysis.InternalUtilities;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.PooledObjects;
-using Microsoft.CodeAnalysis.Syntax.InternalSyntax;
-using Microsoft.CodeAnalysis.Text;
+using MetaDslx.CodeAnalysis.InternalUtilities;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
+using MetaDslx.CodeAnalysis.Text;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -828,7 +828,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             var trivia = _prevTokenTrailingTrivia;
             if (trivia != null)
             {
-                var triviaList = new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<InternalSyntaxNode>(trivia);
+                var triviaList = new MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<InternalSyntaxNode>(trivia);
                 bool prevTokenHasEndOfLineTrivia = triviaList.Any((int)(SyntaxKind)SyntaxKind.Eof);
                 if (prevTokenHasEndOfLineTrivia)
                 {

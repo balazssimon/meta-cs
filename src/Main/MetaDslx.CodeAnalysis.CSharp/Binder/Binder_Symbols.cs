@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -6,13 +6,13 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using Microsoft.CodeAnalysis.CSharp.Symbols;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.PooledObjects;
-using Microsoft.CodeAnalysis.RuntimeMembers;
+using MetaDslx.CodeAnalysis.CSharp.Symbols;
+using MetaDslx.CodeAnalysis.CSharp.Syntax;
+using MetaDslx.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.RuntimeMembers;
 using Roslyn.Utilities;
 
-namespace Microsoft.CodeAnalysis.CSharp
+namespace MetaDslx.CodeAnalysis.CSharp
 {
     internal partial class Binder
     {
@@ -850,7 +850,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 //  SPEC:   An attribute-name of the form type-name may either include or omit this suffix.
                 //  SPEC:   If an attribute class is found both with and without this suffix, an ambiguity 
                 //  SPEC:   is present, and a compile-time error results. If the attribute-name is spelled
-                //  SPEC:   such that its right-most identifier is a verbatim identifier (§2.4.2), then only
+                //  SPEC:   such that its right-most identifier is a verbatim identifier (�2.4.2), then only
                 //  SPEC:   an attribute without a suffix is matched, thus enabling such an ambiguity to be resolved.
 
                 return isVerbatimIdentifier ? LookupOptions.VerbatimNameAttributeTypeOnly : LookupOptions.AttributeTypeOnly;

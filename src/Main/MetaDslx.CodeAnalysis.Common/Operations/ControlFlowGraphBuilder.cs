@@ -1,15 +1,15 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
-using Microsoft.CodeAnalysis.Operations;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.Operations;
+using MetaDslx.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 
-namespace Microsoft.CodeAnalysis.FlowAnalysis
+namespace MetaDslx.CodeAnalysis.FlowAnalysis
 {
     internal sealed partial class ControlFlowGraphBuilder : OperationVisitor<int?, IOperation>
     {
@@ -1773,7 +1773,7 @@ namespace Microsoft.CodeAnalysis.FlowAnalysis
                     // to some captures from the stack. That means that, after the spilling, we should be able to leave the spill
                     // regions that no longer own captures referenced on the stack. The new capture that we create, should belong to
                     // the region that will become current after that. Here we are trying to compute what will be that region.
-                    // Obviously, we shouldn’t be leaving the region associated with the frame.
+                    // Obviously, we shouldn�t be leaving the region associated with the frame.
                     RegionBuilder currentSpillRegion = _evalStack[currentFrameIndex].frameOpt.RegionBuilderOpt;
                     Debug.Assert(currentSpillRegion != null);
 
@@ -3048,7 +3048,7 @@ oneMoreTime:
 
                 // https://github.com/dotnet/roslyn/issues/27564: It looks like there is a bug in IOperation tree around XmlMemberAccessExpressionSyntax,
                 //                      a None operation is created and all children are dropped.
-                //                      See Microsoft.CodeAnalysis.VisualBasic.UnitTests.Semantics.ConditionalAccessTests.AnonymousTypeMemberName_01
+                //                      See MetaDslx.CodeAnalysis.VisualBasic.UnitTests.Semantics.ConditionalAccessTests.AnonymousTypeMemberName_01
                 //                      The following assert is triggered because of that. Disabling it for now.
                 //Debug.Assert(_currentConditionalAccessInstance == null);
                 _currentConditionalAccessInstance = receiver;
@@ -3108,7 +3108,7 @@ oneMoreTime:
 
                 // https://github.com/dotnet/roslyn/issues/27564: It looks like there is a bug in IOperation tree around XmlMemberAccessExpressionSyntax,
                 //                      a None operation is created and all children are dropped.
-                //                      See Microsoft.CodeAnalysis.VisualBasic.ExpressionEvaluator.UnitTests.ExpressionCompilerTests.ConditionalAccessExpressionType
+                //                      See MetaDslx.CodeAnalysis.VisualBasic.ExpressionEvaluator.UnitTests.ExpressionCompilerTests.ConditionalAccessExpressionType
                 //                      The following assert is triggered because of that. Disabling it for now.
                 //Debug.Assert(_currentConditionalAccessInstance == null);
                 _currentConditionalAccessInstance = null;

@@ -1,8 +1,8 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
 
-namespace Microsoft.CodeAnalysis.Operations
+namespace MetaDslx.CodeAnalysis.Operations
 {
     /// <summary>
     /// Represents an individual clause of an <see cref="IReDimOperation"/> to re-allocate storage space for a single array variable.

@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Concurrent;
@@ -8,14 +8,14 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using Microsoft.CodeAnalysis.CodeGen;
-using Microsoft.CodeAnalysis.Emit.NoPia;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.CodeGen;
+using MetaDslx.CodeAnalysis.Emit.NoPia;
+using MetaDslx.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
-using Microsoft.CodeAnalysis.Text;
+using MetaDslx.CodeAnalysis.Text;
 using System.Security.Cryptography;
 
-namespace Microsoft.CodeAnalysis.Emit
+namespace MetaDslx.CodeAnalysis.Emit
 {
     internal abstract class CommonPEModuleBuilder : Cci.IUnit, Cci.IModuleReference
     {

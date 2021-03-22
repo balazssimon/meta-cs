@@ -1,10 +1,10 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Diagnostics;
 using System.Threading;
-using Microsoft.CodeAnalysis.Text;
+using MetaDslx.CodeAnalysis.Text;
 
-namespace Microsoft.CodeAnalysis.Syntax
+namespace MetaDslx.CodeAnalysis.Syntax
 {
     /// <summary>
     /// This is a SyntaxReference implementation that lazily translates the result (SyntaxNode) of the

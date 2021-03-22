@@ -1,16 +1,16 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.CSharp.Symbols;
-using Microsoft.CodeAnalysis.Syntax;
-using Microsoft.CodeAnalysis.Operations;
+using MetaDslx.CodeAnalysis.CSharp;
+using MetaDslx.CodeAnalysis.CSharp.Syntax;
+using MetaDslx.CodeAnalysis.CSharp.Symbols;
+using MetaDslx.CodeAnalysis.Syntax;
+using MetaDslx.CodeAnalysis.Operations;
 
-namespace Microsoft.CodeAnalysis
+namespace MetaDslx.CodeAnalysis
 {
     public static class CSharpExtensions
     {
@@ -130,7 +130,7 @@ namespace Microsoft.CodeAnalysis
     }
 }
 
-namespace Microsoft.CodeAnalysis.CSharp
+namespace MetaDslx.CodeAnalysis.CSharp
 {
     public static class CSharpExtensions
     {
@@ -293,7 +293,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         }
 
         /// <summary>
-        /// Returns this list as a <see cref="Microsoft.CodeAnalysis.SeparatedSyntaxList&lt;TNode&gt;"/>.
+        /// Returns this list as a <see cref="MetaDslx.CodeAnalysis.SeparatedSyntaxList&lt;TNode&gt;"/>.
         /// </summary>
         /// <typeparam name="TOther">The type of the list elements in the separated list.</typeparam>
         /// <returns></returns>

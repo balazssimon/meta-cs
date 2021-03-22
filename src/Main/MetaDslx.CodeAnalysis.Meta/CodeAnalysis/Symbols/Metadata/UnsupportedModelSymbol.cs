@@ -1,5 +1,5 @@
-﻿using MetaDslx.Modeling;
-using Microsoft.CodeAnalysis;
+using MetaDslx.Modeling;
+using MetaDslx.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -45,12 +45,12 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             return default;
         }
 
-        public override void Accept(Microsoft.CodeAnalysis.SymbolVisitor visitor)
+        public override void Accept(MetaDslx.CodeAnalysis.SymbolVisitor visitor)
         {
             // nop
         }
 
-        public override TResult Accept<TResult>(Microsoft.CodeAnalysis.SymbolVisitor<TResult> visitor)
+        public override TResult Accept<TResult>(MetaDslx.CodeAnalysis.SymbolVisitor<TResult> visitor)
         {
             return default;
         }

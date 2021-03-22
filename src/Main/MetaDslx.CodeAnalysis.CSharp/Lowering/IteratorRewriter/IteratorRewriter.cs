@@ -1,14 +1,14 @@
-ï»¿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Immutable;
 using System.Diagnostics;
-using Microsoft.CodeAnalysis.CodeGen;
-using Microsoft.CodeAnalysis.CSharp.Symbols;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.CodeGen;
+using MetaDslx.CodeAnalysis.CSharp.Symbols;
+using MetaDslx.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 
-namespace Microsoft.CodeAnalysis.CSharp
+namespace MetaDslx.CodeAnalysis.CSharp
 {
     internal partial class IteratorRewriter : StateMachineRewriter
     {
@@ -202,7 +202,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             var IEnumeratorOfElementType = F.SpecialType(SpecialType.System_Collections_Generic_IEnumerator_T).Construct(ImmutableArray.Create(_elementType));
             var IEnumeratorOfElementType_get_Current = F.SpecialProperty(SpecialMember.System_Collections_Generic_IEnumerator_T__Current).GetMethod.AsMember(IEnumeratorOfElementType);
 
-            // Add boolÂ IEnumerator.MoveNext() and voidÂ IDisposable.Dispose()
+            // Add bool IEnumerator.MoveNext() and void IDisposable.Dispose()
             {
                 var disposeMethod = OpenMethodImplementation(
                     IDisposable_Dispose,
@@ -213,19 +213,19 @@ namespace Microsoft.CodeAnalysis.CSharp
                 GenerateMoveNextAndDispose(moveNextMethod, disposeMethod);
             }
 
-            // Add TÂ IEnumerator<T>.Current
+            // Add T IEnumerator<T>.Current
             {
                 OpenPropertyImplementation(IEnumeratorOfElementType_get_Current);
                 F.CloseMethod(F.Return(F.Field(F.This(), _currentField)));
             }
 
-            // Add voidÂ IEnumerator.Reset()
+            // Add void IEnumerator.Reset()
             {
                 OpenMethodImplementation(IEnumerator_Reset, hasMethodBodyDependency: false);
                 F.CloseMethod(F.Throw(F.New(F.WellKnownType(WellKnownType.System_NotSupportedException))));
             }
 
-            // Add objectÂ IEnumerator.Current
+            // Add object IEnumerator.Current
             {
                 OpenPropertyImplementation(IEnumerator_get_Current);
                 F.CloseMethod(F.Return(F.Field(F.This(), _currentField)));

@@ -1,4 +1,4 @@
-﻿using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
@@ -6,8 +6,8 @@ using MetaDslx.Languages.Meta;
 using MetaDslx.Languages.Meta.Model;
 using MetaDslx.Languages.Meta.Syntax.InternalSyntax;
 using MetaDslx.VisualStudio.Compilation;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Text;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Text;
 using Microsoft.VisualStudio.Utilities;
 using System;
 using System.Collections.Generic;

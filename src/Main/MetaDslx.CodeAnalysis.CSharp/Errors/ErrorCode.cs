@@ -1,11 +1,11 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-namespace Microsoft.CodeAnalysis.CSharp
+namespace MetaDslx.CodeAnalysis.CSharp
 {
     internal enum ErrorCode
     {
-        Void = InternalErrorCode.Void,
-        Unknown = InternalErrorCode.Unknown,
+        Void = InternalDiagnosticErrorCode.Void,
+        Unknown = InternalDiagnosticErrorCode.Unknown,
 
         #region diagnostics introduced in C# 4 and earlier
         //FTL_InternalError = 1,

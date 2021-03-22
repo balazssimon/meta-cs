@@ -11,9 +11,9 @@ using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Syntax.InternalSyntax;
-using Microsoft.CodeAnalysis.Text;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
+using MetaDslx.CodeAnalysis.Text;
 using MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax;
 namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 {

@@ -1,13 +1,13 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using Roslyn.Utilities;
-using Microsoft.CodeAnalysis.CSharp.Emit;
+using MetaDslx.CodeAnalysis.CSharp.Emit;
 
-namespace Microsoft.CodeAnalysis.CSharp.Symbols.Retargeting
+namespace MetaDslx.CodeAnalysis.CSharp.Symbols.Retargeting
 {
     /// <summary>
     /// Represents a field in a RetargetingModuleSymbol. Essentially this is a wrapper around 

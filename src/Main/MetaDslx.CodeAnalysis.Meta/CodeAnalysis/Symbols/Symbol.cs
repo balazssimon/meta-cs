@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -12,16 +12,16 @@ using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Symbols.Source;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.Modeling;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Collections;
-using Microsoft.CodeAnalysis.PooledObjects;
-using Microsoft.CodeAnalysis.Text;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Collections;
+using MetaDslx.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.Text;
 using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-    using SymbolDisplay = Microsoft.CodeAnalysis.CSharp.SymbolDisplay;
-    using CSharpResources = Microsoft.CodeAnalysis.CSharp.CSharpResources;
+    using SymbolDisplay = MetaDslx.CodeAnalysis.CSharp.SymbolDisplay;
+    using CSharpResources = MetaDslx.CodeAnalysis.CSharp.CSharpResources;
 
     /// <summary>
     /// The base class for all symbols (namespaces, classes, method, parameters, etc.) that are 
@@ -578,7 +578,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         ISymbol ISymbol.ContainingSymbol => this.ContainingSymbol;
 
-        Microsoft.CodeAnalysis.SymbolKind ISymbol.Kind => Language.SymbolFacts.ToCSharpKind(this.Kind);
+        MetaDslx.CodeAnalysis.SymbolKind ISymbol.Kind => Language.SymbolFacts.ToCSharpKind(this.Kind);
 
         IAssemblySymbol ISymbol.ContainingAssembly => this.ContainingAssembly;
 
@@ -591,9 +591,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return this.GetAttributes();
         }
 
-        public abstract void Accept(Microsoft.CodeAnalysis.SymbolVisitor visitor);
+        public abstract void Accept(MetaDslx.CodeAnalysis.SymbolVisitor visitor);
 
-        public abstract TResult Accept<TResult>(Microsoft.CodeAnalysis.SymbolVisitor<TResult> visitor);
+        public abstract TResult Accept<TResult>(MetaDslx.CodeAnalysis.SymbolVisitor<TResult> visitor);
 
         public abstract void Accept(SymbolVisitor visitor);
 
@@ -643,7 +643,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         /// <summary>
         /// Returns data decoded from <see cref="ObsoleteAttribute"/> attribute or null if there is no <see cref="ObsoleteAttribute"/> attribute.
-        /// This property returns <see cref="Microsoft.CodeAnalysis.ObsoleteAttributeData.Uninitialized"/> if attribute arguments haven't been decoded yet.
+        /// This property returns <see cref="MetaDslx.CodeAnalysis.ObsoleteAttributeData.Uninitialized"/> if attribute arguments haven't been decoded yet.
         /// </summary>
         public virtual ObsoleteAttributeData ObsoleteAttributeData => null; // TODO:MetaDslx
 

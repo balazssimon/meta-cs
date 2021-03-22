@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -6,15 +6,15 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection.Metadata;
-using Microsoft.CodeAnalysis.CodeGen;
-using Microsoft.CodeAnalysis.CSharp.Symbols;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.PooledObjects;
-using Microsoft.CodeAnalysis.Text;
+using MetaDslx.CodeAnalysis.CodeGen;
+using MetaDslx.CodeAnalysis.CSharp.Symbols;
+using MetaDslx.CodeAnalysis.CSharp.Syntax;
+using MetaDslx.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.Text;
 using Roslyn.Utilities;
-using static Microsoft.CodeAnalysis.CSharp.Binder;
+using static MetaDslx.CodeAnalysis.CSharp.Binder;
 
-namespace Microsoft.CodeAnalysis.CSharp.CodeGen
+namespace MetaDslx.CodeAnalysis.CSharp.CodeGen
 {
     internal partial class CodeGenerator
     {
@@ -190,18 +190,18 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
             var tc = ts.PrimitiveTypeCode;
             switch (tc)
             {
-                case Microsoft.Cci.PrimitiveTypeCode.Float32:
-                case Microsoft.Cci.PrimitiveTypeCode.Float64:
+                case MetaDslx.Cci.PrimitiveTypeCode.Float32:
+                case MetaDslx.Cci.PrimitiveTypeCode.Float64:
                     return false;
 
-                case Microsoft.Cci.PrimitiveTypeCode.NotPrimitive:
+                case MetaDslx.Cci.PrimitiveTypeCode.NotPrimitive:
                     // if this is a generic type param, verifier will want us to box
                     // EmitCondBranch knows that
                     return ts.IsReferenceType;
 
                 default:
-                    Debug.Assert(tc != Microsoft.Cci.PrimitiveTypeCode.Invalid);
-                    Debug.Assert(tc != Microsoft.Cci.PrimitiveTypeCode.Void);
+                    Debug.Assert(tc != MetaDslx.Cci.PrimitiveTypeCode.Invalid);
+                    Debug.Assert(tc != MetaDslx.Cci.PrimitiveTypeCode.Void);
 
                     return true;
             }
@@ -237,7 +237,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
                 return null;
             }
 
-            bool isBool = nonConstType.PrimitiveTypeCode == Microsoft.Cci.PrimitiveTypeCode.Boolean;
+            bool isBool = nonConstType.PrimitiveTypeCode == MetaDslx.Cci.PrimitiveTypeCode.Boolean;
             bool isZero = constOp.ConstantValue.IsDefaultValue;
 
             // bool is special, only it can be compared to true and false...
@@ -1280,7 +1280,7 @@ oneMoreTime:
         /// <param name="stringConstant">Case constant to compare the key against</param>
         /// <param name="targetLabel">Target label to branch to if key = stringConstant</param>
         /// <param name="stringEqualityMethodRef">String equality method</param>
-        private void EmitStringCompareAndBranch(LocalOrParameter key, SyntaxNode syntaxNode, ConstantValue stringConstant, object targetLabel, Microsoft.Cci.IReference stringEqualityMethodRef)
+        private void EmitStringCompareAndBranch(LocalOrParameter key, SyntaxNode syntaxNode, ConstantValue stringConstant, object targetLabel, MetaDslx.Cci.IReference stringEqualityMethodRef)
         {
             // Emit compare and branch:
 

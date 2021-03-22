@@ -1,11 +1,11 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Diagnostics;
 using System.Reflection.Metadata;
-using Microsoft.CodeAnalysis.CSharp.Symbols;
+using MetaDslx.CodeAnalysis.CSharp.Symbols;
 using Roslyn.Utilities;
 
-namespace Microsoft.CodeAnalysis.CSharp.CodeGen
+namespace MetaDslx.CodeAnalysis.CSharp.CodeGen
 {
     internal partial class CodeGenerator
     {
@@ -121,17 +121,17 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
 #if DEBUG
                     switch (fromPredefTypeKind)
                     {
-                        case Microsoft.Cci.PrimitiveTypeCode.IntPtr:
-                        case Microsoft.Cci.PrimitiveTypeCode.UIntPtr:
-                        case Microsoft.Cci.PrimitiveTypeCode.Pointer:
+                        case MetaDslx.Cci.PrimitiveTypeCode.IntPtr:
+                        case MetaDslx.Cci.PrimitiveTypeCode.UIntPtr:
+                        case MetaDslx.Cci.PrimitiveTypeCode.Pointer:
                             Debug.Assert(toPredefTypeKind.IsNumeric());
                             break;
                         default:
                             Debug.Assert(fromPredefTypeKind.IsNumeric());
                             Debug.Assert(
-                                toPredefTypeKind == Microsoft.Cci.PrimitiveTypeCode.IntPtr ||
-                                toPredefTypeKind == Microsoft.Cci.PrimitiveTypeCode.UIntPtr ||
-                                toPredefTypeKind == Microsoft.Cci.PrimitiveTypeCode.Pointer);
+                                toPredefTypeKind == MetaDslx.Cci.PrimitiveTypeCode.IntPtr ||
+                                toPredefTypeKind == MetaDslx.Cci.PrimitiveTypeCode.UIntPtr ||
+                                toPredefTypeKind == MetaDslx.Cci.PrimitiveTypeCode.Pointer);
                             break;
                     }
 #endif
@@ -165,8 +165,8 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
             {
                 switch (conversion.Type.PrimitiveTypeCode)
                 {
-                    case Microsoft.Cci.PrimitiveTypeCode.Float32:
-                    case Microsoft.Cci.PrimitiveTypeCode.Float64:
+                    case MetaDslx.Cci.PrimitiveTypeCode.Float32:
+                    case MetaDslx.Cci.PrimitiveTypeCode.Float64:
                         // For explicitly-written "identity conversions" from float to float or
                         // double to double, we require the generation of conv.r4 or conv.r8. The
                         // runtime can use these instructions to truncate precision, and csc.exe

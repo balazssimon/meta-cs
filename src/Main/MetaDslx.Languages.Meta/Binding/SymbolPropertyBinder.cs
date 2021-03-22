@@ -1,9 +1,9 @@
-﻿using MetaDslx.CodeAnalysis.Binding;
+using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Binding.Binders;
 using MetaDslx.CodeAnalysis.Symbols.CSharp;
 using MetaDslx.CodeAnalysis.Symbols.Metadata;
 using MetaDslx.Languages.Meta.Model;
-using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;

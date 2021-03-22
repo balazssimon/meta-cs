@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
@@ -10,7 +10,7 @@ using System.Threading;
 using MetaDslx.CodeAnalysis.Symbols.CSharp;
 using MetaDslx.CodeAnalysis.Symbols.Source;
 using MetaDslx.Modeling;
-using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
 using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Metadata

@@ -1,11 +1,11 @@
-ï»¿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Diagnostics;
-using Microsoft.CodeAnalysis.CSharp.Symbols;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
+using MetaDslx.CodeAnalysis.CSharp.Symbols;
+using MetaDslx.CodeAnalysis.CSharp.Syntax;
 
-namespace Microsoft.CodeAnalysis.CSharp
+namespace MetaDslx.CodeAnalysis.CSharp
 {
     /// <summary>
     /// This is a special binder used for decoding some special well-known attributes very early in the attribute binding phase.
@@ -118,13 +118,13 @@ namespace Microsoft.CodeAnalysis.CSharp
                 //  Default value expressions
                 case SyntaxKind.DefaultExpression:
 
-                //  The predefined +, â€“, !, and ~ unary operators.
+                //  The predefined +, –, !, and ~ unary operators.
                 case SyntaxKind.UnaryPlusExpression:
                 case SyntaxKind.UnaryMinusExpression:
                 case SyntaxKind.LogicalNotExpression:
                 case SyntaxKind.BitwiseNotExpression:
 
-                //  The predefined +, â€“, *, /, %, <<, >>, &, |, ^, &&, ||, ==, !=, <, >, <=, and >= binary operators, provided each operand is of a type listed above.
+                //  The predefined +, –, *, /, %, <<, >>, &, |, ^, &&, ||, ==, !=, <, >, <=, and >= binary operators, provided each operand is of a type listed above.
                 case SyntaxKind.AddExpression:
                 case SyntaxKind.MultiplyExpression:
                 case SyntaxKind.SubtractExpression:

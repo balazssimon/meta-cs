@@ -1,11 +1,11 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 
-namespace Microsoft.CodeAnalysis
+namespace MetaDslx.CodeAnalysis
 {
     /// <summary>
     /// Represents a type.
@@ -81,7 +81,7 @@ namespace Microsoft.CodeAnalysis
 
         /// <summary>
         /// An enumerated value that identifies certain 'special' types such as <see cref="System.Object"/>. 
-        /// Returns <see cref="Microsoft.CodeAnalysis.SpecialType.None"/> if the type is not special.
+        /// Returns <see cref="MetaDslx.CodeAnalysis.SpecialType.None"/> if the type is not special.
         /// </summary>
         SpecialType SpecialType { get; }
 

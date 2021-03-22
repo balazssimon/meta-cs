@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Collections.Immutable;
 using Roslyn.Utilities;
 using System.Reflection.Metadata;
 
-namespace Microsoft.CodeAnalysis.CSharp.Symbols
+namespace MetaDslx.CodeAnalysis.CSharp.Symbols
 {
     /// <summary>
     /// A representation of a method symbol that is intended only to be used for comparison purposes
@@ -93,7 +93,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
         internal override bool HasDeclarativeSecurity { get { throw ExceptionUtilities.Unreachable; } }
 
-        internal override IEnumerable<Microsoft.Cci.SecurityAttribute> GetSecurityInformation() { throw ExceptionUtilities.Unreachable; }
+        internal override IEnumerable<MetaDslx.Cci.SecurityAttribute> GetSecurityInformation() { throw ExceptionUtilities.Unreachable; }
 
         internal override ObsoleteAttributeData ObsoleteAttributeData { get { throw ExceptionUtilities.Unreachable; } }
 

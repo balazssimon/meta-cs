@@ -1,12 +1,12 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
-using Microsoft.CodeAnalysis.CSharp.Symbols;
+using MetaDslx.CodeAnalysis.CSharp.Symbols;
 
-namespace Microsoft.CodeAnalysis.CSharp
+namespace MetaDslx.CodeAnalysis.CSharp
 {
     internal sealed class Conversions : ConversionsBase
     {
@@ -289,7 +289,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             // NOTE: Section 6.6 will be slightly updated:
             //
             //   - The candidate methods considered are only those methods that are applicable in their
-            //     normal form (§7.5.3.1), and do not omit any optional parameters. Thus, candidate methods
+            //     normal form (�7.5.3.1), and do not omit any optional parameters. Thus, candidate methods
             //     are ignored if they are applicable only in their expanded form, or if one or more of their
             //     optional parameters do not have a corresponding parameter in the targeted delegate type.
             //   

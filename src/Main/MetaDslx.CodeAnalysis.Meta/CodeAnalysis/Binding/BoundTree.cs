@@ -1,8 +1,8 @@
-﻿using MetaDslx.CodeAnalysis.Binding.Binders;
+using MetaDslx.CodeAnalysis.Binding.Binders;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.Modeling;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 using System;
 using System.Collections.Concurrent;
@@ -14,7 +14,7 @@ using System.Threading;
 
 namespace MetaDslx.CodeAnalysis.Binding
 {
-    using CSharpResources = Microsoft.CodeAnalysis.CSharp.CSharpResources;
+    using CSharpResources = MetaDslx.CodeAnalysis.CSharp.CSharpResources;
 
     public class BoundTree
     {

@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Immutable;
@@ -8,11 +8,11 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
-using Microsoft.Cci;
-using Microsoft.CodeAnalysis.Interop;
+using MetaDslx.Cci;
+using MetaDslx.CodeAnalysis.Interop;
 using Roslyn.Utilities;
 
-namespace Microsoft.CodeAnalysis
+namespace MetaDslx.CodeAnalysis
 {
     /// <summary>
     /// Provides strong name and signs source assemblies.

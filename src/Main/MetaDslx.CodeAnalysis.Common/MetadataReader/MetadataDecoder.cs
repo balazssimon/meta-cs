@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Concurrent;
@@ -7,10 +7,10 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Reflection.Metadata;
 using System.Runtime.InteropServices;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 
-namespace Microsoft.CodeAnalysis
+namespace MetaDslx.CodeAnalysis
 {
     [StructLayout(LayoutKind.Auto)]
     internal struct ModifierInfo<TypeSymbol>
@@ -1389,7 +1389,7 @@ tryAgain:
             // ELEMENT_TYPE_U8, ELEMENT_TYPE_R4, ELEMENT_TYPE_R8, ELEMENT_TYPE_STRING.
             // 
             // A single-dimensional, zero-based array is specified as a single byte 0x1D followed
-            // by the FieldOrPropType of the element type. (See §II.23.1.16) An enum is
+            // by the FieldOrPropType of the element type. (See �II.23.1.16) An enum is
             // specified as a single byte 0x55 followed by a SerString.
             // 
             // tomat: The spec is missing ELEMENT_TYPE_TYPE.

@@ -1,6 +1,6 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-namespace Microsoft.CodeAnalysis
+namespace MetaDslx.CodeAnalysis
 {
     /// <summary>
     /// Describes how severe a diagnostic is.
@@ -38,19 +38,19 @@ namespace Microsoft.CodeAnalysis
         /// <summary>
         /// An unknown severity diagnostic is something whose severity has not yet been determined.
         /// </summary>
-        public const DiagnosticSeverity Unknown = (DiagnosticSeverity)InternalErrorCode.Unknown;
+        public const DiagnosticSeverity Unknown = (DiagnosticSeverity)InternalDiagnosticErrorCode.Unknown;
 
         /// <summary>
         /// If an unknown diagnostic is resolved and found to be unnecessary then it is 
         /// treated as a "Void" diagnostic
         /// </summary>
-        public const DiagnosticSeverity Void = (DiagnosticSeverity)InternalErrorCode.Void;
+        public const DiagnosticSeverity Void = (DiagnosticSeverity)InternalDiagnosticErrorCode.Void;
     }
 
     /// <summary>
     /// Values for ErrorCode/ERRID that are used internally by the compiler but are not exposed.
     /// </summary>
-    internal static class InternalErrorCode
+    internal static class InternalDiagnosticErrorCode
     {
         /// <summary>
         /// The code has yet to be determined.

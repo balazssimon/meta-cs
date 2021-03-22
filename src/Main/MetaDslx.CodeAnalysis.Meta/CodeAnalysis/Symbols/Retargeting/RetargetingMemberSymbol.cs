@@ -1,14 +1,14 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using Roslyn.Utilities;
-using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Symbols.Wrapped;
-using Microsoft.CodeAnalysis.PooledObjects;
-using Microsoft.Cci;
+using MetaDslx.CodeAnalysis.PooledObjects;
+using MetaDslx.Cci;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
 {
@@ -191,12 +191,12 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
             return visitor.VisitMember(this, argument);
         }
 
-        public override void Accept(Microsoft.CodeAnalysis.SymbolVisitor visitor)
+        public override void Accept(MetaDslx.CodeAnalysis.SymbolVisitor visitor)
         {
             throw new NotSupportedException();
         }
 
-        public override TResult Accept<TResult>(Microsoft.CodeAnalysis.SymbolVisitor<TResult> visitor)
+        public override TResult Accept<TResult>(MetaDslx.CodeAnalysis.SymbolVisitor<TResult> visitor)
         {
             throw new NotSupportedException();
         }

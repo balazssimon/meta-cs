@@ -1,8 +1,8 @@
-﻿using MetaDslx.CodeAnalysis.Declarations;
+using MetaDslx.CodeAnalysis.Declarations;
 using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.Modeling;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.PooledObjects;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;

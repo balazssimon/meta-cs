@@ -1,8 +1,8 @@
 using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Text;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Text;
 using Microsoft.Extensions.DependencyInjection;
 using Roslyn.Utilities;
 using System;

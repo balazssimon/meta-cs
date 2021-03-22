@@ -1,6 +1,6 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
+namespace MetaDslx.CodeAnalysis.CSharp.Syntax.InternalSyntax
 {
     /// <summary>
     /// Because syntax nodes need to be constructed with context information - to allow us to 

@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -6,8 +6,8 @@ using System.Diagnostics;
 using System.Linq;
 using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Symbols.Source;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis.Binding
@@ -366,7 +366,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             //  SPEC:   An attribute-name of the form type-name may either include or omit this suffix.
             //  SPEC:   If an attribute class is found both with and without this suffix, an ambiguity 
             //  SPEC:   is present, and a compile-time error results. If the attribute-name is spelled
-            //  SPEC:   such that its right-most identifier is a verbatim identifier (§2.4.2), then only
+            //  SPEC:   such that its right-most identifier is a verbatim identifier (�2.4.2), then only
             //  SPEC:   an attribute without a suffix is matched, thus enabling such an ambiguity to be resolved.
 
             // Roslyn Bug 9681: Compilers incorrectly use the *failure* of binding some subexpression to indicate some other strategy is applicable (attributes, 'var')

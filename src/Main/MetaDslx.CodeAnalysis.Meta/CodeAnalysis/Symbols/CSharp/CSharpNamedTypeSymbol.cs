@@ -1,4 +1,4 @@
-﻿using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -6,10 +6,10 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols.CSharp
 {
-    using CSharpSymbols = Microsoft.CodeAnalysis.CSharp.Symbols;
-    using CSharpSymbol = Microsoft.CodeAnalysis.CSharp.Symbol;
+    using CSharpSymbols = MetaDslx.CodeAnalysis.CSharp.Symbols;
+    using CSharpSymbol = MetaDslx.CodeAnalysis.CSharp.Symbol;
     using Roslyn.Utilities;
-    using Microsoft.CodeAnalysis.PooledObjects;
+    using MetaDslx.CodeAnalysis.PooledObjects;
 
     public class CSharpNamedTypeSymbol : NamedTypeSymbol
     {

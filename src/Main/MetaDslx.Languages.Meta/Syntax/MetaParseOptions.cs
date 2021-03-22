@@ -7,8 +7,8 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Syntax;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 
 using MetaDslx.CodeAnalysis.Symbols;

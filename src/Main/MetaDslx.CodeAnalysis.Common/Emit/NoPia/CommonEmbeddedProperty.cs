@@ -1,12 +1,12 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
-using Microsoft.CodeAnalysis.CodeGen;
-using Cci = Microsoft.Cci;
+using MetaDslx.CodeAnalysis.CodeGen;
+using Cci = MetaDslx.Cci;
 
-namespace Microsoft.CodeAnalysis.Emit.NoPia
+namespace MetaDslx.CodeAnalysis.Emit.NoPia
 {
     internal abstract partial class EmbeddedTypesManager<
         TPEModuleBuilder,

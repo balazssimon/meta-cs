@@ -1,15 +1,15 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
-using Microsoft.CodeAnalysis.CSharp.Symbols;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.CSharp.Symbols;
+using MetaDslx.CodeAnalysis.CSharp.Syntax;
+using MetaDslx.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 
-namespace Microsoft.CodeAnalysis.CSharp
+namespace MetaDslx.CodeAnalysis.CSharp
 {
     internal abstract partial class ConversionsBase
     {
@@ -1300,7 +1300,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             // SPEC:    1) If the type of the switch expression is sbyte, byte, short, ushort, int, uint,
             // SPEC:       long, ulong, bool, char, string, or an enum-type, or if it is the nullable type
             // SPEC:       corresponding to one of these types, then that is the governing type of the switch statement. 
-            // SPEC:    2) Otherwise, exactly one user-defined implicit conversion (§6.4) must exist from the
+            // SPEC:    2) Otherwise, exactly one user-defined implicit conversion (�6.4) must exist from the
             // SPEC:       type of the switch expression to one of the following possible governing types:
             // SPEC:       sbyte, byte, short, ushort, int, uint, long, ulong, char, string, or, a nullable type
             // SPEC:       corresponding to one of those types
@@ -2119,7 +2119,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         private static bool HasImplicitDynamicConversionFromExpression(TypeSymbol expressionType, TypeSymbol destination)
         {
-            // Spec (§6.1.8)
+            // Spec (�6.1.8)
             // An implicit dynamic conversion exists from an expression of type dynamic to any type T.
 
             Debug.Assert((object)destination != null);
@@ -2880,7 +2880,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
 
             // SPEC: UNDONE: From a reference type to a reference type T if it has an explicit reference conversion to a reference type T0 and T0 has an identity conversion T.
-            // SPEC: UNDONE: From a reference type to an interface or delegate type T if it has an explicit reference conversion to an interface or delegate type T0 and either T0 is variance-convertible to T or T is variance-convertible to T0 (Â§13.1.3.2).
+            // SPEC: UNDONE: From a reference type to an interface or delegate type T if it has an explicit reference conversion to an interface or delegate type T0 and either T0 is variance-convertible to T or T is variance-convertible to T0 (§13.1.3.2).
 
             if (HasExplicitArrayConversion(source, destination, ref useSiteDiagnostics))
             {
@@ -2938,7 +2938,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 return true;
             }
 
-            // SPEC: From a type parameter U to T, provided T depends on U (Â§10.1.5)
+            // SPEC: From a type parameter U to T, provided T depends on U (§10.1.5)
             if ((object)s != null && (object)t != null && t.IsReferenceType && t.DependsOn(s))
             {
                 return true;
@@ -2985,7 +2985,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 return true;
             }
 
-            // SPEC: From a type parameter U to T, provided T depends on U (Â§10.1.5)
+            // SPEC: From a type parameter U to T, provided T depends on U (§10.1.5)
             if ((object)s != null && (object)t != null && !t.IsReferenceType && t.DependsOn(s))
             {
                 return true;

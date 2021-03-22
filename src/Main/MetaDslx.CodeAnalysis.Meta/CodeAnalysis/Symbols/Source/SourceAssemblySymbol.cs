@@ -1,5 +1,5 @@
-﻿using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.PooledObjects;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -16,10 +16,10 @@ using MetaDslx.CodeAnalysis.Symbols.Metadata;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Source
 {
-    using CSharpSymbols = Microsoft.CodeAnalysis.CSharp.Symbols;
-    using CSharpCompilation = Microsoft.CodeAnalysis.CSharp.CSharpCompilation;
-    using MessageProvider = Microsoft.CodeAnalysis.CSharp.MessageProvider;
-    using CommonAssemblyWellKnownAttributeData = Microsoft.CodeAnalysis.CommonAssemblyWellKnownAttributeData<MetaDslx.CodeAnalysis.Symbols.NamedTypeSymbol>;
+    using CSharpSymbols = MetaDslx.CodeAnalysis.CSharp.Symbols;
+    using CSharpCompilation = MetaDslx.CodeAnalysis.CSharp.CSharpCompilation;
+    using MessageProvider = MetaDslx.CodeAnalysis.CSharp.MessageProvider;
+    using CommonAssemblyWellKnownAttributeData = MetaDslx.CodeAnalysis.CommonAssemblyWellKnownAttributeData<MetaDslx.CodeAnalysis.Symbols.NamedTypeSymbol>;
 
     public class SourceAssemblySymbol : MetadataOrSourceAssemblySymbol, ISourceAssemblySymbol
     {

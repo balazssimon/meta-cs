@@ -1,11 +1,11 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Generic;
-using Microsoft.CodeAnalysis.Text;
-using Cci = Microsoft.Cci;
+using MetaDslx.CodeAnalysis.Text;
+using Cci = MetaDslx.Cci;
 using DWORD = System.UInt32;
 
-namespace Microsoft.CodeAnalysis.CodeGen
+namespace MetaDslx.CodeAnalysis.CodeGen
 {
     internal class Win32Resource : Cci.IWin32Resource
     {

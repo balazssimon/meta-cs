@@ -3,8 +3,8 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Diagnostics;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Diagnostics;
 using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis

@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections;
@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using Roslyn.Utilities;
 
-namespace Microsoft.CodeAnalysis
+namespace MetaDslx.CodeAnalysis
 {
     // These classes are for debug and testing purposes only. It is frequently handy to be 
     // able to create a string representation of a complex tree-based data type. The idea
@@ -23,17 +23,17 @@ namespace Microsoft.CodeAnalysis
     // exactly one line per node of the tree:
     //
     //   root
-    //   ├─a1
-    //   │ └─a1b1
-    //   ├─a2
-    //   │ ├─a2b1
-    //   │ │ └─a2b1c1
-    //   │ └─a2b2
-    //   │   ├─a2b2c1
-    //   │   │ └─a2b2c1d1
-    //   │   └─a2b2c2
-    //   └─a3
-    //     └─a3b1
+    //   +-a1
+    //   � +-a1b1
+    //   +-a2
+    //   � +-a2b1
+    //   � � +-a2b1c1
+    //   � +-a2b2
+    //   �   +-a2b2c1
+    //   �   � +-a2b2c1d1
+    //   �   +-a2b2c2
+    //   +-a3
+    //     +-a3b1
     //
     // And second, an XML format:
     //

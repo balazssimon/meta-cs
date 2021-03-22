@@ -1,15 +1,15 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using Microsoft.CodeAnalysis.Syntax.InternalSyntax;
-using Microsoft.CodeAnalysis.Text;
+using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
+using MetaDslx.CodeAnalysis.Text;
 using Roslyn.Utilities;
 
-namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
+namespace MetaDslx.CodeAnalysis.CSharp.Syntax.InternalSyntax
 {
     [Flags]
     internal enum LexerMode
@@ -317,7 +317,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
         {
             _leadingTriviaCache.Clear();
             this.LexSyntaxTrivia(afterFirstToken: TextWindow.Position > 0, isTrailing: false, triviaList: ref _leadingTriviaCache);
-            return new SyntaxTriviaList(default(Microsoft.CodeAnalysis.SyntaxToken),
+            return new SyntaxTriviaList(default(MetaDslx.CodeAnalysis.SyntaxToken),
                 _leadingTriviaCache.ToListNode(), position: 0, index: 0);
         }
 
@@ -325,7 +325,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
         {
             _trailingTriviaCache.Clear();
             this.LexSyntaxTrivia(afterFirstToken: true, isTrailing: true, triviaList: ref _trailingTriviaCache);
-            return new SyntaxTriviaList(default(Microsoft.CodeAnalysis.SyntaxToken),
+            return new SyntaxTriviaList(default(MetaDslx.CodeAnalysis.SyntaxToken),
                 _trailingTriviaCache.ToListNode(), position: 0, index: 0);
         }
 
@@ -1313,12 +1313,12 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
                     // in the unary minus analysis.
 
                     // * When a decimal-integer-literal with the value 2147483648 (231) and no integer-type-suffix appears
-                    //   as the token immediately following a unary minus operator token (§7.7.2), the result is a constant
-                    //   of type int with the value −2147483648 (−231). In all other situations, such a decimal-integer-
+                    //   as the token immediately following a unary minus operator token (�7.7.2), the result is a constant
+                    //   of type int with the value -2147483648 (-231). In all other situations, such a decimal-integer-
                     //   literal is of type uint.
                     // * When a decimal-integer-literal with the value 9223372036854775808 (263) and no integer-type-suffix
                     //   or the integer-type-suffix L or l appears as the token immediately following a unary minus operator
-                    //   token (§7.7.2), the result is a constant of type long with the value −9223372036854775808 (−263).
+                    //   token (�7.7.2), the result is a constant of type long with the value -9223372036854775808 (-263).
                     //   In all other situations, such a decimal-integer-literal is of type ulong.
             }
 

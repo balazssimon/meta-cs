@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Concurrent;
@@ -8,17 +8,17 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
-using Microsoft.CodeAnalysis.FlowAnalysis;
-using Microsoft.CodeAnalysis.PooledObjects;
-using Microsoft.CodeAnalysis.Text;
+using MetaDslx.CodeAnalysis.FlowAnalysis;
+using MetaDslx.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.Text;
 using Roslyn.Utilities;
 
-using AnalyzerStateData = Microsoft.CodeAnalysis.Diagnostics.AnalysisState.AnalyzerStateData;
-using DeclarationAnalyzerStateData = Microsoft.CodeAnalysis.Diagnostics.AnalysisState.DeclarationAnalyzerStateData;
-using OperationAnalyzerStateData = Microsoft.CodeAnalysis.Diagnostics.AnalysisState.OperationAnalyzerStateData;
-using SyntaxNodeAnalyzerStateData = Microsoft.CodeAnalysis.Diagnostics.AnalysisState.SyntaxNodeAnalyzerStateData;
+using AnalyzerStateData = MetaDslx.CodeAnalysis.Diagnostics.AnalysisState.AnalyzerStateData;
+using DeclarationAnalyzerStateData = MetaDslx.CodeAnalysis.Diagnostics.AnalysisState.DeclarationAnalyzerStateData;
+using OperationAnalyzerStateData = MetaDslx.CodeAnalysis.Diagnostics.AnalysisState.OperationAnalyzerStateData;
+using SyntaxNodeAnalyzerStateData = MetaDslx.CodeAnalysis.Diagnostics.AnalysisState.SyntaxNodeAnalyzerStateData;
 
-namespace Microsoft.CodeAnalysis.Diagnostics
+namespace MetaDslx.CodeAnalysis.Diagnostics
 {
     /// <summary>
     /// Contains the core execution logic for callbacks into analyzers.

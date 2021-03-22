@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -6,14 +6,14 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Reflection.Metadata;
 using System.Runtime.InteropServices;
-using Microsoft.Cci;
-using Microsoft.CodeAnalysis.CSharp.Emit;
-using Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE;
-using Microsoft.CodeAnalysis.Emit;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.Cci;
+using MetaDslx.CodeAnalysis.CSharp.Emit;
+using MetaDslx.CodeAnalysis.CSharp.Symbols.Metadata.PE;
+using MetaDslx.CodeAnalysis.Emit;
+using MetaDslx.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 
-namespace Microsoft.CodeAnalysis.CSharp.Symbols
+namespace MetaDslx.CodeAnalysis.CSharp.Symbols
 {
     internal partial class NamedTypeSymbol :
         Cci.ITypeReference,
@@ -280,7 +280,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             {
                 // although submission and scripts semantically doesn't have a base we need to emit one into metadata:
                 Debug.Assert((object)baseType == null);
-                baseType = this.ContainingAssembly.GetSpecialType(Microsoft.CodeAnalysis.SpecialType.System_Object);
+                baseType = this.ContainingAssembly.GetSpecialType(MetaDslx.CodeAnalysis.SpecialType.System_Object);
             }
 
             return ((object)baseType != null) ? moduleBeingBuilt.Translate(baseType,
@@ -332,7 +332,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                     {
                         foreach (var implemented in method.ExplicitInterfaceImplementations)
                         {
-                            yield return new Microsoft.Cci.MethodImplementation(method, moduleBeingBuilt.TranslateOverriddenMethodReference(implemented, (CSharpSyntaxNode)context.SyntaxNodeOpt, context.Diagnostics));
+                            yield return new MetaDslx.Cci.MethodImplementation(method, moduleBeingBuilt.TranslateOverriddenMethodReference(implemented, (CSharpSyntaxNode)context.SyntaxNodeOpt, context.Diagnostics));
                         }
                     }
 
@@ -348,7 +348,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                         // specify the override explicitly.
                         // This mostly affects accessors - C# ignores method interactions
                         // between accessors and non-accessors, whereas the runtime does not.
-                        yield return new Microsoft.Cci.MethodImplementation(method, moduleBeingBuilt.TranslateOverriddenMethodReference(method.OverriddenMethod, (CSharpSyntaxNode)context.SyntaxNodeOpt, context.Diagnostics));
+                        yield return new MetaDslx.Cci.MethodImplementation(method, moduleBeingBuilt.TranslateOverriddenMethodReference(method.OverriddenMethod, (CSharpSyntaxNode)context.SyntaxNodeOpt, context.Diagnostics));
                     }
                     else if (method.MethodKind == MethodKind.Destructor && this.SpecialType != SpecialType.System_Object)
                     {
@@ -363,7 +363,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                             MethodSymbol objectMethod = objectMember as MethodSymbol;
                             if ((object)objectMethod != null && objectMethod.MethodKind == MethodKind.Destructor)
                             {
-                                yield return new Microsoft.Cci.MethodImplementation(method, moduleBeingBuilt.TranslateOverriddenMethodReference(objectMethod, (CSharpSyntaxNode)context.SyntaxNodeOpt, context.Diagnostics));
+                                yield return new MetaDslx.Cci.MethodImplementation(method, moduleBeingBuilt.TranslateOverriddenMethodReference(objectMethod, (CSharpSyntaxNode)context.SyntaxNodeOpt, context.Diagnostics));
                             }
                         }
                     }
@@ -387,7 +387,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
                         foreach (var implemented in method.ExplicitInterfaceImplementations)
                         {
-                            yield return new Microsoft.Cci.MethodImplementation(method, moduleBeingBuilt.TranslateOverriddenMethodReference(implemented, (CSharpSyntaxNode)context.SyntaxNodeOpt, context.Diagnostics));
+                            yield return new MetaDslx.Cci.MethodImplementation(method, moduleBeingBuilt.TranslateOverriddenMethodReference(implemented, (CSharpSyntaxNode)context.SyntaxNodeOpt, context.Diagnostics));
                         }
 
                         Debug.Assert(!method.RequiresExplicitOverride());
@@ -925,7 +925,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         ImmutableArray<Cci.ITypeReference> Cci.IGenericTypeInstanceReference.GetGenericArguments(EmitContext context)
         {
             PEModuleBuilder moduleBeingBuilt = (PEModuleBuilder)context.Module;
-            var builder = ArrayBuilder<Microsoft.Cci.ITypeReference>.GetInstance();
+            var builder = ArrayBuilder<MetaDslx.Cci.ITypeReference>.GetInstance();
             Debug.Assert(((Cci.ITypeReference)this).AsGenericTypeInstanceReference != null);
 
             var arguments = this.TypeArgumentsWithAnnotationsNoUseSiteDiagnostics;

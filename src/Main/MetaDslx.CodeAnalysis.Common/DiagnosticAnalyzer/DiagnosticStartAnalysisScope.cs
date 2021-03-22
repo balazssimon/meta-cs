@@ -1,13 +1,13 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading;
-using Microsoft.CodeAnalysis.FlowAnalysis;
+using MetaDslx.CodeAnalysis.FlowAnalysis;
 
-namespace Microsoft.CodeAnalysis.Diagnostics
+namespace MetaDslx.CodeAnalysis.Diagnostics
 {
     /// <summary>
     /// Scope for setting up analyzers for an entire session, automatically associating actions with analyzers.

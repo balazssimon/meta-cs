@@ -1,9 +1,9 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using Microsoft.Cci;
+using MetaDslx.Cci;
 using System.Diagnostics;
 
-namespace Microsoft.CodeAnalysis.Emit
+namespace MetaDslx.CodeAnalysis.Emit
 {
     [DebuggerDisplay("{Name, nq}")]
     internal struct AnonymousTypeValue

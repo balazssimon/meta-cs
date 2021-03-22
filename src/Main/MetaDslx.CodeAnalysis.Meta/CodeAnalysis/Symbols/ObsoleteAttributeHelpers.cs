@@ -1,11 +1,11 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Diagnostics;
 using System.Reflection.Metadata;
 using System.Threading;
 using MetaDslx.CodeAnalysis.Binding;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.CSharp.Symbols.Metadata.PE;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {

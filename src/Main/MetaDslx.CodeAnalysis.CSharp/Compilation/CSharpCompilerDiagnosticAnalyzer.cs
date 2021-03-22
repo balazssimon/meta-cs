@@ -1,10 +1,10 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Immutable;
-using Microsoft.CodeAnalysis.CSharp;
+using MetaDslx.CodeAnalysis.CSharp;
 
-namespace Microsoft.CodeAnalysis.Diagnostics.CSharp
+namespace MetaDslx.CodeAnalysis.Diagnostics.CSharp
 {
     /// <summary>
     /// DiagnosticAnalyzer for C# compiler's syntax/semantic/compilation diagnostics.
@@ -28,8 +28,8 @@ namespace Microsoft.CodeAnalysis.Diagnostics.CSharp
             {
                 switch (errorCode)
                 {
-                    case InternalErrorCode.Void:
-                    case InternalErrorCode.Unknown:
+                    case InternalDiagnosticErrorCode.Void:
+                    case InternalDiagnosticErrorCode.Unknown:
                         continue;
 
                     case (int)ErrorCode.WRN_ALinkWarn:

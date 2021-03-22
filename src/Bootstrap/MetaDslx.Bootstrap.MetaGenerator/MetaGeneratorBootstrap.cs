@@ -1,5 +1,5 @@
-﻿using MetaDslx.Languages.MetaGenerator.Compilation;
-using Microsoft.CodeAnalysis;
+using MetaDslx.Languages.MetaGenerator.Compilation;
+using MetaDslx.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.IO;

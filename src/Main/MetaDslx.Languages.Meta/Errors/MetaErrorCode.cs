@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MetaDslx.CodeAnalysis;
-using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
 
 namespace MetaDslx.Languages.Meta
 {

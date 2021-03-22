@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using Roslyn.Utilities;
 
-namespace Microsoft.CodeAnalysis.CSharp.Symbols
+namespace MetaDslx.CodeAnalysis.CSharp.Symbols
 {
     /// <summary>
     /// Dynamic call-site delegate, for call-sites that do not
@@ -182,7 +182,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 return null;
             }
 
-            internal override IEnumerable<Microsoft.Cci.SecurityAttribute> GetSecurityInformation()
+            internal override IEnumerable<MetaDslx.Cci.SecurityAttribute> GetSecurityInformation()
             {
                 throw ExceptionUtilities.Unreachable;
             }
@@ -262,9 +262,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 return ImmutableArray<string>.Empty;
             }
 
-            internal override Microsoft.Cci.CallingConvention CallingConvention
+            internal override MetaDslx.Cci.CallingConvention CallingConvention
             {
-                get { return Microsoft.Cci.CallingConvention.HasThis; }
+                get { return MetaDslx.Cci.CallingConvention.HasThis; }
             }
 
             internal override bool GenerateDebugInfo

@@ -1,8 +1,8 @@
-﻿using MetaDslx.CodeAnalysis.Symbols;
+using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Symbols.CSharp;
 using MetaDslx.CodeAnalysis.Symbols.Metadata;
 using MetaDslx.Modeling;
-using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
 using Roslyn.Utilities;
 using System;
 using System.Collections.Generic;

@@ -1,8 +1,8 @@
-﻿using MetaDslx.CodeAnalysis.Declarations;
+using MetaDslx.CodeAnalysis.Declarations;
 using MetaDslx.CodeAnalysis.Syntax;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.PooledObjects;
-using Microsoft.CodeAnalysis.Text;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.Text;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;

@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Concurrent;
@@ -6,11 +6,11 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Threading;
-using Microsoft.CodeAnalysis.CSharp.Emit;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.CSharp.Emit;
+using MetaDslx.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 
-namespace Microsoft.CodeAnalysis.CSharp.Symbols
+namespace MetaDslx.CodeAnalysis.CSharp.Symbols
 {
     /// <summary>
     /// Manages anonymous types created on module level. All requests for anonymous type symbols 
@@ -225,7 +225,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             return template.Construct(typeArguments);
         }
 
-        private AnonymousTypeTemplateSymbol CreatePlaceholderTemplate(Microsoft.CodeAnalysis.Emit.AnonymousTypeKey key)
+        private AnonymousTypeTemplateSymbol CreatePlaceholderTemplate(MetaDslx.CodeAnalysis.Emit.AnonymousTypeKey key)
         {
             var fields = key.Fields.SelectAsArray(f => new AnonymousTypeField(f.Name, Location.None, default));
             var typeDescr = new AnonymousTypeDescriptor(fields, Location.None);
@@ -373,14 +373,14 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             }
         }
 
-        internal static Microsoft.CodeAnalysis.Emit.AnonymousTypeKey GetAnonymousTypeKey(NamedTypeSymbol type)
+        internal static MetaDslx.CodeAnalysis.Emit.AnonymousTypeKey GetAnonymousTypeKey(NamedTypeSymbol type)
         {
             return ((AnonymousTypeTemplateSymbol)type).GetAnonymousTypeKey();
         }
 
-        internal IReadOnlyDictionary<Microsoft.CodeAnalysis.Emit.AnonymousTypeKey, Microsoft.CodeAnalysis.Emit.AnonymousTypeValue> GetAnonymousTypeMap()
+        internal IReadOnlyDictionary<MetaDslx.CodeAnalysis.Emit.AnonymousTypeKey, MetaDslx.CodeAnalysis.Emit.AnonymousTypeValue> GetAnonymousTypeMap()
         {
-            var result = new Dictionary<Microsoft.CodeAnalysis.Emit.AnonymousTypeKey, Microsoft.CodeAnalysis.Emit.AnonymousTypeValue>();
+            var result = new Dictionary<MetaDslx.CodeAnalysis.Emit.AnonymousTypeKey, MetaDslx.CodeAnalysis.Emit.AnonymousTypeValue>();
             var templates = ArrayBuilder<AnonymousTypeTemplateSymbol>.GetInstance();
             // Get anonymous types but not synthesized delegates. (Delegate types are
             // not reused across generations since reuse would add complexity (such
@@ -390,7 +390,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             {
                 var nameAndIndex = template.NameAndIndex;
                 var key = template.GetAnonymousTypeKey();
-                var value = new Microsoft.CodeAnalysis.Emit.AnonymousTypeValue(nameAndIndex.Name, nameAndIndex.Index, template);
+                var value = new MetaDslx.CodeAnalysis.Emit.AnonymousTypeValue(nameAndIndex.Name, nameAndIndex.Index, template);
                 result.Add(key, value);
             }
             templates.Free();

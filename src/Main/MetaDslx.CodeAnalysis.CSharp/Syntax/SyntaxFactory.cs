@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -6,14 +6,14 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Text;
-using InternalSyntax = Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax;
+using MetaDslx.CodeAnalysis.CSharp.Syntax;
+using MetaDslx.CodeAnalysis.Text;
+using InternalSyntax = MetaDslx.CodeAnalysis.CSharp.Syntax.InternalSyntax;
 using System.Xml.Linq;
 using Roslyn.Utilities;
-using Microsoft.CodeAnalysis.Syntax;
+using MetaDslx.CodeAnalysis.Syntax;
 
-namespace Microsoft.CodeAnalysis.CSharp
+namespace MetaDslx.CodeAnalysis.CSharp
 {
     /// <summary>
     /// A class containing factory methods for constructing syntax nodes, tokens and trivia.

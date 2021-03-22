@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -6,12 +6,12 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection.Metadata;
-using Microsoft.CodeAnalysis.Debugging;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.Debugging;
+using MetaDslx.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
-using Cci = Microsoft.Cci;
+using Cci = MetaDslx.Cci;
 
-namespace Microsoft.CodeAnalysis.CodeGen
+namespace MetaDslx.CodeAnalysis.CodeGen
 {
     internal partial class ILBuilder
     {
@@ -198,7 +198,7 @@ namespace Microsoft.CodeAnalysis.CodeGen
             public abstract ScopeType Type { get; }
 
             public virtual ScopeInfo OpenScope(ScopeType scopeType,
-                Microsoft.Cci.ITypeReference exceptionType,
+                MetaDslx.Cci.ITypeReference exceptionType,
                 ExceptionHandlerScope currentHandler)
             {
                 if (scopeType == ScopeType.TryCatchFinally)
@@ -541,7 +541,7 @@ namespace Microsoft.CodeAnalysis.CodeGen
         {
             private readonly ExceptionHandlerContainerScope _containingScope;
             private readonly ScopeType _type;
-            private readonly Microsoft.Cci.ITypeReference _exceptionType;
+            private readonly MetaDslx.Cci.ITypeReference _exceptionType;
 
             private BasicBlock _lastFilterConditionBlock;
 
@@ -552,7 +552,7 @@ namespace Microsoft.CodeAnalysis.CodeGen
             // We do guarantee that special block will be emitted as long as something uses it as a target of a branch.
             private object _blockedByFinallyDestination;
 
-            public ExceptionHandlerScope(ExceptionHandlerContainerScope containingScope, ScopeType type, Microsoft.Cci.ITypeReference exceptionType)
+            public ExceptionHandlerScope(ExceptionHandlerContainerScope containingScope, ScopeType type, MetaDslx.Cci.ITypeReference exceptionType)
             {
                 Debug.Assert((type == ScopeType.Try) || (type == ScopeType.Catch) || (type == ScopeType.Filter) || (type == ScopeType.Finally) || (type == ScopeType.Fault));
                 Debug.Assert((type == ScopeType.Catch) == (exceptionType != null));
@@ -566,7 +566,7 @@ namespace Microsoft.CodeAnalysis.CodeGen
 
             public override ScopeType Type => _type;
 
-            public Microsoft.Cci.ITypeReference ExceptionType => _exceptionType;
+            public MetaDslx.Cci.ITypeReference ExceptionType => _exceptionType;
 
             // pessimistically sets destination for blocked branches.
             // called when finally block is inserted in the outer TryFinally scope.
@@ -687,7 +687,7 @@ namespace Microsoft.CodeAnalysis.CodeGen
             public override ScopeType Type => ScopeType.TryCatchFinally;
 
             public override ScopeInfo OpenScope(ScopeType scopeType,
-                Microsoft.Cci.ITypeReference exceptionType,
+                MetaDslx.Cci.ITypeReference exceptionType,
                 ExceptionHandlerScope currentExceptionHandler)
             {
                 Debug.Assert(((_handlers.Count == 0) && (scopeType == ScopeType.Try)) ||

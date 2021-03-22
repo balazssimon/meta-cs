@@ -1,7 +1,7 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using MetaDslx.CodeAnalysis.Syntax;
-using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -27,7 +27,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             // All the simple type names for all the types in the 'old' declarations.
             internal readonly Lazy<ISet<string>> TypeNames;
             internal readonly Lazy<ISet<string>> NamespaceNames;
-            internal readonly Lazy<ImmutableArray<ReferenceDirective>> ReferenceDirectives;
+            internal readonly Lazy<ImmutableArray<Syntax.ReferenceDirective>> ReferenceDirectives;
 
             public Cache(DeclarationTable table)
             {
@@ -40,7 +40,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
                 this.NamespaceNames = new Lazy<ISet<string>>(
                     () => GetNamespaceNames(this.MergedRoot.Value));
 
-                this.ReferenceDirectives = new Lazy<ImmutableArray<ReferenceDirective>>(
+                this.ReferenceDirectives = new Lazy<ImmutableArray<Syntax.ReferenceDirective>>(
                     () => MergedRoot.Value.Declarations.OfType<RootSingleDeclaration>().SelectMany(r => r.ReferenceDirectives).AsImmutable());
             }
         }

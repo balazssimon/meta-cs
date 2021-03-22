@@ -1,14 +1,14 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Diagnostics;
 using System.Threading;
-using Microsoft.CodeAnalysis.CSharp.Symbols;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Text;
+using MetaDslx.CodeAnalysis.CSharp.Symbols;
+using MetaDslx.CodeAnalysis.CSharp.Syntax;
+using MetaDslx.CodeAnalysis.Text;
 using Roslyn.Utilities;
 using System;
 
-namespace Microsoft.CodeAnalysis.CSharp.Symbols
+namespace MetaDslx.CodeAnalysis.CSharp.Symbols
 {
     /// <summary>
     /// A <see cref="MissingMetadataTypeSymbol"/> is a special kind of <see cref="ErrorTypeSymbol"/> that represents
@@ -293,9 +293,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             public override int GetHashCode()
             {
                 // Inherit special behavior for the object type from NamedTypeSymbol.
-                if (this.SpecialType == Microsoft.CodeAnalysis.SpecialType.System_Object)
+                if (this.SpecialType == MetaDslx.CodeAnalysis.SpecialType.System_Object)
                 {
-                    return (int)Microsoft.CodeAnalysis.SpecialType.System_Object;
+                    return (int)MetaDslx.CodeAnalysis.SpecialType.System_Object;
                 }
 
                 return Hash.Combine(MetadataName, Hash.Combine(_containingModule, Hash.Combine(_namespaceName, arity)));
@@ -312,7 +312,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 if ((comparison & TypeCompareKind.IgnoreDynamic) != 0 &&
                     (object)t2 != null &&
                     t2.TypeKind == TypeKind.Dynamic &&
-                    this.SpecialType == Microsoft.CodeAnalysis.SpecialType.System_Object)
+                    this.SpecialType == MetaDslx.CodeAnalysis.SpecialType.System_Object)
                 {
                     return true;
                 }

@@ -1,4 +1,4 @@
-ï»¿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -8,12 +8,12 @@ using System.Globalization;
 using System.Reflection;
 using System.Reflection.Metadata;
 using System.Threading;
-using Microsoft.CodeAnalysis.CSharp.DocumentationComments;
-using Microsoft.CodeAnalysis.CSharp.Emit;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.CSharp.DocumentationComments;
+using MetaDslx.CodeAnalysis.CSharp.Emit;
+using MetaDslx.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 
-namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
+namespace MetaDslx.CodeAnalysis.CSharp.Symbols.Metadata.PE
 {
     /// <summary>
     /// The class to represent all methods imported from a PE/module.
@@ -867,13 +867,13 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
                 {
                     // 10.5.1 Instance constructor
                     // An instance constructor shall be an instance (not static or virtual) method,
-                    // it shall be named .ctor, and marked instance, rtspecialname, and specialname (Â§15.4.2.6).
+                    // it shall be named .ctor, and marked instance, rtspecialname, and specialname (§15.4.2.6).
                     // An instance constructor can have parameters, but shall not return a value.
                     // An instance constructor cannot take generic type parameters.
 
                     // 10.5.3 Type initializer
                     // This method shall be static, take no parameters, return no value,
-                    // be marked with rtspecialname and specialname (Â§15.4.2.6), and be named .cctor.
+                    // be marked with rtspecialname and specialname (§15.4.2.6), and be named .cctor.
 
                     if ((Flags & (MethodAttributes.RTSpecialName | MethodAttributes.Virtual)) == MethodAttributes.RTSpecialName &&
                         _name.Equals(this.IsStatic ? WellKnownMemberNames.StaticConstructorName : WellKnownMemberNames.InstanceConstructorName) &&

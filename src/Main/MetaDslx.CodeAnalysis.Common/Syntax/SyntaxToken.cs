@@ -1,19 +1,19 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
-using Microsoft.CodeAnalysis.Text;
+using MetaDslx.CodeAnalysis.Text;
 using Roslyn.Utilities;
 
-namespace Microsoft.CodeAnalysis
+namespace MetaDslx.CodeAnalysis
 {
 #pragma warning disable CA1200 // Avoid using cref tags with a prefix
     /// <summary>
     /// Represents a token in the syntax tree. This is the language agnostic equivalent of <see
-    /// cref="T:Microsoft.CodeAnalysis.CSharp.SyntaxToken"/> and <see cref="T:Microsoft.CodeAnalysis.VisualBasic.SyntaxToken"/>.
+    /// cref="T:MetaDslx.CodeAnalysis.CSharp.SyntaxToken"/> and <see cref="T:MetaDslx.CodeAnalysis.VisualBasic.SyntaxToken"/>.
     /// </summary>
 #pragma warning restore CA1200 // Avoid using cref tags with a prefix
     [StructLayout(LayoutKind.Auto)]

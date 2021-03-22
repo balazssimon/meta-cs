@@ -8,7 +8,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.CodeAnalysis;
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
@@ -175,12 +174,12 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    {
 	    }
 	
-	    public SyntaxList<UsingNamespaceSyntax> UsingNamespace 
+	    public MetaDslx.CodeAnalysis.SyntaxList<UsingNamespaceSyntax> UsingNamespace 
 		{ 
 			get
 			{
 				var red = this.GetRed(ref this.usingNamespace, 0);
-				if (red != null) return new SyntaxList<UsingNamespaceSyntax>(red);
+				if (red != null) return new MetaDslx.CodeAnalysis.SyntaxList<UsingNamespaceSyntax>(red);
 				return default;
 			} 
 		}
@@ -218,7 +217,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        }
 	    }
 	
-	    public MainSyntax WithUsingNamespace(SyntaxList<UsingNamespaceSyntax> usingNamespace)
+	    public MainSyntax WithUsingNamespace(MetaDslx.CodeAnalysis.SyntaxList<UsingNamespaceSyntax> usingNamespace)
 		{
 			return this.Update(UsingNamespace, this.NamespaceDeclaration, this.EndOfFileToken);
 		}
@@ -238,7 +237,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 			return this.Update(this.UsingNamespace, this.NamespaceDeclaration, EndOfFileToken);
 		}
 	
-	    public MainSyntax Update(SyntaxList<UsingNamespaceSyntax> usingNamespace, NamespaceDeclarationSyntax namespaceDeclaration, SyntaxToken eOF)
+	    public MainSyntax Update(MetaDslx.CodeAnalysis.SyntaxList<UsingNamespaceSyntax> usingNamespace, NamespaceDeclarationSyntax namespaceDeclaration, SyntaxToken eOF)
 	    {
 	        if (this.UsingNamespace != usingNamespace ||
 				this.NamespaceDeclaration != namespaceDeclaration ||
@@ -425,14 +424,14 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    {
 	    }
 	
-	    public SeparatedSyntaxList<IdentifierSyntax> Identifier 
+	    public MetaDslx.CodeAnalysis.SeparatedSyntaxList<IdentifierSyntax> Identifier 
 		{ 
 			get
 			{
 				var red = this.GetRed(ref this.identifier, 0);
 				if (red != null)
 				{
-					return new SeparatedSyntaxList<IdentifierSyntax>(red, this.GetChildIndex(0));
+					return new MetaDslx.CodeAnalysis.SeparatedSyntaxList<IdentifierSyntax>(red, this.GetChildIndex(0));
 				}
 				return default;
 			} 
@@ -456,7 +455,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        }
 	    }
 	
-	    public QualifierSyntax WithIdentifier(SeparatedSyntaxList<IdentifierSyntax> identifier)
+	    public QualifierSyntax WithIdentifier(MetaDslx.CodeAnalysis.SeparatedSyntaxList<IdentifierSyntax> identifier)
 		{
 			return this.Update(Identifier);
 		}
@@ -466,7 +465,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 			return this.WithIdentifier(this.Identifier.AddRange(identifier));
 		}
 	
-	    public QualifierSyntax Update(SeparatedSyntaxList<IdentifierSyntax> identifier)
+	    public QualifierSyntax Update(MetaDslx.CodeAnalysis.SeparatedSyntaxList<IdentifierSyntax> identifier)
 	    {
 	        if (this.Identifier != identifier)
 	        {
@@ -713,12 +712,12 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    {
 	    }
 	
-	    public SyntaxList<AttributeSyntax> Attribute 
+	    public MetaDslx.CodeAnalysis.SyntaxList<AttributeSyntax> Attribute 
 		{ 
 			get
 			{
 				var red = this.GetRed(ref this.attribute, 0);
-				if (red != null) return new SyntaxList<AttributeSyntax>(red);
+				if (red != null) return new MetaDslx.CodeAnalysis.SyntaxList<AttributeSyntax>(red);
 				return default;
 			} 
 		}
@@ -762,7 +761,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        }
 	    }
 	
-	    public NamespaceDeclarationSyntax WithAttribute(SyntaxList<AttributeSyntax> attribute)
+	    public NamespaceDeclarationSyntax WithAttribute(MetaDslx.CodeAnalysis.SyntaxList<AttributeSyntax> attribute)
 		{
 			return this.Update(Attribute, this.KNamespace, this.QualifiedName, this.NamespaceBody);
 		}
@@ -787,7 +786,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 			return this.Update(this.Attribute, this.KNamespace, this.QualifiedName, NamespaceBody);
 		}
 	
-	    public NamespaceDeclarationSyntax Update(SyntaxList<AttributeSyntax> attribute, SyntaxToken kNamespace, QualifiedNameSyntax qualifiedName, NamespaceBodySyntax namespaceBody)
+	    public NamespaceDeclarationSyntax Update(MetaDslx.CodeAnalysis.SyntaxList<AttributeSyntax> attribute, SyntaxToken kNamespace, QualifiedNameSyntax qualifiedName, NamespaceBodySyntax namespaceBody)
 	    {
 	        if (this.Attribute != attribute ||
 				this.KNamespace != kNamespace ||
@@ -844,12 +843,12 @@ namespace MetaDslx.Languages.Meta.Syntax
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
 		}
-	    public SyntaxList<UsingNamespaceSyntax> UsingNamespace 
+	    public MetaDslx.CodeAnalysis.SyntaxList<UsingNamespaceSyntax> UsingNamespace 
 		{ 
 			get
 			{
 				var red = this.GetRed(ref this.usingNamespace, 1);
-				if (red != null) return new SyntaxList<UsingNamespaceSyntax>(red);
+				if (red != null) return new MetaDslx.CodeAnalysis.SyntaxList<UsingNamespaceSyntax>(red);
 				return default;
 			} 
 		}
@@ -857,12 +856,12 @@ namespace MetaDslx.Languages.Meta.Syntax
 		{ 
 			get { return this.GetRed(ref this.metamodelDeclaration, 2); } 
 		}
-	    public SyntaxList<DeclarationSyntax> Declaration 
+	    public MetaDslx.CodeAnalysis.SyntaxList<DeclarationSyntax> Declaration 
 		{ 
 			get
 			{
 				var red = this.GetRed(ref this.declaration, 3);
-				if (red != null) return new SyntaxList<DeclarationSyntax>(red);
+				if (red != null) return new MetaDslx.CodeAnalysis.SyntaxList<DeclarationSyntax>(red);
 				return default;
 			} 
 		}
@@ -903,7 +902,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 			return this.Update(TOpenBrace, this.UsingNamespace, this.MetamodelDeclaration, this.Declaration, this.TCloseBrace);
 		}
 	
-	    public NamespaceBodySyntax WithUsingNamespace(SyntaxList<UsingNamespaceSyntax> usingNamespace)
+	    public NamespaceBodySyntax WithUsingNamespace(MetaDslx.CodeAnalysis.SyntaxList<UsingNamespaceSyntax> usingNamespace)
 		{
 			return this.Update(this.TOpenBrace, UsingNamespace, this.MetamodelDeclaration, this.Declaration, this.TCloseBrace);
 		}
@@ -918,7 +917,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 			return this.Update(this.TOpenBrace, this.UsingNamespace, MetamodelDeclaration, this.Declaration, this.TCloseBrace);
 		}
 	
-	    public NamespaceBodySyntax WithDeclaration(SyntaxList<DeclarationSyntax> declaration)
+	    public NamespaceBodySyntax WithDeclaration(MetaDslx.CodeAnalysis.SyntaxList<DeclarationSyntax> declaration)
 		{
 			return this.Update(this.TOpenBrace, this.UsingNamespace, this.MetamodelDeclaration, Declaration, this.TCloseBrace);
 		}
@@ -933,7 +932,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 			return this.Update(this.TOpenBrace, this.UsingNamespace, this.MetamodelDeclaration, this.Declaration, TCloseBrace);
 		}
 	
-	    public NamespaceBodySyntax Update(SyntaxToken tOpenBrace, SyntaxList<UsingNamespaceSyntax> usingNamespace, MetamodelDeclarationSyntax metamodelDeclaration, SyntaxList<DeclarationSyntax> declaration, SyntaxToken tCloseBrace)
+	    public NamespaceBodySyntax Update(SyntaxToken tOpenBrace, MetaDslx.CodeAnalysis.SyntaxList<UsingNamespaceSyntax> usingNamespace, MetamodelDeclarationSyntax metamodelDeclaration, MetaDslx.CodeAnalysis.SyntaxList<DeclarationSyntax> declaration, SyntaxToken tCloseBrace)
 	    {
 	        if (this.TOpenBrace != tOpenBrace ||
 				this.UsingNamespace != usingNamespace ||
@@ -982,12 +981,12 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    {
 	    }
 	
-	    public SyntaxList<AttributeSyntax> Attribute 
+	    public MetaDslx.CodeAnalysis.SyntaxList<AttributeSyntax> Attribute 
 		{ 
 			get
 			{
 				var red = this.GetRed(ref this.attribute, 0);
-				if (red != null) return new SyntaxList<AttributeSyntax>(red);
+				if (red != null) return new MetaDslx.CodeAnalysis.SyntaxList<AttributeSyntax>(red);
 				return default;
 			} 
 		}
@@ -1058,7 +1057,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        }
 	    }
 	
-	    public MetamodelDeclarationSyntax WithAttribute(SyntaxList<AttributeSyntax> attribute)
+	    public MetamodelDeclarationSyntax WithAttribute(MetaDslx.CodeAnalysis.SyntaxList<AttributeSyntax> attribute)
 		{
 			return this.Update(Attribute, this.KMetamodel, this.Name, this.TOpenParen, this.MetamodelPropertyList, this.TCloseParen, this.TSemicolon);
 		}
@@ -1098,7 +1097,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 			return this.Update(this.Attribute, this.KMetamodel, this.Name, this.TOpenParen, this.MetamodelPropertyList, this.TCloseParen, TSemicolon);
 		}
 	
-	    public MetamodelDeclarationSyntax Update(SyntaxList<AttributeSyntax> attribute, SyntaxToken kMetamodel, NameSyntax name, SyntaxToken tOpenParen, MetamodelPropertyListSyntax metamodelPropertyList, SyntaxToken tCloseParen, SyntaxToken tSemicolon)
+	    public MetamodelDeclarationSyntax Update(MetaDslx.CodeAnalysis.SyntaxList<AttributeSyntax> attribute, SyntaxToken kMetamodel, NameSyntax name, SyntaxToken tOpenParen, MetamodelPropertyListSyntax metamodelPropertyList, SyntaxToken tCloseParen, SyntaxToken tSemicolon)
 	    {
 	        if (this.Attribute != attribute ||
 				this.KMetamodel != kMetamodel ||
@@ -1147,14 +1146,14 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    {
 	    }
 	
-	    public SeparatedSyntaxList<MetamodelPropertySyntax> MetamodelProperty 
+	    public MetaDslx.CodeAnalysis.SeparatedSyntaxList<MetamodelPropertySyntax> MetamodelProperty 
 		{ 
 			get
 			{
 				var red = this.GetRed(ref this.metamodelProperty, 0);
 				if (red != null)
 				{
-					return new SeparatedSyntaxList<MetamodelPropertySyntax>(red, this.GetChildIndex(0));
+					return new MetaDslx.CodeAnalysis.SeparatedSyntaxList<MetamodelPropertySyntax>(red, this.GetChildIndex(0));
 				}
 				return default;
 			} 
@@ -1178,7 +1177,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        }
 	    }
 	
-	    public MetamodelPropertyListSyntax WithMetamodelProperty(SeparatedSyntaxList<MetamodelPropertySyntax> metamodelProperty)
+	    public MetamodelPropertyListSyntax WithMetamodelProperty(MetaDslx.CodeAnalysis.SeparatedSyntaxList<MetamodelPropertySyntax> metamodelProperty)
 		{
 			return this.Update(MetamodelProperty);
 		}
@@ -1188,7 +1187,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 			return this.WithMetamodelProperty(this.MetamodelProperty.AddRange(metamodelProperty));
 		}
 	
-	    public MetamodelPropertyListSyntax Update(SeparatedSyntaxList<MetamodelPropertySyntax> metamodelProperty)
+	    public MetamodelPropertyListSyntax Update(MetaDslx.CodeAnalysis.SeparatedSyntaxList<MetamodelPropertySyntax> metamodelProperty)
 	    {
 	        if (this.MetamodelProperty != metamodelProperty)
 	        {
@@ -1677,12 +1676,12 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    {
 	    }
 	
-	    public SyntaxList<AttributeSyntax> Attribute 
+	    public MetaDslx.CodeAnalysis.SyntaxList<AttributeSyntax> Attribute 
 		{ 
 			get
 			{
 				var red = this.GetRed(ref this.attribute, 0);
-				if (red != null) return new SyntaxList<AttributeSyntax>(red);
+				if (red != null) return new MetaDslx.CodeAnalysis.SyntaxList<AttributeSyntax>(red);
 				return default;
 			} 
 		}
@@ -1726,7 +1725,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        }
 	    }
 	
-	    public EnumDeclarationSyntax WithAttribute(SyntaxList<AttributeSyntax> attribute)
+	    public EnumDeclarationSyntax WithAttribute(MetaDslx.CodeAnalysis.SyntaxList<AttributeSyntax> attribute)
 		{
 			return this.Update(Attribute, this.KEnum, this.Name, this.EnumBody);
 		}
@@ -1751,7 +1750,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 			return this.Update(this.Attribute, this.KEnum, this.Name, EnumBody);
 		}
 	
-	    public EnumDeclarationSyntax Update(SyntaxList<AttributeSyntax> attribute, SyntaxToken kEnum, NameSyntax name, EnumBodySyntax enumBody)
+	    public EnumDeclarationSyntax Update(MetaDslx.CodeAnalysis.SyntaxList<AttributeSyntax> attribute, SyntaxToken kEnum, NameSyntax name, EnumBodySyntax enumBody)
 	    {
 	        if (this.Attribute != attribute ||
 				this.KEnum != kEnum ||
@@ -1820,12 +1819,12 @@ namespace MetaDslx.Languages.Meta.Syntax
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
 		}
-	    public SyntaxList<EnumMemberDeclarationSyntax> EnumMemberDeclaration 
+	    public MetaDslx.CodeAnalysis.SyntaxList<EnumMemberDeclarationSyntax> EnumMemberDeclaration 
 		{ 
 			get
 			{
 				var red = this.GetRed(ref this.enumMemberDeclaration, 3);
-				if (red != null) return new SyntaxList<EnumMemberDeclarationSyntax>(red);
+				if (red != null) return new MetaDslx.CodeAnalysis.SyntaxList<EnumMemberDeclarationSyntax>(red);
 				return default;
 			} 
 		}
@@ -1874,7 +1873,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 			return this.Update(this.TOpenBrace, this.EnumValues, TSemicolon, this.EnumMemberDeclaration, this.TCloseBrace);
 		}
 	
-	    public EnumBodySyntax WithEnumMemberDeclaration(SyntaxList<EnumMemberDeclarationSyntax> enumMemberDeclaration)
+	    public EnumBodySyntax WithEnumMemberDeclaration(MetaDslx.CodeAnalysis.SyntaxList<EnumMemberDeclarationSyntax> enumMemberDeclaration)
 		{
 			return this.Update(this.TOpenBrace, this.EnumValues, this.TSemicolon, EnumMemberDeclaration, this.TCloseBrace);
 		}
@@ -1889,7 +1888,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 			return this.Update(this.TOpenBrace, this.EnumValues, this.TSemicolon, this.EnumMemberDeclaration, TCloseBrace);
 		}
 	
-	    public EnumBodySyntax Update(SyntaxToken tOpenBrace, EnumValuesSyntax enumValues, SyntaxToken tSemicolon, SyntaxList<EnumMemberDeclarationSyntax> enumMemberDeclaration, SyntaxToken tCloseBrace)
+	    public EnumBodySyntax Update(SyntaxToken tOpenBrace, EnumValuesSyntax enumValues, SyntaxToken tSemicolon, MetaDslx.CodeAnalysis.SyntaxList<EnumMemberDeclarationSyntax> enumMemberDeclaration, SyntaxToken tCloseBrace)
 	    {
 	        if (this.TOpenBrace != tOpenBrace ||
 				this.EnumValues != enumValues ||
@@ -1936,14 +1935,14 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    {
 	    }
 	
-	    public SeparatedSyntaxList<EnumValueSyntax> EnumValue 
+	    public MetaDslx.CodeAnalysis.SeparatedSyntaxList<EnumValueSyntax> EnumValue 
 		{ 
 			get
 			{
 				var red = this.GetRed(ref this.enumValue, 0);
 				if (red != null)
 				{
-					return new SeparatedSyntaxList<EnumValueSyntax>(red, this.GetChildIndex(0));
+					return new MetaDslx.CodeAnalysis.SeparatedSyntaxList<EnumValueSyntax>(red, this.GetChildIndex(0));
 				}
 				return default;
 			} 
@@ -1967,7 +1966,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        }
 	    }
 	
-	    public EnumValuesSyntax WithEnumValue(SeparatedSyntaxList<EnumValueSyntax> enumValue)
+	    public EnumValuesSyntax WithEnumValue(MetaDslx.CodeAnalysis.SeparatedSyntaxList<EnumValueSyntax> enumValue)
 		{
 			return this.Update(EnumValue);
 		}
@@ -1977,7 +1976,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 			return this.WithEnumValue(this.EnumValue.AddRange(enumValue));
 		}
 	
-	    public EnumValuesSyntax Update(SeparatedSyntaxList<EnumValueSyntax> enumValue)
+	    public EnumValuesSyntax Update(MetaDslx.CodeAnalysis.SeparatedSyntaxList<EnumValueSyntax> enumValue)
 	    {
 	        if (this.EnumValue != enumValue)
 	        {
@@ -2021,12 +2020,12 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    {
 	    }
 	
-	    public SyntaxList<AttributeSyntax> Attribute 
+	    public MetaDslx.CodeAnalysis.SyntaxList<AttributeSyntax> Attribute 
 		{ 
 			get
 			{
 				var red = this.GetRed(ref this.attribute, 0);
-				if (red != null) return new SyntaxList<AttributeSyntax>(red);
+				if (red != null) return new MetaDslx.CodeAnalysis.SyntaxList<AttributeSyntax>(red);
 				return default;
 			} 
 		}
@@ -2055,7 +2054,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        }
 	    }
 	
-	    public EnumValueSyntax WithAttribute(SyntaxList<AttributeSyntax> attribute)
+	    public EnumValueSyntax WithAttribute(MetaDslx.CodeAnalysis.SyntaxList<AttributeSyntax> attribute)
 		{
 			return this.Update(Attribute, this.Name);
 		}
@@ -2070,7 +2069,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 			return this.Update(this.Attribute, Name);
 		}
 	
-	    public EnumValueSyntax Update(SyntaxList<AttributeSyntax> attribute, NameSyntax name)
+	    public EnumValueSyntax Update(MetaDslx.CodeAnalysis.SyntaxList<AttributeSyntax> attribute, NameSyntax name)
 	    {
 	        if (this.Attribute != attribute ||
 				this.Name != name)
@@ -2189,12 +2188,12 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    {
 	    }
 	
-	    public SyntaxList<AttributeSyntax> Attribute 
+	    public MetaDslx.CodeAnalysis.SyntaxList<AttributeSyntax> Attribute 
 		{ 
 			get
 			{
 				var red = this.GetRed(ref this.attribute, 0);
-				if (red != null) return new SyntaxList<AttributeSyntax>(red);
+				if (red != null) return new MetaDslx.CodeAnalysis.SyntaxList<AttributeSyntax>(red);
 				return default;
 			} 
 		}
@@ -2268,7 +2267,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        }
 	    }
 	
-	    public ClassDeclarationSyntax WithAttribute(SyntaxList<AttributeSyntax> attribute)
+	    public ClassDeclarationSyntax WithAttribute(MetaDslx.CodeAnalysis.SyntaxList<AttributeSyntax> attribute)
 		{
 			return this.Update(Attribute, this.KAbstract, this.KClass, this.Name, this.SymbolType, this.TColon, this.ClassAncestors, this.ClassBody);
 		}
@@ -2313,7 +2312,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 			return this.Update(this.Attribute, this.KAbstract, this.KClass, this.Name, this.SymbolType, this.TColon, this.ClassAncestors, ClassBody);
 		}
 	
-	    public ClassDeclarationSyntax Update(SyntaxList<AttributeSyntax> attribute, SyntaxToken kAbstract, SyntaxToken kClass, NameSyntax name, SymbolTypeSyntax symbolType, SyntaxToken tColon, ClassAncestorsSyntax classAncestors, ClassBodySyntax classBody)
+	    public ClassDeclarationSyntax Update(MetaDslx.CodeAnalysis.SyntaxList<AttributeSyntax> attribute, SyntaxToken kAbstract, SyntaxToken kClass, NameSyntax name, SymbolTypeSyntax symbolType, SyntaxToken tColon, ClassAncestorsSyntax classAncestors, ClassBodySyntax classBody)
 	    {
 	        if (this.Attribute != attribute ||
 				this.KAbstract != kAbstract ||
@@ -2473,12 +2472,12 @@ namespace MetaDslx.Languages.Meta.Syntax
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
 		}
-	    public SyntaxList<ClassMemberDeclarationSyntax> ClassMemberDeclaration 
+	    public MetaDslx.CodeAnalysis.SyntaxList<ClassMemberDeclarationSyntax> ClassMemberDeclaration 
 		{ 
 			get
 			{
 				var red = this.GetRed(ref this.classMemberDeclaration, 1);
-				if (red != null) return new SyntaxList<ClassMemberDeclarationSyntax>(red);
+				if (red != null) return new MetaDslx.CodeAnalysis.SyntaxList<ClassMemberDeclarationSyntax>(red);
 				return default;
 			} 
 		}
@@ -2515,7 +2514,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 			return this.Update(TOpenBrace, this.ClassMemberDeclaration, this.TCloseBrace);
 		}
 	
-	    public ClassBodySyntax WithClassMemberDeclaration(SyntaxList<ClassMemberDeclarationSyntax> classMemberDeclaration)
+	    public ClassBodySyntax WithClassMemberDeclaration(MetaDslx.CodeAnalysis.SyntaxList<ClassMemberDeclarationSyntax> classMemberDeclaration)
 		{
 			return this.Update(this.TOpenBrace, ClassMemberDeclaration, this.TCloseBrace);
 		}
@@ -2530,7 +2529,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 			return this.Update(this.TOpenBrace, this.ClassMemberDeclaration, TCloseBrace);
 		}
 	
-	    public ClassBodySyntax Update(SyntaxToken tOpenBrace, SyntaxList<ClassMemberDeclarationSyntax> classMemberDeclaration, SyntaxToken tCloseBrace)
+	    public ClassBodySyntax Update(SyntaxToken tOpenBrace, MetaDslx.CodeAnalysis.SyntaxList<ClassMemberDeclarationSyntax> classMemberDeclaration, SyntaxToken tCloseBrace)
 	    {
 	        if (this.TOpenBrace != tOpenBrace ||
 				this.ClassMemberDeclaration != classMemberDeclaration ||
@@ -2575,14 +2574,14 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    {
 	    }
 	
-	    public SeparatedSyntaxList<ClassAncestorSyntax> ClassAncestor 
+	    public MetaDslx.CodeAnalysis.SeparatedSyntaxList<ClassAncestorSyntax> ClassAncestor 
 		{ 
 			get
 			{
 				var red = this.GetRed(ref this.classAncestor, 0);
 				if (red != null)
 				{
-					return new SeparatedSyntaxList<ClassAncestorSyntax>(red, this.GetChildIndex(0));
+					return new MetaDslx.CodeAnalysis.SeparatedSyntaxList<ClassAncestorSyntax>(red, this.GetChildIndex(0));
 				}
 				return default;
 			} 
@@ -2606,7 +2605,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        }
 	    }
 	
-	    public ClassAncestorsSyntax WithClassAncestor(SeparatedSyntaxList<ClassAncestorSyntax> classAncestor)
+	    public ClassAncestorsSyntax WithClassAncestor(MetaDslx.CodeAnalysis.SeparatedSyntaxList<ClassAncestorSyntax> classAncestor)
 		{
 			return this.Update(ClassAncestor);
 		}
@@ -2616,7 +2615,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 			return this.WithClassAncestor(this.ClassAncestor.AddRange(classAncestor));
 		}
 	
-	    public ClassAncestorsSyntax Update(SeparatedSyntaxList<ClassAncestorSyntax> classAncestor)
+	    public ClassAncestorsSyntax Update(MetaDslx.CodeAnalysis.SeparatedSyntaxList<ClassAncestorSyntax> classAncestor)
 	    {
 	        if (this.ClassAncestor != classAncestor)
 	        {
@@ -2833,12 +2832,12 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    {
 	    }
 	
-	    public SyntaxList<AttributeSyntax> Attribute 
+	    public MetaDslx.CodeAnalysis.SyntaxList<AttributeSyntax> Attribute 
 		{ 
 			get
 			{
 				var red = this.GetRed(ref this.attribute, 0);
-				if (red != null) return new SyntaxList<AttributeSyntax>(red);
+				if (red != null) return new MetaDslx.CodeAnalysis.SyntaxList<AttributeSyntax>(red);
 				return default;
 			} 
 		}
@@ -2866,12 +2865,12 @@ namespace MetaDslx.Languages.Meta.Syntax
 		{ 
 			get { return this.GetRed(ref this.defaultValue, 6); } 
 		}
-	    public SyntaxList<RedefinitionsOrSubsettingsSyntax> RedefinitionsOrSubsettings 
+	    public MetaDslx.CodeAnalysis.SyntaxList<RedefinitionsOrSubsettingsSyntax> RedefinitionsOrSubsettings 
 		{ 
 			get
 			{
 				var red = this.GetRed(ref this.redefinitionsOrSubsettings, 7);
-				if (red != null) return new SyntaxList<RedefinitionsOrSubsettingsSyntax>(red);
+				if (red != null) return new MetaDslx.CodeAnalysis.SyntaxList<RedefinitionsOrSubsettingsSyntax>(red);
 				return default;
 			} 
 		}
@@ -2917,7 +2916,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        }
 	    }
 	
-	    public FieldDeclarationSyntax WithAttribute(SyntaxList<AttributeSyntax> attribute)
+	    public FieldDeclarationSyntax WithAttribute(MetaDslx.CodeAnalysis.SyntaxList<AttributeSyntax> attribute)
 		{
 			return this.Update(Attribute, this.FieldContainment, this.FieldModifier, this.TypeReference, this.Name, this.FieldSymbolProperty, this.DefaultValue, this.RedefinitionsOrSubsettings, this.TSemicolon);
 		}
@@ -2957,7 +2956,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 			return this.Update(this.Attribute, this.FieldContainment, this.FieldModifier, this.TypeReference, this.Name, this.FieldSymbolProperty, DefaultValue, this.RedefinitionsOrSubsettings, this.TSemicolon);
 		}
 	
-	    public FieldDeclarationSyntax WithRedefinitionsOrSubsettings(SyntaxList<RedefinitionsOrSubsettingsSyntax> redefinitionsOrSubsettings)
+	    public FieldDeclarationSyntax WithRedefinitionsOrSubsettings(MetaDslx.CodeAnalysis.SyntaxList<RedefinitionsOrSubsettingsSyntax> redefinitionsOrSubsettings)
 		{
 			return this.Update(this.Attribute, this.FieldContainment, this.FieldModifier, this.TypeReference, this.Name, this.FieldSymbolProperty, this.DefaultValue, RedefinitionsOrSubsettings, this.TSemicolon);
 		}
@@ -2972,7 +2971,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 			return this.Update(this.Attribute, this.FieldContainment, this.FieldModifier, this.TypeReference, this.Name, this.FieldSymbolProperty, this.DefaultValue, this.RedefinitionsOrSubsettings, TSemicolon);
 		}
 	
-	    public FieldDeclarationSyntax Update(SyntaxList<AttributeSyntax> attribute, FieldContainmentSyntax fieldContainment, FieldModifierSyntax fieldModifier, TypeReferenceSyntax typeReference, NameSyntax name, FieldSymbolPropertySyntax fieldSymbolProperty, DefaultValueSyntax defaultValue, SyntaxList<RedefinitionsOrSubsettingsSyntax> redefinitionsOrSubsettings, SyntaxToken tSemicolon)
+	    public FieldDeclarationSyntax Update(MetaDslx.CodeAnalysis.SyntaxList<AttributeSyntax> attribute, FieldContainmentSyntax fieldContainment, FieldModifierSyntax fieldModifier, TypeReferenceSyntax typeReference, NameSyntax name, FieldSymbolPropertySyntax fieldSymbolProperty, DefaultValueSyntax defaultValue, MetaDslx.CodeAnalysis.SyntaxList<RedefinitionsOrSubsettingsSyntax> redefinitionsOrSubsettings, SyntaxToken tSemicolon)
 	    {
 	        if (this.Attribute != attribute ||
 				this.FieldContainment != fieldContainment ||
@@ -3624,14 +3623,14 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    {
 	    }
 	
-	    public SeparatedSyntaxList<QualifierSyntax> Qualifier 
+	    public MetaDslx.CodeAnalysis.SeparatedSyntaxList<QualifierSyntax> Qualifier 
 		{ 
 			get
 			{
 				var red = this.GetRed(ref this.qualifier, 0);
 				if (red != null)
 				{
-					return new SeparatedSyntaxList<QualifierSyntax>(red, this.GetChildIndex(0));
+					return new MetaDslx.CodeAnalysis.SeparatedSyntaxList<QualifierSyntax>(red, this.GetChildIndex(0));
 				}
 				return default;
 			} 
@@ -3655,7 +3654,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        }
 	    }
 	
-	    public NameUseListSyntax WithQualifier(SeparatedSyntaxList<QualifierSyntax> qualifier)
+	    public NameUseListSyntax WithQualifier(MetaDslx.CodeAnalysis.SeparatedSyntaxList<QualifierSyntax> qualifier)
 		{
 			return this.Update(Qualifier);
 		}
@@ -3665,7 +3664,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 			return this.WithQualifier(this.Qualifier.AddRange(qualifier));
 		}
 	
-	    public NameUseListSyntax Update(SeparatedSyntaxList<QualifierSyntax> qualifier)
+	    public NameUseListSyntax Update(MetaDslx.CodeAnalysis.SeparatedSyntaxList<QualifierSyntax> qualifier)
 	    {
 	        if (this.Qualifier != qualifier)
 	        {
@@ -4897,21 +4896,21 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    {
 	    }
 	
-	    public SyntaxList<AttributeSyntax> Attribute 
+	    public MetaDslx.CodeAnalysis.SyntaxList<AttributeSyntax> Attribute 
 		{ 
 			get
 			{
 				var red = this.GetRed(ref this.attribute, 0);
-				if (red != null) return new SyntaxList<AttributeSyntax>(red);
+				if (red != null) return new MetaDslx.CodeAnalysis.SyntaxList<AttributeSyntax>(red);
 				return default;
 			} 
 		}
-	    public SyntaxList<OperationModifierSyntax> OperationModifier 
+	    public MetaDslx.CodeAnalysis.SyntaxList<OperationModifierSyntax> OperationModifier 
 		{ 
 			get
 			{
 				var red = this.GetRed(ref this.operationModifier, 1);
-				if (red != null) return new SyntaxList<OperationModifierSyntax>(red);
+				if (red != null) return new MetaDslx.CodeAnalysis.SyntaxList<OperationModifierSyntax>(red);
 				return default;
 			} 
 		}
@@ -4981,7 +4980,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        }
 	    }
 	
-	    public OperationDeclarationSyntax WithAttribute(SyntaxList<AttributeSyntax> attribute)
+	    public OperationDeclarationSyntax WithAttribute(MetaDslx.CodeAnalysis.SyntaxList<AttributeSyntax> attribute)
 		{
 			return this.Update(Attribute, this.OperationModifier, this.ReturnType, this.Name, this.TOpenParen, this.ParameterList, this.TCloseParen, this.TSemicolon);
 		}
@@ -4991,7 +4990,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 			return this.WithAttribute(this.Attribute.AddRange(attribute));
 		}
 	
-	    public OperationDeclarationSyntax WithOperationModifier(SyntaxList<OperationModifierSyntax> operationModifier)
+	    public OperationDeclarationSyntax WithOperationModifier(MetaDslx.CodeAnalysis.SyntaxList<OperationModifierSyntax> operationModifier)
 		{
 			return this.Update(this.Attribute, OperationModifier, this.ReturnType, this.Name, this.TOpenParen, this.ParameterList, this.TCloseParen, this.TSemicolon);
 		}
@@ -5031,7 +5030,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 			return this.Update(this.Attribute, this.OperationModifier, this.ReturnType, this.Name, this.TOpenParen, this.ParameterList, this.TCloseParen, TSemicolon);
 		}
 	
-	    public OperationDeclarationSyntax Update(SyntaxList<AttributeSyntax> attribute, SyntaxList<OperationModifierSyntax> operationModifier, ReturnTypeSyntax returnType, NameSyntax name, SyntaxToken tOpenParen, ParameterListSyntax parameterList, SyntaxToken tCloseParen, SyntaxToken tSemicolon)
+	    public OperationDeclarationSyntax Update(MetaDslx.CodeAnalysis.SyntaxList<AttributeSyntax> attribute, MetaDslx.CodeAnalysis.SyntaxList<OperationModifierSyntax> operationModifier, ReturnTypeSyntax returnType, NameSyntax name, SyntaxToken tOpenParen, ParameterListSyntax parameterList, SyntaxToken tCloseParen, SyntaxToken tSemicolon)
 	    {
 	        if (this.Attribute != attribute ||
 				this.OperationModifier != operationModifier ||
@@ -5323,14 +5322,14 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    {
 	    }
 	
-	    public SeparatedSyntaxList<ParameterSyntax> Parameter 
+	    public MetaDslx.CodeAnalysis.SeparatedSyntaxList<ParameterSyntax> Parameter 
 		{ 
 			get
 			{
 				var red = this.GetRed(ref this.parameter, 0);
 				if (red != null)
 				{
-					return new SeparatedSyntaxList<ParameterSyntax>(red, this.GetChildIndex(0));
+					return new MetaDslx.CodeAnalysis.SeparatedSyntaxList<ParameterSyntax>(red, this.GetChildIndex(0));
 				}
 				return default;
 			} 
@@ -5354,7 +5353,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        }
 	    }
 	
-	    public ParameterListSyntax WithParameter(SeparatedSyntaxList<ParameterSyntax> parameter)
+	    public ParameterListSyntax WithParameter(MetaDslx.CodeAnalysis.SeparatedSyntaxList<ParameterSyntax> parameter)
 		{
 			return this.Update(Parameter);
 		}
@@ -5364,7 +5363,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 			return this.WithParameter(this.Parameter.AddRange(parameter));
 		}
 	
-	    public ParameterListSyntax Update(SeparatedSyntaxList<ParameterSyntax> parameter)
+	    public ParameterListSyntax Update(MetaDslx.CodeAnalysis.SeparatedSyntaxList<ParameterSyntax> parameter)
 	    {
 	        if (this.Parameter != parameter)
 	        {
@@ -5409,12 +5408,12 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    {
 	    }
 	
-	    public SyntaxList<AttributeSyntax> Attribute 
+	    public MetaDslx.CodeAnalysis.SyntaxList<AttributeSyntax> Attribute 
 		{ 
 			get
 			{
 				var red = this.GetRed(ref this.attribute, 0);
-				if (red != null) return new SyntaxList<AttributeSyntax>(red);
+				if (red != null) return new MetaDslx.CodeAnalysis.SyntaxList<AttributeSyntax>(red);
 				return default;
 			} 
 		}
@@ -5449,7 +5448,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        }
 	    }
 	
-	    public ParameterSyntax WithAttribute(SyntaxList<AttributeSyntax> attribute)
+	    public ParameterSyntax WithAttribute(MetaDslx.CodeAnalysis.SyntaxList<AttributeSyntax> attribute)
 		{
 			return this.Update(Attribute, this.TypeReference, this.Name);
 		}
@@ -5469,7 +5468,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 			return this.Update(this.Attribute, this.TypeReference, Name);
 		}
 	
-	    public ParameterSyntax Update(SyntaxList<AttributeSyntax> attribute, TypeReferenceSyntax typeReference, NameSyntax name)
+	    public ParameterSyntax Update(MetaDslx.CodeAnalysis.SyntaxList<AttributeSyntax> attribute, TypeReferenceSyntax typeReference, NameSyntax name)
 	    {
 	        if (this.Attribute != attribute ||
 				this.TypeReference != typeReference ||
@@ -5516,12 +5515,12 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    {
 	    }
 	
-	    public SyntaxList<AttributeSyntax> Attribute 
+	    public MetaDslx.CodeAnalysis.SyntaxList<AttributeSyntax> Attribute 
 		{ 
 			get
 			{
 				var red = this.GetRed(ref this.attribute, 0);
-				if (red != null) return new SyntaxList<AttributeSyntax>(red);
+				if (red != null) return new MetaDslx.CodeAnalysis.SyntaxList<AttributeSyntax>(red);
 				return default;
 			} 
 		}
@@ -5583,7 +5582,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        }
 	    }
 	
-	    public AssociationDeclarationSyntax WithAttribute(SyntaxList<AttributeSyntax> attribute)
+	    public AssociationDeclarationSyntax WithAttribute(MetaDslx.CodeAnalysis.SyntaxList<AttributeSyntax> attribute)
 		{
 			return this.Update(Attribute, this.KAssociation, this.Source, this.KWith, this.Target, this.TSemicolon);
 		}
@@ -5618,7 +5617,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 			return this.Update(this.Attribute, this.KAssociation, this.Source, this.KWith, this.Target, TSemicolon);
 		}
 	
-	    public AssociationDeclarationSyntax Update(SyntaxList<AttributeSyntax> attribute, SyntaxToken kAssociation, QualifierSyntax source, SyntaxToken kWith, QualifierSyntax target, SyntaxToken tSemicolon)
+	    public AssociationDeclarationSyntax Update(MetaDslx.CodeAnalysis.SyntaxList<AttributeSyntax> attribute, SyntaxToken kAssociation, QualifierSyntax source, SyntaxToken kWith, QualifierSyntax target, SyntaxToken tSemicolon)
 	    {
 	        if (this.Attribute != attribute ||
 				this.KAssociation != kAssociation ||
@@ -6363,7 +6362,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 namespace MetaDslx.Languages.Meta
 {
     using System.Threading;
-    using Microsoft.CodeAnalysis.Text;
+    using MetaDslx.CodeAnalysis.Text;
 	using MetaDslx.Languages.Meta.Syntax;
     using MetaDslx.Languages.Meta.Syntax.InternalSyntax;
 
@@ -8555,12 +8554,12 @@ namespace MetaDslx.Languages.Meta
 	        return new SyntaxToken(MetaLanguage.Instance.InternalSyntaxFactory.LComment(text, value));
 	    }
 		
-		public MainSyntax Main(SyntaxList<UsingNamespaceSyntax> usingNamespace, NamespaceDeclarationSyntax namespaceDeclaration, SyntaxToken eOF)
+		public MainSyntax Main(MetaDslx.CodeAnalysis.SyntaxList<UsingNamespaceSyntax> usingNamespace, NamespaceDeclarationSyntax namespaceDeclaration, SyntaxToken eOF)
 		{
 		    if (namespaceDeclaration == null) throw new ArgumentNullException(nameof(namespaceDeclaration));
 		    if (eOF == null) throw new ArgumentNullException(nameof(eOF));
 		    if (eOF.GetKind() != MetaSyntaxKind.Eof) throw new ArgumentException(nameof(eOF));
-		    return (MainSyntax)MetaLanguage.Instance.InternalSyntaxFactory.Main(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<UsingNamespaceGreen>(usingNamespace.Node), (Syntax.InternalSyntax.NamespaceDeclarationGreen)namespaceDeclaration.Green, (InternalSyntaxToken)eOF.Node).CreateRed();
+		    return (MainSyntax)MetaLanguage.Instance.InternalSyntaxFactory.Main(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<UsingNamespaceGreen>(usingNamespace.Node), (Syntax.InternalSyntax.NamespaceDeclarationGreen)namespaceDeclaration.Green, (InternalSyntaxToken)eOF.Node).CreateRed();
 		}
 		
 		public MainSyntax Main(NamespaceDeclarationSyntax namespaceDeclaration, SyntaxToken eOF)
@@ -8580,10 +8579,10 @@ namespace MetaDslx.Languages.Meta
 		    return (QualifiedNameSyntax)MetaLanguage.Instance.InternalSyntaxFactory.QualifiedName((Syntax.InternalSyntax.QualifierGreen)qualifier.Green).CreateRed();
 		}
 		
-		public QualifierSyntax Qualifier(SeparatedSyntaxList<IdentifierSyntax> identifier)
+		public QualifierSyntax Qualifier(MetaDslx.CodeAnalysis.SeparatedSyntaxList<IdentifierSyntax> identifier)
 		{
 		    if (identifier == null) throw new ArgumentNullException(nameof(identifier));
-		    return (QualifierSyntax)MetaLanguage.Instance.InternalSyntaxFactory.Qualifier(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenSeparatedList<IdentifierGreen>(identifier.Node)).CreateRed();
+		    return (QualifierSyntax)MetaLanguage.Instance.InternalSyntaxFactory.Qualifier(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenSeparatedList<IdentifierGreen>(identifier.Node)).CreateRed();
 		}
 		
 		public AttributeSyntax Attribute(SyntaxToken tOpenBracket, QualifierSyntax qualifier, SyntaxToken tCloseBracket)
@@ -8616,13 +8615,13 @@ namespace MetaDslx.Languages.Meta
 			return this.UsingNamespace(this.Token(MetaSyntaxKind.KUsing), qualifier, this.Token(MetaSyntaxKind.TSemicolon));
 		}
 		
-		public NamespaceDeclarationSyntax NamespaceDeclaration(SyntaxList<AttributeSyntax> attribute, SyntaxToken kNamespace, QualifiedNameSyntax qualifiedName, NamespaceBodySyntax namespaceBody)
+		public NamespaceDeclarationSyntax NamespaceDeclaration(MetaDslx.CodeAnalysis.SyntaxList<AttributeSyntax> attribute, SyntaxToken kNamespace, QualifiedNameSyntax qualifiedName, NamespaceBodySyntax namespaceBody)
 		{
 		    if (kNamespace == null) throw new ArgumentNullException(nameof(kNamespace));
 		    if (kNamespace.GetKind() != MetaSyntaxKind.KNamespace) throw new ArgumentException(nameof(kNamespace));
 		    if (qualifiedName == null) throw new ArgumentNullException(nameof(qualifiedName));
 		    if (namespaceBody == null) throw new ArgumentNullException(nameof(namespaceBody));
-		    return (NamespaceDeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.NamespaceDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), (InternalSyntaxToken)kNamespace.Node, (Syntax.InternalSyntax.QualifiedNameGreen)qualifiedName.Green, (Syntax.InternalSyntax.NamespaceBodyGreen)namespaceBody.Green).CreateRed();
+		    return (NamespaceDeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.NamespaceDeclaration(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), (InternalSyntaxToken)kNamespace.Node, (Syntax.InternalSyntax.QualifiedNameGreen)qualifiedName.Green, (Syntax.InternalSyntax.NamespaceBodyGreen)namespaceBody.Green).CreateRed();
 		}
 		
 		public NamespaceDeclarationSyntax NamespaceDeclaration(QualifiedNameSyntax qualifiedName, NamespaceBodySyntax namespaceBody)
@@ -8630,14 +8629,14 @@ namespace MetaDslx.Languages.Meta
 			return this.NamespaceDeclaration(default, this.Token(MetaSyntaxKind.KNamespace), qualifiedName, namespaceBody);
 		}
 		
-		public NamespaceBodySyntax NamespaceBody(SyntaxToken tOpenBrace, SyntaxList<UsingNamespaceSyntax> usingNamespace, MetamodelDeclarationSyntax metamodelDeclaration, SyntaxList<DeclarationSyntax> declaration, SyntaxToken tCloseBrace)
+		public NamespaceBodySyntax NamespaceBody(SyntaxToken tOpenBrace, MetaDslx.CodeAnalysis.SyntaxList<UsingNamespaceSyntax> usingNamespace, MetamodelDeclarationSyntax metamodelDeclaration, MetaDslx.CodeAnalysis.SyntaxList<DeclarationSyntax> declaration, SyntaxToken tCloseBrace)
 		{
 		    if (tOpenBrace == null) throw new ArgumentNullException(nameof(tOpenBrace));
 		    if (tOpenBrace.GetKind() != MetaSyntaxKind.TOpenBrace) throw new ArgumentException(nameof(tOpenBrace));
 		    if (metamodelDeclaration == null) throw new ArgumentNullException(nameof(metamodelDeclaration));
 		    if (tCloseBrace == null) throw new ArgumentNullException(nameof(tCloseBrace));
 		    if (tCloseBrace.GetKind() != MetaSyntaxKind.TCloseBrace) throw new ArgumentException(nameof(tCloseBrace));
-		    return (NamespaceBodySyntax)MetaLanguage.Instance.InternalSyntaxFactory.NamespaceBody((InternalSyntaxToken)tOpenBrace.Node, Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<UsingNamespaceGreen>(usingNamespace.Node), (Syntax.InternalSyntax.MetamodelDeclarationGreen)metamodelDeclaration.Green, Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<DeclarationGreen>(declaration.Node), (InternalSyntaxToken)tCloseBrace.Node).CreateRed();
+		    return (NamespaceBodySyntax)MetaLanguage.Instance.InternalSyntaxFactory.NamespaceBody((InternalSyntaxToken)tOpenBrace.Node, MetaDslx.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<UsingNamespaceGreen>(usingNamespace.Node), (Syntax.InternalSyntax.MetamodelDeclarationGreen)metamodelDeclaration.Green, MetaDslx.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<DeclarationGreen>(declaration.Node), (InternalSyntaxToken)tCloseBrace.Node).CreateRed();
 		}
 		
 		public NamespaceBodySyntax NamespaceBody(MetamodelDeclarationSyntax metamodelDeclaration)
@@ -8645,7 +8644,7 @@ namespace MetaDslx.Languages.Meta
 			return this.NamespaceBody(this.Token(MetaSyntaxKind.TOpenBrace), default, metamodelDeclaration, default, this.Token(MetaSyntaxKind.TCloseBrace));
 		}
 		
-		public MetamodelDeclarationSyntax MetamodelDeclaration(SyntaxList<AttributeSyntax> attribute, SyntaxToken kMetamodel, NameSyntax name, SyntaxToken tOpenParen, MetamodelPropertyListSyntax metamodelPropertyList, SyntaxToken tCloseParen, SyntaxToken tSemicolon)
+		public MetamodelDeclarationSyntax MetamodelDeclaration(MetaDslx.CodeAnalysis.SyntaxList<AttributeSyntax> attribute, SyntaxToken kMetamodel, NameSyntax name, SyntaxToken tOpenParen, MetamodelPropertyListSyntax metamodelPropertyList, SyntaxToken tCloseParen, SyntaxToken tSemicolon)
 		{
 		    if (kMetamodel == null) throw new ArgumentNullException(nameof(kMetamodel));
 		    if (kMetamodel.GetKind() != MetaSyntaxKind.KMetamodel) throw new ArgumentException(nameof(kMetamodel));
@@ -8654,7 +8653,7 @@ namespace MetaDslx.Languages.Meta
 		    if (tCloseParen != null && tCloseParen.GetKind() != MetaSyntaxKind.TCloseParen) throw new ArgumentException(nameof(tCloseParen));
 		    if (tSemicolon == null) throw new ArgumentNullException(nameof(tSemicolon));
 		    if (tSemicolon.GetKind() != MetaSyntaxKind.TSemicolon) throw new ArgumentException(nameof(tSemicolon));
-		    return (MetamodelDeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.MetamodelDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), (InternalSyntaxToken)kMetamodel.Node, (Syntax.InternalSyntax.NameGreen)name.Green, (InternalSyntaxToken)tOpenParen.Node, metamodelPropertyList == null ? null : (Syntax.InternalSyntax.MetamodelPropertyListGreen)metamodelPropertyList.Green, (InternalSyntaxToken)tCloseParen.Node, (InternalSyntaxToken)tSemicolon.Node).CreateRed();
+		    return (MetamodelDeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.MetamodelDeclaration(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), (InternalSyntaxToken)kMetamodel.Node, (Syntax.InternalSyntax.NameGreen)name.Green, (InternalSyntaxToken)tOpenParen.Node, metamodelPropertyList == null ? null : (Syntax.InternalSyntax.MetamodelPropertyListGreen)metamodelPropertyList.Green, (InternalSyntaxToken)tCloseParen.Node, (InternalSyntaxToken)tSemicolon.Node).CreateRed();
 		}
 		
 		public MetamodelDeclarationSyntax MetamodelDeclaration(NameSyntax name)
@@ -8662,10 +8661,10 @@ namespace MetaDslx.Languages.Meta
 			return this.MetamodelDeclaration(default, this.Token(MetaSyntaxKind.KMetamodel), name, default, default, default, this.Token(MetaSyntaxKind.TSemicolon));
 		}
 		
-		public MetamodelPropertyListSyntax MetamodelPropertyList(SeparatedSyntaxList<MetamodelPropertySyntax> metamodelProperty)
+		public MetamodelPropertyListSyntax MetamodelPropertyList(MetaDslx.CodeAnalysis.SeparatedSyntaxList<MetamodelPropertySyntax> metamodelProperty)
 		{
 		    if (metamodelProperty == null) throw new ArgumentNullException(nameof(metamodelProperty));
-		    return (MetamodelPropertyListSyntax)MetaLanguage.Instance.InternalSyntaxFactory.MetamodelPropertyList(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenSeparatedList<MetamodelPropertyGreen>(metamodelProperty.Node)).CreateRed();
+		    return (MetamodelPropertyListSyntax)MetaLanguage.Instance.InternalSyntaxFactory.MetamodelPropertyList(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenSeparatedList<MetamodelPropertyGreen>(metamodelProperty.Node)).CreateRed();
 		}
 		
 		public MetamodelPropertySyntax MetamodelProperty(MetamodelUriPropertySyntax metamodelUriProperty)
@@ -8734,13 +8733,13 @@ namespace MetaDslx.Languages.Meta
 		    return (DeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.Declaration((Syntax.InternalSyntax.ConstDeclarationGreen)constDeclaration.Green).CreateRed();
 		}
 		
-		public EnumDeclarationSyntax EnumDeclaration(SyntaxList<AttributeSyntax> attribute, SyntaxToken kEnum, NameSyntax name, EnumBodySyntax enumBody)
+		public EnumDeclarationSyntax EnumDeclaration(MetaDslx.CodeAnalysis.SyntaxList<AttributeSyntax> attribute, SyntaxToken kEnum, NameSyntax name, EnumBodySyntax enumBody)
 		{
 		    if (kEnum == null) throw new ArgumentNullException(nameof(kEnum));
 		    if (kEnum.GetKind() != MetaSyntaxKind.KEnum) throw new ArgumentException(nameof(kEnum));
 		    if (name == null) throw new ArgumentNullException(nameof(name));
 		    if (enumBody == null) throw new ArgumentNullException(nameof(enumBody));
-		    return (EnumDeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.EnumDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), (InternalSyntaxToken)kEnum.Node, (Syntax.InternalSyntax.NameGreen)name.Green, (Syntax.InternalSyntax.EnumBodyGreen)enumBody.Green).CreateRed();
+		    return (EnumDeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.EnumDeclaration(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), (InternalSyntaxToken)kEnum.Node, (Syntax.InternalSyntax.NameGreen)name.Green, (Syntax.InternalSyntax.EnumBodyGreen)enumBody.Green).CreateRed();
 		}
 		
 		public EnumDeclarationSyntax EnumDeclaration(NameSyntax name, EnumBodySyntax enumBody)
@@ -8748,7 +8747,7 @@ namespace MetaDslx.Languages.Meta
 			return this.EnumDeclaration(default, this.Token(MetaSyntaxKind.KEnum), name, enumBody);
 		}
 		
-		public EnumBodySyntax EnumBody(SyntaxToken tOpenBrace, EnumValuesSyntax enumValues, SyntaxToken tSemicolon, SyntaxList<EnumMemberDeclarationSyntax> enumMemberDeclaration, SyntaxToken tCloseBrace)
+		public EnumBodySyntax EnumBody(SyntaxToken tOpenBrace, EnumValuesSyntax enumValues, SyntaxToken tSemicolon, MetaDslx.CodeAnalysis.SyntaxList<EnumMemberDeclarationSyntax> enumMemberDeclaration, SyntaxToken tCloseBrace)
 		{
 		    if (tOpenBrace == null) throw new ArgumentNullException(nameof(tOpenBrace));
 		    if (tOpenBrace.GetKind() != MetaSyntaxKind.TOpenBrace) throw new ArgumentException(nameof(tOpenBrace));
@@ -8756,7 +8755,7 @@ namespace MetaDslx.Languages.Meta
 		    if (tSemicolon != null && tSemicolon.GetKind() != MetaSyntaxKind.TSemicolon) throw new ArgumentException(nameof(tSemicolon));
 		    if (tCloseBrace == null) throw new ArgumentNullException(nameof(tCloseBrace));
 		    if (tCloseBrace.GetKind() != MetaSyntaxKind.TCloseBrace) throw new ArgumentException(nameof(tCloseBrace));
-		    return (EnumBodySyntax)MetaLanguage.Instance.InternalSyntaxFactory.EnumBody((InternalSyntaxToken)tOpenBrace.Node, (Syntax.InternalSyntax.EnumValuesGreen)enumValues.Green, (InternalSyntaxToken)tSemicolon.Node, Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<EnumMemberDeclarationGreen>(enumMemberDeclaration.Node), (InternalSyntaxToken)tCloseBrace.Node).CreateRed();
+		    return (EnumBodySyntax)MetaLanguage.Instance.InternalSyntaxFactory.EnumBody((InternalSyntaxToken)tOpenBrace.Node, (Syntax.InternalSyntax.EnumValuesGreen)enumValues.Green, (InternalSyntaxToken)tSemicolon.Node, MetaDslx.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<EnumMemberDeclarationGreen>(enumMemberDeclaration.Node), (InternalSyntaxToken)tCloseBrace.Node).CreateRed();
 		}
 		
 		public EnumBodySyntax EnumBody(EnumValuesSyntax enumValues)
@@ -8764,16 +8763,16 @@ namespace MetaDslx.Languages.Meta
 			return this.EnumBody(this.Token(MetaSyntaxKind.TOpenBrace), enumValues, default, default, this.Token(MetaSyntaxKind.TCloseBrace));
 		}
 		
-		public EnumValuesSyntax EnumValues(SeparatedSyntaxList<EnumValueSyntax> enumValue)
+		public EnumValuesSyntax EnumValues(MetaDslx.CodeAnalysis.SeparatedSyntaxList<EnumValueSyntax> enumValue)
 		{
 		    if (enumValue == null) throw new ArgumentNullException(nameof(enumValue));
-		    return (EnumValuesSyntax)MetaLanguage.Instance.InternalSyntaxFactory.EnumValues(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenSeparatedList<EnumValueGreen>(enumValue.Node)).CreateRed();
+		    return (EnumValuesSyntax)MetaLanguage.Instance.InternalSyntaxFactory.EnumValues(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenSeparatedList<EnumValueGreen>(enumValue.Node)).CreateRed();
 		}
 		
-		public EnumValueSyntax EnumValue(SyntaxList<AttributeSyntax> attribute, NameSyntax name)
+		public EnumValueSyntax EnumValue(MetaDslx.CodeAnalysis.SyntaxList<AttributeSyntax> attribute, NameSyntax name)
 		{
 		    if (name == null) throw new ArgumentNullException(nameof(name));
-		    return (EnumValueSyntax)MetaLanguage.Instance.InternalSyntaxFactory.EnumValue(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), (Syntax.InternalSyntax.NameGreen)name.Green).CreateRed();
+		    return (EnumValueSyntax)MetaLanguage.Instance.InternalSyntaxFactory.EnumValue(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), (Syntax.InternalSyntax.NameGreen)name.Green).CreateRed();
 		}
 		
 		public EnumValueSyntax EnumValue(NameSyntax name)
@@ -8787,7 +8786,7 @@ namespace MetaDslx.Languages.Meta
 		    return (EnumMemberDeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.EnumMemberDeclaration((Syntax.InternalSyntax.OperationDeclarationGreen)operationDeclaration.Green).CreateRed();
 		}
 		
-		public ClassDeclarationSyntax ClassDeclaration(SyntaxList<AttributeSyntax> attribute, SyntaxToken kAbstract, SyntaxToken kClass, NameSyntax name, SymbolTypeSyntax symbolType, SyntaxToken tColon, ClassAncestorsSyntax classAncestors, ClassBodySyntax classBody)
+		public ClassDeclarationSyntax ClassDeclaration(MetaDslx.CodeAnalysis.SyntaxList<AttributeSyntax> attribute, SyntaxToken kAbstract, SyntaxToken kClass, NameSyntax name, SymbolTypeSyntax symbolType, SyntaxToken tColon, ClassAncestorsSyntax classAncestors, ClassBodySyntax classBody)
 		{
 		    if (kAbstract != null && kAbstract.GetKind() != MetaSyntaxKind.KAbstract) throw new ArgumentException(nameof(kAbstract));
 		    if (kClass == null) throw new ArgumentNullException(nameof(kClass));
@@ -8795,7 +8794,7 @@ namespace MetaDslx.Languages.Meta
 		    if (name == null) throw new ArgumentNullException(nameof(name));
 		    if (tColon != null && tColon.GetKind() != MetaSyntaxKind.TColon) throw new ArgumentException(nameof(tColon));
 		    if (classBody == null) throw new ArgumentNullException(nameof(classBody));
-		    return (ClassDeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.ClassDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), (InternalSyntaxToken)kAbstract.Node, (InternalSyntaxToken)kClass.Node, (Syntax.InternalSyntax.NameGreen)name.Green, symbolType == null ? null : (Syntax.InternalSyntax.SymbolTypeGreen)symbolType.Green, (InternalSyntaxToken)tColon.Node, classAncestors == null ? null : (Syntax.InternalSyntax.ClassAncestorsGreen)classAncestors.Green, (Syntax.InternalSyntax.ClassBodyGreen)classBody.Green).CreateRed();
+		    return (ClassDeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.ClassDeclaration(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), (InternalSyntaxToken)kAbstract.Node, (InternalSyntaxToken)kClass.Node, (Syntax.InternalSyntax.NameGreen)name.Green, symbolType == null ? null : (Syntax.InternalSyntax.SymbolTypeGreen)symbolType.Green, (InternalSyntaxToken)tColon.Node, classAncestors == null ? null : (Syntax.InternalSyntax.ClassAncestorsGreen)classAncestors.Green, (Syntax.InternalSyntax.ClassBodyGreen)classBody.Green).CreateRed();
 		}
 		
 		public ClassDeclarationSyntax ClassDeclaration(NameSyntax name, ClassBodySyntax classBody)
@@ -8818,13 +8817,13 @@ namespace MetaDslx.Languages.Meta
 			return this.SymbolType(this.Token(MetaSyntaxKind.TOpenBracket), qualifier, this.Token(MetaSyntaxKind.TCloseBracket));
 		}
 		
-		public ClassBodySyntax ClassBody(SyntaxToken tOpenBrace, SyntaxList<ClassMemberDeclarationSyntax> classMemberDeclaration, SyntaxToken tCloseBrace)
+		public ClassBodySyntax ClassBody(SyntaxToken tOpenBrace, MetaDslx.CodeAnalysis.SyntaxList<ClassMemberDeclarationSyntax> classMemberDeclaration, SyntaxToken tCloseBrace)
 		{
 		    if (tOpenBrace == null) throw new ArgumentNullException(nameof(tOpenBrace));
 		    if (tOpenBrace.GetKind() != MetaSyntaxKind.TOpenBrace) throw new ArgumentException(nameof(tOpenBrace));
 		    if (tCloseBrace == null) throw new ArgumentNullException(nameof(tCloseBrace));
 		    if (tCloseBrace.GetKind() != MetaSyntaxKind.TCloseBrace) throw new ArgumentException(nameof(tCloseBrace));
-		    return (ClassBodySyntax)MetaLanguage.Instance.InternalSyntaxFactory.ClassBody((InternalSyntaxToken)tOpenBrace.Node, Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<ClassMemberDeclarationGreen>(classMemberDeclaration.Node), (InternalSyntaxToken)tCloseBrace.Node).CreateRed();
+		    return (ClassBodySyntax)MetaLanguage.Instance.InternalSyntaxFactory.ClassBody((InternalSyntaxToken)tOpenBrace.Node, MetaDslx.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<ClassMemberDeclarationGreen>(classMemberDeclaration.Node), (InternalSyntaxToken)tCloseBrace.Node).CreateRed();
 		}
 		
 		public ClassBodySyntax ClassBody()
@@ -8832,10 +8831,10 @@ namespace MetaDslx.Languages.Meta
 			return this.ClassBody(this.Token(MetaSyntaxKind.TOpenBrace), default, this.Token(MetaSyntaxKind.TCloseBrace));
 		}
 		
-		public ClassAncestorsSyntax ClassAncestors(SeparatedSyntaxList<ClassAncestorSyntax> classAncestor)
+		public ClassAncestorsSyntax ClassAncestors(MetaDslx.CodeAnalysis.SeparatedSyntaxList<ClassAncestorSyntax> classAncestor)
 		{
 		    if (classAncestor == null) throw new ArgumentNullException(nameof(classAncestor));
-		    return (ClassAncestorsSyntax)MetaLanguage.Instance.InternalSyntaxFactory.ClassAncestors(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenSeparatedList<ClassAncestorGreen>(classAncestor.Node)).CreateRed();
+		    return (ClassAncestorsSyntax)MetaLanguage.Instance.InternalSyntaxFactory.ClassAncestors(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenSeparatedList<ClassAncestorGreen>(classAncestor.Node)).CreateRed();
 		}
 		
 		public ClassAncestorSyntax ClassAncestor(QualifierSyntax qualifier)
@@ -8856,13 +8855,13 @@ namespace MetaDslx.Languages.Meta
 		    return (ClassMemberDeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.ClassMemberDeclaration((Syntax.InternalSyntax.OperationDeclarationGreen)operationDeclaration.Green).CreateRed();
 		}
 		
-		public FieldDeclarationSyntax FieldDeclaration(SyntaxList<AttributeSyntax> attribute, FieldContainmentSyntax fieldContainment, FieldModifierSyntax fieldModifier, TypeReferenceSyntax typeReference, NameSyntax name, FieldSymbolPropertySyntax fieldSymbolProperty, DefaultValueSyntax defaultValue, SyntaxList<RedefinitionsOrSubsettingsSyntax> redefinitionsOrSubsettings, SyntaxToken tSemicolon)
+		public FieldDeclarationSyntax FieldDeclaration(MetaDslx.CodeAnalysis.SyntaxList<AttributeSyntax> attribute, FieldContainmentSyntax fieldContainment, FieldModifierSyntax fieldModifier, TypeReferenceSyntax typeReference, NameSyntax name, FieldSymbolPropertySyntax fieldSymbolProperty, DefaultValueSyntax defaultValue, MetaDslx.CodeAnalysis.SyntaxList<RedefinitionsOrSubsettingsSyntax> redefinitionsOrSubsettings, SyntaxToken tSemicolon)
 		{
 		    if (typeReference == null) throw new ArgumentNullException(nameof(typeReference));
 		    if (name == null) throw new ArgumentNullException(nameof(name));
 		    if (tSemicolon == null) throw new ArgumentNullException(nameof(tSemicolon));
 		    if (tSemicolon.GetKind() != MetaSyntaxKind.TSemicolon) throw new ArgumentException(nameof(tSemicolon));
-		    return (FieldDeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.FieldDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), fieldContainment == null ? null : (Syntax.InternalSyntax.FieldContainmentGreen)fieldContainment.Green, fieldModifier == null ? null : (Syntax.InternalSyntax.FieldModifierGreen)fieldModifier.Green, (Syntax.InternalSyntax.TypeReferenceGreen)typeReference.Green, (Syntax.InternalSyntax.NameGreen)name.Green, fieldSymbolProperty == null ? null : (Syntax.InternalSyntax.FieldSymbolPropertyGreen)fieldSymbolProperty.Green, defaultValue == null ? null : (Syntax.InternalSyntax.DefaultValueGreen)defaultValue.Green, Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<RedefinitionsOrSubsettingsGreen>(redefinitionsOrSubsettings.Node), (InternalSyntaxToken)tSemicolon.Node).CreateRed();
+		    return (FieldDeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.FieldDeclaration(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), fieldContainment == null ? null : (Syntax.InternalSyntax.FieldContainmentGreen)fieldContainment.Green, fieldModifier == null ? null : (Syntax.InternalSyntax.FieldModifierGreen)fieldModifier.Green, (Syntax.InternalSyntax.TypeReferenceGreen)typeReference.Green, (Syntax.InternalSyntax.NameGreen)name.Green, fieldSymbolProperty == null ? null : (Syntax.InternalSyntax.FieldSymbolPropertyGreen)fieldSymbolProperty.Green, defaultValue == null ? null : (Syntax.InternalSyntax.DefaultValueGreen)defaultValue.Green, MetaDslx.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<RedefinitionsOrSubsettingsGreen>(redefinitionsOrSubsettings.Node), (InternalSyntaxToken)tSemicolon.Node).CreateRed();
 		}
 		
 		public FieldDeclarationSyntax FieldDeclaration(TypeReferenceSyntax typeReference, NameSyntax name)
@@ -8952,10 +8951,10 @@ namespace MetaDslx.Languages.Meta
 			return this.Subsettings(this.Token(MetaSyntaxKind.KSubsets), default);
 		}
 		
-		public NameUseListSyntax NameUseList(SeparatedSyntaxList<QualifierSyntax> qualifier)
+		public NameUseListSyntax NameUseList(MetaDslx.CodeAnalysis.SeparatedSyntaxList<QualifierSyntax> qualifier)
 		{
 		    if (qualifier == null) throw new ArgumentNullException(nameof(qualifier));
-		    return (NameUseListSyntax)MetaLanguage.Instance.InternalSyntaxFactory.NameUseList(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenSeparatedList<QualifierGreen>(qualifier.Node)).CreateRed();
+		    return (NameUseListSyntax)MetaLanguage.Instance.InternalSyntaxFactory.NameUseList(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenSeparatedList<QualifierGreen>(qualifier.Node)).CreateRed();
 		}
 		
 		public ConstDeclarationSyntax ConstDeclaration(SyntaxToken kConst, TypeReferenceSyntax typeReference, NameSyntax name, ConstValueSyntax constValue, SyntaxToken tSemicolon)
@@ -9106,7 +9105,7 @@ namespace MetaDslx.Languages.Meta
 		    return (CollectionKindSyntax)MetaLanguage.Instance.InternalSyntaxFactory.CollectionKind((InternalSyntaxToken)collectionKind.Node).CreateRed();
 		}
 		
-		public OperationDeclarationSyntax OperationDeclaration(SyntaxList<AttributeSyntax> attribute, SyntaxList<OperationModifierSyntax> operationModifier, ReturnTypeSyntax returnType, NameSyntax name, SyntaxToken tOpenParen, ParameterListSyntax parameterList, SyntaxToken tCloseParen, SyntaxToken tSemicolon)
+		public OperationDeclarationSyntax OperationDeclaration(MetaDslx.CodeAnalysis.SyntaxList<AttributeSyntax> attribute, MetaDslx.CodeAnalysis.SyntaxList<OperationModifierSyntax> operationModifier, ReturnTypeSyntax returnType, NameSyntax name, SyntaxToken tOpenParen, ParameterListSyntax parameterList, SyntaxToken tCloseParen, SyntaxToken tSemicolon)
 		{
 		    if (returnType == null) throw new ArgumentNullException(nameof(returnType));
 		    if (name == null) throw new ArgumentNullException(nameof(name));
@@ -9116,7 +9115,7 @@ namespace MetaDslx.Languages.Meta
 		    if (tCloseParen.GetKind() != MetaSyntaxKind.TCloseParen) throw new ArgumentException(nameof(tCloseParen));
 		    if (tSemicolon == null) throw new ArgumentNullException(nameof(tSemicolon));
 		    if (tSemicolon.GetKind() != MetaSyntaxKind.TSemicolon) throw new ArgumentException(nameof(tSemicolon));
-		    return (OperationDeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.OperationDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<OperationModifierGreen>(operationModifier.Node), (Syntax.InternalSyntax.ReturnTypeGreen)returnType.Green, (Syntax.InternalSyntax.NameGreen)name.Green, (InternalSyntaxToken)tOpenParen.Node, parameterList == null ? null : (Syntax.InternalSyntax.ParameterListGreen)parameterList.Green, (InternalSyntaxToken)tCloseParen.Node, (InternalSyntaxToken)tSemicolon.Node).CreateRed();
+		    return (OperationDeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.OperationDeclaration(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), MetaDslx.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<OperationModifierGreen>(operationModifier.Node), (Syntax.InternalSyntax.ReturnTypeGreen)returnType.Green, (Syntax.InternalSyntax.NameGreen)name.Green, (InternalSyntaxToken)tOpenParen.Node, parameterList == null ? null : (Syntax.InternalSyntax.ParameterListGreen)parameterList.Green, (InternalSyntaxToken)tCloseParen.Node, (InternalSyntaxToken)tSemicolon.Node).CreateRed();
 		}
 		
 		public OperationDeclarationSyntax OperationDeclaration(ReturnTypeSyntax returnType, NameSyntax name)
@@ -9160,17 +9159,17 @@ namespace MetaDslx.Languages.Meta
 			return this.OperationModifierReadonly(this.Token(MetaSyntaxKind.KReadonly));
 		}
 		
-		public ParameterListSyntax ParameterList(SeparatedSyntaxList<ParameterSyntax> parameter)
+		public ParameterListSyntax ParameterList(MetaDslx.CodeAnalysis.SeparatedSyntaxList<ParameterSyntax> parameter)
 		{
 		    if (parameter == null) throw new ArgumentNullException(nameof(parameter));
-		    return (ParameterListSyntax)MetaLanguage.Instance.InternalSyntaxFactory.ParameterList(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenSeparatedList<ParameterGreen>(parameter.Node)).CreateRed();
+		    return (ParameterListSyntax)MetaLanguage.Instance.InternalSyntaxFactory.ParameterList(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenSeparatedList<ParameterGreen>(parameter.Node)).CreateRed();
 		}
 		
-		public ParameterSyntax Parameter(SyntaxList<AttributeSyntax> attribute, TypeReferenceSyntax typeReference, NameSyntax name)
+		public ParameterSyntax Parameter(MetaDslx.CodeAnalysis.SyntaxList<AttributeSyntax> attribute, TypeReferenceSyntax typeReference, NameSyntax name)
 		{
 		    if (typeReference == null) throw new ArgumentNullException(nameof(typeReference));
 		    if (name == null) throw new ArgumentNullException(nameof(name));
-		    return (ParameterSyntax)MetaLanguage.Instance.InternalSyntaxFactory.Parameter(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), (Syntax.InternalSyntax.TypeReferenceGreen)typeReference.Green, (Syntax.InternalSyntax.NameGreen)name.Green).CreateRed();
+		    return (ParameterSyntax)MetaLanguage.Instance.InternalSyntaxFactory.Parameter(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), (Syntax.InternalSyntax.TypeReferenceGreen)typeReference.Green, (Syntax.InternalSyntax.NameGreen)name.Green).CreateRed();
 		}
 		
 		public ParameterSyntax Parameter(TypeReferenceSyntax typeReference, NameSyntax name)
@@ -9178,7 +9177,7 @@ namespace MetaDslx.Languages.Meta
 			return this.Parameter(default, typeReference, name);
 		}
 		
-		public AssociationDeclarationSyntax AssociationDeclaration(SyntaxList<AttributeSyntax> attribute, SyntaxToken kAssociation, QualifierSyntax source, SyntaxToken kWith, QualifierSyntax target, SyntaxToken tSemicolon)
+		public AssociationDeclarationSyntax AssociationDeclaration(MetaDslx.CodeAnalysis.SyntaxList<AttributeSyntax> attribute, SyntaxToken kAssociation, QualifierSyntax source, SyntaxToken kWith, QualifierSyntax target, SyntaxToken tSemicolon)
 		{
 		    if (kAssociation == null) throw new ArgumentNullException(nameof(kAssociation));
 		    if (kAssociation.GetKind() != MetaSyntaxKind.KAssociation) throw new ArgumentException(nameof(kAssociation));
@@ -9188,7 +9187,7 @@ namespace MetaDslx.Languages.Meta
 		    if (target == null) throw new ArgumentNullException(nameof(target));
 		    if (tSemicolon == null) throw new ArgumentNullException(nameof(tSemicolon));
 		    if (tSemicolon.GetKind() != MetaSyntaxKind.TSemicolon) throw new ArgumentException(nameof(tSemicolon));
-		    return (AssociationDeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.AssociationDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), (InternalSyntaxToken)kAssociation.Node, (Syntax.InternalSyntax.QualifierGreen)source.Green, (InternalSyntaxToken)kWith.Node, (Syntax.InternalSyntax.QualifierGreen)target.Green, (InternalSyntaxToken)tSemicolon.Node).CreateRed();
+		    return (AssociationDeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.AssociationDeclaration(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), (InternalSyntaxToken)kAssociation.Node, (Syntax.InternalSyntax.QualifierGreen)source.Green, (InternalSyntaxToken)kWith.Node, (Syntax.InternalSyntax.QualifierGreen)target.Green, (InternalSyntaxToken)tSemicolon.Node).CreateRed();
 		}
 		
 		public AssociationDeclarationSyntax AssociationDeclaration(QualifierSyntax source, QualifierSyntax target)

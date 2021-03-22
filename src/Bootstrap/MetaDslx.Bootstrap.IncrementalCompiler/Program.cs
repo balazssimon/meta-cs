@@ -1,4 +1,4 @@
-﻿using Antlr4.Runtime;
+using Antlr4.Runtime;
 using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode;
 using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax;
 using MetaDslx.CodeAnalysis.Antlr4Test.TestIncrementalCompilation;
@@ -9,8 +9,8 @@ using MetaDslx.Languages.Meta.Syntax.InternalSyntax;
 using MetaDslx.Languages.MetaGenerator.Compilation;
 using MetaDslx.Languages.MetaGenerator.Syntax.InternalSyntax;
 using MetaDslx.Tests;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Text;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Text;
 using System;
 using System.Collections.Immutable;
 using System.IO;

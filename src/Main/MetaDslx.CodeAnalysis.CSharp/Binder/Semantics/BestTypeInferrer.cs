@@ -1,12 +1,12 @@
-ï»¿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
-using Microsoft.CodeAnalysis.CSharp.Symbols;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.CSharp.Symbols;
+using MetaDslx.CodeAnalysis.PooledObjects;
 
-namespace Microsoft.CodeAnalysis.CSharp
+namespace MetaDslx.CodeAnalysis.CSharp
 {
     internal static class BestTypeInferrer
     {
@@ -48,8 +48,8 @@ namespace Microsoft.CodeAnalysis.CSharp
             // SPEC:    7.5.2.14 Finding the best common type of a set of expressions
             // SPEC:    In some cases, a common type needs to be inferred for a set of expressions. In particular, the element types of implicitly typed arrays and
             // SPEC:    the return types of anonymous functions with block bodies are found in this way.
-            // SPEC:    Intuitively, given a set of expressions E1â€¦Em this inference should be equivalent to calling a method:
-            // SPEC:        T M<X>(X x1 â€¦ X xm)
+            // SPEC:    Intuitively, given a set of expressions E1…Em this inference should be equivalent to calling a method:
+            // SPEC:        T M<X>(X x1 … X xm)
             // SPEC:    with the Ei as arguments. 
             // SPEC:    More precisely, the inference starts out with an unfixed type variable X. Output type inferences are then made from each Ei to X.
             // SPEC:    Finally, X is fixed and, if successful, the resulting type S is the resulting best common type for the expressions.
@@ -93,12 +93,12 @@ namespace Microsoft.CodeAnalysis.CSharp
             ref HashSet<DiagnosticInfo> useSiteDiagnostics)
         {
             // SPEC:    The second and third operands, x and y, of the ?: operator control the type of the conditional expression. 
-            // SPEC:    â€¢	If x has type X and y has type Y then
-            // SPEC:        o	If an implicit conversion (Â§6.1) exists from X to Y, but not from Y to X, then Y is the type of the conditional expression.
-            // SPEC:        o	If an implicit conversion (Â§6.1) exists from Y to X, but not from X to Y, then X is the type of the conditional expression.
+            // SPEC:    •	If x has type X and y has type Y then
+            // SPEC:        o	If an implicit conversion (§6.1) exists from X to Y, but not from Y to X, then Y is the type of the conditional expression.
+            // SPEC:        o	If an implicit conversion (§6.1) exists from Y to X, but not from X to Y, then X is the type of the conditional expression.
             // SPEC:        o	Otherwise, no expression type can be determined, and a compile-time error occurs.
-            // SPEC:    â€¢	If only one of x and y has a type, and both x and y, are implicitly convertible to that type, then that is the type of the conditional expression.
-            // SPEC:    â€¢	Otherwise, no expression type can be determined, and a compile-time error occurs.
+            // SPEC:    •	If only one of x and y has a type, and both x and y, are implicitly convertible to that type, then that is the type of the conditional expression.
+            // SPEC:    •	Otherwise, no expression type can be determined, and a compile-time error occurs.
 
             // A type is a candidate if all expressions are convertible to that type.
             ArrayBuilder<TypeSymbol> candidateTypes = ArrayBuilder<TypeSymbol>.GetInstance();

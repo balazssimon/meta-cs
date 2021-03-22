@@ -1,6 +1,6 @@
-﻿using MetaDslx.CodeAnalysis.Symbols.Source;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.Symbols.Source;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 using System;
 using System.Reflection;
@@ -14,7 +14,7 @@ using MetaDslx.Modeling;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-    using CSharpSymbols = Microsoft.CodeAnalysis.CSharp.Symbols;
+    using CSharpSymbols = MetaDslx.CodeAnalysis.CSharp.Symbols;
 
     public abstract class AssemblySymbol : Symbol, IAssemblySymbolInternal
     {
@@ -408,7 +408,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        internal NamedTypeSymbol GetPrimitiveType(Microsoft.Cci.PrimitiveTypeCode type)
+        internal NamedTypeSymbol GetPrimitiveType(MetaDslx.Cci.PrimitiveTypeCode type)
         {
             return (NamedTypeSymbol)GetSpecialSymbol(SpecialTypes.GetTypeFromMetadataName(type));
         }
@@ -878,12 +878,12 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return visitor.VisitAssembly(this, argument);
         }
 
-        public override void Accept(Microsoft.CodeAnalysis.SymbolVisitor visitor)
+        public override void Accept(MetaDslx.CodeAnalysis.SymbolVisitor visitor)
         {
             visitor.VisitAssembly(this);
         }
 
-        public override TResult Accept<TResult>(Microsoft.CodeAnalysis.SymbolVisitor<TResult> visitor)
+        public override TResult Accept<TResult>(MetaDslx.CodeAnalysis.SymbolVisitor<TResult> visitor)
         {
             return visitor.VisitAssembly(this);
         }

@@ -1,16 +1,16 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
-using Microsoft.CodeAnalysis.CSharp.Symbols;
+using MetaDslx.CodeAnalysis.CSharp.Symbols;
 using Roslyn.Utilities;
 
 using static System.Linq.ImmutableArrayExtensions;
 
-namespace Microsoft.CodeAnalysis.CSharp.Symbols
+namespace MetaDslx.CodeAnalysis.CSharp.Symbols
 {
     internal static partial class SymbolExtensions
     {
@@ -278,7 +278,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         }
 
         /// <summary>
-        /// Does the top level type containing this symbol have 'Microsoft.CodeAnalysis.Embedded' attribute?
+        /// Does the top level type containing this symbol have 'MetaDslx.CodeAnalysis.Embedded' attribute?
         /// </summary>
         public static bool IsHiddenByCodeAnalysisEmbeddedAttribute(this Symbol symbol)
         {

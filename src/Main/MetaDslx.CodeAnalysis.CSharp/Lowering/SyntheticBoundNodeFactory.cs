@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -6,15 +6,15 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using Microsoft.CodeAnalysis.CodeGen;
-using Microsoft.CodeAnalysis.CSharp.CodeGen;
-using Microsoft.CodeAnalysis.CSharp.Emit;
-using Microsoft.CodeAnalysis.CSharp.Symbols;
-using Microsoft.CodeAnalysis.PooledObjects;
-using Microsoft.CodeAnalysis.Text;
+using MetaDslx.CodeAnalysis.CodeGen;
+using MetaDslx.CodeAnalysis.CSharp.CodeGen;
+using MetaDslx.CodeAnalysis.CSharp.Emit;
+using MetaDslx.CodeAnalysis.CSharp.Symbols;
+using MetaDslx.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.Text;
 using Roslyn.Utilities;
 
-namespace Microsoft.CodeAnalysis.CSharp
+namespace MetaDslx.CodeAnalysis.CSharp
 {
     /// <summary>
     /// A helper class for synthesizing quantities of code.
@@ -529,42 +529,42 @@ namespace Microsoft.CodeAnalysis.CSharp
             // Because compiler-generated nodes are not lowered, this conversion is not used later in the compiler.
             // But it is a required part of the `BoundIsOperator` node, so we compute a conversion here.
             Conversion c = Compilation.Conversions.ClassifyBuiltInConversion(operand.Type, type, ref discarded);
-            return new BoundIsOperator(this.Syntax, operand, Type(type), c, SpecialType(Microsoft.CodeAnalysis.SpecialType.System_Boolean)) { WasCompilerGenerated = true };
+            return new BoundIsOperator(this.Syntax, operand, Type(type), c, SpecialType(MetaDslx.CodeAnalysis.SpecialType.System_Boolean)) { WasCompilerGenerated = true };
         }
 
         public BoundBinaryOperator LogicalAnd(BoundExpression left, BoundExpression right)
         {
-            return Binary(BinaryOperatorKind.LogicalBoolAnd, SpecialType(Microsoft.CodeAnalysis.SpecialType.System_Boolean), left, right);
+            return Binary(BinaryOperatorKind.LogicalBoolAnd, SpecialType(MetaDslx.CodeAnalysis.SpecialType.System_Boolean), left, right);
         }
 
         public BoundBinaryOperator LogicalOr(BoundExpression left, BoundExpression right)
         {
-            return Binary(BinaryOperatorKind.LogicalBoolOr, SpecialType(Microsoft.CodeAnalysis.SpecialType.System_Boolean), left, right);
+            return Binary(BinaryOperatorKind.LogicalBoolOr, SpecialType(MetaDslx.CodeAnalysis.SpecialType.System_Boolean), left, right);
         }
 
         public BoundBinaryOperator IntEqual(BoundExpression left, BoundExpression right)
         {
-            return Binary(BinaryOperatorKind.IntEqual, SpecialType(Microsoft.CodeAnalysis.SpecialType.System_Boolean), left, right);
+            return Binary(BinaryOperatorKind.IntEqual, SpecialType(MetaDslx.CodeAnalysis.SpecialType.System_Boolean), left, right);
         }
 
         public BoundBinaryOperator ObjectEqual(BoundExpression left, BoundExpression right)
         {
-            return Binary(BinaryOperatorKind.ObjectEqual, SpecialType(Microsoft.CodeAnalysis.SpecialType.System_Boolean), left, right);
+            return Binary(BinaryOperatorKind.ObjectEqual, SpecialType(MetaDslx.CodeAnalysis.SpecialType.System_Boolean), left, right);
         }
 
         public BoundBinaryOperator ObjectNotEqual(BoundExpression left, BoundExpression right)
         {
-            return Binary(BinaryOperatorKind.ObjectNotEqual, SpecialType(Microsoft.CodeAnalysis.SpecialType.System_Boolean), left, right);
+            return Binary(BinaryOperatorKind.ObjectNotEqual, SpecialType(MetaDslx.CodeAnalysis.SpecialType.System_Boolean), left, right);
         }
 
         public BoundBinaryOperator IntNotEqual(BoundExpression left, BoundExpression right)
         {
-            return Binary(BinaryOperatorKind.IntNotEqual, SpecialType(Microsoft.CodeAnalysis.SpecialType.System_Boolean), left, right);
+            return Binary(BinaryOperatorKind.IntNotEqual, SpecialType(MetaDslx.CodeAnalysis.SpecialType.System_Boolean), left, right);
         }
 
         public BoundBinaryOperator IntLessThan(BoundExpression left, BoundExpression right)
         {
-            return Binary(BinaryOperatorKind.IntLessThan, SpecialType(Microsoft.CodeAnalysis.SpecialType.System_Boolean), left, right);
+            return Binary(BinaryOperatorKind.IntLessThan, SpecialType(MetaDslx.CodeAnalysis.SpecialType.System_Boolean), left, right);
         }
 
         public BoundBinaryOperator IntGreaterThanOrEqual(BoundExpression left, BoundExpression right)
@@ -574,12 +574,12 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         public BoundLiteral Literal(int value)
         {
-            return new BoundLiteral(Syntax, ConstantValue.Create(value), SpecialType(Microsoft.CodeAnalysis.SpecialType.System_Int32)) { WasCompilerGenerated = true };
+            return new BoundLiteral(Syntax, ConstantValue.Create(value), SpecialType(MetaDslx.CodeAnalysis.SpecialType.System_Int32)) { WasCompilerGenerated = true };
         }
 
         public BoundLiteral Literal(uint value)
         {
-            return new BoundLiteral(Syntax, ConstantValue.Create(value), SpecialType(Microsoft.CodeAnalysis.SpecialType.System_UInt32)) { WasCompilerGenerated = true };
+            return new BoundLiteral(Syntax, ConstantValue.Create(value), SpecialType(MetaDslx.CodeAnalysis.SpecialType.System_UInt32)) { WasCompilerGenerated = true };
         }
 
         public BoundLiteral Literal(ConstantValue value, TypeSymbol type)
@@ -940,7 +940,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         public BoundLiteral Literal(Boolean value)
         {
-            return new BoundLiteral(Syntax, ConstantValue.Create(value), SpecialType(Microsoft.CodeAnalysis.SpecialType.System_Boolean)) { WasCompilerGenerated = true };
+            return new BoundLiteral(Syntax, ConstantValue.Create(value), SpecialType(MetaDslx.CodeAnalysis.SpecialType.System_Boolean)) { WasCompilerGenerated = true };
         }
 
         public BoundLiteral Literal(string value)
@@ -952,7 +952,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         public BoundLiteral StringLiteral(ConstantValue stringConst)
         {
             Debug.Assert(stringConst.IsString || stringConst.IsNull);
-            return new BoundLiteral(Syntax, stringConst, SpecialType(Microsoft.CodeAnalysis.SpecialType.System_String)) { WasCompilerGenerated = true };
+            return new BoundLiteral(Syntax, stringConst, SpecialType(MetaDslx.CodeAnalysis.SpecialType.System_String)) { WasCompilerGenerated = true };
         }
 
         public BoundLiteral StringLiteral(String stringValue)
@@ -963,7 +963,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         public BoundArrayLength ArrayLength(BoundExpression array)
         {
             Debug.Assert((object)array.Type != null && array.Type.IsArray());
-            return new BoundArrayLength(Syntax, array, SpecialType(Microsoft.CodeAnalysis.SpecialType.System_Int32));
+            return new BoundArrayLength(Syntax, array, SpecialType(MetaDslx.CodeAnalysis.SpecialType.System_Int32));
         }
 
         public BoundArrayAccess ArrayAccessFirstElement(BoundExpression array)
@@ -1010,7 +1010,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         public BoundStatement ThrowNull()
         {
-            return Throw(Null(Compilation.GetWellKnownType(Microsoft.CodeAnalysis.WellKnownType.System_Exception)));
+            return Throw(Null(Compilation.GetWellKnownType(MetaDslx.CodeAnalysis.WellKnownType.System_Exception)));
         }
 
         public BoundExpression ThrowExpression(BoundExpression thrown, TypeSymbol type)
@@ -1069,7 +1069,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         public BoundExpression Sizeof(TypeSymbol type)
         {
-            return new BoundSizeOfOperator(Syntax, Type(type), Binder.GetConstantSizeOf(type), SpecialType(Microsoft.CodeAnalysis.SpecialType.System_Int32)) { WasCompilerGenerated = true };
+            return new BoundSizeOfOperator(Syntax, Type(type), Binder.GetConstantSizeOf(type), SpecialType(MetaDslx.CodeAnalysis.SpecialType.System_Int32)) { WasCompilerGenerated = true };
         }
 
         internal BoundExpression ConstructorInfo(MethodSymbol ctor)
@@ -1078,7 +1078,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 Syntax,
                 ctor,
                 GetMethodFromHandleMethod(ctor.ContainingType),
-                WellKnownType(Microsoft.CodeAnalysis.WellKnownType.System_Reflection_ConstructorInfo))
+                WellKnownType(MetaDslx.CodeAnalysis.WellKnownType.System_Reflection_ConstructorInfo))
             { WasCompilerGenerated = true };
         }
 
@@ -1087,7 +1087,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             return new BoundMethodDefIndex(
                 Syntax,
                 method,
-                SpecialType(Microsoft.CodeAnalysis.SpecialType.System_Int32))
+                SpecialType(MetaDslx.CodeAnalysis.SpecialType.System_Int32))
             { WasCompilerGenerated = true };
         }
 
@@ -1097,12 +1097,12 @@ namespace Microsoft.CodeAnalysis.CSharp
         /// <returns></returns>
         public BoundExpression ModuleVersionId()
         {
-            return new BoundModuleVersionId(Syntax, WellKnownType(Microsoft.CodeAnalysis.WellKnownType.System_Guid)) { WasCompilerGenerated = true };
+            return new BoundModuleVersionId(Syntax, WellKnownType(MetaDslx.CodeAnalysis.WellKnownType.System_Guid)) { WasCompilerGenerated = true };
         }
 
         public BoundExpression ModuleVersionIdString()
         {
-            return new BoundModuleVersionIdString(Syntax, SpecialType(Microsoft.CodeAnalysis.SpecialType.System_String)) { WasCompilerGenerated = true };
+            return new BoundModuleVersionIdString(Syntax, SpecialType(MetaDslx.CodeAnalysis.SpecialType.System_String)) { WasCompilerGenerated = true };
         }
 
         public BoundExpression InstrumentationPayloadRoot(int analysisKind, TypeSymbol payloadType)
@@ -1114,7 +1114,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             return new BoundMaximumMethodDefIndex(
                 Syntax,
-                SpecialType(Microsoft.CodeAnalysis.SpecialType.System_Int32))
+                SpecialType(MetaDslx.CodeAnalysis.SpecialType.System_Int32))
             { WasCompilerGenerated = true };
         }
 
@@ -1126,7 +1126,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             return new BoundSourceDocumentIndex(
                 Syntax,
                 document,
-                SpecialType(Microsoft.CodeAnalysis.SpecialType.System_Int32))
+                SpecialType(MetaDslx.CodeAnalysis.SpecialType.System_Int32))
             { WasCompilerGenerated = true };
         }
 
@@ -1136,7 +1136,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             // in special circumstances. These circumstances are exactly the checks performed by
             // MayUseCallForStructMethod (which is also used by the emitter when determining
             // whether or not to call a method with a value type receiver directly).
-            if (!method.ContainingType.IsValueType || !Microsoft.CodeAnalysis.CSharp.CodeGen.CodeGenerator.MayUseCallForStructMethod(method))
+            if (!method.ContainingType.IsValueType || !MetaDslx.CodeAnalysis.CSharp.CodeGen.CodeGenerator.MayUseCallForStructMethod(method))
             {
                 method = method.GetConstructedLeastOverriddenMethod(this.CompilationState.Type);
             }
@@ -1145,7 +1145,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 Syntax,
                 method,
                 GetMethodFromHandleMethod(method.ContainingType),
-                WellKnownType(Microsoft.CodeAnalysis.WellKnownType.System_Reflection_MethodInfo))
+                WellKnownType(MetaDslx.CodeAnalysis.WellKnownType.System_Reflection_MethodInfo))
             { WasCompilerGenerated = true };
         }
 
@@ -1155,7 +1155,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 Syntax,
                 field,
                 GetFieldFromHandleMethod(field.ContainingType),
-                WellKnownType(Microsoft.CodeAnalysis.WellKnownType.System_Reflection_FieldInfo))
+                WellKnownType(MetaDslx.CodeAnalysis.WellKnownType.System_Reflection_FieldInfo))
             { WasCompilerGenerated = true };
         }
 

@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -6,10 +6,10 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.PooledObjects;
-using Microsoft.CodeAnalysis.Operations;
-using Microsoft.CodeAnalysis.Text;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.Operations;
+using MetaDslx.CodeAnalysis.Text;
 using Roslyn.Utilities;
 using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Symbols;
@@ -19,7 +19,7 @@ using MetaDslx.CodeAnalysis.Binding.Binders;
 
 namespace MetaDslx.CodeAnalysis
 {
-    using CSharpResources = Microsoft.CodeAnalysis.CSharp.CSharpResources;
+    using CSharpResources = MetaDslx.CodeAnalysis.CSharp.CSharpResources;
 
     /// <summary>
     /// Allows asking semantic questions about any node in a SyntaxTree within a Compilation.

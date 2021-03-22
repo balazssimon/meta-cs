@@ -1,16 +1,16 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
-using Microsoft.CodeAnalysis.CSharp.Symbols;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.CSharp.Symbols;
+using MetaDslx.CodeAnalysis.CSharp.Syntax;
+using MetaDslx.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 
-namespace Microsoft.CodeAnalysis.CSharp
+namespace MetaDslx.CodeAnalysis.CSharp
 {
     internal partial class Binder
     {
@@ -1023,7 +1023,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
 
             // SPEC:    An expression E is an attribute-argument-expression if all of the following statements are true:
-            // SPEC:    1) The type of E is an attribute parameter type (§17.1.3).
+            // SPEC:    1) The type of E is an attribute parameter type (�17.1.3).
             // SPEC:    2) At compile-time, the value of Expression can be resolved to one of the following:
             // SPEC:        a) A constant value.
             // SPEC:        b) A System.Type object.

@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -8,12 +8,12 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.CodeAnalysis.CSharp.Symbols;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Text;
+using MetaDslx.CodeAnalysis.CSharp.Symbols;
+using MetaDslx.CodeAnalysis.CSharp.Syntax;
+using MetaDslx.CodeAnalysis.Text;
 using Roslyn.Utilities;
 
-namespace Microsoft.CodeAnalysis.CSharp.Symbols
+namespace MetaDslx.CodeAnalysis.CSharp.Symbols
 {
     /// <summary>
     /// Represents implicit, script and submission classes.
@@ -53,7 +53,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         /// This ensures that a submission class does not inherit methods such as ToString or GetHashCode.
         /// </summary>
         internal override NamedTypeSymbol BaseTypeNoUseSiteDiagnostics
-            => IsScriptClass ? null : this.DeclaringCompilation.GetSpecialType(Microsoft.CodeAnalysis.SpecialType.System_Object);
+            => IsScriptClass ? null : this.DeclaringCompilation.GetSpecialType(MetaDslx.CodeAnalysis.SpecialType.System_Object);
 
         protected override void CheckBase(DiagnosticBag diagnostics)
         {
@@ -146,7 +146,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             get { return false; }
         }
 
-        internal sealed override IEnumerable<Microsoft.Cci.SecurityAttribute> GetSecurityInformation()
+        internal sealed override IEnumerable<MetaDslx.Cci.SecurityAttribute> GetSecurityInformation()
         {
             throw ExceptionUtilities.Unreachable;
         }

@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
 
-namespace Microsoft.CodeAnalysis.CSharp
+namespace MetaDslx.CodeAnalysis.CSharp
 {
     internal static partial class ErrorFacts
     {
@@ -169,7 +169,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             {
                 if (s_resourceManager == null)
                 {
-                    s_resourceManager = Microsoft.CodeAnalysis.CSharp.CSharpResources.ResourceManager; //new System.Resources.ResourceManager("Microsoft.CodeAnalysis.CSharp.CSharpResources", typeof(ErrorCode).GetTypeInfo().Assembly);
+                    s_resourceManager = MetaDslx.CodeAnalysis.CSharp.CSharpResources.ResourceManager; //new System.Resources.ResourceManager("MetaDslx.CodeAnalysis.CSharp.CSharpResources", typeof(ErrorCode).GetTypeInfo().Assembly);
                 }
 
                 return s_resourceManager;

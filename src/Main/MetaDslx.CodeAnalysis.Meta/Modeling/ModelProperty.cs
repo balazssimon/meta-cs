@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.Languages.Meta.Model;
 using MetaDslx.Modeling.Internal;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.PooledObjects;
 
 namespace MetaDslx.Modeling
 {

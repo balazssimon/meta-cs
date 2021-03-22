@@ -1,12 +1,12 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using Roslyn.Utilities;
-using Microsoft.CodeAnalysis.Emit;
+using MetaDslx.CodeAnalysis.Emit;
 
-namespace Microsoft.Cci
+namespace MetaDslx.Cci
 {
     internal abstract class ReferenceIndexer : ReferenceIndexerBase
     {

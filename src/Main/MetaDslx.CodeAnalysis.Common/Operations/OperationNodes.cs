@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 // Despite its name, this file IS NOT (yet) automatically generated.
 
@@ -8,9 +8,9 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
-using Microsoft.CodeAnalysis.FlowAnalysis;
+using MetaDslx.CodeAnalysis.FlowAnalysis;
 
-namespace Microsoft.CodeAnalysis.Operations
+namespace MetaDslx.CodeAnalysis.Operations
 {
     /// <summary>
     /// Represents an operation that creates a pointer value by taking the address of a reference.

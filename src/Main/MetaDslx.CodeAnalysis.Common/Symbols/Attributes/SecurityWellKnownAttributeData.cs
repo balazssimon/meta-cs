@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -6,10 +6,10 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Reflection;
 using System.Threading;
-using Microsoft.CodeAnalysis.CodeGen;
+using MetaDslx.CodeAnalysis.CodeGen;
 using Roslyn.Utilities;
 
-namespace Microsoft.CodeAnalysis
+namespace MetaDslx.CodeAnalysis
 {
     /// <summary>
     /// Information decoded from security attributes, i.e. attributes derived from well-known SecurityAttribute, applied on a method/type/assembly.

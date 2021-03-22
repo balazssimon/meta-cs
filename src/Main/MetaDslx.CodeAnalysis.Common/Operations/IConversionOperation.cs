@@ -1,8 +1,8 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 
-namespace Microsoft.CodeAnalysis.Operations
+namespace MetaDslx.CodeAnalysis.Operations
 {
     /// <summary>
     /// Represents a type conversion.
@@ -33,8 +33,8 @@ namespace Microsoft.CodeAnalysis.Operations
         /// </summary>
         /// <remarks>
         /// If you need conversion information that is language specific, use either
-        /// <see cref="T:Microsoft.CodeAnalysis.CSharp.CSharpExtensions.GetConversion(IConversionOperation)"/> or
-        /// <see cref="T:Microsoft.CodeAnalysis.VisualBasic.VisualBasicExtensions.GetConversion(IConversionOperation)"/>.
+        /// <see cref="T:MetaDslx.CodeAnalysis.CSharp.CSharpExtensions.GetConversion(IConversionOperation)"/> or
+        /// <see cref="T:MetaDslx.CodeAnalysis.VisualBasic.VisualBasicExtensions.GetConversion(IConversionOperation)"/>.
         /// </remarks>
 #pragma warning restore CA1200 // Avoid using cref tags with a prefix
         CommonConversion Conversion { get; }

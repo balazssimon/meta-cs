@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 // turns on tables that are stored as literals in this file
 // to generate new literals undef this constant and examine 
@@ -13,7 +13,7 @@
 
 using System.Diagnostics;
 
-namespace Microsoft.CodeAnalysis
+namespace MetaDslx.CodeAnalysis
 {
     /// 
     /// The XmlCharType class is used for quick character type recognition

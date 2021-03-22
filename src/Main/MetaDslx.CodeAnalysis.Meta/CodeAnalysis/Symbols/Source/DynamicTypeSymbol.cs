@@ -1,11 +1,11 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Source
@@ -164,7 +164,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         {
             // return the distinguished value for 'object' because the hash code ignores the distinction
             // between dynamic and object.  It also ignores custom modifiers.
-            return (int)Microsoft.CodeAnalysis.SpecialType.System_Object;
+            return (int)MetaDslx.CodeAnalysis.SpecialType.System_Object;
         }
 
         public override bool Equals(TypeSymbol t2, TypeCompareKind comparison)
@@ -182,7 +182,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             if ((comparison & TypeCompareKind.IgnoreDynamic) != 0)
             {
                 var other = t2 as NamedTypeSymbol;
-                return (object)other != null && other.SpecialType == Microsoft.CodeAnalysis.SpecialType.System_Object;
+                return (object)other != null && other.SpecialType == MetaDslx.CodeAnalysis.SpecialType.System_Object;
             }
 
             return false;
@@ -205,12 +205,12 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             return visitor.VisitDynamicType(this, argument);
         }
 
-        public override void Accept(Microsoft.CodeAnalysis.SymbolVisitor visitor)
+        public override void Accept(MetaDslx.CodeAnalysis.SymbolVisitor visitor)
         {
             visitor.VisitDynamicType(this);
         }
 
-        public override TResult Accept<TResult>(Microsoft.CodeAnalysis.SymbolVisitor<TResult> visitor)
+        public override TResult Accept<TResult>(MetaDslx.CodeAnalysis.SymbolVisitor<TResult> visitor)
         {
             return visitor.VisitDynamicType(this);
         }

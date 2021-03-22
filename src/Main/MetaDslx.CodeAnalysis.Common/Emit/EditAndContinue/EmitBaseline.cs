@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ using System.Reflection.Metadata;
 using System.Reflection.Metadata.Ecma335;
 using Roslyn.Utilities;
 
-namespace Microsoft.CodeAnalysis.Emit
+namespace MetaDslx.CodeAnalysis.Emit
 {
     // A MethodImpl entry is a pair of implementing method and implemented
     // method. However, the implemented method is a MemberRef rather

@@ -1,5 +1,5 @@
-﻿using Microsoft.Cci;
-using Microsoft.CodeAnalysis;
+using MetaDslx.Cci;
+using MetaDslx.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -8,7 +8,7 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-    public abstract class NamespaceSymbol : NamespaceOrTypeSymbol, IMetaNamespaceSymbol, Microsoft.Cci.INamespace
+    public abstract class NamespaceSymbol : NamespaceOrTypeSymbol, IMetaNamespaceSymbol, MetaDslx.Cci.INamespace
     {
         // PERF: initialization of the following fields will allocate, so we make them lazy
         private string _lazyQualifiedName;
@@ -259,12 +259,12 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return visitor.VisitNamespace(this, argument);
         }
 
-        public override void Accept(Microsoft.CodeAnalysis.SymbolVisitor visitor)
+        public override void Accept(MetaDslx.CodeAnalysis.SymbolVisitor visitor)
         {
             visitor.VisitNamespace(this);
         }
 
-        public override TResult Accept<TResult>(Microsoft.CodeAnalysis.SymbolVisitor<TResult> visitor)
+        public override TResult Accept<TResult>(MetaDslx.CodeAnalysis.SymbolVisitor<TResult> visitor)
         {
             return visitor.VisitNamespace(this);
         }

@@ -1,4 +1,4 @@
-﻿using Antlr4.Runtime;
+using Antlr4.Runtime;
 using Antlr4.Runtime.Misc;
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation;
@@ -10,8 +10,8 @@ using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
 using MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax;
 using MetaDslx.Tests;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Text;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Text;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;

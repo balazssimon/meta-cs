@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Reflection.Metadata;
 using Roslyn.Utilities;
 using static System.Linq.ImmutableArrayExtensions;
 
-namespace Microsoft.CodeAnalysis.CodeGen
+namespace MetaDslx.CodeAnalysis.CodeGen
 {
     internal partial class ILBuilder
     {
@@ -370,7 +370,7 @@ namespace Microsoft.CodeAnalysis.CodeGen
         /// <summary>
         /// Generates code that creates an instance of multidimensional array
         /// </summary>
-        internal void EmitArrayCreation(Microsoft.Cci.IArrayTypeReference arrayType, SyntaxNode syntaxNode, DiagnosticBag diagnostics)
+        internal void EmitArrayCreation(MetaDslx.Cci.IArrayTypeReference arrayType, SyntaxNode syntaxNode, DiagnosticBag diagnostics)
         {
             Debug.Assert(!arrayType.IsSZArray, "should be used only with multidimensional arrays");
 
@@ -384,7 +384,7 @@ namespace Microsoft.CodeAnalysis.CodeGen
         /// <summary>
         /// Generates code that loads an element of a multidimensional array
         /// </summary>
-        internal void EmitArrayElementLoad(Microsoft.Cci.IArrayTypeReference arrayType, SyntaxNode syntaxNode, DiagnosticBag diagnostics)
+        internal void EmitArrayElementLoad(MetaDslx.Cci.IArrayTypeReference arrayType, SyntaxNode syntaxNode, DiagnosticBag diagnostics)
         {
             Debug.Assert(!arrayType.IsSZArray, "should be used only with multidimensional arrays");
 
@@ -398,7 +398,7 @@ namespace Microsoft.CodeAnalysis.CodeGen
         /// <summary>
         /// Generates code that loads an address of an element of a multidimensional array.
         /// </summary>
-        internal void EmitArrayElementAddress(Microsoft.Cci.IArrayTypeReference arrayType, SyntaxNode syntaxNode, DiagnosticBag diagnostics)
+        internal void EmitArrayElementAddress(MetaDslx.Cci.IArrayTypeReference arrayType, SyntaxNode syntaxNode, DiagnosticBag diagnostics)
         {
             Debug.Assert(!arrayType.IsSZArray, "should be used only with multidimensional arrays");
 

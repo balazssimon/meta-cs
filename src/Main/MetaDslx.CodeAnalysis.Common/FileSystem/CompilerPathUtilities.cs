@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 
@@ -15,7 +15,7 @@ namespace Roslyn.Utilities
 
             if (!PathUtilities.IsAbsolute(path))
             {
-                throw new ArgumentException(Microsoft.CodeAnalysis.CodeAnalysisResources.AbsolutePathExpected, argumentName);
+                throw new ArgumentException(MetaDslx.CodeAnalysis.CodeAnalysisResources.AbsolutePathExpected, argumentName);
             }
         }
     }

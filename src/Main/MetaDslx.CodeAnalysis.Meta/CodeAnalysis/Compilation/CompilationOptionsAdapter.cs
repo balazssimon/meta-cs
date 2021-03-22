@@ -1,4 +1,4 @@
-﻿using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -7,7 +7,7 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis
 {
-    using CSharpCompilationOptions = Microsoft.CodeAnalysis.CSharp.CSharpCompilationOptions;
+    using CSharpCompilationOptions = MetaDslx.CodeAnalysis.CSharp.CSharpCompilationOptions;
 
     public abstract class CompilationOptionsAdapter : CompilationOptions
     {
