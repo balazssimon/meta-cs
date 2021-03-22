@@ -2971,13 +2971,13 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
             }
             private GreenNode VisitTerminal(IToken token, MetaSyntaxKind kind)
             {
-				if (token == null || (token.Type == TokenConstants.EOF && kind != SyntaxKind.Eof))
+				if (kind == SyntaxKind.Eof)
 				{
-					if (kind == SyntaxKind.Eof)
-					{
-						return _syntaxParser.EatToken();
-					}
-					else if (kind != null)
+					return _syntaxParser.EatToken();
+				}
+				if (token == null)
+				{
+					if (kind != null)
 					{
 						return _factory.MissingToken(kind);
 					}
@@ -2996,13 +2996,13 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
             }
             private GreenNode VisitTerminal(ITerminalNode node, MetaSyntaxKind kind)
             {
-                if (node == null || node.Symbol == null || (node.Symbol.Type == TokenConstants.EOF && kind != SyntaxKind.Eof))
+				if (kind == SyntaxKind.Eof)
 				{
-					if (kind == SyntaxKind.Eof)
-					{
-						return _syntaxParser.EatToken();
-					}
-					else if (kind != null)
+					return _syntaxParser.EatToken();
+				}
+                if (node == null || node.Symbol == null)
+				{
+					if (kind != null)
 					{
 						return _factory.MissingToken(kind);
 					}

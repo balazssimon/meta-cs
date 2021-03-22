@@ -65,7 +65,7 @@ using [Properties.DefaultNamespace];
 using [Properties.DefaultNamespace].Symbols;
 using [Properties.DefaultNamespace].Syntax;
 using [Properties.DefaultNamespace].Syntax.InternalSyntax;
-using Microsoft.Extensions.DependencyInjection;
+using MetaDslx.Extensions.DependencyInjection;
 ^
 [var lang = Properties.LanguageName]
 namespace [Properties.DefaultNamespace]
@@ -133,8 +133,8 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Syntax;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 [Instances.ParserHeader]
 ^
@@ -386,7 +386,7 @@ end template
 template GenerateLanguageVersion()
 using System;
 using MetaDslx.CodeAnalysis;
-using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
 using Roslyn.Utilities;
 ^
 [var lang = Properties.LanguageName]
@@ -539,8 +539,8 @@ using System.Diagnostics;
 using System.Text;
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Declarations;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Diagnostics;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Diagnostics;
 ^
 [var lang = Properties.LanguageName]
 namespace [Properties.DefaultNamespace]
@@ -794,7 +794,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Immutable;
-using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Declarations;
@@ -900,8 +900,8 @@ using System.Collections.Immutable;
 using System.Text;
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Binding;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.PooledObjects;
 ^
 [var lang = Properties.LanguageName]
 namespace [Properties.DefaultNamespace]
@@ -1093,7 +1093,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MetaDslx.CodeAnalysis;
-using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
 ^
 [var lang = Properties.LanguageName]
 namespace [Properties.DefaultNamespace]
@@ -1128,9 +1128,9 @@ using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Syntax.InternalSyntax;
-using Microsoft.CodeAnalysis.Text;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
+using MetaDslx.CodeAnalysis.Text;
 using MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax;
 
 namespace [Properties.DefaultNamespace].Syntax.InternalSyntax
@@ -1169,9 +1169,9 @@ using Antlr4.Runtime.Tree;
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Syntax.InternalSyntax;
-using Microsoft.CodeAnalysis.Text;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
+using MetaDslx.CodeAnalysis.Text;
 using MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax;
 
 namespace [Properties.DefaultNamespace].Syntax.InternalSyntax
@@ -1548,8 +1548,8 @@ using System.Threading.Tasks;
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax;
-using Microsoft.CodeAnalysis.Text;
-using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Text;
+using MetaDslx.CodeAnalysis;
 using [Properties.DefaultNamespace];
 using [Properties.DefaultNamespace].Syntax;
 using [Properties.DefaultNamespace].Syntax.InternalSyntax;
@@ -2078,9 +2078,9 @@ namespace [Properties.DefaultNamespace].Syntax.InternalSyntax
     using MetaDslx.CodeAnalysis;
     using MetaDslx.CodeAnalysis.Syntax;
     using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
-    using Microsoft.CodeAnalysis;
-    using Microsoft.CodeAnalysis.Syntax.InternalSyntax;
-    using Microsoft.CodeAnalysis.Text;
+    using MetaDslx.CodeAnalysis;
+    using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
+    using MetaDslx.CodeAnalysis.Text;
     using Roslyn.Utilities;
     using MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax;
 ^	
@@ -2160,7 +2160,7 @@ namespace [Properties.DefaultNamespace].Syntax.InternalSyntax
 		///   documentation comments, where the structure describes the XML structure of the comment.
 		///   skipped tokens, where the structure describes the tokens that were skipped by the parser.
 		/// </remarks>
-		public override SyntaxNode GetStructure(Microsoft.CodeAnalysis.SyntaxTrivia trivia)
+		public override SyntaxNode GetStructure(MetaDslx.CodeAnalysis.SyntaxTrivia trivia)
 		{
 			if (trivia.HasStructure)
 			{
@@ -2285,7 +2285,7 @@ namespace [Properties.DefaultNamespace].Syntax.InternalSyntax
             }
         }
 ^
-        public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<InternalSyntaxToken> Tokens => new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<InternalSyntaxToken>(this.tokens);
+        public MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<InternalSyntaxToken> Tokens => new MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<InternalSyntaxToken>(this.tokens);
 ^
         protected override GreenNode GetSlot(int index)
         {
@@ -2302,7 +2302,7 @@ namespace [Properties.DefaultNamespace].Syntax.InternalSyntax
 ^
         public override void Accept([lang]SyntaxVisitor visitor) => visitor.VisitSkippedTokensTrivia(this);
 ^
-        public GreenSkippedTokensTriviaSyntax Update(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<InternalSyntaxToken> tokens)
+        public GreenSkippedTokensTriviaSyntax Update(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<InternalSyntaxToken> tokens)
         {
             if (tokens != this.Tokens)
             {
@@ -2531,12 +2531,12 @@ function string GetRedToGreenParamElem(Antlr4ParserRuleElement elem, string deli
 	end if
 	if (elem.IsList)
 		if (elem.IsToken)
-			result += "Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<"+elem.GreenInnerType()+">("+elem.FieldName()+".Node)"+delim;
+			result += "MetaDslx.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<"+elem.GreenInnerType()+">("+elem.FieldName()+".Node)"+delim;
 		else
 			if (elem.IsSeparated)
-				result += "Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenSeparatedList<"+elem.GreenInnerType()+">("+elem.FieldName()+".Node)"+delim;
+				result += "MetaDslx.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenSeparatedList<"+elem.GreenInnerType()+">("+elem.FieldName()+".Node)"+delim;
 			else
-				result += "Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<"+elem.GreenInnerType()+">("+elem.FieldName()+".Node)"+delim;
+				result += "MetaDslx.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<"+elem.GreenInnerType()+">("+elem.FieldName()+".Node)"+delim;
 			end if
 		end if
 	else
@@ -3132,7 +3132,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
@@ -3296,7 +3296,7 @@ namespace [Properties.DefaultNamespace].Syntax
 namespace [Properties.DefaultNamespace]
 {
     using System.Threading;
-    using Microsoft.CodeAnalysis.Text;
+    using MetaDslx.CodeAnalysis.Text;
 	using [Properties.DefaultNamespace].Syntax;
     using [Properties.DefaultNamespace].Syntax.InternalSyntax;
 ^
@@ -3738,7 +3738,7 @@ template GenerateNodeSyntaxFacts()
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Syntax;
 using Roslyn.Utilities;
 ^
@@ -5368,7 +5368,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Syntax;

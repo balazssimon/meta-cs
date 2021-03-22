@@ -3,7 +3,7 @@
   "isRoot": true,
   "tools": {
     "metadslx.buildtools": {
-      "version": "0.10.469",
+      "version": "0.10.471",
       "commands": [
         "metadslx"
       ]

@@ -1051,8 +1051,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             {
                 __out.AppendLine(false); //67:59
             }
-            __out.Append("using Microsoft.Extensions.DependencyInjection;"); //68:1
-            __out.AppendLine(false); //68:48
+            __out.Append("using MetaDslx.Extensions.DependencyInjection;"); //68:1
+            __out.AppendLine(false); //68:47
             __out.AppendLine(true); //69:1
             var lang = Properties.LanguageName; //70:2
             bool __tmp22_outputWritten = false;
@@ -1678,9 +1678,9 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             __out.Append("using MetaDslx.CodeAnalysis.Syntax;"); //135:1
             __out.AppendLine(false); //135:36
             __out.Append("using MetaDslx.CodeAnalysis;"); //136:1
-            __out.AppendLine(false); //136:30
+            __out.AppendLine(false); //136:29
             __out.Append("using MetaDslx.CodeAnalysis.PooledObjects;"); //137:1
-            __out.AppendLine(false); //137:44
+            __out.AppendLine(false); //137:43
             __out.Append("using Roslyn.Utilities;"); //138:1
             __out.AppendLine(false); //138:24
             bool __tmp2_outputWritten = false;
@@ -3453,7 +3453,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             __out.Append("using MetaDslx.CodeAnalysis;"); //388:1
             __out.AppendLine(false); //388:29
             __out.Append("using MetaDslx.CodeAnalysis;"); //389:1
-            __out.AppendLine(false); //389:30
+            __out.AppendLine(false); //389:29
             __out.Append("using Roslyn.Utilities;"); //390:1
             __out.AppendLine(false); //390:24
             __out.AppendLine(true); //391:1
@@ -4716,9 +4716,9 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             __out.Append("using MetaDslx.CodeAnalysis.Declarations;"); //541:1
             __out.AppendLine(false); //541:42
             __out.Append("using MetaDslx.CodeAnalysis;"); //542:1
-            __out.AppendLine(false); //542:30
+            __out.AppendLine(false); //542:29
             __out.Append("using MetaDslx.CodeAnalysis.Diagnostics;"); //543:1
-            __out.AppendLine(false); //543:42
+            __out.AppendLine(false); //543:41
             __out.AppendLine(true); //544:1
             var lang = Properties.LanguageName; //545:2
             bool __tmp2_outputWritten = false;
@@ -6906,7 +6906,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             __out.Append("using System.Collections.Immutable;"); //796:1
             __out.AppendLine(false); //796:36
             __out.Append("using MetaDslx.CodeAnalysis;"); //797:1
-            __out.AppendLine(false); //797:30
+            __out.AppendLine(false); //797:29
             __out.Append("using MetaDslx.CodeAnalysis;"); //798:1
             __out.AppendLine(false); //798:29
             __out.Append("using MetaDslx.CodeAnalysis.Binding;"); //799:1
@@ -7875,9 +7875,9 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             __out.Append("using MetaDslx.CodeAnalysis.Binding;"); //902:1
             __out.AppendLine(false); //902:37
             __out.Append("using MetaDslx.CodeAnalysis;"); //903:1
-            __out.AppendLine(false); //903:30
+            __out.AppendLine(false); //903:29
             __out.Append("using MetaDslx.CodeAnalysis.PooledObjects;"); //904:1
-            __out.AppendLine(false); //904:44
+            __out.AppendLine(false); //904:43
             __out.AppendLine(true); //905:1
             var lang = Properties.LanguageName; //906:2
             bool __tmp2_outputWritten = false;
@@ -10575,7 +10575,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             __out.Append("using MetaDslx.CodeAnalysis;"); //1095:1
             __out.AppendLine(false); //1095:29
             __out.Append("using MetaDslx.CodeAnalysis;"); //1096:1
-            __out.AppendLine(false); //1096:30
+            __out.AppendLine(false); //1096:29
             __out.AppendLine(true); //1097:1
             var lang = Properties.LanguageName; //1098:2
             bool __tmp2_outputWritten = false;
@@ -11148,11 +11148,11 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             __out.Append("using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;"); //1130:1
             __out.AppendLine(false); //1130:51
             __out.Append("using MetaDslx.CodeAnalysis;"); //1131:1
-            __out.AppendLine(false); //1131:30
+            __out.AppendLine(false); //1131:29
             __out.Append("using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;"); //1132:1
-            __out.AppendLine(false); //1132:52
+            __out.AppendLine(false); //1132:51
             __out.Append("using MetaDslx.CodeAnalysis.Text;"); //1133:1
-            __out.AppendLine(false); //1133:35
+            __out.AppendLine(false); //1133:34
             __out.Append("using MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax;"); //1134:1
             __out.AppendLine(false); //1134:61
             bool __tmp2_outputWritten = false;
@@ -11444,11 +11444,11 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             __out.Append("using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;"); //1171:1
             __out.AppendLine(false); //1171:51
             __out.Append("using MetaDslx.CodeAnalysis;"); //1172:1
-            __out.AppendLine(false); //1172:30
+            __out.AppendLine(false); //1172:29
             __out.Append("using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;"); //1173:1
-            __out.AppendLine(false); //1173:52
+            __out.AppendLine(false); //1173:51
             __out.Append("using MetaDslx.CodeAnalysis.Text;"); //1174:1
-            __out.AppendLine(false); //1174:35
+            __out.AppendLine(false); //1174:34
             __out.Append("using MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax;"); //1175:1
             __out.AppendLine(false); //1175:61
             bool __tmp2_outputWritten = false;
@@ -17182,9 +17182,9 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             __out.Append("using MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax;"); //1550:1
             __out.AppendLine(false); //1550:61
             __out.Append("using MetaDslx.CodeAnalysis.Text;"); //1551:1
-            __out.AppendLine(false); //1551:35
+            __out.AppendLine(false); //1551:34
             __out.Append("using MetaDslx.CodeAnalysis;"); //1552:1
-            __out.AppendLine(false); //1552:30
+            __out.AppendLine(false); //1552:29
             bool __tmp2_outputWritten = false;
             string __tmp3_line = "using "; //1553:1
             if (!string.IsNullOrEmpty(__tmp3_line))
@@ -20434,11 +20434,11 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             __out.Append("    using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;"); //2080:1
             __out.AppendLine(false); //2080:55
             __out.Append("    using MetaDslx.CodeAnalysis;"); //2081:1
-            __out.AppendLine(false); //2081:34
+            __out.AppendLine(false); //2081:33
             __out.Append("    using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;"); //2082:1
-            __out.AppendLine(false); //2082:56
+            __out.AppendLine(false); //2082:55
             __out.Append("    using MetaDslx.CodeAnalysis.Text;"); //2083:1
-            __out.AppendLine(false); //2083:39
+            __out.AppendLine(false); //2083:38
             __out.Append("    using Roslyn.Utilities;"); //2084:1
             __out.AppendLine(false); //2084:28
             __out.Append("    using MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax;"); //2085:1
@@ -21040,7 +21040,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             __out.Append("		/// </remarks>"); //2162:1
             __out.AppendLine(false); //2162:17
             __out.Append("		public override SyntaxNode GetStructure(MetaDslx.CodeAnalysis.SyntaxTrivia trivia)"); //2163:1
-            __out.AppendLine(false); //2163:86
+            __out.AppendLine(false); //2163:85
             __out.Append("		{"); //2164:1
             __out.AppendLine(false); //2164:4
             __out.Append("			if (trivia.HasStructure)"); //2165:1
@@ -21783,7 +21783,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             __out.AppendLine(false); //2286:10
             __out.AppendLine(true); //2287:1
             __out.Append("        public MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<InternalSyntaxToken> Tokens => new MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<InternalSyntaxToken>(this.tokens);"); //2288:1
-            __out.AppendLine(false); //2288:197
+            __out.AppendLine(false); //2288:195
             __out.AppendLine(true); //2289:1
             __out.Append("        protected override GreenNode GetSlot(int index)"); //2290:1
             __out.AppendLine(false); //2290:56
@@ -21934,7 +21934,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             }
             __out.AppendLine(true); //2304:1
             __out.Append("        public GreenSkippedTokensTriviaSyntax Update(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<InternalSyntaxToken> tokens)"); //2305:1
-            __out.AppendLine(false); //2305:138
+            __out.AppendLine(false); //2305:137
             __out.Append("        {"); //2306:1
             __out.AppendLine(false); //2306:10
             __out.Append("            if (tokens != this.Tokens)"); //2307:1
@@ -30423,7 +30423,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             __out.Append("using System.Threading.Tasks;"); //3134:1
             __out.AppendLine(false); //3134:30
             __out.Append("using MetaDslx.CodeAnalysis;"); //3135:1
-            __out.AppendLine(false); //3135:30
+            __out.AppendLine(false); //3135:29
             __out.Append("using MetaDslx.CodeAnalysis;"); //3136:1
             __out.AppendLine(false); //3136:29
             __out.Append("using MetaDslx.CodeAnalysis.Syntax;"); //3137:1
@@ -31964,7 +31964,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             __out.Append("    using System.Threading;"); //3298:1
             __out.AppendLine(false); //3298:28
             __out.Append("    using MetaDslx.CodeAnalysis.Text;"); //3299:1
-            __out.AppendLine(false); //3299:39
+            __out.AppendLine(false); //3299:38
             bool __tmp175_outputWritten = false;
             string __tmp176_line = "	using "; //3300:1
             if (!string.IsNullOrEmpty(__tmp176_line))
@@ -37732,7 +37732,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             __out.Append("using System.Threading;"); //3740:1
             __out.AppendLine(false); //3740:24
             __out.Append("using MetaDslx.CodeAnalysis;"); //3741:1
-            __out.AppendLine(false); //3741:30
+            __out.AppendLine(false); //3741:29
             __out.Append("using MetaDslx.CodeAnalysis.Syntax;"); //3742:1
             __out.AppendLine(false); //3742:36
             __out.Append("using Roslyn.Utilities;"); //3743:1
@@ -50297,7 +50297,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             __out.Append("using System.Threading.Tasks;"); //5370:1
             __out.AppendLine(false); //5370:30
             __out.Append("using MetaDslx.CodeAnalysis;"); //5371:1
-            __out.AppendLine(false); //5371:30
+            __out.AppendLine(false); //5371:29
             __out.Append("using MetaDslx.CodeAnalysis;"); //5372:1
             __out.AppendLine(false); //5372:29
             __out.Append("using MetaDslx.CodeAnalysis.Binding;"); //5373:1

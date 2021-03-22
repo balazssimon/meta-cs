@@ -20,10 +20,12 @@ namespace MetaDslx.CodeGeneration
 
         public string ManualOutputDirectory { get; protected set; }
         public string AutomaticOutputDirectory { get; protected set; }
+        public bool DontSaveGeneratedOutputFiles { get; set; }
         public ImmutableArray<string> GetGeneratedFileList() => _generatedFiles.ToImmutable();
 
         public void WriteOutputFile(string filePath, string fileContent, bool automatic = true, bool omitCodeGenerationWarning = false)
         {
+            if (DontSaveGeneratedOutputFiles) return;
             if (automatic || !File.Exists(filePath))
             {
                 string path;
