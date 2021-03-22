@@ -1051,8 +1051,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             {
                 __out.AppendLine(false); //67:59
             }
-            __out.Append("using MetaDslx.Extensions.DependencyInjection;"); //68:1
-            __out.AppendLine(false); //68:47
+            __out.Append("using Microsoft.Extensions.DependencyInjection;"); //68:1
+            __out.AppendLine(false); //68:48
             __out.AppendLine(true); //69:1
             var lang = Properties.LanguageName; //70:2
             bool __tmp22_outputWritten = false;

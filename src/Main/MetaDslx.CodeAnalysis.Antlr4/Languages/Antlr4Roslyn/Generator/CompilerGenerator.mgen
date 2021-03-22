@@ -65,7 +65,7 @@ using [Properties.DefaultNamespace];
 using [Properties.DefaultNamespace].Symbols;
 using [Properties.DefaultNamespace].Syntax;
 using [Properties.DefaultNamespace].Syntax.InternalSyntax;
-using MetaDslx.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 ^
 [var lang = Properties.LanguageName]
 namespace [Properties.DefaultNamespace]

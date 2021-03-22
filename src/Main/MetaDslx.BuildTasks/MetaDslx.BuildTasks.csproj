@@ -32,6 +32,7 @@
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.Build.Framework" Version="$(MicrosoftBuildVersion)" PrivateAssets="All" />
     <PackageReference Include="Microsoft.Build.Utilities.Core" Version="$(MicrosoftBuildVersion)" PrivateAssets="All" />
+    <!--PackageReference Include="MetaDslx.BuildTools" Version="$(MetaDslxTargetVersion)" /-->
   </ItemGroup>
   
   <ItemGroup>
