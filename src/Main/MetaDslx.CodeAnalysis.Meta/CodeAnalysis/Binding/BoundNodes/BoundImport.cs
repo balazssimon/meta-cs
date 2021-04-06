@@ -12,8 +12,7 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
     {
         private Imports _imports;
 
-        public BoundImport(BoundNode parent, SyntaxNodeOrToken syntax)
-            : base(parent, syntax)
+        public BoundImport()
         {
             _imports = Imports.Empty;
         }

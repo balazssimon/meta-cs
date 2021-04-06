@@ -34,9 +34,9 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             return Language.SyntaxFacts.ExtractValue(this.Syntax);
         }
 
-        protected override BoundNode CreateBoundNode()
+        protected override BoundNode BindNode(CancellationToken cancellationToken)
         {
-            return new BoundValues(this.ParentBoundNode, this.Syntax, this.Values);
+            return new BoundValues(this.Values);
         }
     }
 }

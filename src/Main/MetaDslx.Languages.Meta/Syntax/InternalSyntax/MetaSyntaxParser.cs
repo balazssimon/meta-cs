@@ -982,12 +982,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    return context;
 		}
 		
-		public GreenNode ParseSymbolType(ref ParserState state)
+		public GreenNode ParseSymbolTypeAttribute(ref ParserState state)
 		{
 		    RestoreParserState(state);
 			try
 			{
-				var context = this.Antlr4Parser.symbolType();
+				var context = this.Antlr4Parser.symbolTypeAttribute();
 		        if (TryGetGreenNode(context, out var green)) return green;
 		        else return _visitor.Visit(context);
 			}
@@ -997,27 +997,27 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			}
 		}
 		
-		protected virtual bool CanReuseSymbolType(SymbolTypeSyntax node)
+		protected virtual bool CanReuseSymbolTypeAttribute(SymbolTypeAttributeSyntax node)
 		{
 			return node != null;
 		}
 		
-		internal MetaParser.SymbolTypeContext _Antlr4ParseSymbolType()
+		internal MetaParser.SymbolTypeAttributeContext _Antlr4ParseSymbolTypeAttribute()
 		{
 			BeginNode();
-		    MetaParser.SymbolTypeContext context = null;
+		    MetaParser.SymbolTypeAttributeContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseSymbolType(CurrentNode as SymbolTypeSyntax))
+				if (IsIncremental && CanReuseSymbolTypeAttribute(CurrentNode as SymbolTypeAttributeSyntax))
 				{
 					green = EatNode();
-					context = new MetaParser.SymbolTypeContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					context = new MetaParser.SymbolTypeAttributeContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
 					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
-					context = this.Antlr4Parser._DoParseSymbolType();
+					context = this.Antlr4Parser._DoParseSymbolTypeAttribute();
 					green = _visitor.Visit(context);
 				}
 		    }
@@ -1264,12 +1264,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    return context;
 		}
 		
-		public GreenNode ParseFieldSymbolProperty(ref ParserState state)
+		public GreenNode ParseFieldSymbolPropertyAttribute(ref ParserState state)
 		{
 		    RestoreParserState(state);
 			try
 			{
-				var context = this.Antlr4Parser.fieldSymbolProperty();
+				var context = this.Antlr4Parser.fieldSymbolPropertyAttribute();
 		        if (TryGetGreenNode(context, out var green)) return green;
 		        else return _visitor.Visit(context);
 			}
@@ -1279,27 +1279,27 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			}
 		}
 		
-		protected virtual bool CanReuseFieldSymbolProperty(FieldSymbolPropertySyntax node)
+		protected virtual bool CanReuseFieldSymbolPropertyAttribute(FieldSymbolPropertyAttributeSyntax node)
 		{
 			return node != null;
 		}
 		
-		internal MetaParser.FieldSymbolPropertyContext _Antlr4ParseFieldSymbolProperty()
+		internal MetaParser.FieldSymbolPropertyAttributeContext _Antlr4ParseFieldSymbolPropertyAttribute()
 		{
 			BeginNode();
-		    MetaParser.FieldSymbolPropertyContext context = null;
+		    MetaParser.FieldSymbolPropertyAttributeContext context = null;
 		    GreenNode green = null;
 		    try
 		    {
-				if (IsIncremental && CanReuseFieldSymbolProperty(CurrentNode as FieldSymbolPropertySyntax))
+				if (IsIncremental && CanReuseFieldSymbolPropertyAttribute(CurrentNode as FieldSymbolPropertyAttributeSyntax))
 				{
 					green = EatNode();
-					context = new MetaParser.FieldSymbolPropertyContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
+					context = new MetaParser.FieldSymbolPropertyAttributeContext_Cached(this.Antlr4Parser.Context, this.Antlr4Parser.State, green);
 					this.Antlr4Parser.Context.AddChild(context);
 				}
 				else
 				{
-					context = this.Antlr4Parser._DoParseFieldSymbolProperty();
+					context = this.Antlr4Parser._DoParseFieldSymbolPropertyAttribute();
 					green = _visitor.Visit(context);
 				}
 		    }
@@ -3381,15 +3381,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			    }
 				var attribute = attributeBuilder.ToList();
 				_pool.Free(attributeBuilder);
+				MetaParser.SymbolTypeAttributeContext symbolTypeAttributeContext = context.symbolTypeAttribute();
+				SymbolTypeAttributeGreen symbolTypeAttribute = null;
+				if (symbolTypeAttributeContext != null) symbolTypeAttribute = (SymbolTypeAttributeGreen)this.Visit(symbolTypeAttributeContext);
 				InternalSyntaxToken kAbstract = (InternalSyntaxToken)this.VisitTerminal(context.KAbstract());
 				InternalSyntaxToken kClass = (InternalSyntaxToken)this.VisitTerminal(context.KClass(), MetaSyntaxKind.KClass);
 				MetaParser.NameContext nameContext = context.name();
 				NameGreen name = null;
 				if (nameContext != null) name = (NameGreen)this.Visit(nameContext);
 				if (name == null) name = NameGreen.__Missing;
-				MetaParser.SymbolTypeContext symbolTypeContext = context.symbolType();
-				SymbolTypeGreen symbolType = null;
-				if (symbolTypeContext != null) symbolType = (SymbolTypeGreen)this.Visit(symbolTypeContext);
 				InternalSyntaxToken tColon = (InternalSyntaxToken)this.VisitTerminal(context.TColon());
 				MetaParser.ClassAncestorsContext classAncestorsContext = context.classAncestors();
 				ClassAncestorsGreen classAncestors = null;
@@ -3398,19 +3398,21 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				ClassBodyGreen classBody = null;
 				if (classBodyContext != null) classBody = (ClassBodyGreen)this.Visit(classBodyContext);
 				if (classBody == null) classBody = ClassBodyGreen.__Missing;
-				return _factory.ClassDeclaration(attribute, kAbstract, kClass, name, symbolType, tColon, classAncestors, classBody);
+				return _factory.ClassDeclaration(attribute, symbolTypeAttribute, kAbstract, kClass, name, tColon, classAncestors, classBody);
 			}
 			
-			public override GreenNode VisitSymbolType(MetaParser.SymbolTypeContext context)
+			public override GreenNode VisitSymbolTypeAttribute(MetaParser.SymbolTypeAttributeContext context)
 			{
-				if (context == null) return SymbolTypeGreen.__Missing;
+				if (context == null) return SymbolTypeAttributeGreen.__Missing;
 				InternalSyntaxToken tOpenBracket = (InternalSyntaxToken)this.VisitTerminal(context.TOpenBracket(), MetaSyntaxKind.TOpenBracket);
+				InternalSyntaxToken kSymbol = (InternalSyntaxToken)this.VisitTerminal(context.KSymbol(), MetaSyntaxKind.KSymbol);
+				InternalSyntaxToken tColon = (InternalSyntaxToken)this.VisitTerminal(context.TColon(), MetaSyntaxKind.TColon);
 				MetaParser.QualifierContext qualifierContext = context.qualifier();
 				QualifierGreen qualifier = null;
 				if (qualifierContext != null) qualifier = (QualifierGreen)this.Visit(qualifierContext);
 				if (qualifier == null) qualifier = QualifierGreen.__Missing;
 				InternalSyntaxToken tCloseBracket = (InternalSyntaxToken)this.VisitTerminal(context.TCloseBracket(), MetaSyntaxKind.TCloseBracket);
-				return _factory.SymbolType(tOpenBracket, qualifier, tCloseBracket);
+				return _factory.SymbolTypeAttribute(tOpenBracket, kSymbol, tColon, qualifier, tCloseBracket);
 			}
 			
 			public override GreenNode VisitClassBody(MetaParser.ClassBodyContext context)
@@ -3485,6 +3487,9 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			    }
 				var attribute = attributeBuilder.ToList();
 				_pool.Free(attributeBuilder);
+				MetaParser.FieldSymbolPropertyAttributeContext fieldSymbolPropertyAttributeContext = context.fieldSymbolPropertyAttribute();
+				FieldSymbolPropertyAttributeGreen fieldSymbolPropertyAttribute = null;
+				if (fieldSymbolPropertyAttributeContext != null) fieldSymbolPropertyAttribute = (FieldSymbolPropertyAttributeGreen)this.Visit(fieldSymbolPropertyAttributeContext);
 				MetaParser.FieldContainmentContext fieldContainmentContext = context.fieldContainment();
 				FieldContainmentGreen fieldContainment = null;
 				if (fieldContainmentContext != null) fieldContainment = (FieldContainmentGreen)this.Visit(fieldContainmentContext);
@@ -3499,9 +3504,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				NameGreen name = null;
 				if (nameContext != null) name = (NameGreen)this.Visit(nameContext);
 				if (name == null) name = NameGreen.__Missing;
-				MetaParser.FieldSymbolPropertyContext fieldSymbolPropertyContext = context.fieldSymbolProperty();
-				FieldSymbolPropertyGreen fieldSymbolProperty = null;
-				if (fieldSymbolPropertyContext != null) fieldSymbolProperty = (FieldSymbolPropertyGreen)this.Visit(fieldSymbolPropertyContext);
 				MetaParser.DefaultValueContext defaultValueContext = context.defaultValue();
 				DefaultValueGreen defaultValue = null;
 				if (defaultValueContext != null) defaultValue = (DefaultValueGreen)this.Visit(defaultValueContext);
@@ -3514,19 +3516,21 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				var redefinitionsOrSubsettings = redefinitionsOrSubsettingsBuilder.ToList();
 				_pool.Free(redefinitionsOrSubsettingsBuilder);
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), MetaSyntaxKind.TSemicolon);
-				return _factory.FieldDeclaration(attribute, fieldContainment, fieldModifier, typeReference, name, fieldSymbolProperty, defaultValue, redefinitionsOrSubsettings, tSemicolon);
+				return _factory.FieldDeclaration(attribute, fieldSymbolPropertyAttribute, fieldContainment, fieldModifier, typeReference, name, defaultValue, redefinitionsOrSubsettings, tSemicolon);
 			}
 			
-			public override GreenNode VisitFieldSymbolProperty(MetaParser.FieldSymbolPropertyContext context)
+			public override GreenNode VisitFieldSymbolPropertyAttribute(MetaParser.FieldSymbolPropertyAttributeContext context)
 			{
-				if (context == null) return FieldSymbolPropertyGreen.__Missing;
+				if (context == null) return FieldSymbolPropertyAttributeGreen.__Missing;
 				InternalSyntaxToken tOpenBracket = (InternalSyntaxToken)this.VisitTerminal(context.TOpenBracket(), MetaSyntaxKind.TOpenBracket);
+				InternalSyntaxToken kSymbol = (InternalSyntaxToken)this.VisitTerminal(context.KSymbol(), MetaSyntaxKind.KSymbol);
+				InternalSyntaxToken tColon = (InternalSyntaxToken)this.VisitTerminal(context.TColon(), MetaSyntaxKind.TColon);
 				MetaParser.IdentifierContext identifierContext = context.identifier();
 				IdentifierGreen identifier = null;
 				if (identifierContext != null) identifier = (IdentifierGreen)this.Visit(identifierContext);
 				if (identifier == null) identifier = IdentifierGreen.__Missing;
 				InternalSyntaxToken tCloseBracket = (InternalSyntaxToken)this.VisitTerminal(context.TCloseBracket(), MetaSyntaxKind.TCloseBracket);
-				return _factory.FieldSymbolProperty(tOpenBracket, identifier, tCloseBracket);
+				return _factory.FieldSymbolPropertyAttribute(tOpenBracket, kSymbol, tColon, identifier, tCloseBracket);
 			}
 			
 			public override GreenNode VisitFieldContainment(MetaParser.FieldContainmentContext context)
@@ -4329,10 +4333,10 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    public GreenNode CachedNode => _cachedNode;
 		}
 		
-		internal class SymbolTypeContext_Cached : SymbolTypeContext, ICachedRuleContext
+		internal class SymbolTypeAttributeContext_Cached : SymbolTypeAttributeContext, ICachedRuleContext
 		{
 		    private GreenNode _cachedNode;
-		    public SymbolTypeContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+		    public SymbolTypeAttributeContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
 				: base(parent, invokingState)
 		    {
 		        _cachedNode = cachedNode;
@@ -4395,10 +4399,10 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		    public GreenNode CachedNode => _cachedNode;
 		}
 		
-		internal class FieldSymbolPropertyContext_Cached : FieldSymbolPropertyContext, ICachedRuleContext
+		internal class FieldSymbolPropertyAttributeContext_Cached : FieldSymbolPropertyAttributeContext, ICachedRuleContext
 		{
 		    private GreenNode _cachedNode;
-		    public FieldSymbolPropertyContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
+		    public FieldSymbolPropertyAttributeContext_Cached(ParserRuleContext parent, int invokingState, GreenNode cachedNode)
 				: base(parent, invokingState)
 		    {
 		        _cachedNode = cachedNode;

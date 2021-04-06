@@ -26,8 +26,8 @@ namespace MetaDslx.Languages.Meta.Binding
             var assoc = this.Syntax.AsNode() as AssociationDeclarationSyntax;
             var sourceBinder = GetBinder(assoc.Source);
             var targetBinder = GetBinder(assoc.Target);
-            var source = (BoundSymbol)sourceBinder.Bind(assoc.Source, default);
-            var target = (BoundSymbol)targetBinder.Bind(assoc.Target, default);
+            var source = (BoundSymbol)sourceBinder.Bind(cancellationToken);
+            var target = (BoundSymbol)targetBinder.Bind(cancellationToken);
             if (!source.Diagnostics.IsEmpty || !target.Diagnostics.IsEmpty)
             {
                 diagnostics.AddRange(source.Diagnostics);

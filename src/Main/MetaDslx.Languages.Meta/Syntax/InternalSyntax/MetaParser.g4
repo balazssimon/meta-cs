@@ -66,10 +66,10 @@ enumMemberDeclaration :                       operationDeclaration;
 
                      
               
-classDeclaration : attribute*                                       KAbstract? KClass name symbolType? (TColon                         classAncestors)? classBody;
+classDeclaration : attribute* symbolTypeAttribute?                                       KAbstract? KClass name (TColon                         classAncestors)? classBody;
                      
-                  
-symbolType : TOpenBracket qualifier TCloseBracket;
+           
+symbolTypeAttribute : TOpenBracket KSymbol TColon qualifier TCloseBracket;
       
 classBody : TOpenBrace classMemberDeclaration* TCloseBrace;
 classAncestors : classAncestor (TComma classAncestor)*;
@@ -81,9 +81,9 @@ classMemberDeclaration
 
                         
               
-fieldDeclaration : attribute* fieldContainment? fieldModifier?                 typeReference name fieldSymbolProperty? defaultValue? redefinitionsOrSubsettings* TSemicolon;
+fieldDeclaration : attribute* fieldSymbolPropertyAttribute? fieldContainment? fieldModifier?                 typeReference name defaultValue? redefinitionsOrSubsettings* TSemicolon;
                          
-fieldSymbolProperty : TOpenBracket                 identifier TCloseBracket;
+fieldSymbolPropertyAttribute : TOpenBracket KSymbol TColon                 identifier TCloseBracket;
                                         
 fieldContainment : KContainment;
                

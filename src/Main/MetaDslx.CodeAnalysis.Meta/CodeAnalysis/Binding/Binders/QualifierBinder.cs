@@ -17,23 +17,23 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
         {
         }
 
-        protected override BoundNode CreateBoundNode()
+        protected override BoundNode BindNode(CancellationToken cancellationToken)
         {
             // Only create a BoundQualifier node for the topmost qualifier:
             if (Next.GetBoundQualifier() != null) return null;
             var position = this.GetBinderPosition();
             var identifiers = FindBinders.FindIdentifierBinders(position).Select(ib => ib.Syntax).ToImmutableArray();
-            return new BoundQualifier(this.ParentBoundNode, this.Syntax, identifiers);
+            return new BoundQualifier(identifiers);
         }
 
         public override BoundQualifier GetBoundQualifier()
         {
-            return (BoundQualifier)this.BoundNode;
+            return (BoundQualifier)this.Bind();
         }
 
         protected override LookupConstraints AdjustConstraintsFor(SyntaxNodeOrToken lookupSyntax, LookupConstraints constraints)
         {
-            var boundNode = (BoundQualifier)this.BoundNode;
+            var boundNode = (BoundQualifier)this.Bind();
             if (boundNode != null && boundNode.IsLastIdentifier(lookupSyntax))
             {
                 return base.AdjustConstraintsFor(lookupSyntax, constraints);

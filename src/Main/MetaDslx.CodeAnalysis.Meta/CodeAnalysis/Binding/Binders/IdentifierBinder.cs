@@ -45,9 +45,9 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             }
         }
 
-        protected override BoundNode CreateBoundNode()
+        protected override BoundNode BindNode(CancellationToken cancellationToken)
         {
-            return new BoundIdentifier(this.ParentBoundNode, this.Syntax); 
+            return new BoundIdentifier(); 
         }
 
     }

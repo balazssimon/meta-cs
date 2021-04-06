@@ -27,12 +27,8 @@ namespace MetaDslx.CodeAnalysis.Binding
             _boundTree = boundTree;
         }
 
-        public BoundNode(BoundNode parent, SyntaxNodeOrToken syntax)
+        public BoundNode()
         {
-            Debug.Assert(parent != null);
-            _boundTree = parent._boundTree;
-            _parent = parent;
-            _syntax = syntax;
         }
 
         public BoundTree BoundTree => _boundTree;
@@ -66,8 +62,12 @@ namespace MetaDslx.CodeAnalysis.Binding
             {
                 Interlocked.CompareExchange(ref _children, new ConcurrentDictionary<SyntaxNodeOrToken, BoundNode>(), null);
             }
+            child._syntax = syntax;
+            child._parent = this;
+            child._boundTree = this._boundTree;
             _children.TryAdd(syntax, child);
-            return _children[syntax];
+            var result = _children[syntax];
+            return result;
         }
 
         public override string ToString()

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
+using System.Threading;
 
 namespace MetaDslx.CodeAnalysis.Binding.Binders
 {
@@ -17,7 +18,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             _boundRoot = boundRoot;
         }
 
-        protected override BoundNode CreateBoundNode()
+        protected override BoundNode BindNode(CancellationToken cancellationToken)
         {
             return _boundRoot;
         }

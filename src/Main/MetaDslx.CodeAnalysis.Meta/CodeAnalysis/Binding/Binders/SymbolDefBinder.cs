@@ -30,14 +30,14 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
 
         public Type ModelObjectType => _type;
 
-        protected override BoundNode CreateBoundNode()
+        protected override BoundNode BindNode(CancellationToken cancellationToken)
         {
             var symbols = SourceSymbol.GetInnermostNestedDeclaredSymbols(this.Syntax.GetReference(), this.ContainingDeclaration).Cast<DeclaredSymbol, Symbol>();
             Debug.Assert(symbols.Length == 1 && symbols[0] != null);
-            return new BoundSymbols(this.ParentBoundNode, this.Syntax, symbols);
+            return new BoundSymbols(symbols);
         }
 
-        public ImmutableArray<Symbol> DefinedSymbols => ((BoundSymbol)this.BoundNode).Symbols;
+        public ImmutableArray<Symbol> DefinedSymbols => ((BoundSymbol)this.Bind()).Symbols;
 
         public Symbol DefinedSymbol => DefinedSymbols.FirstOrDefault();
 

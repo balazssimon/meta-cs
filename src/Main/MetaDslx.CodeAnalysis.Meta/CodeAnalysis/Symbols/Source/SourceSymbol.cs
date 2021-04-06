@@ -319,7 +319,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             else
             {
                 var location = valueBinder.Syntax.GetLocation();
-                var boundValue = valueBinder.Binder.Bind(valueBinder.Syntax, cancellationToken) as BoundValue;
+                var boundValue = valueBinder.Binder.Bind(cancellationToken) as BoundValue;
                 Debug.Assert(boundValue != null);
                 if (boundValue != null)
                 {
@@ -483,7 +483,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                     }
                     else
                     {
-                        var boundNode = phaseBinder.Binder.Bind(phaseBinder.Syntax, cancellationToken);
+                        var boundNode = phaseBinder.Binder.Bind(cancellationToken);
                         if (!boundNode.Diagnostics.IsDefaultOrEmpty) diagnostics.AddRange(boundNode.Diagnostics);
                     }
                 }

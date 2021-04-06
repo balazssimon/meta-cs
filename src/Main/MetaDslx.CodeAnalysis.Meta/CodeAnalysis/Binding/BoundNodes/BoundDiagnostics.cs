@@ -10,8 +10,7 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
     {
         private ImmutableArray<Diagnostic> _diagnostics;
 
-        public BoundDiagnostics(BoundNode parent, SyntaxNodeOrToken syntax, ImmutableArray<Diagnostic> diagnostics) 
-            : base(parent, syntax)
+        public BoundDiagnostics(ImmutableArray<Diagnostic> diagnostics) 
         {
             _diagnostics = diagnostics;
         }

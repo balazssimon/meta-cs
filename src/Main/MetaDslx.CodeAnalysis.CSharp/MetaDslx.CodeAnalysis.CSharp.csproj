@@ -64,7 +64,7 @@
       <SubType>Designer</SubType>
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>CSharpResources.Designer.cs</LastGenOutput>
-      <CustomToolNamespace>Microsoft.CodeAnalysis.CSharp</CustomToolNamespace>
+      <CustomToolNamespace>MetaDslx.CodeAnalysis.CSharp</CustomToolNamespace>
     </EmbeddedResource>
   </ItemGroup>
   

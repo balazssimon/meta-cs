@@ -360,13 +360,13 @@ namespace MetaDslx.Languages.Meta.Binding
 				        this.Visit(child);
 					}
 				}
+				this.Visit(node.SymbolTypeAttribute);
 				switch (node.KAbstract.GetKind().Switch())
 				{
 					default:
 						break;
 				}
 				this.Visit(node.Name);
-				this.Visit(node.SymbolType);
 				this.BeginProperty(node.ClassAncestors, name: "SuperClasses");
 				try
 				{
@@ -384,20 +384,12 @@ namespace MetaDslx.Languages.Meta.Binding
 			}
 		}
 		
-		public virtual void VisitSymbolType(SymbolTypeSyntax node)
+		public virtual void VisitSymbolTypeAttribute(SymbolTypeAttributeSyntax node)
 		{
 			this.BeginProperty(node, name: "SymbolType");
 			try
 			{
-				this.BeginSymbolUse(node, types: ImmutableArray.Create(typeof(Symbol)));
-				try
-				{
-					this.Visit(node.Qualifier);
-				}
-				finally
-				{
-					this.EndSymbolUse();
-				}
+				this.Visit(node.Qualifier);
 			}
 			finally
 			{
@@ -482,6 +474,7 @@ namespace MetaDslx.Languages.Meta.Binding
 				        this.Visit(child);
 					}
 				}
+				this.Visit(node.FieldSymbolPropertyAttribute);
 				this.Visit(node.FieldContainment);
 				this.Visit(node.FieldModifier);
 				this.BeginProperty(node.TypeReference, name: "Type");
@@ -494,7 +487,6 @@ namespace MetaDslx.Languages.Meta.Binding
 					this.EndProperty();
 				}
 				this.Visit(node.Name);
-				this.Visit(node.FieldSymbolProperty);
 				this.Visit(node.DefaultValue);
 				if (node.RedefinitionsOrSubsettings != null)
 				{
@@ -510,7 +502,7 @@ namespace MetaDslx.Languages.Meta.Binding
 			}
 		}
 		
-		public virtual void VisitFieldSymbolProperty(FieldSymbolPropertySyntax node)
+		public virtual void VisitFieldSymbolPropertyAttribute(FieldSymbolPropertyAttributeSyntax node)
 		{
 			this.BeginProperty(node, name: "SymbolProperty");
 			try

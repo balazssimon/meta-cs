@@ -27,6 +27,11 @@ namespace MetaDslx.Languages.Meta.Binding
         {
         }
 
+        protected override BoundNode BindNode(CancellationToken cancellationToken)
+        {
+            return base.BindNode(cancellationToken);
+        }
+
         public DeclaredSymbol SymbolType
         {
             get
@@ -35,12 +40,20 @@ namespace MetaDslx.Languages.Meta.Binding
                 {
                     var type = this.ContainingType;
                     var symbolType = this.GetSymbolTypeSymbol(type);
-                    if (symbolType == null)
+                    if (symbolType != null)
                     {
                         foreach (var baseType in type.AllBaseTypesNoUseSiteDiagnostics)
                         {
-                            symbolType = this.GetSymbolTypeSymbol(baseType);
-                            if (symbolType != null) break;
+                            var baseSymbolType = this.GetSymbolTypeSymbol(baseType);
+                            /*if (baseSymbolType != null && baseSymbolType != symbolType && !symbolType.AllBaseTypesNoUseSiteDiagnostics.Contains(baseSymbolType))
+                            {
+                                
+                            }*/
+                            if (baseSymbolType != null)
+                            {
+                                symbolType = baseSymbolType;
+                                break;
+                            }
                         }
                     }
                     Interlocked.CompareExchange(ref _symbolType, symbolType, null);
@@ -65,7 +78,7 @@ namespace MetaDslx.Languages.Meta.Binding
                         var syntaxTree = location.SourceTree;
                         var root = syntaxTree.GetRoot();
                         var node = root.FindNode(location.SourceSpan);
-                        var symbolTypeBoundNode = this.Compilation.GetBinder(node).Bind(node, default);
+                        var symbolTypeBoundNode = this.Compilation.GetBinder(node).Bind();
                         var msymbol = (symbolTypeBoundNode as BoundValue).Values.FirstOrDefault() as NamedTypeSymbol;
                         return msymbol;
                     }

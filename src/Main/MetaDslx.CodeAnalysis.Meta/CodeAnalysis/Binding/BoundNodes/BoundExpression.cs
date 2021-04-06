@@ -8,11 +8,6 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
 {
     public class BoundExpression : BoundNode
     {
-        public BoundExpression(BoundNode parent, SyntaxNodeOrToken syntax)
-            : base(parent, syntax)
-        {
-        }
-
         public Symbol Symbol { get; }
     }
 }

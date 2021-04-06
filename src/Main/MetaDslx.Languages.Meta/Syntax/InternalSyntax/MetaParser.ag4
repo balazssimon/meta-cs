@@ -66,10 +66,10 @@ enumMemberDeclaration : $Property(Operations) operationDeclaration;
 
 $SymbolDef(MetaClass)
 $Documentation
-classDeclaration : attribute* $Property(name=IsAbstract,value=true) KAbstract? KClass name symbolType? (TColon $Property(SuperClasses) classAncestors)? classBody;
+classDeclaration : attribute* symbolTypeAttribute? $Property(name=IsAbstract,value=true) KAbstract? KClass name (TColon $Property(SuperClasses) classAncestors)? classBody;
 $Property(SymbolType)
-$SymbolUse(Symbol)
-symbolType : TOpenBracket qualifier TCloseBracket;
+$SymbolType
+symbolTypeAttribute : TOpenBracket KSymbol TColon qualifier TCloseBracket;
 $Scope
 classBody : TOpenBrace classMemberDeclaration* TCloseBrace;
 classAncestors : classAncestor (TComma classAncestor)*;
@@ -81,9 +81,9 @@ classMemberDeclaration
 
 $SymbolDef(MetaProperty)
 $Documentation
-fieldDeclaration : attribute* fieldContainment? fieldModifier? $Property(Type) typeReference name fieldSymbolProperty? defaultValue? redefinitionsOrSubsettings* TSemicolon;
+fieldDeclaration : attribute* fieldSymbolPropertyAttribute? fieldContainment? fieldModifier? $Property(Type) typeReference name defaultValue? redefinitionsOrSubsettings* TSemicolon;
 $Property(SymbolProperty)
-fieldSymbolProperty : TOpenBracket $SymbolProperty identifier TCloseBracket;
+fieldSymbolPropertyAttribute : TOpenBracket KSymbol TColon $SymbolProperty identifier TCloseBracket;
 $Property(name=IsContainment,value=true)
 fieldContainment : KContainment;
 $Property(Kind)

@@ -157,11 +157,11 @@ public interface IMetaParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitClassDeclaration([NotNull] MetaParser.ClassDeclarationContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="MetaParser.symbolType"/>.
+	/// Visit a parse tree produced by <see cref="MetaParser.symbolTypeAttribute"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitSymbolType([NotNull] MetaParser.SymbolTypeContext context);
+	Result VisitSymbolTypeAttribute([NotNull] MetaParser.SymbolTypeAttributeContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="MetaParser.classBody"/>.
 	/// </summary>
@@ -193,11 +193,11 @@ public interface IMetaParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitFieldDeclaration([NotNull] MetaParser.FieldDeclarationContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="MetaParser.fieldSymbolProperty"/>.
+	/// Visit a parse tree produced by <see cref="MetaParser.fieldSymbolPropertyAttribute"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitFieldSymbolProperty([NotNull] MetaParser.FieldSymbolPropertyContext context);
+	Result VisitFieldSymbolPropertyAttribute([NotNull] MetaParser.FieldSymbolPropertyAttributeContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="MetaParser.fieldContainment"/>.
 	/// </summary>

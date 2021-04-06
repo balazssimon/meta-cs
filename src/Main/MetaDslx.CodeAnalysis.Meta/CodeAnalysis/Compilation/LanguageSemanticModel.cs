@@ -1260,10 +1260,11 @@ namespace MetaDslx.CodeAnalysis
             // In that case, this method chooses the implicit conversion.
 
             position = CheckAndAdjustPosition(position);
-            var binder = this.GetEnclosingBinder(position);
+            Binder binder = null; // TODO:MetaDslx: find or create a binder for the expression
+            //var binder = this.GetEnclosingBinder(position);
             if (binder != null)
             {
-                var bnode = binder.Bind(expression, default) as BoundSymbol;
+                var bnode = binder.Bind() as BoundSymbol;
 
                 if (bnode != null && !cdestination.IsErrorType())
                 {
@@ -1311,10 +1312,11 @@ namespace MetaDslx.CodeAnalysis
             }
 
             position = CheckAndAdjustPosition(position);
-            var binder = this.GetEnclosingBinder(position);
+            Binder binder = null; // TODO:MetaDslx: find or create a binder for the expression
+            //var binder = this.GetEnclosingBinder(position);
             if (binder != null)
             {
-                var bnode = binder.Bind(expression, default) as BoundSymbol;
+                var bnode = binder.Bind() as BoundSymbol;
 
                 if (bnode != null && !destination.IsErrorType())
                 {
@@ -1485,7 +1487,7 @@ namespace MetaDslx.CodeAnalysis
         {
             if (node == null) throw new ArgumentNullException(nameof(node));
             var syntaxNode = (LanguageSyntaxNode)node;
-            var boundNode = this.Compilation.GetBinder(syntaxNode).Bind(syntaxNode, cancellationToken) as BoundValue;
+            var boundNode = this.Compilation.GetBinder(syntaxNode).Bind(cancellationToken) as BoundValue;
             if (boundNode?.Values.FirstOrDefault() is Symbol symbol)
             {
                 return new SymbolInfo(symbol);
@@ -1497,7 +1499,7 @@ namespace MetaDslx.CodeAnalysis
         {
             if (node == null) throw new ArgumentNullException(nameof(node));
             var syntaxNode = (LanguageSyntaxNode)node;
-            var boundNode = this.Compilation.GetBinder(syntaxNode).Bind(syntaxNode, cancellationToken) as BoundValue;
+            var boundNode = this.Compilation.GetBinder(syntaxNode).Bind(cancellationToken) as BoundValue;
             if (boundNode?.Values.FirstOrDefault() is TypeSymbol typeSymbol)
             {
                 return new LanguageTypeInfo(typeSymbol, typeSymbol, Conversion.NoConversion);

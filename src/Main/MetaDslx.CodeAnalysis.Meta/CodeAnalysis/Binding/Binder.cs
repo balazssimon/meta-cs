@@ -29,7 +29,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         private readonly SyntaxNodeOrToken _syntax;
         private readonly Binder _next;
         internal readonly int _index;
-        internal Lazy<BoundNode> _boundNode;
+        private BoundNode _boundNode;
 
         public readonly BinderFlags Flags;
 
@@ -42,7 +42,6 @@ namespace MetaDslx.CodeAnalysis.Binding
             this.Flags = compilation.Options.TopLevelBinderFlags;
             _compilation = compilation;
             _index = 0;
-            _boundNode = new Lazy<BoundNode>(GetOrCreateBoundNode, true);
         }
 
         public Binder(Binder next, SyntaxNodeOrToken syntax, Conversions conversions = null)
@@ -55,7 +54,6 @@ namespace MetaDslx.CodeAnalysis.Binding
             this.Flags = next.Flags;
             _compilation = next._compilation;
             _lazyConversions = conversions;
-            _boundNode = new Lazy<BoundNode>(GetOrCreateBoundNode, true);
         }
 
         private Binder(Binder next, BinderFlags flags)
@@ -66,7 +64,6 @@ namespace MetaDslx.CodeAnalysis.Binding
             _syntax = next.Syntax;
             this.Flags = flags;
             _compilation = next._compilation;
-            _boundNode = new Lazy<BoundNode>(GetOrCreateBoundNode, true);
         }
 
         public LanguageCompilation Compilation => _compilation;
@@ -121,38 +118,12 @@ namespace MetaDslx.CodeAnalysis.Binding
             return new BinderPosition(this, GetBinder(this.Syntax), this.Syntax);
         }
 
-        protected BoundNode ParentBoundNode => Next?.BoundNode ?? Next?.ParentBoundNode ?? _compilation.GetBoundTree(Syntax)?.RootNode;
-
-        internal protected BoundNode BoundNode => _boundNode.Value;
-
         /// <summary>
         /// Some nodes have special binders for their contents (like Blocks)
         /// </summary>
         public virtual Binder GetBinder(SyntaxNodeOrToken node)
         {
             return this.Next.GetBinder(node);
-        }
-
-        private BoundNode GetOrCreateBoundNode()
-        {
-            if (this.Syntax.IsNull) return null;
-            var parent = this.ParentBoundNode;
-            var result = parent?.GetChild(this.Syntax);
-            if (result == null)
-            {
-                result = CreateBoundNode();
-                if (result != null)
-                {
-                    Interlocked.CompareExchange(ref result._index, _index, 0);
-                    if (parent != null) result = parent.TryAddChild(this.Syntax, result);
-                }
-            }
-            return result;
-        }
-
-        protected virtual BoundNode CreateBoundNode()
-        {
-            return null;
         }
 
         public virtual BoundQualifier GetBoundQualifier()
@@ -570,12 +541,29 @@ namespace MetaDslx.CodeAnalysis.Binding
             }
         }
 
-        public virtual BoundNode Bind(SyntaxNodeOrToken node, CancellationToken cancellationToken)
+        public BoundNode Bind(CancellationToken cancellationToken = default)
         {
-            if (node == this.Syntax) return this.BoundNode;
-            var boundNode = this.ParentBoundNode;
-            if (boundNode.Syntax == this.Syntax) return boundNode;
+            if (this.Syntax.IsNull) return null;
+            if (_boundNode == null)
+            {
+                var boundNode = BindNode(cancellationToken);
+                if (boundNode != null)
+                {
+                    var parentNode = Next?.Bind(cancellationToken);
+                    if (parentNode == null) parentNode = _compilation.GetBoundTree(Syntax)?.RootNode;
+                    boundNode = parentNode.TryAddChild(this.Syntax, boundNode);
+                    Interlocked.CompareExchange(ref boundNode._index, _index, 0);
+                    Interlocked.CompareExchange(ref _boundNode, boundNode, null);
+                }
+            }
+            if (_boundNode != null) return _boundNode;
+            if (Next?.Syntax == this.Syntax) return Next?.Bind(cancellationToken);
             else return null;
+        }
+
+        protected virtual BoundNode BindNode(CancellationToken cancellationToken)
+        {
+            return null;
         }
 
         public override string ToString()

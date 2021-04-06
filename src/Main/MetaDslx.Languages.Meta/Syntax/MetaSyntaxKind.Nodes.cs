@@ -45,13 +45,13 @@ namespace MetaDslx.Languages.Meta.Syntax
 		public const string EnumValue = nameof(EnumValue);
 		public const string EnumMemberDeclaration = nameof(EnumMemberDeclaration);
 		public const string ClassDeclaration = nameof(ClassDeclaration);
-		public const string SymbolType = nameof(SymbolType);
+		public const string SymbolTypeAttribute = nameof(SymbolTypeAttribute);
 		public const string ClassBody = nameof(ClassBody);
 		public const string ClassAncestors = nameof(ClassAncestors);
 		public const string ClassAncestor = nameof(ClassAncestor);
 		public const string ClassMemberDeclaration = nameof(ClassMemberDeclaration);
 		public const string FieldDeclaration = nameof(FieldDeclaration);
-		public const string FieldSymbolProperty = nameof(FieldSymbolProperty);
+		public const string FieldSymbolPropertyAttribute = nameof(FieldSymbolPropertyAttribute);
 		public const string FieldContainment = nameof(FieldContainment);
 		public const string FieldModifier = nameof(FieldModifier);
 		public const string DefaultValue = nameof(DefaultValue);

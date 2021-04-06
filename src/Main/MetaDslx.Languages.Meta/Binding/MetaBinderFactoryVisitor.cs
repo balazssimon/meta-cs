@@ -63,12 +63,12 @@ namespace MetaDslx.Languages.Meta.Binding
 		public static object UseConstDeclaration = new object();
 		public static object UseEnumBody = new object();
 		public static object UseEnumValue = new object();
-		public static object UseSymbolType = new object();
+		public static object UseSymbolTypeAttribute = new object();
 		public static object Use = new object();
 		public static object UseClassBody = new object();
+		public static object UseFieldSymbolPropertyAttribute = new object();
 		public static object UseFieldContainment = new object();
 		public static object UseFieldModifier = new object();
-		public static object UseFieldSymbolProperty = new object();
 		public static object UseDefaultValue = new object();
 		public static object UseConstValue = new object();
 		public static object UseVoidType = new object();
@@ -108,6 +108,16 @@ namespace MetaDslx.Languages.Meta.Binding
         protected virtual Binder CreateDocumentationBinderCore(Binder parentBinder, LanguageSyntaxNode syntax)
         {
             return new DocumentationBinder(parentBinder, syntax);
+        }
+
+        protected virtual Binder CreateSymbolTypeBinder(Binder parentBinder, LanguageSyntaxNode syntax)
+        {
+            return this.CreateSymbolTypeBinderCore(parentBinder, syntax);
+        }
+
+        protected virtual Binder CreateSymbolTypeBinderCore(Binder parentBinder, LanguageSyntaxNode syntax)
+        {
+            return new SymbolTypeBinder(parentBinder, syntax);
         }
 
         protected virtual Binder CreateSymbolPropertyBinder(Binder parentBinder, LanguageSyntaxNode syntax)
@@ -517,7 +527,7 @@ namespace MetaDslx.Languages.Meta.Binding
 			return resultBinder;
 		}
 		
-		public Binder VisitSymbolType(SymbolTypeSyntax parent)
+		public Binder VisitSymbolTypeAttribute(SymbolTypeAttributeSyntax parent)
 		{
 		    if (!parent.FullSpan.Contains(this.Position))
 		    {
@@ -529,7 +539,7 @@ namespace MetaDslx.Languages.Meta.Binding
 			{
 				resultBinder = VisitParent(parent);
 				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "SymbolType");
-				resultBinder = this.CreateSymbolUseBinder(resultBinder, parent, types: ImmutableArray.Create(typeof(Symbol)));
+				resultBinder = this.CreateSymbolTypeBinder(resultBinder, parent);
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 			}
 			return resultBinder;
@@ -651,7 +661,7 @@ namespace MetaDslx.Languages.Meta.Binding
 			return resultBinder;
 		}
 		
-		public Binder VisitFieldSymbolProperty(FieldSymbolPropertySyntax parent)
+		public Binder VisitFieldSymbolPropertyAttribute(FieldSymbolPropertyAttributeSyntax parent)
 		{
 		    if (!parent.FullSpan.Contains(this.Position))
 		    {

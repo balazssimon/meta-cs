@@ -21,9 +21,5 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
         public bool IsExtern => _isExtern;
         public bool IsStatic => _isStatic;
 
-        protected override BoundNode CreateBoundNode()
-        {
-            return base.CreateBoundNode();
-        }
     }
 }

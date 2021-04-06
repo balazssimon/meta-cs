@@ -8,11 +8,6 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
 {
     public abstract class BoundValue : BoundNode
     {
-        public BoundValue(BoundNode parent, SyntaxNodeOrToken syntax) 
-            : base(parent, syntax)
-        {
-        }
-
         public abstract ImmutableArray<object> Values { get; }
     }
 }

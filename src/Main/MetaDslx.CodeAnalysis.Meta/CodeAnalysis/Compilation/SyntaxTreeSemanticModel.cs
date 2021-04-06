@@ -235,7 +235,7 @@ namespace MetaDslx.CodeAnalysis
                         // will be one in the binder chain and one isn't necessarily required for the batch case.
                         binder = new LocalScopeBinder(binder, node);
 
-                        BoundNode bound = binder.Bind(node, cancellationToken);
+                        BoundNode bound = binder.Bind(cancellationToken);
 
                         SymbolInfo info = GetSymbolInfoForNode(options, ImmutableArray.Create(bound), boundNodeForSyntacticParent: default, binderOpt: null);
                         if ((object)info.Symbol != null)

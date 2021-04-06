@@ -240,7 +240,7 @@ public partial class MetaParserBaseVisitor<Result> : AbstractParseTreeVisitor<Re
 	/// <return>The visitor result.</return>
 	public virtual Result VisitClassDeclaration([NotNull] MetaParser.ClassDeclarationContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="MetaParser.symbolType"/>.
+	/// Visit a parse tree produced by <see cref="MetaParser.symbolTypeAttribute"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -248,7 +248,7 @@ public partial class MetaParserBaseVisitor<Result> : AbstractParseTreeVisitor<Re
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitSymbolType([NotNull] MetaParser.SymbolTypeContext context) { return VisitChildren(context); }
+	public virtual Result VisitSymbolTypeAttribute([NotNull] MetaParser.SymbolTypeAttributeContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="MetaParser.classBody"/>.
 	/// <para>
@@ -300,7 +300,7 @@ public partial class MetaParserBaseVisitor<Result> : AbstractParseTreeVisitor<Re
 	/// <return>The visitor result.</return>
 	public virtual Result VisitFieldDeclaration([NotNull] MetaParser.FieldDeclarationContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="MetaParser.fieldSymbolProperty"/>.
+	/// Visit a parse tree produced by <see cref="MetaParser.fieldSymbolPropertyAttribute"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -308,7 +308,7 @@ public partial class MetaParserBaseVisitor<Result> : AbstractParseTreeVisitor<Re
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitFieldSymbolProperty([NotNull] MetaParser.FieldSymbolPropertyContext context) { return VisitChildren(context); }
+	public virtual Result VisitFieldSymbolPropertyAttribute([NotNull] MetaParser.FieldSymbolPropertyAttributeContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="MetaParser.fieldContainment"/>.
 	/// <para>

@@ -16,8 +16,7 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
         private ImmutableArray<DeclaredSymbol> _identifierSymbols;
         private ImmutableArray<Diagnostic> _diagnostics;
 
-        public BoundQualifier(BoundNode parent, SyntaxNodeOrToken syntax, ImmutableArray<SyntaxNodeOrToken> identifiers)
-            : base(parent, syntax)
+        public BoundQualifier(ImmutableArray<SyntaxNodeOrToken> identifiers)
         {
             _identifiers = identifiers;
         }
