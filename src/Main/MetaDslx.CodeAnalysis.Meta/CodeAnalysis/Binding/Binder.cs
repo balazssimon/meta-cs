@@ -30,6 +30,8 @@ namespace MetaDslx.CodeAnalysis.Binding
         private readonly Binder _next;
         internal readonly int _index;
         private BoundNode _boundNode;
+        private Conversions _lazyConversions;
+        private OverloadResolution _lazyOverloadResolution;
 
         public readonly BinderFlags Flags;
 
@@ -44,7 +46,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             _index = 0;
         }
 
-        public Binder(Binder next, SyntaxNodeOrToken syntax, Conversions conversions = null)
+        public Binder(Binder next, SyntaxNodeOrToken syntax)
         {
             Debug.Assert(next != null);
             if (syntax.IsNull) _syntax = next.Syntax;
@@ -53,7 +55,6 @@ namespace MetaDslx.CodeAnalysis.Binding
             _next = next;
             this.Flags = next.Flags;
             _compilation = next._compilation;
-            _lazyConversions = conversions;
         }
 
         private Binder(Binder next, BinderFlags flags)
@@ -105,9 +106,6 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         public bool IsSemanticModelBinder => this.Flags.Includes(BinderFlags.SemanticModel);
 
-        // IsEarlyAttributeBinder is called relatively frequently so we want fast code here.
-        public bool IsEarlyAttributeBinder => this.Flags.Includes(BinderFlags.EarlyAttributeBinding);
-
         /// <summary>
         /// Get the next binder in which to look up a name, if not found by this binder.
         /// </summary>
@@ -125,25 +123,6 @@ namespace MetaDslx.CodeAnalysis.Binding
         {
             return this.Next.GetBinder(node);
         }
-
-        public virtual BoundQualifier GetBoundQualifier()
-        {
-            return Next?.GetBoundQualifier();
-        }
-
-        /// <summary>
-        /// Get locals declared immediately in scope designated by the node.
-        /// </summary>
-        public virtual ImmutableArray<Symbol> GetDeclaredLocalsForScope(SyntaxNode scopeDesignator)
-        {
-            return this.Next.GetDeclaredLocalsForScope(scopeDesignator);
-        }
-
-        /// <summary>
-        /// If this binder owns a scope for locals, return syntax node that is used
-        /// as the scope designator. Otherwise, null.
-        /// </summary>
-        public virtual SyntaxNode ScopeDesignator => null;
 
         /// <summary>
         /// The member containing the binding context.  Note that for the purposes of the compiler,
@@ -175,7 +154,19 @@ namespace MetaDslx.CodeAnalysis.Binding
             }
         }
 
-        public virtual ImmutableArray<Symbol> ChildSymbols => Next.ChildSymbols;
+        /// <summary>
+        /// The type containing the binding context
+        /// </summary>
+        public TypeSymbol ContainingType
+        {
+            get
+            {
+                if (_next == null) return null;
+                var symbol = Next.GetDefinedSymbol() as TypeSymbol;
+                if (symbol != null) return symbol;
+                else return Next.ContainingType;
+            }
+        }
 
         /// <summary>
         /// The imports for all containing namespace declarations (innermost-to-outermost, including global),
@@ -186,29 +177,6 @@ namespace MetaDslx.CodeAnalysis.Binding
         public virtual Imports GetImports(ConsList<TypeSymbol> basesBeingResolved)
         {
             return _next.GetImports(basesBeingResolved);
-        }
-
-        protected virtual bool InExecutableBinder => _next.InExecutableBinder;
-
-        /// <summary>
-        /// The type containing the binding context
-        /// </summary>
-        public NamedTypeSymbol ContainingType
-        {
-            get
-            {
-                if (_next == null) return null;
-                var symbol = Next.GetDefinedSymbol() as NamedTypeSymbol;
-                if (symbol != null) return symbol;
-                else return Next.ContainingType;
-                /*var member = this.ContainingDeclaration;
-                Debug.Assert((object)member == null || member.Kind != LanguageSymbolKind.ErrorType);
-                return (object)member == null
-                    ? null
-                    : member.Kind == LanguageSymbolKind.NamedType
-                        ? (NamedTypeSymbol)member
-                        : member.ContainingType;*/
-            }
         }
 
         /// <summary>
@@ -243,7 +211,6 @@ namespace MetaDslx.CodeAnalysis.Binding
             }
         }
 
-        private Conversions _lazyConversions;
         public Conversions Conversions
         {
             get
@@ -257,7 +224,6 @@ namespace MetaDslx.CodeAnalysis.Binding
             }
         }
 
-        private OverloadResolution _lazyOverloadResolution;
         public OverloadResolution OverloadResolution
         {
             get
@@ -321,150 +287,6 @@ namespace MetaDslx.CodeAnalysis.Binding
             diagnostics.Add(new LanguageDiagnostic(new LanguageDiagnosticInfo(code, args), location));
         }
 
-        /// <summary>
-        /// Issue an error or warning for a symbol if it is Obsolete. If there is not enough
-        /// information to report diagnostics, then store the symbols so that diagnostics
-        /// can be reported at a later stage.
-        /// </summary>
-        public void ReportDiagnosticsIfObsolete(DiagnosticBag diagnostics, DeclaredSymbol symbol, SyntaxNodeOrToken node, bool hasBaseReceiver)
-        {
-            switch (symbol.Kind.Switch())
-            {
-                case LanguageSymbolKind.NamedType:
-                case LanguageSymbolKind.Member:
-                    ReportDiagnosticsIfObsolete(diagnostics, symbol, node, hasBaseReceiver, this.ContainingDeclaration, this.ContainingType, this.Flags);
-                    break;
-            }
-        }
-
-        public void ReportDiagnosticsIfObsolete(DiagnosticBag diagnostics, Conversion conversion, SyntaxNodeOrToken node, bool hasBaseReceiver)
-        {
-            if (conversion.IsValid && (object)conversion.Method != null)
-            {
-                ReportDiagnosticsIfObsolete(diagnostics, conversion.Method, node, hasBaseReceiver);
-            }
-        }
-
-        public static void ReportDiagnosticsIfObsolete(
-            DiagnosticBag diagnostics,
-            DeclaredSymbol symbol,
-            SyntaxNodeOrToken node,
-            bool hasBaseReceiver,
-            DeclaredSymbol containingMember,
-            NamedTypeSymbol containingType,
-            BinderFlags location)
-        {
-            Debug.Assert((object)symbol != null);
-
-            // Dev11 also reports on the unconstructed method.  It would be nice to report on 
-            // the constructed method, but then we wouldn't be able to walk the override chain.
-            if (symbol is MemberSymbol memberSymbol)
-            {
-                symbol = symbol.ConstructedFrom;
-            }
-
-            // There are two reasons to walk up to the least-overridden member:
-            //   1) That's the method to which we will actually emit a call.
-            //   2) We don't know what virtual dispatch will do at runtime so an
-            //      overriding member is basically a shot in the dark.  Better to
-            //      just be consistent and always use the least-overridden member.
-            Symbol leastOverriddenSymbol = containingType != null ? symbol.GetConstructedLeastOverriddenMember(containingType) : symbol;
-
-            bool checkOverridingSymbol = hasBaseReceiver && !ReferenceEquals(symbol, leastOverriddenSymbol);
-            if (checkOverridingSymbol)
-            {
-                // If we have a base receiver, we must be done with declaration binding, so it should
-                // be safe to decode diagnostics.  We want to do this since reporting for the overriding
-                // member is conditional on reporting for the overridden member (i.e. we need a definite
-                // answer so we don't double-report).  You might think that double reporting just results
-                // in cascading diagnostics, but it's possible that the second diagnostic is an error
-                // while the first is merely a warning.
-                leastOverriddenSymbol.GetAttributes();
-            }
-
-            var diagnosticKind = ReportDiagnosticsIfObsoleteInternal(diagnostics, leastOverriddenSymbol, node, containingMember, location);
-
-            // CONSIDER: In place of hasBaseReceiver, dev11 also accepts cases where symbol.ContainingType is a "simple type" (e.g. int)
-            // or a special by-ref type (e.g. ArgumentHandle).  These cases are probably more important for other checks performed by
-            // ExpressionBinder::PostBindMethod, but they do appear to ObsoleteAttribute as well.  We're skipping them because they
-            // don't make much sense for ObsoleteAttribute (e.g. this would seem to address the case where int.ToString has been made
-            // obsolete but object.ToString has not).
-
-            // If the overridden member was not definitely obsolete and this is a (non-virtual) base member
-            // access, then check the overriding symbol as well.
-            switch (diagnosticKind)
-            {
-                case ObsoleteDiagnosticKind.NotObsolete:
-                case ObsoleteDiagnosticKind.Lazy:
-                    if (checkOverridingSymbol)
-                    {
-                        Debug.Assert(diagnosticKind != ObsoleteDiagnosticKind.Lazy, "We forced attribute binding above.");
-                        ReportDiagnosticsIfObsoleteInternal(diagnostics, symbol, node, containingMember, location);
-                    }
-                    break;
-            }
-        }
-
-        internal static ObsoleteDiagnosticKind ReportDiagnosticsIfObsoleteInternal(DiagnosticBag diagnostics, Symbol symbol, SyntaxNodeOrToken node, Symbol containingMember, BinderFlags location)
-        {
-            Debug.Assert(diagnostics != null);
-
-            var kind = ObsoleteAttributeHelpers.GetObsoleteDiagnosticKind(symbol, containingMember);
-
-            DiagnosticInfo info = null;
-            switch (kind)
-            {
-                case ObsoleteDiagnosticKind.Diagnostic:
-                    info = ObsoleteAttributeHelpers.CreateObsoleteDiagnostic(symbol, location);
-                    break;
-                case ObsoleteDiagnosticKind.Lazy:
-                case ObsoleteDiagnosticKind.LazyPotentiallySuppressed:
-                    info = new LazyObsoleteDiagnosticInfo(symbol, containingMember, location);
-                    break;
-            }
-
-            if (info != null)
-            {
-                diagnostics.Add(info, node.GetLocation());
-            }
-
-            return kind;
-        }
-
-        public static bool IsSymbolAccessibleConditional(
-            Symbol symbol,
-            AssemblySymbol within,
-            ref HashSet<DiagnosticInfo> useSiteDiagnostics)
-        {
-            return AccessCheck.IsSymbolAccessible(symbol, within, ref useSiteDiagnostics);
-        }
-
-        public bool IsSymbolAccessibleConditional(
-            Symbol symbol,
-            NamedTypeSymbol within,
-            ref HashSet<DiagnosticInfo> useSiteDiagnostics,
-            TypeSymbol throughTypeOpt = null)
-        {
-            return this.Flags.Includes(BinderFlags.IgnoreAccessibility) || AccessCheck.IsSymbolAccessible(symbol, within, ref useSiteDiagnostics, throughTypeOpt);
-        }
-
-        public bool IsSymbolAccessibleConditional(
-            Symbol symbol,
-            NamedTypeSymbol within,
-            TypeSymbol throughTypeOpt,
-            out bool failedThroughTypeCheck,
-            ref HashSet<DiagnosticInfo> useSiteDiagnostics,
-            ConsList<TypeSymbol> basesBeingResolved = null)
-        {
-            if (this.Flags.Includes(BinderFlags.IgnoreAccessibility))
-            {
-                failedThroughTypeCheck = false;
-                return true;
-            }
-
-            return AccessCheck.IsSymbolAccessible(symbol, within, throughTypeOpt, out failedThroughTypeCheck, ref useSiteDiagnostics, basesBeingResolved);
-        }
-
 #if DEBUG
         // Helper to allow displaying the binder hierarchy in the debugger.
         internal Binder[] GetAllBinders()
@@ -477,69 +299,6 @@ namespace MetaDslx.CodeAnalysis.Binding
             return binders.ToArrayAndFree();
         }
 #endif
-
-        internal string Dump()
-        {
-            return TreeDumper.DumpCompact(DumpAncestors());
-
-            TreeDumperNode DumpAncestors()
-            {
-                TreeDumperNode current = null;
-
-                for (Binder scope = this; scope != null; scope = scope.Next)
-                {
-                    var (description, snippet, locals) = Print(scope);
-                    var sub = new List<TreeDumperNode>();
-                    if (!locals.IsEmpty())
-                    {
-                        sub.Add(new TreeDumperNode("locals", locals, null));
-                    }
-                    var currentContainer = scope.ContainingSymbol;
-                    if (currentContainer != null && currentContainer != scope.Next?.ContainingSymbol)
-                    {
-                        sub.Add(new TreeDumperNode("containing symbol", currentContainer.ToDisplayString(), null));
-                    }
-                    if (snippet != null)
-                    {
-                        LanguageSyntaxNode node = scope.ScopeDesignator as LanguageSyntaxNode;
-                        string kindText = (string)(node != null ? node.Kind : scope.ScopeDesignator.GetKind());
-                        sub.Add(new TreeDumperNode($"scope", $"{snippet} ({kindText})", null));
-                    }
-                    if (current != null)
-                    {
-                        sub.Add(current);
-                    }
-                    current = new TreeDumperNode(description, null, sub);
-                }
-
-                return current;
-            }
-
-            (string description, string snippet, string locals) Print(Binder scope)
-            {
-                var locals = string.Join(", ", scope.ChildSymbols.SelectAsArray(s => s.Name));
-                string snippet = null;
-                if (scope.ScopeDesignator != null)
-                {
-                    var lines = scope.ScopeDesignator.ToString().Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
-                    if (lines.Length == 1)
-                    {
-                        snippet = lines[0];
-                    }
-                    else
-                    {
-                        var first = lines[0];
-                        var last = lines[lines.Length - 1].Trim();
-                        var lastSize = Math.Min(last.Length, 12);
-                        snippet = first.Substring(0, Math.Min(first.Length, 12)) + " ... " + last.Substring(last.Length - lastSize, lastSize);
-                    }
-                    snippet = snippet.IsEmpty() ? null : snippet;
-                }
-
-                var description = scope.GetType().Name;
-                return (description, snippet, locals);
-            }
-        }
 
         public BoundNode Bind(CancellationToken cancellationToken = default)
         {

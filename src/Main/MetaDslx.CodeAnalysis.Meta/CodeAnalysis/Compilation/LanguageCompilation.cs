@@ -162,6 +162,21 @@ namespace MetaDslx.CodeAnalysis
             }
         }
 
+
+        private AccessCheck _lazyAccessCheck;
+        public AccessCheck AccessCheck
+        {
+            get
+            {
+                if (_lazyAccessCheck == null)
+                {
+                    Interlocked.CompareExchange(ref _lazyAccessCheck, new AccessCheck(), null);
+                }
+
+                return _lazyAccessCheck;
+            }
+        }
+
         /// <summary>
         /// The language version that was used to parse the syntax trees of this compilation.
         /// </summary>

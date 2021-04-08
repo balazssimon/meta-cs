@@ -57,60 +57,11 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             get { return (Container?.Kind == LanguageSymbolKind.NamedType) && ((NamedTypeSymbol)Container).IsScript; }
         }
 
-        public override bool IsAccessibleHelper(DeclaredSymbol symbol, TypeSymbol accessThroughType, out bool failedThroughTypeCheck, ref HashSet<DiagnosticInfo> useSiteDiagnostics, ConsList<TypeSymbol> basesBeingResolved)
+        protected override void AddLookupCandidateSymbolsInSingleBinder(LookupCandidates result, LookupConstraints constraints)
         {
-            var type = Container as NamedTypeSymbol;
-            if ((object)type != null)
+            if (_container != null)
             {
-                return this.IsSymbolAccessibleConditional(symbol, type, accessThroughType, out failedThroughTypeCheck, ref useSiteDiagnostics);
-            }
-            else
-            {
-                return Next.IsAccessibleHelper(symbol, accessThroughType, out failedThroughTypeCheck, ref useSiteDiagnostics, basesBeingResolved);  // delegate to containing Binder, eventually checking assembly.
-            }
-        }
-
-
-        public override void LookupSymbolsInSingleBinder(LookupResult result, LookupConstraints constraints)
-        {
-            Debug.Assert(result.IsClear);
-
-            if (IsSubmission)
-            {
-                this.LookupMembersInternal(result, constraints.WithQualifier(Container));
-                return;
-            }
-
-            var imports = GetImports(constraints.BasesBeingResolved);
-
-            // first lookup members of the namespace
-            if ((constraints.Options & LookupOptions.NamespaceAliasesOnly) == 0 && Container != null)
-            {
-                this.LookupMembersInternal(result, constraints.WithQualifier(Container));
-
-                if (result.IsMultiViable)
-                {
-                    // symbols cannot conflict with using alias names
-                    if (constraints.MetadataName == constraints.Name && imports.IsUsingAlias(constraints.Name, constraints.OriginalBinder.IsSemanticModelBinder))
-                    {
-                        LanguageDiagnosticInfo diagInfo = new LanguageDiagnosticInfo(InternalErrorCode.ERR_ConflictAliasAndMember, constraints.Name, Container);
-                        var error = new ExtendedErrorTypeSymbol((DeclaredSymbol)null, constraints.Name, constraints.MetadataName, diagInfo, unreported: true);
-                        result.SetFrom(LookupResult.Good(error)); // force lookup to be done w/ error symbol as result
-                    }
-
-                    return;
-                }
-            }
-
-            // next try using aliases or symbols in imported namespaces
-            imports.LookupSymbol(result, constraints);
-        }
-
-        protected override void AddLookupSymbolsInfoInSingleBinder(LookupSymbolsInfo result, LookupConstraints constraints)
-        {
-            if (Container != null)
-            {
-                this.AddMemberLookupSymbolsInfo(result, constraints.WithQualifier(Container));
+                base.AddLookupCandidateSymbolsInSingleBinder(result, constraints.WithQualifier(_container));
             }
 
             // If we are looking only for labels we do not need to search through the imports.
@@ -118,10 +69,9 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             if (!IsSubmission && ((constraints.Options & LookupOptions.LabelsOnly) == 0))
             {
                 var imports = GetImports(basesBeingResolved: null);
-                imports.AddLookupSymbolsInfo(result, constraints);
+                imports.AddLookupCandidateSymbols(result, constraints);
             }
         }
-
 
     }
 }

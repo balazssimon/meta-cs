@@ -25,17 +25,12 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
 
         protected override LookupConstraints AdjustConstraints(LookupConstraints constraints)
         {
-            LookupConstraints result = constraints;
+            LookupConstraints result = base.AdjustConstraints(constraints);
             if (!_types.IsEmpty)
             {
                 result = result.WithTypes(_types);
             }
             return result;
-        }
-
-        protected override LookupConstraints AdjustConstraintsFor(SyntaxNodeOrToken lookupSyntax, LookupConstraints constraints)
-        {
-            return this.AdjustConstraints(constraints);
         }
     }
 }

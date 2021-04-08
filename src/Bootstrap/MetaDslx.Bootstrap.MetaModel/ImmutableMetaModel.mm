@@ -33,9 +33,11 @@
 		string Documentation;
 	}
 
-	abstract class MetaNamedElement[MemberSymbol] : MetaDocumentedElement
+	[symbol: MemberSymbol]
+	abstract class MetaNamedElement : MetaDocumentedElement
 	{
-		string Name[Name];
+		[symbol: Name]
+		string Name;
 	}
 
 	abstract class MetaTypedElement : MetaElement
@@ -43,12 +45,14 @@
 		MetaType Type;
 	}
 
-	abstract class MetaType[TypeSymbol]
+	[symbol: TypeSymbol]
+	abstract class MetaType
 	{
 		bool ConformsTo(MetaType type);
 	}
 
-	class MetaNamedType[NamedTypeSymbol] : MetaType, MetaDeclaration
+	[symbol: NamedTypeSymbol]
+	class MetaNamedType : MetaType, MetaDeclaration
 	{
 	}
 
@@ -63,10 +67,13 @@
 		derived string FullName;
 	}
 	
-	class MetaNamespace[NamespaceSymbol] : MetaDeclaration
+	[symbol: NamespaceSymbol]
+	class MetaNamespace : MetaDeclaration
 	{
-		containment MetaModel DefinedMetaModel[Members];
-		containment list<MetaDeclaration> Declarations[Members];
+		[symbol: Members]
+		containment MetaModel DefinedMetaModel;
+		[symbol: Members]
+		containment list<MetaDeclaration> Declarations;
 	}
 
 	association MetaNamespace.Declarations with MetaDeclaration.Namespace;
@@ -88,14 +95,16 @@
 		MultiSet
 	}
 
-	class MetaCollectionType[NamedTypeSymbol] : MetaType
+	[symbol: NamedTypeSymbol]
+	class MetaCollectionType : MetaType
 	{
 		MetaCollectionKind Kind;
 		MetaType InnerType;
 		bool ConformsTo(MetaType type);
 	}
 
-	class MetaNullableType[NamedTypeSymbol] : MetaType
+	[symbol: NamedTypeSymbol]
+	class MetaNullableType : MetaType
 	{
 		MetaType InnerType;
 		bool ConformsTo(MetaType type);
@@ -108,8 +117,10 @@
 
 	class MetaEnum : MetaNamedType
 	{
-		containment list<MetaEnumLiteral> EnumLiterals[Members];
-		containment list<MetaOperation> Operations[Members];
+		[symbol: Members]
+		containment list<MetaEnumLiteral> EnumLiterals;
+		[symbol: Members]
+		containment list<MetaOperation> Operations;
 	}
 
 	class MetaEnumLiteral : MetaNamedElement, MetaTypedElement
@@ -130,9 +141,12 @@
 	{
 		SystemType SymbolType;
 		bool IsAbstract;
-		list<MetaClass> SuperClasses[DeclaredBaseTypes];
-		containment list<MetaProperty> Properties[Members];
-		containment list<MetaOperation> Operations[Members];
+		[symbol: DeclaredBaseTypes]
+		list<MetaClass> SuperClasses;
+		[symbol: Members]
+		containment list<MetaProperty> Properties;
+		[symbol: Members]
+		containment list<MetaOperation> Operations;
 		bool ConformsTo(MetaType type);
 		list<MetaClass> GetAllSuperClasses(bool includeSelf);
 		list<MetaProperty> GetAllSuperProperties(bool includeSelf);

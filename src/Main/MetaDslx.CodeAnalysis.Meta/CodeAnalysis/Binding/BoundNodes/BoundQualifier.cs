@@ -7,6 +7,7 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Text;
 using System.Threading;
+using System.Linq;
 
 namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
 {
@@ -16,73 +17,17 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
         private ImmutableArray<DeclaredSymbol> _identifierSymbols;
         private ImmutableArray<Diagnostic> _diagnostics;
 
-        public BoundQualifier(ImmutableArray<SyntaxNodeOrToken> identifiers)
+        public BoundQualifier(ImmutableArray<SyntaxNodeOrToken> identifiers, ImmutableArray<DeclaredSymbol> identifierSymbols, ImmutableArray<Diagnostic> diagnostics)
         {
             _identifiers = identifiers;
+            _identifierSymbols = identifierSymbols;
+            _diagnostics = diagnostics;
         }
 
-        public ImmutableArray<DeclaredSymbol> IdentifierSymbols
-        {
-            get
-            {
-                ComputeSymbols();
-                return _identifierSymbols;
-            }
-        }
+        public ImmutableArray<SyntaxNodeOrToken> Identifiers => _identifiers;
+        public ImmutableArray<DeclaredSymbol> IdentifierSymbols => _identifierSymbols;
+        public override ImmutableArray<Diagnostic> Diagnostics => _diagnostics;
 
-        public override ImmutableArray<Diagnostic> Diagnostics
-        {
-            get
-            {
-                ComputeSymbols();
-                return _diagnostics;
-            }
-        }
-
-        public override ImmutableArray<Symbol> Symbols
-        {
-            get
-            {
-                ComputeSymbols();
-                if (_identifiers.Length == _identifierSymbols.Length && _identifierSymbols.Length > 0) return ImmutableArray.Create((Symbol)_identifierSymbols[_identifierSymbols.Length - 1]);
-                else return ImmutableArray<Symbol>.Empty;
-            }
-        }
-
-
-        private void ComputeSymbols()
-        {
-            if (_diagnostics.IsDefault)
-            {
-                var binder = this.GetBinder();
-                if (binder != null)
-                {
-                    var diagnostics = DiagnosticBag.GetInstance();
-                    var symbols = binder.BindDeclaredSymbol(_identifiers, diagnostics);
-                    ImmutableInterlocked.InterlockedInitialize(ref _identifierSymbols, symbols);
-                    ImmutableInterlocked.InterlockedInitialize(ref _diagnostics, diagnostics.ToReadOnlyAndFree());
-                }
-                else
-                {
-                    ImmutableInterlocked.InterlockedInitialize(ref _identifierSymbols, ImmutableArray<DeclaredSymbol>.Empty);
-                    ImmutableInterlocked.InterlockedInitialize(ref _diagnostics, ImmutableArray<Diagnostic>.Empty);
-                }
-            }
-        }
-        
-        internal bool IsLastIdentifier(SyntaxNodeOrToken identifier)
-        {
-            return _identifiers.Length > 0 && _identifiers[_identifiers.Length - 1] == identifier;
-        }
-
-        public DeclaredSymbol GetSymbol(SyntaxNodeOrToken identifier)
-        {
-            Debug.Assert(identifier != null);
-            var index = _identifiers.IndexOf(identifier);
-            Debug.Assert(index >= 0);
-            ComputeSymbols();
-            return _identifierSymbols[index];
-        }
-
+        public override ImmutableArray<Symbol> Symbols => _identifierSymbols.Length > 0 ? ImmutableArray.Create((Symbol)_identifierSymbols[_identifierSymbols.Length - 1]) : ImmutableArray<Symbol>.Empty;
     }
 }

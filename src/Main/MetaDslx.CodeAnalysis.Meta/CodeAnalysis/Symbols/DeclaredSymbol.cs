@@ -473,6 +473,40 @@ namespace MetaDslx.CodeAnalysis.Symbols
             //return m.IsGenericMethod ? m.Construct(this.TypeArgumentsWithAnnotations) : m;
         }
 
+        /// <summary>
+        /// Checks if 'symbol' is accessible from within named type 'within'.  If 'symbol' is accessed off
+        /// of an expression then 'throughTypeOpt' is the type of that expression. This is needed to
+        /// properly do protected access checks.
+        /// </summary>
+        public bool IsSymbolAccessibleWithin(NamedTypeSymbol within, NamedTypeSymbol throughTypeOpt = null)
+        {
+            if ((object)within == null)
+            {
+                throw new ArgumentNullException(nameof(within));
+            }
+
+            HashSet<DiagnosticInfo> useSiteDiagnostics = null;
+            return this.DeclaringCompilation.AccessCheck.IsSymbolAccessible(
+                this,
+                within,
+                ref useSiteDiagnostics,
+                throughTypeOpt);
+        }
+
+        /// <summary>
+        /// Checks if 'symbol' is accessible from within assembly 'within'.  
+        /// </summary>
+        public bool IsSymbolAccessibleWithin(AssemblySymbol within)
+        {
+            if ((object)within == null)
+            {
+                throw new ArgumentNullException(nameof(within));
+            }
+
+            HashSet<DiagnosticInfo> useSiteDiagnostics = null;
+            return this.DeclaringCompilation.AccessCheck.IsSymbolAccessible(this, within, ref useSiteDiagnostics);
+        }
+
 
         bool IDeclaredSymbol.IsImplicitlyDeclared => this.IsImplicitlyDeclared;
 

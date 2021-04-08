@@ -12,7 +12,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
     internal sealed class HostObjectModelBinder : Binder
     {
         public HostObjectModelBinder(Binder next)
-            : base(next, null, null)
+            : base(next, null)
         {
         }
 
@@ -26,7 +26,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             return result;
         }
 
-        public override void LookupSymbolsInSingleBinder(LookupResult result, LookupConstraints constraints)
+        protected override void LookupSymbolsInSingleBinder(LookupResult result, LookupConstraints constraints, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
         {
             var hostObjectType = GetHostObjectType();
             if (hostObjectType.Kind == LanguageSymbolKind.ErrorType)
@@ -41,16 +41,16 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             }
             else
             {
-                LookupMembersInternal(result, constraints.WithQualifier(hostObjectType));
+                base.LookupSymbolsInSingleBinder(result, constraints.WithQualifier(hostObjectType), ref useSiteDiagnostics);
             }
         }
 
-        protected override void AddLookupSymbolsInfoInSingleBinder(LookupSymbolsInfo result, LookupConstraints constraints)
+        protected override void AddLookupCandidateSymbolsInSingleBinder(LookupCandidates result, LookupConstraints constraints)
         {
             var hostObjectType = GetHostObjectType();
             if (hostObjectType.Kind != LanguageSymbolKind.ErrorType)
             {
-                AddMemberLookupSymbolsInfo(result, constraints.WithQualifier(hostObjectType));
+                base.AddLookupCandidateSymbolsInSingleBinder(result, constraints.WithQualifier(hostObjectType));
             }
         }
     }

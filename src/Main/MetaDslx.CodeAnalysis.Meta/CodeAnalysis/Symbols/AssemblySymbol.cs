@@ -751,7 +751,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             Debug.Assert((object)result.ContainingType == null || IsValidWellKnownType(result.ContainingType),
                 "Checking the containing type is the caller's responsibility.");
 
-            return result.DeclaredAccessibility == Accessibility.Public || DeclaredSymbol.IsSymbolAccessible(result, this);
+            return result.DeclaredAccessibility == Accessibility.Public || result.IsSymbolAccessibleWithin(this);
         }
 
         private static NamedTypeSymbol GetTopLevelTypeByMetadataName(AssemblySymbol assembly, ref MetadataTypeName metadataName, AssemblyIdentity assemblyOpt)

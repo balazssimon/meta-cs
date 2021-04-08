@@ -41,7 +41,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
         /// Creates a binder with given imports.
         /// </summary>
         public InContainerBinder(DeclaredSymbol container, Binder next, Imports imports = null)
-            : base(next, null, null)
+            : base(next, null)
         {
             Debug.Assert((object)container != null || imports != null);
 
@@ -53,7 +53,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
         /// Creates a binder with given import computation function.
         /// </summary>
         public InContainerBinder(Binder next, Func<ConsList<TypeSymbol>, Imports> computeImports)
-            : base(next, null, null)
+            : base(next, null)
         {
             Debug.Assert(computeImports != null);
 
@@ -121,60 +121,11 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             get { return (_container?.Kind == LanguageSymbolKind.NamedType) && ((NamedTypeSymbol)_container).IsScript; }
         }
 
-        public override bool IsAccessibleHelper(DeclaredSymbol symbol, TypeSymbol accessThroughType, out bool failedThroughTypeCheck, ref HashSet<DiagnosticInfo> useSiteDiagnostics, ConsList<TypeSymbol> basesBeingResolved)
-        {
-            var type = _container as NamedTypeSymbol;
-            if ((object)type != null)
-            {
-                return this.IsSymbolAccessibleConditional(symbol, type, accessThroughType, out failedThroughTypeCheck, ref useSiteDiagnostics);
-            }
-            else
-            {
-                return Next.IsAccessibleHelper(symbol, accessThroughType, out failedThroughTypeCheck, ref useSiteDiagnostics, basesBeingResolved);  // delegate to containing Binder, eventually checking assembly.
-            }
-        }
-
-
-        public override void LookupSymbolsInSingleBinder(LookupResult result, LookupConstraints constraints)
-        {
-            Debug.Assert(result.IsClear);
-
-            if (IsSubmission)
-            {
-                this.LookupMembersInternal(result, constraints.WithQualifier(_container));
-                return;
-            }
-
-            var imports = GetImports(constraints.BasesBeingResolved);
-
-            // first lookup members of the namespace
-            if ((constraints.Options & LookupOptions.NamespaceAliasesOnly) == 0 && _container != null)
-            {
-                this.LookupMembersInternal(result, constraints.WithQualifier(_container));
-
-                if (result.IsMultiViable)
-                {
-                    // symbols cannot conflict with using alias names
-                    if (constraints.MetadataName == constraints.Name && imports.IsUsingAlias(constraints.Name, constraints.OriginalBinder.IsSemanticModelBinder))
-                    {
-                        LanguageDiagnosticInfo diagInfo = new LanguageDiagnosticInfo(InternalErrorCode.ERR_ConflictAliasAndMember, constraints.Name, _container);
-                        var error = new ExtendedErrorTypeSymbol((DeclaredSymbol)null, constraints.Name, constraints.MetadataName, diagInfo, unreported: true);
-                        result.SetFrom(LookupResult.Good(error)); // force lookup to be done w/ error symbol as result
-                    }
-
-                    return;
-                }
-            }
-
-            // next try using aliases or symbols in imported namespaces
-            imports.LookupSymbol(result, constraints);
-        }
-
-        protected override void AddLookupSymbolsInfoInSingleBinder(LookupSymbolsInfo result, LookupConstraints constraints)
+        protected override void AddLookupCandidateSymbolsInSingleBinder(LookupCandidates result, LookupConstraints constraints)
         {
             if (_container != null)
             {
-                this.AddMemberLookupSymbolsInfo(result, constraints.WithQualifier(_container));
+                base.AddLookupCandidateSymbolsInSingleBinder(result, constraints.WithQualifier(_container));
             }
 
             // If we are looking only for labels we do not need to search through the imports.
@@ -182,7 +133,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             if (!IsSubmission && ((constraints.Options & LookupOptions.LabelsOnly) == 0))
             {
                 var imports = GetImports(basesBeingResolved: null);
-                imports.AddLookupSymbolsInfo(result, constraints);
+                imports.AddLookupCandidateSymbols(result, constraints);
             }
         }
 

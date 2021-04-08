@@ -9,29 +9,18 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
 {
     public class SpecialSymbolBinder : Binder
     {
-        public SpecialSymbolBinder(Binder next, SyntaxNodeOrToken syntax, Conversions conversions = null) 
-            : base(next, syntax, conversions)
+        public SpecialSymbolBinder(Binder next, SyntaxNodeOrToken syntax) 
+            : base(next, syntax)
         {
         }
 
-        public override void LookupSymbolsInSingleBinder(LookupResult result, LookupConstraints constraints)
-        {
-            Debug.Assert(result.IsClear);
-
-            var specialSymbol = Compilation.GetSpecialSymbol(constraints.MetadataName) as DeclaredSymbol;
-            if (specialSymbol != null && specialSymbol.Kind != LanguageSymbolKind.ErrorType)
-            {
-                result.SetFrom(LookupResult.Good(specialSymbol));
-            }
-        }
-
-        protected override void AddLookupSymbolsInfoInSingleBinder(LookupSymbolsInfo result, LookupConstraints constraints)
+        protected override void AddLookupCandidateSymbolsInSingleBinder(LookupCandidates result, LookupConstraints constraints)
         {
             foreach (var symbol in Compilation.SourceAssembly.DeclaredSpecialSymbols)
             {
                 if (symbol is DeclaredSymbol ds)
                 {
-                    result.AddSymbol(ds, symbol.Name, symbol.MetadataName);
+                    if (constraints.IsViable(ds)) result.Add(ds);
                 }
             }
         }

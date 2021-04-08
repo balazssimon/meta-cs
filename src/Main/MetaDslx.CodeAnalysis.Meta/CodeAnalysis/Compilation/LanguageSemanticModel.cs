@@ -693,36 +693,18 @@ namespace MetaDslx.CodeAnalysis
                 container = baseType;
             }
 
-            var info = LookupSymbolsInfo.GetInstance();
-            info.FilterName = name;
-
+            var candidates = LookupCandidates.GetInstance();
             if ((object)container == null)
             {
-                binder.AddLookupSymbolsInfo(info, new LookupConstraints(options: options));
+                binder.AddLookupCandidateSymbols(candidates, new LookupConstraints(Compilation, name: name, options: options));
             }
             else
             {
-                binder.AddMemberLookupSymbolsInfo(info, new LookupConstraints(qualifierOpt: container, options: options));
+                binder.AddLookupCandidateSymbols(candidates, new LookupConstraints(Compilation, name: name, qualifierOpt: container, options: options));
             }
-
-            var results = ArrayBuilder<DeclaredSymbol>.GetInstance(info.Count);
-
-            if (name == null)
-            {
-                // If they didn't provide a name, then look up all names and associated arities 
-                // and find all the corresponding symbols.
-                foreach (string foundName in info.Names)
-                {
-                    AppendSymbolsWithName(results, foundName, binder, container, options, info);
-                }
-            }
-            else
-            {
-                // They provided a name.  Find all the arities for that name, and then look all of those up.
-                AppendSymbolsWithName(results, name, binder, container, options, info);
-            }
-
-            info.Free();
+            var results = ArrayBuilder<DeclaredSymbol>.GetInstance(candidates.Symbols.Count);
+            results.AddRange(candidates.Symbols);
+            candidates.Free();
 
 
             if ((options & LookupOptions.IncludeExtensionMethods) != 0)
@@ -734,92 +716,6 @@ namespace MetaDslx.CodeAnalysis
             return name == null
                 ? FilterNotReferencable(sealedResults)
                 : sealedResults;
-        }
-
-        private void AppendSymbolsWithName(ArrayBuilder<DeclaredSymbol> results, string name, Binder binder, NamespaceOrTypeSymbol container, LookupOptions options, LookupSymbolsInfo info)
-        {
-            IEnumerable<string> metadataNames;
-            DeclaredSymbol uniqueSymbol;
-
-            if (info.TryGetMultipleNamesAndUniqueSymbol(name, out metadataNames, out uniqueSymbol))
-            {
-                if ((object)uniqueSymbol != null)
-                {
-                    // This name mapped to something unique.  We don't need to proceed
-                    // with a costly lookup.  Just add it straight to the results.
-                    results.Add(uniqueSymbol);
-                }
-                else
-                {
-                    // The name maps to multiple symbols. Actually do a real lookup so 
-                    // that we will properly figure out hiding and whatnot.
-                    if (metadataNames != null)
-                    {
-                        foreach (var metadataName in metadataNames)
-                        {
-                            this.AppendSymbolsWithMetadataName(results, name, metadataName, binder, container, options);
-                        }
-                    }
-                    else
-                    {
-                        //non-unique symbol with non-zero arity doesn't seem possible.
-                        this.AppendSymbolsWithMetadataName(results, name, name, binder, container, options);
-                    }
-                }
-            }
-        }
-
-        private void AppendSymbolsWithMetadataName(
-            ArrayBuilder<DeclaredSymbol> results,
-            string name,
-            string metadataName,
-            Binder binder,
-            NamespaceOrTypeSymbol container,
-            LookupOptions options)
-        {
-            Debug.Assert(results != null);
-
-            // Don't need to de-dup since AllMethodsOnArityZero can't be set at this point (not exposed in CommonLookupOptions).
-            Debug.Assert((options & LookupOptions.AllMethodsOnArityZero) == 0);
-
-            var lookupResult = LookupResult.GetInstance();
-
-            binder.LookupSymbolsSimpleName(
-                lookupResult,
-                new LookupConstraints(
-                name,
-                metadataName,
-                qualifierOpt: container,
-                basesBeingResolved: null,
-                options: options & ~LookupOptions.IncludeExtensionMethods,
-                diagnose: false));
-
-            if (lookupResult.IsMultiViable)
-            {
-                if (lookupResult.Symbols.Any(t => t.Kind == LanguageSymbolKind.NamedType || t.Kind == LanguageSymbolKind.Namespace || t.Kind == LanguageSymbolKind.ErrorType))
-                {
-                    // binder.ResultSymbol is defined only for type/namespace lookups
-                    bool wasError;
-                    var diagnostics = DiagnosticBag.GetInstance();  // client code never expects a null diagnostic bag.
-                    DeclaredSymbol singleSymbol = binder.ResultSymbol(lookupResult, name, metadataName, this.Root, diagnostics, true, out wasError, container, options);
-                    diagnostics.Free();
-
-                    if (!wasError)
-                    {
-                        results.Add(singleSymbol);
-                    }
-                    else
-                    {
-                        results.AddRange(lookupResult.Symbols);
-                    }
-                }
-                else
-                {
-                    results.AddRange(lookupResult.Symbols);
-                }
-            }
-
-            lookupResult.Free();
         }
 
         private static ImmutableArray<DeclaredSymbol> FilterNotReferencable(ImmutableArray<DeclaredSymbol> sealedResults)
@@ -873,7 +769,7 @@ namespace MetaDslx.CodeAnalysis
             if (binder != null)
             {
                 HashSet<DiagnosticInfo> useSiteDiagnostics = null;
-                return binder.IsAccessible(cssymbol, ref useSiteDiagnostics, null);
+                return Compilation.AccessCheck.IsSymbolAccessible(cssymbol, null, ref useSiteDiagnostics);
             }
 
             return false;

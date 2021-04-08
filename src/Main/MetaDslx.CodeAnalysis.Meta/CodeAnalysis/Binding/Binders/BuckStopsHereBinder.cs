@@ -37,16 +37,6 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             return Imports.Empty;
         }
 
-        public override bool IsAccessibleHelper(DeclaredSymbol symbol, TypeSymbol accessThroughType, out bool failedThroughTypeCheck, ref HashSet<DiagnosticInfo> useSiteDiagnostics, ConsList<TypeSymbol> basesBeingResolved)
-        {
-            failedThroughTypeCheck = false;
-            return IsSymbolAccessibleConditional(symbol, Compilation.Assembly, ref useSiteDiagnostics);
-        }
-
-        public override ImmutableArray<Symbol> ChildSymbols => ImmutableArray<Symbol>.Empty;
-
-        protected override bool InExecutableBinder => false;
-
         public override Binder GetBinder(SyntaxNodeOrToken node)
         {
             return Compilation.GetBinder(node);

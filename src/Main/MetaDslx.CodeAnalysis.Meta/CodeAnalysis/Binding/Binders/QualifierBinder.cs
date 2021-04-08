@@ -17,28 +17,28 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
         {
         }
 
+        public bool IsTopmostQualifierBinder => object.ReferenceEquals(GetTopmostQualifierBinder(this), this);
+
+        internal static QualifierBinder GetTopmostQualifierBinder(Binder binder)
+        {
+            QualifierBinder result = binder as QualifierBinder;
+            while (binder != null)
+            {
+                binder = binder.Next;
+                if (binder is QualifierBinder qb) result = qb;
+            }
+            return result;
+        }
+
         protected override BoundNode BindNode(CancellationToken cancellationToken)
         {
             // Only create a BoundQualifier node for the topmost qualifier:
-            if (Next.GetBoundQualifier() != null) return null;
+            if (!this.IsTopmostQualifierBinder) return null;
             var position = this.GetBinderPosition();
             var identifiers = FindBinders.FindIdentifierBinders(position).Select(ib => ib.Syntax).ToImmutableArray();
-            return new BoundQualifier(identifiers);
-        }
-
-        public override BoundQualifier GetBoundQualifier()
-        {
-            return (BoundQualifier)this.Bind();
-        }
-
-        protected override LookupConstraints AdjustConstraintsFor(SyntaxNodeOrToken lookupSyntax, LookupConstraints constraints)
-        {
-            var boundNode = (BoundQualifier)this.Bind();
-            if (boundNode != null && boundNode.IsLastIdentifier(lookupSyntax))
-            {
-                return base.AdjustConstraintsFor(lookupSyntax, constraints);
-            }
-            return constraints;
+            var diagnostics = DiagnosticBag.GetInstance();
+            var symbols = this.BindQualifiedName(identifiers, diagnostics, null);
+            return new BoundQualifier(identifiers, symbols, diagnostics.ToReadOnlyAndFree());
         }
 
     }

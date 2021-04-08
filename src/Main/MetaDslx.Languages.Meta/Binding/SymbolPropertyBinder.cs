@@ -62,7 +62,7 @@ namespace MetaDslx.Languages.Meta.Binding
             }
         }
 
-        private NamedTypeSymbol GetSymbolTypeSymbol(NamedTypeSymbol symbol)
+        private NamedTypeSymbol GetSymbolTypeSymbol(DeclaredSymbol symbol)
         {
             symbol.ForceComplete(CompletionPart.FinishProperties, null, default);
             var mclass = (symbol as IModelSymbol)?.ModelObject as MetaClassBuilder;
@@ -91,15 +91,10 @@ namespace MetaDslx.Languages.Meta.Binding
             return null;
         }
 
-        protected override LookupConstraints AdjustConstraintsFor(SyntaxNodeOrToken lookupSyntax, LookupConstraints constraints)
-        {
-            var symbolType = this.SymbolType;
-            return constraints.WithQualifier(symbolType).WithOptions(LookupOptions.MustBeInstance);
-        }
-
         protected override LookupConstraints AdjustConstraints(LookupConstraints constraints)
         {
-            return this.AdjustConstraintsFor(this.Syntax, constraints);
+            var symbolType = this.SymbolType;
+            return base.AdjustConstraints(constraints).WithQualifier(symbolType).WithOptions(LookupOptions.MustBeInstance);
         }
 
     }

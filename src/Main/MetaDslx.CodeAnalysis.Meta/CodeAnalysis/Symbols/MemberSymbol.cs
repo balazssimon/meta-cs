@@ -62,7 +62,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 // See InternalsVisibleToAndStrongNameTests: IvtVirtualCall1, IvtVirtualCall2, IvtVirtual_ParamsAndDynamic.
                 MemberSymbol overridden = m.OverriddenMember;
                 HashSet<DiagnosticInfo> useSiteDiagnostics = null;
-                if ((object)overridden == null || !AccessCheck.IsSymbolAccessible(overridden, accessingType, ref useSiteDiagnostics))
+                if ((object)overridden == null || !DeclaringCompilation.AccessCheck.IsSymbolAccessible(overridden, accessingType, ref useSiteDiagnostics))
                 {
                     break;
                 }
@@ -422,7 +422,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         private static bool IsOverriddenSymbolAccessible(DeclaredSymbol overridden, NamedTypeSymbol overridingContainingType)
         {
             HashSet<DiagnosticInfo> useSiteDiagnostics = null;
-            return AccessCheck.IsSymbolAccessible(overridden.OriginalDefinition, overridingContainingType.OriginalDefinition, ref useSiteDiagnostics);
+            return overridden.DeclaringCompilation.AccessCheck.IsSymbolAccessible(overridden.OriginalDefinition, overridingContainingType.OriginalDefinition, ref useSiteDiagnostics);
         }
 
         internal DiagnosticInfo CalculateUseSiteDiagnostic()

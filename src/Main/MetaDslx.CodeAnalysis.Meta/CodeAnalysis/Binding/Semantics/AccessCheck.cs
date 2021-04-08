@@ -16,12 +16,12 @@ namespace MetaDslx.CodeAnalysis.Binding
     /// <summary>
     /// Contains the code for determining C# accessibility rules.
     /// </summary>
-    internal static class AccessCheck
+    public class AccessCheck
     {
         /// <summary>
         /// Checks if 'symbol' is accessible from within assembly 'within'.
         /// </summary>
-        public static bool IsSymbolAccessible(
+        public bool IsSymbolAccessible(
             Symbol symbol,
             AssemblySymbol within,
             ref HashSet<DiagnosticInfo> useSiteDiagnostics)
@@ -34,7 +34,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// Checks if 'symbol' is accessible from within type 'within', with
         /// an optional qualifier of type "throughTypeOpt".
         /// </summary>
-        public static bool IsSymbolAccessible(
+        public bool IsSymbolAccessible(
             Symbol symbol,
             NamedTypeSymbol within,
             ref HashSet<DiagnosticInfo> useSiteDiagnostics,
@@ -49,7 +49,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// an qualifier of type "throughTypeOpt". Sets "failedThroughTypeCheck" to true
         /// if it failed the "through type" check.
         /// </summary>
-        public static bool IsSymbolAccessible(
+        public bool IsSymbolAccessible(
             Symbol symbol,
             NamedTypeSymbol within,
             TypeSymbol throughTypeOpt,
@@ -80,7 +80,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// prevent the overhead of returning collections or enumerators.
         /// </para>
         /// </remarks>
-        private static bool IsSymbolAccessibleCore(
+        private bool IsSymbolAccessibleCore(
             Symbol symbol,
             Symbol within,  // must be assembly or named type symbol
             TypeSymbol throughTypeOpt,
@@ -125,7 +125,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                 case LanguageSymbolKind.Member:
                     if (declaredSymbol.IsStatic)
                     {
-                        // static members aren't accessed "through" an "instance" of any type.  So we
+                        // members aren't accessed "through" an "instance" of any type.  So we
                         // null out the "through" instance here.  This ensures that we'll understand
                         // accessing protected statics properly.
                         throughTypeOpt = null;
@@ -144,7 +144,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// Is the named type <paramref name="type"/> accessible from within <paramref name="within"/>,
         /// which must be a named type or an assembly.
         /// </summary>
-        private static bool IsNamedTypeAccessible(NamedTypeSymbol type, Symbol within, ref HashSet<DiagnosticInfo> useSiteDiagnostics, ConsList<TypeSymbol> basesBeingResolved = null)
+        private bool IsNamedTypeAccessible(NamedTypeSymbol type, Symbol within, ref HashSet<DiagnosticInfo> useSiteDiagnostics, ConsList<TypeSymbol> basesBeingResolved = null)
         {
             Debug.Assert(within is NamedTypeSymbol || within is AssemblySymbol);
             Debug.Assert((object)type != null);
@@ -162,7 +162,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// Is a top-level type with accessibility "declaredAccessibility" inside assembly "assembly"
         /// accessible from "within", which must be a named type of an assembly.
         /// </summary>
-        private static bool IsNonNestedTypeAccessible(
+        private bool IsNonNestedTypeAccessible(
             AssemblySymbol assembly,
             Accessibility declaredAccessibility,
             Symbol within)
@@ -192,7 +192,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
                     // An internal type is accessible if we're in the same assembly or we have
                     // friend access to the assembly it was defined in.
-                    return (object)withinAssembly == (object)assembly || withinAssembly.HasInternalAccessTo(assembly);
+                    return (object)withinAssembly == (object)assembly || HasInternalAccessTo(withinAssembly, assembly);
 
                 default:
                     throw ExceptionUtilities.UnexpectedValue(declaredAccessibility);
@@ -203,7 +203,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// Is a member with declared accessibility "declaredAccessibility" accessible from within
         /// "within", which must be a named type or an assembly.
         /// </summary>
-        private static bool IsMemberAccessible(
+        private bool IsMemberAccessible(
             NamedTypeSymbol containingType,              // the symbol's containing type
             Accessibility declaredAccessibility,
             Symbol within,
@@ -252,7 +252,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                 basesBeingResolved);
         }
 
-        private static bool IsNonPublicMemberAccessible(
+        private bool IsNonPublicMemberAccessible(
             NamedTypeSymbol containingType,              // the symbol's containing type
             Accessibility declaredAccessibility,
             Symbol within,
@@ -289,10 +289,10 @@ namespace MetaDslx.CodeAnalysis.Binding
                 case Accessibility.Internal:
                     // An internal type is accessible if we're in the same assembly or we have
                     // friend access to the assembly it was defined in.
-                    return withinAssembly.HasInternalAccessTo(containingType.ContainingAssembly);
+                    return HasInternalAccessTo(withinAssembly, containingType.ContainingAssembly);
 
                 case Accessibility.ProtectedAndInternal:
-                    if (!withinAssembly.HasInternalAccessTo(containingType.ContainingAssembly))
+                    if (!HasInternalAccessTo(withinAssembly, containingType.ContainingAssembly))
                     {
                         // We require internal access.  If we don't have it, then this symbol is
                         // definitely not accessible to us.
@@ -303,7 +303,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                     return IsProtectedSymbolAccessible(withinType, throughTypeOpt, originalContainingType, out failedThroughTypeCheck, compilation, ref useSiteDiagnostics, basesBeingResolved);
 
                 case Accessibility.ProtectedOrInternal:
-                    if (withinAssembly.HasInternalAccessTo(containingType.ContainingAssembly))
+                    if (HasInternalAccessTo(withinAssembly, containingType.ContainingAssembly))
                     {
                         // If we have internal access to this symbol, then that's sufficient.  no
                         // need to do the complicated protected case.
@@ -327,7 +327,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// Is a protected symbol inside "originalContainingType" accessible from within "within",
         /// which much be a named type or an assembly.
         /// </summary>
-        private static bool IsProtectedSymbolAccessible(
+        private bool IsProtectedSymbolAccessible(
             NamedTypeSymbol withinType,
             TypeSymbol throughTypeOpt,
             NamedTypeSymbol originalContainingType,
@@ -377,7 +377,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                 {
                     Debug.Assert(current.IsDefinition);
 
-                    if (current.InheritsFromOrImplementsIgnoringConstruction(originalContainingType, compilation, ref useSiteDiagnostics, basesBeingResolved))
+                    if (InheritsFromOrImplementsIgnoringConstruction(current, originalContainingType, compilation, ref useSiteDiagnostics, basesBeingResolved))
                     {
                         // NOTE(cyrusn): We're continually walking up the 'throughType's inheritance
                         // chain.  We could compute it up front and cache it in a set.  However, we
@@ -386,7 +386,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                         // slower to create and check inside the set versus just walking the
                         // inheritance chain.
                         if ((object)originalThroughTypeOpt == null ||
-                            originalThroughTypeOpt.InheritsFromOrImplementsIgnoringConstruction(current, compilation, ref useSiteDiagnostics))
+                            InheritsFromOrImplementsIgnoringConstruction(originalThroughTypeOpt, current, compilation, ref useSiteDiagnostics))
                         {
                             return true;
                         }
@@ -404,7 +404,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             return false;
         }
 
-        private static bool IsPrivateSymbolAccessible(
+        private bool IsPrivateSymbolAccessible(
             Symbol within,
             NamedTypeSymbol originalContainingType)
         {
@@ -425,7 +425,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// <summary>
         /// Is the type "withinType" nested within the original type "originalContainingType".
         /// </summary>
-        private static bool IsNestedWithinOriginalContainingType(
+        private bool IsNestedWithinOriginalContainingType(
             NamedTypeSymbol withinType,
             NamedTypeSymbol originalContainingType)
         {
@@ -454,8 +454,8 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// Determine if "type" inherits from or implements "baseType", ignoring constructed types, and dealing
         /// only with original types.
         /// </summary>
-        private static bool InheritsFromOrImplementsIgnoringConstruction(
-            this TypeSymbol type,
+        private bool InheritsFromOrImplementsIgnoringConstruction(
+            TypeSymbol type,
             NamedTypeSymbol baseType,
             LanguageCompilation compilation,
             ref HashSet<DiagnosticInfo> useSiteDiagnostics,
@@ -536,7 +536,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             baseInterfaces?.Free();
             return result;
             /*
-            static void getBaseInterfaces(TypeSymbol derived, ArrayBuilder<NamedTypeSymbol> baseInterfaces, PooledHashSet<NamedTypeSymbol> interfacesLookedAt, ConsList<TypeSymbol> basesBeingResolved)
+            void getBaseInterfaces(TypeSymbol derived, ArrayBuilder<NamedTypeSymbol> baseInterfaces, PooledHashSet<NamedTypeSymbol> interfacesLookedAt, ConsList<TypeSymbol> basesBeingResolved)
             {
                 if (basesBeingResolved != null && basesBeingResolved.ContainsReference(derived))
                 {
@@ -576,7 +576,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// </summary>
         /// <param name="fromAssembly">The assembly wanting access.</param>
         /// <param name="toAssembly">The assembly possibly providing symbols to be accessed.</param>
-        internal static bool HasInternalAccessTo(this AssemblySymbol fromAssembly, AssemblySymbol toAssembly)
+        protected bool HasInternalAccessTo(AssemblySymbol fromAssembly, AssemblySymbol toAssembly)
         {
             if (Equals(fromAssembly, toAssembly))
             {
@@ -597,7 +597,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             return false;
         }
 
-        internal static ErrorCode GetProtectedMemberInSealedTypeError(NamedTypeSymbol containingType)
+        internal ErrorCode GetProtectedMemberInSealedTypeError(NamedTypeSymbol containingType)
         {
             return InternalErrorCode.WRN_ProtectedInSealed;
         }

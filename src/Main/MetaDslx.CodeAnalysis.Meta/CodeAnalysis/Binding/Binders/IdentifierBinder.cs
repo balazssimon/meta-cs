@@ -6,6 +6,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
+using MetaDslx.CodeAnalysis.PooledObjects;
+using System.Collections.Immutable;
+using System.Diagnostics;
 
 namespace MetaDslx.CodeAnalysis.Binding.Binders
 {
@@ -45,9 +48,32 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             }
         }
 
+        protected QualifierBinder GetQualifierBinder()
+        {
+            return QualifierBinder.GetTopmostQualifierBinder(this);
+        }
+
         protected override BoundNode BindNode(CancellationToken cancellationToken)
         {
-            return new BoundIdentifier(); 
+            var qualifierBinder = this.GetQualifierBinder();
+            if (qualifierBinder != null)
+            {
+                var boundQualifier = (BoundQualifier)qualifierBinder.Bind(cancellationToken);
+                var index = boundQualifier.Identifiers.IndexOf(this.Syntax);
+                Debug.Assert(index >= 0);
+                return new BoundIdentifier(boundQualifier.IdentifierSymbols[index], ImmutableArray<Diagnostic>.Empty); // Diagnostics are reported by the qualifier
+            }
+            else
+            {
+                var diagnostics = DiagnosticBag.GetInstance();
+                var symbol = this.BindDeclaredSymbol(this.Syntax, diagnostics);
+                return new BoundIdentifier(symbol, diagnostics.ToReadOnlyAndFree());
+            }
+        }
+
+        protected override LookupConstraints AdjustConstraints(LookupConstraints constraints)
+        {
+            return base.AdjustConstraints(constraints).WithName(this.Name, this.MetadataName);
         }
 
     }
