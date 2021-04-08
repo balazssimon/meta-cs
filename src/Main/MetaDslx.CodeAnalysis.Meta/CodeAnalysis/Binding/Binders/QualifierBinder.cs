@@ -12,6 +12,8 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
 {
     public class QualifierBinder : ValueBinder
     {
+        private ImmutableArray<SyntaxNodeOrToken> _identifiers;
+
         public QualifierBinder(Binder next, SyntaxNodeOrToken syntax) 
             : base(next, syntax)
         {
@@ -30,16 +32,48 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             return result;
         }
 
-        protected override BoundNode BindNode(CancellationToken cancellationToken)
+        public ImmutableArray<SyntaxNodeOrToken> Identifiers
         {
-            // Only create a BoundQualifier node for the topmost qualifier:
-            if (!this.IsTopmostQualifierBinder) return null;
-            var position = this.GetBinderPosition();
-            var identifiers = FindBinders.FindIdentifierBinders(position).Select(ib => ib.Syntax).ToImmutableArray();
-            var diagnostics = DiagnosticBag.GetInstance();
-            var symbols = this.BindQualifiedName(identifiers, diagnostics, null);
-            return new BoundQualifier(identifiers, symbols, diagnostics.ToReadOnlyAndFree());
+            get
+            {
+                if (_identifiers.IsDefault)
+                {
+                    if (this.IsTopmostQualifierBinder)
+                    {
+                        var position = this.GetBinderPosition();
+                        var identifiers = FindBinders.FindIdentifierBinders(position).Select(ib => ib.Syntax).ToImmutableArray();
+                        ImmutableInterlocked.InterlockedInitialize(ref _identifiers, identifiers);
+                    }
+                    else
+                    {
+                        ImmutableInterlocked.InterlockedInitialize(ref _identifiers, ImmutableArray<SyntaxNodeOrToken>.Empty);
+                    }
+                }
+                return _identifiers;
+            }
         }
 
+        protected override BoundNode BindNode(CancellationToken cancellationToken)
+        {
+            if (this.Identifiers.IsEmpty) return null;
+            // Only create a BoundQualifier node for the topmost qualifier:
+            var diagnostics = DiagnosticBag.GetInstance();
+            var symbols = this.BindQualifiedName(this.Identifiers, diagnostics, null);
+            return new BoundQualifier(this.Identifiers, symbols, diagnostics.ToReadOnlyAndFree());
+        }
+
+        protected override LookupConstraints AdjustConstraints(LookupConstraints constraints)
+        {
+            var result = base.AdjustConstraints(constraints);
+            if (constraints.OriginalBinder != null)
+            {
+                var index = this.Identifiers.IndexOf(constraints.OriginalBinder.Syntax);
+                if (index >= 0 && index < this.Identifiers.Length-1)
+                {
+                    result = result.WithTypes(ImmutableArray<Type>.Empty);
+                }
+            }
+            return result;
+        }
     }
 }

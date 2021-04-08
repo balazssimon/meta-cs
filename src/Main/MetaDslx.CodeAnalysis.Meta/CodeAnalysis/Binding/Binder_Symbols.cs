@@ -79,9 +79,9 @@ namespace MetaDslx.CodeAnalysis.Binding
             LookupOptions options = allowMembers ? LookupOptions.Default : LookupOptions.NamespacesOrTypesOnly;
 
             HashSet<DiagnosticInfo> useSiteDiagnostics = null;
-            var constraints = new LookupConstraints(Compilation, identifierValueText, identifierValueText, qualifierOpt: qualifierOpt, basesBeingResolved: basesBeingResolved, options: options, diagnose: true, originalBinder: this);
+            var constraints = new LookupConstraints(Compilation, identifierValueText, identifierValueText, qualifierOpt: qualifierOpt, basesBeingResolved: basesBeingResolved, options: options, diagnose: true);
             var identifierBinder = identifierSyntax.IsNull ? this : this.GetBinder(identifierSyntax);
-            constraints = identifierBinder.AdjustConstraints(constraints);
+            constraints = identifierBinder.AdjustConstraints(constraints.WithOriginalBinder(identifierBinder));
             LookupSymbols(result, constraints, ref useSiteDiagnostics);
             diagnostics.Add(identifierSyntax.GetLocation(), useSiteDiagnostics);
 

@@ -100,7 +100,6 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// </summary>
         private void AddCandidateSymbols(LookupCandidates result, LookupConstraints constraints)
         {
-            constraints = this.AdjustConstraints(constraints);
             var qualifier = constraints.QualifierOpt as NamespaceOrTypeSymbol;
             if (qualifier == null || qualifier.IsNamespace)
             {

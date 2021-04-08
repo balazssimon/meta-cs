@@ -171,6 +171,8 @@ namespace MetaDslx.CodeAnalysis.Binding
         public virtual bool IsViable(Symbol symbol)
         {
             if (symbol == null) return false;
+            if (this.Name != null && symbol.Name != this.Name) return false;
+            if (this.MetadataName != null && symbol.MetadataName != this.MetadataName) return false;
             if (Types.IsDefaultOrEmpty) return true;
             if (symbol is MergedNamespaceSymbol mns)
             {
