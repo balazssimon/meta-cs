@@ -263,8 +263,15 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                     if (_state.NotePartComplete(CompletionPart.StartChildrenCreated))
                     {
                         var diagnostics = DiagnosticBag.GetInstance();
-                        if (ModelObject != null) _source.CreateContainedChildSymbols(diagnostics, cancellationToken);
-                        else _source.CreateRootSymbols(diagnostics, cancellationToken);
+                        if (ModelObject != null)
+                        {
+                            _source.CreateContainedChildSymbols(diagnostics, cancellationToken);
+                            _source.AssignPropertyValues(SymbolConstants.MembersProperty, diagnostics, cancellationToken);
+                        }
+                        else
+                        {
+                            _source.CreateRootSymbols(diagnostics, cancellationToken);
+                        }
                         AddDeclarationDiagnostics(diagnostics);
                         _state.NotePartComplete(CompletionPart.FinishChildrenCreated);
                         diagnostics.Free();

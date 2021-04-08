@@ -40,7 +40,7 @@ namespace MetaDslx.Languages.Meta.Binding
                 {
                     var type = this.ContainingType;
                     var symbolType = this.GetSymbolTypeSymbol(type);
-                    if (symbolType != null)
+                    if (symbolType == null)
                     {
                         foreach (var baseType in type.AllBaseTypesNoUseSiteDiagnostics)
                         {

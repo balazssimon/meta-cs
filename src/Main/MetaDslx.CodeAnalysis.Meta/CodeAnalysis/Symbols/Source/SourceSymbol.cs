@@ -102,7 +102,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 {
                     if (childDeclaration.Symbol == null)
                     {
-                        var childSymbol = CreateChildSymbol(childDeclaration.NameLocations.FirstOrDefault(), childDeclaration, diagnostics, cancellationToken);
+                        /*var childSymbol = CreateChildSymbol(childDeclaration.NameLocations.FirstOrDefault(), childDeclaration, diagnostics, cancellationToken);
                         if (childSymbol is IModelSourceSymbol childSourceSymbol)
                         {
                             Debug.Assert(childSourceSymbol.ModelObject != null);
@@ -110,8 +110,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                         else
                         {
                             Debug.Assert(false);
-                        }
-                        /*var childSingleDeclaration = childDeclaration.GetSingleDeclaration(symbolPartReference);
+                        }*/
+                        var childSingleDeclaration = childDeclaration.GetSingleDeclaration(symbolPartReference);
                         Debug.Assert(childSingleDeclaration != null);
                         if (childSingleDeclaration != null)
                         {
@@ -129,8 +129,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                         }
                         else
                         {
-                            CreateChildSymbol(childDeclaration.NameLocations.FirstOrDefault(), childDeclaration, diagnostics, cancellationToken);
-                        }*/
+                            Debug.Assert(false);
+                            //CreateChildSymbol(childDeclaration.NameLocations.FirstOrDefault(), childDeclaration, diagnostics, cancellationToken);
+                        }
                     }
                 }
             }
