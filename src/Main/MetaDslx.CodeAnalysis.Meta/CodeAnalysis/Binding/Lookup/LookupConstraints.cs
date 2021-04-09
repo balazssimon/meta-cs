@@ -28,6 +28,8 @@ namespace MetaDslx.CodeAnalysis.Binding
         public readonly ConsList<TypeSymbol> BasesBeingResolved;
         public readonly TypeSymbol AccessThroughType;
         public readonly bool Diagnose;
+        public readonly bool InUsing;
+        public readonly bool IsLookup;
 
         public LookupConstraints(
             Binder originalBinder,
@@ -39,7 +41,9 @@ namespace MetaDslx.CodeAnalysis.Binding
             ImmutableArray<ILookupValidator> validators = default,
             ConsList<TypeSymbol> basesBeingResolved = null,
             TypeSymbol accessThroughType = null,
-            bool diagnose = true)
+            bool diagnose = true,
+            bool inUsing = false,
+            bool isLookup = false)
         {
             OriginalBinder = originalBinder;
             QualifierOpt = qualifierOpt;
@@ -51,6 +55,8 @@ namespace MetaDslx.CodeAnalysis.Binding
             BasesBeingResolved = basesBeingResolved;
             AccessThroughType = accessThroughType;
             Diagnose = diagnose;
+            InUsing = inUsing;
+            IsLookup = isLookup;
         }
 
         protected virtual LookupConstraints Update(
@@ -63,7 +69,9 @@ namespace MetaDslx.CodeAnalysis.Binding
             ImmutableArray<ILookupValidator> validators,
             ConsList<TypeSymbol> basesBeingResolved,
             TypeSymbol accessThroughType,
-            bool diagnose)
+            bool diagnose,
+            bool inUsing,
+            bool isLookup)
         {
             if (!ReferenceEquals(originalBinder, this.OriginalBinder)
                 || name != this.Name || metadataName != this.MetadataName
@@ -72,41 +80,43 @@ namespace MetaDslx.CodeAnalysis.Binding
                 || automaticNamePrefix != this.AutomaticNamePrefix || automaticNameSuffix != this.AutomaticNameSuffix
                 || !ReferenceEquals(basesBeingResolved, this.BasesBeingResolved)
                 || !ReferenceEquals(accessThroughType, this.AccessThroughType)
-                || diagnose != this.Diagnose)
+                || diagnose != this.Diagnose
+                || inUsing != this.InUsing
+                || isLookup != this.IsLookup)
             {
-                return new LookupConstraints(originalBinder, name, metadataName, qualifierOpt, automaticNamePrefix, automaticNameSuffix, validators, basesBeingResolved, accessThroughType, diagnose);
+                return new LookupConstraints(originalBinder, name, metadataName, qualifierOpt, automaticNamePrefix, automaticNameSuffix, validators, basesBeingResolved, accessThroughType, diagnose, inUsing, isLookup);
             }
             return this;
         }
 
         public LookupConstraints WithQualifier(DeclaredSymbol qualifierOpt)
         {
-            return Update(this.OriginalBinder, this.Name, this.MetadataName, qualifierOpt, this.AutomaticNamePrefix, this.AutomaticNameSuffix, this.Validators, this.BasesBeingResolved, this.AccessThroughType, this.Diagnose);
+            return Update(this.OriginalBinder, this.Name, this.MetadataName, qualifierOpt, this.AutomaticNamePrefix, this.AutomaticNameSuffix, this.Validators, this.BasesBeingResolved, this.AccessThroughType, this.Diagnose, this.InUsing, this.IsLookup);
         }
 
         public LookupConstraints WithName(string name, string metadataName = null)
         {
-            return Update(this.OriginalBinder, name, metadataName ?? name, this.QualifierOpt, this.AutomaticNamePrefix, this.AutomaticNameSuffix, this.Validators, this.BasesBeingResolved, this.AccessThroughType, this.Diagnose);
+            return Update(this.OriginalBinder, name, metadataName ?? name, this.QualifierOpt, this.AutomaticNamePrefix, this.AutomaticNameSuffix, this.Validators, this.BasesBeingResolved, this.AccessThroughType, this.Diagnose, this.InUsing, this.IsLookup);
         }
 
         public LookupConstraints WithAutomaticName(string namePrefix, string nameSuffix)
         {
-            return Update(this.OriginalBinder, this.Name, this.MetadataName, this.QualifierOpt, namePrefix, nameSuffix, this.Validators, this.BasesBeingResolved, this.AccessThroughType, this.Diagnose);
+            return Update(this.OriginalBinder, this.Name, this.MetadataName, this.QualifierOpt, namePrefix, nameSuffix, this.Validators, this.BasesBeingResolved, this.AccessThroughType, this.Diagnose, this.InUsing, this.IsLookup);
         }
 
         public LookupConstraints WithOriginalBinder(Binder originalBinder)
         {
-            return Update(originalBinder, this.Name, this.MetadataName, this.QualifierOpt, this.AutomaticNamePrefix, this.AutomaticNameSuffix, this.Validators, this.BasesBeingResolved, this.AccessThroughType, this.Diagnose);
+            return Update(originalBinder, this.Name, this.MetadataName, this.QualifierOpt, this.AutomaticNamePrefix, this.AutomaticNameSuffix, this.Validators, this.BasesBeingResolved, this.AccessThroughType, this.Diagnose, this.InUsing, this.IsLookup);
         }
 
         public LookupConstraints WithAccessThroughType(TypeSymbol accessThroughType)
         {
-            return Update(this.OriginalBinder, this.Name, this.MetadataName, this.QualifierOpt, this.AutomaticNamePrefix, this.AutomaticNameSuffix, this.Validators, this.BasesBeingResolved, accessThroughType, this.Diagnose);
+            return Update(this.OriginalBinder, this.Name, this.MetadataName, this.QualifierOpt, this.AutomaticNamePrefix, this.AutomaticNameSuffix, this.Validators, this.BasesBeingResolved, accessThroughType, this.Diagnose, this.InUsing, this.IsLookup);
         }
 
         public LookupConstraints WithQualifierAndAccessThroughType(NamespaceOrTypeSymbol qualifierOpt, TypeSymbol accessThroughType)
         {
-            return Update(this.OriginalBinder, this.Name, this.MetadataName, qualifierOpt, this.AutomaticNamePrefix, this.AutomaticNameSuffix, this.Validators, this.BasesBeingResolved, accessThroughType, this.Diagnose);
+            return Update(this.OriginalBinder, this.Name, this.MetadataName, qualifierOpt, this.AutomaticNamePrefix, this.AutomaticNameSuffix, this.Validators, this.BasesBeingResolved, accessThroughType, this.Diagnose, this.InUsing, this.IsLookup);
         }
 
         public LookupConstraints WithAdditionalValidators(params ILookupValidator[] validators)
@@ -119,13 +129,28 @@ namespace MetaDslx.CodeAnalysis.Binding
                     newValidators = newValidators.Add(validator);
                 }
             }
-            return Update(this.OriginalBinder, this.Name, this.MetadataName, this.QualifierOpt, this.AutomaticNamePrefix, this.AutomaticNameSuffix, newValidators, this.BasesBeingResolved, this.AccessThroughType, this.Diagnose);
+            return Update(this.OriginalBinder, this.Name, this.MetadataName, this.QualifierOpt, this.AutomaticNamePrefix, this.AutomaticNameSuffix, newValidators, this.BasesBeingResolved, this.AccessThroughType, this.Diagnose, this.InUsing, this.IsLookup);
         }
 
         public LookupConstraints ClearValidators()
         {
             if (this.Validators.IsDefaultOrEmpty) return this;
-            return Update(this.OriginalBinder, this.Name, this.MetadataName, this.QualifierOpt, this.AutomaticNamePrefix, this.AutomaticNameSuffix, default, this.BasesBeingResolved, this.AccessThroughType, this.Diagnose);
+            return Update(this.OriginalBinder, this.Name, this.MetadataName, this.QualifierOpt, this.AutomaticNamePrefix, this.AutomaticNameSuffix, default, this.BasesBeingResolved, this.AccessThroughType, this.Diagnose, this.InUsing, this.IsLookup);
+        }
+
+        public LookupConstraints WithDiagnose(bool diagnose)
+        {
+            return Update(this.OriginalBinder, this.Name, this.MetadataName, this.QualifierOpt, this.AutomaticNamePrefix, this.AutomaticNameSuffix, this.Validators, this.BasesBeingResolved, this.AccessThroughType, diagnose, this.InUsing, this.IsLookup);
+        }
+
+        public LookupConstraints WithInUsing(bool inUsing)
+        {
+            return Update(this.OriginalBinder, this.Name, this.MetadataName, this.QualifierOpt, this.AutomaticNamePrefix, this.AutomaticNameSuffix, this.Validators, this.BasesBeingResolved, this.AccessThroughType, this.Diagnose, inUsing, this.IsLookup);
+        }
+
+        public LookupConstraints WithIsLookup(bool isLookup)
+        {
+            return Update(this.OriginalBinder, this.Name, this.MetadataName, this.QualifierOpt, this.AutomaticNamePrefix, this.AutomaticNameSuffix, this.Validators, this.BasesBeingResolved, this.AccessThroughType, this.Diagnose, this.InUsing, isLookup);
         }
 
         public LanguageCompilation Compilation => this.OriginalBinder.Compilation;
@@ -146,11 +171,11 @@ namespace MetaDslx.CodeAnalysis.Binding
             get { return this.AutomaticNamePrefix != null || this.AutomaticNameSuffix != null; }
         }
 
-        public static DeclaredSymbol UnwrapAlias(DeclaredSymbol symbol, ConsList<TypeSymbol> basesBeingResolved = null)
+        public static DeclaredSymbol UnwrapAlias(DeclaredSymbol symbol, LookupConstraints recursionConstraint)
         {
             if (symbol.Kind == LanguageSymbolKind.Alias)
             {
-                return ((AliasSymbol)symbol).GetAliasTarget(basesBeingResolved);
+                return ((AliasSymbol)symbol).GetAliasTarget(recursionConstraint);
             }
             return symbol;
         }
@@ -176,7 +201,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             // but lookup results refer to symbol.
 
             var unwrappedSymbol = symbol.Kind == LanguageSymbolKind.Alias
-                ? ((AliasSymbol)symbol).GetAliasTarget(this.BasesBeingResolved)
+                ? ((AliasSymbol)symbol).GetAliasTarget(this)
                 : symbol;
 
             var result = LookupResult.Good(unwrappedSymbol);
@@ -293,14 +318,6 @@ namespace MetaDslx.CodeAnalysis.Binding
             {
                 if (symbols.Count > 1)
                 {
-                    // symbols cannot conflict with using alias names
-                    var imports = this.OriginalBinder?.GetImports(this.BasesBeingResolved);
-                    if (imports != null && imports.IsUsingAlias(this.Name, this.OriginalBinder.IsSemanticModelBinder))
-                    {
-                        LanguageDiagnosticInfo diagInfo = new LanguageDiagnosticInfo(InternalErrorCode.ERR_ConflictAliasAndMember, this.Name, this.QualifierOpt);
-                        return new ExtendedErrorTypeSymbol((DeclaredSymbol)null, this.Name, this.MetadataName, diagInfo, unreported: true);
-                    }
-
                     // gracefully handle symbols.Count > 2
                     symbols.Sort(ConsistentSymbolOrder.Instance);
 
@@ -309,7 +326,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
                     for (int i = 0; i < symbols.Count; i++)
                     {
-                        symbols[i] = UnwrapAlias(symbols[i]);
+                        symbols[i] = UnwrapAlias(symbols[i], this);
                     }
 
                     BestSymbolInfo secondBest;

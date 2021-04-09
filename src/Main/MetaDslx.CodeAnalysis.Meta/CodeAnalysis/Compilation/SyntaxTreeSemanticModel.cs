@@ -298,11 +298,12 @@ namespace MetaDslx.CodeAnalysis
                 {
                     // determine if this type is part of a base declaration being resolved
                     var basesBeingResolved = GetBasesBeingResolved(node);
+                    var recursionConstraints = new LookupConstraints(binder, basesBeingResolved: basesBeingResolved);
 
                     var diagnostics = DiagnosticBag.GetInstance();
                     try
                     {
-                        return binder.BindDeclaredOrAliasSymbol(node, diagnostics, basesBeingResolved, validatorOpt: LookupValidators.NamespaceOrType);
+                        return binder.BindDeclaredOrAliasSymbol(node, diagnostics, recursionConstraints, validatorOpt: LookupValidators.NamespaceOrType);
                     }
                     finally
                     {

@@ -34,6 +34,10 @@ namespace MetaDslx.Languages.Meta.Binding
                 var targetProp = (MetaPropertyBuilder)(target.Symbols[0] as IModelSymbol).ModelObject;
                 sourceProp.OppositeProperties.Add(targetProp);
             }
+            else
+            {
+                return null;
+            }
             return null;
         }
     }

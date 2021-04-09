@@ -82,6 +82,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                 var validatedResult = constraints.CheckSingleResultViability(symbol);
                 result.MergeEqual(validatedResult);
             }
+            candidates.Free();
         }
 
         /// <summary>
@@ -237,6 +238,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             //Debug.Assert(type.TypeKind != LanguageTypeKind.TypeParameter);
 
             var tmp = LookupCandidates.GetInstance();
+            //type.ForceComplete(CompletionPart.FinishBaseTypes, null, default);
             foreach (var currentType in type.AllBaseTypesNoUseSiteDiagnostics)
             {
                 tmp.Clear();
@@ -280,10 +282,11 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         protected virtual void AddLookupCandidateSymbolsInScope(LookupCandidates result, LookupConstraints constraints)
         {
-            if (constraints.QualifierOpt != null)
+            var qualifier = constraints.QualifierOpt;
+            if (qualifier != null)
             {
-                if (constraints.Name != null) result.AddRange(constraints.QualifierOpt.GetMembers(constraints.Name));
-                else result.AddRange(constraints.QualifierOpt.GetMembersUnordered());
+                if (constraints.Name != null) result.AddRange(qualifier.GetMembers(constraints.Name));
+                else result.AddRange(qualifier.GetMembersUnordered());
             }
         }
 

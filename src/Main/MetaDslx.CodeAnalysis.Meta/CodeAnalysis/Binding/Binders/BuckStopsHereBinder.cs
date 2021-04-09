@@ -32,7 +32,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             }
         }
 
-        public override Imports GetImports(ConsList<TypeSymbol> basesBeingResolved)
+        public override Imports GetImports(LookupConstraints recursionConstraints = null)
         {
             return Imports.Empty;
         }

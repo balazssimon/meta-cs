@@ -432,7 +432,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             var symbolDef = GetBinder(declaration.SyntaxReference);
             if (symbolDef.Binder != null)
             {
-                return symbolDef.Binder.GetImports(null);
+                return symbolDef.Binder.GetImports();
             }
             else
             {

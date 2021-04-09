@@ -20,7 +20,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
     public class InContainerBinder : Binder
     {
         private readonly DeclaredSymbol _container;
-        private readonly Func<ConsList<TypeSymbol>, Imports> _computeImports;
+        private readonly Func<LookupConstraints, Imports> _computeImports;
         private Imports _lazyImports;
         private ImportChain _lazyImportChain;
 
@@ -35,7 +35,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             Debug.Assert(declarationSyntax != null);
 
             _container = container;
-            _computeImports = basesBeingResolved => Imports.FromSyntax(declarationSyntax, container, this, basesBeingResolved, inUsing);
+            _computeImports = constraints => Imports.FromSyntax(declarationSyntax, container, this, constraints.WithInUsing(inUsing));
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
         /// <summary>
         /// Creates a binder with given import computation function.
         /// </summary>
-        public InContainerBinder(Binder next, Func<ConsList<TypeSymbol>, Imports> computeImports)
+        public InContainerBinder(Binder next, Func<LookupConstraints, Imports> computeImports)
             : base(next, null)
         {
             Debug.Assert(computeImports != null);
@@ -70,13 +70,14 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             }
         }
 
-        public override Imports GetImports(ConsList<TypeSymbol> basesBeingResolved)
+        public override Imports GetImports(LookupConstraints recursionConstraints = null)
         {
             Debug.Assert(_lazyImports != null || _computeImports != null, "Have neither imports nor a way to compute them.");
 
             if (_lazyImports == null)
             {
-                Interlocked.CompareExchange(ref _lazyImports, _computeImports(basesBeingResolved), null);
+                if (recursionConstraints == null) recursionConstraints = new LookupConstraints(this);
+                Interlocked.CompareExchange(ref _lazyImports, _computeImports(recursionConstraints), null);
             }
 
             return _lazyImports;
@@ -91,7 +92,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
                     ImportChain importChain = this.Next.ImportChain;
                     if ((object)_container == null || _container.Kind == LanguageSymbolKind.Namespace)
                     {
-                        importChain = new ImportChain(GetImports(basesBeingResolved: null), importChain);
+                        importChain = new ImportChain(GetImports(), importChain);
                     }
 
                     Interlocked.CompareExchange(ref _lazyImportChain, importChain, null);
@@ -122,15 +123,34 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             get { return (_container?.Kind == LanguageSymbolKind.NamedType) && ((NamedTypeSymbol)_container).IsScript; }
         }
 
+        protected override LookupConstraints AdjustConstraints(LookupConstraints constraints)
+        {
+            return base.AdjustConstraints(constraints).WithAdditionalValidators(this);
+        }
+
         protected override void AddLookupCandidateSymbolsInScope(LookupCandidates result, LookupConstraints constraints)
         {
             if (_container != null)
             {
                 base.AddLookupCandidateSymbolsInScope(result, constraints.WithQualifier(_container));
             }
-            var imports = GetImports(basesBeingResolved: null);
+            var imports = GetImports(constraints);
             imports.AddLookupCandidateSymbols(result, constraints);
         }
 
+        protected override void CheckFinalResultViability(LookupResult result, LookupConstraints constraints)
+        {
+            if (result.IsMultiViable)
+            {
+                // symbols cannot conflict with using alias names
+                var imports = GetImports(constraints);
+                if (imports != null && imports.IsUsingAlias(constraints.Name, this.IsSemanticModelBinder))
+                {
+                    LanguageDiagnosticInfo diagInfo = new LanguageDiagnosticInfo(InternalErrorCode.ERR_ConflictAliasAndMember, constraints.Name, constraints.QualifierOpt);
+                    var error = new ExtendedErrorTypeSymbol((DeclaredSymbol)null, constraints.Name, constraints.MetadataName, diagInfo, unreported: true);
+                    result.SetFrom(LookupResult.Good(error));
+                }
+            }
+        }
     }
 }

@@ -307,9 +307,9 @@ namespace MetaDslx.CodeAnalysis.Binding
                         // ever consumed.  Aliases are actually checked in scriptClassBinder (below).
                         // Note: #loaded trees don't consume previous submission imports.
                         result = compilation.PreviousSubmission == null || !isSubmissionTree
-                            ? new InContainerBinder(result, basesBeingResolved => scriptClassBinder.GetImports(basesBeingResolved))
-                            : new InContainerBinder(result, basesBeingResolved =>
-                                compilation.GetPreviousSubmissionImports().Concat(scriptClassBinder.GetImports(basesBeingResolved)));
+                            ? new InContainerBinder(result, recursionConstraints => scriptClassBinder.GetImports(recursionConstraints))
+                            : new InContainerBinder(result, recursionConstraints =>
+                                compilation.GetPreviousSubmissionImports().Concat(scriptClassBinder.GetImports(recursionConstraints)));
                     }
 
                     result = new InContainerBinder(compilation.GlobalNamespace, result);

@@ -1175,7 +1175,7 @@ namespace MetaDslx.CodeAnalysis
             }
 
             var binder = GetBinder((LanguageSyntaxNode)tree.GetRoot());
-            return binder.GetImports(basesBeingResolved: null);
+            return binder.GetImports();
         }
 
         /// <summary>
@@ -1835,7 +1835,7 @@ namespace MetaDslx.CodeAnalysis
         /// </summary>
         internal Imports GetImports(SingleDeclaration declaration)
         {
-            return GetBinder((LanguageSyntaxNode)declaration.SyntaxReference.GetSyntax()).GetImports(basesBeingResolved: null);
+            return GetBinder((LanguageSyntaxNode)declaration.SyntaxReference.GetSyntax()).GetImports();
         }
 
         private AliasSymbol CreateGlobalNamespaceAlias()
@@ -2162,7 +2162,6 @@ namespace MetaDslx.CodeAnalysis
         private void GetDiagnosticsForAllSymbols(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             this.ForceComplete(cancellationToken);
-            this.ReportUnusedImports(null, diagnostics, cancellationToken);
             foreach (var syntaxTree in this.SyntaxTrees)
             {
                 this.GetDiagnosticsForSymbolsInTree(syntaxTree, null, diagnostics, cancellationToken);

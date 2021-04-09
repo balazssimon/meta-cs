@@ -28,19 +28,19 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// Bind the syntax into a declared symbol by also unwrapping alias symbols. 
         /// </summary>
         [MethodImpl(MethodImplOptions.NoInlining)]
-        public DeclaredSymbol BindDeclaredSymbol(SyntaxNodeOrToken identifierSyntax, DiagnosticBag diagnostics, ConsList<TypeSymbol> basesBeingResolved = null, bool suppressUseSiteDiagnostics = false, ILookupValidator validatorOpt = null)
+        public DeclaredSymbol BindDeclaredSymbol(SyntaxNodeOrToken identifierSyntax, DiagnosticBag diagnostics, LookupConstraints recursionConstraints = null, ILookupValidator validatorOpt = null)
         {
-            var result = BindDeclaredOrAliasSymbolInternal(identifierSyntax, diagnostics, suppressUseSiteDiagnostics || basesBeingResolved != null, basesBeingResolved, validatorOpt: validatorOpt);
-            return LookupConstraints.UnwrapAlias(result, basesBeingResolved);
+            var result = BindDeclaredOrAliasSymbolInternal(identifierSyntax, diagnostics, recursionConstraints);
+            return LookupConstraints.UnwrapAlias(result, recursionConstraints);
         }
 
         /// <summary>
         /// Bind the syntax into a declared symbol or an alias. 
         /// </summary>
         [MethodImpl(MethodImplOptions.NoInlining)]
-        public DeclaredSymbol BindDeclaredOrAliasSymbol(SyntaxNodeOrToken identifierSyntax, DiagnosticBag diagnostics, ConsList<TypeSymbol> basesBeingResolved = null, bool suppressUseSiteDiagnostics = false, ILookupValidator validatorOpt = null)
+        public DeclaredSymbol BindDeclaredOrAliasSymbol(SyntaxNodeOrToken identifierSyntax, DiagnosticBag diagnostics, LookupConstraints recursionConstraints = null, ILookupValidator validatorOpt = null)
         {
-            var result = BindDeclaredOrAliasSymbolInternal(identifierSyntax, diagnostics, suppressUseSiteDiagnostics || basesBeingResolved != null, basesBeingResolved, validatorOpt: validatorOpt);
+            var result = BindDeclaredOrAliasSymbolInternal(identifierSyntax, diagnostics, recursionConstraints);
             return result;
         }
 
@@ -58,7 +58,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// enough they should be disqualified from inlining. In the future when attributes are allowed on 
         /// local functions we should explicitly mark them as <see cref="MethodImplOptions.NoInlining"/>
         /// </remarks>
-        private DeclaredSymbol BindDeclaredOrAliasSymbolInternal(SyntaxNodeOrToken identifierSyntax, DiagnosticBag diagnostics, bool suppressUseSiteDiagnostics = false, ConsList<TypeSymbol> basesBeingResolved = null, string nameOpt = null, DeclaredSymbol qualifierOpt = null, ILookupValidator validatorOpt = null)
+        private DeclaredSymbol BindDeclaredOrAliasSymbolInternal(SyntaxNodeOrToken identifierSyntax, DiagnosticBag diagnostics, LookupConstraints recursionConstraints, string nameOpt = null, DeclaredSymbol qualifierOpt = null, ILookupValidator validatorOpt = null)
         {
             var syntaxFacts = Compilation.Language.SyntaxFacts;
 
@@ -79,7 +79,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             var result = LookupResult.GetInstance();
             HashSet<DiagnosticInfo> useSiteDiagnostics = null;
             var binder = identifierSyntax.IsNull ? this : this.GetBinder(identifierSyntax);
-            var constraints = new LookupConstraints(binder, name, metadataName, qualifierOpt: qualifierOpt, basesBeingResolved: basesBeingResolved, diagnose: true, validators: validators);
+            var constraints = new LookupConstraints(binder, name, metadataName, qualifierOpt: qualifierOpt, isLookup: true, basesBeingResolved: recursionConstraints?.BasesBeingResolved, diagnose: recursionConstraints?.Diagnose ?? true, inUsing: recursionConstraints?.InUsing ?? false, validators: validators);
             constraints = binder.AdjustConstraints(constraints);
             LookupSymbols(result, constraints, ref useSiteDiagnostics);
             diagnostics.Add(identifierSyntax.GetLocation(), useSiteDiagnostics);
@@ -99,10 +99,10 @@ namespace MetaDslx.CodeAnalysis.Binding
             {
                 bool wasError;
 
-                bindingResult = constraints.ResultSymbol(result, diagnostics, suppressUseSiteDiagnostics, out wasError);
+                bindingResult = constraints.ResultSymbol(result, diagnostics, recursionConstraints?.Diagnose ?? true, out wasError);
                 if (bindingResult.Kind == LanguageSymbolKind.Alias)
                 {
-                    var aliasTarget = ((AliasSymbol)bindingResult).GetAliasTarget(basesBeingResolved);
+                    var aliasTarget = ((AliasSymbol)bindingResult).GetAliasTarget(recursionConstraints);
                     if (aliasTarget.Kind == LanguageSymbolKind.NamedType && ((NamedTypeSymbol)aliasTarget).ContainsDynamic())
                     {
                         ReportUseSiteDiagnosticForDynamic(diagnostics, identifierSyntax);
@@ -115,43 +115,34 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         }
 
-        public ImmutableArray<DeclaredSymbol> BindQualifiedName(ImmutableArray<SyntaxNodeOrToken> identifiers, DiagnosticBag diagnostics, ConsList<TypeSymbol> basesBeingResolved = null)
-        {
-            return BindQualifiedName(identifiers, diagnostics, basesBeingResolved, basesBeingResolved != null);
-        }
-
-        private ImmutableArray<DeclaredSymbol> BindQualifiedName(
-            ImmutableArray<SyntaxNodeOrToken> identifiers,
-            DiagnosticBag diagnostics,
-            ConsList<TypeSymbol> basesBeingResolved,
-            bool suppressUseSiteDiagnostics)
+        public ImmutableArray<DeclaredSymbol> BindQualifiedName(ImmutableArray<SyntaxNodeOrToken> identifiers, DiagnosticBag diagnostics, LookupConstraints recursionConstraints)
         {
             if (identifiers.Length == 0) return ImmutableArray<DeclaredSymbol>.Empty;
             var result = ArrayBuilder<DeclaredSymbol>.GetInstance();
-            result.Add(BindDeclaredOrAliasSymbolInternal(identifiers[0], diagnostics, suppressUseSiteDiagnostics: false, basesBeingResolved: basesBeingResolved, qualifierOpt: null));
+            result.Add(BindDeclaredOrAliasSymbolInternal(identifiers[0], diagnostics, recursionConstraints, qualifierOpt: null));
 
             var last = result[0];
             for (int i = 1; i < identifiers.Length; i++)
             {
                 if (last == null) break;
-                result.Add(this.BindDeclaredOrAliasSymbolInternal(identifiers[i], diagnostics, suppressUseSiteDiagnostics, basesBeingResolved, qualifierOpt: last));
+                result.Add(this.BindDeclaredOrAliasSymbolInternal(identifiers[i], diagnostics, recursionConstraints, qualifierOpt: last));
                 last = result[i];
             }
 
             return result.ToImmutableAndFree();
         }
 
-        public ImmutableArray<DeclaredSymbol> BindQualifiedName(ImmutableArray<string> identifiers, SyntaxNodeOrToken syntax, DiagnosticBag diagnostics)
+        public ImmutableArray<DeclaredSymbol> BindQualifiedName(ImmutableArray<string> identifiers, SyntaxNodeOrToken syntax, DiagnosticBag diagnostics, LookupConstraints recursionConstraints)
         {
             if (identifiers.Length == 0) return ImmutableArray<DeclaredSymbol>.Empty;
             var result = ArrayBuilder<DeclaredSymbol>.GetInstance();
-            result.Add(BindDeclaredOrAliasSymbolInternal(syntax, nameOpt: identifiers[0], qualifierOpt: null, diagnostics: diagnostics, suppressUseSiteDiagnostics: false, basesBeingResolved: null));
+            result.Add(BindDeclaredOrAliasSymbolInternal(syntax, diagnostics, recursionConstraints, nameOpt: identifiers[0], qualifierOpt: null));
 
             var last = result[0];
             for (int i = 1; i < identifiers.Length; i++)
             {
                 if (last == null) break;
-                result.Add(this.BindDeclaredOrAliasSymbolInternal(syntax, nameOpt: identifiers[i], qualifierOpt: last, diagnostics: diagnostics, suppressUseSiteDiagnostics: false, basesBeingResolved: null));
+                result.Add(this.BindDeclaredOrAliasSymbolInternal(syntax, diagnostics, recursionConstraints, nameOpt: identifiers[i], qualifierOpt: last));
                 last = result[i];
             }
 

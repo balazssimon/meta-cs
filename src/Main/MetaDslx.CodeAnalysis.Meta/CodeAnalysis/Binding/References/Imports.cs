@@ -78,8 +78,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             SyntaxNodeOrToken syntax,
             DeclaredSymbol container,
             Binder scopeBinder,
-            ConsList<TypeSymbol> basesBeingResolved,
-            bool inUsing)
+            LookupConstraints constraints)
         {
             var diagnostics = new DiagnosticBag();
             Binder containerBinder;
@@ -109,7 +108,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                 }*/
             }
 
-            ImmutableArray<UsingDirective> usingDirectives = inUsing ? ImmutableArray<UsingDirective>.Empty : BuildUsingDirectives(containerSyntax, containerBinder, diagnostics);
+            ImmutableArray<UsingDirective> usingDirectives = constraints.InUsing ? ImmutableArray<UsingDirective>.Empty : BuildUsingDirectives(containerSyntax, containerBinder, diagnostics);
             ImmutableArray<ExternAliasDirective> externAliasDirectives = BuildExternAliasDirectives(containerSyntax, containerBinder, diagnostics);
 
             if (usingDirectives.Length == 0 && externAliasDirectives.Length == 0)
@@ -211,7 +210,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                         }
 
                         var declarationBinder = usingsBinder.WithAdditionalFlags(BinderFlags.SuppressConstraintChecks);
-                        var target = declarationBinder.BindQualifiedName(usingDirective.TargetQualifiedName, diagnostics, basesBeingResolved);
+                        var target = declarationBinder.BindQualifiedName(usingDirective.TargetQualifiedName, diagnostics, constraints.WithInUsing(true));
                         var imported = target.Length > 0 ? target[target.Length - 1] : null;
                         if (imported == null) continue;
 
@@ -295,7 +294,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                     continue;
                 }
                 var qualifiedName = syntaxFacts.ExtractQualifiedName(@using);
-                var imported = usingsBinder.BindQualifiedName(qualifiedName, null, diagnostics).LastOrDefault();
+                var imported = usingsBinder.BindQualifiedName(qualifiedName, null, diagnostics, new LookupConstraints(usingsBinder, inUsing: true)).LastOrDefault();
                 if (uniqueUsings.Add(imported))
                 {
                     boundUsings.Add(new DeclaredSymbolAndUsingDirective(imported, null));
@@ -657,7 +656,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             // Force resolution of named aliases.
             foreach (var (_, alias) in UsingAliases)
             {
-                alias.Alias.GetAliasTarget(basesBeingResolved: null);
+                alias.Alias.GetAliasTarget(null);
                 semanticDiagnostics.AddRange(alias.Alias.AliasTargetDiagnostics);
             }
 
@@ -779,7 +778,8 @@ namespace MetaDslx.CodeAnalysis.Binding
         private static void AddLookupCandidateSymbolsInUsings(
             ImmutableArray<DeclaredSymbolAndUsingDirective> usings, LookupCandidates result, LookupConstraints constraints)
         {
-            if (constraints.OriginalBinder.Flags.Includes(BinderFlags.InScriptUsing))
+            var binder = constraints.OriginalBinder;
+            if (binder.Flags.Includes(BinderFlags.InScriptUsing))
             {
                 return;
             }
@@ -794,6 +794,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                     if (IsValidLookupCandidateInUsings(member) && constraints.IsViable(member))
                     {
                         result.Add(member);
+                        if (constraints.IsLookup) MarkImportDirective(binder.Compilation, namespaceSymbol.UsingDirective.SyntaxNode, binder.IsSemanticModelBinder);
                     }
                 }
             }

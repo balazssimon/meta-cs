@@ -59,7 +59,8 @@ namespace MetaDslx.Bootstrap.MetaModel
             BinderFlags binderFlags = BinderFlags.IgnoreAccessibility;
             BinderFlags binderFlags2 = BinderFlags.IgnoreMetaLibraryDuplicatedTypes;
             binderFlags = binderFlags.UnionWith(binderFlags2);
-            MetaCompilationOptions options = new MetaCompilationOptions(OutputKind.NetModule, deterministic: true, concurrentBuild: false, topLevelBinderFlags: binderFlags);
+            //MetaCompilationOptions options = new MetaCompilationOptions(OutputKind.NetModule, deterministic: true, concurrentBuild: false, topLevelBinderFlags: binderFlags);
+            MetaCompilationOptions options = new MetaCompilationOptions(OutputKind.NetModule, deterministic: false, concurrentBuild: true, topLevelBinderFlags: binderFlags);
             var compilation = MetaCompilation.
                 Create("MetaTest").
                 AddSyntaxTrees(tree).

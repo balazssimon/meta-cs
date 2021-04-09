@@ -105,7 +105,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
             // We can pass basesBeingResolved: null because base type cycles can't cross
             // submission boundaries - there's no way to depend on a subsequent submission.
-            var previousTarget = GetAliasTarget(basesBeingResolved: null);
+            var previousTarget = GetAliasTarget(null);
             if (previousTarget.Kind != LanguageSymbolKind.Namespace)
             {
                 return this;
@@ -143,7 +143,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         {
             get
             {
-                return GetAliasTarget(basesBeingResolved: null);
+                return GetAliasTarget(null);
             }
         }
 
@@ -233,7 +233,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         }
 
         // basesBeingResolved is only used to break circular references.
-        public DeclaredSymbol GetAliasTarget(ConsList<TypeSymbol> basesBeingResolved)
+        public DeclaredSymbol GetAliasTarget(LookupConstraints recursionConstraints)
         {
             if (!_state.HasComplete(CompletionPart.AliasTarget))
             {
@@ -243,7 +243,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
                 DeclaredSymbol symbol = this.IsExtern ?
                     ResolveExternAliasTarget(newDiagnostics) :
-                    ResolveAliasTarget(_binder, _aliasTargetName, newDiagnostics, basesBeingResolved);
+                    ResolveAliasTarget(_binder, _aliasTargetName, newDiagnostics, recursionConstraints);
 
                 if ((object)Interlocked.CompareExchange(ref _aliasTarget, symbol, null) == null)
                 {
@@ -301,9 +301,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             return target;
         }
 
-        private static DeclaredSymbol ResolveAliasTarget(Binder binder, SyntaxNodeOrToken syntax, DiagnosticBag diagnostics, ConsList<TypeSymbol> basesBeingResolved)
+        private static DeclaredSymbol ResolveAliasTarget(Binder binder, SyntaxNodeOrToken syntax, DiagnosticBag diagnostics, LookupConstraints recursionConstraints)
         {
-            return binder.BindDeclaredSymbol(syntax, diagnostics, basesBeingResolved);
+            return binder.BindDeclaredSymbol(syntax, diagnostics, recursionConstraints);
         }
 
         public override bool Equals(object obj)

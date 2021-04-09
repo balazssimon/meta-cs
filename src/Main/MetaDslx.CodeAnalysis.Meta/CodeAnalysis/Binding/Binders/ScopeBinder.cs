@@ -57,15 +57,37 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             get { return (Container?.Kind == LanguageSymbolKind.NamedType) && ((NamedTypeSymbol)Container).IsScript; }
         }
 
-        protected override void AddLookupCandidateSymbolsInScope(LookupCandidates result, LookupConstraints constraints)
+        protected override LookupConstraints AdjustConstraints(LookupConstraints constraints)
         {
-            if (_container != null)
-            {
-                base.AddLookupCandidateSymbolsInScope(result, constraints.WithQualifier(_container));
-            }
-            var imports = GetImports(basesBeingResolved: null);
-            imports.AddLookupCandidateSymbols(result, constraints);
+            return base.AdjustConstraints(constraints).WithAdditionalValidators(this);
         }
 
+        protected override void AddLookupCandidateSymbolsInScope(LookupCandidates result, LookupConstraints constraints)
+        {
+            if (Container != null)
+            {
+                base.AddLookupCandidateSymbolsInScope(result, constraints.WithQualifier(Container));
+            }
+            var imports = GetImports(constraints);
+            if (imports != null)
+            { 
+                imports.AddLookupCandidateSymbols(result, constraints);
+            }
+        }
+
+        protected override void CheckFinalResultViability(LookupResult result, LookupConstraints constraints)
+        {
+            if (result.IsMultiViable)
+            {
+                // symbols cannot conflict with using alias names
+                var imports = GetImports(constraints);
+                if (imports != null && imports.IsUsingAlias(constraints.Name, this.IsSemanticModelBinder))
+                {
+                    LanguageDiagnosticInfo diagInfo = new LanguageDiagnosticInfo(InternalErrorCode.ERR_ConflictAliasAndMember, constraints.Name, constraints.QualifierOpt);
+                    var error = new ExtendedErrorTypeSymbol((DeclaredSymbol)null, constraints.Name, constraints.MetadataName, diagInfo, unreported: true);
+                    result.SetFrom(LookupResult.Good(error));
+                }
+            }
+        }
     }
 }

@@ -48,11 +48,12 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             return this.DefinedSymbol;
         }
 
-        public override Imports GetImports(ConsList<TypeSymbol> basesBeingResolved)
+        public override Imports GetImports(LookupConstraints recursionConstraints = null)
         {
-            if (_lazyImports == null)
+            if (_lazyImports == null && (recursionConstraints == null || !recursionConstraints.InUsing))
             {
-                var imports = Imports.FromSyntax(this.Syntax, this.DefinedSymbol as DeclaredSymbol, this, basesBeingResolved, false);
+                if (recursionConstraints == null) recursionConstraints = new LookupConstraints(this);
+                var imports = Imports.FromSyntax(this.Syntax, this.DefinedSymbol as DeclaredSymbol, this, recursionConstraints);
                 Interlocked.CompareExchange(ref _lazyImports, imports, null);
             }
 
@@ -68,7 +69,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
                     ImportChain importChain = this.Next.ImportChain;
                     if ((object)DefinedSymbol == null || DefinedSymbol.Kind == LanguageSymbolKind.Namespace)
                     {
-                        importChain = new ImportChain(GetImports(basesBeingResolved: null), importChain);
+                        importChain = new ImportChain(GetImports(), importChain);
                     }
 
                     Interlocked.CompareExchange(ref _lazyImportChain, importChain, null);
