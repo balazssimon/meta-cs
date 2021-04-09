@@ -53,21 +53,20 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             return QualifierBinder.GetTopmostQualifierBinder(this);
         }
 
-        protected override BoundNode BindNode(CancellationToken cancellationToken)
+        protected override BoundNode BindNode(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             var qualifierBinder = this.GetQualifierBinder();
             if (qualifierBinder != null)
             {
-                var boundQualifier = (BoundQualifier)qualifierBinder.Bind(cancellationToken);
+                var boundQualifier = (BoundQualifier)qualifierBinder.Bind(null, cancellationToken);
                 var index = boundQualifier.Identifiers.IndexOf(this.Syntax);
                 Debug.Assert(index >= 0);
-                return new BoundIdentifier(boundQualifier.IdentifierSymbols[index], ImmutableArray<Diagnostic>.Empty); // Diagnostics are reported by the qualifier
+                return new BoundIdentifier(boundQualifier.IdentifierSymbols[index]);
             }
             else
             {
-                var diagnostics = DiagnosticBag.GetInstance();
                 var symbol = this.BindDeclaredSymbol(this.Syntax, diagnostics);
-                return new BoundIdentifier(symbol, diagnostics.ToReadOnlyAndFree());
+                return new BoundIdentifier(symbol);
             }
         }
 

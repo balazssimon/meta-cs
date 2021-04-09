@@ -16,6 +16,5 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
         {
         }
 
-        public abstract void Execute(DiagnosticBag diagnostics, CancellationToken cancellationToken);
     }
 }

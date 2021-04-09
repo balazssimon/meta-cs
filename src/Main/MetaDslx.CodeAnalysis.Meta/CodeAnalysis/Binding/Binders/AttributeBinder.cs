@@ -19,7 +19,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             LookupConstraints result = base.AdjustConstraints(constraints);
             if (!result.IsMemberLookup)
             {
-                result = result.WithOptions(result.Options | LookupOptions.AttributeTypeOnly);
+                result = result.WithAutomaticName(string.Empty, "Attribute");
             }
             return result;
         }

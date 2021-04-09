@@ -752,8 +752,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             AddLookupCandidateSymbolsInAliases(result, constraints);
 
             // Add types within namespaces imported through usings, but don't add nested namespaces.
-            LookupOptions usingOptions = (constraints.Options & ~(LookupOptions.NamespaceAliasesOnly | LookupOptions.NamespacesOrTypesOnly)) | LookupOptions.MustNotBeNamespace;
-            AddLookupCandidateSymbolsInUsings(this.Usings, result, constraints.WithOptions(usingOptions));
+            AddLookupCandidateSymbolsInUsings(this.Usings, result, constraints.WithAdditionalValidator(MustNotBeNamespaceLookupValidator.Instance));
         }
 
         internal void AddLookupCandidateSymbolsInAliases(LookupCandidates result, LookupConstraints constraints)
@@ -785,7 +784,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                 return;
             }
 
-            Debug.Assert(!constraints.Options.CanConsiderNamespaces());
+            Debug.Assert(constraints.Validators.Contains(MustNotBeNamespaceLookupValidator.Instance));
 
             // look in all using namespaces
             foreach (var namespaceSymbol in usings)

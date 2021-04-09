@@ -693,7 +693,9 @@ namespace MetaDslx.CodeAnalysis
                 container = baseType;
             }
 
-            var candidates = LookupCandidates.GetInstance();
+            throw new NotImplementedException("TODO:MetaDslx");
+
+            /*var candidates = LookupCandidates.GetInstance();
             if ((object)container == null)
             {
                 binder.AddLookupCandidateSymbols(candidates, new LookupConstraints(Compilation, name: name, options: options));
@@ -715,7 +717,7 @@ namespace MetaDslx.CodeAnalysis
             ImmutableArray<DeclaredSymbol> sealedResults = results.ToImmutableAndFree();
             return name == null
                 ? FilterNotReferencable(sealedResults)
-                : sealedResults;
+                : sealedResults;*/
         }
 
         private static ImmutableArray<DeclaredSymbol> FilterNotReferencable(ImmutableArray<DeclaredSymbol> sealedResults)
@@ -1383,7 +1385,7 @@ namespace MetaDslx.CodeAnalysis
         {
             if (node == null) throw new ArgumentNullException(nameof(node));
             var syntaxNode = (LanguageSyntaxNode)node;
-            var boundNode = this.Compilation.GetBinder(syntaxNode).Bind(cancellationToken) as BoundValue;
+            var boundNode = this.Compilation.GetBinder(syntaxNode).Bind(cancellationToken: cancellationToken) as BoundValue;
             if (boundNode?.Values.FirstOrDefault() is Symbol symbol)
             {
                 return new SymbolInfo(symbol);
@@ -1395,7 +1397,7 @@ namespace MetaDslx.CodeAnalysis
         {
             if (node == null) throw new ArgumentNullException(nameof(node));
             var syntaxNode = (LanguageSyntaxNode)node;
-            var boundNode = this.Compilation.GetBinder(syntaxNode).Bind(cancellationToken) as BoundValue;
+            var boundNode = this.Compilation.GetBinder(syntaxNode).Bind(null, cancellationToken) as BoundValue;
             if (boundNode?.Values.FirstOrDefault() is TypeSymbol typeSymbol)
             {
                 return new LanguageTypeInfo(typeSymbol, typeSymbol, Conversion.NoConversion);

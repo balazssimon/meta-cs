@@ -26,7 +26,21 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             return result;
         }
 
-        protected override void LookupSymbolsInSingleBinder(LookupResult result, LookupConstraints constraints, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        protected override void AddLookupCandidateSymbolsInScope(LookupCandidates result, LookupConstraints constraints)
+        {
+            var hostObjectType = GetHostObjectType();
+            if (hostObjectType.Kind != LanguageSymbolKind.ErrorType)
+            {
+                base.AddLookupCandidateSymbolsInScope(result, constraints.WithQualifier(hostObjectType));
+            }
+        }
+
+        protected override LookupConstraints AdjustConstraints(LookupConstraints constraints)
+        {
+            return base.AdjustConstraints(constraints).WithAdditionalValidator(this);
+        }
+
+        protected override void CheckFinalResultViability(LookupResult result, LookupConstraints constraints)
         {
             var hostObjectType = GetHostObjectType();
             if (hostObjectType.Kind == LanguageSymbolKind.ErrorType)
@@ -38,19 +52,6 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
                     ImmutableArray<Symbol>.Empty,
                     ImmutableArray<Location>.Empty
                 ));
-            }
-            else
-            {
-                base.LookupSymbolsInSingleBinder(result, constraints.WithQualifier(hostObjectType), ref useSiteDiagnostics);
-            }
-        }
-
-        protected override void AddLookupCandidateSymbolsInSingleBinder(LookupCandidates result, LookupConstraints constraints)
-        {
-            var hostObjectType = GetHostObjectType();
-            if (hostObjectType.Kind != LanguageSymbolKind.ErrorType)
-            {
-                base.AddLookupCandidateSymbolsInSingleBinder(result, constraints.WithQualifier(hostObjectType));
             }
         }
     }

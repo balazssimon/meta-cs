@@ -320,20 +320,13 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             else
             {
                 var location = valueBinder.Syntax.GetLocation();
-                var boundValue = valueBinder.Binder.Bind(cancellationToken) as BoundValue;
+                var boundValue = valueBinder.Binder.Bind(diagnostics, cancellationToken) as BoundValue;
                 Debug.Assert(boundValue != null);
-                if (boundValue != null)
+                if (boundValue != null && !boundValue.Diagnostics.HasAnyErrors())
                 {
-                    if (!boundValue.Diagnostics.IsDefaultOrEmpty)
+                    foreach (var value in boundValue.Values)
                     {
-                        diagnostics.AddRange(boundValue.Diagnostics);
-                    }
-                    else
-                    {
-                        foreach (var value in boundValue.Values)
-                        {
-                            SymbolFacts.SetOrAddPropertyValue(ModelObject, objectProperty, value, location, diagnostics);
-                        }
+                        SymbolFacts.SetOrAddPropertyValue(ModelObject, objectProperty, value, location, diagnostics);
                     }
                 }
             }
@@ -478,15 +471,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 var phaseBinders = FindBinders.FindPhaseBinders(symbolDef, start, finish);
                 foreach (var phaseBinder in phaseBinders)
                 {
-                    if (phaseBinder.Binder is CustomBinder customBinder)
-                    {
-                        customBinder.Execute(diagnostics, cancellationToken);
-                    }
-                    else
-                    {
-                        var boundNode = phaseBinder.Binder.Bind(cancellationToken);
-                        if (!boundNode.Diagnostics.IsDefaultOrEmpty) diagnostics.AddRange(boundNode.Diagnostics);
-                    }
+                    phaseBinder.Binder.Bind(diagnostics, cancellationToken);
                 }
             }
             return result.ToImmutableAndFree();

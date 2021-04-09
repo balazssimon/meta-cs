@@ -21,24 +21,20 @@ namespace MetaDslx.Languages.Meta.Binding
         {
         }
 
-        public override void Execute(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        protected override BoundNode BindNode(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             var assoc = this.Syntax.AsNode() as AssociationDeclarationSyntax;
             var sourceBinder = GetBinder(assoc.Source);
             var targetBinder = GetBinder(assoc.Target);
-            var source = (BoundSymbol)sourceBinder.Bind(cancellationToken);
-            var target = (BoundSymbol)targetBinder.Bind(cancellationToken);
-            if (!source.Diagnostics.IsEmpty || !target.Diagnostics.IsEmpty)
-            {
-                diagnostics.AddRange(source.Diagnostics);
-                diagnostics.AddRange(target.Diagnostics);
-            }
-            else
+            var source = (BoundSymbol)sourceBinder.Bind(diagnostics, cancellationToken);
+            var target = (BoundSymbol)targetBinder.Bind(diagnostics, cancellationToken);
+            if (!diagnostics.HasAnyErrors())
             {
                 var sourceProp = (MetaPropertyBuilder)(source.Symbols[0] as IModelSymbol).ModelObject;
                 var targetProp = (MetaPropertyBuilder)(target.Symbols[0] as IModelSymbol).ModelObject;
                 sourceProp.OppositeProperties.Add(targetProp);
             }
+            return new BoundNode();
         }
     }
 }

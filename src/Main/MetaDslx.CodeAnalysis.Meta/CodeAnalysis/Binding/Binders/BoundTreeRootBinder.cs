@@ -18,7 +18,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             _boundRoot = boundRoot;
         }
 
-        protected override BoundNode BindNode(CancellationToken cancellationToken)
+        protected override BoundNode BindNode(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             return _boundRoot;
         }

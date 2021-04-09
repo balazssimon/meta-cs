@@ -300,27 +300,35 @@ namespace MetaDslx.CodeAnalysis.Binding
         }
 #endif
 
-        public BoundNode Bind(CancellationToken cancellationToken = default)
+        public BoundNode Bind(DiagnosticBag diagnostics = null, CancellationToken cancellationToken = default)
         {
             if (this.Syntax.IsNull) return null;
             if (_boundNode == null)
             {
-                var boundNode = BindNode(cancellationToken);
+                var boundNodeDiagnostics = DiagnosticBag.GetInstance();
+                var boundNode = BindNode(boundNodeDiagnostics, cancellationToken);
                 if (boundNode != null)
                 {
-                    var parentNode = Next?.Bind(cancellationToken);
+                    var parentNode = Next?.Bind(null, cancellationToken);
                     if (parentNode == null) parentNode = _compilation.GetBoundTree(Syntax)?.RootNode;
                     boundNode = parentNode.TryAddChild(this.Syntax, boundNode);
                     Interlocked.CompareExchange(ref boundNode._index, _index, 0);
+                    ImmutableInterlocked.InterlockedInitialize(ref boundNode._diagnostics, boundNodeDiagnostics.ToReadOnly());
                     Interlocked.CompareExchange(ref _boundNode, boundNode, null);
                 }
+                if (diagnostics != null) diagnostics.AddRange(boundNodeDiagnostics);
+                boundNodeDiagnostics.Free();
+            }
+            else
+            {
+                if (diagnostics != null) diagnostics.AddRange(_boundNode.Diagnostics);
             }
             if (_boundNode != null) return _boundNode;
-            if (Next?.Syntax == this.Syntax) return Next?.Bind(cancellationToken);
+            if (Next?.Syntax == this.Syntax) return Next?.Bind(diagnostics, cancellationToken);
             else return null;
         }
 
-        protected virtual BoundNode BindNode(CancellationToken cancellationToken)
+        protected virtual BoundNode BindNode(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             return null;
         }

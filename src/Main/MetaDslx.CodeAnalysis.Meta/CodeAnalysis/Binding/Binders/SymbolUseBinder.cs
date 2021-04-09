@@ -10,6 +10,8 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using MetaDslx.CodeAnalysis.Symbols.Metadata;
+using MetaDslx.CodeAnalysis.Symbols.CSharp;
 
 namespace MetaDslx.CodeAnalysis.Binding.Binders
 {
@@ -28,9 +30,37 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             LookupConstraints result = base.AdjustConstraints(constraints);
             if (!_types.IsEmpty)
             {
-                result = result.WithTypes(_types);
+                result = result.WithAdditionalValidator(this);
             }
             return result;
+        }
+
+        protected override bool IsViable(DeclaredSymbol symbol, LookupConstraints constraints)
+        {
+            if (_types.IsDefaultOrEmpty) return true;
+            if (symbol is MergedNamespaceSymbol mns)
+            {
+                if (_types.Any(t => t.IsAssignableFrom(mns.GetType()))) return true;
+                foreach (var ns in mns.ConstituentNamespaces)
+                {
+                    if (ns is IModelSymbol nms)
+                    {
+                        var mtype = nms.ModelObjectType;
+                        return mtype != null && _types.Any(t => t.IsAssignableFrom(mtype));
+                    }
+                }
+                return false;
+            }
+            else if (symbol is CSharpNamedTypeSymbol cnts)
+            {
+                return _types.Any(t => t == typeof(Type) || t.IsAssignableFrom(cnts.GetType()));
+            }
+            if (symbol is IModelSymbol ms)
+            {
+                var mtype = ms.ModelObjectType;
+                return mtype != null && _types.Any(t => t.IsAssignableFrom(mtype));
+            }
+            return false;
         }
     }
 }

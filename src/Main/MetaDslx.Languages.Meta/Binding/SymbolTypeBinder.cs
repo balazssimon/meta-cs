@@ -17,9 +17,9 @@ namespace MetaDslx.Languages.Meta.Binding
         {
         }
 
-        protected override BoundNode BindNode(CancellationToken cancellationToken)
+        protected override BoundNode BindNode(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
-            return base.BindNode(cancellationToken);
+            return base.BindNode(diagnostics, cancellationToken);
         }
     }
 }

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
+using System.Collections.Immutable;
 
 namespace MetaDslx.CodeAnalysis.Binding.Binders
 {
@@ -14,16 +15,9 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
         {
         }
 
-        protected override void AddLookupCandidateSymbolsInSingleBinder(LookupCandidates result, LookupConstraints constraints)
+        protected override void AddLookupCandidateSymbolsInScope(LookupCandidates result, LookupConstraints constraints)
         {
-            foreach (var symbol in Compilation.SourceAssembly.DeclaredSpecialSymbols)
-            {
-                if (symbol is DeclaredSymbol ds)
-                {
-                    if (constraints.IsViable(ds)) result.Add(ds);
-                }
-            }
+            result.AddRange(Compilation.SourceAssembly.DeclaredSpecialSymbols);
         }
-
     }
 }

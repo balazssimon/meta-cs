@@ -24,27 +24,24 @@ namespace MetaDslx.CodeAnalysis.Binding
 
     public partial class Binder
     {
-        public DeclaredSymbol BindDeclaredSymbol(SyntaxNodeOrToken identifierSyntax, DiagnosticBag diagnostics, ConsList<TypeSymbol> basesBeingResolved = null)
-        {
-            return BindDeclaredSymbol(identifierSyntax, diagnostics, basesBeingResolved, basesBeingResolved != null);
-        }
-
         /// <summary>
-        /// This method is used in deeply recursive parts of the compiler and requires a non-trivial amount of stack
-        /// space to execute. Preventing inlining here to keep recursive frames small.
+        /// Bind the syntax into a declared symbol by also unwrapping alias symbols. 
         /// </summary>
         [MethodImpl(MethodImplOptions.NoInlining)]
-        public DeclaredSymbol BindDeclaredSymbol(SyntaxNodeOrToken identifierSyntax, DiagnosticBag diagnostics, ConsList<TypeSymbol> basesBeingResolved, bool suppressUseSiteDiagnostics)
+        public DeclaredSymbol BindDeclaredSymbol(SyntaxNodeOrToken identifierSyntax, DiagnosticBag diagnostics, ConsList<TypeSymbol> basesBeingResolved = null, bool suppressUseSiteDiagnostics = false, ILookupValidator validatorOpt = null)
         {
-            var result = BindDeclaredOrAliasSymbol(identifierSyntax, true, diagnostics, basesBeingResolved, suppressUseSiteDiagnostics, qualifierOpt: null);
+            var result = BindDeclaredOrAliasSymbolInternal(identifierSyntax, diagnostics, suppressUseSiteDiagnostics || basesBeingResolved != null, basesBeingResolved, validatorOpt: validatorOpt);
             return LookupConstraints.UnwrapAlias(result, basesBeingResolved);
         }
 
-        public DeclaredSymbol BindDeclaredOrAliasSymbol(SyntaxNodeOrToken identifierSyntax, bool allowMembers, DiagnosticBag diagnostics, ConsList<TypeSymbol> basesBeingResolved, bool suppressUseSiteDiagnostics, DeclaredSymbol qualifierOpt)
+        /// <summary>
+        /// Bind the syntax into a declared symbol or an alias. 
+        /// </summary>
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        public DeclaredSymbol BindDeclaredOrAliasSymbol(SyntaxNodeOrToken identifierSyntax, DiagnosticBag diagnostics, ConsList<TypeSymbol> basesBeingResolved = null, bool suppressUseSiteDiagnostics = false, ILookupValidator validatorOpt = null)
         {
-            var syntaxFacts = Compilation.Language.SyntaxFacts;
-            var identifierValueText = syntaxFacts.ExtractName(identifierSyntax);
-            return BindDeclaredOrAliasSymbol(identifierValueText, identifierSyntax, allowMembers, diagnostics, basesBeingResolved, suppressUseSiteDiagnostics, qualifierOpt);
+            var result = BindDeclaredOrAliasSymbolInternal(identifierSyntax, diagnostics, suppressUseSiteDiagnostics || basesBeingResolved != null, basesBeingResolved, validatorOpt: validatorOpt);
+            return result;
         }
 
         /// <summary>
@@ -61,27 +58,29 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// enough they should be disqualified from inlining. In the future when attributes are allowed on 
         /// local functions we should explicitly mark them as <see cref="MethodImplOptions.NoInlining"/>
         /// </remarks>
-        private DeclaredSymbol BindDeclaredOrAliasSymbol(string identifierValueText, SyntaxNodeOrToken identifierSyntax, bool allowMembers, DiagnosticBag diagnostics, ConsList<TypeSymbol> basesBeingResolved, bool suppressUseSiteDiagnostics, DeclaredSymbol qualifierOpt)
+        private DeclaredSymbol BindDeclaredOrAliasSymbolInternal(SyntaxNodeOrToken identifierSyntax, DiagnosticBag diagnostics, bool suppressUseSiteDiagnostics = false, ConsList<TypeSymbol> basesBeingResolved = null, string nameOpt = null, DeclaredSymbol qualifierOpt = null, ILookupValidator validatorOpt = null)
         {
             var syntaxFacts = Compilation.Language.SyntaxFacts;
+
+            var name = nameOpt != null ? nameOpt : syntaxFacts.ExtractName(identifierSyntax);
+            var metadataName = nameOpt != null ? nameOpt : syntaxFacts.ExtractMetadataName(identifierSyntax);
 
             // If we are here in an error-recovery scenario, say, "goo<int, >(123);" then
             // we might have an 'empty' simple name. In that case do not report an 
             // 'unable to find ""' error; we've already reported an error in the parser so
             // just bail out with an error symbol.
 
-            if (string.IsNullOrWhiteSpace(identifierValueText))
+            if (string.IsNullOrWhiteSpace(name))
             {
-                return new ExtendedErrorTypeSymbol(Compilation.Assembly.GlobalNamespace, identifierValueText, identifierValueText, new LanguageDiagnosticInfo(InternalErrorCode.ERR_SingleTypeNameNotFound));
+                return new ExtendedErrorTypeSymbol(Compilation.Assembly.GlobalNamespace, name, metadataName, new LanguageDiagnosticInfo(InternalErrorCode.ERR_SingleTypeNameNotFound));
             }
 
+            var validators = validatorOpt != null ? ImmutableArray.Create(validatorOpt) : ImmutableArray<ILookupValidator>.Empty;
             var result = LookupResult.GetInstance();
-            LookupOptions options = allowMembers ? LookupOptions.Default : LookupOptions.NamespacesOrTypesOnly;
-
             HashSet<DiagnosticInfo> useSiteDiagnostics = null;
-            var constraints = new LookupConstraints(Compilation, identifierValueText, identifierValueText, qualifierOpt: qualifierOpt, basesBeingResolved: basesBeingResolved, options: options, diagnose: true);
-            var identifierBinder = identifierSyntax.IsNull ? this : this.GetBinder(identifierSyntax);
-            constraints = identifierBinder.AdjustConstraints(constraints.WithOriginalBinder(identifierBinder));
+            var binder = identifierSyntax.IsNull ? this : this.GetBinder(identifierSyntax);
+            var constraints = new LookupConstraints(binder, name, metadataName, qualifierOpt: qualifierOpt, basesBeingResolved: basesBeingResolved, diagnose: true, validators: validators);
+            constraints = binder.AdjustConstraints(constraints);
             LookupSymbols(result, constraints, ref useSiteDiagnostics);
             diagnostics.Add(identifierSyntax.GetLocation(), useSiteDiagnostics);
 
@@ -100,7 +99,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             {
                 bool wasError;
 
-                bindingResult = constraints.ResultSymbol(result, identifierSyntax, diagnostics, suppressUseSiteDiagnostics, out wasError);
+                bindingResult = constraints.ResultSymbol(result, diagnostics, suppressUseSiteDiagnostics, out wasError);
                 if (bindingResult.Kind == LanguageSymbolKind.Alias)
                 {
                     var aliasTarget = ((AliasSymbol)bindingResult).GetAliasTarget(basesBeingResolved);
@@ -129,13 +128,13 @@ namespace MetaDslx.CodeAnalysis.Binding
         {
             if (identifiers.Length == 0) return ImmutableArray<DeclaredSymbol>.Empty;
             var result = ArrayBuilder<DeclaredSymbol>.GetInstance();
-            result.Add(BindDeclaredOrAliasSymbol(identifiers[0], true, diagnostics, basesBeingResolved, suppressUseSiteDiagnostics: false, qualifierOpt: null));
+            result.Add(BindDeclaredOrAliasSymbolInternal(identifiers[0], diagnostics, suppressUseSiteDiagnostics: false, basesBeingResolved: basesBeingResolved, qualifierOpt: null));
 
             var last = result[0];
             for (int i = 1; i < identifiers.Length; i++)
             {
                 if (last == null) break;
-                result.Add(this.BindDeclaredOrAliasSymbol(identifiers[i], true, diagnostics, basesBeingResolved, suppressUseSiteDiagnostics, last));
+                result.Add(this.BindDeclaredOrAliasSymbolInternal(identifiers[i], diagnostics, suppressUseSiteDiagnostics, basesBeingResolved, qualifierOpt: last));
                 last = result[i];
             }
 
@@ -146,13 +145,13 @@ namespace MetaDslx.CodeAnalysis.Binding
         {
             if (identifiers.Length == 0) return ImmutableArray<DeclaredSymbol>.Empty;
             var result = ArrayBuilder<DeclaredSymbol>.GetInstance();
-            result.Add(BindDeclaredOrAliasSymbol(identifiers[0], syntax, true, diagnostics, basesBeingResolved: null, suppressUseSiteDiagnostics: false, qualifierOpt: null));
+            result.Add(BindDeclaredOrAliasSymbolInternal(syntax, nameOpt: identifiers[0], qualifierOpt: null, diagnostics: diagnostics, suppressUseSiteDiagnostics: false, basesBeingResolved: null));
 
             var last = result[0];
             for (int i = 1; i < identifiers.Length; i++)
             {
                 if (last == null) break;
-                result.Add(this.BindDeclaredOrAliasSymbol(identifiers[i], syntax, true, diagnostics, basesBeingResolved: null, suppressUseSiteDiagnostics: false, last));
+                result.Add(this.BindDeclaredOrAliasSymbolInternal(syntax, nameOpt: identifiers[i], qualifierOpt: last, diagnostics: diagnostics, suppressUseSiteDiagnostics: false, basesBeingResolved: null));
                 last = result[i];
             }
 

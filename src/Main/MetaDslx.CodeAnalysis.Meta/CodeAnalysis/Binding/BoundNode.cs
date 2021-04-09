@@ -20,6 +20,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         private BoundNode _parent;
         internal int _index;
         private SyntaxNodeOrToken _syntax;
+        internal ImmutableArray<Diagnostic> _diagnostics;
         private ConcurrentDictionary<SyntaxNodeOrToken, BoundNode> _children;
 
         public BoundNode(BoundTree boundTree)
@@ -37,7 +38,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         public SyntaxNodeOrToken Syntax => _syntax;
 
-        public virtual ImmutableArray<Diagnostic> Diagnostics => ImmutableArray<Diagnostic>.Empty;
+        public ImmutableArray<Diagnostic> Diagnostics => _diagnostics;
 
         public Binder GetBinder()
         {

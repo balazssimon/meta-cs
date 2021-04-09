@@ -153,11 +153,6 @@ namespace MetaDslx.CodeAnalysis.Syntax
             else return nodeOrToken.AsNode().ToString();
         }
 
-        public virtual string ExtractErrorDisplayName(SyntaxNodeOrToken nodeOrToken)
-        {
-            return null;
-        }
-
         public virtual ImmutableArray<string> ExtractQualifiedName(SyntaxNodeOrToken nodeOrToken)
         {
             string name = this.ExtractName(nodeOrToken);
@@ -172,8 +167,7 @@ namespace MetaDslx.CodeAnalysis.Syntax
 
         public virtual string ExtractMetadataName(SyntaxNodeOrToken nodeOrToken)
         {
-            if (nodeOrToken.IsToken) return nodeOrToken.AsToken().ValueText;
-            else return nodeOrToken.AsNode().ToString();
+            return this.ExtractName(nodeOrToken);
         }
 
         public virtual object ExtractValue(SyntaxNodeOrToken nodeOrToken)

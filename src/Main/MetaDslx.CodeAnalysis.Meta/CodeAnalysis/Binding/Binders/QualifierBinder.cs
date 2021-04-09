@@ -53,13 +53,12 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             }
         }
 
-        protected override BoundNode BindNode(CancellationToken cancellationToken)
+        protected override BoundNode BindNode(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             if (this.Identifiers.IsEmpty) return null;
             // Only create a BoundQualifier node for the topmost qualifier:
-            var diagnostics = DiagnosticBag.GetInstance();
             var symbols = this.BindQualifiedName(this.Identifiers, diagnostics, null);
-            return new BoundQualifier(this.Identifiers, symbols, diagnostics.ToReadOnlyAndFree());
+            return new BoundQualifier(this.Identifiers, symbols);
         }
 
         protected override LookupConstraints AdjustConstraints(LookupConstraints constraints)
@@ -70,7 +69,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
                 var index = this.Identifiers.IndexOf(constraints.OriginalBinder.Syntax);
                 if (index >= 0 && index < this.Identifiers.Length-1)
                 {
-                    result = result.WithTypes(ImmutableArray<Type>.Empty);
+                    result = result.ClearValidators();
                 }
             }
             return result;

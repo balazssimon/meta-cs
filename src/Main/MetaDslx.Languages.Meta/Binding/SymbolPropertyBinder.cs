@@ -27,9 +27,9 @@ namespace MetaDslx.Languages.Meta.Binding
         {
         }
 
-        protected override BoundNode BindNode(CancellationToken cancellationToken)
+        protected override BoundNode BindNode(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
-            return base.BindNode(cancellationToken);
+            return base.BindNode(diagnostics, cancellationToken);
         }
 
         public DeclaredSymbol SymbolType
@@ -94,7 +94,7 @@ namespace MetaDslx.Languages.Meta.Binding
         protected override LookupConstraints AdjustConstraints(LookupConstraints constraints)
         {
             var symbolType = this.SymbolType;
-            return base.AdjustConstraints(constraints).WithQualifier(symbolType).WithOptions(LookupOptions.MustBeInstance);
+            return base.AdjustConstraints(constraints).WithQualifier(symbolType).WithAdditionalValidator(MustBeInstanceLookupValidator.Instance);
         }
 
     }

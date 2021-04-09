@@ -1,22 +1,23 @@
 ﻿using MetaDslx.CodeAnalysis.PooledObjects;
 using MetaDslx.CodeAnalysis.Symbols;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Binding
 {
-    public sealed class LookupCandidates
+    public sealed class LookupCandidates : IEnumerable<DeclaredSymbol>
     {
-        private readonly ArrayBuilder<DeclaredSymbol> _symbolList;
+        private readonly HashSet<DeclaredSymbol> _symbolList;
 
         private readonly ObjectPool<LookupCandidates> _pool;
 
         private LookupCandidates(ObjectPool<LookupCandidates> pool)
         {
             _pool = pool;
-            _symbolList = new ArrayBuilder<DeclaredSymbol>();
+            _symbolList = new HashSet<DeclaredSymbol>();
         }
 
         public bool IsClear
@@ -37,7 +38,17 @@ namespace MetaDslx.CodeAnalysis.Binding
             _symbolList.Add(symbol);
         }
 
-        public ArrayBuilder<DeclaredSymbol> Symbols
+        public void AddRange(IEnumerable<DeclaredSymbol> symbols)
+        {
+            _symbolList.UnionWith(symbols);
+        }
+
+        public void AddRange(LookupCandidates symbols)
+        {
+            _symbolList.UnionWith(symbols.Symbols);
+        }
+
+        public HashSet<DeclaredSymbol> Symbols
         {
             get
             {
@@ -71,6 +82,16 @@ namespace MetaDslx.CodeAnalysis.Binding
             {
                 _pool.Free(this);
             }
+        }
+
+        public IEnumerator<DeclaredSymbol> GetEnumerator()
+        {
+            return _symbolList.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
         }
     }
 }

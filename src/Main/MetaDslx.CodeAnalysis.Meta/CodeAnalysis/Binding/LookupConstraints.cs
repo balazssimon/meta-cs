@@ -18,110 +18,115 @@ namespace MetaDslx.CodeAnalysis.Binding
 {
     public class LookupConstraints
     {
-        public readonly LanguageCompilation Compilation;
+        public readonly Binder OriginalBinder;
         public readonly DeclaredSymbol QualifierOpt;
         public readonly string Name;
         public readonly string MetadataName;
-        public readonly ImmutableArray<Type> Types;
+        public readonly string AutomaticNamePrefix;
+        public readonly string AutomaticNameSuffix;
+        public readonly ImmutableArray<ILookupValidator> Validators;
         public readonly ConsList<TypeSymbol> BasesBeingResolved;
-        public readonly LookupOptions Options;
-        public readonly bool Diagnose;
-        public readonly Binder OriginalBinder;
         public readonly TypeSymbol AccessThroughType;
+        public readonly bool Diagnose;
 
         public LookupConstraints(
-            LanguageCompilation compilation,
+            Binder originalBinder,
             string name = null,
             string metadataName = null,
-            ImmutableArray<Type> types = default,
             DeclaredSymbol qualifierOpt = null,
+            string automaticNamePrefix = null,
+            string automaticNameSuffix = null,
+            ImmutableArray<ILookupValidator> validators = default,
             ConsList<TypeSymbol> basesBeingResolved = null,
-            Binder originalBinder = null,
             TypeSymbol accessThroughType = null,
-            LookupOptions options = LookupOptions.Default,
             bool diagnose = true)
         {
-            Compilation = compilation;
+            OriginalBinder = originalBinder;
             QualifierOpt = qualifierOpt;
             Name = name;
-            Types = types;
             MetadataName = metadataName ?? name;
+            AutomaticNamePrefix = automaticNamePrefix;
+            AutomaticNameSuffix = automaticNameSuffix;
+            Validators = validators.IsDefault ? ImmutableArray<ILookupValidator>.Empty : validators;
             BasesBeingResolved = basesBeingResolved;
-            OriginalBinder = originalBinder;
             AccessThroughType = accessThroughType;
-            Options = options;
             Diagnose = diagnose;
         }
 
         protected virtual LookupConstraints Update(
+            Binder originalBinder,
             string name,
             string metadataName,
-            ImmutableArray<Type> types,
             DeclaredSymbol qualifierOpt,
+            string automaticNamePrefix,
+            string automaticNameSuffix,
+            ImmutableArray<ILookupValidator> validators,
             ConsList<TypeSymbol> basesBeingResolved,
-            Binder originalBinder,
             TypeSymbol accessThroughType,
-            LookupOptions options,
             bool diagnose)
         {
-            if (!ReferenceEquals(qualifierOpt, this.QualifierOpt) || name != this.Name || metadataName != this.MetadataName || types != this.Types ||
-                !ReferenceEquals(basesBeingResolved, this.BasesBeingResolved) || !ReferenceEquals(originalBinder, this.OriginalBinder) ||
-                !ReferenceEquals(accessThroughType, this.AccessThroughType) ||
-                options != this.Options || diagnose != this.Diagnose)
+            if (!ReferenceEquals(originalBinder, this.OriginalBinder)
+                || name != this.Name || metadataName != this.MetadataName
+                || !ReferenceEquals(qualifierOpt, this.QualifierOpt)
+                || validators != this.Validators
+                || automaticNamePrefix != this.AutomaticNamePrefix || automaticNameSuffix != this.AutomaticNameSuffix
+                || !ReferenceEquals(basesBeingResolved, this.BasesBeingResolved)
+                || !ReferenceEquals(accessThroughType, this.AccessThroughType)
+                || diagnose != this.Diagnose)
             {
-                return new LookupConstraints(Compilation, name, metadataName, types, qualifierOpt, basesBeingResolved, originalBinder, accessThroughType, options, diagnose);
+                return new LookupConstraints(originalBinder, name, metadataName, qualifierOpt, automaticNamePrefix, automaticNameSuffix, validators, basesBeingResolved, accessThroughType, diagnose);
             }
             return this;
         }
 
-        public LookupConstraints WithName(string name, string metadataName = null)
-        {
-            return Update(name, metadataName ?? name, this.Types, this.QualifierOpt, this.BasesBeingResolved, this.OriginalBinder, this.AccessThroughType, this.Options, this.Diagnose);
-        }
-
-        public LookupConstraints WithTypes(ImmutableArray<Type> types)
-        {
-            return Update(this.Name, this.MetadataName, types, this.QualifierOpt, this.BasesBeingResolved, this.OriginalBinder, this.AccessThroughType, this.Options, this.Diagnose);
-        }
-
         public LookupConstraints WithQualifier(DeclaredSymbol qualifierOpt)
         {
-            return Update(this.Name, this.MetadataName, this.Types, qualifierOpt, this.BasesBeingResolved, this.OriginalBinder, this.AccessThroughType, this.Options, this.Diagnose);
+            return Update(this.OriginalBinder, this.Name, this.MetadataName, qualifierOpt, this.AutomaticNamePrefix, this.AutomaticNameSuffix, this.Validators, this.BasesBeingResolved, this.AccessThroughType, this.Diagnose);
         }
 
-        public LookupConstraints WithOptions(LookupOptions options)
+        public LookupConstraints WithName(string name, string metadataName = null)
         {
-            return Update(this.Name, this.MetadataName, this.Types, this.QualifierOpt, this.BasesBeingResolved, this.OriginalBinder, this.AccessThroughType, options, this.Diagnose);
+            return Update(this.OriginalBinder, name, metadataName ?? name, this.QualifierOpt, this.AutomaticNamePrefix, this.AutomaticNameSuffix, this.Validators, this.BasesBeingResolved, this.AccessThroughType, this.Diagnose);
         }
 
-        public LookupConstraints WithDiagnose(bool diagnose)
+        public LookupConstraints WithAutomaticName(string namePrefix, string nameSuffix)
         {
-            return Update(this.Name, this.MetadataName, this.Types, this.QualifierOpt, this.BasesBeingResolved, this.OriginalBinder, this.AccessThroughType, this.Options, diagnose);
-        }
-
-        public LookupConstraints WithDiagnoseAndOriginalBinder(bool diagnose, Binder originalBinder)
-        {
-            return Update(this.Name, this.MetadataName, this.Types, this.QualifierOpt, this.BasesBeingResolved, originalBinder, this.AccessThroughType, this.Options, diagnose);
+            return Update(this.OriginalBinder, this.Name, this.MetadataName, this.QualifierOpt, namePrefix, nameSuffix, this.Validators, this.BasesBeingResolved, this.AccessThroughType, this.Diagnose);
         }
 
         public LookupConstraints WithOriginalBinder(Binder originalBinder)
         {
-            return Update(this.Name, this.MetadataName, this.Types, this.QualifierOpt, this.BasesBeingResolved, originalBinder, this.AccessThroughType, this.Options, this.Diagnose);
+            return Update(originalBinder, this.Name, this.MetadataName, this.QualifierOpt, this.AutomaticNamePrefix, this.AutomaticNameSuffix, this.Validators, this.BasesBeingResolved, this.AccessThroughType, this.Diagnose);
         }
 
         public LookupConstraints WithAccessThroughType(TypeSymbol accessThroughType)
         {
-            return Update(this.Name, this.MetadataName, this.Types, this.QualifierOpt, this.BasesBeingResolved, this.OriginalBinder, accessThroughType, this.Options, this.Diagnose);
+            return Update(this.OriginalBinder, this.Name, this.MetadataName, this.QualifierOpt, this.AutomaticNamePrefix, this.AutomaticNameSuffix, this.Validators, this.BasesBeingResolved, accessThroughType, this.Diagnose);
         }
 
         public LookupConstraints WithQualifierAndAccessThroughType(NamespaceOrTypeSymbol qualifierOpt, TypeSymbol accessThroughType)
         {
-            return Update(this.Name, this.MetadataName, this.Types, qualifierOpt, this.BasesBeingResolved, this.OriginalBinder, accessThroughType, this.Options, this.Diagnose);
+            return Update(this.OriginalBinder, this.Name, this.MetadataName, qualifierOpt, this.AutomaticNamePrefix, this.AutomaticNameSuffix, this.Validators, this.BasesBeingResolved, accessThroughType, this.Diagnose);
         }
+
+        public LookupConstraints WithAdditionalValidator(ILookupValidator validator)
+        {
+            if (validator == null || this.Validators.Contains(validator)) return this;
+            return Update(this.OriginalBinder, this.Name, this.MetadataName, this.QualifierOpt, this.AutomaticNamePrefix, this.AutomaticNameSuffix, this.Validators.Add(validator), this.BasesBeingResolved, this.AccessThroughType, this.Diagnose);
+        }
+
+        public LookupConstraints ClearValidators()
+        {
+            if (this.Validators.IsDefaultOrEmpty) return this;
+            return Update(this.OriginalBinder, this.Name, this.MetadataName, this.QualifierOpt, this.AutomaticNamePrefix, this.AutomaticNameSuffix, default, this.BasesBeingResolved, this.AccessThroughType, this.Diagnose);
+        }
+
+        public LanguageCompilation Compilation => this.OriginalBinder.Compilation;
+        public SyntaxNodeOrToken Syntax => this.OriginalBinder.Syntax;
 
         public virtual bool AreValid()
         {
-            return this.Options.AreValid();
+            return true;
         }
 
         public bool IsMemberLookup
@@ -129,34 +134,9 @@ namespace MetaDslx.CodeAnalysis.Binding
             get { return (object)this.QualifierOpt != null; }
         }
 
-        public bool CanConsiderMembers()
+        public bool IsAutomaticNameLookup
         {
-            return this.Options.CanConsiderMembers();
-        }
-
-        public bool CanConsiderLocals()
-        {
-            return this.Options.CanConsiderLocals();
-        }
-
-        public bool CanConsiderTypes()
-        {
-            return this.Options.CanConsiderTypes();
-        }
-
-        public bool CanConsiderNamespaces()
-        {
-            return this.Options.CanConsiderNamespaces();
-        }
-
-        public bool IsAttributeTypeLookup()
-        {
-            return this.Options.IsAttributeTypeLookup();
-        }
-
-        public bool IsVerbatimNameAttributeTypeLookup()
-        {
-            return this.Options.IsVerbatimNameAttributeTypeLookup();
+            get { return this.AutomaticNamePrefix != null || this.AutomaticNameSuffix != null; }
         }
 
         public static DeclaredSymbol UnwrapAlias(DeclaredSymbol symbol, ConsList<TypeSymbol> basesBeingResolved = null)
@@ -168,258 +148,58 @@ namespace MetaDslx.CodeAnalysis.Binding
             return symbol;
         }
 
-        public virtual bool IsViable(Symbol symbol)
+        public virtual bool IsViable(DeclaredSymbol symbol)
         {
             if (symbol == null) return false;
             if (this.Name != null && symbol.Name != this.Name) return false;
             if (this.MetadataName != null && symbol.MetadataName != this.MetadataName) return false;
-            if (Types.IsDefaultOrEmpty) return true;
-            if (symbol is MergedNamespaceSymbol mns)
+            if (!this.Validators.IsDefaultOrEmpty)
             {
-                if (Types.Any(t => t.IsAssignableFrom(mns.GetType()))) return true;
-                foreach (var ns in mns.ConstituentNamespaces)
+                foreach (var validator in this.Validators)
                 {
-                    if (ns is IModelSymbol nms)
-                    {
-                        var mtype = nms.ModelObjectType;
-                        return mtype != null && Types.Any(t => t.IsAssignableFrom(mtype));
-                    }
+                    if (!validator.IsViable(symbol, this)) return false;
                 }
-                return false;
             }
-            else if (symbol is CSharpNamedTypeSymbol cnts)
-            {
-                return Types.Any(t => t == typeof(Type) || t.IsAssignableFrom(cnts.GetType()));
-            }
-            if (symbol is IModelSymbol ms)
-            {
-                var mtype = ms.ModelObjectType;
-                return mtype != null && Types.Any(t => t.IsAssignableFrom(mtype));
-            }
-            return false;
+            return true;
         }
 
-        /// <remarks>
-        /// Distinguish from <see cref="CanAddLookupSymbolInfo"/>, which performs an analogous task for Add*LookupSymbolsInfo*.
-        /// </remarks>
-        public virtual SingleLookupResult CheckViability(Binder binder, DeclaredSymbol symbol, LookupConstraints constraints, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        public virtual SingleLookupResult CheckSingleResultViability(DeclaredSymbol symbol)
         {
-            bool inaccessibleViaQualifier;
-            DiagnosticInfo diagInfo;
-
             // General pattern: checks and diagnostics refer to unwrapped symbol,
             // but lookup results refer to symbol.
 
             var unwrappedSymbol = symbol.Kind == LanguageSymbolKind.Alias
-                ? ((AliasSymbol)symbol).GetAliasTarget(constraints.BasesBeingResolved)
+                ? ((AliasSymbol)symbol).GetAliasTarget(this.BasesBeingResolved)
                 : symbol;
 
-            if (WrongArity(symbol, constraints.MetadataName, constraints.Diagnose, constraints.Options, out diagInfo))
+            var result = LookupResult.Good(unwrappedSymbol);
+            if (!this.Validators.IsDefaultOrEmpty)
             {
-                return LookupResult.WrongArity(symbol, diagInfo);
-            }
-            else if (!unwrappedSymbol.CanBeReferencedByName)
-            {
-                diagInfo = constraints.Diagnose ? new LanguageDiagnosticInfo(InternalErrorCode.ERR_CantCallSpecialMethod, unwrappedSymbol) : null;
-                return LookupResult.NotReferencable(symbol, diagInfo);
-            }
-            else if ((constraints.Options & LookupOptions.NamespacesOrTypesOnly) != 0 && !(unwrappedSymbol is NamespaceOrTypeSymbol))
-            {
-                return LookupResult.NotTypeOrNamespace(unwrappedSymbol, symbol, constraints.Diagnose);
-            }
-            else if ((constraints.Options & LookupOptions.MustBeInvocableIfMember) != 0
-                && IsNonInvocableMember(unwrappedSymbol))
-            {
-                return LookupResult.NotInvocable(unwrappedSymbol, symbol, constraints.Diagnose);
-            }
-            else if (!binder.Flags.Includes(BinderFlags.IgnoreAccessibility) && 
-                     !this.IsAccessible(unwrappedSymbol,
-                                        ref useSiteDiagnostics,
-                                        RefineAccessThroughType(constraints.Options, constraints.AccessThroughType),
-                                        out inaccessibleViaQualifier,
-                                        constraints.BasesBeingResolved))
-            {
-                if (!constraints.Diagnose)
+                foreach (var validator in this.Validators)
                 {
-                    diagInfo = null;
+                    result = validator.CheckSingleResultViability(result, symbol as AliasSymbol, this);
+                    if (result.Kind != LookupResultKind.Viable) return result;
                 }
-                else if (inaccessibleViaQualifier)
+            }
+            return result;
+        }
+
+
+        public virtual void CheckFinalResultViability(LookupResult result)
+        {
+            if (!this.Validators.IsDefaultOrEmpty)
+            {
+                foreach (var validator in this.Validators)
                 {
-                    diagInfo = new LanguageDiagnosticInfo(InternalErrorCode.ERR_BadProtectedAccess, unwrappedSymbol, constraints.AccessThroughType, binder.ContainingType);
+                    validator.CheckFinalResultViability(result, this);
+                    if (!result.IsMultiViable) return;
                 }
-                else if (IsBadIvtSpecification())
-                {
-                    diagInfo = new LanguageDiagnosticInfo(InternalErrorCode.ERR_FriendRefNotEqualToThis, unwrappedSymbol.ContainingAssembly.Identity.ToString(), AssemblyIdentity.PublicKeyToString(this.Compilation.Assembly.PublicKey));
-                }
-                else
-                {
-                    diagInfo = new SymbolDiagnosticInfo(ImmutableArray.Create<ISymbol>(unwrappedSymbol), ImmutableArray<Location>.Empty, InternalErrorCode.ERR_BadAccess, unwrappedSymbol);
-                }
-
-                return LookupResult.Inaccessible(symbol, diagInfo);
             }
-            else if ((constraints.Options & LookupOptions.MustBeInstance) != 0 && !IsInstance(unwrappedSymbol))
-            {
-                diagInfo = constraints.Diagnose ? new LanguageDiagnosticInfo(InternalErrorCode.ERR_ObjectRequired, unwrappedSymbol) : null;
-                return LookupResult.StaticInstanceMismatch(symbol, diagInfo);
-            }
-            else if ((constraints.Options & LookupOptions.MustNotBeInstance) != 0 && IsInstance(unwrappedSymbol))
-            {
-                diagInfo = constraints.Diagnose ? new LanguageDiagnosticInfo(InternalErrorCode.ERR_ObjectProhibited, unwrappedSymbol) : null;
-                return LookupResult.StaticInstanceMismatch(symbol, diagInfo);
-            }
-            else if ((constraints.Options & LookupOptions.MustNotBeNamespace) != 0 && unwrappedSymbol.Kind == LanguageSymbolKind.Namespace)
-            {
-                diagInfo = constraints.Diagnose ? new LanguageDiagnosticInfo(InternalErrorCode.ERR_BadSKunknown, unwrappedSymbol, unwrappedSymbol.GetKindText()) : null;
-                return LookupResult.NotTypeOrNamespace(symbol, diagInfo);
-            }
-            /*else if ((options & LookupOptions.LabelsOnly) != 0 && unwrappedSymbol.Kind != LanguageSymbolKind.Label)
-            {
-                diagInfo = diagnose ? new LanguageDiagnosticInfo(InternalErrorCode.ERR_LabelNotFound, unwrappedSymbol.Name) : null;
-                return LookupResult.NotLabel(symbol, diagInfo);
-            }*/
-            else if (!constraints.IsViable(symbol))
-            {
-                return LookupResult.WrongSymbol(symbol, symbol, constraints.Types, true);
-            }
-            else
-            {
-                return LookupResult.Good(symbol);
-            }
-
-            bool IsBadIvtSpecification()
-            {
-                // Ensures that during binding we don't ask for public key which results in attribute binding and stack overflow.
-                // If looking up attributes, don't ask for public key.
-                if ((unwrappedSymbol.DeclaredAccessibility == Accessibility.Internal ||
-                    unwrappedSymbol.DeclaredAccessibility == Accessibility.ProtectedAndInternal ||
-                    unwrappedSymbol.DeclaredAccessibility == Accessibility.ProtectedOrInternal)
-                    && !constraints.Options.IsAttributeTypeLookup())
-                {
-                    var assemblyName = this.Compilation.AssemblyName;
-                    if (assemblyName == null)
-                    {
-                        return false;
-                    }
-                    var keys = unwrappedSymbol.ContainingAssembly.GetInternalsVisibleToPublicKeys(assemblyName);
-                    if (!keys.Any())
-                    {
-                        return false;
-                    }
-                    foreach (ImmutableArray<byte> key in keys)
-                    {
-                        if (key.SequenceEqual(this.Compilation.Assembly.Identity.PublicKey))
-                        {
-                            return false;
-                        }
-                    }
-                    return true;
-                }
-                return false;
-            }
-        }
-
-        public void CheckViability<TSymbol>(Binder binder, LookupResult result, ImmutableArray<TSymbol> symbols, LookupConstraints constraints, ref HashSet<DiagnosticInfo> useSiteDiagnostics) where TSymbol : DeclaredSymbol
-        {
-            foreach (var symbol in symbols)
-            {
-                var res = this.CheckViability(binder, symbol, constraints, ref useSiteDiagnostics);
-                result.MergeEqual(res);
-            }
-        }
-
-
-        /// <summary>
-        /// Check whether "symbol" is accessible from this binder.
-        /// Also checks protected access via "accessThroughType".
-        /// </summary>
-        public bool IsAccessible(DeclaredSymbol symbol, ref HashSet<DiagnosticInfo> useSiteDiagnostics, TypeSymbol accessThroughType = null, ConsList<TypeSymbol> basesBeingResolved = null)
-        {
-            bool failedThroughTypeCheck;
-            return IsAccessible(symbol, ref useSiteDiagnostics, accessThroughType, out failedThroughTypeCheck, basesBeingResolved);
-        }
-
-        /// <summary>
-        /// Check whether "symbol" is accessible from this binder.
-        /// Also checks protected access via "accessThroughType", and sets "failedThroughTypeCheck" if fails
-        /// the protected access check.
-        /// </summary>
-        protected virtual bool IsAccessible(DeclaredSymbol symbol, ref HashSet<DiagnosticInfo> useSiteDiagnostics, TypeSymbol accessThroughType, out bool failedThroughTypeCheck, ConsList<TypeSymbol> basesBeingResolved = null)
-        {
-            failedThroughTypeCheck = false;
-            return true;
-        }
-
-        public bool IsNonInvocableMember(DeclaredSymbol symbol)
-        {
-            switch (symbol.Kind.Switch())
-            {
-                case LanguageSymbolKind.Member:
-                case LanguageSymbolKind.NamedType:
-                    return !IsInvocableMember(symbol);
-
-                default:
-                    return false;
-            }
-        }
-
-        private bool IsInvocableMember(DeclaredSymbol symbol)
-        {
-            // If a member is a method or event, or if it is a constant, field or property of 
-            // either a delegate type or the type dynamic, then the member is said to be invocable.
-
-            TypeSymbol type = null;
-
-            switch (symbol.Kind.Switch())
-            {
-                case LanguageSymbolKind.Member:
-                    return ((MemberSymbol)symbol).MemberKind == MemberKind.Method;
-            }
-
-            // TODO:MetaDslx - delegate typed members
-
-            return (object)type != null && type.IsDynamic();
-        }
-
-        private static bool IsInstance(DeclaredSymbol symbol)
-        {
-            switch (symbol.Kind.Switch())
-            {
-                case LanguageSymbolKind.Member:
-                    return !symbol.IsStatic;
-                default:
-                    return false;
-            }
-        }
-
-        // Check if the given symbol can be accessed with the given metadataName. If OK, return false.
-        // If not OK, return true and return a diagnosticinfo. Note that methods with type arguments
-        // can be accesses with metadataName zero due to type inference (but non types).
-        private static bool WrongArity(Symbol symbol, string metadataName, bool diagnose, LookupOptions options, out DiagnosticInfo diagInfo)
-        {
-            if (symbol.MetadataName != metadataName)
-            {
-                diagInfo = diagnose ? new LanguageDiagnosticInfo(InternalErrorCode.ERR_TypeArgsNotAllowed, symbol, symbol.MetadataName) : null;
-                return true;
-            }
-            diagInfo = null;
-            return false;
-        }
-
-        private static TypeSymbol RefineAccessThroughType(LookupOptions options, TypeSymbol accessThroughType)
-        {
-            // Normally, when we access a protected instance member, we need to know the type of the receiver so we
-            // can determine whether the member is actually accessible in the containing type.  There is one exception:
-            // If the receiver is "base", then it's okay if the receiver type isn't derived from the containing type.
-            return ((options & LookupOptions.UseBaseReferenceAccessibility) != 0)
-                ? null
-                : accessThroughType;
         }
 
         // return the type or namespace symbol in a lookup result, or report an error.
         public virtual DeclaredSymbol ResultSymbol(
             LookupResult result,
-            SyntaxNodeOrToken where,
             DiagnosticBag diagnostics,
             bool suppressUseSiteDiagnostics,
             out bool wasError)
@@ -428,6 +208,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
             var syntaxFacts = Compilation.Language.SyntaxFacts;
             var symbols = result.Symbols;
+            var where = this.Syntax;
             wasError = false;
 
             if (result.IsMultiViable)
@@ -524,8 +305,8 @@ namespace MetaDslx.CodeAnalysis.Binding
                     var first = symbols[best.Index];
                     var second = symbols[secondBest.Index];
 
-                    Debug.Assert(originalSymbols[best.Index] != originalSymbols[secondBest.Index] || Options.IsAttributeTypeLookup(),
-                        "This kind of ambiguity is only possible for attributes.");
+                    Debug.Assert(originalSymbols[best.Index] != originalSymbols[secondBest.Index] || this.IsAutomaticNameLookup,
+                        "This kind of ambiguity is only possible for automatic name lookup.");
 
                     Debug.Assert(first != second || originalSymbols[best.Index] != originalSymbols[secondBest.Index],
                         "Why does the LookupResult contain the same symbol twice?");
@@ -552,7 +333,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
                                 // '{0}' is an ambiguous reference between '{1}' and '{2}'
                                 info = new SymbolDiagnosticInfo(errorSymbols, InternalErrorCode.ERR_AmbigContext,
-                                        syntaxFacts.ExtractErrorDisplayName(where) ?? Name,
+                                        this.Name,
                                         new FormattedSymbol(first, SymbolDisplayFormat.CSharpErrorMessageFormat),
                                         new FormattedSymbol(second, SymbolDisplayFormat.CSharpErrorMessageFormat));
                             }
@@ -683,7 +464,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
                         if (first is NamespaceOrTypeSymbol && second is NamespaceOrTypeSymbol)
                         {
-                            if (Options.IsAttributeTypeLookup() &&
+                            if (this.IsAutomaticNameLookup &&
                                 first.Kind == LanguageSymbolKind.NamedType &&
                                 second.Kind == LanguageSymbolKind.NamedType &&
                                 originalSymbols[best.Index].Name != originalSymbols[secondBest.Index].Name && // Use alias names, if available.
@@ -694,13 +475,13 @@ namespace MetaDslx.CodeAnalysis.Binding
                                 //  SPEC:   is present, and a compile-time error results.
 
                                 info = new SymbolDiagnosticInfo(errorSymbols, InternalErrorCode.ERR_AmbiguousAttribute,
-                                    syntaxFacts.ExtractErrorDisplayName(where) ?? Name, first, second);
+                                    this.Name, first, second);
                             }
                             else
                             {
                                 // '{0}' is an ambiguous reference between '{1}' and '{2}'
                                 info = new SymbolDiagnosticInfo(errorSymbols, InternalErrorCode.ERR_AmbigContext,
-                                        syntaxFacts.ExtractErrorDisplayName(where) ?? Name,
+                                        this.Name,
                                         new FormattedSymbol(first, SymbolDisplayFormat.CSharpErrorMessageFormat),
                                         new FormattedSymbol(second, SymbolDisplayFormat.CSharpErrorMessageFormat));
                             }
@@ -776,7 +557,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
             if (result.Kind == LookupResultKind.Empty)
             {
-                LanguageDiagnosticInfo info = NotFound(where, Name, MetadataName, syntaxFacts.ExtractErrorDisplayName(where) ?? Name, diagnostics, aliasOpt: null, QualifierOpt, Options);
+                LanguageDiagnosticInfo info = NotFound(Name, this.AutomaticNamePrefix, this.AutomaticNameSuffix, diagnostics);
                 return new ExtendedErrorTypeSymbol(QualifierOpt ?? Compilation.Assembly.GlobalNamespace, Name, MetadataName, info);
             }
 
@@ -826,11 +607,13 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// <remarks>
         /// This is only intended to be called when the type isn't found (i.e. not when it is found but is inaccessible, has the wrong arity, etc).
         /// </remarks>
-        protected LanguageDiagnosticInfo NotFound(SyntaxNodeOrToken where, string simpleName, string metadataName, string whereText, DiagnosticBag diagnostics, SyntaxNodeOrToken aliasOpt, DeclaredSymbol declaredSymbolQualifierOpt, LookupOptions options)
+        protected LanguageDiagnosticInfo NotFound(string whereText, string prefix, string suffix, DiagnosticBag diagnostics)
         {
+            SyntaxNodeOrToken aliasOpt = null; // TODO:MetaDslx
+            var where = this.Syntax;
             var syntaxFacts = Compilation.Language.SyntaxFacts;
             var location = where.GetLocation();
-            var qualifierOpt = declaredSymbolQualifierOpt as NamespaceOrTypeSymbol;
+            var qualifierOpt = this.QualifierOpt as NamespaceOrTypeSymbol;
             // Lookup totally ignores type forwarders, but we want the type lookup diagnostics
             // to distinguish between a type that can't be found and a type that is only present
             // as a type forwarder.  We'll look for type forwarders in the containing and
@@ -838,10 +621,18 @@ namespace MetaDslx.CodeAnalysis.Binding
             AssemblySymbol forwardedToAssembly;
 
             // for attributes, suggest both, but not for verbatim name
-            if (options.IsAttributeTypeLookup() && !options.IsVerbatimNameAttributeTypeLookup())
+            if (this.IsAutomaticNameLookup)
             {
-                // just recurse one level, so cheat and OR verbatim name option :)
-                NotFound(where, simpleName, metadataName, whereText + "Attribute", diagnostics, aliasOpt, qualifierOpt, options | LookupOptions.VerbatimNameAttributeTypeOnly);
+                if (!string.IsNullOrEmpty(prefix))
+                {
+                    // just recurse one level, so cheat and OR verbatim name option :)
+                    NotFound(prefix + whereText, null, suffix, diagnostics);
+                }
+                if (!string.IsNullOrEmpty(suffix))
+                {
+                    // just recurse one level, so cheat and OR verbatim name option :)
+                    NotFound(whereText + suffix, null, null, diagnostics);
+                }
             }
 
             if ((object)qualifierOpt != null)
@@ -860,7 +651,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                 {
                     Debug.Assert(qualifierOpt.IsNamespace);
 
-                    forwardedToAssembly = GetForwardedToAssembly(simpleName, metadataName, ref qualifierOpt, diagnostics, location);
+                    forwardedToAssembly = GetForwardedToAssembly(Name, MetadataName, ref qualifierOpt, diagnostics, location);
 
                     if (ReferenceEquals(qualifierOpt, Compilation.GlobalNamespace))
                     {
@@ -887,10 +678,10 @@ namespace MetaDslx.CodeAnalysis.Binding
                 }
             }
 
-            if (options == LookupOptions.NamespaceAliasesOnly)
+            /*if (options == LookupOptions.NamespaceAliasesOnly)
             {
                 return diagnostics.Add(InternalErrorCode.ERR_AliasNotFound, location, whereText);
-            }
+            }*/
 
             if (syntaxFacts.IsVarTypeDeclaration(where))
             {
@@ -898,7 +689,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                 return diagnostics.Add(code, location);
             }
 
-            forwardedToAssembly = GetForwardedToAssembly(simpleName, metadataName, ref qualifierOpt, diagnostics, location);
+            forwardedToAssembly = GetForwardedToAssembly(Name, MetadataName, ref qualifierOpt, diagnostics, location);
 
             if ((object)forwardedToAssembly != null)
             {
@@ -1257,5 +1048,6 @@ namespace MetaDslx.CodeAnalysis.Binding
                 return containerResult;
             }
         }
+
     }
 }

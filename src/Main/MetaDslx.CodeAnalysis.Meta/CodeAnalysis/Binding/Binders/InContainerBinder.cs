@@ -9,6 +9,7 @@ using MetaDslx.CodeAnalysis.Symbols.Source;
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
+using System.Collections.Immutable;
 
 namespace MetaDslx.CodeAnalysis.Binding.Binders
 {
@@ -121,20 +122,14 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             get { return (_container?.Kind == LanguageSymbolKind.NamedType) && ((NamedTypeSymbol)_container).IsScript; }
         }
 
-        protected override void AddLookupCandidateSymbolsInSingleBinder(LookupCandidates result, LookupConstraints constraints)
+        protected override void AddLookupCandidateSymbolsInScope(LookupCandidates result, LookupConstraints constraints)
         {
             if (_container != null)
             {
-                base.AddLookupCandidateSymbolsInSingleBinder(result, constraints.WithQualifier(_container));
+                base.AddLookupCandidateSymbolsInScope(result, constraints.WithQualifier(_container));
             }
-
-            // If we are looking only for labels we do not need to search through the imports.
-            // Submission imports are handled by AddMemberLookupSymbolsInfo (above).
-            if (!IsSubmission && ((constraints.Options & LookupOptions.LabelsOnly) == 0))
-            {
-                var imports = GetImports(basesBeingResolved: null);
-                imports.AddLookupCandidateSymbols(result, constraints);
-            }
+            var imports = GetImports(basesBeingResolved: null);
+            imports.AddLookupCandidateSymbols(result, constraints);
         }
 
     }

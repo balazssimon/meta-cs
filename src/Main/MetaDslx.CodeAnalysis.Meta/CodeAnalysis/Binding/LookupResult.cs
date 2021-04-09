@@ -258,8 +258,11 @@ namespace MetaDslx.CodeAnalysis.Binding
             _error = error;
         }
 
-        // Merge another result with this one, with the current result being prioritized
-        // over the other if they are of equal "goodness". Mutates the current result.
+        /// <summary>
+        /// Merge another result with this one, with the current result being prioritized
+        /// over the other if they are of equal "goodness". Mutates the current result.
+        /// </summary>
+        /// <param name="other"></param>
         public void MergePrioritized(LookupResult other)
         {
             if (other.Kind > Kind)

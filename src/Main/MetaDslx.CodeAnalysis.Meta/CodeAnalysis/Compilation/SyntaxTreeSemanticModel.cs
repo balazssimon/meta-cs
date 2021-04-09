@@ -235,7 +235,7 @@ namespace MetaDslx.CodeAnalysis
                         // will be one in the binder chain and one isn't necessarily required for the batch case.
                         binder = new LocalScopeBinder(binder, node);
 
-                        BoundNode bound = binder.Bind(cancellationToken);
+                        BoundNode bound = binder.Bind(null, cancellationToken);
 
                         SymbolInfo info = GetSymbolInfoForNode(options, ImmutableArray.Create(bound), boundNodeForSyntacticParent: default, binderOpt: null);
                         if ((object)info.Symbol != null)
@@ -302,7 +302,7 @@ namespace MetaDslx.CodeAnalysis
                     var diagnostics = DiagnosticBag.GetInstance();
                     try
                     {
-                        return binder.BindDeclaredOrAliasSymbol(node, false, diagnostics, basesBeingResolved, basesBeingResolved != null, null);
+                        return binder.BindDeclaredOrAliasSymbol(node, diagnostics, basesBeingResolved, validatorOpt: NamespaceOrTypeLookupValidator.Instance);
                     }
                     finally
                     {

@@ -12,7 +12,7 @@ using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis.Binding
 {
-    public partial class Binder
+    public partial class Binder : ILookupValidator
     {
 
         /// <summary>
@@ -26,14 +26,14 @@ namespace MetaDslx.CodeAnalysis.Binding
             Debug.Assert(constraints.AreValid());
 
             // don't create diagnosis instances unless lookup fails
-            var binder = this.LookupSymbolsInternal(result, constraints.WithDiagnose(false), ref useSiteDiagnostics);
+            var binder = this.LookupSymbolsInternal(result, constraints, false, ref useSiteDiagnostics);
             Debug.Assert((binder != null) || result.IsClear);
 
             if (result.Kind != LookupResultKind.Viable && result.Kind != LookupResultKind.Empty)
             {
                 result.Clear();
                 // retry to get diagnosis
-                var otherBinder = this.LookupSymbolsInternal(result, constraints.WithDiagnose(true), ref useSiteDiagnostics);
+                var otherBinder = this.LookupSymbolsInternal(result, constraints, true, ref useSiteDiagnostics);
                 Debug.Assert(binder == otherBinder);
             }
 
@@ -41,7 +41,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             return binder;
         }
 
-        private Binder LookupSymbolsInternal(LookupResult result, LookupConstraints constraints, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        private Binder LookupSymbolsInternal(LookupResult result, LookupConstraints constraints, bool diagnose, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
         {
             Debug.Assert(result.IsClear);
             Debug.Assert(constraints.AreValid());
@@ -52,13 +52,13 @@ namespace MetaDslx.CodeAnalysis.Binding
                 if (binder != null)
                 {
                     var tmp = LookupResult.GetInstance();
-                    scope.LookupSymbolsInSingleBinder(tmp, constraints, ref useSiteDiagnostics);
+                    scope.LookupSymbolsInSingleBinder(tmp, constraints, diagnose, ref useSiteDiagnostics);
                     result.MergeEqual(tmp);
                     tmp.Free();
                 }
                 else
                 {
-                    scope.LookupSymbolsInSingleBinder(result, constraints, ref useSiteDiagnostics);
+                    scope.LookupSymbolsInSingleBinder(result, constraints, diagnose, ref useSiteDiagnostics);
                     if (!result.IsClear)
                     {
                         binder = scope;
@@ -68,7 +68,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             return binder;
         }
 
-        protected virtual void LookupSymbolsInSingleBinder(LookupResult result, LookupConstraints constraints, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        private void LookupSymbolsInSingleBinder(LookupResult result, LookupConstraints constraints, bool diagnose, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
         {
             var candidates = LookupCandidates.GetInstance();
             AddLookupCandidateSymbolsInSingleBinder(candidates, constraints);
@@ -90,15 +90,15 @@ namespace MetaDslx.CodeAnalysis.Binding
             }
         }
 
-        protected virtual void AddLookupCandidateSymbolsInSingleBinder(LookupCandidates result, LookupConstraints constraints)
+        private void AddLookupCandidateSymbolsInSingleBinder(LookupCandidates result, LookupConstraints constraints)
         {
-            this.AddCandidateSymbols(result, constraints);
+            this.AddCandidateSymbolsInternal(result, constraints);
         }
 
         /// <summary>
         /// Look for names of members
         /// </summary>
-        private void AddCandidateSymbols(LookupCandidates result, LookupConstraints constraints)
+        private void AddCandidateSymbolsInternal(LookupCandidates result, LookupConstraints constraints)
         {
             var qualifier = constraints.QualifierOpt as NamespaceOrTypeSymbol;
             if (qualifier == null || qualifier.IsNamespace)
@@ -142,8 +142,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
                 bool isCurrentSubmission = submission == Compilation;
 
-                // If we are looking only for labels we do not need to search through the imports.
-                if ((constraints.Options & LookupOptions.LabelsOnly) == 0 && !(isCurrentSubmission && this.Flags.Includes(BinderFlags.InScriptUsing)))
+                if (!(isCurrentSubmission && this.Flags.Includes(BinderFlags.InScriptUsing)))
                 {
                     var submissionImports = submission.GetSubmissionImports();
                     if (!isCurrentSubmission)
@@ -160,26 +159,30 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         private void AddCandidateSymbolsInNamespace(LookupCandidates result, LookupConstraints constraints)
         {
-            var candidateMembers = GetCandidateSymbols(constraints);
-            foreach (var symbol in candidateMembers)
+            var candidateSymbols = LookupCandidates.GetInstance();
+            AddLookupCandidateSymbolsInScope(candidateSymbols, constraints);
+            foreach (var symbol in candidateSymbols)
             {
                 if (constraints.WithAccessThroughType(null).IsViable(symbol))
                 {
                     result.Add(symbol);
                 }
             }
+            candidateSymbols.Free();
         }
 
         private void AddCandidateSymbolsWithoutInheritance(LookupCandidates result, LookupConstraints constraints)
         {
-            var candidateMembers = GetCandidateSymbols(constraints);
-            foreach (var symbol in candidateMembers)
+            var candidateSymbols = LookupCandidates.GetInstance();
+            AddLookupCandidateSymbolsInScope(candidateSymbols, constraints);
+            foreach (var symbol in candidateSymbols)
             {
                 if (constraints.IsViable(symbol))
                 {
                     result.Add(symbol);
                 }
             }
+            candidateSymbols.Free();
         }
 
         private void AddCandidateSymbolsInTypeCore(LookupCandidates result, LookupConstraints constraints)
@@ -187,31 +190,22 @@ namespace MetaDslx.CodeAnalysis.Binding
             AddCandidateSymbolsWithoutInheritance(result, constraints);
 
             TypeSymbol type = (TypeSymbol)constraints.QualifierOpt;
-            foreach (var baseInterface in type.AllBaseTypesNoUseSiteDiagnostics)
+            foreach (var baseType in type.AllBaseTypesNoUseSiteDiagnostics)
             {
-                AddCandidateSymbolsWithoutInheritance(result, constraints.WithQualifier(baseInterface));
+                AddCandidateSymbolsWithoutInheritance(result, constraints.WithQualifier(baseType));
             }
 
             //this.AddCandidateSymbolsInTypeCore(result, constraints.WithQualifier(Compilation.GetSpecialType(SpecialType.System_Object))); // TODO:MetaDslx
         }
 
-        private ImmutableArray<DeclaredSymbol> GetCandidateSymbols(LookupConstraints constraints)
+        protected virtual void AddLookupCandidateSymbolsInScope(LookupCandidates result, LookupConstraints constraints)
         {
             if (constraints.QualifierOpt != null)
             {
-                if ((constraints.Options & LookupOptions.NamespacesOrTypesOnly) != 0 && constraints.QualifierOpt is TypeSymbol)
-                {
-                    return constraints.QualifierOpt.GetTypeMembers(constraints.Name).Cast<NamedTypeSymbol, DeclaredSymbol>();
-                }
-                else
-                {
-                    if (constraints.Name != null) return constraints.QualifierOpt.GetMembers(constraints.Name);
-                    else return constraints.QualifierOpt.GetMembersUnordered();
-                }
+                if (constraints.Name != null) result.AddRange(constraints.QualifierOpt.GetMembers(constraints.Name));
+                else result.AddRange(constraints.QualifierOpt.GetMembersUnordered());
             }
-            return ImmutableArray<DeclaredSymbol>.Empty;
         }
-
 
         protected virtual LookupConstraints AdjustConstraints(LookupConstraints constraints)
         {
@@ -219,5 +213,34 @@ namespace MetaDslx.CodeAnalysis.Binding
             else return Next.AdjustConstraints(constraints);
         }
 
+        bool ILookupValidator.IsViable(DeclaredSymbol symbol, LookupConstraints constraints)
+        {
+            return this.IsViable(symbol, constraints);
+        }
+
+        SingleLookupResult ILookupValidator.CheckSingleResultViability(SingleLookupResult result, AliasSymbol aliasSymbol, LookupConstraints constraints)
+        {
+            return this.CheckSingleResultViability(result, aliasSymbol, constraints);
+        }
+
+        void ILookupValidator.CheckFinalResultViability(LookupResult result, LookupConstraints constraints)
+        {
+            this.CheckFinalResultViability(result, constraints);
+        }
+
+        protected virtual bool IsViable(DeclaredSymbol symbol, LookupConstraints constraints)
+        {
+            return true;
+        }
+
+        protected virtual SingleLookupResult CheckSingleResultViability(SingleLookupResult result, AliasSymbol aliasSymbol, LookupConstraints constraints)
+        {
+            return result;
+        }
+
+        protected virtual void CheckFinalResultViability(LookupResult result, LookupConstraints constraints)
+        {
+            
+        }
     }
 }

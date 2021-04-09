@@ -30,7 +30,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
 
         public Type ModelObjectType => _type;
 
-        protected override BoundNode BindNode(CancellationToken cancellationToken)
+        protected override BoundNode BindNode(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             var symbols = SourceSymbol.GetInnermostNestedDeclaredSymbols(this.Syntax.GetReference(), this.ContainingDeclaration).Cast<DeclaredSymbol, Symbol>();
             Debug.Assert(symbols.Length == 1 && symbols[0] != null);
