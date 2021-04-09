@@ -109,10 +109,17 @@ namespace MetaDslx.CodeAnalysis.Binding
             return Update(this.OriginalBinder, this.Name, this.MetadataName, qualifierOpt, this.AutomaticNamePrefix, this.AutomaticNameSuffix, this.Validators, this.BasesBeingResolved, accessThroughType, this.Diagnose);
         }
 
-        public LookupConstraints WithAdditionalValidator(ILookupValidator validator)
+        public LookupConstraints WithAdditionalValidators(params ILookupValidator[] validators)
         {
-            if (validator == null || this.Validators.Contains(validator)) return this;
-            return Update(this.OriginalBinder, this.Name, this.MetadataName, this.QualifierOpt, this.AutomaticNamePrefix, this.AutomaticNameSuffix, this.Validators.Add(validator), this.BasesBeingResolved, this.AccessThroughType, this.Diagnose);
+            var newValidators = this.Validators;
+            foreach (var validator in validators)
+            {
+                if (!newValidators.Contains(validator))
+                {
+                    newValidators = newValidators.Add(validator);
+                }
+            }
+            return Update(this.OriginalBinder, this.Name, this.MetadataName, this.QualifierOpt, this.AutomaticNamePrefix, this.AutomaticNameSuffix, newValidators, this.BasesBeingResolved, this.AccessThroughType, this.Diagnose);
         }
 
         public LookupConstraints ClearValidators()
@@ -205,6 +212,8 @@ namespace MetaDslx.CodeAnalysis.Binding
             out bool wasError)
         {
             Debug.Assert(diagnostics != null);
+
+            CheckFinalResultViability(result);
 
             var syntaxFacts = Compilation.Language.SyntaxFacts;
             var symbols = result.Symbols;

@@ -94,7 +94,7 @@ namespace MetaDslx.Languages.Meta.Binding
         protected override LookupConstraints AdjustConstraints(LookupConstraints constraints)
         {
             var symbolType = this.SymbolType;
-            return base.AdjustConstraints(constraints).WithQualifier(symbolType).WithAdditionalValidator(MustBeInstanceLookupValidator.Instance);
+            return base.AdjustConstraints(constraints).WithQualifier(symbolType).WithAdditionalValidators(LookupValidators.MustBeInstance);
         }
 
     }

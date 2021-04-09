@@ -30,7 +30,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             LookupConstraints result = base.AdjustConstraints(constraints);
             if (!_types.IsEmpty)
             {
-                result = result.WithAdditionalValidator(this);
+                result = result.WithAdditionalValidators(this);
             }
             return result;
         }

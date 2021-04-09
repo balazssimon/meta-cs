@@ -302,7 +302,7 @@ namespace MetaDslx.CodeAnalysis
                     var diagnostics = DiagnosticBag.GetInstance();
                     try
                     {
-                        return binder.BindDeclaredOrAliasSymbol(node, diagnostics, basesBeingResolved, validatorOpt: NamespaceOrTypeLookupValidator.Instance);
+                        return binder.BindDeclaredOrAliasSymbol(node, diagnostics, basesBeingResolved, validatorOpt: LookupValidators.NamespaceOrType);
                     }
                     finally
                     {

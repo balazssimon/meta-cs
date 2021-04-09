@@ -74,7 +74,8 @@ namespace MetaDslx.CodeAnalysis.Binding
             AddLookupCandidateSymbolsInSingleBinder(candidates, constraints);
             foreach (var symbol in candidates.Symbols)
             {
-                result.MergeEqual(LookupResult.Good(symbol));
+                var validatedResult = constraints.CheckSingleResultViability(symbol);
+                result.MergeEqual(validatedResult);
             }
         }
 

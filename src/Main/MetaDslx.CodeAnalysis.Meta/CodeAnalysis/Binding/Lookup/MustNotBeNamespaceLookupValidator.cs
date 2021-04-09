@@ -6,23 +6,26 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Binding
 {
-    public class NamespaceOrTypeLookupValidator : ILookupValidator
+    public class MustNotBeNamespaceLookupValidator : ILookupValidator
     {
-        public static readonly NamespaceOrTypeLookupValidator Instance = new NamespaceOrTypeLookupValidator();
-
         public void CheckFinalResultViability(LookupResult result, LookupConstraints constraints)
         {
-            
+           
         }
 
         public SingleLookupResult CheckSingleResultViability(SingleLookupResult result, AliasSymbol aliasSymbol, LookupConstraints constraints)
         {
+            var symbol = result.Symbol;
+            if (symbol.Kind == LanguageSymbolKind.Namespace)
+            {
+                return LookupResult.StaticInstanceMismatch(symbol, new LanguageDiagnosticInfo(InternalErrorCode.ERR_BadSKunknown, symbol, symbol.GetKindText()));
+            }
             return result;
         }
 
         public bool IsViable(DeclaredSymbol symbol, LookupConstraints constraints)
         {
-            return symbol is NamespaceOrTypeSymbol;
+            return true;
         }
     }
 }

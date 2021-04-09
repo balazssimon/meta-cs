@@ -37,7 +37,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
 
         protected override LookupConstraints AdjustConstraints(LookupConstraints constraints)
         {
-            return base.AdjustConstraints(constraints).WithAdditionalValidator(this);
+            return base.AdjustConstraints(constraints).WithAdditionalValidators(this);
         }
 
         protected override void CheckFinalResultViability(LookupResult result, LookupConstraints constraints)
