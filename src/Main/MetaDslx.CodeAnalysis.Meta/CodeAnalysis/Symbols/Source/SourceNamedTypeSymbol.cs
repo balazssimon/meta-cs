@@ -227,6 +227,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                     {
                         var diagnostics = DiagnosticBag.GetInstance();
                         _source.CreateContainedChildSymbols(diagnostics, cancellationToken);
+                        _source.AssignPropertyValues(SymbolConstants.MembersProperty, diagnostics, cancellationToken);
                         AddDeclarationDiagnostics(diagnostics);
                         _state.NotePartComplete(CompletionPart.FinishChildrenCreated);
                         diagnostics.Free();

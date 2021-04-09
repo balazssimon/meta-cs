@@ -1,5 +1,7 @@
 ﻿namespace MetaDslx.Languages.Uml.Model
 {
+    using MetaDslx.CodeAnalysis.Symbols;
+
     metamodel Uml(Uri="http://www.omg.org/spec/UML"); 
 
     /// <summary>
@@ -3492,6 +3494,7 @@
     /// <summary>
     /// A NamedElement is an Element in a model that may have a name. The name may be given directly and/or via the use of a StringExpression.
     /// </summary>
+    [symbol: MemberSymbol]
     abstract class NamedElement : Element
     {
     	/// <summary>
@@ -3503,7 +3506,7 @@
     	/// <summary>
     	/// The name of the NamedElement.
     	/// </summary>
-		[Name]
+		[symbol: Name]
     	string Name;
     	/// <summary>
     	/// The StringExpression used to define the name of this NamedElement.
@@ -3576,7 +3579,7 @@
     /// <summary>
     /// A Namespace is an Element in a model that owns and/or imports a set of NamedElements that can be identified by name.
     /// </summary>
-	[Scope]
+	[symbol: NamespaceSymbol]
     abstract class Namespace : NamedElement
     {
     	/// <summary>
@@ -3596,6 +3599,7 @@
     	/// <summary>
     	/// A collection of NamedElements owned by the Namespace.
     	/// </summary>
+        [symbol: Members]
     	containment union set<NamedElement> OwnedMember subsets Element.OwnedElement, Namespace.Member;
     	/// <summary>
     	/// Specifies a set of Constraints owned by this Namespace.
@@ -3835,7 +3839,7 @@
     /// <summary>
     /// A Type constrains the values represented by a TypedElement.
     /// </summary>
-	[Type]
+	[symbol: NamedTypeSymbol]
     abstract class Type : PackageableElement
     {
     	/// <summary>
@@ -3858,7 +3862,6 @@
     	/// <summary>
     	/// The type of the TypedElement.
     	/// </summary>
-		[Type]
     	Type Type;
     }
 
@@ -4131,6 +4134,7 @@
     /// <summary>
     /// A Classifier represents a classification of instances according to their Features.
     /// </summary>
+    [symbol: NamedTypeSymbol]
     abstract class Classifier : Namespace, Type, TemplateableElement, RedefinableElement
     {
 	    /// <summary>
@@ -4154,6 +4158,7 @@
     	/// </summary>
     	// spec:
     	//     result = (parents())
+        [symbol: DeclaredBaseTypes]
     	derived set<Classifier> General;
     	/// <summary>
     	/// The Generalization relationships for this Classifier. These Generalizations navigate to more general Classifiers in the generalization hierarchy.

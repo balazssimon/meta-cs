@@ -204,6 +204,75 @@ namespace MetaDslx.CodeAnalysis.Binding
             }
         }
 
+        // Merge resultHidden into resultHiding, whereby viable results in resultHiding should hide results
+        // in resultHidden if the owner of the symbol in resultHiding is a subtype of the owner of the symbol
+        // in resultHidden.
+        public void MergeHidingLookupCandidates(LookupCandidates resultHiding, LookupCandidates resultHidden)
+        {
+            // Methods hide non-methods, non-methods hide everything.
+
+            if (!resultHiding.IsClear && !resultHidden.IsClear)
+            {
+                // Check if resultHiding has any non-methods. If so, it hides everything in resultHidden.
+                var hidingSymbols = resultHiding.Symbols;
+                var hiddenSymbols = resultHidden.Symbols;
+                foreach (var sym in hiddenSymbols.ToList())
+                {
+                    var hiddenContainer = sym.ContainingType;
+
+                    // see if sym is hidden
+                    bool symIsHidden = false;
+                    foreach (var hidingSym in hidingSymbols)
+                    {
+                        var hidingContainer = hidingSym.ContainingType;
+                        if (!IsDerivedType(baseType: hiddenContainer, derivedType: hidingContainer, useSiteDiagnostics: resultHiding.UseSiteDiagnostics) &&
+                            (hiddenContainer == null || hiddenContainer.SpecialType != SpecialType.System_Object))
+                        {
+                            continue; // not in inheritance relationship, so it cannot hide
+                        }
+
+                        if (HidesSymbol(hidingSym, sym))
+                        {
+                            symIsHidden = true;
+                            break;
+                        }
+
+                        // Note: We do not implement hiding by signature in non-interfaces here; that is handled later in overload lookup.
+                    }
+
+                    if (!symIsHidden) hidingSymbols.Add(sym); // not hidden
+                }
+            }
+            else
+            {
+                resultHiding.Merge(resultHidden);
+            }
+        }
+
+        public virtual bool HidesSymbol(DeclaredSymbol hidingSymbol, DeclaredSymbol hiddenSymbol)
+        {
+            if (hiddenSymbol.Name != hidingSymbol.Name) return false;
+            if (hiddenSymbol.Kind != hidingSymbol.Kind) return false;
+            if (hiddenSymbol is IModelSymbol hiddenModelSymbol && hidingSymbol is IModelSymbol hidingModelSymbol)
+            {
+                return hiddenModelSymbol.ModelObjectType == hidingModelSymbol.ModelObjectType;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private static bool IsDerivedType(NamedTypeSymbol baseType, NamedTypeSymbol derivedType, HashSet<DiagnosticInfo> useSiteDiagnostics)
+        {
+            if (TypeSymbol.Equals(baseType, derivedType, TypeCompareKind.ConsiderEverything2)) return false;
+            foreach (var b in derivedType.AllBaseTypesWithDefinitionUseSiteDiagnostics(ref useSiteDiagnostics))
+            {
+                if (TypeSymbol.Equals(b, baseType, TypeCompareKind.ConsiderEverything2)) return true;
+            }
+            return derivedType.AllBaseTypesWithDefinitionUseSiteDiagnostics(ref useSiteDiagnostics).Contains(baseType);
+        }
+
         // return the type or namespace symbol in a lookup result, or report an error.
         public virtual DeclaredSymbol ResultSymbol(
             LookupResult result,

@@ -366,7 +366,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             Symbol childSymbol;
             if (childDeclaration != null)
             {
-                childSymbol = childDeclaration.CreateSymbol(_symbol.ContainingSymbol, SymbolFactory);
+                childSymbol = childDeclaration.CreateSymbol(_symbol, SymbolFactory);
+                Debug.Assert(object.ReferenceEquals(childSymbol.ContainingSymbol, _symbol));
             }
             else
             {

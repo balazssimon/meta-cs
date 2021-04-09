@@ -8,29 +8,26 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Binding
 {
-    public sealed class LookupCandidates : IEnumerable<DeclaredSymbol>
+    public sealed class LookupCandidates 
     {
-        private readonly HashSet<DeclaredSymbol> _symbolList;
-
         private readonly ObjectPool<LookupCandidates> _pool;
+        private readonly HashSet<DeclaredSymbol> _symbolList;
+        private readonly HashSet<DiagnosticInfo> _useSiteDiagnostics;
 
         private LookupCandidates(ObjectPool<LookupCandidates> pool)
         {
             _pool = pool;
             _symbolList = new HashSet<DeclaredSymbol>();
+            _useSiteDiagnostics = new HashSet<DiagnosticInfo>();
         }
 
-        public bool IsClear
-        {
-            get
-            {
-                return _symbolList.Count == 0;
-            }
-        }
+        public bool IsClear => _symbolList.Count == 0;
+        public int Count => _symbolList.Count;
 
         public void Clear()
         {
             _symbolList.Clear();
+            _useSiteDiagnostics.Clear();
         }
 
         public void Add(DeclaredSymbol symbol)
@@ -43,18 +40,14 @@ namespace MetaDslx.CodeAnalysis.Binding
             _symbolList.UnionWith(symbols);
         }
 
-        public void AddRange(LookupCandidates symbols)
+        public void Merge(LookupCandidates candidates)
         {
-            _symbolList.UnionWith(symbols.Symbols);
+            _symbolList.UnionWith(candidates.Symbols);
+            _useSiteDiagnostics.UnionWith(candidates.UseSiteDiagnostics);
         }
 
-        public HashSet<DeclaredSymbol> Symbols
-        {
-            get
-            {
-                return _symbolList;
-            }
-        }
+        public HashSet<DeclaredSymbol> Symbols => _symbolList;
+        public HashSet<DiagnosticInfo> UseSiteDiagnostics => _useSiteDiagnostics;
 
         // global pool
         //TODO: consider if global pool is ok.
@@ -84,14 +77,5 @@ namespace MetaDslx.CodeAnalysis.Binding
             }
         }
 
-        public IEnumerator<DeclaredSymbol> GetEnumerator()
-        {
-            return _symbolList.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return this.GetEnumerator();
-        }
     }
 }

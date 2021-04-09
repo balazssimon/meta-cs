@@ -72,6 +72,11 @@ namespace MetaDslx.CodeAnalysis.Binding
         {
             var candidates = LookupCandidates.GetInstance();
             AddLookupCandidateSymbolsInSingleBinder(candidates, constraints);
+            if (diagnose)
+            {
+                if (useSiteDiagnostics == null) useSiteDiagnostics = new HashSet<DiagnosticInfo>();
+                useSiteDiagnostics.UnionWith(candidates.UseSiteDiagnostics);
+            }
             foreach (var symbol in candidates.Symbols)
             {
                 var validatedResult = constraints.CheckSingleResultViability(symbol);
@@ -121,11 +126,15 @@ namespace MetaDslx.CodeAnalysis.Binding
                 case Symbols.TypeKind.Enum:
                 case Symbols.TypeKind.Dynamic:
                 case Symbols.TypeKind.Constructed:
-                    this.AddCandidateSymbolsInTypeCore(result, constraints.WithAccessThroughType(type));
+                    this.AddCandidateSymbolsInTypeAndBaseTypes(result, constraints.WithAccessThroughType(type));
                     break;
 
                 case Symbols.TypeKind.Submission:
                     this.AddCandidateSymbolsInSubmissions(result, constraints);
+                    break;
+
+                case Symbols.TypeKind.Error:
+                    this.AddCandidateSymbolsInErrorType(result, constraints);
                     break;
             }
         }
@@ -158,11 +167,33 @@ namespace MetaDslx.CodeAnalysis.Binding
             }
         }
 
+        private void AddCandidateSymbolsInErrorType(LookupCandidates result, LookupConstraints constraints)
+        {
+            var errorType = (ErrorTypeSymbol)constraints.QualifierOpt;
+            if (!errorType.CandidateSymbols.IsDefault && errorType.CandidateSymbols.Length == 1)
+            {
+                // The dev11 IDE experience provided meaningful information about members of inaccessible types,
+                // so we should do the same (DevDiv #633340).
+                // TODO: generalize to other result kinds and/or candidate counts?
+                if (errorType.ResultKind == LookupResultKind.Inaccessible)
+                {
+                    TypeSymbol candidateType = errorType.CandidateSymbols.First() as TypeSymbol;
+                    if ((object)candidateType != null)
+                    {
+                        AddCandidateSymbolsInType(result, constraints.WithQualifier(candidateType));
+                        return; // Bypass call to Clear()
+                    }
+                }
+            }
+
+            result.Clear();
+        }
+
         private void AddCandidateSymbolsInNamespace(LookupCandidates result, LookupConstraints constraints)
         {
             var candidateSymbols = LookupCandidates.GetInstance();
             AddLookupCandidateSymbolsInScope(candidateSymbols, constraints);
-            foreach (var symbol in candidateSymbols)
+            foreach (var symbol in candidateSymbols.Symbols)
             {
                 if (constraints.WithAccessThroughType(null).IsViable(symbol))
                 {
@@ -172,11 +203,23 @@ namespace MetaDslx.CodeAnalysis.Binding
             candidateSymbols.Free();
         }
 
+        private void AddCandidateSymbolsInTypeAndBaseTypes(LookupCandidates result, LookupConstraints constraints)
+        {
+            AddCandidateSymbolsWithoutInheritance(result, constraints);
+
+            var tmp = LookupCandidates.GetInstance();
+            AddCandidateSymbolsInBaseTypes(tmp, constraints);
+            constraints.MergeHidingLookupCandidates(result, tmp);
+            tmp.Free();
+
+            //this.AddCandidateSymbolsInTypeCore(result, constraints.WithQualifier(Compilation.GetSpecialType(SpecialType.System_Object))); // TODO:MetaDslx
+        }
+
         private void AddCandidateSymbolsWithoutInheritance(LookupCandidates result, LookupConstraints constraints)
         {
             var candidateSymbols = LookupCandidates.GetInstance();
             AddLookupCandidateSymbolsInScope(candidateSymbols, constraints);
-            foreach (var symbol in candidateSymbols)
+            foreach (var symbol in candidateSymbols.Symbols)
             {
                 if (constraints.IsViable(symbol))
                 {
@@ -186,17 +229,53 @@ namespace MetaDslx.CodeAnalysis.Binding
             candidateSymbols.Free();
         }
 
-        private void AddCandidateSymbolsInTypeCore(LookupCandidates result, LookupConstraints constraints)
+        // Lookup member in a class, struct, enum, delegate.
+        private void AddCandidateSymbolsInBaseTypes(LookupCandidates result, LookupConstraints constraints)
         {
-            AddCandidateSymbolsWithoutInheritance(result, constraints);
+            TypeSymbol type = constraints.QualifierOpt as TypeSymbol;
+            Debug.Assert((object)type != null);
+            //Debug.Assert(type.TypeKind != LanguageTypeKind.TypeParameter);
 
-            TypeSymbol type = (TypeSymbol)constraints.QualifierOpt;
-            foreach (var baseType in type.AllBaseTypesNoUseSiteDiagnostics)
+            var tmp = LookupCandidates.GetInstance();
+            foreach (var currentType in type.AllBaseTypesNoUseSiteDiagnostics)
             {
-                AddCandidateSymbolsWithoutInheritance(result, constraints.WithQualifier(baseType));
+                tmp.Clear();
+                AddCandidateSymbolsWithoutInheritance(tmp, constraints.WithQualifier(currentType));
+                constraints.MergeHidingLookupCandidates(result, tmp);
+                if (constraints.BasesBeingResolved != null && constraints.BasesBeingResolved.ContainsReference(type.OriginalDefinition))
+                {
+                    var other = GetNearestOtherSymbol(constraints.BasesBeingResolved, type);
+                    var diagInfo = new LanguageDiagnosticInfo(InternalErrorCode.ERR_CircularBase, type, other);
+                    var error = new ExtendedErrorTypeSymbol(this.Compilation, constraints.Name, constraints.MetadataName, diagInfo, unreported: true);
+                    result.Clear();
+                    result.Add(error); // force lookup to be done w/ error symbol as result
+                }
+            }
+            tmp.Free();
+        }
+
+        // find the nearest symbol in list to the symbol 'type'.  It may be the same symbol if its the only one.
+        private static Symbol GetNearestOtherSymbol(ConsList<TypeSymbol> list, TypeSymbol type)
+        {
+            TypeSymbol other = type;
+
+            for (; list != null && list != ConsList<TypeSymbol>.Empty; list = list.Tail)
+            {
+                if (TypeSymbol.Equals(list.Head, type.OriginalDefinition, TypeCompareKind.ConsiderEverything2))
+                {
+                    if (TypeSymbol.Equals(other, type, TypeCompareKind.ConsiderEverything2) && list.Tail != null && list.Tail != ConsList<TypeSymbol>.Empty)
+                    {
+                        other = list.Tail.Head;
+                    }
+                    break;
+                }
+                else
+                {
+                    other = list.Head;
+                }
             }
 
-            //this.AddCandidateSymbolsInTypeCore(result, constraints.WithQualifier(Compilation.GetSpecialType(SpecialType.System_Object))); // TODO:MetaDslx
+            return other;
         }
 
         protected virtual void AddLookupCandidateSymbolsInScope(LookupCandidates result, LookupConstraints constraints)

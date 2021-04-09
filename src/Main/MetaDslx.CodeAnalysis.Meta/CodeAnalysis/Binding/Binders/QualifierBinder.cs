@@ -64,9 +64,9 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
         protected override LookupConstraints AdjustConstraints(LookupConstraints constraints)
         {
             var result = base.AdjustConstraints(constraints);
-            if (constraints.OriginalBinder != null)
+            if (!constraints.Syntax.IsNull)
             {
-                var index = this.Identifiers.IndexOf(constraints.OriginalBinder.Syntax);
+                var index = this.Identifiers.IndexOf(constraints.Syntax);
                 if (index >= 0 && index < this.Identifiers.Length-1)
                 {
                     result = result.ClearValidators();

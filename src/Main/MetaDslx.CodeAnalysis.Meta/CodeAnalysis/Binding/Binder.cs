@@ -333,6 +333,19 @@ namespace MetaDslx.CodeAnalysis.Binding
             return null;
         }
 
+        protected TBinder FindAncestorBinder<TBinder>()
+            where TBinder: Binder
+        {
+            var binder = this;
+            var result = binder as TBinder;
+            while (binder != null && result == null)
+            {
+                binder = binder.Next;
+                result = binder as TBinder;
+            }
+            return result;
+        }
+
         public override string ToString()
         {
             return this.GetType().Name;
