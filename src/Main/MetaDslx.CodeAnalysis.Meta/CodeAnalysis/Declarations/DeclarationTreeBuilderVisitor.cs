@@ -57,6 +57,10 @@ namespace MetaDslx.CodeAnalysis.Declarations
             get { return this.PropertyStack.Count > 0 ? this.PropertyStack.Peek() : default; }
         }
 
+        public virtual void Visit(SyntaxToken token)
+        {
+        }
+
         protected RootSingleDeclaration CreateRoot(LanguageSyntaxNode syntax, Type type)
         {
             if (_syntaxTree.Options.Kind != SourceCodeKind.Regular)

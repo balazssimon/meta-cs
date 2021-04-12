@@ -5174,25 +5174,27 @@ end template
 template GenerateDeclarationTreeBuilderVisitBody(Antlr4ParserRule rule)
 [if (rule.ContainsAnnotations)]
 	[loop(elem:rule.AllElements where elem.ContainsAnnotations)]
-        [if (elem.IsList)]
+        [if (elem.IsToken)]
+if (node.[elem.RedName()].GetKind() != MetaDslx.CodeAnalysis.Syntax.SyntaxKind.None)
+        [else]
 if (node.[elem.RedName()] != null)
+        [end if]
 {
+        [if (elem.IsList)]
 	foreach (var child in node.[elem.RedName()])
 	{
         [GenerateDeclarationTreeBuilderVisitElement(rule, elem, "child")]
 	}
-}
         [else]
-[GenerateDeclarationTreeBuilderVisitElement(rule, elem, "node."+elem.RedName())]
+    [GenerateDeclarationTreeBuilderVisitElement(rule, elem, "node."+elem.RedName())]
         [end if]
+}
 	[end loop]    
 [end if]
 end template
 
 template GenerateDeclarationTreeBuilderVisitElementBody(Antlr4ParserRuleElement elem, string elemName)
-	[if (elem.IsList && !(elem.IsToken || elem.IsFixedTokenAltBlock))]
 this.Visit([elemName]);
-	[end if]
 end template
 
 template GenerateDeclarationTreeBuilderAnnotation(MetaCompilerAnnotation annot, string elemName, string body)

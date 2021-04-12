@@ -8,14 +8,14 @@ using MetaDslx.CodeAnalysis.Symbols.Metadata;
 
 namespace MetaDslx.CodeAnalysis.Binding.Binders
 {
-    public class DocumentationBinder : CustomBinder
+    public class DocumentationBinder : ValueBinder
     {
         public DocumentationBinder(Binder next, SyntaxNodeOrToken syntax)
             : base(next, syntax)
         {
         }
 
-        protected override BoundNode BindNode(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        protected override object ComputeValue()
         {
             var syntax = this.Syntax;
             if (syntax.IsNull) return null;
@@ -27,16 +27,8 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
                 if (text.StartsWith("///")) sb.AppendLine(text.Substring(3));
                 else if (text.StartsWith("/**") && text.EndsWith("*/")) sb.AppendLine(text.Substring(3, text.Length - 5));
             }
-            this.SetDocumentation(sb.ToString());
-            return null;
-        }
-
-        protected virtual void SetDocumentation(string documentationText)
-        {
-            var symbolDef = this.FindAncestorBinder<DefineBinder>();
-            var mobj = (symbolDef?.DefinedSymbol as IModelSymbol)?.ModelObject as MetaDocumentedElementBuilder;
-            if (mobj == null) return;
-            mobj.Documentation = documentationText;
+            var documentation = sb.ToString();
+            return string.IsNullOrWhiteSpace(documentation) ? null : documentation;
         }
     }
 }
