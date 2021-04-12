@@ -59,6 +59,14 @@ namespace MetaDslx.CodeAnalysis.Declarations
             }
         }
 
+        public override Type SymbolType
+        {
+            get
+            {
+                return this._declarations.IsEmpty ? null : this._declarations[0].SymbolType;
+            }
+        }
+
         public override Type ModelObjectType
         {
             get
@@ -69,23 +77,19 @@ namespace MetaDslx.CodeAnalysis.Declarations
 
         public Symbol Symbol => _symbol;
 
-        public Symbol CreateSymbol(Symbol container, SymbolFactory symbolFactory)
+        internal Symbol DangerousCreateSymbol(Symbol container, SymbolFactory symbolFactory)
         {
             if (_symbol != null)
             {
                 Debug.Assert(_symbol.ContainingSymbol == container);
                 return _symbol;
             }
-            var symbol = symbolFactory.MakeSourceSymbol(container, ModelObjectType, this);
+            var symbol = symbolFactory.MakeSourceSymbol(container, SymbolType, ModelObjectType, this);
             if (Interlocked.CompareExchange(ref _symbol, symbol, null) != null)
             {
                 symbolFactory.RemoveSymbol(symbol);
             }
-            if (_symbol.Kind != LanguageSymbolKind.ErrorType)
-            {
-                var mobj = (_symbol as IModelSourceSymbol)?.ModelObject;
-                Debug.Assert(mobj != null);
-            }
+            Debug.Assert(_symbol.Kind == LanguageSymbolKind.ErrorType || ModelObjectType == null || (_symbol as IModelSourceSymbol)?.ModelObject != null);
             return _symbol;
         }
 

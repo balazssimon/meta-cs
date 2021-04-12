@@ -8,7 +8,7 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-    public sealed class CompletionGraph
+    public sealed partial class CompletionGraph
     {
         private ImmutableArray<CompletionPart> _parts;
 
@@ -51,7 +51,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         }
     }
 
-    public sealed class CompletionGraphBuilder
+    public sealed partial class CompletionGraphBuilder
     {
         private List<CompletionPart> _parts;
         private Dictionary<CompletionPart, HashSet<CompletionPart>> _edges;
@@ -83,10 +83,10 @@ namespace MetaDslx.CodeAnalysis.Symbols
         {
             if (!_parts.Contains(source)) throw new ArgumentException("Part is not in the completion graph.", nameof(source));
             if (!_parts.Contains(target)) throw new ArgumentException("Part is not in the completion graph.", nameof(target));
-            if (source == CompletionPart.None) throw new ArgumentException("Part cannot depend on CompletionPart.None", nameof(source));
-            if (source == CompletionPart.All) throw new ArgumentException("Part cannot depend on CompletionPart.All", nameof(source));
-            if (target == CompletionPart.None) throw new ArgumentException("None cannot depend on another part.", nameof(target));
-            if (target == CompletionPart.All) throw new ArgumentException("All cannot depend on another part.", nameof(target));
+            if (source == CompletionGraph.None) throw new ArgumentException("Part cannot depend on None", nameof(source));
+            if (source == CompletionGraph.All) throw new ArgumentException("Part cannot depend on All", nameof(source));
+            if (target == CompletionGraph.None) throw new ArgumentException("None cannot depend on another part.", nameof(target));
+            if (target == CompletionGraph.All) throw new ArgumentException("All cannot depend on another part.", nameof(target));
             HashSet<CompletionPart> sources;
             if (!_edges.TryGetValue(target, out sources))
             {
@@ -112,7 +112,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                     VisitNode(_parts[rootIndex], stack, visited, result);
                     ++rootIndex;
                 }
-                result.Add(CompletionPart.All);
+                result.Add(CompletionGraph.All);
                 return new CompletionGraph(result.ToImmutableArray());
             }
             finally

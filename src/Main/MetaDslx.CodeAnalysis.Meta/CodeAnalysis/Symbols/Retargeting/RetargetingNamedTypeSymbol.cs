@@ -188,7 +188,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
             return _lazyUseSiteDiagnostic;
         }
 
-        internal sealed override LanguageCompilation DeclaringCompilation // perf, not correctness
+        public sealed override LanguageCompilation DeclaringCompilation // perf, not correctness
         {
             get { return null; }
         }

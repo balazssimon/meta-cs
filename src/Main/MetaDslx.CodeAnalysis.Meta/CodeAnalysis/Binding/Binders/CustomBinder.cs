@@ -12,7 +12,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
     public abstract class CustomBinder : PhaseBinder
     {
         public CustomBinder(Binder next, SyntaxNodeOrToken syntax) 
-            : base(next, syntax, CompletionPart.StartCustomBinders, CompletionPart.FinishCustomBinders)
+            : base(next, syntax, CompletionGraph.StartCustomBinders, CompletionGraph.FinishCustomBinders)
         {
         }
 

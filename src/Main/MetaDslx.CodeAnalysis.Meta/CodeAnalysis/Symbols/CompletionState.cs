@@ -52,7 +52,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public void DefaultForceComplete(Symbol symbol, CancellationToken cancellationToken)
         {
             Debug.Assert(symbol.RequiresCompletion);
-            if (!HasComplete(CompletionPart.Attributes))
+            if (!HasComplete(CompletionGraph.Attributes))
             {
                 _ = symbol.GetAttributes();
 
@@ -70,11 +70,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 // whether this invariant is tied to correctness or not. The most compelling example though is 
                 // SourceEventSymbol which raises SymbolDeclaredEvent before CompletionPart.Attributes is noted as completed. 
                 // Many other implementations have this pattern but no apparent code which could depend on it.
-                SpinWaitComplete(CompletionPart.Attributes, cancellationToken);
+                SpinWaitComplete(CompletionGraph.Attributes, cancellationToken);
             }
 
             // any other values are completion parts intended for other kinds of symbols
-            NotePartComplete(CompletionPart.All);
+            NotePartComplete(CompletionGraph.All);
         }
 
         public bool HasComplete(CompletionPart part)

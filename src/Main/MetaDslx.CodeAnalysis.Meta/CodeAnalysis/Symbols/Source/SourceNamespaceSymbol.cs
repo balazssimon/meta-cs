@@ -47,13 +47,15 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         public override MergedDeclaration MergedDeclaration => _declaration;
 
+        public SourceSymbol Source => _source;
+
         public override ImmutableArray<Symbol> ChildSymbols
         {
             get
             {
                 if (_childSymbols.IsDefault)
                 {
-                    this.ForceComplete(CompletionPart.FinishChildrenCreated, null, default);
+                    this.ForceComplete(CompletionGraph.FinishChildrenCreated, null, default);
                     var childSymbols = _declaration.Children.Where(decl => decl.Symbol != null).Select(decl => decl.Symbol).ToImmutableArray();
                     ImmutableInterlocked.InterlockedInitialize(ref _childSymbols, childSymbols);
                 }
@@ -141,7 +143,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         public override ImmutableArray<AttributeData> GetAttributes()
         {
             // TODO:MetaDslx
-            _state.NotePartComplete(CompletionPart.Attributes);
+            _state.NotePartComplete(CompletionGraph.Attributes);
             return ImmutableArray<AttributeData>.Empty;
         }
 
@@ -236,9 +238,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             {
                 cancellationToken.ThrowIfCancellationRequested();
                 var incompletePart = _state.NextIncompletePart;
-                if (incompletePart == CompletionPart.StartCreated || incompletePart == CompletionPart.FinishCreated)
+                if (incompletePart == CompletionGraph.StartCreated || incompletePart == CompletionGraph.FinishCreated)
                 {
-                    if (_state.NotePartComplete(CompletionPart.StartCreated))
+                    if (_state.NotePartComplete(CompletionGraph.StartCreated))
                     {
                         var diagnostics = DiagnosticBag.GetInstance();
                         foreach (var singleDeclaration in _declaration.Declarations)
@@ -250,40 +252,39 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                             _source.AssignPropertyValues(SymbolConstants.NameProperty, diagnostics, cancellationToken);
                         }
                         AddDeclarationDiagnostics(diagnostics);
-                        _state.NotePartComplete(CompletionPart.FinishCreated);
+                        _state.NotePartComplete(CompletionGraph.FinishCreated);
                         diagnostics.Free();
                     }
                 }
-                else if (incompletePart == CompletionPart.Attributes)
+                else if (incompletePart == CompletionGraph.Attributes)
                 {
                     GetAttributes();
                 }
-                else if (incompletePart == CompletionPart.StartChildrenCreated || incompletePart == CompletionPart.FinishChildrenCreated)
+                else if (incompletePart == CompletionGraph.StartChildrenCreated || incompletePart == CompletionGraph.FinishChildrenCreated)
                 {
-                    if (_state.NotePartComplete(CompletionPart.StartChildrenCreated))
+                    if (_state.NotePartComplete(CompletionGraph.StartChildrenCreated))
                     {
                         var diagnostics = DiagnosticBag.GetInstance();
                         if (ModelObject != null)
                         {
                             _source.CreateContainedChildSymbols(diagnostics, cancellationToken);
-                            _source.AssignPropertyValues(SymbolConstants.MembersProperty, diagnostics, cancellationToken);
                         }
                         else
                         {
                             _source.CreateRootSymbols(diagnostics, cancellationToken);
                         }
                         AddDeclarationDiagnostics(diagnostics);
-                        _state.NotePartComplete(CompletionPart.FinishChildrenCreated);
+                        _state.NotePartComplete(CompletionGraph.FinishChildrenCreated);
                         diagnostics.Free();
                     }
                 }
-                else if (incompletePart == CompletionPart.Members)
+                else if (incompletePart == CompletionGraph.Members)
                 {
                     this.SourceDeclaration.GetMembersByName();
                 }
-                else if (incompletePart == CompletionPart.StartProperties || incompletePart == CompletionPart.FinishProperties)
+                else if (incompletePart == CompletionGraph.StartProperties || incompletePart == CompletionGraph.FinishProperties)
                 {
-                    if (_state.NotePartComplete(CompletionPart.StartProperties))
+                    if (_state.NotePartComplete(CompletionGraph.StartProperties))
                     {
                         var diagnostics = DiagnosticBag.GetInstance();
                         if (ModelObject != null)
@@ -292,11 +293,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                             _phaseBinders = _source.CollectPhases();
                         }
                         AddSymbolDiagnostics(diagnostics);
-                        _state.NotePartComplete(CompletionPart.FinishProperties);
+                        _state.NotePartComplete(CompletionGraph.FinishProperties);
                         diagnostics.Free();
                     }
                 }
-                else if (incompletePart == CompletionPart.ChildrenCompleted)
+                else if (incompletePart == CompletionGraph.ChildrenCompleted)
                 {
                     // ensure relevant imports are complete.
                     var diagnostics = DiagnosticBag.GetInstance();
@@ -322,7 +323,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
                         foreach (var child in childSymbols)
                         {
-                            if (!child.HasComplete(CompletionPart.All))
+                            if (!child.HasComplete(CompletionGraph.All))
                             {
                                 allCompleted = false;
                                 break;
@@ -334,13 +335,13 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                         foreach (var child in childSymbols)
                         {
                             ForceCompleteChildByLocation(locationOpt, child, cancellationToken);
-                            allCompleted = allCompleted && child.HasComplete(CompletionPart.All);
+                            allCompleted = allCompleted && child.HasComplete(CompletionGraph.All);
                         }
                     }
 
                     if (allCompleted)
                     {
-                        _state.NotePartComplete(CompletionPart.ChildrenCompleted);
+                        _state.NotePartComplete(CompletionGraph.ChildrenCompleted);
                     }
                     else
                     {
@@ -373,7 +374,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                         }
                     }
                     // This assert will trigger if we forgot to handle any of the completion parts
-                    Debug.Assert(!CompletionPart.NamespaceSymbolAll.Contains(incompletePart));
+                    Debug.Assert(!CompletionGraph.NamespaceSymbolAll.Contains(incompletePart));
                     // any other values are completion parts intended for other kinds of symbols
                     _state.NotePartComplete(incompletePart);
                 }
@@ -384,7 +385,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         done:
             // Don't return until we've seen all of the CompletionParts. This ensures all
             // diagnostics have been reported (not necessarily on this thread).
-            var allParts = (locationOpt == null) ? CompletionPart.NamespaceSymbolAll : CompletionPart.NamespaceSymbolWithLocationAll;
+            var allParts = (locationOpt == null) ? CompletionGraph.NamespaceSymbolAll : CompletionGraph.NamespaceSymbolWithLocationAll;
             _state.SpinWaitComplete(allParts, cancellationToken);
         }
 

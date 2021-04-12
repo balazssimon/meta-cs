@@ -877,7 +877,7 @@ namespace [Properties.DefaultNamespace]
 ^
         public override RootSingleDeclaration CreateDeclarationTree(LanguageSyntaxTree syntaxTree, string scriptClassName, bool isSubmission)
         {
-            return [Properties.LanguageName]DeclarationTreeBuilderVisitor.ForTree(([Properties.LanguageName]SyntaxTree)syntaxTree, scriptClassName, isSubmission);
+            return [Properties.LanguageName]DeclarationTreeBuilderVisitor.ForTree(([Properties.LanguageName]SyntaxTree)syntaxTree, this.Language.SymbolFacts, scriptClassName, isSubmission);
         }
 ^
         /*public override ScriptCompilationInfo CreateScriptCompilationInfo(CompilationBase previousSubmission, Type submissionReturnType, Type hostObjectType)
@@ -5112,6 +5112,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Declarations;
+using MetaDslx.CodeAnalysis.Symbols;
 using [Properties.DefaultNamespace];
 using [Properties.DefaultNamespace].Syntax;
 using [Properties.DefaultNamespace].Symbols;
@@ -5121,17 +5122,18 @@ namespace [Properties.DefaultNamespace].Binding
 {
 	public class [Properties.LanguageName]DeclarationTreeBuilderVisitor : DeclarationTreeBuilderVisitor, I[Properties.LanguageName]SyntaxVisitor
 	{
-        protected [Properties.LanguageName]DeclarationTreeBuilderVisitor([Properties.LanguageName]SyntaxTree syntaxTree, string scriptClassName, bool isSubmission)
-            : base(syntaxTree, scriptClassName, isSubmission)
+        protected [Properties.LanguageName]DeclarationTreeBuilderVisitor([Properties.LanguageName]SyntaxTree syntaxTree, SymbolFacts symbolFacts, string scriptClassName, bool isSubmission)
+            : base(syntaxTree, symbolFacts, scriptClassName, isSubmission)
         {
         }
 ^
         public static RootSingleDeclaration ForTree(
             [Properties.LanguageName]SyntaxTree syntaxTree,
+            SymbolFacts symbolFacts,
             string scriptClassName,
             bool isSubmission)
         {
-            var builder = new [Properties.LanguageName]DeclarationTreeBuilderVisitor(syntaxTree, scriptClassName, isSubmission);
+            var builder = new [Properties.LanguageName]DeclarationTreeBuilderVisitor(syntaxTree, symbolFacts, scriptClassName, isSubmission);
             return builder.CreateRoot(syntaxTree.GetRoot(), [Instances.MainRule().Annotations.GetObjectType(MetaCompilerAnnotationInfo.Root)]);
         }
 ^

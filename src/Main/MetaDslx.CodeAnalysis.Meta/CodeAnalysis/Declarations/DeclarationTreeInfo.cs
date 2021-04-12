@@ -19,14 +19,15 @@ namespace MetaDslx.CodeAnalysis.Declarations
         private int importCount;
         private ArrayBuilder<Identifier> currentName;
 
-        public DeclarationTreeInfo(DeclarationTreeInfo parentScope, DeclarationTreeInfo parentDeclaration, DeclarationTreeInfo parent, string parentProperty, Type type, SyntaxNodeOrToken syntax)
+        public DeclarationTreeInfo(DeclarationTreeInfo parentScope, DeclarationTreeInfo parentDeclaration, DeclarationTreeInfo parent, string parentProperty, Type symbolType, Type modelObjectType, SyntaxNodeOrToken syntax)
         {
             this.ParentScope = parentScope;
             this.ParentDeclaration = parentDeclaration;
             this.Parent = parent;
             this.Parent = parent;
             this.ParentProperty = parentProperty;
-            this.ModelObjectType = type;
+            this.SymbolType = symbolType;
+            this.ModelObjectType = modelObjectType;
             this.Syntax = syntax;
             this.Names = new ArrayBuilder<ArrayBuilder<Identifier>>();
             this.Members = new ArrayBuilder<SingleDeclaration>();
@@ -39,6 +40,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
         public DeclarationTreeInfo ParentDeclaration { get; private set; }
         public DeclarationTreeInfo Parent { get; private set; }
         public SyntaxNodeOrToken Syntax { get; private set; }
+        public Type SymbolType { get; private set; }
         public Type ModelObjectType { get; private set; }
         public bool Merge { get; private set; }
         public bool Detached { get; private set; }

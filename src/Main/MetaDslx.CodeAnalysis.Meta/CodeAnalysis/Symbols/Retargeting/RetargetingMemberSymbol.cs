@@ -201,7 +201,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
             throw new NotSupportedException();
         }
 
-        internal sealed override LanguageCompilation DeclaringCompilation // perf, not correctness
+        public sealed override LanguageCompilation DeclaringCompilation // perf, not correctness
         {
             get { return null; }
         }

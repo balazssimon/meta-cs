@@ -1,4 +1,5 @@
-﻿using MetaDslx.CodeAnalysis.Symbols;
+﻿using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.Languages.Meta.Symbols;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,11 @@ namespace MetaDslx.Languages.Meta
         public override SymbolFacts CreateSymbolFacts()
         {
             return new CustomMetaSymbolFacts();
+        }
+
+        public override CompilationFactory CreateCompilationFactory()
+        {
+            return new CustomMetaCompilationFactory();
         }
     }
 }

@@ -92,7 +92,7 @@ namespace MetaDslx.CodeAnalysis
 
         protected virtual CompletionGraphBuilder ConstructCompletionGraph()
         {
-            return CompletionPart.ConstructDefaultCompletionGraph();
+            return CompletionGraphBuilder.BuildDefaultGraph();
         }
 
         public abstract RootSingleDeclaration CreateDeclarationTree(LanguageSyntaxTree syntaxTree, string scriptClassName, bool isSubmission);

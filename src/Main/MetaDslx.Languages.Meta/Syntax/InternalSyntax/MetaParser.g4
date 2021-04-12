@@ -175,7 +175,7 @@ parameterList : parameter (TComma parameter)*;
                       
 parameter : attribute*                 typeReference name;
 
-         
+                          
 associationDeclaration : attribute* KAssociation                    source=qualifier KWith                    target=qualifier TSemicolon;
 
 

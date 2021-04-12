@@ -30,7 +30,10 @@ namespace MetaDslx.CodeAnalysis.Symbols
         {
             return _name;
         }
+    }
 
+    public sealed partial class CompletionGraph
+    {
         public static readonly CompletionPart None = new CompletionPart(nameof(None));
         public static readonly CompletionPart All = new CompletionPart(nameof(All));
 
@@ -45,7 +48,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         public static readonly CompletionPart StartValidatingReferencedAssemblies = new CompletionPart(nameof(StartValidatingReferencedAssemblies));
         public static readonly CompletionPart FinishValidatingReferencedAssemblies = new CompletionPart(nameof(FinishValidatingReferencedAssemblies));
-        
+
         public static readonly CompletionPart StartValidatingAddedModules = new CompletionPart(nameof(StartValidatingAddedModules));
         public static readonly CompletionPart FinishValidatingAddedModules = new CompletionPart(nameof(FinishValidatingAddedModules));
 
@@ -72,65 +75,66 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public static readonly CompletionPart AliasTarget = new CompletionPart(nameof(AliasTarget));
 
         public static readonly ImmutableHashSet<CompletionPart> AssemblySymbolAll =
-            Combine(StartCreated, FinishCreated, Attributes, StartAttributeChecks, FinishAttributeChecks, Module, StartValidatingAddedModules, FinishValidatingAddedModules);
+            CompletionPart.Combine(StartCreated, FinishCreated, Attributes, StartAttributeChecks, FinishAttributeChecks, Module, StartValidatingAddedModules, FinishValidatingAddedModules);
         public static readonly ImmutableHashSet<CompletionPart> ModuleSymbolAll =
-            Combine(StartCreated, FinishCreated, Attributes, StartValidatingReferencedAssemblies, FinishValidatingReferencedAssemblies, ChildrenCompleted);
+            CompletionPart.Combine(StartCreated, FinishCreated, Attributes, StartValidatingReferencedAssemblies, FinishValidatingReferencedAssemblies, ChildrenCompleted);
 
         public static readonly ImmutableHashSet<CompletionPart> NamedTypeSymbolWithLocationAll =
-            Combine(StartCreated, FinishCreated, Attributes, StartBaseTypes, FinishBaseTypes, StartChildrenCreated, FinishChildrenCreated, Members, TypeMembers, StartProperties, FinishProperties);
-        public static readonly ImmutableHashSet<CompletionPart> NamedTypeSymbolAll = 
-            Combine(StartCreated, FinishCreated, Attributes, StartBaseTypes, FinishBaseTypes, StartChildrenCreated, FinishChildrenCreated, Members, TypeMembers, StartProperties, FinishProperties, ChildrenCompleted);
+            CompletionPart.Combine(StartCreated, FinishCreated, Attributes, StartBaseTypes, FinishBaseTypes, StartChildrenCreated, FinishChildrenCreated, Members, TypeMembers, StartProperties, FinishProperties);
+        public static readonly ImmutableHashSet<CompletionPart> NamedTypeSymbolAll =
+            CompletionPart.Combine(StartCreated, FinishCreated, Attributes, StartBaseTypes, FinishBaseTypes, StartChildrenCreated, FinishChildrenCreated, Members, TypeMembers, StartProperties, FinishProperties, ChildrenCompleted);
 
         public static readonly ImmutableHashSet<CompletionPart> ImportsAll =
-            Combine(StartValidatingImports, FinishValidatingImports);
+            CompletionPart.Combine(StartValidatingImports, FinishValidatingImports);
 
         public static readonly ImmutableHashSet<CompletionPart> NamespaceSymbolWithLocationAll =
-            Combine(StartCreated, FinishCreated, Attributes, StartChildrenCreated, FinishChildrenCreated, Members, StartProperties, FinishProperties);
+            CompletionPart.Combine(StartCreated, FinishCreated, Attributes, StartChildrenCreated, FinishChildrenCreated, Members, StartProperties, FinishProperties);
         public static readonly ImmutableHashSet<CompletionPart> NamespaceSymbolAll =
-            Combine(StartCreated, FinishCreated, Attributes, StartChildrenCreated, FinishChildrenCreated, Members, StartProperties, FinishProperties, ChildrenCompleted);
+            CompletionPart.Combine(StartCreated, FinishCreated, Attributes, StartChildrenCreated, FinishChildrenCreated, Members, StartProperties, FinishProperties, ChildrenCompleted);
 
         public static readonly ImmutableHashSet<CompletionPart> MemberSymbolWithLocationAll =
-            Combine(StartCreated, FinishCreated, Attributes, StartChildrenCreated, FinishChildrenCreated, Members, StartProperties, FinishProperties);
+            CompletionPart.Combine(StartCreated, FinishCreated, Attributes, StartChildrenCreated, FinishChildrenCreated, Members, StartProperties, FinishProperties);
         public static readonly ImmutableHashSet<CompletionPart> MemberSymbolAll =
-            Combine(StartCreated, FinishCreated, Attributes, StartChildrenCreated, FinishChildrenCreated, Members, StartProperties, FinishProperties, ChildrenCompleted);
+            CompletionPart.Combine(StartCreated, FinishCreated, Attributes, StartChildrenCreated, FinishChildrenCreated, Members, StartProperties, FinishProperties, ChildrenCompleted);
 
         public static readonly ImmutableHashSet<CompletionPart> LocalSymbolWithLocationAll =
-            Combine(StartCreated, FinishCreated, Attributes, StartChildrenCreated, FinishChildrenCreated, StartProperties, FinishProperties);
+            CompletionPart.Combine(StartCreated, FinishCreated, Attributes, StartChildrenCreated, FinishChildrenCreated, StartProperties, FinishProperties);
         public static readonly ImmutableHashSet<CompletionPart> LocalSymbolAll =
-            Combine(StartCreated, FinishCreated, Attributes, StartChildrenCreated, FinishChildrenCreated, StartProperties, FinishProperties, ChildrenCompleted);
-
-
-        internal static CompletionGraphBuilder ConstructDefaultCompletionGraph()
-        {
-            CompletionGraphBuilder builder = new CompletionGraphBuilder();
-            builder.AddLast(CompletionPart.StartCreated);
-            builder.AddLast(CompletionPart.FinishCreated);
-            builder.AddLast(CompletionPart.Attributes);
-            builder.AddLast(CompletionPart.StartAttributeChecks);
-            builder.AddLast(CompletionPart.FinishAttributeChecks);
-            builder.AddLast(CompletionPart.StartBaseTypes);
-            builder.AddLast(CompletionPart.FinishBaseTypes);
-            builder.AddLast(CompletionPart.StartChildrenCreated);
-            builder.AddLast(CompletionPart.FinishChildrenCreated);
-            builder.AddLast(CompletionPart.Members);
-            builder.AddLast(CompletionPart.TypeMembers);
-            builder.AddLast(CompletionPart.StartValidatingImports);
-            builder.AddLast(CompletionPart.FinishValidatingImports);
-            builder.AddLast(CompletionPart.AliasTarget);
-            builder.AddLast(CompletionPart.StartProperties);
-            builder.AddLast(CompletionPart.FinishProperties);
-            builder.AddLast(CompletionPart.ChildrenCompleted);
-            builder.AddLast(CompletionPart.StartCustomBinders);
-            builder.AddLast(CompletionPart.FinishCustomBinders);
-            builder.AddLast(CompletionPart.Module);
-            builder.AddLast(CompletionPart.StartValidatingAddedModules);
-            builder.AddLast(CompletionPart.FinishValidatingAddedModules);
-            builder.AddLast(CompletionPart.StartValidatingReferencedAssemblies);
-            builder.AddLast(CompletionPart.FinishValidatingReferencedAssemblies);
-            return builder;
-        }
-        //*/
+            CompletionPart.Combine(StartCreated, FinishCreated, Attributes, StartChildrenCreated, FinishChildrenCreated, StartProperties, FinishProperties, ChildrenCompleted);
 
     }
 
+    public sealed partial class CompletionGraphBuilder
+    {
+        public static CompletionGraphBuilder BuildDefaultGraph()
+        {
+            CompletionGraphBuilder builder = new CompletionGraphBuilder();
+            builder.AddLast(CompletionGraph.StartCreated);
+            builder.AddLast(CompletionGraph.FinishCreated);
+            builder.AddLast(CompletionGraph.Attributes);
+            builder.AddLast(CompletionGraph.StartAttributeChecks);
+            builder.AddLast(CompletionGraph.FinishAttributeChecks);
+            builder.AddLast(CompletionGraph.StartBaseTypes);
+            builder.AddLast(CompletionGraph.FinishBaseTypes);
+            builder.AddLast(CompletionGraph.StartChildrenCreated);
+            builder.AddLast(CompletionGraph.FinishChildrenCreated);
+            builder.AddLast(CompletionGraph.Members);
+            builder.AddLast(CompletionGraph.TypeMembers);
+            builder.AddLast(CompletionGraph.StartValidatingImports);
+            builder.AddLast(CompletionGraph.FinishValidatingImports);
+            builder.AddLast(CompletionGraph.AliasTarget);
+            builder.AddLast(CompletionGraph.StartProperties);
+            builder.AddLast(CompletionGraph.FinishProperties);
+            builder.AddLast(CompletionGraph.ChildrenCompleted);
+            builder.AddLast(CompletionGraph.StartCustomBinders);
+            builder.AddLast(CompletionGraph.FinishCustomBinders);
+            builder.AddLast(CompletionGraph.Module);
+            builder.AddLast(CompletionGraph.StartValidatingAddedModules);
+            builder.AddLast(CompletionGraph.FinishValidatingAddedModules);
+            builder.AddLast(CompletionGraph.StartValidatingReferencedAssemblies);
+            builder.AddLast(CompletionGraph.FinishValidatingReferencedAssemblies);
+            return builder;
+        }
+        //*/
+    }
 }

@@ -225,7 +225,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
             return this.RetargetingTranslator.Retarget(underlying, RetargetOptions.RetargetPrimitiveTypesByName);
         }
 
-        internal sealed override LanguageCompilation DeclaringCompilation // perf, not correctness
+        public sealed override LanguageCompilation DeclaringCompilation // perf, not correctness
         {
             get { return null; }
         }

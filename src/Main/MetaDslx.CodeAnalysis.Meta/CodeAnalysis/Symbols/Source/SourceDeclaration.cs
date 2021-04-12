@@ -126,7 +126,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 {
                     _symbol.AddDeclarationDiagnostics(diagnostics);
 
-                    _state.NotePartComplete(CompletionPart.TypeMembers);
+                    _state.NotePartComplete(CompletionGraph.TypeMembers);
                 }
 
                 diagnostics.Free();
@@ -256,7 +256,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         public Dictionary<string, ImmutableArray<DeclaredSymbol>> GetMembersByName()
         {
-            if (_state.HasComplete(CompletionPart.Members))
+            if (_state.HasComplete(CompletionGraph.Members))
             {
                 return _lazyMembersDictionary;
             }
@@ -279,14 +279,14 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                     _symbol.CheckMembers(membersDictionary, diagnostics);
                     _symbol.AddDeclarationDiagnostics(diagnostics);
                     _symbol.DeclaringCompilation.SymbolDeclaredEvent(_symbol);
-                    var wasSetThisThread = _state.NotePartComplete(CompletionPart.Members);
+                    var wasSetThisThread = _state.NotePartComplete(CompletionGraph.Members);
                     Debug.Assert(wasSetThisThread);
                 }
 
                 diagnostics.Free();
             }
 
-            _state.SpinWaitComplete(CompletionPart.Members, default);
+            _state.SpinWaitComplete(CompletionGraph.Members, default);
             return _lazyMembersDictionary;
         }
 
@@ -372,6 +372,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         private Members BuildMembers(DiagnosticBag diagnostics)
         {
+            var sourceSymbol = (_symbol as IModelSourceSymbol)?.Source;
+            if (sourceSymbol?.ModelObject != null)
+            {
+                sourceSymbol?.AssignPropertyValues(SymbolConstants.MembersProperty, diagnostics, default);
+            }
             var builder = new MembersBuilder(_symbol, _state);
             AddTypeMembers(builder.TypeMembers, diagnostics);
             AddNonTypeMembers(builder.NonTypeMembers, diagnostics);
@@ -466,11 +471,13 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 foreach (var symbol in membersByName[name])
                 {
                     var modelSymbol = symbol as IModelSourceSymbol;
+                    if (modelSymbol == null) continue;
                     var symbolType = symbolFacts.GetModelObjectType(modelSymbol.ModelObject);
                     Symbol prev;
                     if (symbolMap.TryGetValue(symbol, out prev))
                     {
                         var modelPrevSymbol = prev as IModelSourceSymbol;
+                        if (modelPrevSymbol == null) continue;
                         var prevType = symbolFacts.GetModelObjectType(modelPrevSymbol.ModelObject);
                         if (prevType == symbolType)
                         {

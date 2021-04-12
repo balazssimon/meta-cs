@@ -18,6 +18,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
 
     public class SingleDeclaration : Declaration
     {
+        private Type _symbolType;
         private readonly Type _modelObjectType;
         private readonly SyntaxReference _syntaxReference;
         private readonly SourceLocation _nameLocation;
@@ -36,6 +37,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
         public SingleDeclaration(
             string name, 
             DeclarationKind kind,
+            Type symbolType,
             Type modelObjectType,
             SyntaxReference syntaxReference,
             SourceLocation nameLocation,
@@ -48,6 +50,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             ImmutableArray<Diagnostic> diagnostics)
             : base(name, kind, canMerge, hasUsings, isNestingParent)
         {
+            _symbolType = symbolType;
             _modelObjectType = modelObjectType;
             _syntaxReference = syntaxReference;
             _nameLocation = nameLocation;
@@ -57,10 +60,9 @@ namespace MetaDslx.CodeAnalysis.Declarations
             this.Diagnostics = diagnostics;
         }
 
-        public override Type ModelObjectType
-        {
-            get { return this._modelObjectType; }
-        }
+        public override Type SymbolType => _symbolType;
+
+        public override Type ModelObjectType => _modelObjectType;
 
         public Location Location
         {

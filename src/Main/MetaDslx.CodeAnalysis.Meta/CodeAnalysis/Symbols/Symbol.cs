@@ -40,7 +40,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         {
         }
 
-        public virtual Language Language => Language.None;
+        public virtual Language Language => ContainingSymbol?.ContainingModule?.Language ?? Language.None;
 
 
         /// <summary>
@@ -122,7 +122,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// 
         /// Remarks, not "ContainingCompilation" because it isn't transitive.
         /// </remarks>
-        internal virtual LanguageCompilation DeclaringCompilation
+        public virtual LanguageCompilation DeclaringCompilation
         {
             get
             {

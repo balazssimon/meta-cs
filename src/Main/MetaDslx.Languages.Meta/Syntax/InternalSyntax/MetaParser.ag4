@@ -175,7 +175,7 @@ parameterList : parameter (TComma parameter)*;
 $Define(MetaParameter)
 parameter : attribute* $Property(Type) typeReference name;
 
-$Opposite
+$Symbol(AssociationSymbol)
 associationDeclaration : attribute* KAssociation $Use(MetaProperty) source=qualifier KWith $Use(MetaProperty) target=qualifier TSemicolon;
 
 

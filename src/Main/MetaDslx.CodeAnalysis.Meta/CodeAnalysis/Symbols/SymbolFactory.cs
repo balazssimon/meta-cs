@@ -40,20 +40,29 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return CreateSymbol(modelObject);
         }
 
-        public Symbol MakeSourceSymbol(Symbol container, Type modelObjectType, MergedDeclaration declaration)
+        public Symbol MakeSourceSymbol(Symbol container, Type symbolType, Type modelObjectType, MergedDeclaration declaration)
         {
             object modelObject = null;
-            if (declaration != null)
+            if (modelObjectType != null)
             {
-                modelObject = _objectMap.GetValue(declaration, decl => _module.DeclaringCompilation.ObjectFactory.CreateObject(modelObjectType));
+                if (declaration != null)
+                {
+                    modelObject = _objectMap.GetValue(declaration, decl => _module.DeclaringCompilation.ObjectFactory.CreateObject(modelObjectType));
+                }
+                else
+                {
+                    modelObject = _module.DeclaringCompilation.ObjectFactory.CreateObject(modelObjectType);
+                }
+                if (_symbolMap.TryGetValue(modelObject, out var symbol)) return symbol;
+                symbol = CreateSourceSymbol(container, symbolType, modelObject, declaration);
+                return GetOrAddSymbol(modelObject, symbol);
             }
             else
             {
-                modelObject = _module.DeclaringCompilation.ObjectFactory.CreateObject(modelObjectType);
+                var symbol = CreateSourceSymbol(container, symbolType, null, declaration);
+                if (declaration != null) return GetOrAddSymbol(declaration, symbol);
+                else return symbol;
             }
-            if (_symbolMap.TryGetValue(modelObject, out var symbol)) return symbol;
-            symbol = CreateSourceSymbol(container, modelObject, declaration);
-            return GetOrAddSymbol(modelObject, symbol);
         }
 
         public ImmutableArray<Symbol> GetChildSymbols(object modelObject)
@@ -83,39 +92,37 @@ namespace MetaDslx.CodeAnalysis.Symbols
         {
             var pobj = _symbolFacts.GetParent(modelObject);
             var psym = pobj != null ? GetSymbol(pobj) : _module;
-            var sym = CreateSymbol(psym, pobj, modelObject);
+            var sym = CreateSymbol(psym, _symbolFacts.GetSymbolType(modelObject), modelObject);
             return GetOrAddSymbol(modelObject, sym);
         }
 
-        protected Symbol CreateSymbol(Symbol container, object containerObject, object modelObject)
+        protected Symbol CreateSymbol(Symbol container, Type symbolType, object modelObject)
         {
             if (IsSourceSymbolFactory)
             {
                 Debug.Assert(false);
-                return CreateSourceSymbol(container, modelObject, null);
+                return CreateSourceSymbol(container, symbolType, modelObject, null);
             }
             else
             {
-                return CreateMetaSymbol(container, modelObject);
+                return CreateMetaSymbol(container, symbolType, modelObject);
             }
         }
 
-        protected virtual Symbol CreateMetaSymbol(Symbol container, object modelObject)
+        protected virtual Symbol CreateMetaSymbol(Symbol container, Type symbolType, object modelObject)
         {
-            var type = _symbolFacts.GetSymbolType(modelObject);
-            if (type == typeof(NamespaceSymbol)) return new ModelNamespaceSymbol(container, modelObject);
-            if (type == typeof(NamedTypeSymbol)) return new ModelNamedTypeSymbol(container, modelObject);
-            if (type == typeof(MemberSymbol)) return new ModelMemberSymbol(container, modelObject);
+            if (symbolType == typeof(NamespaceSymbol)) return new ModelNamespaceSymbol(container, modelObject);
+            if (symbolType == typeof(NamedTypeSymbol)) return new ModelNamedTypeSymbol(container, modelObject);
+            if (symbolType == typeof(MemberSymbol)) return new ModelMemberSymbol(container, modelObject);
             return new UnsupportedModelSymbol(container, modelObject);
         }
 
-        protected virtual Symbol CreateSourceSymbol(Symbol container, object modelObject, MergedDeclaration declaration)
+        protected virtual Symbol CreateSourceSymbol(Symbol container, Type symbolType, object modelObject, MergedDeclaration declaration)
         {
-            var type = _symbolFacts.GetSymbolType(modelObject);
-            if (type == typeof(NamespaceSymbol)) return new SourceNamespaceSymbol((SourceModuleSymbol)container.ContainingModule, container, modelObject, declaration);
-            if (type == typeof(NamedTypeSymbol)) return new SourceNamedTypeSymbol(container, modelObject, declaration);
-            if (type == typeof(TypeSymbol)) return new SourceAnonymousTypeSymbol(container, modelObject, declaration);
-            if (type == typeof(MemberSymbol)) return new SourceMemberSymbol(container, modelObject, declaration);
+            if (symbolType == typeof(NamespaceSymbol)) return new SourceNamespaceSymbol((SourceModuleSymbol)container.ContainingModule, container, modelObject, declaration);
+            if (symbolType == typeof(NamedTypeSymbol)) return new SourceNamedTypeSymbol(container, modelObject, declaration);
+            if (symbolType == typeof(TypeSymbol)) return new SourceAnonymousTypeSymbol(container, modelObject, declaration);
+            if (symbolType == typeof(MemberSymbol)) return new SourceMemberSymbol(container, modelObject, declaration);
             return new UnsupportedModelSymbol(container, modelObject);
         }
 

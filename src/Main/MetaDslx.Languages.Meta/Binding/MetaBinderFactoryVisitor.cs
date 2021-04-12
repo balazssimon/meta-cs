@@ -120,16 +120,6 @@ namespace MetaDslx.Languages.Meta.Binding
             return new SymbolPropertyBinder(parentBinder, syntax);
         }
 
-        protected virtual Binder CreateOppositeBinder(Binder parentBinder, SyntaxNodeOrToken syntax)
-        {
-            return this.CreateOppositeBinderCore(parentBinder, syntax);
-        }
-
-        protected virtual Binder CreateOppositeBinderCore(Binder parentBinder, SyntaxNodeOrToken syntax)
-        {
-            return new OppositeBinder(parentBinder, syntax);
-        }
-
         public Binder VisitSkippedTokensTrivia(MetaSkippedTokensTriviaSyntax parent)
         {
             return null;
@@ -1279,7 +1269,7 @@ namespace MetaDslx.Languages.Meta.Binding
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitParent(parent);
-				resultBinder = this.CreateOppositeBinder(resultBinder, parent);
+				resultBinder = this.CreateSymbolBinder(resultBinder, parent, type: typeof(AssociationSymbol));
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 				if (use == UseSource)
 				{

@@ -613,22 +613,22 @@ namespace MetaDslx.CodeAnalysis.Binding
             {
                 cancellationToken.ThrowIfCancellationRequested();
                 var incompletePart = _state.NextIncompletePart;
-                if (incompletePart == CompletionPart.StartValidatingImports)
+                if (incompletePart == CompletionGraph.StartValidatingImports)
                 {
-                    if (_state.NotePartComplete(CompletionPart.StartValidatingImports))
+                    if (_state.NotePartComplete(CompletionGraph.StartValidatingImports))
                     {
                         Validate();
-                        _state.NotePartComplete(CompletionPart.FinishValidatingImports);
+                        _state.NotePartComplete(CompletionGraph.FinishValidatingImports);
                     }
                 }
-                else if (incompletePart == CompletionPart.FinishValidatingImports)
+                else if (incompletePart == CompletionGraph.FinishValidatingImports)
                 {
                     // some other thread has started validating imports (otherwise we would be in the case above) so
                     // we just wait for it to both finish and report the diagnostics.
-                    Debug.Assert(_state.HasComplete(CompletionPart.StartValidatingImports));
-                    _state.SpinWaitComplete(CompletionPart.FinishValidatingImports, cancellationToken);
+                    Debug.Assert(_state.HasComplete(CompletionGraph.StartValidatingImports));
+                    _state.SpinWaitComplete(CompletionGraph.FinishValidatingImports, cancellationToken);
                 }
-                else if (incompletePart == null || incompletePart == CompletionPart.None)
+                else if (incompletePart == null || incompletePart == CompletionGraph.None)
                 {
                     return;
                 }
@@ -636,7 +636,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                 {
                     // any other values are completion parts intended for other kinds of symbols
                     _state.NotePartComplete(incompletePart);
-                    Debug.Assert(!CompletionPart.ImportsAll.Contains(incompletePart));
+                    Debug.Assert(!CompletionGraph.ImportsAll.Contains(incompletePart));
                 }
                 _state.SpinWaitComplete(incompletePart, cancellationToken);
             }

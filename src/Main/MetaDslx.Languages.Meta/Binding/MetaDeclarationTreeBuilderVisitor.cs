@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Declarations;
+using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.Languages.Meta;
 using MetaDslx.Languages.Meta.Syntax;
 using MetaDslx.Languages.Meta.Symbols;
@@ -18,17 +19,18 @@ namespace MetaDslx.Languages.Meta.Binding
 {
 	public class MetaDeclarationTreeBuilderVisitor : DeclarationTreeBuilderVisitor, IMetaSyntaxVisitor
 	{
-        protected MetaDeclarationTreeBuilderVisitor(MetaSyntaxTree syntaxTree, string scriptClassName, bool isSubmission)
-            : base(syntaxTree, scriptClassName, isSubmission)
+        protected MetaDeclarationTreeBuilderVisitor(MetaSyntaxTree syntaxTree, SymbolFacts symbolFacts, string scriptClassName, bool isSubmission)
+            : base(syntaxTree, symbolFacts, scriptClassName, isSubmission)
         {
         }
 
         public static RootSingleDeclaration ForTree(
             MetaSyntaxTree syntaxTree,
+            SymbolFacts symbolFacts,
             string scriptClassName,
             bool isSubmission)
         {
-            var builder = new MetaDeclarationTreeBuilderVisitor(syntaxTree, scriptClassName, isSubmission);
+            var builder = new MetaDeclarationTreeBuilderVisitor(syntaxTree, symbolFacts, scriptClassName, isSubmission);
             return builder.CreateRoot(syntaxTree.GetRoot(), null);
         }
 
@@ -46,14 +48,6 @@ namespace MetaDslx.Languages.Meta.Binding
         }
 
         protected virtual void EndSymbolProperty(SyntaxNodeOrToken syntax)
-        {
-        }
-
-        protected virtual void BeginOpposite(SyntaxNodeOrToken syntax)
-        {
-        }
-
-        protected virtual void EndOpposite(SyntaxNodeOrToken syntax)
         {
         }
 
@@ -1406,7 +1400,7 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public virtual void VisitAssociationDeclaration(AssociationDeclarationSyntax node)
 		{
-			this.BeginOpposite(node);
+			this.BeginSymbol(node, type: typeof(AssociationSymbol));
 			try
 			{
 				if (node.Attribute != null)
@@ -1443,7 +1437,7 @@ namespace MetaDslx.Languages.Meta.Binding
 			}
 			finally
 			{
-				this.EndOpposite(node);
+				this.EndSymbol(node, type: typeof(AssociationSymbol));
 			}
 		}
 		

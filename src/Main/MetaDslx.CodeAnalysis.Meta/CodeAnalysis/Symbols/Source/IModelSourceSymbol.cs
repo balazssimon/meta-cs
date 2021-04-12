@@ -10,9 +10,10 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Source
 {
-    public interface IModelSourceSymbol : IModelSymbol
+    public interface IModelSourceSymbol : IModelSymbol, ISourceSymbol
     {
         ImmutableArray<Diagnostic> Diagnostics { get; }
+        SourceSymbol Source { get; }
         BinderPosition<SymbolBinder> GetBinder(SyntaxReference syntax);
         Symbol GetChildSymbol(SyntaxReference syntax);
     }

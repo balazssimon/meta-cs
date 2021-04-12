@@ -17,7 +17,7 @@ namespace MetaDslx.CodeAnalysis
     /// This interface is reserved for implementation by its associated APIs. We reserve the right to
     /// change it in the future.
     /// </remarks>
-    [InternalImplementationOnly]
+    //[InternalImplementationOnly]
     public interface ISymbol : IEquatable<ISymbol>
     {
         /// <summary>

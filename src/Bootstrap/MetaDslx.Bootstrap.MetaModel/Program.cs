@@ -41,7 +41,7 @@ namespace MetaDslx.Bootstrap.MetaModel
             //string text = File.ReadAllText(@"..\..\..\Error5.mm");
 
             var tree = MetaSyntaxTree.ParseText(text);
-            var declarations = MetaDeclarationTreeBuilderVisitor.ForTree(tree, "Script", false);
+            var declarations = MetaDeclarationTreeBuilderVisitor.ForTree(tree, MetaLanguage.Instance.SymbolFacts, "Script", false);
 
             //Console.WriteLine(declarations.Dump());
 

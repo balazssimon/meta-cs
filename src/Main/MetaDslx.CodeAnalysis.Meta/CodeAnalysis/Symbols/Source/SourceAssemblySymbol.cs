@@ -194,7 +194,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         /// <remarks>
         /// This override is essential - it's a base case of the recursive definition.
         /// </remarks>
-        internal sealed override LanguageCompilation DeclaringCompilation
+        public sealed override LanguageCompilation DeclaringCompilation
         {
             get
             {
@@ -756,28 +756,28 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             {
                 cancellationToken.ThrowIfCancellationRequested();
                 var incompletePart = _state.NextIncompletePart;
-                if (incompletePart == CompletionPart.Attributes)
+                if (incompletePart == CompletionGraph.Attributes)
                 {
                     EnsureAttributesAreBound();
                 }
-                else if (incompletePart == CompletionPart.StartAttributeChecks || incompletePart == CompletionPart.FinishAttributeChecks)
+                else if (incompletePart == CompletionGraph.StartAttributeChecks || incompletePart == CompletionGraph.FinishAttributeChecks)
                 {
-                    if (_state.NotePartComplete(CompletionPart.StartAttributeChecks))
+                    if (_state.NotePartComplete(CompletionGraph.StartAttributeChecks))
                     {
                         var diagnostics = DiagnosticBag.GetInstance();
                         ValidateAttributeSemantics(diagnostics);
                         AddDeclarationDiagnostics(diagnostics);
-                        var thisThreadCompleted = _state.NotePartComplete(CompletionPart.FinishAttributeChecks);
+                        var thisThreadCompleted = _state.NotePartComplete(CompletionGraph.FinishAttributeChecks);
                         Debug.Assert(thisThreadCompleted);
                         diagnostics.Free();
                     }
                 }
-                else if (incompletePart == CompletionPart.Module)
+                else if (incompletePart == CompletionGraph.Module)
                 {
                     SourceModule.ForceComplete(null, locationOpt, cancellationToken);
-                    if (SourceModule.HasComplete(CompletionPart.ChildrenCompleted))
+                    if (SourceModule.HasComplete(CompletionGraph.ChildrenCompleted))
                     {
-                        _state.NotePartComplete(CompletionPart.Module);
+                        _state.NotePartComplete(CompletionGraph.Module);
                     }
                     else
                     {
@@ -786,16 +786,16 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                         return;
                     }
                 }
-                else if (incompletePart == CompletionPart.StartValidatingAddedModules || incompletePart == CompletionPart.FinishValidatingAddedModules)
+                else if (incompletePart == CompletionGraph.StartValidatingAddedModules || incompletePart == CompletionGraph.FinishValidatingAddedModules)
                 {
-                    if (_state.NotePartComplete(CompletionPart.StartValidatingAddedModules))
+                    if (_state.NotePartComplete(CompletionGraph.StartValidatingAddedModules))
                     {
                         ReportDiagnosticsForAddedModules();
-                        var thisThreadCompleted = _state.NotePartComplete(CompletionPart.FinishValidatingAddedModules);
+                        var thisThreadCompleted = _state.NotePartComplete(CompletionGraph.FinishValidatingAddedModules);
                         Debug.Assert(thisThreadCompleted);
                     }
                 }
-                else if (incompletePart == null || incompletePart == CompletionPart.None)
+                else if (incompletePart == null || incompletePart == CompletionGraph.None)
                 {
                     return;
                 }
@@ -1235,12 +1235,12 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             if ((_lazySourceAttributesBag == null || !_lazySourceAttributesBag.IsSealed) &&
                 LoadAndValidateAttributes(OneOrMany.Create(GetAttributeDeclarations()), ref _lazySourceAttributesBag))
             {
-                _state.NotePartComplete(CompletionPart.Attributes);
+                _state.NotePartComplete(CompletionGraph.Attributes);
             }*/
             if (_lazySourceAttributesBag == null)
             {
                 Interlocked.CompareExchange(ref _lazySourceAttributesBag, CustomAttributesBag<AttributeData>.Empty, null);
-                _state.NotePartComplete(CompletionPart.Attributes);
+                _state.NotePartComplete(CompletionGraph.Attributes);
             }
         }
 
@@ -1617,7 +1617,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 //Our maps of unread and unassigned fields won't be done until the assembly is complete.
                 this.ForceComplete(completionPart: null, locationOpt: null, cancellationToken: cancellationToken);
 
-                Debug.Assert(this.HasComplete(CompletionPart.Module),
+                Debug.Assert(this.HasComplete(CompletionGraph.Module),
                     "Don't consume unused field information if there are still types to be processed.");
 
                 // Build this up in a local before we assign it to this.unusedFieldWarnings (so other threads
@@ -1639,7 +1639,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 {
                     bool isInternalAccessibility;
                     bool success = _unassignedFieldsMap.TryGetValue(symbol, out isInternalAccessibility);
-                    Debug.Assert(success, "Once CompletionPart.Module is set, no-one should be modifying the map.");
+                    Debug.Assert(success, "Once CompletionGraph.Module is set, no-one should be modifying the map.");
 
                     if (isInternalAccessibility && internalsAreVisible)
                     {

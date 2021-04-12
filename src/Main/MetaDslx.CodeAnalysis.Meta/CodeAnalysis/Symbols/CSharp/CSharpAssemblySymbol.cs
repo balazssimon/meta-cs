@@ -230,7 +230,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
             }
         }
 
-        internal sealed override LanguageCompilation DeclaringCompilation // perf, not correctness
+        public sealed override LanguageCompilation DeclaringCompilation // perf, not correctness
         {
             get { return null; }
         }

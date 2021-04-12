@@ -65,7 +65,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             _aliasTarget = target;
             _binder = binder;
             _state = CompletionState.Create(binder.Language);
-            _state.NotePartComplete(CompletionPart.AliasTarget);
+            _state.NotePartComplete(CompletionGraph.AliasTarget);
         }
 
         private AliasSymbol(Binder binder, string aliasName, SyntaxNodeOrToken aliasTargetName, Location location, bool isExtern = false)
@@ -235,7 +235,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         // basesBeingResolved is only used to break circular references.
         public DeclaredSymbol GetAliasTarget(LookupConstraints recursionConstraints)
         {
-            if (!_state.HasComplete(CompletionPart.AliasTarget))
+            if (!_state.HasComplete(CompletionGraph.AliasTarget))
             {
                 // the target is not yet bound. If it is an ordinary alias, bind the target
                 // symbol. If it is an extern alias then find the target in the list of metadata references.
@@ -253,14 +253,14 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                     bool won = Interlocked.Exchange(ref _aliasTargetDiagnostics, newDiagnostics) == null;
                     Debug.Assert(won, "Only one thread can win the alias target CompareExchange");
 
-                    _state.NotePartComplete(CompletionPart.AliasTarget);
+                    _state.NotePartComplete(CompletionGraph.AliasTarget);
                     // we do not clear this.aliasTargetName, as another thread might be about to use it for ResolveAliasTarget(...)
                 }
                 else
                 {
                     newDiagnostics.Free();
                     // Wait for diagnostics to have been reported if another thread resolves the alias
-                    _state.SpinWaitComplete(CompletionPart.AliasTarget, default(CancellationToken));
+                    _state.SpinWaitComplete(CompletionGraph.AliasTarget, default(CancellationToken));
                 }
             }
 

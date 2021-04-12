@@ -51,13 +51,15 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         public override MergedDeclaration MergedDeclaration => _declaration;
 
+        public SourceSymbol Source => _source;
+
         public override ImmutableArray<Symbol> ChildSymbols
         {
             get
             {
                 if (_childSymbols.IsDefault)
                 {
-                    this.ForceComplete(CompletionPart.FinishChildrenCreated, null, default);
+                    this.ForceComplete(CompletionGraph.FinishChildrenCreated, null, default);
                     var childSymbols = _declaration.Children.Where(decl => decl.Symbol != null).Select(decl => decl.Symbol).ToImmutableArray();
                     ImmutableInterlocked.InterlockedInitialize(ref _childSymbols, childSymbols);
                 }
@@ -163,7 +165,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         public override ImmutableArray<AttributeData> GetAttributes()
         {
             // TODO:MetaDslx
-            _state.NotePartComplete(CompletionPart.Attributes);
+            _state.NotePartComplete(CompletionGraph.Attributes);
             return ImmutableArray<AttributeData>.Empty;
         }
 
@@ -187,9 +189,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 // NOTE: cases that depend on GetMembers[ByName] should call RequireCompletionPartMembers.
                 cancellationToken.ThrowIfCancellationRequested();
                 var incompletePart = _state.NextIncompletePart;
-                if (incompletePart == CompletionPart.StartCreated || incompletePart == CompletionPart.FinishCreated)
+                if (incompletePart == CompletionGraph.StartCreated || incompletePart == CompletionGraph.FinishCreated)
                 {
-                    if (_state.NotePartComplete(CompletionPart.StartCreated))
+                    if (_state.NotePartComplete(CompletionGraph.StartCreated))
                     {
                         var diagnostics = DiagnosticBag.GetInstance();
                         if (_declaration != null)
@@ -201,59 +203,58 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                         }
                         _source.AssignPropertyValues(SymbolConstants.NameProperty, diagnostics, cancellationToken);
                         AddDeclarationDiagnostics(diagnostics);
-                        _state.NotePartComplete(CompletionPart.FinishCreated);
+                        _state.NotePartComplete(CompletionGraph.FinishCreated);
                         diagnostics.Free();
                     }
                 }
-                else if (incompletePart == CompletionPart.Attributes)
+                else if (incompletePart == CompletionGraph.Attributes)
                 {
                     GetAttributes();
                 }
-                else if (incompletePart == CompletionPart.StartBaseTypes || incompletePart == CompletionPart.FinishBaseTypes)
+                else if (incompletePart == CompletionGraph.StartBaseTypes || incompletePart == CompletionGraph.FinishBaseTypes)
                 {
-                    if (_state.NotePartComplete(CompletionPart.StartBaseTypes))
+                    if (_state.NotePartComplete(CompletionGraph.StartBaseTypes))
                     {
                         var diagnostics = DiagnosticBag.GetInstance();
                         _source.AssignPropertyValues(SymbolConstants.DeclaredBaseTypesProperty, diagnostics, cancellationToken);
                         CheckBaseTypes(diagnostics);
                         AddDeclarationDiagnostics(diagnostics);
-                        _state.NotePartComplete(CompletionPart.FinishBaseTypes);
+                        _state.NotePartComplete(CompletionGraph.FinishBaseTypes);
                         diagnostics.Free();
                     }
                 }
-                else if (incompletePart == CompletionPart.StartChildrenCreated || incompletePart == CompletionPart.FinishChildrenCreated)
+                else if (incompletePart == CompletionGraph.StartChildrenCreated || incompletePart == CompletionGraph.FinishChildrenCreated)
                 {
-                    if (_state.NotePartComplete(CompletionPart.StartChildrenCreated))
+                    if (_state.NotePartComplete(CompletionGraph.StartChildrenCreated))
                     {
                         var diagnostics = DiagnosticBag.GetInstance();
                         _source.CreateContainedChildSymbols(diagnostics, cancellationToken);
-                        _source.AssignPropertyValues(SymbolConstants.MembersProperty, diagnostics, cancellationToken);
                         AddDeclarationDiagnostics(diagnostics);
-                        _state.NotePartComplete(CompletionPart.FinishChildrenCreated);
+                        _state.NotePartComplete(CompletionGraph.FinishChildrenCreated);
                         diagnostics.Free();
                     }
                 }
-                else if (incompletePart == CompletionPart.Members)
+                else if (incompletePart == CompletionGraph.Members)
                 {
                     this.SourceDeclaration.GetMembersByName();
                 }
-                else if (incompletePart == CompletionPart.TypeMembers)
+                else if (incompletePart == CompletionGraph.TypeMembers)
                 {
                     this.SourceDeclaration.GetTypeMembersUnordered();
                 }
-                else if (incompletePart == CompletionPart.StartProperties || incompletePart == CompletionPart.FinishProperties)
+                else if (incompletePart == CompletionGraph.StartProperties || incompletePart == CompletionGraph.FinishProperties)
                 {
-                    if (_state.NotePartComplete(CompletionPart.StartProperties))
+                    if (_state.NotePartComplete(CompletionGraph.StartProperties))
                     {
                         var diagnostics = DiagnosticBag.GetInstance();
                         _source.AssignPropertyValues(null, diagnostics, cancellationToken);
                         _phaseBinders = _source.CollectPhases();
                         AddSymbolDiagnostics(diagnostics);
-                        _state.NotePartComplete(CompletionPart.FinishProperties);
+                        _state.NotePartComplete(CompletionGraph.FinishProperties);
                         diagnostics.Free();
                     }
                 }
-                else if (incompletePart == CompletionPart.ChildrenCompleted)
+                else if (incompletePart == CompletionGraph.ChildrenCompleted)
                 {
                     // ensure relevant imports are complete.
                     var diagnostics = DiagnosticBag.GetInstance();
@@ -278,7 +279,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                         foreach (var child in childSymbols)
                         {
                             ForceCompleteChildByLocation(locationOpt, child, cancellationToken);
-                            allCompleted = allCompleted && child.HasComplete(CompletionPart.All);
+                            allCompleted = allCompleted && child.HasComplete(CompletionGraph.All);
                         }
                     }
 
@@ -286,14 +287,14 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                     {
                         // We did not complete all members so we won't have enough information for
                         // the PointedAtManagedTypeChecks, so just kick out now.
-                        var allParts = CompletionPart.NamedTypeSymbolWithLocationAll;
+                        var allParts = CompletionGraph.NamedTypeSymbolWithLocationAll;
                         _state.SpinWaitComplete(allParts, cancellationToken);
                         return;
                     }
 
                     // We've completed all members, so we're ready for the PointedAtManagedTypeChecks;
                     // proceed to the next iteration.
-                    _state.NotePartComplete(CompletionPart.ChildrenCompleted);
+                    _state.NotePartComplete(CompletionGraph.ChildrenCompleted);
                 }
                 else if (incompletePart == null)
                 {
@@ -319,7 +320,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                         }
                     }
                     // This assert will trigger if we forgot to handle any of the completion parts
-                    Debug.Assert(!CompletionPart.NamedTypeSymbolAll.Contains(incompletePart));
+                    Debug.Assert(!CompletionGraph.NamedTypeSymbolAll.Contains(incompletePart));
                     // any other values are completion parts intended for other kinds of symbols
                     _state.NotePartComplete(incompletePart);
                 }

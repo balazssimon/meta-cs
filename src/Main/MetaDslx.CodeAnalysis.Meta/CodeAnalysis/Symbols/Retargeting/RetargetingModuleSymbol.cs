@@ -272,7 +272,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
             }
         }
 
-        internal sealed override LanguageCompilation DeclaringCompilation // perf, not correctness
+        public sealed override LanguageCompilation DeclaringCompilation // perf, not correctness
         {
             get { return null; }
         }

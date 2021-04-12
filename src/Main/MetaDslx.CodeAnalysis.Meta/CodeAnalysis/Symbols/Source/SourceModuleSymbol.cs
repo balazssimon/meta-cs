@@ -229,11 +229,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             {
                 cancellationToken.ThrowIfCancellationRequested();
                 var incompletePart = _state.NextIncompletePart;
-                if (incompletePart == CompletionPart.Attributes)
+                if (incompletePart == CompletionGraph.Attributes)
                 {
                     GetAttributes();
                 }
-                else if (incompletePart == CompletionPart.StartValidatingReferencedAssemblies)
+                else if (incompletePart == CompletionGraph.StartValidatingReferencedAssemblies)
                 {
                     DiagnosticBag diagnostics = null;
 
@@ -243,14 +243,14 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                         ValidateLinkedAssemblies(diagnostics, cancellationToken);
                     }
 
-                    if (_state.NotePartComplete(CompletionPart.StartValidatingReferencedAssemblies))
+                    if (_state.NotePartComplete(CompletionGraph.StartValidatingReferencedAssemblies))
                     {
                         if (diagnostics != null)
                         {
                             _assemblySymbol.DeclaringCompilation.DeclarationDiagnostics.AddRange(diagnostics);
                         }
 
-                        _state.NotePartComplete(CompletionPart.FinishValidatingReferencedAssemblies);
+                        _state.NotePartComplete(CompletionGraph.FinishValidatingReferencedAssemblies);
                     }
 
                     if (diagnostics != null)
@@ -258,20 +258,20 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                         diagnostics.Free();
                     }
                 }
-                else if (incompletePart == CompletionPart.FinishValidatingReferencedAssemblies)
+                else if (incompletePart == CompletionGraph.FinishValidatingReferencedAssemblies)
                 {
                     // some other thread has started validating references (otherwise we would be in the case above) so
                     // we just wait for it to both finish and report the diagnostics.
-                    Debug.Assert(_state.HasComplete(CompletionPart.StartValidatingReferencedAssemblies));
-                    _state.SpinWaitComplete(CompletionPart.FinishValidatingReferencedAssemblies, cancellationToken);
+                    Debug.Assert(_state.HasComplete(CompletionGraph.StartValidatingReferencedAssemblies));
+                    _state.SpinWaitComplete(CompletionGraph.FinishValidatingReferencedAssemblies, cancellationToken);
                 }
-                else if (incompletePart == CompletionPart.ChildrenCompleted)
+                else if (incompletePart == CompletionGraph.ChildrenCompleted)
                 {
                     this.GlobalNamespace.ForceComplete(null, locationOpt, cancellationToken);
 
-                    if (this.GlobalNamespace.HasComplete(CompletionPart.ChildrenCompleted))
+                    if (this.GlobalNamespace.HasComplete(CompletionGraph.ChildrenCompleted))
                     {
-                        _state.NotePartComplete(CompletionPart.ChildrenCompleted);
+                        _state.NotePartComplete(CompletionGraph.ChildrenCompleted);
                     }
                     else
                     {
@@ -279,7 +279,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                         return;
                     }
                 }
-                else if (incompletePart == null || incompletePart == CompletionPart.None)
+                else if (incompletePart == null || incompletePart == CompletionGraph.None)
                 {
                     return;
                 }
@@ -353,7 +353,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         /// <remarks>
         /// This override is essential - it's a base case of the recursive definition.
         /// </remarks>
-        internal override LanguageCompilation DeclaringCompilation
+        public override LanguageCompilation DeclaringCompilation
         {
             get
             {
@@ -391,14 +391,14 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 var mergedAttributes = ((SourceAssemblySymbol)this.ContainingAssembly).GetAttributeDeclarations();
                 if (LoadAndValidateAttributes(OneOrMany.Create(mergedAttributes), ref _lazyCustomAttributesBag))
                 {
-                    var completed = _state.NotePartComplete(CompletionPart.Attributes);
+                    var completed = _state.NotePartComplete(CompletionGraph.Attributes);
                     Debug.Assert(completed);
                 }
             }*/
             if (_lazyCustomAttributesBag == null)
             {
                 Interlocked.CompareExchange(ref _lazyCustomAttributesBag, CustomAttributesBag<AttributeData>.Empty, null);
-                var completed = _state.NotePartComplete(CompletionPart.Attributes);
+                var completed = _state.NotePartComplete(CompletionGraph.Attributes);
                 Debug.Assert(completed);
             }
             return _lazyCustomAttributesBag;

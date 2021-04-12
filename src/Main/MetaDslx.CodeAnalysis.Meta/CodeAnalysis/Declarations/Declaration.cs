@@ -72,6 +72,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             get { return this.flags.HasFlag(DeclarationFlags.IsNestingParent); }
         }
 
+        public abstract Type SymbolType { get; }
         public abstract Type ModelObjectType { get; }
 
         public ImmutableArray<Declaration> Children
