@@ -15,11 +15,11 @@ using MetaDslx.CodeAnalysis.Symbols.CSharp;
 
 namespace MetaDslx.CodeAnalysis.Binding.Binders
 {
-    public class SymbolUseBinder : Binder
+    public class UseBinder : Binder
     {
         private readonly ImmutableArray<Type> _types;
 
-        public SymbolUseBinder(Binder next, SyntaxNodeOrToken syntax, ImmutableArray<Type> types)
+        public UseBinder(Binder next, SyntaxNodeOrToken syntax, ImmutableArray<Type> types)
             : base(next, syntax)
         {
             _types = types;
@@ -61,6 +61,11 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
                 return mtype != null && _types.Any(t => t.IsAssignableFrom(mtype));
             }
             return false;
+        }
+
+        public override string ToString()
+        {
+            return $"Use: {string.Join(", ", _types.Select(t => t.Name))}";
         }
     }
 }

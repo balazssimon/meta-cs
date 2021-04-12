@@ -16,33 +16,33 @@ namespace MetaDslx.CodeAnalysis.Binding
             return new FindCompilationUnitRoot(origin).FindOne(includeSelf: true);
         }
 
-        public static BinderPosition<SymbolDefBinder> FindSymbolDefBinder(Symbol symbol, SyntaxReference reference)
+        public static BinderPosition<SymbolBinder> FindSymbolBinder(Symbol symbol, SyntaxReference reference)
         {
             var origin = reference.ToBinderPosition(symbol.DeclaringCompilation);
-            return new FindSymbolDef(origin, symbol).FindOne(includeSelf: true);
+            return new FindSymbol(origin, symbol).FindOne(includeSelf: true);
         }
 
-        public static BinderPosition<SymbolDefBinder> FindFirstOrDefaultSymbolDefBinder(Symbol symbol, SyntaxReference reference)
+        public static BinderPosition<SymbolBinder> FindFirstOrDefaultSymbolBinder(Symbol symbol, SyntaxReference reference)
         {
             var origin = reference.ToBinderPosition(symbol.DeclaringCompilation);
-            var result = new FindSymbolDef(origin, symbol).FindAll(includeSelf: true);
+            var result = new FindSymbol(origin, symbol).FindAll(includeSelf: true);
             if (result.Length == 0) return default;
             else return result[0];
         }
 
-        public static ImmutableArray<BinderPosition<ImportBinder>> FindImportBinders(BinderPosition symbolDefBinder)
+        public static ImmutableArray<BinderPosition<ImportBinder>> FindImportBinders(BinderPosition symbolBinder)
         {
-            return new FindImports(symbolDefBinder).FindAll();
+            return new FindImports(symbolBinder).FindAll();
         }
 
-        public static ImmutableArray<BinderPosition<PhaseBinder>> FindPhaseBinders(BinderPosition<SymbolDefBinder> symbolDefBinder, CompletionPart startPhase, CompletionPart finishPhase)
+        public static ImmutableArray<BinderPosition<PhaseBinder>> FindPhaseBinders(BinderPosition<SymbolBinder> symbolBinder, CompletionPart startPhase, CompletionPart finishPhase)
         {
-            return new FindPhases(symbolDefBinder, startPhase, finishPhase).FindAll();
+            return new FindPhases(symbolBinder, startPhase, finishPhase).FindAll();
         }
 
-        public static ImmutableArray<BinderPosition<PropertyBinder>> FindPropertyBinders(BinderPosition<SymbolDefBinder> symbolDefBinder)
+        public static ImmutableArray<BinderPosition<PropertyBinder>> FindPropertyBinders(BinderPosition<SymbolBinder> symbolBinder)
         {
-            return new FindProperties(symbolDefBinder).FindAll();
+            return new FindProperties(symbolBinder).FindAll();
         }
 
         public static ImmutableArray<BinderPosition<ValueBinder>> FindPropertyValueBinders(BinderPosition<PropertyBinder> propertyBinder)
@@ -50,9 +50,9 @@ namespace MetaDslx.CodeAnalysis.Binding
             return new FindValues(propertyBinder).FindAll(includeSelf: true);
         }
 
-        public static ImmutableArray<BinderPosition<NameBinder>> FindNameBinders(BinderPosition symbolDefBinder)
+        public static ImmutableArray<BinderPosition<NameBinder>> FindNameBinders(BinderPosition symbolBinder)
         {
-            return new FindNames(symbolDefBinder).FindAll();
+            return new FindNames(symbolBinder).FindAll();
         }
 
         public static ImmutableArray<BinderPosition<ValueBinder>> FindValueBinders(BinderPosition originBinder)

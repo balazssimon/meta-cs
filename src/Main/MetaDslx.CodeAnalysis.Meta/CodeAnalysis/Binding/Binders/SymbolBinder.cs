@@ -1,7 +1,7 @@
+﻿using MetaDslx.CodeAnalysis.Binding.Binders.Find;
+using MetaDslx.CodeAnalysis.Binding.BoundNodes;
 using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Symbols.Source;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.PooledObjects;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -9,26 +9,25 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using Roslyn.Utilities;
-using MetaDslx.CodeAnalysis.Binding.Binders.Find;
-using MetaDslx.CodeAnalysis.Binding.BoundNodes;
 
 namespace MetaDslx.CodeAnalysis.Binding.Binders
 {
-    public class SymbolDefBinder : ValueBinder, ISymbolBoundary
-
+    public class SymbolBinder : ValueBinder, ISymbolBoundary
     {
-        private readonly Type _type;
+        private readonly Type _symbolType;
+        private readonly Type _modelObjectType;
         private Imports _lazyImports;
         private ImportChain _lazyImportChain;
 
-        public SymbolDefBinder(Binder next, SyntaxNodeOrToken syntax, Type type) 
+        public SymbolBinder(Binder next, SyntaxNodeOrToken syntax, Type symbolType, Type modelObjectType)
             : base(next, syntax)
         {
-            _type = type;
+            _symbolType = symbolType;
+            _modelObjectType = modelObjectType;
         }
 
-        public Type ModelObjectType => _type;
+        public Type SymbolType => _symbolType;
+        public Type ModelObjectType => _modelObjectType;
 
         protected override BoundNode BindNode(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
@@ -84,8 +83,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
 
         public override string ToString()
         {
-            return $"SymbolDefBinder: {_type.Name}";
+            return $"SymbolBinder: {_symbolType.Name}";
         }
-
     }
 }

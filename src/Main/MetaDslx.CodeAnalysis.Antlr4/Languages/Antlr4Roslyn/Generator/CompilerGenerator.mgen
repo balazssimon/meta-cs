@@ -5135,6 +5135,17 @@ namespace [Properties.DefaultNamespace].Binding
             return builder.CreateRoot(syntaxTree.GetRoot(), [Instances.MainRule().Annotations.GetObjectType(MetaCompilerAnnotationInfo.Root)]);
         }
 ^
+		[loop(annot:Instances.CustomAnnotations)]
+^
+        protected virtual void Begin[annot.Name](SyntaxNodeOrToken syntax)
+        {
+        }
+^
+        protected virtual void End[annot.Name](SyntaxNodeOrToken syntax)
+        {
+        }
+		[end loop]
+^
 		public virtual void VisitSkippedTokensTrivia([Properties.LanguageName]SkippedTokensTriviaSyntax node)
 		{
 		}
@@ -5189,122 +5200,22 @@ this.Visit(node.[elem.RedName()]);
 	[end if]
 end template
 
-template GenerateDeclarationTreeBuilderSymbolDef(MetaCompilerAnnotation annot, string name, string body)
-this.BeginSymbolDef([name][annot.GetAnnotationParams()]);
+template GenerateDeclarationTreeBuilderAnnotation(MetaCompilerAnnotation annot, string name, string body)
+this.Begin[annot.Name]([name][annot.GetAnnotationParams()]);
 try
 {
 	[body]
 }
 finally
 {
-	this.EndSymbolDef();
+	this.End[annot.Name]([name][annot.GetAnnotationParams()]);
 }
-end template
-
-template GenerateDeclarationTreeBuilderImport(MetaCompilerAnnotation annot, string name, string body)
-this.BeginImport([name][annot.GetAnnotationParams()]);
-try
-{
-	[body]
-}
-finally
-{
-	this.EndImport();
-}
-end template
-
-template GenerateDeclarationTreeBuilderSymbolUse(MetaCompilerAnnotation annot, string name, string body)
-this.BeginSymbolUse([name][annot.GetAnnotationParams()]);
-try
-{
-	[body]
-}
-finally
-{
-	this.EndSymbolUse();
-}
-end template
-
-template GenerateDeclarationTreeBuilderQualifier(MetaCompilerAnnotation annot, string name, string body)
-this.BeginQualifier([name][annot.GetAnnotationParams()]);
-try
-{
-	[body]
-}
-finally
-{
-	this.EndQualifier();
-}
-end template
-
-template GenerateDeclarationTreeBuilderName(MetaCompilerAnnotation annot, string name, string body)
-this.BeginName([name][annot.GetAnnotationParams()]);
-try
-{
-	[body]
-}
-finally
-{
-	this.EndName();
-}
-end template
-
-template GenerateDeclarationTreeBuilderProperty(MetaCompilerAnnotation annot, string name, string body)
-this.BeginProperty([name][annot.GetAnnotationParams()]);
-try
-{
-	[body]
-}
-finally
-{
-	this.EndProperty();
-}
-end template
-
-template GenerateDeclarationTreeBuilderScope(MetaCompilerAnnotation annot, string name, string body)
-this.BeginScope([name][annot.GetAnnotationParams()]);
-try
-{
-	[body]
-}
-finally
-{
-	this.EndScope();
-}
-end template
-
-template GenerateDeclarationTreeBuilderIdentifier(MetaCompilerAnnotation annot, string name, string body)
-if ([name] != null) this.RegisterIdentifier([name][annot.GetAnnotationParams()]);
-[body]
 end template
 
 function string GetDeclarationTreeBuilderVisitBody(Antlr4ParserRule rule)
 	string body = GenerateDeclarationTreeBuilderVisitBody(rule);
 	loop (annot:rule.Annotations.Annotations.Reverse())
-		if (annot.Name == MetaCompilerAnnotationInfo.Identifier)
-			body = GenerateDeclarationTreeBuilderIdentifier(annot, "node", body);
-		end if
-		if (annot.Name == MetaCompilerAnnotationInfo.Qualifier)
-			body = GenerateDeclarationTreeBuilderQualifier(annot, "node", body);
-		end if
-		if (annot.Name == MetaCompilerAnnotationInfo.Name)
-			body = GenerateDeclarationTreeBuilderName(annot, "node", body);
-		end if
-		if (annot.Name == MetaCompilerAnnotationInfo.Scope)
-			body = GenerateDeclarationTreeBuilderScope(annot, "node", body);
-		end if
-		if (annot.Name == MetaCompilerAnnotationInfo.SymbolDef)
-			body = GenerateDeclarationTreeBuilderSymbolDef(annot, "node", body);
-		end if
-		if (annot.Name == MetaCompilerAnnotationInfo.SymbolUse)
-			body = GenerateDeclarationTreeBuilderSymbolUse(annot, "node", body);
-		end if
-		if (annot.Name == MetaCompilerAnnotationInfo.Import)
-			body = GenerateDeclarationTreeBuilderImport(annot, "node", body);
-		end if
-		if (annot.Name == MetaCompilerAnnotationInfo.Property)
-			body = GenerateDeclarationTreeBuilderProperty(annot, "node", body);
-		end if
+		body = GenerateDeclarationTreeBuilderAnnotation(annot, "node", body);
 	end loop
 	return body;
 end function
@@ -5316,30 +5227,7 @@ function string GetDeclarationTreeBuilderVisitElement(Antlr4ParserRule rule, Ant
 		name = "child";
 	end if
 	loop (annot:elem.Annotations.Annotations.Reverse())
-		if (annot.Name == MetaCompilerAnnotationInfo.Identifier)
-			body = GenerateDeclarationTreeBuilderIdentifier(annot, name, body);
-		end if
-		if (annot.Name == MetaCompilerAnnotationInfo.Qualifier)
-			body = GenerateDeclarationTreeBuilderQualifier(annot, name, body);
-		end if
-		if (annot.Name == MetaCompilerAnnotationInfo.Name)
-			body = GenerateDeclarationTreeBuilderName(annot, name, body);
-		end if
-		if (annot.Name == MetaCompilerAnnotationInfo.Scope)
-			body = GenerateDeclarationTreeBuilderScope(annot, name, body);
-		end if
-		if (annot.Name == MetaCompilerAnnotationInfo.SymbolDef)
-			body = GenerateDeclarationTreeBuilderSymbolDef(annot, name, body);
-		end if
-		if (annot.Name == MetaCompilerAnnotationInfo.SymbolUse)
-			body = GenerateDeclarationTreeBuilderSymbolUse(annot, name, body);
-		end if
-		if (annot.Name == MetaCompilerAnnotationInfo.Import)
-			body = GenerateDeclarationTreeBuilderImport(annot, name, body);
-		end if
-		if (annot.Name == MetaCompilerAnnotationInfo.Property && !annot.HasProperty("value"))
-			body = GenerateDeclarationTreeBuilderProperty(annot, name, body);
-		end if
+		body = GenerateDeclarationTreeBuilderAnnotation(annot, name, body);
 	end loop
 	return body;
 end function
@@ -5392,12 +5280,12 @@ namespace [Properties.DefaultNamespace].Binding
         }
 		[loop(annot:Instances.CustomAnnotations)]
 ^
-        protected virtual Binder Create[annot.Name]Binder(Binder parentBinder, LanguageSyntaxNode syntax)
+        protected virtual Binder Create[annot.Name]Binder(Binder parentBinder, SyntaxNodeOrToken syntax)
         {
             return this.Create[annot.Name]BinderCore(parentBinder, syntax);
         }
 ^
-        protected virtual Binder Create[annot.Name]BinderCore(Binder parentBinder, LanguageSyntaxNode syntax)
+        protected virtual Binder Create[annot.Name]BinderCore(Binder parentBinder, SyntaxNodeOrToken syntax)
         {
             return new [annot.Name]Binder(parentBinder, syntax);
         }

@@ -45,13 +45,13 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         public DeclaredSymbol DeclaredSymbol => _symbol as DeclaredSymbol;
 
-        public BinderPosition<SymbolDefBinder> GetBinder(SyntaxReference reference)
+        public BinderPosition<SymbolBinder> GetBinder(SyntaxReference reference)
         {
             Debug.Assert(_symbol.DeclaringSyntaxReferences.Contains(reference));
-            return FindBinders.FindSymbolDefBinder(_symbol, reference);
+            return FindBinders.FindSymbolBinder(_symbol, reference);
         }
 
-        public ImmutableArray<BinderPosition<PropertyBinder>> FindPropertyBinders(BinderPosition<SymbolDefBinder> symbolDefBinder)
+        public ImmutableArray<BinderPosition<PropertyBinder>> FindPropertyBinders(BinderPosition<SymbolBinder> symbolDefBinder)
         {
             return FindBinders.FindPropertyBinders(symbolDefBinder);
         }
@@ -313,7 +313,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         private void AssignObjectProperty(BinderPosition<ValueBinder> valueBinder, string propertyName, object objectProperty, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
-            if (valueBinder.Binder is SymbolDefBinder valueSymbolDef)
+            if (valueBinder.Binder is DefineBinder valueSymbolDef)
             {
                 AssignChildSymbols(valueSymbolDef, propertyName, objectProperty, diagnostics, cancellationToken);
             }
@@ -332,7 +332,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             }
         }
 
-        private void AssignChildSymbols(SymbolDefBinder childBinder, string propertyName, object objectProperty, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        private void AssignChildSymbols(DefineBinder childBinder, string propertyName, object objectProperty, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             var container = childBinder.ContainingDeclaration;
             var symbolPartReference = childBinder.Syntax.GetReference();

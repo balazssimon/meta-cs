@@ -19,7 +19,7 @@ using System.Threading;
 
 namespace MetaDslx.Languages.Meta.Binding
 {
-    public class SymbolPropertyBinder : SymbolUseBinder
+    public class SymbolPropertyBinder : UseBinder
     {
         private DeclaredSymbol _symbolType;
 

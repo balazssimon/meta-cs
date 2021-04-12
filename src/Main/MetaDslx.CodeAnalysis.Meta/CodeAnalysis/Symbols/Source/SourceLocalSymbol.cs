@@ -132,7 +132,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             return ImmutableArray<AttributeData>.Empty;
         }
 
-        public BinderPosition<SymbolDefBinder> GetBinder(SyntaxReference syntax)
+        public BinderPosition<DefineBinder> GetBinder(SyntaxReference syntax)
         {
             return _source.GetBinder(syntax);
         }

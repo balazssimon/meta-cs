@@ -6,7 +6,7 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Binding.Binders
 {
-    public class AttributeBinder : SymbolUseBinder
+    public class AttributeBinder : UseBinder
     {
         public AttributeBinder(Binder next, SyntaxNodeOrToken syntax, ImmutableArray<Type> types) 
             : base(next, syntax, types)

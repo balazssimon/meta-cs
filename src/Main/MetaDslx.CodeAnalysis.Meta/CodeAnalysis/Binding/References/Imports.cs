@@ -84,7 +84,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             Binder containerBinder;
             SyntaxNodeOrToken containerSyntax;
 
-            var symbolDefBinder = FindBinders.FindFirstOrDefaultSymbolDefBinder(container, syntax.GetReference());
+            var symbolDefBinder = FindBinders.FindFirstOrDefaultSymbolBinder(container, syntax.GetReference());
             if (symbolDefBinder.Binder != null)
             {
                 containerBinder = symbolDefBinder.Binder;

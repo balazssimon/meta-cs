@@ -10,7 +10,7 @@ using System.Threading;
 
 namespace MetaDslx.Languages.Meta.Binding
 {
-    public class SymbolTypeBinder : SymbolUseBinder
+    public class SymbolTypeBinder : UseBinder
     {
         public SymbolTypeBinder(Binder next, SyntaxNodeOrToken syntax) 
             : base(next, syntax, ImmutableArray.Create(typeof(Symbol)))

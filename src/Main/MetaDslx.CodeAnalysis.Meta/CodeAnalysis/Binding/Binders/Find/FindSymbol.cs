@@ -5,17 +5,17 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Binding.Binders.Find
 {
-    public class FindSymbolDef : FindBinderAncestors<SymbolDefBinder>
+    public class FindSymbol : FindBinderAncestors<SymbolBinder>
     {
         private Symbol _symbol;
 
-        public FindSymbolDef(BinderPosition origin, Symbol symbol)
+        public FindSymbol(BinderPosition origin, Symbol symbol)
             : base(origin)
         {
             _symbol = symbol;
         }
 
-        public override bool IsValidBinder(SymbolDefBinder binder)
+        public override bool IsValidBinder(SymbolBinder binder)
         {
             return binder.DefinedSymbols.Contains(_symbol);
         }

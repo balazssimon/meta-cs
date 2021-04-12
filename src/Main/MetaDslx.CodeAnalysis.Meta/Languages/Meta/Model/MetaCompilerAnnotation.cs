@@ -15,6 +15,8 @@ namespace MetaDslx.Languages.Meta
 
         public const string Root = nameof(Root);
 
+        public const string Documentation = nameof(Documentation);
+
         public const string Attribute = nameof(Attribute);
 
         public const string Identifier = nameof(Identifier);
@@ -26,8 +28,9 @@ namespace MetaDslx.Languages.Meta
         public const string Name = nameof(Name);
         public const string Scope = nameof(Scope);
 
-        public const string SymbolDef = nameof(SymbolDef);
-        public const string SymbolUse = nameof(SymbolUse);
+        public const string Define = nameof(Define);
+        public const string Use = nameof(Use);
+        public const string Symbol = nameof(Symbol);
 
         public const string Import = nameof(Import);
 
@@ -37,10 +40,11 @@ namespace MetaDslx.Languages.Meta
         public static readonly string[] WellKnownAnnotations =
             {
                 Root,
+                Documentation,
                 Attribute,
                 Identifier, Qualifier, Value, EnumValue,
                 Property, Name, Scope,
-                SymbolDef, SymbolUse, 
+                Define, Use, Symbol,
                 Import,
                 Token
             };
@@ -52,6 +56,7 @@ namespace MetaDslx.Languages.Meta
         public static readonly string[][] WellKnownAnnotationProperties =
         {
             new string[] { "type" },
+            new string[] { },
             new string[] { "type" },
             new string[] { "name" },
             new string[] { "type", "types" },
@@ -62,6 +67,7 @@ namespace MetaDslx.Languages.Meta
             new string[] { "local" },
             new string[] { "type", "nestingProperty", "merge" },
             new string[] { "type", "types" },
+            new string[] { "type" },
             new string[] { "extern", "static" },
             new string[] { "kind", "first", "last", "defaultSeparator", "defaultIdentifier", "defaultWhitespace", "defaultEndOfLine", "endOfLine" },
         };
@@ -91,8 +97,9 @@ namespace MetaDslx.Languages.Meta
         {
             DefaultProperties.Add(Attribute, "type");
             DefaultProperties.Add(Root, "type");
-            DefaultProperties.Add(SymbolDef, "type");
-            DefaultProperties.Add(SymbolUse, "type");
+            DefaultProperties.Add(Define, "type");
+            DefaultProperties.Add(Use, "type");
+            DefaultProperties.Add(Symbol, "type");
             DefaultProperties.Add(Property, "name");
             DefaultProperties.Add(Identifier, "name");
             DefaultProperties.Add(Value, "value");
@@ -303,7 +310,18 @@ namespace MetaDslx.Languages.Meta
         public string GetAnnotationParams()
         {
             string result = "";
-            if (this.Name == MetaCompilerAnnotationInfo.SymbolDef)
+            if (this.Name == MetaCompilerAnnotationInfo.Symbol)
+            {
+                if (this.HasProperty("type"))
+                {
+                    result = ", type: typeof(" + this.GetValue("type") + ")";
+                }
+                else
+                {
+                    result = ", type: null";
+                }
+            }
+            if (this.Name == MetaCompilerAnnotationInfo.Define)
             {
                 if (this.HasProperty("type"))
                 {
@@ -329,7 +347,7 @@ namespace MetaDslx.Languages.Meta
                     result = ", local: " + this.GetValue("local");
                 }
             }
-            if (this.Name == MetaCompilerAnnotationInfo.SymbolUse || this.Name == MetaCompilerAnnotationInfo.Attribute)
+            if (this.Name == MetaCompilerAnnotationInfo.Use || this.Name == MetaCompilerAnnotationInfo.Attribute)
             {
                 if (this.HasProperty("type"))
                 {

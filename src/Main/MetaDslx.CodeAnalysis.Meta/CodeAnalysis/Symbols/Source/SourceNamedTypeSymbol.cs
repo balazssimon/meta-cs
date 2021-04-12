@@ -148,7 +148,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             return this.SourceDeclaration.GetTypeMembers(name, metadataName);
         }
 
-        public BinderPosition<SymbolDefBinder> GetBinder(SyntaxReference syntax)
+        public BinderPosition<SymbolBinder> GetBinder(SyntaxReference syntax)
         {
             return _source.GetBinder(syntax);
         }
