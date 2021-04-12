@@ -23,7 +23,7 @@ namespace MetaDslx.Languages.Meta.Binding
     {
         private DeclaredSymbol _symbolType;
 
-        public SymbolPropertyBinder(Binder next, SyntaxNodeOrToken syntax) : base(next, syntax, ImmutableArray<Type>.Empty)
+        public SymbolPropertyBinder(Binder next, SyntaxNodeOrToken syntax) : base(next, syntax, ImmutableArray<Type>.Empty, null, null)
         {
         }
 

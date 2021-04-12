@@ -5179,36 +5179,31 @@ if (node.[elem.RedName()] != null)
 {
 	foreach (var child in node.[elem.RedName()])
 	{
-        [GenerateDeclarationTreeBuilderVisitElement(rule, elem)]
+        [GenerateDeclarationTreeBuilderVisitElement(rule, elem, "child")]
 	}
 }
         [else]
-[GenerateDeclarationTreeBuilderVisitElement(rule, elem)]
+[GenerateDeclarationTreeBuilderVisitElement(rule, elem, "node."+elem.RedName())]
         [end if]
 	[end loop]    
 [end if]
 end template
 
-template GenerateDeclarationTreeBuilderVisitElementBody(Antlr4ParserRuleElement elem)
-	[if (elem.IsList)]
-this.Visit(child);
-	[else]
-		[if (elem.IsToken || elem.IsFixedTokenAltBlock)]
-		[else]
-this.Visit(node.[elem.RedName()]);
-		[end if]
+template GenerateDeclarationTreeBuilderVisitElementBody(Antlr4ParserRuleElement elem, string elemName)
+	[if (elem.IsList && !(elem.IsToken || elem.IsFixedTokenAltBlock))]
+this.Visit([elemName]);
 	[end if]
 end template
 
-template GenerateDeclarationTreeBuilderAnnotation(MetaCompilerAnnotation annot, string name, string body)
-this.Begin[annot.Name]([name][annot.GetAnnotationParams()]);
+template GenerateDeclarationTreeBuilderAnnotation(MetaCompilerAnnotation annot, string elemName, string body)
+this.Begin[annot.Name]([elemName][annot.GetAnnotationParams()]);
 try
 {
 	[body]
 }
 finally
 {
-	this.End[annot.Name]([name][annot.GetAnnotationParams()]);
+	this.End[annot.Name]([elemName][annot.GetAnnotationParams()]);
 }
 end template
 
@@ -5220,32 +5215,28 @@ function string GetDeclarationTreeBuilderVisitBody(Antlr4ParserRule rule)
 	return body;
 end function
 
-function string GetDeclarationTreeBuilderVisitElement(Antlr4ParserRule rule, Antlr4ParserRuleElement elem)
-	string body = GenerateDeclarationTreeBuilderVisitElementBody(elem);
-	string name = "node."+elem.RedName();
-	if (elem.IsList)
-		name = "child";
-	end if
+function string GetDeclarationTreeBuilderVisitElement(Antlr4ParserRule rule, Antlr4ParserRuleElement elem, string elemName)
+	string body = GenerateDeclarationTreeBuilderVisitElementBody(elem, elemName);
 	loop (annot:elem.Annotations.Annotations.Reverse())
-		body = GenerateDeclarationTreeBuilderAnnotation(annot, name, body);
+		body = GenerateDeclarationTreeBuilderAnnotation(annot, elemName, body);
 	end loop
 	return body;
 end function
 
-template GenerateDeclarationTreeBuilderVisitElement(Antlr4ParserRule rule, Antlr4ParserRuleElement elem)
-	[if (elem.IsToken || elem.IsFixedTokenAltBlock)]
-switch (node.[elem.RedName()].GetKind().Switch())
+template GenerateDeclarationTreeBuilderVisitElement(Antlr4ParserRule rule, Antlr4ParserRuleElement elem, string elemName)
+	[if (elem.IsFixedTokenAltBlock)]
+switch ([elemName].GetKind().Switch())
 {
 	[loop (alt:elem.BlockItems)]
 	case [Properties.LanguageName]SyntaxKind.[alt.RedName()]:
-		[GetDeclarationTreeBuilderVisitElement(rule, alt)]
+		[GetDeclarationTreeBuilderVisitElement(rule, alt, elemName)]
 		break;
 	[end loop]
 	default:
 		break;
 }
 	[else]
-[GetDeclarationTreeBuilderVisitElement(rule, elem)]
+[GetDeclarationTreeBuilderVisitElement(rule, elem, elemName)]
 	[end if]
 end template
 
