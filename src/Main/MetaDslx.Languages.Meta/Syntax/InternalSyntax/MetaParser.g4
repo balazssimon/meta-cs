@@ -24,20 +24,20 @@ qualifiedName : qualifier;
 qualifier : identifier (TDot identifier)*;
 
                      
-                         
+                   
 attribute : TOpenBracket qualifier TCloseBracket;
 
        
 usingNamespace: KUsing qualifier TSemicolon;
 
-                                                                      
+                                                                   
 namespaceDeclaration: attribute* KNamespace qualifiedName namespaceBody;
 
       
 namespaceBody : TOpenBrace usingNamespace* metamodelDeclaration declaration* TCloseBrace;
 
                            
-                     
+                  
               
 metamodelDeclaration: attribute* KMetamodel name (TOpenParen metamodelPropertyList? TCloseParen)? TSemicolon;
 
@@ -53,18 +53,18 @@ metamodelPrefixProperty : IPrefix TAssign        stringLiteral;
                         
 declaration : enumDeclaration | classDeclaration | associationDeclaration | constDeclaration;
 
-                    
+                 
               
 enumDeclaration : attribute* KEnum name enumBody;
       
 enumBody : TOpenBrace                         enumValues (TSemicolon enumMemberDeclaration*)? TCloseBrace;
 enumValues : enumValue (TComma enumValue)*;
-                           
+                        
               
 enumValue : attribute* name;
 enumMemberDeclaration :                       operationDeclaration;
 
-                     
+                  
               
 classDeclaration : attribute* symbolTypeAttribute?                                       KAbstract? KClass name (TColon                         classAncestors)? classBody;
                      
@@ -73,13 +73,13 @@ symbolTypeAttribute : TOpenBracket KSymbol TColon qualifier TCloseBracket;
       
 classBody : TOpenBrace classMemberDeclaration* TCloseBrace;
 classAncestors : classAncestor (TComma classAncestor)*;
-classAncestor :                            qualifier;
+classAncestor :                      qualifier;
 classMemberDeclaration 
 	:                       fieldDeclaration 
 	|                       operationDeclaration
 	;
 
-                        
+                     
               
 fieldDeclaration : attribute* fieldSymbolPropertyAttribute? fieldContainment? fieldModifier?                 typeReference name defaultValue? redefinitionsOrSubsettings* TSemicolon;
                          
@@ -100,24 +100,24 @@ redefinitionsOrSubsettings : redefinitions | subsettings;
 redefinitions : KRedefines                                nameUseList?;
 subsettings : KSubsets                                nameUseList?;
 
-                        
+                  
 nameUseList : qualifier (TComma qualifier)*;
 
-                        
+                     
 constDeclaration : KConst                 typeReference name constValue? TSemicolon;
                      
 constValue : TAssign        stringLiteral;
 
-                    
+              
 returnType : typeReference | voidType;
-                    
+              
 typeOfReference : typeReference;
-                    
+              
 typeReference : collectionType | simpleType;
-                    
+              
 simpleType : primitiveType | objectType | nullableType | classType;
 
-                                                   
+                                             
 classType : qualifier;
 
            
@@ -142,10 +142,10 @@ voidType
 	: KVoid
 	;
 
-                            
+                         
 nullableType :                      primitiveType TQuestion;
 
-                              
+                           
 collectionType :                 collectionKind TLessThan                      simpleType TGreaterThan;
 collectionKind 
 	:                                KSet 
@@ -154,7 +154,7 @@ collectionKind
 	|                                      KMultiList
 	;
 	
-                         
+                      
               
 operationDeclaration : attribute* operationModifier*                       returnType name TOpenParen                       parameterList? TCloseParen TSemicolon;
 
@@ -166,11 +166,11 @@ operationModifierReadonly : KReadonly;
 
 parameterList : parameter (TComma parameter)*;
 
-                         
+                      
 parameter : attribute*                 typeReference name;
 
          
-associationDeclaration : attribute* KAssociation                          source=qualifier KWith                          target=qualifier TSemicolon;
+associationDeclaration : attribute* KAssociation                    source=qualifier KWith                    target=qualifier TSemicolon;
 
 
 // Additional rules for lexer:

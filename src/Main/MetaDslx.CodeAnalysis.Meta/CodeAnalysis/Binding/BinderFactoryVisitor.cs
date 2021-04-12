@@ -113,24 +113,14 @@ namespace MetaDslx.CodeAnalysis.Binding
             return new ImportBinder(parentBinder, syntax, isExtern, isStatic);
         }
 
-        protected virtual Binder CreateSymbolUseBinder(Binder parentBinder, SyntaxNodeOrToken syntax, ImmutableArray<Type> types)
+        protected virtual Binder CreateUseBinder(Binder parentBinder, SyntaxNodeOrToken syntax, ImmutableArray<Type> types, string autoPrefix = null, string autoSuffix = null)
         {
-            return this.CreateSymbolUseBinderCore(parentBinder, syntax, types);
+            return this.CreateUseBinderCore(parentBinder, syntax, types, autoPrefix, autoSuffix);
         }
 
-        protected virtual Binder CreateSymbolUseBinderCore(Binder parentBinder, SyntaxNodeOrToken syntax, ImmutableArray<Type> types)
+        protected virtual Binder CreateUseBinderCore(Binder parentBinder, SyntaxNodeOrToken syntax, ImmutableArray<Type> types, string autoPrefix, string autoSuffix)
         {
-            return new UseBinder(parentBinder, syntax, types);
-        }
-
-        protected virtual Binder CreateAttributeBinder(Binder parentBinder, SyntaxNodeOrToken syntax, ImmutableArray<Type> types)
-        {
-            return this.CreateAttributeBinderCore(parentBinder, syntax, types);
-        }
-
-        protected virtual Binder CreateAttributeBinderCore(Binder parentBinder, SyntaxNodeOrToken syntax, ImmutableArray<Type> types)
-        {
-            return new AttributeBinder(parentBinder, syntax, types);
+            return new UseBinder(parentBinder, syntax, types, autoPrefix, autoSuffix);
         }
 
         protected virtual Binder CreatePropertyBinder(Binder parentBinder, SyntaxNodeOrToken syntax, string name, SymbolPropertyOwner owner = SymbolPropertyOwner.CurrentSymbol, Type ownerType = null)

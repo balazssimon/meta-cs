@@ -18,11 +18,15 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
     public class UseBinder : Binder
     {
         private readonly ImmutableArray<Type> _types;
+        private readonly string _autoPrefix;
+        private readonly string _autoSuffix;
 
-        public UseBinder(Binder next, SyntaxNodeOrToken syntax, ImmutableArray<Type> types)
+        public UseBinder(Binder next, SyntaxNodeOrToken syntax, ImmutableArray<Type> types, string autoPrefix, string autoSuffix)
             : base(next, syntax)
         {
             _types = types;
+            _autoPrefix = autoPrefix;
+            _autoSuffix = autoSuffix;
         }
 
         protected override LookupConstraints AdjustConstraints(LookupConstraints constraints)
@@ -30,6 +34,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             LookupConstraints result = base.AdjustConstraints(constraints);
             if (!_types.IsEmpty)
             {
+                if (!string.IsNullOrEmpty(_autoPrefix) || !string.IsNullOrEmpty(_autoSuffix)) result = result.WithAutomaticName(_autoPrefix, _autoSuffix);
                 result = result.WithAdditionalValidators(this);
             }
             return result;

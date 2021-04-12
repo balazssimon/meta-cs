@@ -100,42 +100,32 @@ namespace MetaDslx.Languages.Meta.Binding
 
         }
 
-        protected virtual Binder CreateDocumentationBinder(Binder parentBinder, LanguageSyntaxNode syntax)
-        {
-            return this.CreateDocumentationBinderCore(parentBinder, syntax);
-        }
-
-        protected virtual Binder CreateDocumentationBinderCore(Binder parentBinder, LanguageSyntaxNode syntax)
-        {
-            return new DocumentationBinder(parentBinder, syntax);
-        }
-
-        protected virtual Binder CreateSymbolTypeBinder(Binder parentBinder, LanguageSyntaxNode syntax)
+        protected virtual Binder CreateSymbolTypeBinder(Binder parentBinder, SyntaxNodeOrToken syntax)
         {
             return this.CreateSymbolTypeBinderCore(parentBinder, syntax);
         }
 
-        protected virtual Binder CreateSymbolTypeBinderCore(Binder parentBinder, LanguageSyntaxNode syntax)
+        protected virtual Binder CreateSymbolTypeBinderCore(Binder parentBinder, SyntaxNodeOrToken syntax)
         {
             return new SymbolTypeBinder(parentBinder, syntax);
         }
 
-        protected virtual Binder CreateSymbolPropertyBinder(Binder parentBinder, LanguageSyntaxNode syntax)
+        protected virtual Binder CreateSymbolPropertyBinder(Binder parentBinder, SyntaxNodeOrToken syntax)
         {
             return this.CreateSymbolPropertyBinderCore(parentBinder, syntax);
         }
 
-        protected virtual Binder CreateSymbolPropertyBinderCore(Binder parentBinder, LanguageSyntaxNode syntax)
+        protected virtual Binder CreateSymbolPropertyBinderCore(Binder parentBinder, SyntaxNodeOrToken syntax)
         {
             return new SymbolPropertyBinder(parentBinder, syntax);
         }
 
-        protected virtual Binder CreateOppositeBinder(Binder parentBinder, LanguageSyntaxNode syntax)
+        protected virtual Binder CreateOppositeBinder(Binder parentBinder, SyntaxNodeOrToken syntax)
         {
             return this.CreateOppositeBinderCore(parentBinder, syntax);
         }
 
-        protected virtual Binder CreateOppositeBinderCore(Binder parentBinder, LanguageSyntaxNode syntax)
+        protected virtual Binder CreateOppositeBinderCore(Binder parentBinder, SyntaxNodeOrToken syntax)
         {
             return new OppositeBinder(parentBinder, syntax);
         }
@@ -214,7 +204,7 @@ namespace MetaDslx.Languages.Meta.Binding
 			{
 				resultBinder = VisitParent(parent);
 				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "Attributes");
-				resultBinder = this.CreateAttributeBinder(resultBinder, parent, types: ImmutableArray.Create(typeof(MetaAttribute)));
+				resultBinder = this.CreateUseBinder(resultBinder, parent, types: ImmutableArray.Create(typeof(MetaAttribute)));
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 			}
 			return resultBinder;
@@ -596,7 +586,7 @@ namespace MetaDslx.Languages.Meta.Binding
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 				if (use == UseQualifier)
 				{
-					resultBinder = this.CreateSymbolUseBinder(resultBinder, parent.Qualifier, types: ImmutableArray.Create(typeof(MetaClass)));
+					resultBinder = this.CreateUseBinder(resultBinder, parent.Qualifier, types: ImmutableArray.Create(typeof(MetaClass)));
 					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
 				}
 			}
@@ -849,7 +839,7 @@ namespace MetaDslx.Languages.Meta.Binding
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitParent(parent);
-				resultBinder = this.CreateSymbolUseBinder(resultBinder, parent, types: ImmutableArray.Create(typeof(MetaProperty)));
+				resultBinder = this.CreateUseBinder(resultBinder, parent, types: ImmutableArray.Create(typeof(MetaProperty)));
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 			}
 			return resultBinder;
@@ -918,7 +908,7 @@ namespace MetaDslx.Languages.Meta.Binding
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitParent(parent);
-				resultBinder = this.CreateSymbolUseBinder(resultBinder, parent, types: ImmutableArray.Create(typeof(MetaType)));
+				resultBinder = this.CreateUseBinder(resultBinder, parent, types: ImmutableArray.Create(typeof(MetaType)));
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 			}
 			return resultBinder;
@@ -935,7 +925,7 @@ namespace MetaDslx.Languages.Meta.Binding
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitParent(parent);
-				resultBinder = this.CreateSymbolUseBinder(resultBinder, parent, types: ImmutableArray.Create(typeof(MetaType)));
+				resultBinder = this.CreateUseBinder(resultBinder, parent, types: ImmutableArray.Create(typeof(MetaType)));
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 			}
 			return resultBinder;
@@ -952,7 +942,7 @@ namespace MetaDslx.Languages.Meta.Binding
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitParent(parent);
-				resultBinder = this.CreateSymbolUseBinder(resultBinder, parent, types: ImmutableArray.Create(typeof(MetaType)));
+				resultBinder = this.CreateUseBinder(resultBinder, parent, types: ImmutableArray.Create(typeof(MetaType)));
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 			}
 			return resultBinder;
@@ -969,7 +959,7 @@ namespace MetaDslx.Languages.Meta.Binding
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitParent(parent);
-				resultBinder = this.CreateSymbolUseBinder(resultBinder, parent, types: ImmutableArray.Create(typeof(MetaType)));
+				resultBinder = this.CreateUseBinder(resultBinder, parent, types: ImmutableArray.Create(typeof(MetaType)));
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 			}
 			return resultBinder;
@@ -986,7 +976,7 @@ namespace MetaDslx.Languages.Meta.Binding
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitParent(parent);
-				resultBinder = this.CreateSymbolUseBinder(resultBinder, parent, types: ImmutableArray.Create(typeof(MetaClass), typeof(MetaEnum), typeof(MetaConstant)));
+				resultBinder = this.CreateUseBinder(resultBinder, parent, types: ImmutableArray.Create(typeof(MetaClass), typeof(MetaEnum), typeof(MetaConstant)));
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 			}
 			return resultBinder;
@@ -1287,12 +1277,12 @@ namespace MetaDslx.Languages.Meta.Binding
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 				if (use == UseSource)
 				{
-					resultBinder = this.CreateSymbolUseBinder(resultBinder, parent.Source, types: ImmutableArray.Create(typeof(MetaProperty)));
+					resultBinder = this.CreateUseBinder(resultBinder, parent.Source, types: ImmutableArray.Create(typeof(MetaProperty)));
 					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
 				}
 				if (use == UseTarget)
 				{
-					resultBinder = this.CreateSymbolUseBinder(resultBinder, parent.Target, types: ImmutableArray.Create(typeof(MetaProperty)));
+					resultBinder = this.CreateUseBinder(resultBinder, parent.Target, types: ImmutableArray.Create(typeof(MetaProperty)));
 					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
 				}
 			}

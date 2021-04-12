@@ -19,7 +19,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
         private int importCount;
         private ArrayBuilder<Identifier> currentName;
 
-        public DeclarationTreeInfo(DeclarationTreeInfo parentScope, DeclarationTreeInfo parentDeclaration, DeclarationTreeInfo parent, string parentProperty, Type type, SyntaxNodeOrToken node)
+        public DeclarationTreeInfo(DeclarationTreeInfo parentScope, DeclarationTreeInfo parentDeclaration, DeclarationTreeInfo parent, string parentProperty, Type type, SyntaxNodeOrToken syntax)
         {
             this.ParentScope = parentScope;
             this.ParentDeclaration = parentDeclaration;
@@ -27,7 +27,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             this.Parent = parent;
             this.ParentProperty = parentProperty;
             this.ModelObjectType = type;
-            this.Node = node;
+            this.Syntax = syntax;
             this.Names = new ArrayBuilder<ArrayBuilder<Identifier>>();
             this.Members = new ArrayBuilder<SingleDeclaration>();
             this.Imports = new ArrayBuilder<SyntaxReference>();
@@ -38,7 +38,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
         public DeclarationTreeInfo ParentScope { get; private set; }
         public DeclarationTreeInfo ParentDeclaration { get; private set; }
         public DeclarationTreeInfo Parent { get; private set; }
-        public SyntaxNodeOrToken Node { get; private set; }
+        public SyntaxNodeOrToken Syntax { get; private set; }
         public Type ModelObjectType { get; private set; }
         public bool Merge { get; private set; }
         public bool Detached { get; private set; }
@@ -97,10 +97,12 @@ namespace MetaDslx.CodeAnalysis.Declarations
         public void BeginImport(SyntaxNodeOrToken syntax)
         {
             ++this.importCount;
+            this.BeginNoDeclaration();
         }
 
         public void EndImport()
         {
+            this.EndNoDeclaration();
         }
 
         public void BeginQualifier()
@@ -173,9 +175,9 @@ namespace MetaDslx.CodeAnalysis.Declarations
             public readonly SymbolPropertyOwner Owner;
             public readonly Type OwnerType;
 
-            public Property(LanguageSyntaxNode node, string name, SymbolPropertyOwner owner, Type ownerType)
+            public Property(SyntaxNodeOrToken syntax, string name, SymbolPropertyOwner owner, Type ownerType)
             {
-                SyntaxReference = node?.GetReference();
+                SyntaxReference = syntax.GetReference();
                 Name = name;
                 Owner = owner;
                 OwnerType = ownerType;
