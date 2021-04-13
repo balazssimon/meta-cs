@@ -208,7 +208,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
                 if (expectedType == typeof(Type) && symbol is CSharpNamedTypeSymbol cnts) return Type.GetType(GetFullMetadataName(cnts));
                 else if (expectedType == typeof(string)) return symbol.Name;
                 else if (symbol is IModelSymbol ms) return ms.ModelObject;
-                //else return null;
+                //Debug.Assert(false);
+                else return null;
             }
             return symbol;
         }

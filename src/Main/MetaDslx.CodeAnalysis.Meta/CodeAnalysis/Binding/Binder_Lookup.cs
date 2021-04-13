@@ -285,6 +285,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             var qualifier = constraints.QualifierOpt;
             if (qualifier != null)
             {
+                qualifier.ForceComplete(CompletionGraph.Members, null, default);
                 if (constraints.Name != null) result.AddRange(qualifier.GetMembers(constraints.Name));
                 else result.AddRange(qualifier.GetMembersUnordered());
             }

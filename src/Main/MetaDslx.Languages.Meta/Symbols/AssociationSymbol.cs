@@ -43,6 +43,8 @@ namespace MetaDslx.Languages.Meta.Symbols
 
         public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => _declaration.SyntaxReferences;
 
+        public ImmutableArray<Diagnostic> Diagnostics => _diagnostics != null ? _diagnostics.ToReadOnly() : ImmutableArray<Diagnostic>.Empty;
+
         public override bool RequiresCompletion => true;
 
         public override void ForceComplete(CompletionPart completionPart, SourceLocation locationOpt, CancellationToken cancellationToken)
@@ -60,7 +62,7 @@ namespace MetaDslx.Languages.Meta.Symbols
         done:
             // Don't return until we've seen all of the CompletionParts. This ensures all
             // diagnostics have been reported (not necessarily on this thread).
-            var allParts = ImmutableArray.Create(MetaCompletionGraph.Association);
+            var allParts = completionPart == null ? ImmutableArray.Create(CompletionGraph.All) : ImmutableArray.Create(completionPart);
             _state.SpinWaitComplete(allParts, cancellationToken);
         }
 
@@ -80,10 +82,13 @@ namespace MetaDslx.Languages.Meta.Symbols
             {
                 return false;
             }
-            else if (incompletePart == MetaCompletionGraph.Association)
+            else if (incompletePart == MetaCompletionGraph.StartAssociation || incompletePart == MetaCompletionGraph.FinishAssociation)
             {
-                CompleteAssociation(cancellationToken);
-                _state.NotePartComplete(MetaCompletionGraph.Association);
+                if (_state.NotePartComplete(MetaCompletionGraph.StartAssociation))
+                {
+                    CompleteAssociation(cancellationToken);
+                    _state.NotePartComplete(MetaCompletionGraph.FinishAssociation);
+                }
             }
             else
             {

@@ -2205,7 +2205,7 @@ namespace MetaDslx.CodeAnalysis
             while (index < queue.Count)
             {
                 var symbol = queue[index];
-                if (symbol is IModelSourceSymbol sourceSymbol)
+                if (symbol is ISourceSymbol sourceSymbol)
                 {
                     foreach (var diagnostic in sourceSymbol.Diagnostics)
                     {
