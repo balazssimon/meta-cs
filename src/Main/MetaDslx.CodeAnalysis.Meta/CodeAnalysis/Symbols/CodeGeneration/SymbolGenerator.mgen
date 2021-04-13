@@ -1,0 +1,12 @@
+﻿namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration;
+generator SymbolGenerator;
+
+template GenerateSourceSymbol(string namespaceName, string className)
+namespace [namespaceName]
+{
+	public partial class [className]
+	{
+	}
+}
+end template
+

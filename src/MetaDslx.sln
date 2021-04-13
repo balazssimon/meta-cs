@@ -62,7 +62,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.Bootstrap.MetaGene
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.Bootstrap.Antlr4Roslyn", "Bootstrap\MetaDslx.Bootstrap.Antlr4Roslyn\MetaDslx.Bootstrap.Antlr4Roslyn.csproj", "{071978EF-0129-4131-AD91-EB6B0DF151D3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.Bootstrap.IncrementalCompiler", "Bootstrap\MetaDslx.Bootstrap.IncrementalCompiler\MetaDslx.Bootstrap.IncrementalCompiler.csproj", "{B9BCD87E-7EA0-4ABA-8F3C-145DF8C49826}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.Bootstrap.IncrementalCompiler", "Bootstrap\MetaDslx.Bootstrap.IncrementalCompiler\MetaDslx.Bootstrap.IncrementalCompiler.csproj", "{B9BCD87E-7EA0-4ABA-8F3C-145DF8C49826}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.CodeAnalysis.Analyzers", "Main\MetaDslx.CodeAnalysis.Analyzers\MetaDslx.CodeAnalysis.Analyzers.csproj", "{ED9751A7-437D-4427-A804-CB80F8A4986A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -186,6 +188,10 @@ Global
 		{B9BCD87E-7EA0-4ABA-8F3C-145DF8C49826}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B9BCD87E-7EA0-4ABA-8F3C-145DF8C49826}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B9BCD87E-7EA0-4ABA-8F3C-145DF8C49826}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED9751A7-437D-4427-A804-CB80F8A4986A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED9751A7-437D-4427-A804-CB80F8A4986A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED9751A7-437D-4427-A804-CB80F8A4986A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED9751A7-437D-4427-A804-CB80F8A4986A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

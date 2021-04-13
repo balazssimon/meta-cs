@@ -369,7 +369,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         internal virtual string GetDebuggerDisplay()
         {
-            return $"{this.Kind} {this.ToDisplayString(s_debuggerDisplayFormat)}";
+            return $"{this.Kind} {this.MetadataName} ({this.GetType().Name})";
         }
 
         #region Use-Site Diagnostics
