@@ -28,11 +28,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MetaDslx.CodeAnalysis.Common\MetaDslx.CodeAnalysis.Common.csproj" PrivateAssets="all" />
-    <ProjectReference Include="..\MetaDslx.CodeAnalysis.CSharp\MetaDslx.CodeAnalysis.CSharp.csproj" PrivateAssets="all" />
-  </ItemGroup>
-
-  <ItemGroup>
     <MetaGenerator Update="Languages\Meta\Generator\ImmutableMetaModelGenerator.mgen">
       <AutomaticOutputLocation>ManualOutputDirectory</AutomaticOutputLocation>
     </MetaGenerator>

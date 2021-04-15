@@ -8,46 +8,33 @@
     Roslyn version
   -->
   <PropertyGroup>
-	<OfficialBuild>true</OfficialBuild>
-    <MetaDslxTargetVersion>0.11.23</MetaDslxTargetVersion>
-    <VersionPrefix>$(MetaDslxTargetVersion)</VersionPrefix>
-    <MetaDslxLanguagesTargetVersion>0.2.41</MetaDslxLanguagesTargetVersion>
-    <VersionSuffix Condition="'$(OfficialBuild)' != 'true' and '$(DotNetUseShippingVersions)' != 'true'">alpha1</VersionSuffix>
-    <BootstrapVersion>0.11.22</BootstrapVersion>
-    <SemanticVersioningV1>true</SemanticVersioningV1>
-    <!-- 
-      By default the assembly version in official builds is "$(VersionPrefix).0".
-      When building servicing set AssemblyVersion property to a fixed value to avoid updating binding redirects in VS.
+    <MajorVersion>0</MajorVersion>
+    <MinorVersion>11</MinorVersion>
+    <PatchVersion>23</PatchVersion>
+    <PreReleaseVersionLabel>0</PreReleaseVersionLabel>
+    <VersionPrefix>$(MajorVersion).$(MinorVersion).$(PatchVersion)</VersionPrefix>
+    <!--
+      By default the assembly version in official builds is "$(MajorVersion).$(MinorVersion).0.0".
       Keep the setting conditional. The toolset sets the assembly version to 42.42.42.42 if not set explicitly.
-    <AssemblyVersion Condition="'$(OfficialBuild)' == 'true' or '$(DotNetUseShippingVersions)' == 'true'">$(VersionPrefix).0</AssemblyVersion>
     -->
-	<MetaDslxVersion Condition="'$(OfficialBuild)' == 'true' or '$(DotNetUseShippingVersions)' == 'true'">$(VersionPrefix).0</MetaDslxVersion>
-	<MetaDslxVersion Condition="'$(OfficialBuild)' != 'true' and '$(DotNetUseShippingVersions)' != 'true'">$(VersionPrefix)-$(VersionSuffix)</MetaDslxVersion>
+    <AssemblyVersion Condition="'$(OfficialBuild)' == 'true' or '$(DotNetUseShippingVersions)' == 'true'">$(MajorVersion).$(MinorVersion).0.0</AssemblyVersion>
+    <!--
+      Arcade overrides our VersionPrefix when MajorVersion and MinorVersion are specified. Clear them so that
+      we can keep the PatchVersion until we are using an SDK that includes https://github.com/dotnet/arcade/pull/3601
+    -->
+    <MajorVersion>
+    </MajorVersion>
+    <MinorVersion>
+    </MinorVersion>
+    <BootstrapVersion>0.11.22</BootstrapVersion>
+    <DotNetBuildFromSource>true</DotNetBuildFromSource>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
-  </PropertyGroup>
+
   <!-- 
     Dependency versions
   -->
   <PropertyGroup>
     <!-- Versions used by several individual references below -->
-    <RoslynDiagnosticsNugetPackageVersion>3.3.2</RoslynDiagnosticsNugetPackageVersion>
-    <MicrosoftCodeAnalysisAnalyzersVersion>$(RoslynDiagnosticsNugetPackageVersion)</MicrosoftCodeAnalysisAnalyzersVersion>
-    <MicrosoftCodeAnalysisCSharpVersion>3.9.0</MicrosoftCodeAnalysisCSharpVersion>
-    <MicrosoftDiaSymReaderNativeVersion>1.7.0</MicrosoftDiaSymReaderNativeVersion>
-    <SystemCollectionsImmutableVersion>5.0.0</SystemCollectionsImmutableVersion>
-    <SystemMemoryVersion>4.5.4</SystemMemoryVersion>
-    <SystemReflectionMetadataVersion>5.0.0</SystemReflectionMetadataVersion>
-    <SystemRuntimeCompilerServicesUnsafeVersion>5.0.0</SystemRuntimeCompilerServicesUnsafeVersion>
-    <SystemTextEncodingCodePagesVersion>5.0.0</SystemTextEncodingCodePagesVersion>
-    <SystemThreadingTasksExtensionsVersion>4.5.4</SystemThreadingTasksExtensionsVersion>
     <Antlr4RuntimeStandardVersion>4.9.1</Antlr4RuntimeStandardVersion>
-    <MicrosoftBuildVersion>16.8.0</MicrosoftBuildVersion>
-    <MicrosoftDependencyInjectionVersion>5.0.0</MicrosoftDependencyInjectionVersion>
-    <MicrosoftBclAsyncInterfacesVersion>5.0.0</MicrosoftBclAsyncInterfacesVersion>
-    <MicrosoftNetDskTestVersion>16.6.1</MicrosoftNetDskTestVersion>
-    <MicrosoftSourceLinkGitHubVersion>1.0.0</MicrosoftSourceLinkGitHubVersion>
-    <XUnitVersion>2.4.1</XUnitVersion>
   </PropertyGroup>
 </Project>

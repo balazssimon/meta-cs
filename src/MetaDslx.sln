@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28729.10
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.CodeAnalysis.CSharp", "Main\MetaDslx.CodeAnalysis.CSharp\MetaDslx.CodeAnalysis.CSharp.csproj", "{4AF052DC-20F4-4F5D-8631-10A458AF86FF}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.CodeAnalysis.Meta", "Main\MetaDslx.CodeAnalysis.Meta\MetaDslx.CodeAnalysis.Meta.csproj", "{AA0ECA5D-DBAF-4E3F-A85F-9F18F8A1C03C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.Languages.Meta", "Main\MetaDslx.Languages.Meta\MetaDslx.Languages.Meta.csproj", "{BA598C0D-DE63-46C5-9FC0-881D918B3088}"
@@ -19,8 +17,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.BuildTasks", "Main
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.CodeAnalysis", "Main\MetaDslx.CodeAnalysis\MetaDslx.CodeAnalysis.csproj", "{679E9677-911B-44B9-8BD1-AF2A907D1E7F}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.CodeAnalysis.Common", "Main\MetaDslx.CodeAnalysis.Common\MetaDslx.CodeAnalysis.Common.csproj", "{53C88B8A-A649-4A2B-87ED-75DBD3B5C3BB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.VisualStudio", "Main\MetaDslx.VisualStudio\MetaDslx.VisualStudio.csproj", "{EDB7CFD1-F190-41F1-817D-EB2B11AAFE48}"
 EndProject
@@ -66,20 +62,27 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.Bootstrap.Incremen
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.CodeAnalysis.Analyzers", "Main\MetaDslx.CodeAnalysis.Analyzers\MetaDslx.CodeAnalysis.Analyzers.csproj", "{ED9751A7-437D-4427-A804-CB80F8A4986A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.Bootstrap.SourceGenerators", "Bootstrap\MetaDslx.Bootstrap.SourceGenerators\MetaDslx.Bootstrap.SourceGenerators.csproj", "{AC71D814-559C-45C1-AF6A-81C77173AB12}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.Bootstrap.SourceGenerators", "Bootstrap\MetaDslx.Bootstrap.SourceGenerators\MetaDslx.Bootstrap.SourceGenerators.csproj", "{AC71D814-559C-45C1-AF6A-81C77173AB12}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneratedSourceSymbols", "Experiments\GeneratedSourceSymbols\GeneratedSourceSymbols.csproj", "{E8653657-27AC-44E8-A36E-CD837A39A135}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeneratedSourceSymbols", "Experiments\GeneratedSourceSymbols\GeneratedSourceSymbols.csproj", "{E8653657-27AC-44E8-A36E-CD837A39A135}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.CodeAnalysis.Common", "Roslyn\MetaDslx.CodeAnalysis.Common\MetaDslx.CodeAnalysis.Common.csproj", "{A9F769BA-42E5-4EE2-B985-B17827C0BDE8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.CodeAnalysis.CSharp", "Roslyn\MetaDslx.CodeAnalysis.CSharp\MetaDslx.CodeAnalysis.CSharp.csproj", "{952C643E-3F9F-4CD0-A50A-9AB5612443D9}"
 EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Roslyn\CSharpAnalyzerDriver\CSharpAnalyzerDriver.projitems*{952c643e-3f9f-4cd0-a50a-9ab5612443d9}*SharedItemsImports = 5
+		Roslyn\AnalyzerDriver\AnalyzerDriver.projitems*{a9f769ba-42e5-4ee2-b985-b17827c0bde8}*SharedItemsImports = 5
+		Roslyn\CodeAnalysis.Debugging\Microsoft.CodeAnalysis.Debugging.projitems*{a9f769ba-42e5-4ee2-b985-b17827c0bde8}*SharedItemsImports = 5
+		Roslyn\Collections\Microsoft.CodeAnalysis.Collections.projitems*{a9f769ba-42e5-4ee2-b985-b17827c0bde8}*SharedItemsImports = 5
+		Roslyn\PooledObjects\Microsoft.CodeAnalysis.PooledObjects.projitems*{a9f769ba-42e5-4ee2-b985-b17827c0bde8}*SharedItemsImports = 5
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{4AF052DC-20F4-4F5D-8631-10A458AF86FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4AF052DC-20F4-4F5D-8631-10A458AF86FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4AF052DC-20F4-4F5D-8631-10A458AF86FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4AF052DC-20F4-4F5D-8631-10A458AF86FF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AA0ECA5D-DBAF-4E3F-A85F-9F18F8A1C03C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AA0ECA5D-DBAF-4E3F-A85F-9F18F8A1C03C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA0ECA5D-DBAF-4E3F-A85F-9F18F8A1C03C}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -104,10 +107,6 @@ Global
 		{679E9677-911B-44B9-8BD1-AF2A907D1E7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{679E9677-911B-44B9-8BD1-AF2A907D1E7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{679E9677-911B-44B9-8BD1-AF2A907D1E7F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{53C88B8A-A649-4A2B-87ED-75DBD3B5C3BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{53C88B8A-A649-4A2B-87ED-75DBD3B5C3BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{53C88B8A-A649-4A2B-87ED-75DBD3B5C3BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{53C88B8A-A649-4A2B-87ED-75DBD3B5C3BB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EDB7CFD1-F190-41F1-817D-EB2B11AAFE48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EDB7CFD1-F190-41F1-817D-EB2B11AAFE48}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EDB7CFD1-F190-41F1-817D-EB2B11AAFE48}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -204,6 +203,14 @@ Global
 		{E8653657-27AC-44E8-A36E-CD837A39A135}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E8653657-27AC-44E8-A36E-CD837A39A135}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E8653657-27AC-44E8-A36E-CD837A39A135}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9F769BA-42E5-4EE2-B985-B17827C0BDE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9F769BA-42E5-4EE2-B985-B17827C0BDE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9F769BA-42E5-4EE2-B985-B17827C0BDE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9F769BA-42E5-4EE2-B985-B17827C0BDE8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{952C643E-3F9F-4CD0-A50A-9AB5612443D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{952C643E-3F9F-4CD0-A50A-9AB5612443D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{952C643E-3F9F-4CD0-A50A-9AB5612443D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{952C643E-3F9F-4CD0-A50A-9AB5612443D9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
