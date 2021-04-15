@@ -6,6 +6,7 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
+    [Symbol(HasSubSymbolKinds = true)]
     public abstract class LocalSymbol : DeclaredSymbol
     {
         public sealed override LanguageSymbolKind Kind => LanguageSymbolKind.Member;

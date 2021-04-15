@@ -259,7 +259,7 @@ namespace MetaDslx.Modeling
                     {
                         this.flags |= ModelPropertyFlags.Containment;
                     }
-                    else if (annot is SymbolPropertyAttribute spa)
+                    else if (annot is ModelObjectSymbolPropertyAttribute spa)
                     {
                         this.symbolProperty = spa.PropertyName;
                     }

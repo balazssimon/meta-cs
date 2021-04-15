@@ -5,11 +5,11 @@ using System.Text;
 namespace MetaDslx.CodeAnalysis.Symbols
 {
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = true)]
-    public class SymbolPropertyAttribute : Attribute
+    public class ModelObjectSymbolPropertyAttribute : Attribute
     {
         private string _propertyName;
 
-        public SymbolPropertyAttribute(string propertyName)
+        public ModelObjectSymbolPropertyAttribute(string propertyName)
         {
             _propertyName = propertyName;
         }

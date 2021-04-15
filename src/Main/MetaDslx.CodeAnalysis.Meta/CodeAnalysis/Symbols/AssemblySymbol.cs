@@ -16,6 +16,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 {
     using CSharpSymbols = MetaDslx.CodeAnalysis.CSharp.Symbols;
 
+    [Symbol]
     public abstract class AssemblySymbol : Symbol, IAssemblySymbolInternal
     {
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

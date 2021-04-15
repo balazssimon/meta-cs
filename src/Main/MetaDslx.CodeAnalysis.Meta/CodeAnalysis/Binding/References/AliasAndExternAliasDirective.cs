@@ -2,7 +2,7 @@
 
 using System.Collections.Generic;
 using System.Diagnostics;
-using MetaDslx.CodeAnalysis.Symbols.Source;
+using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Text;

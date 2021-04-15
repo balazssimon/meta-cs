@@ -14,6 +14,7 @@ using System.Threading;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
+    [Symbol(HasSubSymbolKinds = true)]
     public abstract partial class TypeSymbol : NamespaceOrTypeSymbol, IMetaTypeSymbol
     {
         // TODO (tomat): Consider changing this to an empty name. This name shouldn't ever leak to the user in error messages.

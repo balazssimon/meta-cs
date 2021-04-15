@@ -7443,7 +7443,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         if (!__tmp9_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp10_line = "global::MetaDslx.CodeAnalysis.Symbols.SymbolAttribute(typeof("; //514:6
+                string __tmp10_line = "global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof("; //514:6
                 if (!string.IsNullOrEmpty(__tmp10_line))
                 {
                     __out.Append(__tmp10_line);
@@ -7466,7 +7466,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         if (!__tmp11_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp12_line = "))"; //514:92
+                string __tmp12_line = "))"; //514:103
                 if (!string.IsNullOrEmpty(__tmp12_line))
                 {
                     __out.Append(__tmp12_line);
@@ -7491,7 +7491,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 }
                 if (__tmp8_outputWritten)
                 {
-                    __out.AppendLine(false); //514:99
+                    __out.AppendLine(false); //514:110
                 }
             }
             bool __tmp15_outputWritten = false;
@@ -8055,7 +8055,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         if (!__tmp9_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp10_line = "global::MetaDslx.CodeAnalysis.Symbols.SymbolPropertyAttribute(\""; //561:6
+                string __tmp10_line = "global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute(\""; //561:6
                 if (!string.IsNullOrEmpty(__tmp10_line))
                 {
                     __out.Append(__tmp10_line);
@@ -8078,7 +8078,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         if (!__tmp11_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp12_line = "\")"; //561:90
+                string __tmp12_line = "\")"; //561:101
                 if (!string.IsNullOrEmpty(__tmp12_line))
                 {
                     __out.Append(__tmp12_line);
@@ -8103,7 +8103,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 }
                 if (__tmp8_outputWritten)
                 {
-                    __out.AppendLine(false); //561:97
+                    __out.AppendLine(false); //561:108
                 }
             }
             bool __tmp15_outputWritten = false;

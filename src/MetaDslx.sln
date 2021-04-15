@@ -64,7 +64,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.Bootstrap.Antlr4Ro
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.Bootstrap.IncrementalCompiler", "Bootstrap\MetaDslx.Bootstrap.IncrementalCompiler\MetaDslx.Bootstrap.IncrementalCompiler.csproj", "{B9BCD87E-7EA0-4ABA-8F3C-145DF8C49826}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.CodeAnalysis.Analyzers", "Main\MetaDslx.CodeAnalysis.Analyzers\MetaDslx.CodeAnalysis.Analyzers.csproj", "{ED9751A7-437D-4427-A804-CB80F8A4986A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.CodeAnalysis.Analyzers", "Main\MetaDslx.CodeAnalysis.Analyzers\MetaDslx.CodeAnalysis.Analyzers.csproj", "{ED9751A7-437D-4427-A804-CB80F8A4986A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.Bootstrap.SourceGenerators", "Bootstrap\MetaDslx.Bootstrap.SourceGenerators\MetaDslx.Bootstrap.SourceGenerators.csproj", "{AC71D814-559C-45C1-AF6A-81C77173AB12}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneratedSourceSymbols", "Experiments\GeneratedSourceSymbols\GeneratedSourceSymbols.csproj", "{E8653657-27AC-44E8-A36E-CD837A39A135}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -192,6 +196,14 @@ Global
 		{ED9751A7-437D-4427-A804-CB80F8A4986A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED9751A7-437D-4427-A804-CB80F8A4986A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED9751A7-437D-4427-A804-CB80F8A4986A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC71D814-559C-45C1-AF6A-81C77173AB12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC71D814-559C-45C1-AF6A-81C77173AB12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC71D814-559C-45C1-AF6A-81C77173AB12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC71D814-559C-45C1-AF6A-81C77173AB12}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8653657-27AC-44E8-A36E-CD837A39A135}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8653657-27AC-44E8-A36E-CD837A39A135}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8653657-27AC-44E8-A36E-CD837A39A135}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8653657-27AC-44E8-A36E-CD837A39A135}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

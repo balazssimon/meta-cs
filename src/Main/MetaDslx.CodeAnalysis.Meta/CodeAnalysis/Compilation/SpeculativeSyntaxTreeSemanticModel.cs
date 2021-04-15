@@ -4,7 +4,7 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Threading;
 using MetaDslx.CodeAnalysis.Binding;
-using MetaDslx.CodeAnalysis.Symbols.Source;
+using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis;
 
 namespace MetaDslx.CodeAnalysis

@@ -3,7 +3,7 @@
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <RootNamespace>MetaDslx</RootNamespace>
+    <RootNamespace>MetaDslx.CodeAnalysis.Analyzers</RootNamespace>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <IncludeBuildOutput>false</IncludeBuildOutput>
@@ -35,7 +35,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="$(MicrosoftCodeAnalysisCSharpVersion)" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="$(MicrosoftCodeAnalysisAnalyzersVersion)" PrivateAssets="all" />
-    <PackageReference Include="Antlr4.Runtime.Standard" Version="$(Antlr4RuntimeStandardVersion)" PrivateAssets="all" GeneratePathProperty="true"/>
+    <PackageReference Include="Antlr4.Runtime.Standard" Version="$(Antlr4RuntimeStandardVersion)" PrivateAssets="all" GeneratePathProperty="true" />
   </ItemGroup>
   
   <ItemGroup>

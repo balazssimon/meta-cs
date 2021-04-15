@@ -55,7 +55,7 @@ namespace MetaDslx.Modeling
                     this.immutableType = da.ImmutableType;
                     this.mutableType = da.MutableType;
                 }
-                if (annot is SymbolAttribute sa)
+                if (annot is ModelObjectSymbolAttribute sa)
                 {
                     this.symbolType = sa.SymbolType;
                 }

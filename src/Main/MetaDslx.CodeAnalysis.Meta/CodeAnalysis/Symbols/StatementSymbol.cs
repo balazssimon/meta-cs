@@ -4,6 +4,7 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
+    [Symbol(HasSubSymbolKinds = true)]
     public abstract class StatementSymbol : NonDeclaredSymbol
     {
         public abstract StatementKind StatementKind { get; }

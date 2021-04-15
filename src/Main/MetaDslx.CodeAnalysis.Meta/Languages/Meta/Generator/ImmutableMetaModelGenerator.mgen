@@ -511,7 +511,7 @@ template GenerateDescriptorClass(MetaModel model, MetaClass cls)
 [GenerateDocumentation(cls)]
 [GenerateAttributes(cls)]
 [if (cls.SymbolType != null)]
-["["]global::MetaDslx.CodeAnalysis.Symbols.SymbolAttribute(typeof([cls.SymbolType.FullName]))["]"]
+["["]global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof([cls.SymbolType.FullName]))["]"]
 [end if]
 ["["+Properties.CoreNs].ModelObjectDescriptorAttribute(typeof([cls.CSharpName(null, ClassKind.Id, true)]), typeof([cls.CSharpName(null, ClassKind.Immutable, true)]), typeof([cls.CSharpName(null, ClassKind.Builder, true)])[GetDescriptorAncestors(model, cls)])["]"]
 public static class [cls.CSharpName(model, ClassKind.Descriptor)]
@@ -558,7 +558,7 @@ template GenerateDescriptorProperty(MetaModel model, MetaClass cls, MetaProperty
 [GenerateDocumentation(prop)]
 [GenerateAttributes(prop)]
 [if (prop.SymbolProperty != null)]
-["["]global::MetaDslx.CodeAnalysis.Symbols.SymbolPropertyAttribute("[prop.SymbolProperty]")["]"]
+["["]global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("[prop.SymbolProperty]")["]"]
 [end if]
 [GenerateDescriptorPropertyAttributes(model, cls, prop)]
 public static readonly [Properties.CoreNs].ModelProperty [prop.CSharpName(model, PropertyKind.Descriptor)] =

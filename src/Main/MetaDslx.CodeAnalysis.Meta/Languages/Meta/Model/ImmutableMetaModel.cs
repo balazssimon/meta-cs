@@ -1396,7 +1396,7 @@ namespace MetaDslx.Languages.Meta.Model
 					defaultValue: null);
 		}
 	
-		[global::MetaDslx.CodeAnalysis.Symbols.SymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.MemberSymbol))]
+		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.MemberSymbol))]
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Model.Internal.MetaNamedElementId), typeof(global::MetaDslx.Languages.Meta.Model.MetaNamedElement), typeof(global::MetaDslx.Languages.Meta.Model.MetaNamedElementBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaDocumentedElement) })]
 		public static class MetaNamedElement
 		{
@@ -1421,7 +1421,7 @@ namespace MetaDslx.Languages.Meta.Model
 				get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaNamedElement; }
 			}
 			
-			[global::MetaDslx.CodeAnalysis.Symbols.SymbolPropertyAttribute("Name")]
+			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("Name")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty NameProperty =
 			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaNamedElement), name: "Name",
 			        immutableType: typeof(string),
@@ -1462,7 +1462,7 @@ namespace MetaDslx.Languages.Meta.Model
 					defaultValue: null);
 		}
 	
-		[global::MetaDslx.CodeAnalysis.Symbols.SymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.TypeSymbol))]
+		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.TypeSymbol))]
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Model.Internal.MetaTypeId), typeof(global::MetaDslx.Languages.Meta.Model.MetaType), typeof(global::MetaDslx.Languages.Meta.Model.MetaTypeBuilder))]
 		public static class MetaType
 		{
@@ -1488,7 +1488,7 @@ namespace MetaDslx.Languages.Meta.Model
 			}
 		}
 	
-		[global::MetaDslx.CodeAnalysis.Symbols.SymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.NamedTypeSymbol))]
+		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.NamedTypeSymbol))]
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Model.Internal.MetaNamedTypeId), typeof(global::MetaDslx.Languages.Meta.Model.MetaNamedType), typeof(global::MetaDslx.Languages.Meta.Model.MetaNamedTypeBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaType), typeof(MetaDescriptor.MetaDeclaration) })]
 		public static class MetaNamedType
 		{
@@ -1590,7 +1590,7 @@ namespace MetaDslx.Languages.Meta.Model
 					defaultValue: null);
 		}
 	
-		[global::MetaDslx.CodeAnalysis.Symbols.SymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.NamespaceSymbol))]
+		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.NamespaceSymbol))]
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Model.Internal.MetaNamespaceId), typeof(global::MetaDslx.Languages.Meta.Model.MetaNamespace), typeof(global::MetaDslx.Languages.Meta.Model.MetaNamespaceBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaDeclaration) })]
 		public static class MetaNamespace
 		{
@@ -1615,7 +1615,7 @@ namespace MetaDslx.Languages.Meta.Model
 				get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaNamespace; }
 			}
 			
-			[global::MetaDslx.CodeAnalysis.Symbols.SymbolPropertyAttribute("Members")]
+			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("Members")]
 			[global::MetaDslx.Modeling.ContainmentAttribute]
 			[global::MetaDslx.Modeling.OppositeAttribute(typeof(MetaDescriptor.MetaModel), "Namespace")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty DefinedMetaModelProperty =
@@ -1625,7 +1625,7 @@ namespace MetaDslx.Languages.Meta.Model
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaNamespace_DefinedMetaModel,
 					defaultValue: null);
 			
-			[global::MetaDslx.CodeAnalysis.Symbols.SymbolPropertyAttribute("Members")]
+			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("Members")]
 			[global::MetaDslx.Modeling.CollectionAttribute]
 			[global::MetaDslx.Modeling.OrderedAttribute]
 			[global::MetaDslx.Modeling.ContainmentAttribute]
@@ -1685,7 +1685,7 @@ namespace MetaDslx.Languages.Meta.Model
 					defaultValue: null);
 		}
 	
-		[global::MetaDslx.CodeAnalysis.Symbols.SymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.NamedTypeSymbol))]
+		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.NamedTypeSymbol))]
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Model.Internal.MetaCollectionTypeId), typeof(global::MetaDslx.Languages.Meta.Model.MetaCollectionType), typeof(global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaType) })]
 		public static class MetaCollectionType
 		{
@@ -1725,7 +1725,7 @@ namespace MetaDslx.Languages.Meta.Model
 					defaultValue: null);
 		}
 	
-		[global::MetaDslx.CodeAnalysis.Symbols.SymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.NamedTypeSymbol))]
+		[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolAttribute(typeof(MetaDslx.CodeAnalysis.Symbols.NamedTypeSymbol))]
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Model.Internal.MetaNullableTypeId), typeof(global::MetaDslx.Languages.Meta.Model.MetaNullableType), typeof(global::MetaDslx.Languages.Meta.Model.MetaNullableTypeBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaType) })]
 		public static class MetaNullableType
 		{
@@ -1807,7 +1807,7 @@ namespace MetaDslx.Languages.Meta.Model
 				get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaEnum; }
 			}
 			
-			[global::MetaDslx.CodeAnalysis.Symbols.SymbolPropertyAttribute("Members")]
+			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("Members")]
 			[global::MetaDslx.Modeling.CollectionAttribute]
 			[global::MetaDslx.Modeling.OrderedAttribute]
 			[global::MetaDslx.Modeling.ContainmentAttribute]
@@ -1819,7 +1819,7 @@ namespace MetaDslx.Languages.Meta.Model
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaEnum_EnumLiterals,
 					defaultValue: null);
 			
-			[global::MetaDslx.CodeAnalysis.Symbols.SymbolPropertyAttribute("Members")]
+			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("Members")]
 			[global::MetaDslx.Modeling.CollectionAttribute]
 			[global::MetaDslx.Modeling.OrderedAttribute]
 			[global::MetaDslx.Modeling.ContainmentAttribute]
@@ -1944,7 +1944,7 @@ namespace MetaDslx.Languages.Meta.Model
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaClass_IsAbstract,
 					defaultValue: null);
 			
-			[global::MetaDslx.CodeAnalysis.Symbols.SymbolPropertyAttribute("DeclaredBaseTypes")]
+			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("DeclaredBaseTypes")]
 			[global::MetaDslx.Modeling.CollectionAttribute]
 			[global::MetaDslx.Modeling.OrderedAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty SuperClassesProperty =
@@ -1954,7 +1954,7 @@ namespace MetaDslx.Languages.Meta.Model
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaClass_SuperClasses,
 					defaultValue: null);
 			
-			[global::MetaDslx.CodeAnalysis.Symbols.SymbolPropertyAttribute("Members")]
+			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("Members")]
 			[global::MetaDslx.Modeling.CollectionAttribute]
 			[global::MetaDslx.Modeling.OrderedAttribute]
 			[global::MetaDslx.Modeling.ContainmentAttribute]
@@ -1966,7 +1966,7 @@ namespace MetaDslx.Languages.Meta.Model
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaClass_Properties,
 					defaultValue: null);
 			
-			[global::MetaDslx.CodeAnalysis.Symbols.SymbolPropertyAttribute("Members")]
+			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("Members")]
 			[global::MetaDslx.Modeling.CollectionAttribute]
 			[global::MetaDslx.Modeling.OrderedAttribute]
 			[global::MetaDslx.Modeling.ContainmentAttribute]

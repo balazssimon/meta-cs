@@ -1,7 +1,3 @@
-﻿namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration;
-generator SymbolGenerator;
-
-template GenerateSymbol(SymbolGenerationInfo symbol)
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Declarations;
 using MetaDslx.CodeAnalysis.Symbols;
@@ -13,104 +9,27 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Text;
 using System.Threading;
-
-namespace [symbol.NamespaceName]
+namespace MetaDslx.Bootstrap.SourceGenerators
 {
-	public partial class [symbol.Name]
-	{
-        [if (symbol.ParentSymbol != null && symbol.ParentSymbol.SubSymbolKind != null)]
-        public sealed override [symbol.ParentSymbol.SubSymbolKind] [symbol.ParentSymbol.SubSymbolKindName] => [symbol.ParentSymbol.SubSymbolKind].[symbol.SymbolKind];
-        [end if]
-^
-        [if (symbol.SubSymbolKind != null)]
-        public virtual [symbol.SubSymbolKind] [symbol.SubSymbolKindName] => [symbol.SubSymbolKind].None;
-        [end if]
-^
-        public [if (symbol.IsSymbolClass)]virtual[else]override[end if] void Accept(SymbolVisitor visitor)
-        {
-            visitor.Accept(this);
-        }
-
-        public [if (symbol.IsSymbolClass)]virtual[else]override[end if] TResult Accept<TResult>(SymbolVisitor<TResult> visitor)
-        {
-            return visitor.Accept(this);
-        }
-
-        public [if (symbol.IsSymbolClass)]virtual[else]override[end if] TResult Accept<TArgument, TResult>(SymbolVisitor<TArgument, TResult> visitor, TArgument argument)
-        {
-            return visitor.Accept(this, argument);
-        }
-
-	}
-
-    public abstract partial class SymbolVisitor
-    {
-        public virtual void Visit[symbol.SymbolKind]([symbol.Name] symbol)
-        {
-            DefaultVisit(symbol);
-        }        
-    }
-
-    public abstract partial class SymbolVisitor<TResult>
-    {
-        public virtual TResult Visit[symbol.SymbolKind]([symbol.Name] symbol)
-        {
-            return DefaultVisit(symbol);
-        }       
-    }
-
-    public abstract partial class SymbolVisitor<TArgument, TResult>
-    {
-        public virtual TResult Visit[symbol.SymbolKind]([symbol.Name]Symbol symbol, TArgument argument)
-        {
-            return DefaultVisit(symbol, argument);
-        }      
-    }
-}
-end template
-
-template GenerateSourceSymbol(string namespaceName, string className)
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.Declarations;
-using MetaDslx.CodeAnalysis.Symbols;
-using MetaDslx.CodeAnalysis.Symbols.Metadata;
-using MetaDslx.CodeAnalysis.Symbols.Source;
-using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Diagnostics;
-using System.Text;
-using System.Threading;
-
-namespace [namespaceName]
-{
-	public partial class [className]
+	public partial class CustomSymbol
 	{
         private readonly Symbol _containingSymbol;
         private readonly MergedDeclaration _declaration;
         private readonly CompletionState _state;
         private DiagnosticBag _diagnostics;
-
-		public [className](Symbol containingSymbol, MergedDeclaration declaration)
+		public CustomSymbol(Symbol containingSymbol, MergedDeclaration declaration)
 		{
             Debug.Assert(declaration != null);
             _containingSymbol = containingSymbol;
             _declaration = declaration;
             _state = CompletionState.Create(Language);
 		}
-
         public override Symbol ContainingSymbol => _containingSymbol;
-
         public override ImmutableArray<Symbol> ChildSymbols => ImmutableArray<Symbol>.Empty;
-
         public MergedDeclaration MergedDeclaration => _declaration;
-
         public override ImmutableArray<Location> Locations => _declaration.NameLocations;
-
         public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => _declaration.SyntaxReferences;
-
         public ImmutableArray<Diagnostic> Diagnostics => _diagnostics != null ? _diagnostics.ToReadOnly() : ImmutableArray<Diagnostic>.Empty;
-
         private void AddSymbolDiagnostics(DiagnosticBag diagnostics)
         {
             if (!diagnostics.IsEmptyWithoutResolution)
@@ -121,33 +40,25 @@ namespace [namespaceName]
                 _diagnostics.AddRange(diagnostics);
             }
         }
-
         public override void Accept(CodeAnalysis.SymbolVisitor visitor)
         {
             throw new NotImplementedException();
         }
-
         public override TResult Accept<TResult>(CodeAnalysis.SymbolVisitor<TResult> visitor)
         {
             throw new NotImplementedException();
         }
-
         public override void Accept(CodeAnalysis.Symbols.SymbolVisitor visitor)
         {
             throw new NotImplementedException();
         }
-
         public override TResult Accept<TResult>(CodeAnalysis.Symbols.SymbolVisitor<TResult> visitor)
         {
             throw new NotImplementedException();
         }
-
         public override TResult Accept<TArgument, TResult>(SymbolVisitor<TArgument, TResult> visitor, TArgument argument)
         {
             throw new NotImplementedException();
         }
-
 	}
 }
-end template
-

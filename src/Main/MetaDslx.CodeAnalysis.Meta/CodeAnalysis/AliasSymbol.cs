@@ -10,7 +10,7 @@ using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.CodeAnalysis;
 using Roslyn.Utilities;
 
-namespace MetaDslx.CodeAnalysis.Symbols.Source
+namespace MetaDslx.CodeAnalysis.Symbols
 {
     /// <summary>
     /// Symbol representing a using alias appearing in a compilation unit or within a namespace
@@ -44,6 +44,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
     ///     IList&lt;Symbol&gt; SemanticModel.LookupSymbols(CSharpSyntaxNode location, NamespaceOrTypeSymbol container = null, string name = null, int? arity = null, LookupOptions options = LookupOptions.Default, List&lt;Symbol> results = null);
     /// </pre>
     /// </summary>
+    [Symbol]
     public sealed class AliasSymbol : DeclaredSymbol, IAliasSymbol
     {
         private readonly string _aliasName;

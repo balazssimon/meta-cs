@@ -9,6 +9,7 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
+    [Symbol(HasSubSymbolKinds = true)]
     public abstract class MemberSymbol : DeclaredSymbol, IMetaMemberSymbol
     {
         public sealed override LanguageSymbolKind Kind => LanguageSymbolKind.Member;

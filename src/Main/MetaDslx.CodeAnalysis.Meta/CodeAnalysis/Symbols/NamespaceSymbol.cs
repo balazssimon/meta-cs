@@ -8,6 +8,7 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
+    [Symbol]
     public abstract class NamespaceSymbol : NamespaceOrTypeSymbol, IMetaNamespaceSymbol, MetaDslx.Cci.INamespace
     {
         // PERF: initialization of the following fields will allocate, so we make them lazy

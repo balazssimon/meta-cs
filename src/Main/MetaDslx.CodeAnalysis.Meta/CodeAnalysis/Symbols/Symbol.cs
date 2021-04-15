@@ -17,6 +17,7 @@ using MetaDslx.CodeAnalysis.Collections;
 using MetaDslx.CodeAnalysis.PooledObjects;
 using MetaDslx.CodeAnalysis.Text;
 using Roslyn.Utilities;
+using System.Runtime.CompilerServices;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
@@ -28,8 +29,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
     /// exposed by the compiler.
     /// </summary>
     [DebuggerDisplay("{GetDebuggerDisplay(), nq}")]
+    [Symbol(HasSubSymbolKinds = true)]
     public abstract partial class Symbol : ISymbol, IFormattable
     {
+        private static ConditionalWeakTable<Symbol, DiagnosticBag> s_diagnostics = new ConditionalWeakTable<Symbol, DiagnosticBag>();
+
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         // Changes to the public interface of this class should remain synchronized with the VB version of Symbol.
         // Do not make any changes to the public interface without making the corresponding change
@@ -157,6 +161,27 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 return (object)container != null ? container.ContainingModule : null;
             }
         }
+
+        public ImmutableArray<Diagnostic> Diagnostics
+        {
+            get
+            {
+                if (s_diagnostics.TryGetValue(this, out var diagnostics)) return diagnostics.ToReadOnly();
+                else return ImmutableArray<Diagnostic>.Empty;
+            }
+        }
+
+        protected void AddSymbolDiagnostics(DiagnosticBag diagnostics)
+        {
+            if (!diagnostics.IsEmptyWithoutResolution)
+            {
+                LanguageCompilation compilation = this.DeclaringCompilation;
+                Debug.Assert(compilation != null);
+                var symbolDiagnostics = s_diagnostics.GetOrCreateValue(this);
+                symbolDiagnostics.AddRange(diagnostics);
+            }
+        }
+
 
         /// <summary>
         /// <para>
@@ -701,6 +726,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 member.ForceComplete(null, locationOpt, cancellationToken);
             }
         }
+
 
     }
 }

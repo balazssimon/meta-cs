@@ -65,8 +65,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         public override AssemblySymbol ContainingAssembly => _module.ContainingAssembly;
 
-        public ImmutableArray<Diagnostic> Diagnostics => _diagnostics != null ? _diagnostics.ToReadOnly() : ImmutableArray<Diagnostic>.Empty;
-
         internal IEnumerable<Imports> GetBoundImportsMerged()
         {
             var compilation = this.DeclaringCompilation;
@@ -396,15 +394,5 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         #endregion
 
-        private void AddSymbolDiagnostics(DiagnosticBag diagnostics)
-        {
-            if (!diagnostics.IsEmptyWithoutResolution)
-            {
-                LanguageCompilation compilation = this.DeclaringCompilation;
-                Debug.Assert(compilation != null);
-                if (_diagnostics == null) _diagnostics = new DiagnosticBag();
-                _diagnostics.AddRange(diagnostics);
-            }
-        }
     }
 }
