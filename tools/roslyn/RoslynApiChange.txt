@@ -1,0 +1,36 @@
+PooledObjects\ArrayBuilder.cs	internal sealed partial class ArrayBuilder	public sealed partial class ArrayBuilder
+PooledObjects\ArrayBuilder.Enumerator.cs	internal partial class ArrayBuilder	public partial class ArrayBuilder
+PooledObjects\ArrayBuilder.Enumerator.cs	internal struct Enumerator	public struct Enumerator
+PooledObjects\ObjectPool`1.cs	internal class ObjectPool	public class ObjectPool
+PooledObjects\PooledDictionary.cs	internal sealed partial class PooledDictionary	public sealed partial class PooledDictionary
+MetaDslx.CodeAnalysis.Common\Collections\ArrayElement.cs	internal struct ArrayElement	public struct ArrayElement
+MetaDslx.CodeAnalysis.Common\Collections\ArrayElement.cs	internal T Value;	public T Value;
+MetaDslx.CodeAnalysis.Common\InternalUtilities\ConsList`1.cs	internal class ConsList	public class ConsList
+MetaDslx.CodeAnalysis.Common\InternalUtilities\ConsList`1.cs	internal struct Enumerator	public struct Enumerator
+MetaDslx.CodeAnalysis.Common\InternalUtilities\ThreeState.cs	internal enum ThreeState	public enum ThreeState
+MetaDslx.CodeAnalysis.Common\InternalUtilities\ThreeState.cs	internal static class ThreeStateHelpers	public static class ThreeStateHelpers
+MetaDslx.CodeAnalysis.Common\Serialization\ObjectReader.cs	internal sealed partial class ObjectReader	public sealed partial class ObjectReader
+MetaDslx.CodeAnalysis.Common\Serialization\ObjectWriter.cs	internal sealed partial class ObjectWriter	public sealed partial class ObjectWriter
+MetaDslx.CodeAnalysis.Common\Serialization\IObjectWritable.cs	internal interface IObjectWritable	public interface IObjectWritable
+MetaDslx.CodeAnalysis.Common\Diagnostic\SourceLocation.cs	internal sealed class SourceLocation	public sealed class SourceLocation
+MetaDslx.CodeAnalysis.Common\Diagnostic\DiagnosticBag.cs	internal class DiagnosticBag	public class DiagnosticBag
+MetaDslx.CodeAnalysis.Common\Diagnostic\DiagnosticInfo.cs	internal class DiagnosticInfo	public class DiagnosticInfo
+MetaDslx.CodeAnalysis.Common\Diagnostic\CommonMessageProvider.cs	internal abstract class CommonMessageProvider	public abstract class CommonMessageProvider
+MetaDslx.CodeAnalysis.Common\DiagnosticAnalyzer\AsyncQueue.cs	internal sealed class AsyncQueue	public sealed class AsyncQueue
+MetaDslx.CodeAnalysis.Common\DiagnosticAnalyzer\CompilationEvent.cs	internal abstract class CompilationEvent	public abstract class CompilationEvent
+MetaDslx.CodeAnalysis.Common\DiagnosticAnalyzer\CompilationEvent.cs	internal CompilationEvent	public CompilationEvent
+MetaDslx.CodeAnalysis.Common\Syntax\GreenNode.cs	internal abstract class GreenNode	public abstract class GreenNode
+MetaDslx.CodeAnalysis.Common\Syntax\GreenNode.cs	internal enum NodeFlags	internal protected enum NodeFlags
+MetaDslx.CodeAnalysis.Common\Syntax\InternalSyntax\SyntaxList`1.cs	internal partial struct SyntaxList	public partial struct SyntaxList
+MetaDslx.CodeAnalysis.Common\Syntax\InternalSyntax\SyntaxList`1.Enumerator.cs	internal partial struct SyntaxList	public partial struct SyntaxList
+MetaDslx.CodeAnalysis.Common\Syntax\InternalSyntax\SyntaxList`1.Enumerator.cs	internal struct Enumerator	public struct Enumerator
+MetaDslx.CodeAnalysis.Common\Syntax\InternalSyntax\SeparatedSyntaxList.cs	internal struct SeparatedSyntaxList	public struct SeparatedSyntaxList
+MetaDslx.CodeAnalysis.Common\Syntax\InternalSyntax\SyntaxListBuilder.cs	internal class SyntaxListBuilder	public class SyntaxListBuilder
+MetaDslx.CodeAnalysis.Common\Syntax\InternalSyntax\SyntaxListBuilder`1.cs	internal struct SyntaxListBuilder	public struct SyntaxListBuilder
+MetaDslx.CodeAnalysis.Common\Symbols\TypeCompareKind.cs	internal enum TypeCompareKind	public enum TypeCompareKind
+MetaDslx.CodeAnalysis.Common\Symbols\Attributes\ObsoleteAttributeKind.cs	internal enum ObsoleteAttributeKind	public enum ObsoleteAttributeKind
+MetaDslx.CodeAnalysis.Common\Symbols\Attributes\ObsoleteAttributeKind.cs	internal sealed class ObsoleteAttributeData	public sealed class ObsoleteAttributeData
+MetaDslx.CodeAnalysis.Common\MetadataReader\MetadataTypeName.cs	internal partial struct MetadataTypeName	public partial struct MetadataTypeName
+MetaDslx.CodeAnalysis.Common\MetadataReader\MetadataTypeName.Key.cs	internal partial struct MetadataTypeName	public partial struct MetadataTypeName
+MetaDslx.CodeAnalysis.Common\MetadataReader\PEModule.cs	internal sealed class PEModule	public sealed class PEModule
+MetaDslx.CodeAnalysis.Common\ReferenceManager\CommonReferenceManager.State.cs	internal abstract class CommonReferenceManager	public abstract class CommonReferenceManager

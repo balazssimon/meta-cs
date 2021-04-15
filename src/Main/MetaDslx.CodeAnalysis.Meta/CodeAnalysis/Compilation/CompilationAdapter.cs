@@ -14,7 +14,7 @@ using System.Diagnostics;
 using System.Reflection.Metadata;
 using Microsoft.CodeAnalysis.Symbols;
 
-namespace MetaDslx.CodeAnalysis
+namespace MetaDslx.CodeAnalysis.Internal
 {
     public abstract class CompilationAdapter : Microsoft.CodeAnalysis.Compilation
     {
