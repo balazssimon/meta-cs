@@ -1,4 +1,4 @@
-using MetaDslx.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -9,7 +9,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
     [Symbol(HasSubSymbolKinds = true)]
     public abstract class LocalSymbol : DeclaredSymbol
     {
-        public sealed override LanguageSymbolKind Kind => LanguageSymbolKind.Member;
+        public sealed override SymbolKind Kind => SymbolKind.Member;
 
         public abstract LocalKind LocalKind { get; }
 
@@ -32,14 +32,5 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return visitor.VisitLocal(this, argument);
         }
 
-        public override void Accept(MetaDslx.CodeAnalysis.SymbolVisitor visitor)
-        {
-
-        }
-
-        public override TResult Accept<TResult>(MetaDslx.CodeAnalysis.SymbolVisitor<TResult> visitor)
-        {
-            return default;
-        }
     }
 }

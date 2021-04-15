@@ -5,8 +5,8 @@ using System.Linq;
 using System.Text;
 using MetaDslx.CodeAnalysis.Declarations;
 using MetaDslx.Modeling;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.PooledObjects;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.PooledObjects;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 {

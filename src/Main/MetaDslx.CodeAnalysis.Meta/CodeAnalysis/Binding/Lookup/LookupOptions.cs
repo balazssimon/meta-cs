@@ -4,7 +4,7 @@ using System;
 
 namespace MetaDslx.CodeAnalysis.Binding
 {
-    using CSharpResources = MetaDslx.CodeAnalysis.CSharp.CSharpResources;
+    using CSharpResources = Microsoft.CodeAnalysis.CSharp.CSharpResources;
 
     /// <summary>
     /// Options that can be used to modify the symbol lookup mechanism. 

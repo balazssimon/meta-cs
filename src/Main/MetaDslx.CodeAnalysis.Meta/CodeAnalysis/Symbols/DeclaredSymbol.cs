@@ -1,8 +1,8 @@
 using MetaDslx.CodeAnalysis.Declarations;
-using MetaDslx.CodeAnalysis.Syntax;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.PooledObjects;
-using MetaDslx.CodeAnalysis.Text;
+using Microsoft.CodeAnalysis.Syntax;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.PooledObjects;
+using Microsoft.CodeAnalysis.Text;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -13,7 +13,7 @@ using System.Threading;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-    public abstract partial class DeclaredSymbol : Symbol, IDeclaredSymbol
+    public abstract partial class DeclaredSymbol : Symbol
     {
         /// <summary>
         /// Returns the nearest lexically enclosing declaration, or null if there is none.
@@ -416,7 +416,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 {
                     switch (this.Kind.Switch())
                     {
-                        case LanguageSymbolKind.Member:
+                        case SymbolKind.Member:
                             info = new LanguageDiagnosticInfo(InternalErrorCode.ERR_BindToBogus, this);
                             break;
                     }
@@ -506,32 +506,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
             HashSet<DiagnosticInfo> useSiteDiagnostics = null;
             return this.DeclaringCompilation.AccessCheck.IsSymbolAccessible(this, within, ref useSiteDiagnostics);
         }
-
-
-        bool IDeclaredSymbol.IsImplicitlyDeclared => this.IsImplicitlyDeclared;
-
-        INamedTypeSymbol IDeclaredSymbol.ContainingType => this.ContainingType;
-
-        INamespaceSymbol IDeclaredSymbol.ContainingNamespace => this.ContainingNamespace;
-
-        bool IDeclaredSymbol.IsDefinition => this.IsDefinition;
-
-        bool IDeclaredSymbol.IsStatic => this.IsStatic;
-
-        bool IDeclaredSymbol.IsVirtual => this.IsVirtual;
-
-        bool IDeclaredSymbol.IsOverride => this.IsOverride;
-
-        bool IDeclaredSymbol.IsAbstract => this.IsAbstract;
-
-        bool IDeclaredSymbol.IsSealed => this.IsSealed;
-
-        ImmutableArray<SyntaxReference> IDeclaredSymbol.DeclaringSyntaxReferences => this.DeclaringSyntaxReferences;
-
-        Accessibility IDeclaredSymbol.DeclaredAccessibility => this.DeclaredAccessibility;
-
-        IDeclaredSymbol IDeclaredSymbol.OriginalDefinition => this.OriginalDefinition;
-
 
     }
 }

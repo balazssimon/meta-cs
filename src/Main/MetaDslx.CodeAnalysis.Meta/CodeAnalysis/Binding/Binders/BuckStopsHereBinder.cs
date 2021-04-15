@@ -6,7 +6,7 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Symbols.Source;
-using MetaDslx.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis.Binding.Binders

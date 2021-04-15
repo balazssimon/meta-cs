@@ -2,8 +2,8 @@
 
 using System.Diagnostics;
 using System.Threading;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.Text;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Text;
 using Roslyn.Utilities;
 using System;
 
@@ -214,7 +214,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
                                 foreach (NamespaceOrTypeSymbol symbol in container.GetMembers(namespaces[i]))
                                 {
-                                    if (symbol.Kind == LanguageSymbolKind.Namespace) // VB should also check name casing.
+                                    if (symbol.Kind == SymbolKind.Namespace) // VB should also check name casing.
                                     {
                                         newContainer = (NamespaceSymbol)symbol;
                                         break;

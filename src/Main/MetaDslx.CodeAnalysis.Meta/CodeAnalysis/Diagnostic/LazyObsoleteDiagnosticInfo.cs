@@ -1,26 +1,30 @@
-// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+#nullable disable
 
 using System.Diagnostics;
 using System.Threading;
 using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Symbols;
-using MetaDslx.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 
 namespace MetaDslx.CodeAnalysis
 {
-    internal sealed class LazyObsoleteDiagnosticInfo : DiagnosticInfoWithMessageProvider
+    internal sealed class LazyObsoleteDiagnosticInfo : LanguageDiagnosticInfo
     {
         private DiagnosticInfo _lazyActualObsoleteDiagnostic;
 
-        private readonly Symbol _symbol;
+        private readonly object _symbolOrSymbolWithAnnotations;
         private readonly Symbol _containingSymbol;
         private readonly BinderFlags _binderFlags;
 
-        internal LazyObsoleteDiagnosticInfo(Symbol symbol, Symbol containingSymbol, BinderFlags binderFlags)
-            : base(CSharp.MessageProvider.Instance, (int)CSharp.ErrorCode.Unknown)
+        internal LazyObsoleteDiagnosticInfo(object symbol, Symbol containingSymbol, BinderFlags binderFlags)
+            : base(InternalErrorCode.Unknown)
         {
-            Debug.Assert(symbol is Symbol);
-            _symbol = symbol;
+            Debug.Assert(symbol is Symbol /*TODO:MetaDslx || symbol is TypeWithAnnotations*/);
+            _symbolOrSymbolWithAnnotations = symbol;
             _containingSymbol = containingSymbol;
             _binderFlags = binderFlags;
             _lazyActualObsoleteDiagnostic = null;
@@ -32,15 +36,15 @@ namespace MetaDslx.CodeAnalysis
             {
                 // A symbol's Obsoleteness may not have been calculated yet if the symbol is coming
                 // from a different compilation's source. In that case, force completion of attributes.
-                _symbol.ForceCompleteObsoleteAttribute();
-                //_symbol.ForceComplete(CompletionPart.ObsoleteAttribute);
+                var symbol = (_symbolOrSymbolWithAnnotations as Symbol);//TODO:MetaDslx ?? ((TypeWithAnnotations)_symbolOrSymbolWithAnnotations).Type;
+                symbol.ForceCompleteObsoleteAttribute();
 
-                var kind = ObsoleteAttributeHelpers.GetObsoleteDiagnosticKind(_symbol, _containingSymbol, forceComplete: true);
+                var kind = ObsoleteAttributeHelpers.GetObsoleteDiagnosticKind(symbol, _containingSymbol, forceComplete: true);
                 Debug.Assert(kind != ObsoleteDiagnosticKind.Lazy);
                 Debug.Assert(kind != ObsoleteDiagnosticKind.LazyPotentiallySuppressed);
 
                 var info = (kind == ObsoleteDiagnosticKind.Diagnostic) ?
-                    ObsoleteAttributeHelpers.CreateObsoleteDiagnostic(_symbol, _binderFlags) :
+                    ObsoleteAttributeHelpers.CreateObsoleteDiagnostic(symbol, _binderFlags) :
                     null;
 
                 // If this symbol is not obsolete or is in an obsolete context, we don't want to report any diagnostics.

@@ -1,24 +1,31 @@
 using MetaDslx.CodeAnalysis.Declarations;
-using MetaDslx.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.Diagnostics;
 using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Text;
-using MetaDslx.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using System.Threading;
-using MetaDslx.CodeAnalysis.Emit;
-using MetaDslx.CodeAnalysis.CodeGen;
+using Microsoft.CodeAnalysis.Emit;
+using Microsoft.CodeAnalysis.CodeGen;
 using System.IO;
 using System.Diagnostics;
 using System.Reflection.Metadata;
+using Microsoft.CodeAnalysis.Symbols;
 
 namespace MetaDslx.CodeAnalysis
 {
-    public abstract class CompilationAdapter : MetaDslx.CodeAnalysis.Compilation
+    public abstract class CompilationAdapter : Microsoft.CodeAnalysis.Compilation
     {
-        internal CompilationAdapter(string name, ImmutableArray<MetaDslx.CodeAnalysis.MetadataReference> references, IReadOnlyDictionary<string, string> features, bool isSubmission, AsyncQueue<CompilationEvent> eventQueue) 
-            : base(name, references, features, isSubmission, eventQueue)
+        internal CompilationAdapter(
+            string? name,
+            ImmutableArray<MetadataReference> references,
+            IReadOnlyDictionary<string, string> features,
+            bool isSubmission,
+            SemanticModelProvider? semanticModelProvider,
+            AsyncQueue<CompilationEvent>? eventQueue) 
+            : base(name, references, features, isSubmission, semanticModelProvider, eventQueue)
         {
         }
 
@@ -28,7 +35,7 @@ namespace MetaDslx.CodeAnalysis
 
         public abstract DeclarationTable Declarations { get; }
 
-        internal override IEnumerable<MetaDslx.CodeAnalysis.ReferenceDirective> ReferenceDirectives
+        internal override IEnumerable<Microsoft.CodeAnalysis.ReferenceDirective> ReferenceDirectives
         {
             get { return this.ReferenceDirectivesCore.Select(d => d.ToMicrosoft()); }
         }
@@ -37,7 +44,7 @@ namespace MetaDslx.CodeAnalysis
 
         internal override CommonMessageProvider MessageProvider
         {
-            get { return MetaDslx.CodeAnalysis.CSharp.MessageProvider.Instance; }
+            get { return Microsoft.CodeAnalysis.CSharp.MessageProvider.Instance; }
         }
 
         /// <summary>
@@ -71,47 +78,22 @@ namespace MetaDslx.CodeAnalysis
             throw new NotImplementedException();
         }
 
-        internal override bool CompileMethods(
-            CommonPEModuleBuilder moduleBuilder,
-            bool emittingPdb,
-            bool emitMetadataOnly,
-            bool emitTestCoverageData,
-            DiagnosticBag diagnostics,
-            Predicate<ISymbol> filterOpt,
-            CancellationToken cancellationToken)
+        internal override bool CompileMethods(CommonPEModuleBuilder moduleBuilder, bool emittingPdb, bool emitMetadataOnly, bool emitTestCoverageData, DiagnosticBag diagnostics, Predicate<ISymbolInternal>? filterOpt, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
 
-        internal override bool GenerateResourcesAndDocumentationComments(
-            CommonPEModuleBuilder moduleBuilder,
-            Stream xmlDocStream,
-            Stream win32Resources,
-            string outputNameOverride,
-            DiagnosticBag diagnostics,
-            CancellationToken cancellationToken)
+        internal override bool GenerateResourcesAndDocumentationComments(CommonPEModuleBuilder moduleBeingBuilt, Stream? xmlDocumentationStream, Stream? win32ResourcesStream, string? outputNameOverride, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
 
-        internal override EmitDifferenceResult EmitDifference(
-            EmitBaseline baseline,
-            IEnumerable<SemanticEdit> edits,
-            Func<ISymbol, bool> isAddedSymbol,
-            Stream metadataStream,
-            Stream ilStream,
-            Stream pdbStream,
-            ICollection<MethodDefinitionHandle> updatedMethods,
-            CompilationTestData testData,
-            CancellationToken cancellationToken)
+        internal override EmitDifferenceResult EmitDifference(EmitBaseline baseline, IEnumerable<SemanticEdit> edits, Func<ISymbol, bool> isAddedSymbol, Stream metadataStream, Stream ilStream, Stream pdbStream, ICollection<MethodDefinitionHandle> updatedMethodHandles, CompilationTestData? testData, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
 
-        internal override void AddDebugSourceDocumentsForChecksumDirectives(
-            DebugDocumentsBuilder documentsBuilder,
-            SyntaxTree tree,
-            DiagnosticBag diagnostics)
+        internal override void AddDebugSourceDocumentsForChecksumDirectives(DebugDocumentsBuilder documentsBuilder, SyntaxTree tree, DiagnosticBag diagnostics)
         {
             throw new NotImplementedException();
         }
@@ -120,7 +102,7 @@ namespace MetaDslx.CodeAnalysis
 
         #endregion
 
-        protected override IArrayTypeSymbol CommonCreateArrayTypeSymbol(ITypeSymbol elementType, int rank)
+        protected override IArrayTypeSymbol CommonCreateArrayTypeSymbol(ITypeSymbol elementType, int rank, NullableAnnotation elementNullableAnnotation)
         {
             throw new NotImplementedException();
         }
@@ -130,32 +112,42 @@ namespace MetaDslx.CodeAnalysis
             throw new NotImplementedException();
         }
 
-        protected override INamedTypeSymbol CommonCreateTupleTypeSymbol(
-            ImmutableArray<ITypeSymbol> elementTypes,
-            ImmutableArray<string> elementNames,
-            ImmutableArray<Location> elementLocations)
+        protected override INamedTypeSymbol CommonCreateTupleTypeSymbol(ImmutableArray<ITypeSymbol> elementTypes, ImmutableArray<string?> elementNames, ImmutableArray<Location?> elementLocations, ImmutableArray<NullableAnnotation> elementNullableAnnotations)
         {
             throw new NotImplementedException();
         }
 
-        protected override INamedTypeSymbol CommonCreateTupleTypeSymbol(
-            INamedTypeSymbol underlyingType,
-            ImmutableArray<string> elementNames,
-            ImmutableArray<Location> elementLocations)
+        protected override INamedTypeSymbol CommonCreateTupleTypeSymbol(INamedTypeSymbol underlyingType, ImmutableArray<string?> elementNames, ImmutableArray<Location?> elementLocations, ImmutableArray<NullableAnnotation> elementNullableAnnotations)
         {
             throw new NotImplementedException();
         }
 
-        protected override INamedTypeSymbol CommonCreateAnonymousTypeSymbol(
-            ImmutableArray<ITypeSymbol> memberTypes,
-            ImmutableArray<string> memberNames,
-            ImmutableArray<Location> memberLocations,
-            ImmutableArray<bool> memberIsReadOnly)
+        protected override INamedTypeSymbol CommonCreateAnonymousTypeSymbol(ImmutableArray<ITypeSymbol> memberTypes, ImmutableArray<string> memberNames, ImmutableArray<Location> memberLocations, ImmutableArray<bool> memberIsReadOnly, ImmutableArray<NullableAnnotation> memberNullableAnnotations)
         {
             throw new NotImplementedException();
         }
 
-        internal override ISymbol CommonGetWellKnownTypeMember(WellKnownMember member)
+        internal override ITypeSymbolInternal CommonGetWellKnownType(WellKnownType wellknownType)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override INamedTypeSymbol CommonCreateNativeIntegerTypeSymbol(bool signed)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override IFunctionPointerTypeSymbol CommonCreateFunctionPointerTypeSymbol(ITypeSymbol returnType, RefKind returnRefKind, ImmutableArray<ITypeSymbol> parameterTypes, ImmutableArray<RefKind> parameterRefKinds, SignatureCallingConvention callingConvention, ImmutableArray<INamedTypeSymbol> callingConventionTypes)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override INamespaceSymbol CommonCreateErrorNamespaceSymbol(INamespaceSymbol container, string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override INamedTypeSymbol CommonCreateErrorTypeSymbol(INamespaceOrTypeSymbol? container, string name, int arity)
         {
             throw new NotImplementedException();
         }
@@ -165,7 +157,7 @@ namespace MetaDslx.CodeAnalysis
             throw new NotImplementedException();
         }
 
-        internal override bool IsSystemTypeReference(ITypeSymbol type)
+        internal override bool IsSystemTypeReference(ITypeSymbolInternal type)
         {
             throw new NotImplementedException();
         }

@@ -12,17 +12,17 @@ using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Symbols.Source;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.Modeling;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.Collections;
-using MetaDslx.CodeAnalysis.PooledObjects;
-using MetaDslx.CodeAnalysis.Text;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Collections;
+using Microsoft.CodeAnalysis.PooledObjects;
+using Microsoft.CodeAnalysis.Text;
 using Roslyn.Utilities;
 using System.Runtime.CompilerServices;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-    using SymbolDisplay = MetaDslx.CodeAnalysis.CSharp.SymbolDisplay;
-    using CSharpResources = MetaDslx.CodeAnalysis.CSharp.CSharpResources;
+    using SymbolDisplay = Microsoft.CodeAnalysis.CSharp.SymbolDisplay;
+    using CSharpResources = Microsoft.CodeAnalysis.CSharp.CSharpResources;
 
     /// <summary>
     /// The base class for all symbols (namespaces, classes, method, parameters, etc.) that are 
@@ -30,7 +30,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
     /// </summary>
     [DebuggerDisplay("{GetDebuggerDisplay(), nq}")]
     [Symbol(HasSubSymbolKinds = true)]
-    public abstract partial class Symbol : ISymbol, IFormattable
+    public abstract partial class Symbol : IFormattable
     {
         private static ConditionalWeakTable<Symbol, DiagnosticBag> s_diagnostics = new ConditionalWeakTable<Symbol, DiagnosticBag>();
 
@@ -86,7 +86,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <summary>
         /// Gets the kind of this symbol.
         /// </summary>
-        public virtual LanguageSymbolKind Kind => LanguageSymbolKind.None;
+        public virtual SymbolKind Kind => SymbolKind.None;
 
         /// <summary>
         /// Get the symbol that logically contains this symbol. 
@@ -132,12 +132,12 @@ namespace MetaDslx.CodeAnalysis.Symbols
             {
                 switch (this.Kind.Switch())
                 {
-                    case LanguageSymbolKind.ErrorType:
+                    case SymbolKind.ErrorType:
                         return null;
-                    case LanguageSymbolKind.Assembly:
+                    case SymbolKind.Assembly:
                         Debug.Assert(!(this is SourceAssemblySymbol), "SourceAssemblySymbol must override DeclaringCompilation");
                         return null;
-                    case LanguageSymbolKind.NetModule:
+                    case SymbolKind.NetModule:
                         Debug.Assert(!(this is SourceModuleSymbol), "SourceModuleSymbol must override DeclaringCompilation");
                         return null;
                 }
@@ -388,15 +388,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
             get { return this.DeclaringCompilation != null; }
         }
 
-        private static readonly SymbolDisplayFormat s_debuggerDisplayFormat =
-            SymbolDisplayFormat.TestFormat.WithCompilerInternalOptions(SymbolDisplayCompilerInternalOptions.IncludeNonNullableTypeModifier)
-                .AddMiscellaneousOptions(SymbolDisplayMiscellaneousOptions.IncludeNullableReferenceTypeModifier);
-
-        internal virtual string GetDebuggerDisplay()
-        {
-            return $"{this.Kind} {this.MetadataName} ({this.GetType().Name})";
-        }
-
         #region Use-Site Diagnostics
 
         /// <summary>
@@ -536,97 +527,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return this.MetadataName + " (" + this.Kind.ToString() + ")";
         }
 
-        public ImmutableArray<SymbolDisplayPart> ToDisplayParts(SymbolDisplayFormat format = null)
-        {
-            return SymbolDisplay.ToDisplayParts(this, format);
-        }
-
-        public string ToMinimalDisplayString(
-            SemanticModel semanticModel,
-            int position,
-            SymbolDisplayFormat format = null)
-        {
-            return SymbolDisplay.ToMinimalDisplayString(this, semanticModel, position, format);
-        }
-
-        public ImmutableArray<SymbolDisplayPart> ToMinimalDisplayParts(
-            SemanticModel semanticModel,
-            int position,
-            SymbolDisplayFormat format = null)
-        {
-            return SymbolDisplay.ToMinimalDisplayParts(this, semanticModel, position, format);
-        }
-
-        #region ISymbol Members
-
-        string ISymbol.Language => this.Language.Name;
-
-        string ISymbol.Name => this.Name;
-
-        string ISymbol.ToDisplayString(SymbolDisplayFormat format)
-        {
-            return SymbolDisplay.ToDisplayString(this, format);
-        }
-
-        ImmutableArray<SymbolDisplayPart> ISymbol.ToDisplayParts(SymbolDisplayFormat format)
-        {
-            return SymbolDisplay.ToDisplayParts(this, format);
-        }
-
-        string ISymbol.ToMinimalDisplayString(
-            SemanticModel semanticModel,
-            int position,
-            SymbolDisplayFormat format)
-        {
-            var csharpModel = semanticModel as LanguageSemanticModel;
-            if (csharpModel == null)
-            {
-                throw new ArgumentException(CSharpResources.WrongSemanticModelType, this.Language.Name);
-            }
-
-            return SymbolDisplay.ToMinimalDisplayString(this, csharpModel, position, format);
-        }
-
-        ImmutableArray<SymbolDisplayPart> ISymbol.ToMinimalDisplayParts(
-            SemanticModel semanticModel,
-            int position,
-            SymbolDisplayFormat format)
-        {
-            var csharpModel = semanticModel as LanguageSemanticModel;
-            if (csharpModel == null)
-            {
-                throw new ArgumentException(CSharpResources.WrongSemanticModelType, this.Language.Name);
-            }
-
-            return SymbolDisplay.ToMinimalDisplayParts(this, csharpModel, position, format);
-        }
-
-        ISymbol ISymbol.ContainingSymbol => this.ContainingSymbol;
-
-        MetaDslx.CodeAnalysis.SymbolKind ISymbol.Kind => Language.SymbolFacts.ToCSharpKind(this.Kind);
-
-        IAssemblySymbol ISymbol.ContainingAssembly => this.ContainingAssembly;
-
-        IModuleSymbol ISymbol.ContainingModule => this.ContainingModule;
-
-        ImmutableArray<Location> ISymbol.Locations => this.Locations;
-
-        ImmutableArray<AttributeData> ISymbol.GetAttributes()
-        {
-            return this.GetAttributes();
-        }
-
-        public abstract void Accept(MetaDslx.CodeAnalysis.SymbolVisitor visitor);
-
-        public abstract TResult Accept<TResult>(MetaDslx.CodeAnalysis.SymbolVisitor<TResult> visitor);
-
         public abstract void Accept(SymbolVisitor visitor);
 
         public abstract TResult Accept<TResult>(SymbolVisitor<TResult> visitor);
 
         public abstract TResult Accept<TArgument, TResult>(SymbolVisitor<TArgument, TResult> visitor, TArgument argument);
-
-        #endregion
 
         string IFormattable.ToString(string format, IFormatProvider formatProvider)
         {

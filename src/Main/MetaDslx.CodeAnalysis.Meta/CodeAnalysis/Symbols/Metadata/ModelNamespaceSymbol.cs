@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using MetaDslx.Modeling;
-using MetaDslx.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 {

@@ -1,6 +1,4 @@
 using MetaDslx.Languages.Meta.Model;
-using MetaDslx.Modeling.Internal;
-using MetaDslx.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -97,8 +95,6 @@ namespace MetaDslx.Modeling
         }
 
         protected abstract void MInit();
-
-        public virtual void MValidate(DiagnosticBag diagnostics, CancellationToken cancellationToken = default) { }
 
         internal void MCallInit()
         {

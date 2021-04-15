@@ -1,5 +1,5 @@
 using MetaDslx.CodeAnalysis.Symbols;
-using MetaDslx.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using Roslyn.Utilities;
 using System;
 using System.Collections.Generic;
@@ -49,12 +49,12 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
 
         private bool IsSubmission
         {
-            get { return (Container?.Kind == LanguageSymbolKind.NamedType) && ((NamedTypeSymbol)Container).IsSubmission; }
+            get { return (Container?.Kind == Symbols.SymbolKind.NamedType) && ((NamedTypeSymbol)Container).IsSubmission; }
         }
 
         private bool IsScript
         {
-            get { return (Container?.Kind == LanguageSymbolKind.NamedType) && ((NamedTypeSymbol)Container).IsScript; }
+            get { return (Container?.Kind == Symbols.SymbolKind.NamedType) && ((NamedTypeSymbol)Container).IsScript; }
         }
 
         protected override LookupConstraints AdjustConstraints(LookupConstraints constraints)

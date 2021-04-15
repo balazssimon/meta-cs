@@ -43,7 +43,7 @@ namespace Microsoft.CodeAnalysis.PooledObjects
     /// Rationale: 
     ///    If there is no intent for reusing the object, do not use pool - just use "new". 
     /// </summary>
-    internal class ObjectPool<T> where T : class
+    public class ObjectPool<T> where T : class
     {
         [DebuggerDisplay("{Value,nq}")]
         private struct Element

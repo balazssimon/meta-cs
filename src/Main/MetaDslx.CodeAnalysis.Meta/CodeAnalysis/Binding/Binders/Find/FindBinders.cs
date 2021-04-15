@@ -1,7 +1,7 @@
 using MetaDslx.CodeAnalysis.Binding.Binders;
 using MetaDslx.CodeAnalysis.Binding.Binders.Find;
 using MetaDslx.CodeAnalysis.Symbols;
-using MetaDslx.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;

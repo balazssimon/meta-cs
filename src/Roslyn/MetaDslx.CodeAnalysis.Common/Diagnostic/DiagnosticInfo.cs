@@ -22,7 +22,7 @@ namespace Microsoft.CodeAnalysis
     /// provide access to additional information about the error, such as what symbols were involved in the ambiguity.
     /// </remarks>
     [DebuggerDisplay("{GetDebuggerDisplay(), nq}")]
-    internal class DiagnosticInfo : IFormattable, IObjectWritable
+    public class DiagnosticInfo : IFormattable, IObjectWritable
     {
         private readonly CommonMessageProvider _messageProvider;
         private readonly int _errorCode;

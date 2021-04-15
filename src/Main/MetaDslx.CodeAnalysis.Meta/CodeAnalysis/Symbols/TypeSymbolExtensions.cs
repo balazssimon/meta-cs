@@ -1,4 +1,4 @@
-using MetaDslx.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -49,7 +49,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public static bool IsErrorType(this TypeSymbol type)
         {
             Debug.Assert((object)type != null);
-            return type.Kind == LanguageSymbolKind.ErrorType;
+            return type.Kind == SymbolKind.ErrorType;
         }
         public static bool IsDynamic(this TypeSymbol type)
         {

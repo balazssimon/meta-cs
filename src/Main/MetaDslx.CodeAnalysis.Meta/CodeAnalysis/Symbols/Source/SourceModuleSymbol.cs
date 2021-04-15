@@ -2,8 +2,8 @@ using MetaDslx.CodeAnalysis.Declarations;
 using MetaDslx.CodeAnalysis.Symbols.CSharp;
 using MetaDslx.CodeAnalysis.Symbols.Metadata;
 using MetaDslx.Modeling;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.PooledObjects;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 using System;
 using System.Collections.Generic;
@@ -176,7 +176,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             {
                 switch (s.Kind.Switch())
                 {
-                    case LanguageSymbolKind.Namespace:
+                    case SymbolKind.Namespace:
                         if (NamespaceContainsExplicitDefinitionOfNoPiaLocalTypes((NamespaceSymbol)s))
                         {
                             return true;
@@ -184,7 +184,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
                         break;
 
-                    case LanguageSymbolKind.NamedType:
+                    case SymbolKind.NamedType:
                         if (((NamedTypeSymbol)s).IsExplicitDefinitionOfNoPiaLocalType)
                         {
                             return true;

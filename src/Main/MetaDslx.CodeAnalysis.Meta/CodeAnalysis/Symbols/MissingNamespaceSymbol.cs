@@ -2,8 +2,8 @@
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.Text;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Text;
 using Roslyn.Utilities;
 using System.Diagnostics;
 
@@ -63,7 +63,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         {
             get
             {
-                if (_containingSymbol.Kind == LanguageSymbolKind.NetModule)
+                if (_containingSymbol.Kind == SymbolKind.NetModule)
                 {
                     return new NamespaceExtent((ModuleSymbol)_containingSymbol);
                 }

@@ -1,6 +1,6 @@
 using MetaDslx.CodeAnalysis.Binding;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.PooledObjects;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 using System;
 using System.Collections.Concurrent;
@@ -15,7 +15,7 @@ using System.Threading;
 namespace MetaDslx.CodeAnalysis.Symbols
 {
     [Symbol(HasSubSymbolKinds = true)]
-    public abstract partial class TypeSymbol : NamespaceOrTypeSymbol, IMetaTypeSymbol
+    public abstract partial class TypeSymbol : NamespaceOrTypeSymbol
     {
         // TODO (tomat): Consider changing this to an empty name. This name shouldn't ever leak to the user in error messages.
         internal const string ImplicitTypeName = "<invalid-global-code>";
@@ -349,7 +349,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             {
                 throw new ArgumentNullException(nameof(baseTypeMember));
             }
-            if (baseTypeMember is IMetaMemberSymbol member && member.IsImplementableMember)
+            if (baseTypeMember is MemberSymbol member && member.IsImplementableMember)
             {
                 return null;
             }
@@ -371,7 +371,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <summary>
         /// Gets corresponding primitive type code for this type declaration.
         /// </summary>
-        internal MetaDslx.Cci.PrimitiveTypeCode PrimitiveTypeCode => SpecialTypes.GetTypeCode(SpecialType);
+        internal Microsoft.Cci.PrimitiveTypeCode PrimitiveTypeCode => SpecialTypes.GetTypeCode(SpecialType);
 
         #region Use-Site Diagnostics
 
@@ -403,18 +403,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         protected override sealed DeclaredSymbol OriginalSymbolDefinition => this.OriginalTypeSymbolDefinition;
 
         #endregion
-        ImmutableArray<INamedTypeSymbol> IMetaTypeSymbol.BaseTypes => StaticCast<INamedTypeSymbol>.From(this.BaseTypesNoUseSiteDiagnostics);
-
-        ImmutableArray<INamedTypeSymbol> IMetaTypeSymbol.AllBaseTypes => StaticCast<INamedTypeSymbol>.From(this.AllBaseTypesNoUseSiteDiagnostics);
-
-        MetaDslx.CodeAnalysis.TypeKind ITypeSymbol.TypeKind => Language.SymbolFacts.ToCSharpKind(this.TypeKind);
-
-        INamedTypeSymbol ITypeSymbol.BaseType => this.BaseTypesNoUseSiteDiagnostics.Where(t => ((ITypeSymbol)t).TypeKind == MetaDslx.CodeAnalysis.TypeKind.Class).FirstOrDefault();
-
-        ImmutableArray<INamedTypeSymbol> ITypeSymbol.Interfaces => StaticCast<INamedTypeSymbol>.From(this.BaseTypesNoUseSiteDiagnostics.WhereAsArray(t => ((ITypeSymbol)t).TypeKind == MetaDslx.CodeAnalysis.TypeKind.Interface));
-
-        ImmutableArray<INamedTypeSymbol> ITypeSymbol.AllInterfaces => StaticCast<INamedTypeSymbol>.From(this.AllBaseTypesNoUseSiteDiagnostics.WhereAsArray(t => ((ITypeSymbol)t).TypeKind == MetaDslx.CodeAnalysis.TypeKind.Interface));
-
         public virtual bool IsReferenceType => false;
 
         public virtual bool IsValueType => false;
@@ -423,25 +411,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         public virtual bool IsTupleType => false;
 
-        ITypeSymbol ITypeSymbol.OriginalDefinition => this.OriginalTypeSymbolDefinition;
-
-        SpecialType ITypeSymbol.SpecialType => this.SpecialType;
-
         public virtual bool IsRefLikeType => false;
 
         public virtual bool IsUnmanagedType => false;
 
         public virtual bool IsReadOnly => false;
-
-        ISymbol IMetaTypeSymbol.FindImplementationForBaseTypeMember(ISymbol baseMember)
-        {
-            return this.FindImplementationForBaseTypeMember((Symbol)baseMember);
-        }
-
-        ISymbol ITypeSymbol.FindImplementationForInterfaceMember(ISymbol interfaceMember)
-        {
-            return this.FindImplementationForBaseTypeMember((Symbol)interfaceMember);
-        }
 
         #region Interface member checks
 

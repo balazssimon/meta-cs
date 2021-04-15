@@ -1,6 +1,6 @@
 using MetaDslx.CodeAnalysis.Binding;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.PooledObjects;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.PooledObjects;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -10,9 +10,9 @@ using System.Text;
 namespace MetaDslx.CodeAnalysis.Symbols
 {
     [Symbol(HasSubSymbolKinds = true)]
-    public abstract class MemberSymbol : DeclaredSymbol, IMetaMemberSymbol
+    public abstract class MemberSymbol : DeclaredSymbol
     {
-        public sealed override LanguageSymbolKind Kind => LanguageSymbolKind.Member;
+        public sealed override SymbolKind Kind => SymbolKind.Member;
 
         public abstract MemberKind MemberKind { get; }
 
@@ -241,7 +241,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             hiddenBuilder = null;
 
             bool currTypeHasExactMatch = false;
-            LanguageSymbolKind memberKind = this.Kind;
+            SymbolKind memberKind = this.Kind;
 
             foreach (DeclaredSymbol otherMember in currType.GetMembers(this.Name))
             {
@@ -277,7 +277,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         private static void FindRelatedMembers(
             bool isOverride,
             bool overridingMemberIsFromSomeCompilation,
-            LanguageSymbolKind overridingMemberKind,
+            SymbolKind overridingMemberKind,
             DeclaredSymbol representativeMember,
             out ImmutableArray<DeclaredSymbol> overriddenMembers,
             out ImmutableArray<DeclaredSymbol> runtimeOverriddenMembers,
@@ -328,7 +328,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// Specifically, methods, properties, and types cannot hide constructors, destructors,
         /// operators, conversions, or accessors.
         /// </summary>
-        private static void AddHiddenMemberIfApplicable(ref ArrayBuilder<DeclaredSymbol> hiddenBuilder, LanguageSymbolKind hidingMemberKind, DeclaredSymbol hiddenMember)
+        private static void AddHiddenMemberIfApplicable(ref ArrayBuilder<DeclaredSymbol> hiddenBuilder, SymbolKind hidingMemberKind, DeclaredSymbol hiddenMember)
         {
             Debug.Assert((object)hiddenMember != null);
             AccessOrGetInstance(ref hiddenBuilder).Add(hiddenMember);
@@ -404,7 +404,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// Will have all other members with the same signature (including custom modifiers) as 
         /// representativeMember added.
         /// </param>
-        private static void FindOtherHiddenMembersInContainingType(LanguageSymbolKind hidingMemberKind, DeclaredSymbol representativeMember, ref ArrayBuilder<DeclaredSymbol> hiddenBuilder)
+        private static void FindOtherHiddenMembersInContainingType(SymbolKind hidingMemberKind, DeclaredSymbol representativeMember, ref ArrayBuilder<DeclaredSymbol> hiddenBuilder)
         {
             Debug.Assert((object)representativeMember != null);
         }
@@ -447,14 +447,5 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return visitor.VisitMember(this, argument);
         }
 
-        public override void Accept(MetaDslx.CodeAnalysis.SymbolVisitor visitor)
-        {
-            
-        }
-
-        public override TResult Accept<TResult>(MetaDslx.CodeAnalysis.SymbolVisitor<TResult> visitor)
-        {
-            return default;
-        }
     }
 }

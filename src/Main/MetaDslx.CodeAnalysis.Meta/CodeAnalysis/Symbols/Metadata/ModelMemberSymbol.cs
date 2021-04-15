@@ -1,5 +1,5 @@
 using MetaDslx.Modeling;
-using MetaDslx.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;

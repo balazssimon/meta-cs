@@ -8,9 +8,9 @@ using System.Diagnostics.CodeAnalysis;
 namespace Microsoft.CodeAnalysis
 {
     [DebuggerDisplay("{Value,nq}")]
-    internal struct ArrayElement<T>
+    public struct ArrayElement<T>
     {
-        internal T Value;
+        public T Value;
 
         public static implicit operator T(ArrayElement<T> element)
         {

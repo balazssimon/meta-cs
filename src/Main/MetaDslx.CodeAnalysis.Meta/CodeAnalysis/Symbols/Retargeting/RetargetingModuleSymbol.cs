@@ -12,7 +12,7 @@ using System.Threading;
 using MetaDslx.CodeAnalysis.Symbols.CSharp;
 using MetaDslx.CodeAnalysis.Symbols.Source;
 using MetaDslx.Modeling;
-using MetaDslx.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 
 
 namespace MetaDslx.CodeAnalysis.Symbols.Retargeting

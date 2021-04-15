@@ -7,10 +7,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using MetaDslx.Modeling;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.Collections;
-using MetaDslx.CodeAnalysis.PooledObjects;
-using MetaDslx.CodeAnalysis.Text;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Collections;
+using Microsoft.CodeAnalysis.PooledObjects;
+using Microsoft.CodeAnalysis.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
@@ -138,7 +138,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             {
                 foreach (DeclaredSymbol childSymbol in namespaceSymbol.GetMembers(name))
                 {
-                    if (childSymbol.Kind == LanguageSymbolKind.Namespace)
+                    if (childSymbol.Kind == SymbolKind.Namespace)
                     {
                         namespaceSymbols = namespaceSymbols ?? ArrayBuilder<NamespaceSymbol>.GetInstance();
                         namespaceSymbols.Add((NamespaceSymbol)childSymbol);

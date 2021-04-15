@@ -24,14 +24,5 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return visitor.VisitStatement(this, argument);
         }
 
-        public override void Accept(MetaDslx.CodeAnalysis.SymbolVisitor visitor)
-        {
-
-        }
-
-        public override TResult Accept<TResult>(MetaDslx.CodeAnalysis.SymbolVisitor<TResult> visitor)
-        {
-            return default;
-        }
     }
 }

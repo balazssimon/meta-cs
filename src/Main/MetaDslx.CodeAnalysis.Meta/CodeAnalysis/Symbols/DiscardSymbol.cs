@@ -1,13 +1,13 @@
 // Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using MetaDslx.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using System.Collections.Immutable;
 using System.Diagnostics;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
     [Symbol]
-    public sealed class DiscardSymbol : Symbol, IDiscardSymbol
+    public sealed class DiscardSymbol : Symbol
     {
         public DiscardSymbol(TypeSymbol type)
         {
@@ -15,7 +15,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
             Type = type;
         }
 
-        ITypeSymbol IDiscardSymbol.Type => Type;
         public TypeSymbol Type { get; }
 
         /// <summary>
@@ -25,7 +24,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         public override Symbol ContainingSymbol => null;
         public override ImmutableArray<Symbol> ChildSymbols => ImmutableArray<Symbol>.Empty;
-        public override LanguageSymbolKind Kind => LanguageSymbolKind.Discard;
+        public override SymbolKind Kind => SymbolKind.Discard;
         public override ImmutableArray<Location> Locations => ImmutableArray<Location>.Empty;
         public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => ImmutableArray<SyntaxReference>.Empty;
 
@@ -35,16 +34,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public override TResult Accept<TArgument, TResult>(SymbolVisitor<TArgument, TResult> visitor, TArgument argument)
         {
             return visitor.VisitDiscard(this, argument);
-        }
-
-        public override void Accept(MetaDslx.CodeAnalysis.SymbolVisitor visitor)
-        {
-            visitor.VisitDiscard(this);
-        }
-
-        public override TResult Accept<TResult>(MetaDslx.CodeAnalysis.SymbolVisitor<TResult> visitor)
-        {
-            return visitor.VisitDiscard(this);
         }
 
         public override bool Equals(object obj) => obj is DiscardSymbol other && this.Type.Equals(other.Type);

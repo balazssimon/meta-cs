@@ -8,7 +8,7 @@ using System.Reflection.PortableExecutable;
 using System.Runtime.InteropServices;
 using MetaDslx.CodeAnalysis.Symbols.Source;
 using MetaDslx.Modeling;
-using MetaDslx.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis.Symbols
@@ -17,7 +17,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
     /// Represents a module within an assembly. Every assembly contains one or more modules.
     /// </summary>
     [Symbol]
-    public abstract class ModuleSymbol : Symbol, IModuleSymbol
+    public abstract class ModuleSymbol : Symbol
     {
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         // Changes to the public interface of this class should remain synchronized with the VB version.
@@ -54,13 +54,13 @@ namespace MetaDslx.CodeAnalysis.Symbols
         }
 
         /// <summary>
-        /// Returns value 'NetModule' of the <see cref="LanguageSymbolKind"/>
+        /// Returns value 'NetModule' of the <see cref="SymbolKind"/>
         /// </summary>
-        public sealed override LanguageSymbolKind Kind
+        public sealed override SymbolKind Kind
         {
             get
             {
-                return LanguageSymbolKind.NetModule;
+                return SymbolKind.NetModule;
             }
         }
 
@@ -233,28 +233,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
         }
 
-        #region IModuleSymbol Members
-
-        INamespaceSymbol IModuleSymbol.GlobalNamespace
-        {
-            get { return this.GlobalNamespace; }
-        }
-
-        INamespaceSymbol IModuleSymbol.GetModuleNamespace(INamespaceSymbol namespaceSymbol)
-        {
-            return this.GetModuleNamespace(namespaceSymbol);
-        }
-
-        ImmutableArray<IAssemblySymbol> IModuleSymbol.ReferencedAssemblySymbols
-        {
-            get
-            {
-                return ImmutableArray<IAssemblySymbol>.CastUp(ReferencedAssemblySymbols);
-            }
-        }
-
-        #endregion
-
         #region ISymbol Members
 
         public override void Accept(SymbolVisitor visitor)
@@ -270,16 +248,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public override TResult Accept<TArgument, TResult>(SymbolVisitor<TArgument, TResult> visitor, TArgument argument)
         {
             return visitor.VisitModule(this, argument);
-        }
-
-        public override void Accept(MetaDslx.CodeAnalysis.SymbolVisitor visitor)
-        {
-            visitor.VisitModule(this);
-        }
-
-        public override TResult Accept<TResult>(MetaDslx.CodeAnalysis.SymbolVisitor<TResult> visitor)
-        {
-            return visitor.VisitModule(this);
         }
 
         /// <summary>

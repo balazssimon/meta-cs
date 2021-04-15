@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using MetaDslx.CodeAnalysis.Symbols;
-using MetaDslx.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis.Binding.Binders
@@ -29,7 +29,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
         protected override void AddLookupCandidateSymbolsInScope(LookupCandidates result, LookupConstraints constraints)
         {
             var hostObjectType = GetHostObjectType();
-            if (hostObjectType.Kind != LanguageSymbolKind.ErrorType)
+            if (hostObjectType.Kind != Symbols.SymbolKind.ErrorType)
             {
                 base.AddLookupCandidateSymbolsInScope(result, constraints.WithQualifier(hostObjectType));
             }
@@ -43,7 +43,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
         protected override void CheckFinalResultViability(LookupResult result, LookupConstraints constraints)
         {
             var hostObjectType = GetHostObjectType();
-            if (hostObjectType.Kind == LanguageSymbolKind.ErrorType)
+            if (hostObjectType.Kind == Symbols.SymbolKind.ErrorType)
             {
                 // The name '{0}' does not exist in the current context (are you missing a reference to assembly '{1}'?)
                 result.SetFrom(new LanguageDiagnosticInfo(

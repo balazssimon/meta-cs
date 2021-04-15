@@ -4,13 +4,13 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.PooledObjects;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Source
 {
-    public sealed partial class DynamicTypeSymbol : TypeSymbol, IDynamicTypeSymbol
+    public sealed partial class DynamicTypeSymbol : TypeSymbol
     {
         public static readonly DynamicTypeSymbol Instance = new DynamicTypeSymbol();
 
@@ -50,11 +50,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             }
         }
 
-        public override LanguageSymbolKind Kind
+        public override SymbolKind Kind
         {
             get
             {
-                return LanguageSymbolKind.DynamicType;
+                return SymbolKind.DynamicType;
             }
         }
 
@@ -164,7 +164,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         {
             // return the distinguished value for 'object' because the hash code ignores the distinction
             // between dynamic and object.  It also ignores custom modifiers.
-            return (int)MetaDslx.CodeAnalysis.SpecialType.System_Object;
+            return (int)Microsoft.CodeAnalysis.SpecialType.System_Object;
         }
 
         public override bool Equals(TypeSymbol t2, TypeCompareKind comparison)
@@ -182,7 +182,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             if ((comparison & TypeCompareKind.IgnoreDynamic) != 0)
             {
                 var other = t2 as NamedTypeSymbol;
-                return (object)other != null && other.SpecialType == MetaDslx.CodeAnalysis.SpecialType.System_Object;
+                return (object)other != null && other.SpecialType == Microsoft.CodeAnalysis.SpecialType.System_Object;
             }
 
             return false;
@@ -203,16 +203,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         public override TResult Accept<TArgument, TResult>(SymbolVisitor<TArgument, TResult> visitor, TArgument argument)
         {
             return visitor.VisitDynamicType(this, argument);
-        }
-
-        public override void Accept(MetaDslx.CodeAnalysis.SymbolVisitor visitor)
-        {
-            visitor.VisitDynamicType(this);
-        }
-
-        public override TResult Accept<TResult>(MetaDslx.CodeAnalysis.SymbolVisitor<TResult> visitor)
-        {
-            return visitor.VisitDynamicType(this);
         }
 
         #endregion

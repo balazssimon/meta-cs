@@ -4,12 +4,12 @@ using System.Collections.Immutable;
 using System.Text;
 using MetaDslx.CodeAnalysis.Declarations;
 using MetaDslx.Modeling;
-using MetaDslx.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-    using CSharpSymbolKind = MetaDslx.CodeAnalysis.SymbolKind;
-    using CSharpTypeKind = MetaDslx.CodeAnalysis.TypeKind;
+    using CSharpSymbolKind = Microsoft.CodeAnalysis.SymbolKind;
+    using CSharpTypeKind = Microsoft.CodeAnalysis.TypeKind;
 
     public abstract class SymbolFacts
     {
@@ -20,75 +20,75 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return false;
         }
 
-        public virtual CSharpSymbolKind ToCSharpKind(LanguageSymbolKind kind)
+        public virtual CSharpSymbolKind ToCSharpKind(SymbolKind kind)
         {
             switch (kind.Switch())
             {
-                case LanguageSymbolKind.Assembly:
+                case SymbolKind.Assembly:
                     return CSharpSymbolKind.Assembly;
-                case LanguageSymbolKind.NetModule:
+                case SymbolKind.NetModule:
                     return CSharpSymbolKind.NetModule;
-                case LanguageSymbolKind.Alias:
+                case SymbolKind.Alias:
                     return CSharpSymbolKind.Alias;
-                case LanguageSymbolKind.Namespace:
+                case SymbolKind.Namespace:
                     return CSharpSymbolKind.Namespace;
-                case LanguageSymbolKind.NamedType:
+                case SymbolKind.NamedType:
                     return CSharpSymbolKind.NamedType;
-                case LanguageSymbolKind.Member:
+                case SymbolKind.Member:
                     return CSharpSymbolKind.Property;
-                case LanguageSymbolKind.Local:
+                case SymbolKind.Local:
                     return CSharpSymbolKind.Local;
-                case LanguageSymbolKind.ErrorType:
+                case SymbolKind.ErrorType:
                     return CSharpSymbolKind.ErrorType;
-                case LanguageSymbolKind.Expression:
+                case SymbolKind.Expression:
                     return CSharpSymbolKind.ErrorType;
-                case LanguageSymbolKind.Statement:
+                case SymbolKind.Statement:
                     return CSharpSymbolKind.ErrorType;
-                case LanguageSymbolKind.DynamicType:
+                case SymbolKind.DynamicType:
                     return CSharpSymbolKind.DynamicType;
-                case LanguageSymbolKind.ConstructedType:
+                case SymbolKind.ConstructedType:
                     return CSharpSymbolKind.ArrayType;
-                case LanguageSymbolKind.None:
+                case SymbolKind.None:
                     return CSharpSymbolKind.ErrorType;
-                case LanguageSymbolKind.Discard:
+                case SymbolKind.Discard:
                     return CSharpSymbolKind.Discard;
                 default:
                     throw new ArgumentException("Unexpected symbol kind: " + kind.ToString(), nameof(kind));
             }
         }
 
-        public virtual LanguageSymbolKind FromCSharpKind(CSharpSymbolKind kind)
+        public virtual SymbolKind FromCSharpKind(CSharpSymbolKind kind)
         {
             switch (kind)
             {
                 case CSharpSymbolKind.Assembly:
-                    return LanguageSymbolKind.Assembly;
+                    return SymbolKind.Assembly;
                 case CSharpSymbolKind.NetModule:
-                    return LanguageSymbolKind.NetModule;
+                    return SymbolKind.NetModule;
                 case CSharpSymbolKind.Alias:
-                    return LanguageSymbolKind.Alias;
+                    return SymbolKind.Alias;
                 case CSharpSymbolKind.Namespace:
-                    return LanguageSymbolKind.Namespace;
+                    return SymbolKind.Namespace;
                 case CSharpSymbolKind.NamedType:
-                    return LanguageSymbolKind.NamedType;
+                    return SymbolKind.NamedType;
                 case CSharpSymbolKind.Field:
                 case CSharpSymbolKind.Property:
                 case CSharpSymbolKind.Event:
                 case CSharpSymbolKind.Method:
-                    return LanguageSymbolKind.Member;
+                    return SymbolKind.Member;
                 case CSharpSymbolKind.Label:
                 case CSharpSymbolKind.Local:
                 case CSharpSymbolKind.RangeVariable:
                 case CSharpSymbolKind.Parameter:
                 case CSharpSymbolKind.TypeParameter:
-                    return LanguageSymbolKind.Local;
+                    return SymbolKind.Local;
                 case CSharpSymbolKind.ErrorType:
-                    return LanguageSymbolKind.ErrorType;
+                    return SymbolKind.ErrorType;
                 case CSharpSymbolKind.DynamicType:
-                    return LanguageSymbolKind.DynamicType;
+                    return SymbolKind.DynamicType;
                 case CSharpSymbolKind.ArrayType:
                 case CSharpSymbolKind.PointerType:
-                    return LanguageSymbolKind.ConstructedType;
+                    return SymbolKind.ConstructedType;
                 default:
                     throw new ArgumentException("Unexpected symbol kind: " + kind.ToString(), nameof(kind));
             }

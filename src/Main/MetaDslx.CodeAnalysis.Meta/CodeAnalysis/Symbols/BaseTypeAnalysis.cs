@@ -2,8 +2,8 @@
 
 using System.Collections.Generic;
 using System.Diagnostics;
-using MetaDslx.CodeAnalysis.Collections;
-using MetaDslx.CodeAnalysis.PooledObjects;
+using Microsoft.CodeAnalysis.Collections;
+using Microsoft.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis.Symbols

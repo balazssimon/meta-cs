@@ -1,7 +1,7 @@
 using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Symbols.Metadata;
 using MetaDslx.CodeAnalysis.Symbols.Source;
-using MetaDslx.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -42,9 +42,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
             {
                 switch (containingSymbol.Kind.Switch())
                 {
-                    case LanguageSymbolKind.Namespace:
-                    case LanguageSymbolKind.NamedType:
-                    case LanguageSymbolKind.ErrorType:
+                    case SymbolKind.Namespace:
+                    case SymbolKind.NamedType:
+                    case SymbolKind.ErrorType:
                         return (NamespaceOrTypeSymbol)containingSymbol;
                 }
             }
@@ -55,12 +55,12 @@ namespace MetaDslx.CodeAnalysis.Symbols
         {
             switch (symbol.Kind.Switch())
             {
-                case LanguageSymbolKind.ConstructedType:
-                case LanguageSymbolKind.DynamicType:
-                case LanguageSymbolKind.ErrorType:
-                case LanguageSymbolKind.NamedType:
+                case SymbolKind.ConstructedType:
+                case SymbolKind.DynamicType:
+                case SymbolKind.ErrorType:
+                case SymbolKind.NamedType:
                     return true;
-                case LanguageSymbolKind.Alias:
+                case SymbolKind.Alias:
                     return IsTypeOrTypeAlias(((AliasSymbol)symbol).Target);
                 default:
                     Debug.Assert(!(symbol is TypeSymbol));

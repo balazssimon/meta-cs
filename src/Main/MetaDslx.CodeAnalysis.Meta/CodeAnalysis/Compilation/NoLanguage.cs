@@ -1,10 +1,10 @@
-using MetaDslx.CodeAnalysis.Binding;
+﻿using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Declarations;
 using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.Text;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Text;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -286,52 +286,52 @@ namespace MetaDslx.CodeAnalysis
 
         public class NoSymbolFacts : SymbolFacts
         {
-            public override LanguageSymbolKind FromCSharpKind(SymbolKind kind)
+            public override Symbols.SymbolKind FromCSharpKind(Microsoft.CodeAnalysis.SymbolKind kind)
             {
                 switch (kind)
                 {
-                    case SymbolKind.Alias:
-                        return LanguageSymbolKind.Alias;
-                    case SymbolKind.ArrayType:
-                        return LanguageSymbolKind.ConstructedType;
-                    case SymbolKind.Assembly:
-                        return LanguageSymbolKind.Assembly;
-                    case SymbolKind.DynamicType:
-                        return LanguageSymbolKind.DynamicType;
-                    case SymbolKind.ErrorType:
-                        return LanguageSymbolKind.ErrorType;
-                    case SymbolKind.Event:
-                        return LanguageSymbolKind.Member;
-                    case SymbolKind.Field:
-                        return LanguageSymbolKind.Member;
-                    case SymbolKind.Label:
-                        return LanguageSymbolKind.Local;
-                    case SymbolKind.Local:
-                        return LanguageSymbolKind.Local;
-                    case SymbolKind.Method:
-                        return LanguageSymbolKind.Member;
-                    case SymbolKind.NetModule:
-                        return LanguageSymbolKind.NetModule;
-                    case SymbolKind.NamedType:
-                        return LanguageSymbolKind.NamedType;
-                    case SymbolKind.Namespace:
-                        return LanguageSymbolKind.Namespace;
-                    case SymbolKind.Parameter:
-                        return LanguageSymbolKind.Local;
-                    case SymbolKind.PointerType:
-                        return LanguageSymbolKind.ConstructedType;
-                    case SymbolKind.Property:
-                        return LanguageSymbolKind.Member;
-                    case SymbolKind.RangeVariable:
-                        return LanguageSymbolKind.Local;
-                    case SymbolKind.TypeParameter:
-                        return LanguageSymbolKind.Local;
-                    case SymbolKind.Preprocessing:
-                        return LanguageSymbolKind.Local;
-                    case SymbolKind.Discard:
-                        return LanguageSymbolKind.Discard;
+                    case Microsoft.CodeAnalysis.SymbolKind.Alias:
+                        return Symbols.SymbolKind.Alias;
+                    case Microsoft.CodeAnalysis.SymbolKind.ArrayType:
+                        return Symbols.SymbolKind.ConstructedType;
+                    case Microsoft.CodeAnalysis.SymbolKind.Assembly:
+                        return Symbols.SymbolKind.Assembly;
+                    case Microsoft.CodeAnalysis.SymbolKind.DynamicType:
+                        return Symbols.SymbolKind.DynamicType;
+                    case Microsoft.CodeAnalysis.SymbolKind.ErrorType:
+                        return Symbols.SymbolKind.ErrorType;
+                    case Microsoft.CodeAnalysis.SymbolKind.Event:
+                        return Symbols.SymbolKind.Member;
+                    case Microsoft.CodeAnalysis.SymbolKind.Field:
+                        return Symbols.SymbolKind.Member;
+                    case Microsoft.CodeAnalysis.SymbolKind.Label:
+                        return Symbols.SymbolKind.Local;
+                    case Microsoft.CodeAnalysis.SymbolKind.Local:
+                        return Symbols.SymbolKind.Local;
+                    case Microsoft.CodeAnalysis.SymbolKind.Method:
+                        return Symbols.SymbolKind.Member;
+                    case Microsoft.CodeAnalysis.SymbolKind.NetModule:
+                        return Symbols.SymbolKind.NetModule;
+                    case Microsoft.CodeAnalysis.SymbolKind.NamedType:
+                        return Symbols.SymbolKind.NamedType;
+                    case Microsoft.CodeAnalysis.SymbolKind.Namespace:
+                        return Symbols.SymbolKind.Namespace;
+                    case Microsoft.CodeAnalysis.SymbolKind.Parameter:
+                        return Symbols.SymbolKind.Local;
+                    case Microsoft.CodeAnalysis.SymbolKind.PointerType:
+                        return Symbols.SymbolKind.ConstructedType;
+                    case Microsoft.CodeAnalysis.SymbolKind.Property:
+                        return Symbols.SymbolKind.Member;
+                    case Microsoft.CodeAnalysis.SymbolKind.RangeVariable:
+                        return Symbols.SymbolKind.Local;
+                    case Microsoft.CodeAnalysis.SymbolKind.TypeParameter:
+                        return Symbols.SymbolKind.Local;
+                    case Microsoft.CodeAnalysis.SymbolKind.Preprocessing:
+                        return Symbols.SymbolKind.Local;
+                    case Microsoft.CodeAnalysis.SymbolKind.Discard:
+                        return Symbols.SymbolKind.Discard;
                     default:
-                        return LanguageSymbolKind.None;
+                        return Symbols.SymbolKind.None;
                 }
             }
 

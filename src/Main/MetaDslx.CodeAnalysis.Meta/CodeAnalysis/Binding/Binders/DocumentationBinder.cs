@@ -5,6 +5,7 @@ using MetaDslx.Languages.Meta.Model;
 using System.Diagnostics;
 using System.Threading;
 using MetaDslx.CodeAnalysis.Symbols.Metadata;
+using Microsoft.CodeAnalysis;
 
 namespace MetaDslx.CodeAnalysis.Binding.Binders
 {

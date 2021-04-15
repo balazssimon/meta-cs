@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -6,9 +6,9 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
-using MetaDslx.CodeAnalysis.Collections;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.PooledObjects;
+using Microsoft.CodeAnalysis.Collections;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Symbols.Source;
@@ -78,13 +78,14 @@ namespace MetaDslx.CodeAnalysis.Binding
             SyntaxNodeOrToken syntax,
             DeclaredSymbol container,
             Binder scopeBinder,
-            LookupConstraints constraints)
+            ConsList<TypeSymbol> basesBeingResolved,
+            bool inUsing)
         {
             var diagnostics = new DiagnosticBag();
             Binder containerBinder;
             SyntaxNodeOrToken containerSyntax;
 
-            var symbolDefBinder = FindBinders.FindFirstOrDefaultSymbolBinder(container, syntax.GetReference());
+            var symbolDefBinder = FindBinders.FindFirstOrDefaultSymbolDefBinder(container, syntax.GetReference());
             if (symbolDefBinder.Binder != null)
             {
                 containerBinder = symbolDefBinder.Binder;
@@ -108,7 +109,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                 }*/
             }
 
-            ImmutableArray<UsingDirective> usingDirectives = constraints.InUsing ? ImmutableArray<UsingDirective>.Empty : BuildUsingDirectives(containerSyntax, containerBinder, diagnostics);
+            ImmutableArray<UsingDirective> usingDirectives = inUsing ? ImmutableArray<UsingDirective>.Empty : BuildUsingDirectives(containerSyntax, containerBinder, diagnostics);
             ImmutableArray<ExternAliasDirective> externAliasDirectives = BuildExternAliasDirectives(containerSyntax, containerBinder, diagnostics);
 
             if (usingDirectives.Length == 0 && externAliasDirectives.Length == 0)
@@ -210,11 +211,11 @@ namespace MetaDslx.CodeAnalysis.Binding
                         }
 
                         var declarationBinder = usingsBinder.WithAdditionalFlags(BinderFlags.SuppressConstraintChecks);
-                        var target = declarationBinder.BindQualifiedName(usingDirective.TargetQualifiedName, diagnostics, constraints.WithInUsing(true));
+                        var target = declarationBinder.BindDeclaredSymbol(usingDirective.TargetQualifiedName, diagnostics, basesBeingResolved);
                         var imported = target.Length > 0 ? target[target.Length - 1] : null;
                         if (imported == null) continue;
 
-                        if (imported.Kind == LanguageSymbolKind.Namespace)
+                        if (imported.Kind == Symbols.SymbolKind.Namespace)
                         {
                             if (usingDirective.IsStatic)
                             {
@@ -230,7 +231,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                                 usings.Add(new DeclaredSymbolAndUsingDirective(imported, usingDirective));
                             }
                         }
-                        else if (imported.Kind == LanguageSymbolKind.NamedType)
+                        else if (imported.Kind == Symbols.SymbolKind.NamedType)
                         {
                             if (usingDirective.IsStatic)
                             {
@@ -245,12 +246,14 @@ namespace MetaDslx.CodeAnalysis.Binding
                                 }
                                 else
                                 {
+                                    declarationBinder.ReportDiagnosticsIfObsolete(diagnostics, importedType, usingDirective.TargetName, hasBaseReceiver: false);
+
                                     uniqueUsings.Add(importedType);
                                     usings.Add(new DeclaredSymbolAndUsingDirective(importedType, usingDirective));
                                 }
                             }
                         }
-                        else if (imported.Kind != LanguageSymbolKind.ErrorType)
+                        else if (imported.Kind != Symbols.SymbolKind.ErrorType)
                         {
                             // Do not report additional error if the symbol itself is erroneous.
 
@@ -294,7 +297,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                     continue;
                 }
                 var qualifiedName = syntaxFacts.ExtractQualifiedName(@using);
-                var imported = usingsBinder.BindQualifiedName(qualifiedName, null, diagnostics, new LookupConstraints(usingsBinder, inUsing: true)).LastOrDefault();
+                var imported = usingsBinder.BindDeclaredSymbol(qualifiedName, diagnostics).LastOrDefault();
                 if (uniqueUsings.Add(imported))
                 {
                     boundUsings.Add(new DeclaredSymbolAndUsingDirective(imported, null));
@@ -613,22 +616,22 @@ namespace MetaDslx.CodeAnalysis.Binding
             {
                 cancellationToken.ThrowIfCancellationRequested();
                 var incompletePart = _state.NextIncompletePart;
-                if (incompletePart == CompletionGraph.StartValidatingImports)
+                if (incompletePart == CompletionPart.StartValidatingImports)
                 {
-                    if (_state.NotePartComplete(CompletionGraph.StartValidatingImports))
+                    if (_state.NotePartComplete(CompletionPart.StartValidatingImports))
                     {
                         Validate();
-                        _state.NotePartComplete(CompletionGraph.FinishValidatingImports);
+                        _state.NotePartComplete(CompletionPart.FinishValidatingImports);
                     }
                 }
-                else if (incompletePart == CompletionGraph.FinishValidatingImports)
+                else if (incompletePart == CompletionPart.FinishValidatingImports)
                 {
                     // some other thread has started validating imports (otherwise we would be in the case above) so
                     // we just wait for it to both finish and report the diagnostics.
-                    Debug.Assert(_state.HasComplete(CompletionGraph.StartValidatingImports));
-                    _state.SpinWaitComplete(CompletionGraph.FinishValidatingImports, cancellationToken);
+                    Debug.Assert(_state.HasComplete(CompletionPart.StartValidatingImports));
+                    _state.SpinWaitComplete(CompletionPart.FinishValidatingImports, cancellationToken);
                 }
-                else if (incompletePart == null || incompletePart == CompletionGraph.None)
+                else if (incompletePart == null || incompletePart == CompletionPart.None)
                 {
                     return;
                 }
@@ -636,7 +639,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                 {
                     // any other values are completion parts intended for other kinds of symbols
                     _state.NotePartComplete(incompletePart);
-                    Debug.Assert(!CompletionGraph.ImportsAll.Contains(incompletePart));
+                    Debug.Assert(!CompletionPart.ImportsAll.Contains(incompletePart));
                 }
                 _state.SpinWaitComplete(incompletePart, cancellationToken);
             }
@@ -656,7 +659,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             // Force resolution of named aliases.
             foreach (var (_, alias) in UsingAliases)
             {
-                alias.Alias.GetAliasTarget(null);
+                alias.Alias.GetAliasTarget(basesBeingResolved: null);
                 semanticDiagnostics.AddRange(alias.Alias.AliasTargetDiagnostics);
             }
 
@@ -706,16 +709,98 @@ namespace MetaDslx.CodeAnalysis.Binding
             return false;
         }
 
+        internal void LookupSymbol(LookupResult result, LookupConstraints constraints)
+        {
+            LookupSymbolInAliases(result, constraints);
+
+            if (!result.IsMultiViable && (constraints.Options & LookupOptions.NamespaceAliasesOnly) == 0)
+            {
+                LookupSymbolInUsings(this.Usings, result, constraints);
+            }
+        }
+
+        internal void LookupSymbolInAliases(LookupResult result, LookupConstraints constraints)
+        {
+            bool callerIsSemanticModel = constraints.OriginalBinder.IsSemanticModelBinder;
+
+            AliasAndUsingDirective alias;
+            if (this.UsingAliases.TryGetValue(constraints.Name, out alias))
+            {
+                // Found a match in our list of normal aliases.  Mark the alias as being seen so that
+                // it won't be reported to the user as something that can be removed.
+                var res = constraints.OriginalBinder.CheckViability(alias.Alias, constraints.WithAccessThroughType(null));
+                if (res.Kind == LookupResultKind.Viable)
+                {
+                    MarkImportDirective(alias.UsingDirective, callerIsSemanticModel);
+                }
+
+                result.MergeEqual(res);
+            }
+
+            foreach (var a in this.ExternAliases)
+            {
+                if (a.Alias.Name == constraints.Name)
+                {
+                    // Found a match in our list of extern aliases.  Mark the extern alias as being
+                    // seen so that it won't be reported to the user as something that can be
+                    // removed.
+                    var res = constraints.OriginalBinder.CheckViability(a.Alias, constraints.WithAccessThroughType(null));
+                    if (res.Kind == LookupResultKind.Viable)
+                    {
+                        MarkImportDirective(a.ExternAliasDirective, callerIsSemanticModel);
+                    }
+
+                    result.MergeEqual(res);
+                }
+            }
+        }
+
+        internal static void LookupSymbolInUsings(
+            ImmutableArray<DeclaredSymbolAndUsingDirective> usings,
+            LookupResult result,
+            LookupConstraints constraints)
+        {
+            if (constraints.OriginalBinder.Flags.Includes(BinderFlags.InScriptUsing))
+            {
+                return;
+            }
+
+            bool callerIsSemanticModel = constraints.OriginalBinder.IsSemanticModelBinder;
+
+            foreach (var typeOrNamespace in usings)
+            {
+                ImmutableArray<DeclaredSymbol> candidates = Binder.GetCandidateMembers(constraints.WithQualifier(typeOrNamespace.DeclaredSymbol));
+                foreach (DeclaredSymbol symbol in candidates)
+                {
+                    if (!IsValidLookupCandidateInUsings(symbol))
+                    {
+                        continue;
+                    }
+
+                    // Found a match in our list of normal using directives.  Mark the directive
+                    // as being seen so that it won't be reported to the user as something that
+                    // can be removed.
+                    var res = constraints.OriginalBinder.CheckViability(symbol, constraints.WithAccessThroughType(null));
+                    if (res.Kind == LookupResultKind.Viable)
+                    {
+                        MarkImportDirective(constraints.OriginalBinder.Compilation, typeOrNamespace.UsingDirective.SyntaxNode, callerIsSemanticModel);
+                    }
+
+                    result.MergeEqual(res);
+                }
+            }
+        }
+
         private static bool IsValidLookupCandidateInUsings(DeclaredSymbol symbol)
         {
             switch (symbol.Kind.Switch())
             {
                 // lookup via "using namespace" ignores namespaces inside
-                case LanguageSymbolKind.Namespace:
+                case Symbols.SymbolKind.Namespace:
                     return false;
 
                 // lookup via "using static" ignores extension methods and non-static methods
-                case LanguageSymbolKind.Member:
+                case Symbols.SymbolKind.Member:
                     if (!symbol.IsStatic)
                     {
                         return false;
@@ -725,7 +810,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
                 // types are considered static members for purposes of "using static" feature
                 // regardless of whether they are declared with "static" modifier or not
-                case LanguageSymbolKind.NamedType:
+                case Symbols.SymbolKind.NamedType:
                     break;
 
                 // lookup via "using static" ignores non-static members
@@ -746,15 +831,16 @@ namespace MetaDslx.CodeAnalysis.Binding
         // SemanticModel.LookupNames/LookupSymbols work and do not count as usages of the directives
         // when the actual code is bound.
 
-        internal void AddLookupCandidateSymbols(LookupCandidates result, LookupConstraints constraints)
+        internal void AddLookupSymbolsInfo(LookupSymbolsInfo result, LookupConstraints constraints)
         {
-            AddLookupCandidateSymbolsInAliases(result, constraints);
+            AddLookupSymbolsInfoInAliases(result, constraints);
 
             // Add types within namespaces imported through usings, but don't add nested namespaces.
-            AddLookupCandidateSymbolsInUsings(this.Usings, result, constraints.WithAdditionalValidators(LookupValidators.MustNotBeNamespace));
+            LookupOptions usingOptions = (constraints.Options & ~(LookupOptions.NamespaceAliasesOnly | LookupOptions.NamespacesOrTypesOnly)) | LookupOptions.MustNotBeNamespace;
+            AddLookupSymbolsInfoInUsings(this.Usings, result, constraints.WithOptions(usingOptions));
         }
 
-        internal void AddLookupCandidateSymbolsInAliases(LookupCandidates result, LookupConstraints constraints)
+        internal void AddLookupSymbolsInfoInAliases(LookupSymbolsInfo result, LookupConstraints constraints)
         {
             foreach (var (_, usingAlias) in this.UsingAliases)
             {
@@ -767,34 +853,33 @@ namespace MetaDslx.CodeAnalysis.Binding
             }
         }
 
-        private static void AddAliasSymbolToResult(LookupCandidates result, AliasSymbol aliasSymbol, LookupConstraints constraints)
+        private static void AddAliasSymbolToResult(LookupSymbolsInfo result, AliasSymbol aliasSymbol, LookupConstraints constraints)
         {
-            if (constraints.WithAccessThroughType(null).IsViable(aliasSymbol))
+            var targetSymbol = aliasSymbol.GetAliasTarget(basesBeingResolved: null);
+            if (constraints.OriginalBinder.CanAddLookupSymbolInfo(targetSymbol, result, constraints.WithAccessThroughType(null), aliasSymbol: aliasSymbol))
             {
-                result.Add(aliasSymbol);
+                result.AddSymbol(aliasSymbol, aliasSymbol.Name, aliasSymbol.Name);
             }
         }
 
-        private static void AddLookupCandidateSymbolsInUsings(
-            ImmutableArray<DeclaredSymbolAndUsingDirective> usings, LookupCandidates result, LookupConstraints constraints)
+        private static void AddLookupSymbolsInfoInUsings(
+            ImmutableArray<DeclaredSymbolAndUsingDirective> usings, LookupSymbolsInfo result, LookupConstraints constraints)
         {
-            var binder = constraints.OriginalBinder;
-            if (binder.Flags.Includes(BinderFlags.InScriptUsing))
+            if (constraints.OriginalBinder.Flags.Includes(BinderFlags.InScriptUsing))
             {
                 return;
             }
 
-            Debug.Assert(constraints.Validators.Contains(LookupValidators.MustNotBeNamespace));
+            Debug.Assert(!constraints.Options.CanConsiderNamespaces());
 
             // look in all using namespaces
             foreach (var namespaceSymbol in usings)
             {
                 foreach (var member in namespaceSymbol.DeclaredSymbol.GetMembersUnordered())
                 {
-                    if (IsValidLookupCandidateInUsings(member) && constraints.IsViable(member))
+                    if (IsValidLookupCandidateInUsings(member) && constraints.OriginalBinder.CanAddLookupSymbolInfo(member, result, constraints, null))
                     {
-                        result.Add(member);
-                        if (constraints.IsLookup) MarkImportDirective(binder.Compilation, namespaceSymbol.UsingDirective.SyntaxNode, binder.IsSemanticModelBinder);
+                        result.AddSymbol(member, member.Name, member.MetadataName);
                     }
                 }
             }

@@ -1,10 +1,10 @@
-// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Diagnostics;
-using MetaDslx.CodeAnalysis.Text;
+using Microsoft.CodeAnalysis.Text;
 using Roslyn.Utilities;
 using System;
-using MetaDslx.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 
 namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 {
@@ -115,7 +115,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
                 if (node.SlotCount > 0)
                 {
-                    var child = MetaDslx.CodeAnalysis.ChildSyntaxList.ItemInternal(node, 0);
+                    var child = Microsoft.CodeAnalysis.ChildSyntaxList.ItemInternal(node, 0);
                     if (IsNonZeroWidthOrIsEndOfFile(child))
                     {
                         return new Cursor(child, 0);

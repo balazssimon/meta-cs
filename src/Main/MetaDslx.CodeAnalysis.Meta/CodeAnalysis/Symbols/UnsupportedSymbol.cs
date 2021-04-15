@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using MetaDslx.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Immutable;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-    public sealed class UnsupportedSymbol : Symbol, IMetaErrorSymbol
+    public sealed class UnsupportedSymbol : ErrorTypeSymbol
     {
         private Symbol _containingSymbol;
         private ISymbol _symbol;
@@ -21,13 +21,13 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         public override ImmutableArray<Symbol> ChildSymbols => ImmutableArray<Symbol>.Empty;
 
-        public override LanguageSymbolKind Kind => LanguageSymbolKind.None;
-
         public override Symbol ContainingSymbol => _containingSymbol;
 
         public override ImmutableArray<Location> Locations => _symbol.Locations;
 
         public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => ImmutableArray<SyntaxReference>.Empty;
+
+        public override DiagnosticInfo ErrorInfo => LanguageDiagnosticInfo.EmptyErrorInfo;
 
         public override void Accept(SymbolVisitor visitor)
         {
@@ -44,14 +44,5 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return default;
         }
 
-        public override void Accept(MetaDslx.CodeAnalysis.SymbolVisitor visitor)
-        {
-            // nop
-        }
-
-        public override TResult Accept<TResult>(MetaDslx.CodeAnalysis.SymbolVisitor<TResult> visitor)
-        {
-            return default;
-        }
     }
 }

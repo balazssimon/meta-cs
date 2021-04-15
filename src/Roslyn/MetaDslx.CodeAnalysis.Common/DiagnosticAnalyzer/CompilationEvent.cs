@@ -4,9 +4,9 @@
 
 namespace Microsoft.CodeAnalysis.Diagnostics
 {
-    internal abstract class CompilationEvent
+    public abstract class CompilationEvent
     {
-        internal CompilationEvent(Compilation compilation)
+        public CompilationEvent(Compilation compilation)
         {
             this.Compilation = compilation;
         }

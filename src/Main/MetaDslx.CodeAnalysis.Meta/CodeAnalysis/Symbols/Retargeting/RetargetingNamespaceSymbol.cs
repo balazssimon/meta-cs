@@ -3,14 +3,14 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.PooledObjects;
-using MetaDslx.CodeAnalysis.Text;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.PooledObjects;
+using Microsoft.CodeAnalysis.Text;
 using Roslyn.Utilities;
 using System.Diagnostics;
 using System.Globalization;
 using System.Threading;
-using MetaDslx.Cci;
+using Microsoft.Cci;
 using MetaDslx.CodeAnalysis.Binding;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
@@ -79,7 +79,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
             foreach (DeclaredSymbol s in underlyingMembers)
             {
                 // Skip explicitly declared local types.
-                if (s.Kind == LanguageSymbolKind.NamedType && ((NamedTypeSymbol)s).IsExplicitDefinitionOfNoPiaLocalType)
+                if (s.Kind == SymbolKind.NamedType && ((NamedTypeSymbol)s).IsExplicitDefinitionOfNoPiaLocalType)
                 {
                     continue;
                 }

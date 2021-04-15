@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using MetaDslx.CodeAnalysis.PooledObjects;
+using Microsoft.CodeAnalysis.PooledObjects;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading;
 using System;
 using System.Linq;
-using MetaDslx.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Symbols;
 
 namespace MetaDslx.CodeAnalysis.FlowAnalysis

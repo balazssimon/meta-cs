@@ -1,4 +1,4 @@
-using MetaDslx.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -6,8 +6,8 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols.CSharp
 {
-    using CSharpSymbols = MetaDslx.CodeAnalysis.CSharp.Symbols;
-    using CSharpSymbol = MetaDslx.CodeAnalysis.CSharp.Symbol;
+    using CSharpSymbols = Microsoft.CodeAnalysis.CSharp.Symbols;
+    using CSharpSymbol = Microsoft.CodeAnalysis.CSharp.Symbol;
 
     public class CSharpMemberSymbol : MemberSymbol
     {

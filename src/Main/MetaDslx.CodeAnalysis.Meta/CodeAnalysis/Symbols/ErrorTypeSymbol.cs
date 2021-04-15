@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using MetaDslx.CodeAnalysis.Binding;
-using MetaDslx.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using Roslyn.Utilities;
 using System;
 using System.Collections.Generic;
@@ -17,7 +17,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
     /// found, an ErrorSymbol is returned when asking the field "x" what it's type is.
     /// </summary>
     [Symbol]
-    public abstract partial class ErrorTypeSymbol : NamedTypeSymbol, IErrorTypeSymbol, IMetaErrorSymbol
+    public abstract partial class ErrorTypeSymbol : NamedTypeSymbol
     {
         internal static readonly ErrorTypeSymbol UnknownResultType = new UnsupportedMetadataTypeSymbol();
 
@@ -135,7 +135,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <summary>
         /// Gets the kind of this symbol.
         /// </summary>
-        public sealed override LanguageSymbolKind Kind => LanguageSymbolKind.ErrorType;
+        public sealed override SymbolKind Kind => SymbolKind.ErrorType;
 
         /// <summary>
         /// Gets the kind of this type.
@@ -190,7 +190,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
             get { return false; }
         }
 
-        ImmutableArray<ISymbol> IErrorTypeSymbol.CandidateSymbols => this.CandidateSymbols.Cast<DeclaredSymbol, ISymbol>();
     }
 
 }

@@ -4,9 +4,9 @@
 
 namespace Microsoft.CodeAnalysis.Syntax.InternalSyntax
 {
-    internal partial struct SyntaxList<TNode> where TNode : GreenNode
+    public partial struct SyntaxList<TNode> where TNode : GreenNode
     {
-        internal struct Enumerator
+        public struct Enumerator
         {
             private readonly SyntaxList<TNode> _list;
             private int _index;

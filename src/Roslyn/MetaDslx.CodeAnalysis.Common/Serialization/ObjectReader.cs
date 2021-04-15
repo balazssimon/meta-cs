@@ -29,7 +29,7 @@ namespace Roslyn.Utilities
     /// <summary>
     /// An <see cref="ObjectReader"/> that deserializes objects from a byte stream.
     /// </summary>
-    internal sealed partial class ObjectReader : IDisposable
+    public sealed partial class ObjectReader : IDisposable
     {
         /// <summary>
         /// We start the version at something reasonably random.  That way an older file, with 

@@ -1,5 +1,5 @@
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.PooledObjects;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 using System;
 using System.Collections.Generic;
@@ -11,9 +11,9 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-    public abstract class NamedTypeSymbol : TypeSymbol, INamedTypeSymbol
+    public abstract class NamedTypeSymbol : TypeSymbol
     {
-        public override LanguageSymbolKind Kind => LanguageSymbolKind.NamedType;
+        public override SymbolKind Kind => SymbolKind.NamedType;
 
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         public ImmutableArray<MethodSymbol> Constructors => GetConstructors<MethodSymbol>(includeInstance: true, includeStatic: true);
 
-        private ImmutableArray<TMethodSymbol> GetConstructors<TMethodSymbol>(bool includeInstance, bool includeStatic) where TMethodSymbol : class, IMethodSymbol
+        private ImmutableArray<TMethodSymbol> GetConstructors<TMethodSymbol>(bool includeInstance, bool includeStatic) where TMethodSymbol : MethodSymbol
         {
             Debug.Assert(includeInstance || includeStatic);
 
@@ -134,7 +134,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             ArrayBuilder<TMethodSymbol> constructors = ArrayBuilder<TMethodSymbol>.GetInstance();
             foreach (Symbol candidate in instanceCandidates)
             {
-                if (candidate.Kind == LanguageSymbolKind.Member && ((MemberSymbol)candidate).MemberKind == MemberKind.Method)
+                if (candidate.Kind == SymbolKind.Member && ((MemberSymbol)candidate).MemberKind == MemberKind.Method)
                 {
                     TMethodSymbol method = candidate as TMethodSymbol;
                     Debug.Assert((object)method != null);
@@ -144,7 +144,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
             foreach (Symbol candidate in staticCandidates)
             {
-                if (candidate.Kind == LanguageSymbolKind.Member && ((MemberSymbol)candidate).MemberKind == MemberKind.Method)
+                if (candidate.Kind == SymbolKind.Member && ((MemberSymbol)candidate).MemberKind == MemberKind.Method)
                 {
                     TMethodSymbol method = candidate as TMethodSymbol;
                     Debug.Assert((object)method != null);
@@ -207,7 +207,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
             if ((object)t2 == this) return true;
             if ((object)t2 == null) return false;
-
+            
             if ((comparison & TypeCompareKind.IgnoreDynamic) != 0)
             {
                 if (t2.TypeKind == TypeKind.Dynamic)
@@ -241,12 +241,12 @@ namespace MetaDslx.CodeAnalysis.Symbols
             {
                 return false;
             }
-
+            
             // CONSIDER: original definitions are not unique for missing metadata type
             // symbols.  Therefore this code may not behave correctly if 'this' is List<int>
             // where List`1 is a missing metadata type symbol, and other is similarly List<int>
             // but for a reference-distinct List`1.
-            if (!TypeSymbol.Equals(thisOriginalDefinition, otherOriginalDefinition, TypeCompareKind.ConsiderEverything2))
+            if (!TypeSymbol.Equals(thisOriginalDefinition, otherOriginalDefinition, TypeCompareKind.ConsiderEverything))
             {
                 return false;
             }
@@ -360,68 +360,13 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         public virtual bool MangleName => false;
 
-        int INamedTypeSymbol.Arity => this.Arity;
-
-        bool INamedTypeSymbol.IsGenericType => false;
-
-        bool INamedTypeSymbol.IsUnboundGenericType => false;
-
         public virtual bool IsScript => false;
 
         public virtual bool IsSubmission => TypeKind == TypeKind.Submission;
 
         public virtual bool IsImplicit => false;
 
-        bool INamedTypeSymbol.IsComImport => false;
-
         public virtual bool MightContainExtensionMethods => false;
-
-        bool INamedTypeSymbol.IsSerializable => false;
-
-        IEnumerable<string> INamedTypeSymbol.MemberNames => this.MemberNames;
-
-        ImmutableArray<ITypeParameterSymbol> INamedTypeSymbol.TypeParameters => ImmutableArray<ITypeParameterSymbol>.Empty;
-
-        ImmutableArray <ITypeSymbol> INamedTypeSymbol.TypeArguments => ImmutableArray<ITypeSymbol>.Empty;
-
-        INamedTypeSymbol INamedTypeSymbol.OriginalDefinition => this.OriginalDefinition;
-
-        IMethodSymbol INamedTypeSymbol.DelegateInvokeMethod => null;
-
-        INamedTypeSymbol INamedTypeSymbol.EnumUnderlyingType => this.EnumUnderlyingType;
-
-        INamedTypeSymbol INamedTypeSymbol.ConstructedFrom => this;
-
-        ImmutableArray<IMethodSymbol> INamedTypeSymbol.InstanceConstructors => StaticCast<IMethodSymbol>.From(this.InstanceConstructors);
-
-        ImmutableArray<IMethodSymbol> INamedTypeSymbol.StaticConstructors => StaticCast<IMethodSymbol>.From(this.StaticConstructors);
-
-        ImmutableArray<IMethodSymbol> INamedTypeSymbol.Constructors => StaticCast<IMethodSymbol>.From(this.Constructors);
-
-        ISymbol INamedTypeSymbol.AssociatedSymbol => null;
-
-        INamedTypeSymbol INamedTypeSymbol.TupleUnderlyingType => this.TupleUnderlyingType;
-
-        ImmutableArray<IFieldSymbol> INamedTypeSymbol.TupleElements => ImmutableArray<IFieldSymbol>.Empty;
-
-        bool INamedTypeSymbol.IsScriptClass => this.IsScript;
-
-        bool INamedTypeSymbol.IsImplicitClass => this.IsImplicit;
-
-        INamedTypeSymbol INamedTypeSymbol.Construct(params ITypeSymbol[] typeArguments)
-        {
-            return this;
-        }
-
-        INamedTypeSymbol INamedTypeSymbol.ConstructUnboundGenericType()
-        {
-            return this;
-        }
-
-        ImmutableArray<CustomModifier> INamedTypeSymbol.GetTypeArgumentCustomModifiers(int ordinal)
-        {
-            return ImmutableArray<CustomModifier>.Empty;
-        }
 
         public override void Accept(SymbolVisitor visitor)
         {
@@ -438,14 +383,5 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return visitor.VisitNamedType(this, argument);
         }
 
-        public override void Accept(MetaDslx.CodeAnalysis.SymbolVisitor visitor)
-        {
-            visitor.VisitNamedType(this);
-        }
-
-        public override TResult Accept<TResult>(MetaDslx.CodeAnalysis.SymbolVisitor<TResult> visitor)
-        {
-            return visitor.VisitNamedType(this);
-        }
     }
 }

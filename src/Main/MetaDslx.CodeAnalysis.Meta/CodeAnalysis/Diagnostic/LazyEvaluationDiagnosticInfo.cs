@@ -1,5 +1,4 @@
-﻿using MetaDslx.CodeAnalysis;
-using MetaDslx.Modeling;
+﻿using MetaDslx.Modeling;
 using Roslyn.Utilities;
 using System;
 using System.Collections.Generic;
@@ -7,6 +6,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MetaDslx.CodeAnalysis;
 
 namespace MetaDslx.Modeling
 {

@@ -8,15 +8,15 @@ using System.Diagnostics;
 using System.Linq;
 using MetaDslx.CodeAnalysis.Symbols.CSharp;
 using MetaDslx.CodeAnalysis.Symbols.Source;
-using MetaDslx.Cci;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.PooledObjects;
+using Microsoft.Cci;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
 {
-    using CSharpSymbols = MetaDslx.CodeAnalysis.CSharp.Symbols;
-    using PEModuleSymbol = MetaDslx.CodeAnalysis.CSharp.Symbols.Metadata.PE.PEModuleSymbol;
+    using CSharpSymbols = Microsoft.CodeAnalysis.CSharp.Symbols;
+    using PEModuleSymbol = Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE.PEModuleSymbol;
 
     internal enum RetargetOptions : byte
     {
@@ -114,7 +114,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
 
             public DeclaredSymbol Retarget(DeclaredSymbol symbol)
             {
-                Debug.Assert(symbol.Kind != LanguageSymbolKind.NamedType || ((NamedTypeSymbol)symbol).PrimitiveTypeCode == PrimitiveTypeCode.NotPrimitive);
+                Debug.Assert(symbol.Kind != SymbolKind.NamedType || ((NamedTypeSymbol)symbol).PrimitiveTypeCode == PrimitiveTypeCode.NotPrimitive);
                 return symbol.Accept(this, RetargetOptions.RetargetPrimitiveTypesByName) as DeclaredSymbol;
             }
 
@@ -151,7 +151,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
                     }
                 }
 
-                if (type.Kind == LanguageSymbolKind.ErrorType)
+                if (type.Kind == SymbolKind.ErrorType)
                 {
                     return Retarget((ErrorTypeSymbol)type);
                 }
@@ -340,7 +340,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
                     return newDefinition;
                 }
 
-                if (newDefinition.Kind == LanguageSymbolKind.ErrorType)
+                if (newDefinition.Kind == SymbolKind.ErrorType)
                 {
                     return newDefinition;
                 }

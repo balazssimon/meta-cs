@@ -1,5 +1,5 @@
-using MetaDslx.Cci;
-using MetaDslx.CodeAnalysis;
+using Microsoft.Cci;
+using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -9,7 +9,7 @@ using System.Text;
 namespace MetaDslx.CodeAnalysis.Symbols
 {
     [Symbol]
-    public abstract class NamespaceSymbol : NamespaceOrTypeSymbol, IMetaNamespaceSymbol, MetaDslx.Cci.INamespace
+    public abstract class NamespaceSymbol : NamespaceOrTypeSymbol
     {
         // PERF: initialization of the following fields will allocate, so we make them lazy
         private string _lazyQualifiedName;
@@ -74,7 +74,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <summary>
         /// Gets the kind of this symbol.
         /// </summary>
-        public sealed override LanguageSymbolKind Kind => LanguageSymbolKind.Namespace;
+        public sealed override SymbolKind Kind => SymbolKind.Namespace;
 
         public override bool IsImplicitlyDeclared => this.IsGlobalNamespace;
 
@@ -158,7 +158,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         {
             foreach (var sym in this.GetMembers(name))
             {
-                if (sym.Kind == LanguageSymbolKind.Namespace)
+                if (sym.Kind == SymbolKind.Namespace)
                 {
                     return (NamespaceSymbol)sym;
                 }
@@ -178,58 +178,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return this.GetMembers().OfType<NamespaceSymbol>();
         }
 
-        #region IMetaNamespaceSymbol Members
-
-        INamespaceSymbol IMetaNamespaceSymbol.LookupNestedNamespace(ImmutableArray<string> names)
-        {
-            return this.LookupNestedNamespace(names);
-        }
-
-        INamespaceSymbol IMetaNamespaceSymbol.GetNestedNamespace(string name)
-        {
-            return this.GetNestedNamespace(name);
-        }
-
-        #endregion
-
-        #region INamespaceSymbol Members
-
-        IEnumerable<INamespaceOrTypeSymbol> INamespaceSymbol.GetMembers()
-        {
-            return this.GetMembers().OfType<INamespaceOrTypeSymbol>();
-        }
-
-        IEnumerable<INamespaceOrTypeSymbol> INamespaceSymbol.GetMembers(string name)
-        {
-            return this.GetMembers(name).OfType<INamespaceOrTypeSymbol>();
-        }
-
-        IEnumerable<INamespaceSymbol> INamespaceSymbol.GetNamespaceMembers()
-        {
-            return this.GetNamespaceMembers();
-        }
-
-        NamespaceKind INamespaceSymbol.NamespaceKind
-        {
-            get { return this.NamespaceKind; }
-        }
-
-        Compilation INamespaceSymbol.ContainingCompilation
-        {
-            get
-            {
-                return this.ContainingCompilation;
-            }
-        }
-
-        ImmutableArray<INamespaceSymbol> INamespaceSymbol.ConstituentNamespaces
-        {
-            get
-            {
-                return StaticCast<INamespaceSymbol>.From(this.ConstituentNamespaces);
-            }
-        }
-
         public string QualifiedName
         {
             get
@@ -238,10 +186,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
                     (_lazyQualifiedName = this.ToDisplayString(SymbolDisplayFormat.QualifiedNameOnlyFormat));
             }
         }
-
-        INamespace INamespace.ContainingNamespace => this.ContainingNamespace;
-
-        #endregion
 
         #region ISymbol Members
 
@@ -260,15 +204,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return visitor.VisitNamespace(this, argument);
         }
 
-        public override void Accept(MetaDslx.CodeAnalysis.SymbolVisitor visitor)
-        {
-            visitor.VisitNamespace(this);
-        }
-
-        public override TResult Accept<TResult>(MetaDslx.CodeAnalysis.SymbolVisitor<TResult> visitor)
-        {
-            return visitor.VisitNamespace(this);
-        }
         #endregion
     }
 }

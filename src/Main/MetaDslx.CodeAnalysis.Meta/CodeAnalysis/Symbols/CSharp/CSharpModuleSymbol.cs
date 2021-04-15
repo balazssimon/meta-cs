@@ -1,4 +1,4 @@
-using MetaDslx.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -15,7 +15,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
     using System.Reflection.PortableExecutable;
     using System.Runtime.InteropServices;
     using System.Threading;
-    using CSharpSymbols = MetaDslx.CodeAnalysis.CSharp.Symbols;
+    using CSharpSymbols = Microsoft.CodeAnalysis.CSharp.Symbols;
 
     public class CSharpModuleSymbol : NonMissingModuleSymbol
     {

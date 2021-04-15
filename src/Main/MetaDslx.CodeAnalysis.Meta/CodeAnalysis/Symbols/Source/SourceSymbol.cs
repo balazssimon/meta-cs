@@ -4,9 +4,9 @@ using MetaDslx.CodeAnalysis.Binding.BoundNodes;
 using MetaDslx.CodeAnalysis.Declarations;
 using MetaDslx.CodeAnalysis.Symbols.Metadata;
 using MetaDslx.Modeling;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.PooledObjects;
-using MetaDslx.CodeAnalysis.Text;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.PooledObjects;
+using Microsoft.CodeAnalysis.Text;
 using Roslyn.Utilities;
 using System;
 using System.Collections.Generic;
@@ -380,7 +380,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 Debug.Assert(false);
                 childSymbol = null;
             }
-            if (childSymbol == null || childSymbol.Kind == LanguageSymbolKind.ErrorType)
+            if (childSymbol == null || childSymbol.Kind == SymbolKind.ErrorType)
             {
                 if (childDeclaration != null)
                 {

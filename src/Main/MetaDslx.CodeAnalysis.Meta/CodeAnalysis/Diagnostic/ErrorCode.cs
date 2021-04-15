@@ -3,8 +3,8 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Diagnostics;
 using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis
@@ -16,7 +16,7 @@ namespace MetaDslx.CodeAnalysis
     {
         public int Code { get; }
 
-        public string MessagePrefix { get; }
+        public ErrorCodeMessageProvider MessageProvider { get; }
 
         /// <summary>
         /// An unique identifier for the diagnostic.
@@ -28,7 +28,7 @@ namespace MetaDslx.CodeAnalysis
 
         protected virtual string GetFormattedId()
         {
-            return string.Format("{0}{1:D4}", this.MessagePrefix, this.Code);
+            return string.Format("{0}{1:D4}", this.MessageProvider.CodePrefix, this.Code);
         }
 
         /// <summary>
@@ -91,8 +91,8 @@ namespace MetaDslx.CodeAnalysis
         /// <param name="helpLinkUri">An optional hyperlink that provides a more detailed description regarding the diagnostic.</param>
         /// <param name="customTags">Optional custom tags for the diagnostic. See <see cref="WellKnownDiagnosticTags"/> for some well known tags.</param>
         public ErrorCode(
+            ErrorCodeMessageProvider messageProvider,
             int code,
-            string messagePrefix,
             string title,
             string messageFormat,
             string category,
@@ -101,7 +101,7 @@ namespace MetaDslx.CodeAnalysis
             string description = null,
             string helpLinkUri = null,
             params string[] customTags)
-            : this(code, messagePrefix, title, messageFormat, category, defaultSeverity, isEnabledByDefault, description, helpLinkUri, customTags.AsImmutableOrEmpty())
+            : this(messageProvider, code, title, messageFormat, category, defaultSeverity, isEnabledByDefault, description, helpLinkUri, customTags.AsImmutableOrEmpty())
         {
         }
 
@@ -130,8 +130,8 @@ namespace MetaDslx.CodeAnalysis
         ///         customTags: DiagnosticCustomTags.Microsoft);
         /// </remarks>
         public ErrorCode(
+            ErrorCodeMessageProvider messageProvider,
             int code,
-            string messagePrefix,
             LocalizableString title,
             LocalizableString messageFormat,
             string category,
@@ -140,13 +140,13 @@ namespace MetaDslx.CodeAnalysis
             LocalizableString description = null,
             string helpLinkUri = null,
             params string[] customTags)
-            : this(code, messagePrefix, title, messageFormat, category, defaultSeverity, isEnabledByDefault, description, helpLinkUri, customTags.AsImmutableOrEmpty())
+            : this(messageProvider, code, title, messageFormat, category, defaultSeverity, isEnabledByDefault, description, helpLinkUri, customTags.AsImmutableOrEmpty())
         {
         }
 
         internal ErrorCode(
+            ErrorCodeMessageProvider messageProvider,
             int code,
-            string messagePrefix,
             LocalizableString title,
             LocalizableString messageFormat,
             string category,
@@ -156,9 +156,9 @@ namespace MetaDslx.CodeAnalysis
             string helpLinkUri,
             ImmutableArray<string> customTags)
         {
-            if (string.IsNullOrWhiteSpace(messagePrefix))
+            if (messageProvider == null)
             {
-                throw new ArgumentException(CodeAnalysisResources.DiagnosticIdCantBeNullOrWhitespace, nameof(messagePrefix));
+                throw new ArgumentNullException(nameof(messageProvider));
             }
 
             if (messageFormat == null)
@@ -177,7 +177,7 @@ namespace MetaDslx.CodeAnalysis
             }
 
             this.Code = code;
-            this.MessagePrefix = messagePrefix;
+            this.MessageProvider = messageProvider;
             this.Title = title;
             this.Category = category;
             this.MessageFormat = messageFormat;
@@ -199,7 +199,7 @@ namespace MetaDslx.CodeAnalysis
                 this.Description.Equals(other.Description) &&
                 this.HelpLinkUri == other.HelpLinkUri &&
                 this.Code == other.Code &&
-                this.MessagePrefix == other.MessagePrefix &&
+                this.MessageProvider.CodePrefix == other.MessageProvider.CodePrefix &&
                 this.IsEnabledByDefault == other.IsEnabledByDefault &&
                 this.MessageFormat.Equals(other.MessageFormat) &&
                 this.Title.Equals(other.Title);
@@ -217,7 +217,7 @@ namespace MetaDslx.CodeAnalysis
                 Hash.Combine(this.Description.GetHashCode(),
                 Hash.Combine(this.HelpLinkUri.GetHashCode(),
                 Hash.Combine(this.Code.GetHashCode(),
-                Hash.Combine(this.MessagePrefix.GetHashCode(),
+                Hash.Combine(this.MessageProvider.CodePrefix.GetHashCode(),
                 Hash.Combine(this.IsEnabledByDefault.GetHashCode(),
                 Hash.Combine(this.MessageFormat.GetHashCode(),
                     this.Title.GetHashCode()))))))));
@@ -236,7 +236,7 @@ namespace MetaDslx.CodeAnalysis
 
             // Create a dummy diagnostic to compute the effective diagnostic severity for given compilation options
             // TODO: Once https://github.com/dotnet/roslyn/issues/3650 is fixed, we can avoid creating a no-location diagnostic here.
-            var effectiveDiagnostic = compilationOptions.FilterDiagnostic(Diagnostic.Create(this.DiagnosticDescriptor, Location.None));
+            var effectiveDiagnostic = compilationOptions.FilterDiagnostic(Diagnostic.Create(this.DiagnosticDescriptor, Location.None), default);
             return effectiveDiagnostic != null ? MapSeverityToReport(effectiveDiagnostic.Severity) : ReportDiagnostic.Suppress;
         }
 

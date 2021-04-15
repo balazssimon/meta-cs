@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -6,12 +6,12 @@ using System.Diagnostics;
 
 namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 {
-    using MetaDslx.CodeAnalysis;
-    using MetaDslx.CodeAnalysis.PooledObjects;
-    using MetaDslx.CodeAnalysis.Text;
+    using Microsoft.CodeAnalysis;
+    using Microsoft.CodeAnalysis.PooledObjects;
+    using Microsoft.CodeAnalysis.Text;
     using Roslyn.Utilities;
     using System.Threading;
-    using Internal = MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
+    using Internal = Microsoft.CodeAnalysis.Syntax.InternalSyntax;
 
     public abstract class InternalSyntaxFactory
     {
@@ -126,7 +126,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 return trivia;
             }
 
-            return trivia.WithAnnotationsGreen(new[] { MetaDslx.CodeAnalysis.SyntaxAnnotation.ElasticAnnotation });
+            return trivia.WithAnnotationsGreen(new[] { Microsoft.CodeAnalysis.SyntaxAnnotation.ElasticAnnotation });
         }
 
         public InternalSyntaxTrivia Whitespace(string text, bool elastic = false)
@@ -137,7 +137,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 return trivia;
             }
 
-            return trivia.WithAnnotationsGreen(new[] { MetaDslx.CodeAnalysis.SyntaxAnnotation.ElasticAnnotation });
+            return trivia.WithAnnotationsGreen(new[] { Microsoft.CodeAnalysis.SyntaxAnnotation.ElasticAnnotation });
         }
 
         public abstract InternalSyntaxTrivia Trivia(SyntaxKind kind, string text, bool elastic = false);

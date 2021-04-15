@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -6,11 +6,11 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.Collections;
-using MetaDslx.CodeAnalysis.PooledObjects;
-using MetaDslx.CodeAnalysis.Operations;
-using MetaDslx.CodeAnalysis.Text;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Collections;
+using Microsoft.CodeAnalysis.PooledObjects;
+using Microsoft.CodeAnalysis.Operations;
+using Microsoft.CodeAnalysis.Text;
 using Roslyn.Utilities;
 using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Binding;
@@ -20,7 +20,7 @@ using MetaDslx.CodeAnalysis.Binding.BoundNodes;
 
 namespace MetaDslx.CodeAnalysis
 {
-    using CSharpResources = MetaDslx.CodeAnalysis.CSharp.CSharpResources;
+    using CSharpResources = Microsoft.CodeAnalysis.CSharp.CSharpResources;
 
     /// <summary>
     /// Allows asking semantic questions about a tree of syntax nodes in a Compilation. Typically,
@@ -661,7 +661,7 @@ namespace MetaDslx.CodeAnalysis
             SyntaxToken token;
             position = CheckAndAdjustPosition(position, out token);
 
-            if ((object)container == null || container.Kind == LanguageSymbolKind.Namespace)
+            if ((object)container == null || container.Kind == Symbols.SymbolKind.Namespace)
             {
                 options &= ~LookupOptions.IncludeExtensionMethods;
             }
@@ -679,7 +679,7 @@ namespace MetaDslx.CodeAnalysis
                 TypeSymbol baseType = null;
 
                 // For a script class or a submission class base should have no members.
-                if ((object)containingType != null && containingType.Kind == LanguageSymbolKind.NamedType && ((NamedTypeSymbol)containingType).IsScript)
+                if ((object)containingType != null && containingType.Kind == Symbols.SymbolKind.NamedType && ((NamedTypeSymbol)containingType).IsScript)
                 {
                     return ImmutableArray<DeclaredSymbol>.Empty;
                 }
@@ -693,20 +693,36 @@ namespace MetaDslx.CodeAnalysis
                 container = baseType;
             }
 
-            throw new NotImplementedException("TODO:MetaDslx");
+            var info = LookupSymbolsInfo.GetInstance();
+            info.FilterName = name;
 
-            /*var candidates = LookupCandidates.GetInstance();
             if ((object)container == null)
             {
-                binder.AddLookupCandidateSymbols(candidates, new LookupConstraints(Compilation, name: name, options: options));
+                binder.AddLookupSymbolsInfo(info, new LookupConstraints(options: options));
             }
             else
             {
-                binder.AddLookupCandidateSymbols(candidates, new LookupConstraints(Compilation, name: name, qualifierOpt: container, options: options));
+                binder.AddMemberLookupSymbolsInfo(info, new LookupConstraints(qualifierOpt: container, options: options));
             }
-            var results = ArrayBuilder<DeclaredSymbol>.GetInstance(candidates.Symbols.Count);
-            results.AddRange(candidates.Symbols);
-            candidates.Free();
+
+            var results = ArrayBuilder<DeclaredSymbol>.GetInstance(info.Count);
+
+            if (name == null)
+            {
+                // If they didn't provide a name, then look up all names and associated arities 
+                // and find all the corresponding symbols.
+                foreach (string foundName in info.Names)
+                {
+                    AppendSymbolsWithName(results, foundName, binder, container, options, info);
+                }
+            }
+            else
+            {
+                // They provided a name.  Find all the arities for that name, and then look all of those up.
+                AppendSymbolsWithName(results, name, binder, container, options, info);
+            }
+
+            info.Free();
 
 
             if ((options & LookupOptions.IncludeExtensionMethods) != 0)
@@ -717,7 +733,93 @@ namespace MetaDslx.CodeAnalysis
             ImmutableArray<DeclaredSymbol> sealedResults = results.ToImmutableAndFree();
             return name == null
                 ? FilterNotReferencable(sealedResults)
-                : sealedResults;*/
+                : sealedResults;
+        }
+
+        private void AppendSymbolsWithName(ArrayBuilder<DeclaredSymbol> results, string name, Binder binder, NamespaceOrTypeSymbol container, LookupOptions options, LookupSymbolsInfo info)
+        {
+            IEnumerable<string> metadataNames;
+            DeclaredSymbol uniqueSymbol;
+
+            if (info.TryGetMultipleNamesAndUniqueSymbol(name, out metadataNames, out uniqueSymbol))
+            {
+                if ((object)uniqueSymbol != null)
+                {
+                    // This name mapped to something unique.  We don't need to proceed
+                    // with a costly lookup.  Just add it straight to the results.
+                    results.Add(uniqueSymbol);
+                }
+                else
+                {
+                    // The name maps to multiple symbols. Actually do a real lookup so 
+                    // that we will properly figure out hiding and whatnot.
+                    if (metadataNames != null)
+                    {
+                        foreach (var metadataName in metadataNames)
+                        {
+                            this.AppendSymbolsWithMetadataName(results, name, metadataName, binder, container, options);
+                        }
+                    }
+                    else
+                    {
+                        //non-unique symbol with non-zero arity doesn't seem possible.
+                        this.AppendSymbolsWithMetadataName(results, name, name, binder, container, options);
+                    }
+                }
+            }
+        }
+
+        private void AppendSymbolsWithMetadataName(
+            ArrayBuilder<DeclaredSymbol> results,
+            string name,
+            string metadataName,
+            Binder binder,
+            NamespaceOrTypeSymbol container,
+            LookupOptions options)
+        {
+            Debug.Assert(results != null);
+
+            // Don't need to de-dup since AllMethodsOnArityZero can't be set at this point (not exposed in CommonLookupOptions).
+            Debug.Assert((options & LookupOptions.AllMethodsOnArityZero) == 0);
+
+            var lookupResult = LookupResult.GetInstance();
+
+            binder.LookupSymbolsSimpleName(
+                lookupResult,
+                new LookupConstraints(
+                name,
+                metadataName,
+                qualifierOpt: container,
+                basesBeingResolved: null,
+                options: options & ~LookupOptions.IncludeExtensionMethods,
+                diagnose: false));
+
+            if (lookupResult.IsMultiViable)
+            {
+                if (lookupResult.Symbols.Any(t => t.Kind == Symbols.SymbolKind.NamedType || t.Kind == Symbols.SymbolKind.Namespace || t.Kind == Symbols.SymbolKind.ErrorType))
+                {
+                    // binder.ResultSymbol is defined only for type/namespace lookups
+                    bool wasError;
+                    var diagnostics = DiagnosticBag.GetInstance();  // client code never expects a null diagnostic bag.
+                    DeclaredSymbol singleSymbol = binder.ResultSymbol(lookupResult, name, metadataName, this.Root, diagnostics, true, out wasError, container, options);
+                    diagnostics.Free();
+
+                    if (!wasError)
+                    {
+                        results.Add(singleSymbol);
+                    }
+                    else
+                    {
+                        results.AddRange(lookupResult.Symbols);
+                    }
+                }
+                else
+                {
+                    results.AddRange(lookupResult.Symbols);
+                }
+            }
+
+            lookupResult.Free();
         }
 
         private static ImmutableArray<DeclaredSymbol> FilterNotReferencable(ImmutableArray<DeclaredSymbol> sealedResults)
@@ -771,7 +873,7 @@ namespace MetaDslx.CodeAnalysis
             if (binder != null)
             {
                 HashSet<DiagnosticInfo> useSiteDiagnostics = null;
-                return Compilation.AccessCheck.IsSymbolAccessible(cssymbol, null, ref useSiteDiagnostics);
+                return binder.IsAccessible(cssymbol, ref useSiteDiagnostics, null);
             }
 
             return false;
@@ -975,7 +1077,7 @@ namespace MetaDslx.CodeAnalysis
 
             foreach (Symbol symbol in symbols)
             {
-                if (symbol.Kind == LanguageSymbolKind.Alias)
+                if (symbol.Kind == Symbols.SymbolKind.Alias)
                     anyAliases = true;
             }
 
@@ -1158,11 +1260,10 @@ namespace MetaDslx.CodeAnalysis
             // In that case, this method chooses the implicit conversion.
 
             position = CheckAndAdjustPosition(position);
-            Binder binder = null; // TODO:MetaDslx: find or create a binder for the expression
-            //var binder = this.GetEnclosingBinder(position);
+            var binder = this.GetEnclosingBinder(position);
             if (binder != null)
             {
-                var bnode = binder.Bind() as BoundSymbol;
+                var bnode = binder.Bind(expression, default) as BoundSymbol;
 
                 if (bnode != null && !cdestination.IsErrorType())
                 {
@@ -1210,11 +1311,10 @@ namespace MetaDslx.CodeAnalysis
             }
 
             position = CheckAndAdjustPosition(position);
-            Binder binder = null; // TODO:MetaDslx: find or create a binder for the expression
-            //var binder = this.GetEnclosingBinder(position);
+            var binder = this.GetEnclosingBinder(position);
             if (binder != null)
             {
-                var bnode = binder.Bind() as BoundSymbol;
+                var bnode = binder.Bind(expression, default) as BoundSymbol;
 
                 if (bnode != null && !destination.IsErrorType())
                 {
@@ -1385,7 +1485,7 @@ namespace MetaDslx.CodeAnalysis
         {
             if (node == null) throw new ArgumentNullException(nameof(node));
             var syntaxNode = (LanguageSyntaxNode)node;
-            var boundNode = this.Compilation.GetBinder(syntaxNode).Bind(cancellationToken: cancellationToken) as BoundValue;
+            var boundNode = this.Compilation.GetBinder(syntaxNode).Bind(syntaxNode, cancellationToken) as BoundValue;
             if (boundNode?.Values.FirstOrDefault() is Symbol symbol)
             {
                 return new SymbolInfo(symbol);
@@ -1397,7 +1497,7 @@ namespace MetaDslx.CodeAnalysis
         {
             if (node == null) throw new ArgumentNullException(nameof(node));
             var syntaxNode = (LanguageSyntaxNode)node;
-            var boundNode = this.Compilation.GetBinder(syntaxNode).Bind(null, cancellationToken) as BoundValue;
+            var boundNode = this.Compilation.GetBinder(syntaxNode).Bind(syntaxNode, cancellationToken) as BoundValue;
             if (boundNode?.Values.FirstOrDefault() is TypeSymbol typeSymbol)
             {
                 return new LanguageTypeInfo(typeSymbol, typeSymbol, Conversion.NoConversion);
@@ -1567,9 +1667,9 @@ namespace MetaDslx.CodeAnalysis
             LanguageDeclarationComputer.ComputeDeclarationsInSpan(this, span, getSymbol, builder, cancellationToken);
         }
 
-        internal override void ComputeDeclarationsInNode(SyntaxNode node, bool getSymbol, ArrayBuilder<DeclarationInfo> builder, CancellationToken cancellationToken, int? levelsToCompute = null)
+        internal override void ComputeDeclarationsInNode(SyntaxNode node, ISymbol associatedSymbol, bool getSymbol, ArrayBuilder<DeclarationInfo> builder, CancellationToken cancellationToken, int? levelsToCompute = null)
         {
-            LanguageDeclarationComputer.ComputeDeclarationsInNode(this, node, getSymbol, builder, cancellationToken, levelsToCompute);
+            LanguageDeclarationComputer.ComputeDeclarationsInNode(this, node, associatedSymbol, getSymbol, builder, cancellationToken, levelsToCompute);
         }
 
         protected internal override SyntaxNode GetTopmostNodeForDiagnosticAnalysis(ISymbol symbol, SyntaxNode declaringSyntax)

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using MetaDslx.CodeAnalysis.Declarations;
-using MetaDslx.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Source
 {

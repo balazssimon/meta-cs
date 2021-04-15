@@ -6,8 +6,8 @@ using System.Diagnostics;
 using System.Threading;
 using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Symbols.Source;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.PooledObjects;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 using System.Collections.Immutable;
 
@@ -90,7 +90,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
                 if (_lazyImportChain == null)
                 {
                     ImportChain importChain = this.Next.ImportChain;
-                    if ((object)_container == null || _container.Kind == LanguageSymbolKind.Namespace)
+                    if ((object)_container == null || _container.Kind == Symbols.SymbolKind.Namespace)
                     {
                         importChain = new ImportChain(GetImports(), importChain);
                     }
@@ -115,12 +115,12 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
 
         private bool IsSubmission
         {
-            get { return (_container?.Kind == LanguageSymbolKind.NamedType) && ((NamedTypeSymbol)_container).IsSubmission; }
+            get { return (_container?.Kind == Symbols.SymbolKind.NamedType) && ((NamedTypeSymbol)_container).IsSubmission; }
         }
 
         private bool IsScript
         {
-            get { return (_container?.Kind == LanguageSymbolKind.NamedType) && ((NamedTypeSymbol)_container).IsScript; }
+            get { return (_container?.Kind == Symbols.SymbolKind.NamedType) && ((NamedTypeSymbol)_container).IsScript; }
         }
 
         protected override LookupConstraints AdjustConstraints(LookupConstraints constraints)

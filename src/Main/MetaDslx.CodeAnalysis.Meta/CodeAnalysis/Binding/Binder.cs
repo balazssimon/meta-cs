@@ -1,8 +1,8 @@
 using MetaDslx.CodeAnalysis.Binding.BoundNodes;
 using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Symbols.Source;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.PooledObjects;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 using System;
 using System.Collections.Generic;
@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.CodeAnalysis.Binding
 {
-    using CSharp = MetaDslx.CodeAnalysis.CSharp;
+    using CSharp = Microsoft.CodeAnalysis.CSharp;
 
     /// <summary>
     /// A Binder converts names in to symbols and syntax nodes into bound trees. It is context
@@ -189,7 +189,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                 var containingMember = this.ContainingDeclaration;
                 switch (containingMember?.Kind.Switch())
                 {
-                    case LanguageSymbolKind.Member:
+                    case Symbols.SymbolKind.Member:
                         var memberSymbol = (MemberSymbol)containingMember;
                         if (memberSymbol.MemberKind == MemberKind.Method)
                         {
@@ -201,7 +201,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                             return false;
                         }
 
-                    case LanguageSymbolKind.NamedType:
+                    case Symbols.SymbolKind.NamedType:
                         // script variable initializers
                         return ((NamedTypeSymbol)containingMember).IsScript;
 

@@ -28,7 +28,7 @@ namespace Microsoft.CodeAnalysis
     /// This type is not responsible for managing the underlying storage
     /// backing the PE image.
     /// </summary>
-    internal sealed class PEModule : IDisposable
+    public sealed class PEModule : IDisposable
     {
         /// <summary>
         /// We need to store reference to the module metadata to keep the metadata alive while 

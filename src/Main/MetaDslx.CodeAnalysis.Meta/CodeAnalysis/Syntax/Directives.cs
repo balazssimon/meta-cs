@@ -1,9 +1,9 @@
-// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Text;
-using MetaDslx.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis.Syntax
@@ -25,9 +25,9 @@ namespace MetaDslx.CodeAnalysis.Syntax
 
         public LanguageSyntaxNode SyntaxNode => _node;
 
-        public MetaDslx.CodeAnalysis.SyntaxTree SyntaxTree => _node.SyntaxTree;
+        public Microsoft.CodeAnalysis.SyntaxTree SyntaxTree => _node.SyntaxTree;
 
-        public MetaDslx.CodeAnalysis.Location Location => _node.Location;
+        public Microsoft.CodeAnalysis.Location Location => _node.Location;
 
         public virtual bool IncrementallyEquivalent(Directive other)
         {
@@ -262,9 +262,9 @@ namespace MetaDslx.CodeAnalysis.Syntax
 
         public string File => _file;
 
-        internal MetaDslx.CodeAnalysis.ReferenceDirective ToMicrosoft()
+        internal Microsoft.CodeAnalysis.ReferenceDirective ToMicrosoft()
         {
-            return new MetaDslx.CodeAnalysis.ReferenceDirective(this.File, this.SyntaxNode.Location);
+            return new Microsoft.CodeAnalysis.ReferenceDirective(this.File, this.SyntaxNode.Location);
         }
     }
 

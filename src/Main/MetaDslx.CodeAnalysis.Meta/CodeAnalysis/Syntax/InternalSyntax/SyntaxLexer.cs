@@ -1,7 +1,7 @@
-using MetaDslx.CodeAnalysis.InternalUtilities;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
-using MetaDslx.CodeAnalysis.Text;
+﻿using MetaDslx.CodeAnalysis.InternalUtilities;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Syntax.InternalSyntax;
+using Microsoft.CodeAnalysis.Text;
 using Roslyn.Utilities;
 using System;
 using System.Collections.Generic;

@@ -5,10 +5,10 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using Roslyn.Utilities;
-using MetaDslx.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Symbols.Wrapped;
-using MetaDslx.CodeAnalysis.PooledObjects;
-using MetaDslx.Cci;
+using Microsoft.CodeAnalysis.PooledObjects;
+using Microsoft.Cci;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
 {
@@ -165,7 +165,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
             foreach (DeclaredSymbol s in underlyingMembers)
             {
                 // Skip explicitly declared local types.
-                if (s.Kind == LanguageSymbolKind.NamedType && ((NamedTypeSymbol)s).IsExplicitDefinitionOfNoPiaLocalType)
+                if (s.Kind == SymbolKind.NamedType && ((NamedTypeSymbol)s).IsExplicitDefinitionOfNoPiaLocalType)
                 {
                     continue;
                 }
@@ -189,16 +189,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
         public override TResult Accept<TArgument, TResult>(SymbolVisitor<TArgument, TResult> visitor, TArgument argument)
         {
             return visitor.VisitMember(this, argument);
-        }
-
-        public override void Accept(MetaDslx.CodeAnalysis.SymbolVisitor visitor)
-        {
-            throw new NotSupportedException();
-        }
-
-        public override TResult Accept<TResult>(MetaDslx.CodeAnalysis.SymbolVisitor<TResult> visitor)
-        {
-            throw new NotSupportedException();
         }
 
         public sealed override LanguageCompilation DeclaringCompilation // perf, not correctness

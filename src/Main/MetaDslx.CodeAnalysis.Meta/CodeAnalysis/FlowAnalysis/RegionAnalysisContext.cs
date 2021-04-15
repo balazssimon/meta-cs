@@ -4,9 +4,9 @@ using System;
 using System.Diagnostics;
 using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Symbols;
-using MetaDslx.CodeAnalysis.CSharp.Symbols;
-using MetaDslx.CodeAnalysis.CSharp.Syntax;
-using MetaDslx.CodeAnalysis.Text;
+using Microsoft.CodeAnalysis.CSharp.Symbols;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Text;
 
 namespace MetaDslx.CodeAnalysis.FlowAnalysis
 {

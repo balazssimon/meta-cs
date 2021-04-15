@@ -17,7 +17,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
     /// A queue whose enqueue and dequeue operations can be performed in parallel.
     /// </summary>
     /// <typeparam name="TElement">The type of values kept by the queue.</typeparam>
-    internal sealed class AsyncQueue<TElement>
+    public sealed class AsyncQueue<TElement>
     {
         // Continuations run asynchronously to ensure user code does not execute within protected regions and lead to
         // delays, deadlocks, and/or state corruption.

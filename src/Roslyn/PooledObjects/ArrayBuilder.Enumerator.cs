@@ -4,12 +4,12 @@
 
 namespace Microsoft.CodeAnalysis.PooledObjects
 {
-    internal partial class ArrayBuilder<T>
+    public partial class ArrayBuilder<T>
     {
         /// <summary>
         /// struct enumerator used in foreach.
         /// </summary>
-        internal struct Enumerator
+        public struct Enumerator
         {
             private readonly ArrayBuilder<T> _builder;
             private int _index;

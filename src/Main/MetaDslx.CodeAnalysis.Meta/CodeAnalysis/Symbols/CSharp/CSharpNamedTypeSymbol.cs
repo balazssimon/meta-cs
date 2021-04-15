@@ -1,4 +1,4 @@
-using MetaDslx.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -6,10 +6,10 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols.CSharp
 {
-    using CSharpSymbols = MetaDslx.CodeAnalysis.CSharp.Symbols;
-    using CSharpSymbol = MetaDslx.CodeAnalysis.CSharp.Symbol;
+    using CSharpSymbols = Microsoft.CodeAnalysis.CSharp.Symbols;
+    using CSharpSymbol = Microsoft.CodeAnalysis.CSharp.Symbol;
     using Roslyn.Utilities;
-    using MetaDslx.CodeAnalysis.PooledObjects;
+    using Microsoft.CodeAnalysis.PooledObjects;
 
     public class CSharpNamedTypeSymbol : NamedTypeSymbol
     {
@@ -27,7 +27,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
 
         internal CSharpSymbolMap CSharpSymbolMap => _module.CSharpSymbolMap;
 
-        public override LanguageSymbolKind Kind => Language.SymbolFacts.FromCSharpKind(_csharpSymbol.Kind);
+        public override SymbolKind Kind => Language.SymbolFacts.FromCSharpKind(_csharpSymbol.Kind);
 
         public override string Name => _csharpSymbol.Name;
 

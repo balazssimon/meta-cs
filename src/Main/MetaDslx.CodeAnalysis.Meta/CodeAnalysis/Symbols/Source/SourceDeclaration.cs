@@ -1,7 +1,7 @@
 using MetaDslx.CodeAnalysis.Declarations;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.PooledObjects;
-using MetaDslx.CodeAnalysis.Text;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.PooledObjects;
+using Microsoft.CodeAnalysis.Text;
 using Roslyn.Utilities;
 using System;
 using System.Collections.Generic;
@@ -421,7 +421,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                     if (index < childSymbols.Length)
                     {
                         var symbol = childSymbols[index] as SourceNamedTypeSymbol;
-                        if (symbol != null && symbol.Kind != LanguageSymbolKind.ErrorType) builder.Add(symbol);
+                        if (symbol != null && symbol.Kind != SymbolKind.ErrorType) builder.Add(symbol);
                     }
                 }
             }
@@ -451,7 +451,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 if (index < childSymbols.Length)
                 {
                     var symbol = childSymbols[index] as DeclaredSymbol;
-                    if (symbol != null && symbol.Kind != LanguageSymbolKind.ErrorType) builder.Add(symbol);
+                    if (symbol != null && symbol.Kind != SymbolKind.ErrorType) builder.Add(symbol);
                 }
             }
         }
@@ -524,55 +524,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                     }
                 }*/
             }
-        }
-
-        /// <summary>
-        /// Fix up a partial method by combining its defining and implementing declarations, updating the array of symbols (by name),
-        /// and returning the combined symbol.
-        /// </summary>
-        /// <param name="symbols">The symbols array containing both the latent and implementing declaration</param>
-        /// <param name="part1">One of the two declarations</param>
-        /// <param name="part2">The other declaration</param>
-        /// <returns>An updated symbols array containing only one method symbol representing the two parts</returns>
-        private ImmutableArray<Symbol> FixPartialMember(ImmutableArray<Symbol> symbols, IPartialMemberSymbol part1, IPartialMemberSymbol part2)
-        {
-            IPartialMemberSymbol definition;
-            IPartialMemberSymbol implementation;
-            if (part1.IsPartialDefinition)
-            {
-                definition = part1;
-                implementation = part2;
-            }
-            else
-            {
-                definition = part2;
-                implementation = part1;
-            }
-
-            InitializePartialSymbolParts(definition, implementation);
-
-            // a partial method is represented in the member list by its definition part:
-            return Remove(symbols, (Symbol)implementation);
-        }
-
-        protected virtual void InitializePartialSymbolParts(IPartialMemberSymbol definition, IPartialMemberSymbol implementation)
-        {
-            throw new NotImplementedException("TODO:MetaDslx");
-            //definition.OtherPartOfPartial = implementation;
-            //implementation.OtherPartOfPartial = definition;
-        }
-
-        private static ImmutableArray<Symbol> Remove(ImmutableArray<Symbol> symbols, Symbol symbol)
-        {
-            var builder = ArrayBuilder<Symbol>.GetInstance();
-            foreach (var s in symbols)
-            {
-                if (!ReferenceEquals(s, symbol))
-                {
-                    builder.Add(s);
-                }
-            }
-            return builder.ToImmutableAndFree();
         }
 
 

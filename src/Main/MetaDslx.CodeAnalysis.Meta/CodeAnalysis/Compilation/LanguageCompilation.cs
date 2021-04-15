@@ -18,21 +18,21 @@ using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Symbols.Source;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.Modeling;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.CodeGen;
-using MetaDslx.CodeAnalysis.Diagnostics;
-using MetaDslx.CodeAnalysis.Emit;
-using MetaDslx.CodeAnalysis.Operations;
-using MetaDslx.CodeAnalysis.PooledObjects;
-using MetaDslx.CodeAnalysis.Symbols;
-using MetaDslx.CodeAnalysis.Text;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CodeGen;
+using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.Emit;
+using Microsoft.CodeAnalysis.Operations;
+using Microsoft.CodeAnalysis.PooledObjects;
+using Microsoft.CodeAnalysis.Symbols;
+using Microsoft.CodeAnalysis.Text;
 using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis
 {
-    using CSharpResources = MetaDslx.CodeAnalysis.CSharp.CSharpResources;
-    using CSharpCompilation = MetaDslx.CodeAnalysis.CSharp.CSharpCompilation;
-    using MessageProvider = MetaDslx.CodeAnalysis.CSharp.MessageProvider;
+    using CSharpResources = Microsoft.CodeAnalysis.CSharp.CSharpResources;
+    using CSharpCompilation = Microsoft.CodeAnalysis.CSharp.CSharpCompilation;
+    using MessageProvider = Microsoft.CodeAnalysis.CSharp.MessageProvider;
     using Binder = MetaDslx.CodeAnalysis.Binding.Binder;
 
     /// <summary>
@@ -1693,7 +1693,7 @@ namespace MetaDslx.CodeAnalysis
             var throughType0 = throughType.EnsureLanguageSymbolOrNull<ITypeSymbol, TypeSymbol>(nameof(throughType));
             HashSet<DiagnosticInfo> useSiteDiagnostics = null;
             return
-                within0.Kind == LanguageSymbolKind.Assembly ?
+                within0.Kind == Symbols.SymbolKind.Assembly ?
                 AccessCheck.IsSymbolAccessible(symbol0, (AssemblySymbol)within0, ref useSiteDiagnostics) :
                 AccessCheck.IsSymbolAccessible(symbol0, (NamedTypeSymbol)within0, ref useSiteDiagnostics, throughType0);
         }
@@ -2180,7 +2180,7 @@ namespace MetaDslx.CodeAnalysis
                 return true;
             }
 
-            if (symbol.Kind == LanguageSymbolKind.Member && ((MemberSymbol)symbol).MemberKind == MemberKind.Method && symbol.IsImplicitlyDeclared && ((MethodSymbol)symbol).MethodKind == MethodKind.Constructor)
+            if (symbol.Kind == Symbols.SymbolKind.Member && ((MemberSymbol)symbol).MemberKind == MemberKind.Method && symbol.IsImplicitlyDeclared && ((MethodSymbol)symbol).MethodKind == MethodKind.Constructor)
             {
                 // Include implicitly declared constructor if containing type is included
                 return IsDefinedOrImplementedInSourceTree(symbol.ContainingType, tree, span);

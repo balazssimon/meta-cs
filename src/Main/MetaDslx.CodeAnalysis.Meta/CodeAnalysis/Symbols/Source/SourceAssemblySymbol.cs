@@ -1,5 +1,5 @@
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.PooledObjects;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.PooledObjects;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -16,12 +16,12 @@ using MetaDslx.CodeAnalysis.Symbols.Metadata;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Source
 {
-    using CSharpSymbols = MetaDslx.CodeAnalysis.CSharp.Symbols;
-    using CSharpCompilation = MetaDslx.CodeAnalysis.CSharp.CSharpCompilation;
-    using MessageProvider = MetaDslx.CodeAnalysis.CSharp.MessageProvider;
-    using CommonAssemblyWellKnownAttributeData = MetaDslx.CodeAnalysis.CommonAssemblyWellKnownAttributeData<MetaDslx.CodeAnalysis.Symbols.NamedTypeSymbol>;
+    using CSharpSymbols = Microsoft.CodeAnalysis.CSharp.Symbols;
+    using CSharpCompilation = Microsoft.CodeAnalysis.CSharp.CSharpCompilation;
+    using MessageProvider = Microsoft.CodeAnalysis.CSharp.MessageProvider;
+    using CommonAssemblyWellKnownAttributeData = Microsoft.CodeAnalysis.CommonAssemblyWellKnownAttributeData<MetaDslx.CodeAnalysis.Symbols.NamedTypeSymbol>;
 
-    public class SourceAssemblySymbol : MetadataOrSourceAssemblySymbol, ISourceAssemblySymbol
+    public class SourceAssemblySymbol : MetadataOrSourceAssemblySymbol
     {
         /// <summary>
         /// A Compilation the assembly is created for.
@@ -959,7 +959,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 // Descent into child namespaces.
                 foreach (Symbol member in mergedNs.GetMembers())
                 {
-                    if (member.Kind == LanguageSymbolKind.Namespace)
+                    if (member.Kind == SymbolKind.Namespace)
                     {
                         ReportNameCollisionDiagnosticsForAddedModules((NamespaceSymbol)member, diagnostics);
                     }
@@ -1442,13 +1442,13 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             {
                 switch (member.Kind.Switch())
                 {
-                    case LanguageSymbolKind.Namespace:
+                    case SymbolKind.Namespace:
                         if (ContainsExtensionMethods((NamespaceSymbol)member))
                         {
                             return true;
                         }
                         break;
-                    case LanguageSymbolKind.NamedType:
+                    case SymbolKind.NamedType:
                         if (((NamedTypeSymbol)member).MightContainExtensionMethods)
                         {
                             return true;
@@ -1795,6 +1795,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         public override AssemblyMetadata GetMetadata() => null;
 
-        Compilation ISourceAssemblySymbol.Compilation => _compilation;
+        internal override bool IsNetModule()
+        {
+            return _compilation.Options.OutputKind.IsNetModule();
+        }
     }
 }

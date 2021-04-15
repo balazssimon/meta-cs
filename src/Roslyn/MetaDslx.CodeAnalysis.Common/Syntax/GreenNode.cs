@@ -17,7 +17,7 @@ using Roslyn.Utilities;
 namespace Microsoft.CodeAnalysis
 {
     [DebuggerDisplay("{GetDebuggerDisplay(), nq}")]
-    internal abstract class GreenNode : IObjectWritable
+    public abstract class GreenNode : IObjectWritable
     {
         private string GetDebuggerDisplay()
         {
@@ -261,7 +261,7 @@ namespace Microsoft.CodeAnalysis
 
         #region Flags 
         [Flags]
-        internal enum NodeFlags : byte
+        internal protected enum NodeFlags : byte
         {
             None = 0,
             ContainsDiagnostics = 1 << 0,

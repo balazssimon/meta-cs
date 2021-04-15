@@ -6,13 +6,15 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.PooledObjects;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.PooledObjects;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.Modeling;
 
 namespace MetaDslx.CodeAnalysis.Declarations
 {
+    using LoadDirective = MetaDslx.CodeAnalysis.Syntax.LoadDirective;
+
     public sealed partial class SyntaxAndDeclarationManager
     {
         internal readonly ImmutableArray<SyntaxTree> ExternalSyntaxTrees;

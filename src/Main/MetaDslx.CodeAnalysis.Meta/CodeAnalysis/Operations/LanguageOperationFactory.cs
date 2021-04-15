@@ -7,9 +7,9 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 using MetaDslx.CodeAnalysis.Binding;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.Operations;
-using MetaDslx.CodeAnalysis.PooledObjects;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Operations;
+using Microsoft.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis.Operations

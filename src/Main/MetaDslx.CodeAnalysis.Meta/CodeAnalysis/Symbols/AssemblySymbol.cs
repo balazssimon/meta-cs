@@ -1,6 +1,6 @@
 using MetaDslx.CodeAnalysis.Symbols.Source;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.PooledObjects;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 using System;
 using System.Reflection;
@@ -11,10 +11,12 @@ using System.Linq;
 using System.Text;
 using System.Reflection.PortableExecutable;
 using MetaDslx.Modeling;
+using Microsoft.CodeAnalysis.Symbols;
+using Microsoft.Cci;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-    using CSharpSymbols = MetaDslx.CodeAnalysis.CSharp.Symbols;
+    using CSharpSymbols = Microsoft.CodeAnalysis.CSharp.Symbols;
 
     [Symbol]
     public abstract class AssemblySymbol : Symbol, IAssemblySymbolInternal
@@ -169,11 +171,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         public abstract ImmutableArray<ModuleSymbol> Modules { get; }
 
-        public sealed override LanguageSymbolKind Kind
+        public sealed override SymbolKind Kind
         {
             get
             {
-                return LanguageSymbolKind.Assembly;
+                return SymbolKind.Assembly;
             }
         }
 
@@ -409,7 +411,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        internal NamedTypeSymbol GetPrimitiveType(MetaDslx.Cci.PrimitiveTypeCode type)
+        internal NamedTypeSymbol GetPrimitiveType(Microsoft.Cci.PrimitiveTypeCode type)
         {
             return (NamedTypeSymbol)GetSpecialSymbol(SpecialTypes.GetTypeFromMetadataName(type));
         }
@@ -696,7 +698,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                     continue;
                 }
 
-                Debug.Assert(!TypeSymbol.Equals(candidate, result, TypeCompareKind.ConsiderEverything2));
+                Debug.Assert(!TypeSymbol.Equals(candidate, result, TypeCompareKind.ConsiderEverything));
 
                 if ((object)result != null)
                 {
@@ -773,7 +775,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         private static bool IsAcceptableMatchForGetTypeByMetadataName(NamedTypeSymbol candidate)
         {
-            return candidate.Kind != LanguageSymbolKind.ErrorType || !(candidate is MissingMetadataTypeSymbol);
+            return candidate.Kind != SymbolKind.ErrorType || !(candidate is MissingMetadataTypeSymbol);
         }
 
         /// <summary>
@@ -795,23 +797,45 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         internal abstract ImmutableArray<byte> PublicKey { get; }
 
+        Version? IAssemblySymbolInternal.AssemblyVersionPattern => throw new NotImplementedException();
+
+        AssemblyIdentity IAssemblySymbolInternal.Identity => throw new NotImplementedException();
+
+        Microsoft.CodeAnalysis.SymbolKind ISymbolInternal.Kind => throw new NotImplementedException();
+
+        string ISymbolInternal.Name => throw new NotImplementedException();
+
+        string ISymbolInternal.MetadataName => throw new NotImplementedException();
+
+        Compilation ISymbolInternal.DeclaringCompilation => throw new NotImplementedException();
+
+        ISymbolInternal ISymbolInternal.ContainingSymbol => throw new NotImplementedException();
+
+        IAssemblySymbolInternal ISymbolInternal.ContainingAssembly => throw new NotImplementedException();
+
+        IModuleSymbolInternal ISymbolInternal.ContainingModule => throw new NotImplementedException();
+
+        INamedTypeSymbolInternal ISymbolInternal.ContainingType => throw new NotImplementedException();
+
+        INamespaceSymbolInternal ISymbolInternal.ContainingNamespace => throw new NotImplementedException();
+
+        bool ISymbolInternal.IsDefinition => throw new NotImplementedException();
+
+        ImmutableArray<Location> ISymbolInternal.Locations => throw new NotImplementedException();
+
+        bool ISymbolInternal.IsImplicitlyDeclared => throw new NotImplementedException();
+
+        Accessibility ISymbolInternal.DeclaredAccessibility => throw new NotImplementedException();
+
+        bool ISymbolInternal.IsStatic => throw new NotImplementedException();
+
+        bool ISymbolInternal.IsVirtual => throw new NotImplementedException();
+
+        bool ISymbolInternal.IsOverride => throw new NotImplementedException();
+
+        bool ISymbolInternal.IsAbstract => throw new NotImplementedException();
+
         #region IAssemblySymbol Members
-
-        INamespaceSymbol IAssemblySymbol.GlobalNamespace
-        {
-            get
-            {
-                return this.GlobalNamespace;
-            }
-        }
-
-        IEnumerable<IModuleSymbol> IAssemblySymbol.Modules
-        {
-            get
-            {
-                return this.Modules;
-            }
-        }
 
         /// <summary>
         /// If this symbol represents a metadata assembly returns the underlying <see cref="AssemblyMetadata"/>.
@@ -819,46 +843,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// Otherwise, this returns <see langword="null"/>.
         /// </summary>
         public abstract AssemblyMetadata GetMetadata();
-
-        INamedTypeSymbol IAssemblySymbol.ResolveForwardedType(string fullyQualifiedMetadataName)
-        {
-            return ResolveForwardedType(fullyQualifiedMetadataName);
-        }
-
-        bool IAssemblySymbol.GivesAccessTo(IAssemblySymbol assemblyWantingAccess)
-        {
-            if (Equals(this, assemblyWantingAccess))
-            {
-                return true;
-            }
-
-            var myKeys = GetInternalsVisibleToPublicKeys(assemblyWantingAccess.Name);
-
-            // We have an easy out here. Suppose the assembly wanting access is 
-            // being compiled as a module. You can only strong-name an assembly. So we are going to optimistically 
-            // assume that it is going to be compiled into an assembly with a matching strong name, if necessary.
-            if (myKeys.Any() && assemblyWantingAccess.IsNetModule())
-            {
-                return true;
-            }
-
-            foreach (var key in myKeys)
-            {
-                IVTConclusion conclusion = this.Identity.PerformIVTCheck(assemblyWantingAccess.Identity.PublicKey, key);
-                Debug.Assert(conclusion != IVTConclusion.NoRelationshipClaimed);
-                if (conclusion == IVTConclusion.Match || conclusion == IVTConclusion.OneSignedOneNot)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        INamedTypeSymbol IAssemblySymbol.GetTypeByMetadataName(string metadataName)
-        {
-            return this.GetTypeByMetadataName(metadataName);
-        }
 
         #endregion
 
@@ -879,17 +863,27 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return visitor.VisitAssembly(this, argument);
         }
 
-        public override void Accept(MetaDslx.CodeAnalysis.SymbolVisitor visitor)
+        bool ISymbolInternal.Equals(ISymbolInternal? other, Microsoft.CodeAnalysis.TypeCompareKind compareKind)
         {
-            visitor.VisitAssembly(this);
+            throw new NotImplementedException();
         }
 
-        public override TResult Accept<TResult>(MetaDslx.CodeAnalysis.SymbolVisitor<TResult> visitor)
+        ISymbol ISymbolInternal.GetISymbol()
         {
-            return visitor.VisitAssembly(this);
+            throw new NotImplementedException();
+        }
+
+        IReference ISymbolInternal.GetCciAdapter()
+        {
+            throw new NotImplementedException();
         }
 
         #endregion
+
+        internal virtual bool IsNetModule()
+        {
+            return false;
+        }
 
     }
 }

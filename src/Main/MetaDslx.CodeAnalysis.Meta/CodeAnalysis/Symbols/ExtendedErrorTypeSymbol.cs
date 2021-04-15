@@ -5,8 +5,8 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using MetaDslx.CodeAnalysis.Binding;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.Text;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Text;
 using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis.Symbols
@@ -34,9 +34,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
         internal ExtendedErrorTypeSymbol(DeclaredSymbol containingSymbol, string name, string metadataName, DiagnosticInfo errorInfo, bool unreported = false, bool variableUsedBeforeDeclaration = false)
         {
             Debug.Assert(((object)containingSymbol == null) ||
-                (containingSymbol.Kind == LanguageSymbolKind.Namespace) ||
-                (containingSymbol.Kind == LanguageSymbolKind.NamedType) ||
-                (containingSymbol.Kind == LanguageSymbolKind.ErrorType));
+                (containingSymbol.Kind == SymbolKind.Namespace) ||
+                (containingSymbol.Kind == SymbolKind.NamedType) ||
+                (containingSymbol.Kind == SymbolKind.ErrorType));
 
             Debug.Assert(name != null);
             Debug.Assert(unreported == false || errorInfo != null);

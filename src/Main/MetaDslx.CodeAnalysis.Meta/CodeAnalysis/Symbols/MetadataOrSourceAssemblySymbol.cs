@@ -2,7 +2,7 @@
 
 using MetaDslx.CodeAnalysis.Symbols.Metadata;
 using MetaDslx.Modeling;
-using MetaDslx.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -51,7 +51,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 {
                     emittedName = MetadataTypeName.FromFullName(((SpecialType)key).GetMetadataName(), useCLSCompliantNameArityEncoding: true);
                     result = firstModule.LookupTopLevelMetadataType(ref emittedName);
-                    if (result.Kind == LanguageSymbolKind.ErrorType || result.DeclaredAccessibility != Accessibility.Public)
+                    if (result.Kind == SymbolKind.ErrorType || result.DeclaredAccessibility != Accessibility.Public)
                     {
                         result = null;
                     }
@@ -68,7 +68,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                         }
                     }
                 }
-                if (result == null || (result.Kind != LanguageSymbolKind.ErrorType && result.DeclaredAccessibility != Accessibility.Public))
+                if (result == null || (result.Kind != SymbolKind.ErrorType && result.DeclaredAccessibility != Accessibility.Public))
                 {
                     if (key is SpecialType)
                     {
@@ -188,7 +188,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <param name="potentialGiverOfAccess"></param>
         /// <returns></returns>
         /// <remarks></remarks>
-        protected IVTConclusion MakeFinalIVTDetermination(AssemblySymbol potentialGiverOfAccess)
+        internal IVTConclusion MakeFinalIVTDetermination(AssemblySymbol potentialGiverOfAccess)
         {
             IVTConclusion result;
             if (AssembliesToWhichInternalAccessHasBeenDetermined.TryGetValue(potentialGiverOfAccess, out result))

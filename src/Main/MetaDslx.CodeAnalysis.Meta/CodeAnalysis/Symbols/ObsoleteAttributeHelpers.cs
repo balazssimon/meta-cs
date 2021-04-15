@@ -4,8 +4,8 @@ using System.Diagnostics;
 using System.Reflection.Metadata;
 using System.Threading;
 using MetaDslx.CodeAnalysis.Binding;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.CSharp.Symbols.Metadata.PE;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {

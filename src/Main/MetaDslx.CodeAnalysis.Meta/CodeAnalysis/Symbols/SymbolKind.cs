@@ -8,7 +8,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
     /// <summary>
     /// Specifies the possible kinds of symbols.
     /// </summary>
-    public class LanguageSymbolKind : EnumObject
+    public class SymbolKind : EnumObject
     {
         /// <summary>
         /// Symbol is an unknown symbol.
@@ -80,30 +80,30 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         public const string Discard = nameof(Discard);
 
-        protected LanguageSymbolKind(string name)
+        protected SymbolKind(string name)
             : base(name)
         {
         }
 
-        protected LanguageSymbolKind(EnumObject retargetedValue)
+        protected SymbolKind(EnumObject retargetedValue)
             : base(retargetedValue)
         {
         }
 
-        static LanguageSymbolKind()
+        static SymbolKind()
         {
-            EnumObject.RegisterDefault<LanguageSymbolKind>(None);
-            EnumObject.AutoInit<LanguageSymbolKind>();
+            EnumObject.RegisterDefault<SymbolKind>(None);
+            EnumObject.AutoInit<SymbolKind>();
         }
 
-        public static implicit operator LanguageSymbolKind(string name)
+        public static implicit operator SymbolKind(string name)
         {
-            return FromString<LanguageSymbolKind>(name);
+            return FromString<SymbolKind>(name);
         }
 
-        public static explicit operator LanguageSymbolKind(int value)
+        public static explicit operator SymbolKind(int value)
         {
-            return FromIntUnsafe<LanguageSymbolKind>(value);
+            return FromIntUnsafe<SymbolKind>(value);
         }
 
     }

@@ -1,11 +1,11 @@
-// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
-using MetaDslx.CodeAnalysis.Collections;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.PooledObjects;
+using Microsoft.CodeAnalysis.Collections;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Symbols.Source;
@@ -98,31 +98,31 @@ namespace MetaDslx.CodeAnalysis.Binding
 
             switch (symbol.Kind.Switch())
             {
-                case LanguageSymbolKind.ConstructedType:
+                case Symbols.SymbolKind.ConstructedType:
                     throw new NotImplementedException("TODO:MetaDslx");
                     //return IsSymbolAccessibleCore(((ArrayTypeSymbol)symbol).ElementType, within, null, out failedThroughTypeCheck, compilation, ref useSiteDiagnostics, basesBeingResolved);
 
-                case LanguageSymbolKind.NamedType:
+                case Symbols.SymbolKind.NamedType:
                     return IsNamedTypeAccessible((NamedTypeSymbol)symbol, within, ref useSiteDiagnostics, basesBeingResolved);
 
-                case LanguageSymbolKind.Alias:
+                case Symbols.SymbolKind.Alias:
                     return IsSymbolAccessibleCore(((AliasSymbol)symbol).Target, within, null, out failedThroughTypeCheck, compilation, ref useSiteDiagnostics, basesBeingResolved);
 
-                case LanguageSymbolKind.Discard:
+                case Symbols.SymbolKind.Discard:
                     return IsSymbolAccessibleCore(((DiscardSymbol)symbol).Type, within, null, out failedThroughTypeCheck, compilation, ref useSiteDiagnostics, basesBeingResolved);
 
-                case LanguageSymbolKind.ErrorType:
+                case Symbols.SymbolKind.ErrorType:
                     // Always assume that error types are accessible.
                     return true;
 
-                case LanguageSymbolKind.Namespace:
-                case LanguageSymbolKind.DynamicType:
-                case LanguageSymbolKind.Assembly:
-                case LanguageSymbolKind.NetModule:
+                case Symbols.SymbolKind.Namespace:
+                case Symbols.SymbolKind.DynamicType:
+                case Symbols.SymbolKind.Assembly:
+                case Symbols.SymbolKind.NetModule:
                     // These types of symbols are always accessible (if visible).
                     return true;
 
-                case LanguageSymbolKind.Member:
+                case Symbols.SymbolKind.Member:
                     if (declaredSymbol.IsStatic)
                     {
                         // members aren't accessed "through" an "instance" of any type.  So we
@@ -133,7 +133,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
                     return IsMemberAccessible(declaredSymbol.ContainingType, declaredSymbol.DeclaredAccessibility, within, throughTypeOpt, out failedThroughTypeCheck, compilation, ref useSiteDiagnostics);
 
-                case LanguageSymbolKind.None:
+                case Symbols.SymbolKind.None:
                     return false;
                 default:
                     throw ExceptionUtilities.UnexpectedValue(symbol.Kind);
@@ -576,7 +576,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// </summary>
         /// <param name="fromAssembly">The assembly wanting access.</param>
         /// <param name="toAssembly">The assembly possibly providing symbols to be accessed.</param>
-        protected bool HasInternalAccessTo(AssemblySymbol fromAssembly, AssemblySymbol toAssembly)
+        internal bool HasInternalAccessTo(AssemblySymbol fromAssembly, AssemblySymbol toAssembly)
         {
             if (Equals(fromAssembly, toAssembly))
             {

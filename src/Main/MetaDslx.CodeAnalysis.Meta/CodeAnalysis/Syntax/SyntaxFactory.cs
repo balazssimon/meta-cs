@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -9,10 +9,10 @@ using System.Threading;
 using InternalSyntax = MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
 using System.Xml.Linq;
 using Roslyn.Utilities;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.Syntax;
-using MetaDslx.CodeAnalysis.CSharp;
-using MetaDslx.CodeAnalysis.Text;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Syntax;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.Text;
 using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
 
 namespace MetaDslx.CodeAnalysis.Syntax

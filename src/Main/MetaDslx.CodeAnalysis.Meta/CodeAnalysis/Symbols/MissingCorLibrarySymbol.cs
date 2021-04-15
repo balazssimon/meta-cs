@@ -3,8 +3,8 @@
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Threading;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.Text;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Text;
 using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis.Symbols
@@ -53,7 +53,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 {
                     MetadataTypeName emittedName = MetadataTypeName.FromFullName(type.GetMetadataName(), useCLSCompliantNameArityEncoding: true);
                     result = module.LookupTopLevelMetadataType(ref emittedName);
-                    if (result.Kind != LanguageSymbolKind.ErrorType && result.DeclaredAccessibility != Accessibility.Public)
+                    if (result.Kind != SymbolKind.ErrorType && result.DeclaredAccessibility != Accessibility.Public)
                     {
                         result = new MissingMetadataTypeSymbol.TopLevel(module, ref emittedName, type);
                     }

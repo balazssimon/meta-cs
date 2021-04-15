@@ -1,5 +1,5 @@
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
+﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Syntax.InternalSyntax;
 using Roslyn.Utilities;
 using System;
 using System.Collections.Generic;
@@ -10,37 +10,37 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
     public abstract class GreenNodeAdapter : GreenNode
     {
         internal GreenNodeAdapter(SyntaxKind kind)
-            : base(kind.GetValue())
+            : base((ushort)kind.GetValue())
         {
             GreenStats.NoteGreen(this);
         }
 
         internal GreenNodeAdapter(SyntaxKind kind, int fullWidth)
-            : base(kind.GetValue(), fullWidth)
+            : base((ushort)kind.GetValue(), fullWidth)
         {
             GreenStats.NoteGreen(this);
         }
 
         internal GreenNodeAdapter(SyntaxKind kind, DiagnosticInfo[] diagnostics)
-            : base(kind.GetValue(), diagnostics)
+            : base((ushort)kind.GetValue(), diagnostics)
         {
             GreenStats.NoteGreen(this);
         }
 
         internal GreenNodeAdapter(SyntaxKind kind, DiagnosticInfo[] diagnostics, int fullWidth)
-            : base(kind.GetValue(), diagnostics, fullWidth)
+            : base((ushort)kind.GetValue(), diagnostics, fullWidth)
         {
             GreenStats.NoteGreen(this);
         }
 
         internal GreenNodeAdapter(SyntaxKind kind, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
-            : base(kind.GetValue(), diagnostics, annotations)
+            : base((ushort)kind.GetValue(), diagnostics, annotations)
         {
             GreenStats.NoteGreen(this);
         }
 
         internal GreenNodeAdapter(SyntaxKind kind, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations, int fullWidth)
-            : base(kind.GetValue(), diagnostics, annotations, fullWidth)
+            : base((ushort)kind.GetValue(), diagnostics, annotations, fullWidth)
         {
             GreenStats.NoteGreen(this);
         }
@@ -67,7 +67,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         public override string KindText => Kind.GetName();
 
-        public override GreenNode GetSlot(int index)
+        internal override GreenNode GetSlot(int index)
         {
             return this.GetSlotCore(index);
         }

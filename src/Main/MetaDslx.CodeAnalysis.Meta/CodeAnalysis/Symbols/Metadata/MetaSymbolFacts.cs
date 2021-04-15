@@ -1,7 +1,7 @@
 using MetaDslx.CodeAnalysis.Symbols.CSharp;
 using MetaDslx.Modeling;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.PooledObjects;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.PooledObjects;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -199,7 +199,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 
         public virtual object GetSymbolValue(Symbol symbol, Type expectedType)
         {
-            if (symbol.Kind == LanguageSymbolKind.ErrorType)
+            if (symbol.Kind == SymbolKind.ErrorType)
             {
                 return null;
             }

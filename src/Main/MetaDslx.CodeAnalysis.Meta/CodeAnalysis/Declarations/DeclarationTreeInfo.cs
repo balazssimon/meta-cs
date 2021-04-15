@@ -1,7 +1,7 @@
-using MetaDslx.CodeAnalysis.Syntax;
+using Microsoft.CodeAnalysis.Syntax;
 using MetaDslx.Modeling;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.PooledObjects;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.PooledObjects;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

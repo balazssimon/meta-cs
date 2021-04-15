@@ -1,6 +1,6 @@
 using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
 using MetaDslx.Modeling;
-using MetaDslx.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using Roslyn.Utilities;
 using System;
 using System.Collections.Generic;

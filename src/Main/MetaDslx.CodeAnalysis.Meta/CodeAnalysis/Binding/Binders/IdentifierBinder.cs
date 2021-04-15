@@ -1,12 +1,12 @@
 using MetaDslx.CodeAnalysis.Binding.Binders.Find;
 using MetaDslx.CodeAnalysis.Binding.BoundNodes;
 using MetaDslx.CodeAnalysis.Symbols;
-using MetaDslx.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
-using MetaDslx.CodeAnalysis.PooledObjects;
+using Microsoft.CodeAnalysis.PooledObjects;
 using System.Collections.Immutable;
 using System.Diagnostics;
 

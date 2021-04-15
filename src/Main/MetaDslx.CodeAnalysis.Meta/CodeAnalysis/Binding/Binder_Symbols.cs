@@ -12,15 +12,15 @@ using MetaDslx.CodeAnalysis.Symbols.Metadata;
 using MetaDslx.CodeAnalysis.Symbols.Source;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.Languages.Meta.Model;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.PooledObjects;
-using MetaDslx.CodeAnalysis.RuntimeMembers;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.PooledObjects;
+using Microsoft.CodeAnalysis.RuntimeMembers;
 using Roslyn.Utilities;
 using MetaDslx.CodeAnalysis.Binding.BoundNodes;
 
 namespace MetaDslx.CodeAnalysis.Binding
 {
-    using Cci = MetaDslx.Cci;
+    using Cci = Microsoft.Cci;
 
     public partial class Binder
     {
@@ -100,10 +100,10 @@ namespace MetaDslx.CodeAnalysis.Binding
                 bool wasError;
 
                 bindingResult = constraints.ResultSymbol(result, diagnostics, recursionConstraints?.Diagnose ?? true, out wasError);
-                if (bindingResult.Kind == LanguageSymbolKind.Alias)
+                if (bindingResult.Kind == Symbols.SymbolKind.Alias)
                 {
                     var aliasTarget = ((AliasSymbol)bindingResult).GetAliasTarget(recursionConstraints);
-                    if (aliasTarget.Kind == LanguageSymbolKind.NamedType && ((NamedTypeSymbol)aliasTarget).ContainsDynamic())
+                    if (aliasTarget.Kind == Symbols.SymbolKind.NamedType && ((NamedTypeSymbol)aliasTarget).ContainsDynamic())
                     {
                         ReportUseSiteDiagnosticForDynamic(diagnostics, identifierSyntax);
                     }
@@ -165,10 +165,10 @@ namespace MetaDslx.CodeAnalysis.Binding
             {
                 switch (s.Kind.Switch())
                 {
-                    case LanguageSymbolKind.Alias:
-                        if (((AliasSymbol)s).Target.Kind == LanguageSymbolKind.NamedType) return true;
+                    case Symbols.SymbolKind.Alias:
+                        if (((AliasSymbol)s).Target.Kind == Symbols.SymbolKind.NamedType) return true;
                         break;
-                    case LanguageSymbolKind.NamedType:
+                    case Symbols.SymbolKind.NamedType:
                         return true;
                 }
             }

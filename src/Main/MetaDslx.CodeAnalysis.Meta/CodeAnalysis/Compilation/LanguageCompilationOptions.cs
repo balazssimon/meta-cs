@@ -1,19 +1,20 @@
-// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using MetaDslx.CodeAnalysis.PooledObjects;
+using Microsoft.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 using System.Diagnostics;
 using System.ComponentModel;
-using MetaDslx.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Binding;
+using System.Threading;
 
 namespace MetaDslx.CodeAnalysis
 {
-    using MessageProvider = MetaDslx.CodeAnalysis.CSharp.MessageProvider;
+    using MessageProvider = Microsoft.CodeAnalysis.CSharp.MessageProvider;
 
     /// <summary>
     /// Represents various options that affect compilation, such as 
@@ -87,9 +88,9 @@ namespace MetaDslx.CodeAnalysis
             this.TopLevelBinderFlags = topLevelBinderFlags ?? BinderFlags.None;
         }
 
-        public MetaDslx.CodeAnalysis.CSharp.CSharpCompilationOptions ToCSharp()
+        public Microsoft.CodeAnalysis.CSharp.CSharpCompilationOptions ToCSharp()
         {
-            return new MetaDslx.CodeAnalysis.CSharp.CSharpCompilationOptions(
+            return new Microsoft.CodeAnalysis.CSharp.CSharpCompilationOptions(
                 outputKind: this.OutputKind,
                 moduleName: this.ModuleName,
                 mainTypeName: this.MainTypeName,
@@ -119,8 +120,8 @@ namespace MetaDslx.CodeAnalysis
                 referencesSupersedeLowerVersions: this.ReferencesSupersedeLowerVersions,
                 reportSuppressedDiagnostics: this.ReportSuppressedDiagnostics,
                 publicSign: this.PublicSign,
-                topLevelBinderFlags: MetaDslx.CodeAnalysis.CSharp.BinderFlags.None,
-                nullableContextOptions: MetaDslx.CodeAnalysis.CSharp.NullableContextOptions.Disable);
+                topLevelBinderFlags: Microsoft.CodeAnalysis.CSharp.BinderFlags.None,
+                nullableContextOptions: Microsoft.CodeAnalysis.CSharp.NullableContextOptions.Disable);
         }
 
         public new Language Language => this.LanguageCore;
@@ -518,7 +519,7 @@ namespace MetaDslx.CodeAnalysis
                    Hash.Combine(Hash.CombineValues(this.Usings, StringComparer.Ordinal), TopLevelBinderFlags.GetHashCode())));
         }
 
-        public override Diagnostic FilterDiagnostic(Diagnostic diagnostic)
+        internal override Diagnostic? FilterDiagnostic(Diagnostic diagnostic, CancellationToken cancellationToken)
         {
             return LanguageDiagnosticFilter.Filter(diagnostic, WarningLevel, GeneralDiagnosticOption, SpecificDiagnosticOptions);
         }

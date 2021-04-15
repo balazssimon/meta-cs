@@ -1,10 +1,11 @@
-﻿using MetaDslx.CodeAnalysis.PooledObjects;
+﻿using Microsoft.CodeAnalysis.PooledObjects;
 using MetaDslx.CodeAnalysis.Symbols;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
+using Microsoft.CodeAnalysis;
 
 namespace MetaDslx.CodeAnalysis.Binding
 {

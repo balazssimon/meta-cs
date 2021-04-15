@@ -13,7 +13,7 @@ namespace Microsoft.CodeAnalysis
     /// Abstracts the ability to classify and load messages for error codes. Allows the error
     /// infrastructure to be reused between C# and VB.
     /// </summary>
-    internal abstract class CommonMessageProvider
+    public abstract class CommonMessageProvider
     {
         /// <summary>
         /// Caches the return values for <see cref="GetIdForErrorCode(int)"/>.

@@ -1,13 +1,13 @@
-// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.PooledObjects;
-using MetaDslx.CodeAnalysis.Text;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.PooledObjects;
+using Microsoft.CodeAnalysis.Text;
 using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis
@@ -29,12 +29,13 @@ namespace MetaDslx.CodeAnalysis
         public static void ComputeDeclarationsInNode(
             SemanticModel model,
             SyntaxNode node,
+            ISymbol associatedSymbol,
             bool getSymbol,
             ArrayBuilder<DeclarationInfo> builder,
             CancellationToken cancellationToken,
             int? levelsToCompute = null)
         {
-            ComputeDeclarations(model, node, (n, level) => InvalidLevel(level), getSymbol, builder, levelsToCompute, cancellationToken);
+            ComputeDeclarations(model, node, (n, level) => InvalidLevel(level), associatedSymbol, getSymbol, builder, levelsToCompute, cancellationToken);
         }
 
         private static bool InvalidLevel(int? level)
@@ -51,6 +52,7 @@ namespace MetaDslx.CodeAnalysis
             SemanticModel model,
             SyntaxNode node,
             Func<SyntaxNode, int?, bool> shouldSkip,
+            ISymbol associatedSymbol,
             bool getSymbol,
             ArrayBuilder<DeclarationInfo> builder,
             int? levelsToCompute,

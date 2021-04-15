@@ -6,10 +6,10 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.PooledObjects;
-using MetaDslx.CodeAnalysis.Operations;
-using MetaDslx.CodeAnalysis.Text;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.PooledObjects;
+using Microsoft.CodeAnalysis.Operations;
+using Microsoft.CodeAnalysis.Text;
 using Roslyn.Utilities;
 using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Symbols;
@@ -19,7 +19,7 @@ using MetaDslx.CodeAnalysis.Binding.Binders;
 
 namespace MetaDslx.CodeAnalysis
 {
-    using CSharpResources = MetaDslx.CodeAnalysis.CSharp.CSharpResources;
+    using CSharpResources = Microsoft.CodeAnalysis.CSharp.CSharpResources;
 
     /// <summary>
     /// Allows asking semantic questions about any node in a SyntaxTree within a Compilation.

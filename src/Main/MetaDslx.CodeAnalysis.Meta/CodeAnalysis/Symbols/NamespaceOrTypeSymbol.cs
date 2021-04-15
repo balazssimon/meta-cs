@@ -1,5 +1,5 @@
 using MetaDslx.CodeAnalysis.Symbols.Source;
-using MetaDslx.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using Roslyn.Utilities;
 using System;
 using System.Collections.Generic;
@@ -10,58 +10,19 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-    public abstract class NamespaceOrTypeSymbol : DeclaredSymbol, IMetaNamespaceOrTypeSymbol
+    public abstract class NamespaceOrTypeSymbol : DeclaredSymbol
     {
         /// <summary>
         /// Returns true if this symbol is a namespace. If it is not a namespace, it must be a type.
         /// </summary>
-        public bool IsNamespace => Kind == LanguageSymbolKind.Namespace;
+        public bool IsNamespace => Kind == SymbolKind.Namespace;
 
         /// <summary>
         /// Returns true if this symbols is a type. Equivalent to !IsNamespace.
         /// </summary>
         public bool IsType => !IsNamespace;
 
-        bool INamespaceOrTypeSymbol.IsNamespace => this.IsNamespace;
-
-        bool INamespaceOrTypeSymbol.IsType => this.IsType;
-
         public override ImmutableArray<Symbol> ChildSymbols => GetMembers().Cast<DeclaredSymbol, Symbol>();
-
-        ImmutableArray<IDeclaredSymbol> INamespaceOrTypeSymbol.GetMembers()
-        {
-            return StaticCast<IDeclaredSymbol>.From(this.GetMembers());
-        }
-
-        ImmutableArray<IDeclaredSymbol> INamespaceOrTypeSymbol.GetMembers(string name)
-        {
-            return StaticCast<IDeclaredSymbol>.From(this.GetMembers(name));
-        }
-
-        ImmutableArray<IDeclaredSymbol> IMetaNamespaceOrTypeSymbol.GetMembers(string name, string metadataName)
-        {
-            return StaticCast<IDeclaredSymbol>.From(this.GetMembers(name, metadataName));
-        }
-
-        ImmutableArray<INamedTypeSymbol> INamespaceOrTypeSymbol.GetTypeMembers()
-        {
-            return StaticCast<INamedTypeSymbol>.From(this.GetTypeMembers());
-        }
-
-        ImmutableArray<INamedTypeSymbol> INamespaceOrTypeSymbol.GetTypeMembers(string name)
-        {
-            return StaticCast<INamedTypeSymbol>.From(this.GetTypeMembers(name));
-        }
-
-        ImmutableArray<INamedTypeSymbol> INamespaceOrTypeSymbol.GetTypeMembers(string name, int arity)
-        {
-            return StaticCast<INamedTypeSymbol>.From(this.GetTypeMembers(name, $"{name}`{arity}"));
-        }
-
-        ImmutableArray<INamedTypeSymbol> IMetaNamespaceOrTypeSymbol.GetTypeMembers(string name, string metadataName)
-        {
-            return StaticCast<INamedTypeSymbol>.From(this.GetTypeMembers(name, metadataName));
-        }
 
         /// <summary>
         /// Lookup an immediately nested type referenced from metadata, names should be
@@ -79,7 +40,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
             NamespaceOrTypeSymbol scope = this;
 
-            if (scope.Kind == LanguageSymbolKind.ErrorType)
+            if (scope.Kind == SymbolKind.ErrorType)
             {
                 return new MissingMetadataTypeSymbol.Nested((NamedTypeSymbol)scope, ref emittedTypeName);
             }

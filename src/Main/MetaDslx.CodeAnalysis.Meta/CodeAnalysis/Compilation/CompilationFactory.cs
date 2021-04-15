@@ -1,11 +1,11 @@
-using MetaDslx.CodeAnalysis.Binding;
+﻿using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Declarations;
 using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Symbols.CSharp;
 using MetaDslx.CodeAnalysis.Symbols.Metadata;
 using MetaDslx.CodeAnalysis.Symbols.Source;
 using MetaDslx.Modeling;
-using MetaDslx.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -92,7 +92,7 @@ namespace MetaDslx.CodeAnalysis
 
         protected virtual CompletionGraphBuilder ConstructCompletionGraph()
         {
-            return CompletionGraphBuilder.BuildDefaultGraph();
+            return CompletionPart.ConstructDefaultCompletionGraph();
         }
 
         public abstract RootSingleDeclaration CreateDeclarationTree(LanguageSyntaxTree syntaxTree, string scriptClassName, bool isSubmission);

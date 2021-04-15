@@ -2,6 +2,7 @@
 using MetaDslx.CodeAnalysis.Binding.BoundNodes;
 using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Symbols.Source;
+using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -66,7 +67,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
                 if (_lazyImportChain == null)
                 {
                     ImportChain importChain = this.Next.ImportChain;
-                    if ((object)DefinedSymbol == null || DefinedSymbol.Kind == LanguageSymbolKind.Namespace)
+                    if ((object)DefinedSymbol == null || DefinedSymbol.Kind == Symbols.SymbolKind.Namespace)
                     {
                         importChain = new ImportChain(GetImports(), importChain);
                     }

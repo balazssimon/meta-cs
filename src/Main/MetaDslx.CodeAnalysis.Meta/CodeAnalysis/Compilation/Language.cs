@@ -1,8 +1,8 @@
 using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.Text;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Text;
 using Microsoft.Extensions.DependencyInjection;
 using Roslyn.Utilities;
 using System;
@@ -17,7 +17,7 @@ namespace MetaDslx.CodeAnalysis
         public static readonly Language None = NoLanguage.Instance;
 
         private ServiceCollection _serviceCollection;
-        private ServiceProvider _serviceProvider;
+        private IServiceProvider _serviceProvider;
         private LanguageServices _languageServices;
 
         private SyntaxFacts _syntaxFacts;
@@ -30,7 +30,7 @@ namespace MetaDslx.CodeAnalysis
         {
             EnumObject.Init(typeof(LanguageVersion));
             EnumObject.Init(typeof(SyntaxKind));
-            EnumObject.Init(typeof(LanguageSymbolKind));
+            EnumObject.Init(typeof(Symbols.SymbolKind));
             EnumObject.Init(typeof(Symbols.TypeKind));
             _serviceCollection = new ServiceCollection();
             RegisterServices(_serviceCollection);
@@ -43,7 +43,7 @@ namespace MetaDslx.CodeAnalysis
         }
 
         public abstract string Name { get; }
-        public ServiceProvider Services => _serviceProvider;
+        public IServiceProvider Services => _serviceProvider;
 
         protected abstract LanguageServices CreateLanguageServices();
         private void RegisterServices(ServiceCollection services)

@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Text;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.PooledObjects;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.PooledObjects;
 
 namespace MetaDslx.CodeAnalysis.Symbols.CSharp
 {
-    using CSharpSymbols = MetaDslx.CodeAnalysis.CSharp.Symbols;
-    using CSharpSymbol = MetaDslx.CodeAnalysis.CSharp.Symbol;
+    using CSharpSymbols = Microsoft.CodeAnalysis.CSharp.Symbols;
+    using CSharpSymbol = Microsoft.CodeAnalysis.CSharp.Symbol;
 
     public class CSharpNamespaceSymbol : NamespaceSymbol
     {

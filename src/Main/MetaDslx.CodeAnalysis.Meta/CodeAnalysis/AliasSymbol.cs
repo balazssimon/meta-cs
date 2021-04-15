@@ -7,8 +7,8 @@ using System.Threading;
 using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Binding.Binders;
 using MetaDslx.CodeAnalysis.Syntax;
-using MetaDslx.CodeAnalysis;
 using Roslyn.Utilities;
+using Microsoft.CodeAnalysis;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
@@ -45,7 +45,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
     /// </pre>
     /// </summary>
     [Symbol]
-    public sealed class AliasSymbol : DeclaredSymbol, IAliasSymbol
+    public sealed class AliasSymbol : DeclaredSymbol
     {
         private readonly string _aliasName;
         private readonly Binder _binder;
@@ -107,7 +107,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             // We can pass basesBeingResolved: null because base type cycles can't cross
             // submission boundaries - there's no way to depend on a subsequent submission.
             var previousTarget = GetAliasTarget(null);
-            if (previousTarget.Kind != LanguageSymbolKind.Namespace)
+            if (previousTarget.Kind != SymbolKind.Namespace)
             {
                 return this;
             }
@@ -126,11 +126,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
         }
 
-        public override LanguageSymbolKind Kind
+        public override SymbolKind Kind
         {
             get
             {
-                return LanguageSymbolKind.Alias;
+                return SymbolKind.Alias;
             }
         }
 
@@ -339,15 +339,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
             get { return true; }
         }
 
-        #region IAliasSymbol Members
-
-        INamespaceOrTypeSymbol IAliasSymbol.Target
-        {
-            get { return this.Target as INamespaceOrTypeSymbol; }
-        }
-
-        #endregion
-
         #region ISymbol Members
 
         public override void Accept(SymbolVisitor visitor)
@@ -363,16 +354,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public override TResult Accept<TArgument, TResult>(SymbolVisitor<TArgument, TResult> visitor, TArgument argument)
         {
             return visitor.VisitAlias(this, argument);
-        }
-
-        public override void Accept(MetaDslx.CodeAnalysis.SymbolVisitor visitor)
-        {
-            visitor.VisitAlias(this);
-        }
-
-        public override TResult Accept<TResult>(MetaDslx.CodeAnalysis.SymbolVisitor<TResult> visitor)
-        {
-            return visitor.VisitAlias(this);
         }
 
         public override ImmutableArray<DeclaredSymbol> GetMembers()

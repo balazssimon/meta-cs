@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.Languages.Meta.Model;
 using MetaDslx.Modeling.Internal;
-using MetaDslx.CodeAnalysis.PooledObjects;
+using Microsoft.CodeAnalysis.PooledObjects;
 
 namespace MetaDslx.Modeling
 {

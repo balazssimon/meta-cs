@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -10,17 +10,17 @@ using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Symbols.CSharp;
 using MetaDslx.CodeAnalysis.Symbols.Retargeting;
 using MetaDslx.CodeAnalysis.Symbols.Source;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.Collections;
-using MetaDslx.CodeAnalysis.PooledObjects;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Collections;
+using Microsoft.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis
 {
     using MetadataOrDiagnostic = System.Object;
-    using CSharpSymbols = MetaDslx.CodeAnalysis.CSharp.Symbols;
-    using CSharpCompilation = MetaDslx.CodeAnalysis.CSharp.CSharpCompilation;
-    using CSharpResources = MetaDslx.CodeAnalysis.CSharp.CSharpResources;
+    using CSharpSymbols = Microsoft.CodeAnalysis.CSharp.Symbols;
+    using CSharpCompilation = Microsoft.CodeAnalysis.CSharp.CSharpCompilation;
+    using CSharpResources = Microsoft.CodeAnalysis.CSharp.CSharpResources;
 
     public partial class LanguageCompilation
     {
@@ -183,15 +183,6 @@ namespace MetaDslx.CodeAnalysis
                 {
                     AssertBound();
                     return _lazyCSharpReferenceManager.DirectiveReferences;
-                }
-            }
-
-            internal ImmutableArray<MetadataReference> ImplicitReferences
-            {
-                get
-                {
-                    AssertBound();
-                    return _lazyCSharpReferenceManager.ImplicitReferences;
                 }
             }
 
@@ -413,14 +404,6 @@ namespace MetaDslx.CodeAnalysis
             {
                 var aliases = AliasesOfReferencedAssemblies[referencedAssemblyIndex];
                 return aliases.Length == 0 || aliases.IndexOf(MetadataReferenceProperties.GlobalAlias, StringComparer.Ordinal) >= 0;
-            }
-
-            internal IEnumerable<KeyValuePair<AssemblyIdentity, PortableExecutableReference>> GetImplicitlyResolvedAssemblyReferences()
-            {
-                foreach (PortableExecutableReference reference in ImplicitReferences)
-                {
-                    yield return KeyValuePairUtil.Create(ReferencedAssemblies[ReferencedAssembliesMap[reference]].Identity, reference);
-                }
             }
 
 

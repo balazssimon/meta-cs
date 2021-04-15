@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -6,13 +6,13 @@ using System.Collections.Immutable;
 using System.Threading;
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Syntax;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.Syntax;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Syntax;
 using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis
 {
-    using CSharpSyntaxTree = MetaDslx.CodeAnalysis.CSharp.CSharpSyntaxTree;
+    using CSharpSyntaxTree = Microsoft.CodeAnalysis.CSharp.CSharpSyntaxTree;
 
     public static class SyntaxExtensions
     {
@@ -427,11 +427,11 @@ namespace MetaDslx.CodeAnalysis
             {
                 switch (csharpTree.GetPragmaDirectiveWarningState(id, position))
                 {
-                    case MetaDslx.CodeAnalysis.CSharp.Syntax.PragmaWarningState.Default:
+                    case Microsoft.CodeAnalysis.CSharp.Syntax.PragmaWarningState.Default:
                         return PragmaWarningState.Default;
-                    case MetaDslx.CodeAnalysis.CSharp.Syntax.PragmaWarningState.Enabled:
+                    case Microsoft.CodeAnalysis.CSharp.Syntax.PragmaWarningState.Enabled:
                         return PragmaWarningState.Enabled;
-                    case MetaDslx.CodeAnalysis.CSharp.Syntax.PragmaWarningState.Disabled:
+                    case Microsoft.CodeAnalysis.CSharp.Syntax.PragmaWarningState.Disabled:
                         return PragmaWarningState.Disabled;
                     default:
                         break;

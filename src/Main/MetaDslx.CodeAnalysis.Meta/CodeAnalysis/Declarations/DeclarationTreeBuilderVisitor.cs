@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using Microsoft.CodeAnalysis;
 using MetaDslx.Modeling;
 using MetaDslx.CodeAnalysis.Symbols;
 

@@ -1,6 +1,5 @@
-﻿using MetaDslx.CodeAnalysis.Syntax;
-using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.CodeAnalysis.Syntax;
+using Microsoft.CodeAnalysis.Syntax.InternalSyntax;
 using System;
 using System.Collections.Generic;
 using System.Text;
