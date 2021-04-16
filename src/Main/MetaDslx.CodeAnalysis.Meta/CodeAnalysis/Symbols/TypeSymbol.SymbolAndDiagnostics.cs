@@ -1,12 +1,18 @@
 // Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using Microsoft.CodeAnalysis;
+using System;
 using System.Collections.Immutable;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
     public partial class TypeSymbol
     {
+        public bool IsRecord { get; internal set; }
+        public bool IsNativeIntegerType { get; internal set; }
+        public Microsoft.CodeAnalysis.NullableAnnotation DefaultNullableAnnotation { get; internal set; }
+        public bool IsManagedTypeNoUseSiteDiagnostics { get; internal set; }
+
         /// <summary>
         /// Represents the method by which this type implements a given interface type
         /// and/or the corresponding diagnostics.
@@ -23,6 +29,16 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 this.Symbol = symbol;
                 this.Diagnostics = diagnostics;
             }
+        }
+
+        internal bool IsNullableType()
+        {
+            throw new NotImplementedException();
+        }
+
+        internal bool IsTypeParameter()
+        {
+            throw new NotImplementedException();
         }
     }
 }

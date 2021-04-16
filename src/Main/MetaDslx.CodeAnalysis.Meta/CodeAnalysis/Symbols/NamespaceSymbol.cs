@@ -205,5 +205,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
         }
 
         #endregion
+        protected sealed override ISymbol CreateISymbol()
+        {
+            return new PublicModel.NamespaceSymbol(this);
+        }
     }
 }

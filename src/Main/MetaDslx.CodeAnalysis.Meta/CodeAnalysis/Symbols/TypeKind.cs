@@ -18,9 +18,14 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public const string Module = nameof(Module);
 
         /// <summary>
-        /// Type is a named type (e.g. class).
+        /// Type is a class.
         /// </summary>
-        public const string NamedType = nameof(NamedType);
+        public const string Class = nameof(Class);
+
+        /// <summary>
+        /// Type is a struct.
+        /// </summary>
+        public const string Struct = nameof(Struct);
 
         /// <summary>
         /// Type is an anonymous type.
@@ -81,6 +86,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public static explicit operator TypeKind(int value)
         {
             return FromIntUnsafe<TypeKind>(value);
+        }
+
+        public Microsoft.CodeAnalysis.TypeKind ToCSharp()
+        {
+            return default;
         }
     }
 }

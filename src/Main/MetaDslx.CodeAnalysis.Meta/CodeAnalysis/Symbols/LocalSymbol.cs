@@ -17,6 +17,14 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         public override bool IsStatic => false;
 
+        public bool IsConst { get; internal set; }
+        public bool IsRef { get; internal set; }
+        public RefKind RefKind { get; internal set; }
+        public bool HasConstantValue { get; internal set; }
+        public object ConstantValue { get; internal set; }
+        public bool IsFixed { get; internal set; }
+        internal TypeWithAnnotations TypeWithAnnotations { get;  set; }
+
         public override void Accept(SymbolVisitor visitor)
         {
             visitor.VisitLocal(this);
@@ -31,6 +39,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
         {
             return visitor.VisitLocal(this, argument);
         }
-
+        protected sealed override ISymbol CreateISymbol()
+        {
+            return new PublicModel.LocalSymbol(this);
+        }
     }
 }

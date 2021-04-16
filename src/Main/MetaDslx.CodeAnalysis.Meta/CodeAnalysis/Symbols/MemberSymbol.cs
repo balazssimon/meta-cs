@@ -447,5 +447,10 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return visitor.VisitMember(this, argument);
         }
 
+        protected override ISymbol CreateISymbol()
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

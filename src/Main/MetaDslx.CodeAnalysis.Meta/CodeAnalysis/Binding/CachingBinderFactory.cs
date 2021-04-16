@@ -15,7 +15,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         // expensive. 
         private readonly ConcurrentCache<BinderCacheKey, Binder> _binderCache;
 
-        internal CachingBinderFactory(LanguageCompilation compilation, SyntaxTree syntaxTree)
+        internal CachingBinderFactory(LanguageCompilation compilation, SyntaxTree syntaxTree, bool ignoreAccessibility)
             : base(compilation, syntaxTree)
         {
             // 50 is more or less a guess, but it seems to work fine for scenarios that I tried.

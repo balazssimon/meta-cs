@@ -16,7 +16,7 @@ namespace MetaDslx.CodeAnalysis
     {
         public int Code { get; }
 
-        public ErrorCodeMessageProvider MessageProvider { get; }
+        public CommonMessageProvider MessageProvider { get; }
 
         /// <summary>
         /// An unique identifier for the diagnostic.
@@ -91,7 +91,7 @@ namespace MetaDslx.CodeAnalysis
         /// <param name="helpLinkUri">An optional hyperlink that provides a more detailed description regarding the diagnostic.</param>
         /// <param name="customTags">Optional custom tags for the diagnostic. See <see cref="WellKnownDiagnosticTags"/> for some well known tags.</param>
         public ErrorCode(
-            ErrorCodeMessageProvider messageProvider,
+            CommonMessageProvider messageProvider,
             int code,
             string title,
             string messageFormat,
@@ -130,7 +130,7 @@ namespace MetaDslx.CodeAnalysis
         ///         customTags: DiagnosticCustomTags.Microsoft);
         /// </remarks>
         public ErrorCode(
-            ErrorCodeMessageProvider messageProvider,
+            CommonMessageProvider messageProvider,
             int code,
             LocalizableString title,
             LocalizableString messageFormat,
@@ -145,7 +145,7 @@ namespace MetaDslx.CodeAnalysis
         }
 
         internal ErrorCode(
-            ErrorCodeMessageProvider messageProvider,
+            CommonMessageProvider messageProvider,
             int code,
             LocalizableString title,
             LocalizableString messageFormat,

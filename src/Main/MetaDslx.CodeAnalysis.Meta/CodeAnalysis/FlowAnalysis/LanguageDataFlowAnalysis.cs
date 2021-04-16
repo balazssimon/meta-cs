@@ -317,6 +317,12 @@ namespace MetaDslx.CodeAnalysis.FlowAnalysis
             }
         }
 
+        public override ImmutableArray<ISymbol> DefinitelyAssignedOnEntry => throw new NotImplementedException();
+
+        public override ImmutableArray<ISymbol> DefinitelyAssignedOnExit => throw new NotImplementedException();
+
+        public override ImmutableArray<IMethodSymbol> UsedLocalFunctions => throw new NotImplementedException();
+
         private static ImmutableArray<ISymbol> Normalize(IEnumerable<Symbol> data)
         {
             var builder = ArrayBuilder<Symbol>.GetInstance();

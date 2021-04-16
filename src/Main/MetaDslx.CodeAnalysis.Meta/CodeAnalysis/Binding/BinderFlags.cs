@@ -5,6 +5,8 @@ using System;
 
 namespace MetaDslx.CodeAnalysis.Binding
 {
+    using CSharpBinderFlags = Microsoft.CodeAnalysis.CSharp.BinderFlags;
+
     /// <summary>
     /// A specific location for binding.
     /// </summary>
@@ -75,6 +77,21 @@ namespace MetaDslx.CodeAnalysis.Binding
         public static BinderFlags operator |(BinderFlags left, FlagsObject right)
         {
             return right?.UnionWith(left) ?? left;
+        }
+
+        internal CSharpBinderFlags ToCSharp()
+        {
+            CSharpBinderFlags result = CSharpBinderFlags.None;
+            if (this.Includes(SuppressConstraintChecks)) result |= CSharpBinderFlags.SuppressConstraintChecks;
+            if (this.Includes(SuppressObsoleteChecks)) result |= CSharpBinderFlags.SuppressObsoleteChecks;
+            if (this.Includes(IgnoreCorLibraryDuplicatedTypes)) result |= CSharpBinderFlags.IgnoreCorLibraryDuplicatedTypes;
+            if (this.Includes(IgnoreMetaLibraryDuplicatedTypes)) result |= CSharpBinderFlags.IgnoreCorLibraryDuplicatedTypes;
+            if (this.Includes(SemanticModel)) result |= CSharpBinderFlags.SemanticModel;
+            if (this.Includes(EarlyAttributeBinding)) result |= CSharpBinderFlags.EarlyAttributeBinding;
+            if (this.Includes(IgnoreAccessibility)) result |= CSharpBinderFlags.IgnoreAccessibility;
+            if (this.Includes(InScriptUsing)) result |= CSharpBinderFlags.InScriptUsing;
+            if (this.Includes(InLoadedSyntaxTree)) result |= CSharpBinderFlags.InLoadedSyntaxTree;
+            return result;
         }
     }
 

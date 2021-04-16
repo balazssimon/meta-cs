@@ -10,95 +10,13 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Text;
 using System.Threading;
+using Microsoft.CodeAnalysis.Symbols;
+using Microsoft.Cci;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
     public abstract partial class DeclaredSymbol : Symbol
     {
-        /// <summary>
-        /// Returns the nearest lexically enclosing declaration, or null if there is none.
-        /// </summary>
-        public virtual DeclaredSymbol ContainingDeclaration
-        {
-            get
-            {
-                Symbol container = this.ContainingSymbol;
-
-                while (container != null)
-                {
-                    DeclaredSymbol containerAsDeclaration = container as DeclaredSymbol;
-
-                    // NOTE: container could be null, so we do not check 
-                    //       whether containerAsType is not null, but 
-                    //       instead check if it did not change after 
-                    //       the cast.
-                    if ((object)containerAsDeclaration == (object)container)
-                    {
-                        // this should be relatively uncommon
-                        // most symbols that may be contained in a type
-                        // know their containing type and can override ContainingType
-                        // with a more precise implementation
-                        return containerAsDeclaration;
-                    }
-
-                    container = container.ContainingSymbol;
-                }
-
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Returns the nearest lexically enclosing type, or null if there is none.
-        /// </summary>
-        public virtual NamedTypeSymbol ContainingType
-        {
-            get
-            {
-                DeclaredSymbol container = this.ContainingDeclaration;
-
-                NamedTypeSymbol containerAsType = container as NamedTypeSymbol;
-
-                // NOTE: container could be null, so we do not check 
-                //       whether containerAsType is not null, but 
-                //       instead check if it did not change after 
-                //       the cast.
-                if ((object)containerAsType == (object)container)
-                {
-                    // this should be relatively uncommon
-                    // most symbols that may be contained in a type
-                    // know their containing type and can override ContainingType
-                    // with a more precise implementation
-                    return containerAsType;
-                }
-
-                // this is recursive, but recursion should be very short 
-                // before we reach symbol that definitely knows its containing type.
-                return container.ContainingType;
-            }
-        }
-
-        /// <summary>
-        /// Gets the nearest enclosing namespace for this namespace or type. For a nested type,
-        /// returns the namespace that contains its container.
-        /// </summary>
-        public virtual NamespaceSymbol ContainingNamespace
-        {
-            get
-            {
-                for (var container = this.ContainingDeclaration; (object)container != null; container = container.ContainingDeclaration)
-                {
-                    var ns = container as NamespaceSymbol;
-                    if ((object)ns != null)
-                    {
-                        return ns;
-                    }
-                }
-
-                return null;
-            }
-        }
-
         /// <summary>
         /// The original definition of this symbol. If this symbol is constructed from another
         /// symbol by type substitution then OriginalDefinition gets the original symbol as it was defined in

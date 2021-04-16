@@ -1,4 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.PooledObjects;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -20,5 +21,11 @@ namespace MetaDslx.CodeAnalysis
 
         protected abstract Language LanguageCore { get; }
 
+        internal override void ValidateOptions(ArrayBuilder<Diagnostic> builder)
+        {
+            this.ValidateOptionsCore(builder);
+        }
+
+        protected abstract void ValidateOptionsCore(ArrayBuilder<Diagnostic> builder);
     }
 }

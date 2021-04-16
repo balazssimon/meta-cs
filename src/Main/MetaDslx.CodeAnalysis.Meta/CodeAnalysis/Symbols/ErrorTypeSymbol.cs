@@ -190,6 +190,16 @@ namespace MetaDslx.CodeAnalysis.Symbols
             get { return false; }
         }
 
+        protected sealed override ISymbol CreateISymbol()
+        {
+            return new PublicModel.ErrorTypeSymbol(this, DefaultNullableAnnotation);
+        }
+
+        protected sealed override ITypeSymbol CreateITypeSymbol(Microsoft.CodeAnalysis.NullableAnnotation nullableAnnotation)
+        {
+            Debug.Assert(nullableAnnotation != DefaultNullableAnnotation);
+            return new PublicModel.ErrorTypeSymbol(this, nullableAnnotation);
+        }
     }
 
 }

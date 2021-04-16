@@ -46,6 +46,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public const string Member = nameof(Member);
 
         /// <summary>
+        /// Symbol is a method.
+        /// </summary>
+        public const string Method = nameof(Method);
+
+        /// <summary>
         /// Symbol is a local declaration (e.g. parameter or local variable).
         /// </summary>
         public const string Local = nameof(Local);
@@ -76,6 +81,21 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public const string ErrorType = nameof(ErrorType);
 
         /// <summary>
+        /// Symbol that represents a class 
+        /// </summary>
+        public const string Class = nameof(Class);
+
+        /// <summary>
+        /// Symbol that represents an interface
+        /// </summary>
+        public const string Interface = nameof(Interface);
+
+        /// <summary>
+        /// Symbol that represents a field
+        /// </summary>
+        public const string Field = nameof(Field);
+
+        /// <summary>
         /// Discarded symbol, i.e. '_'
         /// </summary>
         public const string Discard = nameof(Discard);
@@ -104,6 +124,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public static explicit operator SymbolKind(int value)
         {
             return FromIntUnsafe<SymbolKind>(value);
+        }
+
+        public Microsoft.CodeAnalysis.SymbolKind ToCSharp()
+        {
+            return default;
         }
 
     }

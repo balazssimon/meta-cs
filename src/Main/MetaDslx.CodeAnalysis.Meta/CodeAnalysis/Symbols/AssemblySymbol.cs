@@ -50,6 +50,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
         }
 
+        internal ImmutableArray<NamedTypeSymbol> GetAllTopLevelForwardedTypes()
+        {
+            throw new NotImplementedException("TODO:MetaDslx");
+        }
+
         /// <summary>
         /// A helper method for ReferenceManager to set the system assembly, which provides primitive 
         /// types like Object, String, etc., e.g. mscorlib.dll. 
@@ -782,7 +787,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// Lookup member declaration in predefined CorLib type in this Assembly. Only valid if this 
         /// assembly is the Cor Library
         /// </summary>
-        internal virtual Symbol GetDeclaredSpecialTypeMember(SpecialMember member)
+        internal virtual DeclaredSymbol GetDeclaredSpecialTypeMember(SpecialMember member)
         {
             return null;
         }
@@ -790,7 +795,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <summary>
         /// Lookup member declaration in predefined CorLib type used by this Assembly.
         /// </summary>
-        internal virtual Symbol GetSpecialTypeMember(SpecialMember member)
+        internal virtual DeclaredSymbol GetSpecialTypeMember(SpecialMember member)
         {
             return CorLibrary.GetDeclaredSpecialTypeMember(member);
         }
@@ -885,5 +890,14 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return false;
         }
 
+        internal NamedTypeSymbol GetSpecialType(SpecialType specialType)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override ISymbol CreateISymbol()
+        {
+            return new PublicModel.NonSourceAssemblySymbol(this);
+        }
     }
 }

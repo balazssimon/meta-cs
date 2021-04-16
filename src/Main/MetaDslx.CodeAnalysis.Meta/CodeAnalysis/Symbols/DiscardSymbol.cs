@@ -28,6 +28,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public override ImmutableArray<Location> Locations => ImmutableArray<Location>.Empty;
         public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => ImmutableArray<SyntaxReference>.Empty;
 
+        internal TypeWithAnnotations TypeWithAnnotations { get; set; }
+
         public override void Accept(SymbolVisitor visitor) => visitor.VisitDiscard(this);
         public override TResult Accept<TResult>(SymbolVisitor<TResult> visitor) => visitor.VisitDiscard(this);
 
@@ -38,6 +40,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         public override bool Equals(object obj) => obj is DiscardSymbol other && this.Type.Equals(other.Type);
         public override int GetHashCode() => this.Type.GetHashCode();
+
+        protected override ISymbol CreateISymbol()
+        {
+            return new PublicModel.DiscardSymbol(this);
+        }
 
     }
 }

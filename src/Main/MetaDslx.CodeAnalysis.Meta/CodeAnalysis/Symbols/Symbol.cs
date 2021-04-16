@@ -18,6 +18,7 @@ using Microsoft.CodeAnalysis.PooledObjects;
 using Microsoft.CodeAnalysis.Text;
 using Roslyn.Utilities;
 using System.Runtime.CompilerServices;
+using Microsoft.CodeAnalysis.Symbols;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
@@ -33,6 +34,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
     public abstract partial class Symbol : IFormattable
     {
         private static ConditionalWeakTable<Symbol, DiagnosticBag> s_diagnostics = new ConditionalWeakTable<Symbol, DiagnosticBag>();
+        private static ConditionalWeakTable<Symbol, ISymbol> s_publicModel = new ConditionalWeakTable<Symbol, ISymbol>();
 
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         // Changes to the public interface of this class should remain synchronized with the VB version of Symbol.
@@ -162,6 +164,90 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
         }
 
+        /// <summary>
+        /// Returns the nearest lexically enclosing declaration, or null if there is none.
+        /// </summary>
+        public virtual DeclaredSymbol ContainingDeclaration
+        {
+            get
+            {
+                Symbol container = this.ContainingSymbol;
+
+                while (container != null)
+                {
+                    DeclaredSymbol containerAsDeclaration = container as DeclaredSymbol;
+
+                    // NOTE: container could be null, so we do not check 
+                    //       whether containerAsType is not null, but 
+                    //       instead check if it did not change after 
+                    //       the cast.
+                    if ((object)containerAsDeclaration == (object)container)
+                    {
+                        // this should be relatively uncommon
+                        // most symbols that may be contained in a type
+                        // know their containing type and can override ContainingType
+                        // with a more precise implementation
+                        return containerAsDeclaration;
+                    }
+
+                    container = container.ContainingSymbol;
+                }
+
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Returns the nearest lexically enclosing type, or null if there is none.
+        /// </summary>
+        public virtual NamedTypeSymbol ContainingType
+        {
+            get
+            {
+                DeclaredSymbol container = this.ContainingDeclaration;
+
+                NamedTypeSymbol containerAsType = container as NamedTypeSymbol;
+
+                // NOTE: container could be null, so we do not check 
+                //       whether containerAsType is not null, but 
+                //       instead check if it did not change after 
+                //       the cast.
+                if ((object)containerAsType == (object)container)
+                {
+                    // this should be relatively uncommon
+                    // most symbols that may be contained in a type
+                    // know their containing type and can override ContainingType
+                    // with a more precise implementation
+                    return containerAsType;
+                }
+
+                // this is recursive, but recursion should be very short 
+                // before we reach symbol that definitely knows its containing type.
+                return container.ContainingType;
+            }
+        }
+
+        /// <summary>
+        /// Gets the nearest enclosing namespace for this namespace or type. For a nested type,
+        /// returns the namespace that contains its container.
+        /// </summary>
+        public virtual NamespaceSymbol ContainingNamespace
+        {
+            get
+            {
+                for (var container = this.ContainingDeclaration; (object)container != null; container = container.ContainingDeclaration)
+                {
+                    var ns = container as NamespaceSymbol;
+                    if ((object)ns != null)
+                    {
+                        return ns;
+                    }
+                }
+
+                return null;
+            }
+        }
+
         public ImmutableArray<Diagnostic> Diagnostics
         {
             get
@@ -272,75 +358,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public virtual ImmutableArray<AttributeData> GetAttributes()
         {
             return ImmutableArray<AttributeData>.Empty;
-        }
-
-        // Note: This is no public "IsNew". This is intentional, because new has no syntactic meaning.
-        // It serves only to remove a warning. Furthermore, it can not be inferred from 
-        // metadata. For symbols defined in source, the modifiers in the syntax tree
-        // can be examined.
-
-        /// <summary>
-        /// Compare two symbol objects to see if they refer to the same symbol. You should always
-        /// use <see cref="operator =="/> and <see cref="operator !="/>, or the <see cref="Equals(object)"/> method, to compare two symbols for equality.
-        /// </summary>
-        public static bool operator ==(Symbol left, Symbol right)
-        {
-            //PERF: this function is often called with
-            //      1) left referencing same object as the right 
-            //      2) right being null
-            //      The code attempts to check for these conditions before 
-            //      resorting to .Equals
-
-            // the condition is expected to be folded when inlining "someSymbol == null"
-            if (((object)right == null))
-            {
-                return (object)left == (object)null;
-            }
-
-            // this part is expected to disappear when inlining "someSymbol == null"
-            return (object)left == (object)right || right.Equals(left);
-        }
-
-        /// <summary>
-        /// Compare two symbol objects to see if they refer to the same symbol. You should always
-        /// use == and !=, or the Equals method, to compare two symbols for equality.
-        /// </summary>
-        public static bool operator !=(Symbol left, Symbol right)
-        {
-            //PERF: this function is often called with
-            //      1) left referencing same object as the right 
-            //      2) right being null
-            //      The code attempts to check for these conditions before 
-            //      resorting to .Equals
-            //
-            //NOTE: we do not implement this as !(left == right) 
-            //      since that sometimes results in a worse code
-
-            // the condition is expected to be folded when inlining "someSymbol != null"
-            if (((object)right == null))
-            {
-                return (object)left != (object)null;
-            }
-
-            // this part is expected to disappear when inlining "someSymbol != null"
-            return (object)left != (object)right && !right.Equals(left);
-        }
-
-        // By default, we do reference equality. This can be overridden.
-        public override bool Equals(object obj)
-        {
-            return (object)this == obj;
-        }
-
-        public bool Equals(ISymbol other)
-        {
-            return this.Equals((object)other);
-        }
-
-        // By default, we do reference equality. This can be overridden.
-        public override int GetHashCode()
-        {
-            return System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(this);
         }
 
         /// <summary>
@@ -600,6 +617,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 compilation.DeclarationDiagnostics.AddRange(diagnostics);
             }
         }
+
         public virtual bool IsDefinedInSourceTree(SyntaxTree tree, TextSpan? definedWithinSpan, CancellationToken cancellationToken = default(CancellationToken))
         {
             var declaringReferences = this.DeclaringSyntaxReferences;
@@ -632,6 +650,108 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
         }
 
+        /// <summary>
+        /// Returns the Documentation Comment ID for the symbol, or null if the symbol doesn't
+        /// support documentation comments.
+        /// </summary>
+        public virtual string GetDocumentationCommentId()
+        {
+            return "";
+        }
 
+        /// <summary>
+        /// Fetches the documentation comment for this element with a cancellation token.
+        /// </summary>
+        /// <param name="preferredCulture">Optionally, retrieve the comments formatted for a particular culture. No impact on source documentation comments.</param>
+        /// <param name="expandIncludes">Optionally, expand <![CDATA[<include>]]> elements. No impact on non-source documentation comments.</param>
+        /// <param name="cancellationToken">Optionally, allow cancellation of documentation comment retrieval.</param>
+        /// <returns>The XML that would be written to the documentation file for the symbol.</returns>
+        public virtual string GetDocumentationCommentXml(
+            CultureInfo preferredCulture = null,
+            bool expandIncludes = false,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return "";
+        }
+
+        /// <summary>
+        /// Compare two symbol objects to see if they refer to the same symbol. You should always
+        /// use <see cref="operator =="/> and <see cref="operator !="/>, or the <see cref="Equals(object)"/> method, to compare two symbols for equality.
+        /// </summary>
+        public static bool operator ==(Symbol left, Symbol right)
+        {
+            //PERF: this function is often called with
+            //      1) left referencing same object as the right 
+            //      2) right being null
+            //      The code attempts to check for these conditions before 
+            //      resorting to .Equals
+
+            // the condition is expected to be folded when inlining "someSymbol == null"
+            if (right is null)
+            {
+                return left is null;
+            }
+
+            // this part is expected to disappear when inlining "someSymbol == null"
+            return (object)left == (object)right || right.Equals(left);
+        }
+
+        /// <summary>
+        /// Compare two symbol objects to see if they refer to the same symbol. You should always
+        /// use == and !=, or the Equals method, to compare two symbols for equality.
+        /// </summary>
+        public static bool operator !=(Symbol left, Symbol right)
+        {
+            //PERF: this function is often called with
+            //      1) left referencing same object as the right 
+            //      2) right being null
+            //      The code attempts to check for these conditions before 
+            //      resorting to .Equals
+            //
+            //NOTE: we do not implement this as !(left == right) 
+            //      since that sometimes results in a worse code
+
+            // the condition is expected to be folded when inlining "someSymbol != null"
+            if (right is null)
+            {
+                return left is object;
+            }
+
+            // this part is expected to disappear when inlining "someSymbol != null"
+            return (object)left != (object)right && !right.Equals(left);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return this.Equals(obj as Symbol, SymbolEqualityComparer.Default.CompareKind);
+        }
+
+        // By default we don't consider the compareKind, and do reference equality. This can be overridden.
+        public virtual bool Equals(Symbol other, TypeCompareKind compareKind)
+        {
+            return (object)this == other;
+        }
+
+        // By default, we do reference equality. This can be overridden.
+        public override int GetHashCode()
+        {
+            return System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(this);
+        }
+
+        public static bool Equals(Symbol first, Symbol second, TypeCompareKind compareKind)
+        {
+            if (first is null)
+            {
+                return second is null;
+            }
+
+            return first.Equals(second, compareKind);
+        }
+
+        protected abstract ISymbol CreateISymbol();
+
+        internal ISymbol ISymbol => s_publicModel.GetValue(this, s => s.CreateISymbol());
+
+        public Symbol OriginalDefinition { get; internal set; }
     }
 }

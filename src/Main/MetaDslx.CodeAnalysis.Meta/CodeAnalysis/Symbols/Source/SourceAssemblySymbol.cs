@@ -236,7 +236,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             }
         }
 
-        internal override Symbol GetSpecialTypeMember(SpecialMember member)
+        internal override DeclaredSymbol GetSpecialTypeMember(SpecialMember member)
         {
             return _compilation.IsMemberMissing(member) ? null : base.GetSpecialTypeMember(member);
         }

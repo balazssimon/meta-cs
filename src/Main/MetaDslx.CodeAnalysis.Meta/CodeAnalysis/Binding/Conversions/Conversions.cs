@@ -33,7 +33,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         private LanguageCompilation Compilation { get { return _binder.Compilation; } }
 
-        public Conversion ClassifyConversionFromType(ITypeSymbol source, ITypeSymbol destination, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        public Conversion ClassifyConversionFromType(TypeSymbol source, TypeSymbol destination, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
         {
             throw new NotImplementedException();
         }

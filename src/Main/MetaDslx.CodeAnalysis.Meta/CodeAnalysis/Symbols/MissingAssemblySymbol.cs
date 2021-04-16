@@ -46,7 +46,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
         }
 
-        internal override Symbol GetDeclaredSpecialTypeMember(SpecialMember member)
+        internal override DeclaredSymbol GetDeclaredSpecialTypeMember(SpecialMember member)
         {
             return null;
         }

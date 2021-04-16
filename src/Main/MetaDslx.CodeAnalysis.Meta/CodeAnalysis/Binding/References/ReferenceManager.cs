@@ -379,7 +379,7 @@ namespace MetaDslx.CodeAnalysis
             /// <summary>
             /// Gets the <see cref="MetadataReference"/> that corresponds to the assembly symbol. 
             /// </summary>
-            internal MetadataReference GetMetadataReference(IAssemblySymbol assemblySymbol)
+            internal MetadataReference? GetMetadataReference(AssemblySymbol? assemblySymbol)
             {
                 foreach (var entry in ReferencedAssembliesMap)
                 {

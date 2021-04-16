@@ -1,6 +1,7 @@
 using MetaDslx.CodeAnalysis.Binding;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
+using Microsoft.CodeAnalysis.Symbols;
 using Roslyn.Utilities;
 using System;
 using System.Collections.Concurrent;
@@ -486,5 +487,18 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
 
         #endregion
+
+        internal ITypeSymbol GetITypeSymbol(Microsoft.CodeAnalysis.NullableAnnotation nullableAnnotation)
+        {
+            if (nullableAnnotation == DefaultNullableAnnotation)
+            {
+                return (ITypeSymbol)this.ISymbol;
+            }
+
+            return CreateITypeSymbol(nullableAnnotation);
+        }
+
+        protected abstract ITypeSymbol CreateITypeSymbol(Microsoft.CodeAnalysis.NullableAnnotation nullableAnnotation);
+
     }
 }

@@ -136,13 +136,13 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <summary>
         /// Not yet known value is represented by ErrorTypeSymbol.UnknownResultType
         /// </summary>
-        private Symbol[] _lazySpecialTypeMembers;
+        private DeclaredSymbol[] _lazySpecialTypeMembers;
 
         /// <summary>
         /// Lookup member declaration in predefined CorLib type in this Assembly. Only valid if this 
         /// assembly is the Cor Library
         /// </summary>
-        internal override Symbol GetDeclaredSpecialTypeMember(SpecialMember member)
+        internal override DeclaredSymbol GetDeclaredSpecialTypeMember(SpecialMember member)
         {
 #if DEBUG
             foreach (var module in this.Modules)
@@ -155,7 +155,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             {
                 if (_lazySpecialTypeMembers == null)
                 {
-                    var specialTypeMembers = new Symbol[(int)SpecialMember.Count];
+                    var specialTypeMembers = new DeclaredSymbol[(int)SpecialMember.Count];
 
                     for (int i = 0; i < specialTypeMembers.Length; i++)
                     {
@@ -167,7 +167,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
                 var descriptor = SpecialMembers.GetDescriptor(member);
                 NamedTypeSymbol type = (NamedTypeSymbol)GetDeclaredSpecialSymbol((SpecialType)descriptor.DeclaringTypeId);
-                Symbol result = null;
+                DeclaredSymbol result = null;
 
                 if (!type.IsErrorType())
                 {

@@ -174,7 +174,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// </summary>
         public virtual ImportChain ImportChain => _next.ImportChain;
 
-        public virtual Imports GetImports(LookupConstraints recursionConstraints = null)
+        public virtual Imports GetImports(LookupConstraints? recursionConstraints = null)
         {
             return _next.GetImports(recursionConstraints);
         }

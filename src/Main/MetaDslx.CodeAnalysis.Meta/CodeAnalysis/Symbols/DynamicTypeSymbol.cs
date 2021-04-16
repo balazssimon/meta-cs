@@ -1,18 +1,17 @@
-// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
-
+﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.PooledObjects;
+using Roslyn.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.PooledObjects;
-using Roslyn.Utilities;
+using System.Text;
 
-namespace MetaDslx.CodeAnalysis.Symbols.Source
+namespace MetaDslx.CodeAnalysis.Symbols
 {
-    public sealed partial class DynamicTypeSymbol : TypeSymbol
+    public class DynamicTypeSymbol : TypeSymbol
     {
-        public static readonly DynamicTypeSymbol Instance = new DynamicTypeSymbol();
+        internal static readonly DynamicTypeSymbol Instance = new DynamicTypeSymbol();
 
         private DynamicTypeSymbol()
         {
@@ -82,7 +81,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             }
         }
 
-        public override ImmutableArray<NamedTypeSymbol> GetBaseTypesNoUseSiteDiagnostics(ConsList<TypeSymbol> basesBeingResolved)
+        public override ImmutableArray<NamedTypeSymbol> BaseTypesNoUseSiteDiagnostics => ImmutableArray<NamedTypeSymbol>.Empty;
+
+        public override ImmutableArray<NamedTypeSymbol> GetBaseTypesNoUseSiteDiagnostics(ConsList<TypeSymbol> basesBeingResolved = null)
         {
             return ImmutableArray<NamedTypeSymbol>.Empty;
         }
@@ -119,6 +120,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             }
         }
 
+        public sealed override ObsoleteAttributeData? ObsoleteAttributeData
+        {
+            get { return null; }
+        }
+
         public override ImmutableArray<DeclaredSymbol> GetMembers()
         {
             return ImmutableArray<DeclaredSymbol>.Empty;
@@ -139,7 +145,22 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             return ImmutableArray<NamedTypeSymbol>.Empty;
         }
 
-        public override Symbol ContainingSymbol
+        public override TResult Accept<TArgument, TResult>(SymbolVisitor<TArgument, TResult> visitor, TArgument argument)
+        {
+            return visitor.VisitDynamicType(this, argument);
+        }
+
+        public override void Accept(SymbolVisitor visitor)
+        {
+            visitor.VisitDynamicType(this);
+        }
+
+        public override TResult Accept<TResult>(SymbolVisitor<TResult> visitor)
+        {
+            return visitor.VisitDynamicType(this);
+        }
+
+        public override Symbol? ContainingSymbol
         {
             get
             {
@@ -167,9 +188,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             return (int)Microsoft.CodeAnalysis.SpecialType.System_Object;
         }
 
-        public override bool Equals(TypeSymbol t2, TypeCompareKind comparison)
+        public override bool Equals(TypeSymbol? t2, TypeCompareKind comparison)
         {
-            if ((object)t2 == null)
+            if ((object?)t2 == null)
             {
                 return false;
             }
@@ -182,29 +203,21 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             if ((comparison & TypeCompareKind.IgnoreDynamic) != 0)
             {
                 var other = t2 as NamedTypeSymbol;
-                return (object)other != null && other.SpecialType == Microsoft.CodeAnalysis.SpecialType.System_Object;
+                return (object?)other != null && other.SpecialType == Microsoft.CodeAnalysis.SpecialType.System_Object;
             }
 
             return false;
         }
 
-        #region ISymbol Members
-
-        public override void Accept(SymbolVisitor visitor)
+        protected override ISymbol CreateISymbol()
         {
-            visitor.VisitDynamicType(this);
+            return new PublicModel.DynamicTypeSymbol(this, DefaultNullableAnnotation);
         }
 
-        public override TResult Accept<TResult>(SymbolVisitor<TResult> visitor)
+        protected sealed override ITypeSymbol CreateITypeSymbol(Microsoft.CodeAnalysis.NullableAnnotation nullableAnnotation)
         {
-            return visitor.VisitDynamicType(this);
+            Debug.Assert(nullableAnnotation != DefaultNullableAnnotation);
+            return new PublicModel.DynamicTypeSymbol(this, nullableAnnotation);
         }
-
-        public override TResult Accept<TArgument, TResult>(SymbolVisitor<TArgument, TResult> visitor, TArgument argument)
-        {
-            return visitor.VisitDynamicType(this, argument);
-        }
-
-        #endregion
     }
 }

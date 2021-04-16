@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
+using MetaDslx.CodeAnalysis.Syntax;
 using Microsoft.CodeAnalysis;
 using Roslyn.Utilities;
 
@@ -14,6 +16,10 @@ namespace MetaDslx.CodeAnalysis
     /// </summary>
     internal static class LanguageDiagnosticFilter
     {
+        private static readonly InternalErrorCode[] s_alinkWarnings = { InternalErrorCode.WRN_ConflictingMachineAssembly,
+                                                                        InternalErrorCode.WRN_RefCultureMismatch,
+                                                                        InternalErrorCode.WRN_InvalidVersionFormat };
+
         /// <summary>
         /// Modifies an input <see cref="Diagnostic"/> per the given options. For example, the
         /// severity may be escalated, or the <see cref="Diagnostic"/> may be filtered out entirely
@@ -25,7 +31,14 @@ namespace MetaDslx.CodeAnalysis
         /// <param name="nullableOption">Whether Nullable Reference Types feature is enabled globally</param>
         /// <param name="specificDiagnosticOptions">How specific diagnostics should be reported</param>
         /// <returns>A diagnostic updated to reflect the options, or null if it has been filtered out</returns>
-        public static Diagnostic Filter(Diagnostic d, int warningLevelOption, ReportDiagnostic generalDiagnosticOption, IDictionary<string, ReportDiagnostic> specificDiagnosticOptions)
+        internal static Diagnostic? Filter(
+            Diagnostic d,
+            int warningLevelOption,
+            NullableContextOptions nullableOption,
+            ReportDiagnostic generalDiagnosticOption,
+            IDictionary<string, ReportDiagnostic> specificDiagnosticOptions,
+            SyntaxTreeOptionsProvider? syntaxTreeOptions,
+            CancellationToken cancellationToken)
         {
             if (d == null)
             {
@@ -49,19 +62,43 @@ namespace MetaDslx.CodeAnalysis
                 return null;
             }
 
-            ReportDiagnostic reportAction;
             bool hasPragmaSuppression;
-            reportAction = GetDiagnosticReport(d.Severity, d.IsEnabledByDefault, d.Id, d.WarningLevel, d.Location as Location,
-                d.Category, warningLevelOption, generalDiagnosticOption, specificDiagnosticOptions, out hasPragmaSuppression);
+            var reportAction = GetDiagnosticReport(d.Severity,
+                d.IsEnabledByDefault,
+                d.Id,
+                d.WarningLevel,
+                d.Location,
+                d.Category,
+                warningLevelOption,
+                nullableOption,
+                generalDiagnosticOption,
+                specificDiagnosticOptions,
+                syntaxTreeOptions,
+                cancellationToken,
+                out hasPragmaSuppression);
+
             if (hasPragmaSuppression)
             {
                 d = d.WithIsSuppressed(true);
             }
+
             return d.WithReportDiagnostic(reportAction);
         }
 
-        // Take a warning and return the final deposition of the given warning,
-        // based on both command line options and pragmas.
+        /// <summary>
+        /// Take a warning and return the final disposition of the given warning,
+        /// based on both command line options and pragmas. The diagnostic options
+        /// have precedence in the following order:
+        ///     1. Warning level
+        ///     2. Command line options (/nowarn, /warnaserror)
+        ///     3. Editor config options (syntax tree level)
+        ///     4. Global analyzer config options (compilation level)
+        ///     5. Global warning level
+        ///
+        /// Pragmas are considered separately. If a diagnostic would not otherwise
+        /// be suppressed, but is suppressed by a pragma, <paramref name="hasPragmaSuppression"/>
+        /// is true but the diagnostic is not reported as suppressed.
+        /// </summary> 
         internal static ReportDiagnostic GetDiagnosticReport(
             DiagnosticSeverity severity,
             bool isEnabledByDefault,
@@ -70,24 +107,87 @@ namespace MetaDslx.CodeAnalysis
             Location location,
             string category,
             int warningLevelOption,
+            NullableContextOptions nullableOption,
             ReportDiagnostic generalDiagnosticOption,
             IDictionary<string, ReportDiagnostic> specificDiagnosticOptions,
+            SyntaxTreeOptionsProvider? syntaxTreeOptions,
+            CancellationToken cancellationToken,
             out bool hasPragmaSuppression)
         {
             hasPragmaSuppression = false;
 
-            // Read options (e.g., /nowarn or /warnaserror)
-            ReportDiagnostic report = ReportDiagnostic.Default;
-            var isSpecified = specificDiagnosticOptions.TryGetValue(id, out report);
-            if (!isSpecified)
+            Debug.Assert(location.SourceTree is null || location.SourceTree is LanguageSyntaxTree);
+            var tree = location.SourceTree as LanguageSyntaxTree;
+            var position = location.SourceSpan.Start;
+
+            bool isNullableFlowAnalysisWarning = Microsoft.CodeAnalysis.CSharp.ErrorFacts.NullableWarnings.Contains(id);
+            if (isNullableFlowAnalysisWarning)
             {
-                report = isEnabledByDefault ? ReportDiagnostic.Default : ReportDiagnostic.Suppress;
+                NullableContextState.State? warningsState = tree?.GetNullableContextState(position).WarningsState;
+                var nullableWarningsEnabled = warningsState switch
+                {
+                    NullableContextState.State.Enabled => true,
+                    NullableContextState.State.Disabled => false,
+                    NullableContextState.State.ExplicitlyRestored => nullableOption.WarningsEnabled(),
+                    NullableContextState.State.Unknown =>
+                        tree?.IsGeneratedCode(syntaxTreeOptions, cancellationToken) != true && nullableOption.WarningsEnabled(),
+                    null => nullableOption.WarningsEnabled(),
+                    _ => throw ExceptionUtilities.UnexpectedValue(warningsState)
+                };
+
+                if (!nullableWarningsEnabled)
+                {
+                    return ReportDiagnostic.Suppress;
+                }
             }
 
-            // Compute if the reporting should be suppressed.
+            // 1. Warning level
             if (diagnosticWarningLevel > warningLevelOption)  // honor the warning level
             {
                 return ReportDiagnostic.Suppress;
+            }
+
+            ReportDiagnostic report;
+            bool isSpecified = false;
+            bool specifiedWarnAsErrorMinus = false;
+
+            if (specificDiagnosticOptions.TryGetValue(id, out report))
+            {
+                // 2. Command line options (/nowarn, /warnaserror)
+                isSpecified = true;
+
+                // 'ReportDiagnostic.Default' is added to SpecificDiagnosticOptions for "/warnaserror-:DiagnosticId",
+                if (report == ReportDiagnostic.Default)
+                {
+                    specifiedWarnAsErrorMinus = true;
+                }
+            }
+
+            // Apply syntax tree options, if applicable.
+            if (syntaxTreeOptions != null &&
+                (!isSpecified || specifiedWarnAsErrorMinus))
+            {
+                // 3. Editor config options (syntax tree level)
+                // 4. Global analyzer config options (compilation level)
+                // Do not apply config options if it is bumping a warning to an error and "/warnaserror-:DiagnosticId" was specified on the command line.
+                if ((tree != null && syntaxTreeOptions.TryGetDiagnosticValue(tree, id, cancellationToken, out var reportFromSyntaxTreeOptions) ||
+                    syntaxTreeOptions.TryGetGlobalDiagnosticValue(id, cancellationToken, out reportFromSyntaxTreeOptions)) &&
+                    !(specifiedWarnAsErrorMinus && severity == DiagnosticSeverity.Warning && reportFromSyntaxTreeOptions == ReportDiagnostic.Error))
+                {
+                    isSpecified = true;
+                    report = reportFromSyntaxTreeOptions;
+
+                    // '/warnaserror' should promote warnings configured in analyzer config to error.
+                    if (!specifiedWarnAsErrorMinus && report == ReportDiagnostic.Warn && generalDiagnosticOption == ReportDiagnostic.Error)
+                    {
+                        report = ReportDiagnostic.Error;
+                    }
+                }
+            }
+
+            if (!isSpecified)
+            {
+                report = isEnabledByDefault ? ReportDiagnostic.Default : ReportDiagnostic.Suppress;
             }
 
             if (report == ReportDiagnostic.Suppress)
@@ -95,16 +195,14 @@ namespace MetaDslx.CodeAnalysis
                 return ReportDiagnostic.Suppress;
             }
 
-            var pragmaWarningState = Syntax.PragmaWarningState.Default;
-
-            // If location is available, check out pragmas
-            if (location != null &&
-                location.SourceTree != null &&
-                (pragmaWarningState = location.SourceTree.GetPragmaDirectiveWarningState(id, location.SourceSpan.Start)) == Syntax.PragmaWarningState.Disabled)
+            // If location.SourceTree is available, check out pragmas
+            var pragmaWarningState = tree?.GetPragmaDirectiveWarningState(id, position) ?? Syntax.PragmaWarningState.Default;
+            if (pragmaWarningState == Syntax.PragmaWarningState.Disabled)
             {
                 hasPragmaSuppression = true;
             }
 
+            // NOTE: this may be removed as part of https://github.com/dotnet/roslyn/issues/36550
             if (pragmaWarningState == Syntax.PragmaWarningState.Enabled)
             {
                 switch (report)
@@ -137,6 +235,7 @@ namespace MetaDslx.CodeAnalysis
                 return ReportDiagnostic.Suppress;
             }
 
+            // 5. Global options
             // Unless specific warning options are defined (/warnaserror[+|-]:<n> or /nowarn:<n>, 
             // follow the global option (/warnaserror[+|-] or /nowarn).
             if (report == ReportDiagnostic.Default)
@@ -155,10 +254,9 @@ namespace MetaDslx.CodeAnalysis
                         // display a lightbulb would stop working if someone has suppress-all-warnings (/nowarn) specified in their project.
                         if (severity == DiagnosticSeverity.Warning || severity == DiagnosticSeverity.Info)
                         {
-                            return ReportDiagnostic.Suppress;
+                            report = ReportDiagnostic.Suppress;
+                            isSpecified = true;
                         }
-                        break;
-                    default:
                         break;
                 }
             }

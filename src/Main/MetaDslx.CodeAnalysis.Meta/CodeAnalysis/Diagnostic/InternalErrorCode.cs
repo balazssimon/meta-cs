@@ -13,21 +13,19 @@ namespace MetaDslx.CodeAnalysis
 
     internal sealed class InternalErrorCode : ErrorCode
     {
-        private static ErrorCodeMessageProvider s_messageProvider = new ErrorCodeMessageProvider("MM", typeof(InternalErrorCode));
-
-        public const string ModelCategory = "MetaDslx.Core";
-        public const string Prefix = "MM";
+        private static CommonMessageProvider s_messageProvider = Microsoft.CodeAnalysis.CSharp.MessageProvider.Instance;
+        private static Dictionary<int, InternalErrorCode> s_errorCodes = new Dictionary<int, InternalErrorCode>();
 
         private InternalErrorCode(int code, DiagnosticSeverity defaultSeverity, params string[] customTags)
             : base(s_messageProvider, code, GetTitle(code), GetMessageFormat(code), GetCategory(code), defaultSeverity, true, GetDescription(code), GetHelpLink(code), customTags)
         {
-            s_messageProvider.Add(this);
+            s_errorCodes.Add(code, this);
         }
 
         private InternalErrorCode()
-            : base(s_messageProvider, 0, "Invalid error code", "Invalid error code. This should not happen. There is an error in the compiler.", ModelCategory, DiagnosticSeverity.Error, true, "Invalid error code. This should not happen. There is an error in the compiler.", null)
+            : base(s_messageProvider, 0, "Internal error", "Internal error. This should not happen. There is an error in the compiler.", "Compiler", DiagnosticSeverity.Error, true, "Invalid error code. This should not happen. There is an error in the compiler.", null)
         {
-            s_messageProvider.Add(this);
+            s_errorCodes.Add(0, this);
         }
 
         static InternalErrorCode()
@@ -63,11 +61,11 @@ namespace MetaDslx.CodeAnalysis
         private static InternalErrorCode ResolveErrorCode(ObjectReader reader)
         {
             int errorCode = reader.ReadInt32();
-            var result = (InternalErrorCode)s_messageProvider.GetErrorCode(errorCode);
-            return result ?? ERR_InvalidErrorCode;
+            if (s_errorCodes.TryGetValue(errorCode, out var result)) return result;
+            else return ERR_InternalError;
         }
 
-        public static readonly InternalErrorCode ERR_InvalidErrorCode = new InternalErrorCode();
+        public static readonly InternalErrorCode ERR_InternalError = new InternalErrorCode();
 
         /// <summary>
         /// The code has yet to be determined.
@@ -83,8 +81,6 @@ namespace MetaDslx.CodeAnalysis
         /// The code was lazily determined and does not need to be reported.
         /// </summary>
         public static readonly InternalErrorCode Void = new InternalErrorCode(Microsoft.CodeAnalysis.InternalErrorCode.Void, (DiagnosticSeverity)Microsoft.CodeAnalysis.InternalErrorCode.Void);
-
-        public static readonly InternalErrorCode ERR_InternalError = new InternalErrorCode(-9999, (DiagnosticSeverity)(-9999));
         
         #region diagnostics introduced in C# 4 and earlier
         //public static readonly InternalErrorCode FTL_InternalError = new InternalErrorCode(1, DiagnosticSeverity.Error);
@@ -1787,5 +1783,10 @@ namespace MetaDslx.CodeAnalysis
         public static readonly InternalErrorCode ERR_DefaultInterfaceImplementationInNoPIAType = new InternalErrorCode(8711, DiagnosticSeverity.Error);
 
         #endregion diagnostics introduced for C# 8.0
+
+        public static readonly InternalErrorCode WRN_SyncAndAsyncEntryPoints = new InternalErrorCode((int)Microsoft.CodeAnalysis.CSharp.ErrorCode.WRN_SyncAndAsyncEntryPoints, DiagnosticSeverity.Warning);
+        public static readonly InternalErrorCode ERR_SimpleProgramNotAnExecutable = new InternalErrorCode((int)Microsoft.CodeAnalysis.CSharp.ErrorCode.ERR_SimpleProgramNotAnExecutable, DiagnosticSeverity.Error);
+        public static readonly InternalErrorCode ERR_SimpleProgramDisallowsMainType = new InternalErrorCode((int)Microsoft.CodeAnalysis.CSharp.ErrorCode.ERR_SimpleProgramDisallowsMainType, DiagnosticSeverity.Error);
+
     }
 }

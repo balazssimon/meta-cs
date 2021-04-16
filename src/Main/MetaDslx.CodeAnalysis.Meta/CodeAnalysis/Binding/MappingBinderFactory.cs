@@ -12,7 +12,7 @@ namespace MetaDslx.CodeAnalysis.Binding
     {
         private ConcurrentDictionary<BinderCacheKey, Binder> _map;
 
-        internal MappingBinderFactory(LanguageCompilation compilation, SyntaxTree syntaxTree) 
+        internal MappingBinderFactory(LanguageCompilation compilation, SyntaxTree syntaxTree, bool ignoreAccessibility) 
             : base(compilation, syntaxTree)
         {
             _map = new ConcurrentDictionary<BinderCacheKey, Binder>();

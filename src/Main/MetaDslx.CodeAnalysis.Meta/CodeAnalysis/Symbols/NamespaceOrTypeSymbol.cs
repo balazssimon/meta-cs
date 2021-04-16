@@ -137,6 +137,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return namedType;
         }
 
+
         /// <summary>
         /// Finds types or namespaces described by a qualified name.
         /// </summary>
@@ -148,19 +149,23 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <remarks>
         /// "C.D" matches C.D, C{T}.D, C{S,T}.D{U}, etc.
         /// </remarks>
-        internal IEnumerable<NamespaceOrTypeSymbol> GetNamespaceOrTypeByQualifiedName(IEnumerable<string> qualifiedName)
+        internal IEnumerable<NamespaceOrTypeSymbol>? GetNamespaceOrTypeByQualifiedName(IEnumerable<string> qualifiedName)
         {
-            IEnumerable<NamespaceOrTypeSymbol> namespacesOrTypes = new NamespaceOrTypeSymbol[] { this };
-            IEnumerable<NamespaceOrTypeSymbol> symbols = null;
+            NamespaceOrTypeSymbol namespaceOrType = this;
+            IEnumerable<NamespaceOrTypeSymbol>? symbols = null;
             foreach (string name in qualifiedName)
             {
                 if (symbols != null)
                 {
                     // there might be multiple types of different arity, prefer a non-generic type:
-                    namespacesOrTypes = symbols;
+                    namespaceOrType = symbols.OfMinimalArity();
+                    if ((object)namespaceOrType == null)
+                    {
+                        return SpecializedCollections.EmptyEnumerable<NamespaceOrTypeSymbol>();
+                    }
                 }
 
-                symbols = namespacesOrTypes.SelectMany(nt => nt.GetMembers(name)).OfType<NamespaceOrTypeSymbol>();
+                symbols = namespaceOrType.GetMembers(name).OfType<NamespaceOrTypeSymbol>();
             }
 
             return symbols;

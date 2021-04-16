@@ -292,9 +292,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
             public override int GetHashCode()
             {
                 // Inherit special behavior for the object type from NamedTypeSymbol.
-                if (this.SpecialType == MetaDslx.CodeAnalysis.SpecialType.System_Object)
+                if (this.SpecialType == Microsoft.CodeAnalysis.SpecialType.System_Object)
                 {
-                    return (int)MetaDslx.CodeAnalysis.SpecialType.System_Object;
+                    return (int)Microsoft.CodeAnalysis.SpecialType.System_Object;
                 }
 
                 return Hash.Combine(MetadataName, Hash.Combine(_containingModule, Hash.Combine(_namespaceName, arity)));
@@ -311,7 +311,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 if ((comparison & TypeCompareKind.IgnoreDynamic) != 0 &&
                     (object)t2 != null &&
                     t2.TypeKind == TypeKind.Dynamic &&
-                    this.SpecialType == MetaDslx.CodeAnalysis.SpecialType.System_Object)
+                    this.SpecialType == Microsoft.CodeAnalysis.SpecialType.System_Object)
                 {
                     return true;
                 }
@@ -324,6 +324,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                     string.Equals(_namespaceName, other.NamespaceName, StringComparison.Ordinal) &&
                     _containingModule.Equals(other._containingModule);
             }
+
         }
 
         internal class TopLevelWithCustomErrorInfo : TopLevel

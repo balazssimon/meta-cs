@@ -364,7 +364,7 @@ namespace MetaDslx.CodeAnalysis.Syntax
         Nullable
     }
 
-    public class PragmaWarningDirective : Directive
+    internal class PragmaWarningDirective : Directive
     {
         private readonly PragmaWarningState _state;
         private readonly PragmaWarningKind _kind;
@@ -384,7 +384,7 @@ namespace MetaDslx.CodeAnalysis.Syntax
         public ImmutableArray<string> ErrorIds => _errorIds;
     }
 
-    public class NullableDirective : Directive
+    internal class NullableDirective : Directive
     {
         private readonly PragmaWarningState _state;
 

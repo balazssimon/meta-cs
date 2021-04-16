@@ -1,4 +1,8 @@
-// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+#nullable disable
 
 using System.Diagnostics;
 using System.Reflection.Metadata;
@@ -39,8 +43,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         internal static ObsoleteAttributeData GetObsoleteDataFromMetadata(EntityHandle token, PEModuleSymbol containingModule, bool ignoreByRefLikeMarker)
         {
-            ObsoleteAttributeData obsoleteAttributeData;
-            obsoleteAttributeData = containingModule.Module.TryGetDeprecatedOrExperimentalOrObsoleteAttribute(token, ignoreByRefLikeMarker);
+            var obsoleteAttributeData = containingModule.Module.TryGetDeprecatedOrExperimentalOrObsoleteAttribute(token, new MetadataDecoder(containingModule), ignoreByRefLikeMarker);
             Debug.Assert(obsoleteAttributeData == null || !obsoleteAttributeData.IsUninitialized);
             return obsoleteAttributeData;
         }
@@ -55,8 +58,19 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </returns>
         private static ThreeState GetObsoleteContextState(Symbol symbol, bool forceComplete)
         {
+            /* TODO:MetaDslx
             while ((object)symbol != null)
             {
+                if (symbol.Kind == SymbolKind.Field)
+                {
+                    // If this is the backing field of an event, look at the event instead.
+                    var associatedSymbol = ((FieldSymbol)symbol).AssociatedSymbol;
+                    if ((object)associatedSymbol != null)
+                    {
+                        symbol = associatedSymbol;
+                    }
+                }
+
                 if (forceComplete)
                 {
                     symbol.ForceCompleteObsoleteAttribute();
@@ -68,15 +82,22 @@ namespace MetaDslx.CodeAnalysis.Symbols
                     return state;
                 }
 
-                symbol = symbol.ContainingSymbol;
+                // For property or event accessors, check the associated property or event next.
+                if (symbol.IsAccessor())
+                {
+                    symbol = ((MethodSymbol)symbol).AssociatedSymbol;
+                }
+                else
+                {
+                    symbol = symbol.ContainingSymbol;
+                }
             }
-
+            */
             return ThreeState.False;
         }
 
         internal static ObsoleteDiagnosticKind GetObsoleteDiagnosticKind(Symbol symbol, Symbol containingMember, bool forceComplete = false)
         {
-            if (symbol == null) return ObsoleteDiagnosticKind.NotObsolete;
             switch (symbol.ObsoleteKind)
             {
                 case ObsoleteAttributeKind.None:
@@ -112,6 +133,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         internal static DiagnosticInfo CreateObsoleteDiagnostic(Symbol symbol, BinderFlags location)
         {
+            return null;
+            /* TODO:MetaDslx
             var data = symbol.ObsoleteAttributeData;
             Debug.Assert(data != null);
 
@@ -138,18 +161,24 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 return new LanguageDiagnosticInfo(InternalErrorCode.WRN_Experimental, new FormattedSymbol(symbol, SymbolDisplayFormat.CSharpErrorMessageFormat));
             }
 
-            if (data.Message == null)
+            // Issue a specialized diagnostic for add methods of collection initializers
+            var isColInit = location.Includes(BinderFlags.CollectionInitializerAddMethod);
+            var errorCode = (message: data.Message, isError: data.IsError, isColInit) switch
             {
-                // It seems like we should be able to assert that data.IsError is false, but we can't because dev11 had
-                // a bug in this area (i.e. always produce a warning when there's no message) and we have to match it.
-                // Debug.Assert(!data.IsError);
-                return new LanguageDiagnosticInfo(InternalErrorCode.WRN_DeprecatedSymbol, symbol);
-            }
-            else
-            {
-                ErrorCode errorCode = data.IsError ? InternalErrorCode.ERR_DeprecatedSymbolStr : InternalErrorCode.WRN_DeprecatedSymbolStr;
-                return new LanguageDiagnosticInfo(errorCode, symbol, data.Message);
-            }
+                // dev11 had a bug in this area (i.e. always produce a warning when there's no message) and we have to match it.
+                (message: null, isError: _, isColInit: true) => InternalErrorCode.WRN_DeprecatedCollectionInitAdd,
+                (message: null, isError: _, isColInit: false) => InternalErrorCode.WRN_DeprecatedSymbol,
+                (message: { }, isError: true, isColInit: true) => InternalErrorCode.ERR_DeprecatedCollectionInitAddStr,
+                (message: { }, isError: true, isColInit: false) => InternalErrorCode.ERR_DeprecatedSymbolStr,
+                (message: { }, isError: false, isColInit: true) => InternalErrorCode.WRN_DeprecatedCollectionInitAddStr,
+                (message: { }, isError: false, isColInit: false) => InternalErrorCode.WRN_DeprecatedSymbolStr
+            };
+
+            var arguments = data.Message is string message
+                ? new object[] { symbol, message }
+                : new object[] { symbol };
+
+            return new CustomObsoleteDiagnosticInfo(MessageProvider.Instance, (int)errorCode, data, arguments);*/
         }
     }
 }

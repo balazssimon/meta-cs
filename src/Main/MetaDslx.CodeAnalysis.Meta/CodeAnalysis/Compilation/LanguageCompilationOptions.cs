@@ -23,23 +23,33 @@ namespace MetaDslx.CodeAnalysis
     /// </summary>
     public abstract class LanguageCompilationOptions : CompilationOptionsAdapter, IEquatable<LanguageCompilationOptions>
     {
-        private readonly Language _language;
-
         /// <summary>
         /// Allow unsafe regions (i.e. unsafe modifiers on members and unsafe blocks).
         /// </summary>
-        public bool AllowUnsafe { get; protected set; }
+        public bool AllowUnsafe { get; private set; }
 
         /// <summary>
         /// Global namespace usings.
         /// </summary>
-        public ImmutableArray<string> Usings { get; protected set; }
+        public ImmutableArray<string> Usings { get; private set; }
 
         /// <summary>
         /// Flags applied to the top-level binder created for each syntax tree in the compilation 
         /// as well as for the binder of global imports.
         /// </summary>
-        public BinderFlags TopLevelBinderFlags { get; protected set; }
+        public BinderFlags TopLevelBinderFlags { get; private set; }
+
+        /// <summary>
+        /// Gets the source language.
+        /// </summary>
+        public new Language Language { get; private set; }
+
+        protected override Language LanguageCore => this.Language;
+
+        /// <summary>
+        /// Global Nullable context options.
+        /// </summary>
+        public override NullableContextOptions NullableContextOptions { get; protected set; }
 
         // Defaults correspond to the compiler's defaults or indicate that the user did not specify when that is significant.
         // That's significant when one option depends on another's setting. SubsystemVersion depends on Platform and Target.
@@ -47,45 +57,133 @@ namespace MetaDslx.CodeAnalysis
             Language language,
             OutputKind outputKind,
             bool reportSuppressedDiagnostics = false,
-            string moduleName = null,
-            string mainTypeName = null,
-            string scriptClassName = null,
-            IEnumerable<string> usings = null,
+            string? moduleName = null,
+            string? mainTypeName = null,
+            string? scriptClassName = null,
+            IEnumerable<string>? usings = null,
             OptimizationLevel optimizationLevel = OptimizationLevel.Debug,
             bool checkOverflow = false,
             bool allowUnsafe = false,
-            string cryptoKeyContainer = null,
-            string cryptoKeyFile = null,
-            ImmutableArray<byte> cryptoPublicKey = default(ImmutableArray<byte>),
+            string? cryptoKeyContainer = null,
+            string? cryptoKeyFile = null,
+            ImmutableArray<byte> cryptoPublicKey = default,
             bool? delaySign = null,
             Platform platform = Platform.AnyCpu,
             ReportDiagnostic generalDiagnosticOption = ReportDiagnostic.Default,
-            int warningLevel = 4,
-            IEnumerable<KeyValuePair<string, ReportDiagnostic>> specificDiagnosticOptions = null,
+            int warningLevel = Diagnostic.DefaultWarningLevel,
+            IEnumerable<KeyValuePair<string, ReportDiagnostic>>? specificDiagnosticOptions = null,
             bool concurrentBuild = true,
             bool deterministic = false,
-            DateTime currentLocalTime = default(DateTime),
-            bool debugPlusMode = false,
-            XmlReferenceResolver xmlReferenceResolver = null,
-            SourceReferenceResolver sourceReferenceResolver = null,
-            MetadataReferenceResolver metadataReferenceResolver = null,
-            AssemblyIdentityComparer assemblyIdentityComparer = null,
-            StrongNameProvider strongNameProvider = null,
+            XmlReferenceResolver? xmlReferenceResolver = null,
+            SourceReferenceResolver? sourceReferenceResolver = null,
+            MetadataReferenceResolver? metadataReferenceResolver = null,
+            AssemblyIdentityComparer? assemblyIdentityComparer = null,
+            StrongNameProvider? strongNameProvider = null,
             bool publicSign = false,
             MetadataImportOptions metadataImportOptions = MetadataImportOptions.Public,
-            bool referencesSupersedeLowerVersions = false,
-            BinderFlags topLevelBinderFlags = null)
+            NullableContextOptions nullableContextOptions = NullableContextOptions.Disable)
+            : this(outputKind, reportSuppressedDiagnostics, moduleName, mainTypeName, scriptClassName,
+                   usings, optimizationLevel, checkOverflow, allowUnsafe,
+                   cryptoKeyContainer, cryptoKeyFile, cryptoPublicKey, delaySign, platform,
+                   generalDiagnosticOption, warningLevel,
+                   specificDiagnosticOptions, concurrentBuild, deterministic,
+                   currentLocalTime: default,
+                   debugPlusMode: false,
+                   xmlReferenceResolver: xmlReferenceResolver,
+                   sourceReferenceResolver: sourceReferenceResolver,
+                   syntaxTreeOptionsProvider: null,
+                   metadataReferenceResolver: metadataReferenceResolver,
+                   assemblyIdentityComparer: assemblyIdentityComparer,
+                   strongNameProvider: strongNameProvider,
+                   metadataImportOptions: metadataImportOptions,
+                   referencesSupersedeLowerVersions: false,
+                   publicSign: publicSign,
+                   topLevelBinderFlags: BinderFlags.None,
+                   nullableContextOptions: nullableContextOptions)
+        {
+        }
+
+        // Expects correct arguments.
+        internal LanguageCompilationOptions(
+            OutputKind outputKind,
+            bool reportSuppressedDiagnostics,
+            string? moduleName,
+            string? mainTypeName,
+            string? scriptClassName,
+            IEnumerable<string>? usings,
+            OptimizationLevel optimizationLevel,
+            bool checkOverflow,
+            bool allowUnsafe,
+            string? cryptoKeyContainer,
+            string? cryptoKeyFile,
+            ImmutableArray<byte> cryptoPublicKey,
+            bool? delaySign,
+            Platform platform,
+            ReportDiagnostic generalDiagnosticOption,
+            int warningLevel,
+            IEnumerable<KeyValuePair<string, ReportDiagnostic>>? specificDiagnosticOptions,
+            bool concurrentBuild,
+            bool deterministic,
+            DateTime currentLocalTime,
+            bool debugPlusMode,
+            XmlReferenceResolver? xmlReferenceResolver,
+            SourceReferenceResolver? sourceReferenceResolver,
+            SyntaxTreeOptionsProvider? syntaxTreeOptionsProvider,
+            MetadataReferenceResolver? metadataReferenceResolver,
+            AssemblyIdentityComparer? assemblyIdentityComparer,
+            StrongNameProvider? strongNameProvider,
+            MetadataImportOptions metadataImportOptions,
+            bool referencesSupersedeLowerVersions,
+            bool publicSign,
+            BinderFlags topLevelBinderFlags,
+            NullableContextOptions nullableContextOptions)
             : base(outputKind, reportSuppressedDiagnostics, moduleName, mainTypeName, scriptClassName,
                    cryptoKeyContainer, cryptoKeyFile, cryptoPublicKey, delaySign, publicSign, optimizationLevel, checkOverflow,
                    platform, generalDiagnosticOption, warningLevel, specificDiagnosticOptions.ToImmutableDictionaryOrEmpty(),
                    concurrentBuild, deterministic, currentLocalTime, debugPlusMode, xmlReferenceResolver,
-                   sourceReferenceResolver, metadataReferenceResolver, assemblyIdentityComparer,
-                   strongNameProvider, metadataImportOptions, referencesSupersedeLowerVersions)
+                   sourceReferenceResolver, syntaxTreeOptionsProvider, metadataReferenceResolver,
+                   assemblyIdentityComparer, strongNameProvider, metadataImportOptions, referencesSupersedeLowerVersions)
         {
-            _language = language;
             this.Usings = usings.AsImmutableOrEmpty();
             this.AllowUnsafe = allowUnsafe;
-            this.TopLevelBinderFlags = topLevelBinderFlags ?? BinderFlags.None;
+            this.TopLevelBinderFlags = topLevelBinderFlags;
+            this.NullableContextOptions = nullableContextOptions;
+        }
+
+        private LanguageCompilationOptions(LanguageCompilationOptions other) : this(
+            outputKind: other.OutputKind,
+            moduleName: other.ModuleName,
+            mainTypeName: other.MainTypeName,
+            scriptClassName: other.ScriptClassName,
+            usings: other.Usings,
+            optimizationLevel: other.OptimizationLevel,
+            checkOverflow: other.CheckOverflow,
+            allowUnsafe: other.AllowUnsafe,
+            cryptoKeyContainer: other.CryptoKeyContainer,
+            cryptoKeyFile: other.CryptoKeyFile,
+            cryptoPublicKey: other.CryptoPublicKey,
+            delaySign: other.DelaySign,
+            platform: other.Platform,
+            generalDiagnosticOption: other.GeneralDiagnosticOption,
+            warningLevel: other.WarningLevel,
+            specificDiagnosticOptions: other.SpecificDiagnosticOptions,
+            concurrentBuild: other.ConcurrentBuild,
+            deterministic: other.Deterministic,
+            currentLocalTime: other.CurrentLocalTime,
+            debugPlusMode: other.DebugPlusMode,
+            xmlReferenceResolver: other.XmlReferenceResolver,
+            sourceReferenceResolver: other.SourceReferenceResolver,
+            syntaxTreeOptionsProvider: other.SyntaxTreeOptionsProvider,
+            metadataReferenceResolver: other.MetadataReferenceResolver,
+            assemblyIdentityComparer: other.AssemblyIdentityComparer,
+            strongNameProvider: other.StrongNameProvider,
+            metadataImportOptions: other.MetadataImportOptions,
+            referencesSupersedeLowerVersions: other.ReferencesSupersedeLowerVersions,
+            reportSuppressedDiagnostics: other.ReportSuppressedDiagnostics,
+            publicSign: other.PublicSign,
+            topLevelBinderFlags: other.TopLevelBinderFlags,
+            nullableContextOptions: other.NullableContextOptions)
+        {
         }
 
         public Microsoft.CodeAnalysis.CSharp.CSharpCompilationOptions ToCSharp()
@@ -113,6 +211,7 @@ namespace MetaDslx.CodeAnalysis
                 debugPlusMode: this.DebugPlusMode,
                 xmlReferenceResolver: this.XmlReferenceResolver,
                 sourceReferenceResolver: this.SourceReferenceResolver,
+                syntaxTreeOptionsProvider: this.SyntaxTreeOptionsProvider,
                 metadataReferenceResolver: this.MetadataReferenceResolver,
                 assemblyIdentityComparer: this.AssemblyIdentityComparer,
                 strongNameProvider: this.StrongNameProvider,
@@ -120,68 +219,93 @@ namespace MetaDslx.CodeAnalysis
                 referencesSupersedeLowerVersions: this.ReferencesSupersedeLowerVersions,
                 reportSuppressedDiagnostics: this.ReportSuppressedDiagnostics,
                 publicSign: this.PublicSign,
-                topLevelBinderFlags: Microsoft.CodeAnalysis.CSharp.BinderFlags.None,
-                nullableContextOptions: Microsoft.CodeAnalysis.CSharp.NullableContextOptions.Disable);
+                topLevelBinderFlags: this.TopLevelBinderFlags.ToCSharp(),
+                nullableContextOptions: this.NullableContextOptions);
         }
 
-        public new Language Language => this.LanguageCore;
-
-        protected override Language LanguageCore => _language;
 
         protected abstract LanguageCompilationOptions Clone();
 
         public LanguageCompilationOptions WithTopLevelBinderFlags(BinderFlags flags)
         {
-            if (flags == TopLevelBinderFlags) return this;
+            if (flags == TopLevelBinderFlags)
+            {
+                return this;
+            }
             var clone = this.Clone();
             clone.TopLevelBinderFlags = flags;
             return clone;
         }
 
+        internal override ImmutableArray<string> GetImports() => Usings;
+
         public new LanguageCompilationOptions WithOutputKind(OutputKind kind)
         {
-            if (kind == this.OutputKind) return this;
+            if (kind == this.OutputKind)
+            {
+                return this;
+            }
             var clone = this.Clone();
             clone.OutputKind = kind;
             return clone;
         }
 
-        public new LanguageCompilationOptions WithModuleName(string moduleName)
+        public new LanguageCompilationOptions WithModuleName(string? moduleName)
         {
-            if (moduleName == this.ModuleName) return this;
+            if (moduleName == this.ModuleName)
+            {
+                return this;
+            }
             var clone = this.Clone();
             clone.ModuleName = moduleName;
             return clone;
         }
 
-        public new LanguageCompilationOptions WithScriptClassName(string name)
+        public new LanguageCompilationOptions WithScriptClassName(string? name)
         {
-            if (name == this.ScriptClassName) return this;
+            if (name == this.ScriptClassName)
+            {
+                return this;
+            }
             var clone = this.Clone();
             clone.ScriptClassName = name;
             return clone;
         }
 
-        public new LanguageCompilationOptions WithMainTypeName(string name)
+        public new LanguageCompilationOptions WithMainTypeName(string? name)
         {
-            if (name == this.MainTypeName) return this;
+            if (name == this.MainTypeName)
+            {
+                return this;
+            }
             var clone = this.Clone();
             clone.MainTypeName = name;
             return clone;
         }
 
-        public new LanguageCompilationOptions WithCryptoKeyContainer(string name)
+        public new LanguageCompilationOptions WithCryptoKeyContainer(string? name)
         {
-            if (name == this.CryptoKeyContainer) return this;
+            if (name == this.CryptoKeyContainer)
+            {
+                return this;
+            }
             var clone = this.Clone();
             clone.CryptoKeyContainer = name;
             return clone;
         }
 
-        public new LanguageCompilationOptions WithCryptoKeyFile(string path)
+        public new LanguageCompilationOptions WithCryptoKeyFile(string? path)
         {
-            if (string.IsNullOrEmpty(path)) path = null;
-            if (path == this.CryptoKeyFile) return this;
+            if (string.IsNullOrEmpty(path))
+            {
+                path = null;
+            }
+
+            if (path == this.CryptoKeyFile)
+            {
+                return this;
+            }
+
             var clone = this.Clone();
             clone.CryptoKeyFile = path;
             return clone;
@@ -189,8 +313,16 @@ namespace MetaDslx.CodeAnalysis
 
         public new LanguageCompilationOptions WithCryptoPublicKey(ImmutableArray<byte> value)
         {
-            if (value.IsDefault) value = ImmutableArray<byte>.Empty;
-            if (value == this.CryptoPublicKey) return this;
+            if (value.IsDefault)
+            {
+                value = ImmutableArray<byte>.Empty;
+            }
+
+            if (value == this.CryptoPublicKey)
+            {
+                return this;
+            }
+
             var clone = this.Clone();
             clone.CryptoPublicKey = value;
             return clone;
@@ -198,7 +330,11 @@ namespace MetaDslx.CodeAnalysis
 
         public new LanguageCompilationOptions WithDelaySign(bool? value)
         {
-            if (value == this.DelaySign) return this;
+            if (value == this.DelaySign)
+            {
+                return this;
+            }
+
             var clone = this.Clone();
             clone.DelaySign = value;
             return clone;
@@ -206,19 +342,27 @@ namespace MetaDslx.CodeAnalysis
 
         public LanguageCompilationOptions WithUsings(ImmutableArray<string> usings)
         {
-            if (this.Usings == usings) return this;
+            if (this.Usings == usings)
+            {
+                return this;
+            }
+
             var clone = this.Clone();
             clone.Usings = usings;
             return clone;
         }
 
-        public LanguageCompilationOptions WithUsings(IEnumerable<string> usings) => WithUsings(usings.AsImmutableOrEmpty());
+        public LanguageCompilationOptions WithUsings(IEnumerable<string>? usings) => WithUsings(usings.AsImmutableOrEmpty());
 
-        public LanguageCompilationOptions WithUsings(params string[] usings) => WithUsings((IEnumerable<string>)usings);
+        public LanguageCompilationOptions WithUsings(params string[]? usings) => WithUsings((IEnumerable<string>?)usings);
 
         public new LanguageCompilationOptions WithOptimizationLevel(OptimizationLevel value)
         {
-            if (value == this.OptimizationLevel) return this;
+            if (value == this.OptimizationLevel)
+            {
+                return this;
+            }
+
             var clone = this.Clone();
             clone.OptimizationLevel = value;
             return clone;
@@ -226,15 +370,35 @@ namespace MetaDslx.CodeAnalysis
 
         public new LanguageCompilationOptions WithOverflowChecks(bool enabled)
         {
-            if (enabled == this.CheckOverflow) return this;
+            if (enabled == this.CheckOverflow)
+            {
+                return this;
+            }
+
             var clone = this.Clone();
             clone.CheckOverflow = enabled;
             return clone;
         }
 
+        public LanguageCompilationOptions WithNullableContextOptions(NullableContextOptions options)
+        {
+            if (options == this.NullableContextOptions)
+            {
+                return this;
+            }
+
+            var clone = this.Clone();
+            clone.NullableContextOptions = options;
+            return clone;
+        }
+
         public LanguageCompilationOptions WithAllowUnsafe(bool enabled)
         {
-            if (enabled == this.AllowUnsafe) return this;
+            if (enabled == this.AllowUnsafe)
+            {
+                return this;
+            }
+
             var clone = this.Clone();
             clone.AllowUnsafe = enabled;
             return clone;
@@ -242,7 +406,11 @@ namespace MetaDslx.CodeAnalysis
 
         public new LanguageCompilationOptions WithPlatform(Platform platform)
         {
-            if (this.Platform == platform) return this;
+            if (this.Platform == platform)
+            {
+                return this;
+            }
+
             var clone = this.Clone();
             clone.Platform = platform;
             return clone;
@@ -250,19 +418,22 @@ namespace MetaDslx.CodeAnalysis
 
         public new LanguageCompilationOptions WithPublicSign(bool publicSign)
         {
-            if (this.PublicSign == publicSign) return this;
+            if (this.PublicSign == publicSign)
+            {
+                return this;
+            }
+
             var clone = this.Clone();
             clone.PublicSign = publicSign;
             return clone;
         }
 
-        protected override CompilationOptions CommonWithGeneralDiagnosticOption(ReportDiagnostic value) => 
-            WithGeneralDiagnosticOption(value);
+        protected override CompilationOptions CommonWithGeneralDiagnosticOption(ReportDiagnostic value) => WithGeneralDiagnosticOption(value);
 
-        protected override CompilationOptions CommonWithSpecificDiagnosticOptions(ImmutableDictionary<string, ReportDiagnostic> specificDiagnosticOptions) =>
+        protected override CompilationOptions CommonWithSpecificDiagnosticOptions(ImmutableDictionary<string, ReportDiagnostic>? specificDiagnosticOptions) =>
             WithSpecificDiagnosticOptions(specificDiagnosticOptions);
 
-        protected override CompilationOptions CommonWithSpecificDiagnosticOptions(IEnumerable<KeyValuePair<string, ReportDiagnostic>> specificDiagnosticOptions) =>
+        protected override CompilationOptions CommonWithSpecificDiagnosticOptions(IEnumerable<KeyValuePair<string, ReportDiagnostic>>? specificDiagnosticOptions) =>
             WithSpecificDiagnosticOptions(specificDiagnosticOptions);
 
         protected override CompilationOptions CommonWithReportSuppressedDiagnostics(bool reportSuppressedDiagnostics) =>
@@ -270,27 +441,43 @@ namespace MetaDslx.CodeAnalysis
 
         public new LanguageCompilationOptions WithGeneralDiagnosticOption(ReportDiagnostic value)
         {
-            if (this.GeneralDiagnosticOption == value) return this;
+            if (this.GeneralDiagnosticOption == value)
+            {
+                return this;
+            }
+
             var clone = this.Clone();
             clone.GeneralDiagnosticOption = value;
             return clone;
         }
 
-        public new LanguageCompilationOptions WithSpecificDiagnosticOptions(ImmutableDictionary<string, ReportDiagnostic> values)
+        public new LanguageCompilationOptions WithSpecificDiagnosticOptions(ImmutableDictionary<string, ReportDiagnostic>? values)
         {
-            if (values == null) values = ImmutableDictionary<string, ReportDiagnostic>.Empty;
-            if (this.SpecificDiagnosticOptions == values) return this;
+            if (values == null)
+            {
+                values = ImmutableDictionary<string, ReportDiagnostic>.Empty;
+            }
+
+            if (this.SpecificDiagnosticOptions == values)
+            {
+                return this;
+            }
+
             var clone = this.Clone();
             clone.SpecificDiagnosticOptions = values;
             return clone;
         }
 
-        public new LanguageCompilationOptions WithSpecificDiagnosticOptions(IEnumerable<KeyValuePair<string, ReportDiagnostic>> values) =>
+        public new LanguageCompilationOptions WithSpecificDiagnosticOptions(IEnumerable<KeyValuePair<string, ReportDiagnostic>>? values) =>
             WithSpecificDiagnosticOptions(values.ToImmutableDictionaryOrEmpty());
 
         public new LanguageCompilationOptions WithReportSuppressedDiagnostics(bool reportSuppressedDiagnostics)
         {
-            if (reportSuppressedDiagnostics == this.ReportSuppressedDiagnostics) return this;
+            if (reportSuppressedDiagnostics == this.ReportSuppressedDiagnostics)
+            {
+                return this;
+            }
+
             var clone = this.Clone();
             clone.ReportSuppressedDiagnostics = reportSuppressedDiagnostics;
             return clone;
@@ -298,7 +485,11 @@ namespace MetaDslx.CodeAnalysis
 
         public LanguageCompilationOptions WithWarningLevel(int warningLevel)
         {
-            if (warningLevel == this.WarningLevel) return this;
+            if (warningLevel == this.WarningLevel)
+            {
+                return this;
+            }
+
             var clone = this.Clone();
             clone.WarningLevel = warningLevel;
             return clone;
@@ -306,7 +497,11 @@ namespace MetaDslx.CodeAnalysis
 
         public new LanguageCompilationOptions WithConcurrentBuild(bool concurrentBuild)
         {
-            if (concurrentBuild == this.ConcurrentBuild) return this;
+            if (concurrentBuild == this.ConcurrentBuild)
+            {
+                return this;
+            }
+
             var clone = this.Clone();
             clone.ConcurrentBuild = concurrentBuild;
             return clone;
@@ -314,23 +509,35 @@ namespace MetaDslx.CodeAnalysis
 
         public new LanguageCompilationOptions WithDeterministic(bool deterministic)
         {
-            if (deterministic == this.Deterministic) return this;
+            if (deterministic == this.Deterministic)
+            {
+                return this;
+            }
+
             var clone = this.Clone();
             clone.Deterministic = deterministic;
             return clone;
         }
 
-        public LanguageCompilationOptions WithCurrentLocalTime(DateTime value)
+        internal LanguageCompilationOptions WithCurrentLocalTime(DateTime value)
         {
-            if (value == this.CurrentLocalTime) return this;
+            if (value == this.CurrentLocalTime)
+            {
+                return this;
+            }
+
             var clone = this.Clone();
             clone.CurrentLocalTime = value;
             return clone;
         }
 
-        public LanguageCompilationOptions WithDebugPlusMode(bool debugPlusMode)
+        internal LanguageCompilationOptions WithDebugPlusMode(bool debugPlusMode)
         {
-            if (debugPlusMode == this.DebugPlusMode) return this;
+            if (debugPlusMode == this.DebugPlusMode)
+            {
+                return this;
+            }
+
             var clone = this.Clone();
             clone.DebugPlusMode = debugPlusMode;
             return clone;
@@ -338,56 +545,97 @@ namespace MetaDslx.CodeAnalysis
 
         public new LanguageCompilationOptions WithMetadataImportOptions(MetadataImportOptions value)
         {
-            if (value == this.MetadataImportOptions) return this;
+            if (value == this.MetadataImportOptions)
+            {
+                return this;
+            }
+
             var clone = this.Clone();
             clone.MetadataImportOptions = value;
             return clone;
         }
 
-        public LanguageCompilationOptions WithReferencesSupersedeLowerVersions(bool value)
+        internal LanguageCompilationOptions WithReferencesSupersedeLowerVersions(bool value)
         {
-            if (value == this.ReferencesSupersedeLowerVersions) return this;
+            if (value == this.ReferencesSupersedeLowerVersions)
+            {
+                return this;
+            }
+
             var clone = this.Clone();
             clone.ReferencesSupersedeLowerVersions = value;
             return clone;
         }
 
-        public new LanguageCompilationOptions WithXmlReferenceResolver(XmlReferenceResolver resolver)
+        public new LanguageCompilationOptions WithXmlReferenceResolver(XmlReferenceResolver? resolver)
         {
-            if (ReferenceEquals(resolver, this.XmlReferenceResolver)) return this;
+            if (ReferenceEquals(resolver, this.XmlReferenceResolver))
+            {
+                return this;
+            }
+
             var clone = this.Clone();
             clone.XmlReferenceResolver = resolver;
             return clone;
         }
 
-        public new LanguageCompilationOptions WithSourceReferenceResolver(SourceReferenceResolver resolver)
+        public new LanguageCompilationOptions WithSourceReferenceResolver(SourceReferenceResolver? resolver)
         {
-            if (ReferenceEquals(resolver, this.SourceReferenceResolver)) return this;
+            if (ReferenceEquals(resolver, this.SourceReferenceResolver))
+            {
+                return this;
+            }
+
             var clone = this.Clone();
             clone.SourceReferenceResolver = resolver;
             return clone;
         }
 
-        public new LanguageCompilationOptions WithMetadataReferenceResolver(MetadataReferenceResolver resolver)
+        public new LanguageCompilationOptions WithSyntaxTreeOptionsProvider(SyntaxTreeOptionsProvider? provider)
         {
-            if (ReferenceEquals(resolver, this.MetadataReferenceResolver)) return this;
+            if (ReferenceEquals(provider, this.SyntaxTreeOptionsProvider))
+            {
+                return this;
+            }
+
+            var clone = this.Clone();
+            clone.SyntaxTreeOptionsProvider = provider;
+            return clone;
+        }
+
+        public new LanguageCompilationOptions WithMetadataReferenceResolver(MetadataReferenceResolver? resolver)
+        {
+            if (ReferenceEquals(resolver, this.MetadataReferenceResolver))
+            {
+                return this;
+            }
+
             var clone = this.Clone();
             clone.MetadataReferenceResolver = resolver;
             return clone;
         }
 
-        public new LanguageCompilationOptions WithAssemblyIdentityComparer(AssemblyIdentityComparer comparer)
+        public new LanguageCompilationOptions WithAssemblyIdentityComparer(AssemblyIdentityComparer? comparer)
         {
             comparer = comparer ?? AssemblyIdentityComparer.Default;
-            if (ReferenceEquals(comparer, this.AssemblyIdentityComparer)) return this;
+
+            if (ReferenceEquals(comparer, this.AssemblyIdentityComparer))
+            {
+                return this;
+            }
+
             var clone = this.Clone();
             clone.AssemblyIdentityComparer = comparer;
             return clone;
         }
 
-        public new LanguageCompilationOptions WithStrongNameProvider(StrongNameProvider provider)
+        public new LanguageCompilationOptions WithStrongNameProvider(StrongNameProvider? provider)
         {
-            if (ReferenceEquals(provider, this.StrongNameProvider)) return this;
+            if (ReferenceEquals(provider, this.StrongNameProvider))
+            {
+                return this;
+            }
+
             var clone = this.Clone();
             clone.StrongNameProvider = provider;
             return clone;
@@ -404,25 +652,39 @@ namespace MetaDslx.CodeAnalysis
 
         protected override CompilationOptions CommonWithOptimizationLevel(OptimizationLevel value) => WithOptimizationLevel(value);
 
-        protected override CompilationOptions CommonWithAssemblyIdentityComparer(AssemblyIdentityComparer comparer) =>
+        protected override CompilationOptions CommonWithAssemblyIdentityComparer(AssemblyIdentityComparer? comparer) =>
             WithAssemblyIdentityComparer(comparer);
 
-        protected override CompilationOptions CommonWithXmlReferenceResolver(XmlReferenceResolver resolver) =>
+        protected override CompilationOptions CommonWithXmlReferenceResolver(XmlReferenceResolver? resolver) =>
             WithXmlReferenceResolver(resolver);
 
-        protected override CompilationOptions CommonWithSourceReferenceResolver(SourceReferenceResolver resolver) =>
+        protected override CompilationOptions CommonWithSourceReferenceResolver(SourceReferenceResolver? resolver) =>
             WithSourceReferenceResolver(resolver);
 
-        protected override CompilationOptions CommonWithMetadataReferenceResolver(MetadataReferenceResolver resolver) =>
+        protected override CompilationOptions CommonWithSyntaxTreeOptionsProvider(SyntaxTreeOptionsProvider? provider)
+            => WithSyntaxTreeOptionsProvider(provider);
+
+        protected override CompilationOptions CommonWithMetadataReferenceResolver(MetadataReferenceResolver? resolver) =>
             WithMetadataReferenceResolver(resolver);
 
-        protected override CompilationOptions CommonWithStrongNameProvider(StrongNameProvider provider) =>
+        protected override CompilationOptions CommonWithStrongNameProvider(StrongNameProvider? provider) =>
             WithStrongNameProvider(provider);
 
         protected override CompilationOptions CommonWithMetadataImportOptions(MetadataImportOptions value) =>
             WithMetadataImportOptions(value);
 
-        protected override void ValidateOptions(ArrayBuilder<Diagnostic> builder)
+        [Obsolete]
+        protected override CompilationOptions CommonWithFeatures(ImmutableArray<string> features)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void ValidateOptionsCore(ArrayBuilder<Diagnostic> builder)
+        {
+            this.ValidateOptions(builder);
+        }
+
+        protected virtual void ValidateOptions(ArrayBuilder<Diagnostic> builder)
         {
             ValidateOptions(builder, MessageProvider.Instance);
 
@@ -436,53 +698,53 @@ namespace MetaDslx.CodeAnalysis
 
                 if (!MainTypeName.IsValidClrTypeName())
                 {
-                    builder.Add(LanguageDiagnostic.Create(InternalErrorCode.ERR_BadCompilationOptionValue, nameof(MainTypeName), MainTypeName));
+                    builder.Add(Diagnostic.Create(MessageProvider.Instance, (int)Microsoft.CodeAnalysis.CSharp.ErrorCode.ERR_BadCompilationOptionValue, nameof(MainTypeName), MainTypeName));
                 }
             }
 
             if (!Platform.IsValid())
             {
-                builder.Add(LanguageDiagnostic.Create(InternalErrorCode.ERR_BadPlatformType, Platform.ToString()));
+                builder.Add(Diagnostic.Create(MessageProvider.Instance, (int)Microsoft.CodeAnalysis.CSharp.ErrorCode.ERR_BadPlatformType, Platform.ToString()));
             }
 
             if (ModuleName != null)
             {
-                MetadataHelpers.CheckAssemblyOrModuleName(ModuleName, MessageProvider.Instance, InternalErrorCode.ERR_BadModuleName.Code, builder);
+                MetadataHelpers.CheckAssemblyOrModuleName(ModuleName, MessageProvider.Instance, (int)Microsoft.CodeAnalysis.CSharp.ErrorCode.ERR_BadModuleName, builder);
             }
 
             if (!OutputKind.IsValid())
             {
-                builder.Add(LanguageDiagnostic.Create(InternalErrorCode.ERR_BadCompilationOptionValue, nameof(OutputKind), OutputKind.ToString()));
+                builder.Add(Diagnostic.Create(MessageProvider.Instance, (int)Microsoft.CodeAnalysis.CSharp.ErrorCode.ERR_BadCompilationOptionValue, nameof(OutputKind), OutputKind.ToString()));
             }
 
             if (!OptimizationLevel.IsValid())
             {
-                builder.Add(LanguageDiagnostic.Create(InternalErrorCode.ERR_BadCompilationOptionValue, nameof(OptimizationLevel), OptimizationLevel.ToString()));
+                builder.Add(Diagnostic.Create(MessageProvider.Instance, (int)Microsoft.CodeAnalysis.CSharp.ErrorCode.ERR_BadCompilationOptionValue, nameof(OptimizationLevel), OptimizationLevel.ToString()));
             }
 
             if (ScriptClassName == null || !ScriptClassName.IsValidClrTypeName())
             {
-                builder.Add(LanguageDiagnostic.Create(InternalErrorCode.ERR_BadCompilationOptionValue, nameof(ScriptClassName), ScriptClassName ?? "null"));
+                builder.Add(Diagnostic.Create(MessageProvider.Instance, (int)Microsoft.CodeAnalysis.CSharp.ErrorCode.ERR_BadCompilationOptionValue, nameof(ScriptClassName), ScriptClassName ?? "null"));
             }
 
-            if (WarningLevel < 0 || WarningLevel > 4)
+            if (WarningLevel < 0)
             {
-                builder.Add(LanguageDiagnostic.Create(InternalErrorCode.ERR_BadCompilationOptionValue, nameof(WarningLevel), WarningLevel));
+                builder.Add(Diagnostic.Create(MessageProvider.Instance, (int)Microsoft.CodeAnalysis.CSharp.ErrorCode.ERR_BadCompilationOptionValue, nameof(WarningLevel), WarningLevel));
             }
 
             if (Usings != null && Usings.Any(u => !u.IsValidClrNamespaceName()))
             {
-                builder.Add(LanguageDiagnostic.Create(InternalErrorCode.ERR_BadCompilationOptionValue, nameof(Usings), Usings.Where(u => !u.IsValidClrNamespaceName()).First() ?? "null"));
+                builder.Add(Diagnostic.Create(MessageProvider.Instance, (int)Microsoft.CodeAnalysis.CSharp.ErrorCode.ERR_BadCompilationOptionValue, nameof(Usings), Usings.Where(u => !u.IsValidClrNamespaceName()).First() ?? "null"));
             }
 
             if (Platform == Platform.AnyCpu32BitPreferred && OutputKind.IsValid() && !(OutputKind == OutputKind.ConsoleApplication || OutputKind == OutputKind.WindowsApplication || OutputKind == OutputKind.WindowsRuntimeApplication))
             {
-                builder.Add(LanguageDiagnostic.Create(InternalErrorCode.ERR_BadPrefer32OnLib));
+                builder.Add(Diagnostic.Create(MessageProvider.Instance, (int)Microsoft.CodeAnalysis.CSharp.ErrorCode.ERR_BadPrefer32OnLib));
             }
 
             if (!MetadataImportOptions.IsValid())
             {
-                builder.Add(LanguageDiagnostic.Create(InternalErrorCode.ERR_BadCompilationOptionValue, nameof(MetadataImportOptions), MetadataImportOptions.ToString()));
+                builder.Add(Diagnostic.Create(MessageProvider.Instance, (int)Microsoft.CodeAnalysis.CSharp.ErrorCode.ERR_BadCompilationOptionValue, nameof(MetadataImportOptions), MetadataImportOptions.ToString()));
             }
 
             // TODO: add check for 
@@ -490,7 +752,7 @@ namespace MetaDslx.CodeAnalysis
             //          (version >= "6.2")
         }
 
-        public virtual bool Equals(LanguageCompilationOptions other)
+        public bool Equals(LanguageCompilationOptions? other)
         {
             if (object.ReferenceEquals(this, other))
             {
@@ -504,10 +766,11 @@ namespace MetaDslx.CodeAnalysis
 
             return this.AllowUnsafe == other.AllowUnsafe &&
                    this.TopLevelBinderFlags == other.TopLevelBinderFlags &&
-                   (this.Usings == null ? other.Usings == null : this.Usings.SequenceEqual(other.Usings, StringComparer.Ordinal));
+                   (this.Usings == null ? other.Usings == null : this.Usings.SequenceEqual(other.Usings, StringComparer.Ordinal) &&
+                   this.NullableContextOptions == other.NullableContextOptions);
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return this.Equals(obj as LanguageCompilationOptions);
         }
@@ -516,35 +779,43 @@ namespace MetaDslx.CodeAnalysis
         {
             return Hash.Combine(base.GetHashCodeHelper(),
                    Hash.Combine(this.AllowUnsafe,
-                   Hash.Combine(Hash.CombineValues(this.Usings, StringComparer.Ordinal), TopLevelBinderFlags.GetHashCode())));
+                   Hash.Combine(Hash.CombineValues(this.Usings, StringComparer.Ordinal),
+                   Hash.Combine(TopLevelBinderFlags.GetHashCode(), this.NullableContextOptions.GetHashCode()))));
         }
 
         internal override Diagnostic? FilterDiagnostic(Diagnostic diagnostic, CancellationToken cancellationToken)
         {
-            return LanguageDiagnosticFilter.Filter(diagnostic, WarningLevel, GeneralDiagnosticOption, SpecificDiagnosticOptions);
+            return LanguageDiagnosticFilter.Filter(
+                diagnostic,
+                WarningLevel,
+                NullableContextOptions,
+                GeneralDiagnosticOption,
+                SpecificDiagnosticOptions,
+                SyntaxTreeOptionsProvider,
+                cancellationToken);
         }
 
-        protected override CompilationOptions CommonWithModuleName(string moduleName)
+        protected override CompilationOptions CommonWithModuleName(string? moduleName)
         {
             return WithModuleName(moduleName);
         }
 
-        protected override CompilationOptions CommonWithMainTypeName(string mainTypeName)
+        protected override CompilationOptions CommonWithMainTypeName(string? mainTypeName)
         {
             return WithMainTypeName(mainTypeName);
         }
 
-        protected override CompilationOptions CommonWithScriptClassName(string scriptClassName)
+        protected override CompilationOptions CommonWithScriptClassName(string? scriptClassName)
         {
             return WithScriptClassName(scriptClassName);
         }
 
-        protected override CompilationOptions CommonWithCryptoKeyContainer(string cryptoKeyContainer)
+        protected override CompilationOptions CommonWithCryptoKeyContainer(string? cryptoKeyContainer)
         {
             return WithCryptoKeyContainer(cryptoKeyContainer);
         }
 
-        protected override CompilationOptions CommonWithCryptoKeyFile(string cryptoKeyFile)
+        protected override CompilationOptions CommonWithCryptoKeyFile(string? cryptoKeyFile)
         {
             return WithCryptoKeyFile(cryptoKeyFile);
         }
@@ -563,5 +834,6 @@ namespace MetaDslx.CodeAnalysis
         {
             return WithOverflowChecks(checkOverflow);
         }
+
     }
 }

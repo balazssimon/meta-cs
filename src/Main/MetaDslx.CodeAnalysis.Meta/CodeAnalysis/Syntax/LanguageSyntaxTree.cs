@@ -13,6 +13,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
 using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
 using Microsoft.CodeAnalysis.Text;
+using System.Runtime.CompilerServices;
 
 namespace MetaDslx.CodeAnalysis
 {
@@ -357,31 +358,59 @@ namespace MetaDslx.CodeAnalysis
             if (_lazyPragmaWarningStateMap == null)
             {
                 // Create the warning state map on demand.
-                Interlocked.CompareExchange(ref _lazyPragmaWarningStateMap, new PragmaWarningStateMap(this, false), null);
+                Interlocked.CompareExchange(ref _lazyPragmaWarningStateMap, new PragmaWarningStateMap(this), null);
             }
 
             return _lazyPragmaWarningStateMap.GetWarningState(id, position);
         }
 
-        /// <summary>
-        /// Returns true if the `#nullable` directive preceding the position is
-        /// `enable` or `safeonly`, false if `disable`, and null if no preceding directive,
-        /// or directive preceding the position is `restore`.
-        /// </summary>
-        internal bool? GetNullableDirectiveState(int position)
+        private NullableContextStateMap GetNullableContextStateMap()
         {
-            if (_lazyNullableDirectiveMap == null)
+            if (_lazyNullableContextStateMap == null)
             {
                 // Create the #nullable directive map on demand.
-                Interlocked.CompareExchange(ref _lazyNullableDirectiveMap, NullableDirectiveMap.Create(this, false), null);
+                Interlocked.CompareExchange(
+                    ref _lazyNullableContextStateMap,
+                    new StrongBox<NullableContextStateMap>(NullableContextStateMap.Create(this)),
+                    null);
             }
-
-            return _lazyNullableDirectiveMap.GetDirectiveState(position);
+            return _lazyNullableContextStateMap.Value;
         }
 
-        private LineDirectiveMap _lazyLineDirectiveMap;
-        private PragmaWarningStateMap _lazyPragmaWarningStateMap;
-        private NullableDirectiveMap _lazyNullableDirectiveMap;
+        internal NullableContextState GetNullableContextState(int position)
+            => GetNullableContextStateMap().GetContextState(position);
+
+        internal bool? IsNullableAnalysisEnabled(TextSpan span) => GetNullableContextStateMap().IsNullableAnalysisEnabled(span);
+
+        internal bool IsGeneratedCode(SyntaxTreeOptionsProvider? provider, CancellationToken cancellationToken)
+        {
+            return provider?.IsGenerated(this, cancellationToken) switch
+            {
+                null or GeneratedKind.Unknown => isGeneratedHeuristic(),
+                GeneratedKind kind => kind != GeneratedKind.NotGenerated
+            };
+
+            bool isGeneratedHeuristic()
+            {
+                if (_lazyIsGeneratedCode == GeneratedKind.Unknown)
+                {
+                    // Create the generated code status on demand
+                    bool isGenerated = GeneratedCodeUtilities.IsGeneratedCode(
+                            this,
+                            isComment: trivia => Language.SyntaxFacts.IsCommentTrivia(trivia.GetKind()),
+                            cancellationToken: default);
+                    _lazyIsGeneratedCode = isGenerated ? GeneratedKind.MarkedGenerated : GeneratedKind.NotGenerated;
+                }
+
+                return _lazyIsGeneratedCode == GeneratedKind.MarkedGenerated;
+            }
+        }
+
+        private LineDirectiveMap? _lazyLineDirectiveMap;
+        private PragmaWarningStateMap? _lazyPragmaWarningStateMap;
+        private StrongBox<NullableContextStateMap>? _lazyNullableContextStateMap;
+
+        private GeneratedKind _lazyIsGeneratedCode = GeneratedKind.Unknown;
 
         private LinePosition GetLinePosition(int position)
         {

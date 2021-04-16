@@ -98,7 +98,7 @@ namespace MetaDslx.CodeAnalysis.Syntax
             set { this.Features = value; }
         }
 
-        public override void ValidateOptions(ArrayBuilder<Diagnostic> builder)
+        internal override void ValidateOptions(ArrayBuilder<Diagnostic> builder)
         {
             ValidateOptions(builder, Microsoft.CodeAnalysis.CSharp.MessageProvider.Instance);
 

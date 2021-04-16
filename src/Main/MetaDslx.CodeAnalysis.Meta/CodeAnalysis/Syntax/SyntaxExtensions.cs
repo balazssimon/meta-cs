@@ -420,7 +420,7 @@ namespace MetaDslx.CodeAnalysis
         }
 
         // Given the error code and the source location, get the warning state based on pragma warning directives.
-        public static PragmaWarningState GetPragmaDirectiveWarningState(this SyntaxTree tree, string id, int position)
+        internal static PragmaWarningState GetPragmaDirectiveWarningState(this SyntaxTree tree, string id, int position)
         {
             if (tree is LanguageSyntaxTree languageTree) return languageTree.GetPragmaDirectiveWarningState(id, position);
             if (tree is CSharpSyntaxTree csharpTree)

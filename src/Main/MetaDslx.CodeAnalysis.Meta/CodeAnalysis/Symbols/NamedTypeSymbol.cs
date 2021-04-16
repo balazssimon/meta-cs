@@ -366,7 +366,105 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         public virtual bool IsImplicit => false;
 
+        public virtual bool IsInterface => false;
+
         public virtual bool MightContainExtensionMethods => false;
+
+        public virtual bool IsGenericType => false;
+
+        /// <summary>
+        /// Returns the type parameters that this type has. If this is a non-generic type,
+        /// returns an empty ImmutableArray.  
+        /// </summary>
+        public virtual ImmutableArray<TypeParameterSymbol> TypeParameters => ImmutableArray<TypeParameterSymbol>.Empty;
+
+        /// <summary>
+        /// Returns the type arguments that have been substituted for the type parameters. 
+        /// If nothing has been substituted for a give type parameters,
+        /// then the type parameter itself is consider the type argument.
+        /// </summary>
+        internal virtual ImmutableArray<TypeWithAnnotations> TypeArgumentsWithAnnotationsNoUseSiteDiagnostics => ImmutableArray<TypeWithAnnotations>.Empty;
+
+        internal ImmutableArray<TypeWithAnnotations> TypeArgumentsWithDefinitionUseSiteDiagnostics(ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        {
+            var result = TypeArgumentsWithAnnotationsNoUseSiteDiagnostics;
+
+            foreach (var typeArgument in result)
+            {
+                typeArgument.Type.OriginalDefinition.AddUseSiteDiagnostics(ref useSiteDiagnostics);
+            }
+
+            return result;
+        }
+
+        internal TypeWithAnnotations TypeArgumentWithDefinitionUseSiteDiagnostics(int index, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        {
+            var result = TypeArgumentsWithAnnotationsNoUseSiteDiagnostics[index];
+            result.Type.OriginalDefinition.AddUseSiteDiagnostics(ref useSiteDiagnostics);
+            return result;
+        }
+
+        /// <summary>
+        /// Returns the type symbol that this type was constructed from. This type symbol
+        /// has the same containing type (if any), but has type arguments that are the same
+        /// as the type parameters (although its containing type might not).
+        /// </summary>
+        public virtual NamedTypeSymbol ConstructedFrom { get; }
+        public bool IsUnboundGenericType { get; internal set; }
+        public bool IsScriptClass { get; internal set; }
+        public bool IsImplicitClass { get; internal set; }
+        public bool IsSerializable { get; internal set; }
+        public NamedTypeSymbol NativeIntegerUnderlyingType { get; internal set; }
+        public ImmutableArray<FieldSymbol> TupleElements { get; internal set; }
+        public MethodSymbol DelegateInvokeMethod { get; internal set; }
+
+        /// <summary>
+        /// Returns a constructed type given its type arguments.
+        /// </summary>
+        /// <param name="typeArguments">The immediate type arguments to be replaced for type
+        /// parameters in the type.</param>
+        internal NamedTypeSymbol Construct(params TypeWithAnnotations[] typeArguments)
+        {
+            throw new NotImplementedException("TODO:MetaDslx");
+        }
+
+        /// <summary>
+        /// Returns a constructed type given its type arguments.
+        /// </summary>
+        /// <param name="typeArguments">The immediate type arguments to be replaced for type
+        /// parameters in the type.</param>
+        internal NamedTypeSymbol Construct(ImmutableArray<TypeWithAnnotations> typeArguments)
+        {
+            throw new NotImplementedException("TODO:MetaDslx");
+        }
+
+        /// <summary>
+        /// Returns a constructed type given its type arguments.
+        /// </summary>
+        /// <param name="typeArguments"></param>
+        internal NamedTypeSymbol Construct(IEnumerable<TypeWithAnnotations> typeArguments)
+        {
+            throw new NotImplementedException("TODO:MetaDslx");
+        }
+
+        /// <summary>
+        /// Returns an unbound generic type of this named type.
+        /// </summary>
+        public NamedTypeSymbol ConstructUnboundGenericType()
+        {
+            throw new NotImplementedException("TODO:MetaDslx");
+        }
+
+        internal NamedTypeSymbol GetUnboundGenericTypeOrSelf()
+        {
+            if (!this.IsGenericType)
+            {
+                return this;
+            }
+
+            return this.ConstructUnboundGenericType();
+        }
+
 
         public override void Accept(SymbolVisitor visitor)
         {
@@ -383,5 +481,15 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return visitor.VisitNamedType(this, argument);
         }
 
+        protected override ISymbol CreateISymbol()
+        {
+            return new PublicModel.NonErrorNamedTypeSymbol(this, DefaultNullableAnnotation);
+        }
+
+        protected override ITypeSymbol CreateITypeSymbol(Microsoft.CodeAnalysis.NullableAnnotation nullableAnnotation)
+        {
+            Debug.Assert(nullableAnnotation != DefaultNullableAnnotation);
+            return new PublicModel.NonErrorNamedTypeSymbol(this, nullableAnnotation);
+        }
     }
 }

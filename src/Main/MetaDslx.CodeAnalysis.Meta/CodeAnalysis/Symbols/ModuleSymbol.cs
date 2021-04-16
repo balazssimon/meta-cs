@@ -258,5 +258,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public abstract ModuleMetadata GetMetadata();
 
         #endregion
+        protected override ISymbol CreateISymbol()
+        {
+            return new PublicModel.ModuleSymbol(this);
+        }
     }
 }

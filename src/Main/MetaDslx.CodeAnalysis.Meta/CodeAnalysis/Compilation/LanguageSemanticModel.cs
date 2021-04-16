@@ -329,13 +329,13 @@ namespace MetaDslx.CodeAnalysis
         /// </summary>
         /// <param name="node">The syntax node to get semantic information for.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        public ImmutableArray<ISymbol> GetMemberGroup(LanguageSyntaxNode node, CancellationToken cancellationToken = default(CancellationToken))
+        public ImmutableArray<Symbol> GetMemberGroup(LanguageSyntaxNode node, CancellationToken cancellationToken = default(CancellationToken))
         {
             CheckSyntaxNode(node);
 
             return CanGetSemanticInfo(node)
-                ? StaticCast<ISymbol>.From(this.GetMemberGroupWorker(node, SymbolInfoOptions.DefaultOptions, cancellationToken))
-                : ImmutableArray<ISymbol>.Empty;
+                ? this.GetMemberGroupWorker(node, SymbolInfoOptions.DefaultOptions, cancellationToken)
+                : ImmutableArray<Symbol>.Empty;
         }
 
         #endregion GetIndexerGroup
@@ -357,7 +357,7 @@ namespace MetaDslx.CodeAnalysis
         /// If <paramref name="aliasSyntax"/> resolves to an alias name, return the AliasSymbol corresponding
         /// to A. Otherwise return null.
         /// </summary>
-        public IAliasSymbol GetAliasInfo(LanguageSyntaxNode aliasSyntax, CancellationToken cancellationToken = default(CancellationToken))
+        public IAliasSymbol? GetAliasInfo(LanguageSyntaxNode aliasSyntax, CancellationToken cancellationToken = default(CancellationToken))
         {
             CheckSyntaxNode(aliasSyntax);
 
@@ -365,7 +365,7 @@ namespace MetaDslx.CodeAnalysis
                 return null;
 
             SymbolInfo info = GetSymbolInfoWorker(aliasSyntax, SymbolInfoOptions.PreferTypeToConstructors | SymbolInfoOptions.PreserveAliases, cancellationToken);
-            return info.Symbol as AliasSymbol;
+            return info.Symbol as IAliasSymbol;
         }
 
         /// <summary>
@@ -384,7 +384,7 @@ namespace MetaDslx.CodeAnalysis
         /// expression should derive from TypeSyntax.</param>
         /// <remarks>The passed in name is interpreted as a stand-alone name, as if it
         /// appeared by itself somewhere within the scope that encloses "position".</remarks>
-        public IAliasSymbol GetSpeculativeAliasInfo(int position, LanguageSyntaxNode aliasSyntax, SpeculativeBindingOption bindingOption)
+        public IAliasSymbol? GetSpeculativeAliasInfo(int position, LanguageSyntaxNode aliasSyntax, SpeculativeBindingOption bindingOption)
         {
             Binder binder;
             BoundNode boundNode = GetSpeculativelyBoundNode(position, aliasSyntax, bindingOption, out binder); //calls CheckAndAdjustPosition
@@ -392,7 +392,7 @@ namespace MetaDslx.CodeAnalysis
             var symbolInfo = this.GetSymbolInfoForNode(SymbolInfoOptions.PreferTypeToConstructors | SymbolInfoOptions.PreserveAliases,
                 ImmutableArray.Create(boundNode), boundNodeForSyntacticParent: default, binderOpt: binder);
 
-            return symbolInfo.Symbol as AliasSymbol;
+            return symbolInfo.Symbol as IAliasSymbol;
         }
 
         /// <summary>
@@ -497,14 +497,14 @@ namespace MetaDslx.CodeAnalysis
         /// 
         /// Non-reduced extension methods are considered regardless of the value of <paramref name="includeReducedExtensionMethods"/>.
         /// </remarks>
-        public new ImmutableArray<ISymbol> LookupSymbols(
+        public new ImmutableArray<DeclaredSymbol> LookupSymbols(
             int position,
-            INamespaceOrTypeSymbol container = null,
-            string name = null,
+            DeclaredSymbol? container = null,
+            string? name = null,
             bool includeReducedExtensionMethods = false)
         {
             var options = includeReducedExtensionMethods ? LookupOptions.IncludeExtensionMethods : LookupOptions.Default;
-            return StaticCast<ISymbol>.From(LookupSymbolsInternal(position, ToLanguageSpecific(container), name, options, useBaseReferenceAccessibility: false));
+            return LookupSymbolsInternal(position, container, name, options, useBaseReferenceAccessibility: false);
         }
 
         /// <summary>
@@ -542,11 +542,11 @@ namespace MetaDslx.CodeAnalysis
         /// 
         /// Non-reduced extension methods are considered, but reduced extension methods are not.
         /// </remarks>
-        public new ImmutableArray<ISymbol> LookupBaseMembers(
+        public new ImmutableArray<DeclaredSymbol> LookupBaseMembers(
             int position,
-            string name = null)
+            string? name = null)
         {
-            return StaticCast<ISymbol>.From(LookupSymbolsInternal(position, container: null, name: name, options: LookupOptions.Default, useBaseReferenceAccessibility: true));
+            return LookupSymbolsInternal(position, container: null, name: name, options: LookupOptions.Default, useBaseReferenceAccessibility: true);
         }
 
         /// <summary>
@@ -567,12 +567,12 @@ namespace MetaDslx.CodeAnalysis
         /// specified, the "position" location is significant for determining which members of "containing" are
         /// accessible. 
         /// </remarks>
-        public new ImmutableArray<ISymbol> LookupStaticMembers(
+        public new ImmutableArray<DeclaredSymbol> LookupStaticMembers(
             int position,
-            INamespaceOrTypeSymbol container = null,
-            string name = null)
+            DeclaredSymbol? container = null,
+            string? name = null)
         {
-            return StaticCast<ISymbol>.From(LookupSymbolsInternal(position, ToLanguageSpecific(container), name, LookupOptions.MustNotBeInstance, useBaseReferenceAccessibility: false));
+            return LookupSymbolsInternal(position, container, name, LookupOptions.MustNotBeInstance, useBaseReferenceAccessibility: false);
         }
 
         /// <summary>
@@ -593,12 +593,12 @@ namespace MetaDslx.CodeAnalysis
         /// 
         /// Does not return INamespaceOrTypeSymbol, because there could be aliases.
         /// </remarks>
-        public new ImmutableArray<ISymbol> LookupNamespacesAndTypes(
+        public new ImmutableArray<DeclaredSymbol> LookupNamespacesAndTypes(
             int position,
-            INamespaceOrTypeSymbol container = null,
-            string name = null)
+            DeclaredSymbol? container = null,
+            string? name = null)
         {
-            return StaticCast<ISymbol>.From(LookupSymbolsInternal(position, ToLanguageSpecific(container), name, LookupOptions.NamespacesOrTypesOnly, useBaseReferenceAccessibility: false));
+            return LookupSymbolsInternal(position, container, name, LookupOptions.NamespacesOrTypesOnly, useBaseReferenceAccessibility: false);
         }
 
         /// <summary>
@@ -615,11 +615,11 @@ namespace MetaDslx.CodeAnalysis
         /// specified, the "position" location is significant for determining which members of "containing" are
         /// accessible. 
         /// </remarks>
-        public new ImmutableArray<ISymbol> LookupLabels(
+        public new ImmutableArray<DeclaredSymbol> LookupLabels(
             int position,
-            string name = null)
+            string? name = null)
         {
-            return StaticCast<ISymbol>.From(LookupSymbolsInternal(position, container: null, name: name, options: LookupOptions.LabelsOnly, useBaseReferenceAccessibility: false));
+            return LookupSymbolsInternal(position, container: null, name: name, options: LookupOptions.LabelsOnly, useBaseReferenceAccessibility: false);
         }
 
         /// <summary>
@@ -644,8 +644,8 @@ namespace MetaDslx.CodeAnalysis
         /// <exception cref="ArgumentException">Throws an argument exception if the passed lookup options are invalid.</exception>
         private ImmutableArray<DeclaredSymbol> LookupSymbolsInternal(
             int position,
-            NamespaceOrTypeSymbol container,
-            string name,
+            DeclaredSymbol? container,
+            string? name,
             LookupOptions options,
             bool useBaseReferenceAccessibility)
         {
@@ -661,7 +661,7 @@ namespace MetaDslx.CodeAnalysis
             SyntaxToken token;
             position = CheckAndAdjustPosition(position, out token);
 
-            if ((object)container == null || container.Kind == Symbols.SymbolKind.Namespace)
+            if (container is null || container.Kind == Symbols.SymbolKind.Namespace)
             {
                 options &= ~LookupOptions.IncludeExtensionMethods;
             }
@@ -679,12 +679,12 @@ namespace MetaDslx.CodeAnalysis
                 TypeSymbol baseType = null;
 
                 // For a script class or a submission class base should have no members.
-                if ((object)containingType != null && containingType.Kind == Symbols.SymbolKind.NamedType && ((NamedTypeSymbol)containingType).IsScript)
+                if (containingType is not null && containingType.Kind == Symbols.SymbolKind.NamedType && ((NamedTypeSymbol)containingType).IsScript)
                 {
                     return ImmutableArray<DeclaredSymbol>.Empty;
                 }
 
-                if ((object)containingType == null || containingType.BaseTypesNoUseSiteDiagnostics.IsEmpty)
+                if (containingType is null || containingType.BaseTypesNoUseSiteDiagnostics.IsEmpty)
                 {
                     throw new ArgumentException(
                         "Not a valid position for a call to LookupBaseMembers (must be in a type with a base type)",
@@ -696,7 +696,7 @@ namespace MetaDslx.CodeAnalysis
             var info = LookupSymbolsInfo.GetInstance();
             info.FilterName = name;
 
-            if ((object)container == null)
+            if (container is null)
             {
                 binder.AddLookupSymbolsInfo(info, new LookupConstraints(options: options));
             }
@@ -736,7 +736,7 @@ namespace MetaDslx.CodeAnalysis
                 : sealedResults;
         }
 
-        private void AppendSymbolsWithName(ArrayBuilder<DeclaredSymbol> results, string name, Binder binder, NamespaceOrTypeSymbol container, LookupOptions options, LookupSymbolsInfo info)
+        private void AppendSymbolsWithName(ArrayBuilder<DeclaredSymbol> results, string name, Binder binder, DeclaredSymbol? container, LookupOptions options, LookupSymbolsInfo info)
         {
             IEnumerable<string> metadataNames;
             DeclaredSymbol uniqueSymbol;
@@ -774,7 +774,7 @@ namespace MetaDslx.CodeAnalysis
             string name,
             string metadataName,
             Binder binder,
-            NamespaceOrTypeSymbol container,
+            DeclaredSymbol? container,
             LookupOptions options)
         {
             Debug.Assert(results != null);
@@ -858,22 +858,14 @@ namespace MetaDslx.CodeAnalysis
         /// modifiers on symbol and its containing types. Even if true is returned, the given symbol
         /// may not be able to be referenced for other reasons, such as name hiding.
         /// </remarks>
-        public new bool IsAccessible(int position, ISymbol symbol)
+        public new bool IsAccessible(int position, DeclaredSymbol symbol)
         {
             position = CheckAndAdjustPosition(position);
-
-            if ((object)symbol == null)
-            {
-                throw new ArgumentNullException(nameof(symbol));
-            }
-
-            var cssymbol = symbol.EnsureLanguageSymbolOrNull<ISymbol, DeclaredSymbol>(nameof(symbol));
-
             var binder = this.GetEnclosingBinder(position);
             if (binder != null)
             {
                 HashSet<DiagnosticInfo> useSiteDiagnostics = null;
-                return binder.IsAccessible(cssymbol, ref useSiteDiagnostics, null);
+                return binder.IsAccessible(symbol, ref useSiteDiagnostics, null);
             }
 
             return false;
@@ -1052,7 +1044,7 @@ namespace MetaDslx.CodeAnalysis
             {
                 // Non-error case. Use constructor that doesn't require creation of a Symbol array.
                 var symbolToReturn = ((options & SymbolInfoOptions.ResolveAliases) != 0) ? unwrapped : symbol;
-                return new SymbolInfo(symbolToReturn, ImmutableArray<ISymbol>.Empty, CandidateReason.None);
+                return new SymbolInfo(symbolToReturn.GetPublicSymbol(), ImmutableArray<ISymbol>.Empty, CandidateReason.None);
             }
         }
 
@@ -1241,18 +1233,16 @@ namespace MetaDslx.CodeAnalysis
         /// Conversion object with a false "Exists" property is returned.</returns>
         /// <remarks>To determine the conversion between two types (instead of an expression and a
         /// type), use Compilation.ClassifyConversion.</remarks>
-        public Conversion ClassifyConversion(int position, LanguageSyntaxNode expression, ITypeSymbol destination, bool isExplicitInSource = false)
+        public Conversion ClassifyConversion(int position, LanguageSyntaxNode expression, TypeSymbol destination, bool isExplicitInSource = false)
         {
             if ((object)destination == null)
             {
                 throw new ArgumentNullException(nameof(destination));
             }
 
-            var cdestination = destination.EnsureLanguageSymbolOrNull<ITypeSymbol, TypeSymbol>(nameof(destination));
-
             if (isExplicitInSource)
             {
-                return ClassifyConversionForCast(position, expression, cdestination);
+                return ClassifyConversionForCast(position, expression, destination);
             }
 
             // Note that it is possible for an expression to be convertible to a type
@@ -1265,10 +1255,10 @@ namespace MetaDslx.CodeAnalysis
             {
                 var bnode = binder.Bind(expression, default) as BoundSymbol;
 
-                if (bnode != null && !cdestination.IsErrorType())
+                if (bnode != null && !destination.IsErrorType())
                 {
                     HashSet<DiagnosticInfo> useSiteDiagnostics = null;
-                    return binder.Conversions.ClassifyConversionFromExpression(bnode, cdestination, ref useSiteDiagnostics);
+                    return binder.Conversions.ClassifyConversionFromExpression(bnode, destination, ref useSiteDiagnostics);
                 }
             }
 
@@ -1341,7 +1331,7 @@ namespace MetaDslx.CodeAnalysis
         /// NOTE:   (3) BaseFieldDeclarationSyntax or its subtypes as these declarations can contain multiple variable declarators.
         /// NOTE:       GetDeclaredSymbol should be called on the variable declarators directly.
         /// </remarks>
-        public abstract IDeclaredSymbol GetDeclaredSymbol(LanguageSyntaxNode declarationSyntax, CancellationToken cancellationToken = default(CancellationToken));
+        public abstract DeclaredSymbol GetDeclaredSymbol(LanguageSyntaxNode declarationSyntax, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Given a base field declaration syntax, get the corresponding symbols.
@@ -1349,7 +1339,7 @@ namespace MetaDslx.CodeAnalysis
         /// <param name="declarationSyntax">The syntax node that declares one or more fields or events.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The symbols that were declared.</returns>
-        public abstract ImmutableArray<IDeclaredSymbol> GetDeclaredSymbols(LanguageSyntaxNode declarationSyntax, CancellationToken cancellationToken = default(CancellationToken));
+        public abstract ImmutableArray<DeclaredSymbol> GetDeclaredSymbols(LanguageSyntaxNode declarationSyntax, CancellationToken cancellationToken = default(CancellationToken));
 
         // Get the symbols and possible method or property group associated with a bound node, as
         // they should be exposed through GetSemanticInfo.
@@ -1444,13 +1434,13 @@ namespace MetaDslx.CodeAnalysis
         /// Given a position in the SyntaxTree for this SemanticModel returns the innermost
         /// NamedType that the position is considered inside of.
         /// </summary>
-        public new ISymbol GetEnclosingSymbol(
+        public new Symbol? GetEnclosingSymbol(
             int position,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             position = CheckAndAdjustPosition(position);
             var binder = GetEnclosingBinder(position);
-            return binder == null ? null : binder.ContainingSymbol;
+            return binder?.ContainingSymbol;
         }
 
         #region SemanticModel Members
@@ -1485,10 +1475,10 @@ namespace MetaDslx.CodeAnalysis
         {
             if (node == null) throw new ArgumentNullException(nameof(node));
             var syntaxNode = (LanguageSyntaxNode)node;
-            var boundNode = this.Compilation.GetBinder(syntaxNode).Bind(syntaxNode, cancellationToken) as BoundValue;
+            var boundNode = this.Compilation.GetBinder(syntaxNode).Bind(cancellationToken: cancellationToken) as BoundValue;
             if (boundNode?.Values.FirstOrDefault() is Symbol symbol)
             {
-                return new SymbolInfo(symbol);
+                return new SymbolInfo(symbol.GetPublicSymbol());
             }
             return SymbolInfo.None;
         }
@@ -1497,7 +1487,7 @@ namespace MetaDslx.CodeAnalysis
         {
             if (node == null) throw new ArgumentNullException(nameof(node));
             var syntaxNode = (LanguageSyntaxNode)node;
-            var boundNode = this.Compilation.GetBinder(syntaxNode).Bind(syntaxNode, cancellationToken) as BoundValue;
+            var boundNode = this.Compilation.GetBinder(syntaxNode).Bind(cancellationToken: cancellationToken) as BoundValue;
             if (boundNode?.Values.FirstOrDefault() is TypeSymbol typeSymbol)
             {
                 return new LanguageTypeInfo(typeSymbol, typeSymbol, Conversion.NoConversion);
@@ -1505,7 +1495,7 @@ namespace MetaDslx.CodeAnalysis
             return LanguageTypeInfo.None;
         }
 
-        private ImmutableArray<IDeclaredSymbol> GetMemberGroupFromNode(SyntaxNode node, CancellationToken cancellationToken)
+        private ImmutableArray<DeclaredSymbol> GetMemberGroupFromNode(SyntaxNode node, CancellationToken cancellationToken)
         {
             switch (node)
             {
@@ -1520,13 +1510,13 @@ namespace MetaDslx.CodeAnalysis
                     return this.GetMemberGroup(attribute, cancellationToken);*/
             }
 
-            return ImmutableArray<IDeclaredSymbol>.Empty;
+            return ImmutableArray<DeclaredSymbol>.Empty;
         }
 
-        protected sealed override ImmutableArray<IDeclaredSymbol> GetMemberGroupCore(SyntaxNode node, CancellationToken cancellationToken)
+        protected sealed override ImmutableArray<ISymbol> GetMemberGroupCore(SyntaxNode node, CancellationToken cancellationToken)
         {
             var methodGroup = this.GetMemberGroupFromNode(node, cancellationToken);
-            return StaticCast<IDeclaredSymbol>.From(methodGroup);
+            return methodGroup.GetPublicSymbols();
         }
 
         protected sealed override SymbolInfo GetSpeculativeSymbolInfoCore(int position, SyntaxNode node, SpeculativeBindingOption bindingOption)
@@ -1577,7 +1567,7 @@ namespace MetaDslx.CodeAnalysis
             return GetPreprocessingSymbolInfo(node);
         }
 
-        protected sealed override IDeclaredSymbol GetDeclaredSymbolCore(SyntaxNode node, CancellationToken cancellationToken)
+        protected sealed override DeclaredSymbol GetDeclaredSymbolCore(SyntaxNode node, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -1644,11 +1634,11 @@ namespace MetaDslx.CodeAnalysis
             return null;
         }
 
-        protected sealed override ImmutableArray<IDeclaredSymbol> GetDeclaredSymbolsCore(SyntaxNode declaration, CancellationToken cancellationToken = default(CancellationToken))
+        protected sealed override ImmutableArray<DeclaredSymbol> GetDeclaredSymbolsCore(SyntaxNode declaration, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            ImmutableArray<IDeclaredSymbol> result = this.GetDeclaredSymbols((LanguageSyntaxNode)declaration, cancellationToken);
+            ImmutableArray<DeclaredSymbol> result = this.GetDeclaredSymbols((LanguageSyntaxNode)declaration, cancellationToken);
 
             if (result.IsDefault)
             {
@@ -1659,7 +1649,7 @@ namespace MetaDslx.CodeAnalysis
                 }
             }
 
-            return ImmutableArray.Create<IDeclaredSymbol>();
+            return ImmutableArray.Create<DeclaredSymbol>();
         }
 
         internal override void ComputeDeclarationsInSpan(TextSpan span, bool getSymbol, ArrayBuilder<DeclarationInfo> builder, CancellationToken cancellationToken)

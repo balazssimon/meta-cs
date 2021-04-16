@@ -377,5 +377,10 @@ namespace MetaDslx.CodeAnalysis.Symbols
         }
 
         #endregion
+
+        protected override ISymbol CreateISymbol()
+        {
+            return new PublicModel.AliasSymbol(this);
+        }
     }
 }
