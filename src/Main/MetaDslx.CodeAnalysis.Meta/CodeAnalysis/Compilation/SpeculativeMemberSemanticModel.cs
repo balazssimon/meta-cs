@@ -25,5 +25,12 @@ namespace MetaDslx.CodeAnalysis
         {
         }
 
+        protected override Binder GetEnclosingBinderCore(int position)
+        {
+            var token = this.Root.IsToken ? this.Root.AsToken() : this.Root.AsNode().FindToken(position);
+            return Compilation.GetBinder(token);
+        }
+
+
     }
 }

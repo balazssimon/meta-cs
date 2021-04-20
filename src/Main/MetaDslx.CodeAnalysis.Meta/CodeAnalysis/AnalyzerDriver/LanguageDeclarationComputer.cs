@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
+using MetaDslx.CodeAnalysis.Symbols;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
 using Microsoft.CodeAnalysis.Text;
@@ -21,15 +22,15 @@ namespace MetaDslx.CodeAnalysis
             ArrayBuilder<DeclarationInfo> builder,
             CancellationToken cancellationToken)
         {
-            ComputeDeclarations(model, model.SyntaxTree.GetRoot(cancellationToken),
+            ComputeDeclarations(model, model.SyntaxTree.GetRoot(cancellationToken), 
                 (node, level) => !node.Span.OverlapsWith(span) || InvalidLevel(level),
-                getSymbol, builder, null, cancellationToken);
+                null, getSymbol, builder, null, cancellationToken);
         }
 
         public static void ComputeDeclarationsInNode(
             SemanticModel model,
             SyntaxNode node,
-            ISymbol associatedSymbol,
+            Symbol associatedSymbol,
             bool getSymbol,
             ArrayBuilder<DeclarationInfo> builder,
             CancellationToken cancellationToken,
@@ -52,7 +53,7 @@ namespace MetaDslx.CodeAnalysis
             SemanticModel model,
             SyntaxNode node,
             Func<SyntaxNode, int?, bool> shouldSkip,
-            ISymbol associatedSymbol,
+            Symbol? associatedSymbol,
             bool getSymbol,
             ArrayBuilder<DeclarationInfo> builder,
             int? levelsToCompute,

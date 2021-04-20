@@ -21,14 +21,14 @@ namespace MetaDslx.CodeAnalysis
             _additionalLocations = ImmutableArray<Location>.Empty;
         }
 
-        public SymbolDiagnosticInfo(ErrorCode errorCode, ImmutableArray<Symbol> symbols, params object[] arguments)
+        public SymbolDiagnosticInfo(ImmutableArray<Symbol> symbols, ErrorCode errorCode, params object[] arguments)
             : base(errorCode, arguments)
         {
             _symbols = symbols;
             _additionalLocations = ImmutableArray<Location>.Empty;
         }
 
-        public SymbolDiagnosticInfo(ErrorCode errorCode, ImmutableArray<Symbol> symbols, ImmutableArray<Location> additionalLocations, params object[] arguments)
+        public SymbolDiagnosticInfo(ImmutableArray<Symbol> symbols, ErrorCode errorCode, ImmutableArray<Location> additionalLocations, params object[] arguments)
             : base(errorCode, arguments)
         {
             _symbols = symbols;

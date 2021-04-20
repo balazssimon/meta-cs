@@ -206,7 +206,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             }
             if ((startMode != null || endMode != null) && Options.Incremental)
             {
-                token = token.WithAdditionalAnnotationsGreen(new SyntaxAnnotation(IncrementalTokenAnnotationKind, new IncrementalTokenAnnotation(startMode, endMode)));
+                token = token.WithAdditionalAnnotationGreen(new SyntaxAnnotation(IncrementalTokenAnnotationKind, new IncrementalTokenAnnotation(startMode, endMode)));
             }
             return token;
         }

@@ -280,5 +280,6 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             var reader = new Reader(this);
             return reader.ReadNodeOrToken(asToken);
         }
+
     }
 }

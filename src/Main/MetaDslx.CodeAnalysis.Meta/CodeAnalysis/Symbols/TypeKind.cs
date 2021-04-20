@@ -62,6 +62,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         public const string Error = nameof(Error);
 
+        public const string NamedType = nameof(NamedType);
+
         protected TypeKind(string name)
             : base(name)
         {

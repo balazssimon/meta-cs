@@ -11,23 +11,23 @@ namespace MetaDslx.CodeAnalysis.Syntax
     [DebuggerDisplay("{GetDebuggerDisplay(), nq}")]
     public abstract class Directive
     {
-        private readonly LanguageSyntaxNode _node;
+        private readonly SyntaxNodeOrToken _syntax;
         private readonly bool _isActive;
 
-        protected Directive(LanguageSyntaxNode node, bool isActive)
+        protected Directive(SyntaxNodeOrToken syntax, bool isActive)
         {
             //Debug.Assert(node is IDirectiveTriviaSyntax);
-            _node = node;
+            _syntax = syntax;
             _isActive = isActive;
         }
 
         public abstract DirectiveKind Kind { get; }
 
-        public LanguageSyntaxNode SyntaxNode => _node;
+        public SyntaxNodeOrToken Syntax => _syntax;
 
-        public Microsoft.CodeAnalysis.SyntaxTree SyntaxTree => _node.SyntaxTree;
+        public Microsoft.CodeAnalysis.SyntaxTree SyntaxTree => _syntax.SyntaxTree;
 
-        public Microsoft.CodeAnalysis.Location Location => _node.Location;
+        public Microsoft.CodeAnalysis.Location Location => _syntax.GetLocation();
 
         public virtual bool IncrementallyEquivalent(Directive other)
         {
@@ -68,7 +68,7 @@ namespace MetaDslx.CodeAnalysis.Syntax
         internal string GetDebuggerDisplay()
         {
             var writer = new System.IO.StringWriter(System.Globalization.CultureInfo.InvariantCulture);
-            _node.WriteTo(writer);
+            _syntax.WriteTo(writer);
             return writer.ToString();
         }
 
@@ -95,16 +95,16 @@ namespace MetaDslx.CodeAnalysis.Syntax
 
     public abstract class BranchingDirective : Directive
     {
-        public BranchingDirective(LanguageSyntaxNode node, bool isActive) 
-            : base(node, isActive)
+        public BranchingDirective(SyntaxNodeOrToken syntax, bool isActive) 
+            : base(syntax, isActive)
         {
         }
     }
 
     public abstract class ConditionalDirective : BranchingDirective
     {
-        public ConditionalDirective(LanguageSyntaxNode node, bool isActive)
-            : base(node, isActive)
+        public ConditionalDirective(SyntaxNodeOrToken syntax, bool isActive)
+            : base(syntax, isActive)
         {
         }
 
@@ -118,8 +118,8 @@ namespace MetaDslx.CodeAnalysis.Syntax
         private readonly bool _branchTaken;
         private readonly bool _conditionValue;
 
-        public IfDirective(LanguageSyntaxNode node, LanguageSyntaxNode condition, bool isActive, bool branchTaken, bool conditionValue)
-            : base(node, isActive)
+        public IfDirective(SyntaxNodeOrToken syntax, LanguageSyntaxNode condition, bool isActive, bool branchTaken, bool conditionValue)
+            : base(syntax, isActive)
         {
             _condition = condition;
             _branchTaken = branchTaken;
@@ -141,8 +141,8 @@ namespace MetaDslx.CodeAnalysis.Syntax
         private readonly bool _branchTaken;
         private readonly bool _conditionValue;
 
-        public ElifDirective(LanguageSyntaxNode node, LanguageSyntaxNode condition, bool isActive, bool branchTaken, bool conditionValue)
-            : base(node, isActive)
+        public ElifDirective(SyntaxNodeOrToken syntax, LanguageSyntaxNode condition, bool isActive, bool branchTaken, bool conditionValue)
+            : base(syntax, isActive)
         {
             _condition = condition;
             _branchTaken = branchTaken;
@@ -162,8 +162,8 @@ namespace MetaDslx.CodeAnalysis.Syntax
     {
         private readonly bool _branchTaken;
 
-        public ElseDirective(LanguageSyntaxNode node, bool isActive, bool branchTaken)
-            : base(node, isActive)
+        public ElseDirective(SyntaxNodeOrToken syntax, bool isActive, bool branchTaken)
+            : base(syntax, isActive)
         {
             _branchTaken = branchTaken;
         }
@@ -175,8 +175,8 @@ namespace MetaDslx.CodeAnalysis.Syntax
 
     public class EndIfDirective : Directive
     {
-        public EndIfDirective(LanguageSyntaxNode node, bool isActive)
-            : base(node, isActive)
+        public EndIfDirective(SyntaxNodeOrToken syntax, bool isActive)
+            : base(syntax, isActive)
         {
         }
 
@@ -187,8 +187,8 @@ namespace MetaDslx.CodeAnalysis.Syntax
 
     public class RegionDirective : Directive
     {
-        public RegionDirective(LanguageSyntaxNode node, bool isActive)
-            : base(node, isActive)
+        public RegionDirective(SyntaxNodeOrToken syntax, bool isActive)
+            : base(syntax, isActive)
         {
         }
 
@@ -199,8 +199,8 @@ namespace MetaDslx.CodeAnalysis.Syntax
 
     public class EndRegionDirective : Directive
     {
-        public EndRegionDirective(LanguageSyntaxNode node, bool isActive)
-            : base(node, isActive)
+        public EndRegionDirective(SyntaxNodeOrToken syntax, bool isActive)
+            : base(syntax, isActive)
         {
         }
 
@@ -212,8 +212,8 @@ namespace MetaDslx.CodeAnalysis.Syntax
     {
         private readonly string _name;
 
-        public DefineDirective(LanguageSyntaxNode node, bool isActive, string name)
-            : base(node, isActive)
+        public DefineDirective(SyntaxNodeOrToken syntax, bool isActive, string name)
+            : base(syntax, isActive)
         {
             _name = name;
         }
@@ -232,8 +232,8 @@ namespace MetaDslx.CodeAnalysis.Syntax
     {
         private readonly string _name;
 
-        public UndefDirective(LanguageSyntaxNode node, bool isActive, string name)
-            : base(node, isActive)
+        public UndefDirective(SyntaxNodeOrToken syntax, bool isActive, string name)
+            : base(syntax, isActive)
         {
             _name = name;
         }
@@ -252,8 +252,8 @@ namespace MetaDslx.CodeAnalysis.Syntax
     {
         private readonly string _file;
 
-        public ReferenceDirective(LanguageSyntaxNode node, bool isActive, string file)
-            : base(node, isActive)
+        public ReferenceDirective(SyntaxNodeOrToken syntax, bool isActive, string file)
+            : base(syntax, isActive)
         {
             _file = file;
         }
@@ -264,7 +264,7 @@ namespace MetaDslx.CodeAnalysis.Syntax
 
         internal Microsoft.CodeAnalysis.ReferenceDirective ToMicrosoft()
         {
-            return new Microsoft.CodeAnalysis.ReferenceDirective(this.File, this.SyntaxNode.Location);
+            return new Microsoft.CodeAnalysis.ReferenceDirective(this.File, this.Location);
         }
     }
 
@@ -272,8 +272,8 @@ namespace MetaDslx.CodeAnalysis.Syntax
     {
         private readonly string _file;
 
-        public LoadDirective(LanguageSyntaxNode node, bool isActive, string file)
-            : base(node, isActive)
+        public LoadDirective(SyntaxNodeOrToken syntax, bool isActive, string file)
+            : base(syntax, isActive)
         {
             _file = file;
         }
@@ -287,8 +287,8 @@ namespace MetaDslx.CodeAnalysis.Syntax
     {
         private SyntaxNodeOrToken _aliasName;
 
-        public ExternAliasDirective(LanguageSyntaxNode node, SyntaxNodeOrToken aliasName)
-            : base(node, true)
+        public ExternAliasDirective(SyntaxNodeOrToken syntax, SyntaxNodeOrToken aliasName)
+            : base(syntax, true)
         {
             _aliasName = aliasName;
         }
@@ -306,8 +306,8 @@ namespace MetaDslx.CodeAnalysis.Syntax
         private bool _isStatic;
         private bool _isGlobal;
 
-        public UsingDirective(LanguageSyntaxNode node, SyntaxNodeOrToken aliasName, SyntaxNodeOrToken targetName, ImmutableArray<SyntaxNodeOrToken> targetQualifiedName, bool isStatic, bool isGlobal)
-            : base(node, true)
+        public UsingDirective(SyntaxNodeOrToken syntax, SyntaxNodeOrToken aliasName, SyntaxNodeOrToken targetName, ImmutableArray<SyntaxNodeOrToken> targetQualifiedName, bool isStatic, bool isGlobal)
+            : base(syntax, true)
         {
             _aliasName = aliasName;
             _targetName = targetName;
@@ -337,16 +337,16 @@ namespace MetaDslx.CodeAnalysis.Syntax
         private readonly int _line;
         private readonly string _file;
 
-        public LineDirective(LanguageSyntaxNode node, bool isActive, int line, string file = null)
-            : base(node, isActive)
+        public LineDirective(SyntaxNodeOrToken syntax, bool isActive, int line, string file = null)
+            : base(syntax, isActive)
         {
             _kind = LineDirectiveKind.Number;
             _line = line;
             _file = file;
         }
 
-        public LineDirective(LanguageSyntaxNode node, bool isActive, LineDirectiveKind kind)
-            : base(node, isActive)
+        public LineDirective(SyntaxNodeOrToken syntax, bool isActive, LineDirectiveKind kind)
+            : base(syntax, isActive)
         {
             _kind = kind;
         }
@@ -370,8 +370,8 @@ namespace MetaDslx.CodeAnalysis.Syntax
         private readonly PragmaWarningKind _kind;
         private readonly ImmutableArray<string> _errorIds;
 
-        public PragmaWarningDirective(LanguageSyntaxNode node, bool isActive, PragmaWarningState state, PragmaWarningKind kind, ImmutableArray<string> errorIds)
-            : base(node, isActive)
+        public PragmaWarningDirective(SyntaxNodeOrToken syntax, bool isActive, PragmaWarningState state, PragmaWarningKind kind, ImmutableArray<string> errorIds)
+            : base(syntax, isActive)
         {
             _state = state;
             _kind = kind;
@@ -388,8 +388,8 @@ namespace MetaDslx.CodeAnalysis.Syntax
     {
         private readonly PragmaWarningState _state;
 
-        public NullableDirective(LanguageSyntaxNode node, bool isActive, PragmaWarningState state)
-            : base(node, isActive)
+        public NullableDirective(SyntaxNodeOrToken syntax, bool isActive, PragmaWarningState state)
+            : base(syntax, isActive)
         {
             _state = state;
         }

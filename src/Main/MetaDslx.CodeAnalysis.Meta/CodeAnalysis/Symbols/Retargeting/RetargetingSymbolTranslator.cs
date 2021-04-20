@@ -118,12 +118,12 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
                 return symbol.Accept(this, RetargetOptions.RetargetPrimitiveTypesByName) as DeclaredSymbol;
             }
 
-            public MarshalPseudoCustomAttributeData Retarget(MarshalPseudoCustomAttributeData marshallingInfo)
+            /*public MarshalPseudoCustomAttributeData Retarget(MarshalPseudoCustomAttributeData marshallingInfo)
             {
                 // Retarget by type code - primitive types are encoded in short form in an attribute signature:
                 return marshallingInfo?.WithTranslatedTypes<TypeSymbol, RetargetingSymbolTranslator>(
                     (type, translator) => translator.Retarget(type, RetargetOptions.RetargetPrimitiveTypesByTypeCode), this);
-            }
+            }*/
 
             public TypeSymbol Retarget(TypeSymbol symbol, RetargetOptions options)
             {

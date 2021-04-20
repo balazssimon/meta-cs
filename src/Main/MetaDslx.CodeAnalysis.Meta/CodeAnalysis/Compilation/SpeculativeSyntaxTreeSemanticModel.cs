@@ -16,17 +16,17 @@ namespace MetaDslx.CodeAnalysis
     internal class SpeculativeSyntaxTreeSemanticModel : SyntaxTreeSemanticModel
     {
         private readonly SyntaxTreeSemanticModel _parentSemanticModel;
-        private readonly LanguageSyntaxNode _root;
+        private readonly SyntaxNodeOrToken _root;
         private readonly Binder _rootBinder;
         private readonly int _position;
         private readonly SpeculativeBindingOption _bindingOption;
 
-        public static SpeculativeSyntaxTreeSemanticModel Create(SyntaxTreeSemanticModel parentSemanticModel, LanguageSyntaxNode root, Binder rootBinder, int position, SpeculativeBindingOption bindingOption)
+        public static SpeculativeSyntaxTreeSemanticModel Create(SyntaxTreeSemanticModel parentSemanticModel, SyntaxNodeOrToken root, Binder rootBinder, int position, SpeculativeBindingOption bindingOption)
         {
             return CreateCore(parentSemanticModel, root, rootBinder, position, bindingOption);
         }
 
-        private static SpeculativeSyntaxTreeSemanticModel CreateCore(SyntaxTreeSemanticModel parentSemanticModel, LanguageSyntaxNode root, Binder rootBinder, int position, SpeculativeBindingOption bindingOption)
+        private static SpeculativeSyntaxTreeSemanticModel CreateCore(SyntaxTreeSemanticModel parentSemanticModel, SyntaxNodeOrToken root, Binder rootBinder, int position, SpeculativeBindingOption bindingOption)
         {
             Debug.Assert(parentSemanticModel is SyntaxTreeSemanticModel);
             Debug.Assert(root != null);
@@ -37,7 +37,7 @@ namespace MetaDslx.CodeAnalysis
             return speculativeModel;
         }
 
-        private SpeculativeSyntaxTreeSemanticModel(SyntaxTreeSemanticModel parentSemanticModel, LanguageSyntaxNode root, Binder rootBinder, int position, SpeculativeBindingOption bindingOption)
+        private SpeculativeSyntaxTreeSemanticModel(SyntaxTreeSemanticModel parentSemanticModel, SyntaxNodeOrToken root, Binder rootBinder, int position, SpeculativeBindingOption bindingOption)
             : base(parentSemanticModel.Compilation, (LanguageSyntaxTree)parentSemanticModel.SyntaxTree, (LanguageSyntaxTree)root.SyntaxTree)
         {
             _parentSemanticModel = parentSemanticModel;
@@ -71,22 +71,12 @@ namespace MetaDslx.CodeAnalysis
             }
         }
 
-        public override LanguageSyntaxNode Root
+        public override SyntaxNodeOrToken Root
         {
             get
             {
                 return _root;
             }
-        }
-
-        internal override BoundNode Bind(Binder binder, LanguageSyntaxNode node, DiagnosticBag diagnostics)
-        {
-            return _parentSemanticModel.Bind(binder, node, diagnostics);
-        }
-
-        internal override Binder GetEnclosingBinderInternal(int position)
-        {
-            return _rootBinder;
         }
 
         protected virtual SpeculativeBindingOption GetSpeculativeBindingOption(LanguageSyntaxNode node)
@@ -99,20 +89,5 @@ namespace MetaDslx.CodeAnalysis
             return _bindingOption;
         }
 
-        internal override SymbolInfo GetSymbolInfoWorker(LanguageSyntaxNode node, SymbolInfoOptions options, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            if ((options & SymbolInfoOptions.PreserveAliases) != 0)
-            {
-                var aliasSymbol = (AliasSymbol)_parentSemanticModel.GetSpeculativeAliasInfo(_position, node, this.GetSpeculativeBindingOption(node));
-                return new SymbolInfo(aliasSymbol, ImmutableArray<ISymbol>.Empty, CandidateReason.None);
-            }
-
-            return _parentSemanticModel.GetSpeculativeSymbolInfo(_position, node, this.GetSpeculativeBindingOption(node));
-        }
-
-        internal override LanguageTypeInfo GetTypeInfoWorker(LanguageSyntaxNode node, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return _parentSemanticModel.GetSpeculativeTypeInfoWorker(_position, node, this.GetSpeculativeBindingOption(node));
-        }
     }
 }

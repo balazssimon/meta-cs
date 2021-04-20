@@ -552,6 +552,7 @@ namespace [Properties.DefaultNamespace]
         private static readonly [lang]CompilationOptions s_defaultOptions = new [lang]CompilationOptions(OutputKind.ConsoleApplication);
         private static readonly [lang]CompilationOptions s_defaultSubmissionOptions = new [lang]CompilationOptions(OutputKind.DynamicallyLinkedLibrary).WithReferencesSupersedeLowerVersions(true);
 
+
         /// <summary>
         /// Creates a new compilation from scratch. Methods such as AddSyntaxTrees or AddReferences
         /// on the returned object will allow to continue building up the Compilation incrementally.
@@ -562,10 +563,10 @@ namespace [Properties.DefaultNamespace]
         /// <param name="options">The compiler options to use.</param>
         /// <returns>A new compilation.</returns>
         public static [lang]Compilation Create(
-            string assemblyName,
-            IEnumerable<SyntaxTree> syntaxTrees = null,
-            IEnumerable<MetadataReference> references = null,
-            [lang]CompilationOptions options = null)
+            string? assemblyName,
+            IEnumerable<SyntaxTree>? syntaxTrees = null,
+            IEnumerable<MetadataReference>? references = null,
+            [lang]CompilationOptions? options = null)
         {
             return Create(
                 assemblyName,
@@ -583,12 +584,12 @@ namespace [Properties.DefaultNamespace]
         /// </summary>
         public static [lang]Compilation CreateScriptCompilation(
             string assemblyName,
-            SyntaxTree syntaxTree = null,
-            IEnumerable<MetadataReference> references = null,
-            [lang]CompilationOptions options = null,
-            [lang]Compilation previousScriptCompilation = null,
-            Type returnType = null,
-            Type globalsType = null)
+            SyntaxTree? syntaxTree = null,
+            IEnumerable<MetadataReference>? references = null,
+            [lang]CompilationOptions? options = null,
+            [lang]Compilation? previousScriptCompilation = null,
+            Type? returnType = null,
+            Type? globalsType = null)
         {
             CheckSubmissionOptions(options);
             ValidateScriptCompilationParameters(previousScriptCompilation, returnType, ref globalsType);
@@ -596,7 +597,7 @@ namespace [Properties.DefaultNamespace]
             return Create(
                 assemblyName,
                 options?.WithReferencesSupersedeLowerVersions(true) ?? s_defaultSubmissionOptions,
-                (syntaxTree != null) ? new["[]"] { syntaxTree } : NoSyntaxTrees,
+                (syntaxTree != null) ? new[] { syntaxTree } : SpecializedCollections.EmptyEnumerable<SyntaxTree>(),
                 references,
                 previousScriptCompilation,
                 returnType,
@@ -605,22 +606,33 @@ namespace [Properties.DefaultNamespace]
         }
 
         private static [lang]Compilation Create(
-            string assemblyName,
+            string? assemblyName,
             [lang]CompilationOptions options,
-            IEnumerable<SyntaxTree> syntaxTrees,
-            IEnumerable<MetadataReference> references,
-            [lang]Compilation previousSubmission,
-            Type returnType,
-            Type hostObjectType,
+            IEnumerable<SyntaxTree>? syntaxTrees,
+            IEnumerable<MetadataReference>? references,
+            [lang]Compilation? previousSubmission,
+            Type? returnType,
+            Type? hostObjectType,
             bool isSubmission)
         {
-            Debug.Assert(options != null);
+            RoslynDebug.Assert(options != null);
             Debug.Assert(!isSubmission || options.ReferencesSupersedeLowerVersions);
+
+            var validatedReferences = ValidateReferences<LanguageCompilationReference>(references);
+
+            // We can't reuse the whole Reference Manager entirely (reuseReferenceManager = false)
+            // because the set of references of this submission differs from the previous one.
+            // The submission inherits references of the previous submission, adds the previous submission reference
+            // and may add more references passed explicitly or via #r.
+            //
+            // TODO: Consider reusing some results of the assembly binding to improve perf
+            // since most of the binding work is similar.
+            // https://github.com/dotnet/roslyn/issues/43397
 
             var compilation = new [lang]Compilation(
                 assemblyName,
                 options,
-                references,
+                validatedReferences,
                 previousSubmission,
                 returnType,
                 hostObjectType,
@@ -633,13 +645,15 @@ namespace [Properties.DefaultNamespace]
                     options.SourceReferenceResolver,
                     options.Language,
                     isSubmission,
-                    state: null));
+                    state: null),
+                semanticModelProvider: null);
 
             if (syntaxTrees != null)
             {
                 compilation = compilation.AddSyntaxTrees(syntaxTrees);
             }
 
+            Debug.Assert(compilation._lazyAssemblySymbol is null);
             return compilation;
         }
 

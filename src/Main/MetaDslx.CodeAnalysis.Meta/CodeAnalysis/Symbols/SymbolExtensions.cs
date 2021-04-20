@@ -195,6 +195,12 @@ namespace MetaDslx.CodeAnalysis.Symbols
         }
 
         [return: NotNullIfNotNull("symbol")]
+        internal static ISymbol? GetPublicSymbol(this DeclaredSymbol? symbol)
+        {
+            return symbol.GetPublicSymbol<ISymbol>();
+        }
+
+        [return: NotNullIfNotNull("symbol")]
         internal static INamespaceOrTypeSymbol? GetPublicSymbol(this NamespaceOrTypeSymbol? symbol)
         {
             return symbol.GetPublicSymbol<INamespaceOrTypeSymbol>();
@@ -291,6 +297,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
         internal static ImmutableArray<ISymbol> GetPublicSymbols(this ImmutableArray<Symbol> symbols)
         {
             return GetPublicSymbols<ISymbol>(symbols);
+        }
+
+        internal static ImmutableArray<ISymbol> GetPublicSymbols(this ImmutableArray<DeclaredSymbol> symbols)
+        {
+            return GetPublicSymbols<ISymbol>(StaticCast<Symbol>.From(symbols));
         }
 
         internal static ImmutableArray<IPropertySymbol> GetPublicSymbols(this ImmutableArray<PropertySymbol> symbols)

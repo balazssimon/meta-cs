@@ -121,7 +121,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
 
         public void RegisterIdentifier(SyntaxNodeOrToken syntax)
         {
-            var node = (LanguageSyntaxNode)syntax.NodeOrParent;
+            var node = syntax.GetNodeOrParent();
             this.RegisterIdentifier(new Identifier(node.Language.SyntaxFacts.ExtractName(syntax), syntax));
         }
 

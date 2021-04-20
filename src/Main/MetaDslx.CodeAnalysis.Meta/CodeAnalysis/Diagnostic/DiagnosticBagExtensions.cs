@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using MetaDslx.CodeAnalysis.Symbols;
 using Microsoft.CodeAnalysis;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -71,9 +72,9 @@ namespace MetaDslx.CodeAnalysis
             return info;
         }
 
-        public static LanguageDiagnosticInfo Add(this DiagnosticBag diagnostics, ImmutableArray<ISymbol> symbols, ErrorCode code, Location location, params object[] args)
+        public static LanguageDiagnosticInfo Add(this DiagnosticBag diagnostics, ImmutableArray<Symbol> symbols, ErrorCode code, Location location, params object[] args)
         {
-            var info = new SymbolDiagnosticInfo(symbols, ImmutableArray<Location>.Empty, code, args);
+            var info = new SymbolDiagnosticInfo(symbols, code, ImmutableArray<Location>.Empty, args);
             var diag = new LanguageDiagnostic(info, location);
             diagnostics.Add(diag);
             return info;

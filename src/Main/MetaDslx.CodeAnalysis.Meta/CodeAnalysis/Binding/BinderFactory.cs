@@ -88,15 +88,8 @@ namespace MetaDslx.CodeAnalysis.Binding
         {
             int position = node.SpanStart;
 
-            // Unless this is interactive retrieving a binder for global statements
-            // at the very top-level (i.e. in a completely empty file) use
-            // node.Parent to maintain existing behavior.
-            /*if ((!InScript || node.GetKind() != Language.SyntaxFacts.CompilationUnitKind) && node.Parent != null)
-            {
-                node = node.Parent;
-            }*/
-
-            return GetBinder(node.NodeOrParent, position, node.IsToken);
+            if (node.IsToken) return GetBinder(node.Parent, position, node.IsToken);
+            else return GetBinder(node.AsNode(), position, node.IsToken);
         }
 
         public Binder GetBinder(SyntaxNode node, int position, bool forChild)

@@ -38,7 +38,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
         {
             if (symbol is INamespaceSymbol namespaceSymbol) return GetNamespaceSymbol(namespaceSymbol);
             if (symbol is INamedTypeSymbol namedTypeSymbol) return GetNamedTypeSymbol(namedTypeSymbol);
-            return new UnsupportedSymbol(symbol, GetSymbol(symbol.ContainingSymbol));
+            throw new NotImplementedException();
+            //return new UnsupportedSymbol(symbol, GetSymbol(symbol.ContainingSymbol));
         }
 
         private Symbol GetContainerSymbol(ISymbol symbol)

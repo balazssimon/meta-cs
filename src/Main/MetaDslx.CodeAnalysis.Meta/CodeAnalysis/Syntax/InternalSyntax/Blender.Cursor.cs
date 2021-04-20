@@ -142,7 +142,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 var cursor = this;
                 if (!cursor.IsFinished)
                 {
-                    var syntaxFacts = ((LanguageSyntaxNode)cursor.CurrentNodeOrToken.NodeOrParent).Language.SyntaxFacts;
+                    var syntaxFacts = cursor.CurrentNodeOrToken.GetNodeOrParent().Language.SyntaxFacts;
                     for (var node = cursor.CurrentNodeOrToken; node.GetKind() != SyntaxKind.None && !syntaxFacts.IsToken(node.GetKind()); node = cursor.CurrentNodeOrToken)
                     {
                         cursor = cursor.MoveToFirstChild();

@@ -50,6 +50,8 @@ namespace MetaDslx.CodeAnalysis
     /// </summary>
     public abstract partial class LanguageCompilation : CompilationAdapter
     {
+        internal static ParallelOptions DefaultParallelOptions = new ParallelOptions();
+
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         //
         // Changes to the public interface of this class should remain synchronized with the VB
@@ -1805,9 +1807,9 @@ namespace MetaDslx.CodeAnalysis
                     {
                         viableEntryPoints.Sort(LexicalOrderSymbolComparer.Instance);
                         var info = new SymbolDiagnosticInfo(
+                             symbols: viableEntryPoints.OfType<Symbol>().AsImmutable(),
                              InternalErrorCode.ERR_MultipleEntryPoints,
                              arguments: Array.Empty<object>(),
-                             symbols: viableEntryPoints.OfType<Symbol>().AsImmutable(),
                              additionalLocations: viableEntryPoints.Select(m => m.Locations.First()).OfType<Location>().AsImmutable());
 
                         diagnostics.Add(new LanguageDiagnostic(info, viableEntryPoints.First().Locations.First()));
@@ -2338,19 +2340,19 @@ namespace MetaDslx.CodeAnalysis
 
         internal void RecordImport(UsingDirective directive)
         {
-            RecordImportInternal(directive.SyntaxNode);
+            RecordImportInternal(directive.Syntax);
         }
 
         internal void RecordImport(ExternAliasDirective directive)
         {
-            RecordImportInternal(directive.SyntaxNode);
+            RecordImportInternal(directive.Syntax);
         }
 
-        private void RecordImportInternal(LanguageSyntaxNode syntax)
+        private void RecordImportInternal(SyntaxNodeOrToken syntax)
         {
             // Note: the suppression will be unnecessary once LazyInitializer is properly annotated
             LazyInitializer.EnsureInitialized(ref _lazyImportInfos)!.
-                Add(new ImportInfo(syntax.SyntaxTree, syntax.Kind, syntax.Span));
+                Add(new ImportInfo(syntax.SyntaxTree, syntax.GetKind(), syntax.Span));
         }
 
         private struct ImportInfo : IEquatable<ImportInfo>

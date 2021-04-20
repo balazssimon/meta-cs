@@ -119,7 +119,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
             if (csharpSymbol is CSharpSymbols.NamespaceSymbol ns) return GetNamespaceSymbol(ns);
             if (csharpSymbol is CSharpSymbols.NamedTypeSymbol namedType) return GetNamedTypeSymbol(namedType);
             if (csharpSymbol.CanBeReferencedByName) return GetMemberSymbol(csharpSymbol);
-            return new UnsupportedSymbol(csharpSymbol, GetSymbol(csharpSymbol.ContainingSymbol));
+            return new UnsupportedCSharpSymbol(csharpSymbol, GetSymbol(csharpSymbol.ContainingSymbol));
         }
 
         public ImmutableArray<DeclaredSymbol> GetMemberSymbols(ImmutableArray<CSharpSymbol> csharpSymbols)

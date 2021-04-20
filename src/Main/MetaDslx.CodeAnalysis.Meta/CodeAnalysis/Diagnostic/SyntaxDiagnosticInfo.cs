@@ -8,10 +8,11 @@ namespace MetaDslx.CodeAnalysis
 {
     public class SyntaxDiagnosticInfo : LanguageDiagnosticInfo
     {
+        /*TODO:MetaDslx
         static SyntaxDiagnosticInfo()
         {
             ObjectBinder.RegisterTypeReader(typeof(SyntaxDiagnosticInfo), r => new SyntaxDiagnosticInfo(r));
-        }
+        }*/
 
         internal readonly int Offset;
         internal readonly int Width;
@@ -53,12 +54,13 @@ namespace MetaDslx.CodeAnalysis
             writer.WriteInt32(this.Width);
         }
 
+        /* TODO:MetaDslx
         protected SyntaxDiagnosticInfo(ObjectReader reader)
             : base(reader)
         {
             this.Offset = reader.ReadInt32();
             this.Width = reader.ReadInt32();
-        }
+        }*/
 
         #endregion
     }

@@ -875,7 +875,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         ISymbol ISymbolInternal.GetISymbol()
         {
-            throw new NotImplementedException();
+            return this.ISymbol;
         }
 
         IReference ISymbolInternal.GetCciAdapter()

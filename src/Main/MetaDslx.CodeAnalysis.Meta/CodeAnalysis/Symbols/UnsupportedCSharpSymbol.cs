@@ -1,23 +1,24 @@
 // Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Symbols;
 using System;
 using System.Collections.Immutable;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-    public sealed class UnsupportedSymbol : ErrorTypeSymbol
+    public sealed class UnsupportedCSharpSymbol : ErrorTypeSymbol
     {
         private Symbol _containingSymbol;
-        private ISymbol _symbol;
+        private Microsoft.CodeAnalysis.CSharp.Symbol _symbol;
 
-        internal UnsupportedSymbol(ISymbol symbol, Symbol containingSymbol)
+        internal UnsupportedCSharpSymbol(Microsoft.CodeAnalysis.CSharp.Symbol symbol, Symbol containingSymbol)
         {
             _containingSymbol = containingSymbol;
             _symbol = symbol;
         }
 
-        public ISymbol Symbol => _symbol;
+        public ISymbol Symbol => _symbol.GetPublicSymbol();
 
         public override ImmutableArray<Symbol> ChildSymbols => ImmutableArray<Symbol>.Empty;
 

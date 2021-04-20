@@ -8,7 +8,9 @@ using System.Reflection.PortableExecutable;
 using System.Runtime.InteropServices;
 using MetaDslx.CodeAnalysis.Symbols.Source;
 using MetaDslx.Modeling;
+using Microsoft.Cci;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Symbols;
 using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis.Symbols
@@ -17,7 +19,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
     /// Represents a module within an assembly. Every assembly contains one or more modules.
     /// </summary>
     [Symbol]
-    public abstract class ModuleSymbol : Symbol
+    public abstract class ModuleSymbol : Symbol, IModuleSymbolInternal
     {
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         // Changes to the public interface of this class should remain synchronized with the VB version.
@@ -196,6 +198,34 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         internal abstract CharSet? DefaultMarshallingCharSet { get; }
 
+        Microsoft.CodeAnalysis.SymbolKind ISymbolInternal.Kind => Microsoft.CodeAnalysis.SymbolKind.NetModule;
+
+        Compilation ISymbolInternal.DeclaringCompilation => this.DeclaringCompilation;
+
+        ISymbolInternal ISymbolInternal.ContainingSymbol => this.ContainingDeclaration;
+
+        IAssemblySymbolInternal ISymbolInternal.ContainingAssembly => this.ContainingAssembly;
+
+        IModuleSymbolInternal ISymbolInternal.ContainingModule => null;
+
+        INamedTypeSymbolInternal ISymbolInternal.ContainingType => null;
+
+        INamespaceSymbolInternal ISymbolInternal.ContainingNamespace => null;
+
+        bool ISymbolInternal.IsDefinition => false;
+
+        bool ISymbolInternal.IsImplicitlyDeclared => false;
+
+        Accessibility ISymbolInternal.DeclaredAccessibility => Accessibility.NotApplicable;
+
+        bool ISymbolInternal.IsStatic => false;
+
+        bool ISymbolInternal.IsVirtual => false;
+
+        bool ISymbolInternal.IsOverride => false;
+
+        bool ISymbolInternal.IsAbstract => false;
+
         internal virtual ImmutableArray<byte> GetHash(AssemblyHashAlgorithm algorithmId)
         {
             throw ExceptionUtilities.Unreachable;
@@ -261,6 +291,21 @@ namespace MetaDslx.CodeAnalysis.Symbols
         protected override ISymbol CreateISymbol()
         {
             return new PublicModel.ModuleSymbol(this);
+        }
+
+        bool ISymbolInternal.Equals(ISymbolInternal? other, TypeCompareKind compareKind)
+        {
+            throw new NotImplementedException();
+        }
+
+        ISymbol ISymbolInternal.GetISymbol()
+        {
+            return this.ISymbol;
+        }
+
+        IReference ISymbolInternal.GetCciAdapter()
+        {
+            throw new NotImplementedException();
         }
     }
 }

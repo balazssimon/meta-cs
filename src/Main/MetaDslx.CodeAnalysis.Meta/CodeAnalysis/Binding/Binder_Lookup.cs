@@ -123,7 +123,8 @@ namespace MetaDslx.CodeAnalysis.Binding
             TypeSymbol type = (TypeSymbol)constraints.QualifierOpt;
             switch (type.TypeKind.Switch())
             {
-                case Symbols.TypeKind.NamedType:
+                case Symbols.TypeKind.Class:
+                case Symbols.TypeKind.Struct:
                 case Symbols.TypeKind.Enum:
                 case Symbols.TypeKind.Dynamic:
                 case Symbols.TypeKind.Constructed:
@@ -233,8 +234,8 @@ namespace MetaDslx.CodeAnalysis.Binding
         // Lookup member in a class, struct, enum, delegate.
         private void AddCandidateSymbolsInBaseTypes(LookupCandidates result, LookupConstraints constraints)
         {
-            TypeSymbol type = constraints.QualifierOpt as TypeSymbol;
-            Debug.Assert((object)type != null);
+            TypeSymbol? type = constraints.QualifierOpt as TypeSymbol;
+            Debug.Assert(type is not null);
             //Debug.Assert(type.TypeKind != LanguageTypeKind.TypeParameter);
 
             var tmp = LookupCandidates.GetInstance();
@@ -283,7 +284,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         protected virtual void AddLookupCandidateSymbolsInScope(LookupCandidates result, LookupConstraints constraints)
         {
             var qualifier = constraints.QualifierOpt;
-            if (qualifier != null)
+            if (qualifier is not null)
             {
                 qualifier.ForceComplete(CompletionGraph.Members, null, default);
                 if (constraints.Name != null) result.AddRange(qualifier.GetMembers(constraints.Name));
@@ -325,6 +326,42 @@ namespace MetaDslx.CodeAnalysis.Binding
         protected virtual void CheckFinalResultViability(LookupResult result, LookupConstraints constraints)
         {
             
+        }
+
+        /// <summary>
+        /// Check whether "symbol" is accessible from this binder.
+        /// Also checks protected access via "accessThroughType".
+        /// </summary>
+        public bool IsAccessible(Symbol symbol, ref HashSet<DiagnosticInfo> useSiteDiagnostics, TypeSymbol? accessThroughType = null, ConsList<TypeSymbol>? basesBeingResolved = null)
+        {
+            bool failedThroughTypeCheck;
+            return IsAccessible(symbol, accessThroughType, out failedThroughTypeCheck, ref useSiteDiagnostics, basesBeingResolved);
+        }
+
+        /// <summary>
+        /// Check whether "symbol" is accessible from this binder.
+        /// Also checks protected access via "accessThroughType", and sets "failedThroughTypeCheck" if fails
+        /// the protected access check.
+        /// </summary>
+        public bool IsAccessible(Symbol symbol, TypeSymbol? accessThroughType, out bool failedThroughTypeCheck, ref HashSet<DiagnosticInfo> useSiteDiagnostics, ConsList<TypeSymbol>? basesBeingResolved = null)
+        {
+            if (this.Flags.Includes(BinderFlags.IgnoreAccessibility))
+            {
+                failedThroughTypeCheck = false;
+                return true;
+            }
+
+            return IsAccessibleHelper(symbol, accessThroughType, out failedThroughTypeCheck, ref useSiteDiagnostics, basesBeingResolved);
+        }
+
+        /// <remarks>
+        /// Should only be called by <see cref="IsAccessible(Symbol, TypeSymbol, out bool, ref HashSet{DiagnosticInfo}, ConsList{TypeSymbol})"/>,
+        /// which will already have checked for <see cref="BinderFlags.IgnoreAccessibility"/>.
+        /// </remarks>
+        protected virtual bool IsAccessibleHelper(Symbol symbol, TypeSymbol? accessThroughType, out bool failedThroughTypeCheck, ref HashSet<DiagnosticInfo> useSiteDiagnostics, ConsList<TypeSymbol>? basesBeingResolved)
+        {
+            // By default, just delegate to containing binder.
+            return Next.IsAccessibleHelper(symbol, accessThroughType, out failedThroughTypeCheck, ref useSiteDiagnostics, basesBeingResolved);
         }
     }
 }

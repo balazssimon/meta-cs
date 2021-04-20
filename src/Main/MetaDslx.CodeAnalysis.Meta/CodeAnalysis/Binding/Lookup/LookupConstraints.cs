@@ -20,28 +20,28 @@ namespace MetaDslx.CodeAnalysis.Binding
     public class LookupConstraints
     {
         public readonly Binder OriginalBinder;
-        public readonly DeclaredSymbol QualifierOpt;
-        public readonly string Name;
-        public readonly string MetadataName;
-        public readonly string AutomaticNamePrefix;
-        public readonly string AutomaticNameSuffix;
+        public readonly DeclaredSymbol? QualifierOpt;
+        public readonly string? Name;
+        public readonly string? MetadataName;
+        public readonly string? AutomaticNamePrefix;
+        public readonly string? AutomaticNameSuffix;
         public readonly ImmutableArray<ILookupValidator> Validators;
-        public readonly ConsList<TypeSymbol> BasesBeingResolved;
-        public readonly TypeSymbol AccessThroughType;
+        public readonly ConsList<TypeSymbol>? BasesBeingResolved;
+        public readonly TypeSymbol? AccessThroughType;
         public readonly bool Diagnose;
         public readonly bool InUsing;
         public readonly bool IsLookup;
 
         public LookupConstraints(
             Binder originalBinder,
-            string name = null,
-            string metadataName = null,
-            DeclaredSymbol qualifierOpt = null,
-            string automaticNamePrefix = null,
-            string automaticNameSuffix = null,
+            string? name = null,
+            string? metadataName = null,
+            DeclaredSymbol? qualifierOpt = null,
+            string? automaticNamePrefix = null,
+            string? automaticNameSuffix = null,
             ImmutableArray<ILookupValidator> validators = default,
-            ConsList<TypeSymbol> basesBeingResolved = null,
-            TypeSymbol accessThroughType = null,
+            ConsList<TypeSymbol>? basesBeingResolved = null,
+            TypeSymbol? accessThroughType = null,
             bool diagnose = true,
             bool inUsing = false,
             bool isLookup = false)
@@ -323,7 +323,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                     symbols.Sort(ConsistentSymbolOrder.Instance);
 
                     var originalSymbols = symbols.ToImmutable();
-                    var errorSymbols = StaticCast<ISymbol>.From(originalSymbols);
+                    var errorSymbols = StaticCast<Symbol>.From(originalSymbols);
 
                     for (int i = 0; i < symbols.Count; i++)
                     {
@@ -610,7 +610,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
                     // Cannot reference System.Void directly.
                     var singleType = singleResult as TypeSymbol;
-                    if ((object)singleType != null && singleType.PrimitiveTypeCode == Cci.PrimitiveTypeCode.Void && Name == "Void")
+                    if ((object)singleType != null && singleType.PrimitiveTypeCode == Microsoft.Cci.PrimitiveTypeCode.Void && Name == "Void")
                     {
                         wasError = true;
                         var errorInfo = new LanguageDiagnosticInfo(InternalErrorCode.ERR_SystemVoid);

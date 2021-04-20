@@ -13,21 +13,18 @@ namespace MetaDslx.Modeling
 {
     public sealed class ModelErrorCode : ErrorCode
     {
-        private static ImmutableDictionary<int, ModelErrorCode> s_errorCodeToDescriptorMap = ImmutableDictionary<int, ModelErrorCode>.Empty;
+        private static ErrorCodeMessageProvider s_messageProvider = new ErrorCodeMessageProvider("MM", typeof(ModelErrorCode));
 
         public const string ModelCategory = "MetaDslx.Core";
-        public const string Prefix = "MM";
 
         private ModelErrorCode(int code, string title, string messageFormat, DiagnosticSeverity defaultSeverity, bool isEnabledByDefault = true, string description = null, string helpLinkUri = null, params string[] customTags) 
-            : base(code, Prefix, title, messageFormat, ModelCategory, defaultSeverity, isEnabledByDefault, description, helpLinkUri, customTags)
+            : base(s_messageProvider, code, title, messageFormat, ModelCategory, defaultSeverity, isEnabledByDefault, description, helpLinkUri, customTags)
         {
-            ImmutableInterlocked.GetOrAdd(ref s_errorCodeToDescriptorMap, code, c => this);
         }
 
         private ModelErrorCode(int code, LocalizableString title, LocalizableString messageFormat, DiagnosticSeverity defaultSeverity, bool isEnabledByDefault, LocalizableString description = null, string helpLinkUri = null, params string[] customTags)
-            : base(code, Prefix, title, messageFormat, ModelCategory, defaultSeverity, isEnabledByDefault, description, helpLinkUri, customTags)
+            : base(s_messageProvider, code, title, messageFormat, ModelCategory, defaultSeverity, isEnabledByDefault, description, helpLinkUri, customTags)
         {
-            ImmutableInterlocked.GetOrAdd(ref s_errorCodeToDescriptorMap, code, c => this);
         }
 
         static ModelErrorCode()
@@ -38,8 +35,7 @@ namespace MetaDslx.Modeling
         private static ModelErrorCode ResolveErrorCode(ObjectReader reader)
         {
             int errorCode = reader.ReadInt32();
-            s_errorCodeToDescriptorMap.TryGetValue(errorCode, out ModelErrorCode result);
-            return result ?? ERR_InvalidErrorCode;
+            return (ModelErrorCode)s_messageProvider.GetErrorCode(errorCode);
         }
 
         public static readonly ModelErrorCode ERR_InvalidErrorCode = new ModelErrorCode(0, "Invalid error code", "Invalid error code. This should not happen. There is an error in the compiler.", DiagnosticSeverity.Error, false);

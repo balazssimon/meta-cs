@@ -35,7 +35,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             get
             {
                 if (this.IsScript) return ImmutableArray<NamedTypeSymbol>.Empty;
-                else return ImmutableArray.Create(this.DeclaringCompilation.GetSpecialType(MetaDslx.CodeAnalysis.SpecialType.System_Object));
+                else return ImmutableArray.Create(this.DeclaringCompilation.GetSpecialType(Microsoft.CodeAnalysis.SpecialType.System_Object));
             }
         }
             

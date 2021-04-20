@@ -72,7 +72,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         public virtual bool RequiresCompletion => false;
 
-        public virtual void ForceComplete(CompletionPart completionPart, SourceLocation locationOpt, CancellationToken cancellationToken)
+        public virtual void ForceComplete(CompletionPart completionPart, SourceLocation? locationOpt, CancellationToken cancellationToken)
         {
             // must be overridden by source symbols, no-op for other symbols
             Debug.Assert(!this.RequiresCompletion);
@@ -727,7 +727,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         }
 
         // By default we don't consider the compareKind, and do reference equality. This can be overridden.
-        public virtual bool Equals(Symbol other, TypeCompareKind compareKind)
+        public virtual bool Equals(Symbol? other, TypeCompareKind compareKind)
         {
             return (object)this == other;
         }

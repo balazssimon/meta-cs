@@ -129,6 +129,8 @@ namespace Microsoft.CodeAnalysis
 
         internal int Position => _position;
 
+        public bool IsNull => _nodeOrParent is null && _token is null;
+
         internal GreenNode RequiredUnderlyingNode
         {
             get

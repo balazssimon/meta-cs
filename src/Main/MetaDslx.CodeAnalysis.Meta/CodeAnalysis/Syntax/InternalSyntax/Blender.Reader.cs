@@ -198,7 +198,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 // See if we're actually able to reuse this node or token.  If not, our caller will
                 // move the cursor to the next appropriate position and will try again.
                 var currentNodeOrToken = _oldTreeCursor.CurrentNodeOrToken;
-                var nodeAnnot = SyntaxParser.GetNodeAnnotation(currentNodeOrToken.NodeOrParent.Green);
+                var nodeAnnot = SyntaxParser.GetNodeAnnotation(currentNodeOrToken.UnderlyingNode);
                 if (!CanReuse(currentNodeOrToken, nodeAnnot))
                 {
                     blendedNode = default;
@@ -214,7 +214,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 _oldDirectives = currentNodeOrToken.ApplyDirectives(_oldDirectives);
 
                 GreenNode lastToken;
-                if (currentNodeOrToken.IsNode) lastToken = currentNodeOrToken.NodeOrParent.Green.GetLastTerminal();
+                if (currentNodeOrToken.IsNode) lastToken = currentNodeOrToken.UnderlyingNode.GetLastTerminal();
                 else lastToken = currentNodeOrToken.UnderlyingNode;
                 var tokenAnnot = SyntaxLexer.GetTokenAnnotation(lastToken);
                 if (tokenAnnot != null) _mode = tokenAnnot.EndMode;
@@ -250,7 +250,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 }
 
                 GreenNode firstToken;
-                if (nodeOrToken.IsNode) firstToken = nodeOrToken.NodeOrParent.Green.GetFirstTerminal();
+                if (nodeOrToken.IsNode) firstToken = nodeOrToken.UnderlyingNode.GetFirstTerminal();
                 else firstToken = nodeOrToken.UnderlyingNode;
                 var tokenAnnot = SyntaxLexer.GetTokenAnnotation(firstToken);
                 if (tokenAnnot != null)
@@ -310,7 +310,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 }
 
                 // don't reuse nodes or tokens with skipped text or diagnostics attached to them
-                if (nodeOrToken.NodeOrParent.ContainsSkippedText || nodeOrToken.NodeOrParent.ContainsDiagnostics)
+                var nodeOrParent = nodeOrToken.GetNodeOrParent();
+                if (nodeOrParent.ContainsSkippedText || nodeOrToken.ContainsDiagnostics)
                 {
                     return false;
                 }

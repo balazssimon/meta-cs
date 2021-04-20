@@ -142,7 +142,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 (int minLookahead, int maxLookahead) = Blender.GetLexerLookahead(_oldRoot);
                 minLookahead = Math.Min(Lexer.MinLookahead, minLookahead);
                 maxLookahead = Math.Max(Lexer.MaxLookahead, maxLookahead);
-                root = root.WithAdditionalAnnotationsGreen(new SyntaxAnnotation(IncrementalTreeAnnotationKind, new IncrementalTreeAnnotation(null, null, _mode, _state, minLookahead, maxLookahead)));
+                root = root.WithAdditionalAnnotationGreen(new SyntaxAnnotation(IncrementalTreeAnnotationKind, new IncrementalTreeAnnotation(null, null, _mode, _state, minLookahead, maxLookahead)));
                 if (_lastErrorIndex < _syntaxErrors.Count)
                 {
                     root = WithCurrentSyntaxErrors(root, 0);
@@ -230,7 +230,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 #else
                     nodeAnnot = new IncrementalNodeAnnotation(incrementalState.state, _state, minTokenLookahead, maxTokenLookahead, lookaheadBefore, lookaheadAfter);
 #endif
-                    green = green.WithAdditionalAnnotationsGreen(new SyntaxAnnotation(IncrementalNodeAnnotationKind, nodeAnnot));
+                    green = green.WithAdditionalAnnotationGreen(new SyntaxAnnotation(IncrementalNodeAnnotationKind, nodeAnnot));
                 }
                 if (_incrementalStateStack.Count > 0)
                 {

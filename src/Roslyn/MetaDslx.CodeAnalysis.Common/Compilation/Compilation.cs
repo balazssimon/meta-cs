@@ -3088,9 +3088,9 @@ namespace Microsoft.CodeAnalysis
             }
         }
 
-        internal void MarkImportDirectiveAsUsed(SyntaxNode node)
+        internal void MarkImportDirectiveAsUsed(SyntaxNodeOrToken syntax)
         {
-            MarkImportDirectiveAsUsed(node.SyntaxTree, node.Span.Start);
+            MarkImportDirectiveAsUsed(syntax.SyntaxTree, syntax.Span.Start);
         }
 
         internal void MarkImportDirectiveAsUsed(SyntaxTree? syntaxTree, int position)

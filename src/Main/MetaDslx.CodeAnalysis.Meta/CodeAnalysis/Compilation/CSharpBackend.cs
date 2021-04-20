@@ -1,5 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Symbols;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,7 +25,7 @@ namespace MetaDslx.CodeAnalysis
 
         public CSharpCompilation CSharpCompilation => _csharpCompilation;
 
-        public override IAssemblySymbol AssemblySymbol => _csharpCompilation.Assembly;
+        public override IAssemblySymbol AssemblySymbol => _csharpCompilation.Assembly.GetPublicSymbol();
 
         public override CommonReferenceManager GetBoundReferenceManager()
         {

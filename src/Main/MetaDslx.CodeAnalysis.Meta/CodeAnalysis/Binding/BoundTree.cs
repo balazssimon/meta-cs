@@ -76,7 +76,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
             if ((fullStart <= position && position < fullEnd) || atEOF) // allow for EOF
             {
-                token = ((LanguageSyntaxNode)(atEOF ?this.SyntaxTree.GetRoot() : RootSyntax.NodeOrParent)).FindToken(position);
+                token = (atEOF ? this.SyntaxTree.GetRootNode() : RootSyntax.GetNodeOrParent()).FindToken(position);
 
                 if (position < token.SpanStart) // NB: Span, not FullSpan
                 {
@@ -114,7 +114,8 @@ namespace MetaDslx.CodeAnalysis.Binding
             var position = node.SpanStart;
 
             // skip zero-width tokens to get the position, but never get past the end of the node
-            int betterPosition = node.NodeOrParent.GetFirstToken(includeZeroWidth: false).SpanStart;
+            var nodeOrParent = node.GetNodeOrParent();
+            int betterPosition = nodeOrParent.GetFirstToken(includeZeroWidth: false).SpanStart;
             if (betterPosition < node.Span.End)
             {
                 position = betterPosition;
@@ -135,7 +136,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                 // check and adjust the preceding position.
                 return CheckAndAdjustPosition(position - 1);
             }
-            else if (node.IsMissing || node.NodeOrParent.HasErrors || node.Width == 0 || node.NodeOrParent.IsPartOfStructuredTrivia())
+            else if (node.IsMissing || nodeOrParent.HasErrors || node.Width == 0 || nodeOrParent.IsPartOfStructuredTrivia())
             {
                 return CheckAndAdjustPosition(position);
             }
@@ -183,7 +184,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                 return rootBinder.GetBinder(node) ?? rootBinder;
             }
 
-            Debug.Assert(root.NodeOrParent.Contains(node));
+            Debug.Assert(root.GetNodeOrParent().Contains(node));
 
             Binder binder = null;
             for (var current = node; binder == null; current = current.ParentOrStructuredTriviaParent)
@@ -238,7 +239,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         internal protected SyntaxNodeOrToken GetBindableParentNode(SyntaxNodeOrToken node, bool allowNullParent = false)
         {
             // The node is an expression, but its parent is null
-            LanguageSyntaxNode parent = (LanguageSyntaxNode)node.NodeOrParent;
+            LanguageSyntaxNode parent = node.GetNodeOrParent();
             if (parent == null)
             {
                 // For speculative model, expression might be the root of the syntax tree, in which case it can have a null parent.
@@ -273,7 +274,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             if (!this.RootSyntax.FullSpan.Contains(position))
                 return _rootBinder;
 
-            SyntaxToken token = this.RootSyntax.NodeOrParent.FindToken(position);
+            SyntaxToken token = this.RootSyntax.GetNodeOrParent().FindToken(position);
             LanguageSyntaxNode node = (LanguageSyntaxNode)token.Parent;
 
             return GetEnclosingBinderInternal(node, position);

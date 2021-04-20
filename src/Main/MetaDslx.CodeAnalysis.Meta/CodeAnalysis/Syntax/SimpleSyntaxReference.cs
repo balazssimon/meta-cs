@@ -36,7 +36,7 @@ namespace MetaDslx.CodeAnalysis
 
         public override SyntaxNode GetSyntax(CancellationToken cancellationToken)
         {
-            return _nodeOrToken.NodeOrParent;
+            return _nodeOrToken.GetNodeOrParent();
         }
     }
 }

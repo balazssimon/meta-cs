@@ -91,6 +91,13 @@ namespace MetaDslx.CodeAnalysis
             return ((Syntax.InternalSyntax.InternalSyntaxNode)node).ContextualKind;
         }
 
+        public static LanguageSyntaxNode GetNodeOrParent(this SyntaxNodeOrToken syntax)
+        {
+            if (syntax.IsToken) return (LanguageSyntaxNode)syntax.Parent;
+            else return (LanguageSyntaxNode)syntax.AsNode();
+        }
+
+
         public static bool IsExpression(this LanguageSyntaxNode node)
         {
             return node.Language.SyntaxFacts.IsExpression(node);
@@ -166,7 +173,7 @@ namespace MetaDslx.CodeAnalysis
 
         public static SyntaxTriviaList ToSyntaxTriviaList(this IEnumerable<SyntaxTrivia> sequence)
         {
-            SyntaxTrivia? first = sequence.FirstOrNullable();
+            SyntaxTrivia? first = sequence.FirstOrNull();
             if (first == null) return default(SyntaxTriviaList);
             else return ((Syntax.InternalSyntax.InternalSyntaxNode)first.Value.UnderlyingNode).Language.SyntaxFactory.TriviaList(sequence);
         }
@@ -452,6 +459,11 @@ namespace MetaDslx.CodeAnalysis
         public static SyntaxReference GetReference(this SyntaxNodeOrToken syntax)
         {
             return new SimpleSyntaxReference(syntax);
+        }
+
+        public static TNode WithAdditionalAnnotationGreen<TNode>(this TNode node, SyntaxAnnotation annotation) where TNode : GreenNode
+        {
+            return node.WithAdditionalAnnotationsGreen<TNode>(ImmutableArray.Create(annotation));
         }
     }
 }

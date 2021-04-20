@@ -15,7 +15,7 @@ using Microsoft.Cci;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-    public abstract partial class DeclaredSymbol : Symbol
+    public abstract partial class DeclaredSymbol : Symbol, ISymbolInternal
     {
         /// <summary>
         /// The original definition of this symbol. If this symbol is constructed from another
@@ -368,6 +368,20 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         public virtual DeclaredSymbol ConstructedFrom => this;
 
+        Microsoft.CodeAnalysis.SymbolKind ISymbolInternal.Kind => this.Kind.ToCSharp();
+
+        Compilation ISymbolInternal.DeclaringCompilation => this.DeclaringCompilation;
+
+        ISymbolInternal ISymbolInternal.ContainingSymbol => this.ContainingDeclaration;
+
+        IAssemblySymbolInternal ISymbolInternal.ContainingAssembly => throw new NotImplementedException();
+
+        IModuleSymbolInternal ISymbolInternal.ContainingModule => throw new NotImplementedException();
+
+        INamedTypeSymbolInternal ISymbolInternal.ContainingType => throw new NotImplementedException();
+
+        INamespaceSymbolInternal ISymbolInternal.ContainingNamespace => throw new NotImplementedException();
+
         /// <summary>
         /// Returns the original virtual or abstract method which a given method symbol overrides,
         /// ignoring any other overriding methods in base classes.
@@ -425,5 +439,19 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return this.DeclaringCompilation.AccessCheck.IsSymbolAccessible(this, within, ref useSiteDiagnostics);
         }
 
+        bool ISymbolInternal.Equals(ISymbolInternal? other, TypeCompareKind compareKind)
+        {
+            return this.Equals(other as DeclaredSymbol, compareKind);
+        }
+
+        ISymbol ISymbolInternal.GetISymbol()
+        {
+            return this.ISymbol;
+        }
+
+        IReference ISymbolInternal.GetCciAdapter()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

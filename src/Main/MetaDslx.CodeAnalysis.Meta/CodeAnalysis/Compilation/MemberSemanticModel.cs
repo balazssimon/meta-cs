@@ -74,11 +74,11 @@ namespace MetaDslx.CodeAnalysis
             }
         }
 
-        public override LanguageSyntaxNode Root
+        public override SyntaxNodeOrToken Root
         {
             get
             {
-                return (LanguageSyntaxNode)_boundTree.RootSyntax.NodeOrParent;
+                return (LanguageSyntaxNode)_boundTree.RootSyntax;
             }
         }
 
@@ -149,70 +149,6 @@ namespace MetaDslx.CodeAnalysis
             return false;
         }
 
-        private Binder GetEnclosingBinderInternalWithinRoot(SyntaxNode node, int position)
-        {
-            AssertPositionAdjusted(position);
-            return BoundTree.GetEnclosingBinderInternalWithinRoot(node, position, RootBinder, _boundTree.RootSyntax).WithAdditionalFlags(GetSemanticModelBinderFlags());
-        }
-
-        public override Conversion ClassifyConversion(
-            LanguageSyntaxNode expression,
-            ITypeSymbol destination,
-            bool isExplicitInSource = false)
-        {
-            if ((object)destination == null)
-            {
-                throw new ArgumentNullException(nameof(destination));
-            }
-
-            var csdestination = destination.EnsureLanguageSymbolOrNull<ITypeSymbol, TypeSymbol>(nameof(destination));
-
-            if (isExplicitInSource)
-            {
-                return ClassifyConversionForCast(expression, csdestination);
-            }
-
-            // Note that it is possible for an expression to be convertible to a type
-            // via both an implicit user-defined conversion and an explicit built-in conversion.
-            // In that case, this method chooses the implicit conversion.
-
-            CheckSyntaxNode(expression);
-
-            var binder = this.GetEnclosingBinderInternal(expression, GetAdjustedNodePosition(expression));
-            LanguageSyntaxNode bindableNode = this.GetBindableSyntaxNode(expression);
-            var boundExpression = this.GetLowerBoundNode(bindableNode);
-            if (binder == null || boundExpression == null)
-            {
-                return Conversion.NoConversion;
-            }
-
-            HashSet<DiagnosticInfo> useSiteDiagnostics = null;
-            return binder.Conversions.ClassifyConversionFromExpression(boundExpression, csdestination, ref useSiteDiagnostics);
-        }
-
-        internal override Conversion ClassifyConversionForCast(
-            LanguageSyntaxNode expression,
-            TypeSymbol destination)
-        {
-            CheckSyntaxNode(expression);
-
-            if ((object)destination == null)
-            {
-                throw new ArgumentNullException(nameof(destination));
-            }
-
-            var binder = this.GetEnclosingBinderInternal(expression, GetAdjustedNodePosition(expression));
-            LanguageSyntaxNode bindableNode = this.GetBindableSyntaxNode(expression);
-            var boundExpression = this.GetLowerBoundNode(bindableNode);
-            if (binder == null || boundExpression == null)
-            {
-                return Conversion.NoConversion;
-            }
-
-            HashSet<DiagnosticInfo> useSiteDiagnostics = null;
-            return binder.Conversions.ClassifyConversionFromExpression(boundExpression, destination, ref useSiteDiagnostics, forCast: true);
-        }
-
         /// <summary>
         /// Get the bound node corresponding to the root.
         /// </summary> 
@@ -250,7 +186,7 @@ namespace MetaDslx.CodeAnalysis
             throw new NotSupportedException();
         }
 
-        public override ImmutableArray<Diagnostic> GetMethodBodyDiagnostics(TextSpan? span = null, CancellationToken cancellationToken = default(CancellationToken))
+        public override ImmutableArray<Diagnostic> GetSymbolDiagnostics(TextSpan? span = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             throw new NotSupportedException();
         }
@@ -260,16 +196,16 @@ namespace MetaDslx.CodeAnalysis
             throw new NotSupportedException();
         }
 
-        public override IDeclaredSymbol GetDeclaredSymbol(LanguageSyntaxNode declarationSyntax, CancellationToken cancellationToken = default(CancellationToken))
+        public override DeclaredSymbol GetDeclaredSymbol(LanguageSyntaxNode declarationSyntax, CancellationToken cancellationToken = default(CancellationToken))
         {
             // Can't define namespace inside a member.
             return null;
         }
 
-        public override ImmutableArray<IDeclaredSymbol> GetDeclaredSymbols(LanguageSyntaxNode declarationSyntax, CancellationToken cancellationToken = default(CancellationToken))
+        public override ImmutableArray<DeclaredSymbol> GetDeclaredSymbols(LanguageSyntaxNode declarationSyntax, CancellationToken cancellationToken = default(CancellationToken))
         {
             // Can't define field inside member.
-            return ImmutableArray.Create<IDeclaredSymbol>();
+            return ImmutableArray.Create<DeclaredSymbol>();
         }
 
         public override SyntaxTree SyntaxTree
@@ -278,147 +214,6 @@ namespace MetaDslx.CodeAnalysis
             {
                 return _boundTree.SyntaxTree;
             }
-        }
-
-        internal override IOperation GetOperationWorker(LanguageSyntaxNode node, CancellationToken cancellationToken)
-        {
-            LanguageSyntaxNode bindingRoot = GetBindingRoot(node);
-
-            IOperation statementOrRootOperation = GetStatementOrRootOperation(bindingRoot, cancellationToken);
-            if (statementOrRootOperation == null)
-            {
-                return null;
-            }
-
-            // we might optimize it later
-            // https://github.com/dotnet/roslyn/issues/22180
-            return statementOrRootOperation.DescendantsAndSelf().FirstOrDefault(o => !o.IsImplicit && o.Syntax == node);
-        }
-
-        private IOperation GetStatementOrRootOperation(LanguageSyntaxNode node, CancellationToken cancellationToken)
-        {
-            Debug.Assert(node == GetBindingRoot(node));
-
-            ImmutableArray<BoundNode> boundNodes;
-            GetBoundNodes(node, out _, out boundNodes, out _);
-
-            // decide whether we should use highest or lowest bound node here 
-            // https://github.com/dotnet/roslyn/issues/22179
-            BoundNode result = boundNodes[0];
-            return _operationFactory.Value.Create(result);
-        }
-
-        internal override SymbolInfo GetSymbolInfoWorker(LanguageSyntaxNode node, SymbolInfoOptions options, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            ValidateSymbolInfoOptions(options);
-
-            SyntaxNodeOrToken bindableNode;
-            ImmutableArray<BoundNode> boundNodes;
-            BoundNode boundParent;
-            GetBoundNodes(node, out bindableNode, out boundNodes, out boundParent);
-
-            Debug.Assert(IsInTree(node), "Since the node is in the tree, we can always recompute the binder later");
-            return base.GetSymbolInfoForNode(options, boundNodes, boundParent, binderOpt: null);
-        }
-
-        internal override LanguageTypeInfo GetTypeInfoWorker(LanguageSyntaxNode node, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            SyntaxNodeOrToken bindableNode;
-            ImmutableArray<BoundNode> boundNodes;
-            BoundNode boundParent;
-            GetBoundNodes(node, out bindableNode, out boundNodes, out boundParent);
-
-            return GetTypeInfoForNode(boundNodes, boundParent);
-        }
-
-        internal override ImmutableArray<Symbol> GetMemberGroupWorker(LanguageSyntaxNode node, SymbolInfoOptions options, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            SyntaxNodeOrToken bindableNode;
-            ImmutableArray<BoundNode> boundNodes;
-            BoundNode boundParent;
-            GetBoundNodes(node, out bindableNode, out boundNodes, out boundParent);
-
-            Debug.Assert(IsInTree(node), "Since the node is in the tree, we can always recompute the binder later");
-            return base.GetMemberGroupForNode(options, boundNodes[boundNodes.Length-1], boundParent, binderOpt: null);
-        }
-
-        internal override Optional<object> GetConstantValueWorker(LanguageSyntaxNode node, CancellationToken cancellationToken)
-        {
-            LanguageSyntaxNode bindableNode = this.GetBindableSyntaxNode(node);
-            BoundNode boundExpr = this.GetLowerBoundNode(bindableNode);
-            // TODO:MetaDslx
-            return default(Optional<object>);
-        }
-
-        private void GetBoundNodes(SyntaxNodeOrToken node, out SyntaxNodeOrToken bindableNode, out ImmutableArray<BoundNode> boundNodes, out BoundNode boundParent)
-        {
-            _boundTree.GetBoundNodes(node, out bindableNode, out boundNodes, out boundParent);
-        }
-
-        // We might not have actually been given a bindable expression or statement; the caller can
-        // give us variable declaration nodes, for example. If we're not at an expression or
-        // statement, back up until we find one.
-        private LanguageSyntaxNode GetBindingRoot(LanguageSyntaxNode node)
-        {
-            return (LanguageSyntaxNode)_boundTree.GetBindingRoot(node).NodeOrParent;
-        }
-
-        // We want the binder in which this syntax node is going to be bound, NOT the binder which
-        // this syntax node *produces*. That is, suppose we have
-        //
-        // void M() { int x; { int y; { int z; } } } 
-        //
-        // We want the enclosing binder of the syntax node for { int z; }.  We do not want the binder
-        // that has local z, but rather the binder that has local y. The inner block is going to be
-        // bound in the context of its enclosing binder; it's contents are going to be bound in the
-        // context of its binder.
-        internal override Binder GetEnclosingBinderInternal(int position)
-        {
-            AssertPositionAdjusted(position);
-
-            // If we have a root binder with no tokens in it, position can be outside the span event
-            // after position is adjusted. If this happens, there can't be any 
-            if (!this.Root.FullSpan.Contains(position))
-                return this.RootBinder;
-
-            SyntaxToken token = this.Root.FindToken(position);
-            LanguageSyntaxNode node = (LanguageSyntaxNode)token.Parent;
-
-            return GetEnclosingBinderInternal(node, position);
-        }
-
-        /// <summary>
-        /// This overload exists for callers who already have a node in hand 
-        /// and don't want to search through the tree.
-        /// </summary>
-        private Binder GetEnclosingBinderInternal(LanguageSyntaxNode node, int position)
-        {
-            AssertPositionAdjusted(position);
-            return GetEnclosingBinderInternalWithinRoot(node, position);
-        }
-
-        /// <summary>
-        /// Get all bounds nodes associated with a node, ordered from highest to lowest in the bound tree.
-        /// Strictly speaking, the order is that of a pre-order traversal of the bound tree.
-        /// </summary>
-        internal ImmutableArray<BoundNode> GetBoundNodes(LanguageSyntaxNode node)
-        {
-            return _boundTree.GetBoundNodes(node);
-        }
-
-        // some nodes don't have direct semantic meaning by themselves and so we need to bind a different node that does
-        internal protected virtual LanguageSyntaxNode GetBindableSyntaxNode(LanguageSyntaxNode node)
-        {
-            return (LanguageSyntaxNode)_boundTree.GetBindableSyntaxNode(node).NodeOrParent;
-        }
-
-        /// <summary>
-        /// If the node is an expression, return the nearest parent node
-        /// with semantic meaning. Otherwise return null.
-        /// </summary>
-        protected LanguageSyntaxNode GetBindableParentNode(LanguageSyntaxNode node)
-        {
-            return (LanguageSyntaxNode)_boundTree.GetBindableParentNode(node, this.IsSpeculativeSemanticModel).NodeOrParent;
         }
 
     }

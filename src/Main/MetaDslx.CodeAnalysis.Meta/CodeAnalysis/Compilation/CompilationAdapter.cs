@@ -13,6 +13,7 @@ using System.IO;
 using System.Diagnostics;
 using System.Reflection.Metadata;
 using Microsoft.CodeAnalysis.Symbols;
+using MetaDslx.CodeAnalysis.Symbols;
 
 namespace MetaDslx.CodeAnalysis.Internal
 {
@@ -102,7 +103,7 @@ namespace MetaDslx.CodeAnalysis.Internal
 
         #endregion
 
-        protected override IArrayTypeSymbol CommonCreateArrayTypeSymbol(ITypeSymbol elementType, int rank, NullableAnnotation elementNullableAnnotation)
+        protected override IArrayTypeSymbol CommonCreateArrayTypeSymbol(ITypeSymbol elementType, int rank, Microsoft.CodeAnalysis.NullableAnnotation elementNullableAnnotation)
         {
             throw new NotImplementedException();
         }
@@ -112,17 +113,17 @@ namespace MetaDslx.CodeAnalysis.Internal
             throw new NotImplementedException();
         }
 
-        protected override INamedTypeSymbol CommonCreateTupleTypeSymbol(ImmutableArray<ITypeSymbol> elementTypes, ImmutableArray<string?> elementNames, ImmutableArray<Location?> elementLocations, ImmutableArray<NullableAnnotation> elementNullableAnnotations)
+        protected override INamedTypeSymbol CommonCreateTupleTypeSymbol(ImmutableArray<ITypeSymbol> elementTypes, ImmutableArray<string?> elementNames, ImmutableArray<Location?> elementLocations, ImmutableArray<Microsoft.CodeAnalysis.NullableAnnotation> elementNullableAnnotations)
         {
             throw new NotImplementedException();
         }
 
-        protected override INamedTypeSymbol CommonCreateTupleTypeSymbol(INamedTypeSymbol underlyingType, ImmutableArray<string?> elementNames, ImmutableArray<Location?> elementLocations, ImmutableArray<NullableAnnotation> elementNullableAnnotations)
+        protected override INamedTypeSymbol CommonCreateTupleTypeSymbol(INamedTypeSymbol underlyingType, ImmutableArray<string?> elementNames, ImmutableArray<Location?> elementLocations, ImmutableArray<Microsoft.CodeAnalysis.NullableAnnotation> elementNullableAnnotations)
         {
             throw new NotImplementedException();
         }
 
-        protected override INamedTypeSymbol CommonCreateAnonymousTypeSymbol(ImmutableArray<ITypeSymbol> memberTypes, ImmutableArray<string> memberNames, ImmutableArray<Location> memberLocations, ImmutableArray<bool> memberIsReadOnly, ImmutableArray<NullableAnnotation> memberNullableAnnotations)
+        protected override INamedTypeSymbol CommonCreateAnonymousTypeSymbol(ImmutableArray<ITypeSymbol> memberTypes, ImmutableArray<string> memberNames, ImmutableArray<Location> memberLocations, ImmutableArray<bool> memberIsReadOnly, ImmutableArray<Microsoft.CodeAnalysis.NullableAnnotation> memberNullableAnnotations)
         {
             throw new NotImplementedException();
         }
@@ -153,6 +154,11 @@ namespace MetaDslx.CodeAnalysis.Internal
         }
 
         internal override bool IsAttributeType(ITypeSymbol type)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal protected new bool IsAttributeType(TypeSymbol type)
         {
             throw new NotImplementedException();
         }
