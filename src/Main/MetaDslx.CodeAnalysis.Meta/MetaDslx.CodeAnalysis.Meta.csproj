@@ -15,18 +15,9 @@
     <MetaDslxDisableMetaGeneratorGenerator>false</MetaDslxDisableMetaGeneratorGenerator>
   </PropertyGroup>
 
-  <!--ItemGroup>
-    <PackageReference Include="System.Collections.Immutable" Version="$(SystemCollectionsImmutableVersion)" />
-    <PackageReference Include="System.Memory" Version="$(SystemMemoryVersion)" />
-    <PackageReference Include="System.Reflection.Metadata" Version="$(SystemReflectionMetadataVersion)" />
-    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="$(SystemRuntimeCompilerServicesUnsafeVersion)" />
-    <PackageReference Include="System.Threading.Tasks.Extensions" Version="$(SystemThreadingTasksExtensionsVersion)" />
-    <PackageReference Include="System.Text.Encoding.CodePages" Version="$(SystemTextEncodingCodePagesVersion)" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="$(MicrosoftDependencyInjectionVersion)" />
-    <PackageReference Include="MetaDslx.BuildTasks" Version="$(BootstrapVersion)" PrivateAssets="all" />
-  </ItemGroup-->
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="$(MicrosoftDependencyInjectionVersion)" />
+    <PackageReference Include="MetaDslx.BuildTasks" Version="$(BootstrapVersion)" PrivateAssets="all" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,6 +26,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <MetaGenerator Update="CodeAnalysis\Symbols\CodeGeneration\SymbolGenerator.mgen">
+      <AutomaticOutputLocation>ManualOutputDirectory</AutomaticOutputLocation>
+    </MetaGenerator>
     <MetaGenerator Update="Languages\Meta\Generator\ImmutableMetaModelGenerator.mgen">
       <AutomaticOutputLocation>ManualOutputDirectory</AutomaticOutputLocation>
     </MetaGenerator>
