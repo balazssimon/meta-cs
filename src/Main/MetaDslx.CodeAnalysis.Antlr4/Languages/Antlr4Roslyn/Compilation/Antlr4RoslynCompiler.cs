@@ -10,13 +10,14 @@ using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
 using System.Diagnostics;
 using MetaDslx.Languages.Antlr4Roslyn.Generator;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.Text;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Text;
 using MetaDslx.Languages.Meta;
 using System.Reflection;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax;
 using Roslyn.Utilities;
+using MetaDslx.CodeAnalysis;
 
 namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
 {

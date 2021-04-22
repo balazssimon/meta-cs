@@ -25,10 +25,10 @@ namespace MetaDslx.CodeAnalysis.Declarations
         private State _lazyState;
 
         public SyntaxAndDeclarationManager(
+            Language language,
             ImmutableArray<SyntaxTree> externalSyntaxTrees,
             string scriptClassName,
             SourceReferenceResolver resolver,
-            Language language,
             bool isSubmission,
             State state)
         {
@@ -137,10 +137,10 @@ namespace MetaDslx.CodeAnalysis.Declarations
                 declTable);
 
             return new SyntaxAndDeclarationManager(
+                language,
                 newExternalSyntaxTrees,
                 scriptClassName,
                 resolver,
-                language,
                 isSubmission,
                 state);
         }
@@ -342,10 +342,10 @@ namespace MetaDslx.CodeAnalysis.Declarations
                 declTable);
 
             return new SyntaxAndDeclarationManager(
+                this.Language,
                 newExternalSyntaxTrees,
                 this.ScriptClassName,
                 this.Resolver,
-                this.Language,
                 this.IsSubmission,
                 state);
         }
@@ -561,17 +561,17 @@ namespace MetaDslx.CodeAnalysis.Declarations
                 declTable);
 
             return new SyntaxAndDeclarationManager(
+                this.Language,
                 newExternalSyntaxTrees,
                 this.ScriptClassName,
                 this.Resolver,
-                this.Language,
                 this.IsSubmission,
                 state);
         }
 
         internal SyntaxAndDeclarationManager WithExternalSyntaxTrees(ImmutableArray<SyntaxTree> trees)
         {
-            return new SyntaxAndDeclarationManager(trees, this.ScriptClassName, this.Resolver, this.Language, this.IsSubmission, state: null);
+            return new SyntaxAndDeclarationManager(this.Language, trees, this.ScriptClassName, this.Resolver, this.IsSubmission, state: null);
         }
 
         internal static bool IsLoadedSyntaxTree(SyntaxTree tree, ImmutableDictionary<string, SyntaxTree> loadedSyntaxTreeMap)

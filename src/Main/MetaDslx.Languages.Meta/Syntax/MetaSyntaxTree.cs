@@ -12,8 +12,8 @@ using System.Threading.Tasks;
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax;
-using MetaDslx.CodeAnalysis.Text;
-using MetaDslx.CodeAnalysis;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Text;
 using MetaDslx.Languages.Meta;
 using MetaDslx.Languages.Meta.Syntax;
 using MetaDslx.Languages.Meta.Syntax.InternalSyntax;
@@ -29,29 +29,7 @@ namespace MetaDslx.Languages.Meta
         /// The options used by the parser to produce the syntax tree.
         /// </summary>
         public new abstract MetaParseOptions Options { get; }
-        // REVIEW: I would prefer to not expose CloneAsRoot and make the functionality
-        // internal to CaaS layer, to ensure that for a given SyntaxTree there can not
-        // be multiple trees claiming to be its children.
-        // 
-        // However, as long as we provide GetRoot extensibility point on SyntaxTree
-        // the guarantee above cannot be implemented and we have to provide some way for
-        // creating root nodes.
-        //
-        // Therefore I place CloneAsRoot API on SyntaxTree and make it protected to
-        // at least limit its visibility to SyntaxTree extenders.
-        /// <summary>
-        /// Produces a clone of a <see cref="MetaSyntaxNode"/> which will have current syntax tree as its parent.
-        /// 
-        /// Caller must guarantee that if the same instance of <see cref="MetaSyntaxNode"/> makes multiple calls
-        /// to this function, only one result is observable.
-        /// </summary>
-        /// <typeparam name="T">Type of the syntax node.</typeparam>
-        /// <param name="node">The original syntax node.</param>
-        /// <returns>A clone of the original syntax node that has current <see cref="CSharpSyntaxTree"/> as its parent.</returns>
-        protected T CloneNodeAsRoot<T>(T node) where T : MetaSyntaxNode
-        {
-            return MetaSyntaxNode.CloneNodeAsRoot(node, this);
-        }
+
         /// <summary>
         /// Gets the root node of the syntax tree.
         /// </summary>
@@ -177,7 +155,7 @@ namespace MetaDslx.Languages.Meta
         }
         public new ImmutableArray<MetaSyntaxKind> LookupTokens(int position, CancellationToken cancellationToken)
         {
-            return this.LookupTokensCore(position, cancellationToken).SelectAsArray(kind => (MetaSyntaxKind)kind);
+            return this.LookupTokensCore(position, cancellationToken).Select(kind => (MetaSyntaxKind)kind).ToImmutableArray();
         }
         #endregion
         #region Changes
@@ -438,7 +416,7 @@ namespace MetaDslx.Languages.Meta
                     directives: DirectiveStack.Empty)
             {
             }
-            public override bool SupportsLocations
+            protected override bool SupportsLocations
             {
                 get { return true; }
             }

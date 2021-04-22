@@ -123,5 +123,10 @@ namespace MetaDslx.CodeAnalysis.Syntax
         }
 
         protected abstract LanguageParseOptions CommonWithIncremental(bool incremental);
+
+        protected SourceCodeKind MapSpecifiedToEffectiveKind(SourceCodeKind kind)
+        {
+            return kind.MapSpecifiedToEffectiveKind();
+        }
     }
 }

@@ -13,10 +13,11 @@ using Antlr4.Runtime.Tree;
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
-using MetaDslx.CodeAnalysis.Text;
 using MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Syntax.InternalSyntax;
+using Microsoft.CodeAnalysis.Text;
+
 namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 {
     public class MetaSyntaxParser : Antlr4SyntaxParser

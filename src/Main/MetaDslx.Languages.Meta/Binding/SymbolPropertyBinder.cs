@@ -10,7 +10,7 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Text;
 using Roslyn.Utilities;
-using MetaDslx.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Binding.BoundNodes;
 using System.Linq;
 using MetaDslx.CodeAnalysis.Symbols;

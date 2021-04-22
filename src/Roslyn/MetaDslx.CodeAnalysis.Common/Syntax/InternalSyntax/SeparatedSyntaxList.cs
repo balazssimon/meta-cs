@@ -11,7 +11,7 @@ namespace Microsoft.CodeAnalysis.Syntax.InternalSyntax
     {
         private readonly SyntaxList<GreenNode> _list;
 
-        internal SeparatedSyntaxList(SyntaxList<GreenNode> list)
+        public SeparatedSyntaxList(SyntaxList<GreenNode> list)
         {
             Validate(list);
             _list = list;
@@ -34,7 +34,7 @@ namespace Microsoft.CodeAnalysis.Syntax.InternalSyntax
             }
         }
 
-        internal GreenNode? Node => _list.Node;
+        public GreenNode? Node => _list.Node;
 
         public int Count
         {

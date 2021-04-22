@@ -7,8 +7,8 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Syntax;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.PooledObjects;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 
 using MetaDslx.CodeAnalysis.Symbols;
@@ -65,7 +65,7 @@ namespace MetaDslx.Languages.Meta.Syntax
             {
                 return this;
             }
-            var effectiveKind = kind.MapSpecifiedToEffectiveKind();
+            var effectiveKind = MapSpecifiedToEffectiveKind(kind);
             return new MetaParseOptions(this) { SpecifiedKind = kind, Kind = effectiveKind };
         }
         public new MetaParseOptions WithIncremental(bool incremental)
@@ -139,27 +139,7 @@ namespace MetaDslx.Languages.Meta.Syntax
                 ?? ImmutableDictionary<string, string>.Empty;
             return new MetaParseOptions(this) { Features = dictionary };
         }
-        public override void ValidateOptions(ArrayBuilder<Diagnostic> builder)
-        {
-            base.ValidateOptions(builder);
-            // Validate LanguageVersion not SpecifiedLanguageVersion, after Latest/Default has been converted:
-            if (!LanguageVersion.IsValid())
-            {
-                builder.Add(MetaErrorCode.ERR_BadLanguageVersion.ToDiagnosticWithNoLocation(LanguageVersion.ToString()));
-            }
-        }
-        public bool IsFeatureEnabled(string feature)
-        {
-            throw new NotImplementedException("TODO:MetaDslx");
-            /*string featureFlag = feature.RequiredFeature();
-            if (featureFlag != null)
-            {
-                return Features.ContainsKey(featureFlag);
-            }
-            LanguageVersion availableVersion = LanguageVersion;
-            LanguageVersion requiredVersion = feature.RequiredVersion();
-            return availableVersion >= requiredVersion;*/
-        }
+
         public override bool Equals(object obj)
         {
             return this.Equals(obj as MetaParseOptions);

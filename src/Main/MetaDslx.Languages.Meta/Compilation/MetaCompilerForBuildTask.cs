@@ -4,7 +4,7 @@ using MetaDslx.Languages.Meta.Generator;
 using MetaDslx.Languages.Meta.Syntax;
 using MetaDslx.Languages.Meta.Model;
 using MetaDslx.Modeling;
-using MetaDslx.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -56,8 +56,7 @@ namespace MetaDslx.Languages.Meta
                     BinderFlags binderFlags2 = BinderFlags.IgnoreMetaLibraryDuplicatedTypes;
                     binderFlags = binderFlags.UnionWith(binderFlags2);
                 }
-                MetaCompilationOptions options = new MetaCompilationOptions(OutputKind.NetModule, deterministic: true, concurrentBuild: false,
-                    topLevelBinderFlags: binderFlags);
+                MetaCompilationOptions options = new MetaCompilationOptions(OutputKind.NetModule, deterministic: true, concurrentBuild: false).WithTopLevelBinderFlags(binderFlags);
                 //MetaCompilationOptions options = new MetaCompilationOptions(MetaLanguage.Instance, OutputKind.NetModule, deterministic: true, concurrentBuild: false);
                 var compilation = MetaCompilation.
                     Create("MetaModelCompilation").

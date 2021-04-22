@@ -108,7 +108,7 @@ namespace Microsoft.CodeAnalysis.Syntax.InternalSyntax
 #endif
     }
 
-    internal static class SyntaxNodeCache
+    public static class SyntaxNodeCache
     {
         private const int CacheSizeBits = 16;
         private const int CacheSize = 1 << CacheSizeBits;
@@ -128,7 +128,7 @@ namespace Microsoft.CodeAnalysis.Syntax.InternalSyntax
 
         private static readonly Entry[] s_cache = new Entry[CacheSize];
 
-        internal static void AddNode(GreenNode node, int hash)
+        public static void AddNode(GreenNode node, int hash)
         {
             if (AllChildrenInCache(node) && !node.IsMissing)
             {
@@ -183,7 +183,7 @@ namespace Microsoft.CodeAnalysis.Syntax.InternalSyntax
             return true;
         }
 
-        internal static GreenNode? TryGetNode(int kind, GreenNode? child1, out int hash)
+        public static GreenNode? TryGetNode(int kind, GreenNode? child1, out int hash)
         {
             return TryGetNode(kind, child1, GetDefaultNodeFlags(), out hash);
         }
@@ -211,7 +211,7 @@ namespace Microsoft.CodeAnalysis.Syntax.InternalSyntax
             return null;
         }
 
-        internal static GreenNode? TryGetNode(int kind, GreenNode? child1, GreenNode? child2, out int hash)
+        public static GreenNode? TryGetNode(int kind, GreenNode? child1, GreenNode? child2, out int hash)
         {
             return TryGetNode(kind, child1, child2, GetDefaultNodeFlags(), out hash);
         }
@@ -239,7 +239,7 @@ namespace Microsoft.CodeAnalysis.Syntax.InternalSyntax
             return null;
         }
 
-        internal static GreenNode? TryGetNode(int kind, GreenNode? child1, GreenNode? child2, GreenNode? child3, out int hash)
+        public static GreenNode? TryGetNode(int kind, GreenNode? child1, GreenNode? child2, GreenNode? child3, out int hash)
         {
             return TryGetNode(kind, child1, child2, child3, GetDefaultNodeFlags(), out hash);
         }
@@ -267,7 +267,7 @@ namespace Microsoft.CodeAnalysis.Syntax.InternalSyntax
             return null;
         }
 
-        public static GreenNode.NodeFlags GetDefaultNodeFlags()
+        internal static GreenNode.NodeFlags GetDefaultNodeFlags()
         {
             return GreenNode.NodeFlags.IsNotMissing;
         }

@@ -13,12 +13,12 @@ namespace Microsoft.CodeAnalysis.Syntax.InternalSyntax
     {
         private readonly GreenNode? _node;
 
-        internal SyntaxList(GreenNode? node)
+        public SyntaxList(GreenNode? node)
         {
             _node = node;
         }
 
-        internal GreenNode? Node => _node;
+        public GreenNode? Node => _node;
 
         public int Count
         {

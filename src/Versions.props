@@ -27,6 +27,12 @@
     <MinorVersion>
     </MinorVersion>
     <BootstrapVersion>0.11.22</BootstrapVersion>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Nullable>enable</Nullable>
+    <LangVersion>preview</LangVersion>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <DotNetBuildFromSource>true</DotNetBuildFromSource>
   </PropertyGroup>
 
@@ -36,5 +42,7 @@
   <PropertyGroup>
     <!-- Versions used by several individual references below -->
     <Antlr4RuntimeStandardVersion>4.9.1</Antlr4RuntimeStandardVersion>
+    <MicrosoftDependencyInjectionVersion>5.0.0</MicrosoftDependencyInjectionVersion>
+    <MicrosoftBuildVersion>16.8.0</MicrosoftBuildVersion>
   </PropertyGroup>
 </Project>

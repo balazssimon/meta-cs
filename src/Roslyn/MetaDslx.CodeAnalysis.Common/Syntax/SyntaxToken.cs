@@ -28,7 +28,7 @@ namespace Microsoft.CodeAnalysis
         internal static readonly Func<SyntaxToken, bool> NonZeroWidth = t => t.Width > 0;
         internal static readonly Func<SyntaxToken, bool> Any = t => true;
 
-        internal SyntaxToken(SyntaxNode? parent, GreenNode? token, int position, int index)
+        public SyntaxToken(SyntaxNode? parent, GreenNode? token, int position, int index)
         {
             Debug.Assert(parent == null || !parent.Green.IsList, "list cannot be a parent");
             Debug.Assert(token == null || token.IsToken, "token must be a token");
@@ -38,7 +38,7 @@ namespace Microsoft.CodeAnalysis
             Index = index;
         }
 
-        internal SyntaxToken(GreenNode? token)
+        public SyntaxToken(GreenNode? token)
             : this()
         {
             Debug.Assert(token == null || token.IsToken, "token must be a token");
@@ -77,7 +77,7 @@ namespace Microsoft.CodeAnalysis
         /// </summary>
         public SyntaxNode? Parent { get; }
 
-        internal GreenNode? Node { get; }
+        public GreenNode? Node { get; }
 
         internal GreenNode RequiredNode
         {

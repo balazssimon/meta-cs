@@ -20,7 +20,7 @@ namespace MetaDslx.CodeAnalysis
     /// <summary>
     /// The parsed representation of a C# source document.
     /// </summary>
-    public abstract partial class LanguageSyntaxTree : SyntaxTree
+    public abstract partial class LanguageSyntaxTree : SyntaxTreeAdapter
     {
         public Language Language => ((LanguageParseOptions)this.Options).Language;
 
@@ -530,5 +530,38 @@ namespace MetaDslx.CodeAnalysis
         {
             return ImmutableArray<SyntaxKind>.Empty;
         }
+
+        protected void VerifySource(IEnumerable<TextChangeRange>? changes = null)
+        {
+            SyntaxTreeExtensions.VerifySource(this, changes);
+        }
+
+        // REVIEW: I would prefer to not expose CloneAsRoot and make the functionality
+        // internal to CaaS layer, to ensure that for a given SyntaxTree there can not
+        // be multiple trees claiming to be its children.
+        // 
+        // However, as long as we provide GetRoot extensibility point on SyntaxTree
+        // the guarantee above cannot be implemented and we have to provide some way for
+        // creating root nodes.
+        //
+        // Therefore I place CloneAsRoot API on SyntaxTree and make it protected to
+        // at least limit its visibility to SyntaxTree extenders.
+        /// <summary>
+        /// Produces a clone of a <see cref="SyntaxNode"/> which will have current syntax tree as its parent.
+        /// 
+        /// Caller must guarantee that if the same instance of <see cref="SyntaxNode"/> makes multiple calls
+        /// to this function, only one result is observable.
+        /// </summary>
+        /// <typeparam name="T">Type of the syntax node.</typeparam>
+        /// <param name="node">The original syntax node.</param>
+        /// <returns>A clone of the original syntax node that has current <see cref="LanguageSyntaxTree"/> as its parent.</returns>
+        protected T CloneNodeAsRoot<T>(T node) where T : SyntaxNode
+        {
+            return SyntaxNode.CloneNodeAsRoot(node, this);
+        }
+
+        internal override bool SupportsLocationsCore => this.SupportsLocations;
+
+        protected virtual new bool SupportsLocations => base.SupportsLocationsCore;
     }
 }

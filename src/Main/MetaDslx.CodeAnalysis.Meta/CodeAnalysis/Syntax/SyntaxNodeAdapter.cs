@@ -49,5 +49,20 @@ namespace MetaDslx.CodeAnalysis.Syntax
         }
 
         protected abstract SyntaxNode GetNodeSlotCore(int slot);
+
+        protected new int GetChildPosition(int index)
+        {
+            return base.GetChildPosition(index);
+        }
+
+        protected new int GetChildIndex(int slot)
+        {
+            return base.GetChildIndex(slot);
+        }
+
+        protected new SyntaxAnnotation[] GetAnnotations()
+        {
+            return base.GetAnnotations();
+        }
     }
 }

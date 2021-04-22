@@ -6,18 +6,20 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Text;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Diagnostics;
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Declarations;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.Diagnostics;
 
 namespace MetaDslx.Languages.Meta
 {
     public class MetaCompilation : LanguageCompilation
     {
         #region Constructors and Factories
+        
         private static readonly MetaCompilationOptions s_defaultOptions = new MetaCompilationOptions(OutputKind.ConsoleApplication);
         private static readonly MetaCompilationOptions s_defaultSubmissionOptions = new MetaCompilationOptions(OutputKind.DynamicallyLinkedLibrary).WithReferencesSupersedeLowerVersions(true);
+
         /// <summary>
         /// Creates a new compilation from scratch. Methods such as AddSyntaxTrees or AddReferences
         /// on the returned object will allow to continue building up the Compilation incrementally.
@@ -28,10 +30,10 @@ namespace MetaDslx.Languages.Meta
         /// <param name="options">The compiler options to use.</param>
         /// <returns>A new compilation.</returns>
         public static MetaCompilation Create(
-            string assemblyName,
-            IEnumerable<SyntaxTree> syntaxTrees = null,
-            IEnumerable<MetadataReference> references = null,
-            MetaCompilationOptions options = null)
+            string? assemblyName,
+            IEnumerable<SyntaxTree>? syntaxTrees = null,
+            IEnumerable<MetadataReference>? references = null,
+            MetaCompilationOptions? options = null)
         {
             return Create(
                 assemblyName,
@@ -43,42 +45,43 @@ namespace MetaDslx.Languages.Meta
                 hostObjectType: null,
                 isSubmission: false);
         }
+
         /// <summary>
         /// Creates a new compilation that can be used in scripting.
         /// </summary>
         public static MetaCompilation CreateScriptCompilation(
             string assemblyName,
-            SyntaxTree syntaxTree = null,
-            IEnumerable<MetadataReference> references = null,
-            MetaCompilationOptions options = null,
-            MetaCompilation previousScriptCompilation = null,
-            Type returnType = null,
-            Type globalsType = null)
+            SyntaxTree? syntaxTree = null,
+            IEnumerable<MetadataReference>? references = null,
+            MetaCompilationOptions? options = null,
+            MetaCompilation? previousScriptCompilation = null,
+            Type? returnType = null,
+            Type? globalsType = null)
         {
             CheckSubmissionOptions(options);
             ValidateScriptCompilationParameters(previousScriptCompilation, returnType, ref globalsType);
+
             return Create(
                 assemblyName,
                 options?.WithReferencesSupersedeLowerVersions(true) ?? s_defaultSubmissionOptions,
-                (syntaxTree != null) ? new[] { syntaxTree } : NoSyntaxTrees,
+                (syntaxTree != null) ? new[] { syntaxTree } : null,
                 references,
                 previousScriptCompilation,
                 returnType,
                 globalsType,
                 isSubmission: true);
         }
+
         private static MetaCompilation Create(
-            string assemblyName,
+            string? assemblyName,
             MetaCompilationOptions options,
-            IEnumerable<SyntaxTree> syntaxTrees,
-            IEnumerable<MetadataReference> references,
-            MetaCompilation previousSubmission,
-            Type returnType,
-            Type hostObjectType,
+            IEnumerable<SyntaxTree>? syntaxTrees,
+            IEnumerable<MetadataReference>? references,
+            MetaCompilation? previousSubmission,
+            Type? returnType,
+            Type? hostObjectType,
             bool isSubmission)
         {
-            Debug.Assert(options != null);
-            Debug.Assert(!isSubmission || options.ReferencesSupersedeLowerVersions);
             var compilation = new MetaCompilation(
                 assemblyName,
                 options,
@@ -90,51 +93,59 @@ namespace MetaDslx.Languages.Meta
                 referenceManager: null,
                 reuseReferenceManager: false,
                 syntaxAndDeclarations: new SyntaxAndDeclarationManager(
+                    options.Language,
                     ImmutableArray<SyntaxTree>.Empty,
                     options.ScriptClassName,
                     options.SourceReferenceResolver,
-                    options.Language,
                     isSubmission,
-                    state: null));
+                    state: null),
+                semanticModelProvider: null);
+
             if (syntaxTrees != null)
             {
                 compilation = compilation.AddSyntaxTrees(syntaxTrees);
             }
             return compilation;
         }
-        protected MetaCompilation(string assemblyName, MetaCompilationOptions options, IEnumerable<MetadataReference> references, MetaCompilation previousSubmission, Type submissionReturnType, Type hostObjectType, bool isSubmission, ReferenceManager referenceManager, bool reuseReferenceManager, SyntaxAndDeclarationManager syntaxAndDeclarations, AsyncQueue<CompilationEvent> eventQueue = null)
-            : base(assemblyName, options, references, previousSubmission, submissionReturnType, hostObjectType, isSubmission, referenceManager, reuseReferenceManager, syntaxAndDeclarations, eventQueue)
+
+        protected MetaCompilation(string assemblyName, MetaCompilationOptions options, IEnumerable<MetadataReference> references, MetaCompilation previousSubmission, Type submissionReturnType, Type hostObjectType, bool isSubmission, ReferenceManager referenceManager, bool reuseReferenceManager, SyntaxAndDeclarationManager syntaxAndDeclarations, SemanticModelProvider semanticModelProvider, AsyncQueue<CompilationEvent> eventQueue = null)
+            : base(assemblyName, options, references, previousSubmission, submissionReturnType, hostObjectType, isSubmission, referenceManager, reuseReferenceManager, syntaxAndDeclarations, semanticModelProvider, eventQueue)
         {
         }
+
         /// <summary>
         /// Create a duplicate of this compilation with different symbol instances.
         /// </summary>
         protected override LanguageCompilation CreateNew(
-            string assemblyName,
-            LanguageCompilationOptions options,
-            IEnumerable<MetadataReference> references,
-            LanguageCompilation previousSubmission,
-            Type submissionReturnType,
-            Type hostObjectType,
-            bool isSubmission,
-            ReferenceManager referenceManager,
-            bool reuseReferenceManager,
+            string assemblyName, 
+            LanguageCompilationOptions options, 
+            IEnumerable<MetadataReference> references, 
+            LanguageCompilation previousSubmission, 
+            Type submissionReturnType, 
+            Type hostObjectType, 
+            bool isSubmission, 
+            ReferenceManager referenceManager, 
+            bool reuseReferenceManager, 
             SyntaxAndDeclarationManager syntaxAndDeclarations,
+            SemanticModelProvider semanticModelProvider,
             AsyncQueue<CompilationEvent> eventQueue = null)
         {
             return new MetaCompilation(
-                assemblyName, 
-                (MetaCompilationOptions)options, 
-                references, 
-                (MetaCompilation)previousSubmission, 
-                submissionReturnType, 
-                hostObjectType, 
-                isSubmission, 
-                referenceManager, 
-                reuseReferenceManager, 
-                syntaxAndDeclarations, 
+                assemblyName,
+                (MetaCompilationOptions)options,
+                references,
+                (MetaCompilation)previousSubmission,
+                submissionReturnType,
+                hostObjectType,
+                isSubmission,
+                referenceManager,
+                reuseReferenceManager,
+                syntaxAndDeclarations,
+                semanticModelProvider,
                 eventQueue);
         }
+
+
         protected override Compilation CommonClone()
         {
             return this.Clone();

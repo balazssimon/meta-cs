@@ -4,7 +4,7 @@
   <PropertyGroup>
     <RootNamespace>MetaDslx.BuildTasks</RootNamespace>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
-    <TargetFrameworks>netstandard2.0;net461;net5.0</TargetFrameworks>
+    <TargetFrameworks>net461;net5.0</TargetFrameworks>
     <NoStdLib>true</NoStdLib>
     <ApplyNgenOptimization>partial</ApplyNgenOptimization>
     <LangVersion>preview</LangVersion>
@@ -32,8 +32,8 @@
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.Build.Framework" Version="$(MicrosoftBuildVersion)" PrivateAssets="All" />
     <PackageReference Include="Microsoft.Build.Utilities.Core" Version="$(MicrosoftBuildVersion)" PrivateAssets="All" />
-    <PackageReference Include="MetaDslx.CodeAnalysis" Version="$(MetaDslxTargetVersion)" PrivateAssets="all" />
-    <!--PackageReference Include="MetaDslx.BuildTools" Version="$(MetaDslxTargetVersion)" /-->
+    <PackageReference Include="MetaDslx.CodeAnalysis" Version="$(VersionPrefix)" PrivateAssets="all" />
+    <!--PackageReference Include="MetaDslx.BuildTools" Version="$(VersionPrefix)" PrivateAssets="all" /-->
   </ItemGroup>
   
   <ItemGroup>

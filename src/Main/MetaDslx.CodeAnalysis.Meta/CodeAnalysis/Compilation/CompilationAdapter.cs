@@ -133,6 +133,11 @@ namespace MetaDslx.CodeAnalysis.Internal
             throw new NotImplementedException();
         }
 
+        internal override ISymbolInternal? CommonGetWellKnownTypeMember(WellKnownMember member)
+        {
+            throw new NotImplementedException();
+        }
+
         protected override INamedTypeSymbol CommonCreateNativeIntegerTypeSymbol(bool signed)
         {
             throw new NotImplementedException();
@@ -164,6 +169,11 @@ namespace MetaDslx.CodeAnalysis.Internal
         }
 
         internal override bool IsSystemTypeReference(ITypeSymbolInternal type)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal override void SerializePdbEmbeddedCompilationOptions(BlobBuilder builder)
         {
             throw new NotImplementedException();
         }

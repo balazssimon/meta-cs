@@ -9,7 +9,7 @@ using Roslyn.Utilities;
 
 namespace Microsoft.CodeAnalysis.Syntax.InternalSyntax
 {
-    internal class SyntaxListPool
+    public class SyntaxListPool
     {
         private ArrayElement<SyntaxListBuilder?>[] _freeList = new ArrayElement<SyntaxListBuilder?>[10];
         private int _freeIndex;
@@ -18,11 +18,11 @@ namespace Microsoft.CodeAnalysis.Syntax.InternalSyntax
         private readonly List<SyntaxListBuilder> _allocated = new List<SyntaxListBuilder>();
 #endif
 
-        internal SyntaxListPool()
+        public SyntaxListPool()
         {
         }
 
-        internal SyntaxListBuilder Allocate()
+        public SyntaxListBuilder Allocate()
         {
             SyntaxListBuilder item;
             if (_freeIndex > 0)
@@ -43,23 +43,23 @@ namespace Microsoft.CodeAnalysis.Syntax.InternalSyntax
             return item;
         }
 
-        internal SyntaxListBuilder<TNode> Allocate<TNode>() where TNode : GreenNode
+        public SyntaxListBuilder<TNode> Allocate<TNode>() where TNode : GreenNode
         {
             return new SyntaxListBuilder<TNode>(this.Allocate());
         }
 
-        internal SeparatedSyntaxListBuilder<TNode> AllocateSeparated<TNode>() where TNode : GreenNode
+        public SeparatedSyntaxListBuilder<TNode> AllocateSeparated<TNode>() where TNode : GreenNode
         {
             return new SeparatedSyntaxListBuilder<TNode>(this.Allocate());
         }
 
-        internal void Free<TNode>(in SeparatedSyntaxListBuilder<TNode> item) where TNode : GreenNode
+        public void Free<TNode>(in SeparatedSyntaxListBuilder<TNode> item) where TNode : GreenNode
         {
             RoslynDebug.Assert(item.UnderlyingBuilder is object);
             Free(item.UnderlyingBuilder);
         }
 
-        internal void Free(SyntaxListBuilder item)
+        public void Free(SyntaxListBuilder item)
         {
             item.Clear();
             if (_freeIndex >= _freeList.Length)

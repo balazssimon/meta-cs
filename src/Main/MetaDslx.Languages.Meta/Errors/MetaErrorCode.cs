@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MetaDslx.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using MetaDslx.CodeAnalysis;
 
 namespace MetaDslx.Languages.Meta
@@ -16,6 +16,8 @@ namespace MetaDslx.Languages.Meta
         public new const string Category = "Meta";
         public new const string MessagePrefix = "M";
 
+        private static readonly ErrorCodeMessageProvider s_messages = new ErrorCodeMessageProvider(MessagePrefix, typeof(MetaErrorCode));
+
         public static readonly MetaErrorCode ERR_GeneralError = new MetaErrorCode(1, DiagnosticSeverity.Error, "Error", "Error: {0}");
         public static readonly MetaErrorCode WRN_GeneralWarning = new MetaErrorCode(2, DiagnosticSeverity.Warning, "Warning", "Warning: {0}");
         public static readonly MetaErrorCode INF_GeneralInfo = new MetaErrorCode(3, DiagnosticSeverity.Info, "Info", "Info: {0}");
@@ -23,7 +25,7 @@ namespace MetaDslx.Languages.Meta
         public static readonly MetaErrorCode ERR_FeatureNotAvailableInVersion1 = new MetaErrorCode(5, DiagnosticSeverity.Error, "Feature not available", "Feature not available in Meta version 1: {0}");
 
         private MetaErrorCode(int code, DiagnosticSeverity defaultSeverity, string title, string messageFormat, bool isEnabledByDefault = true, string description = null, string helpLinkUri = null, params string[] customTags) 
-            : base(code, MessagePrefix, title, messageFormat, Category, defaultSeverity, isEnabledByDefault, description, helpLinkUri, customTags)
+            : base(s_messages, code, title, messageFormat, Category, defaultSeverity, isEnabledByDefault, description, helpLinkUri, customTags)
         {
         }
     }

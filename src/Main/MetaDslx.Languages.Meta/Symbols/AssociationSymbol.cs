@@ -6,12 +6,14 @@ using MetaDslx.CodeAnalysis.Symbols.Metadata;
 using MetaDslx.CodeAnalysis.Symbols.Source;
 using MetaDslx.Languages.Meta.Model;
 using MetaDslx.Languages.Meta.Syntax;
+using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Text;
 using System.Threading;
+using SymbolKind = MetaDslx.CodeAnalysis.Symbols.SymbolKind;
 
 namespace MetaDslx.Languages.Meta.Symbols
 {
@@ -31,7 +33,7 @@ namespace MetaDslx.Languages.Meta.Symbols
             _state = CompletionState.Create(Language);
         }
 
-        public override LanguageSymbolKind Kind => LanguageSymbolKind.ConstructedType;
+        public override SymbolKind Kind => SymbolKind.ConstructedType;
 
         public override Symbol ContainingSymbol => _containingSymbol;
 
@@ -130,16 +132,6 @@ namespace MetaDslx.Languages.Meta.Symbols
             }
         }
 
-        public override void Accept(CodeAnalysis.SymbolVisitor visitor)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override TResult Accept<TResult>(CodeAnalysis.SymbolVisitor<TResult> visitor)
-        {
-            throw new NotImplementedException();
-        }
-
         public override void Accept(CodeAnalysis.Symbols.SymbolVisitor visitor)
         {
             throw new NotImplementedException();
@@ -155,5 +147,9 @@ namespace MetaDslx.Languages.Meta.Symbols
             throw new NotImplementedException();
         }
 
+        protected override ISymbol CreateISymbol()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

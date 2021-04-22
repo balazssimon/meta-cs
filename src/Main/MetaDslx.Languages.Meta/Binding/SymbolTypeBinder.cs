@@ -1,4 +1,4 @@
-﻿using MetaDslx.CodeAnalysis;
+﻿using Microsoft.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Binding.Binders;
 using MetaDslx.CodeAnalysis.Symbols;

@@ -7,20 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Immutable;
-using MetaDslx.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Declarations;
-using MetaDslx.CodeAnalysis.Symbols;
-using MetaDslx.CodeAnalysis.Symbols.Source;
-using MetaDslx.CodeAnalysis.Symbols.Metadata;
-using MetaDslx.Languages.Meta;
-using MetaDslx.Languages.Meta.Syntax;
 using MetaDslx.Languages.Meta.Binding;
 using MetaDslx.Languages.Meta.Symbols;
-
-using MetaDslx.CodeAnalysis.Symbols;
-using MetaDslx.Languages.Meta.Model;
 
 namespace MetaDslx.Languages.Meta
 {

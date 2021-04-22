@@ -6,7 +6,7 @@ using MetaDslx.CodeAnalysis.Binding.BoundNodes;
 using MetaDslx.CodeAnalysis.Symbols.Metadata;
 using MetaDslx.Languages.Meta.Model;
 using MetaDslx.Languages.Meta.Syntax;
-using MetaDslx.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Text;

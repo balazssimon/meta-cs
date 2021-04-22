@@ -8,7 +8,6 @@
     <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
     <NoStdLib>true</NoStdLib>
     <ApplyNgenOptimization>partial</ApplyNgenOptimization>
-    <LangVersion>preview</LangVersion>
 
     <!-- NuGet -->
     <IsPackable>true</IsPackable>
@@ -30,7 +29,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
-  <ItemGroup>
+  <!--ItemGroup>
     <PackageReference Include="System.Collections.Immutable" Version="$(SystemCollectionsImmutableVersion)" />
     <PackageReference Include="System.Memory" Version="$(SystemMemoryVersion)" />
     <PackageReference Include="System.Reflection.Metadata" Version="$(SystemReflectionMetadataVersion)" />
@@ -40,7 +39,7 @@
     <PackageReference Include="Antlr4.Runtime.Standard" Version="$(Antlr4RuntimeStandardVersion)" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="$(MicrosoftDependencyInjectionVersion)" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="$(MicrosoftSourceLinkGitHubVersion)" PrivateAssets="All" />
-  </ItemGroup>
+  </ItemGroup-->
   
   <ItemGroup>
     <ProjectReference Include="..\MetaDslx.CodeAnalysis.Meta\MetaDslx.CodeAnalysis.Meta.csproj" PrivateAssets="all" />

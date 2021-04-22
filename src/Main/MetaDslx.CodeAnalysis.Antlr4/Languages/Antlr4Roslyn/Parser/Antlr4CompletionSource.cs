@@ -11,8 +11,8 @@ using Antlr4.Runtime.Misc;
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.PooledObjects;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.PooledObjects;
 
 namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 {

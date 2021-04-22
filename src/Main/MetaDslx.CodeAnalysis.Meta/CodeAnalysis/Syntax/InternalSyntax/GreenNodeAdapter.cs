@@ -61,6 +61,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         protected virtual SyntaxKind KindCore => (SyntaxKind)EnumObject.FromIntUnsafe(LanguageCore.SyntaxFacts.SyntaxKindType, this.RawKind);
 
+        protected virtual new bool ShouldReuseInSerialization => base.ShouldReuseInSerialization;
+
         public SyntaxKind ContextualKind => this.ContextualKindCore;
 
         protected virtual SyntaxKind ContextualKindCore => (SyntaxKind)EnumObject.FromIntUnsafe(LanguageCore.SyntaxFacts.SyntaxKindType, this.RawContextualKind);
@@ -80,6 +82,11 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         }
 
         protected abstract SyntaxNode CreateRedCore(SyntaxNode parent, int position);
+
+        protected new DiagnosticInfo[] GetDiagnostics()
+        {
+            return base.GetDiagnostics();
+        }
 
         internal protected new virtual void WriteTo(ObjectWriter writer)
         {

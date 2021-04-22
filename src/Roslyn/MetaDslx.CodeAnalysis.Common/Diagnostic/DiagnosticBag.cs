@@ -315,13 +315,13 @@ namespace Microsoft.CodeAnalysis
 
         #region "Poolable"
 
-        internal static DiagnosticBag GetInstance()
+        public static DiagnosticBag GetInstance()
         {
             DiagnosticBag bag = s_poolInstance.Allocate();
             return bag;
         }
 
-        internal void Free()
+        public void Free()
         {
             Clear();
             s_poolInstance.Free(this);

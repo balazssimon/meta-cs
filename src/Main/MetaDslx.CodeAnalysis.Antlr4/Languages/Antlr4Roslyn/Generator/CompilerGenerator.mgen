@@ -196,7 +196,7 @@ namespace [Properties.DefaultNamespace].Syntax
                 return this;
             }
 
-            var effectiveKind = kind.MapSpecifiedToEffectiveKind();
+            var effectiveKind = MapSpecifiedToEffectiveKind(kind);
             return new [lang]ParseOptions(this) { SpecifiedKind = kind, Kind = effectiveKind };
         }
 
@@ -286,30 +286,6 @@ namespace [Properties.DefaultNamespace].Syntax
                 ?? ImmutableDictionary<string, string>.Empty;
 
             return new [lang]ParseOptions(this) { Features = dictionary };
-        }
-
-        public override void ValidateOptions(ArrayBuilder<Diagnostic> builder)
-        {
-            base.ValidateOptions(builder);
-
-            // Validate LanguageVersion not SpecifiedLanguageVersion, after Latest/Default has been converted:
-            if (!LanguageVersion.IsValid())
-            {
-                builder.Add([lang]ErrorCode.ERR_BadLanguageVersion.ToDiagnosticWithNoLocation(LanguageVersion.ToString()));
-            }
-        }
-
-        public bool IsFeatureEnabled(string feature)
-        {
-            throw new NotImplementedException("TODO:MetaDslx");
-            /*string featureFlag = feature.RequiredFeature();
-            if (featureFlag != null)
-            {
-                return Features.ContainsKey(featureFlag);
-            }
-            LanguageVersion availableVersion = LanguageVersion;
-            LanguageVersion requiredVersion = feature.RequiredVersion();
-            return availableVersion >= requiredVersion;*/
         }
 
         public override bool Equals(object obj)
@@ -457,19 +433,6 @@ namespace [Properties.DefaultNamespace]
         }
     }
 
-    public class [lang]RequiredLanguageVersion : RequiredLanguageVersion
-    {
-        internal LanguageVersion Version { get; }
-
-        internal [lang]RequiredLanguageVersion(LanguageVersion version)
-        {
-            [lang]LanguageVersion preview = [lang]LanguageVersion.Preview;
-            Version = (version == preview.MapSpecifiedToEffectiveVersion()) ? [lang]LanguageVersion.Preview : version;
-        }
-
-        public override string ToString() => Version.ToDisplayString();
-    }
-
     public static class LanguageVersionFacts
     {
         /// <summary>
@@ -537,10 +500,10 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Text;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Diagnostics;
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Declarations;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.Diagnostics;
 ^
 [var lang = Properties.LanguageName]
 namespace [Properties.DefaultNamespace]
@@ -548,10 +511,9 @@ namespace [Properties.DefaultNamespace]
     public class [lang]Compilation : LanguageCompilation
     {
         #region Constructors and Factories
-
+        
         private static readonly [lang]CompilationOptions s_defaultOptions = new [lang]CompilationOptions(OutputKind.ConsoleApplication);
         private static readonly [lang]CompilationOptions s_defaultSubmissionOptions = new [lang]CompilationOptions(OutputKind.DynamicallyLinkedLibrary).WithReferencesSupersedeLowerVersions(true);
-
 
         /// <summary>
         /// Creates a new compilation from scratch. Methods such as AddSyntaxTrees or AddReferences
@@ -597,7 +559,7 @@ namespace [Properties.DefaultNamespace]
             return Create(
                 assemblyName,
                 options?.WithReferencesSupersedeLowerVersions(true) ?? s_defaultSubmissionOptions,
-                (syntaxTree != null) ? new[] { syntaxTree } : SpecializedCollections.EmptyEnumerable<SyntaxTree>(),
+                (syntaxTree != null) ? new[] { syntaxTree } : null,
                 references,
                 previousScriptCompilation,
                 returnType,
@@ -615,24 +577,10 @@ namespace [Properties.DefaultNamespace]
             Type? hostObjectType,
             bool isSubmission)
         {
-            RoslynDebug.Assert(options != null);
-            Debug.Assert(!isSubmission || options.ReferencesSupersedeLowerVersions);
-
-            var validatedReferences = ValidateReferences<LanguageCompilationReference>(references);
-
-            // We can't reuse the whole Reference Manager entirely (reuseReferenceManager = false)
-            // because the set of references of this submission differs from the previous one.
-            // The submission inherits references of the previous submission, adds the previous submission reference
-            // and may add more references passed explicitly or via #r.
-            //
-            // TODO: Consider reusing some results of the assembly binding to improve perf
-            // since most of the binding work is similar.
-            // https://github.com/dotnet/roslyn/issues/43397
-
             var compilation = new [lang]Compilation(
                 assemblyName,
                 options,
-                validatedReferences,
+                references,
                 previousSubmission,
                 returnType,
                 hostObjectType,
@@ -640,10 +588,10 @@ namespace [Properties.DefaultNamespace]
                 referenceManager: null,
                 reuseReferenceManager: false,
                 syntaxAndDeclarations: new SyntaxAndDeclarationManager(
+                    options.Language,
                     ImmutableArray<SyntaxTree>.Empty,
                     options.ScriptClassName,
                     options.SourceReferenceResolver,
-                    options.Language,
                     isSubmission,
                     state: null),
                 semanticModelProvider: null);
@@ -652,13 +600,11 @@ namespace [Properties.DefaultNamespace]
             {
                 compilation = compilation.AddSyntaxTrees(syntaxTrees);
             }
-
-            Debug.Assert(compilation._lazyAssemblySymbol is null);
             return compilation;
         }
 
-        protected [lang]Compilation(string assemblyName, [lang]CompilationOptions options, IEnumerable<MetadataReference> references, [lang]Compilation previousSubmission, Type submissionReturnType, Type hostObjectType, bool isSubmission, ReferenceManager referenceManager, bool reuseReferenceManager, SyntaxAndDeclarationManager syntaxAndDeclarations, AsyncQueue<CompilationEvent> eventQueue = null)
-            : base(assemblyName, options, references, previousSubmission, submissionReturnType, hostObjectType, isSubmission, referenceManager, reuseReferenceManager, syntaxAndDeclarations, eventQueue)
+        protected [lang]Compilation(string assemblyName, [lang]CompilationOptions options, IEnumerable<MetadataReference> references, [lang]Compilation previousSubmission, Type submissionReturnType, Type hostObjectType, bool isSubmission, ReferenceManager referenceManager, bool reuseReferenceManager, SyntaxAndDeclarationManager syntaxAndDeclarations, SemanticModelProvider semanticModelProvider, AsyncQueue<CompilationEvent> eventQueue = null)
+            : base(assemblyName, options, references, previousSubmission, submissionReturnType, hostObjectType, isSubmission, referenceManager, reuseReferenceManager, syntaxAndDeclarations, semanticModelProvider, eventQueue)
         {
         }
 
@@ -666,42 +612,43 @@ namespace [Properties.DefaultNamespace]
         /// Create a duplicate of this compilation with different symbol instances.
         /// </summary>
         protected override LanguageCompilation CreateNew(
-            string assemblyName,
-            LanguageCompilationOptions options,
-            IEnumerable<MetadataReference> references,
-            LanguageCompilation previousSubmission,
-            Type submissionReturnType,
-            Type hostObjectType,
-            bool isSubmission,
-            ReferenceManager referenceManager,
-            bool reuseReferenceManager,
+            string assemblyName, 
+            LanguageCompilationOptions options, 
+            IEnumerable<MetadataReference> references, 
+            LanguageCompilation previousSubmission, 
+            Type submissionReturnType, 
+            Type hostObjectType, 
+            bool isSubmission, 
+            ReferenceManager referenceManager, 
+            bool reuseReferenceManager, 
             SyntaxAndDeclarationManager syntaxAndDeclarations,
+            SemanticModelProvider semanticModelProvider,
             AsyncQueue<CompilationEvent> eventQueue = null)
         {
             return new [lang]Compilation(
-                assemblyName, 
-                ([lang]CompilationOptions)options, 
-                references, 
-                ([lang]Compilation)previousSubmission, 
-                submissionReturnType, 
-                hostObjectType, 
-                isSubmission, 
-                referenceManager, 
-                reuseReferenceManager, 
-                syntaxAndDeclarations, 
+                assemblyName,
+                ([lang]CompilationOptions)options,
+                references,
+                ([lang]Compilation)previousSubmission,
+                submissionReturnType,
+                hostObjectType,
+                isSubmission,
+                referenceManager,
+                reuseReferenceManager,
+                syntaxAndDeclarations,
+                semanticModelProvider,
                 eventQueue);
         }
+
 
         protected override Compilation CommonClone()
         {
             return this.Clone();
         }
-
         /// <summary>
         /// Creates a new compilation with the specified name.
         /// </summary>
         public new [lang]Compilation WithAssemblyName(string assemblyName) => ([lang]Compilation)base.WithAssemblyName(assemblyName);
-
         /// <summary>
         /// Creates a new compilation with the specified references.
         /// </summary>
@@ -714,107 +661,79 @@ namespace [Properties.DefaultNamespace]
         /// the new compilation is going to use the updated version, while the current compilation will be using the previous (it doesn't change).
         /// </remarks>
         public new [lang]Compilation WithReferences(IEnumerable<MetadataReference> references) => ([lang]Compilation)base.WithReferences(references);
-
         /// <summary>
         /// Creates a new compilation with the specified references.
         /// </summary>
-        public new [lang]Compilation WithReferences(params MetadataReference["[]"] references) => ([lang]Compilation)base.WithReferences(references);
-
+        public new [lang]Compilation WithReferences(params MetadataReference[] references) => ([lang]Compilation)base.WithReferences(references);
         /// <summary>
         /// Creates a new compilation with the specified compilation options.
         /// </summary>
         public [lang]Compilation WithOptions([lang]CompilationOptions options) => ([lang]Compilation)base.WithOptions(options);
-
         #endregion
-
         #region Syntax Trees (maintain an ordered list)
-
         /// <summary>
         /// Creates a new compilation with additional syntax trees.
         /// </summary>
-        public new [lang]Compilation AddSyntaxTrees(params SyntaxTree["[]"] trees) => ([lang]Compilation)base.AddSyntaxTrees(trees);
-
+        public new [lang]Compilation AddSyntaxTrees(params SyntaxTree[] trees) => ([lang]Compilation)base.AddSyntaxTrees(trees);
         /// <summary>
         /// Creates a new compilation with additional syntax trees.
         /// </summary>
         public new [lang]Compilation AddSyntaxTrees(IEnumerable<SyntaxTree> trees) => ([lang]Compilation)base.AddSyntaxTrees(trees);
-
         /// <summary>
         /// Creates a new compilation without the specified syntax trees. Preserves metadata info for use with trees
         /// added later.
         /// </summary>
-        public new [lang]Compilation RemoveSyntaxTrees(params SyntaxTree["[]"] trees) => ([lang]Compilation)base.RemoveSyntaxTrees(trees);
-
+        public new [lang]Compilation RemoveSyntaxTrees(params SyntaxTree[] trees) => ([lang]Compilation)base.RemoveSyntaxTrees(trees);
         /// <summary>
         /// Creates a new compilation without the specified syntax trees. Preserves metadata info for use with trees
         /// added later.
         /// </summary>
         public new [lang]Compilation RemoveSyntaxTrees(IEnumerable<SyntaxTree> trees) => ([lang]Compilation)base.RemoveSyntaxTrees(trees);
-
         /// <summary>
         /// Creates a new compilation without any syntax trees. Preserves metadata info
         /// from this compilation for use with trees added later.
         /// </summary>
         public new [lang]Compilation RemoveAllSyntaxTrees() => ([lang]Compilation)base.RemoveAllSyntaxTrees();
-
         /// <summary>
         /// Creates a new compilation without the old tree but with the new tree.
         /// </summary>
         public new [lang]Compilation ReplaceSyntaxTree(SyntaxTree oldTree, SyntaxTree newTree) => ([lang]Compilation)base.ReplaceSyntaxTree(oldTree, newTree);
-
         #endregion
-
         #region References
-
         /// <summary>
         /// Creates a new compilation with additional metadata references.
         /// </summary>
-        public new [lang]Compilation AddReferences(params MetadataReference["[]"] references) => ([lang]Compilation)base.AddReferences(references);
-
+        public new [lang]Compilation AddReferences(params MetadataReference[] references) => ([lang]Compilation)base.AddReferences(references);
         /// <summary>
         /// Creates a new compilation with additional metadata references.
         /// </summary>
         public new [lang]Compilation AddReferences(IEnumerable<MetadataReference> references) => ([lang]Compilation)base.AddReferences(references);
-
         /// <summary>
         /// Creates a new compilation without the specified metadata references.
         /// </summary>
-        public new [lang]Compilation RemoveReferences(params MetadataReference["[]"] references) => ([lang]Compilation)base.RemoveReferences(references);
-
+        public new [lang]Compilation RemoveReferences(params MetadataReference[] references) => ([lang]Compilation)base.RemoveReferences(references);
         /// <summary>
         /// Creates a new compilation without the specified metadata references.
         /// </summary>
         public new [lang]Compilation RemoveReferences(IEnumerable<MetadataReference> references) => ([lang]Compilation)base.RemoveReferences(references);
-
         /// <summary>
         /// Creates a new compilation without any metadata references
         /// </summary>
         public new [lang]Compilation RemoveAllReferences() => ([lang]Compilation)base.RemoveAllReferences();
-
         /// <summary>
         /// Creates a new compilation with an old metadata reference replaced with a new metadata reference.
         /// </summary>
         public new [lang]Compilation ReplaceReference(MetadataReference oldReference, MetadataReference newReference) => ([lang]Compilation)base.ReplaceReference(oldReference, newReference);
-
         #endregion
     }
 }
 end template
 
 template GenerateCompilationFactory()
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Collections.Immutable;
-using MetaDslx.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Declarations;
-using MetaDslx.CodeAnalysis.Symbols;
-using MetaDslx.CodeAnalysis.Symbols.Source;
-using MetaDslx.CodeAnalysis.Symbols.Metadata;
 using [Properties.DefaultNamespace];
 using [Properties.DefaultNamespace].Syntax;
 using [Properties.DefaultNamespace].Binding;
@@ -911,155 +830,67 @@ template GenerateCompilationOptions()
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Text;
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Binding;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.PooledObjects;
+using Microsoft.CodeAnalysis;
 ^
 [var lang = Properties.LanguageName]
 namespace [Properties.DefaultNamespace]
 {
     public class [lang]CompilationOptions : LanguageCompilationOptions, IEquatable<LanguageCompilationOptions>
     {
-        public [lang]CompilationOptions(
-            OutputKind outputKind,
-            bool reportSuppressedDiagnostics = false,
-            string moduleName = null,
-            string mainTypeName = null,
-            string scriptClassName = null,
-            IEnumerable<string> usings = null,
-            OptimizationLevel optimizationLevel = OptimizationLevel.Debug,
-            bool checkOverflow = false,
-            bool allowUnsafe = false,
-            string cryptoKeyContainer = null,
-            string cryptoKeyFile = null,
-            ImmutableArray<byte> cryptoPublicKey = default,
-            bool? delaySign = null,
-            Platform platform = Platform.AnyCpu,
-            ReportDiagnostic generalDiagnosticOption = ReportDiagnostic.Default,
-            int warningLevel = 4,
-            IEnumerable<KeyValuePair<string, ReportDiagnostic>> specificDiagnosticOptions = null,
-            bool concurrentBuild = true,
-            bool deterministic = false,
-            DateTime currentLocalTime = default,
-            bool debugPlusMode = false,
-            XmlReferenceResolver xmlReferenceResolver = null,
-            SourceReferenceResolver sourceReferenceResolver = null,
-            MetadataReferenceResolver metadataReferenceResolver = null,
-            AssemblyIdentityComparer assemblyIdentityComparer = null,
-            StrongNameProvider strongNameProvider = null,
-            bool publicSign = false,
-            MetadataImportOptions metadataImportOptions = MetadataImportOptions.Public,
-            bool referencesSupersedeLowerVersions = false,
-            BinderFlags topLevelBinderFlags = null)
-            : base([lang]Language.Instance, outputKind, reportSuppressedDiagnostics, moduleName, mainTypeName, scriptClassName, usings,
-                   optimizationLevel, checkOverflow, allowUnsafe, cryptoKeyContainer, cryptoKeyFile, cryptoPublicKey, delaySign, platform, 
-                   generalDiagnosticOption, warningLevel, specificDiagnosticOptions,
-                   concurrentBuild, deterministic, currentLocalTime, debugPlusMode, xmlReferenceResolver,
-                   sourceReferenceResolver, metadataReferenceResolver, assemblyIdentityComparer,
-                   strongNameProvider, publicSign, metadataImportOptions, referencesSupersedeLowerVersions, topLevelBinderFlags)
+        public [lang]CompilationOptions(OutputKind outputKind, bool reportSuppressedDiagnostics = false, string? moduleName = null, string? mainTypeName = null, string? scriptClassName = null, IEnumerable<string>? usings = null, OptimizationLevel optimizationLevel = OptimizationLevel.Debug, bool checkOverflow = false, bool allowUnsafe = false, string? cryptoKeyContainer = null, string? cryptoKeyFile = null, ImmutableArray<byte> cryptoPublicKey = default, bool? delaySign = null, Platform platform = Platform.AnyCpu, ReportDiagnostic generalDiagnosticOption = ReportDiagnostic.Default, int warningLevel = 4, IEnumerable<KeyValuePair<string, ReportDiagnostic>>? specificDiagnosticOptions = null, bool concurrentBuild = true, bool deterministic = false, XmlReferenceResolver? xmlReferenceResolver = null, SourceReferenceResolver? sourceReferenceResolver = null, MetadataReferenceResolver? metadataReferenceResolver = null, AssemblyIdentityComparer? assemblyIdentityComparer = null, StrongNameProvider? strongNameProvider = null, bool publicSign = false, MetadataImportOptions metadataImportOptions = MetadataImportOptions.Public, NullableContextOptions nullableContextOptions = NullableContextOptions.Disable) 
+            : base([lang]Language.Instance, outputKind, reportSuppressedDiagnostics, moduleName, mainTypeName, scriptClassName, usings, optimizationLevel, 
+                  checkOverflow, allowUnsafe, cryptoKeyContainer, cryptoKeyFile, cryptoPublicKey, delaySign, platform, generalDiagnosticOption, warningLevel,
+                  specificDiagnosticOptions, concurrentBuild, deterministic, xmlReferenceResolver, sourceReferenceResolver, metadataReferenceResolver, 
+                  assemblyIdentityComparer, strongNameProvider, publicSign, metadataImportOptions, nullableContextOptions)
         {
+        }
+
+        protected [lang]CompilationOptions([lang]CompilationOptions other)
+            : base(other)
+        {
+
         }
 
         protected override LanguageCompilationOptions Clone()
         {
-            return new [lang]CompilationOptions(
-                outputKind: this.OutputKind,
-                reportSuppressedDiagnostics: this.ReportSuppressedDiagnostics,
-                moduleName: this.ModuleName,
-                mainTypeName: this.MainTypeName,
-                scriptClassName: this.ScriptClassName,
-                usings: this.Usings,
-                optimizationLevel: this.OptimizationLevel,
-                checkOverflow: this.CheckOverflow,
-                allowUnsafe: this.AllowUnsafe,
-                cryptoKeyContainer: this.CryptoKeyContainer,
-                cryptoKeyFile: this.CryptoKeyFile,
-                cryptoPublicKey: this.CryptoPublicKey,
-                delaySign: this.DelaySign,
-                platform: this.Platform,
-                generalDiagnosticOption: this.GeneralDiagnosticOption,
-                warningLevel: this.WarningLevel,
-                specificDiagnosticOptions: this.SpecificDiagnosticOptions,
-                concurrentBuild: this.ConcurrentBuild,
-                deterministic: this.Deterministic,
-                currentLocalTime: this.CurrentLocalTime,
-                debugPlusMode: this.DebugPlusMode,
-                xmlReferenceResolver: this.XmlReferenceResolver,
-                sourceReferenceResolver: this.SourceReferenceResolver,
-                metadataReferenceResolver: this.MetadataReferenceResolver,
-                assemblyIdentityComparer: this.AssemblyIdentityComparer,
-                strongNameProvider: this.StrongNameProvider,
-                publicSign: this.PublicSign,
-                metadataImportOptions: this.MetadataImportOptions,
-                referencesSupersedeLowerVersions: this.ReferencesSupersedeLowerVersions,
-                topLevelBinderFlags: this.TopLevelBinderFlags);
+            return new [lang]CompilationOptions(this);
         }
 
-        public new [lang]CompilationOptions WithTopLevelBinderFlags(BinderFlags flags) => ([lang]CompilationOptions)base.WithTopLevelBinderFlags(flags);
         public new [lang]CompilationOptions WithOutputKind(OutputKind kind) => ([lang]CompilationOptions)base.WithOutputKind(kind);
+        public new [lang]CompilationOptions WithReportSuppressedDiagnostics(bool value) => ([lang]CompilationOptions)base.WithReportSuppressedDiagnostics(value);
         public new [lang]CompilationOptions WithModuleName(string moduleName) => ([lang]CompilationOptions)base.WithModuleName(moduleName);
-        public new [lang]CompilationOptions WithScriptClassName(string name) => ([lang]CompilationOptions)base.WithScriptClassName(name);
         public new [lang]CompilationOptions WithMainTypeName(string name) => ([lang]CompilationOptions)base.WithMainTypeName(name);
+        public new [lang]CompilationOptions WithScriptClassName(string name) => ([lang]CompilationOptions)base.WithScriptClassName(name);
+        public new [lang]CompilationOptions WithUsings(ImmutableArray<string> usings) => ([lang]CompilationOptions)base.WithUsings(usings);
+        public new [lang]CompilationOptions WithUsings(IEnumerable<string> usings) => ([lang]CompilationOptions)base.WithUsings(usings);
+        public new [lang]CompilationOptions WithUsings(params string[] usings) => ([lang]CompilationOptions)base.WithUsings(usings);
+        public new [lang]CompilationOptions WithOptimizationLevel(OptimizationLevel value) => ([lang]CompilationOptions)base.WithOptimizationLevel(value);
+        public new [lang]CompilationOptions WithOverflowChecks(bool enabled) => ([lang]CompilationOptions)base.WithOverflowChecks(enabled);
+        public new [lang]CompilationOptions WithAllowUnsafe(bool enabled) => ([lang]CompilationOptions)base.WithAllowUnsafe(enabled);
         public new [lang]CompilationOptions WithCryptoKeyContainer(string name) => ([lang]CompilationOptions)base.WithCryptoKeyContainer(name);
         public new [lang]CompilationOptions WithCryptoKeyFile(string path) => ([lang]CompilationOptions)base.WithCryptoKeyFile(path);
         public new [lang]CompilationOptions WithCryptoPublicKey(ImmutableArray<byte> value) => ([lang]CompilationOptions)base.WithCryptoPublicKey(value);
         public new [lang]CompilationOptions WithDelaySign(bool? value) => ([lang]CompilationOptions)base.WithDelaySign(value);
-        public new [lang]CompilationOptions WithUsings(ImmutableArray<string> usings) => ([lang]CompilationOptions)base.WithUsings(usings);
-        public new [lang]CompilationOptions WithUsings(IEnumerable<string> usings) => ([lang]CompilationOptions)base.WithUsings(usings);
-        public new [lang]CompilationOptions WithUsings(params string["[]"] usings) => ([lang]CompilationOptions)base.WithUsings(usings);
-        public new [lang]CompilationOptions WithOptimizationLevel(OptimizationLevel value) => ([lang]CompilationOptions)base.WithOptimizationLevel(value);
-        public new [lang]CompilationOptions WithOverflowChecks(bool enabled) => ([lang]CompilationOptions)base.WithOverflowChecks(enabled);
-        public new [lang]CompilationOptions WithAllowUnsafe(bool enabled) => ([lang]CompilationOptions)base.WithAllowUnsafe(enabled);
         public new [lang]CompilationOptions WithPlatform(Platform platform) => ([lang]CompilationOptions)base.WithPlatform(platform);
-        public new [lang]CompilationOptions WithPublicSign(bool publicSign) => ([lang]CompilationOptions)base.WithPublicSign(publicSign);
         public new [lang]CompilationOptions WithGeneralDiagnosticOption(ReportDiagnostic value) => ([lang]CompilationOptions)base.WithGeneralDiagnosticOption(value);
+        public new [lang]CompilationOptions WithWarningLevel(int warningLevel) => ([lang]CompilationOptions)base.WithWarningLevel(warningLevel);
         public new [lang]CompilationOptions WithSpecificDiagnosticOptions(ImmutableDictionary<string, ReportDiagnostic> values) => ([lang]CompilationOptions)base.WithSpecificDiagnosticOptions(values);
         public new [lang]CompilationOptions WithSpecificDiagnosticOptions(IEnumerable<KeyValuePair<string, ReportDiagnostic>> values) => ([lang]CompilationOptions)base.WithSpecificDiagnosticOptions(values);
-        public new [lang]CompilationOptions WithWarningLevel(int warningLevel) => ([lang]CompilationOptions)base.WithWarningLevel(warningLevel);
         public new [lang]CompilationOptions WithConcurrentBuild(bool concurrentBuild) => ([lang]CompilationOptions)base.WithConcurrentBuild(concurrentBuild);
         public new [lang]CompilationOptions WithDeterministic(bool deterministic) => ([lang]CompilationOptions)base.WithDeterministic(deterministic);
-        public new [lang]CompilationOptions WithCurrentLocalTime(DateTime value) => ([lang]CompilationOptions)base.WithCurrentLocalTime(value);
-        public new [lang]CompilationOptions WithDebugPlusMode(bool debugPlusMode) => ([lang]CompilationOptions)base.WithDebugPlusMode(debugPlusMode);
-        public new [lang]CompilationOptions WithMetadataImportOptions(MetadataImportOptions value) => ([lang]CompilationOptions)base.WithMetadataImportOptions(value);
-        public new [lang]CompilationOptions WithReferencesSupersedeLowerVersions(bool value) => ([lang]CompilationOptions)base.WithReferencesSupersedeLowerVersions(value);
         public new [lang]CompilationOptions WithXmlReferenceResolver(XmlReferenceResolver resolver) => ([lang]CompilationOptions)base.WithXmlReferenceResolver(resolver);
         public new [lang]CompilationOptions WithSourceReferenceResolver(SourceReferenceResolver resolver) => ([lang]CompilationOptions)base.WithSourceReferenceResolver(resolver);
         public new [lang]CompilationOptions WithMetadataReferenceResolver(MetadataReferenceResolver resolver) => ([lang]CompilationOptions)base.WithMetadataReferenceResolver(resolver);
         public new [lang]CompilationOptions WithAssemblyIdentityComparer(AssemblyIdentityComparer comparer) => ([lang]CompilationOptions)base.WithAssemblyIdentityComparer(comparer);
         public new [lang]CompilationOptions WithStrongNameProvider(StrongNameProvider provider) => ([lang]CompilationOptions)base.WithStrongNameProvider(provider);
+        public new [lang]CompilationOptions WithPublicSign(bool publicSign) => ([lang]CompilationOptions)base.WithPublicSign(publicSign);
+        public new [lang]CompilationOptions WithMetadataImportOptions(MetadataImportOptions value) => ([lang]CompilationOptions)base.WithMetadataImportOptions(value);
+        public new [lang]CompilationOptions WithNullableContextOptions(NullableContextOptions value) => ([lang]CompilationOptions)base.WithNullableContextOptions(value);
 
-        protected override void ValidateOptions(ArrayBuilder<Diagnostic> builder)
-        {
-            base.ValidateOptions(builder);
-        }
-
-        public override bool Equals(LanguageCompilationOptions other)
-        {
-            if (other is [lang]CompilationOptions typedOptions) return this.Equals(typedOptions);
-            else return base.Equals(other);
-        }
-
-        public bool Equals([lang]CompilationOptions other)
-        {
-            return base.Equals(other);
-        }
-
-        public override bool Equals(object obj)
-        {
-            return this.Equals(obj as [lang]CompilationOptions);
-        }
-
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
-
-        public override Diagnostic FilterDiagnostic(Diagnostic diagnostic)
-        {
-            return base.FilterDiagnostic(diagnostic);
-        }
+        public new [lang]CompilationOptions WithTopLevelBinderFlags(BinderFlags flags) => ([lang]CompilationOptions)base.WithTopLevelBinderFlags(flags);
+        public new [lang]CompilationOptions WithReferencesSupersedeLowerVersions(bool value) => ([lang]CompilationOptions)base.WithReferencesSupersedeLowerVersions(value);
 
     }
 }
@@ -1117,6 +948,9 @@ namespace [Properties.DefaultNamespace]
         public new const string Category = "[Instances.ErrorCodeCategory]";
         public new const string MessagePrefix = "[Instances.MessagePrefix]";
 ^
+        private static readonly ErrorCodeMessageProvider s_messages = new ErrorCodeMessageProvider(MessagePrefix, typeof([lang]ErrorCode));
+
+^
         public static readonly [lang]ErrorCode ERR_GeneralError = new [lang]ErrorCode(1, DiagnosticSeverity.Error, "Error", "Error: {0}");
         public static readonly [lang]ErrorCode WRN_GeneralWarning = new [lang]ErrorCode(2, DiagnosticSeverity.Warning, "Warning", "Warning: {0}");
         public static readonly [lang]ErrorCode INF_GeneralInfo = new [lang]ErrorCode(3, DiagnosticSeverity.Info, "Info", "Info: {0}");
@@ -1124,7 +958,7 @@ namespace [Properties.DefaultNamespace]
         public static readonly [lang]ErrorCode ERR_FeatureNotAvailableInVersion1 = new [lang]ErrorCode(5, DiagnosticSeverity.Error, "Feature not available", "Feature not available in [lang] version 1: {0}");
 ^
         private [lang]ErrorCode(int code, DiagnosticSeverity defaultSeverity, string title, string messageFormat, bool isEnabledByDefault = true, string description = null, string helpLinkUri = null, params string["[]"] customTags) 
-            : base(code, MessagePrefix, title, messageFormat, Category, defaultSeverity, isEnabledByDefault, description, helpLinkUri, customTags)
+            : base(s_messages, code, title, messageFormat, Category, defaultSeverity, isEnabledByDefault, description, helpLinkUri, customTags)
         {
         }
     }
@@ -1142,9 +976,9 @@ using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
-using MetaDslx.CodeAnalysis.Text;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Syntax.InternalSyntax;
+using Microsoft.CodeAnalysis.Text;
 using MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax;
 
 namespace [Properties.DefaultNamespace].Syntax.InternalSyntax
@@ -1183,10 +1017,10 @@ using Antlr4.Runtime.Tree;
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
-using MetaDslx.CodeAnalysis.Text;
 using MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Syntax.InternalSyntax;
+using Microsoft.CodeAnalysis.Text;
 
 namespace [Properties.DefaultNamespace].Syntax.InternalSyntax
 {
@@ -1562,8 +1396,8 @@ using System.Threading.Tasks;
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax;
-using MetaDslx.CodeAnalysis.Text;
-using MetaDslx.CodeAnalysis;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Text;
 using [Properties.DefaultNamespace];
 using [Properties.DefaultNamespace].Syntax;
 using [Properties.DefaultNamespace].Syntax.InternalSyntax;
@@ -1581,31 +1415,6 @@ namespace [Properties.DefaultNamespace]
         /// The options used by the parser to produce the syntax tree.
         /// </summary>
         public new abstract [lang]ParseOptions Options { get; }
-
-        // REVIEW: I would prefer to not expose CloneAsRoot and make the functionality
-        // internal to CaaS layer, to ensure that for a given SyntaxTree there can not
-        // be multiple trees claiming to be its children.
-        // 
-        // However, as long as we provide GetRoot extensibility point on SyntaxTree
-        // the guarantee above cannot be implemented and we have to provide some way for
-        // creating root nodes.
-        //
-        // Therefore I place CloneAsRoot API on SyntaxTree and make it protected to
-        // at least limit its visibility to SyntaxTree extenders.
-
-        /// <summary>
-        /// Produces a clone of a <see cref="[lang]SyntaxNode"/> which will have current syntax tree as its parent.
-        /// 
-        /// Caller must guarantee that if the same instance of <see cref="[lang]SyntaxNode"/> makes multiple calls
-        /// to this function, only one result is observable.
-        /// </summary>
-        /// <typeparam name="T">Type of the syntax node.</typeparam>
-        /// <param name="node">The original syntax node.</param>
-        /// <returns>A clone of the original syntax node that has current <see cref="CSharpSyntaxTree"/> as its parent.</returns>
-        protected T CloneNodeAsRoot<T>(T node) where T : [lang]SyntaxNode
-        {
-            return [lang]SyntaxNode.CloneNodeAsRoot(node, this);
-        }
 
         /// <summary>
         /// Gets the root node of the syntax tree.
@@ -1751,7 +1560,7 @@ namespace [Properties.DefaultNamespace]
 
         public new ImmutableArray<[lang]SyntaxKind> LookupTokens(int position, CancellationToken cancellationToken)
         {
-            return this.LookupTokensCore(position, cancellationToken).SelectAsArray(kind => ([lang]SyntaxKind)kind);
+            return this.LookupTokensCore(position, cancellationToken).Select(kind => ([lang]SyntaxKind)kind).ToImmutableArray();
         }
 
         #endregion
@@ -2065,7 +1874,7 @@ namespace [Properties.DefaultNamespace]
             {
             }
 
-            public override bool SupportsLocations
+            protected override bool SupportsLocations
             {
                 get { return true; }
             }
@@ -2092,9 +1901,10 @@ namespace [Properties.DefaultNamespace].Syntax.InternalSyntax
     using MetaDslx.CodeAnalysis;
     using MetaDslx.CodeAnalysis.Syntax;
     using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
-    using MetaDslx.CodeAnalysis;
-    using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
-    using MetaDslx.CodeAnalysis.Text;
+    using Microsoft.CodeAnalysis;
+    using Microsoft.CodeAnalysis.Syntax;
+	using Microsoft.CodeAnalysis.Syntax.InternalSyntax;
+	using Microsoft.CodeAnalysis.Text;
     using Roslyn.Utilities;
     using MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax;
 ^	
@@ -2299,7 +2109,7 @@ namespace [Properties.DefaultNamespace].Syntax.InternalSyntax
             }
         }
 ^
-        public MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<InternalSyntaxToken> Tokens => new MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<InternalSyntaxToken>(this.tokens);
+        public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<InternalSyntaxToken> Tokens => new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<InternalSyntaxToken>(this.tokens);
 ^
         protected override GreenNode GetSlot(int index)
         {
@@ -2316,7 +2126,7 @@ namespace [Properties.DefaultNamespace].Syntax.InternalSyntax
 ^
         public override void Accept([lang]SyntaxVisitor visitor) => visitor.VisitSkippedTokensTrivia(this);
 ^
-        public GreenSkippedTokensTriviaSyntax Update(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<InternalSyntaxToken> tokens)
+        public GreenSkippedTokensTriviaSyntax Update(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<InternalSyntaxToken> tokens)
         {
             if (tokens != this.Tokens)
             {
@@ -3146,7 +2956,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MetaDslx.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
@@ -3310,7 +3120,7 @@ namespace [Properties.DefaultNamespace].Syntax
 namespace [Properties.DefaultNamespace]
 {
     using System.Threading;
-    using MetaDslx.CodeAnalysis.Text;
+    using Microsoft.CodeAnalysis.Text;
 	using [Properties.DefaultNamespace].Syntax;
     using [Properties.DefaultNamespace].Syntax.InternalSyntax;
 ^
@@ -5127,10 +4937,12 @@ using System.Threading.Tasks;
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Declarations;
 using MetaDslx.CodeAnalysis.Symbols;
+using Microsoft.CodeAnalysis;
 using [Properties.DefaultNamespace];
 using [Properties.DefaultNamespace].Syntax;
 using [Properties.DefaultNamespace].Symbols;
 [Instances.ParserHeader]
+
 ^
 namespace [Properties.DefaultNamespace].Binding
 {
@@ -5265,7 +5077,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MetaDslx.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Syntax;

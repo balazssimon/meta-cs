@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MetaDslx.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using MetaDslx.CodeAnalysis;
 
 namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
 {
     public class Antlr4RoslynErrorCode : ErrorCode
     {
+        private static ErrorCodeMessageProvider s_messageProvider = new ErrorCodeMessageProvider("AR", typeof(Antlr4RoslynErrorCode));
+
         public new const string Category = "Antlr4Roslyn";
-        public new const string MessagePrefix = "AR";
 
         public static readonly Antlr4RoslynErrorCode ERR_SyntaxError = new Antlr4RoslynErrorCode(1, DiagnosticSeverity.Error, "Syntax error", "Syntax error: {0}");
         public static readonly Antlr4RoslynErrorCode ERR_UnnamedElement = new Antlr4RoslynErrorCode(2, DiagnosticSeverity.Error, "Element must have a name", "Element '{0}' must have a name. Elements with the same type in a rule must have different names.");
@@ -35,7 +36,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         
 
         public Antlr4RoslynErrorCode(int code, DiagnosticSeverity defaultSeverity, string title, string messageFormat, bool isEnabledByDefault = true, string description = null, string helpLinkUri = null, params string[] customTags) 
-            : base(code, MessagePrefix, title, messageFormat, Category, defaultSeverity, isEnabledByDefault, description, helpLinkUri, customTags)
+            : base(s_messageProvider, code, title, messageFormat, Category, defaultSeverity, isEnabledByDefault, description, helpLinkUri, customTags)
         {
         }
     }

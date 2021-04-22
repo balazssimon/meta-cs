@@ -9,7 +9,6 @@
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <NoStdLib>true</NoStdLib>
     <ApplyNgenOptimization>partial</ApplyNgenOptimization>
-    <LangVersion>preview</LangVersion>
 
     <!-- NuGet -->
     <IsPackable>true</IsPackable>
@@ -28,7 +27,6 @@
     <!-- Optional: Embed source files that are not tracked by the source control manager to the PDB -->
     <!-- This is useful if you generate files during the build -->
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <ExcludeRestorePackageImports>false</ExcludeRestorePackageImports>
   </PropertyGroup>
 

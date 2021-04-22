@@ -4,8 +4,8 @@ using System.Text;
 
 namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
 {
-    using MetaDslx.CodeAnalysis;
-    using MetaDslx.CodeAnalysis.PooledObjects;
+    using Microsoft.CodeAnalysis;
+    using Microsoft.CodeAnalysis.PooledObjects;
     using System;
     using System.Collections.Generic;
     using System.Collections.Immutable;

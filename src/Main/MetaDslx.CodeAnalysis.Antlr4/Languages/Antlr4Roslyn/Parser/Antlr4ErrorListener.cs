@@ -1,6 +1,6 @@
 using Antlr4.Runtime;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.Text;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Text;
 using System;
 using System.Collections.Generic;
 using System.IO;

@@ -104,7 +104,7 @@ namespace MetaDslx.CodeAnalysis
         }
 
         // Expects correct arguments.
-        internal LanguageCompilationOptions(
+        private LanguageCompilationOptions(
             OutputKind outputKind,
             bool reportSuppressedDiagnostics,
             string? moduleName,
@@ -150,7 +150,7 @@ namespace MetaDslx.CodeAnalysis
             this.NullableContextOptions = nullableContextOptions;
         }
 
-        private LanguageCompilationOptions(LanguageCompilationOptions other) : this(
+        protected LanguageCompilationOptions(LanguageCompilationOptions other) : this(
             outputKind: other.OutputKind,
             moduleName: other.ModuleName,
             mainTypeName: other.MainTypeName,
@@ -555,7 +555,7 @@ namespace MetaDslx.CodeAnalysis
             return clone;
         }
 
-        internal LanguageCompilationOptions WithReferencesSupersedeLowerVersions(bool value)
+        public LanguageCompilationOptions WithReferencesSupersedeLowerVersions(bool value)
         {
             if (value == this.ReferencesSupersedeLowerVersions)
             {
@@ -783,7 +783,7 @@ namespace MetaDslx.CodeAnalysis
                    Hash.Combine(TopLevelBinderFlags.GetHashCode(), this.NullableContextOptions.GetHashCode()))));
         }
 
-        internal override Diagnostic? FilterDiagnostic(Diagnostic diagnostic, CancellationToken cancellationToken)
+        protected new virtual Diagnostic? FilterDiagnostic(Diagnostic diagnostic, CancellationToken cancellationToken)
         {
             return LanguageDiagnosticFilter.Filter(
                 diagnostic,
@@ -793,6 +793,11 @@ namespace MetaDslx.CodeAnalysis
                 SpecificDiagnosticOptions,
                 SyntaxTreeOptionsProvider,
                 cancellationToken);
+        }
+
+        internal override Diagnostic? FilterDiagnosticCore(Diagnostic diagnostic, CancellationToken cancellationToken)
+        {
+            return this.FilterDiagnostic(diagnostic, cancellationToken);
         }
 
         protected override CompilationOptions CommonWithModuleName(string? moduleName)

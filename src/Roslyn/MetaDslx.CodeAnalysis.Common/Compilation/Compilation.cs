@@ -123,7 +123,7 @@ namespace Microsoft.CodeAnalysis
 
         internal abstract void SerializePdbEmbeddedCompilationOptions(BlobBuilder builder);
 
-        internal static void ValidateScriptCompilationParameters(Compilation? previousScriptCompilation, Type? returnType, ref Type? globalsType)
+        protected static void ValidateScriptCompilationParameters(Compilation? previousScriptCompilation, Type? returnType, ref Type? globalsType)
         {
             if (globalsType != null && !IsValidHostObjectType(globalsType))
             {
@@ -158,7 +158,7 @@ namespace Microsoft.CodeAnalysis
         /// Checks options passed to submission compilation constructor.
         /// Throws an exception if the options are not applicable to submissions.
         /// </summary>
-        internal static void CheckSubmissionOptions(CompilationOptions? options)
+        protected static void CheckSubmissionOptions(CompilationOptions? options)
         {
             if (options == null)
             {

@@ -21,7 +21,7 @@ namespace Microsoft.CodeAnalysis
     {
         private readonly SyntaxNode? _node;
 
-        internal SyntaxList(SyntaxNode? node)
+        public SyntaxList(SyntaxNode? node)
         {
             _node = node;
         }
@@ -62,7 +62,7 @@ namespace Microsoft.CodeAnalysis
             return builder.ToList().Node;
         }
 
-        internal SyntaxNode? Node
+        public SyntaxNode? Node
         {
             get
             {

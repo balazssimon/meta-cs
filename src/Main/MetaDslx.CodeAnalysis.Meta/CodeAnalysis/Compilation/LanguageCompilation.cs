@@ -292,10 +292,10 @@ namespace MetaDslx.CodeAnalysis
 
         #region Constructors and Factories
 
-        private LanguageCompilation(
+        protected LanguageCompilation(
             string? assemblyName,
             LanguageCompilationOptions options,
-            ImmutableArray<MetadataReference> references,
+            IEnumerable<MetadataReference> references,
             LanguageCompilation? previousSubmission,
             Type? submissionReturnType,
             Type? hostObjectType,
@@ -309,7 +309,7 @@ namespace MetaDslx.CodeAnalysis
         {
         }
 
-        protected LanguageCompilation(
+        private LanguageCompilation(
             string? assemblyName,
             LanguageCompilationOptions options,
             IEnumerable<MetadataReference> references,
@@ -325,6 +325,9 @@ namespace MetaDslx.CodeAnalysis
             AsyncQueue<CompilationEvent>? eventQueue = null)
             : base(assemblyName, ValidateReferences<LanguageCompilationReference>(references), features, isSubmission, semanticModelProvider, eventQueue)
         {
+            Debug.Assert(options != null);
+            Debug.Assert(!isSubmission || options.ReferencesSupersedeLowerVersions);
+
             _options = options;
             _language = _options.Language;
             this.builtInOperators = new BuiltInOperators(this);
@@ -536,10 +539,10 @@ namespace MetaDslx.CodeAnalysis
                 reuseSyntaxAndDeclarationManager ?
                     _syntaxAndDeclarations :
                     new SyntaxAndDeclarationManager(
+                        options.Language,
                         _syntaxAndDeclarations.ExternalSyntaxTrees,
                         options.ScriptClassName,
                         options.SourceReferenceResolver,
-                        options.Language,
                         _syntaxAndDeclarations.IsSubmission,
                         state: null),
                 this.SemanticModelProvider);

@@ -172,9 +172,9 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator
                 }
                 else if (elem.IsList)
                 {
-                    if (elem.IsToken) return "MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<InternalSyntaxToken>";
-                    else if (elem.IsSeparated) return "MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<" + elem.Type.ToPascalCase() + "Green>";
-                    else return "MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<" + elem.Type.ToPascalCase() + "Green>";
+                    if (elem.IsToken) return "Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<InternalSyntaxToken>";
+                    else if (elem.IsSeparated) return "Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<" + elem.Type.ToPascalCase() + "Green>";
+                    else return "Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<" + elem.Type.ToPascalCase() + "Green>";
                 }
                 else if (elem.IsToken) return "InternalSyntaxToken";
                 else return elem.Type.ToPascalCase() + "Green";
@@ -236,9 +236,9 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator
             }
             else if (elem.IsList)
             {
-                if (elem.IsSeparated) return "MetaDslx.CodeAnalysis.SeparatedSyntaxList<" + elem.Type.ToPascalCase() + "Syntax>";
-                else if (elem.IsToken) return "MetaDslx.CodeAnalysis.SyntaxTokenList";
-                else return "MetaDslx.CodeAnalysis.SyntaxList<" + elem.Type.ToPascalCase() + "Syntax>";
+                if (elem.IsSeparated) return "Microsoft.CodeAnalysis.SeparatedSyntaxList<" + elem.Type.ToPascalCase() + "Syntax>";
+                else if (elem.IsToken) return "Microsoft.CodeAnalysis.SyntaxTokenList";
+                else return "Microsoft.CodeAnalysis.SyntaxList<" + elem.Type.ToPascalCase() + "Syntax>";
             }
             else if (elem.IsToken) return "SyntaxToken";
             else return elem.Type.ToPascalCase() + "Syntax";

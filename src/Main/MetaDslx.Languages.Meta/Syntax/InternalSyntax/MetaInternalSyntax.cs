@@ -17,13 +17,14 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
     using MetaDslx.CodeAnalysis;
     using MetaDslx.CodeAnalysis.Syntax;
     using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
-    using MetaDslx.CodeAnalysis;
-    using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
-    using MetaDslx.CodeAnalysis.Text;
+    using Microsoft.CodeAnalysis;
+    using Microsoft.CodeAnalysis.Syntax;
+	using Microsoft.CodeAnalysis.Syntax.InternalSyntax;
+	using Microsoft.CodeAnalysis.Text;
     using Roslyn.Utilities;
     using MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax;
 
-	internal abstract class GreenSyntaxNode : InternalSyntaxNode
+    internal abstract class GreenSyntaxNode : InternalSyntaxNode
     {
         protected GreenSyntaxNode(SyntaxKind kind)
             : base(kind)
@@ -99,7 +100,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		///   documentation comments, where the structure describes the XML structure of the comment.
 		///   skipped tokens, where the structure describes the tokens that were skipped by the parser.
 		/// </remarks>
-		public override SyntaxNode GetStructure(MetaDslx.CodeAnalysis.SyntaxTrivia trivia)
+		public override SyntaxNode GetStructure(Microsoft.CodeAnalysis.SyntaxTrivia trivia)
 		{
 			if (trivia.HasStructure)
 			{
@@ -224,7 +225,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
             }
         }
 
-        public MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<InternalSyntaxToken> Tokens => new MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<InternalSyntaxToken>(this.tokens);
+        public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<InternalSyntaxToken> Tokens => new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<InternalSyntaxToken>(this.tokens);
 
         protected override GreenNode GetSlot(int index)
         {
@@ -241,7 +242,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 
         public override void Accept(MetaSyntaxVisitor visitor) => visitor.VisitSkippedTokensTrivia(this);
 
-        public GreenSkippedTokensTriviaSyntax Update(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<InternalSyntaxToken> tokens)
+        public GreenSkippedTokensTriviaSyntax Update(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<InternalSyntaxToken> tokens)
         {
             if (tokens != this.Tokens)
             {
@@ -1159,7 +1160,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			this.flags &= ~NodeFlags.IsNotMissing;
 		}
 	
-	    public MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<UsingNamespaceGreen> UsingNamespace { get { return new MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<UsingNamespaceGreen>(this.usingNamespace); } }
+	    public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<UsingNamespaceGreen> UsingNamespace { get { return new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<UsingNamespaceGreen>(this.usingNamespace); } }
 	    public NamespaceDeclarationGreen NamespaceDeclaration { get { return this.namespaceDeclaration; } }
 	    public InternalSyntaxToken EndOfFileToken { get { return this.eOF; } }
 	
@@ -1193,7 +1194,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	        return new MainGreen(this.Kind, this.usingNamespace, this.namespaceDeclaration, this.eOF, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public MainGreen Update(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<UsingNamespaceGreen> usingNamespace, NamespaceDeclarationGreen namespaceDeclaration, InternalSyntaxToken eOF)
+	    public MainGreen Update(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<UsingNamespaceGreen> usingNamespace, NamespaceDeclarationGreen namespaceDeclaration, InternalSyntaxToken eOF)
 	    {
 	        if (this.UsingNamespace != usingNamespace ||
 				this.NamespaceDeclaration != namespaceDeclaration ||
@@ -1405,7 +1406,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			this.flags &= ~NodeFlags.IsNotMissing;
 		}
 	
-	    public MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<IdentifierGreen> Identifier { get { return new MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<IdentifierGreen>(this.identifier); } }
+	    public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<IdentifierGreen> Identifier { get { return new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<IdentifierGreen>(this.identifier); } }
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
@@ -1435,7 +1436,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	        return new QualifierGreen(this.Kind, this.identifier, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public QualifierGreen Update(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<IdentifierGreen> identifier)
+	    public QualifierGreen Update(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<IdentifierGreen> identifier)
 	    {
 	        if (this.Identifier != identifier)
 	        {
@@ -1734,7 +1735,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			this.flags &= ~NodeFlags.IsNotMissing;
 		}
 	
-	    public MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> Attribute { get { return new MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen>(this.attribute); } }
+	    public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> Attribute { get { return new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen>(this.attribute); } }
 	    public InternalSyntaxToken KNamespace { get { return this.kNamespace; } }
 	    public QualifiedNameGreen QualifiedName { get { return this.qualifiedName; } }
 	    public NamespaceBodyGreen NamespaceBody { get { return this.namespaceBody; } }
@@ -1770,7 +1771,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	        return new NamespaceDeclarationGreen(this.Kind, this.attribute, this.kNamespace, this.qualifiedName, this.namespaceBody, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public NamespaceDeclarationGreen Update(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, InternalSyntaxToken kNamespace, QualifiedNameGreen qualifiedName, NamespaceBodyGreen namespaceBody)
+	    public NamespaceDeclarationGreen Update(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, InternalSyntaxToken kNamespace, QualifiedNameGreen qualifiedName, NamespaceBodyGreen namespaceBody)
 	    {
 	        if (this.Attribute != attribute ||
 				this.KNamespace != kNamespace ||
@@ -1868,9 +1869,9 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		}
 	
 	    public InternalSyntaxToken TOpenBrace { get { return this.tOpenBrace; } }
-	    public MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<UsingNamespaceGreen> UsingNamespace { get { return new MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<UsingNamespaceGreen>(this.usingNamespace); } }
+	    public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<UsingNamespaceGreen> UsingNamespace { get { return new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<UsingNamespaceGreen>(this.usingNamespace); } }
 	    public MetamodelDeclarationGreen MetamodelDeclaration { get { return this.metamodelDeclaration; } }
-	    public MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<DeclarationGreen> Declaration { get { return new MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<DeclarationGreen>(this.declaration); } }
+	    public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<DeclarationGreen> Declaration { get { return new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<DeclarationGreen>(this.declaration); } }
 	    public InternalSyntaxToken TCloseBrace { get { return this.tCloseBrace; } }
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
@@ -1905,7 +1906,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	        return new NamespaceBodyGreen(this.Kind, this.tOpenBrace, this.usingNamespace, this.metamodelDeclaration, this.declaration, this.tCloseBrace, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public NamespaceBodyGreen Update(InternalSyntaxToken tOpenBrace, MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<UsingNamespaceGreen> usingNamespace, MetamodelDeclarationGreen metamodelDeclaration, MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<DeclarationGreen> declaration, InternalSyntaxToken tCloseBrace)
+	    public NamespaceBodyGreen Update(InternalSyntaxToken tOpenBrace, Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<UsingNamespaceGreen> usingNamespace, MetamodelDeclarationGreen metamodelDeclaration, Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<DeclarationGreen> declaration, InternalSyntaxToken tCloseBrace)
 	    {
 	        if (this.TOpenBrace != tOpenBrace ||
 				this.UsingNamespace != usingNamespace ||
@@ -2025,7 +2026,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			this.flags &= ~NodeFlags.IsNotMissing;
 		}
 	
-	    public MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> Attribute { get { return new MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen>(this.attribute); } }
+	    public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> Attribute { get { return new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen>(this.attribute); } }
 	    public InternalSyntaxToken KMetamodel { get { return this.kMetamodel; } }
 	    public NameGreen Name { get { return this.name; } }
 	    public InternalSyntaxToken TOpenParen { get { return this.tOpenParen; } }
@@ -2067,7 +2068,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	        return new MetamodelDeclarationGreen(this.Kind, this.attribute, this.kMetamodel, this.name, this.tOpenParen, this.metamodelPropertyList, this.tCloseParen, this.tSemicolon, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public MetamodelDeclarationGreen Update(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, InternalSyntaxToken kMetamodel, NameGreen name, InternalSyntaxToken tOpenParen, MetamodelPropertyListGreen metamodelPropertyList, InternalSyntaxToken tCloseParen, InternalSyntaxToken tSemicolon)
+	    public MetamodelDeclarationGreen Update(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, InternalSyntaxToken kMetamodel, NameGreen name, InternalSyntaxToken tOpenParen, MetamodelPropertyListGreen metamodelPropertyList, InternalSyntaxToken tCloseParen, InternalSyntaxToken tSemicolon)
 	    {
 	        if (this.Attribute != attribute ||
 				this.KMetamodel != kMetamodel ||
@@ -2123,7 +2124,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			this.flags &= ~NodeFlags.IsNotMissing;
 		}
 	
-	    public MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<MetamodelPropertyGreen> MetamodelProperty { get { return new MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<MetamodelPropertyGreen>(this.metamodelProperty); } }
+	    public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<MetamodelPropertyGreen> MetamodelProperty { get { return new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<MetamodelPropertyGreen>(this.metamodelProperty); } }
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
@@ -2153,7 +2154,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	        return new MetamodelPropertyListGreen(this.Kind, this.metamodelProperty, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public MetamodelPropertyListGreen Update(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<MetamodelPropertyGreen> metamodelProperty)
+	    public MetamodelPropertyListGreen Update(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<MetamodelPropertyGreen> metamodelProperty)
 	    {
 	        if (this.MetamodelProperty != metamodelProperty)
 	        {
@@ -2728,7 +2729,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			this.flags &= ~NodeFlags.IsNotMissing;
 		}
 	
-	    public MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> Attribute { get { return new MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen>(this.attribute); } }
+	    public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> Attribute { get { return new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen>(this.attribute); } }
 	    public InternalSyntaxToken KEnum { get { return this.kEnum; } }
 	    public NameGreen Name { get { return this.name; } }
 	    public EnumBodyGreen EnumBody { get { return this.enumBody; } }
@@ -2764,7 +2765,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	        return new EnumDeclarationGreen(this.Kind, this.attribute, this.kEnum, this.name, this.enumBody, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public EnumDeclarationGreen Update(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, InternalSyntaxToken kEnum, NameGreen name, EnumBodyGreen enumBody)
+	    public EnumDeclarationGreen Update(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, InternalSyntaxToken kEnum, NameGreen name, EnumBodyGreen enumBody)
 	    {
 	        if (this.Attribute != attribute ||
 				this.KEnum != kEnum ||
@@ -2864,7 +2865,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	    public InternalSyntaxToken TOpenBrace { get { return this.tOpenBrace; } }
 	    public EnumValuesGreen EnumValues { get { return this.enumValues; } }
 	    public InternalSyntaxToken TSemicolon { get { return this.tSemicolon; } }
-	    public MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<EnumMemberDeclarationGreen> EnumMemberDeclaration { get { return new MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<EnumMemberDeclarationGreen>(this.enumMemberDeclaration); } }
+	    public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<EnumMemberDeclarationGreen> EnumMemberDeclaration { get { return new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<EnumMemberDeclarationGreen>(this.enumMemberDeclaration); } }
 	    public InternalSyntaxToken TCloseBrace { get { return this.tCloseBrace; } }
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
@@ -2899,7 +2900,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	        return new EnumBodyGreen(this.Kind, this.tOpenBrace, this.enumValues, this.tSemicolon, this.enumMemberDeclaration, this.tCloseBrace, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public EnumBodyGreen Update(InternalSyntaxToken tOpenBrace, EnumValuesGreen enumValues, InternalSyntaxToken tSemicolon, MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<EnumMemberDeclarationGreen> enumMemberDeclaration, InternalSyntaxToken tCloseBrace)
+	    public EnumBodyGreen Update(InternalSyntaxToken tOpenBrace, EnumValuesGreen enumValues, InternalSyntaxToken tSemicolon, Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<EnumMemberDeclarationGreen> enumMemberDeclaration, InternalSyntaxToken tCloseBrace)
 	    {
 	        if (this.TOpenBrace != tOpenBrace ||
 				this.EnumValues != enumValues ||
@@ -2953,7 +2954,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			this.flags &= ~NodeFlags.IsNotMissing;
 		}
 	
-	    public MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<EnumValueGreen> EnumValue { get { return new MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<EnumValueGreen>(this.enumValue); } }
+	    public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<EnumValueGreen> EnumValue { get { return new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<EnumValueGreen>(this.enumValue); } }
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
@@ -2983,7 +2984,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	        return new EnumValuesGreen(this.Kind, this.enumValue, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public EnumValuesGreen Update(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<EnumValueGreen> enumValue)
+	    public EnumValuesGreen Update(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<EnumValueGreen> enumValue)
 	    {
 	        if (this.EnumValue != enumValue)
 	        {
@@ -3044,7 +3045,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			this.flags &= ~NodeFlags.IsNotMissing;
 		}
 	
-	    public MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> Attribute { get { return new MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen>(this.attribute); } }
+	    public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> Attribute { get { return new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen>(this.attribute); } }
 	    public NameGreen Name { get { return this.name; } }
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
@@ -3076,7 +3077,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	        return new EnumValueGreen(this.Kind, this.attribute, this.name, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public EnumValueGreen Update(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, NameGreen name)
+	    public EnumValueGreen Update(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, NameGreen name)
 	    {
 	        if (this.Attribute != attribute ||
 				this.Name != name)
@@ -3284,7 +3285,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			this.flags &= ~NodeFlags.IsNotMissing;
 		}
 	
-	    public MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> Attribute { get { return new MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen>(this.attribute); } }
+	    public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> Attribute { get { return new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen>(this.attribute); } }
 	    public SymbolTypeAttributeGreen SymbolTypeAttribute { get { return this.symbolTypeAttribute; } }
 	    public InternalSyntaxToken KAbstract { get { return this.kAbstract; } }
 	    public InternalSyntaxToken KClass { get { return this.kClass; } }
@@ -3328,7 +3329,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	        return new ClassDeclarationGreen(this.Kind, this.attribute, this.symbolTypeAttribute, this.kAbstract, this.kClass, this.name, this.tColon, this.classAncestors, this.classBody, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public ClassDeclarationGreen Update(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, SymbolTypeAttributeGreen symbolTypeAttribute, InternalSyntaxToken kAbstract, InternalSyntaxToken kClass, NameGreen name, InternalSyntaxToken tColon, ClassAncestorsGreen classAncestors, ClassBodyGreen classBody)
+	    public ClassDeclarationGreen Update(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, SymbolTypeAttributeGreen symbolTypeAttribute, InternalSyntaxToken kAbstract, InternalSyntaxToken kClass, NameGreen name, InternalSyntaxToken tColon, ClassAncestorsGreen classAncestors, ClassBodyGreen classBody)
 	    {
 	        if (this.Attribute != attribute ||
 				this.SymbolTypeAttribute != symbolTypeAttribute ||
@@ -3544,7 +3545,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		}
 	
 	    public InternalSyntaxToken TOpenBrace { get { return this.tOpenBrace; } }
-	    public MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<ClassMemberDeclarationGreen> ClassMemberDeclaration { get { return new MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<ClassMemberDeclarationGreen>(this.classMemberDeclaration); } }
+	    public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<ClassMemberDeclarationGreen> ClassMemberDeclaration { get { return new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<ClassMemberDeclarationGreen>(this.classMemberDeclaration); } }
 	    public InternalSyntaxToken TCloseBrace { get { return this.tCloseBrace; } }
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
@@ -3577,7 +3578,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	        return new ClassBodyGreen(this.Kind, this.tOpenBrace, this.classMemberDeclaration, this.tCloseBrace, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public ClassBodyGreen Update(InternalSyntaxToken tOpenBrace, MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<ClassMemberDeclarationGreen> classMemberDeclaration, InternalSyntaxToken tCloseBrace)
+	    public ClassBodyGreen Update(InternalSyntaxToken tOpenBrace, Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<ClassMemberDeclarationGreen> classMemberDeclaration, InternalSyntaxToken tCloseBrace)
 	    {
 	        if (this.TOpenBrace != tOpenBrace ||
 				this.ClassMemberDeclaration != classMemberDeclaration ||
@@ -3629,7 +3630,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			this.flags &= ~NodeFlags.IsNotMissing;
 		}
 	
-	    public MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<ClassAncestorGreen> ClassAncestor { get { return new MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<ClassAncestorGreen>(this.classAncestor); } }
+	    public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<ClassAncestorGreen> ClassAncestor { get { return new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<ClassAncestorGreen>(this.classAncestor); } }
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
@@ -3659,7 +3660,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	        return new ClassAncestorsGreen(this.Kind, this.classAncestor, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public ClassAncestorsGreen Update(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<ClassAncestorGreen> classAncestor)
+	    public ClassAncestorsGreen Update(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<ClassAncestorGreen> classAncestor)
 	    {
 	        if (this.ClassAncestor != classAncestor)
 	        {
@@ -3986,14 +3987,14 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			this.flags &= ~NodeFlags.IsNotMissing;
 		}
 	
-	    public MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> Attribute { get { return new MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen>(this.attribute); } }
+	    public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> Attribute { get { return new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen>(this.attribute); } }
 	    public FieldSymbolPropertyAttributeGreen FieldSymbolPropertyAttribute { get { return this.fieldSymbolPropertyAttribute; } }
 	    public FieldContainmentGreen FieldContainment { get { return this.fieldContainment; } }
 	    public FieldModifierGreen FieldModifier { get { return this.fieldModifier; } }
 	    public TypeReferenceGreen TypeReference { get { return this.typeReference; } }
 	    public NameGreen Name { get { return this.name; } }
 	    public DefaultValueGreen DefaultValue { get { return this.defaultValue; } }
-	    public MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<RedefinitionsOrSubsettingsGreen> RedefinitionsOrSubsettings { get { return new MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<RedefinitionsOrSubsettingsGreen>(this.redefinitionsOrSubsettings); } }
+	    public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<RedefinitionsOrSubsettingsGreen> RedefinitionsOrSubsettings { get { return new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<RedefinitionsOrSubsettingsGreen>(this.redefinitionsOrSubsettings); } }
 	    public InternalSyntaxToken TSemicolon { get { return this.tSemicolon; } }
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
@@ -4032,7 +4033,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	        return new FieldDeclarationGreen(this.Kind, this.attribute, this.fieldSymbolPropertyAttribute, this.fieldContainment, this.fieldModifier, this.typeReference, this.name, this.defaultValue, this.redefinitionsOrSubsettings, this.tSemicolon, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public FieldDeclarationGreen Update(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, FieldSymbolPropertyAttributeGreen fieldSymbolPropertyAttribute, FieldContainmentGreen fieldContainment, FieldModifierGreen fieldModifier, TypeReferenceGreen typeReference, NameGreen name, DefaultValueGreen defaultValue, MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<RedefinitionsOrSubsettingsGreen> redefinitionsOrSubsettings, InternalSyntaxToken tSemicolon)
+	    public FieldDeclarationGreen Update(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, FieldSymbolPropertyAttributeGreen fieldSymbolPropertyAttribute, FieldContainmentGreen fieldContainment, FieldModifierGreen fieldModifier, TypeReferenceGreen typeReference, NameGreen name, DefaultValueGreen defaultValue, Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<RedefinitionsOrSubsettingsGreen> redefinitionsOrSubsettings, InternalSyntaxToken tSemicolon)
 	    {
 	        if (this.Attribute != attribute ||
 				this.FieldSymbolPropertyAttribute != fieldSymbolPropertyAttribute ||
@@ -4777,7 +4778,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			this.flags &= ~NodeFlags.IsNotMissing;
 		}
 	
-	    public MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<QualifierGreen> Qualifier { get { return new MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<QualifierGreen>(this.qualifier); } }
+	    public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<QualifierGreen> Qualifier { get { return new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<QualifierGreen>(this.qualifier); } }
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
@@ -4807,7 +4808,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	        return new NameUseListGreen(this.Kind, this.qualifier, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public NameUseListGreen Update(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<QualifierGreen> qualifier)
+	    public NameUseListGreen Update(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<QualifierGreen> qualifier)
 	    {
 	        if (this.Qualifier != qualifier)
 	        {
@@ -6245,8 +6246,8 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			this.flags &= ~NodeFlags.IsNotMissing;
 		}
 	
-	    public MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> Attribute { get { return new MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen>(this.attribute); } }
-	    public MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<OperationModifierGreen> OperationModifier { get { return new MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<OperationModifierGreen>(this.operationModifier); } }
+	    public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> Attribute { get { return new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen>(this.attribute); } }
+	    public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<OperationModifierGreen> OperationModifier { get { return new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<OperationModifierGreen>(this.operationModifier); } }
 	    public ReturnTypeGreen ReturnType { get { return this.returnType; } }
 	    public NameGreen Name { get { return this.name; } }
 	    public InternalSyntaxToken TOpenParen { get { return this.tOpenParen; } }
@@ -6289,7 +6290,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	        return new OperationDeclarationGreen(this.Kind, this.attribute, this.operationModifier, this.returnType, this.name, this.tOpenParen, this.parameterList, this.tCloseParen, this.tSemicolon, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public OperationDeclarationGreen Update(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<OperationModifierGreen> operationModifier, ReturnTypeGreen returnType, NameGreen name, InternalSyntaxToken tOpenParen, ParameterListGreen parameterList, InternalSyntaxToken tCloseParen, InternalSyntaxToken tSemicolon)
+	    public OperationDeclarationGreen Update(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<OperationModifierGreen> operationModifier, ReturnTypeGreen returnType, NameGreen name, InternalSyntaxToken tOpenParen, ParameterListGreen parameterList, InternalSyntaxToken tCloseParen, InternalSyntaxToken tSemicolon)
 	    {
 	        if (this.Attribute != attribute ||
 				this.OperationModifier != operationModifier ||
@@ -6615,7 +6616,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			this.flags &= ~NodeFlags.IsNotMissing;
 		}
 	
-	    public MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<ParameterGreen> Parameter { get { return new MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<ParameterGreen>(this.parameter); } }
+	    public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<ParameterGreen> Parameter { get { return new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<ParameterGreen>(this.parameter); } }
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
@@ -6645,7 +6646,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	        return new ParameterListGreen(this.Kind, this.parameter, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public ParameterListGreen Update(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<ParameterGreen> parameter)
+	    public ParameterListGreen Update(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<ParameterGreen> parameter)
 	    {
 	        if (this.Parameter != parameter)
 	        {
@@ -6717,7 +6718,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			this.flags &= ~NodeFlags.IsNotMissing;
 		}
 	
-	    public MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> Attribute { get { return new MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen>(this.attribute); } }
+	    public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> Attribute { get { return new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen>(this.attribute); } }
 	    public TypeReferenceGreen TypeReference { get { return this.typeReference; } }
 	    public NameGreen Name { get { return this.name; } }
 	
@@ -6751,7 +6752,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	        return new ParameterGreen(this.Kind, this.attribute, this.typeReference, this.name, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public ParameterGreen Update(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, TypeReferenceGreen typeReference, NameGreen name)
+	    public ParameterGreen Update(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, TypeReferenceGreen typeReference, NameGreen name)
 	    {
 	        if (this.Attribute != attribute ||
 				this.TypeReference != typeReference ||
@@ -6858,7 +6859,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			this.flags &= ~NodeFlags.IsNotMissing;
 		}
 	
-	    public MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> Attribute { get { return new MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen>(this.attribute); } }
+	    public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> Attribute { get { return new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen>(this.attribute); } }
 	    public InternalSyntaxToken KAssociation { get { return this.kAssociation; } }
 	    public QualifierGreen Source { get { return this.source; } }
 	    public InternalSyntaxToken KWith { get { return this.kWith; } }
@@ -6898,7 +6899,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	        return new AssociationDeclarationGreen(this.Kind, this.attribute, this.kAssociation, this.source, this.kWith, this.target, this.tSemicolon, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public AssociationDeclarationGreen Update(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, InternalSyntaxToken kAssociation, QualifierGreen source, InternalSyntaxToken kWith, QualifierGreen target, InternalSyntaxToken tSemicolon)
+	    public AssociationDeclarationGreen Update(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, InternalSyntaxToken kAssociation, QualifierGreen source, InternalSyntaxToken kWith, QualifierGreen target, InternalSyntaxToken tSemicolon)
 	    {
 	        if (this.Attribute != attribute ||
 				this.KAssociation != kAssociation ||
@@ -8136,7 +8137,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	        return Token(null, MetaSyntaxKind.LComment, text, value, null);
 	    }
 	
-		public MainGreen Main(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<UsingNamespaceGreen> usingNamespace, NamespaceDeclarationGreen namespaceDeclaration, InternalSyntaxToken eOF)
+		public MainGreen Main(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<UsingNamespaceGreen> usingNamespace, NamespaceDeclarationGreen namespaceDeclaration, InternalSyntaxToken eOF)
 	    {
 	#if DEBUG
 			if (namespaceDeclaration == null) throw new ArgumentNullException(nameof(namespaceDeclaration));
@@ -8186,7 +8187,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			return result;
 	    }
 	
-		public QualifierGreen Qualifier(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<IdentifierGreen> identifier)
+		public QualifierGreen Qualifier(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<IdentifierGreen> identifier)
 	    {
 	#if DEBUG
 	#endif
@@ -8241,7 +8242,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			return result;
 	    }
 	
-		public NamespaceDeclarationGreen NamespaceDeclaration(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, InternalSyntaxToken kNamespace, QualifiedNameGreen qualifiedName, NamespaceBodyGreen namespaceBody)
+		public NamespaceDeclarationGreen NamespaceDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, InternalSyntaxToken kNamespace, QualifiedNameGreen qualifiedName, NamespaceBodyGreen namespaceBody)
 	    {
 	#if DEBUG
 			if (kNamespace == null) throw new ArgumentNullException(nameof(kNamespace));
@@ -8252,7 +8253,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	        return new NamespaceDeclarationGreen(MetaSyntaxKind.NamespaceDeclaration, attribute.Node, kNamespace, qualifiedName, namespaceBody);
 	    }
 	
-		public NamespaceBodyGreen NamespaceBody(InternalSyntaxToken tOpenBrace, MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<UsingNamespaceGreen> usingNamespace, MetamodelDeclarationGreen metamodelDeclaration, MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<DeclarationGreen> declaration, InternalSyntaxToken tCloseBrace)
+		public NamespaceBodyGreen NamespaceBody(InternalSyntaxToken tOpenBrace, Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<UsingNamespaceGreen> usingNamespace, MetamodelDeclarationGreen metamodelDeclaration, Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<DeclarationGreen> declaration, InternalSyntaxToken tCloseBrace)
 	    {
 	#if DEBUG
 			if (tOpenBrace == null) throw new ArgumentNullException(nameof(tOpenBrace));
@@ -8264,7 +8265,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	        return new NamespaceBodyGreen(MetaSyntaxKind.NamespaceBody, tOpenBrace, usingNamespace.Node, metamodelDeclaration, declaration.Node, tCloseBrace);
 	    }
 	
-		public MetamodelDeclarationGreen MetamodelDeclaration(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, InternalSyntaxToken kMetamodel, NameGreen name, InternalSyntaxToken tOpenParen, MetamodelPropertyListGreen metamodelPropertyList, InternalSyntaxToken tCloseParen, InternalSyntaxToken tSemicolon)
+		public MetamodelDeclarationGreen MetamodelDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, InternalSyntaxToken kMetamodel, NameGreen name, InternalSyntaxToken tOpenParen, MetamodelPropertyListGreen metamodelPropertyList, InternalSyntaxToken tCloseParen, InternalSyntaxToken tSemicolon)
 	    {
 	#if DEBUG
 			if (kMetamodel == null) throw new ArgumentNullException(nameof(kMetamodel));
@@ -8278,7 +8279,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	        return new MetamodelDeclarationGreen(MetaSyntaxKind.MetamodelDeclaration, attribute.Node, kMetamodel, name, tOpenParen, metamodelPropertyList, tCloseParen, tSemicolon);
 	    }
 	
-		public MetamodelPropertyListGreen MetamodelPropertyList(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<MetamodelPropertyGreen> metamodelProperty)
+		public MetamodelPropertyListGreen MetamodelPropertyList(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<MetamodelPropertyGreen> metamodelProperty)
 	    {
 	#if DEBUG
 	#endif
@@ -8397,7 +8398,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			return new DeclarationGreen(MetaSyntaxKind.Declaration, null, null, null, constDeclaration);
 	    }
 	
-		public EnumDeclarationGreen EnumDeclaration(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, InternalSyntaxToken kEnum, NameGreen name, EnumBodyGreen enumBody)
+		public EnumDeclarationGreen EnumDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, InternalSyntaxToken kEnum, NameGreen name, EnumBodyGreen enumBody)
 	    {
 	#if DEBUG
 			if (kEnum == null) throw new ArgumentNullException(nameof(kEnum));
@@ -8408,7 +8409,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	        return new EnumDeclarationGreen(MetaSyntaxKind.EnumDeclaration, attribute.Node, kEnum, name, enumBody);
 	    }
 	
-		public EnumBodyGreen EnumBody(InternalSyntaxToken tOpenBrace, EnumValuesGreen enumValues, InternalSyntaxToken tSemicolon, MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<EnumMemberDeclarationGreen> enumMemberDeclaration, InternalSyntaxToken tCloseBrace)
+		public EnumBodyGreen EnumBody(InternalSyntaxToken tOpenBrace, EnumValuesGreen enumValues, InternalSyntaxToken tSemicolon, Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<EnumMemberDeclarationGreen> enumMemberDeclaration, InternalSyntaxToken tCloseBrace)
 	    {
 	#if DEBUG
 			if (tOpenBrace == null) throw new ArgumentNullException(nameof(tOpenBrace));
@@ -8421,7 +8422,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	        return new EnumBodyGreen(MetaSyntaxKind.EnumBody, tOpenBrace, enumValues, tSemicolon, enumMemberDeclaration.Node, tCloseBrace);
 	    }
 	
-		public EnumValuesGreen EnumValues(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<EnumValueGreen> enumValue)
+		public EnumValuesGreen EnumValues(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<EnumValueGreen> enumValue)
 	    {
 	#if DEBUG
 	#endif
@@ -8436,7 +8437,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			return result;
 	    }
 	
-		public EnumValueGreen EnumValue(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, NameGreen name)
+		public EnumValueGreen EnumValue(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, NameGreen name)
 	    {
 	#if DEBUG
 			if (name == null) throw new ArgumentNullException(nameof(name));
@@ -8468,7 +8469,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			return result;
 	    }
 	
-		public ClassDeclarationGreen ClassDeclaration(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, SymbolTypeAttributeGreen symbolTypeAttribute, InternalSyntaxToken kAbstract, InternalSyntaxToken kClass, NameGreen name, InternalSyntaxToken tColon, ClassAncestorsGreen classAncestors, ClassBodyGreen classBody)
+		public ClassDeclarationGreen ClassDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, SymbolTypeAttributeGreen symbolTypeAttribute, InternalSyntaxToken kAbstract, InternalSyntaxToken kClass, NameGreen name, InternalSyntaxToken tColon, ClassAncestorsGreen classAncestors, ClassBodyGreen classBody)
 	    {
 	#if DEBUG
 			if (kAbstract != null && kAbstract.Kind != MetaSyntaxKind.KAbstract) throw new ArgumentException(nameof(kAbstract));
@@ -8497,7 +8498,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	        return new SymbolTypeAttributeGreen(MetaSyntaxKind.SymbolTypeAttribute, tOpenBracket, kSymbol, tColon, qualifier, tCloseBracket);
 	    }
 	
-		public ClassBodyGreen ClassBody(InternalSyntaxToken tOpenBrace, MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<ClassMemberDeclarationGreen> classMemberDeclaration, InternalSyntaxToken tCloseBrace)
+		public ClassBodyGreen ClassBody(InternalSyntaxToken tOpenBrace, Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<ClassMemberDeclarationGreen> classMemberDeclaration, InternalSyntaxToken tCloseBrace)
 	    {
 	#if DEBUG
 			if (tOpenBrace == null) throw new ArgumentNullException(nameof(tOpenBrace));
@@ -8516,7 +8517,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			return result;
 	    }
 	
-		public ClassAncestorsGreen ClassAncestors(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<ClassAncestorGreen> classAncestor)
+		public ClassAncestorsGreen ClassAncestors(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<ClassAncestorGreen> classAncestor)
 	    {
 	#if DEBUG
 	#endif
@@ -8579,7 +8580,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			return result;
 	    }
 	
-		public FieldDeclarationGreen FieldDeclaration(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, FieldSymbolPropertyAttributeGreen fieldSymbolPropertyAttribute, FieldContainmentGreen fieldContainment, FieldModifierGreen fieldModifier, TypeReferenceGreen typeReference, NameGreen name, DefaultValueGreen defaultValue, MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<RedefinitionsOrSubsettingsGreen> redefinitionsOrSubsettings, InternalSyntaxToken tSemicolon)
+		public FieldDeclarationGreen FieldDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, FieldSymbolPropertyAttributeGreen fieldSymbolPropertyAttribute, FieldContainmentGreen fieldContainment, FieldModifierGreen fieldModifier, TypeReferenceGreen typeReference, NameGreen name, DefaultValueGreen defaultValue, Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<RedefinitionsOrSubsettingsGreen> redefinitionsOrSubsettings, InternalSyntaxToken tSemicolon)
 	    {
 	#if DEBUG
 			if (typeReference == null) throw new ArgumentNullException(nameof(typeReference));
@@ -8723,7 +8724,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			return result;
 	    }
 	
-		public NameUseListGreen NameUseList(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<QualifierGreen> qualifier)
+		public NameUseListGreen NameUseList(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<QualifierGreen> qualifier)
 	    {
 	#if DEBUG
 	#endif
@@ -8993,7 +8994,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			return result;
 	    }
 	
-		public OperationDeclarationGreen OperationDeclaration(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<OperationModifierGreen> operationModifier, ReturnTypeGreen returnType, NameGreen name, InternalSyntaxToken tOpenParen, ParameterListGreen parameterList, InternalSyntaxToken tCloseParen, InternalSyntaxToken tSemicolon)
+		public OperationDeclarationGreen OperationDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<OperationModifierGreen> operationModifier, ReturnTypeGreen returnType, NameGreen name, InternalSyntaxToken tOpenParen, ParameterListGreen parameterList, InternalSyntaxToken tCloseParen, InternalSyntaxToken tSemicolon)
 	    {
 	#if DEBUG
 			if (returnType == null) throw new ArgumentNullException(nameof(returnType));
@@ -9074,7 +9075,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			return result;
 	    }
 	
-		public ParameterListGreen ParameterList(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<ParameterGreen> parameter)
+		public ParameterListGreen ParameterList(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<ParameterGreen> parameter)
 	    {
 	#if DEBUG
 	#endif
@@ -9089,7 +9090,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			return result;
 	    }
 	
-		public ParameterGreen Parameter(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, TypeReferenceGreen typeReference, NameGreen name)
+		public ParameterGreen Parameter(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, TypeReferenceGreen typeReference, NameGreen name)
 	    {
 	#if DEBUG
 			if (typeReference == null) throw new ArgumentNullException(nameof(typeReference));
@@ -9106,7 +9107,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			return result;
 	    }
 	
-		public AssociationDeclarationGreen AssociationDeclaration(MetaDslx.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, InternalSyntaxToken kAssociation, QualifierGreen source, InternalSyntaxToken kWith, QualifierGreen target, InternalSyntaxToken tSemicolon)
+		public AssociationDeclarationGreen AssociationDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, InternalSyntaxToken kAssociation, QualifierGreen source, InternalSyntaxToken kWith, QualifierGreen target, InternalSyntaxToken tSemicolon)
 	    {
 	#if DEBUG
 			if (kAssociation == null) throw new ArgumentNullException(nameof(kAssociation));

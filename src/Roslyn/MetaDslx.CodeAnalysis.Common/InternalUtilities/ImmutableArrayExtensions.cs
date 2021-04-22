@@ -8,16 +8,16 @@ using System.Collections.Immutable;
 
 namespace Roslyn.Utilities
 {
-    internal static class ImmutableArrayExtensions
+    public static class ImmutableArrayExtensions
     {
-        internal static ImmutableArray<T> ToImmutableArrayOrEmpty<T>(this IEnumerable<T>? items)
+        public static ImmutableArray<T> ToImmutableArrayOrEmpty<T>(this IEnumerable<T>? items)
             => items == null ? ImmutableArray<T>.Empty : ImmutableArray.CreateRange(items);
 
-        internal static ImmutableArray<T> ToImmutableArrayOrEmpty<T>(this ImmutableArray<T> items)
+        public static ImmutableArray<T> ToImmutableArrayOrEmpty<T>(this ImmutableArray<T> items)
             => items.IsDefault ? ImmutableArray<T>.Empty : items;
 
         // same as Array.BinarySearch but the ability to pass arbitrary value to the comparer without allocation
-        internal static int BinarySearch<TElement, TValue>(this ImmutableArray<TElement> array, TValue value, Func<TElement, TValue, int> comparer)
+        public static int BinarySearch<TElement, TValue>(this ImmutableArray<TElement> array, TValue value, Func<TElement, TValue, int> comparer)
         {
             int low = 0;
             int high = array.Length - 1;
@@ -45,7 +45,7 @@ namespace Roslyn.Utilities
             return ~low;
         }
 
-        internal static ImmutableArray<TDerived> CastDown<TOriginal, TDerived>(this ImmutableArray<TOriginal> array) where TDerived : class, TOriginal
+        public static ImmutableArray<TDerived> CastDown<TOriginal, TDerived>(this ImmutableArray<TOriginal> array) where TDerived : class, TOriginal
         {
             return array.CastArray<TDerived>();
         }

@@ -3,7 +3,7 @@
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 using System;
 using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using Roslyn.Utilities;
 
 namespace MetaDslx.Languages.Meta
@@ -64,16 +64,7 @@ namespace MetaDslx.Languages.Meta
             }
         }
     }
-    public class MetaRequiredLanguageVersion : RequiredLanguageVersion
-    {
-        internal LanguageVersion Version { get; }
-        internal MetaRequiredLanguageVersion(LanguageVersion version)
-        {
-            MetaLanguageVersion preview = MetaLanguageVersion.Preview;
-            Version = (version == preview.MapSpecifiedToEffectiveVersion()) ? MetaLanguageVersion.Preview : version;
-        }
-        public override string ToString() => Version.ToDisplayString();
-    }
+
     public static class LanguageVersionFacts
     {
         /// <summary>

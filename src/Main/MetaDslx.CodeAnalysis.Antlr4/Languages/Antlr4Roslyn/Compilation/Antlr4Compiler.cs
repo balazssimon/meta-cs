@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
 using System.Threading;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Text;
+using Microsoft.CodeAnalysis.PooledObjects;
 using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.Text;
-using MetaDslx.CodeAnalysis.PooledObjects;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.CodeGeneration;
 

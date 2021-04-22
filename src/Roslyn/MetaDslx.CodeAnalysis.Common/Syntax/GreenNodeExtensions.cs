@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.PooledObjects;
 
 namespace Microsoft.CodeAnalysis
 {
-    internal static class GreenNodeExtensions
+    public static class GreenNodeExtensions
     {
         public static TNode WithAnnotationsGreen<TNode>(this TNode node, IEnumerable<SyntaxAnnotation> annotations) where TNode : GreenNode
         {

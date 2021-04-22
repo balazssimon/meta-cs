@@ -8,7 +8,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.Languages.Meta;
@@ -17,6 +16,7 @@ using MetaDslx.Languages.Meta.Symbols;
 
 using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.Languages.Meta.Model;
+using Microsoft.CodeAnalysis;
 
 namespace MetaDslx.Languages.Meta.Binding
 {

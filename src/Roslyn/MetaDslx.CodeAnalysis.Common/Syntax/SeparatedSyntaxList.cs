@@ -18,7 +18,7 @@ namespace Microsoft.CodeAnalysis
         private readonly int _count;
         private readonly int _separatorCount;
 
-        internal SeparatedSyntaxList(SyntaxNodeOrTokenList list)
+        public SeparatedSyntaxList(SyntaxNodeOrTokenList list)
             : this()
         {
             Validate(list);
@@ -50,12 +50,12 @@ namespace Microsoft.CodeAnalysis
             }
         }
 
-        internal SeparatedSyntaxList(SyntaxNode node, int index)
+        public SeparatedSyntaxList(SyntaxNode node, int index)
             : this(new SyntaxNodeOrTokenList(node, index))
         {
         }
 
-        internal SyntaxNode? Node
+        public SyntaxNode? Node
         {
             get
             {

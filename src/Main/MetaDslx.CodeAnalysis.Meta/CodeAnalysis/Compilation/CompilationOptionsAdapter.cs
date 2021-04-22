@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace MetaDslx.CodeAnalysis
 {
@@ -27,5 +28,12 @@ namespace MetaDslx.CodeAnalysis
         }
 
         protected abstract void ValidateOptionsCore(ArrayBuilder<Diagnostic> builder);
+
+        internal override Diagnostic? FilterDiagnostic(Diagnostic diagnostic, CancellationToken cancellationToken)
+        {
+            return this.FilterDiagnosticCore(diagnostic, cancellationToken);
+        }
+
+        internal abstract Diagnostic? FilterDiagnosticCore(Diagnostic diagnostic, CancellationToken cancellationToken);
     }
 }
