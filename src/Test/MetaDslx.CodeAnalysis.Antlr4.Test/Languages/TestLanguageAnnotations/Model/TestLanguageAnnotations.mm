@@ -4,12 +4,15 @@
 
 	metamodel TestLanguageAnnotations;
 
-	class NamedElement[DeclaredSymbol]
+	[symbol: DeclaredSymbol]
+	class NamedElement
 	{
-		string Name[Name];
+		[symbol: Name]
+		string Name;
 	}
 
-	class Type[TypeSymbol]
+	[symbol: TypeSymbol]
+	class Type
 	{
 	}
 
@@ -34,16 +37,20 @@
 	{
 	}
 
-	class Namespace[NamespaceSymbol] : Scope, NamedDeclaration
+	[symbol: NamespaceSymbol]
+	class Namespace : Scope, NamedDeclaration
 	{
 	}
 
-	class Class[NamedTypeSymbol] : Type, NamedDeclaration, Scope
+	[symbol: NamedTypeSymbol]
+	class Class : Type, NamedDeclaration, Scope
 	{
-		containment list<Property> Properties[Members] subsets Declaration.Declarations;
+		[symbol: Members]
+		containment list<Property> Properties subsets Declaration.Declarations;
 	}
 
-	class Member[MemberSymbol] : NamedDeclaration
+	[symbol: MemberSymbol]
+	class Member : NamedDeclaration
 	{
 	}
 

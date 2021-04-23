@@ -29,6 +29,8 @@
 
   <ItemGroup>
     <PackageReference Include="MetaDslx.BuildTasks" Version="$(BootstrapVersion)" PrivateAssets="All" />
+    <PackageReference Include="Antlr4.Runtime.Standard" Version="$(Antlr4RuntimeStandardVersion)" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="$(MicrosoftDependencyInjectionVersion)" />
     <!-->PackageReference Include="MetaDslx.CodeAnalysis" Version="$(BootstrapVersion)" /-->
   </ItemGroup>
 

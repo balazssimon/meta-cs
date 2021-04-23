@@ -2,7 +2,7 @@ using MetaDslx.CodeAnalysis.InternalUtilities;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
 using MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax;
-using MetaDslx.CodeAnalysis.Text;
+using Microsoft.CodeAnalysis.Text;
 using System;
 using System.Collections.Generic;
 using System.Text;

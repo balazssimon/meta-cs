@@ -11,6 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Xunit;
+using Microsoft.CodeAnalysis;
 
 namespace MetaDslx.CodeAnalysis.Antlr4Test.TestLanguageAnnotations
 {
@@ -21,7 +22,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestLanguageAnnotations
             TestLanguageAnnotationsDescriptor.Initialize();
             string text = File.ReadAllText($@"..\..\..\InputFiles\LanguageAnnotations\Test{testId}-File{fileId}.txt");
             var st = TestLanguageAnnotationsSyntaxTree.ParseText(text);
-            var options = new TestLanguageAnnotationsCompilationOptions(MetaDslx.CodeAnalysis.OutputKind.DynamicallyLinkedLibrary, topLevelBinderFlags: (BinderFlags)BinderFlags.IgnoreAccessibility/*, concurrentBuild: false*/);
+            var options = new TestLanguageAnnotationsCompilationOptions(OutputKind.DynamicallyLinkedLibrary).WithTopLevelBinderFlags(BinderFlags.IgnoreAccessibility);
             var comp = TestLanguageAnnotationsCompilation.Create("Test").WithOptions(options).AddSyntaxTrees(st);
             comp.ForceComplete();
             if (assertEmptyDiagnostics) AssertEmptyDiagnostics(comp);

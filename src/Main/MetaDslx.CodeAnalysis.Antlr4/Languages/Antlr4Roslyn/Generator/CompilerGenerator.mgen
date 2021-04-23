@@ -133,8 +133,8 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Syntax;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.PooledObjects;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 [Instances.ParserHeader]
 ^
@@ -361,7 +361,7 @@ end template
 
 template GenerateLanguageVersion()
 using System;
-using MetaDslx.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using MetaDslx.CodeAnalysis;
 using Roslyn.Utilities;
 ^
@@ -559,7 +559,7 @@ namespace [Properties.DefaultNamespace]
             return Create(
                 assemblyName,
                 options?.WithReferencesSupersedeLowerVersions(true) ?? s_defaultSubmissionOptions,
-                (syntaxTree != null) ? new[] { syntaxTree } : null,
+                (syntaxTree != null) ? new["[]"] { syntaxTree } : null,
                 references,
                 previousScriptCompilation,
                 returnType,
@@ -664,7 +664,7 @@ namespace [Properties.DefaultNamespace]
         /// <summary>
         /// Creates a new compilation with the specified references.
         /// </summary>
-        public new [lang]Compilation WithReferences(params MetadataReference[] references) => ([lang]Compilation)base.WithReferences(references);
+        public new [lang]Compilation WithReferences(params MetadataReference["[]"] references) => ([lang]Compilation)base.WithReferences(references);
         /// <summary>
         /// Creates a new compilation with the specified compilation options.
         /// </summary>
@@ -674,7 +674,7 @@ namespace [Properties.DefaultNamespace]
         /// <summary>
         /// Creates a new compilation with additional syntax trees.
         /// </summary>
-        public new [lang]Compilation AddSyntaxTrees(params SyntaxTree[] trees) => ([lang]Compilation)base.AddSyntaxTrees(trees);
+        public new [lang]Compilation AddSyntaxTrees(params SyntaxTree["[]"] trees) => ([lang]Compilation)base.AddSyntaxTrees(trees);
         /// <summary>
         /// Creates a new compilation with additional syntax trees.
         /// </summary>
@@ -683,7 +683,7 @@ namespace [Properties.DefaultNamespace]
         /// Creates a new compilation without the specified syntax trees. Preserves metadata info for use with trees
         /// added later.
         /// </summary>
-        public new [lang]Compilation RemoveSyntaxTrees(params SyntaxTree[] trees) => ([lang]Compilation)base.RemoveSyntaxTrees(trees);
+        public new [lang]Compilation RemoveSyntaxTrees(params SyntaxTree["[]"] trees) => ([lang]Compilation)base.RemoveSyntaxTrees(trees);
         /// <summary>
         /// Creates a new compilation without the specified syntax trees. Preserves metadata info for use with trees
         /// added later.
@@ -703,7 +703,7 @@ namespace [Properties.DefaultNamespace]
         /// <summary>
         /// Creates a new compilation with additional metadata references.
         /// </summary>
-        public new [lang]Compilation AddReferences(params MetadataReference[] references) => ([lang]Compilation)base.AddReferences(references);
+        public new [lang]Compilation AddReferences(params MetadataReference["[]"] references) => ([lang]Compilation)base.AddReferences(references);
         /// <summary>
         /// Creates a new compilation with additional metadata references.
         /// </summary>
@@ -711,7 +711,7 @@ namespace [Properties.DefaultNamespace]
         /// <summary>
         /// Creates a new compilation without the specified metadata references.
         /// </summary>
-        public new [lang]Compilation RemoveReferences(params MetadataReference[] references) => ([lang]Compilation)base.RemoveReferences(references);
+        public new [lang]Compilation RemoveReferences(params MetadataReference["[]"] references) => ([lang]Compilation)base.RemoveReferences(references);
         /// <summary>
         /// Creates a new compilation without the specified metadata references.
         /// </summary>
@@ -730,6 +730,7 @@ namespace [Properties.DefaultNamespace]
 end template
 
 template GenerateCompilationFactory()
+using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Binding;
@@ -867,7 +868,7 @@ namespace [Properties.DefaultNamespace]
         public new [lang]CompilationOptions WithScriptClassName(string name) => ([lang]CompilationOptions)base.WithScriptClassName(name);
         public new [lang]CompilationOptions WithUsings(ImmutableArray<string> usings) => ([lang]CompilationOptions)base.WithUsings(usings);
         public new [lang]CompilationOptions WithUsings(IEnumerable<string> usings) => ([lang]CompilationOptions)base.WithUsings(usings);
-        public new [lang]CompilationOptions WithUsings(params string[] usings) => ([lang]CompilationOptions)base.WithUsings(usings);
+        public new [lang]CompilationOptions WithUsings(params string["[]"] usings) => ([lang]CompilationOptions)base.WithUsings(usings);
         public new [lang]CompilationOptions WithOptimizationLevel(OptimizationLevel value) => ([lang]CompilationOptions)base.WithOptimizationLevel(value);
         public new [lang]CompilationOptions WithOverflowChecks(bool enabled) => ([lang]CompilationOptions)base.WithOverflowChecks(enabled);
         public new [lang]CompilationOptions WithAllowUnsafe(bool enabled) => ([lang]CompilationOptions)base.WithAllowUnsafe(enabled);
@@ -939,7 +940,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MetaDslx.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using MetaDslx.CodeAnalysis;
 ^
 [var lang = Properties.LanguageName]
@@ -1986,7 +1987,7 @@ namespace [Properties.DefaultNamespace].Syntax.InternalSyntax
 		///   documentation comments, where the structure describes the XML structure of the comment.
 		///   skipped tokens, where the structure describes the tokens that were skipped by the parser.
 		/// </remarks>
-		public override SyntaxNode GetStructure(MetaDslx.CodeAnalysis.SyntaxTrivia trivia)
+		public override SyntaxNode GetStructure(Microsoft.CodeAnalysis.SyntaxTrivia trivia)
 		{
 			if (trivia.HasStructure)
 			{
@@ -2357,12 +2358,12 @@ function string GetRedToGreenParamElem(Antlr4ParserRuleElement elem, string deli
 	end if
 	if (elem.IsList)
 		if (elem.IsToken)
-			result += "MetaDslx.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<"+elem.GreenInnerType()+">("+elem.FieldName()+".Node)"+delim;
+			result += "Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<"+elem.GreenInnerType()+">("+elem.FieldName()+".Node)"+delim;
 		else
 			if (elem.IsSeparated)
-				result += "MetaDslx.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenSeparatedList<"+elem.GreenInnerType()+">("+elem.FieldName()+".Node)"+delim;
+				result += "Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenSeparatedList<"+elem.GreenInnerType()+">("+elem.FieldName()+".Node)"+delim;
 			else
-				result += "MetaDslx.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<"+elem.GreenInnerType()+">("+elem.FieldName()+".Node)"+delim;
+				result += "Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<"+elem.GreenInnerType()+">("+elem.FieldName()+".Node)"+delim;
 			end if
 		end if
 	else

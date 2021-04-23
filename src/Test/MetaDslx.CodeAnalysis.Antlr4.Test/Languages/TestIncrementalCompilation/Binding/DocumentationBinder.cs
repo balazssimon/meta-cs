@@ -1,7 +1,7 @@
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Binding.Binders;
-using MetaDslx.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Text;

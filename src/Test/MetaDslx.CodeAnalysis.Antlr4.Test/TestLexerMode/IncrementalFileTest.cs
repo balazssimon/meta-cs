@@ -1,5 +1,3 @@
-using MetaDslx.Tests;
-using MetaDslx.CodeAnalysis.Text;
 using System;
 using System.Collections.Generic;
 using System.IO;

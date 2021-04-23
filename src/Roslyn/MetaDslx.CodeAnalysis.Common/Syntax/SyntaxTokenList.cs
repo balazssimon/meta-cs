@@ -96,7 +96,7 @@ namespace Microsoft.CodeAnalysis
             return builder.ToList().Node;
         }
 
-        internal GreenNode? Node { get; }
+        public GreenNode? Node { get; }
 
         internal int Position { get; }
 

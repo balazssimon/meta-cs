@@ -4,13 +4,10 @@
   <PropertyGroup>
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
   </PropertyGroup>
-  <!--
-    Roslyn version
-  -->
   <PropertyGroup>
     <MajorVersion>0</MajorVersion>
     <MinorVersion>11</MinorVersion>
-    <PatchVersion>27</PatchVersion>
+    <PatchVersion>30</PatchVersion>
     <PreReleaseVersionLabel>0</PreReleaseVersionLabel>
     <VersionPrefix>$(MajorVersion).$(MinorVersion).$(PatchVersion)</VersionPrefix>
     <!--
@@ -18,7 +15,7 @@
       Keep the setting conditional. The toolset sets the assembly version to 42.42.42.42 if not set explicitly.
     -->
     <AssemblyVersion Condition="'$(OfficialBuild)' == 'true' or '$(DotNetUseShippingVersions)' == 'true'">$(MajorVersion).$(MinorVersion).0.0</AssemblyVersion>
-    <BootstrapVersion>0.11.26</BootstrapVersion>
+    <BootstrapVersion>0.11.29</BootstrapVersion>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -39,5 +36,7 @@
     <MicrosoftCodeAnalysisCSharpVersion>3.9.0</MicrosoftCodeAnalysisCSharpVersion>
     <MicrosoftCodeAnalysisAnalyzersVersion>3.3.2</MicrosoftCodeAnalysisAnalyzersVersion>
     <MicrosoftSourceLinkGitHubVersion>1.0.0</MicrosoftSourceLinkGitHubVersion>
+    <MicrosoftNetDskTestVersion>16.6.1</MicrosoftNetDskTestVersion>
+    <XUnitVersion>2.4.1</XUnitVersion>
   </PropertyGroup>
 </Project>
