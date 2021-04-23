@@ -188,6 +188,11 @@ namespace MetaDslx.CodeAnalysis
             this.CustomTags = customTags;
 
             this.DiagnosticDescriptor = new DiagnosticDescriptor(this.Id, title, messageFormat, category, defaultSeverity, isEnabledByDefault, description, helpLinkUri, customTags);
+
+            if (messageProvider is ErrorCodeMessageProvider ecmp)
+            {
+                ecmp.Add(this);
+            }
         }
 
         public bool Equals(ErrorCode other)

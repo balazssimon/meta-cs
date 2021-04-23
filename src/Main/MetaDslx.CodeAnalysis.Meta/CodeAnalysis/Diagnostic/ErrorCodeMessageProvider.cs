@@ -6,7 +6,7 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis
 {
-    public class ErrorCodeMessageProvider : CommonMessageProvider
+    public sealed class ErrorCodeMessageProvider : CommonMessageProvider
     {
         private string _codePrefix;
         private Type _errorCodeType;
@@ -157,7 +157,7 @@ namespace MetaDslx.CodeAnalysis
 
         public override int ERR_BadAssemblyName => throw new NotImplementedException();
 
-        public void Add(ErrorCode errorCode)
+        internal void Add(ErrorCode errorCode)
         {
             _errorCodes.Add(errorCode.Code, errorCode);
         }
@@ -214,7 +214,7 @@ namespace MetaDslx.CodeAnalysis
 
         public override string GetMessagePrefix(string id, DiagnosticSeverity severity, bool isWarningAsError, CultureInfo? culture)
         {
-            throw new NotImplementedException();
+            return _codePrefix;
         }
 
         public override DiagnosticSeverity GetSeverity(int code)
