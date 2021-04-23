@@ -26,6 +26,8 @@ namespace MetaDslx.Languages.Meta
 
         }
 
+        protected override Language LanguageCore => MetaLanguage.Instance;
+
         protected override LanguageCompilationOptions Clone()
         {
             return new MetaCompilationOptions(this);

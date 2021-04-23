@@ -853,6 +853,8 @@ namespace [Properties.DefaultNamespace]
 
         }
 
+        protected override Language LanguageCore => [lang]Language.Instance;
+
         protected override LanguageCompilationOptions Clone()
         {
             return new [lang]CompilationOptions(this);

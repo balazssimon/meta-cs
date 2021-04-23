@@ -30,8 +30,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         {
             Debug.Assert(!nonTypeMembers.IsDefault);
             Debug.Assert(!typeMembers.IsDefault);
-            Debug.Assert(!nonTypeMembers.Any(s => s is ITypeSymbol));
-            Debug.Assert(!typeMembers.Any(s => !(s is ITypeSymbol)));
+            Debug.Assert(!nonTypeMembers.Any(s => s is TypeSymbol));
+            Debug.Assert(!typeMembers.Any(s => !(s is TypeSymbol)));
             _symbol = symbol;
             _state = state;
             this.NamedNonTypeMembers = nonTypeMembers.WhereAsArray(m => m.Name != null);

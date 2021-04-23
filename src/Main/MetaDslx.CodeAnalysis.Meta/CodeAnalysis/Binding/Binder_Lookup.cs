@@ -123,6 +123,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             TypeSymbol type = (TypeSymbol)constraints.QualifierOpt;
             switch (type.TypeKind.Switch())
             {
+                case Symbols.TypeKind.NamedType:
                 case Symbols.TypeKind.Class:
                 case Symbols.TypeKind.Struct:
                 case Symbols.TypeKind.Enum:

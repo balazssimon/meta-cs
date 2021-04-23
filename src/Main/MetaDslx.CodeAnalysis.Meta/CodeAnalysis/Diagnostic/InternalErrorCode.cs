@@ -62,10 +62,8 @@ namespace MetaDslx.CodeAnalysis
         {
             int errorCode = reader.ReadInt32();
             if (s_errorCodes.TryGetValue(errorCode, out var result)) return result;
-            else return ERR_InternalError;
+            else return Unknown;
         }
-
-        public static readonly InternalErrorCode ERR_InternalError = new InternalErrorCode();
 
         /// <summary>
         /// The code has yet to be determined.

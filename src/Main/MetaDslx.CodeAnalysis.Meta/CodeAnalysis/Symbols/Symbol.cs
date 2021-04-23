@@ -544,6 +544,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return this.MetadataName + " (" + this.Kind.ToString() + ")";
         }
 
+        private string GetDebuggerDisplay()
+        {
+            return this.MetadataName + " (" + this.GetType().Name + ")";
+        }
+
         public abstract void Accept(SymbolVisitor visitor);
 
         public abstract TResult Accept<TResult>(SymbolVisitor<TResult> visitor);

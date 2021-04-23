@@ -6,7 +6,7 @@ using MetaDslx.Languages.Meta.Binding;
 using MetaDslx.Languages.Meta.Generator;
 using MetaDslx.Languages.Meta.Model;
 using MetaDslx.Modeling;
-using MetaDslx.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -59,8 +59,8 @@ namespace MetaDslx.Bootstrap.MetaModel
             BinderFlags binderFlags = BinderFlags.IgnoreAccessibility;
             BinderFlags binderFlags2 = BinderFlags.IgnoreMetaLibraryDuplicatedTypes;
             binderFlags = binderFlags.UnionWith(binderFlags2);
-            //MetaCompilationOptions options = new MetaCompilationOptions(OutputKind.NetModule, deterministic: true, concurrentBuild: false, topLevelBinderFlags: binderFlags);
-            MetaCompilationOptions options = new MetaCompilationOptions(OutputKind.NetModule, deterministic: false, concurrentBuild: true, topLevelBinderFlags: binderFlags);
+            MetaCompilationOptions options = new MetaCompilationOptions(OutputKind.NetModule, deterministic: true, concurrentBuild: false).WithTopLevelBinderFlags(binderFlags); 
+            //MetaCompilationOptions options = new MetaCompilationOptions(OutputKind.NetModule, deterministic: false, concurrentBuild: true).WithTopLevelBinderFlags(binderFlags);
             var compilation = MetaCompilation.
                 Create("MetaTest").
                 AddSyntaxTrees(tree).

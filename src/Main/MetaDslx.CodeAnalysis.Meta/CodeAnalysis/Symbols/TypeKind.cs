@@ -92,7 +92,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         public Microsoft.CodeAnalysis.TypeKind ToCSharp()
         {
-            return default;
+            return Microsoft.CodeAnalysis.TypeKind.Class;
         }
     }
 }

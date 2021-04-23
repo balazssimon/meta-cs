@@ -44,8 +44,6 @@ namespace MetaDslx.CodeAnalysis
         public LanguageDiagnosticInfo(ErrorCode code, object[] args, ImmutableArray<Symbol> symbols, ImmutableArray<Location> additionalLocations)
             : base(code, args, symbols)
         {
-            // Internal errors are abnormal and should not occur except where there are bugs in the compiler.
-            Debug.Assert(code != InternalErrorCode.ERR_InternalError);
             _errorCode = code;
             _additionalLocations = additionalLocations.IsDefaultOrEmpty ? SpecializedCollections.EmptyReadOnlyList<Location>() : additionalLocations;
         }

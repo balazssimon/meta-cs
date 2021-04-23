@@ -42,7 +42,7 @@ namespace MetaDslx.CodeAnalysis
         /// <summary>
         /// Gets the source language.
         /// </summary>
-        public new Language Language { get; private set; }
+        public new Language Language { get; }
 
         protected override Language LanguageCore => this.Language;
 
@@ -82,7 +82,7 @@ namespace MetaDslx.CodeAnalysis
             bool publicSign = false,
             MetadataImportOptions metadataImportOptions = MetadataImportOptions.Public,
             NullableContextOptions nullableContextOptions = NullableContextOptions.Disable)
-            : this(outputKind, reportSuppressedDiagnostics, moduleName, mainTypeName, scriptClassName,
+            : this(language, outputKind, reportSuppressedDiagnostics, moduleName, mainTypeName, scriptClassName,
                    usings, optimizationLevel, checkOverflow, allowUnsafe,
                    cryptoKeyContainer, cryptoKeyFile, cryptoPublicKey, delaySign, platform,
                    generalDiagnosticOption, warningLevel,
@@ -105,6 +105,7 @@ namespace MetaDslx.CodeAnalysis
 
         // Expects correct arguments.
         private LanguageCompilationOptions(
+            Language language,
             OutputKind outputKind,
             bool reportSuppressedDiagnostics,
             string? moduleName,
@@ -144,6 +145,7 @@ namespace MetaDslx.CodeAnalysis
                    sourceReferenceResolver, syntaxTreeOptionsProvider, metadataReferenceResolver,
                    assemblyIdentityComparer, strongNameProvider, metadataImportOptions, referencesSupersedeLowerVersions)
         {
+            this.Language = language;
             this.Usings = usings.AsImmutableOrEmpty();
             this.AllowUnsafe = allowUnsafe;
             this.TopLevelBinderFlags = topLevelBinderFlags;
@@ -151,6 +153,7 @@ namespace MetaDslx.CodeAnalysis
         }
 
         protected LanguageCompilationOptions(LanguageCompilationOptions other) : this(
+            language: other.Language,
             outputKind: other.OutputKind,
             moduleName: other.ModuleName,
             mainTypeName: other.MainTypeName,
