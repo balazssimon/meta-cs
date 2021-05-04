@@ -345,7 +345,7 @@ namespace MetaDslx.Modeling
 
         public override void Add(T item, object tag)
         {
-            if (this.HasValue && !this.HasKnownValue(item, tag)) throw new ModelException(ModelErrorCode.ERR_CannotAddMultipleValuesToNonCollectionProperty.ToDiagnostic(GreenObject.ExtractLocation(tag), this.slot, this.obj));
+            if (this.HasValue && !this.HasKnownValue(item, tag)) throw new ModelException(ModelErrorCode.ERR_CannotAddMultipleValuesToNonCollectionProperty.ToDiagnostic(GreenObject.ExtractLocation(tag), this.slot.Name, this.obj.ToString()));
             this.obj.MModel.SetValue<T>(this.obj.MId, this.slot.EffectiveProperty, item, tag, this.obj.MIsBeingCreated);
         }
 
@@ -364,7 +364,7 @@ namespace MetaDslx.Modeling
 
         public override void AddLazy(LazyValue<T> item)
         {
-            if (this.HasLazyValue) throw new ModelException(ModelErrorCode.ERR_CannotAddMultipleValuesToNonCollectionProperty.ToDiagnostic(GreenObject.ExtractLocation(item.Tag), this.slot, this.obj));
+            if (this.HasLazyValue) throw new ModelException(ModelErrorCode.ERR_CannotAddMultipleValuesToNonCollectionProperty.ToDiagnostic(GreenObject.ExtractLocation(item.Tag), this.slot.Name, this.obj.ToString()));
             this.obj.MModel.AddLazyItem(this.obj.MId, this.slot.EffectiveProperty, item, this.obj.MIsBeingCreated);
         }
 
@@ -455,7 +455,7 @@ namespace MetaDslx.Modeling
             }
             else if (!this.HasKnownValue(item, tag))
             {
-                throw new ModelException(ModelErrorCode.ERR_CannotAddMultipleValuesToNonCollectionProperty.ToDiagnostic(GreenObject.ExtractLocation(tag), this.slot, this.obj));
+                throw new ModelException(ModelErrorCode.ERR_CannotAddMultipleValuesToNonCollectionProperty.ToDiagnostic(GreenObject.ExtractLocation(tag), this.slot.Name, this.obj.ToString()));
             }
         }
 

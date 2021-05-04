@@ -37,7 +37,7 @@ using DFA = Antlr4.Runtime.Dfa.DFA;
 
 [System.CodeDom.Compiler.GeneratedCode("ANTLR", "4.9.1")]
 [System.CLSCompliant(false)]
-public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParser {
+public partial class MetaParser : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4Parser {
     private MetaSyntaxParser SyntaxParser => (MetaSyntaxParser)this.IncrementalAntlr4Parser;
 	protected static DFA[] decisionToDFA;
 	protected static PredictionContextCache sharedContextCache = new PredictionContextCache();

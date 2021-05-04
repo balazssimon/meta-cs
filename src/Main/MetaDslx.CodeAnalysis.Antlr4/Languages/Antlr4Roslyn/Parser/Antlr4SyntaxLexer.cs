@@ -24,7 +24,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         internal static readonly IncrementalToken InvalidToken = new IncrementalToken(0, string.Empty);
 
         private readonly Antlr4InputStream _stream;
-        private readonly Antlr4.Runtime.Lexer _lexer;
+        private readonly Antlr4Lexer _lexer;
         private readonly SyntaxFacts _syntaxFacts;
         private bool _readNextToken;
         private bool _eof;
@@ -43,7 +43,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             _readNextToken = true;
         }
 
-        public Antlr4.Runtime.Lexer Antlr4Lexer => _lexer;
+        public Antlr4Lexer Antlr4Lexer => _lexer;
 
         internal Antlr4InputStream InputStream => _stream;
 

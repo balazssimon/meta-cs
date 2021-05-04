@@ -28,7 +28,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
     public abstract partial class Antlr4SyntaxParser : SyntaxParser<IncrementalToken>, ITokenStream, ITokenSource, IAntlrErrorListener<IToken>
     {
         private readonly Antlr4SyntaxLexer _lexer;
-        private readonly IncrementalParser _parser;
+        private readonly Antlr4Parser _parser;
         private readonly Dictionary<ParserRuleContext, GreenNode> _nodeCache;
         private Stack<ResetPoint> _resetPoints;
         private bool _matchedToken;
@@ -38,7 +38,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         {
             _nodeCache = new Dictionary<ParserRuleContext, GreenNode>();
             _lexer = (Antlr4SyntaxLexer)this.Lexer;
-            _parser = (IncrementalParser)((IAntlr4SyntaxFactory)language.InternalSyntaxFactory).CreateAntlr4Parser(this);
+            _parser = ((IAntlr4SyntaxFactory)language.InternalSyntaxFactory).CreateAntlr4Parser(this);
             _parser._incrementalParser = this;
             _parser.RemoveErrorListeners();
             _parser.AddErrorListener(this);
@@ -46,7 +46,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             _resetPoints = new Stack<ResetPoint>();
         }
 
-        protected IncrementalParser Parser => _parser;
+        protected Antlr4Parser Parser => _parser;
 
         protected override ParserState SaveParserState(ParserState previousState)
         {

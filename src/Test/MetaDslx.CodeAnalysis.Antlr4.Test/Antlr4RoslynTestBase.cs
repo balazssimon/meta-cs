@@ -48,7 +48,8 @@ namespace MetaDslx.Tests
             if (assertEmptyDiagnostics) AssertEmptyDiagnostics(diagnostics);
             var antlr4Diagnostics = Antlr4Parse(text, assertEmptyDiagnostics);
             LogParseInfo(text, tree, antlr4Diagnostics);
-            Assert.Equal(antlr4Diagnostics.Length, diagnostics.Length);
+            Assert.Equal(text.ToString(), tree.GetRoot().ToFullString());
+            CheckDiagnostics(antlr4Diagnostics, diagnostics);
             return tree;
         }
 
@@ -60,10 +61,28 @@ namespace MetaDslx.Tests
             if (assertEmptyDiagnostics) AssertEmptyDiagnostics(diagnostics);
             var antlr4Diagnostics = Antlr4Parse(text, assertEmptyDiagnostics);
             LogParseInfo(text, tree, antlr4Diagnostics);
-            //Assert.Equal(antlr4Diagnostics.Length, diagnostics.Length);
-            Assert.True(antlr4Diagnostics.Length <= diagnostics.Length);
+            Assert.Equal(text.ToString(), tree.GetRoot().ToFullString());
+            CheckDiagnostics(antlr4Diagnostics, diagnostics);
             return tree;
         }
+
+        private void CheckDiagnostics(ImmutableArray<Diagnostic> antlr4Diagnostics, ImmutableArray<Diagnostic> diagnostics)
+        {
+            var formatter = new DiagnosticFormatter();
+            var diagnosticsList = diagnostics.Select(d => formatter.Format(d)).OrderBy(d => d).ToList();
+            var antlr4DiagnosticsList = antlr4Diagnostics.Select(d => formatter.Format(d)).OrderBy(d => d).ToList();
+            var lastIndex = Math.Min(antlr4Diagnostics.Length, diagnostics.Length);
+            for (int i = 0; i < lastIndex; i++)
+            {
+                Assert.Equal(antlr4DiagnosticsList[i], diagnosticsList[i]);
+            }
+            if (lastIndex < antlr4Diagnostics.Length)
+            {
+                Assert.Equal(antlr4DiagnosticsList[lastIndex], null);
+            }
+            Assert.True(antlr4Diagnostics.Length == diagnostics.Length);
+        }
+
 
         public (SourceText, LanguageSyntaxTree) IncrementalParseWithInsertedText((SourceText oldText, LanguageSyntaxTree oldTree) old, int position, string insertedText, bool assertEmptyDiagnostics = true)
         {

@@ -1162,11 +1162,11 @@ namespace MetaDslx.Modeling.Internal
                 {
                     if (slot.IsCollection)
                     {
-                        this.MakeException(Location.None, ModelErrorCode.ERR_CannotAddValueToProperty, plainValue, valueId.Descriptor.MutableType, unassignableProperty, unassignableProperty.MutableType, oid);
+                        this.MakeException(Location.None, ModelErrorCode.ERR_CannotAddValueToProperty, plainValue, valueId.Descriptor.MutableType.Name, unassignableProperty, unassignableProperty.MutableType.Name, oid);
                     }
                     else
                     {
-                        this.MakeException(Location.None, ModelErrorCode.ERR_CannotAssignValueToProperty, plainValue, valueId.Descriptor.MutableType, unassignableProperty, unassignableProperty.MutableType, oid);
+                        this.MakeException(Location.None, ModelErrorCode.ERR_CannotAssignValueToProperty, plainValue, valueId.Descriptor.MutableType.Name, unassignableProperty, unassignableProperty.MutableType.Name, oid);
                     }
                 }
             }

@@ -7839,19 +7839,19 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		public virtual TResult VisitScientificLiteralGreen(ScientificLiteralGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitStringLiteralGreen(StringLiteralGreen node) => this.DefaultVisit(node);
 	}
-	internal class MetaInternalSyntaxFactory : InternalSyntaxFactory, MetaDslx.Languages.Antlr4Roslyn.IAntlr4SyntaxFactory
+	internal class MetaInternalSyntaxFactory : InternalSyntaxFactory, MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IAntlr4SyntaxFactory
 	{
 		public MetaInternalSyntaxFactory(MetaSyntaxFacts syntaxFacts) 
 		    : base(syntaxFacts)
 		{
 		}
 	
-	    public Antlr4.Runtime.Lexer CreateAntlr4Lexer(Antlr4.Runtime.ICharStream input)
+	    public Antlr4Lexer CreateAntlr4Lexer(Antlr4.Runtime.ICharStream input)
 	    {
 	        return new MetaLexer(input);
 	    }
 	
-	    public Antlr4.Runtime.Parser CreateAntlr4Parser(Antlr4.Runtime.ITokenStream input)
+	    public Antlr4Parser CreateAntlr4Parser(Antlr4.Runtime.ITokenStream input)
 	    {
 	        return new MetaParser(input);
 	    }

@@ -2612,19 +2612,19 @@ end template
 
 template GenerateInternalSyntaxFactory()
 [var lang = Properties.LanguageName]
-internal class [lang]InternalSyntaxFactory : InternalSyntaxFactory, MetaDslx.Languages.Antlr4Roslyn.IAntlr4SyntaxFactory
+internal class [lang]InternalSyntaxFactory : InternalSyntaxFactory, global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IAntlr4SyntaxFactory
 {
 	public [lang]InternalSyntaxFactory([lang]SyntaxFacts syntaxFacts) 
 	    : base(syntaxFacts)
 	{
 	}
 ^
-    public Antlr4.Runtime.Lexer CreateAntlr4Lexer(Antlr4.Runtime.ICharStream input)
+    public global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4Lexer CreateAntlr4Lexer(Antlr4.Runtime.ICharStream input)
     {
         return new [lang]Lexer(input);
     }
 ^
-    public Antlr4.Runtime.Parser CreateAntlr4Parser(Antlr4.Runtime.ITokenStream input)
+    public global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4Parser CreateAntlr4Parser(Antlr4.Runtime.ITokenStream input)
     {
         return new [lang]Parser(input);
     }

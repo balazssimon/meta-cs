@@ -25032,7 +25032,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp4_last) __out.AppendLine(true);
                 }
             }
-            string __tmp5_line = "InternalSyntaxFactory : InternalSyntaxFactory, MetaDslx.Languages.Antlr4Roslyn.IAntlr4SyntaxFactory"; //2615:22
+            string __tmp5_line = "InternalSyntaxFactory : InternalSyntaxFactory, global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IAntlr4SyntaxFactory"; //2615:22
             if (!string.IsNullOrEmpty(__tmp5_line))
             {
                 __out.Append(__tmp5_line);
@@ -25041,7 +25041,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             if (__tmp2_outputWritten) __out.AppendLine(true);
             if (__tmp2_outputWritten)
             {
-                __out.AppendLine(false); //2615:121
+                __out.AppendLine(false); //2615:151
             }
             __out.Append("{"); //2616:1
             __out.AppendLine(false); //2616:2
@@ -25110,8 +25110,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             __out.Append("	}"); //2620:1
             __out.AppendLine(false); //2620:3
             __out.AppendLine(true); //2621:1
-            __out.Append("    public Antlr4.Runtime.Lexer CreateAntlr4Lexer(Antlr4.Runtime.ICharStream input)"); //2622:1
-            __out.AppendLine(false); //2622:84
+            __out.Append("    public global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4Lexer CreateAntlr4Lexer(Antlr4.Runtime.ICharStream input)"); //2622:1
+            __out.AppendLine(false); //2622:137
             __out.Append("    {"); //2623:1
             __out.AppendLine(false); //2623:6
             bool __tmp14_outputWritten = false;
@@ -25152,8 +25152,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             __out.Append("    }"); //2625:1
             __out.AppendLine(false); //2625:6
             __out.AppendLine(true); //2626:1
-            __out.Append("    public Antlr4.Runtime.Parser CreateAntlr4Parser(Antlr4.Runtime.ITokenStream input)"); //2627:1
-            __out.AppendLine(false); //2627:87
+            __out.Append("    public global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4Parser CreateAntlr4Parser(Antlr4.Runtime.ITokenStream input)"); //2627:1
+            __out.AppendLine(false); //2627:140
             __out.Append("    {"); //2628:1
             __out.AppendLine(false); //2628:6
             bool __tmp19_outputWritten = false;

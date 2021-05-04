@@ -58,12 +58,6 @@
   <ItemGroup>
     <Folder Include="InputFiles\IncrementalCompilation\" />
     <Folder Include="InputFiles\LexerMode\" />
-    <Folder Include="Languages\TestIncrementalCompilation\Errors\" />
-    <Folder Include="Languages\TestLanguageAnnotations\Compilation\" />
-    <Folder Include="Languages\TestLanguageAnnotations\Errors\" />
-    <Folder Include="Languages\TestLanguageAnnotations\Symbols\" />
-    <Folder Include="Languages\TestLexerMode\Errors\" />
-    <Folder Include="Languages\TestLexerMode\Symbols\" />
   </ItemGroup>
 
 </Project>

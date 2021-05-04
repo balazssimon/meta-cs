@@ -179,21 +179,40 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             return true;
         }
 
+        private void IncrementalLexerFix(string lexerFilePath)
+        {
+            StringBuilder sb = new StringBuilder();
+            using(StreamReader reader = new StreamReader(lexerFilePath))
+            {
+                while (!reader.EndOfStream)
+                {
+                    var line = reader.ReadLine();
+                    if (line.Contains("global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4Lexer")) return;
+                    if (line.Contains(": Lexer {"))
+                    {
+                        line = line.Replace(": Lexer {", ": global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4Lexer {");
+                    }
+                    sb.AppendLine(line);
+                }
+            }
+            File.WriteAllText(lexerFilePath, sb.ToString());
+        }
+
         private void IncrementalParserFix(string parserFilePath)
         {
             StringBuilder sb = new StringBuilder();
-            using(StreamReader reader = new StreamReader(parserFilePath))
+            using (StreamReader reader = new StreamReader(parserFilePath))
             {
                 string prevLine1 = null;
                 string prevLine2 = null;
                 string prevLine3 = null;
-                while(!reader.EndOfStream)
+                while (!reader.EndOfStream)
                 {
                     var line = reader.ReadLine();
-                    if (line.Contains("global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParser")) return;
+                    if (line.Contains("global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4Parser")) return;
                     if (line.Contains(": Parser {"))
                     {
-                        line = line.Replace(": Parser {", $": global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.IncrementalParser {{\r\n    private {LanguageName}SyntaxParser SyntaxParser => ({LanguageName}SyntaxParser)this.IncrementalAntlr4Parser;");
+                        line = line.Replace(": Parser {", $": global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4Parser {{\r\n    private {LanguageName}SyntaxParser SyntaxParser => ({LanguageName}SyntaxParser)this.IncrementalAntlr4Parser;");
                     }
                     if (line.Contains("Context _localctx = new "))
                     {
@@ -418,6 +437,9 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
 
             if (this.GenerateCompiler)
             {
+                string antlr4LexerFile = Path.Combine(this.AutomaticOutputDirectory, Path.ChangeExtension(this.GeneratedAntlr4GrammarFile, ".cs"));
+                IncrementalLexerFix(antlr4LexerFile);
+
                 this.WriteOutputFile(Path.Combine(this.SyntaxDirectory, this.LanguageName + "SyntaxFacts.Tokens.cs"), this.GeneratedTokenSyntaxFacts);
                 this.WriteOutputFile(Path.Combine(this.SyntaxDirectory, this.LanguageName + "SyntaxKind.Tokens.cs"), this.GeneratedSyntaxKind);
             }

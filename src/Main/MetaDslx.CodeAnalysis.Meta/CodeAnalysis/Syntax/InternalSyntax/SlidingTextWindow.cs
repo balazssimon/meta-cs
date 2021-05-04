@@ -208,7 +208,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         {
             if (position < _basis)
             {
-                Debug.Assert(true);
+                Debug.Assert(false);
             }
             // if position is within already read character range then just use what we have
             int relative = position - _basis;
