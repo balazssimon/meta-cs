@@ -26,6 +26,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             else return pch;
         }
 
+        public int LexemeStartPosition => _textWindow.LexemeStartPosition;
         public int Index => _textWindow.Position;
         public int Size => _textWindow.Text.Length;
         public string SourceName => "<unknown>";

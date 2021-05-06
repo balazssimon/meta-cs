@@ -14,6 +14,10 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode
 {
     public class TestLexerModeLanguageServices : TestLexerModeLanguageServicesBase
     {
+        public override InternalSyntaxFactory CreateInternalSyntaxFactory(SyntaxFacts syntaxFacts)
+        {
+            return new CustomTestLexerModeInternalSyntaxFactory((TestLexerModeSyntaxFacts)syntaxFacts);
+        }
     }
 }
 

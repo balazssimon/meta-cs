@@ -163,8 +163,9 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 }
                 if (index >= _count)
                 {
-                    if (_count > 0) return _items[_count - 1];
-                    else return default;
+                    /*if (_count > 0) return _items[_count - 1];
+                    else return default;*/
+                    return default;
                 }
                 else
                 {

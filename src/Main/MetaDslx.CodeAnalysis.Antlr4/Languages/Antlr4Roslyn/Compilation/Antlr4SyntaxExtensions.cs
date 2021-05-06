@@ -13,8 +13,8 @@ namespace MetaDslx.CodeAnalysis.Syntax
     {
         public static int ToAntlr4(this SyntaxKind kind)
         {
-            if (kind == SyntaxKind.None) return 0;
-            else if (kind == SyntaxKind.Eof) return -1;
+            if (kind == SyntaxKind.None || kind == SyntaxKind.BadToken) return TokenConstants.InvalidType;
+            else if (kind == SyntaxKind.Eof) return TokenConstants.EOF;
             else 
             {
                 var value = kind.GetValue();
@@ -32,7 +32,7 @@ namespace MetaDslx.CodeAnalysis.Syntax
 
         public static SyntaxKind FromAntlr4(this int token, Type syntaxKindType)
         {
-            if (token == 0) return (SyntaxKind)EnumObject.ByName(syntaxKindType, SyntaxKind.None);
+            if (token == 0) return (SyntaxKind)EnumObject.ByName(syntaxKindType, SyntaxKind.BadToken);
             else if (token == -1) return (SyntaxKind)EnumObject.ByName(syntaxKindType, SyntaxKind.Eof);
             else return (SyntaxKind)EnumObject.FromIntUnsafe(syntaxKindType, token + SyntaxKind.__LastPredefinedSyntaxKindValue);
         }

@@ -15,6 +15,32 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             : base(input, output, errorOutput)
         {
         }
+
+        public override IToken NextToken()
+        {
+            var token = base.NextToken();
+            if (token.Type == TokenConstants.EOF)
+            {
+                if (this.InputStream is Antlr4InputStream charStream && charStream.LexemeStartPosition < charStream.Size)
+                {
+                    this.HitEOF = false;
+                    IToken t = this.TokenFactory.Create(Tuple.Create((ITokenSource)this, (ICharStream)this.InputStream), TokenConstants.InvalidType, this.Text, TokenConstants.HiddenChannel, this.TokenStartCharIndex, this.CharIndex - 1, this.TokenStartLine, this.TokenStartColumn);
+                    this.Emit(t);
+                    return t;
+                }
+            }
+            return token;
+        }
+
+        public override void Recover(LexerNoViableAltException e)
+        {
+            base.Recover(e);
+        }
+
+        /*public override void Recover(RecognitionException re)
+        {
+            base.Recover(re);
+        }*/
     }
 
 }

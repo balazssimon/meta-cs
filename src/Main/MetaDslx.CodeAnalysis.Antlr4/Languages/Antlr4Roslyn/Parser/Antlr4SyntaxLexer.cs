@@ -132,7 +132,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         {
             CallLogger.Instance.Call(CreateAntlr4LexerModeSnapshot());
             IToken token = ReadNextToken(true);
-            if (token == null || token.Type <= 0) return SyntaxKind.None;
+            if (token == null) return SyntaxKind.None;
             var kind = token.Type.FromAntlr4(_syntaxFacts.SyntaxKindType);
             return kind;
         }

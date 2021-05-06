@@ -799,7 +799,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             protected internal virtual void ConsumeUntil(Parser recognizer, IntervalSet set)
             {
                 //		System.err.println("consumeUntil("+set.toString(recognizer.getTokenNames())+")");
-                int ttype = ttype = _parser.CurrentToken.Kind.ToAntlr4(); //((ITokenStream)recognizer.InputStream).La(1);
+                int ttype = _parser.CurrentToken.Kind.ToAntlr4(); //((ITokenStream)recognizer.InputStream).La(1);
                 while (ttype != TokenConstants.EOF && !set.Contains(ttype))
                 {
                     //System.out.println("consume during recover LA(1)="+getTokenNames()[input.LA(1)]);

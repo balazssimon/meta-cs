@@ -1,0 +1,4 @@
+namespace MetaDslx.Bootstrap;
+generator MGenTest;
+
+properties P

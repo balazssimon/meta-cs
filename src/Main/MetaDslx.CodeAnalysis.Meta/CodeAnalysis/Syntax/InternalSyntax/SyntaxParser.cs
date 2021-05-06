@@ -33,6 +33,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         private int _lastErrorIndex;
         private List<SyntaxDiagnosticInfo> _syntaxErrors;
         private int _position;
+        private int _lexerPosition;
         private int _lastNonSkippedTokenIndex;
 
         private static readonly ObjectPool<BlendedNode[]> s_blendedNodesPool = new ObjectPool<BlendedNode[]>(() => new BlendedNode[32], 2);
@@ -63,6 +64,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             _currentNode = default;
             _syntaxErrors = new List<SyntaxDiagnosticInfo>();
             _position = 0;
+            _lexerPosition = 0;
             _lastNonSkippedTokenIndex = -1;
 #if DEBUG
             _version = 1;
@@ -204,8 +206,6 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         protected ParserState EndNode(ref GreenNode green)
         {
-            if (green == null) return null;
-
             _state = SaveParserState();
             CallLogger.Instance.Call(_state);
             PrintStateStack();
@@ -218,19 +218,22 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 var minLookahead = Math.Min(incrementalState.minLookahead, _minLookahead);
                 var maxLookahead = Math.Max(incrementalState.maxLookahead, _maxLookahead);
 
-                green = WithCurrentSyntaxErrors(green, incrementalState.position);
-
-                var nodeAnnot = GetNodeAnnotation(green);
-                if (nodeAnnot == null)
+                if (green != null)
                 {
-                    var lookaheadBefore = minLookahead - incrementalState.position;
-                    var lookaheadAfter = maxLookahead - incrementalState.position - green.FullWidth;
+                    green = WithCurrentSyntaxErrors(green, incrementalState.position);
+
+                    var nodeAnnot = GetNodeAnnotation(green);
+                    if (nodeAnnot == null)
+                    {
+                        var lookaheadBefore = minLookahead - incrementalState.position;
+                        var lookaheadAfter = maxLookahead - incrementalState.position - green.FullWidth;
 #if DEBUG
-                    nodeAnnot = new IncrementalNodeAnnotation(incrementalState.state, _state, minTokenLookahead, maxTokenLookahead, lookaheadBefore, lookaheadAfter, _version);
+                        nodeAnnot = new IncrementalNodeAnnotation(incrementalState.state, _state, minTokenLookahead, maxTokenLookahead, lookaheadBefore, lookaheadAfter, _version);
 #else
-                    nodeAnnot = new IncrementalNodeAnnotation(incrementalState.state, _state, minTokenLookahead, maxTokenLookahead, lookaheadBefore, lookaheadAfter);
+                        nodeAnnot = new IncrementalNodeAnnotation(incrementalState.state, _state, minTokenLookahead, maxTokenLookahead, lookaheadBefore, lookaheadAfter);
 #endif
-                    green = green.WithAdditionalAnnotationGreen(new SyntaxAnnotation(IncrementalNodeAnnotationKind, nodeAnnot));
+                        green = green.WithAdditionalAnnotationGreen(new SyntaxAnnotation(IncrementalNodeAnnotationKind, nodeAnnot));
+                    }
                 }
                 if (_incrementalStateStack.Count > 0)
                 {
@@ -305,11 +308,13 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 else _lexedTokens.MarkResetPoint();
             }
             _resetCount++;
-            return new ResetPoint(_resetCount, _state, index, _lastNonSkippedTokenIndex, _lastErrorIndex, _prevTokenTrailingTrivia);
+            return new ResetPoint(_resetCount, _state, index, _position, _lastNonSkippedTokenIndex, _lastErrorIndex, _prevTokenTrailingTrivia);
         }
 
         protected void Reset(ref ResetPoint point)
         {
+            _position = point.Position;
+            _lexerPosition = point.Position;
             _prevTokenTrailingTrivia = point.PrevTokenTrailingTrivia;
             _lastNonSkippedTokenIndex = point.LastNonSkippedTokenIndex;
             _lastErrorIndex = point.LastErrorIndex;
@@ -412,7 +417,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
             _blendedTokens.InsertItem(currentNode);
             _lastNonSkippedTokenIndex = TokenIndex;
-            MoveToNextToken();
+            MoveToNextToken(skip: false);
 
             // erase current state
             RestoreParserState(currentNode.Blender.State);
@@ -517,7 +522,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             {
                 if (_maxTokenLookahead < 0)
                 {
-                    _maxLookahead = _position + CurrentToken.FullWidth;
+                    _maxLookahead = _position;
+                    if (CurrentToken != null) _maxLookahead += CurrentToken.FullWidth;
                     _maxTokenLookahead = 0;
                 }
                 for (int i = lookaheadCount; i > _maxTokenLookahead; i--)
@@ -571,7 +577,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         protected InternalSyntaxToken EatToken()
         {
             var ct = this.EatCurrentTokenWithSkippedTokensAndErrors();
-            MoveToNextToken();
+            MoveToNextToken(skip: false);
             return ct;
         }
 
@@ -597,17 +603,25 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             return ct;
         }
 
-        protected void MoveToNextToken()
+        protected void MoveToNextToken(bool skip)
         {
             if (_currentNode.Node != null)
             {
-                _position += _currentNode.Node.FullWidth;
-                _prevTokenTrailingTrivia = _currentNode.Node.GetTrailingTrivia().Node;
+                _lexerPosition += _currentNode.Node.FullWidth;
+                if (!skip)
+                {
+                    _position = _lexerPosition;
+                    _prevTokenTrailingTrivia = _currentNode.Node.GetTrailingTrivia().Node;
+                }
             }
             else
             {
-                _position += _currentToken.FullWidth;
-                _prevTokenTrailingTrivia = _currentToken.GetTrailingTrivia();
+                _lexerPosition += _currentToken.FullWidth;
+                if (!skip)
+                {
+                    _position = _lexerPosition;
+                    _prevTokenTrailingTrivia = _currentToken.GetTrailingTrivia();
+                }
             }
             _currentToken = default;
             if (_blendedTokens != null)
@@ -635,7 +649,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             var ct = this.EatCurrentTokenWithSkippedTokensAndErrors();
             if (ct.Kind == kind)
             {
-                MoveToNextToken();
+                MoveToNextToken(skip: false);
                 return ct;
             }
 
@@ -651,7 +665,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             var ct = this.EatCurrentTokenWithSkippedTokensAndErrors();
             if (ct.Kind == expected)
             {
-                MoveToNextToken();
+                MoveToNextToken(skip: false);
                 return ct;
             }
 
@@ -663,7 +677,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         {
             var ct = this.CurrentToken;
             CallLogger.Instance.Call(ct.ToFullString());
-            MoveToNextToken();
+            MoveToNextToken(skip: true);
             return ct;
         }
 
@@ -736,7 +750,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 token = WithAdditionalDiagnostics(token, this.GetExpectedTokenError(kind, token.Kind));
             }
 
-            MoveToNextToken();
+            MoveToNextToken(skip: false);
             return token;
         }
 

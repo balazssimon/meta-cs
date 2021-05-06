@@ -1,4 +1,5 @@
 using Antlr4.Runtime;
+using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode;
 using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax;
 using MetaDslx.CodeAnalysis.Antlr4Test.TestIncrementalCompilation;
@@ -22,7 +23,13 @@ namespace MetaDslx.Bootstrap.IncrementalCompiler
     {
         static void Main(string[] args)
         {
-            CompileMGen("mgen01.txt");
+            //CompileMGen("mgen01.txt");
+            //CompileMGen("mgen02.txt");
+            //CompileMGen("mgen03.txt");
+            //IncrementalCompileMGen("mgen03.txt");
+            //CompileMeta("meta01.txt");
+            //CompileMeta("meta02.txt");
+            EditAndCompileMeta("meta01.txt");
         }
 
         private static void CompileMeta(string fileName)
@@ -33,14 +40,61 @@ namespace MetaDslx.Bootstrap.IncrementalCompiler
             PrintResults(source, syntaxTree, antlr4Diags);
         }
 
+        private static void IncrementalCompileMeta(string fileName)
+        {
+            var options = MetaLanguage.Instance.DefaultParseOptions.WithIncremental(true);
+            var code = File.ReadAllText(@"..\..\..\" + fileName);
+            var source1 = SourceText.From(code.Substring(0, 1));
+            var syntaxTree1 = MetaLanguage.Instance.ParseSyntaxTree(source1, options: options);
+            var antlr4Diags1 = Antlr4ParseMeta(source1);
+            Console.WriteLine("Length=1");
+            PrintResults(source1, syntaxTree1, antlr4Diags1, true);
+            for (int i = 2; i <= code.Length; ++i)
+            {
+                Console.WriteLine("Length=" + i);
+                var source2 = source1.WithChanges(new TextChange(new TextSpan(i - 1, 0), code[i - 1].ToString()));
+                var syntaxTree2 = (LanguageSyntaxTree)syntaxTree1.WithChangedText(source2);
+                if (source2[source2.Length - 1] != '\r')
+                {
+                    var antlr4Diags2 = Antlr4ParseMeta(source2);
+                    PrintResults(source2, syntaxTree2, antlr4Diags2, true);
+                }
+                source1 = source2;
+                syntaxTree1 = syntaxTree2;
+            }
+        }
+
+        private static void EditAndCompileMeta(string fileName)
+        {
+            var options = MetaLanguage.Instance.DefaultParseOptions.WithIncremental(true);
+            var code = File.ReadAllText(@"..\..\..\" + fileName);
+            var source1 = SourceText.From(code);
+            var syntaxTree1 = MetaLanguage.Instance.ParseSyntaxTree(source1, options: options);
+            var antlr4Diags1 = Antlr4ParseMeta(source1);
+            Console.WriteLine("Original");
+            PrintResults(source1, syntaxTree1, antlr4Diags1, true);
+            for (int i = 0; i < code.Length-1; ++i)
+            {
+                Console.WriteLine("Position=" + i);
+                if (i > 0 && code[i - 1] == '\r') continue;
+                var source2 = source1.WithChanges(new TextChange(new TextSpan(i, 1), string.Empty));
+                var syntaxTree2 = (LanguageSyntaxTree)syntaxTree1.WithChangedText(source2);
+                //if (i < source2.Length && source2[i] != '\r')
+                {
+                    var antlr4Diags2 = Antlr4ParseMeta(source2);
+                    PrintResults(source2, syntaxTree2, antlr4Diags2, true);
+                }
+            }
+        }
+
         public static ImmutableArray<Diagnostic> Antlr4ParseMeta(SourceText text)
         {
             var diagnostics = DiagnosticBag.GetInstance();
             var errors = new Antlr4ErrorListener("", diagnostics);
-            var lexer = new TestLexerModeLexer(new AntlrInputStream(text.ToString()));
+            var lexer = new MetaLexer(new AntlrInputStream(text.ToString()));
             lexer.RemoveErrorListeners();
             lexer.AddErrorListener(errors);
-            var parser = new TestLexerModeParser(new CommonTokenStream(lexer));
+            var parser = new MetaParser(new CommonTokenStream(lexer));
             parser.RemoveErrorListeners();
             parser.AddErrorListener(errors);
             parser.main();
@@ -56,14 +110,38 @@ namespace MetaDslx.Bootstrap.IncrementalCompiler
             PrintResults(source, syntaxTree, antlr4Diags);
         }
 
+        private static void IncrementalCompileMGen(string fileName)
+        {
+            var options = TestLexerModeLanguage.Instance.DefaultParseOptions.WithIncremental(true);
+            var code = File.ReadAllText(@"..\..\..\" + fileName);
+            var source1 = SourceText.From(code.Substring(0, 1));
+            var syntaxTree1 = TestLexerModeLanguage.Instance.ParseSyntaxTree(source1, options: options);
+            var antlr4Diags1 = Antlr4ParseMGen(source1);
+            Console.WriteLine("Length=1");
+            PrintResults(source1, syntaxTree1, antlr4Diags1, true);
+            for (int i = 2; i <= code.Length; ++i)
+            {
+                Console.WriteLine("Length="+i);
+                var source2 = source1.WithChanges(new TextChange(new TextSpan(i - 1, 0), code[i - 1].ToString()));
+                var syntaxTree2 = (LanguageSyntaxTree)syntaxTree1.WithChangedText(source2);
+                if (source2[source2.Length - 1] != '\r')
+                {
+                    var antlr4Diags2 = Antlr4ParseMGen(source2);
+                    PrintResults(source2, syntaxTree2, antlr4Diags2, true);
+                }
+                source1 = source2;
+                syntaxTree1 = syntaxTree2;
+            }
+        }
+
         public static ImmutableArray<Diagnostic> Antlr4ParseMGen(SourceText text)
         {
             var diagnostics = DiagnosticBag.GetInstance();
             var errors = new Antlr4ErrorListener("", diagnostics);
-            var lexer = new MetaGeneratorLexer(new AntlrInputStream(text.ToString()));
+            var lexer = new TestLexerModeLexer(new AntlrInputStream(text.ToString()));
             lexer.RemoveErrorListeners();
             lexer.AddErrorListener(errors);
-            var parser = new MetaGeneratorParser(new CommonTokenStream(lexer));
+            var parser = new TestLexerModeParser(new CommonTokenStream(lexer));
             parser.RemoveErrorListeners();
             parser.AddErrorListener(errors);
             parser.main();
@@ -88,11 +166,14 @@ namespace MetaDslx.Bootstrap.IncrementalCompiler
             return antlr4Diagnostics.Length == diagnostics.Length;
         }
 
-        private static void PrintResults(SourceText source, SyntaxTree syntaxTree, ImmutableArray<Diagnostic> antlr4Diags)
+        private static void PrintResults(SourceText source, SyntaxTree syntaxTree, ImmutableArray<Diagnostic> antlr4Diags, bool onlyIfMismatch = false)
         {
+            var diags = syntaxTree.GetDiagnostics().ToImmutableArray();
+            var diagsOk = CheckDiagnostics(antlr4Diags, diags);
+            var sourceOk = source.ToString() == syntaxTree.GetRoot().ToFullString();
+            if (onlyIfMismatch && diagsOk && sourceOk) return;
             Console.WriteLine("==== diagnostics ====");
             var formatter = new DiagnosticFormatter();
-            var diags = syntaxTree.GetDiagnostics().ToImmutableArray();
             foreach (var diag in diags)
             {
                 Console.WriteLine(formatter.Format(diag));
@@ -107,11 +188,10 @@ namespace MetaDslx.Bootstrap.IncrementalCompiler
             Console.WriteLine("---------------------");
             Console.WriteLine(syntaxTree.GetRoot().ToFullString());
             Console.WriteLine("====== result =======");
-            var diagsOk = CheckDiagnostics(antlr4Diags, diags);
             Console.WriteLine("Diagnostics: " + (diagsOk ? "OK" : "mismatch"));
-            var sourceOk = source.ToString() == syntaxTree.GetRoot().ToFullString();
-            Console.WriteLine("Source: " + (diagsOk ? "OK" : "mismatch"));
+            Console.WriteLine("Source: " + (sourceOk ? "OK" : "mismatch"));
             Console.WriteLine("=====================");
+            if (onlyIfMismatch) Console.ReadLine();
         }
 
         private static void RunTest()

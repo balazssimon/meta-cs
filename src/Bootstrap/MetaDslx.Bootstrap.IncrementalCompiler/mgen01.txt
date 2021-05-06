@@ -1,0 +1,5 @@
+namespace MetaDslx.Bootstrap;
+generator MGenTest;
+
+properties Properties
+  string Name = "
