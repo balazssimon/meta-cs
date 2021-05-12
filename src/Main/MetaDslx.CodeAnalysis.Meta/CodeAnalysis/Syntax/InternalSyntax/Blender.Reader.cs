@@ -380,8 +380,15 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             private BlendedNode CreateBlendedNode(LanguageSyntaxNode node, InternalSyntaxToken token)
             {
                 object customToken = null;
-                if (token != null) customToken = _parser.CreateCustomTokenCore(token);
-                else if (node != null) customToken = _parser.CreateCustomTokenCore((InternalSyntaxToken)node.Green.GetLastTerminal());
+                if (token != null)
+                {
+                    customToken = _parser.CreateCustomTokenCore(token, _parser.LexerPosition);
+                }
+                else if (node != null)
+                {
+                    var lastToken = (InternalSyntaxToken)node.Green.GetLastTerminal();
+                    customToken = _parser.CreateCustomTokenCore(lastToken, _parser.LexerPosition + node.FullWidth - lastToken.FullWidth);
+                }
 
                 return new BlendedNode(node, token, customToken,
                     new Blender(_parser, _oldTreeCursor, _changes, _newPosition, _changeDelta, _newDirectives, _oldDirectives, _mode, _state));

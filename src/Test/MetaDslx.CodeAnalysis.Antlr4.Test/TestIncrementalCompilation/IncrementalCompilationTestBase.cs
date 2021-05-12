@@ -4,6 +4,7 @@ using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation;
 using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation.Syntax;
 using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestIncrementalCompilation.Syntax.InternalSyntax;
 using MetaDslx.Tests;
+using Microsoft.CodeAnalysis.Text;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -35,6 +36,11 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestIncrementalCompilation
         public override Parser CreateAntlr4Parser(ITokenStream stream)
         {
             return new TestIncrementalCompilationParser(stream);
+        }
+
+        protected SourceText LoadFile(string fileName)
+        {
+            return SourceText.From(File.ReadAllText(Path.Combine(InputFileDirectory, fileName)));
         }
     }
 }

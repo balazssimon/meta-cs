@@ -68,7 +68,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestLexerMode
         public void CompilerGenerator()
         {
             string source = File.ReadAllText($@"..\..\..\InputFiles\LexerMode\CompilerGenerator.txt");
-            Type(source, 20000);
+            Type(source, 5000);
         }
     }
     public class FileTest_SoalPrinter : LexerModeTestBase

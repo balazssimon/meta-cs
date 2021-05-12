@@ -52,9 +52,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             base.Reset(position, directives);
             _readNextToken = true;
             _eof = false;
-            _lexer.HitEOF = false;
-            _lexer.ModeStack.Clear();
-            _lexer.CurrentMode = 0;
+            _lexer.Reset();
             _lexer.InputStream.Seek(position);
             CallLogger.Instance.Call(CreateAntlr4LexerModeSnapshot());
             CallLogger.Instance.Log("  position=" + position);
@@ -154,11 +152,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
                 this.Start();
                 _readNextToken = false;
                 token = _lexer.NextToken();
+                TextWindow.ResetTo(token.StopIndex + 1);
                 /*if (HasAntlr4LexerModeChanged(_lastMode))*/ _lastMode = CreateAntlr4LexerModeSnapshot();
-                if (token.Type == TokenConstants.EOF)
+                /*if (token.Type == TokenConstants.EOF)
                 {
                     TextWindow.Start();
-                }
+                }*/
             }
             else
             {
@@ -184,7 +183,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 
         public void SyntaxError(TextWriter output, IRecognizer recognizer, int offendingSymbol, int line, int charPositionInLine, string msg, RecognitionException e)
         {
-            this.AddError(Antlr4RoslynErrorCode.ERR_SyntaxError, msg);
+            this.AddError(this.TextWindow.LexemeStartPosition, this.TextWindow.Position - this.TextWindow.LexemeStartPosition, Antlr4RoslynErrorCode.ERR_SyntaxError, msg);
             CallLogger.Instance.Log("  Lexer error: " + msg);
         }
     }

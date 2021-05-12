@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.CodeAnalysis.CSharp.Symbols;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
@@ -92,13 +93,10 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         protected void AddError(SyntaxDiagnosticInfo error)
         {
-            if (error != null)
+            if (error != null && error.Offset >= 0)
             {
-                if (_errors == null)
-                {
-                    _errors = new List<SyntaxDiagnosticInfo>(8);
-                }
-
+                if (_errors == null) _errors = new List<SyntaxDiagnosticInfo>(8);
+                if (_errors.Any(err => error.Equals(err))) return;
                 _errors.Add(error);
             }
         }
@@ -117,17 +115,17 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         private int GetLexemeOffsetFromPosition(int position)
         {
-            return position >= TextWindow.LexemeStartPosition ? position - TextWindow.LexemeStartPosition : position;
+            return position - this.Position;
         }
 
         protected SyntaxDiagnosticInfo MakeError(ErrorCode code)
         {
-            return new SyntaxDiagnosticInfo(TextWindow.LexemeStartPosition - this.Position, TextWindow.Width, code);
+            return MakeError(TextWindow.LexemeStartPosition, TextWindow.Width, code);
         }
 
         protected SyntaxDiagnosticInfo MakeError(ErrorCode code, params object[] args)
         {
-            return new SyntaxDiagnosticInfo(TextWindow.LexemeStartPosition - this.Position, TextWindow.Width, code, args);
+            return MakeError(TextWindow.LexemeStartPosition, TextWindow.Width, code, args);
         }
 
     }

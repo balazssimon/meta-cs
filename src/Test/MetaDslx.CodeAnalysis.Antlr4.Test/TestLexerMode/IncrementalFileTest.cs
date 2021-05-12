@@ -6,98 +6,74 @@ using Xunit;
 
 namespace MetaDslx.CodeAnalysis.Antlr4Test.TestLexerMode
 {
-    public class IncrementalFileTest_MGenTest : LexerModeTestBase
+    public class IncrementalFileTest_MGenTest : EditTest
     {
-        [Fact]
-        public void MGenTest()
+        public IncrementalFileTest_MGenTest()
+            : base("MGenTest.txt")
         {
-            //int pos = 83;
-            //string source = File.ReadAllText($@"..\..\..\InputFiles\LexerMode\MGenTest.txt").Substring(0, pos);
-            //IncrementalType(source, pos - 1);
-            string source = File.ReadAllText($@"..\..\..\InputFiles\LexerMode\MGenTest.txt");
-            IncrementalType(source);
-            //IncrementalParse(SourceText.From(source));
         }
     }
-    public class IncrementalFileTest_PropertyTest : LexerModeTestBase
+    public class IncrementalFileTest_PropertyTest : EditTest
     {
-        [Fact]
-        public void PropertyTest()
+        public IncrementalFileTest_PropertyTest()
+            : base("PropertyTest.txt")
         {
-            string source = File.ReadAllText($@"..\..\..\InputFiles\LexerMode\PropertyTest.txt");;
-            IncrementalType(source);
         }
     }
-    public class IncrementalFileTest_MetaModelGenerator : LexerModeTestBase
+    public class IncrementalFileTest_MetaModelGenerator : EditTest
     {
-        [Fact]
-        public void MetaModelGenerator()
+        public IncrementalFileTest_MetaModelGenerator()
+            : base("MetaModelGenerator.txt", 50)
         {
-            string source = File.ReadAllText($@"..\..\..\InputFiles\LexerMode\MetaModelGenerator.txt");
-            IncrementalType(source, 50);
         }
     }
-    public class IncrementalFileTest_MofModelToMetaModelGenerator : LexerModeTestBase
+    public class IncrementalFileTest_MofModelToMetaModelGenerator : EditTest
     {
-        [Fact]
-        public void MofModelToMetaModelGenerator()
+        public IncrementalFileTest_MofModelToMetaModelGenerator()
+            : base("MofModelToMetaModelGenerator.txt", 64)
         {
-            string source = File.ReadAllText($@"..\..\..\InputFiles\LexerMode\MofModelToMetaModelGenerator.txt");
-            IncrementalType(source, 64);
         }
     }
-    public class IncrementalFileTest_UmlModelToMetaModelGenerator : LexerModeTestBase
+    public class IncrementalFileTest_UmlModelToMetaModelGenerator : EditTest
     {
-        [Fact]
-        public void UmlModelToMetaModelGenerator()
+        public IncrementalFileTest_UmlModelToMetaModelGenerator()
+            : base("UmlModelToMetaModelGenerator.txt", 64)
         {
-            string source = File.ReadAllText($@"..\..\..\InputFiles\LexerMode\UmlModelToMetaModelGenerator.txt");
-            IncrementalType(source, 64);
         }
     }
-    public class IncrementalFileTest_ImmutableMetaModelGenerator : LexerModeTestBase
+    public class IncrementalFileTest_ImmutableMetaModelGenerator : EditTest
     {
-        [Fact]
-        public void ImmutableMetaModelGenerator()
+        public IncrementalFileTest_ImmutableMetaModelGenerator()
+            : base("ImmutableMetaModelGenerator.txt", 560)
         {
-            string source = File.ReadAllText($@"..\..\..\InputFiles\LexerMode\ImmutableMetaModelGenerator.txt");
-            IncrementalType(source, 560);
         }
     }
-    public class IncrementalFileTest_CompilerGenerator : LexerModeTestBase
+    public class IncrementalFileTest_CompilerGenerator : EditTest
     {
-        [Fact]
-        public void CompilerGenerator()
+        public IncrementalFileTest_CompilerGenerator()
+            : base("CompilerGenerator.txt", 5000)
         {
-            string source = File.ReadAllText($@"..\..\..\InputFiles\LexerMode\CompilerGenerator.txt");
-            IncrementalType(source, 20000);
         }
     }
-    public class IncrementalFileTest_SoalPrinter : LexerModeTestBase
+    public class IncrementalFileTest_SoalPrinter : EditTest
     {
-        [Fact]
-        public void SoalPrinter()
+        public IncrementalFileTest_SoalPrinter()
+            : base("SoalPrinter.txt", 70)
         {
-            string source = File.ReadAllText($@"..\..\..\InputFiles\LexerMode\SoalPrinter.txt");
-            IncrementalType(source, 70);
         }
     }
-    public class IncrementalFileTest_XsdGenerator : LexerModeTestBase
+    public class IncrementalFileTest_XsdGenerator : EditTest
     {
-        [Fact]
-        public void XsdGenerator()
+        public IncrementalFileTest_XsdGenerator()
+            : base("XsdGenerator.txt", 120)
         {
-            string source = File.ReadAllText($@"..\..\..\InputFiles\LexerMode\XsdGenerator.txt");
-            IncrementalType(source, 120);
         }
     }
-    public class IncrementalFileTest_WsdlGenerator : LexerModeTestBase
+    public class IncrementalFileTest_WsdlGenerator : EditTest
     {
-        [Fact]
-        public void WsdlGenerator()
+        public IncrementalFileTest_WsdlGenerator()
+            : base("WsdlGenerator.txt", 100)
         {
-            string source = File.ReadAllText($@"..\..\..\InputFiles\LexerMode\WsdlGenerator.txt");
-            IncrementalType(source, 100);
         }
     }
 }

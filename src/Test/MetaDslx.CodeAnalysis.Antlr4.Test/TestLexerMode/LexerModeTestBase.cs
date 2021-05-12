@@ -5,6 +5,7 @@ using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode;
 using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax;
 using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.InternalSyntax;
 using MetaDslx.Tests;
+using Microsoft.CodeAnalysis.Text;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -19,6 +20,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestLexerMode
     public class LexerModeTestBase : Antlr4RoslynTestBase
     {
         protected string TestId = string.Empty;
+        public static string InputFileDirectory = @"..\..\..\InputFiles\LexerMode";
 
         public override Language Language => TestLexerModeLanguage.Instance;
 
@@ -36,5 +38,11 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestLexerMode
         {
             return ((TestLexerModeParser)parser).main();
         }
+
+        protected SourceText LoadFile(string fileName)
+        {
+            return SourceText.From(File.ReadAllText(Path.Combine(InputFileDirectory, fileName)));
+        }
+
     }
 }

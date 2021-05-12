@@ -80,13 +80,13 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             return _nodeCache.TryGetValue(context, out existingGreenNode);
         }
 
-        protected override IncrementalToken CreateCustomToken(InternalSyntaxToken green)
+        protected override IncrementalToken CreateCustomToken(InternalSyntaxToken green, int position)
         {
             var token = new IncrementalToken(green.Kind.ToAntlr4(), green.Kind == SyntaxKind.Eof ? "<EOF>" : green.Text);
             token.SetGreenToken(green);
             token.TokenIndex = this.TokenCount;
-            token.StartIndex = Lexer.Position - green.FullWidth + green.GetLeadingTriviaWidth();
-            token.StopIndex = Lexer.Position - green.GetTrailingTriviaWidth() - 1;
+            token.StartIndex = position + green.GetLeadingTriviaWidth();
+            token.StopIndex = token.StartIndex + green.Width - 1;
             return token;
         }
 

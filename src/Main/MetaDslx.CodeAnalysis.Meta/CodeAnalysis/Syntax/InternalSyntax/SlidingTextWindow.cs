@@ -208,7 +208,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         {
             if (position < _basis)
             {
-                //Debug.Assert(false);
+                return;
             }
             // if position is within already read character range then just use what we have
             int relative = position - _basis;
@@ -219,7 +219,11 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             else
             {
                 var resetPoint = position;
-                if (_resetStack.Count > 0) resetPoint = _resetStack[0] - _basis;
+                if (_resetStack.Count > 0)
+                {
+                    Debug.Assert(position >= _resetStack[0]);
+                    resetPoint = _resetStack[0] - _basis;
+                }
 
                 // we need to reread text buffer
                 int amountToRead = Math.Min(_text.Length, resetPoint + _characterWindow.Length) - resetPoint;

@@ -179,6 +179,11 @@ namespace MetaDslx.Tests
             }
         }
 
+        public void IncrementalType(SourceText source, int delta = 1)
+        {
+            this.IncrementalType(source.ToString());
+        }
+        
         public void IncrementalType(string source, int delta = 1)
         {
             SourceText oldText = null;

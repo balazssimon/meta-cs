@@ -26,10 +26,15 @@ namespace MetaDslx.Bootstrap.IncrementalCompiler
             //CompileMGen("mgen01.txt");
             //CompileMGen("mgen02.txt");
             //CompileMGen("mgen03.txt");
+            //CompileMGen("mgen04.txt");
             //IncrementalCompileMGen("mgen03.txt");
             //CompileMeta("meta01.txt");
             //CompileMeta("meta02.txt");
             EditAndCompileMeta("meta01.txt");
+            //CompileMeta("meta03.txt");
+            //EditAndCompileMeta("meta03.txt");
+            //CompileMeta("meta04.txt");
+            //EditAndCompileMeta("meta04.txt");
         }
 
         private static void CompileMeta(string fileName)
@@ -174,12 +179,12 @@ namespace MetaDslx.Bootstrap.IncrementalCompiler
             if (onlyIfMismatch && diagsOk && sourceOk) return;
             Console.WriteLine("==== diagnostics ====");
             var formatter = new DiagnosticFormatter();
-            foreach (var diag in diags)
+            foreach (var diag in antlr4Diags)
             {
                 Console.WriteLine(formatter.Format(diag));
             }
             Console.WriteLine("---------------------");
-            foreach (var diag in antlr4Diags)
+            foreach (var diag in diags)
             {
                 Console.WriteLine(formatter.Format(diag));
             }

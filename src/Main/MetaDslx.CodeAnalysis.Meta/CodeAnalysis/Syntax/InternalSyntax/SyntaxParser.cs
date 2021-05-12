@@ -103,6 +103,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         public LanguageSyntaxNode OldRoot => _oldRoot;
 
+        public int LexerPosition => _lexerPosition;
+
         public virtual void Dispose()
         {
             var blendedTokens = _blendedTokens;
@@ -147,7 +149,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 root = root.WithAdditionalAnnotationGreen(new SyntaxAnnotation(IncrementalTreeAnnotationKind, new IncrementalTreeAnnotation(null, null, _mode, _state, minLookahead, maxLookahead)));
                 if (_lastErrorIndex < _syntaxErrors.Count)
                 {
-                    root = WithCurrentSyntaxErrors(root, 0);
+                    //root = WithCurrentSyntaxErrors(root, 0);
                     //root = WithAdditionalDiagnostics(root, _syntaxErrors.GetRange(_lastErrorIndex, _syntaxErrors.Count - _lastErrorIndex).ToArray());
                 }
             }
@@ -155,7 +157,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             {
                 if (_lastErrorIndex < _syntaxErrors.Count)
                 {
-                    root = WithCurrentSyntaxErrors(root, 0);
+                    //root = WithCurrentSyntaxErrors(root, 0);
                     //root = WithAdditionalDiagnostics(root, _syntaxErrors.GetRange(_lastErrorIndex, _syntaxErrors.Count - _lastErrorIndex).ToArray());
                 }
             }
@@ -220,7 +222,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
                 if (green != null)
                 {
-                    green = WithCurrentSyntaxErrors(green, incrementalState.position);
+                    //green = WithCurrentSyntaxErrors(green, incrementalState.position - green.GetLeadingTriviaWidth());
 
                     var nodeAnnot = GetNodeAnnotation(green);
                     if (nodeAnnot == null)
@@ -308,7 +310,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 else _lexedTokens.MarkResetPoint();
             }
             _resetCount++;
-            return new ResetPoint(_resetCount, _state, index, _position, _lastNonSkippedTokenIndex, _lastErrorIndex, _prevTokenTrailingTrivia);
+            return new ResetPoint(_resetCount, _state, index, _lexerPosition, _lastNonSkippedTokenIndex, _lastErrorIndex, _prevTokenTrailingTrivia);
         }
 
         protected void Reset(ref ResetPoint point)
@@ -491,7 +493,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             {
                 var token = Lexer.Lex(ref _mode);
                 if (token == null) return false;
-                _lexedTokens.AddItem((token, CreateCustomTokenCore(token)));
+                _lexedTokens.AddItem((token, CreateCustomTokenCore(token, Lexer.Position)));
                 return true;
             }
         }
@@ -587,6 +589,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             CallLogger.Instance.Call(ct.ToFullString());
             var index = TokenIndex;
             var skippedTokenCount = index - _lastNonSkippedTokenIndex - 1;
+            var skippedWidth = 0;
             if (skippedTokenCount > 0)
             {
                 var skippedTokens = SyntaxListBuilder.Create();
@@ -594,10 +597,11 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 {
                     var token = PeekToken(-i);
                     skippedTokens.Add(token);
+                    skippedWidth += token.FullWidth;
                 }
                 ct = AddSkippedSyntax(ct, skippedTokens.ToListNode(), false);
             }
-            ct = (InternalSyntaxToken)WithCurrentSyntaxErrors(ct, _position);
+            ct = (InternalSyntaxToken)WithCurrentSyntaxErrors(ct, _lexerPosition - skippedWidth);
             _lastNonSkippedTokenIndex = TokenIndex;
             PrintStateStack();
             return ct;
@@ -920,7 +924,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         {
             if (error != null)
             {
-                if (_syntaxErrors.Any(err => object.Equals(err, error))) return;
+                if (_syntaxErrors.Any(err => error.Equals(err) && err.ErrorCode == error.ErrorCode && err.Offset == error.Offset && err.Width == error.Width)) return;
                 _syntaxErrors.Add(error);
             }
         }
@@ -1295,7 +1299,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         protected InternalSyntaxToken LastCreatedToken => _blendedTokens != null ? _blendedTokens.LastCreatedItem.Token : _lexedTokens.LastCreatedItem.Token;
         internal protected int SkippedTokenCount => TokenIndex - _lastNonSkippedTokenIndex - 1;
 
-        internal protected virtual object CreateCustomTokenCore(InternalSyntaxToken token)
+        internal protected virtual object CreateCustomTokenCore(InternalSyntaxToken token, int position)
         {
             return null;
         }

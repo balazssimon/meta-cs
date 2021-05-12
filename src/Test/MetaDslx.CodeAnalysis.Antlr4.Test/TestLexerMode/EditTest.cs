@@ -1,22 +1,34 @@
-using Microsoft.CodeAnalysis.Text;
+﻿using Microsoft.CodeAnalysis.Text;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Xunit;
 
-namespace MetaDslx.CodeAnalysis.Antlr4Test.TestIncrementalCompilation
+namespace MetaDslx.CodeAnalysis.Antlr4Test.TestLexerMode
 {
-    public class EditTest : IncrementalCompilationTestBase
+    public abstract class EditTest : LexerModeTestBase
     {
         private SourceText source;
         private Random rnd;
+        private int incrementalSteps;
 
-        public EditTest()
+        public EditTest(string fileName, int incrementalSteps = 1)
         {
-            source = LoadFile("Entities.txt");
+            source = LoadFile(fileName);
             rnd = new Random();
+            this.incrementalSteps = incrementalSteps;
         }
+
+
+        [Fact]
+        public void TypeSource()
+        {
+            IncrementalType(source, incrementalSteps);
+        }
+
 
         [Fact]
         public void SerialEdits()
@@ -42,23 +54,6 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestIncrementalCompilation
             }
         }
 
-        [Fact]
-        public void Test01()
-        {
-            var src1 = SingleEdit(source, 36, 1);
-            var src2 = SingleEdit(src1, 37, 1);
-        }
-
-        [Fact]
-        public void Test02()
-        {
-            SingleEdit(source, 823, 10);
-        }
-
-        [Fact]
-        public void Test03()
-        {
-            SingleEdit(source, 418, 27);
-        }
     }
+
 }
