@@ -22,8 +22,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         public readonly bool IsIncremental;
         protected readonly CancellationToken CancellationToken;
 
-        private LexerMode _mode;
-        private ParserState _state;
+        private ParserState? _state;
         private LanguageSyntaxNode _oldRoot;
         private BlendedNode _currentNode;
         private InternalSyntaxToken _currentToken;
@@ -95,7 +94,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         public LanguageParseOptions Options => Lexer.Options;
 
-        protected SourceText Text => Lexer.Text;
+        protected SourceText SourceText => Lexer.SourceText;
 
         public bool IsScript => Options != null && Options.Kind == SourceCodeKind.Script;
 
@@ -146,7 +145,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 (int minLookahead, int maxLookahead) = Blender.GetLexerLookahead(_oldRoot);
                 minLookahead = Math.Min(Lexer.MinLookahead, minLookahead);
                 maxLookahead = Math.Max(Lexer.MaxLookahead, maxLookahead);
-                root = root.WithAdditionalAnnotationGreen(new SyntaxAnnotation(IncrementalTreeAnnotationKind, new IncrementalTreeAnnotation(null, null, _mode, _state, minLookahead, maxLookahead)));
+                root = root.WithAdditionalAnnotationGreen(new SyntaxAnnotation(IncrementalTreeAnnotationKind, new IncrementalTreeAnnotation(null, null, _lexerState, _state, minLookahead, maxLookahead)));
                 if (_lastErrorIndex < _syntaxErrors.Count)
                 {
                     //root = WithCurrentSyntaxErrors(root, 0);
@@ -491,7 +490,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             }
             else
             {
-                var token = Lexer.Lex(ref _mode);
+                var token = Lexer.Lex();
                 if (token == null) return false;
                 _lexedTokens.AddItem((token, CreateCustomTokenCore(token, Lexer.Position)));
                 return true;

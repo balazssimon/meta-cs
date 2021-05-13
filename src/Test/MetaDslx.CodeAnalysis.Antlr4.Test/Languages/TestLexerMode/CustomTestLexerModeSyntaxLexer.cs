@@ -29,13 +29,13 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.Intern
         {
         }
 
-        protected override Antlr4LexerMode CreateAntlr4LexerModeSnapshot()
+        protected override Antlr4LexerState CreateAntlr4LexerModeSnapshot()
         {
             var antlr4Lexer = (TestLexerModeLexer)this.Antlr4Lexer;
             return new CustomLexerMode(this, antlr4Lexer._templateParenthesis, antlr4Lexer._templateBrackets);
         }
 
-        protected override void RestoreAntlr4LexerMode(Antlr4LexerMode mode)
+        protected override void RestoreAntlr4LexerMode(Antlr4LexerState mode)
         {
             base.RestoreAntlr4LexerMode(mode);
             var customMode = (CustomLexerMode)mode;
@@ -47,7 +47,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.Intern
         }
     }
 
-    public class CustomLexerMode : Antlr4LexerMode, IEquatable<CustomLexerMode>
+    public class CustomLexerMode : Antlr4LexerState, IEquatable<CustomLexerMode>
     {
         private int _templateParenthesis = 0;
         private int _templateBrackets = 0;
@@ -64,14 +64,14 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLexerMode.Syntax.Intern
 
         public bool Equals(CustomLexerMode other)
         {
-            if (!base.Equals((Antlr4LexerMode)other)) return false;
+            if (!base.Equals((Antlr4LexerState)other)) return false;
             if (other == null) return _templateParenthesis == 0 && _templateBrackets == 0;
             if (other._templateParenthesis != _templateParenthesis) return false;
             if (other._templateBrackets != _templateBrackets) return false;
             return true;
         }
 
-        public override bool Equals(Antlr4LexerMode other)
+        public override bool Equals(Antlr4LexerState other)
         {
             return this.Equals(other as CustomLexerMode);
         }

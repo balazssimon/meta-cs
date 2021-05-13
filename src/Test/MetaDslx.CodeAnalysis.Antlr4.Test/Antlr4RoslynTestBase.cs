@@ -285,7 +285,7 @@ namespace MetaDslx.Tests
                     }
                     if (tokenAnnot != null)
                     {
-                        buf.Append($"[(startMode={((Antlr4LexerMode)tokenAnnot.StartMode)?.Mode ?? 0},endState={((Antlr4LexerMode)tokenAnnot.EndMode)?.Mode ?? 0})] ");
+                        buf.Append($"[(startMode={((Antlr4LexerState)tokenAnnot.StartMode)?.Mode ?? 0},endState={((Antlr4LexerState)tokenAnnot.EndMode)?.Mode ?? 0})] ");
                     }
                     else
                     {

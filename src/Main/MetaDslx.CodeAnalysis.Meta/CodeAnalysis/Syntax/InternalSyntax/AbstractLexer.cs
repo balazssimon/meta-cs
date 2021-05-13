@@ -2,7 +2,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Symbols;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
@@ -12,56 +14,48 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
     // separate out text windowing implementation (keeps scanning & lexing functions from abusing details)
     public abstract class AbstractLexer : IDisposable
     {
-        internal protected readonly Language Language;
+        public readonly Language Language;
         protected readonly SlidingTextWindow TextWindow;
-        private List<SyntaxDiagnosticInfo> _errors;
+        private readonly List<SyntaxDiagnosticInfo> Errors;
 
         protected AbstractLexer(Language language, SourceText text)
         {
             this.Language = language;
             this.TextWindow = new SlidingTextWindow(text);
+            Errors = new List<SyntaxDiagnosticInfo>();
         }
 
-        public abstract int Position { get; }
-        internal protected SourceText Text => TextWindow.Text;
-        public int MinLookahead => TextWindow.MinLookahead;
-        public int MaxLookahead => TextWindow.MaxLookahead;
+        public SourceText SourceText => TextWindow.SourceText;
 
         public virtual void Dispose()
         {
             this.TextWindow.Dispose();
         }
 
-        protected void Start()
-        {
-            TextWindow.Start();
-            //_errors = null;
-        }
-
         protected bool HasErrors
         {
-            get { return _errors != null; }
+            get { return Errors.Count > 0; }
         }
 
         protected SyntaxDiagnosticInfo[] GetAndClearErrors(int leadingTriviaWidth)
         {
-            if (_errors != null)
+            if (Errors.Count > 0)
             {
                 if (leadingTriviaWidth > 0)
                 {
-                    var array = new SyntaxDiagnosticInfo[_errors.Count];
-                    for (int i = 0; i < _errors.Count; i++)
+                    var array = new SyntaxDiagnosticInfo[Errors.Count];
+                    for (int i = 0; i < Errors.Count; i++)
                     {
                         // fixup error positioning to account for leading trivia
-                        array[i] = _errors[i].WithOffset(_errors[i].Offset + leadingTriviaWidth);
+                        array[i] = Errors[i].WithOffset(Errors[i].Offset + leadingTriviaWidth);
                     }
-                    _errors = null;
+                    Errors.Clear();
                     return array;
                 }
                 else
                 {
-                    var result = _errors;
-                    _errors = null;
+                    var result = Errors;
+                    Errors.Clear();
                     return result.ToArray();
                 }
             }
@@ -71,19 +65,14 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             }
         }
 
-        protected void AddError(int position, int width, ErrorCode code)
+        protected void ClearErrors()
         {
-            this.AddError(this.MakeError(position, width, code));
+            Errors.Clear();
         }
 
         protected void AddError(int position, int width, ErrorCode code, params object[] args)
         {
             this.AddError(this.MakeError(position, width, code, args));
-        }
-
-        protected void AddError(ErrorCode code)
-        {
-            this.AddError(MakeError(code));
         }
 
         protected void AddError(ErrorCode code, params object[] args)
@@ -93,34 +82,18 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         protected void AddError(SyntaxDiagnosticInfo error)
         {
-            if (error != null && error.Offset >= 0)
+            if (error != null)
             {
-                if (_errors == null) _errors = new List<SyntaxDiagnosticInfo>(8);
-                if (_errors.Any(err => error.Equals(err))) return;
-                _errors.Add(error);
+                if (Errors.Any(err => error.Equals(err) && err.ErrorCode == error.ErrorCode && err.Offset == error.Offset && err.Width == error.Width)) return;
+                Errors.Add(error);
             }
-        }
-
-        protected SyntaxDiagnosticInfo MakeError(int position, int width, ErrorCode code)
-        {
-            int offset = GetLexemeOffsetFromPosition(position);
-            return new SyntaxDiagnosticInfo(offset, width, code);
         }
 
         protected SyntaxDiagnosticInfo MakeError(int position, int width, ErrorCode code, params object[] args)
         {
-            int offset = GetLexemeOffsetFromPosition(position);
-            return new SyntaxDiagnosticInfo(offset, width, code, args);
-        }
-
-        private int GetLexemeOffsetFromPosition(int position)
-        {
-            return position - this.Position;
-        }
-
-        protected SyntaxDiagnosticInfo MakeError(ErrorCode code)
-        {
-            return MakeError(TextWindow.LexemeStartPosition, TextWindow.Width, code);
+            int offset = position - TextWindow.LexemeStartPosition;
+            if (offset < 0) throw new ArgumentOutOfRangeException(nameof(position), $"Position {position} must be between {TextWindow.LexemeStartPosition} and {TextWindow.LexemeStartPosition + TextWindow.Width}.");
+            return new SyntaxDiagnosticInfo(position - TextWindow.LexemeStartPosition, width, code, args);
         }
 
         protected SyntaxDiagnosticInfo MakeError(ErrorCode code, params object[] args)

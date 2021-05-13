@@ -8,9 +8,9 @@ using System.Text;
 
 namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 {
-    public class Antlr4LexerMode : LexerMode
+    public class Antlr4LexerState : IEquatable<Antlr4LexerState>
     {
-        public Antlr4LexerMode(IAntlr4Lexer lexer)
+        public Antlr4LexerState(IAntlr4Lexer lexer)
         {
             this.Mode = lexer.Antlr4Lexer.CurrentMode;
             this.ModeStackReversed = lexer.Antlr4Lexer.ModeStack.ToImmutableArray();
@@ -22,10 +22,10 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         public override bool Equals(object obj)
         {
             if (!base.Equals(obj)) return false;
-            return this.Equals((Antlr4LexerMode)obj);
+            return this.Equals((Antlr4LexerState)obj);
         }
 
-        public virtual bool Equals(Antlr4LexerMode other)
+        public virtual bool Equals(Antlr4LexerState other)
         {
             if (other == null)
             {

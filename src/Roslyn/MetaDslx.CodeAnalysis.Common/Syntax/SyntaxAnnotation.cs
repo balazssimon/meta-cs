@@ -33,8 +33,7 @@ namespace Microsoft.CodeAnalysis
 
         // use a value identity instead of object identity so a deserialized instance matches the original instance.
         public string? Kind { get; }
-        public string? Data => this.ObjectData?.ToString();
-        public object? ObjectData { get; }
+        public string? Data { get; }
 
         public SyntaxAnnotation()
         {
@@ -50,20 +49,14 @@ namespace Microsoft.CodeAnalysis
         public SyntaxAnnotation(string? kind, string? data)
             : this(kind)
         {
-            this.ObjectData = data;
-        }
-
-        public SyntaxAnnotation(string? kind, object? data)
-            : this(kind)
-        {
-            this.ObjectData = data;
+            this.Data = data;
         }
 
         private SyntaxAnnotation(ObjectReader reader)
         {
             _id = reader.ReadInt64();
             this.Kind = reader.ReadString();
-            this.ObjectData = reader.ReadString();
+            this.Data = reader.ReadString();
         }
 
         bool IObjectWritable.ShouldReuseInSerialization => true;

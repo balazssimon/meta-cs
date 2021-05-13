@@ -40,7 +40,6 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         private readonly SourceText _text;                 // Source of text to parse.
         private int _basis;                                // Offset of the window relative to the SourceText start.
         private int _offset;                               // Offset from the start of the window.
-        private List<int> _resetStack;
         private readonly int _textEnd;                     // Absolute end position
         private char[] _characterWindow;                   // Moveable window of chars from source text
         private int _characterWindowCount;                 // # of valid characters in chars buffer
@@ -68,7 +67,6 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             _text = text;
             _basis = 0;
             _offset = 0;
-            _resetStack = new List<int>();
             _textEnd = text.Length;
             _strings = StringTable.GetInstance();
             _characterWindow = s_windowPool.Allocate();
@@ -89,7 +87,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             }
         }
 
-        public SourceText Text => _text;
+        public SourceText SourceText => _text;
 
         /// <summary>
         /// The current absolute position in the text file.
@@ -184,32 +182,10 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             _maxLexemeLookahead = int.MinValue;
         }
 
-        public int GetResetPoint()
-        {
-            _resetStack.Add(_basis + _offset);
-            return _resetStack.Count;
-        }
-
-        public void Reset(int resetPoint)
-        {
-            Debug.Assert(resetPoint == _resetStack.Count);
-            var position = _resetStack[_resetStack.Count - 1];
-            _resetStack.RemoveAt(_resetStack.Count - 1);
-            ResetTo(position);
-        }
-
-        public void ReleaseResetPoint(int resetPoint)
-        {
-            Debug.Assert(resetPoint == _resetStack.Count);
-            _resetStack.RemoveAt(_resetStack.Count - 1);
-        }
-
         public void ResetTo(int position)
         {
-            if (position < _basis)
-            {
-                return;
-            }
+            if (position < _basis) throw new ArgumentOutOfRangeException(nameof(position), $"Reset position {position} cannot be less than the basis position {_basis}.");
+
             // if position is within already read character range then just use what we have
             int relative = position - _basis;
             if (relative >= 0 && relative <= _characterWindowCount)
@@ -218,30 +194,24 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             }
             else
             {
-                var resetPoint = position;
-                if (_resetStack.Count > 0)
-                {
-                    Debug.Assert(position >= _resetStack[0]);
-                    resetPoint = _resetStack[0] - _basis;
-                }
-
                 // we need to reread text buffer
-                int amountToRead = Math.Min(_text.Length, resetPoint + _characterWindow.Length) - resetPoint;
+                int amountToRead = Math.Min(_text.Length, position + _characterWindow.Length) - position;
                 amountToRead = Math.Max(amountToRead, 0);
                 if (amountToRead > 0)
                 {
-                    _text.CopyTo(resetPoint, _characterWindow, 0, amountToRead);
+                    _text.CopyTo(position, _characterWindow, 0, amountToRead);
                 }
 
-                _lexemeStart = resetPoint - position;
-                _offset = resetPoint - position;
-                _basis = resetPoint;
+                _lexemeStart = 0;
+                _offset = 0;
+                _basis = position;
                 _characterWindowCount = amountToRead;
             }
         }
 
         private bool MoreChars(int delta = 0)
         {
+            if (_offset + delta < 0) throw new ArgumentOutOfRangeException(nameof(delta), $"Offset+delta value cannot be negative.");
             if (_offset + delta >= _characterWindowCount)
             {
                 if (this.Position + delta >= _textEnd)
@@ -348,8 +318,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             _minLookahead = Math.Min(_minLookahead, _minLexemeLookahead);
             _maxLookahead = Math.Max(_maxLookahead, _maxLexemeLookahead);
 
-            if (_offset >= _characterWindowCount
-                && !MoreChars())
+            if (_offset >= _characterWindowCount && !MoreChars())
             {
                 return InvalidCharacter;
             }
