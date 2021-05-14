@@ -8,47 +8,22 @@ using System.Text;
 
 namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 {
-    public class Antlr4LexerState : IEquatable<Antlr4LexerState>
+    public class Antlr4LexerState : LexerState
     {
-        public Antlr4LexerState(IAntlr4Lexer lexer)
+        public Antlr4LexerState(int hashCode, int mode, int[]? modeStackReversed)
+            : base(hashCode)
         {
-            this.Mode = lexer.Antlr4Lexer.CurrentMode;
-            this.ModeStackReversed = lexer.Antlr4Lexer.ModeStack.ToImmutableArray();
+            this.Mode = mode;
+            this.ModeStackReversed = modeStackReversed;
         }
 
-        public int Mode { get; private set; }
-        public ImmutableArray<int> ModeStackReversed { get; private set; }
-
-        public override bool Equals(object obj)
-        {
-            if (!base.Equals(obj)) return false;
-            return this.Equals((Antlr4LexerState)obj);
-        }
-
-        public virtual bool Equals(Antlr4LexerState other)
-        {
-            if (other == null)
-            {
-                return this.Mode == 0 && this.ModeStackReversed.Length == 0;
-            }
-            if (this.Mode != other.Mode) return false;
-            if (this.ModeStackReversed.Length != other.ModeStackReversed.Length) return false;
-            for (int i = 0; i < this.ModeStackReversed.Length; i++)
-            {
-                if (this.ModeStackReversed[i] != other.ModeStackReversed[i]) return false;
-            }
-            return true;
-        }
-
-        public override int GetHashCode()
-        {
-            return Hash.Combine(this.Mode, this.ModeStackReversed.GetHashCode());
-        }
+        public int Mode { get; }
+        public int[]? ModeStackReversed { get; }
 
         public override string ToString()
         {
             string modeStack = string.Empty;
-            if (ModeStackReversed.Length > 0)
+            if (ModeStackReversed != null && ModeStackReversed.Length > 0)
             {
                 StringBuilder sb = new StringBuilder();
                 for (int i = ModeStackReversed.Length - 1; i >= 0; i--)

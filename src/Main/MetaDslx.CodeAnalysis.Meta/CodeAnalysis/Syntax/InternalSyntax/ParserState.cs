@@ -4,17 +4,11 @@ using Microsoft.CodeAnalysis;
 
 namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 {
-    public class ParserState
+    public class ParserState : State
     {
-        public ParserState()
+        public ParserState(int hashCode)
+            : base(hashCode)
         {
-        }
-
-        public static bool SameState(ParserState first, ParserState second)
-        {
-            if (first == null && second == null) return true;
-            if (first != null) return first.Equals(second);
-            else return second.Equals(first);
         }
     }
 }

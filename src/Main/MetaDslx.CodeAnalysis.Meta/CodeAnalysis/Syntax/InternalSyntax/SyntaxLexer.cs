@@ -18,9 +18,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         private readonly InternalSyntaxFactory InternalSyntaxFactory;
         private readonly LanguageParseOptions _options;
-        private List<(int position, object? state)> _resetStack;
+        private List<(int position, LexerState? state)> _resetStack;
         private readonly Queue<BufferedLexeme> _buffer;
-        private object? _bufferState;
         private readonly TextKeyedCache<InternalSyntaxToken> _tokenCache = TextKeyedCache<InternalSyntaxToken>.GetInstance();
         private readonly TextKeyedCache<InternalSyntaxTrivia> _triviaCache = TextKeyedCache<InternalSyntaxTrivia>.GetInstance();
         private readonly CachingIdentityFactory<string, SyntaxKind> _keywordKindMap;
@@ -28,7 +27,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         private readonly SyntaxListBuilder _leadingTriviaCache = new SyntaxListBuilder(10);
         private readonly SyntaxListBuilder _trailingTriviaCache = new SyntaxListBuilder(10);
         private int _position;
-        private object? _state;
+        private LexerState? _state;
         private DirectiveStack _directives;
 
         public SyntaxLexer(Language language, SourceText text, LanguageParseOptions options)
@@ -40,7 +39,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             _keywordKindMap = language.InternalSyntaxFactory.KeywordKindPool.Allocate();
             _options = options;
             _buffer = new Queue<BufferedLexeme>();
-            _resetStack = new List<(int position, object? state)>();
+            _resetStack = new List<(int position, LexerState? state)>();
         }
 
         public DirectiveStack Directives => _directives;
@@ -49,7 +48,9 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         public int Position => _position;
 
-        public object? State => _state;
+        public LexerState? State => _state;
+
+        protected virtual LexerStateManager? StateManager => null;
 
         public override void Dispose()
         {
@@ -59,10 +60,6 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             base.Dispose();
         }
 
-        protected abstract object? SaveLexerState();
-        protected abstract bool IsLexerInState(object? state);
-        public abstract void RestoreLexerState(object? state);
-
         public void Reset()
         {
             if (_resetStack.Count == 0) throw new InvalidOperationException("There is no reset point saved. Call MarkResetPoint() before calling Reset().");
@@ -71,18 +68,17 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             this.ResetTo(resetPoint.position, resetPoint.state);
         }
 
-        public void ResetTo(int position, object? state)
+        public void ResetTo(int position, LexerState? state)
         {
-            this.TextWindow.ResetTo(position);
-            this.RestoreLexerState(state);
+            TextWindow.ResetTo(position);
+            StateManager?.InternalRestoreState(state);
             _position = position;
-            _bufferState = state;
             _buffer.Clear();
         }
 
         public int MarkResetPoint()
         {
-            _resetStack.Add((TextWindow.Position, _bufferState));
+            _resetStack.Add((TextWindow.Position, StateManager?.State));
             return _resetStack.Count;
         }
 
@@ -139,8 +135,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 if (cache) textOrGreenNode = CachedSyntaxToken(kind);
             }
             if (textOrGreenNode == null) textOrGreenNode = TextWindow.GetText(intern: cache);
-            if (!this.IsLexerInState(_bufferState)) _bufferState = this.SaveLexerState();
-            _buffer.Enqueue(new BufferedLexeme(kind, textOrGreenNode, _bufferState, errors));
+            StateManager?.InternalChanged();
+            _buffer.Enqueue(new BufferedLexeme(kind, textOrGreenNode, StateManager?.State, errors));
         }
 
         private InternalSyntaxToken? CachedSyntaxToken(SyntaxKind kind)
@@ -348,10 +344,10 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         {
             public readonly SyntaxKind Kind;
             private readonly object TextOrGreenNode;
-            public readonly object? EndState;
+            public readonly LexerState? EndState;
             private readonly SyntaxDiagnosticInfo[]? Errors;
 
-            public BufferedLexeme(SyntaxKind kind, object textOrGreenNode, object? endState, SyntaxDiagnosticInfo[]? errors)
+            public BufferedLexeme(SyntaxKind kind, object textOrGreenNode, LexerState? endState, SyntaxDiagnosticInfo[]? errors)
             {
                 Kind = kind;
                 TextOrGreenNode = textOrGreenNode;
