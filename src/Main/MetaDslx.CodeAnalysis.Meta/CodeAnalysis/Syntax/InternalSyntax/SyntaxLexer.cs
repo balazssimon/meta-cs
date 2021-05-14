@@ -19,7 +19,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         private readonly InternalSyntaxFactory InternalSyntaxFactory;
         private readonly LanguageParseOptions _options;
         private List<(int position, LexerState? state)> _resetStack;
-        private readonly Queue<BufferedLexeme> _buffer;
+        private readonly List<BufferedLexeme> _buffer;
         private readonly TextKeyedCache<InternalSyntaxToken> _tokenCache = TextKeyedCache<InternalSyntaxToken>.GetInstance();
         private readonly TextKeyedCache<InternalSyntaxTrivia> _triviaCache = TextKeyedCache<InternalSyntaxTrivia>.GetInstance();
         private readonly CachingIdentityFactory<string, SyntaxKind> _keywordKindMap;
@@ -27,6 +27,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         private readonly SyntaxListBuilder _leadingTriviaCache = new SyntaxListBuilder(10);
         private readonly SyntaxListBuilder _trailingTriviaCache = new SyntaxListBuilder(10);
         private int _position;
+        private int _bufferPosition;
         private LexerState? _state;
         private DirectiveStack _directives;
 
@@ -38,7 +39,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             _triviaCache = TextKeyedCache<InternalSyntaxTrivia>.GetInstance();
             _keywordKindMap = language.InternalSyntaxFactory.KeywordKindPool.Allocate();
             _options = options;
-            _buffer = new Queue<BufferedLexeme>();
+            _buffer = new List<BufferedLexeme>();
+            _bufferPosition = 0;
             _resetStack = new List<(int position, LexerState? state)>();
         }
 
@@ -77,6 +79,13 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             TextWindow.ResetTo(position);
             StateManager?.InternalRestoreState(state);
             _position = position;
+            int index = _buffer.Count;
+            while (index > 0 && _bufferPosition > position)
+            {
+                _bufferPosition -= _buffer[index - 1].Width;
+            }
+            _buffer.RemoveRange(index, _buffer.Count - index);
+            _bufferPosition = position;
             _buffer.Clear();
         }
 
@@ -106,7 +115,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             this.ClearErrors();
         }
 
-        private BufferedLexeme NextLexeme()
+        private BufferedLexeme PeekLexeme()
         {
             if (_buffer.Count == 0)
             {
@@ -114,23 +123,36 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 var lexeme = this.ScanLexeme();
                 if (lexeme.kind != SyntaxKind.None)
                 {
-                    this.AppendLexeme(lexeme.kind, lexeme.cache);
+                    this.AppendLexeme(lexeme.kind, lexeme.isTrivia, lexeme.cache);
                 }
             }
-            return _buffer.Count > 0 ? _buffer.Dequeue() : DefaultLexeme;
+            if (_buffer.Count == 0) return DefaultLexeme;
+            else return _buffer[0];
+        }
+
+        private void EatLexeme()
+        {
+            if (_buffer.Count > 0) _buffer.RemoveAt(0);
+        }
+
+        private BufferedLexeme NextLexeme()
+        {
+            var result = PeekLexeme();
+            EatLexeme();
+            return result;
         }
 
         /// <summary>
         /// Scans a token or syntax trivia. End of line should be scanned as a separate trivia.
         /// </summary>
         /// <returns>The syntax kind of the token or trivia and whether to try to cache the result.</returns>
-        protected abstract (SyntaxKind kind, bool cache) ScanLexeme();
+        protected abstract (SyntaxKind kind, bool isTrivia, bool cache) ScanLexeme();
 
-        protected void AppendLexeme(SyntaxKind kind, bool cache)
+        protected void AppendLexeme(SyntaxKind kind, bool isTrivia, bool cache)
         {
             var errors = GetAndClearErrors(0);
             object? textOrGreenNode = null;
-            if (Language.SyntaxFacts.IsTrivia(kind))
+            if (isTrivia)
             {
                 textOrGreenNode = CreateTrivia(kind, cache);
             }
@@ -140,7 +162,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             }
             if (textOrGreenNode == null) textOrGreenNode = TextWindow.GetText(intern: cache);
             StateManager?.InternalChanged();
-            _buffer.Enqueue(new BufferedLexeme(kind, textOrGreenNode, StateManager?.State, errors));
+            _buffer.Add(new BufferedLexeme(kind, textOrGreenNode, StateManager?.State, errors));
         }
 
         private InternalSyntaxToken? CachedSyntaxToken(SyntaxKind kind)
@@ -252,14 +274,9 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             return result;
         }
 
-        private InternalSyntaxToken Create(BufferedLexeme lexeme, GreenNode leadingTrivia, GreenNode trailingTrivia)
+        private InternalSyntaxToken Create(BufferedLexeme lexeme, GreenNode? leadingTrivia, GreenNode? trailingTrivia)
         {
             var errors = lexeme.GetErrors(leadingTrivia?.FullWidth ?? 0);
-            if (lexeme.IsToken)
-            {
-                return lexeme.Token.WithDiagnosticsGreen(errors);
-            }
-            Debug.Assert(lexeme.IsText);
             InternalSyntaxToken token;
             switch (lexeme.Kind.Switch())
             {
@@ -270,7 +287,17 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                     token = InternalSyntaxFactory.BadToken(leadingTrivia, lexeme.Text, trailingTrivia);
                     break;
                 default:
-                    token = CreateToken(leadingTrivia, lexeme.Kind, lexeme.Text, trailingTrivia);
+                    if (lexeme.IsText)
+                    {
+                        token = CreateToken(leadingTrivia, lexeme.Kind, lexeme.Text, trailingTrivia);
+                    }
+                    else
+                    {
+                        Debug.Assert(lexeme.IsToken);
+                        token = lexeme.Token;
+                        if (leadingTrivia != null || token.HasLeadingTrivia) token = (InternalSyntaxToken)token.WithLeadingTrivia(leadingTrivia);
+                        if (trailingTrivia != null || token.HasTrailingTrivia) token = (InternalSyntaxToken)token.WithTrailingTrivia(trailingTrivia);
+                    }
                     break;
             }
             if (errors != null)
@@ -285,8 +312,9 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         {
             while (true)
             {
-                var lexeme = this.NextLexeme();
+                var lexeme = this.PeekLexeme();
                 if (!lexeme.IsTrivia) return;
+                EatLexeme();
                 triviaList.Add(lexeme.Trivia);
                 if (isTrailing && (Language.SyntaxFacts.IsTriviaWithEndOfLine(lexeme.Kind) || Language.SyntaxFacts.IsTriviaWithEndOfLine(lexeme.Trivia))) return;
             }
@@ -364,7 +392,9 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             public bool IsText => TextOrGreenNode is string;
             public InternalSyntaxToken? Token => TextOrGreenNode as InternalSyntaxToken;
             public InternalSyntaxTrivia? Trivia => TextOrGreenNode as InternalSyntaxTrivia;
-            public string? Text => TextOrGreenNode as string;
+            public string Text => TextOrGreenNode is GreenNode green ? green.ToFullString() : TextOrGreenNode is string text ? text : string.Empty;
+
+            public int Width => TextOrGreenNode is GreenNode green ? green.FullWidth : TextOrGreenNode is string text ? text.Length : 0;
 
             public SyntaxDiagnosticInfo[]? GetErrors(int leadingTriviaWidth)
             {
@@ -389,6 +419,11 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 {
                     return null;
                 }
+            }
+
+            public override string ToString()
+            {
+                return TextOrGreenNode.ToString();
             }
         }
     }

@@ -45,17 +45,17 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 
         internal bool Resetting => _resetting;
 
-        protected override (SyntaxKind kind, bool cache) ScanLexeme()
+        protected override (SyntaxKind kind, bool isTrivia, bool cache) ScanLexeme()
         {
             var token = _lexer.NextToken();
             var kind = token.Type.FromAntlr4(_syntaxFacts.SyntaxKindType);
             var cache = _syntaxFacts.IsFixedToken(kind);
-            return (kind, cache);
+            return (kind, token.Channel != 0, cache);
         }
 
         public void SyntaxError(TextWriter output, IRecognizer recognizer, int offendingSymbol, int line, int charPositionInLine, string msg, RecognitionException e)
         {
-            this.AppendLexeme(SyntaxKind.BadToken, false);
+            this.AppendLexeme(SyntaxKind.BadToken, _lexer.Channel != 0, false);
             this.StartLexeme();
             this.AddError(Antlr4RoslynErrorCode.ERR_SyntaxError, msg);
         }
