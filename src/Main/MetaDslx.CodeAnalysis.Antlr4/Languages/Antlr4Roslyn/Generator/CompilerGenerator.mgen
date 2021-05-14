@@ -1399,6 +1399,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Syntax;
+using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
 using MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
@@ -1580,7 +1581,7 @@ namespace [Properties.DefaultNamespace]
             }
             var oldTree = this;
             // if changes is entire text do a full reparse
-            if (changes.Count == 1 && changes[0].Span == new TextSpan(0, this.Length) && changes[0].NewLength == newText.Length)
+            if (changes.Count == 1 && changes["[0]"].Span == new TextSpan(0, this.Length) && changes["[0]"].NewLength == newText.Length)
             {
                 // parser will do a full parse if we give it no changes
                 changes = null;
@@ -2935,7 +2936,7 @@ namespace [Properties.DefaultNamespace].Syntax
 ^
         protected override SyntaxTree CreateSyntaxTreeForRoot()
         {
-            return [lang]SyntaxTree.CreateWithoutClone(this);
+            return [lang]SyntaxTree.CreateWithoutClone(this, ParseData.Empty);
         }
 ^
         public override TResult Accept<TArg, TResult>(SyntaxVisitor<TArg, TResult> visitor, TArg argument)
@@ -3796,9 +3797,9 @@ public class [Properties.LanguageName]SyntaxFactory : SyntaxFactory
 	/// <summary>
 	/// Create a new syntax tree from a syntax node.
 	/// </summary>
-	public [lang]SyntaxTree SyntaxTree(SyntaxNode root, [lang]ParseOptions options = null, string path = "", Encoding encoding = null)
+	public [lang]SyntaxTree SyntaxTree(SyntaxNode root, [lang]ParseOptions? options = null, string? path = "", Encoding? encoding = null)
 	{
-		return [lang]SyntaxTree.Create(([lang]SyntaxNode)root, ([lang]ParseOptions)options, path, null, encoding);
+		return [lang]SyntaxTree.Create(([lang]SyntaxNode)root, ParseData.Empty, options, path, null, encoding);
 	}
 	
 	/// <summary>

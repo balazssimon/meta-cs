@@ -8,7 +8,7 @@
     <NoStdLib>true</NoStdLib>
     <ApplyNgenOptimization>partial</ApplyNgenOptimization>
     <IsPackable>false</IsPackable>
-    <MetaDslxDisableAntlr4RoslynGenerator>true</MetaDslxDisableAntlr4RoslynGenerator>
+    <MetaDslxDisableAntlr4RoslynGenerator>false</MetaDslxDisableAntlr4RoslynGenerator>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Binding\BoundDocumentation.cs" />

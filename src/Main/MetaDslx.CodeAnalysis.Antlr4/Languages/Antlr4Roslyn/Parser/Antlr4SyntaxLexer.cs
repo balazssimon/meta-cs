@@ -27,6 +27,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         private readonly Antlr4Lexer _lexer;
         private readonly SyntaxFacts _syntaxFacts;
         private bool _resetting;
+        private Antlr4LexerStateManager _stateManager;
 
         public Antlr4SyntaxLexer(Language language, SourceText text, LanguageParseOptions options) 
             : base(language, text, options)
@@ -40,6 +41,18 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         }
 
         public Antlr4Lexer Antlr4Lexer => _lexer;
+
+        protected sealed override LexerStateManager? StateManager
+        {
+            get
+            {
+                if (_stateManager == null)
+                {
+                    Interlocked.CompareExchange(ref _stateManager, this.CreateStateManager(), null);
+                }
+                return _stateManager;
+            }
+        }
 
         internal Antlr4InputStream InputStream => _stream;
 
@@ -58,6 +71,11 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             this.AppendLexeme(SyntaxKind.BadToken, _lexer.Channel != 0, false);
             this.StartLexeme();
             this.AddError(Antlr4RoslynErrorCode.ERR_SyntaxError, msg);
+        }
+
+        protected virtual Antlr4LexerStateManager CreateStateManager()
+        {
+            return new Antlr4LexerStateManager(this);
         }
 
         protected class Antlr4LexerStateManager : LexerStateManager

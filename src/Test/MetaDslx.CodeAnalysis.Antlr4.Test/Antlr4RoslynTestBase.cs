@@ -262,7 +262,7 @@ namespace MetaDslx.Tests
             {
                 buf.Append("  ");
             }
-            var annot = SyntaxParser.GetNodeAnnotation(node.Green);
+            /*var annot = SyntaxParser.GetNodeAnnotation(node.Green);
             if (annot != null)
             {
 #if DEBUG
@@ -270,7 +270,7 @@ namespace MetaDslx.Tests
 #else
                 buf.Append($"[(startState={((Antlr4ParserState)annot.StartState).State},endState={((Antlr4ParserState)annot.EndState).State},ltb={annot.LookaheadTokensBefore},lta={annot.LookaheadTokensAfter},lb={annot.LookaheadBefore},la={annot.LookaheadAfter})] ");
 #endif
-            }
+            }*/
             buf.Append(node.Kind);
             buf.AppendLine();
             foreach (var child in node.ChildNodesAndTokens())
@@ -278,7 +278,7 @@ namespace MetaDslx.Tests
                 if (child.IsToken)
                 {
                     var token = child.AsToken();
-                    var tokenAnnot = SyntaxLexer.GetTokenAnnotation(token.Node);
+                    /*var tokenAnnot = SyntaxLexer.GetTokenAnnotation(token.Node);
                     for (int i = 0; i < indent + 1; i++)
                     {
                         buf.Append("  ");
@@ -290,7 +290,7 @@ namespace MetaDslx.Tests
                     else
                     {
                         buf.Append($"[(startMode=0,endState=0)] ");
-                    }
+                    }*/
                     buf.Append(child.GetKind());
                     buf.Append(": " + token.Text);
                     buf.AppendLine();

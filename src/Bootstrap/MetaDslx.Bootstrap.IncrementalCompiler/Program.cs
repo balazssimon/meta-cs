@@ -23,18 +23,18 @@ namespace MetaDslx.Bootstrap.IncrementalCompiler
     {
         static void Main(string[] args)
         {
-            //CompileMGen("mgen01.txt");
-            //CompileMGen("mgen02.txt");
-            //CompileMGen("mgen03.txt");
-            //CompileMGen("mgen04.txt");
-            //IncrementalCompileMGen("mgen03.txt");
             //CompileMeta("meta01.txt");
-            //CompileMeta("meta02.txt");
+            CompileMeta("meta02.txt");
             //EditAndCompileMeta("meta01.txt");
             //CompileMeta("meta03.txt");
             //EditAndCompileMeta("meta03.txt");
             //CompileMeta("meta04.txt");
             //EditAndCompileMeta("meta04.txt");
+            //CompileMGen("mgen01.txt");
+            //CompileMGen("mgen02.txt");
+            //CompileMGen("mgen03.txt");
+            //CompileMGen("mgen04.txt");
+            //IncrementalCompileMGen("mgen03.txt");
         }
 
         private static void CompileMeta(string fileName)
