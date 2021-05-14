@@ -33,8 +33,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         private Stack<ResetPoint> _resetPoints;
         private bool _matchedToken;
 
-        public Antlr4SyntaxParser(Language language, SourceText text, LanguageParseOptions options, LanguageSyntaxNode oldTree, IEnumerable<TextChangeRange> changes, CancellationToken cancellationToken = default)
-            : base(language, text, options, oldTree, changes, cancellationToken)
+        public Antlr4SyntaxParser(Language language, SourceText text, LanguageParseOptions options, LanguageSyntaxNode? oldTree, ParseData? oldParseData, IEnumerable<TextChangeRange>? changes, CancellationToken cancellationToken = default)
+            : base(language, text, options, oldTree, oldParseData, changes, cancellationToken)
         {
             _nodeCache = new Dictionary<ParserRuleContext, GreenNode>();
             _lexer = (Antlr4SyntaxLexer)this.Lexer;
@@ -46,24 +46,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             _resetPoints = new Stack<ResetPoint>();
         }
 
-        protected Antlr4Parser Parser => _parser;
-
-        protected override ParserState SaveParserState(ParserState previousState)
-        {
-            var oldState = previousState as Antlr4ParserState;
-            if (oldState == null || oldState.State != _parser.State) return new Antlr4ParserState(_parser.State);
-            else return previousState;
-        }
-
-        protected override void RestoreParserState(ParserState state)
-        {
-            base.RestoreParserState(state);
-            var newState = state as Antlr4ParserState;
-            if (newState != null)
-            {
-                _parser.State = newState.State;
-            }
-        }
+        protected Antlr4Parser Antlr4Parser => _parser;
 
         protected void CacheGreenNode(ParserRuleContext context, GreenNode greenNode)
         {
@@ -109,24 +92,24 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         string ITokenStream.GetText(Interval interval)
         {
             if (interval.b < interval.a) return string.Empty;
-            else return this.Text.ToString(TextSpan.FromBounds(interval.a, interval.b + 1));
+            else return this.SourceText.ToString(TextSpan.FromBounds(interval.a, interval.b + 1));
         }
 
         string ITokenStream.GetText()
         {
-            return this.Text.ToString();
+            return this.SourceText.ToString();
         }
 
         string ITokenStream.GetText(RuleContext ctx)
         {
             if (ctx.SourceInterval.b < ctx.SourceInterval.a) return string.Empty;
-            else return this.Text.ToString(TextSpan.FromBounds(ctx.SourceInterval.a, ctx.SourceInterval.b + 1));
+            else return this.SourceText.ToString(TextSpan.FromBounds(ctx.SourceInterval.a, ctx.SourceInterval.b + 1));
         }
 
         string ITokenStream.GetText(IToken start, IToken stop)
         {
             if (stop.StopIndex < start.StartIndex) return string.Empty;
-            else return this.Text.ToString(TextSpan.FromBounds(start.StartIndex, stop.StopIndex + 1));
+            else return this.SourceText.ToString(TextSpan.FromBounds(start.StartIndex, stop.StopIndex + 1));
         }
 
         #endregion
@@ -218,5 +201,51 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         }
 
         #endregion
+
+        protected class Antlr4ParserStateManager : ParserStateManager
+        {
+            public Antlr4ParserStateManager(Antlr4SyntaxParser parser)
+                : base(parser)
+            {
+            }
+
+            public new Antlr4SyntaxParser Parser => (Antlr4SyntaxParser)base.Parser;
+            public Antlr4Parser Antlr4Parser => Parser.Antlr4Parser;
+
+            protected override int ComputeStateHash()
+            {
+                return this.Antlr4Parser.State.GetHashCode();
+            }
+
+            protected override bool IsInState(ParserState? state)
+            {
+                var antlr4Parser = Antlr4Parser;
+                if (state == null) return antlr4Parser.State == 0;
+                var antlr4State = (Antlr4ParserState)state;
+                if (antlr4Parser.State != antlr4State.State) return false;
+                return true;
+            }
+
+            protected override void RestoreState(ParserState? state)
+            {
+                var antlr4State = state as Antlr4ParserState;
+                var antlr4Parser = Antlr4Parser;
+                if (antlr4State != null)
+                {
+                    antlr4Parser.State = antlr4State.State;
+                }
+                else
+                {
+                    antlr4Parser.State = 0;
+                }
+            }
+
+            protected override ParserState? SaveState(int hashCode)
+            {
+                var antlr4Parser = Antlr4Parser;
+                if (antlr4Parser.State == 0) return null;
+                else return new Antlr4ParserState(hashCode, antlr4Parser.State);
+            }
+        }
     }
 }

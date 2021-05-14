@@ -242,7 +242,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         public abstract IEnumerable<InternalSyntaxToken> GetWellKnownTokens();
 
-        public abstract SyntaxLexer CreateLexer(SourceText text, LanguageParseOptions options);
-        public abstract SyntaxParser CreateParser(SourceText text, LanguageParseOptions options, LanguageSyntaxNode oldTree, IEnumerable<TextChangeRange> changes, CancellationToken cancellationToken = default);
+        public abstract SyntaxLexer CreateLexer(SourceText text, LanguageParseOptions? options);
+        public abstract SyntaxParser CreateParser(SourceText text, LanguageParseOptions? options, LanguageSyntaxNode? oldTree, ParseData? oldParseData, IEnumerable<TextChangeRange>? changes, CancellationToken cancellationToken = default);
     }
 }

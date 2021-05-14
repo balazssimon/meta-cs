@@ -21,8 +21,8 @@ namespace MetaDslx.Bootstrap.MetaModel
             ImmutableModel coreModel = MetaInstance.MModel;
             Console.WriteLine(coreModel);
 
-            string text = File.ReadAllText(@"..\..\..\..\..\Main\MetaDslx.CodeAnalysis.Meta\Languages\Meta\Model\ImmutableMetaModel.mm");
-            //string text = File.ReadAllText(@"..\..\..\ImmutableMetaModel.mm");
+            //string text = File.ReadAllText(@"..\..\..\..\..\Main\MetaDslx.CodeAnalysis.Meta\Languages\Meta\Model\ImmutableMetaModel.mm");
+            string text = File.ReadAllText(@"..\..\..\ImmutableMetaModel.mm");
             //string text = File.ReadAllText(@"..\..\..\PropertiesTestLang.mm");
             //string text = File.ReadAllText(@"..\..\..\Calculator.mm");
             //string text = File.ReadAllText(@"..\..\..\..\..\..\..\soal-cs\Src\Main\MetaDslx.Languages.Soal\Symbols\Soal.mm");

@@ -16,15 +16,17 @@ using Microsoft.CodeAnalysis.PooledObjects;
 
 namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 {
-    public class Antlr4CompletionSource
+    public struct Antlr4CompletionSource
     {
+        private ParseData _parseData;
         private LanguageSyntaxNode _root;
         private ATN _atn;
         private SyntaxFacts _syntaxFacts;
 
-        public Antlr4CompletionSource(LanguageSyntaxNode root, ATN atn)
+        public Antlr4CompletionSource(ParseData parseData, LanguageSyntaxNode root, ATN atn)
         {
-            Debug.Assert(Antlr4SyntaxParser.GetTreeAnnotation(root.Green) != null);
+            Debug.Assert(parseData != null);
+            _parseData = parseData;
             _root = root;
             _atn = atn;
             _syntaxFacts = _root.Language.SyntaxFacts;
@@ -64,7 +66,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             tokens.Free();
 
             var result = ArrayBuilder<SyntaxKind>.GetInstance();
-            result.AddRange(suggestions.Select(tokenType => tokenType.FromAntlr4(_syntaxFacts.SyntaxKindType)));
+            var syntaxKindType = _syntaxFacts.SyntaxKindType;
+            result.AddRange(suggestions.Select(tokenType => tokenType.FromAntlr4(syntaxKindType)));
             return result.ToImmutableAndFree();
         }
 
@@ -76,7 +79,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             return false;
         }
 
-        private (LanguageSyntaxNode node, int startState, int startPosition) FindStartState(int position)
+        private (LanguageSyntaxNode? node, int startState, int startPosition) FindStartState(int position)
         {
             var token = _root.FindToken(position);
 
@@ -93,31 +96,36 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
                 prevToken = _root.FindToken(prevPosition);
             }
 
-            SyntaxNode node;
-            IncrementalNodeAnnotation annot = null;
-            int startPosition = -1;
+            SyntaxNode? node;
+            IncrementalNodeData? incrementalData = null;
 
-            if (prevToken.Span.End <= position)
+            node = prevToken.Parent;
+            if (node != null && node.Span.End <= position)
             {
-                node = prevToken.Parent;
-                annot = null;
+                var lastPrevNode = node;
+                incrementalData = null;
                 while (node != null && node.Span.End <= position)
                 {
-                    annot = Antlr4SyntaxParser.GetNodeAnnotation(node.Green);
-                    startPosition = node.Span.End;
+                    lastPrevNode = node;
                     node = node.Parent;
                 }
-                if (annot != null) return ((LanguageSyntaxNode)token.Parent, ((Antlr4ParserState)annot.EndState).State, startPosition);
+                if (lastPrevNode != null && _parseData.TryGetIncrementalData(lastPrevNode.Green, out incrementalData) && incrementalData != null)
+                {
+                    return ((LanguageSyntaxNode)token.Parent, ((Antlr4ParserState)incrementalData.EndParserState).State, lastPrevNode.Span.End);
+                }
             }
 
             node = token.Parent;
+            var lastNode = node;
             while (node != null && node.SpanStart == token.SpanStart)
             {
-                annot = Antlr4SyntaxParser.GetNodeAnnotation(node.Green);
-                startPosition = node.SpanStart;
+                lastNode = node;
                 node = node.Parent;
             }
-            if (annot != null) return ((LanguageSyntaxNode)token.Parent, ((Antlr4ParserState)annot.StartState).State, startPosition);
+            if (lastNode != null && _parseData.TryGetIncrementalData(lastNode.Green, out incrementalData) && incrementalData != null)
+            {
+                return ((LanguageSyntaxNode)token.Parent, ((Antlr4ParserState)incrementalData.StartParserState).State, lastNode.Span.End);
+            }
 
             return (_root, 0, 0);
         }

@@ -177,6 +177,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
             return new GreenSyntaxTrivia(this.Kind, this.Text, GetDiagnostics(), annotations);
         }
 
+        public override GreenNode Clone()
+        {
+			return new GreenSyntaxTrivia(this.Kind, this.Text, GetDiagnostics(), GetAnnotations());
+		}
+
         public static implicit operator SyntaxTrivia(GreenSyntaxTrivia trivia)
         {
             return new SyntaxTrivia(default, trivia, position: 0, index: 0);
@@ -268,7 +273,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			return new GreenSkippedTokensTriviaSyntax(this.Kind, this.tokens, GetDiagnostics(), annotations);
 		}
 
-        internal GreenSkippedTokensTriviaSyntax(ObjectReader reader)
+		public override GreenNode Clone()
+		{
+			return new GreenSkippedTokensTriviaSyntax(this.Kind, this.tokens, GetDiagnostics(), GetAnnotations());
+		}
+
+		internal GreenSkippedTokensTriviaSyntax(ObjectReader reader)
             : base(reader)
         {
             this.SlotCount = 1;
@@ -497,7 +507,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	        System.Diagnostics.Debug.Assert(this.GetType() == typeof(GreenSyntaxToken));
 	        return new GreenSyntaxToken(this.Kind, this.FullWidth, this.GetDiagnostics(), annotations);
 	    }
-	    public override TResult Accept<TResult>(InternalSyntaxVisitor<TResult> visitor)
+		public override GreenNode Clone()
+		{
+			return new GreenSyntaxToken(this.Kind, this.FullWidth, GetDiagnostics(), GetAnnotations());
+		}
+		public override TResult Accept<TResult>(InternalSyntaxVisitor<TResult> visitor)
 	    {
 	        return visitor.VisitToken(this);
 	    }
@@ -7856,14 +7870,14 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	        return new MetaParser(input);
 	    }
 	
-		public override SyntaxLexer CreateLexer(SourceText text, LanguageParseOptions options)
+		public override SyntaxLexer CreateLexer(SourceText text, LanguageParseOptions? options)
 		{
-			return new MetaSyntaxLexer(text, (MetaParseOptions)options ?? MetaParseOptions.Default);
+			return new MetaSyntaxLexer(text, (MetaParseOptions)(options ?? MetaParseOptions.Default));
 		}
 	
-	    public override SyntaxParser CreateParser(SourceText text, LanguageParseOptions options, LanguageSyntaxNode oldTree, IEnumerable<TextChangeRange> changes, CancellationToken cancellationToken = default)
+	    public override SyntaxParser CreateParser(SourceText text, LanguageParseOptions? options, LanguageSyntaxNode? oldTree, ParseData? oldParseData, IEnumerable<TextChangeRange>? changes, CancellationToken cancellationToken = default)
 		{
-			return new MetaSyntaxParser(text, (MetaParseOptions)options ?? MetaParseOptions.Default, (MetaSyntaxNode)oldTree, changes, cancellationToken);
+			return new MetaSyntaxParser(text, (MetaParseOptions)(options ?? MetaParseOptions.Default), (MetaSyntaxNode?)oldTree, oldParseData, changes, cancellationToken);
 		}
 	
 		private MetaSyntaxKind ToMetaSyntaxKind(SyntaxKind kind)

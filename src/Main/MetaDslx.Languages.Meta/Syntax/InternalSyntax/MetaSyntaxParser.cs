@@ -26,14 +26,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
         public MetaSyntaxParser(
             SourceText text,
             MetaParseOptions options,
-            MetaSyntaxNode oldTree, 
-            IEnumerable<TextChangeRange> changes,
+            MetaSyntaxNode? oldTree, 
+			ParseData? oldParseData,
+            IEnumerable<TextChangeRange>? changes,
             CancellationToken cancellationToken = default)
-            : base(MetaLanguage.Instance, text, options, oldTree, changes, cancellationToken)
+            : base(MetaLanguage.Instance, text, options, oldTree, oldParseData, changes, cancellationToken)
         {
             _visitor = new Antlr4ToRoslynVisitor(this);
         }
-        protected MetaParser Antlr4Parser => (MetaParser)this.Parser;
+        protected MetaParser Antlr4Parser => (MetaParser)base.Antlr4Parser;
 		public override LanguageSyntaxNode Parse()
 		{
 			BeginRoot();

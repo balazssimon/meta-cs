@@ -16,13 +16,13 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
     {
         public readonly Language Language;
         protected readonly SlidingTextWindow TextWindow;
-        private readonly List<SyntaxDiagnosticInfo> Errors;
+        private readonly List<SyntaxDiagnosticInfo> _errors;
 
         protected AbstractLexer(Language language, SourceText text)
         {
             this.Language = language;
             this.TextWindow = new SlidingTextWindow(text);
-            Errors = new List<SyntaxDiagnosticInfo>();
+            _errors = new List<SyntaxDiagnosticInfo>();
         }
 
         public SourceText SourceText => TextWindow.SourceText;
@@ -34,29 +34,29 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         protected bool HasErrors
         {
-            get { return Errors.Count > 0; }
+            get { return _errors.Count > 0; }
         }
 
         protected SyntaxDiagnosticInfo[] GetAndClearErrors(int leadingTriviaWidth)
         {
-            if (Errors.Count > 0)
+            if (_errors.Count > 0)
             {
                 if (leadingTriviaWidth > 0)
                 {
-                    var array = new SyntaxDiagnosticInfo[Errors.Count];
-                    for (int i = 0; i < Errors.Count; i++)
+                    var array = new SyntaxDiagnosticInfo[_errors.Count];
+                    for (int i = 0; i < _errors.Count; i++)
                     {
                         // fixup error positioning to account for leading trivia
-                        array[i] = Errors[i].WithOffset(Errors[i].Offset + leadingTriviaWidth);
+                        array[i] = _errors[i].WithOffset(_errors[i].Offset + leadingTriviaWidth);
                     }
-                    Errors.Clear();
+                    _errors.Clear();
                     return array;
                 }
                 else
                 {
-                    var result = Errors;
-                    Errors.Clear();
-                    return result.ToArray();
+                    var array = _errors.ToArray();
+                    _errors.Clear();
+                    return array;
                 }
             }
             else
@@ -67,7 +67,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         protected void ClearErrors()
         {
-            Errors.Clear();
+            _errors.Clear();
         }
 
         protected void AddError(int position, int width, ErrorCode code, params object[] args)
@@ -84,8 +84,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         {
             if (error != null)
             {
-                if (Errors.Any(err => error.Equals(err) && err.ErrorCode == error.ErrorCode && err.Offset == error.Offset && err.Width == error.Width)) return;
-                Errors.Add(error);
+                if (_errors.Any(err => error.Equals(err) && err.ErrorCode == error.ErrorCode && err.Offset == error.Offset && err.Width == error.Width)) return;
+                _errors.Add(error);
             }
         }
 

@@ -24,6 +24,8 @@ namespace MetaDslx.CodeAnalysis
     {
         public Language Language => ((LanguageParseOptions)this.Options).Language;
 
+        protected abstract ParseData ParseData { get; }
+
         /// <summary>
         /// Determines if two trees are the same, disregarding trivia differences.
         /// </summary>
@@ -73,24 +75,10 @@ namespace MetaDslx.CodeAnalysis
         }
 
         #region Preprocessor Symbols
-        private bool _hasDirectives;
-        private DirectiveStack _directives;
-
-        protected void SetDirectiveStack(DirectiveStack directives)
-        {
-            _directives = directives;
-            _hasDirectives = true;
-        }
 
         protected DirectiveStack GetDirectives()
         {
-            if (!_hasDirectives)
-            {
-                var stack = ((InternalSyntaxNode)this.GetRoot().Green).ApplyDirectives(default(DirectiveStack));
-                SetDirectiveStack(stack);
-            }
-
-            return _directives;
+            return ParseData.Directives;
         }
 
         public bool IsAnyPreprocessorSymbolDefined(ImmutableArray<string> conditionalSymbols)

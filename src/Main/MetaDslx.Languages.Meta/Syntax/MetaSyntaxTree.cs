@@ -17,6 +17,8 @@ using Microsoft.CodeAnalysis.Text;
 using MetaDslx.Languages.Meta;
 using MetaDslx.Languages.Meta.Syntax;
 using MetaDslx.Languages.Meta.Syntax.InternalSyntax;
+using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
+
 namespace MetaDslx.Languages.Meta
 {
     /// <summary>
@@ -65,7 +67,7 @@ namespace MetaDslx.Languages.Meta
         /// <summary>
         /// Creates a new syntax tree from a syntax node.
         /// </summary>
-        public static MetaSyntaxTree Create(MetaSyntaxNode root, MetaParseOptions options = null, string path = "", SourceText text = null, Encoding encoding = null, SourceHashAlgorithm checksumAlgorithm = SourceHashAlgorithm.Sha1)
+        public static MetaSyntaxTree Create(MetaSyntaxNode root, ParseData parseData, MetaParseOptions? options = null, string path = "", SourceText? text = null, Encoding? encoding = null, SourceHashAlgorithm checksumAlgorithm = SourceHashAlgorithm.Sha1)
         {
             if (root == null)
             {
@@ -81,16 +83,16 @@ namespace MetaDslx.Languages.Meta
                 path: path,
                 options: options ?? MetaParseOptions.Default,
                 root: root,
-                directives: directives);
+                parseData: parseData.WithDirectives(directives));
         }
         /// <summary>
         /// Creates a new syntax tree from a syntax node with text that should correspond to the syntax node.
         /// </summary>
         /// <remarks>This is used by the ExpressionEvaluator.</remarks>
-        internal static MetaSyntaxTree CreateForDebugger(MetaSyntaxNode root, SourceText text, MetaParseOptions options)
+        internal static MetaSyntaxTree CreateForDebugger(MetaSyntaxNode root, ParseData parseData, SourceText text, MetaParseOptions options)
         {
             Debug.Assert(root != null);
-            return new DebuggerSyntaxTree(root, text, options);
+            return new DebuggerSyntaxTree(root, parseData, text, options);
         }
         /// <summary>
         /// <para>
@@ -100,7 +102,7 @@ namespace MetaDslx.Languages.Meta
         /// <para>NOTE: This method is only intended to be used from <see cref="MetaSyntaxNode.SyntaxTree"/> property.</para>
         /// <para>NOTE: Do not use this method elsewhere, instead use <see cref="Create(MetaSyntaxNode, CSharpParseOptions, string, Encoding)"/> method for creating a syntax tree.</para>
         /// </summary>
-        internal static MetaSyntaxTree CreateWithoutClone(MetaSyntaxNode root)
+        internal static MetaSyntaxTree CreateWithoutClone(MetaSyntaxNode root, ParseData parseData)
         {
             Debug.Assert(root != null);
             return new ParsedSyntaxTree(
@@ -110,7 +112,7 @@ namespace MetaDslx.Languages.Meta
                 path: "",
                 options: MetaParseOptions.Default,
                 root: root,
-                directives: DirectiveStack.Empty,
+                parseData: parseData.WithDirectives(DirectiveStack.Empty),
                 cloneRoot: false);
         }
         /// <summary>
@@ -139,10 +141,10 @@ namespace MetaDslx.Languages.Meta
                 throw new ArgumentNullException(nameof(text));
             }
             options = options ?? MetaParseOptions.Default;
-            using (var parser = new MetaSyntaxParser(text, options, oldTree: null, changes: null, cancellationToken: cancellationToken))
+            using (var parser = new MetaSyntaxParser(text, options, oldTree: null, oldParseData: ParseData.Empty, changes: null, cancellationToken: cancellationToken))
             {
                 var compilationUnit = (MainSyntax)parser.Parse();
-                var tree = new ParsedSyntaxTree(text, text.Encoding, text.ChecksumAlgorithm, path, options, compilationUnit, parser.Directives);
+                var tree = new ParsedSyntaxTree(text, text.Encoding, text.ChecksumAlgorithm, path, options, compilationUnit, parser.ParseData);
                 tree.VerifySource();
                 return tree;
             }
@@ -151,7 +153,7 @@ namespace MetaDslx.Languages.Meta
         #region Completion
         protected override ImmutableArray<SyntaxKind> LookupTokensCore(int position, CancellationToken cancellationToken = default)
         {
-            return new Antlr4CompletionSource(this.GetRoot(cancellationToken), MetaParser._ATN).GetTokenSuggestions(position, cancellationToken);
+            return new Antlr4CompletionSource(this.ParseData, this.GetRoot(cancellationToken), MetaParser._ATN).GetTokenSuggestions(position, cancellationToken);
         }
         public new ImmutableArray<MetaSyntaxKind> LookupTokens(int position, CancellationToken cancellationToken)
         {
@@ -197,10 +199,10 @@ namespace MetaDslx.Languages.Meta
                 changes = null;
                 oldTree = null;
             }
-            using (var parser = new MetaSyntaxParser(newText, this.Options, oldTree?.GetRoot(), changes))
+            using (var parser = new MetaSyntaxParser(newText, this.Options, oldTree?.GetRoot(), oldTree?.ParseData ?? ParseData.Empty, changes))
             {
                 var compilationUnit = (MainSyntax)parser.Parse();
-                var tree = new ParsedSyntaxTree(newText, newText.Encoding, newText.ChecksumAlgorithm, this.FilePath, this.Options, compilationUnit, parser.Directives);
+                var tree = new ParsedSyntaxTree(newText, newText.Encoding, newText.ChecksumAlgorithm, this.FilePath, this.Options, compilationUnit, parser.ParseData);
                 tree.VerifySource(changes);
                 return tree;
             }
@@ -284,6 +286,9 @@ namespace MetaDslx.Languages.Meta
             {
                 get { return true; }
             }
+
+            protected override ParseData ParseData => ParseData.Empty;
+
             public override FileLinePositionSpan GetLineSpan(TextSpan span, CancellationToken cancellationToken = default(CancellationToken))
             {
                 return default(FileLinePositionSpan);
@@ -302,11 +307,12 @@ namespace MetaDslx.Languages.Meta
             private readonly MetaParseOptions _options;
             private readonly string _path;
             private readonly MetaSyntaxNode _root;
+            private readonly ParseData _parseData;
             private readonly bool _hasCompilationUnitRoot;
-            private readonly Encoding _encodingOpt;
+            private readonly Encoding? _encodingOpt;
             private readonly SourceHashAlgorithm _checksumAlgorithm;
             private SourceText _lazyText;
-            internal ParsedSyntaxTree(SourceText textOpt, Encoding encodingOpt, SourceHashAlgorithm checksumAlgorithm, string path, MetaParseOptions options, MetaSyntaxNode root, DirectiveStack directives, bool cloneRoot = true)
+            internal ParsedSyntaxTree(SourceText? textOpt, Encoding? encodingOpt, SourceHashAlgorithm checksumAlgorithm, string path, MetaParseOptions options, MetaSyntaxNode root, ParseData parseData, bool cloneRoot = true)
             {
                 Debug.Assert(root != null);
                 Debug.Assert(options != null);
@@ -317,9 +323,10 @@ namespace MetaDslx.Languages.Meta
                 _options = options;
                 _path = path ?? string.Empty;
                 _root = cloneRoot ? this.CloneNodeAsRoot(root) : root;
+                _parseData = parseData;
                 _hasCompilationUnitRoot = root.Kind == MetaSyntaxKind.Main;
-                this.SetDirectiveStack(directives);
             }
+            protected override ParseData ParseData => _parseData;
             public override string FilePath
             {
                 get { return _path; }
@@ -385,7 +392,7 @@ namespace MetaDslx.Languages.Meta
                     _path,
                     (MetaParseOptions)options,
                     (MetaSyntaxNode)root,
-                    this.GetDirectives());
+                    this.ParseData);
             }
             public override SyntaxTree WithFilePath(string path)
             {
@@ -400,12 +407,12 @@ namespace MetaDslx.Languages.Meta
                     path,
                     _options,
                     _root,
-                    this.GetDirectives());
+                    this.ParseData);
             }
         }
         private class DebuggerSyntaxTree : ParsedSyntaxTree
         {
-            public DebuggerSyntaxTree(MetaSyntaxNode root, SourceText text, MetaParseOptions options)
+            public DebuggerSyntaxTree(MetaSyntaxNode root, ParseData parseData, SourceText text, MetaParseOptions options)
                 : base(
                     text,
                     text.Encoding,
@@ -413,7 +420,7 @@ namespace MetaDslx.Languages.Meta
                     path: "",
                     options: options,
                     root: root,
-                    directives: DirectiveStack.Empty)
+                    parseData: parseData.WithDirectives(DirectiveStack.Empty))
             {
             }
             protected override bool SupportsLocations

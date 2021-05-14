@@ -9,8 +9,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 {
     public abstract class SyntaxParser<T> : SyntaxParser
     {
-        protected SyntaxParser(Language language, SourceText text, LanguageParseOptions options, LanguageSyntaxNode oldTree, IEnumerable<TextChangeRange> changes, CancellationToken cancellationToken = default) 
-            : base(language, text, options, oldTree, changes, cancellationToken)
+        protected SyntaxParser(Language language, SourceText text, LanguageParseOptions options, LanguageSyntaxNode? oldTree, ParseData? oldParseData, IEnumerable<TextChangeRange>? changes, CancellationToken cancellationToken = default) 
+            : base(language, text, options, oldTree, oldParseData, changes, cancellationToken)
         {
         }
 

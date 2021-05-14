@@ -178,12 +178,12 @@ namespace MetaDslx.CodeAnalysis
                 throw new NotImplementedException();
             }
 
-            public override SyntaxLexer CreateLexer(SourceText text, LanguageParseOptions options)
+            public override SyntaxLexer CreateLexer(SourceText text, LanguageParseOptions? options)
             {
                 throw new NotImplementedException();
             }
 
-            public override SyntaxParser CreateParser(SourceText text, LanguageParseOptions options, LanguageSyntaxNode oldTree, IEnumerable<TextChangeRange> changes, CancellationToken cancellationToken = default)
+            public override SyntaxParser CreateParser(SourceText text, LanguageParseOptions? options, LanguageSyntaxNode? oldTree, ParseData? oldParseData, IEnumerable<TextChangeRange>? changes, CancellationToken cancellationToken = default)
             {
                 throw new NotImplementedException();
             }

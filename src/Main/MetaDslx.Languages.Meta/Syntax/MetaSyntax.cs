@@ -34,7 +34,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 
         protected override SyntaxTree CreateSyntaxTreeForRoot()
         {
-            return MetaSyntaxTree.CreateWithoutClone(this);
+            return MetaSyntaxTree.CreateWithoutClone(this, ParseData.Empty);
         }
 
         public override TResult Accept<TArg, TResult>(SyntaxVisitor<TArg, TResult> visitor, TArg argument)
@@ -8399,7 +8399,7 @@ namespace MetaDslx.Languages.Meta
 		/// </summary>
 		public MetaSyntaxTree SyntaxTree(SyntaxNode root, MetaParseOptions options = null, string path = "", Encoding encoding = null)
 		{
-			return MetaSyntaxTree.Create((MetaSyntaxNode)root, (MetaParseOptions)options, path, null, encoding);
+			return MetaSyntaxTree.Create((MetaSyntaxNode)root, ParseData.Empty, (MetaParseOptions)options, path, null, encoding);
 		}
 		/// <summary>
 		/// Produces a syntax tree by parsing the source text.
@@ -8435,7 +8435,7 @@ namespace MetaDslx.Languages.Meta
 	
 		public override LanguageSyntaxTree MakeSyntaxTree(LanguageSyntaxNode root, ParseOptions options = null, string path = "", Encoding encoding = null)
 		{
-			return MetaSyntaxTree.Create((MetaSyntaxNode)root, (MetaParseOptions)options, path, null, encoding);
+			return MetaSyntaxTree.Create((MetaSyntaxNode)root, ParseData.Empty, (MetaParseOptions)options, path, null, encoding);
 		}
 	
 	

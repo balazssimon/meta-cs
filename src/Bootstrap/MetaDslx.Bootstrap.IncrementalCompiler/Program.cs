@@ -30,7 +30,7 @@ namespace MetaDslx.Bootstrap.IncrementalCompiler
             //IncrementalCompileMGen("mgen03.txt");
             //CompileMeta("meta01.txt");
             //CompileMeta("meta02.txt");
-            EditAndCompileMeta("meta01.txt");
+            //EditAndCompileMeta("meta01.txt");
             //CompileMeta("meta03.txt");
             //EditAndCompileMeta("meta03.txt");
             //CompileMeta("meta04.txt");

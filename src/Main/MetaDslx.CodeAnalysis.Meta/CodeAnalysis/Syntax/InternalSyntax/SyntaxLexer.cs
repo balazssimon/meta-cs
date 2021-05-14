@@ -52,6 +52,10 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         protected virtual LexerStateManager? StateManager => null;
 
+        public int MinLookahead => TextWindow.MinLookahead;
+
+        public int MaxLookahead => TextWindow.MaxLookahead;
+
         public override void Dispose()
         {
             _keywordKindMap.Free();
@@ -250,7 +254,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         private InternalSyntaxToken Create(BufferedLexeme lexeme, GreenNode leadingTrivia, GreenNode trailingTrivia)
         {
-            var errors = lexeme.GetErrors(leadingTrivia.FullWidth);
+            var errors = lexeme.GetErrors(leadingTrivia?.FullWidth ?? 0);
             if (lexeme.IsToken)
             {
                 return lexeme.Token.WithDiagnosticsGreen(errors);

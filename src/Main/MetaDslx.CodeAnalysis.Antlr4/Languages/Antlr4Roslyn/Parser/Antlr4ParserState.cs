@@ -9,16 +9,10 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
     {
         public readonly int State;
 
-        public Antlr4ParserState(int state)
+        public Antlr4ParserState(int hashCode, int state)
+            : base(hashCode)
         {
             State = state;
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (obj == null || obj.GetType() != this.GetType()) return false;
-            var other = (Antlr4ParserState)obj;
-            return other.State == this.State;
         }
 
         public override string ToString()

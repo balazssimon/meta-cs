@@ -21,8 +21,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             private int _changeDelta;
             private DirectiveStack _newDirectives;
             private DirectiveStack _oldDirectives;
-            private LexerMode _mode;
-            private ParserState _state;
+            private LexerState? _lexerState;
+            private ParserState? _parserState;
 
             public Reader(Blender blender)
             {
@@ -33,8 +33,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 _changeDelta = blender._changeDelta;
                 _newDirectives = blender._newDirectives;
                 _oldDirectives = blender._oldDirectives;
-                _mode = blender._mode;
-                _state = blender._state;
+                _lexerState = blender._lexerState;
+                _parserState = blender._parserState;
             }
 
             internal BlendedNode ReadNodeOrToken(bool asToken)
@@ -170,10 +170,11 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 var lexer = _parser.Lexer;
                 if (lexer.Position != _newPosition)
                 {
-                    lexer.Reset(_newPosition, _newDirectives);
+                    lexer.ResetTo(_newPosition, _lexerState);
                 }
 
-                var token = lexer.Lex(ref _mode);
+                var token = lexer.Lex();
+                _lexerState = lexer.State;
                 _newDirectives = lexer.Directives;
                 return token;
             }
@@ -198,8 +199,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 // See if we're actually able to reuse this node or token.  If not, our caller will
                 // move the cursor to the next appropriate position and will try again.
                 var currentNodeOrToken = _oldTreeCursor.CurrentNodeOrToken;
-                var nodeAnnot = SyntaxParser.GetNodeAnnotation(currentNodeOrToken.UnderlyingNode);
-                if (!CanReuse(currentNodeOrToken, nodeAnnot))
+                if (!_parser.TryGetIncrementalData(currentNodeOrToken.UnderlyingNode, out var incrementalData) || incrementalData == null || !CanReuse(currentNodeOrToken, incrementalData))
                 {
                     blendedNode = default;
                     return false;
@@ -213,13 +213,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 _newDirectives = currentNodeOrToken.ApplyDirectives(_newDirectives);
                 _oldDirectives = currentNodeOrToken.ApplyDirectives(_oldDirectives);
 
-                GreenNode lastToken;
-                if (currentNodeOrToken.IsNode) lastToken = currentNodeOrToken.UnderlyingNode.GetLastTerminal();
-                else lastToken = currentNodeOrToken.UnderlyingNode;
-                var tokenAnnot = SyntaxLexer.GetTokenAnnotation(lastToken);
-                if (tokenAnnot != null) _mode = tokenAnnot.EndMode;
-
-                if (nodeAnnot != null) _state = nodeAnnot.EndState;
+                _lexerState = incrementalData.EndLexerState;
+                _parserState = incrementalData.EndParserState;
 
                 blendedNode = CreateBlendedNode(
                     node: (LanguageSyntaxNode)currentNodeOrToken.AsNode(),
@@ -227,13 +222,13 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 return true;
             }
 
-            private bool CanReuse(SyntaxNodeOrToken nodeOrToken, IncrementalNodeAnnotation nodeAnnot)
+            private bool CanReuse(SyntaxNodeOrToken nodeOrToken, IncrementalNodeData incrementalData)
             {
                 CallLogger.Instance.Call(nodeOrToken.GetDebuggerDisplay());
 
                 if (!CanReuseDirectly(nodeOrToken)) return false;
 
-                var lookahead = nodeAnnot?.LookaheadAfter ?? 0;
+                var lookahead = incrementalData.LookaheadAfter;
                 if (lookahead > 0)
                 {
                     var next = _oldTreeCursor;
@@ -249,33 +244,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                     }
                 }
 
-                GreenNode firstToken;
-                if (nodeOrToken.IsNode) firstToken = nodeOrToken.UnderlyingNode.GetFirstTerminal();
-                else firstToken = nodeOrToken.UnderlyingNode;
-                var tokenAnnot = SyntaxLexer.GetTokenAnnotation(firstToken);
-                if (tokenAnnot != null)
-                {
-                    if (!LexerMode.SameMode(_mode, tokenAnnot.StartMode)) return false;
-                }
-                else
-                {
-                    if (!LexerMode.SameMode(_mode, null)) return false;
-                }
-
-                if (nodeOrToken.IsNode)
-                {
-                    if (nodeAnnot == null) return false;
-                    if (ParserState.SameState(_state, nodeAnnot.StartState))
-                    {
-                        CallLogger.Instance.Log("  State mismatch:");
-                        CallLogger.Instance.Log("    Parser state: "+_state);
-                        CallLogger.Instance.Log("    Node start state: "+nodeAnnot.StartState);
-                        return false;
-                    }
-                    //Debug.Assert(_state == nodeAnnot.StartState);
-                }
-
-                CallLogger.Instance.Log("  Reuse: true");
+                if (_lexerState != incrementalData.StartLexerState) return false;
+                if (_parserState != incrementalData.StartParserState) return false;
 
                 return true;
             }
@@ -391,7 +361,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 }
 
                 return new BlendedNode(node, token, customToken,
-                    new Blender(_parser, _oldTreeCursor, _changes, _newPosition, _changeDelta, _newDirectives, _oldDirectives, _mode, _state));
+                    new Blender(_parser, _oldTreeCursor, _changes, _newPosition, _changeDelta, _newDirectives, _oldDirectives, _lexerState, _parserState));
             }
         }
     }
