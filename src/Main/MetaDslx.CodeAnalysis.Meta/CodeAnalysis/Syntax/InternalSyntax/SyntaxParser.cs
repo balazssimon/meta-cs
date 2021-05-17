@@ -99,8 +99,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         protected virtual ParserStateManager? StateManager => null;
 
-        protected override int TokenIndex => _blendedTokens != null ? _blendedTokens.Index : _lexedTokens.Index;
-        protected override int TokenCount => _blendedTokens != null ? _blendedTokens.Count : _lexedTokens.Count;
+        internal protected override int TokenIndex => _blendedTokens != null ? _blendedTokens.Index : _lexedTokens.Index;
+        internal protected override int TokenCount => _blendedTokens != null ? _blendedTokens.Count : _lexedTokens.Count;
         protected InternalSyntaxToken LastCreatedToken => _blendedTokens != null ? _blendedTokens.LastCreatedItem.Token : _lexedTokens.LastCreatedItem.Token;
         internal protected int SkippedTokenCount => _skippedTokens.Count;
         protected override GreenNode PrevTokenTrailingTrivia => _prevTokenTrailingTrivia;
@@ -376,7 +376,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             {
                 var token = Lexer.Lex();
                 if (token == null) return false;
-                _lexedTokens.AddItem((token, CreateCustomTokenCore(token, _position)));
+                _lexedTokens.AddItem((token, CreateCustomTokenCore(token, this.TokenCount, _position)));
                 return true;
             }
         }
@@ -474,7 +474,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             ct = (InternalSyntaxToken)WithCurrentSyntaxErrors(ct, 0);
             if (ct.ContainsDiagnostics)
             {
-                var customToken = this.CreateCustomTokenCore(ct, _position);
+                var customToken = this.CreateCustomTokenCore(ct, this.TokenCount, _position - ct.GetLeadingTriviaWidth());
                 if (_blendedTokens != null)
                 {
                     var bt = _blendedTokens.GetCurrentItem();
@@ -559,7 +559,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             return token;
         }
 
-        internal protected virtual object CreateCustomTokenCore(InternalSyntaxToken token, int position)
+        internal protected virtual object CreateCustomTokenCore(InternalSyntaxToken token, int index, int position)
         {
             return null;
         }

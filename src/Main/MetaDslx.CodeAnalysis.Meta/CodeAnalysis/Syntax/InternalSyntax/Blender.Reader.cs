@@ -352,12 +352,12 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 object customToken = null;
                 if (token != null)
                 {
-                    customToken = _parser.CreateCustomTokenCore(token, _parser.LexerPosition);
+                    customToken = _parser.CreateCustomTokenCore(token, _parser.TokenCount, _parser.LexerPosition);
                 }
                 else if (node != null)
                 {
                     var lastToken = (InternalSyntaxToken)node.Green.GetLastTerminal();
-                    customToken = _parser.CreateCustomTokenCore(lastToken, _parser.LexerPosition + node.FullWidth - lastToken.FullWidth);
+                    customToken = _parser.CreateCustomTokenCore(lastToken, _parser.TokenCount, _parser.LexerPosition + node.FullWidth - lastToken.FullWidth);
                 }
 
                 return new BlendedNode(node, token, customToken,

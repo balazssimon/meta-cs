@@ -129,7 +129,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
                 Lexer._resetting = true;
                 antlr4Lexer.Reset();
                 Lexer._resetting = false;
-                if (antlr4State != null)
+                if (antlr4State != null && antlr4State.ModeStackReversed != null)
                 {
                     foreach (var m in antlr4State.ModeStackReversed)
                     {

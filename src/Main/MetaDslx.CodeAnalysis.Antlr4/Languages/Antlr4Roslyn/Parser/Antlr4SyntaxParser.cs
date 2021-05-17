@@ -76,11 +76,11 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             return _nodeCache.TryGetValue(context, out existingGreenNode);
         }
 
-        protected override IncrementalToken CreateCustomToken(InternalSyntaxToken green, int position)
+        protected override IncrementalToken CreateCustomToken(InternalSyntaxToken green, int index, int position)
         {
             var token = new IncrementalToken(green.Kind.ToAntlr4(), green.Kind == SyntaxKind.Eof ? "<EOF>" : green.Text);
             token.SetGreenToken(green);
-            token.TokenIndex = this.TokenCount;
+            token.TokenIndex = index;
             token.StartIndex = position + green.GetLeadingTriviaWidth();
             token.StopIndex = token.StartIndex + green.Width - 1;
             return token;
@@ -121,8 +121,17 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 
         string ITokenStream.GetText(IToken start, IToken stop)
         {
-            if (stop.StopIndex < start.StartIndex) return string.Empty;
-            else return this.SourceText.ToString(TextSpan.FromBounds(start.StartIndex, stop.StopIndex + 1));
+            if (stop.TokenIndex < start.TokenIndex) return string.Empty;
+            if (start.TokenIndex == stop.TokenIndex) return this.PeekCustomToken(0).Text;
+            var sb = new StringBuilder();
+            for (int i = start.TokenIndex; i <= stop.TokenIndex; i++)
+            {
+                var token = this.PeekToken(i - this.TokenIndex);
+                if (i == start.TokenIndex) sb.Append(token.TokenWithLeadingTrivia(null).ToFullString());
+                else if (i == stop.TokenIndex) sb.Append(token.TokenWithTrailingTrivia(null).ToFullString());
+                else sb.Append(token.ToFullString());
+            }
+            return sb.ToString();
         }
 
         #endregion

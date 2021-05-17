@@ -26,11 +26,11 @@ namespace MetaDslx.Bootstrap.IncrementalCompiler
         {
             //CompileMeta("meta01.txt");
             //CompileMeta("meta02.txt");
-            EditAndCompileMeta("meta01.txt");
+            //EditAndCompileMeta("meta01.txt");
             //CompileMeta("meta03.txt");
             //EditAndCompileMeta("meta03.txt");
             //CompileMeta("meta04.txt");
-            //EditAndCompileMeta("meta04.txt");
+            EditAndCompileMeta("meta04.txt");
             //CompileMeta("meta05.txt");
             //CompileMeta("meta06.txt");
             //CompileMGen("mgen01.txt");
@@ -108,6 +108,7 @@ namespace MetaDslx.Bootstrap.IncrementalCompiler
             lexer.RemoveErrorListeners();
             lexer.AddErrorListener(errors);
             var parser = new MetaParser(new CommonTokenStream(lexer));
+            parser.ErrorHandler = new MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.DefaultErrorStrategy();
             parser.RemoveErrorListeners();
             parser.AddErrorListener(errors);
             parser.main();
@@ -170,7 +171,11 @@ namespace MetaDslx.Bootstrap.IncrementalCompiler
             var lastIndex = Math.Min(antlr4Diagnostics.Length, diagnostics.Length);
             for (int i = 0; i < lastIndex; i++)
             {
-                if (antlr4DiagnosticsList[i] != diagnosticsList[i]) return false;
+                var expected = antlr4DiagnosticsList[i];
+                var actual = diagnosticsList[i];
+                expected = expected.Substring(expected.IndexOf(':'));
+                actual = actual.Substring(actual.IndexOf(':'));
+                if (expected != actual) return false;
             }
             if (lastIndex < antlr4Diagnostics.Length)
             {

@@ -33,6 +33,7 @@ namespace MetaDslx.Tests
             lexer.RemoveErrorListeners();
             lexer.AddErrorListener(errors);
             var parser = CreateAntlr4Parser(new CommonTokenStream(lexer));
+            parser.ErrorHandler = new MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.DefaultErrorStrategy();
             parser.RemoveErrorListeners();
             parser.AddErrorListener(errors);
             Antlr4MainRule(parser);
@@ -74,13 +75,17 @@ namespace MetaDslx.Tests
             var lastIndex = Math.Min(antlr4Diagnostics.Length, diagnostics.Length);
             for (int i = 0; i < lastIndex; i++)
             {
-                Assert.Equal(antlr4DiagnosticsList[i], diagnosticsList[i]);
+                var expected = antlr4DiagnosticsList[i];
+                var actual = diagnosticsList[i];
+                expected = expected.Substring(expected.IndexOf(':'));
+                actual = actual.Substring(actual.IndexOf(':'));
+                Assert.Equal(expected, actual);
             }
             if (lastIndex < antlr4Diagnostics.Length)
             {
                 Assert.Equal(antlr4DiagnosticsList[lastIndex], null);
             }
-            Assert.True(antlr4Diagnostics.Length == diagnostics.Length);
+            Assert.Equal(antlr4Diagnostics.Length, diagnostics.Length);
         }
 
 

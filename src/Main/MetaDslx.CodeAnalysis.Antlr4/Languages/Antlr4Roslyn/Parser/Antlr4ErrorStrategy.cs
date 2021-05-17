@@ -709,7 +709,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             protected internal virtual IToken ConstructToken(ITokenSource tokenSource, int expectedTokenType, string tokenText, IToken current)
             {
                 var green = _parser.CreateMissingToken(expectedTokenType.FromAntlr4(_parser.Language.SyntaxFacts.SyntaxKindType), current.Type.FromAntlr4(_parser.Language.SyntaxFacts.SyntaxKindType), false);
-                var token = _parser.CreateCustomToken(green, _parser.LexerPosition);
+                var token = _parser.CreateCustomToken(green, _parser.TokenIndex, _parser.LexerPosition);
                 return token;
             }
 

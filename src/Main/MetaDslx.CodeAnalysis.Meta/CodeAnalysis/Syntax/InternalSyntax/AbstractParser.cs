@@ -19,8 +19,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             _errors = new List<SyntaxDiagnosticInfo>();
         }
 
-        protected abstract int TokenIndex { get; }
-        protected abstract int TokenCount { get; }
+        internal protected abstract int TokenIndex { get; }
+        internal protected abstract int TokenCount { get; }
         protected abstract InternalSyntaxToken CurrentToken { get; }
         protected abstract GreenNode PrevTokenTrailingTrivia { get; }
 

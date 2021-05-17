@@ -21,11 +21,11 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             return (T)base.PeekCustomToken(n);
         }
 
-        internal protected override object CreateCustomTokenCore(InternalSyntaxToken token, int position)
+        internal protected override object CreateCustomTokenCore(InternalSyntaxToken token, int index, int position)
         {
-            return this.CreateCustomToken(token, position);
+            return this.CreateCustomToken(token, index, position);
         }
 
-        protected abstract T CreateCustomToken(InternalSyntaxToken token, int position);
+        protected abstract T CreateCustomToken(InternalSyntaxToken token, int index, int position);
     }
 }
