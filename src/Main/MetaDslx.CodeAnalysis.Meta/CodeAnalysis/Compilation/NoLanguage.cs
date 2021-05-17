@@ -250,6 +250,11 @@ namespace MetaDslx.CodeAnalysis
                 {
                 }
 
+                public override GreenNode Clone()
+                {
+                    return new CSharpInternalSyntaxTrivia(this.Kind, this.Text, this.GetDiagnostics(), this.GetAnnotations());
+                }
+
                 public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
                 {
                     return this;

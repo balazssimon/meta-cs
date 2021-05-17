@@ -16,10 +16,8 @@ namespace MetaDslx.Languages.Meta
     public class MetaCompilation : LanguageCompilation
     {
         #region Constructors and Factories
-        
         private static readonly MetaCompilationOptions s_defaultOptions = new MetaCompilationOptions(OutputKind.ConsoleApplication);
         private static readonly MetaCompilationOptions s_defaultSubmissionOptions = new MetaCompilationOptions(OutputKind.DynamicallyLinkedLibrary).WithReferencesSupersedeLowerVersions(true);
-
         /// <summary>
         /// Creates a new compilation from scratch. Methods such as AddSyntaxTrees or AddReferences
         /// on the returned object will allow to continue building up the Compilation incrementally.
@@ -45,7 +43,6 @@ namespace MetaDslx.Languages.Meta
                 hostObjectType: null,
                 isSubmission: false);
         }
-
         /// <summary>
         /// Creates a new compilation that can be used in scripting.
         /// </summary>
@@ -60,7 +57,6 @@ namespace MetaDslx.Languages.Meta
         {
             CheckSubmissionOptions(options);
             ValidateScriptCompilationParameters(previousScriptCompilation, returnType, ref globalsType);
-
             return Create(
                 assemblyName,
                 options?.WithReferencesSupersedeLowerVersions(true) ?? s_defaultSubmissionOptions,
@@ -71,7 +67,6 @@ namespace MetaDslx.Languages.Meta
                 globalsType,
                 isSubmission: true);
         }
-
         private static MetaCompilation Create(
             string? assemblyName,
             MetaCompilationOptions options,
@@ -100,19 +95,16 @@ namespace MetaDslx.Languages.Meta
                     isSubmission,
                     state: null),
                 semanticModelProvider: null);
-
             if (syntaxTrees != null)
             {
                 compilation = compilation.AddSyntaxTrees(syntaxTrees);
             }
             return compilation;
         }
-
         protected MetaCompilation(string assemblyName, MetaCompilationOptions options, IEnumerable<MetadataReference> references, MetaCompilation previousSubmission, Type submissionReturnType, Type hostObjectType, bool isSubmission, ReferenceManager referenceManager, bool reuseReferenceManager, SyntaxAndDeclarationManager syntaxAndDeclarations, SemanticModelProvider semanticModelProvider, AsyncQueue<CompilationEvent> eventQueue = null)
             : base(assemblyName, options, references, previousSubmission, submissionReturnType, hostObjectType, isSubmission, referenceManager, reuseReferenceManager, syntaxAndDeclarations, semanticModelProvider, eventQueue)
         {
         }
-
         /// <summary>
         /// Create a duplicate of this compilation with different symbol instances.
         /// </summary>
@@ -144,8 +136,6 @@ namespace MetaDslx.Languages.Meta
                 semanticModelProvider,
                 eventQueue);
         }
-
-
         protected override Compilation CommonClone()
         {
             return this.Clone();

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using MetaDslx.Languages.Antlr4Roslyn.Compilation;
+using Microsoft.CodeAnalysis;
 
 namespace MetaDslx.Bootstrap.Antlr4Roslyn
 { 

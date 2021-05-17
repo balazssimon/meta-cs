@@ -2,8 +2,8 @@
 // WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 using System;
-using MetaDslx.CodeAnalysis;
 using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
 using Roslyn.Utilities;
 
 namespace MetaDslx.Languages.Meta
@@ -64,7 +64,6 @@ namespace MetaDslx.Languages.Meta
             }
         }
     }
-
     public static class LanguageVersionFacts
     {
         /// <summary>

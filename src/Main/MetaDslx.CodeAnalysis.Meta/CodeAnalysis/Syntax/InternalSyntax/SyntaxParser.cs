@@ -25,7 +25,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         private GreenNode _prevTokenTrailingTrivia;
         private int _resetCount;
         private int _position;
-        private int _lastNonSkippedTokenIndex;
+        private SyntaxListBuilder _skippedTokens;
         private ParseData? _oldParseData;
         private ParseData? _parseData;
         private ConditionalWeakTable<GreenNode, IncrementalNodeData>? _incrementalData;
@@ -55,7 +55,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             CancellationToken = cancellationToken;
             _currentNode = default;
             _position = 0;
-            _lastNonSkippedTokenIndex = -1;
+            _skippedTokens = SyntaxListBuilder.Create();
 
             if (IsIncremental)
             {
@@ -88,14 +88,21 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         public int Position => _position;
 
-        public ParserState? State => StateManager?.State;
+        public ParserState? State
+        {
+            get
+            {
+                StateManager?.InternalChanged();
+                return StateManager?.State;
+            }
+        }
 
         protected virtual ParserStateManager? StateManager => null;
 
         protected override int TokenIndex => _blendedTokens != null ? _blendedTokens.Index : _lexedTokens.Index;
         protected override int TokenCount => _blendedTokens != null ? _blendedTokens.Count : _lexedTokens.Count;
         protected InternalSyntaxToken LastCreatedToken => _blendedTokens != null ? _blendedTokens.LastCreatedItem.Token : _lexedTokens.LastCreatedItem.Token;
-        internal protected int SkippedTokenCount => TokenIndex - _lastNonSkippedTokenIndex - 1;
+        internal protected int SkippedTokenCount => _skippedTokens.Count;
         protected override GreenNode PrevTokenTrailingTrivia => _prevTokenTrailingTrivia;
 
         public override void Dispose()
@@ -152,10 +159,10 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         protected void EndNode(ref GreenNode green)
         {
+            var state = this.State;
+            var lexerState = this.Lexer.State;
             if (IsIncremental)
             {
-                var state = this.State;
-                var lexerState = this.Lexer.State;
                 var incrementalState = _incrementalStateStack.Pop();
                 var minTokenLookahead = Math.Min(incrementalState.minTokenLookahead, _minTokenLookahead);
                 var maxTokenLookahead = Math.Max(incrementalState.maxTokenLookahead, _maxTokenLookahead);
@@ -206,14 +213,15 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 else _lexedTokens.MarkResetPoint();
             }
             _resetCount++;
-            return new ResetPoint(_resetCount, this.State, index, _position, _lastNonSkippedTokenIndex, _prevTokenTrailingTrivia);
+            return new ResetPoint(_resetCount, this.State, index, _position, _skippedTokens.ToArray(), _prevTokenTrailingTrivia);
         }
 
         protected void Reset(ref ResetPoint point)
         {
             _position = point.Position;
             _prevTokenTrailingTrivia = point.PrevTokenTrailingTrivia;
-            _lastNonSkippedTokenIndex = point.LastNonSkippedTokenIndex;
+            _skippedTokens.Clear();
+            _skippedTokens.AddRange(point.SkippedTokens);
             if (_blendedTokens != null)
             {
                 _blendedTokens.ResetTo(point.Index);
@@ -287,8 +295,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             }
 
             _blendedTokens.InsertItem(currentNode);
-            _lastNonSkippedTokenIndex = TokenIndex;
-            MoveToNextToken(skip: false);
+            _skippedTokens.Clear();
+            MoveToNextToken();
 
             // erase current state
             RestoreParserState(currentNode.Blender.ParserState);
@@ -368,18 +376,15 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             {
                 var token = Lexer.Lex();
                 if (token == null) return false;
-                _lexedTokens.AddItem((token, CreateCustomTokenCore(token, Lexer.Position)));
+                _lexedTokens.AddItem((token, CreateCustomTokenCore(token, _position)));
                 return true;
             }
         }
 
         protected void RegisterLookahead(int n)
         {
-            CallLogger.Instance.Call(n);
-            var skippedTokenCount = TokenIndex - _lastNonSkippedTokenIndex - 1;
-            CallLogger.Instance.Log("  SkippedTokenCount=" + skippedTokenCount);
+            var skippedTokenCount = _skippedTokens.Count;
             int lookaheadCount = skippedTokenCount + n + 1;
-            CallLogger.Instance.Log("  LookaheadCount=" + lookaheadCount);
 
             if (lookaheadCount < _minTokenLookahead)
             {
@@ -453,51 +458,47 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         //we should keep it simple so that it can be inlined.
         protected InternalSyntaxToken EatToken()
         {
-            var ct = this.EatCurrentTokenWithSkippedTokensAndErrors();
-            MoveToNextToken(skip: false);
+            var ct = this.EatCurrentTokenWithAndErrors(eatSkippedTokens: true);
+            MoveToNextToken();
             return ct;
         }
 
-        private InternalSyntaxToken EatCurrentTokenWithSkippedTokensAndErrors()
+        private InternalSyntaxToken EatCurrentTokenWithAndErrors(bool eatSkippedTokens)
         {
             var ct = this.CurrentToken;
-            CallLogger.Instance.Call(ct.ToFullString());
-            var index = TokenIndex;
-            var skippedTokenCount = index - _lastNonSkippedTokenIndex - 1;
-            var skippedWidth = 0;
-            if (skippedTokenCount > 0)
+            if (eatSkippedTokens && _skippedTokens.Count > 0)
             {
-                var skippedTokens = SyntaxListBuilder.Create();
-                for (int i = skippedTokenCount; i > 0; i--)
-                {
-                    var token = PeekToken(-i);
-                    skippedTokens.Add(token);
-                    skippedWidth += token.FullWidth;
-                }
-                ct = AddSkippedSyntax(ct, skippedTokens.ToListNode(), false);
+                ct = AddSkippedSyntax(ct, _skippedTokens.ToListNode(), false);
+                _skippedTokens.Clear();
             }
-            ct = (InternalSyntaxToken)WithCurrentSyntaxErrors(ct, _position - skippedWidth);
-            _lastNonSkippedTokenIndex = TokenIndex;
+            ct = (InternalSyntaxToken)WithCurrentSyntaxErrors(ct, 0);
+            if (ct.ContainsDiagnostics)
+            {
+                var customToken = this.CreateCustomTokenCore(ct, _position);
+                if (_blendedTokens != null)
+                {
+                    var bt = _blendedTokens.GetCurrentItem();
+                    _blendedTokens.UpdateCurrentItem(new BlendedNode(null, ct, customToken, bt.Blender));
+                }
+                else
+                {
+                    _lexedTokens.UpdateCurrentItem((ct, customToken));
+                }
+            }
             return ct;
         }
 
-        protected void MoveToNextToken(bool skip)
+        protected void MoveToNextToken()
         {
             if (_currentNode.Node != null)
             {
                 _position += _currentNode.Node.FullWidth;
-                if (!skip)
-                {
-                    _prevTokenTrailingTrivia = _currentNode.Node.GetTrailingTrivia().Node;
-                }
+                _prevTokenTrailingTrivia = _currentNode.Node.GetTrailingTrivia().Node;
             }
             else
             {
                 _position += _currentToken.FullWidth;
-                if (!skip)
-                {
-                    _prevTokenTrailingTrivia = _currentToken.GetTrailingTrivia();
-                }
+                _prevTokenTrailingTrivia = _currentToken.GetTrailingTrivia();
             }
             _currentToken = default;
             if (_blendedTokens != null)
@@ -522,10 +523,10 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         {
             Debug.Assert(Language.SyntaxFacts.IsToken(kind));
 
-            var ct = this.EatCurrentTokenWithSkippedTokensAndErrors();
+            var ct = this.EatCurrentTokenWithAndErrors(eatSkippedTokens: true);
             if (ct.Kind == kind)
             {
-                MoveToNextToken(skip: false);
+                MoveToNextToken();
                 return ct;
             }
 
@@ -535,9 +536,9 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         protected InternalSyntaxToken SkipToken()
         {
-            var ct = this.CurrentToken;
-            CallLogger.Instance.Call(ct.ToFullString());
-            MoveToNextToken(skip: true);
+            var ct = this.EatCurrentTokenWithAndErrors(eatSkippedTokens: false);
+            _skippedTokens.Add(ct);
+            MoveToNextToken();
             return ct;
         }
 

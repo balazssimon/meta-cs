@@ -109,6 +109,21 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             return this.LexSyntaxToken();
         }
 
+#if DEBUG
+        public List<InternalSyntaxToken> GetAllTokens()
+        {
+            var result = new List<InternalSyntaxToken>();
+            InternalSyntaxToken? token = this.Lex();
+            while(token != null)
+            {
+                result.Add(token);
+                token = this.Lex();
+            }
+            this.ResetTo(0, null);
+            return result;
+        }
+#endif
+
         protected void StartLexeme()
         {
             TextWindow.Start();
@@ -248,10 +263,6 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             {
                 trivia = CreateTrivia(kind, TextWindow.GetText(intern: cache));
             }
-            if (this.HasErrors)
-            {
-                trivia = trivia.WithDiagnosticsGreen(this.GetAndClearErrors(leadingTriviaWidth: 0));
-            }
             return trivia;
         }
 
@@ -314,8 +325,11 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             {
                 var lexeme = this.PeekLexeme();
                 if (!lexeme.IsTrivia) return;
+                var trivia = lexeme.Trivia;
+                var errors = lexeme.GetErrors(0);
+                if (errors != null) trivia = trivia.WithDiagnosticsGreen(errors);
                 EatLexeme();
-                triviaList.Add(lexeme.Trivia);
+                triviaList.Add(trivia);
                 if (isTrailing && (Language.SyntaxFacts.IsTriviaWithEndOfLine(lexeme.Kind) || Language.SyntaxFacts.IsTriviaWithEndOfLine(lexeme.Trivia))) return;
             }
         }

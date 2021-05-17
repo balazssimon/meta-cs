@@ -6,6 +6,7 @@ using MetaDslx.CodeAnalysis.Antlr4Test.TestIncrementalCompilation;
 using MetaDslx.CodeAnalysis.InternalUtilities;
 using MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax;
 using MetaDslx.Languages.Meta;
+using MetaDslx.Languages.Meta.Syntax;
 using MetaDslx.Languages.Meta.Syntax.InternalSyntax;
 using MetaDslx.Languages.MetaGenerator.Compilation;
 using MetaDslx.Languages.MetaGenerator.Syntax.InternalSyntax;
@@ -24,12 +25,14 @@ namespace MetaDslx.Bootstrap.IncrementalCompiler
         static void Main(string[] args)
         {
             //CompileMeta("meta01.txt");
-            CompileMeta("meta02.txt");
-            //EditAndCompileMeta("meta01.txt");
+            //CompileMeta("meta02.txt");
+            EditAndCompileMeta("meta01.txt");
             //CompileMeta("meta03.txt");
             //EditAndCompileMeta("meta03.txt");
             //CompileMeta("meta04.txt");
             //EditAndCompileMeta("meta04.txt");
+            //CompileMeta("meta05.txt");
+            //CompileMeta("meta06.txt");
             //CompileMGen("mgen01.txt");
             //CompileMGen("mgen02.txt");
             //CompileMGen("mgen03.txt");
@@ -40,6 +43,11 @@ namespace MetaDslx.Bootstrap.IncrementalCompiler
         private static void CompileMeta(string fileName)
         {
             var source = SourceText.From(File.ReadAllText(@"..\..\..\"+ fileName));
+
+            var lexer = new MetaSyntaxLexer(source, MetaParseOptions.Default);
+            var tokens = lexer.GetAllTokens();
+            Console.WriteLine("Number of tokens: " + tokens.Count);
+
             var syntaxTree = MetaLanguage.Instance.ParseSyntaxTree(source);
             var antlr4Diags = Antlr4ParseMeta(source);
             PrintResults(source, syntaxTree, antlr4Diags);
@@ -183,14 +191,14 @@ namespace MetaDslx.Bootstrap.IncrementalCompiler
             {
                 Console.WriteLine(formatter.Format(diag));
             }
-            Console.WriteLine("---------------------");
+            Console.WriteLine("------ actual -------");
             foreach (var diag in diags)
             {
                 Console.WriteLine(formatter.Format(diag));
             }
             Console.WriteLine("====== source =======");
             Console.WriteLine(source.ToString());
-            Console.WriteLine("---------------------");
+            Console.WriteLine("------ actual -------");
             Console.WriteLine(syntaxTree.GetRoot().ToFullString());
             Console.WriteLine("====== result =======");
             Console.WriteLine("Diagnostics: " + (diagsOk ? "OK" : "mismatch"));

@@ -8397,9 +8397,9 @@ namespace MetaDslx.Languages.Meta
 		/// <summary>
 		/// Create a new syntax tree from a syntax node.
 		/// </summary>
-		public MetaSyntaxTree SyntaxTree(SyntaxNode root, MetaParseOptions options = null, string path = "", Encoding encoding = null)
+		public MetaSyntaxTree SyntaxTree(SyntaxNode root, MetaParseOptions? options = null, string? path = "", Encoding? encoding = null)
 		{
-			return MetaSyntaxTree.Create((MetaSyntaxNode)root, ParseData.Empty, (MetaParseOptions)options, path, null, encoding);
+			return MetaSyntaxTree.Create((MetaSyntaxNode)root, ParseData.Empty, options, path, null, encoding);
 		}
 		/// <summary>
 		/// Produces a syntax tree by parsing the source text.

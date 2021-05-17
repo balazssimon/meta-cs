@@ -11,14 +11,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Syntax;
+using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
 using MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 using MetaDslx.Languages.Meta;
 using MetaDslx.Languages.Meta.Syntax;
 using MetaDslx.Languages.Meta.Syntax.InternalSyntax;
-using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
-
 namespace MetaDslx.Languages.Meta
 {
     /// <summary>
@@ -31,7 +30,6 @@ namespace MetaDslx.Languages.Meta
         /// The options used by the parser to produce the syntax tree.
         /// </summary>
         public new abstract MetaParseOptions Options { get; }
-
         /// <summary>
         /// Gets the root node of the syntax tree.
         /// </summary>
@@ -286,9 +284,7 @@ namespace MetaDslx.Languages.Meta
             {
                 get { return true; }
             }
-
             protected override ParseData ParseData => ParseData.Empty;
-
             public override FileLinePositionSpan GetLineSpan(TextSpan span, CancellationToken cancellationToken = default(CancellationToken))
             {
                 return default(FileLinePositionSpan);

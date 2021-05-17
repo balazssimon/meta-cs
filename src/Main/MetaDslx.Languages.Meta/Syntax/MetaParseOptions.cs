@@ -139,7 +139,6 @@ namespace MetaDslx.Languages.Meta.Syntax
                 ?? ImmutableDictionary<string, string>.Empty;
             return new MetaParseOptions(this) { Features = dictionary };
         }
-
         public override bool Equals(object obj)
         {
             return this.Equals(obj as MetaParseOptions);

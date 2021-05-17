@@ -209,7 +209,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 
         void IAntlrErrorListener<IToken>.SyntaxError(TextWriter output, IRecognizer recognizer, IToken offendingSymbol, int line, int charPositionInLine, string msg, RecognitionException e)
         {
-            this.AddError(offendingSymbol.StartIndex, offendingSymbol.StopIndex - offendingSymbol.StartIndex + 1, Antlr4RoslynErrorCode.ERR_SyntaxError, msg);
+            this.AddErrorToCurrentToken(Antlr4RoslynErrorCode.ERR_SyntaxError, msg);
             CallLogger.Instance.Log("  Parser error: " + msg);
         }
 

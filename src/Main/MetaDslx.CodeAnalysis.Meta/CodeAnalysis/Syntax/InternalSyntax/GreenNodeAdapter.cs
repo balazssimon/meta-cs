@@ -83,7 +83,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         protected abstract SyntaxNode CreateRedCore(SyntaxNode parent, int position);
 
-        public virtual GreenNode Clone() => throw new NotImplementedException("TODO: make it abstract");
+        //public virtual GreenNode Clone() => throw new NotImplementedException("TODO: make it abstract");
+        public abstract GreenNode Clone(); 
 
         protected new DiagnosticInfo[] GetDiagnostics()
         {

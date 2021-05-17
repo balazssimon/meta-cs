@@ -17,7 +17,6 @@ using MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Syntax.InternalSyntax;
 using Microsoft.CodeAnalysis.Text;
-
 namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 {
     public class MetaSyntaxParser : Antlr4SyntaxParser
@@ -26,15 +25,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
         public MetaSyntaxParser(
             SourceText text,
             MetaParseOptions options,
-            MetaSyntaxNode? oldTree, 
-			ParseData? oldParseData,
-            IEnumerable<TextChangeRange>? changes,
+            MetaSyntaxNode oldTree, 
+			ParseData oldParseData,
+            IEnumerable<TextChangeRange> changes,
             CancellationToken cancellationToken = default)
             : base(MetaLanguage.Instance, text, options, oldTree, oldParseData, changes, cancellationToken)
         {
             _visitor = new Antlr4ToRoslynVisitor(this);
         }
-        protected MetaParser Antlr4Parser => (MetaParser)base.Antlr4Parser;
+        protected new MetaParser Antlr4Parser => (MetaParser)base.Antlr4Parser;
 		public override LanguageSyntaxNode Parse()
 		{
 			BeginRoot();

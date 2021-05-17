@@ -150,6 +150,13 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 if (_offset < _count || _hasMoreItems) _offset++;
             }
 
+            public void UpdateCurrentItem(T item)
+            {
+                Debug.Assert(_hasCurrentItem);
+                _items[_offset] = item;
+                _currentItem = item;
+            }
+
             public T PeekItem(int n)
             {
                 int index = _offset + n;
@@ -169,6 +176,11 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 }
                 else
                 {
+                    if (n >= 0 && !_hasCurrentItem)
+                    {
+                        _currentItem = _items[_offset];
+                        _hasCurrentItem = true;
+                    }
                     return _items[index];
                 }
             }
@@ -240,6 +252,11 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 {
                     Debug.Assert(index >= _firstIndex && index < _firstIndex + _count);
                     return _items[index];
+                }
+                internal set
+                {
+                    Debug.Assert(index >= _firstIndex && index < _firstIndex + _count);
+                    _items[index] = value;
                 }
             }
         }

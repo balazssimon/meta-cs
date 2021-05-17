@@ -12,11 +12,13 @@ using File = System.IO.File;
 using FileAttributes = System.IO.FileAttributes;
 using Path = System.IO.Path;
 using StringBuilder = System.Text.StringBuilder;
+using Microsoft.CodeAnalysis;
 
 namespace MetaDslx.Bootstrap.Antlr4Roslyn
 {
     public class Antlr4BuildTool : Antlr4Tool
     {
+        private const string Antlr4JarName = "antlr-4.9.1-complete.jar";
         private List<string> _generatedCodeFiles = new List<string>();
 
         private string JavaHome
@@ -57,7 +59,7 @@ namespace MetaDslx.Bootstrap.Antlr4Roslyn
                 if (string.IsNullOrWhiteSpace(ToolPath))
                 {
                     string assemblyPath = Path.GetDirectoryName(typeof(Antlr4BuildTool).Assembly.Location);
-                    ToolPath = Path.Combine(assemblyPath, "..", "..", "..", "antlr-4.8-complete.jar");
+                    ToolPath = Path.Combine(assemblyPath, @"..\..\..\..\..\Main\MetaDslx.BuildTools\tools", Antlr4JarName);
                 }
 
                 if (string.IsNullOrWhiteSpace(ToolPath) || !File.Exists(ToolPath))

@@ -28,6 +28,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         private readonly SyntaxFacts _syntaxFacts;
         private bool _resetting;
         private Antlr4LexerStateManager _stateManager;
+        private bool _hitEof;
 
         public Antlr4SyntaxLexer(Language language, SourceText text, LanguageParseOptions options) 
             : base(language, text, options)
@@ -62,15 +63,20 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         {
             var token = _lexer.NextToken();
             var kind = token.Type.FromAntlr4(_syntaxFacts.SyntaxKindType);
+            if (kind == SyntaxKind.Eof)
+            {
+                if (_hitEof) return (SyntaxKind.None, false, false);
+                else _hitEof = true;
+            }
             var cache = _syntaxFacts.IsFixedToken(kind);
             return (kind, token.Channel != 0, cache);
         }
 
         public void SyntaxError(TextWriter output, IRecognizer recognizer, int offendingSymbol, int line, int charPositionInLine, string msg, RecognitionException e)
         {
-            this.AppendLexeme(SyntaxKind.BadToken, _lexer.Channel != 0, false);
-            this.StartLexeme();
             this.AddError(Antlr4RoslynErrorCode.ERR_SyntaxError, msg);
+            this.AppendLexeme(SyntaxKind.BadToken, true, false);
+            this.StartLexeme();
         }
 
         protected virtual Antlr4LexerStateManager CreateStateManager()
@@ -131,6 +137,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
                     }
                     antlr4Lexer.CurrentMode = antlr4State.Mode;
                 }
+                Lexer._hitEof = false;
             }
 
             protected override LexerState? SaveState(int hashCode)

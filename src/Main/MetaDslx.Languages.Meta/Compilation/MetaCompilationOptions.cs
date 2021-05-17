@@ -19,20 +19,15 @@ namespace MetaDslx.Languages.Meta
                   assemblyIdentityComparer, strongNameProvider, publicSign, metadataImportOptions, nullableContextOptions)
         {
         }
-
         protected MetaCompilationOptions(MetaCompilationOptions other)
             : base(other)
         {
-
         }
-
         protected override Language LanguageCore => MetaLanguage.Instance;
-
         protected override LanguageCompilationOptions Clone()
         {
             return new MetaCompilationOptions(this);
         }
-
         public new MetaCompilationOptions WithOutputKind(OutputKind kind) => (MetaCompilationOptions)base.WithOutputKind(kind);
         public new MetaCompilationOptions WithReportSuppressedDiagnostics(bool value) => (MetaCompilationOptions)base.WithReportSuppressedDiagnostics(value);
         public new MetaCompilationOptions WithModuleName(string moduleName) => (MetaCompilationOptions)base.WithModuleName(moduleName);
@@ -63,10 +58,8 @@ namespace MetaDslx.Languages.Meta
         public new MetaCompilationOptions WithPublicSign(bool publicSign) => (MetaCompilationOptions)base.WithPublicSign(publicSign);
         public new MetaCompilationOptions WithMetadataImportOptions(MetadataImportOptions value) => (MetaCompilationOptions)base.WithMetadataImportOptions(value);
         public new MetaCompilationOptions WithNullableContextOptions(NullableContextOptions value) => (MetaCompilationOptions)base.WithNullableContextOptions(value);
-
         public new MetaCompilationOptions WithTopLevelBinderFlags(BinderFlags flags) => (MetaCompilationOptions)base.WithTopLevelBinderFlags(flags);
         public new MetaCompilationOptions WithReferencesSupersedeLowerVersions(bool value) => (MetaCompilationOptions)base.WithReferencesSupersedeLowerVersions(value);
-
     }
 }
 

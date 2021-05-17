@@ -133,13 +133,13 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             }
         }
 
-        protected void AddError(int position, int width, ErrorCode code, params object[] args)
+        /*protected void AddError(int position, int width, ErrorCode code, params object[] args)
         {
             //Debug.Assert(position <= _position);
             this.AddSyntaxError(MakeError(position, width, code, args));
         }
 
-        /*protected void AddError(int position, int width, ErrorCode code)
+        protected void AddError(int position, int width, ErrorCode code)
         {
             this.AddSyntaxError(MakeError(position, width, code));
         }
@@ -164,15 +164,16 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         {
             this.AddErrorToCurrentToken(MakeError(CurrentToken, code));
         }
+        */
 
         protected void AddErrorToCurrentToken(ErrorCode code, params object[] args)
         {
-            this.AddErrorToCurrentToken(MakeError(CurrentToken, code, args));
+            this.AddSyntaxError(MakeError(CurrentToken, code, args));
         }
 
-        protected void AddErrorToPreviousTokenEnd(ErrorCode code, params object[] args)
+        /*protected void AddErrorToPreviousTokenEnd(ErrorCode code, params object[] args)
         {
-            this.AddErrorToCurrentToken(MakeError(_prevTokenTrailingTrivia != null ? - _prevTokenTrailingTrivia.FullWidth : 0, 1, code, args));
+            this.AddSyntaxError(MakeError(_prevTokenTrailingTrivia != null ? -_prevTokenTrailingTrivia.FullWidth : 0, 1, code, args));
         }
         */
         protected void AddSyntaxError(SyntaxDiagnosticInfo error)

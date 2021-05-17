@@ -784,9 +784,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
                 {
                     // compute what follows who invoked us
                     ATNState invokingState = atn.states[ctx.invokingState];
-                    RuleTransition rt = (RuleTransition)invokingState.Transition(0);
-                    IntervalSet follow = atn.NextTokens(rt.followState);
-                    recoverSet.AddAll(follow);
+                    var rt = invokingState.Transition(0) as RuleTransition;
+                    if (rt != null)
+                    {
+                        IntervalSet follow = atn.NextTokens(rt.followState);
+                        recoverSet.AddAll(follow);
+                    }
                     ctx = ctx.Parent;
                 }
                 recoverSet.Remove(TokenConstants.EPSILON);
