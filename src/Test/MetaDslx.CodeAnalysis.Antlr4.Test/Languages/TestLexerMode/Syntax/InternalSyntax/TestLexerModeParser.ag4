@@ -16,7 +16,7 @@ usingDeclaration
     : KUsing qualifiedName TSemicolon								#usingNamespaceDeclaration
     | KUsing KGenerator qualifiedName identifier? TSemicolon		#usingGeneratorDeclaration
 	;
-    
+
 configDeclaration : startProperties=KProperties identifier? configProperty* KEnd endProperties=KProperties;
 configProperty
     : typeReference identifier (TAssign expression)? TSemicolon #configPropertyDeclaration

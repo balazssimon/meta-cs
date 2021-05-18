@@ -83,6 +83,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             while (index > 0 && _bufferPosition > position)
             {
                 _bufferPosition -= _buffer[index - 1].Width;
+                --index;
             }
             _buffer.RemoveRange(index, _buffer.Count - index);
             _bufferPosition = position;
@@ -147,7 +148,13 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         private void EatLexeme()
         {
-            if (_buffer.Count > 0) _buffer.RemoveAt(0);
+            if (_buffer.Count > 0)
+            {
+                var lexeme = _buffer[0];
+                _state = lexeme.EndState;
+                _position += lexeme.Width;
+                _buffer.RemoveAt(0);
+            }
         }
 
         private BufferedLexeme NextLexeme()
@@ -280,8 +287,6 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             var trailing = _trailingTriviaCache;
 
             var result = Create(lexeme, leading.ToListNode(), trailing.ToListNode());
-            _state = lexeme.EndState;
-            _position += result.FullWidth;
             return result;
         }
 

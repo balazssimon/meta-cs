@@ -30,14 +30,15 @@ namespace MetaDslx.Bootstrap.IncrementalCompiler
             //CompileMeta("meta03.txt");
             //EditAndCompileMeta("meta03.txt");
             //CompileMeta("meta04.txt");
-            EditAndCompileMeta("meta04.txt");
+            //EditAndCompileMeta("meta04.txt");
+            //SingleEditMeta("meta01.txt", 194, 593);
             //CompileMeta("meta05.txt");
             //CompileMeta("meta06.txt");
             //CompileMGen("mgen01.txt");
             //CompileMGen("mgen02.txt");
             //CompileMGen("mgen03.txt");
             //CompileMGen("mgen04.txt");
-            //IncrementalCompileMGen("mgen03.txt");
+            IncrementalCompileMGen("mgen03.txt");
         }
 
         private static void CompileMeta(string fileName)
@@ -92,12 +93,29 @@ namespace MetaDslx.Bootstrap.IncrementalCompiler
                 if (i > 0 && code[i - 1] == '\r') continue;
                 var source2 = source1.WithChanges(new TextChange(new TextSpan(i, 1), string.Empty));
                 var syntaxTree2 = (LanguageSyntaxTree)syntaxTree1.WithChangedText(source2);
-                //if (i < source2.Length && source2[i] != '\r')
-                {
-                    var antlr4Diags2 = Antlr4ParseMeta(source2);
-                    PrintResults(source2, syntaxTree2, antlr4Diags2, true);
-                }
+                var antlr4Diags2 = Antlr4ParseMeta(source2);
+                PrintResults(source2, syntaxTree2, antlr4Diags2, true);
             }
+        }
+
+        public static void SingleEditMeta(string fileName, int start, int length)
+        {
+            var options = MetaLanguage.Instance.DefaultParseOptions.WithIncremental(true);
+            var code = File.ReadAllText(@"..\..\..\" + fileName);
+            var source1 = SourceText.From(code);
+            var syntaxTree1 = MetaLanguage.Instance.ParseSyntaxTree(source1, options: options);
+            var antlr4Diags1 = Antlr4ParseMeta(source1);
+
+            var deletedText = source1.GetSubText(new TextSpan(start, length)).ToString();
+            var source2 = source1.WithChanges(new TextChange(new TextSpan(start, length), string.Empty));
+            var syntaxTree2 = (LanguageSyntaxTree)syntaxTree1.WithChangedText(source2);
+            var antlr4Diags2 = Antlr4ParseMeta(source2);
+            PrintResults(source2, syntaxTree2, antlr4Diags2, true);
+
+            var source3 = source1.WithChanges(new TextChange(new TextSpan(start, start), deletedText));
+            var syntaxTree3 = (LanguageSyntaxTree)syntaxTree2.WithChangedText(source3);
+            var antlr4Diags3 = Antlr4ParseMeta(source3);
+            PrintResults(source3, syntaxTree3, antlr4Diags3, true);
         }
 
         public static ImmutableArray<Diagnostic> Antlr4ParseMeta(SourceText text)

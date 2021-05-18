@@ -24,7 +24,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         internal void InternalRestoreState(TState? state)
         {
-            if (!_dirty && object.Equals(_state, state)) return;
+            //if (!_dirty && object.Equals(_state, state)) return;
             this.RestoreState(state);
             _state = state;
             _dirty = false;

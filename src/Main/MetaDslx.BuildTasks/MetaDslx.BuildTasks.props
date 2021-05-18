@@ -7,7 +7,7 @@
   <PropertyGroup>
     <Antlr4UseCSharpGenerator Condition="'$(Antlr4UseCSharpGenerator)' == ''">true</Antlr4UseCSharpGenerator>
     <!-- Folder containing MetaDslx.BuildTasks.dll -->
-    <MetaDslxBuildTaskPath Condition=" '$(MSBuildRuntimeType)' == 'Core' ">..\lib\netstandard2.0</MetaDslxBuildTaskPath>
+    <MetaDslxBuildTaskPath Condition=" '$(MSBuildRuntimeType)' == 'Core' ">..\lib\net5.0</MetaDslxBuildTaskPath>
     <MetaDslxBuildTaskPath Condition=" '$(MSBuildRuntimeType)' != 'Core' ">..\lib\net461</MetaDslxBuildTaskPath>
     <MetaDslxCompileMetaModelCore Condition="'$(MetaDslxCompileMetaModelCore)' == ''">false</MetaDslxCompileMetaModelCore>
     <MetaDslxMetaModelCoreNamespace Condition="'$(MetaDslxMetaModelCoreNamespace)' == ''">MetaDslx.Languages.Meta.Model</MetaDslxMetaModelCoreNamespace>

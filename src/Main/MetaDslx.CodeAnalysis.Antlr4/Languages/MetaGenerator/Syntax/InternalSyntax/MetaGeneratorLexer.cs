@@ -30,7 +30,7 @@ using DFA = Antlr4.Runtime.Dfa.DFA;
 
 [System.CodeDom.Compiler.GeneratedCode("ANTLR", "4.9.1")]
 [System.CLSCompliant(false)]
-public partial class MetaGeneratorLexer : Lexer {
+public partial class MetaGeneratorLexer : global::MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4Lexer {
 	protected static DFA[] decisionToDFA;
 	protected static PredictionContextCache sharedContextCache = new PredictionContextCache();
 	public const int

@@ -356,7 +356,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 {
                     var token = _blendedTokens.LastCreatedItem.Blender.ReadToken();
                     if (token.Token == null) return false;
-                    if (token.Token.Kind == SyntaxKind.Eof)
+                    /*if (token.Token.Kind == SyntaxKind.Eof)
                     {
                         if (_blendedTokens.LastCreatedItem.Token == null || _blendedTokens.LastCreatedItem.Token.Kind != SyntaxKind.Eof)
                         {
@@ -367,7 +367,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                         {
                             return false;
                         }
-                    }
+                    }*/
                     _blendedTokens.AddItem(token);
                     return true;
                 }

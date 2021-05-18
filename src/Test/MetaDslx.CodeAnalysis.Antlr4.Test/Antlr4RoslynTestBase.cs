@@ -136,7 +136,7 @@ namespace MetaDslx.Tests
             catch (Exception ex)
             {
                 string operation = deleted ? "while inserting" : "while deleting";
-                throw new WrappedXunitException($"Edit failed {operation} at position {start} with deleted text of length {length}:\r\n----\r\n{deletedText}\r\n----\r\nEdited source is:\r\n----\r\n{editedSource}\r\n----\r\nOriginal source is:\r\n----\r\n{old.source}\r\n----\r\n", ex);
+                throw new WrappedXunitException($"Edit failed {operation} at position {start} with deleted text of length {length}\r\n----\r\n", ex);
             }
         }
 
@@ -178,7 +178,7 @@ namespace MetaDslx.Tests
                 }
                 catch (Exception ex)
                 {
-                    throw new WrappedXunitException($"Typing failed at position {i}:\r\n----\r\n{currentSource}\r\n----\r\nOriginal source is:\r\n----\r\n{source}\r\n----\r\n", ex);
+                    throw new WrappedXunitException($"Typing failed at position {i}\r\n----\r\n", ex);
                 }
                 i += delta;
             }

@@ -187,7 +187,9 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
             private T FetchCurrentItem()
             {
-                return PeekItem(0);
+                var result = PeekItem(0);
+                Debug.Assert(_hasCurrentItem);
+                return result;
             }
 
             public void AddItem(in T item)
