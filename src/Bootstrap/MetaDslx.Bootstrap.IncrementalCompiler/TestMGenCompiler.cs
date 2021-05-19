@@ -45,7 +45,7 @@ namespace MetaDslx.Bootstrap.IncrementalCompiler
                 var source2 = source1.WithChanges(new TextChange(new TextSpan(i, 0), code[i].ToString()));
                 var syntaxTree2 = (TestLexerModeSyntaxTree)syntaxTree1.WithChangedText(source2);
                 var antlr4Diags2 = Antlr4Parse(source2);
-                PrintResults(source2, syntaxTree2, antlr4Diags2, true);
+                if (code[i] != '\r') PrintResults(source2, syntaxTree2, antlr4Diags2, true);
                 source1 = source2;
                 syntaxTree1 = syntaxTree2;
             }
@@ -85,6 +85,7 @@ namespace MetaDslx.Bootstrap.IncrementalCompiler
                 var start = rnd.Next(code.Length);
                 var length = rnd.Next(code.Length - start + 1);
                 Console.WriteLine($"i={i}, Start={start}, Length={length}");
+                if (start > 0 && code[start - 1] == '\r') continue;
                 (source1, syntaxTree1) = SingleEdit(source1, syntaxTree1, start, length, code);
             }
         }
