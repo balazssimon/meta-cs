@@ -16,5 +16,11 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         }
 
         protected Antlr4SyntaxParser IncrementalAntlr4Parser => _incrementalParser;
+
+        public override void NotifyErrorListeners(IToken offendingToken, string msg, RecognitionException e)
+        {
+            if (_incrementalParser == null && e is NoViableAltException nvae) base.NotifyErrorListeners(nvae.StartToken, msg, e); 
+            else base.NotifyErrorListeners(offendingToken, msg, e);
+        }
     }
 }

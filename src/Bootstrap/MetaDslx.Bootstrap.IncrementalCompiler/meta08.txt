@@ -1,0 +1,18 @@
+namespace EntitiesSample.Sample
+{
+	metamodel Entities(Uri="http://metadslx.entities.sample/1.0"); 
+	
+	abstract class NamedElement
+	{
+		[Name]
+		string Name;
+	}
+	
+	[Scope]
+	class Namespace : Declaration
+	{
+		containment list<Declaration> Declarations;
+	}
+	
+	association Namespace.Declarations with EntitiesSample.Sample.Declaration.Namespace;
+}

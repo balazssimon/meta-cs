@@ -352,7 +352,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 object customToken = null;
                 if (token != null)
                 {
-                    customToken = _parser.CreateCustomTokenCore(token, _parser.TokenCount, _parser.LexerPosition);
+                    customToken = _parser.CreateCustomTokenCore(token, _parser.TokenCount, _parser.LexerPosition - token.FullWidth);
                 }
                 else if (node != null)
                 {

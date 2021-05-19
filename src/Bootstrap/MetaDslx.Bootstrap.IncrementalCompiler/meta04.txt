@@ -1,0 +1,4 @@
+namespace EntitiesSample.Sample
+{
+  metamodel Entities(Uri="http://metadslx.entities.sample/1.e with Field.Opposite;
+}

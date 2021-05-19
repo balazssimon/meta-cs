@@ -1,0 +1,19 @@
+namespace EntitiesSample.Sample
+{
+	metamodel Entities(Uri="http://metadslx.entities.sample/1.0"); 
+	
+	abstract class NamedElement
+	{
+		[Name]
+		string Name;
+	}
+
+	[Type]
+	abstract class EType
+	{
+	}
+
+	abstract class Declaration : NamedElement
+	{
+		Namespace Namespaosite with Field.Opposite;
+}

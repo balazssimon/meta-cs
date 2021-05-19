@@ -155,6 +155,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 Debug.Assert(_hasCurrentItem);
                 _items[_offset] = item;
                 _currentItem = item;
+                //_hasCurrentItem = true;
             }
 
             public T PeekItem(int n)

@@ -1,0 +1,133 @@
+namespace MetaDslx.Languages.Soal.Generator;
+generator XsdGenerator for object;
+
+using MetaDslx.Languages.Soal.Symbols;
+
+properties Properties
+  bool ImportXsd = true;
+end properties
+
+template Generate(Namespace ns)
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="[ns.Uri]"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:[ns.Prefix]="[ns.Uri]"
+  [if (Properties.ImportXsd)]
+    [loop(ins:ns.GetImportedNamespaces())]
+    xmlns:[ins.Prefix]="[ins.Uri]"
+    [end loop]
+  [end if]
+    elementFormDefault="qualified">
+  [if (Properties.ImportXsd)]
+    [loop(ins:ns.GetImportedNamespaces())]
+  <xs:import namespace="[ins.Uri]" schemaLocation="[ins.FullName].xsd"/>
+    [end loop]
+  [end if]
+  [loop(ns.Declarations->etype:typeof(Symbols.Enum))]
+^
+  <xs:element name="[etype.GetXsdName()]" type="[ns.Prefix]:[etype.GetXsdName()]"/>
+  <xs:simpleType name="[etype.GetXsdName()]">
+    [if (etype.BaseType != null)]
+    <xs:restriction base="[etype.BaseType.GetNamespace(ns).Prefix]:[etype.BaseType.GetXsdName()]">
+    [else]
+    <xs:restriction base="xs:string">
+    [end if]
+      [loop(etype->elit:EnumLiterals)]
+        [if (elit.HasAnnotationProperty(SoalAnnotations.Enum, SoalAnnotationProperties.Name))]
+      <xs:enumeration value="[elit.GetAnnotationPropertyValue(SoalAnnotations.Enum, SoalAnnotationProperties.Name)]"/>
+        [else]
+      <xs:enumeration value="[elit.Name]"/>
+        [end if]
+      [end loop]
+    </xs:restriction>
+  </xs:simpleType>
+  [end loop]
+  [loop(ns.Declarations->stype:typeof(Struct))]
+^
+  <xs:element name="[stype.GetXsdName()]" type="[ns.Prefix]:[stype.GetXsdName()]"/>
+  <xs:complexType name="[stype.GetXsdName()]">
+    [if (stype.BaseType != null)]
+    <xs:complexContent>
+      <xs:extension base="[stype.BaseType.GetNamespace(ns).Prefix]:[stype.BaseType.GetXsdName()]">
+        [GenerateStructBody(ns, stype)]
+      </xs:extension>
+    </xs:complexContent>
+    [else]
+    [GenerateStructBody(ns, stype)]
+    [end if]
+  </xs:complexType>
+  [end loop]
+  [loop(ns.Declarations->intf:typeof(Interface)->op:Operations)]
+    [if (intf.HasAnnotation(SoalAnnotations.Rpc))]
+      [loop(op->param:Parameters where param.Type.IsArrayType() && param.Type.GetCoreType().MId != SoalInstance.Byte.MId)]
+^
+  [GenerateParamType(ns, op.Name + param.Name.ToPascalCase(), param.Type, param)]
+      [end loop]
+      [if (op.Result.Type.IsArrayType() && op.Result.Type.GetCoreType().MId != SoalInstance.Byte.MId)]
+^
+  [GenerateParamType(ns, op.Name + "Response", op.Result.Type, op.Result)]
+      [end if]
+    [else]
+      [if (intf.HasAnnotation(SoalAnnotations.NoWrap))]
+        [loop(op->param:Parameters)]
+  [GenerateElement(ns, op.Name + param.Name.ToPascalCase(), param.Type, param)]
+        [end loop]
+        [if (op.Result.Type.MId != SoalInstance.Void.MId)]
+  [GenerateElement(ns, op.Name + "Response", op.Result.Type, op.Result)]
+        [end if]
+      [else]
+^
+  <xs:element name="[op.Name]" type="[ns.Prefix]:[op.Name]"/>
+  <xs:complexType name="[op.Name]">
+    <xs:sequence>
+        [loop(op->param:Parameters where !param.HasAnnotation(SoalAnnotations.Attribute))]
+      [GenerateElement(ns, param.Name, param.Type, param)]
+        [end loop]
+    </xs:sequence>
+        [loop(op->param:Parameters where param.HasAnnotation(SoalAnnotations.Attribute))]
+    [GenerateElement(ns, param.Name, param.Type, param)]
+        [end loop]
+  </xs:complexType>
+        [if (!op.Result.IsOneway)]
+^
+  <xs:element name="[op.Name]Response" type="[ns.Prefix]:[op.Name]Response"/>
+  <xs:complexType name="[op.Name]Response">
+          [if (op.Result.Type.MId == SoalInstance.Void.MId || op.Result.HasAnnotation(SoalAnnotations.Attribute))]
+    <xs:sequence/>
+          [else]
+    <xs:sequence>
+      [GenerateElement(ns, op.Name+"Result", op.Result.Type, op.Result)]
+    </xs:sequence>
+          [end if]
+          [if (op.Result.HasAnnotation(SoalAnnotations.Attribute))]
+    [GenerateElement(ns, op.Name+"Result", op.Result.Type, op.Result)]
+          [end if]
+  </xs:complexType>
+        [end if]
+      [end if]
+    [end if]
+  [end loop]
+</xs:schema>
+end template
+
+template GenerateStructBody(Namespace ns, Struct stype)
+<xs:[GetStructKind(stype)]>
+  [loop(stype->prop:Properties where !prop.HasAnnotation(SoalAnnotations.Attribute))]
+    [string newName = prop.GetAnnotationPropertyValue(SoalAnnotations.Element, SoalAnnotationProperties.Name) as string]
+  [GenerateElement(ns, newName == null ? prop.Name : newName, prop.Type, prop)]
+  [end loop]
+</xs:[GetStructKind(stype)]>
+[loop(stype->prop:Properties where prop.HasAnnotation(SoalAnnotations.Attribute))]
+  [string newName = prop.GetAnnotationPropertyValue(SoalAnnotations.Attribute, SoalAnnotationProperties.Name) as string]
+[GenerateElement(ns, newName == null ? prop.Name : newName, prop.Type, prop)]
+[end loop]
+end template
+
+template GenerateElement(Namespace ns, string name, SoalType t, AnnotatedElement ae)
+[Annotation restrAnnot = ae.GetAnnotation(SoalAnnotations.Restriction)]
+[if (ae.HasAnnotation(SoalAnnotations.Attribute))]
+<xs:attribute name="[name]" type="[t.GetCoreType().GetNamespace(ns).Prefix]:[t.GetCoreType().GetXsdName()]"[GetAttributeRequired(ae)]/>
+[else]
+  [if (t.IsArrayType())]
+    [ArrayType array = t is NullableType ? (ArrayType)((NullableType)t).InnerType : (ArrayType)t]
+    [object wrapped = ae.GetAnnotationPropertyValue(SoalAnnotations.Element, SoalA

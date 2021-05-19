@@ -28,6 +28,13 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         {
             if (_errors.Count > 0)
             {
+                /*var start = position;
+                var end = position + width;
+                var currentErrors = _errors.Where(err => err.Offset >= start && err.Offset + err.Width <= end).Select(err => err.WithOffset(err.Offset - start)).ToArray();
+                if (currentErrors.Length > 0)
+                {
+                    return WithAdditionalDiagnostics(green, currentErrors);
+                }*/
                 if (offset > 0)
                 {
                     var array = new SyntaxDiagnosticInfo[_errors.Count];
@@ -366,12 +373,12 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 InternalSyntaxToken token = node as InternalSyntaxToken;
                 if (token != null)
                 {
-                    builder.Add(token.GetLeadingTrivia());
+                    //builder.Add(token.GetLeadingTrivia());
 
                     if (token.Width > 0)
                     {
                         // separate trivia from the tokens
-                        InternalSyntaxToken tk = token.TokenWithLeadingTrivia(null).TokenWithTrailingTrivia(null);
+                        /*InternalSyntaxToken tk = token.TokenWithLeadingTrivia(null).TokenWithTrailingTrivia(null);
 
                         // adjust relative offsets of diagnostics attached to the token:
                         int leadingWidth = token.GetLeadingTriviaWidth();
@@ -386,6 +393,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                         }
 
                         builder.Add(Language.InternalSyntaxFactory.SkippedTokensTrivia(tk));
+                        */
+                        builder.Add(Language.InternalSyntaxFactory.SkippedTokensTrivia(token));
                     }
                     else
                     {
@@ -397,7 +406,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                             diagnosticOffset = currentOffset;
                         }
                     }
-                    builder.Add(token.GetTrailingTrivia());
+                    //builder.Add(token.GetTrailingTrivia());
 
                     currentOffset += token.FullWidth;
                 }
@@ -428,7 +437,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             {
                 // Since we're adding triviaWidth before the token, we have to add that much to
                 // the offset of each of its diagnostics.
-                /*if (triviaWidth > 0)
+                if (triviaWidth > 0)
                 {
                     var targetDiagnostics = target.GetDiagnostics();
                     for (int i = 0; i < targetDiagnostics.Length; i++)
@@ -436,7 +445,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                         var d = (SyntaxDiagnosticInfo)targetDiagnostics[i];
                         targetDiagnostics[i] = new SyntaxDiagnosticInfo(d.Offset + triviaWidth, d.Width, d.ErrorCode, d.Arguments);
                     }
-                }*/
+                }
 
                 var leadingTrivia = target.GetLeadingTrivia();
                 target = target.TokenWithLeadingTrivia(SyntaxList.Concat(trivia, leadingTrivia));

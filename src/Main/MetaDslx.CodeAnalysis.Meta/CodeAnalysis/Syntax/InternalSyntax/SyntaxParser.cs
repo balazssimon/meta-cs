@@ -458,32 +458,38 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         //we should keep it simple so that it can be inlined.
         protected InternalSyntaxToken EatToken()
         {
-            var ct = this.EatCurrentTokenWithAndErrors(eatSkippedTokens: true);
+            var ct = this.EatCurrentTokenWithAndErrors();
             MoveToNextToken();
             return ct;
         }
 
-        private InternalSyntaxToken EatCurrentTokenWithAndErrors(bool eatSkippedTokens)
+        private InternalSyntaxToken EatCurrentTokenWithAndErrors(bool skip = false)
         {
             var ct = this.CurrentToken;
-            if (eatSkippedTokens && _skippedTokens.Count > 0)
-            {
-                ct = AddSkippedSyntax(ct, _skippedTokens.ToListNode(), false);
-                _skippedTokens.Clear();
-            }
             ct = (InternalSyntaxToken)WithCurrentSyntaxErrors(ct, 0);
             if (ct.ContainsDiagnostics)
             {
-                var customToken = this.CreateCustomTokenCore(ct, this.TokenCount, _position - ct.GetLeadingTriviaWidth());
                 if (_blendedTokens != null)
                 {
                     var bt = _blendedTokens.GetCurrentItem();
+                    var customToken = this.CreateCustomTokenCore(ct, _blendedTokens.Index, _position);
                     _blendedTokens.UpdateCurrentItem(new BlendedNode(null, ct, customToken, bt.Blender));
                 }
                 else
                 {
+                    var customToken = this.CreateCustomTokenCore(ct, _lexedTokens.Index, _position);
                     _lexedTokens.UpdateCurrentItem((ct, customToken));
                 }
+            }
+            var skippedTokensWidth = 0;
+            if (!skip && _skippedTokens.Count > 0)
+            {
+                for (int i = 0; i < _skippedTokens.Count; ++i)
+                {
+                    skippedTokensWidth += _skippedTokens[i].FullWidth;
+                }
+                ct = AddSkippedSyntax(ct, _skippedTokens.ToListNode(), false);
+                _skippedTokens.Clear();
             }
             return ct;
         }
@@ -523,7 +529,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         {
             Debug.Assert(Language.SyntaxFacts.IsToken(kind));
 
-            var ct = this.EatCurrentTokenWithAndErrors(eatSkippedTokens: true);
+            var ct = this.EatCurrentTokenWithAndErrors();
             if (ct.Kind == kind)
             {
                 MoveToNextToken();
@@ -536,7 +542,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         protected InternalSyntaxToken SkipToken()
         {
-            var ct = this.EatCurrentTokenWithAndErrors(eatSkippedTokens: false);
+            var ct = this.EatCurrentTokenWithAndErrors(skip: true);
             _skippedTokens.Add(ct);
             MoveToNextToken();
             return ct;

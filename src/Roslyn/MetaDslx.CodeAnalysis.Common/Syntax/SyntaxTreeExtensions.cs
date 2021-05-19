@@ -43,6 +43,8 @@ namespace Microsoft.CodeAnalysis
 
             var span = node.FullSpan;
             var textSpanOpt = span.Intersection(fullSpan);
+            var fromText = textSpanOpt != null ? text.ToString(textSpanOpt.Value) : text.ToString();
+            var fromNode = node.ToFullString();
             int index;
             char found = default;
             char expected = default;
@@ -52,8 +54,6 @@ namespace Microsoft.CodeAnalysis
             }
             else
             {
-                var fromText = text.ToString(textSpanOpt.Value);
-                var fromNode = node.ToFullString();
                 index = FindFirstDifference(fromText, fromNode);
                 if (index >= 0)
                 {
