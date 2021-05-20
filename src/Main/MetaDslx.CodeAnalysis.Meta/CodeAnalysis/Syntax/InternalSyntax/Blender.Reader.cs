@@ -21,8 +21,10 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             private int _changeDelta;
             private DirectiveStack _newDirectives;
             private DirectiveStack _oldDirectives;
-            private LexerState? _lexerState;
-            private ParserState? _parserState;
+            private LexerState? _newLexerState;
+            private LexerState? _oldLexerState;
+            private ParserState? _newParserState;
+            private ParserState? _oldParserState;
 
             public Reader(Blender blender)
             {
@@ -33,8 +35,10 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 _changeDelta = blender._changeDelta;
                 _newDirectives = blender._newDirectives;
                 _oldDirectives = blender._oldDirectives;
-                _lexerState = blender._lexerState;
-                _parserState = blender._parserState;
+                _newLexerState = blender._newLexerState;
+                _oldLexerState = blender._oldLexerState;
+                _newParserState = blender._newParserState;
+                _oldParserState = blender._oldParserState;
             }
 
             internal BlendedNode ReadNodeOrToken(bool asToken)
@@ -170,11 +174,11 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 var lexer = _parser.Lexer;
                 if (lexer.Position != _newPosition)
                 {
-                    lexer.ResetTo(_newPosition, _lexerState);
+                    lexer.ResetTo(_newPosition, _newLexerState);
                 }
 
                 var token = lexer.Lex();
-                _lexerState = lexer.State;
+                _newLexerState = lexer.State;
                 _newDirectives = lexer.Directives;
                 return token;
             }
@@ -213,8 +217,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 _newDirectives = currentNodeOrToken.ApplyDirectives(_newDirectives);
                 _oldDirectives = currentNodeOrToken.ApplyDirectives(_oldDirectives);
 
-                _lexerState = incrementalData.EndLexerState;
-                _parserState = incrementalData.EndParserState;
+                _newLexerState = incrementalData.EndLexerState;
+                _newParserState = incrementalData.EndParserState;
 
                 blendedNode = CreateBlendedNode(
                     node: (LanguageSyntaxNode)currentNodeOrToken.AsNode(),
@@ -242,8 +246,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                     }
                 }
 
-                if (_lexerState != incrementalData.StartLexerState) return false;
-                if (_parser.State != incrementalData.StartParserState) return false;
+                if (_oldLexerState != incrementalData.StartLexerState) return false;
+                if (_oldParserState != incrementalData.StartParserState) return false;
 
                 return true;
             }
@@ -353,11 +357,11 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 else if (node != null)
                 {
                     var lastToken = (InternalSyntaxToken)node.Green.GetLastTerminal();
-                    customToken = _parser.CreateCustomTokenCore(lastToken, _parser.TokenCount, _parser.LexerPosition + node.FullWidth - lastToken.FullWidth);
+                    customToken = _parser.CreateCustomTokenCore(lastToken, _parser.TokenCount, _parser.LexerPosition - lastToken.FullWidth);
                 }
 
                 return new BlendedNode(node, token, customToken,
-                    new Blender(_parser, _oldTreeCursor, _changes, _newPosition, _changeDelta, _newDirectives, _oldDirectives, _lexerState, _parserState));
+                    new Blender(_parser, _oldTreeCursor, _changes, _newPosition, _changeDelta, _newDirectives, _oldDirectives, _newLexerState, _oldLexerState, _newParserState, _oldParserState));
             }
         }
     }

@@ -9,16 +9,18 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         protected struct ResetPoint
         {
             public readonly int ResetCount;
-            public readonly ParserState? State;
+            public readonly LexerState? LexerState;
+            public readonly ParserState? ParserState;
             public readonly int Index;
             public readonly int Position;
             public readonly GreenNode[] SkippedTokens;
             public readonly GreenNode PrevTokenTrailingTrivia;
 
-            internal ResetPoint(int resetCount, ParserState? state, int index, int position, GreenNode[] skippedTokens, GreenNode prevTokenTrailingTrivia)
+            internal ResetPoint(int resetCount, LexerState? lexerState, ParserState? parserState, int index, int position, GreenNode[] skippedTokens, GreenNode prevTokenTrailingTrivia)
             {
                 this.ResetCount = resetCount;
-                this.State = state;
+                this.LexerState = lexerState;
+                this.ParserState = parserState;
                 this.Index = index;
                 this.Position = position;
                 this.SkippedTokens = skippedTokens;

@@ -29,8 +29,10 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         private readonly int _changeDelta;
         private readonly DirectiveStack _newDirectives;
         private readonly DirectiveStack _oldDirectives;
-        private readonly LexerState? _lexerState;
-        private readonly ParserState? _parserState;
+        private readonly LexerState? _newLexerState;
+        private readonly LexerState? _oldLexerState;
+        private readonly ParserState? _newParserState;
+        private readonly ParserState? _oldParserState;
 
         public Blender(SyntaxParser parser, LanguageSyntaxNode? oldTree, ParseData? oldParseData, IEnumerable<TextChangeRange>? changes)
         {
@@ -78,8 +80,10 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             _changeDelta = 0;
             _newDirectives = default;
             _oldDirectives = default;
-            _lexerState = null;
-            _parserState = null;
+            _newLexerState = null;
+            _oldLexerState = null;
+            _newParserState = null;
+            _oldParserState = null;
         }
 
         private Blender(
@@ -90,8 +94,10 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             int changeDelta,
             DirectiveStack newDirectives,
             DirectiveStack oldDirectives,
-            LexerState? lexerState,
-            ParserState? parserState)
+            LexerState? newLexerState,
+            LexerState? oldLexerState,
+            ParserState? newParserState,
+            ParserState? oldParserState)
         {
             Debug.Assert(parser != null);
             Debug.Assert(changes != null);
@@ -103,12 +109,16 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             _changeDelta = changeDelta;
             _newDirectives = newDirectives;
             _oldDirectives = oldDirectives;
-            _lexerState = lexerState;
-            _parserState = parserState;
+            _newLexerState = newLexerState;
+            _oldLexerState = oldLexerState;
+            _newParserState = newParserState;
+            _oldParserState = oldParserState;
         }
 
-        public LexerState? LexerState => _lexerState;
-        public ParserState? ParserState => _parserState;
+        public LexerState? NewLexerState => _newLexerState;
+        public LexerState? OldLexerState => _oldLexerState;
+        public ParserState? NewParserState => _newParserState;
+        public ParserState? OldParserState => _oldParserState;
         public int Position => _newPosition;
         public DirectiveStack Directives => _newDirectives;
 

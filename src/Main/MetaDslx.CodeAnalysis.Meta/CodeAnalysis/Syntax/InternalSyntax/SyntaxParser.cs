@@ -23,16 +23,17 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         private ParserStateManager? _stateManager;
         private LanguageSyntaxNode? _oldRoot;
         private BlendedNode _currentNode;
-        private InternalSyntaxToken _currentToken;
+        private InternalSyntaxToken? _currentToken;
         private GreenNode _prevTokenTrailingTrivia;
         private int _resetCount;
         private int _position;
+        private LexerState? _lexerState;
         private SyntaxListBuilder _skippedTokens;
         private ParseData? _oldParseData;
         private ParseData? _parseData;
         private ConditionalWeakTable<GreenNode, IncrementalNodeData>? _incrementalData;
 
-        private SlidingBuffer<(InternalSyntaxToken Token, object CustomToken)> _lexedTokens;
+        private SlidingBuffer<(InternalSyntaxToken Token, object CustomToken, LexerState? LexerState)> _lexedTokens;
         private SlidingBuffer<BlendedNode> _blendedTokens;
 
         private int _version;
@@ -57,6 +58,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             CancellationToken = cancellationToken;
             _currentNode = default;
             _position = 0;
+            _lexerState = null;
             _skippedTokens = SyntaxListBuilder.Create();
 
             if (IsIncremental)
@@ -71,7 +73,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             }
             else
             {
-                _lexedTokens = new SlidingBuffer<(InternalSyntaxToken Token, object CustomToken)>(this, default);
+                _lexedTokens = new SlidingBuffer<(InternalSyntaxToken Token, object CustomToken, LexerState? LexerState)>(this, default);
                 _version = 0;
             }
         }
@@ -172,14 +174,13 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 _maxTokenLookahead = int.MinValue;
                 _minLookahead = _position;
                 _maxLookahead = _position;
-                _incrementalStateStack.Push((_minTokenLookahead, _maxTokenLookahead, _minLookahead, _maxLookahead, _position, this.Lexer.State, this.State));
+                _incrementalStateStack.Push((_minTokenLookahead, _maxTokenLookahead, _minLookahead, _maxLookahead, _position, _lexerState, this.State));
             }
         }
 
         protected void EndNode(ref GreenNode green)
         {
             var state = this.State;
-            var lexerState = this.Lexer.State;
             if (IsIncremental)
             {
                 var incrementalState = _incrementalStateStack.Pop();
@@ -193,7 +194,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                     var lookaheadBefore = minLookahead - incrementalState.position;
                     var lookaheadAfter = maxLookahead - incrementalState.position - green.FullWidth;
                     var exists = _incrementalData.TryGetValue(green, out var existingData);
-                    if (exists && !existingData.Equals(incrementalState.lexerState, lexerState, incrementalState.state, state, minTokenLookahead, maxTokenLookahead, lookaheadBefore, lookaheadAfter))
+                    if (exists && !existingData.Equals(incrementalState.lexerState, _lexerState, incrementalState.state, state, minTokenLookahead, maxTokenLookahead, lookaheadBefore, lookaheadAfter))
                     {
                         green = ((InternalSyntaxNode)green).Clone();
                         exists = false;
@@ -201,9 +202,9 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                     if (!exists)
                     {
 #if DEBUG
-                        var data = new IncrementalNodeData(incrementalState.lexerState, lexerState, incrementalState.state, state, minTokenLookahead, maxTokenLookahead, lookaheadBefore, lookaheadAfter, _version);
+                        var data = new IncrementalNodeData(incrementalState.lexerState, _lexerState, incrementalState.state, state, minTokenLookahead, maxTokenLookahead, lookaheadBefore, lookaheadAfter, _version);
 #else
-                        var data = new IncrementalNodeData(incrementalState.state, state, minTokenLookahead, maxTokenLookahead, lookaheadBefore, lookaheadAfter);
+                        var data = new IncrementalNodeData(incrementalState.lexerState, _lexerState, incrementalState.state, state, minTokenLookahead, maxTokenLookahead, lookaheadBefore, lookaheadAfter);
 #endif
                         _incrementalData.Add(green, data);
                     }
@@ -232,7 +233,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 else _lexedTokens.MarkResetPoint();
             }
             _resetCount++;
-            return new ResetPoint(_resetCount, this.State, index, _position, _skippedTokens.ToArray(), _prevTokenTrailingTrivia);
+            return new ResetPoint(_resetCount, _lexerState, this.State, index, _position, _skippedTokens.ToArray(), _prevTokenTrailingTrivia);
         }
 
         protected void Reset(ref ResetPoint point)
@@ -241,10 +242,11 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             _prevTokenTrailingTrivia = point.PrevTokenTrailingTrivia;
             _skippedTokens.Clear();
             _skippedTokens.AddRange(point.SkippedTokens);
+            RestoreParserState(point.ParserState);
+            _lexerState = point.LexerState;
             if (_blendedTokens != null)
             {
                 _blendedTokens.ResetTo(point.Index);
-                RestoreParserState(point.State);
                 _currentToken = default;
                 _currentNode = default;
             }
@@ -318,7 +320,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             MoveToNextToken();
 
             // erase current state
-            RestoreParserState(currentNode.Blender.ParserState);
+            RestoreParserState(currentNode.Blender.NewParserState);
             EraseState();
 
             // TODO:MetaDslx: correct Peek before this position
@@ -395,7 +397,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             {
                 var token = Lexer.Lex();
                 if (token == null) return false;
-                _lexedTokens.AddItem((token, CreateCustomTokenCore(token, this.TokenCount, _position)));
+                _lexedTokens.AddItem((token, CreateCustomTokenCore(token, this.TokenCount, _position), Lexer.State));
                 return true;
             }
         }
@@ -496,8 +498,9 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 }
                 else
                 {
+                    var lt = _lexedTokens.GetCurrentItem();
                     var customToken = this.CreateCustomTokenCore(ct, _lexedTokens.Index, _position);
-                    _lexedTokens.UpdateCurrentItem((ct, customToken));
+                    _lexedTokens.UpdateCurrentItem((ct, customToken, lt.LexerState));
                 }
             }
             var skippedTokensWidth = 0;
@@ -519,6 +522,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             {
                 _position += _currentNode.Node.FullWidth;
                 _prevTokenTrailingTrivia = _currentNode.Node.GetTrailingTrivia().Node;
+                _lexerState = _currentNode.Blender.NewLexerState;
             }
             else
             {
@@ -533,7 +537,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             }
             else
             {
-                _lexedTokens.EatItem();
+                var token = _lexedTokens.EatItem();
+                _lexerState = token.LexerState;
             }
         }
 
