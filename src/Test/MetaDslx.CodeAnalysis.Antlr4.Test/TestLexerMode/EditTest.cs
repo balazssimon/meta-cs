@@ -34,10 +34,11 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestLexerMode
         public void SerialEdits()
         {
             var src = (source, (LanguageSyntaxTree)null);
-            for (int i = 0; i < source.Length; i++)
+            for (int i = 0; i < source.Length; i += incrementalSteps)
             {
                 var start = i;
                 var length = 1;
+                if (i > 0 && source[i - 1] == '\r') continue;
                 src = SingleEdit(src, start, length);
             }
         }
@@ -46,10 +47,11 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestLexerMode
         public void RandomEdits()
         {
             var src = (source, (LanguageSyntaxTree)null);
-            for (int i = 0; i < 10000; i++)
+            for (int i = 0; i < 100; i++)
             {
                 var start = rnd.Next(src.source.Length);
                 var length = rnd.Next(src.source.Length - start);
+                if (start > 0 && source[start - 1] == '\r') continue;
                 src = SingleEdit(src, start, length);
             }
         }

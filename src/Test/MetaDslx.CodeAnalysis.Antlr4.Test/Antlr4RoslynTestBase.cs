@@ -77,8 +77,6 @@ namespace MetaDslx.Tests
             {
                 var expected = antlr4DiagnosticsList[i];
                 var actual = diagnosticsList[i];
-                expected = expected.Substring(expected.IndexOf(':'));
-                actual = actual.Substring(actual.IndexOf(':'));
                 Assert.Equal(expected, actual);
             }
             if (lastIndex < antlr4Diagnostics.Length)
@@ -171,6 +169,7 @@ namespace MetaDslx.Tests
                     i = source.Length;
                     last = true;
                 }
+                if (i < source.Length && source[i] == '\r') continue;
                 string currentSource = source.Substring(0, i);
                 try
                 {
@@ -202,6 +201,7 @@ namespace MetaDslx.Tests
                     currentDelta = source.Length - (i - delta);
                     i = source.Length;
                 }
+                if (i < source.Length && source[i] == '\r') continue;
                 string currentSource = source.Substring(0, i);
                 try
                 {

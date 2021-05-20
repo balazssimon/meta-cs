@@ -317,8 +317,8 @@ TH_TAssignRightShift : TAssignRightShift -> type(TAssignRightShift);
 TH_TOpenParenthesis : TOpenParenthesis {Type=TOpenParenthesis; _templateParenthesis++;};
                      
 TH_TCloseParenthesis : TCloseParenthesis {Type=TCloseParenthesis; _templateParenthesis--; if(_templateParenthesis == 0) Mode(TEMPLATE_OUTPUT); };
-TH_TOpenBracket : TOpenBracket -> type(TCloseParenthesis);
-TH_TCloseBracket : TCloseBracket -> type(TCloseParenthesis);
+TH_TOpenBracket : TOpenBracket -> type(TOpenBracket);
+TH_TCloseBracket : TCloseBracket -> type(TCloseBracket);
 TH_TOpenBrace : TOpenBrace -> type(TOpenBrace);
 TH_TCloseBrace : TCloseBrace -> type(TCloseBrace);
 TH_TEquals : TEquals -> type(TEquals);
