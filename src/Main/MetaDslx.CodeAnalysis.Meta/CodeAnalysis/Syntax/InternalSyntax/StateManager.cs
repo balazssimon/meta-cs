@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Text;
 
@@ -7,14 +8,18 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
     public abstract class StateManager<TState>
         where TState : State
     {
-        private readonly Dictionary<int, object?> _stateCache;
+        private ConcurrentDictionary<int, object?>? _stateCache;
         private bool _dirty;
         private TState? _state;
 
         public StateManager()
         {
-            _stateCache = new Dictionary<int, object?>();
             _dirty = true;
+        }
+
+        internal void InternalSetCache(StateManager<TState>? other)
+        {
+            _stateCache = other?._stateCache;
         }
 
         internal void InternalChanged()
@@ -56,10 +61,11 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         private TState? LookupCurrentState(int hashCode)
         {
+            if (_stateCache == null) _stateCache = new ConcurrentDictionary<int, object?>();
             if (!_stateCache.TryGetValue(hashCode, out var potentialState))
             {
                 var currentState = this.SaveState(hashCode);
-                _stateCache.Add(hashCode, currentState);
+                _stateCache.TryAdd(hashCode, currentState);
                 return currentState;
             }
             if (potentialState is null || potentialState is TState)

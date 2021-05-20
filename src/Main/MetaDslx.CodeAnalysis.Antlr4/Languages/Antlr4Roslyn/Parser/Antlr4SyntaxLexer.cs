@@ -43,18 +43,6 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 
         public Antlr4Lexer Antlr4Lexer => _lexer;
 
-        protected sealed override LexerStateManager? StateManager
-        {
-            get
-            {
-                if (_stateManager == null)
-                {
-                    Interlocked.CompareExchange(ref _stateManager, this.CreateStateManager(), null);
-                }
-                return _stateManager;
-            }
-        }
-
         internal Antlr4InputStream InputStream => _stream;
 
         internal bool Resetting => _resetting;
@@ -79,7 +67,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             this.StartLexeme();
         }
 
-        protected virtual Antlr4LexerStateManager CreateStateManager()
+        protected override LexerStateManager? CreateStateManager()
         {
             return new Antlr4LexerStateManager(this);
         }

@@ -29,6 +29,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         private int _position;
         private int _bufferPosition;
         private LexerState? _state;
+        private bool _hasStateManager;
+        private LexerStateManager? _stateManager;
         private DirectiveStack _directives;
 
         public SyntaxLexer(Language language, SourceText text, LanguageParseOptions options)
@@ -52,7 +54,18 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         public LexerState? State => _state;
 
-        protected virtual LexerStateManager? StateManager => null;
+        internal protected LexerStateManager? StateManager
+        {
+            get 
+            {
+                if (!_hasStateManager)
+                {
+                    _stateManager = CreateStateManager();
+                    _hasStateManager = true;
+                }
+                return _stateManager; 
+            }
+        }
 
         public int MinLookahead => TextWindow.MinLookahead;
 
@@ -342,6 +355,9 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         protected abstract InternalSyntaxToken CreateToken(GreenNode? leadingTrivia, SyntaxKind kind, string text, GreenNode? trailingTrivia);
 
         protected abstract InternalSyntaxTrivia CreateTrivia(SyntaxKind kind, string text);
+
+        protected abstract LexerStateManager? CreateStateManager();
+
 
         protected bool TryGetKeywordKind(string key, out SyntaxKind kind)
         {

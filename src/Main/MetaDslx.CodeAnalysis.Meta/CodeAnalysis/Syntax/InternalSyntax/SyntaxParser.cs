@@ -19,6 +19,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         public readonly bool IsIncremental;
         protected readonly CancellationToken CancellationToken;
 
+        private bool _hasStateManager;
+        private ParserStateManager? _stateManager;
         private LanguageSyntaxNode? _oldRoot;
         private BlendedNode _currentNode;
         private InternalSyntaxToken _currentToken;
@@ -61,8 +63,11 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             {
                 _blendedTokens = new SlidingBuffer<BlendedNode>(this, new BlendedNode(null, null, null, new Blender(this, oldTree, oldParseData, changes)));
                 _oldRoot = oldTree;
+                _oldParseData = oldParseData;
                 _version = oldParseData != null ? oldParseData.Version + 1 : 1;
                 _incrementalData = new ConditionalWeakTable<GreenNode, IncrementalNodeData>();
+                if (oldParseData?.LexerStateManager != null) Lexer.StateManager?.InternalSetCache(oldParseData.LexerStateManager);
+                if (oldParseData?.ParserStateManager != null) StateManager?.InternalSetCache(oldParseData.ParserStateManager);
             }
             else
             {
@@ -97,7 +102,19 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             }
         }
 
-        protected virtual ParserStateManager? StateManager => null;
+        internal protected ParserStateManager? StateManager
+        {
+            get
+            {
+                if (!_hasStateManager)
+                {
+                    _stateManager = CreateStateManager();
+                    _hasStateManager = true;
+                }
+                return _stateManager;
+            }
+        }
+
 
         internal protected override int TokenIndex => _blendedTokens != null ? _blendedTokens.Index : _lexedTokens.Index;
         internal protected override int TokenCount => _blendedTokens != null ? _blendedTokens.Count : _lexedTokens.Count;
@@ -125,6 +142,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             base.Dispose();
         }
 
+        protected abstract ParserStateManager? CreateStateManager();
+
         protected void BeginRoot()
         {
 
@@ -137,11 +156,11 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             {
                 var minLookahead = Math.Min(Lexer.MinLookahead, _oldParseData?.MinLexerLookahead ?? int.MaxValue);
                 var maxLookahead = Math.Max(Lexer.MaxLookahead, _oldParseData?.MaxLexerLookahead ?? int.MinValue);
-                _parseData = new ParseData(_version, directives, minLookahead, maxLookahead, _incrementalData);
+                _parseData = new ParseData(_version, Lexer.StateManager, this.StateManager, directives, minLookahead, maxLookahead, _incrementalData);
             }
             else
             {
-                _parseData = new ParseData(0, directives, 0, 0, null);
+                _parseData = new ParseData(0, null, null, directives, 0, 0, null);
             }
         }
 
@@ -283,7 +302,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             Debug.Assert(_blendedTokens != null);
 
             // remember result
-            var result = CurrentNode.Green;
+            var result = WithCurrentSyntaxErrors(CurrentNode.Green, 0);
             var currentNode = _currentNode;
 
             if (this.TryGetIncrementalData(currentNode.Node.Green, out var incrementalData) && incrementalData != null)

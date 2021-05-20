@@ -32,7 +32,6 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         private readonly Dictionary<ParserRuleContext, GreenNode> _nodeCache;
         private Stack<ResetPoint> _resetPoints;
         private bool _matchedToken;
-        private ParserStateManager? _stateManager;
 
         public Antlr4SyntaxParser(Language language, SourceText text, LanguageParseOptions options, LanguageSyntaxNode? oldTree, ParseData? oldParseData, IEnumerable<TextChangeRange>? changes, CancellationToken cancellationToken = default)
             : base(language, text, options, oldTree, oldParseData, changes, cancellationToken)
@@ -48,18 +47,6 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
         }
 
         protected Antlr4Parser Antlr4Parser => _parser;
-
-        protected sealed override ParserStateManager? StateManager
-        {
-            get
-            {
-                if (_stateManager == null)
-                {
-                    Interlocked.CompareExchange(ref _stateManager, this.CreateStateManager(), null);
-                }
-                return _stateManager;
-            }
-        }
 
         protected void CacheGreenNode(ParserRuleContext context, GreenNode greenNode)
         {
@@ -224,7 +211,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 
         #endregion
 
-        protected virtual Antlr4ParserStateManager CreateStateManager()
+        protected override ParserStateManager? CreateStateManager()
         {
             return new Antlr4ParserStateManager(this);
         }

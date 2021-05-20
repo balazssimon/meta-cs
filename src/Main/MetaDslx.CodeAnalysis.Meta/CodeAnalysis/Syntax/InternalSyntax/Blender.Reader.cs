@@ -224,8 +224,6 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
             private bool CanReuse(SyntaxNodeOrToken nodeOrToken, IncrementalNodeData incrementalData)
             {
-                CallLogger.Instance.Call(nodeOrToken.GetDebuggerDisplay());
-
                 if (!CanReuseDirectly(nodeOrToken)) return false;
 
                 var lookahead = incrementalData.LookaheadAfter;
@@ -245,7 +243,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 }
 
                 if (_lexerState != incrementalData.StartLexerState) return false;
-                if (_parserState != incrementalData.StartParserState) return false;
+                if (_parser.State != incrementalData.StartParserState) return false;
 
                 return true;
             }
@@ -262,8 +260,6 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
             private bool CanReuseDirectly(SyntaxNodeOrToken nodeOrToken)
             {
-                CallLogger.Instance.Call(nodeOrToken.GetDebuggerDisplay());
-
                 // Zero width nodes and tokens always indicate that the parser had to do
                 // something tricky, so don't reuse them.
                 // NOTE: this is slightly different from IsMissing because of omitted type arguments
