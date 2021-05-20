@@ -65,6 +65,7 @@ namespace MetaDslx.Bootstrap.IncrementalCompiler
                 Console.WriteLine("Position=" + i);
                 var start = i;
                 var length = 1;
+                if (i > 0 && code[i - 1] == '\r') continue;
                 (source1, syntaxTree1) = SingleEdit(source1, syntaxTree1, start, length, code);
             }
         }

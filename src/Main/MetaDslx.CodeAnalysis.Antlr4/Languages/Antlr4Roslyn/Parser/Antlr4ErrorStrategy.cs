@@ -649,10 +649,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
                 if (expecting.Contains(nextTokenType))
                 {
                     ReportUnwantedToken(recognizer);
-                    _parser.SkipToken(); // recognizer.Consume();
-                                         // simply delete extra token
-                                         // we want to return the token we're actually matching
-                    IToken matchedSymbol = _parser.GetCurrentCustomToken(); // recognizer.CurrentToken;
+                    //recognizer.Consume();
+                    _parser.SkipToken(); 
+                    // simply delete extra token
+                    // we want to return the token we're actually matching
+                    //IToken matchedSymbol = _parser.GetCurrentCustomToken();
+                    IToken matchedSymbol = recognizer.CurrentToken;
                     ReportMatch(recognizer);
                     // we know current token is correct
                     return matchedSymbol;
@@ -784,8 +786,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
                 {
                     // compute what follows who invoked us
                     ATNState invokingState = atn.states[ctx.invokingState];
-                    var rt = invokingState.Transition(0) as RuleTransition;
-                    if (rt != null)
+                    if (invokingState.Transition(0) is RuleTransition rt)
                     {
                         IntervalSet follow = atn.NextTokens(rt.followState);
                         recoverSet.AddAll(follow);
@@ -802,12 +803,15 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             protected internal virtual void ConsumeUntil(Parser recognizer, IntervalSet set)
             {
                 //		System.err.println("consumeUntil("+set.toString(recognizer.getTokenNames())+")");
-                int ttype = _parser.CurrentToken.Kind.ToAntlr4(); //((ITokenStream)recognizer.InputStream).La(1);
+                //int ttype = ((ITokenStream)recognizer.InputStream).LA(1);
+                int ttype = _parser.CurrentToken.Kind.ToAntlr4();
                 while (ttype != TokenConstants.EOF && !set.Contains(ttype))
                 {
                     //System.out.println("consume during recover LA(1)="+getTokenNames()[input.LA(1)]);
                     //			recognizer.getInputStream().consume();
+                    //recognizer.Consume();
                     _parser.SkipToken();
+                    //ttype = ((ITokenStream)recognizer.InputStream).LA(1);
                     ttype = _parser.CurrentToken.Kind.ToAntlr4();
                 }
             }

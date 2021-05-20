@@ -1,0 +1,9 @@
+namespace MetaDslx.Bootstrap;
+generator MGenTest;
+
+properties Properties
+  string Name = "";
+end properties
+
+template SayHello(Properties.Name]!
+end template

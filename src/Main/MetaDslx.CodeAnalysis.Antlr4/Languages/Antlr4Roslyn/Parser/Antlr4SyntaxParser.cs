@@ -247,7 +247,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
             protected override bool IsInState(ParserState? state)
             {
                 var antlr4Parser = Antlr4Parser;
-                if (state == null) return antlr4Parser.State == 0;
+                if (state == null) return antlr4Parser.State == -1;
                 var antlr4State = (Antlr4ParserState)state;
                 if (antlr4Parser.State != antlr4State.State) return false;
                 return true;
@@ -263,14 +263,14 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
                 }
                 else
                 {
-                    antlr4Parser.State = 0;
+                    antlr4Parser.State = -1;
                 }
             }
 
             protected override ParserState? SaveState(int hashCode)
             {
                 var antlr4Parser = Antlr4Parser;
-                if (antlr4Parser.State == 0) return null;
+                if (antlr4Parser.State == -1) return null;
                 else return new Antlr4ParserState(hashCode, antlr4Parser.State);
             }
         }

@@ -29,7 +29,12 @@ namespace MetaDslx.Bootstrap.IncrementalCompiler
             //TestMetaCompiler.RandomEdit("meta01.txt");
 
             //TestMGenCompiler.Type("mgen03.txt");
-            TestMGenCompiler.Type("mgen04.txt");
+            TestMGenCompiler.SerialEdit("mgen03.txt");
+            //TestMGenCompiler.RandomEdit("mgen03.txt");
+            //TestMGenCompiler.Type("mgen04.txt");
+            //TestMGenCompiler.SerialEdit("mgen04.txt");
+            //TestMGenCompiler.RandomEdit("mgen04.txt");
+            //TestMGenCompiler.Type("mgen05.txt");
 
             //CompileMeta("meta01.txt");
             //CompileMeta("meta02.txt");
