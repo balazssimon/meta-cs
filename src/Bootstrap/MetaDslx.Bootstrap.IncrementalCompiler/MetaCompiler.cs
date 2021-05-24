@@ -22,8 +22,8 @@ namespace MetaDslx.Bootstrap.IncrementalCompiler
             var source = SourceText.From(File.ReadAllText(@"..\..\..\" + fileName));
 
             var lexer = new MetaSyntaxLexer(source, MetaParseOptions.Default);
-            var tokens = lexer.GetAllTokens();
-            Console.WriteLine("Number of tokens: " + tokens.Count);
+            //var tokens = lexer.GetAllTokens();
+            //Console.WriteLine("Number of tokens: " + tokens.Count);
 
             var syntaxTree = MetaLanguage.Instance.ParseSyntaxTree(source);
             var antlr4Diags = Antlr4Parse(source);

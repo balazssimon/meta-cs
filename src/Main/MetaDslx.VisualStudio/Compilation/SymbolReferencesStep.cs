@@ -1,6 +1,7 @@
 using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.PooledObjects;
+using MetaDslx.CodeAnalysis.Symbols;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.PooledObjects;
 using Microsoft.VisualStudio.Text;
 using System;
 using System.Collections.Generic;
@@ -33,7 +34,7 @@ namespace MetaDslx.VisualStudio.Compilation
             foreach (var token in collectedSymbols.TokensWithSymbols)
             {
                 var tokenSpan = new SnapshotSpan(textSnapshot, new Span(token.Span.Start, token.Span.Length));
-                var symbol = collectedSymbols.GetSymbol(token) as IDeclaredSymbol;
+                var symbol = collectedSymbols.GetSymbol(token) as DeclaredSymbol;
                 if (symbol != null && symbol.Locations.Any(loc => loc.SourceSpan == token.Span))
                 {
                     var nameDefinitions = ArrayBuilder<SnapshotSpan>.GetInstance();
@@ -53,7 +54,7 @@ namespace MetaDslx.VisualStudio.Compilation
             return result;
         }
 
-        private ImmutableArray<SnapshotSpan> GetReferences(ISymbol symbol, CollectSymbolsResult symbols, ITextSnapshot textSnapshot)
+        private ImmutableArray<SnapshotSpan> GetReferences(Symbol symbol, CollectSymbolsResult symbols, ITextSnapshot textSnapshot)
         {
             var result = ArrayBuilder<SnapshotSpan>.GetInstance();
             foreach (var token in symbols.TokensWithSymbols)
@@ -70,18 +71,18 @@ namespace MetaDslx.VisualStudio.Compilation
 
     public class SymbolReferencesResult
     {
-        private Dictionary<ISymbol, ImmutableArray<SnapshotSpan>> _symbolNameDefinitions;
-        private Dictionary<ISymbol, ImmutableArray<SnapshotSpan>> _symbolDefinitions;
-        private Dictionary<ISymbol, ImmutableArray<SnapshotSpan>> _symbolReferences;
+        private Dictionary<Symbol, ImmutableArray<SnapshotSpan>> _symbolNameDefinitions;
+        private Dictionary<Symbol, ImmutableArray<SnapshotSpan>> _symbolDefinitions;
+        private Dictionary<Symbol, ImmutableArray<SnapshotSpan>> _symbolReferences;
 
         public SymbolReferencesResult()
         {
-            _symbolNameDefinitions = new Dictionary<ISymbol, ImmutableArray<SnapshotSpan>>();
-            _symbolDefinitions = new Dictionary<ISymbol, ImmutableArray<SnapshotSpan>>();
-            _symbolReferences = new Dictionary<ISymbol, ImmutableArray<SnapshotSpan>>();
+            _symbolNameDefinitions = new Dictionary<Symbol, ImmutableArray<SnapshotSpan>>();
+            _symbolDefinitions = new Dictionary<Symbol, ImmutableArray<SnapshotSpan>>();
+            _symbolReferences = new Dictionary<Symbol, ImmutableArray<SnapshotSpan>>();
         }
 
-        internal bool TryAdd(ISymbol symbol, ImmutableArray<SnapshotSpan> nameDefinitions, ImmutableArray<SnapshotSpan> definitions, ImmutableArray<SnapshotSpan> references)
+        internal bool TryAdd(Symbol symbol, ImmutableArray<SnapshotSpan> nameDefinitions, ImmutableArray<SnapshotSpan> definitions, ImmutableArray<SnapshotSpan> references)
         {
             if (_symbolNameDefinitions.ContainsKey(symbol)) return false;
             _symbolNameDefinitions.Add(symbol, nameDefinitions);
@@ -90,21 +91,21 @@ namespace MetaDslx.VisualStudio.Compilation
             return true;
         }
 
-        public IEnumerable<ISymbol> Symbols => _symbolDefinitions.Keys;
+        public IEnumerable<Symbol> Symbols => _symbolDefinitions.Keys;
 
-        public ImmutableArray<SnapshotSpan> GetNameDefinitions(ISymbol symbol)
+        public ImmutableArray<SnapshotSpan> GetNameDefinitions(Symbol symbol)
         {
             if (_symbolNameDefinitions.TryGetValue(symbol, out var result)) return result;
             else return ImmutableArray<SnapshotSpan>.Empty;
         }
 
-        public ImmutableArray<SnapshotSpan> GetDefinitions(ISymbol symbol)
+        public ImmutableArray<SnapshotSpan> GetDefinitions(Symbol symbol)
         {
             if (_symbolDefinitions.TryGetValue(symbol, out var result)) return result;
             else return ImmutableArray<SnapshotSpan>.Empty;
         }
 
-        public ImmutableArray<SnapshotSpan> GetReferences(ISymbol symbol)
+        public ImmutableArray<SnapshotSpan> GetReferences(Symbol symbol)
         {
             if (_symbolReferences.TryGetValue(symbol, out var result)) return result;
             else return ImmutableArray<SnapshotSpan>.Empty;

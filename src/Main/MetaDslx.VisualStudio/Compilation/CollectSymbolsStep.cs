@@ -3,7 +3,6 @@ using MetaDslx.Languages.Meta.Model;
 using MetaDslx.VisualStudio.Classification;
 using MetaDslx.VisualStudio.Editor;
 using MetaDslx.VisualStudio.Utilities;
-using MetaDslx.CodeAnalysis;
 using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Text.Tagging;
@@ -16,6 +15,8 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Symbols;
 
 namespace MetaDslx.VisualStudio.Compilation
 {
@@ -59,16 +60,16 @@ namespace MetaDslx.VisualStudio.Compilation
             return result;
         }
 
-        private ISymbol GetSymbol(SyntaxToken token, SemanticModel semanticModel, CancellationToken cancellationToken)
+        private Symbol GetSymbol(SyntaxToken token, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
             try
             {
-                SyntaxNode node = token.Parent;
+                LanguageSyntaxNode node = token.Parent as LanguageSyntaxNode;
                 if (node != null && node.SlotCount == 1)
                 {
                     if (cancellationToken.IsCancellationRequested) return null;
                     var ti = semanticModel.GetTypeInfo(node, cancellationToken);
-                    if (ti.Type != null) return ti.Type;
+                    if (ti.Type is Symbol typeSymbol) return typeSymbol;
                     //var si = semanticModel.GetSymbolInfo(node, cancellationToken);
                     //if (si.Symbol != null) return si.Symbol;
                 }
@@ -81,7 +82,7 @@ namespace MetaDslx.VisualStudio.Compilation
             }
         }
 
-        private IClassificationType GetSymbolClassificationType(ISymbol symbol, SyntaxToken token, SemanticModel semanticModel, CancellationToken cancellationToken)
+        private IClassificationType GetSymbolClassificationType(Symbol symbol, SyntaxToken token, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
             foreach (var tagger in _taggers)
             {
@@ -115,7 +116,7 @@ namespace MetaDslx.VisualStudio.Compilation
             else return null;
         }
 
-        public ISymbol GetSymbol(SyntaxToken token)
+        public Symbol GetSymbol(SyntaxToken token)
         {
             if (_symbols.TryGetValue(token, out var result)) return result.Symbol;
             else return null;
@@ -123,13 +124,13 @@ namespace MetaDslx.VisualStudio.Compilation
 
         internal struct SymbolData
         {
-            public SymbolData(ISymbol symbol, IClassificationType classificationType)
+            public SymbolData(Symbol symbol, IClassificationType classificationType)
             {
                 Symbol = symbol;
                 ClassificationType = classificationType;
             }
 
-            public ISymbol Symbol { get; }
+            public Symbol Symbol { get; }
             public IClassificationType ClassificationType { get; }
         }
     }

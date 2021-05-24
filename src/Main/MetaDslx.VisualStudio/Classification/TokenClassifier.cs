@@ -1,9 +1,10 @@
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Syntax;
+using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
 using MetaDslx.VisualStudio.Compilation;
 using MetaDslx.VisualStudio.Utilities;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.Text;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Text;
 using Microsoft.VisualStudio.Language.StandardClassification;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
@@ -90,7 +91,8 @@ namespace MetaDslx.VisualStudio.Classification
                     var end = top.span.End;
                     for (int i = top.green.SlotCount - 1; i >= 0; --i)
                     {
-                        var slot = top.green.GetSlot(i);
+                        var green = (GreenNodeAdapter)top.green;
+                        var slot = green.GetSlot(i);
                         var start = end - slot.FullWidth;
                         var childSpan = new TextSpan(start, end);
                         if (span.IntersectsWith(childSpan)) stack.Push((slot, childSpan));

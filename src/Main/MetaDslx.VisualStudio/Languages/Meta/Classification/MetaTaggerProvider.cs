@@ -1,12 +1,13 @@
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Binding;
+using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.Languages.Meta;
 using MetaDslx.Languages.Meta.Model;
 using MetaDslx.Languages.Meta.Syntax;
 using MetaDslx.VisualStudio.Classification;
 using MetaDslx.VisualStudio.Utilities;
-using MetaDslx.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.Language.StandardClassification;
 using Microsoft.VisualStudio.Shell.TableManager;
 using Microsoft.VisualStudio.Text;
@@ -44,7 +45,7 @@ namespace MetaDslx.VisualStudio.Languages.Meta.Classification
 
         public override string DisplayName => "MetaModel";
 
-        public override IClassificationType GetSymbolClassificationType(ISymbol symbol, SyntaxToken token, SemanticModel semanticModel, CancellationToken cancellationToken)
+        public override IClassificationType GetSymbolClassificationType(Symbol symbol, SyntaxToken token, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
             if (symbol is ITypeSymbol && !(symbol is IErrorTypeSymbol))
             {

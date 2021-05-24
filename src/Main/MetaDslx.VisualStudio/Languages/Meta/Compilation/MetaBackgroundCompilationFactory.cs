@@ -6,8 +6,8 @@ using MetaDslx.Languages.Meta;
 using MetaDslx.Languages.Meta.Model;
 using MetaDslx.Languages.Meta.Syntax.InternalSyntax;
 using MetaDslx.VisualStudio.Compilation;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.Text;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Text;
 using Microsoft.VisualStudio.Utilities;
 using System;
 using System.Collections.Generic;
@@ -34,8 +34,7 @@ namespace MetaDslx.VisualStudio.Languages.Meta.Compilation
             BinderFlags binderFlags2 = BinderFlags.IgnoreMetaLibraryDuplicatedTypes;
             binderFlags = binderFlags.UnionWith(binderFlags2);
             MetaCompilationOptions options = new MetaCompilationOptions(OutputKind.NetModule,
-                deterministic: true, concurrentBuild: false,
-                topLevelBinderFlags: binderFlags);
+                deterministic: true, concurrentBuild: false).WithTopLevelBinderFlags(binderFlags);
             var compilation = MetaCompilation.Create("MetaBackgroundCompilation").AddReferences(symbolsReference, metaModelReference).AddSyntaxTrees(syntaxTrees).WithOptions(options);
             return compilation;
         }

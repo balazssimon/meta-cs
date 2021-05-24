@@ -48,7 +48,7 @@ namespace MetaDslx.CodeAnalysis
     /// new compilation from scratch, as the new compilation can reuse information from the old
     /// compilation.
     /// </summary>
-    public abstract partial class LanguageCompilation : CompilationAdapter
+    public abstract partial class LanguageCompilation : CompilationAdapter, ICompilation
     {
         internal static ParallelOptions DefaultParallelOptions = new ParallelOptions();
 

@@ -1,8 +1,8 @@
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.VisualStudio.Utilities;
-using MetaDslx.CodeAnalysis.PooledObjects;
-using MetaDslx.CodeAnalysis.Text;
+using Microsoft.CodeAnalysis.PooledObjects;
+using Microsoft.CodeAnalysis.Text;
 using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.Editor;
 using Microsoft.VisualStudio.Text;
@@ -60,7 +60,7 @@ namespace MetaDslx.VisualStudio.Compilation
             var changes = ArrayBuilder<TextChange>.GetInstance();
             foreach (var change in e.Changes)
             {
-                changes.Add(new TextChange(new MetaDslx.CodeAnalysis.Text.TextSpan(change.OldPosition, change.OldLength), change.NewText));
+                changes.Add(new TextChange(new Microsoft.CodeAnalysis.Text.TextSpan(change.OldPosition, change.OldLength), change.NewText));
             }
             _textChanges.Enqueue(changes.ToImmutableAndFree());
             this.Recompile();

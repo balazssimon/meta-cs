@@ -1,8 +1,9 @@
 using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.VisualStudio.Compilation;
 using MetaDslx.VisualStudio.Editor;
 using MetaDslx.VisualStudio.Utilities;
-using MetaDslx.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.Language.StandardClassification;
 using Microsoft.VisualStudio.Shell.TableControl;
 using Microsoft.VisualStudio.Shell.TableManager;
@@ -108,7 +109,7 @@ namespace MetaDslx.VisualStudio.Classification
             return tagger;
         }
 
-        public abstract IClassificationType GetSymbolClassificationType(ISymbol symbol, SyntaxToken token, SemanticModel semanticModel, CancellationToken cancellationToken);
+        public abstract IClassificationType GetSymbolClassificationType(Symbol symbol, SyntaxToken token, SemanticModel semanticModel, CancellationToken cancellationToken);
 
         #region ITableDataSource members
         public abstract string DisplayName

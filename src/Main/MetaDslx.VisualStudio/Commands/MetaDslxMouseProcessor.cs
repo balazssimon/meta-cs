@@ -1,7 +1,7 @@
 using MetaDslx.VisualStudio.Classification;
 using MetaDslx.VisualStudio.Compilation;
 using MetaDslx.VisualStudio.Utilities;
-using MetaDslx.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 using System;

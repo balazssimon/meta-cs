@@ -22,7 +22,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 #if DEBUG
         public IncrementalNodeData(LexerState? startLexerState, LexerState? endLexerState, ParserState? startParserState, ParserState? endParserState, int lookaheadTokensBefore, int lookaheadTokensAfter, int lookaheadBefore, int lookaheadAfter, int version)
 #else
-        public IncrementalNodeAnnotation(LexerState? startLexerState, LexerState? endLexerState, ParserState? startParserState, ParserState? endParserState, int lookaheadTokensBefore, int lookaheadTokensAfter, int lookaheadBefore, int lookaheadAfter)
+        public IncrementalNodeData(LexerState? startLexerState, LexerState? endLexerState, ParserState? startParserState, ParserState? endParserState, int lookaheadTokensBefore, int lookaheadTokensAfter, int lookaheadBefore, int lookaheadAfter)
 #endif
         {
             StartLexerState = startLexerState;

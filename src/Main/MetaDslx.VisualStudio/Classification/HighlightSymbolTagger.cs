@@ -12,6 +12,7 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MetaDslx.CodeAnalysis.Symbols;
 
 namespace MetaDslx.VisualStudio.Classification
 {
@@ -97,7 +98,7 @@ namespace MetaDslx.VisualStudio.Classification
             List<SnapshotSpan> referenceSpans = new List<SnapshotSpan>();
             List<SnapshotSpan> definitionSpans = new List<SnapshotSpan>();
             SnapshotSpan? currentWord = null;
-            ISymbol currentSymbol = null;
+            Symbol currentSymbol = null;
 
             var compilationSnapshot = _backgroundCompilation.CompilationSnapshot;
             var symbols = compilationSnapshot?.GetCompilationStepResult<CollectSymbolsResult>();
@@ -115,7 +116,7 @@ namespace MetaDslx.VisualStudio.Classification
                 }
             }
 
-            if (currentWord == null || currentSymbol == null || currentSymbol is IErrorTypeSymbol)
+            if (currentWord == null || currentSymbol == null || currentSymbol.Kind == SymbolKind.ErrorType)
             {
                 //If we couldn't find a word, clear out the existing markers
                 SynchronousUpdate(currentRequest, null, null, null);

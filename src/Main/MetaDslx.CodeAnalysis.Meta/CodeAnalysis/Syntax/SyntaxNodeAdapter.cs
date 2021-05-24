@@ -64,5 +64,7 @@ namespace MetaDslx.CodeAnalysis.Syntax
         {
             return base.GetAnnotations();
         }
+
+        public new int SlotCount => base.SlotCount;
     }
 }

@@ -5,7 +5,7 @@ using MetaDslx.Modeling;
 using MetaDslx.VisualStudio.Compilation;
 using MetaDslx.VisualStudio.Editor;
 using MetaDslx.VisualStudio.Utilities;
-using MetaDslx.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.Core.Imaging;
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.Language.Intellisense;
@@ -23,6 +23,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using SymbolKind = MetaDslx.CodeAnalysis.Symbols.SymbolKind;
 
 namespace MetaDslx.VisualStudio.Intellisense
 {
@@ -112,8 +113,8 @@ namespace MetaDslx.VisualStudio.Intellisense
                     var containingSymbol = symbol.ContainingSymbol;
                     while (containingSymbol != null)
                     {
-                        if (containingSymbol.Kind == LanguageSymbolKind.NetModule || string.IsNullOrWhiteSpace(containingSymbol.Name)) break;
-                        header.Add(new ClassifiedTextRun(containingSymbol.Kind == LanguageSymbolKind.NamedType ? PredefinedClassificationTypeNames.SymbolDefinition : PredefinedClassificationTypeNames.Identifier, containingSymbol.Name + "."));
+                        if (containingSymbol.Kind == SymbolKind.NetModule || string.IsNullOrWhiteSpace(containingSymbol.Name)) break;
+                        header.Add(new ClassifiedTextRun(containingSymbol.Kind == SymbolKind.NamedType ? PredefinedClassificationTypeNames.SymbolDefinition : PredefinedClassificationTypeNames.Identifier, containingSymbol.Name + "."));
                         containingSymbol = containingSymbol.ContainingSymbol;
                     }
                     header.Reverse();
@@ -121,14 +122,14 @@ namespace MetaDslx.VisualStudio.Intellisense
                     {
                         header.Insert(0, new ClassifiedTextRun(PredefinedClassificationTypeNames.Keyword, modelObject.MMetaClass.Name + " "));
                     }
-                    header.Add(new ClassifiedTextRun(symbol.Kind == LanguageSymbolKind.NamedType ? PredefinedClassificationTypeNames.SymbolDefinition : PredefinedClassificationTypeNames.Identifier, symbol.Name));
+                    header.Add(new ClassifiedTextRun(symbol.Kind == SymbolKind.NamedType ? PredefinedClassificationTypeNames.SymbolDefinition : PredefinedClassificationTypeNames.Identifier, symbol.Name));
 
                     var elm = new ContainerElement(
                         ContainerElementStyle.Wrapped,
-                        new ImageElement(symbol.Kind == LanguageSymbolKind.Namespace ? StandardIcons.NamespaceIcon : symbol.Kind == LanguageSymbolKind.NamedType ? StandardIcons.ClassIcon : StandardIcons.PropertyIcon),
+                        new ImageElement(symbol.Kind == SymbolKind.Namespace ? StandardIcons.NamespaceIcon : symbol.Kind == SymbolKind.NamedType ? StandardIcons.ClassIcon : StandardIcons.PropertyIcon),
                         new ClassifiedTextElement(header));
 
-                    if (symbol is IDeclaredSymbol declaredSymbol)
+                    if (symbol is DeclaredSymbol declaredSymbol)
                     {
                         var docComment = declaredSymbol.GetDocumentationCommentXml(cancellationToken: cancellationToken);
                         if (!string.IsNullOrWhiteSpace(docComment))
