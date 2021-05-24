@@ -1,0 +1,88 @@
+namespace MetaDslx.Languages.Mof.Generator;
+generator MofModelToMetaModelGenerator for IEnumerable<ImmutableObject>;
+
+using MetaDslx.Modeling;
+using MetaDslx.Languages.Mof.Model;
+using System.Collections.Immutable;
+using Roslyn.Utilities;
+
+properties Properties
+	string Namespace = "";
+	string ModelName = "";
+end properties
+
+extern function string GenerateDefaultValue(Property property)
+extern function IEnumerable<string> CommentLines(string text, bool escapeHtml)
+
+template Generate(string namespaceName, string metaModelName, string uri)
+namespace [namespaceName]
+{
+    metamodel [metaModelName](Uri="[uri]"); 
+^
+	[loop(Instances->pt:typeof(PrimitiveType))]
+    [GeneratePrimitiveType(pt)]
+	[end loop]
+	[loop(Instances->enm:typeof(Enumeration))]
+^
+    [GenerateEnum(enm)]
+	[end loop]
+	[loop(Instances->cls:typeof(Class))]
+^
+    [GenerateClass(cls)]
+	[end loop]
+^
+	[loop(Instances->assoc:typeof(Association))]
+    [GenerateAssociation(assoc)]
+	[end loop]
+}
+end template
+
+template GeneratePrimitiveType(PrimitiveType pt)
+[GenerateComment(pt)]
+const PrimitiveType [pt.Name];
+end template
+
+template GenerateEnum(Enumeration enm)
+[GenerateComment(enm)]
+enum [enm.Name]
+{
+	[loop(enm->lit:OwnedLiteral; separator sep = ",")]
+    [GenerateComment(lit)]
+    [lit.Name.ToPascalCase()][sep]
+	[end loop]
+}
+end template
+
+template GenerateClass(Class cls)
+[GenerateComment(cls)]
+[cls.IsAbstract ? "abstract " : ""]class [cls.Name][GenerateBaseClasses(cls)]
+{
+	[loop(cls->prop:OwnedAttribute)]
+	[GenerateProperty(prop)]
+	[end loop]
+	[loop(cls->op:OwnedOperation)]
+	[GenerateOperation(op)]
+	[end loop]
+}
+end template
+
+template GenerateBaseClasses(Class cls)
+[string sep = " : "]
+[loop(cls->Generalization->gen:General)]
+[sep][gen.Name]\
+[sep = ", "]
+[end loop]
+end template
+
+template GenerateProperty(Property prop)
+[GenerateComment(prop)]
+[GenerateContainment(prop)][GenerateModifiers(prop)][GenerateType(prop, prop.Type)] [prop.Name.ToPascalCase()][prop.GenerateDefaultValue()][GenerateRedefines(prop)][GenerateSubsets(prop)];
+end template
+
+template GenerateContainment(Property prop)
+[prop.Aggregation == AggregationKind.Composite ? "containment " : ""]
+end template
+
+template GenerateModifiers(Property prop)
+	[if (prop.Upper > 1 || prop.Upper < 0)]
+[prop.IsDerivedUnion ? "union " : (prop.IsDerived ? "derived 

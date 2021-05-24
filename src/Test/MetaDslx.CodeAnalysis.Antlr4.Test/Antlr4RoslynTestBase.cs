@@ -185,7 +185,7 @@ namespace MetaDslx.Tests
 
         public void IncrementalType(SourceText source, int delta = 1)
         {
-            this.IncrementalType(source.ToString());
+            this.IncrementalType(source.ToString(), delta);
         }
         
         public void IncrementalType(string source, int delta = 1)
@@ -218,7 +218,7 @@ namespace MetaDslx.Tests
                 catch (Exception ex)
                 {
                     //throw;
-                    throw new WrappedXunitException($"Typing failed at position {i}:\r\n----\r\n{currentSource}\r\n----\r\nOriginal source is:\r\n----\r\n{source}\r\n----\r\n", ex);
+                    throw new WrappedXunitException($"Typing failed at position {i}\r\n----\r\n", ex);
                 }
                 if (i == source.Length) reachedEnd = true;
             }

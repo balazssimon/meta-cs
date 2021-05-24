@@ -15,11 +15,11 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestLexerMode
         private Random rnd;
         private int incrementalSteps;
 
-        public EditTest(string fileName, int incrementalSteps = 1)
+        public EditTest(string fileName, int incrementalSteps = 0)
         {
             source = LoadFile(fileName);
             rnd = new Random();
-            this.incrementalSteps = incrementalSteps;
+            this.incrementalSteps = incrementalSteps > 0 ? incrementalSteps : source.Length / 10;
         }
 
 
@@ -47,7 +47,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test.TestLexerMode
         public void RandomEdits()
         {
             var src = (source, (LanguageSyntaxTree)null);
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 10; i++)
             {
                 var start = rnd.Next(src.source.Length);
                 var length = rnd.Next(src.source.Length - start);
