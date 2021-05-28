@@ -303,10 +303,6 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
 
         public override object VisitGeneratorDeclaration([NotNull] MetaGeneratorParser.GeneratorDeclarationContext context)
         {
-            if (context.KStandalone() == null)
-            {
-                WriteLine("using MetaDslx.CodeGeneration;");
-            }
             return null;
         }
 
@@ -465,13 +461,13 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
         {
             if (standalone)
             {
-                WriteLine("private class CodeBuilder");
+                WriteLine("private class __CodeBuilder");
                 WriteLine("{");
                 IncIndent();
                 WriteLine("private bool newLine;");
                 WriteLine("private System.Text.StringBuilder builder = new System.Text.StringBuilder();");
                 WriteLine("");
-                WriteLine("public CodeBuilder()");
+                WriteLine("public __CodeBuilder()");
                 WriteLine("{");
                 IncIndent();
                 WriteLine("this.newLine = true;");
@@ -492,12 +488,21 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
                 DecIndent();
                 WriteLine("}");
                 WriteLine("");
+                WriteLine("public void Write(ReadOnlySpan<char> str)");
+                WriteLine("{");
+                IncIndent();
+                WriteLine("if (str.IsEmpty) return;");
+                WriteLine("this.newLine = false;");
+                WriteLine("builder.Append(str.ToString());");
+                DecIndent();
+                WriteLine("}");
+                WriteLine("");
                 WriteLine("public void Write(object obj)");
                 WriteLine("{");
                 IncIndent();
                 WriteLine("if (obj == null) return;");
                 WriteLine("string text = obj.ToString();");
-                WriteLine("this.Append(text);");
+                WriteLine("builder.Append(text);");
                 DecIndent();
                 WriteLine("}");
                 WriteLine("");
@@ -514,7 +519,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
                 DecIndent();
                 WriteLine("}");
                 WriteLine("");
-                WriteLine("public override string ToString()");
+                WriteLine("public string ToStringAndFree()");
                 WriteLine("{");
                 IncIndent();
                 WriteLine("return builder.ToString();");
@@ -523,43 +528,56 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
                 DecIndent();
                 WriteLine("}");
 
-                WriteLine("private ref struct CodeReader");
+                WriteLine("private ref struct __CodeReader");
                 WriteLine("{");
-                IncIndent();
-                WriteLine("private ReadOnlySpan<char> _code;");
-                WriteLine("public CodeReader(string code)");
-                WriteLine("{");
-                IncIndent();
-                WriteLine("_code = code.AsSpan();");
-                DecIndent();
-                WriteLine("}");
-                WriteLine("public bool EndOfStream => _code.Length == 0;");
-                WriteLine("public ReadOnlySpan<char> ReadLine()");
-                WriteLine("{");
-                IncIndent();
-                WriteLine("int indexR = _code.IndexOf('\r');");
-                WriteLine("int indexN = _code.IndexOf('\n');");
-                WriteLine("int index = _code.Length;");
-                WriteLine("if (indexR >= 0)");
-                WriteLine("{");
-                IncIndent();
-                WriteLine("if (indexN == indexR + 1) index = indexN + 1;");
-                WriteLine("else if (indexN >= 0 && indexN < indexR) index = indexN + 1;");
-                WriteLine("else index = indexR + 1;");
-                DecIndent();
-                WriteLine("}");
-                WriteLine("else if (indexN >= 0)");
-                WriteLine("{");
-                IncIndent();
-                WriteLine("index = indexN + 1;");
-                DecIndent();
-                WriteLine("}");
-                WriteLine("var result = _code.Slice(0, index);");
-                WriteLine("_code = _code.Slice(index);");
-                WriteLine("return result;");
-                DecIndent();
-                WriteLine("}");
-                DecIndent();
+                WriteLine("    private ReadOnlySpan<char> _code;");
+                WriteLine("");
+                WriteLine("    public __CodeReader(string code)");
+                WriteLine("    {");
+                WriteLine("        _code = code.AsSpan();");
+                WriteLine("        int lastNonEndlineIndex = _code.Length - 1;");
+                WriteLine("        while (lastNonEndlineIndex >= 0 && (_code[lastNonEndlineIndex] == '\\r' || _code[lastNonEndlineIndex] == '\\n'))");
+                WriteLine("        {");
+                WriteLine("            --lastNonEndlineIndex;");
+                WriteLine("        }");
+                WriteLine("        _code = _code.Slice(0, lastNonEndlineIndex + 1);");
+                WriteLine("    }");
+                WriteLine("");
+                WriteLine("    public bool EndOfStream => _code.Length == 0;");
+                WriteLine("");
+                WriteLine("    public ReadOnlySpan<char> ReadLine()");
+                WriteLine("    {");
+                WriteLine("        int indexR = _code.IndexOf('\\r');");
+                WriteLine("        int indexN = _code.IndexOf('\\n');");
+                WriteLine("        int lineLength = _code.Length;");
+                WriteLine("        int nextLineStartIndex = _code.Length;");
+                WriteLine("        if (indexR >= 0)");
+                WriteLine("        {");
+                WriteLine("            if (indexN == indexR + 1)");
+                WriteLine("            {");
+                WriteLine("                lineLength = indexR;");
+                WriteLine("                nextLineStartIndex = indexN + 1;");
+                WriteLine("            }");
+                WriteLine("            else if (indexN >= 0 && indexN < indexR)");
+                WriteLine("            {");
+                WriteLine("                lineLength = indexN;");
+                WriteLine("                nextLineStartIndex = indexN + 1;");
+                WriteLine("            }");
+                WriteLine("            else");
+                WriteLine("            {");
+                WriteLine("                lineLength = indexR;");
+                WriteLine("                nextLineStartIndex = indexR + 1;");
+                WriteLine("            }");
+                WriteLine("        }");
+                WriteLine("        else if (indexN >= 0)");
+                WriteLine("        {");
+                WriteLine("            lineLength = indexN;");
+                WriteLine("            nextLineStartIndex = indexN + 1;");
+                WriteLine("        }");
+                WriteLine("        var result = _code.Slice(0, lineLength);");
+                WriteLine("        _code = _code.Slice(nextLineStartIndex);");
+                WriteLine("        return result;");
+                WriteLine("    }");
                 WriteLine("}");
             }
             DecIndent();
@@ -944,8 +962,8 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
             Visit(context.templateSignature());
             WriteLine("{");
             IncIndent();
-            if (this.standalone) WriteLine("CodeBuilder __out = new CodeBuilder();");
-            else WriteLine("CodeBuilder __out = CodeBuilder.GetInstance();");
+            if (this.standalone) WriteLine("var __out = new __CodeBuilder();");
+            else WriteLine("var __out = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();");
             tmpCounter = 0;
             Visit(context.templateBody());
             if (this.standalone) WriteLine("return __out.ToString();");
@@ -1631,10 +1649,11 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
                             if (IsTemplateOutputExpression(statement))
                             {
                                 closeBraces = true;
-                                if (this.standalone) WriteLine("CodeBuilder {0} = new CodeBuilder();", tmp);
-                                else WriteLine("CodeBuilder {0} = CodeBuilder.GetInstance();", tmp);
+                                if (this.standalone) WriteLine("var {0} = new __CodeBuilder();", tmp);
+                                else WriteLine("var {0} = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();", tmp);
                                 VisitTemplateStatement(statement.templateStatement(), tmp);
-                                WriteLine("CodeReader {0}Reader = new CodeReader({0}.ToStringAndFree());", tmp);
+                                if (this.standalone) WriteLine("var {0}Reader = new __CodeReader({0}.ToStringAndFree());", tmp);
+                                else WriteLine("var {0}Reader = new global::MetaDslx.CodeGeneration.CodeReader({0}.ToStringAndFree());", tmp);
                                 WriteLine("bool {0}_last = {0}Reader.EndOfStream;", tmp);
                                 WriteLine("while(!{0}_last)", tmp);
                                 WriteLine("{");
