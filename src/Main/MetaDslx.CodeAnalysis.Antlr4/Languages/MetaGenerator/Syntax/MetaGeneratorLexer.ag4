@@ -19,6 +19,7 @@ channels
 // Keywords
 $Token(first=KNamespace,last=KDefault,kind=ReservedKeyword)
 KNamespace : 'namespace';
+KStandalone : 'standalone';
 KGenerator : 'generator';
 KUsing : 'using';
 KConfiguration : 'configuration';

@@ -3,4 +3,33 @@ generator MGenTest;
 
 template SayHello(string name)
 HelloXA, [name]!
+[Line1()]
+[Line1()]
+[Line1()]
+aaa
+[Line2()]
+[Line2()]
+[Line2()]
+bbb
+[Line1()]
+[Line2()]
+
+[Line1()]
+[Line2()]
+^
+[Line1()]
+[Line2()]
+ccc
+end template
+
+template Line1()
+[var s = "abc"]
+[s]
+
+end template
+
+template Line2()
+[var s = "abc"]
+[""]
+
 end template

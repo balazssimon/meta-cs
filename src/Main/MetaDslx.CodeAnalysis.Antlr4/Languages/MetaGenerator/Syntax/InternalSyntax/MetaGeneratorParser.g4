@@ -10,7 +10,7 @@ main : namespaceDeclaration generatorDeclaration usingDeclaration* configDeclara
 
 namespaceDeclaration : KNamespace qualifiedName TSemicolon;
 
-generatorDeclaration : KGenerator identifier (TColon qualifiedName)? (KFor typeReference)? TSemicolon;
+generatorDeclaration : KStandalone? KGenerator identifier (TColon qualifiedName)? (KFor typeReference)? TSemicolon;
 
 usingDeclaration
     : KUsing qualifiedName TSemicolon								#usingNamespaceDeclaration

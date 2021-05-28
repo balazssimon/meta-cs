@@ -1,9 +1,9 @@
 using MetaDslx.Languages.MetaGenerator.Compilation;
-using MetaDslx.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Microsoft.CodeAnalysis;
 
 namespace MetaDslx.Bootstrap.MetaGenerator
 {

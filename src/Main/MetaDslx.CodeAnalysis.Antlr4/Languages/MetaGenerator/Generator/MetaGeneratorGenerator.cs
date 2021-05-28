@@ -301,6 +301,15 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
             return null;
         }
 
+        public override object VisitGeneratorDeclaration([NotNull] MetaGeneratorParser.GeneratorDeclarationContext context)
+        {
+            if (context.KStandalone() == null)
+            {
+                WriteLine("using MetaDslx.CodeGeneration;");
+            }
+            return null;
+        }
+
         public override object VisitUsingNamespaceDeclaration(MetaGeneratorParser.UsingNamespaceDeclarationContext context)
         {
             WriteLine("using {0}; {1}", context.qualifiedName().GetText(), context.ToComment());
@@ -425,6 +434,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
     internal class MetaGenCSharpClassVisitor : MetaGenVisitor
     {
         private int tmpCounter = 0;
+        private bool standalone = false;
         private bool processTemplateOutput = false;
         private List<SwitchInfo> switchStack = new List<SwitchInfo>();
         private HashSet<string> externFunctionNames = new HashSet<string>();
@@ -453,63 +463,105 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
 
         public override void Close()
         {
-            WriteLine("private class StringBuilder");
-            WriteLine("{");
-            IncIndent();
-            WriteLine("private bool newLine;");
-            WriteLine("private System.Text.StringBuilder builder = new System.Text.StringBuilder();");
-            WriteLine("");
-            WriteLine("public StringBuilder()");
-            WriteLine("{");
-            IncIndent();
-            WriteLine("this.newLine = true;");
-            DecIndent();
-            WriteLine("}");
-            WriteLine("");
-            WriteLine("public void Append(string str)");
-            WriteLine("{");
-            IncIndent();
-            WriteLine("if (str == null) return;");
-            WriteLine("if (!string.IsNullOrEmpty(str))");
-            WriteLine("{");
-            IncIndent();
-            WriteLine("this.newLine = false;");
-            DecIndent();
-            WriteLine("}");
-            WriteLine("builder.Append(str);");
-            DecIndent();
-            WriteLine("}");
-            WriteLine("");
-            WriteLine("public void Append(object obj)");
-            WriteLine("{");
-            IncIndent();
-            WriteLine("if (obj == null) return;");
-            WriteLine("string text = obj.ToString();");
-            WriteLine("this.Append(text);");
-            DecIndent();
-            WriteLine("}");
-            WriteLine("");
-            WriteLine("public void AppendLine(bool force = false)");
-            WriteLine("{");
-            IncIndent();
-            WriteLine("if (force || !this.newLine)");
-            WriteLine("{");
-            IncIndent();
-            WriteLine("builder.AppendLine();");
-            WriteLine("this.newLine = true;");
-            DecIndent();
-            WriteLine("}");
-            DecIndent();
-            WriteLine("}");
-            WriteLine("");
-            WriteLine("public override string ToString()");
-            WriteLine("{");
-            IncIndent();
-            WriteLine("return builder.ToString();");
-            DecIndent();
-            WriteLine("}");
-            DecIndent();
-            WriteLine("}");
+            if (standalone)
+            {
+                WriteLine("private class CodeBuilder");
+                WriteLine("{");
+                IncIndent();
+                WriteLine("private bool newLine;");
+                WriteLine("private System.Text.StringBuilder builder = new System.Text.StringBuilder();");
+                WriteLine("");
+                WriteLine("public CodeBuilder()");
+                WriteLine("{");
+                IncIndent();
+                WriteLine("this.newLine = true;");
+                DecIndent();
+                WriteLine("}");
+                WriteLine("");
+                WriteLine("public void Write(string str)");
+                WriteLine("{");
+                IncIndent();
+                WriteLine("if (str == null) return;");
+                WriteLine("if (!string.IsNullOrEmpty(str))");
+                WriteLine("{");
+                IncIndent();
+                WriteLine("this.newLine = false;");
+                DecIndent();
+                WriteLine("}");
+                WriteLine("builder.Append(str);");
+                DecIndent();
+                WriteLine("}");
+                WriteLine("");
+                WriteLine("public void Write(object obj)");
+                WriteLine("{");
+                IncIndent();
+                WriteLine("if (obj == null) return;");
+                WriteLine("string text = obj.ToString();");
+                WriteLine("this.Append(text);");
+                DecIndent();
+                WriteLine("}");
+                WriteLine("");
+                WriteLine("public void AppendLine(bool force = false)");
+                WriteLine("{");
+                IncIndent();
+                WriteLine("if (force || !this.newLine)");
+                WriteLine("{");
+                IncIndent();
+                WriteLine("builder.AppendLine();");
+                WriteLine("this.newLine = true;");
+                DecIndent();
+                WriteLine("}");
+                DecIndent();
+                WriteLine("}");
+                WriteLine("");
+                WriteLine("public override string ToString()");
+                WriteLine("{");
+                IncIndent();
+                WriteLine("return builder.ToString();");
+                DecIndent();
+                WriteLine("}");
+                DecIndent();
+                WriteLine("}");
+
+                WriteLine("private ref struct CodeReader");
+                WriteLine("{");
+                IncIndent();
+                WriteLine("private ReadOnlySpan<char> _code;");
+                WriteLine("public CodeReader(string code)");
+                WriteLine("{");
+                IncIndent();
+                WriteLine("_code = code.AsSpan();");
+                DecIndent();
+                WriteLine("}");
+                WriteLine("public bool EndOfStream => _code.Length == 0;");
+                WriteLine("public ReadOnlySpan<char> ReadLine()");
+                WriteLine("{");
+                IncIndent();
+                WriteLine("int indexR = _code.IndexOf('\r');");
+                WriteLine("int indexN = _code.IndexOf('\n');");
+                WriteLine("int index = _code.Length;");
+                WriteLine("if (indexR >= 0)");
+                WriteLine("{");
+                IncIndent();
+                WriteLine("if (indexN == indexR + 1) index = indexN + 1;");
+                WriteLine("else if (indexN >= 0 && indexN < indexR) index = indexN + 1;");
+                WriteLine("else index = indexR + 1;");
+                DecIndent();
+                WriteLine("}");
+                WriteLine("else if (indexN >= 0)");
+                WriteLine("{");
+                IncIndent();
+                WriteLine("index = indexN + 1;");
+                DecIndent();
+                WriteLine("}");
+                WriteLine("var result = _code.Slice(0, index);");
+                WriteLine("_code = _code.Slice(index);");
+                WriteLine("return result;");
+                DecIndent();
+                WriteLine("}");
+                DecIndent();
+                WriteLine("}");
+            }
             DecIndent();
             WriteLine("}");
             DecIndent();
@@ -555,26 +607,30 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
 
         public override object VisitGeneratorDeclaration(MetaGeneratorParser.GeneratorDeclarationContext context)
         {
+            this.standalone = context.KStandalone() != null;
             string name = context.identifier().GetText();
-            WriteLine("using __Hidden_{0};", name);
-            WriteLine("namespace __Hidden_{0}", name);
-            WriteLine("{");
-            IncIndent();
-            WriteLine("internal static class __Extensions");
-            WriteLine("{");
-            IncIndent();
-            WriteLine("internal static IEnumerator<T> GetEnumerator<T>(this T item)");
-            WriteLine("{");
-            IncIndent();
-            WriteLine("if (item == null) return new List<T>().GetEnumerator();");
-            WriteLine("else return new List<T> { item }.GetEnumerator();");
-            DecIndent();
-            WriteLine("}");
-            DecIndent();
-            WriteLine("}");
-            DecIndent();
-            WriteLine("}");
-            WriteLine();
+            if (this.standalone)
+            {
+                WriteLine("using __Hidden_{0};", name);
+                WriteLine("namespace __Hidden_{0}", name);
+                WriteLine("{");
+                IncIndent();
+                WriteLine("internal static class __Extensions");
+                WriteLine("{");
+                IncIndent();
+                WriteLine("internal static IEnumerator<T> GetEnumerator<T>(this T item)");
+                WriteLine("{");
+                IncIndent();
+                WriteLine("if (item == null) return new List<T>().GetEnumerator();");
+                WriteLine("else return new List<T> { item }.GetEnumerator();");
+                DecIndent();
+                WriteLine("}");
+                DecIndent();
+                WriteLine("}");
+                DecIndent();
+                WriteLine("}");
+                WriteLine();
+            }
             this.GenerateExtensionsInterface(name);
             WriteLine();
             string baseType = string.Empty;
@@ -621,17 +677,6 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
                 WriteLine("}");
                 WriteLine();
             }
-            WriteLine("private Stream __ToStream(string text)");
-            WriteLine("{");
-            IncIndent();
-            WriteLine("MemoryStream stream = new MemoryStream();");
-            WriteLine("StreamWriter writer = new StreamWriter(stream);");
-            WriteLine("writer.Write(text);");
-            WriteLine("writer.Flush();");
-            WriteLine("stream.Position = 0;");
-            WriteLine("return stream;");
-            DecIndent();
-            WriteLine("}");
             WriteLine();
             WriteLine("private static IEnumerable<T> __Enumerate<T>(IEnumerator<T> items)");
             WriteLine("{");
@@ -899,10 +944,12 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
             Visit(context.templateSignature());
             WriteLine("{");
             IncIndent();
-            WriteLine("StringBuilder __out = new StringBuilder();");
+            if (this.standalone) WriteLine("CodeBuilder __out = new CodeBuilder();");
+            else WriteLine("CodeBuilder __out = CodeBuilder.GetInstance();");
             tmpCounter = 0;
             Visit(context.templateBody());
-            WriteLine("return __out.ToString();");
+            if (this.standalone) WriteLine("return __out.ToString();");
+            else WriteLine("return __out.ToStringAndFree();");
             DecIndent();
             WriteLine("}");
             WriteLine();
@@ -1584,16 +1631,15 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
                             if (IsTemplateOutputExpression(statement))
                             {
                                 closeBraces = true;
-                                WriteLine("StringBuilder {0} = new StringBuilder();", tmp);
+                                if (this.standalone) WriteLine("CodeBuilder {0} = new CodeBuilder();", tmp);
+                                else WriteLine("CodeBuilder {0} = CodeBuilder.GetInstance();", tmp);
                                 VisitTemplateStatement(statement.templateStatement(), tmp);
-                                WriteLine("using(StreamReader {0}Reader = new StreamReader(this.__ToStream({0}.ToString())))", tmp);
-                                WriteLine("{");
-                                IncIndent();
+                                WriteLine("CodeReader {0}Reader = new CodeReader({0}.ToStringAndFree());", tmp);
                                 WriteLine("bool {0}_last = {0}Reader.EndOfStream;", tmp);
                                 WriteLine("while(!{0}_last)", tmp);
                                 WriteLine("{");
                                 IncIndent();
-                                WriteLine("string {0}_line = {0}Reader.ReadLine();", tmp);
+                                WriteLine("ReadOnlySpan<char> {0}_line = {0}Reader.ReadLine();", tmp);
                                 WriteLine("{0}_last = {0}Reader.EndOfStream;", tmp);
                                 hasOutput = true;
                             }
@@ -1608,7 +1654,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
                         WriteLine("if (!string.IsNullOrEmpty({0}))", prefix);
                         WriteLine("{");
                         IncIndent();
-                        WriteLine("__out.Append({0});", prefix);
+                        WriteLine("__out.Write({0});", prefix);
                         if (!forceNewLine && !noNewLine)
                         {
                             WriteLine("{0} = true;", outputWrittenTmp);
@@ -1620,7 +1666,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
                     {
                         if (closeBraces)
                         {
-                            WriteLine("if (({0}_last && !string.IsNullOrEmpty({0}_line)) || (!{0}_last && {0}_line != null))", tmp);
+                            WriteLine("if (!{0}_last || !{0}_line.IsEmpty)", tmp);
                         }
                         else
                         {
@@ -1628,7 +1674,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
                         }
                         WriteLine("{");
                         IncIndent();
-                        WriteLine("__out.Append({0}_line);", tmp);
+                        WriteLine("__out.Write({0}_line);", tmp);
                         if (!forceNewLine && !noNewLine)
                         {
                             WriteLine("{0} = true;", outputWrittenTmp);
@@ -1670,8 +1716,6 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
                         {
                             DecIndent();
                             WriteLine("}");
-                            DecIndent();
-                            WriteLine("}");
                         }
                     }
                     if (i == endIndex)
@@ -1711,11 +1755,11 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
         {
             if (this.processTemplateOutput)
             {
-                WriteLine("{0}.Append(this.ProcessTemplateOutput(\"{1}\")); {2}", output, EscapeText(context.LTemplateOutput().GetText()), context.ToComment());
+                WriteLine("{0}.Write(this.ProcessTemplateOutput(\"{1}\")); {2}", output, EscapeText(context.LTemplateOutput().GetText()), context.ToComment());
             }
             else
             {
-                WriteLine("{0}.Append(\"{1}\"); {2}", output, EscapeText(context.LTemplateOutput().GetText()), context.ToComment());
+                WriteLine("{0}.Write(\"{1}\"); {2}", output, EscapeText(context.LTemplateOutput().GetText()), context.ToComment());
             }
             return null;
         }
@@ -1740,7 +1784,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
             {
                 string lineBreakText = context.LTemplateLineBreak().GetText();
                 string force = lineBreakText.StartsWith("^") ? "true" : "false";
-                if (!context.LTemplateLineBreak().GetText().StartsWith("\\"))
+                if (!lineBreakText.StartsWith("\\"))
                 {
                     WriteLine("{0}.AppendLine({2}); {1}", output, context.ToComment(), force);
                 }
@@ -1749,7 +1793,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
             {
                 string lineBreakText = context.LTemplateLineControl().GetText();
                 string force = lineBreakText.StartsWith("^") ? "true" : "false";
-                if (!context.LTemplateLineControl().GetText().StartsWith("\\"))
+                if (!lineBreakText.StartsWith("\\"))
                 {
                     WriteLine("{0}.AppendLine({2}); {1}", output, context.ToComment(), force);
                 }
@@ -1779,11 +1823,11 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
                     WriteIndent();
                     if (this.processTemplateOutput)
                     {
-                        Write("{0}.Append(this.ProcessTemplateOutput(", output);
+                        Write("{0}.Write(this.ProcessTemplateOutput(", output);
                     }
                     else
                     {
-                        Write("{0}.Append(", output);
+                        Write("{0}.Write(", output);
                     }
                     Visit(expression);
                     if (this.processTemplateOutput)

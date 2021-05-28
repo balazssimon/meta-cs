@@ -19,6 +19,7 @@ channels
 // Keywords
                                                            
 KNamespace : 'namespace';
+KStandalone : 'standalone';
 KGenerator : 'generator';
 KUsing : 'using';
 KConfiguration : 'configuration';

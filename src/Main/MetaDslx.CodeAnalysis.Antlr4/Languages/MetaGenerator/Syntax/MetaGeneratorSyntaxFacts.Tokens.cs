@@ -69,6 +69,7 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 			{
 				case MetaGeneratorTokensSyntaxKind.Eof:
 				case MetaGeneratorTokensSyntaxKind.KNamespace:
+				case MetaGeneratorTokensSyntaxKind.KStandalone:
 				case MetaGeneratorTokensSyntaxKind.KGenerator:
 				case MetaGeneratorTokensSyntaxKind.KUsing:
 				case MetaGeneratorTokensSyntaxKind.KConfiguration:
@@ -210,6 +211,7 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 			switch (kind.Switch())
 			{
 				case MetaGeneratorTokensSyntaxKind.KNamespace:
+				case MetaGeneratorTokensSyntaxKind.KStandalone:
 				case MetaGeneratorTokensSyntaxKind.KGenerator:
 				case MetaGeneratorTokensSyntaxKind.KUsing:
 				case MetaGeneratorTokensSyntaxKind.KConfiguration:
@@ -321,6 +323,8 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 			{
 				case "namespace":
 					return MetaGeneratorTokensSyntaxKind.KNamespace;
+				case "standalone":
+					return MetaGeneratorTokensSyntaxKind.KStandalone;
 				case "generator":
 					return MetaGeneratorTokensSyntaxKind.KGenerator;
 				case "using":
@@ -530,6 +534,8 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 			{
 				case MetaGeneratorTokensSyntaxKind.KNamespace:
 					return "namespace";
+				case MetaGeneratorTokensSyntaxKind.KStandalone:
+					return "standalone";
 				case MetaGeneratorTokensSyntaxKind.KGenerator:
 					return "generator";
 				case MetaGeneratorTokensSyntaxKind.KUsing:
@@ -743,6 +749,7 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 			switch(kind.Switch())
 			{
 				case MetaGeneratorTokensSyntaxKind.KNamespace:
+				case MetaGeneratorTokensSyntaxKind.KStandalone:
 				case MetaGeneratorTokensSyntaxKind.KGenerator:
 				case MetaGeneratorTokensSyntaxKind.KUsing:
 				case MetaGeneratorTokensSyntaxKind.KConfiguration:
@@ -943,6 +950,7 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 			switch(kind.Switch())
 			{
 				case MetaGeneratorTokensSyntaxKind.KNamespace:
+				case MetaGeneratorTokensSyntaxKind.KStandalone:
 				case MetaGeneratorTokensSyntaxKind.KGenerator:
 				case MetaGeneratorTokensSyntaxKind.KUsing:
 				case MetaGeneratorTokensSyntaxKind.KConfiguration:
@@ -1005,6 +1013,7 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
         public override IEnumerable<SyntaxKind> GetReservedKeywordKinds()
         {
 				yield return MetaGeneratorTokensSyntaxKind.KNamespace;
+				yield return MetaGeneratorTokensSyntaxKind.KStandalone;
 				yield return MetaGeneratorTokensSyntaxKind.KGenerator;
 				yield return MetaGeneratorTokensSyntaxKind.KUsing;
 				yield return MetaGeneratorTokensSyntaxKind.KConfiguration;
@@ -1064,6 +1073,8 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 			{
 				case "namespace":
 					return MetaGeneratorTokensSyntaxKind.KNamespace;
+				case "standalone":
+					return MetaGeneratorTokensSyntaxKind.KStandalone;
 				case "generator":
 					return MetaGeneratorTokensSyntaxKind.KGenerator;
 				case "using":
