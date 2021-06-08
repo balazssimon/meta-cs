@@ -80,7 +80,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
 
         public string Generate() //13:1
         {
-            CodeBuilder __out = CodeBuilder.GetInstance();
+            var __out = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __out.Write("using System;"); //14:1
             __out.AppendLine(false); //14:14
             __out.Write("using System.Collections.Generic;"); //15:1
@@ -109,9 +109,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 var __loop1_var1 = __tmp1.__loop1_var1;
                 var mm = __tmp1.mm;
                 bool __tmp3_outputWritten = false;
-                CodeBuilder __tmp4 = CodeBuilder.GetInstance();
+                var __tmp4 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp4.Write(GenerateMetamodel(mm));
-                CodeReader __tmp4Reader = new CodeReader(__tmp4.ToStringAndFree());
+                var __tmp4Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp4.ToStringAndFree());
                 bool __tmp4_last = __tmp4Reader.EndOfStream;
                 while(!__tmp4_last)
                 {
@@ -134,7 +134,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
 
         public string GenerateImplementation() //29:1
         {
-            CodeBuilder __out = CodeBuilder.GetInstance();
+            var __out = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __out.Write("using System;"); //30:1
             __out.AppendLine(false); //30:14
             __out.Write("using System.Collections.Generic;"); //31:1
@@ -163,9 +163,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 var __loop2_var1 = __tmp1.__loop2_var1;
                 var mm = __tmp1.mm;
                 bool __tmp3_outputWritten = false;
-                CodeBuilder __tmp4 = CodeBuilder.GetInstance();
+                var __tmp4 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp4.Write(GenerateMetamodelImplementation(mm));
-                CodeReader __tmp4Reader = new CodeReader(__tmp4.ToStringAndFree());
+                var __tmp4Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp4.ToStringAndFree());
                 bool __tmp4_last = __tmp4Reader.EndOfStream;
                 while(!__tmp4_last)
                 {
@@ -283,7 +283,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
 
         public string GenerateDocumentation(MetaDocumentedElement elem) //64:1
         {
-            CodeBuilder __out = CodeBuilder.GetInstance();
+            var __out = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             var lines = elem.GetDocumentationLines(); //65:2
             if (lines.Count > 0) //66:2
             {
@@ -302,9 +302,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp4_line);
                         __tmp3_outputWritten = true;
                     }
-                    CodeBuilder __tmp5 = CodeBuilder.GetInstance();
+                    var __tmp5 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp5.Write(line);
-                    CodeReader __tmp5Reader = new CodeReader(__tmp5.ToStringAndFree());
+                    var __tmp5Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp5.ToStringAndFree());
                     bool __tmp5_last = __tmp5Reader.EndOfStream;
                     while(!__tmp5_last)
                     {
@@ -328,7 +328,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
 
         public string GenerateAttributes(MetaElement elem) //73:1
         {
-            CodeBuilder __out = CodeBuilder.GetInstance();
+            var __out = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             var __loop4_results = 
                 (from __loop4_var1 in __Enumerate((elem).GetEnumerator()) //74:7
                 from attr in __Enumerate((__loop4_var1.Attributes).GetEnumerator()) //74:13
@@ -340,9 +340,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 var __loop4_var1 = __tmp1.__loop4_var1;
                 var attr = __tmp1.attr;
                 bool __tmp3_outputWritten = false;
-                CodeBuilder __tmp4 = CodeBuilder.GetInstance();
+                var __tmp4 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp4.Write("[");
-                CodeReader __tmp4Reader = new CodeReader(__tmp4.ToStringAndFree());
+                var __tmp4Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp4.ToStringAndFree());
                 bool __tmp4_last = __tmp4Reader.EndOfStream;
                 while(!__tmp4_last)
                 {
@@ -355,9 +355,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     }
                     if (!__tmp4_last) __out.AppendLine(true);
                 }
-                CodeBuilder __tmp5 = CodeBuilder.GetInstance();
+                var __tmp5 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp5.Write(GetAttributeName(elem, attr));
-                CodeReader __tmp5Reader = new CodeReader(__tmp5.ToStringAndFree());
+                var __tmp5Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp5.ToStringAndFree());
                 bool __tmp5_last = __tmp5Reader.EndOfStream;
                 while(!__tmp5_last)
                 {
@@ -370,9 +370,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     }
                     if (!__tmp5_last) __out.AppendLine(true);
                 }
-                CodeBuilder __tmp6 = CodeBuilder.GetInstance();
+                var __tmp6 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp6.Write("]");
-                CodeReader __tmp6Reader = new CodeReader(__tmp6.ToStringAndFree());
+                var __tmp6Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp6.ToStringAndFree());
                 bool __tmp6_last = __tmp6Reader.EndOfStream;
                 while(!__tmp6_last)
                 {
@@ -395,7 +395,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
 
         public string GenerateMetamodel(MetaModel model) //79:1
         {
-            CodeBuilder __out = CodeBuilder.GetInstance();
+            var __out = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             bool __tmp2_outputWritten = false;
             string __tmp3_line = "namespace "; //80:1
             if (!string.IsNullOrEmpty(__tmp3_line))
@@ -403,9 +403,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp3_line);
                 __tmp2_outputWritten = true;
             }
-            CodeBuilder __tmp4 = CodeBuilder.GetInstance();
+            var __tmp4 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp4.Write(CSharpName(model.Namespace, NamespaceKind.Public, true));
-            CodeReader __tmp4Reader = new CodeReader(__tmp4.ToStringAndFree());
+            var __tmp4Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp4.ToStringAndFree());
             bool __tmp4_last = __tmp4Reader.EndOfStream;
             while(!__tmp4_last)
             {
@@ -431,9 +431,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp7_line);
                 __tmp6_outputWritten = true;
             }
-            CodeBuilder __tmp8 = CodeBuilder.GetInstance();
+            var __tmp8 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp8.Write(CSharpName(model.Namespace, NamespaceKind.Internal, true));
-            CodeReader __tmp8Reader = new CodeReader(__tmp8.ToStringAndFree());
+            var __tmp8Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp8.ToStringAndFree());
             bool __tmp8_last = __tmp8Reader.EndOfStream;
             while(!__tmp8_last)
             {
@@ -460,9 +460,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             __out.AppendLine(true); //83:1
             bool __tmp11_outputWritten = false;
             string __tmp10Prefix = "	"; //84:1
-            CodeBuilder __tmp12 = CodeBuilder.GetInstance();
+            var __tmp12 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp12.Write(GenerateMetaModel(model));
-            CodeReader __tmp12Reader = new CodeReader(__tmp12.ToStringAndFree());
+            var __tmp12Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp12.ToStringAndFree());
             bool __tmp12_last = __tmp12Reader.EndOfStream;
             while(!__tmp12_last)
             {
@@ -487,9 +487,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             __out.AppendLine(true); //85:1
             bool __tmp14_outputWritten = false;
             string __tmp13Prefix = "	"; //86:1
-            CodeBuilder __tmp15 = CodeBuilder.GetInstance();
+            var __tmp15 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp15.Write(GenerateMetaModelInstance(model));
-            CodeReader __tmp15Reader = new CodeReader(__tmp15.ToStringAndFree());
+            var __tmp15Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp15.ToStringAndFree());
             bool __tmp15_last = __tmp15Reader.EndOfStream;
             while(!__tmp15_last)
             {
@@ -514,9 +514,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             __out.AppendLine(true); //87:1
             bool __tmp17_outputWritten = false;
             string __tmp16Prefix = "	"; //88:1
-            CodeBuilder __tmp18 = CodeBuilder.GetInstance();
+            var __tmp18 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp18.Write(GenerateFactory(model));
-            CodeReader __tmp18Reader = new CodeReader(__tmp18.ToStringAndFree());
+            var __tmp18Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp18.ToStringAndFree());
             bool __tmp18_last = __tmp18Reader.EndOfStream;
             while(!__tmp18_last)
             {
@@ -551,9 +551,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 var enm = __tmp19.enm;
                 bool __tmp21_outputWritten = false;
                 string __tmp20Prefix = "	"; //91:1
-                CodeBuilder __tmp22 = CodeBuilder.GetInstance();
+                var __tmp22 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp22.Write(GenerateEnum(model, enm));
-                CodeReader __tmp22Reader = new CodeReader(__tmp22.ToStringAndFree());
+                var __tmp22Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp22.ToStringAndFree());
                 bool __tmp22_last = __tmp22Reader.EndOfStream;
                 while(!__tmp22_last)
                 {
@@ -588,9 +588,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 var cls = __tmp23.cls;
                 bool __tmp25_outputWritten = false;
                 string __tmp24Prefix = "	"; //94:1
-                CodeBuilder __tmp26 = CodeBuilder.GetInstance();
+                var __tmp26 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp26.Write(GenerateClass(model, cls));
-                CodeReader __tmp26Reader = new CodeReader(__tmp26.ToStringAndFree());
+                var __tmp26Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp26.ToStringAndFree());
                 bool __tmp26_last = __tmp26Reader.EndOfStream;
                 while(!__tmp26_last)
                 {
@@ -616,9 +616,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             __out.AppendLine(true); //96:1
             bool __tmp28_outputWritten = false;
             string __tmp27Prefix = "	"; //97:1
-            CodeBuilder __tmp29 = CodeBuilder.GetInstance();
+            var __tmp29 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp29.Write(GenerateMetaModelDescriptor(model));
-            CodeReader __tmp29Reader = new CodeReader(__tmp29.ToStringAndFree());
+            var __tmp29Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp29.ToStringAndFree());
             bool __tmp29_last = __tmp29Reader.EndOfStream;
             while(!__tmp29_last)
             {
@@ -650,9 +650,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp32_line);
                 __tmp31_outputWritten = true;
             }
-            CodeBuilder __tmp33 = CodeBuilder.GetInstance();
+            var __tmp33 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp33.Write(CSharpName(model.Namespace, NamespaceKind.Internal, true));
-            CodeReader __tmp33Reader = new CodeReader(__tmp33.ToStringAndFree());
+            var __tmp33Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp33.ToStringAndFree());
             bool __tmp33_last = __tmp33Reader.EndOfStream;
             while(!__tmp33_last)
             {
@@ -683,9 +683,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 var cls = __tmp34.cls;
                 bool __tmp36_outputWritten = false;
                 string __tmp35Prefix = "	"; //103:1
-                CodeBuilder __tmp37 = CodeBuilder.GetInstance();
+                var __tmp37 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp37.Write(GenerateClassInternal(model, cls));
-                CodeReader __tmp37Reader = new CodeReader(__tmp37.ToStringAndFree());
+                var __tmp37Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp37.ToStringAndFree());
                 bool __tmp37_last = __tmp37Reader.EndOfStream;
                 while(!__tmp37_last)
                 {
@@ -711,9 +711,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             __out.AppendLine(true); //105:1
             bool __tmp39_outputWritten = false;
             string __tmp38Prefix = "	"; //106:1
-            CodeBuilder __tmp40 = CodeBuilder.GetInstance();
+            var __tmp40 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp40.Write(GenerateMetaModelBuilderInstance(model));
-            CodeReader __tmp40Reader = new CodeReader(__tmp40.ToStringAndFree());
+            var __tmp40Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp40.ToStringAndFree());
             bool __tmp40_last = __tmp40Reader.EndOfStream;
             while(!__tmp40_last)
             {
@@ -738,9 +738,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             __out.AppendLine(true); //107:1
             bool __tmp42_outputWritten = false;
             string __tmp41Prefix = "	"; //108:1
-            CodeBuilder __tmp43 = CodeBuilder.GetInstance();
+            var __tmp43 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp43.Write(GenerateImplementationBase(model));
-            CodeReader __tmp43Reader = new CodeReader(__tmp43.ToStringAndFree());
+            var __tmp43Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp43.ToStringAndFree());
             bool __tmp43_last = __tmp43Reader.EndOfStream;
             while(!__tmp43_last)
             {
@@ -765,9 +765,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             __out.AppendLine(true); //109:1
             bool __tmp45_outputWritten = false;
             string __tmp44Prefix = "	"; //110:1
-            CodeBuilder __tmp46 = CodeBuilder.GetInstance();
+            var __tmp46 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp46.Write(GenerateImplementationProvider(model));
-            CodeReader __tmp46Reader = new CodeReader(__tmp46.ToStringAndFree());
+            var __tmp46Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp46.ToStringAndFree());
             bool __tmp46_last = __tmp46Reader.EndOfStream;
             while(!__tmp46_last)
             {
@@ -796,7 +796,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
 
         public string GenerateMetamodelImplementation(MetaModel model) //114:1
         {
-            CodeBuilder __out = CodeBuilder.GetInstance();
+            var __out = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __out.AppendLine(true); //115:1
             bool __tmp2_outputWritten = false;
             string __tmp3_line = "namespace "; //116:1
@@ -805,9 +805,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp3_line);
                 __tmp2_outputWritten = true;
             }
-            CodeBuilder __tmp4 = CodeBuilder.GetInstance();
+            var __tmp4 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp4.Write(CSharpName(model.Namespace, NamespaceKind.Internal, true));
-            CodeReader __tmp4Reader = new CodeReader(__tmp4.ToStringAndFree());
+            var __tmp4Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp4.ToStringAndFree());
             bool __tmp4_last = __tmp4Reader.EndOfStream;
             while(!__tmp4_last)
             {
@@ -828,9 +828,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             __out.AppendLine(false); //117:2
             bool __tmp6_outputWritten = false;
             string __tmp5Prefix = "	"; //118:1
-            CodeBuilder __tmp7 = CodeBuilder.GetInstance();
+            var __tmp7 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp7.Write(GenerateImplementation(model));
-            CodeReader __tmp7Reader = new CodeReader(__tmp7.ToStringAndFree());
+            var __tmp7Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp7.ToStringAndFree());
             bool __tmp7_last = __tmp7Reader.EndOfStream;
             while(!__tmp7_last)
             {
@@ -859,7 +859,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
 
         public string GenerateMetaModel(MetaModel model) //122:1
         {
-            CodeBuilder __out = CodeBuilder.GetInstance();
+            var __out = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             string metaNs = IsMetaMetaModel(model) ? "" : Properties.MetaNs + "."; //123:2
             bool __tmp2_outputWritten = false;
             string __tmp3_line = "internal class "; //124:1
@@ -868,9 +868,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp3_line);
                 __tmp2_outputWritten = true;
             }
-            CodeBuilder __tmp4 = CodeBuilder.GetInstance();
+            var __tmp4 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp4.Write(CSharpName(model, ModelKind.MetaModel));
-            CodeReader __tmp4Reader = new CodeReader(__tmp4.ToStringAndFree());
+            var __tmp4Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp4.ToStringAndFree());
             bool __tmp4_last = __tmp4Reader.EndOfStream;
             while(!__tmp4_last)
             {
@@ -889,9 +889,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp5_line);
                 __tmp2_outputWritten = true;
             }
-            CodeBuilder __tmp6 = CodeBuilder.GetInstance();
+            var __tmp6 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp6.Write(Properties.CoreNs);
-            CodeReader __tmp6Reader = new CodeReader(__tmp6.ToStringAndFree());
+            var __tmp6Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp6.ToStringAndFree());
             bool __tmp6_last = __tmp6Reader.EndOfStream;
             while(!__tmp6_last)
             {
@@ -924,9 +924,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp10_line);
                 __tmp9_outputWritten = true;
             }
-            CodeBuilder __tmp11 = CodeBuilder.GetInstance();
+            var __tmp11 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp11.Write(CSharpName(model, ModelKind.MetaModel));
-            CodeReader __tmp11Reader = new CodeReader(__tmp11.ToStringAndFree());
+            var __tmp11Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp11.ToStringAndFree());
             bool __tmp11_last = __tmp11Reader.EndOfStream;
             while(!__tmp11_last)
             {
@@ -962,9 +962,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp15_line);
                 __tmp14_outputWritten = true;
             }
-            CodeBuilder __tmp16 = CodeBuilder.GetInstance();
+            var __tmp16 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp16.Write(Properties.CoreNs);
-            CodeReader __tmp16Reader = new CodeReader(__tmp16.ToStringAndFree());
+            var __tmp16Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp16.ToStringAndFree());
             bool __tmp16_last = __tmp16Reader.EndOfStream;
             while(!__tmp16_last)
             {
@@ -983,9 +983,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp17_line);
                 __tmp14_outputWritten = true;
             }
-            CodeBuilder __tmp18 = CodeBuilder.GetInstance();
+            var __tmp18 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp18.Write(CSharpName(model, ModelKind.ImmutableInstance));
-            CodeReader __tmp18Reader = new CodeReader(__tmp18.ToStringAndFree());
+            var __tmp18Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp18.ToStringAndFree());
             bool __tmp18_last = __tmp18Reader.EndOfStream;
             while(!__tmp18_last)
             {
@@ -1016,9 +1016,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp22_line);
                 __tmp21_outputWritten = true;
             }
-            CodeBuilder __tmp23 = CodeBuilder.GetInstance();
+            var __tmp23 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp23.Write(model.Name);
-            CodeReader __tmp23Reader = new CodeReader(__tmp23.ToStringAndFree());
+            var __tmp23Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp23.ToStringAndFree());
             bool __tmp23_last = __tmp23Reader.EndOfStream;
             while(!__tmp23_last)
             {
@@ -1049,9 +1049,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp27_line);
                 __tmp26_outputWritten = true;
             }
-            CodeBuilder __tmp28 = CodeBuilder.GetInstance();
+            var __tmp28 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp28.Write(Properties.CoreNs);
-            CodeReader __tmp28Reader = new CodeReader(__tmp28.ToStringAndFree());
+            var __tmp28Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp28.ToStringAndFree());
             bool __tmp28_last = __tmp28Reader.EndOfStream;
             while(!__tmp28_last)
             {
@@ -1070,9 +1070,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp29_line);
                 __tmp26_outputWritten = true;
             }
-            CodeBuilder __tmp30 = CodeBuilder.GetInstance();
+            var __tmp30 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp30.Write(CSharpName(model, ModelKind.ImmutableInstance));
-            CodeReader __tmp30Reader = new CodeReader(__tmp30.ToStringAndFree());
+            var __tmp30Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp30.ToStringAndFree());
             bool __tmp30_last = __tmp30Reader.EndOfStream;
             while(!__tmp30_last)
             {
@@ -1103,9 +1103,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp34_line);
                 __tmp33_outputWritten = true;
             }
-            CodeBuilder __tmp35 = CodeBuilder.GetInstance();
+            var __tmp35 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp35.Write(CSharpName(model, ModelKind.ImmutableInstance));
-            CodeReader __tmp35Reader = new CodeReader(__tmp35.ToStringAndFree());
+            var __tmp35Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp35.ToStringAndFree());
             bool __tmp35_last = __tmp35Reader.EndOfStream;
             while(!__tmp35_last)
             {
@@ -1136,9 +1136,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp39_line);
                 __tmp38_outputWritten = true;
             }
-            CodeBuilder __tmp40 = CodeBuilder.GetInstance();
+            var __tmp40 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp40.Write(model.Uri);
-            CodeReader __tmp40Reader = new CodeReader(__tmp40.ToStringAndFree());
+            var __tmp40Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp40.ToStringAndFree());
             bool __tmp40_last = __tmp40Reader.EndOfStream;
             while(!__tmp40_last)
             {
@@ -1169,9 +1169,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp44_line);
                 __tmp43_outputWritten = true;
             }
-            CodeBuilder __tmp45 = CodeBuilder.GetInstance();
+            var __tmp45 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp45.Write(model.Prefix);
-            CodeReader __tmp45Reader = new CodeReader(__tmp45.ToStringAndFree());
+            var __tmp45Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp45.ToStringAndFree());
             bool __tmp45_last = __tmp45Reader.EndOfStream;
             while(!__tmp45_last)
             {
@@ -1202,9 +1202,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp49_line);
                 __tmp48_outputWritten = true;
             }
-            CodeBuilder __tmp50 = CodeBuilder.GetInstance();
+            var __tmp50 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp50.Write(Properties.CoreNs);
-            CodeReader __tmp50Reader = new CodeReader(__tmp50.ToStringAndFree());
+            var __tmp50Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp50.ToStringAndFree());
             bool __tmp50_last = __tmp50Reader.EndOfStream;
             while(!__tmp50_last)
             {
@@ -1223,9 +1223,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp51_line);
                 __tmp48_outputWritten = true;
             }
-            CodeBuilder __tmp52 = CodeBuilder.GetInstance();
+            var __tmp52 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp52.Write(CSharpName(model, ModelKind.ImmutableInstance));
-            CodeReader __tmp52Reader = new CodeReader(__tmp52.ToStringAndFree());
+            var __tmp52Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp52.ToStringAndFree());
             bool __tmp52_last = __tmp52Reader.EndOfStream;
             while(!__tmp52_last)
             {
@@ -1256,9 +1256,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp56_line);
                 __tmp55_outputWritten = true;
             }
-            CodeBuilder __tmp57 = CodeBuilder.GetInstance();
+            var __tmp57 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp57.Write(CSharpName(model.Namespace, NamespaceKind.Public, true));
-            CodeReader __tmp57Reader = new CodeReader(__tmp57.ToStringAndFree());
+            var __tmp57Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp57.ToStringAndFree());
             bool __tmp57_last = __tmp57Reader.EndOfStream;
             while(!__tmp57_last)
             {
@@ -1290,9 +1290,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp61_line);
                 __tmp60_outputWritten = true;
             }
-            CodeBuilder __tmp62 = CodeBuilder.GetInstance();
+            var __tmp62 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp62.Write(Properties.CoreNs);
-            CodeReader __tmp62Reader = new CodeReader(__tmp62.ToStringAndFree());
+            var __tmp62Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp62.ToStringAndFree());
             bool __tmp62_last = __tmp62Reader.EndOfStream;
             while(!__tmp62_last)
             {
@@ -1311,9 +1311,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp63_line);
                 __tmp60_outputWritten = true;
             }
-            CodeBuilder __tmp64 = CodeBuilder.GetInstance();
+            var __tmp64 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp64.Write(Properties.CoreNs);
-            CodeReader __tmp64Reader = new CodeReader(__tmp64.ToStringAndFree());
+            var __tmp64Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp64.ToStringAndFree());
             bool __tmp64_last = __tmp64Reader.EndOfStream;
             while(!__tmp64_last)
             {
@@ -1332,9 +1332,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp65_line);
                 __tmp60_outputWritten = true;
             }
-            CodeBuilder __tmp66 = CodeBuilder.GetInstance();
+            var __tmp66 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp66.Write(Properties.CoreNs);
-            CodeReader __tmp66Reader = new CodeReader(__tmp66.ToStringAndFree());
+            var __tmp66Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp66.ToStringAndFree());
             bool __tmp66_last = __tmp66Reader.EndOfStream;
             while(!__tmp66_last)
             {
@@ -1353,9 +1353,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp67_line);
                 __tmp60_outputWritten = true;
             }
-            CodeBuilder __tmp68 = CodeBuilder.GetInstance();
+            var __tmp68 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp68.Write(Properties.CoreNs);
-            CodeReader __tmp68Reader = new CodeReader(__tmp68.ToStringAndFree());
+            var __tmp68Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp68.ToStringAndFree());
             bool __tmp68_last = __tmp68Reader.EndOfStream;
             while(!__tmp68_last)
             {
@@ -1388,9 +1388,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp72_line);
                 __tmp71_outputWritten = true;
             }
-            CodeBuilder __tmp73 = CodeBuilder.GetInstance();
+            var __tmp73 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp73.Write(CSharpName(model, ModelKind.Factory));
-            CodeReader __tmp73Reader = new CodeReader(__tmp73.ToStringAndFree());
+            var __tmp73Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp73.ToStringAndFree());
             bool __tmp73_last = __tmp73Reader.EndOfStream;
             while(!__tmp73_last)
             {
@@ -1432,7 +1432,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
 
         public string GenerateMetaModelInstance(MetaModel model) //151:1
         {
-            CodeBuilder __out = CodeBuilder.GetInstance();
+            var __out = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             string metaNs = IsMetaMetaModel(model) ? "" : Properties.MetaNs + "."; //152:2
             bool metaMetaModel = IsMetaMetaModel(model); //153:2
             bool __tmp2_outputWritten = false;
@@ -1442,9 +1442,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp3_line);
                 __tmp2_outputWritten = true;
             }
-            CodeBuilder __tmp4 = CodeBuilder.GetInstance();
+            var __tmp4 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp4.Write(CSharpName(model, ModelKind.ImmutableInstance));
-            CodeReader __tmp4Reader = new CodeReader(__tmp4.ToStringAndFree());
+            var __tmp4Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp4.ToStringAndFree());
             bool __tmp4_last = __tmp4Reader.EndOfStream;
             while(!__tmp4_last)
             {
@@ -1477,9 +1477,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp7_line);
                 __tmp6_outputWritten = true;
             }
-            CodeBuilder __tmp8 = CodeBuilder.GetInstance();
+            var __tmp8 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp8.Write(CSharpName(model, ModelKind.ImmutableInstance));
-            CodeReader __tmp8Reader = new CodeReader(__tmp8.ToStringAndFree());
+            var __tmp8Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp8.ToStringAndFree());
             bool __tmp8_last = __tmp8Reader.EndOfStream;
             while(!__tmp8_last)
             {
@@ -1513,9 +1513,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp12_line);
                 __tmp11_outputWritten = true;
             }
-            CodeBuilder __tmp13 = CodeBuilder.GetInstance();
+            var __tmp13 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp13.Write(Properties.CoreNs);
-            CodeReader __tmp13Reader = new CodeReader(__tmp13.ToStringAndFree());
+            var __tmp13Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp13.ToStringAndFree());
             bool __tmp13_last = __tmp13Reader.EndOfStream;
             while(!__tmp13_last)
             {
@@ -1546,9 +1546,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp17_line);
                 __tmp16_outputWritten = true;
             }
-            CodeBuilder __tmp18 = CodeBuilder.GetInstance();
+            var __tmp18 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp18.Write(Properties.CoreNs);
-            CodeReader __tmp18Reader = new CodeReader(__tmp18.ToStringAndFree());
+            var __tmp18Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp18.ToStringAndFree());
             bool __tmp18_last = __tmp18Reader.EndOfStream;
             while(!__tmp18_last)
             {
@@ -1585,9 +1585,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 var cst = __tmp20.cst;
                 bool __tmp22_outputWritten = false;
                 string __tmp21Prefix = "	"; //167:1
-                CodeBuilder __tmp23 = CodeBuilder.GetInstance();
+                var __tmp23 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp23.Write(GenerateDocumentation(cst));
-                CodeReader __tmp23Reader = new CodeReader(__tmp23.ToStringAndFree());
+                var __tmp23Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp23.ToStringAndFree());
                 bool __tmp23_last = __tmp23Reader.EndOfStream;
                 while(!__tmp23_last)
                 {
@@ -1618,9 +1618,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp26_line);
                         __tmp25_outputWritten = true;
                     }
-                    CodeBuilder __tmp27 = CodeBuilder.GetInstance();
+                    var __tmp27 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp27.Write(CSharpName(cst.Type, model, ClassKind.Immutable));
-                    CodeReader __tmp27Reader = new CodeReader(__tmp27.ToStringAndFree());
+                    var __tmp27Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp27.ToStringAndFree());
                     bool __tmp27_last = __tmp27Reader.EndOfStream;
                     while(!__tmp27_last)
                     {
@@ -1639,9 +1639,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp28_line);
                         __tmp25_outputWritten = true;
                     }
-                    CodeBuilder __tmp29 = CodeBuilder.GetInstance();
+                    var __tmp29 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp29.Write(CSharpName(cst, model, ClassKind.ImmutableInstance));
-                    CodeReader __tmp29Reader = new CodeReader(__tmp29.ToStringAndFree());
+                    var __tmp29Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp29.ToStringAndFree());
                     bool __tmp29_last = __tmp29Reader.EndOfStream;
                     while(!__tmp29_last)
                     {
@@ -1675,9 +1675,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp33_line);
                         __tmp32_outputWritten = true;
                     }
-                    CodeBuilder __tmp34 = CodeBuilder.GetInstance();
+                    var __tmp34 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp34.Write(CSharpName(cst.Type, model, ClassKind.Immutable, true));
-                    CodeReader __tmp34Reader = new CodeReader(__tmp34.ToStringAndFree());
+                    var __tmp34Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp34.ToStringAndFree());
                     bool __tmp34_last = __tmp34Reader.EndOfStream;
                     while(!__tmp34_last)
                     {
@@ -1696,9 +1696,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp35_line);
                         __tmp32_outputWritten = true;
                     }
-                    CodeBuilder __tmp36 = CodeBuilder.GetInstance();
+                    var __tmp36 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp36.Write(CSharpName(cst, model, ClassKind.ImmutableInstance));
-                    CodeReader __tmp36Reader = new CodeReader(__tmp36.ToStringAndFree());
+                    var __tmp36Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp36.ToStringAndFree());
                     bool __tmp36_last = __tmp36Reader.EndOfStream;
                     while(!__tmp36_last)
                     {
@@ -1737,9 +1737,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 var cls = __tmp38.cls;
                 bool __tmp40_outputWritten = false;
                 string __tmp39Prefix = "	"; //176:1
-                CodeBuilder __tmp41 = CodeBuilder.GetInstance();
+                var __tmp41 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp41.Write(GenerateDocumentation(cls));
-                CodeReader __tmp41Reader = new CodeReader(__tmp41.ToStringAndFree());
+                var __tmp41Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp41.ToStringAndFree());
                 bool __tmp41_last = __tmp41Reader.EndOfStream;
                 while(!__tmp41_last)
                 {
@@ -1768,9 +1768,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp44_line);
                     __tmp43_outputWritten = true;
                 }
-                CodeBuilder __tmp45 = CodeBuilder.GetInstance();
+                var __tmp45 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp45.Write(metaNs);
-                CodeReader __tmp45Reader = new CodeReader(__tmp45.ToStringAndFree());
+                var __tmp45Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp45.ToStringAndFree());
                 bool __tmp45_last = __tmp45Reader.EndOfStream;
                 while(!__tmp45_last)
                 {
@@ -1789,9 +1789,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp46_line);
                     __tmp43_outputWritten = true;
                 }
-                CodeBuilder __tmp47 = CodeBuilder.GetInstance();
+                var __tmp47 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp47.Write(CSharpName(cls, model, ClassKind.ImmutableInstance));
-                CodeReader __tmp47Reader = new CodeReader(__tmp47.ToStringAndFree());
+                var __tmp47Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp47.ToStringAndFree());
                 bool __tmp47_last = __tmp47Reader.EndOfStream;
                 while(!__tmp47_last)
                 {
@@ -1827,9 +1827,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     var prop = __tmp49.prop;
                     bool __tmp51_outputWritten = false;
                     string __tmp50Prefix = "	"; //179:1
-                    CodeBuilder __tmp52 = CodeBuilder.GetInstance();
+                    var __tmp52 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp52.Write(GenerateDocumentation(prop));
-                    CodeReader __tmp52Reader = new CodeReader(__tmp52.ToStringAndFree());
+                    var __tmp52Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp52.ToStringAndFree());
                     bool __tmp52_last = __tmp52Reader.EndOfStream;
                     while(!__tmp52_last)
                     {
@@ -1858,9 +1858,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp55_line);
                         __tmp54_outputWritten = true;
                     }
-                    CodeBuilder __tmp56 = CodeBuilder.GetInstance();
+                    var __tmp56 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp56.Write(metaNs);
-                    CodeReader __tmp56Reader = new CodeReader(__tmp56.ToStringAndFree());
+                    var __tmp56Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp56.ToStringAndFree());
                     bool __tmp56_last = __tmp56Reader.EndOfStream;
                     while(!__tmp56_last)
                     {
@@ -1879,9 +1879,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp57_line);
                         __tmp54_outputWritten = true;
                     }
-                    CodeBuilder __tmp58 = CodeBuilder.GetInstance();
+                    var __tmp58 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp58.Write(CSharpName(prop, model, PropertyKind.ImmutableInstance));
-                    CodeReader __tmp58Reader = new CodeReader(__tmp58.ToStringAndFree());
+                    var __tmp58Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp58.ToStringAndFree());
                     bool __tmp58_last = __tmp58Reader.EndOfStream;
                     while(!__tmp58_last)
                     {
@@ -1915,9 +1915,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp62_line);
                 __tmp61_outputWritten = true;
             }
-            CodeBuilder __tmp63 = CodeBuilder.GetInstance();
+            var __tmp63 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp63.Write(CSharpName(model, ModelKind.ImmutableInstance));
-            CodeReader __tmp63Reader = new CodeReader(__tmp63.ToStringAndFree());
+            var __tmp63Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp63.ToStringAndFree());
             bool __tmp63_last = __tmp63Reader.EndOfStream;
             while(!__tmp63_last)
             {
@@ -1945,9 +1945,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             __out.AppendLine(false); //185:3
             bool __tmp66_outputWritten = false;
             string __tmp65Prefix = "		"; //186:1
-            CodeBuilder __tmp67 = CodeBuilder.GetInstance();
+            var __tmp67 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp67.Write(CSharpName(model, ModelKind.BuilderInstance));
-            CodeReader __tmp67Reader = new CodeReader(__tmp67.ToStringAndFree());
+            var __tmp67Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp67.ToStringAndFree());
             bool __tmp67_last = __tmp67Reader.EndOfStream;
             while(!__tmp67_last)
             {
@@ -1978,9 +1978,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             }
             bool __tmp70_outputWritten = false;
             string __tmp69Prefix = "		"; //187:1
-            CodeBuilder __tmp71 = CodeBuilder.GetInstance();
+            var __tmp71 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp71.Write(CSharpName(model, ModelKind.BuilderInstance));
-            CodeReader __tmp71Reader = new CodeReader(__tmp71.ToStringAndFree());
+            var __tmp71Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp71.ToStringAndFree());
             bool __tmp71_last = __tmp71Reader.EndOfStream;
             while(!__tmp71_last)
             {
@@ -2016,9 +2016,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp75_line);
                 __tmp74_outputWritten = true;
             }
-            CodeBuilder __tmp76 = CodeBuilder.GetInstance();
+            var __tmp76 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp76.Write(CSharpName(model, ModelKind.MetaModel));
-            CodeReader __tmp76Reader = new CodeReader(__tmp76.ToStringAndFree());
+            var __tmp76Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp76.ToStringAndFree());
             bool __tmp76_last = __tmp76Reader.EndOfStream;
             while(!__tmp76_last)
             {
@@ -2049,9 +2049,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp80_line);
                 __tmp79_outputWritten = true;
             }
-            CodeBuilder __tmp81 = CodeBuilder.GetInstance();
+            var __tmp81 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp81.Write(CSharpName(model, ModelKind.BuilderInstance));
-            CodeReader __tmp81Reader = new CodeReader(__tmp81.ToStringAndFree());
+            var __tmp81Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp81.ToStringAndFree());
             bool __tmp81_last = __tmp81Reader.EndOfStream;
             while(!__tmp81_last)
             {
@@ -2090,9 +2090,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 {
                     bool __tmp85_outputWritten = false;
                     string __tmp84Prefix = "		"; //193:1
-                    CodeBuilder __tmp86 = CodeBuilder.GetInstance();
+                    var __tmp86 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp86.Write(CSharpName(cst, model, ClassKind.ImmutableInstance));
-                    CodeReader __tmp86Reader = new CodeReader(__tmp86.ToStringAndFree());
+                    var __tmp86Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp86.ToStringAndFree());
                     bool __tmp86_last = __tmp86Reader.EndOfStream;
                     while(!__tmp86_last)
                     {
@@ -2116,9 +2116,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp87_line);
                         __tmp85_outputWritten = true;
                     }
-                    CodeBuilder __tmp88 = CodeBuilder.GetInstance();
+                    var __tmp88 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp88.Write(CSharpName(cst, model, ClassKind.BuilderInstance, true));
-                    CodeReader __tmp88Reader = new CodeReader(__tmp88.ToStringAndFree());
+                    var __tmp88Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp88.ToStringAndFree());
                     bool __tmp88_last = __tmp88Reader.EndOfStream;
                     while(!__tmp88_last)
                     {
@@ -2147,9 +2147,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 {
                     bool __tmp91_outputWritten = false;
                     string __tmp90Prefix = "		"; //195:1
-                    CodeBuilder __tmp92 = CodeBuilder.GetInstance();
+                    var __tmp92 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp92.Write(CSharpName(cst, model, ClassKind.ImmutableInstance));
-                    CodeReader __tmp92Reader = new CodeReader(__tmp92.ToStringAndFree());
+                    var __tmp92Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp92.ToStringAndFree());
                     bool __tmp92_last = __tmp92Reader.EndOfStream;
                     while(!__tmp92_last)
                     {
@@ -2173,9 +2173,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp93_line);
                         __tmp91_outputWritten = true;
                     }
-                    CodeBuilder __tmp94 = CodeBuilder.GetInstance();
+                    var __tmp94 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp94.Write(CSharpName(cst, model, ClassKind.BuilderInstance, true));
-                    CodeReader __tmp94Reader = new CodeReader(__tmp94.ToStringAndFree());
+                    var __tmp94Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp94.ToStringAndFree());
                     bool __tmp94_last = __tmp94Reader.EndOfStream;
                     while(!__tmp94_last)
                     {
@@ -2214,9 +2214,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 var cls = __tmp96.cls;
                 bool __tmp98_outputWritten = false;
                 string __tmp97Prefix = "		"; //200:1
-                CodeBuilder __tmp99 = CodeBuilder.GetInstance();
+                var __tmp99 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp99.Write(CSharpName(cls, model, ClassKind.ImmutableInstance));
-                CodeReader __tmp99Reader = new CodeReader(__tmp99.ToStringAndFree());
+                var __tmp99Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp99.ToStringAndFree());
                 bool __tmp99_last = __tmp99Reader.EndOfStream;
                 while(!__tmp99_last)
                 {
@@ -2240,9 +2240,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp100_line);
                     __tmp98_outputWritten = true;
                 }
-                CodeBuilder __tmp101 = CodeBuilder.GetInstance();
+                var __tmp101 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp101.Write(CSharpName(cls, model, ClassKind.BuilderInstance, true));
-                CodeReader __tmp101Reader = new CodeReader(__tmp101.ToStringAndFree());
+                var __tmp101Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp101.ToStringAndFree());
                 bool __tmp101_last = __tmp101Reader.EndOfStream;
                 while(!__tmp101_last)
                 {
@@ -2278,9 +2278,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     var prop = __tmp103.prop;
                     bool __tmp105_outputWritten = false;
                     string __tmp104Prefix = "		"; //202:1
-                    CodeBuilder __tmp106 = CodeBuilder.GetInstance();
+                    var __tmp106 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp106.Write(CSharpName(prop, model, PropertyKind.ImmutableInstance));
-                    CodeReader __tmp106Reader = new CodeReader(__tmp106.ToStringAndFree());
+                    var __tmp106Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp106.ToStringAndFree());
                     bool __tmp106_last = __tmp106Reader.EndOfStream;
                     while(!__tmp106_last)
                     {
@@ -2304,9 +2304,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp107_line);
                         __tmp105_outputWritten = true;
                     }
-                    CodeBuilder __tmp108 = CodeBuilder.GetInstance();
+                    var __tmp108 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp108.Write(CSharpName(prop, model, PropertyKind.BuilderInstance, true));
-                    CodeReader __tmp108Reader = new CodeReader(__tmp108.ToStringAndFree());
+                    var __tmp108Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp108.ToStringAndFree());
                     bool __tmp108_last = __tmp108Reader.EndOfStream;
                     while(!__tmp108_last)
                     {
@@ -2335,9 +2335,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             __out.AppendLine(true); //205:1
             bool __tmp111_outputWritten = false;
             string __tmp110Prefix = "		"; //206:1
-            CodeBuilder __tmp112 = CodeBuilder.GetInstance();
+            var __tmp112 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp112.Write(CSharpName(model, ModelKind.ImmutableInstance));
-            CodeReader __tmp112Reader = new CodeReader(__tmp112.ToStringAndFree());
+            var __tmp112Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp112.ToStringAndFree());
             bool __tmp112_last = __tmp112Reader.EndOfStream;
             while(!__tmp112_last)
             {
@@ -2375,7 +2375,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
 
         public string GenerateMetaModelBuilderInstance(MetaModel model) //211:1
         {
-            CodeBuilder __out = CodeBuilder.GetInstance();
+            var __out = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             string metaNs = IsMetaMetaModel(model) ? "" : Properties.MetaNs + "."; //212:2
             bool metaMetaModel = IsMetaMetaModel(model); //213:2
             ImmutableList<ImmutableObject> instances = GetInstances(model); //214:2
@@ -2387,9 +2387,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp3_line);
                 __tmp2_outputWritten = true;
             }
-            CodeBuilder __tmp4 = CodeBuilder.GetInstance();
+            var __tmp4 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp4.Write(CSharpName(model, ModelKind.BuilderInstance));
-            CodeReader __tmp4Reader = new CodeReader(__tmp4.ToStringAndFree());
+            var __tmp4Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp4.ToStringAndFree());
             bool __tmp4_last = __tmp4Reader.EndOfStream;
             while(!__tmp4_last)
             {
@@ -2415,9 +2415,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp7_line);
                 __tmp6_outputWritten = true;
             }
-            CodeBuilder __tmp8 = CodeBuilder.GetInstance();
+            var __tmp8 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp8.Write(CSharpName(model, ModelKind.BuilderInstance));
-            CodeReader __tmp8Reader = new CodeReader(__tmp8.ToStringAndFree());
+            var __tmp8Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp8.ToStringAndFree());
             bool __tmp8_last = __tmp8Reader.EndOfStream;
             while(!__tmp8_last)
             {
@@ -2436,9 +2436,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp9_line);
                 __tmp6_outputWritten = true;
             }
-            CodeBuilder __tmp10 = CodeBuilder.GetInstance();
+            var __tmp10 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp10.Write(CSharpName(model, ModelKind.BuilderInstance));
-            CodeReader __tmp10Reader = new CodeReader(__tmp10.ToStringAndFree());
+            var __tmp10Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp10.ToStringAndFree());
             bool __tmp10_last = __tmp10Reader.EndOfStream;
             while(!__tmp10_last)
             {
@@ -2474,9 +2474,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp14_line);
                 __tmp13_outputWritten = true;
             }
-            CodeBuilder __tmp15 = CodeBuilder.GetInstance();
+            var __tmp15 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp15.Write(Properties.CoreNs);
-            CodeReader __tmp15Reader = new CodeReader(__tmp15.ToStringAndFree());
+            var __tmp15Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp15.ToStringAndFree());
             bool __tmp15_last = __tmp15Reader.EndOfStream;
             while(!__tmp15_last)
             {
@@ -2509,9 +2509,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp19_line);
                     __tmp18_outputWritten = true;
                 }
-                CodeBuilder __tmp20 = CodeBuilder.GetInstance();
+                var __tmp20 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp20.Write(Properties.CoreNs);
-                CodeReader __tmp20Reader = new CodeReader(__tmp20.ToStringAndFree());
+                var __tmp20Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp20.ToStringAndFree());
                 bool __tmp20_last = __tmp20Reader.EndOfStream;
                 while(!__tmp20_last)
                 {
@@ -2549,9 +2549,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 var cst = __tmp22.cst;
                 bool __tmp24_outputWritten = false;
                 string __tmp23Prefix = "	"; //228:1
-                CodeBuilder __tmp25 = CodeBuilder.GetInstance();
+                var __tmp25 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp25.Write(GenerateDocumentation(cst));
-                CodeReader __tmp25Reader = new CodeReader(__tmp25.ToStringAndFree());
+                var __tmp25Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp25.ToStringAndFree());
                 bool __tmp25_last = __tmp25Reader.EndOfStream;
                 while(!__tmp25_last)
                 {
@@ -2582,9 +2582,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp28_line);
                         __tmp27_outputWritten = true;
                     }
-                    CodeBuilder __tmp29 = CodeBuilder.GetInstance();
+                    var __tmp29 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp29.Write(CSharpName(cst.Type, model, ClassKind.Builder));
-                    CodeReader __tmp29Reader = new CodeReader(__tmp29.ToStringAndFree());
+                    var __tmp29Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp29.ToStringAndFree());
                     bool __tmp29_last = __tmp29Reader.EndOfStream;
                     while(!__tmp29_last)
                     {
@@ -2603,9 +2603,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp30_line);
                         __tmp27_outputWritten = true;
                     }
-                    CodeBuilder __tmp31 = CodeBuilder.GetInstance();
+                    var __tmp31 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp31.Write(CSharpName(cst, model, ClassKind.BuilderInstance));
-                    CodeReader __tmp31Reader = new CodeReader(__tmp31.ToStringAndFree());
+                    var __tmp31Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp31.ToStringAndFree());
                     bool __tmp31_last = __tmp31Reader.EndOfStream;
                     while(!__tmp31_last)
                     {
@@ -2639,9 +2639,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp35_line);
                         __tmp34_outputWritten = true;
                     }
-                    CodeBuilder __tmp36 = CodeBuilder.GetInstance();
+                    var __tmp36 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp36.Write(CSharpName(cst.Type, model, ClassKind.Builder, true));
-                    CodeReader __tmp36Reader = new CodeReader(__tmp36.ToStringAndFree());
+                    var __tmp36Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp36.ToStringAndFree());
                     bool __tmp36_last = __tmp36Reader.EndOfStream;
                     while(!__tmp36_last)
                     {
@@ -2660,9 +2660,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp37_line);
                         __tmp34_outputWritten = true;
                     }
-                    CodeBuilder __tmp38 = CodeBuilder.GetInstance();
+                    var __tmp38 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp38.Write(CSharpName(cst, model, ClassKind.BuilderInstance));
-                    CodeReader __tmp38Reader = new CodeReader(__tmp38.ToStringAndFree());
+                    var __tmp38Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp38.ToStringAndFree());
                     bool __tmp38_last = __tmp38Reader.EndOfStream;
                     while(!__tmp38_last)
                     {
@@ -2699,9 +2699,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 var obj = __tmp40.obj;
                 bool __tmp42_outputWritten = false;
                 string __tmp41Prefix = "	"; //237:1
-                CodeBuilder __tmp43 = CodeBuilder.GetInstance();
+                var __tmp43 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp43.Write(GenerateInstanceDeclaration(model, metaMetaModel, obj, instanceNames));
-                CodeReader __tmp43Reader = new CodeReader(__tmp43.ToStringAndFree());
+                var __tmp43Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp43.ToStringAndFree());
                 bool __tmp43_last = __tmp43Reader.EndOfStream;
                 while(!__tmp43_last)
                 {
@@ -2732,9 +2732,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp46_line);
                 __tmp45_outputWritten = true;
             }
-            CodeBuilder __tmp47 = CodeBuilder.GetInstance();
+            var __tmp47 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp47.Write(CSharpName(model, ModelKind.BuilderInstance));
-            CodeReader __tmp47Reader = new CodeReader(__tmp47.ToStringAndFree());
+            var __tmp47Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp47.ToStringAndFree());
             bool __tmp47_last = __tmp47Reader.EndOfStream;
             while(!__tmp47_last)
             {
@@ -2769,9 +2769,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp51_line);
                     __tmp50_outputWritten = true;
                 }
-                CodeBuilder __tmp52 = CodeBuilder.GetInstance();
+                var __tmp52 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp52.Write(Properties.CoreNs);
-                CodeReader __tmp52Reader = new CodeReader(__tmp52.ToStringAndFree());
+                var __tmp52Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp52.ToStringAndFree());
                 bool __tmp52_last = __tmp52Reader.EndOfStream;
                 while(!__tmp52_last)
                 {
@@ -2790,9 +2790,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp53_line);
                     __tmp50_outputWritten = true;
                 }
-                CodeBuilder __tmp54 = CodeBuilder.GetInstance();
+                var __tmp54 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp54.Write(model.Name);
-                CodeReader __tmp54Reader = new CodeReader(__tmp54.ToStringAndFree());
+                var __tmp54Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp54.ToStringAndFree());
                 bool __tmp54_last = __tmp54Reader.EndOfStream;
                 while(!__tmp54_last)
                 {
@@ -2826,9 +2826,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp58_line);
                     __tmp57_outputWritten = true;
                 }
-                CodeBuilder __tmp59 = CodeBuilder.GetInstance();
+                var __tmp59 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp59.Write(Properties.CoreNs);
-                CodeReader __tmp59Reader = new CodeReader(__tmp59.ToStringAndFree());
+                var __tmp59Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp59.ToStringAndFree());
                 bool __tmp59_last = __tmp59Reader.EndOfStream;
                 while(!__tmp59_last)
                 {
@@ -2859,9 +2859,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp63_line);
                     __tmp62_outputWritten = true;
                 }
-                CodeBuilder __tmp64 = CodeBuilder.GetInstance();
+                var __tmp64 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp64.Write(Properties.MetaNs);
-                CodeReader __tmp64Reader = new CodeReader(__tmp64.ToStringAndFree());
+                var __tmp64Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp64.ToStringAndFree());
                 bool __tmp64_last = __tmp64Reader.EndOfStream;
                 while(!__tmp64_last)
                 {
@@ -2892,9 +2892,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp68_line);
                     __tmp67_outputWritten = true;
                 }
-                CodeBuilder __tmp69 = CodeBuilder.GetInstance();
+                var __tmp69 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp69.Write(CSharpName(model));
-                CodeReader __tmp69Reader = new CodeReader(__tmp69.ToStringAndFree());
+                var __tmp69Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp69.ToStringAndFree());
                 bool __tmp69_last = __tmp69Reader.EndOfStream;
                 while(!__tmp69_last)
                 {
@@ -2940,9 +2940,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             __out.AppendLine(false); //258:26
             bool __tmp72_outputWritten = false;
             string __tmp71Prefix = "		"; //259:1
-            CodeBuilder __tmp73 = CodeBuilder.GetInstance();
+            var __tmp73 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp73.Write(CSharpName(model, ModelKind.ImplementationProvider));
-            CodeReader __tmp73Reader = new CodeReader(__tmp73.ToStringAndFree());
+            var __tmp73Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp73.ToStringAndFree());
             bool __tmp73_last = __tmp73Reader.EndOfStream;
             while(!__tmp73_last)
             {
@@ -2966,9 +2966,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp74_line);
                 __tmp72_outputWritten = true;
             }
-            CodeBuilder __tmp75 = CodeBuilder.GetInstance();
+            var __tmp75 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp75.Write(CSharpName(model, ModelKind.BuilderInstance));
-            CodeReader __tmp75Reader = new CodeReader(__tmp75.ToStringAndFree());
+            var __tmp75Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp75.ToStringAndFree());
             bool __tmp75_last = __tmp75Reader.EndOfStream;
             while(!__tmp75_last)
             {
@@ -3028,9 +3028,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             __out.AppendLine(false); //277:3
             bool __tmp78_outputWritten = false;
             string __tmp77Prefix = "		"; //278:1
-            CodeBuilder __tmp79 = CodeBuilder.GetInstance();
+            var __tmp79 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp79.Write(Properties.MetaNs);
-            CodeReader __tmp79Reader = new CodeReader(__tmp79.ToStringAndFree());
+            var __tmp79Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp79.ToStringAndFree());
             bool __tmp79_last = __tmp79Reader.EndOfStream;
             while(!__tmp79_last)
             {
@@ -3054,9 +3054,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp80_line);
                 __tmp78_outputWritten = true;
             }
-            CodeBuilder __tmp81 = CodeBuilder.GetInstance();
+            var __tmp81 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp81.Write(Properties.MetaNs);
-            CodeReader __tmp81Reader = new CodeReader(__tmp81.ToStringAndFree());
+            var __tmp81Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp81.ToStringAndFree());
             bool __tmp81_last = __tmp81Reader.EndOfStream;
             while(!__tmp81_last)
             {
@@ -3075,9 +3075,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp82_line);
                 __tmp78_outputWritten = true;
             }
-            CodeBuilder __tmp83 = CodeBuilder.GetInstance();
+            var __tmp83 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp83.Write(Properties.CoreNs);
-            CodeReader __tmp83Reader = new CodeReader(__tmp83.ToStringAndFree());
+            var __tmp83Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp83.ToStringAndFree());
             bool __tmp83_last = __tmp83Reader.EndOfStream;
             while(!__tmp83_last)
             {
@@ -3105,9 +3105,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             {
                 bool __tmp86_outputWritten = false;
                 string __tmp85Prefix = "		"; //280:1
-                CodeBuilder __tmp87 = CodeBuilder.GetInstance();
+                var __tmp87 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp87.Write(CSharpName(model, ModelKind.Factory));
-                CodeReader __tmp87Reader = new CodeReader(__tmp87.ToStringAndFree());
+                var __tmp87Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp87.ToStringAndFree());
                 bool __tmp87_last = __tmp87Reader.EndOfStream;
                 while(!__tmp87_last)
                 {
@@ -3131,9 +3131,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp88_line);
                     __tmp86_outputWritten = true;
                 }
-                CodeBuilder __tmp89 = CodeBuilder.GetInstance();
+                var __tmp89 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp89.Write(CSharpName(model, ModelKind.Factory));
-                CodeReader __tmp89Reader = new CodeReader(__tmp89.ToStringAndFree());
+                var __tmp89Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp89.ToStringAndFree());
                 bool __tmp89_last = __tmp89Reader.EndOfStream;
                 while(!__tmp89_last)
                 {
@@ -3173,9 +3173,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 {
                     bool __tmp93_outputWritten = false;
                     string __tmp92Prefix = "		"; //285:1
-                    CodeBuilder __tmp94 = CodeBuilder.GetInstance();
+                    var __tmp94 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp94.Write(CSharpName(cst, model, ClassKind.BuilderInstance));
-                    CodeReader __tmp94Reader = new CodeReader(__tmp94.ToStringAndFree());
+                    var __tmp94Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp94.ToStringAndFree());
                     bool __tmp94_last = __tmp94Reader.EndOfStream;
                     while(!__tmp94_last)
                     {
@@ -3199,9 +3199,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp95_line);
                         __tmp93_outputWritten = true;
                     }
-                    CodeBuilder __tmp96 = CodeBuilder.GetInstance();
+                    var __tmp96 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp96.Write(CSharpName(cst.Type, model, ClassKind.Immutable));
-                    CodeReader __tmp96Reader = new CodeReader(__tmp96.ToStringAndFree());
+                    var __tmp96Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp96.ToStringAndFree());
                     bool __tmp96_last = __tmp96Reader.EndOfStream;
                     while(!__tmp96_last)
                     {
@@ -3230,9 +3230,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 {
                     bool __tmp99_outputWritten = false;
                     string __tmp98Prefix = "		"; //287:1
-                    CodeBuilder __tmp100 = CodeBuilder.GetInstance();
+                    var __tmp100 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp100.Write(CSharpName(cst, model, ClassKind.BuilderInstance));
-                    CodeReader __tmp100Reader = new CodeReader(__tmp100.ToStringAndFree());
+                    var __tmp100Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp100.ToStringAndFree());
                     bool __tmp100_last = __tmp100Reader.EndOfStream;
                     while(!__tmp100_last)
                     {
@@ -3256,9 +3256,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp101_line);
                         __tmp99_outputWritten = true;
                     }
-                    CodeBuilder __tmp102 = CodeBuilder.GetInstance();
+                    var __tmp102 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp102.Write(CSharpName(cst.Type, model, ClassKind.Immutable));
-                    CodeReader __tmp102Reader = new CodeReader(__tmp102.ToStringAndFree());
+                    var __tmp102Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp102.ToStringAndFree());
                     bool __tmp102_last = __tmp102Reader.EndOfStream;
                     while(!__tmp102_last)
                     {
@@ -3287,9 +3287,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 {
                     bool __tmp105_outputWritten = false;
                     string __tmp104Prefix = "		"; //290:1
-                    CodeBuilder __tmp106 = CodeBuilder.GetInstance();
+                    var __tmp106 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp106.Write(CSharpName(cst, model, ClassKind.BuilderInstance));
-                    CodeReader __tmp106Reader = new CodeReader(__tmp106.ToStringAndFree());
+                    var __tmp106Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp106.ToStringAndFree());
                     bool __tmp106_last = __tmp106Reader.EndOfStream;
                     while(!__tmp106_last)
                     {
@@ -3313,9 +3313,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp107_line);
                         __tmp105_outputWritten = true;
                     }
-                    CodeBuilder __tmp108 = CodeBuilder.GetInstance();
+                    var __tmp108 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp108.Write(cst.DotNetName);
-                    CodeReader __tmp108Reader = new CodeReader(__tmp108.ToStringAndFree());
+                    var __tmp108Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp108.ToStringAndFree());
                     bool __tmp108_last = __tmp108Reader.EndOfStream;
                     while(!__tmp108_last)
                     {
@@ -3352,9 +3352,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 var obj = __tmp110.obj;
                 bool __tmp112_outputWritten = false;
                 string __tmp111Prefix = "		"; //295:1
-                CodeBuilder __tmp113 = CodeBuilder.GetInstance();
+                var __tmp113 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp113.Write(GenerateInstance(model, metaMetaModel, obj, instanceNames));
-                CodeReader __tmp113Reader = new CodeReader(__tmp113.ToStringAndFree());
+                var __tmp113Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp113.ToStringAndFree());
                 bool __tmp113_last = __tmp113Reader.EndOfStream;
                 while(!__tmp113_last)
                 {
@@ -3388,9 +3388,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 var obj = __tmp114.obj;
                 bool __tmp116_outputWritten = false;
                 string __tmp115Prefix = "		"; //299:1
-                CodeBuilder __tmp117 = CodeBuilder.GetInstance();
+                var __tmp117 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp117.Write(GenerateInstanceProperties(model, metaMetaModel, obj, instanceNames));
-                CodeReader __tmp117Reader = new CodeReader(__tmp117.ToStringAndFree());
+                var __tmp117Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp117.ToStringAndFree());
                 bool __tmp117_last = __tmp117Reader.EndOfStream;
                 while(!__tmp117_last)
                 {
@@ -3422,7 +3422,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
 
         public string GenerateInstanceDeclaration(MetaModel model, bool metaMetaModel, ImmutableObject obj, ImmutableDictionary<ImmutableObject,string> instanceNames) //305:1
         {
-            CodeBuilder __out = CodeBuilder.GetInstance();
+            var __out = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             if (obj != null && obj.MMetaClass != null && instanceNames.ContainsKey(obj)) //306:2
             {
                 string name = instanceNames[obj]; //307:3
@@ -3437,9 +3437,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                             __out.Write(__tmp3_line);
                             __tmp2_outputWritten = true;
                         }
-                        CodeBuilder __tmp4 = CodeBuilder.GetInstance();
+                        var __tmp4 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                         __tmp4.Write(CSharpName(obj.MMetaClass, model, ClassKind.Builder));
-                        CodeReader __tmp4Reader = new CodeReader(__tmp4.ToStringAndFree());
+                        var __tmp4Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp4.ToStringAndFree());
                         bool __tmp4_last = __tmp4Reader.EndOfStream;
                         while(!__tmp4_last)
                         {
@@ -3458,9 +3458,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                             __out.Write(__tmp5_line);
                             __tmp2_outputWritten = true;
                         }
-                        CodeBuilder __tmp6 = CodeBuilder.GetInstance();
+                        var __tmp6 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                         __tmp6.Write(name);
-                        CodeReader __tmp6Reader = new CodeReader(__tmp6.ToStringAndFree());
+                        var __tmp6Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp6.ToStringAndFree());
                         bool __tmp6_last = __tmp6Reader.EndOfStream;
                         while(!__tmp6_last)
                         {
@@ -3494,9 +3494,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                             __out.Write(__tmp10_line);
                             __tmp9_outputWritten = true;
                         }
-                        CodeBuilder __tmp11 = CodeBuilder.GetInstance();
+                        var __tmp11 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                         __tmp11.Write(CSharpName(obj.MMetaClass, model, ClassKind.Builder));
-                        CodeReader __tmp11Reader = new CodeReader(__tmp11.ToStringAndFree());
+                        var __tmp11Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp11.ToStringAndFree());
                         bool __tmp11_last = __tmp11Reader.EndOfStream;
                         while(!__tmp11_last)
                         {
@@ -3515,9 +3515,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                             __out.Write(__tmp12_line);
                             __tmp9_outputWritten = true;
                         }
-                        CodeBuilder __tmp13 = CodeBuilder.GetInstance();
+                        var __tmp13 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                         __tmp13.Write(name);
-                        CodeReader __tmp13Reader = new CodeReader(__tmp13.ToStringAndFree());
+                        var __tmp13Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp13.ToStringAndFree());
                         bool __tmp13_last = __tmp13Reader.EndOfStream;
                         while(!__tmp13_last)
                         {
@@ -3554,9 +3554,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                             __out.Write(__tmp17_line);
                             __tmp16_outputWritten = true;
                         }
-                        CodeBuilder __tmp18 = CodeBuilder.GetInstance();
+                        var __tmp18 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                         __tmp18.Write(CSharpName(obj.MMetaClass, model, ClassKind.Builder, true));
-                        CodeReader __tmp18Reader = new CodeReader(__tmp18.ToStringAndFree());
+                        var __tmp18Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp18.ToStringAndFree());
                         bool __tmp18_last = __tmp18Reader.EndOfStream;
                         while(!__tmp18_last)
                         {
@@ -3575,9 +3575,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                             __out.Write(__tmp19_line);
                             __tmp16_outputWritten = true;
                         }
-                        CodeBuilder __tmp20 = CodeBuilder.GetInstance();
+                        var __tmp20 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                         __tmp20.Write(name);
-                        CodeReader __tmp20Reader = new CodeReader(__tmp20.ToStringAndFree());
+                        var __tmp20Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp20.ToStringAndFree());
                         bool __tmp20_last = __tmp20Reader.EndOfStream;
                         while(!__tmp20_last)
                         {
@@ -3611,9 +3611,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                             __out.Write(__tmp24_line);
                             __tmp23_outputWritten = true;
                         }
-                        CodeBuilder __tmp25 = CodeBuilder.GetInstance();
+                        var __tmp25 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                         __tmp25.Write(CSharpName(obj.MMetaClass, model, ClassKind.Builder, true));
-                        CodeReader __tmp25Reader = new CodeReader(__tmp25.ToStringAndFree());
+                        var __tmp25Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp25.ToStringAndFree());
                         bool __tmp25_last = __tmp25Reader.EndOfStream;
                         while(!__tmp25_last)
                         {
@@ -3632,9 +3632,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                             __out.Write(__tmp26_line);
                             __tmp23_outputWritten = true;
                         }
-                        CodeBuilder __tmp27 = CodeBuilder.GetInstance();
+                        var __tmp27 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                         __tmp27.Write(name);
-                        CodeReader __tmp27Reader = new CodeReader(__tmp27.ToStringAndFree());
+                        var __tmp27Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp27.ToStringAndFree());
                         bool __tmp27_last = __tmp27Reader.EndOfStream;
                         while(!__tmp27_last)
                         {
@@ -3666,14 +3666,14 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
 
         public string GenerateInstance(MetaModel model, bool metaMetaModel, ImmutableObject obj, ImmutableDictionary<ImmutableObject,string> instanceNames) //324:1
         {
-            CodeBuilder __out = CodeBuilder.GetInstance();
+            var __out = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             if (obj != null && obj.MMetaClass != null && instanceNames.ContainsKey(obj)) //325:2
             {
                 string name = instanceNames[obj]; //326:3
                 bool __tmp2_outputWritten = false;
-                CodeBuilder __tmp3 = CodeBuilder.GetInstance();
+                var __tmp3 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp3.Write(name);
-                CodeReader __tmp3Reader = new CodeReader(__tmp3.ToStringAndFree());
+                var __tmp3Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp3.ToStringAndFree());
                 bool __tmp3_last = __tmp3Reader.EndOfStream;
                 while(!__tmp3_last)
                 {
@@ -3692,9 +3692,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp4_line);
                     __tmp2_outputWritten = true;
                 }
-                CodeBuilder __tmp5 = CodeBuilder.GetInstance();
+                var __tmp5 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp5.Write(CSharpName(obj.MMetaClass, model, ClassKind.Immutable));
-                CodeReader __tmp5Reader = new CodeReader(__tmp5.ToStringAndFree());
+                var __tmp5Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp5.ToStringAndFree());
                 bool __tmp5_last = __tmp5Reader.EndOfStream;
                 while(!__tmp5_last)
                 {
@@ -3724,7 +3724,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
 
         public string GenerateInstanceProperties(MetaModel model, bool metaMetaModel, ImmutableObject obj, ImmutableDictionary<ImmutableObject,string> instanceNames) //331:1
         {
-            CodeBuilder __out = CodeBuilder.GetInstance();
+            var __out = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             if (obj != null && obj.MMetaClass != null && instanceNames.ContainsKey(obj)) //332:2
             {
                 var __loop19_results = 
@@ -3742,9 +3742,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     {
                         string name = instanceNames[obj]; //335:5
                         bool __tmp3_outputWritten = false;
-                        CodeBuilder __tmp4 = CodeBuilder.GetInstance();
+                        var __tmp4 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                         __tmp4.Write(name);
-                        CodeReader __tmp4Reader = new CodeReader(__tmp4.ToStringAndFree());
+                        var __tmp4Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp4.ToStringAndFree());
                         bool __tmp4_last = __tmp4Reader.EndOfStream;
                         while(!__tmp4_last)
                         {
@@ -3763,9 +3763,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                             __out.Write(__tmp5_line);
                             __tmp3_outputWritten = true;
                         }
-                        CodeBuilder __tmp6 = CodeBuilder.GetInstance();
+                        var __tmp6 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                         __tmp6.Write(CSharpName(((MetaConstant)obj), model, ClassKind.BuilderInstance));
-                        CodeReader __tmp6Reader = new CodeReader(__tmp6.ToStringAndFree());
+                        var __tmp6Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp6.ToStringAndFree());
                         bool __tmp6_last = __tmp6Reader.EndOfStream;
                         while(!__tmp6_last)
                         {
@@ -3794,9 +3794,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     {
                         object propValue = obj.MGet(prop); //338:5
                         bool __tmp9_outputWritten = false;
-                        CodeBuilder __tmp10 = CodeBuilder.GetInstance();
+                        var __tmp10 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                         __tmp10.Write(GenerateInstancePropertyValue(model, metaMetaModel, obj, prop, propValue, instanceNames));
-                        CodeReader __tmp10Reader = new CodeReader(__tmp10.ToStringAndFree());
+                        var __tmp10Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp10.ToStringAndFree());
                         bool __tmp10_last = __tmp10Reader.EndOfStream;
                         while(!__tmp10_last)
                         {
@@ -3821,7 +3821,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
 
         public string GenerateInstancePropertyValue(MetaModel model, bool metaMetaModel, ImmutableObject obj, ModelProperty prop, object value, ImmutableDictionary<ImmutableObject,string> instanceNames) //345:1
         {
-            CodeBuilder __out = CodeBuilder.GetInstance();
+            var __out = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             string name = instanceNames[obj]; //346:2
             ImmutableObject valueObject = value as ImmutableObject; //347:2
             MetaDeclaration valueDecl = value as MetaDeclaration; //348:2
@@ -3831,9 +3831,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 if (prop.MutableType != null && prop.MutableType.IsClass) //351:3
                 {
                     bool __tmp2_outputWritten = false;
-                    CodeBuilder __tmp3 = CodeBuilder.GetInstance();
+                    var __tmp3 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp3.Write(name);
-                    CodeReader __tmp3Reader = new CodeReader(__tmp3.ToStringAndFree());
+                    var __tmp3Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp3.ToStringAndFree());
                     bool __tmp3_last = __tmp3Reader.EndOfStream;
                     while(!__tmp3_last)
                     {
@@ -3852,9 +3852,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp4_line);
                         __tmp2_outputWritten = true;
                     }
-                    CodeBuilder __tmp5 = CodeBuilder.GetInstance();
+                    var __tmp5 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp5.Write(prop.Name);
-                    CodeReader __tmp5Reader = new CodeReader(__tmp5.ToStringAndFree());
+                    var __tmp5Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp5.ToStringAndFree());
                     bool __tmp5_last = __tmp5Reader.EndOfStream;
                     while(!__tmp5_last)
                     {
@@ -3888,9 +3888,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp9_line);
                         __tmp8_outputWritten = true;
                     }
-                    CodeBuilder __tmp10 = CodeBuilder.GetInstance();
+                    var __tmp10 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp10.Write(name);
-                    CodeReader __tmp10Reader = new CodeReader(__tmp10.ToStringAndFree());
+                    var __tmp10Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp10.ToStringAndFree());
                     bool __tmp10_last = __tmp10Reader.EndOfStream;
                     while(!__tmp10_last)
                     {
@@ -3909,9 +3909,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp11_line);
                         __tmp8_outputWritten = true;
                     }
-                    CodeBuilder __tmp12 = CodeBuilder.GetInstance();
+                    var __tmp12 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp12.Write(prop.Name);
-                    CodeReader __tmp12Reader = new CodeReader(__tmp12.ToStringAndFree());
+                    var __tmp12Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp12.ToStringAndFree());
                     bool __tmp12_last = __tmp12Reader.EndOfStream;
                     while(!__tmp12_last)
                     {
@@ -3940,9 +3940,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             else if (value is string) //356:2
             {
                 bool __tmp15_outputWritten = false;
-                CodeBuilder __tmp16 = CodeBuilder.GetInstance();
+                var __tmp16 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp16.Write(name);
-                CodeReader __tmp16Reader = new CodeReader(__tmp16.ToStringAndFree());
+                var __tmp16Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp16.ToStringAndFree());
                 bool __tmp16_last = __tmp16Reader.EndOfStream;
                 while(!__tmp16_last)
                 {
@@ -3961,9 +3961,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp17_line);
                     __tmp15_outputWritten = true;
                 }
-                CodeBuilder __tmp18 = CodeBuilder.GetInstance();
+                var __tmp18 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp18.Write(prop.Name);
-                CodeReader __tmp18Reader = new CodeReader(__tmp18.ToStringAndFree());
+                var __tmp18Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp18.ToStringAndFree());
                 bool __tmp18_last = __tmp18Reader.EndOfStream;
                 while(!__tmp18_last)
                 {
@@ -3982,9 +3982,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp19_line);
                     __tmp15_outputWritten = true;
                 }
-                CodeBuilder __tmp20 = CodeBuilder.GetInstance();
+                var __tmp20 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp20.Write(EscapeText((string)value));
-                CodeReader __tmp20Reader = new CodeReader(__tmp20.ToStringAndFree());
+                var __tmp20Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp20.ToStringAndFree());
                 bool __tmp20_last = __tmp20Reader.EndOfStream;
                 while(!__tmp20_last)
                 {
@@ -4012,9 +4012,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             else if (value is bool) //358:2
             {
                 bool __tmp23_outputWritten = false;
-                CodeBuilder __tmp24 = CodeBuilder.GetInstance();
+                var __tmp24 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp24.Write(name);
-                CodeReader __tmp24Reader = new CodeReader(__tmp24.ToStringAndFree());
+                var __tmp24Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp24.ToStringAndFree());
                 bool __tmp24_last = __tmp24Reader.EndOfStream;
                 while(!__tmp24_last)
                 {
@@ -4033,9 +4033,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp25_line);
                     __tmp23_outputWritten = true;
                 }
-                CodeBuilder __tmp26 = CodeBuilder.GetInstance();
+                var __tmp26 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp26.Write(prop.Name);
-                CodeReader __tmp26Reader = new CodeReader(__tmp26.ToStringAndFree());
+                var __tmp26Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp26.ToStringAndFree());
                 bool __tmp26_last = __tmp26Reader.EndOfStream;
                 while(!__tmp26_last)
                 {
@@ -4054,9 +4054,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp27_line);
                     __tmp23_outputWritten = true;
                 }
-                CodeBuilder __tmp28 = CodeBuilder.GetInstance();
+                var __tmp28 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp28.Write(value.ToString().ToLower());
-                CodeReader __tmp28Reader = new CodeReader(__tmp28.ToStringAndFree());
+                var __tmp28Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp28.ToStringAndFree());
                 bool __tmp28_last = __tmp28Reader.EndOfStream;
                 while(!__tmp28_last)
                 {
@@ -4084,9 +4084,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             else if (value.GetType().IsPrimitive) //360:2
             {
                 bool __tmp31_outputWritten = false;
-                CodeBuilder __tmp32 = CodeBuilder.GetInstance();
+                var __tmp32 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp32.Write(name);
-                CodeReader __tmp32Reader = new CodeReader(__tmp32.ToStringAndFree());
+                var __tmp32Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp32.ToStringAndFree());
                 bool __tmp32_last = __tmp32Reader.EndOfStream;
                 while(!__tmp32_last)
                 {
@@ -4105,9 +4105,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp33_line);
                     __tmp31_outputWritten = true;
                 }
-                CodeBuilder __tmp34 = CodeBuilder.GetInstance();
+                var __tmp34 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp34.Write(prop.Name);
-                CodeReader __tmp34Reader = new CodeReader(__tmp34.ToStringAndFree());
+                var __tmp34Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp34.ToStringAndFree());
                 bool __tmp34_last = __tmp34Reader.EndOfStream;
                 while(!__tmp34_last)
                 {
@@ -4126,9 +4126,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp35_line);
                     __tmp31_outputWritten = true;
                 }
-                CodeBuilder __tmp36 = CodeBuilder.GetInstance();
+                var __tmp36 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp36.Write(value.ToString());
-                CodeReader __tmp36Reader = new CodeReader(__tmp36.ToStringAndFree());
+                var __tmp36Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp36.ToStringAndFree());
                 bool __tmp36_last = __tmp36Reader.EndOfStream;
                 while(!__tmp36_last)
                 {
@@ -4156,9 +4156,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             else if (value is MetaAttribute) //362:2
             {
                 bool __tmp39_outputWritten = false;
-                CodeBuilder __tmp40 = CodeBuilder.GetInstance();
+                var __tmp40 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp40.Write(name);
-                CodeReader __tmp40Reader = new CodeReader(__tmp40.ToStringAndFree());
+                var __tmp40Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp40.ToStringAndFree());
                 bool __tmp40_last = __tmp40Reader.EndOfStream;
                 while(!__tmp40_last)
                 {
@@ -4177,9 +4177,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp41_line);
                     __tmp39_outputWritten = true;
                 }
-                CodeBuilder __tmp42 = CodeBuilder.GetInstance();
+                var __tmp42 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp42.Write(prop.Name);
-                CodeReader __tmp42Reader = new CodeReader(__tmp42.ToStringAndFree());
+                var __tmp42Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp42.ToStringAndFree());
                 bool __tmp42_last = __tmp42Reader.EndOfStream;
                 while(!__tmp42_last)
                 {
@@ -4198,9 +4198,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp43_line);
                     __tmp39_outputWritten = true;
                 }
-                CodeBuilder __tmp44 = CodeBuilder.GetInstance();
+                var __tmp44 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp44.Write(GetAttributeValueOf(model, (MetaAttribute)value));
-                CodeReader __tmp44Reader = new CodeReader(__tmp44.ToStringAndFree());
+                var __tmp44Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp44.ToStringAndFree());
                 bool __tmp44_last = __tmp44Reader.EndOfStream;
                 while(!__tmp44_last)
                 {
@@ -4228,9 +4228,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             else if (value is Enum) //364:2
             {
                 bool __tmp47_outputWritten = false;
-                CodeBuilder __tmp48 = CodeBuilder.GetInstance();
+                var __tmp48 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp48.Write(name);
-                CodeReader __tmp48Reader = new CodeReader(__tmp48.ToStringAndFree());
+                var __tmp48Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp48.ToStringAndFree());
                 bool __tmp48_last = __tmp48Reader.EndOfStream;
                 while(!__tmp48_last)
                 {
@@ -4249,9 +4249,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp49_line);
                     __tmp47_outputWritten = true;
                 }
-                CodeBuilder __tmp50 = CodeBuilder.GetInstance();
+                var __tmp50 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp50.Write(prop.Name);
-                CodeReader __tmp50Reader = new CodeReader(__tmp50.ToStringAndFree());
+                var __tmp50Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp50.ToStringAndFree());
                 bool __tmp50_last = __tmp50Reader.EndOfStream;
                 while(!__tmp50_last)
                 {
@@ -4270,9 +4270,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp51_line);
                     __tmp47_outputWritten = true;
                 }
-                CodeBuilder __tmp52 = CodeBuilder.GetInstance();
+                var __tmp52 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp52.Write(GetEnumValueOf(model, (Enum)value));
-                CodeReader __tmp52Reader = new CodeReader(__tmp52.ToStringAndFree());
+                var __tmp52Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp52.ToStringAndFree());
                 bool __tmp52_last = __tmp52Reader.EndOfStream;
                 while(!__tmp52_last)
                 {
@@ -4300,9 +4300,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             else if (value is Type) //366:2
             {
                 bool __tmp55_outputWritten = false;
-                CodeBuilder __tmp56 = CodeBuilder.GetInstance();
+                var __tmp56 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp56.Write(name);
-                CodeReader __tmp56Reader = new CodeReader(__tmp56.ToStringAndFree());
+                var __tmp56Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp56.ToStringAndFree());
                 bool __tmp56_last = __tmp56Reader.EndOfStream;
                 while(!__tmp56_last)
                 {
@@ -4321,9 +4321,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp57_line);
                     __tmp55_outputWritten = true;
                 }
-                CodeBuilder __tmp58 = CodeBuilder.GetInstance();
+                var __tmp58 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp58.Write(prop.Name);
-                CodeReader __tmp58Reader = new CodeReader(__tmp58.ToStringAndFree());
+                var __tmp58Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp58.ToStringAndFree());
                 bool __tmp58_last = __tmp58Reader.EndOfStream;
                 while(!__tmp58_last)
                 {
@@ -4342,9 +4342,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp59_line);
                     __tmp55_outputWritten = true;
                 }
-                CodeBuilder __tmp60 = CodeBuilder.GetInstance();
+                var __tmp60 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp60.Write(((Type)value).FullName);
-                CodeReader __tmp60Reader = new CodeReader(__tmp60.ToStringAndFree());
+                var __tmp60Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp60.ToStringAndFree());
                 bool __tmp60_last = __tmp60Reader.EndOfStream;
                 while(!__tmp60_last)
                 {
@@ -4372,9 +4372,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             else if (value is MetaExternalType) //368:2
             {
                 bool __tmp63_outputWritten = false;
-                CodeBuilder __tmp64 = CodeBuilder.GetInstance();
+                var __tmp64 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp64.Write(name);
-                CodeReader __tmp64Reader = new CodeReader(__tmp64.ToStringAndFree());
+                var __tmp64Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp64.ToStringAndFree());
                 bool __tmp64_last = __tmp64Reader.EndOfStream;
                 while(!__tmp64_last)
                 {
@@ -4393,9 +4393,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp65_line);
                     __tmp63_outputWritten = true;
                 }
-                CodeBuilder __tmp66 = CodeBuilder.GetInstance();
+                var __tmp66 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp66.Write(prop.Name);
-                CodeReader __tmp66Reader = new CodeReader(__tmp66.ToStringAndFree());
+                var __tmp66Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp66.ToStringAndFree());
                 bool __tmp66_last = __tmp66Reader.EndOfStream;
                 while(!__tmp66_last)
                 {
@@ -4414,9 +4414,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp67_line);
                     __tmp63_outputWritten = true;
                 }
-                CodeBuilder __tmp68 = CodeBuilder.GetInstance();
+                var __tmp68 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp68.Write(ToPascalCase(((MetaExternalType)value).Name));
-                CodeReader __tmp68Reader = new CodeReader(__tmp68.ToStringAndFree());
+                var __tmp68Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp68.ToStringAndFree());
                 bool __tmp68_last = __tmp68Reader.EndOfStream;
                 while(!__tmp68_last)
                 {
@@ -4446,9 +4446,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 if (metaMetaModel) //371:3
                 {
                     bool __tmp71_outputWritten = false;
-                    CodeBuilder __tmp72 = CodeBuilder.GetInstance();
+                    var __tmp72 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp72.Write(name);
-                    CodeReader __tmp72Reader = new CodeReader(__tmp72.ToStringAndFree());
+                    var __tmp72Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp72.ToStringAndFree());
                     bool __tmp72_last = __tmp72Reader.EndOfStream;
                     while(!__tmp72_last)
                     {
@@ -4467,9 +4467,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp73_line);
                         __tmp71_outputWritten = true;
                     }
-                    CodeBuilder __tmp74 = CodeBuilder.GetInstance();
+                    var __tmp74 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp74.Write(prop.Name);
-                    CodeReader __tmp74Reader = new CodeReader(__tmp74.ToStringAndFree());
+                    var __tmp74Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp74.ToStringAndFree());
                     bool __tmp74_last = __tmp74Reader.EndOfStream;
                     while(!__tmp74_last)
                     {
@@ -4488,9 +4488,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp75_line);
                         __tmp71_outputWritten = true;
                     }
-                    CodeBuilder __tmp76 = CodeBuilder.GetInstance();
+                    var __tmp76 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp76.Write(ToPascalCase(((MetaPrimitiveType)value).Name));
-                    CodeReader __tmp76Reader = new CodeReader(__tmp76.ToStringAndFree());
+                    var __tmp76Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp76.ToStringAndFree());
                     bool __tmp76_last = __tmp76Reader.EndOfStream;
                     while(!__tmp76_last)
                     {
@@ -4518,9 +4518,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 else //373:3
                 {
                     bool __tmp79_outputWritten = false;
-                    CodeBuilder __tmp80 = CodeBuilder.GetInstance();
+                    var __tmp80 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp80.Write(name);
-                    CodeReader __tmp80Reader = new CodeReader(__tmp80.ToStringAndFree());
+                    var __tmp80Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp80.ToStringAndFree());
                     bool __tmp80_last = __tmp80Reader.EndOfStream;
                     while(!__tmp80_last)
                     {
@@ -4539,9 +4539,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp81_line);
                         __tmp79_outputWritten = true;
                     }
-                    CodeBuilder __tmp82 = CodeBuilder.GetInstance();
+                    var __tmp82 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp82.Write(prop.Name);
-                    CodeReader __tmp82Reader = new CodeReader(__tmp82.ToStringAndFree());
+                    var __tmp82Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp82.ToStringAndFree());
                     bool __tmp82_last = __tmp82Reader.EndOfStream;
                     while(!__tmp82_last)
                     {
@@ -4560,9 +4560,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp83_line);
                         __tmp79_outputWritten = true;
                     }
-                    CodeBuilder __tmp84 = CodeBuilder.GetInstance();
+                    var __tmp84 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp84.Write(CSharpName(((MetaPrimitiveType)value), model, ClassKind.ImmutableInstance, true));
-                    CodeReader __tmp84Reader = new CodeReader(__tmp84.ToStringAndFree());
+                    var __tmp84Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp84.ToStringAndFree());
                     bool __tmp84_last = __tmp84Reader.EndOfStream;
                     while(!__tmp84_last)
                     {
@@ -4591,9 +4591,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             else if (valueObject != null && instanceNames.ContainsKey(valueObject)) //376:2
             {
                 bool __tmp87_outputWritten = false;
-                CodeBuilder __tmp88 = CodeBuilder.GetInstance();
+                var __tmp88 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp88.Write(name);
-                CodeReader __tmp88Reader = new CodeReader(__tmp88.ToStringAndFree());
+                var __tmp88Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp88.ToStringAndFree());
                 bool __tmp88_last = __tmp88Reader.EndOfStream;
                 while(!__tmp88_last)
                 {
@@ -4612,9 +4612,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp89_line);
                     __tmp87_outputWritten = true;
                 }
-                CodeBuilder __tmp90 = CodeBuilder.GetInstance();
+                var __tmp90 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp90.Write(prop.Name);
-                CodeReader __tmp90Reader = new CodeReader(__tmp90.ToStringAndFree());
+                var __tmp90Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp90.ToStringAndFree());
                 bool __tmp90_last = __tmp90Reader.EndOfStream;
                 while(!__tmp90_last)
                 {
@@ -4633,9 +4633,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp91_line);
                     __tmp87_outputWritten = true;
                 }
-                CodeBuilder __tmp92 = CodeBuilder.GetInstance();
+                var __tmp92 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp92.Write(instanceNames[valueObject]);
-                CodeReader __tmp92Reader = new CodeReader(__tmp92.ToStringAndFree());
+                var __tmp92Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp92.ToStringAndFree());
                 bool __tmp92_last = __tmp92Reader.EndOfStream;
                 while(!__tmp92_last)
                 {
@@ -4663,9 +4663,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             else if (valueDecl != null && valueDecl is MetaType) //378:2
             {
                 bool __tmp95_outputWritten = false;
-                CodeBuilder __tmp96 = CodeBuilder.GetInstance();
+                var __tmp96 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp96.Write(name);
-                CodeReader __tmp96Reader = new CodeReader(__tmp96.ToStringAndFree());
+                var __tmp96Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp96.ToStringAndFree());
                 bool __tmp96_last = __tmp96Reader.EndOfStream;
                 while(!__tmp96_last)
                 {
@@ -4684,9 +4684,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp97_line);
                     __tmp95_outputWritten = true;
                 }
-                CodeBuilder __tmp98 = CodeBuilder.GetInstance();
+                var __tmp98 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp98.Write(prop.Name);
-                CodeReader __tmp98Reader = new CodeReader(__tmp98.ToStringAndFree());
+                var __tmp98Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp98.ToStringAndFree());
                 bool __tmp98_last = __tmp98Reader.EndOfStream;
                 while(!__tmp98_last)
                 {
@@ -4705,9 +4705,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp99_line);
                     __tmp95_outputWritten = true;
                 }
-                CodeBuilder __tmp100 = CodeBuilder.GetInstance();
+                var __tmp100 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp100.Write(CSharpName(((MetaType)valueDecl), model, ClassKind.Immutable, true));
-                CodeReader __tmp100Reader = new CodeReader(__tmp100.ToStringAndFree());
+                var __tmp100Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp100.ToStringAndFree());
                 bool __tmp100_last = __tmp100Reader.EndOfStream;
                 while(!__tmp100_last)
                 {
@@ -4735,9 +4735,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             else if (valueDecl != null && valueDecl is MetaConstant) //380:2
             {
                 bool __tmp103_outputWritten = false;
-                CodeBuilder __tmp104 = CodeBuilder.GetInstance();
+                var __tmp104 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp104.Write(name);
-                CodeReader __tmp104Reader = new CodeReader(__tmp104.ToStringAndFree());
+                var __tmp104Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp104.ToStringAndFree());
                 bool __tmp104_last = __tmp104Reader.EndOfStream;
                 while(!__tmp104_last)
                 {
@@ -4756,9 +4756,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp105_line);
                     __tmp103_outputWritten = true;
                 }
-                CodeBuilder __tmp106 = CodeBuilder.GetInstance();
+                var __tmp106 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp106.Write(prop.Name);
-                CodeReader __tmp106Reader = new CodeReader(__tmp106.ToStringAndFree());
+                var __tmp106Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp106.ToStringAndFree());
                 bool __tmp106_last = __tmp106Reader.EndOfStream;
                 while(!__tmp106_last)
                 {
@@ -4777,9 +4777,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp107_line);
                     __tmp103_outputWritten = true;
                 }
-                CodeBuilder __tmp108 = CodeBuilder.GetInstance();
+                var __tmp108 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp108.Write(CSharpName(((MetaConstant)valueDecl), model, ClassKind.Immutable, true));
-                CodeReader __tmp108Reader = new CodeReader(__tmp108.ToStringAndFree());
+                var __tmp108Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp108.ToStringAndFree());
                 bool __tmp108_last = __tmp108Reader.EndOfStream;
                 while(!__tmp108_last)
                 {
@@ -4815,9 +4815,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     var __tmp110 = __loop20_results[__loop20_iteration];
                     var cvalue = __tmp110.cvalue;
                     bool __tmp112_outputWritten = false;
-                    CodeBuilder __tmp113 = CodeBuilder.GetInstance();
+                    var __tmp113 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp113.Write(GenerateInstancePropertyCollectionValue(model, metaMetaModel, obj, prop, cvalue, instanceNames));
-                    CodeReader __tmp113Reader = new CodeReader(__tmp113.ToStringAndFree());
+                    var __tmp113Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp113.ToStringAndFree());
                     bool __tmp113_last = __tmp113Reader.EndOfStream;
                     while(!__tmp113_last)
                     {
@@ -4845,9 +4845,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp116_line);
                     __tmp115_outputWritten = true;
                 }
-                CodeBuilder __tmp117 = CodeBuilder.GetInstance();
+                var __tmp117 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp117.Write(name);
-                CodeReader __tmp117Reader = new CodeReader(__tmp117.ToStringAndFree());
+                var __tmp117Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp117.ToStringAndFree());
                 bool __tmp117_last = __tmp117Reader.EndOfStream;
                 while(!__tmp117_last)
                 {
@@ -4866,9 +4866,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp118_line);
                     __tmp115_outputWritten = true;
                 }
-                CodeBuilder __tmp119 = CodeBuilder.GetInstance();
+                var __tmp119 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp119.Write(prop.Name);
-                CodeReader __tmp119Reader = new CodeReader(__tmp119.ToStringAndFree());
+                var __tmp119Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp119.ToStringAndFree());
                 bool __tmp119_last = __tmp119Reader.EndOfStream;
                 while(!__tmp119_last)
                 {
@@ -4891,7 +4891,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
 
         public string GenerateInstancePropertyCollectionValue(MetaModel model, bool metaMetaModel, ImmutableObject obj, ModelProperty prop, object value, ImmutableDictionary<ImmutableObject,string> instanceNames) //391:1
         {
-            CodeBuilder __out = CodeBuilder.GetInstance();
+            var __out = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             string name = instanceNames[obj]; //392:2
             ImmutableObject valueObject = value as ImmutableObject; //393:2
             MetaDeclaration valueDecl = value as MetaDeclaration; //394:2
@@ -4901,9 +4901,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 if (prop.MutableType != null && prop.MutableType.IsClass) //397:3
                 {
                     bool __tmp2_outputWritten = false;
-                    CodeBuilder __tmp3 = CodeBuilder.GetInstance();
+                    var __tmp3 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp3.Write(name);
-                    CodeReader __tmp3Reader = new CodeReader(__tmp3.ToStringAndFree());
+                    var __tmp3Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp3.ToStringAndFree());
                     bool __tmp3_last = __tmp3Reader.EndOfStream;
                     while(!__tmp3_last)
                     {
@@ -4922,9 +4922,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp4_line);
                         __tmp2_outputWritten = true;
                     }
-                    CodeBuilder __tmp5 = CodeBuilder.GetInstance();
+                    var __tmp5 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp5.Write(prop.Name);
-                    CodeReader __tmp5Reader = new CodeReader(__tmp5.ToStringAndFree());
+                    var __tmp5Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp5.ToStringAndFree());
                     bool __tmp5_last = __tmp5Reader.EndOfStream;
                     while(!__tmp5_last)
                     {
@@ -4958,9 +4958,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp9_line);
                         __tmp8_outputWritten = true;
                     }
-                    CodeBuilder __tmp10 = CodeBuilder.GetInstance();
+                    var __tmp10 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp10.Write(name);
-                    CodeReader __tmp10Reader = new CodeReader(__tmp10.ToStringAndFree());
+                    var __tmp10Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp10.ToStringAndFree());
                     bool __tmp10_last = __tmp10Reader.EndOfStream;
                     while(!__tmp10_last)
                     {
@@ -4979,9 +4979,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp11_line);
                         __tmp8_outputWritten = true;
                     }
-                    CodeBuilder __tmp12 = CodeBuilder.GetInstance();
+                    var __tmp12 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp12.Write(prop.Name);
-                    CodeReader __tmp12Reader = new CodeReader(__tmp12.ToStringAndFree());
+                    var __tmp12Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp12.ToStringAndFree());
                     bool __tmp12_last = __tmp12Reader.EndOfStream;
                     while(!__tmp12_last)
                     {
@@ -5010,9 +5010,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             else if (value is string) //402:2
             {
                 bool __tmp15_outputWritten = false;
-                CodeBuilder __tmp16 = CodeBuilder.GetInstance();
+                var __tmp16 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp16.Write(name);
-                CodeReader __tmp16Reader = new CodeReader(__tmp16.ToStringAndFree());
+                var __tmp16Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp16.ToStringAndFree());
                 bool __tmp16_last = __tmp16Reader.EndOfStream;
                 while(!__tmp16_last)
                 {
@@ -5031,9 +5031,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp17_line);
                     __tmp15_outputWritten = true;
                 }
-                CodeBuilder __tmp18 = CodeBuilder.GetInstance();
+                var __tmp18 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp18.Write(prop.Name);
-                CodeReader __tmp18Reader = new CodeReader(__tmp18.ToStringAndFree());
+                var __tmp18Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp18.ToStringAndFree());
                 bool __tmp18_last = __tmp18Reader.EndOfStream;
                 while(!__tmp18_last)
                 {
@@ -5052,9 +5052,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp19_line);
                     __tmp15_outputWritten = true;
                 }
-                CodeBuilder __tmp20 = CodeBuilder.GetInstance();
+                var __tmp20 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp20.Write(EscapeText((string)value));
-                CodeReader __tmp20Reader = new CodeReader(__tmp20.ToStringAndFree());
+                var __tmp20Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp20.ToStringAndFree());
                 bool __tmp20_last = __tmp20Reader.EndOfStream;
                 while(!__tmp20_last)
                 {
@@ -5082,9 +5082,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             else if (value is bool) //404:2
             {
                 bool __tmp23_outputWritten = false;
-                CodeBuilder __tmp24 = CodeBuilder.GetInstance();
+                var __tmp24 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp24.Write(name);
-                CodeReader __tmp24Reader = new CodeReader(__tmp24.ToStringAndFree());
+                var __tmp24Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp24.ToStringAndFree());
                 bool __tmp24_last = __tmp24Reader.EndOfStream;
                 while(!__tmp24_last)
                 {
@@ -5103,9 +5103,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp25_line);
                     __tmp23_outputWritten = true;
                 }
-                CodeBuilder __tmp26 = CodeBuilder.GetInstance();
+                var __tmp26 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp26.Write(prop.Name);
-                CodeReader __tmp26Reader = new CodeReader(__tmp26.ToStringAndFree());
+                var __tmp26Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp26.ToStringAndFree());
                 bool __tmp26_last = __tmp26Reader.EndOfStream;
                 while(!__tmp26_last)
                 {
@@ -5124,9 +5124,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp27_line);
                     __tmp23_outputWritten = true;
                 }
-                CodeBuilder __tmp28 = CodeBuilder.GetInstance();
+                var __tmp28 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp28.Write(value.ToString().ToLower());
-                CodeReader __tmp28Reader = new CodeReader(__tmp28.ToStringAndFree());
+                var __tmp28Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp28.ToStringAndFree());
                 bool __tmp28_last = __tmp28Reader.EndOfStream;
                 while(!__tmp28_last)
                 {
@@ -5154,9 +5154,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             else if (value.GetType().IsPrimitive) //406:2
             {
                 bool __tmp31_outputWritten = false;
-                CodeBuilder __tmp32 = CodeBuilder.GetInstance();
+                var __tmp32 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp32.Write(name);
-                CodeReader __tmp32Reader = new CodeReader(__tmp32.ToStringAndFree());
+                var __tmp32Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp32.ToStringAndFree());
                 bool __tmp32_last = __tmp32Reader.EndOfStream;
                 while(!__tmp32_last)
                 {
@@ -5175,9 +5175,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp33_line);
                     __tmp31_outputWritten = true;
                 }
-                CodeBuilder __tmp34 = CodeBuilder.GetInstance();
+                var __tmp34 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp34.Write(prop.Name);
-                CodeReader __tmp34Reader = new CodeReader(__tmp34.ToStringAndFree());
+                var __tmp34Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp34.ToStringAndFree());
                 bool __tmp34_last = __tmp34Reader.EndOfStream;
                 while(!__tmp34_last)
                 {
@@ -5196,9 +5196,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp35_line);
                     __tmp31_outputWritten = true;
                 }
-                CodeBuilder __tmp36 = CodeBuilder.GetInstance();
+                var __tmp36 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp36.Write(value.ToString());
-                CodeReader __tmp36Reader = new CodeReader(__tmp36.ToStringAndFree());
+                var __tmp36Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp36.ToStringAndFree());
                 bool __tmp36_last = __tmp36Reader.EndOfStream;
                 while(!__tmp36_last)
                 {
@@ -5226,9 +5226,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             else if (value is MetaAttribute) //408:2
             {
                 bool __tmp39_outputWritten = false;
-                CodeBuilder __tmp40 = CodeBuilder.GetInstance();
+                var __tmp40 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp40.Write(name);
-                CodeReader __tmp40Reader = new CodeReader(__tmp40.ToStringAndFree());
+                var __tmp40Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp40.ToStringAndFree());
                 bool __tmp40_last = __tmp40Reader.EndOfStream;
                 while(!__tmp40_last)
                 {
@@ -5247,9 +5247,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp41_line);
                     __tmp39_outputWritten = true;
                 }
-                CodeBuilder __tmp42 = CodeBuilder.GetInstance();
+                var __tmp42 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp42.Write(prop.Name);
-                CodeReader __tmp42Reader = new CodeReader(__tmp42.ToStringAndFree());
+                var __tmp42Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp42.ToStringAndFree());
                 bool __tmp42_last = __tmp42Reader.EndOfStream;
                 while(!__tmp42_last)
                 {
@@ -5268,9 +5268,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp43_line);
                     __tmp39_outputWritten = true;
                 }
-                CodeBuilder __tmp44 = CodeBuilder.GetInstance();
+                var __tmp44 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp44.Write(GetAttributeValueOf(model, (MetaAttribute)value));
-                CodeReader __tmp44Reader = new CodeReader(__tmp44.ToStringAndFree());
+                var __tmp44Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp44.ToStringAndFree());
                 bool __tmp44_last = __tmp44Reader.EndOfStream;
                 while(!__tmp44_last)
                 {
@@ -5298,9 +5298,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             else if (value is Enum) //410:2
             {
                 bool __tmp47_outputWritten = false;
-                CodeBuilder __tmp48 = CodeBuilder.GetInstance();
+                var __tmp48 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp48.Write(name);
-                CodeReader __tmp48Reader = new CodeReader(__tmp48.ToStringAndFree());
+                var __tmp48Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp48.ToStringAndFree());
                 bool __tmp48_last = __tmp48Reader.EndOfStream;
                 while(!__tmp48_last)
                 {
@@ -5319,9 +5319,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp49_line);
                     __tmp47_outputWritten = true;
                 }
-                CodeBuilder __tmp50 = CodeBuilder.GetInstance();
+                var __tmp50 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp50.Write(prop.Name);
-                CodeReader __tmp50Reader = new CodeReader(__tmp50.ToStringAndFree());
+                var __tmp50Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp50.ToStringAndFree());
                 bool __tmp50_last = __tmp50Reader.EndOfStream;
                 while(!__tmp50_last)
                 {
@@ -5340,9 +5340,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp51_line);
                     __tmp47_outputWritten = true;
                 }
-                CodeBuilder __tmp52 = CodeBuilder.GetInstance();
+                var __tmp52 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp52.Write(GetEnumValueOf(model, (Enum)value));
-                CodeReader __tmp52Reader = new CodeReader(__tmp52.ToStringAndFree());
+                var __tmp52Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp52.ToStringAndFree());
                 bool __tmp52_last = __tmp52Reader.EndOfStream;
                 while(!__tmp52_last)
                 {
@@ -5370,9 +5370,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             else if (value is Type) //412:2
             {
                 bool __tmp55_outputWritten = false;
-                CodeBuilder __tmp56 = CodeBuilder.GetInstance();
+                var __tmp56 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp56.Write(name);
-                CodeReader __tmp56Reader = new CodeReader(__tmp56.ToStringAndFree());
+                var __tmp56Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp56.ToStringAndFree());
                 bool __tmp56_last = __tmp56Reader.EndOfStream;
                 while(!__tmp56_last)
                 {
@@ -5391,9 +5391,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp57_line);
                     __tmp55_outputWritten = true;
                 }
-                CodeBuilder __tmp58 = CodeBuilder.GetInstance();
+                var __tmp58 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp58.Write(prop.Name);
-                CodeReader __tmp58Reader = new CodeReader(__tmp58.ToStringAndFree());
+                var __tmp58Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp58.ToStringAndFree());
                 bool __tmp58_last = __tmp58Reader.EndOfStream;
                 while(!__tmp58_last)
                 {
@@ -5412,9 +5412,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp59_line);
                     __tmp55_outputWritten = true;
                 }
-                CodeBuilder __tmp60 = CodeBuilder.GetInstance();
+                var __tmp60 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp60.Write(((Type)value).FullName);
-                CodeReader __tmp60Reader = new CodeReader(__tmp60.ToStringAndFree());
+                var __tmp60Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp60.ToStringAndFree());
                 bool __tmp60_last = __tmp60Reader.EndOfStream;
                 while(!__tmp60_last)
                 {
@@ -5442,9 +5442,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             else if (value is MetaExternalType) //414:2
             {
                 bool __tmp63_outputWritten = false;
-                CodeBuilder __tmp64 = CodeBuilder.GetInstance();
+                var __tmp64 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp64.Write(name);
-                CodeReader __tmp64Reader = new CodeReader(__tmp64.ToStringAndFree());
+                var __tmp64Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp64.ToStringAndFree());
                 bool __tmp64_last = __tmp64Reader.EndOfStream;
                 while(!__tmp64_last)
                 {
@@ -5463,9 +5463,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp65_line);
                     __tmp63_outputWritten = true;
                 }
-                CodeBuilder __tmp66 = CodeBuilder.GetInstance();
+                var __tmp66 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp66.Write(prop.Name);
-                CodeReader __tmp66Reader = new CodeReader(__tmp66.ToStringAndFree());
+                var __tmp66Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp66.ToStringAndFree());
                 bool __tmp66_last = __tmp66Reader.EndOfStream;
                 while(!__tmp66_last)
                 {
@@ -5484,9 +5484,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp67_line);
                     __tmp63_outputWritten = true;
                 }
-                CodeBuilder __tmp68 = CodeBuilder.GetInstance();
+                var __tmp68 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp68.Write(ToPascalCase(((MetaExternalType)value).Name));
-                CodeReader __tmp68Reader = new CodeReader(__tmp68.ToStringAndFree());
+                var __tmp68Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp68.ToStringAndFree());
                 bool __tmp68_last = __tmp68Reader.EndOfStream;
                 while(!__tmp68_last)
                 {
@@ -5516,9 +5516,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 if (metaMetaModel) //417:3
                 {
                     bool __tmp71_outputWritten = false;
-                    CodeBuilder __tmp72 = CodeBuilder.GetInstance();
+                    var __tmp72 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp72.Write(name);
-                    CodeReader __tmp72Reader = new CodeReader(__tmp72.ToStringAndFree());
+                    var __tmp72Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp72.ToStringAndFree());
                     bool __tmp72_last = __tmp72Reader.EndOfStream;
                     while(!__tmp72_last)
                     {
@@ -5537,9 +5537,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp73_line);
                         __tmp71_outputWritten = true;
                     }
-                    CodeBuilder __tmp74 = CodeBuilder.GetInstance();
+                    var __tmp74 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp74.Write(prop.Name);
-                    CodeReader __tmp74Reader = new CodeReader(__tmp74.ToStringAndFree());
+                    var __tmp74Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp74.ToStringAndFree());
                     bool __tmp74_last = __tmp74Reader.EndOfStream;
                     while(!__tmp74_last)
                     {
@@ -5558,9 +5558,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp75_line);
                         __tmp71_outputWritten = true;
                     }
-                    CodeBuilder __tmp76 = CodeBuilder.GetInstance();
+                    var __tmp76 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp76.Write(ToPascalCase(((MetaPrimitiveType)value).Name));
-                    CodeReader __tmp76Reader = new CodeReader(__tmp76.ToStringAndFree());
+                    var __tmp76Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp76.ToStringAndFree());
                     bool __tmp76_last = __tmp76Reader.EndOfStream;
                     while(!__tmp76_last)
                     {
@@ -5588,9 +5588,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 else //419:3
                 {
                     bool __tmp79_outputWritten = false;
-                    CodeBuilder __tmp80 = CodeBuilder.GetInstance();
+                    var __tmp80 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp80.Write(name);
-                    CodeReader __tmp80Reader = new CodeReader(__tmp80.ToStringAndFree());
+                    var __tmp80Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp80.ToStringAndFree());
                     bool __tmp80_last = __tmp80Reader.EndOfStream;
                     while(!__tmp80_last)
                     {
@@ -5609,9 +5609,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp81_line);
                         __tmp79_outputWritten = true;
                     }
-                    CodeBuilder __tmp82 = CodeBuilder.GetInstance();
+                    var __tmp82 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp82.Write(prop.Name);
-                    CodeReader __tmp82Reader = new CodeReader(__tmp82.ToStringAndFree());
+                    var __tmp82Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp82.ToStringAndFree());
                     bool __tmp82_last = __tmp82Reader.EndOfStream;
                     while(!__tmp82_last)
                     {
@@ -5630,9 +5630,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp83_line);
                         __tmp79_outputWritten = true;
                     }
-                    CodeBuilder __tmp84 = CodeBuilder.GetInstance();
+                    var __tmp84 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp84.Write(CSharpName(((MetaPrimitiveType)value), model, ClassKind.ImmutableInstance, true));
-                    CodeReader __tmp84Reader = new CodeReader(__tmp84.ToStringAndFree());
+                    var __tmp84Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp84.ToStringAndFree());
                     bool __tmp84_last = __tmp84Reader.EndOfStream;
                     while(!__tmp84_last)
                     {
@@ -5661,9 +5661,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             else if (valueObject != null && instanceNames.ContainsKey(valueObject)) //422:2
             {
                 bool __tmp87_outputWritten = false;
-                CodeBuilder __tmp88 = CodeBuilder.GetInstance();
+                var __tmp88 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp88.Write(name);
-                CodeReader __tmp88Reader = new CodeReader(__tmp88.ToStringAndFree());
+                var __tmp88Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp88.ToStringAndFree());
                 bool __tmp88_last = __tmp88Reader.EndOfStream;
                 while(!__tmp88_last)
                 {
@@ -5682,9 +5682,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp89_line);
                     __tmp87_outputWritten = true;
                 }
-                CodeBuilder __tmp90 = CodeBuilder.GetInstance();
+                var __tmp90 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp90.Write(prop.Name);
-                CodeReader __tmp90Reader = new CodeReader(__tmp90.ToStringAndFree());
+                var __tmp90Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp90.ToStringAndFree());
                 bool __tmp90_last = __tmp90Reader.EndOfStream;
                 while(!__tmp90_last)
                 {
@@ -5703,9 +5703,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp91_line);
                     __tmp87_outputWritten = true;
                 }
-                CodeBuilder __tmp92 = CodeBuilder.GetInstance();
+                var __tmp92 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp92.Write(instanceNames[valueObject]);
-                CodeReader __tmp92Reader = new CodeReader(__tmp92.ToStringAndFree());
+                var __tmp92Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp92.ToStringAndFree());
                 bool __tmp92_last = __tmp92Reader.EndOfStream;
                 while(!__tmp92_last)
                 {
@@ -5733,9 +5733,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             else if (valueDecl != null && valueDecl is MetaType) //424:2
             {
                 bool __tmp95_outputWritten = false;
-                CodeBuilder __tmp96 = CodeBuilder.GetInstance();
+                var __tmp96 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp96.Write(name);
-                CodeReader __tmp96Reader = new CodeReader(__tmp96.ToStringAndFree());
+                var __tmp96Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp96.ToStringAndFree());
                 bool __tmp96_last = __tmp96Reader.EndOfStream;
                 while(!__tmp96_last)
                 {
@@ -5754,9 +5754,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp97_line);
                     __tmp95_outputWritten = true;
                 }
-                CodeBuilder __tmp98 = CodeBuilder.GetInstance();
+                var __tmp98 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp98.Write(prop.Name);
-                CodeReader __tmp98Reader = new CodeReader(__tmp98.ToStringAndFree());
+                var __tmp98Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp98.ToStringAndFree());
                 bool __tmp98_last = __tmp98Reader.EndOfStream;
                 while(!__tmp98_last)
                 {
@@ -5775,9 +5775,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp99_line);
                     __tmp95_outputWritten = true;
                 }
-                CodeBuilder __tmp100 = CodeBuilder.GetInstance();
+                var __tmp100 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp100.Write(CSharpName(((MetaType)valueDecl), model, ClassKind.Immutable, true));
-                CodeReader __tmp100Reader = new CodeReader(__tmp100.ToStringAndFree());
+                var __tmp100Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp100.ToStringAndFree());
                 bool __tmp100_last = __tmp100Reader.EndOfStream;
                 while(!__tmp100_last)
                 {
@@ -5805,9 +5805,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             else if (valueDecl != null && valueDecl is MetaConstant) //426:2
             {
                 bool __tmp103_outputWritten = false;
-                CodeBuilder __tmp104 = CodeBuilder.GetInstance();
+                var __tmp104 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp104.Write(name);
-                CodeReader __tmp104Reader = new CodeReader(__tmp104.ToStringAndFree());
+                var __tmp104Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp104.ToStringAndFree());
                 bool __tmp104_last = __tmp104Reader.EndOfStream;
                 while(!__tmp104_last)
                 {
@@ -5826,9 +5826,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp105_line);
                     __tmp103_outputWritten = true;
                 }
-                CodeBuilder __tmp106 = CodeBuilder.GetInstance();
+                var __tmp106 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp106.Write(prop.Name);
-                CodeReader __tmp106Reader = new CodeReader(__tmp106.ToStringAndFree());
+                var __tmp106Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp106.ToStringAndFree());
                 bool __tmp106_last = __tmp106Reader.EndOfStream;
                 while(!__tmp106_last)
                 {
@@ -5847,9 +5847,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp107_line);
                     __tmp103_outputWritten = true;
                 }
-                CodeBuilder __tmp108 = CodeBuilder.GetInstance();
+                var __tmp108 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp108.Write(CSharpName(((MetaConstant)valueDecl), model, ClassKind.Immutable, true));
-                CodeReader __tmp108Reader = new CodeReader(__tmp108.ToStringAndFree());
+                var __tmp108Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp108.ToStringAndFree());
                 bool __tmp108_last = __tmp108Reader.EndOfStream;
                 while(!__tmp108_last)
                 {
@@ -5883,9 +5883,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp112_line);
                     __tmp111_outputWritten = true;
                 }
-                CodeBuilder __tmp113 = CodeBuilder.GetInstance();
+                var __tmp113 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp113.Write(name);
-                CodeReader __tmp113Reader = new CodeReader(__tmp113.ToStringAndFree());
+                var __tmp113Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp113.ToStringAndFree());
                 bool __tmp113_last = __tmp113Reader.EndOfStream;
                 while(!__tmp113_last)
                 {
@@ -5904,9 +5904,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp114_line);
                     __tmp111_outputWritten = true;
                 }
-                CodeBuilder __tmp115 = CodeBuilder.GetInstance();
+                var __tmp115 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp115.Write(prop.Name);
-                CodeReader __tmp115Reader = new CodeReader(__tmp115.ToStringAndFree());
+                var __tmp115Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp115.ToStringAndFree());
                 bool __tmp115_last = __tmp115Reader.EndOfStream;
                 while(!__tmp115_last)
                 {
@@ -5929,7 +5929,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
 
         public string GenerateFactory(MetaModel model) //433:1
         {
-            CodeBuilder __out = CodeBuilder.GetInstance();
+            var __out = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             string metaNs = IsMetaMetaModel(model) ? "" : Properties.MetaNs + "."; //434:2
             bool metaMetaModel = IsMetaMetaModel(model); //435:2
             __out.Write("/// <summary>"); //436:1
@@ -5945,9 +5945,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp3_line);
                 __tmp2_outputWritten = true;
             }
-            CodeBuilder __tmp4 = CodeBuilder.GetInstance();
+            var __tmp4 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp4.Write(CSharpName(model, ModelKind.Factory));
-            CodeReader __tmp4Reader = new CodeReader(__tmp4.ToStringAndFree());
+            var __tmp4Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp4.ToStringAndFree());
             bool __tmp4_last = __tmp4Reader.EndOfStream;
             while(!__tmp4_last)
             {
@@ -5966,9 +5966,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp5_line);
                 __tmp2_outputWritten = true;
             }
-            CodeBuilder __tmp6 = CodeBuilder.GetInstance();
+            var __tmp6 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp6.Write(Properties.CoreNs);
-            CodeReader __tmp6Reader = new CodeReader(__tmp6.ToStringAndFree());
+            var __tmp6Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp6.ToStringAndFree());
             bool __tmp6_last = __tmp6Reader.EndOfStream;
             while(!__tmp6_last)
             {
@@ -6001,9 +6001,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp10_line);
                 __tmp9_outputWritten = true;
             }
-            CodeBuilder __tmp11 = CodeBuilder.GetInstance();
+            var __tmp11 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp11.Write(CSharpName(model, ModelKind.Factory));
-            CodeReader __tmp11Reader = new CodeReader(__tmp11.ToStringAndFree());
+            var __tmp11Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp11.ToStringAndFree());
             bool __tmp11_last = __tmp11Reader.EndOfStream;
             while(!__tmp11_last)
             {
@@ -6022,9 +6022,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp12_line);
                 __tmp9_outputWritten = true;
             }
-            CodeBuilder __tmp13 = CodeBuilder.GetInstance();
+            var __tmp13 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp13.Write(Properties.CoreNs);
-            CodeReader __tmp13Reader = new CodeReader(__tmp13.ToStringAndFree());
+            var __tmp13Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp13.ToStringAndFree());
             bool __tmp13_last = __tmp13Reader.EndOfStream;
             while(!__tmp13_last)
             {
@@ -6043,9 +6043,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp14_line);
                 __tmp9_outputWritten = true;
             }
-            CodeBuilder __tmp15 = CodeBuilder.GetInstance();
+            var __tmp15 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp15.Write(Properties.CoreNs);
-            CodeReader __tmp15Reader = new CodeReader(__tmp15.ToStringAndFree());
+            var __tmp15Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp15.ToStringAndFree());
             bool __tmp15_last = __tmp15Reader.EndOfStream;
             while(!__tmp15_last)
             {
@@ -6064,9 +6064,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp16_line);
                 __tmp9_outputWritten = true;
             }
-            CodeBuilder __tmp17 = CodeBuilder.GetInstance();
+            var __tmp17 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp17.Write(Properties.CoreNs);
-            CodeReader __tmp17Reader = new CodeReader(__tmp17.ToStringAndFree());
+            var __tmp17Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp17.ToStringAndFree());
             bool __tmp17_last = __tmp17Reader.EndOfStream;
             while(!__tmp17_last)
             {
@@ -6096,9 +6096,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             __out.AppendLine(false); //443:3
             bool __tmp20_outputWritten = false;
             string __tmp19Prefix = "		"; //444:1
-            CodeBuilder __tmp21 = CodeBuilder.GetInstance();
+            var __tmp21 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp21.Write(CSharpName(model, ModelKind.Descriptor));
-            CodeReader __tmp21Reader = new CodeReader(__tmp21.ToStringAndFree());
+            var __tmp21Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp21.ToStringAndFree());
             bool __tmp21_last = __tmp21Reader.EndOfStream;
             while(!__tmp21_last)
             {
@@ -6137,9 +6137,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp25_line);
                 __tmp24_outputWritten = true;
             }
-            CodeBuilder __tmp26 = CodeBuilder.GetInstance();
+            var __tmp26 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp26.Write(Properties.CoreNs);
-            CodeReader __tmp26Reader = new CodeReader(__tmp26.ToStringAndFree());
+            var __tmp26Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp26.ToStringAndFree());
             bool __tmp26_last = __tmp26Reader.EndOfStream;
             while(!__tmp26_last)
             {
@@ -6158,9 +6158,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp27_line);
                 __tmp24_outputWritten = true;
             }
-            CodeBuilder __tmp28 = CodeBuilder.GetInstance();
+            var __tmp28 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp28.Write(CSharpName(model, ModelKind.ImmutableInstance, true));
-            CodeReader __tmp28Reader = new CodeReader(__tmp28.ToStringAndFree());
+            var __tmp28Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp28.ToStringAndFree());
             bool __tmp28_last = __tmp28Reader.EndOfStream;
             while(!__tmp28_last)
             {
@@ -6192,9 +6192,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp32_line);
                 __tmp31_outputWritten = true;
             }
-            CodeBuilder __tmp33 = CodeBuilder.GetInstance();
+            var __tmp33 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp33.Write(Properties.CoreNs);
-            CodeReader __tmp33Reader = new CodeReader(__tmp33.ToStringAndFree());
+            var __tmp33Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp33.ToStringAndFree());
             bool __tmp33_last = __tmp33Reader.EndOfStream;
             while(!__tmp33_last)
             {
@@ -6243,9 +6243,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp38_line);
                         __tmp37_outputWritten = true;
                     }
-                    CodeBuilder __tmp39 = CodeBuilder.GetInstance();
+                    var __tmp39 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp39.Write(CSharpName(cls, model));
-                    CodeReader __tmp39Reader = new CodeReader(__tmp39.ToStringAndFree());
+                    var __tmp39Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp39.ToStringAndFree());
                     bool __tmp39_last = __tmp39Reader.EndOfStream;
                     while(!__tmp39_last)
                     {
@@ -6264,9 +6264,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp40_line);
                         __tmp37_outputWritten = true;
                     }
-                    CodeBuilder __tmp41 = CodeBuilder.GetInstance();
+                    var __tmp41 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp41.Write(CSharpName(cls, model));
-                    CodeReader __tmp41Reader = new CodeReader(__tmp41.ToStringAndFree());
+                    var __tmp41Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp41.ToStringAndFree());
                     bool __tmp41_last = __tmp41Reader.EndOfStream;
                     while(!__tmp41_last)
                     {
@@ -6301,9 +6301,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp45_line);
                 __tmp44_outputWritten = true;
             }
-            CodeBuilder __tmp46 = CodeBuilder.GetInstance();
+            var __tmp46 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp46.Write(Properties.CoreNs);
-            CodeReader __tmp46Reader = new CodeReader(__tmp46.ToStringAndFree());
+            var __tmp46Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp46.ToStringAndFree());
             bool __tmp46_last = __tmp46Reader.EndOfStream;
             while(!__tmp46_last)
             {
@@ -6322,9 +6322,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp47_line);
                 __tmp44_outputWritten = true;
             }
-            CodeBuilder __tmp48 = CodeBuilder.GetInstance();
+            var __tmp48 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp48.Write(Properties.CoreNs);
-            CodeReader __tmp48Reader = new CodeReader(__tmp48.ToStringAndFree());
+            var __tmp48Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp48.ToStringAndFree());
             bool __tmp48_last = __tmp48Reader.EndOfStream;
             while(!__tmp48_last)
             {
@@ -6374,9 +6374,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp53_line);
                         __tmp52_outputWritten = true;
                     }
-                    CodeBuilder __tmp54 = CodeBuilder.GetInstance();
+                    var __tmp54 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp54.Write(CSharpName(cls, model));
-                    CodeReader __tmp54Reader = new CodeReader(__tmp54.ToStringAndFree());
+                    var __tmp54Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp54.ToStringAndFree());
                     bool __tmp54_last = __tmp54Reader.EndOfStream;
                     while(!__tmp54_last)
                     {
@@ -6409,9 +6409,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp58_line);
                         __tmp57_outputWritten = true;
                     }
-                    CodeBuilder __tmp59 = CodeBuilder.GetInstance();
+                    var __tmp59 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp59.Write(CSharpName(cls, model, ClassKind.Builder));
-                    CodeReader __tmp59Reader = new CodeReader(__tmp59.ToStringAndFree());
+                    var __tmp59Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp59.ToStringAndFree());
                     bool __tmp59_last = __tmp59Reader.EndOfStream;
                     while(!__tmp59_last)
                     {
@@ -6430,9 +6430,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp60_line);
                         __tmp57_outputWritten = true;
                     }
-                    CodeBuilder __tmp61 = CodeBuilder.GetInstance();
+                    var __tmp61 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp61.Write(CSharpName(cls, model, ClassKind.FactoryMethod));
-                    CodeReader __tmp61Reader = new CodeReader(__tmp61.ToStringAndFree());
+                    var __tmp61Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp61.ToStringAndFree());
                     bool __tmp61_last = __tmp61Reader.EndOfStream;
                     while(!__tmp61_last)
                     {
@@ -6460,9 +6460,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.AppendLine(false); //469:3
                     bool __tmp64_outputWritten = false;
                     string __tmp63Prefix = "		"; //470:1
-                    CodeBuilder __tmp65 = CodeBuilder.GetInstance();
+                    var __tmp65 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp65.Write(Properties.CoreNs);
-                    CodeReader __tmp65Reader = new CodeReader(__tmp65.ToStringAndFree());
+                    var __tmp65Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp65.ToStringAndFree());
                     bool __tmp65_last = __tmp65Reader.EndOfStream;
                     while(!__tmp65_last)
                     {
@@ -6486,9 +6486,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp66_line);
                         __tmp64_outputWritten = true;
                     }
-                    CodeBuilder __tmp67 = CodeBuilder.GetInstance();
+                    var __tmp67 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp67.Write(CSharpName(cls, model, ClassKind.Id));
-                    CodeReader __tmp67Reader = new CodeReader(__tmp67.ToStringAndFree());
+                    var __tmp67Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp67.ToStringAndFree());
                     bool __tmp67_last = __tmp67Reader.EndOfStream;
                     while(!__tmp67_last)
                     {
@@ -6519,9 +6519,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp71_line);
                         __tmp70_outputWritten = true;
                     }
-                    CodeBuilder __tmp72 = CodeBuilder.GetInstance();
+                    var __tmp72 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp72.Write(CSharpName(cls, model, ClassKind.Builder));
-                    CodeReader __tmp72Reader = new CodeReader(__tmp72.ToStringAndFree());
+                    var __tmp72Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp72.ToStringAndFree());
                     bool __tmp72_last = __tmp72Reader.EndOfStream;
                     while(!__tmp72_last)
                     {
@@ -6557,7 +6557,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
 
         public string GenerateMetaModelDescriptor(MetaModel model) //479:1
         {
-            CodeBuilder __out = CodeBuilder.GetInstance();
+            var __out = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             string metaNs = IsMetaMetaModel(model) ? "" : Properties.MetaNs + "."; //480:2
             bool metaMetaModel = IsMetaMetaModel(model); //481:2
             bool __tmp2_outputWritten = false;
@@ -6567,9 +6567,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp3_line);
                 __tmp2_outputWritten = true;
             }
-            CodeBuilder __tmp4 = CodeBuilder.GetInstance();
+            var __tmp4 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp4.Write(CSharpName(model, ModelKind.Descriptor));
-            CodeReader __tmp4Reader = new CodeReader(__tmp4.ToStringAndFree());
+            var __tmp4Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp4.ToStringAndFree());
             bool __tmp4_last = __tmp4Reader.EndOfStream;
             while(!__tmp4_last)
             {
@@ -6595,9 +6595,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp7_line);
                 __tmp6_outputWritten = true;
             }
-            CodeBuilder __tmp8 = CodeBuilder.GetInstance();
+            var __tmp8 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp8.Write(Properties.CoreNs);
-            CodeReader __tmp8Reader = new CodeReader(__tmp8.ToStringAndFree());
+            var __tmp8Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp8.ToStringAndFree());
             bool __tmp8_last = __tmp8Reader.EndOfStream;
             while(!__tmp8_last)
             {
@@ -6629,9 +6629,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp12_line);
                 __tmp11_outputWritten = true;
             }
-            CodeBuilder __tmp13 = CodeBuilder.GetInstance();
+            var __tmp13 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp13.Write(CSharpName(model, ModelKind.Descriptor));
-            CodeReader __tmp13Reader = new CodeReader(__tmp13.ToStringAndFree());
+            var __tmp13Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp13.ToStringAndFree());
             bool __tmp13_last = __tmp13Reader.EndOfStream;
             while(!__tmp13_last)
             {
@@ -6664,9 +6664,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp17_line);
                 __tmp16_outputWritten = true;
             }
-            CodeBuilder __tmp18 = CodeBuilder.GetInstance();
+            var __tmp18 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp18.Write(Properties.CoreNs);
-            CodeReader __tmp18Reader = new CodeReader(__tmp18.ToStringAndFree());
+            var __tmp18Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp18.ToStringAndFree());
             bool __tmp18_last = __tmp18Reader.EndOfStream;
             while(!__tmp18_last)
             {
@@ -6702,9 +6702,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 var cls = __tmp20.cls;
                 bool __tmp22_outputWritten = false;
                 string __tmp21Prefix = "		"; //490:1
-                CodeBuilder __tmp23 = CodeBuilder.GetInstance();
+                var __tmp23 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp23.Write(CSharpName(cls, model, ClassKind.Descriptor));
-                CodeReader __tmp23Reader = new CodeReader(__tmp23.ToStringAndFree());
+                var __tmp23Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp23.ToStringAndFree());
                 bool __tmp23_last = __tmp23Reader.EndOfStream;
                 while(!__tmp23_last)
                 {
@@ -6753,9 +6753,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp28_line);
                     __tmp27_outputWritten = true;
                 }
-                CodeBuilder __tmp29 = CodeBuilder.GetInstance();
+                var __tmp29 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp29.Write(CSharpName(prop, model, PropertyKind.Descriptor, true));
-                CodeReader __tmp29Reader = new CodeReader(__tmp29.ToStringAndFree());
+                var __tmp29Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp29.ToStringAndFree());
                 bool __tmp29_last = __tmp29Reader.EndOfStream;
                 while(!__tmp29_last)
                 {
@@ -6797,9 +6797,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp33_line);
                 __tmp32_outputWritten = true;
             }
-            CodeBuilder __tmp34 = CodeBuilder.GetInstance();
+            var __tmp34 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp34.Write(model.Uri);
-            CodeReader __tmp34Reader = new CodeReader(__tmp34.ToStringAndFree());
+            var __tmp34Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp34.ToStringAndFree());
             bool __tmp34_last = __tmp34Reader.EndOfStream;
             while(!__tmp34_last)
             {
@@ -6830,9 +6830,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp38_line);
                 __tmp37_outputWritten = true;
             }
-            CodeBuilder __tmp39 = CodeBuilder.GetInstance();
+            var __tmp39 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp39.Write(model.Prefix);
-            CodeReader __tmp39Reader = new CodeReader(__tmp39.ToStringAndFree());
+            var __tmp39Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp39.ToStringAndFree());
             bool __tmp39_last = __tmp39Reader.EndOfStream;
             while(!__tmp39_last)
             {
@@ -6869,9 +6869,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.AppendLine(true); //504:1
                 bool __tmp43_outputWritten = false;
                 string __tmp42Prefix = "	"; //505:1
-                CodeBuilder __tmp44 = CodeBuilder.GetInstance();
+                var __tmp44 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp44.Write(GenerateDescriptorClass(model, cls));
-                CodeReader __tmp44Reader = new CodeReader(__tmp44.ToStringAndFree());
+                var __tmp44Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp44.ToStringAndFree());
                 bool __tmp44_last = __tmp44Reader.EndOfStream;
                 while(!__tmp44_last)
                 {
@@ -6901,11 +6901,11 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
 
         public string GenerateDescriptorClass(MetaModel model, MetaClass cls) //510:1
         {
-            CodeBuilder __out = CodeBuilder.GetInstance();
+            var __out = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             bool __tmp2_outputWritten = false;
-            CodeBuilder __tmp3 = CodeBuilder.GetInstance();
+            var __tmp3 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp3.Write(GenerateDocumentation(cls));
-            CodeReader __tmp3Reader = new CodeReader(__tmp3.ToStringAndFree());
+            var __tmp3Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp3.ToStringAndFree());
             bool __tmp3_last = __tmp3Reader.EndOfStream;
             while(!__tmp3_last)
             {
@@ -6923,9 +6923,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.AppendLine(false); //511:29
             }
             bool __tmp5_outputWritten = false;
-            CodeBuilder __tmp6 = CodeBuilder.GetInstance();
+            var __tmp6 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp6.Write(GenerateAttributes(cls));
-            CodeReader __tmp6Reader = new CodeReader(__tmp6.ToStringAndFree());
+            var __tmp6Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp6.ToStringAndFree());
             bool __tmp6_last = __tmp6Reader.EndOfStream;
             while(!__tmp6_last)
             {
@@ -6945,9 +6945,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             if (cls.SymbolType != null) //513:2
             {
                 bool __tmp8_outputWritten = false;
-                CodeBuilder __tmp9 = CodeBuilder.GetInstance();
+                var __tmp9 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp9.Write("[");
-                CodeReader __tmp9Reader = new CodeReader(__tmp9.ToStringAndFree());
+                var __tmp9Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp9.ToStringAndFree());
                 bool __tmp9_last = __tmp9Reader.EndOfStream;
                 while(!__tmp9_last)
                 {
@@ -6966,9 +6966,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp10_line);
                     __tmp8_outputWritten = true;
                 }
-                CodeBuilder __tmp11 = CodeBuilder.GetInstance();
+                var __tmp11 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp11.Write(cls.SymbolType.FullName);
-                CodeReader __tmp11Reader = new CodeReader(__tmp11.ToStringAndFree());
+                var __tmp11Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp11.ToStringAndFree());
                 bool __tmp11_last = __tmp11Reader.EndOfStream;
                 while(!__tmp11_last)
                 {
@@ -6987,9 +6987,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp12_line);
                     __tmp8_outputWritten = true;
                 }
-                CodeBuilder __tmp13 = CodeBuilder.GetInstance();
+                var __tmp13 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp13.Write("]");
-                CodeReader __tmp13Reader = new CodeReader(__tmp13.ToStringAndFree());
+                var __tmp13Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp13.ToStringAndFree());
                 bool __tmp13_last = __tmp13Reader.EndOfStream;
                 while(!__tmp13_last)
                 {
@@ -7008,9 +7008,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 }
             }
             bool __tmp15_outputWritten = false;
-            CodeBuilder __tmp16 = CodeBuilder.GetInstance();
+            var __tmp16 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp16.Write("[" + Properties.CoreNs);
-            CodeReader __tmp16Reader = new CodeReader(__tmp16.ToStringAndFree());
+            var __tmp16Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp16.ToStringAndFree());
             bool __tmp16_last = __tmp16Reader.EndOfStream;
             while(!__tmp16_last)
             {
@@ -7029,9 +7029,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp17_line);
                 __tmp15_outputWritten = true;
             }
-            CodeBuilder __tmp18 = CodeBuilder.GetInstance();
+            var __tmp18 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp18.Write(CSharpName(cls, null, ClassKind.Id, true));
-            CodeReader __tmp18Reader = new CodeReader(__tmp18.ToStringAndFree());
+            var __tmp18Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp18.ToStringAndFree());
             bool __tmp18_last = __tmp18Reader.EndOfStream;
             while(!__tmp18_last)
             {
@@ -7050,9 +7050,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp19_line);
                 __tmp15_outputWritten = true;
             }
-            CodeBuilder __tmp20 = CodeBuilder.GetInstance();
+            var __tmp20 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp20.Write(CSharpName(cls, null, ClassKind.Immutable, true));
-            CodeReader __tmp20Reader = new CodeReader(__tmp20.ToStringAndFree());
+            var __tmp20Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp20.ToStringAndFree());
             bool __tmp20_last = __tmp20Reader.EndOfStream;
             while(!__tmp20_last)
             {
@@ -7071,9 +7071,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp21_line);
                 __tmp15_outputWritten = true;
             }
-            CodeBuilder __tmp22 = CodeBuilder.GetInstance();
+            var __tmp22 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp22.Write(CSharpName(cls, null, ClassKind.Builder, true));
-            CodeReader __tmp22Reader = new CodeReader(__tmp22.ToStringAndFree());
+            var __tmp22Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp22.ToStringAndFree());
             bool __tmp22_last = __tmp22Reader.EndOfStream;
             while(!__tmp22_last)
             {
@@ -7092,9 +7092,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp23_line);
                 __tmp15_outputWritten = true;
             }
-            CodeBuilder __tmp24 = CodeBuilder.GetInstance();
+            var __tmp24 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp24.Write(GetDescriptorAncestors(model, cls));
-            CodeReader __tmp24Reader = new CodeReader(__tmp24.ToStringAndFree());
+            var __tmp24Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp24.ToStringAndFree());
             bool __tmp24_last = __tmp24Reader.EndOfStream;
             while(!__tmp24_last)
             {
@@ -7113,9 +7113,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp25_line);
                 __tmp15_outputWritten = true;
             }
-            CodeBuilder __tmp26 = CodeBuilder.GetInstance();
+            var __tmp26 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp26.Write("]");
-            CodeReader __tmp26Reader = new CodeReader(__tmp26.ToStringAndFree());
+            var __tmp26Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp26.ToStringAndFree());
             bool __tmp26_last = __tmp26Reader.EndOfStream;
             while(!__tmp26_last)
             {
@@ -7139,9 +7139,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp29_line);
                 __tmp28_outputWritten = true;
             }
-            CodeBuilder __tmp30 = CodeBuilder.GetInstance();
+            var __tmp30 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp30.Write(CSharpName(cls, model, ClassKind.Descriptor));
-            CodeReader __tmp30Reader = new CodeReader(__tmp30.ToStringAndFree());
+            var __tmp30Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp30.ToStringAndFree());
             bool __tmp30_last = __tmp30Reader.EndOfStream;
             while(!__tmp30_last)
             {
@@ -7167,9 +7167,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp33_line);
                 __tmp32_outputWritten = true;
             }
-            CodeBuilder __tmp34 = CodeBuilder.GetInstance();
+            var __tmp34 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp34.Write(Properties.CoreNs);
-            CodeReader __tmp34Reader = new CodeReader(__tmp34.ToStringAndFree());
+            var __tmp34Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp34.ToStringAndFree());
             bool __tmp34_last = __tmp34Reader.EndOfStream;
             while(!__tmp34_last)
             {
@@ -7201,9 +7201,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp38_line);
                 __tmp37_outputWritten = true;
             }
-            CodeBuilder __tmp39 = CodeBuilder.GetInstance();
+            var __tmp39 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp39.Write(CSharpName(cls, model, ClassKind.Descriptor));
-            CodeReader __tmp39Reader = new CodeReader(__tmp39.ToStringAndFree());
+            var __tmp39Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp39.ToStringAndFree());
             bool __tmp39_last = __tmp39Reader.EndOfStream;
             while(!__tmp39_last)
             {
@@ -7236,9 +7236,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp43_line);
                 __tmp42_outputWritten = true;
             }
-            CodeBuilder __tmp44 = CodeBuilder.GetInstance();
+            var __tmp44 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp44.Write(Properties.CoreNs);
-            CodeReader __tmp44Reader = new CodeReader(__tmp44.ToStringAndFree());
+            var __tmp44Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp44.ToStringAndFree());
             bool __tmp44_last = __tmp44Reader.EndOfStream;
             while(!__tmp44_last)
             {
@@ -7257,9 +7257,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp45_line);
                 __tmp42_outputWritten = true;
             }
-            CodeBuilder __tmp46 = CodeBuilder.GetInstance();
+            var __tmp46 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp46.Write(CSharpName(cls, model, ClassKind.Descriptor));
-            CodeReader __tmp46Reader = new CodeReader(__tmp46.ToStringAndFree());
+            var __tmp46Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp46.ToStringAndFree());
             bool __tmp46_last = __tmp46Reader.EndOfStream;
             while(!__tmp46_last)
             {
@@ -7300,9 +7300,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp50_line);
                 __tmp49_outputWritten = true;
             }
-            CodeBuilder __tmp51 = CodeBuilder.GetInstance();
+            var __tmp51 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp51.Write(Properties.CoreNs);
-            CodeReader __tmp51Reader = new CodeReader(__tmp51.ToStringAndFree());
+            var __tmp51Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp51.ToStringAndFree());
             bool __tmp51_last = __tmp51Reader.EndOfStream;
             while(!__tmp51_last)
             {
@@ -7340,9 +7340,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp55_line);
                 __tmp54_outputWritten = true;
             }
-            CodeBuilder __tmp56 = CodeBuilder.GetInstance();
+            var __tmp56 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp56.Write(Properties.MetaNs);
-            CodeReader __tmp56Reader = new CodeReader(__tmp56.ToStringAndFree());
+            var __tmp56Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp56.ToStringAndFree());
             bool __tmp56_last = __tmp56Reader.EndOfStream;
             while(!__tmp56_last)
             {
@@ -7375,9 +7375,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp60_line);
                 __tmp59_outputWritten = true;
             }
-            CodeBuilder __tmp61 = CodeBuilder.GetInstance();
+            var __tmp61 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp61.Write(CSharpName(cls, null, ClassKind.ImmutableInstance, true));
-            CodeReader __tmp61Reader = new CodeReader(__tmp61.ToStringAndFree());
+            var __tmp61Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp61.ToStringAndFree());
             bool __tmp61_last = __tmp61Reader.EndOfStream;
             while(!__tmp61_last)
             {
@@ -7415,9 +7415,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 var prop = __tmp63.prop;
                 bool __tmp65_outputWritten = false;
                 string __tmp64Prefix = "	"; //540:1
-                CodeBuilder __tmp66 = CodeBuilder.GetInstance();
+                var __tmp66 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp66.Write(GenerateDescriptorProperty(model, cls, prop));
-                CodeReader __tmp66Reader = new CodeReader(__tmp66.ToStringAndFree());
+                var __tmp66Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp66.ToStringAndFree());
                 bool __tmp66_last = __tmp66Reader.EndOfStream;
                 while(!__tmp66_last)
                 {
@@ -7472,12 +7472,12 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
 
         public string GenerateDescriptorProperty(MetaModel model, MetaClass cls, MetaProperty prop) //556:1
         {
-            CodeBuilder __out = CodeBuilder.GetInstance();
+            var __out = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __out.AppendLine(true); //557:1
             bool __tmp2_outputWritten = false;
-            CodeBuilder __tmp3 = CodeBuilder.GetInstance();
+            var __tmp3 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp3.Write(GenerateDocumentation(prop));
-            CodeReader __tmp3Reader = new CodeReader(__tmp3.ToStringAndFree());
+            var __tmp3Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp3.ToStringAndFree());
             bool __tmp3_last = __tmp3Reader.EndOfStream;
             while(!__tmp3_last)
             {
@@ -7495,9 +7495,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.AppendLine(false); //558:30
             }
             bool __tmp5_outputWritten = false;
-            CodeBuilder __tmp6 = CodeBuilder.GetInstance();
+            var __tmp6 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp6.Write(GenerateAttributes(prop));
-            CodeReader __tmp6Reader = new CodeReader(__tmp6.ToStringAndFree());
+            var __tmp6Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp6.ToStringAndFree());
             bool __tmp6_last = __tmp6Reader.EndOfStream;
             while(!__tmp6_last)
             {
@@ -7517,9 +7517,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             if (prop.SymbolProperty != null) //560:2
             {
                 bool __tmp8_outputWritten = false;
-                CodeBuilder __tmp9 = CodeBuilder.GetInstance();
+                var __tmp9 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp9.Write("[");
-                CodeReader __tmp9Reader = new CodeReader(__tmp9.ToStringAndFree());
+                var __tmp9Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp9.ToStringAndFree());
                 bool __tmp9_last = __tmp9Reader.EndOfStream;
                 while(!__tmp9_last)
                 {
@@ -7538,9 +7538,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp10_line);
                     __tmp8_outputWritten = true;
                 }
-                CodeBuilder __tmp11 = CodeBuilder.GetInstance();
+                var __tmp11 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp11.Write(prop.SymbolProperty);
-                CodeReader __tmp11Reader = new CodeReader(__tmp11.ToStringAndFree());
+                var __tmp11Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp11.ToStringAndFree());
                 bool __tmp11_last = __tmp11Reader.EndOfStream;
                 while(!__tmp11_last)
                 {
@@ -7559,9 +7559,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp12_line);
                     __tmp8_outputWritten = true;
                 }
-                CodeBuilder __tmp13 = CodeBuilder.GetInstance();
+                var __tmp13 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp13.Write("]");
-                CodeReader __tmp13Reader = new CodeReader(__tmp13.ToStringAndFree());
+                var __tmp13Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp13.ToStringAndFree());
                 bool __tmp13_last = __tmp13Reader.EndOfStream;
                 while(!__tmp13_last)
                 {
@@ -7580,9 +7580,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 }
             }
             bool __tmp15_outputWritten = false;
-            CodeBuilder __tmp16 = CodeBuilder.GetInstance();
+            var __tmp16 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp16.Write(GenerateDescriptorPropertyAttributes(model, cls, prop));
-            CodeReader __tmp16Reader = new CodeReader(__tmp16.ToStringAndFree());
+            var __tmp16Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp16.ToStringAndFree());
             bool __tmp16_last = __tmp16Reader.EndOfStream;
             while(!__tmp16_last)
             {
@@ -7606,9 +7606,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp19_line);
                 __tmp18_outputWritten = true;
             }
-            CodeBuilder __tmp20 = CodeBuilder.GetInstance();
+            var __tmp20 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp20.Write(Properties.CoreNs);
-            CodeReader __tmp20Reader = new CodeReader(__tmp20.ToStringAndFree());
+            var __tmp20Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp20.ToStringAndFree());
             bool __tmp20_last = __tmp20Reader.EndOfStream;
             while(!__tmp20_last)
             {
@@ -7627,9 +7627,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp21_line);
                 __tmp18_outputWritten = true;
             }
-            CodeBuilder __tmp22 = CodeBuilder.GetInstance();
+            var __tmp22 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp22.Write(CSharpName(prop, model, PropertyKind.Descriptor));
-            CodeReader __tmp22Reader = new CodeReader(__tmp22.ToStringAndFree());
+            var __tmp22Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp22.ToStringAndFree());
             bool __tmp22_last = __tmp22Reader.EndOfStream;
             while(!__tmp22_last)
             {
@@ -7655,9 +7655,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             }
             bool __tmp25_outputWritten = false;
             string __tmp24Prefix = "    "; //565:1
-            CodeBuilder __tmp26 = CodeBuilder.GetInstance();
+            var __tmp26 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp26.Write(Properties.CoreNs);
-            CodeReader __tmp26Reader = new CodeReader(__tmp26.ToStringAndFree());
+            var __tmp26Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp26.ToStringAndFree());
             bool __tmp26_last = __tmp26Reader.EndOfStream;
             while(!__tmp26_last)
             {
@@ -7681,9 +7681,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp27_line);
                 __tmp25_outputWritten = true;
             }
-            CodeBuilder __tmp28 = CodeBuilder.GetInstance();
+            var __tmp28 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp28.Write(CSharpName(cls, model, ClassKind.Descriptor));
-            CodeReader __tmp28Reader = new CodeReader(__tmp28.ToStringAndFree());
+            var __tmp28Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp28.ToStringAndFree());
             bool __tmp28_last = __tmp28Reader.EndOfStream;
             while(!__tmp28_last)
             {
@@ -7702,9 +7702,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp29_line);
                 __tmp25_outputWritten = true;
             }
-            CodeBuilder __tmp30 = CodeBuilder.GetInstance();
+            var __tmp30 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp30.Write(CSharpName(prop, model));
-            CodeReader __tmp30Reader = new CodeReader(__tmp30.ToStringAndFree());
+            var __tmp30Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp30.ToStringAndFree());
             bool __tmp30_last = __tmp30Reader.EndOfStream;
             while(!__tmp30_last)
             {
@@ -7738,9 +7738,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp34_line);
                     __tmp33_outputWritten = true;
                 }
-                CodeBuilder __tmp35 = CodeBuilder.GetInstance();
+                var __tmp35 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp35.Write(CSharpName(collType.InnerType, null, ClassKind.Immutable, true));
-                CodeReader __tmp35Reader = new CodeReader(__tmp35.ToStringAndFree());
+                var __tmp35Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp35.ToStringAndFree());
                 bool __tmp35_last = __tmp35Reader.EndOfStream;
                 while(!__tmp35_last)
                 {
@@ -7771,9 +7771,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp39_line);
                     __tmp38_outputWritten = true;
                 }
-                CodeBuilder __tmp40 = CodeBuilder.GetInstance();
+                var __tmp40 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp40.Write(CSharpName(collType.InnerType, null, ClassKind.Builder, true));
-                CodeReader __tmp40Reader = new CodeReader(__tmp40.ToStringAndFree());
+                var __tmp40Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp40.ToStringAndFree());
                 bool __tmp40_last = __tmp40Reader.EndOfStream;
                 while(!__tmp40_last)
                 {
@@ -7807,9 +7807,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp44_line);
                     __tmp43_outputWritten = true;
                 }
-                CodeBuilder __tmp45 = CodeBuilder.GetInstance();
+                var __tmp45 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp45.Write(CSharpName(prop.Type, null, ClassKind.Immutable, true));
-                CodeReader __tmp45Reader = new CodeReader(__tmp45.ToStringAndFree());
+                var __tmp45Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp45.ToStringAndFree());
                 bool __tmp45_last = __tmp45Reader.EndOfStream;
                 while(!__tmp45_last)
                 {
@@ -7840,9 +7840,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp49_line);
                     __tmp48_outputWritten = true;
                 }
-                CodeBuilder __tmp50 = CodeBuilder.GetInstance();
+                var __tmp50 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp50.Write(CSharpName(prop.Type, null, ClassKind.Builder, true));
-                CodeReader __tmp50Reader = new CodeReader(__tmp50.ToStringAndFree());
+                var __tmp50Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp50.ToStringAndFree());
                 bool __tmp50_last = __tmp50Reader.EndOfStream;
                 while(!__tmp50_last)
                 {
@@ -7874,9 +7874,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp54_line);
                 __tmp53_outputWritten = true;
             }
-            CodeBuilder __tmp55 = CodeBuilder.GetInstance();
+            var __tmp55 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp55.Write(CSharpName(prop, null, PropertyKind.ImmutableInstance, true));
-            CodeReader __tmp55Reader = new CodeReader(__tmp55.ToStringAndFree());
+            var __tmp55Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp55.ToStringAndFree());
             bool __tmp55_last = __tmp55Reader.EndOfStream;
             while(!__tmp55_last)
             {
@@ -7907,9 +7907,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp59_line);
                 __tmp58_outputWritten = true;
             }
-            CodeBuilder __tmp60 = CodeBuilder.GetInstance();
+            var __tmp60 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp60.Write(prop.DefaultValue != null ? prop.DefaultValue : "null");
-            CodeReader __tmp60Reader = new CodeReader(__tmp60.ToStringAndFree());
+            var __tmp60Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp60.ToStringAndFree());
             bool __tmp60_last = __tmp60Reader.EndOfStream;
             while(!__tmp60_last)
             {
@@ -7938,13 +7938,13 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
 
         public string GenerateDescriptorPropertyAttributes(MetaModel model, MetaClass cls, MetaProperty prop) //578:1
         {
-            CodeBuilder __out = CodeBuilder.GetInstance();
+            var __out = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             if (prop.Type is MetaCollectionType) //579:2
             {
                 bool __tmp2_outputWritten = false;
-                CodeBuilder __tmp3 = CodeBuilder.GetInstance();
+                var __tmp3 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp3.Write("[" + Properties.CoreNs + ".CollectionAttribute]");
-                CodeReader __tmp3Reader = new CodeReader(__tmp3.ToStringAndFree());
+                var __tmp3Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp3.ToStringAndFree());
                 bool __tmp3_last = __tmp3Reader.EndOfStream;
                 while(!__tmp3_last)
                 {
@@ -7965,9 +7965,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             if (prop.Type is MetaCollectionType && (((MetaCollectionType)prop.Type).Kind == MetaCollectionKind.MultiSet || ((MetaCollectionType)prop.Type).Kind == MetaCollectionKind.MultiList)) //582:2
             {
                 bool __tmp5_outputWritten = false;
-                CodeBuilder __tmp6 = CodeBuilder.GetInstance();
+                var __tmp6 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp6.Write("[" + Properties.CoreNs + ".NonUniqueAttribute]");
-                CodeReader __tmp6Reader = new CodeReader(__tmp6.ToStringAndFree());
+                var __tmp6Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp6.ToStringAndFree());
                 bool __tmp6_last = __tmp6Reader.EndOfStream;
                 while(!__tmp6_last)
                 {
@@ -7988,9 +7988,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             if (prop.Type is MetaCollectionType && (((MetaCollectionType)prop.Type).Kind == MetaCollectionKind.List || ((MetaCollectionType)prop.Type).Kind == MetaCollectionKind.MultiList)) //585:2
             {
                 bool __tmp8_outputWritten = false;
-                CodeBuilder __tmp9 = CodeBuilder.GetInstance();
+                var __tmp9 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp9.Write("[" + Properties.CoreNs + ".OrderedAttribute]");
-                CodeReader __tmp9Reader = new CodeReader(__tmp9.ToStringAndFree());
+                var __tmp9Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp9.ToStringAndFree());
                 bool __tmp9_last = __tmp9Reader.EndOfStream;
                 while(!__tmp9_last)
                 {
@@ -8011,9 +8011,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             if (prop.IsContainment) //588:2
             {
                 bool __tmp11_outputWritten = false;
-                CodeBuilder __tmp12 = CodeBuilder.GetInstance();
+                var __tmp12 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp12.Write("[" + Properties.CoreNs + ".ContainmentAttribute]");
-                CodeReader __tmp12Reader = new CodeReader(__tmp12.ToStringAndFree());
+                var __tmp12Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp12.ToStringAndFree());
                 bool __tmp12_last = __tmp12Reader.EndOfStream;
                 while(!__tmp12_last)
                 {
@@ -8034,9 +8034,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             if (prop.Kind != MetaPropertyKind.Normal) //591:2
             {
                 bool __tmp14_outputWritten = false;
-                CodeBuilder __tmp15 = CodeBuilder.GetInstance();
+                var __tmp15 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp15.Write("[" + Properties.CoreNs + ".ReadonlyAttribute]");
-                CodeReader __tmp15Reader = new CodeReader(__tmp15.ToStringAndFree());
+                var __tmp15Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp15.ToStringAndFree());
                 bool __tmp15_last = __tmp15Reader.EndOfStream;
                 while(!__tmp15_last)
                 {
@@ -8057,9 +8057,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             if (prop.Kind == MetaPropertyKind.Derived) //594:2
             {
                 bool __tmp17_outputWritten = false;
-                CodeBuilder __tmp18 = CodeBuilder.GetInstance();
+                var __tmp18 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp18.Write("[" + Properties.CoreNs + ".DerivedAttribute]");
-                CodeReader __tmp18Reader = new CodeReader(__tmp18.ToStringAndFree());
+                var __tmp18Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp18.ToStringAndFree());
                 bool __tmp18_last = __tmp18Reader.EndOfStream;
                 while(!__tmp18_last)
                 {
@@ -8080,9 +8080,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             if (prop.Kind == MetaPropertyKind.DerivedUnion) //597:2
             {
                 bool __tmp20_outputWritten = false;
-                CodeBuilder __tmp21 = CodeBuilder.GetInstance();
+                var __tmp21 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp21.Write("[" + Properties.CoreNs + ".DerivedUnionAttribute]");
-                CodeReader __tmp21Reader = new CodeReader(__tmp21.ToStringAndFree());
+                var __tmp21Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp21.ToStringAndFree());
                 bool __tmp21_last = __tmp21Reader.EndOfStream;
                 while(!__tmp21_last)
                 {
@@ -8109,9 +8109,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 var __tmp22 = __loop28_results[__loop28_iteration];
                 var p = __tmp22.p;
                 bool __tmp24_outputWritten = false;
-                CodeBuilder __tmp25 = CodeBuilder.GetInstance();
+                var __tmp25 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp25.Write("[" + Properties.CoreNs + ".OppositeAttribute(typeof(");
-                CodeReader __tmp25Reader = new CodeReader(__tmp25.ToStringAndFree());
+                var __tmp25Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp25.ToStringAndFree());
                 bool __tmp25_last = __tmp25Reader.EndOfStream;
                 while(!__tmp25_last)
                 {
@@ -8124,9 +8124,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     }
                     if (!__tmp25_last) __out.AppendLine(true);
                 }
-                CodeBuilder __tmp26 = CodeBuilder.GetInstance();
+                var __tmp26 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp26.Write(CSharpName(p.Class, model, ClassKind.Descriptor, true));
-                CodeReader __tmp26Reader = new CodeReader(__tmp26.ToStringAndFree());
+                var __tmp26Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp26.ToStringAndFree());
                 bool __tmp26_last = __tmp26Reader.EndOfStream;
                 while(!__tmp26_last)
                 {
@@ -8139,9 +8139,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     }
                     if (!__tmp26_last) __out.AppendLine(true);
                 }
-                CodeBuilder __tmp27 = CodeBuilder.GetInstance();
+                var __tmp27 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp27.Write("), \"");
-                CodeReader __tmp27Reader = new CodeReader(__tmp27.ToStringAndFree());
+                var __tmp27Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp27.ToStringAndFree());
                 bool __tmp27_last = __tmp27Reader.EndOfStream;
                 while(!__tmp27_last)
                 {
@@ -8154,9 +8154,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     }
                     if (!__tmp27_last) __out.AppendLine(true);
                 }
-                CodeBuilder __tmp28 = CodeBuilder.GetInstance();
+                var __tmp28 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp28.Write(CSharpName(p, model));
-                CodeReader __tmp28Reader = new CodeReader(__tmp28.ToStringAndFree());
+                var __tmp28Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp28.ToStringAndFree());
                 bool __tmp28_last = __tmp28Reader.EndOfStream;
                 while(!__tmp28_last)
                 {
@@ -8169,9 +8169,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     }
                     if (!__tmp28_last) __out.AppendLine(true);
                 }
-                CodeBuilder __tmp29 = CodeBuilder.GetInstance();
+                var __tmp29 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp29.Write("\")]");
-                CodeReader __tmp29Reader = new CodeReader(__tmp29.ToStringAndFree());
+                var __tmp29Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp29.ToStringAndFree());
                 bool __tmp29_last = __tmp29Reader.EndOfStream;
                 while(!__tmp29_last)
                 {
@@ -8200,9 +8200,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 if (cls.GetAllSuperClasses(true).Contains(p.Class)) //604:3
                 {
                     bool __tmp32_outputWritten = false;
-                    CodeBuilder __tmp33 = CodeBuilder.GetInstance();
+                    var __tmp33 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp33.Write("[" + Properties.CoreNs + ".SubsetsAttribute(typeof(");
-                    CodeReader __tmp33Reader = new CodeReader(__tmp33.ToStringAndFree());
+                    var __tmp33Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp33.ToStringAndFree());
                     bool __tmp33_last = __tmp33Reader.EndOfStream;
                     while(!__tmp33_last)
                     {
@@ -8215,9 +8215,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         }
                         if (!__tmp33_last) __out.AppendLine(true);
                     }
-                    CodeBuilder __tmp34 = CodeBuilder.GetInstance();
+                    var __tmp34 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp34.Write(CSharpName(p.Class, model, ClassKind.Descriptor, true));
-                    CodeReader __tmp34Reader = new CodeReader(__tmp34.ToStringAndFree());
+                    var __tmp34Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp34.ToStringAndFree());
                     bool __tmp34_last = __tmp34Reader.EndOfStream;
                     while(!__tmp34_last)
                     {
@@ -8230,9 +8230,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         }
                         if (!__tmp34_last) __out.AppendLine(true);
                     }
-                    CodeBuilder __tmp35 = CodeBuilder.GetInstance();
+                    var __tmp35 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp35.Write("), \"");
-                    CodeReader __tmp35Reader = new CodeReader(__tmp35.ToStringAndFree());
+                    var __tmp35Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp35.ToStringAndFree());
                     bool __tmp35_last = __tmp35Reader.EndOfStream;
                     while(!__tmp35_last)
                     {
@@ -8245,9 +8245,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         }
                         if (!__tmp35_last) __out.AppendLine(true);
                     }
-                    CodeBuilder __tmp36 = CodeBuilder.GetInstance();
+                    var __tmp36 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp36.Write(CSharpName(p, model));
-                    CodeReader __tmp36Reader = new CodeReader(__tmp36.ToStringAndFree());
+                    var __tmp36Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp36.ToStringAndFree());
                     bool __tmp36_last = __tmp36Reader.EndOfStream;
                     while(!__tmp36_last)
                     {
@@ -8260,9 +8260,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         }
                         if (!__tmp36_last) __out.AppendLine(true);
                     }
-                    CodeBuilder __tmp37 = CodeBuilder.GetInstance();
+                    var __tmp37 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp37.Write("\")]");
-                    CodeReader __tmp37Reader = new CodeReader(__tmp37.ToStringAndFree());
+                    var __tmp37Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp37.ToStringAndFree());
                     bool __tmp37_last = __tmp37Reader.EndOfStream;
                     while(!__tmp37_last)
                     {
@@ -8289,9 +8289,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp40_line);
                         __tmp39_outputWritten = true;
                     }
-                    CodeBuilder __tmp41 = CodeBuilder.GetInstance();
+                    var __tmp41 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp41.Write(CSharpName(p, model, PropertyKind.Descriptor, true));
-                    CodeReader __tmp41Reader = new CodeReader(__tmp41.ToStringAndFree());
+                    var __tmp41Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp41.ToStringAndFree());
                     bool __tmp41_last = __tmp41Reader.EndOfStream;
                     while(!__tmp41_last)
                     {
@@ -8328,9 +8328,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 if (cls.GetAllSuperClasses(true).Contains(p.Class)) //611:3
                 {
                     bool __tmp45_outputWritten = false;
-                    CodeBuilder __tmp46 = CodeBuilder.GetInstance();
+                    var __tmp46 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp46.Write("[" + Properties.CoreNs + ".RedefinesAttribute(typeof(");
-                    CodeReader __tmp46Reader = new CodeReader(__tmp46.ToStringAndFree());
+                    var __tmp46Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp46.ToStringAndFree());
                     bool __tmp46_last = __tmp46Reader.EndOfStream;
                     while(!__tmp46_last)
                     {
@@ -8343,9 +8343,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         }
                         if (!__tmp46_last) __out.AppendLine(true);
                     }
-                    CodeBuilder __tmp47 = CodeBuilder.GetInstance();
+                    var __tmp47 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp47.Write(CSharpName(p.Class, model, ClassKind.Descriptor, true));
-                    CodeReader __tmp47Reader = new CodeReader(__tmp47.ToStringAndFree());
+                    var __tmp47Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp47.ToStringAndFree());
                     bool __tmp47_last = __tmp47Reader.EndOfStream;
                     while(!__tmp47_last)
                     {
@@ -8358,9 +8358,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         }
                         if (!__tmp47_last) __out.AppendLine(true);
                     }
-                    CodeBuilder __tmp48 = CodeBuilder.GetInstance();
+                    var __tmp48 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp48.Write("), \"");
-                    CodeReader __tmp48Reader = new CodeReader(__tmp48.ToStringAndFree());
+                    var __tmp48Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp48.ToStringAndFree());
                     bool __tmp48_last = __tmp48Reader.EndOfStream;
                     while(!__tmp48_last)
                     {
@@ -8373,9 +8373,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         }
                         if (!__tmp48_last) __out.AppendLine(true);
                     }
-                    CodeBuilder __tmp49 = CodeBuilder.GetInstance();
+                    var __tmp49 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp49.Write(CSharpName(p, model));
-                    CodeReader __tmp49Reader = new CodeReader(__tmp49.ToStringAndFree());
+                    var __tmp49Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp49.ToStringAndFree());
                     bool __tmp49_last = __tmp49Reader.EndOfStream;
                     while(!__tmp49_last)
                     {
@@ -8388,9 +8388,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         }
                         if (!__tmp49_last) __out.AppendLine(true);
                     }
-                    CodeBuilder __tmp50 = CodeBuilder.GetInstance();
+                    var __tmp50 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp50.Write("\")]");
-                    CodeReader __tmp50Reader = new CodeReader(__tmp50.ToStringAndFree());
+                    var __tmp50Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp50.ToStringAndFree());
                     bool __tmp50_last = __tmp50Reader.EndOfStream;
                     while(!__tmp50_last)
                     {
@@ -8417,9 +8417,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp53_line);
                         __tmp52_outputWritten = true;
                     }
-                    CodeBuilder __tmp54 = CodeBuilder.GetInstance();
+                    var __tmp54 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp54.Write(CSharpName(p, model, PropertyKind.Descriptor, true));
-                    CodeReader __tmp54Reader = new CodeReader(__tmp54.ToStringAndFree());
+                    var __tmp54Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp54.ToStringAndFree());
                     bool __tmp54_last = __tmp54Reader.EndOfStream;
                     while(!__tmp54_last)
                     {
@@ -8450,7 +8450,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
 
         public string GenerateImplementationProvider(MetaModel model) //619:1
         {
-            CodeBuilder __out = CodeBuilder.GetInstance();
+            var __out = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             bool __tmp2_outputWritten = false;
             string __tmp3_line = "internal class "; //620:1
             if (!string.IsNullOrEmpty(__tmp3_line))
@@ -8458,9 +8458,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp3_line);
                 __tmp2_outputWritten = true;
             }
-            CodeBuilder __tmp4 = CodeBuilder.GetInstance();
+            var __tmp4 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp4.Write(CSharpName(model, ModelKind.ImplementationProvider));
-            CodeReader __tmp4Reader = new CodeReader(__tmp4.ToStringAndFree());
+            var __tmp4Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp4.ToStringAndFree());
             bool __tmp4_last = __tmp4Reader.EndOfStream;
             while(!__tmp4_last)
             {
@@ -8486,9 +8486,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp7_line);
                 __tmp6_outputWritten = true;
             }
-            CodeBuilder __tmp8 = CodeBuilder.GetInstance();
+            var __tmp8 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp8.Write(CSharpName(model, ModelKind.Implementation));
-            CodeReader __tmp8Reader = new CodeReader(__tmp8.ToStringAndFree());
+            var __tmp8Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp8.ToStringAndFree());
             bool __tmp8_last = __tmp8Reader.EndOfStream;
             while(!__tmp8_last)
             {
@@ -8512,9 +8512,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp11_line);
                 __tmp10_outputWritten = true;
             }
-            CodeBuilder __tmp12 = CodeBuilder.GetInstance();
+            var __tmp12 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp12.Write(CSharpName(model, ModelKind.ImplementationBase, true));
-            CodeReader __tmp12Reader = new CodeReader(__tmp12.ToStringAndFree());
+            var __tmp12Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp12.ToStringAndFree());
             bool __tmp12_last = __tmp12Reader.EndOfStream;
             while(!__tmp12_last)
             {
@@ -8545,9 +8545,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp16_line);
                 __tmp15_outputWritten = true;
             }
-            CodeBuilder __tmp17 = CodeBuilder.GetInstance();
+            var __tmp17 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp17.Write(CSharpName(model, ModelKind.Implementation));
-            CodeReader __tmp17Reader = new CodeReader(__tmp17.ToStringAndFree());
+            var __tmp17Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp17.ToStringAndFree());
             bool __tmp17_last = __tmp17Reader.EndOfStream;
             while(!__tmp17_last)
             {
@@ -8566,9 +8566,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp18_line);
                 __tmp15_outputWritten = true;
             }
-            CodeBuilder __tmp19 = CodeBuilder.GetInstance();
+            var __tmp19 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp19.Write(CSharpName(model, ModelKind.Implementation));
-            CodeReader __tmp19Reader = new CodeReader(__tmp19.ToStringAndFree());
+            var __tmp19Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp19.ToStringAndFree());
             bool __tmp19_last = __tmp19Reader.EndOfStream;
             while(!__tmp19_last)
             {
@@ -8600,9 +8600,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp23_line);
                 __tmp22_outputWritten = true;
             }
-            CodeBuilder __tmp24 = CodeBuilder.GetInstance();
+            var __tmp24 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp24.Write(CSharpName(model, ModelKind.Implementation));
-            CodeReader __tmp24Reader = new CodeReader(__tmp24.ToStringAndFree());
+            var __tmp24Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp24.ToStringAndFree());
             bool __tmp24_last = __tmp24Reader.EndOfStream;
             while(!__tmp24_last)
             {
@@ -8639,7 +8639,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
 
         public string GenerateImplementationBase(MetaModel model) //633:1
         {
-            CodeBuilder __out = CodeBuilder.GetInstance();
+            var __out = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             string metaNs = IsMetaMetaModel(model) ? "" : Properties.MetaNs + "."; //634:2
             bool metaMetaModel = IsMetaMetaModel(model); //635:2
             __out.Write("/// <summary>"); //636:1
@@ -8653,9 +8653,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp3_line);
                 __tmp2_outputWritten = true;
             }
-            CodeBuilder __tmp4 = CodeBuilder.GetInstance();
+            var __tmp4 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp4.Write(CSharpName(model, ModelKind.Implementation, true));
-            CodeReader __tmp4Reader = new CodeReader(__tmp4.ToStringAndFree());
+            var __tmp4Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp4.ToStringAndFree());
             bool __tmp4_last = __tmp4Reader.EndOfStream;
             while(!__tmp4_last)
             {
@@ -8690,9 +8690,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp8_line);
                 __tmp7_outputWritten = true;
             }
-            CodeBuilder __tmp9 = CodeBuilder.GetInstance();
+            var __tmp9 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp9.Write(CSharpName(model, ModelKind.ImplementationBase));
-            CodeReader __tmp9Reader = new CodeReader(__tmp9.ToStringAndFree());
+            var __tmp9Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp9.ToStringAndFree());
             bool __tmp9_last = __tmp9Reader.EndOfStream;
             while(!__tmp9_last)
             {
@@ -8720,9 +8720,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp12_line);
                 __tmp11_outputWritten = true;
             }
-            CodeBuilder __tmp13 = CodeBuilder.GetInstance();
+            var __tmp13 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp13.Write(CSharpName(model, ModelKind.BuilderInstance));
-            CodeReader __tmp13Reader = new CodeReader(__tmp13.ToStringAndFree());
+            var __tmp13Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp13.ToStringAndFree());
             bool __tmp13_last = __tmp13Reader.EndOfStream;
             while(!__tmp13_last)
             {
@@ -8755,9 +8755,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp17_line);
                 __tmp16_outputWritten = true;
             }
-            CodeBuilder __tmp18 = CodeBuilder.GetInstance();
+            var __tmp18 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp18.Write(CSharpName(model, ModelKind.BuilderInstance));
-            CodeReader __tmp18Reader = new CodeReader(__tmp18.ToStringAndFree());
+            var __tmp18Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp18.ToStringAndFree());
             bool __tmp18_last = __tmp18Reader.EndOfStream;
             while(!__tmp18_last)
             {
@@ -8776,9 +8776,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp19_line);
                 __tmp16_outputWritten = true;
             }
-            CodeBuilder __tmp20 = CodeBuilder.GetInstance();
+            var __tmp20 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp20.Write(CSharpName(model, ModelKind.BuilderInstance));
-            CodeReader __tmp20Reader = new CodeReader(__tmp20.ToStringAndFree());
+            var __tmp20Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp20.ToStringAndFree());
             bool __tmp20_last = __tmp20Reader.EndOfStream;
             while(!__tmp20_last)
             {
@@ -8826,9 +8826,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp25_line);
                     __tmp24_outputWritten = true;
                 }
-                CodeBuilder __tmp26 = CodeBuilder.GetInstance();
+                var __tmp26 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp26.Write(CSharpName(cls, model, ClassKind.Immutable));
-                CodeReader __tmp26Reader = new CodeReader(__tmp26.ToStringAndFree());
+                var __tmp26Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp26.ToStringAndFree());
                 bool __tmp26_last = __tmp26Reader.EndOfStream;
                 while(!__tmp26_last)
                 {
@@ -8880,9 +8880,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                             __out.Write(__tmp31_line);
                             __tmp30_outputWritten = true;
                         }
-                        CodeBuilder __tmp32 = CodeBuilder.GetInstance();
+                        var __tmp32 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                         __tmp32.Write(CSharpName(sup, model, ClassKind.Immutable, true));
-                        CodeReader __tmp32Reader = new CodeReader(__tmp32.ToStringAndFree());
+                        var __tmp32Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp32.ToStringAndFree());
                         bool __tmp32_last = __tmp32Reader.EndOfStream;
                         while(!__tmp32_last)
                         {
@@ -8930,9 +8930,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                             __out.Write(__tmp37_line);
                             __tmp36_outputWritten = true;
                         }
-                        CodeBuilder __tmp38 = CodeBuilder.GetInstance();
+                        var __tmp38 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                         __tmp38.Write(CSharpName(sup, model, ClassKind.Immutable, true));
-                        CodeReader __tmp38Reader = new CodeReader(__tmp38.ToStringAndFree());
+                        var __tmp38Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp38.ToStringAndFree());
                         bool __tmp38_last = __tmp38Reader.EndOfStream;
                         while(!__tmp38_last)
                         {
@@ -8988,9 +8988,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                             __out.Write(__tmp43_line);
                             __tmp42_outputWritten = true;
                         }
-                        CodeBuilder __tmp44 = CodeBuilder.GetInstance();
+                        var __tmp44 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                         __tmp44.Write(CSharpName(prop, model));
-                        CodeReader __tmp44Reader = new CodeReader(__tmp44.ToStringAndFree());
+                        var __tmp44Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp44.ToStringAndFree());
                         bool __tmp44_last = __tmp44Reader.EndOfStream;
                         while(!__tmp44_last)
                         {
@@ -9046,9 +9046,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                             __out.Write(__tmp49_line);
                             __tmp48_outputWritten = true;
                         }
-                        CodeBuilder __tmp50 = CodeBuilder.GetInstance();
+                        var __tmp50 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                         __tmp50.Write(CSharpName(prop, model));
-                        CodeReader __tmp50Reader = new CodeReader(__tmp50.ToStringAndFree());
+                        var __tmp50Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp50.ToStringAndFree());
                         bool __tmp50_last = __tmp50Reader.EndOfStream;
                         while(!__tmp50_last)
                         {
@@ -9104,9 +9104,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                             __out.Write(__tmp55_line);
                             __tmp54_outputWritten = true;
                         }
-                        CodeBuilder __tmp56 = CodeBuilder.GetInstance();
+                        var __tmp56 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                         __tmp56.Write(CSharpName(prop, model));
-                        CodeReader __tmp56Reader = new CodeReader(__tmp56.ToStringAndFree());
+                        var __tmp56Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp56.ToStringAndFree());
                         bool __tmp56_last = __tmp56Reader.EndOfStream;
                         while(!__tmp56_last)
                         {
@@ -9141,9 +9141,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp60_line);
                     __tmp59_outputWritten = true;
                 }
-                CodeBuilder __tmp61 = CodeBuilder.GetInstance();
+                var __tmp61 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp61.Write(CSharpName(cls, model, ClassKind.Immutable));
-                CodeReader __tmp61Reader = new CodeReader(__tmp61.ToStringAndFree());
+                var __tmp61Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp61.ToStringAndFree());
                 bool __tmp61_last = __tmp61Reader.EndOfStream;
                 while(!__tmp61_last)
                 {
@@ -9162,9 +9162,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp62_line);
                     __tmp59_outputWritten = true;
                 }
-                CodeBuilder __tmp63 = CodeBuilder.GetInstance();
+                var __tmp63 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp63.Write(CSharpName(cls, model, ClassKind.Builder));
-                CodeReader __tmp63Reader = new CodeReader(__tmp63.ToStringAndFree());
+                var __tmp63Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp63.ToStringAndFree());
                 bool __tmp63_last = __tmp63Reader.EndOfStream;
                 while(!__tmp63_last)
                 {
@@ -9197,9 +9197,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp67_line);
                     __tmp66_outputWritten = true;
                 }
-                CodeBuilder __tmp68 = CodeBuilder.GetInstance();
+                var __tmp68 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp68.Write(CSharpName(cls, model, ClassKind.Immutable));
-                CodeReader __tmp68Reader = new CodeReader(__tmp68.ToStringAndFree());
+                var __tmp68Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp68.ToStringAndFree());
                 bool __tmp68_last = __tmp68Reader.EndOfStream;
                 while(!__tmp68_last)
                 {
@@ -9247,9 +9247,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                                 __out.Write(__tmp73_line);
                                 __tmp72_outputWritten = true;
                             }
-                            CodeBuilder __tmp74 = CodeBuilder.GetInstance();
+                            var __tmp74 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                             __tmp74.Write(CSharpName(prop, model, PropertyKind.Builder));
-                            CodeReader __tmp74Reader = new CodeReader(__tmp74.ToStringAndFree());
+                            var __tmp74Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp74.ToStringAndFree());
                             bool __tmp74_last = __tmp74Reader.EndOfStream;
                             while(!__tmp74_last)
                             {
@@ -9268,9 +9268,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                                 __out.Write(__tmp75_line);
                                 __tmp72_outputWritten = true;
                             }
-                            CodeBuilder __tmp76 = CodeBuilder.GetInstance();
+                            var __tmp76 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                             __tmp76.Write(prop.DefaultValue);
-                            CodeReader __tmp76Reader = new CodeReader(__tmp76.ToStringAndFree());
+                            var __tmp76Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp76.ToStringAndFree());
                             bool __tmp76_last = __tmp76Reader.EndOfStream;
                             while(!__tmp76_last)
                             {
@@ -9306,9 +9306,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                                 __out.Write(__tmp80_line);
                                 __tmp79_outputWritten = true;
                             }
-                            CodeBuilder __tmp81 = CodeBuilder.GetInstance();
+                            var __tmp81 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                             __tmp81.Write(CSharpName(prop, model, PropertyKind.Builder));
-                            CodeReader __tmp81Reader = new CodeReader(__tmp81.ToStringAndFree());
+                            var __tmp81Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp81.ToStringAndFree());
                             bool __tmp81_last = __tmp81Reader.EndOfStream;
                             while(!__tmp81_last)
                             {
@@ -9327,9 +9327,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                                 __out.Write(__tmp82_line);
                                 __tmp79_outputWritten = true;
                             }
-                            CodeBuilder __tmp83 = CodeBuilder.GetInstance();
+                            var __tmp83 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                             __tmp83.Write(prop.DefaultValue);
-                            CodeReader __tmp83Reader = new CodeReader(__tmp83.ToStringAndFree());
+                            var __tmp83Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp83.ToStringAndFree());
                             bool __tmp83_last = __tmp83Reader.EndOfStream;
                             while(!__tmp83_last)
                             {
@@ -9366,9 +9366,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                                 __out.Write(__tmp87_line);
                                 __tmp86_outputWritten = true;
                             }
-                            CodeBuilder __tmp88 = CodeBuilder.GetInstance();
+                            var __tmp88 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                             __tmp88.Write(CSharpName(prop, model, PropertyKind.Builder));
-                            CodeReader __tmp88Reader = new CodeReader(__tmp88.ToStringAndFree());
+                            var __tmp88Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp88.ToStringAndFree());
                             bool __tmp88_last = __tmp88Reader.EndOfStream;
                             while(!__tmp88_last)
                             {
@@ -9387,9 +9387,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                                 __out.Write(__tmp89_line);
                                 __tmp86_outputWritten = true;
                             }
-                            CodeBuilder __tmp90 = CodeBuilder.GetInstance();
+                            var __tmp90 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                             __tmp90.Write(CSharpName(prop.Class, model, ClassKind.Immutable));
-                            CodeReader __tmp90Reader = new CodeReader(__tmp90.ToStringAndFree());
+                            var __tmp90Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp90.ToStringAndFree());
                             bool __tmp90_last = __tmp90Reader.EndOfStream;
                             while(!__tmp90_last)
                             {
@@ -9408,9 +9408,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                                 __out.Write(__tmp91_line);
                                 __tmp86_outputWritten = true;
                             }
-                            CodeBuilder __tmp92 = CodeBuilder.GetInstance();
+                            var __tmp92 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                             __tmp92.Write(CSharpName(prop, model));
-                            CodeReader __tmp92Reader = new CodeReader(__tmp92.ToStringAndFree());
+                            var __tmp92Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp92.ToStringAndFree());
                             bool __tmp92_last = __tmp92Reader.EndOfStream;
                             while(!__tmp92_last)
                             {
@@ -9444,9 +9444,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                                 __out.Write(__tmp96_line);
                                 __tmp95_outputWritten = true;
                             }
-                            CodeBuilder __tmp97 = CodeBuilder.GetInstance();
+                            var __tmp97 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                             __tmp97.Write(CSharpName(prop, model, PropertyKind.Builder));
-                            CodeReader __tmp97Reader = new CodeReader(__tmp97.ToStringAndFree());
+                            var __tmp97Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp97.ToStringAndFree());
                             bool __tmp97_last = __tmp97Reader.EndOfStream;
                             while(!__tmp97_last)
                             {
@@ -9465,9 +9465,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                                 __out.Write(__tmp98_line);
                                 __tmp95_outputWritten = true;
                             }
-                            CodeBuilder __tmp99 = CodeBuilder.GetInstance();
+                            var __tmp99 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                             __tmp99.Write(CSharpName(prop.Class, model, ClassKind.Builder));
-                            CodeReader __tmp99Reader = new CodeReader(__tmp99.ToStringAndFree());
+                            var __tmp99Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp99.ToStringAndFree());
                             bool __tmp99_last = __tmp99Reader.EndOfStream;
                             while(!__tmp99_last)
                             {
@@ -9486,9 +9486,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                                 __out.Write(__tmp100_line);
                                 __tmp95_outputWritten = true;
                             }
-                            CodeBuilder __tmp101 = CodeBuilder.GetInstance();
+                            var __tmp101 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                             __tmp101.Write(CSharpName(prop.Class, model, ClassKind.Immutable));
-                            CodeReader __tmp101Reader = new CodeReader(__tmp101.ToStringAndFree());
+                            var __tmp101Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp101.ToStringAndFree());
                             bool __tmp101_last = __tmp101Reader.EndOfStream;
                             while(!__tmp101_last)
                             {
@@ -9507,9 +9507,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                                 __out.Write(__tmp102_line);
                                 __tmp95_outputWritten = true;
                             }
-                            CodeBuilder __tmp103 = CodeBuilder.GetInstance();
+                            var __tmp103 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                             __tmp103.Write(CSharpName(prop, model));
-                            CodeReader __tmp103Reader = new CodeReader(__tmp103.ToStringAndFree());
+                            var __tmp103Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp103.ToStringAndFree());
                             bool __tmp103_last = __tmp103Reader.EndOfStream;
                             while(!__tmp103_last)
                             {
@@ -9546,9 +9546,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                                 __out.Write(__tmp107_line);
                                 __tmp106_outputWritten = true;
                             }
-                            CodeBuilder __tmp108 = CodeBuilder.GetInstance();
+                            var __tmp108 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                             __tmp108.Write(CSharpName(prop, model, PropertyKind.Builder));
-                            CodeReader __tmp108Reader = new CodeReader(__tmp108.ToStringAndFree());
+                            var __tmp108Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp108.ToStringAndFree());
                             bool __tmp108_last = __tmp108Reader.EndOfStream;
                             while(!__tmp108_last)
                             {
@@ -9567,9 +9567,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                                 __out.Write(__tmp109_line);
                                 __tmp106_outputWritten = true;
                             }
-                            CodeBuilder __tmp110 = CodeBuilder.GetInstance();
+                            var __tmp110 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                             __tmp110.Write(CSharpName(prop.Class, model, ClassKind.Immutable));
-                            CodeReader __tmp110Reader = new CodeReader(__tmp110.ToStringAndFree());
+                            var __tmp110Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp110.ToStringAndFree());
                             bool __tmp110_last = __tmp110Reader.EndOfStream;
                             while(!__tmp110_last)
                             {
@@ -9588,9 +9588,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                                 __out.Write(__tmp111_line);
                                 __tmp106_outputWritten = true;
                             }
-                            CodeBuilder __tmp112 = CodeBuilder.GetInstance();
+                            var __tmp112 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                             __tmp112.Write(CSharpName(prop, model));
-                            CodeReader __tmp112Reader = new CodeReader(__tmp112.ToStringAndFree());
+                            var __tmp112Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp112.ToStringAndFree());
                             bool __tmp112_last = __tmp112Reader.EndOfStream;
                             while(!__tmp112_last)
                             {
@@ -9624,9 +9624,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                                 __out.Write(__tmp116_line);
                                 __tmp115_outputWritten = true;
                             }
-                            CodeBuilder __tmp117 = CodeBuilder.GetInstance();
+                            var __tmp117 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                             __tmp117.Write(CSharpName(prop, model, PropertyKind.Builder));
-                            CodeReader __tmp117Reader = new CodeReader(__tmp117.ToStringAndFree());
+                            var __tmp117Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp117.ToStringAndFree());
                             bool __tmp117_last = __tmp117Reader.EndOfStream;
                             while(!__tmp117_last)
                             {
@@ -9645,9 +9645,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                                 __out.Write(__tmp118_line);
                                 __tmp115_outputWritten = true;
                             }
-                            CodeBuilder __tmp119 = CodeBuilder.GetInstance();
+                            var __tmp119 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                             __tmp119.Write(CSharpName(prop.Class, model, ClassKind.Immutable));
-                            CodeReader __tmp119Reader = new CodeReader(__tmp119.ToStringAndFree());
+                            var __tmp119Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp119.ToStringAndFree());
                             bool __tmp119_last = __tmp119Reader.EndOfStream;
                             while(!__tmp119_last)
                             {
@@ -9666,9 +9666,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                                 __out.Write(__tmp120_line);
                                 __tmp115_outputWritten = true;
                             }
-                            CodeBuilder __tmp121 = CodeBuilder.GetInstance();
+                            var __tmp121 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                             __tmp121.Write(CSharpName(prop, model));
-                            CodeReader __tmp121Reader = new CodeReader(__tmp121.ToStringAndFree());
+                            var __tmp121Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp121.ToStringAndFree());
                             bool __tmp121_last = __tmp121Reader.EndOfStream;
                             while(!__tmp121_last)
                             {
@@ -9707,9 +9707,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp125_line);
                     __tmp124_outputWritten = true;
                 }
-                CodeBuilder __tmp126 = CodeBuilder.GetInstance();
+                var __tmp126 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp126.Write(CSharpName(cls, model, ClassKind.Immutable));
-                CodeReader __tmp126Reader = new CodeReader(__tmp126.ToStringAndFree());
+                var __tmp126Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp126.ToStringAndFree());
                 bool __tmp126_last = __tmp126Reader.EndOfStream;
                 while(!__tmp126_last)
                 {
@@ -9735,9 +9735,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp129_line);
                     __tmp128_outputWritten = true;
                 }
-                CodeBuilder __tmp130 = CodeBuilder.GetInstance();
+                var __tmp130 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp130.Write(CSharpName(cls, model, ClassKind.Immutable));
-                CodeReader __tmp130Reader = new CodeReader(__tmp130.ToStringAndFree());
+                var __tmp130Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp130.ToStringAndFree());
                 bool __tmp130_last = __tmp130Reader.EndOfStream;
                 while(!__tmp130_last)
                 {
@@ -9756,9 +9756,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp131_line);
                     __tmp128_outputWritten = true;
                 }
-                CodeBuilder __tmp132 = CodeBuilder.GetInstance();
+                var __tmp132 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp132.Write(CSharpName(cls, model, ClassKind.Builder));
-                CodeReader __tmp132Reader = new CodeReader(__tmp132.ToStringAndFree());
+                var __tmp132Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp132.ToStringAndFree());
                 bool __tmp132_last = __tmp132Reader.EndOfStream;
                 while(!__tmp132_last)
                 {
@@ -9803,9 +9803,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                             __out.Write(__tmp137_line);
                             __tmp136_outputWritten = true;
                         }
-                        CodeBuilder __tmp138 = CodeBuilder.GetInstance();
+                        var __tmp138 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                         __tmp138.Write(CSharpName(sup, model, ClassKind.Immutable));
-                        CodeReader __tmp138Reader = new CodeReader(__tmp138.ToStringAndFree());
+                        var __tmp138Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp138.ToStringAndFree());
                         bool __tmp138_last = __tmp138Reader.EndOfStream;
                         while(!__tmp138_last)
                         {
@@ -9834,9 +9834,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     {
                         bool __tmp141_outputWritten = false;
                         string __tmp140Prefix = "		"; //729:1
-                        CodeBuilder __tmp142 = CodeBuilder.GetInstance();
+                        var __tmp142 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                         __tmp142.Write(CSharpName(sup.MetaModel, ModelKind.ImplementationProvider, true));
-                        CodeReader __tmp142Reader = new CodeReader(__tmp142.ToStringAndFree());
+                        var __tmp142Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp142.ToStringAndFree());
                         bool __tmp142_last = __tmp142Reader.EndOfStream;
                         while(!__tmp142_last)
                         {
@@ -9860,9 +9860,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                             __out.Write(__tmp143_line);
                             __tmp141_outputWritten = true;
                         }
-                        CodeBuilder __tmp144 = CodeBuilder.GetInstance();
+                        var __tmp144 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                         __tmp144.Write(CSharpName(sup, model, ClassKind.Immutable));
-                        CodeReader __tmp144Reader = new CodeReader(__tmp144.ToStringAndFree());
+                        var __tmp144Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp144.ToStringAndFree());
                         bool __tmp144_last = __tmp144Reader.EndOfStream;
                         while(!__tmp144_last)
                         {
@@ -9916,9 +9916,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                             __out.Write(__tmp149_line);
                             __tmp148_outputWritten = true;
                         }
-                        CodeBuilder __tmp150 = CodeBuilder.GetInstance();
+                        var __tmp150 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                         __tmp150.Write(CSharpName(cls, model, ClassKind.Immutable));
-                        CodeReader __tmp150Reader = new CodeReader(__tmp150.ToStringAndFree());
+                        var __tmp150Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp150.ToStringAndFree());
                         bool __tmp150_last = __tmp150Reader.EndOfStream;
                         while(!__tmp150_last)
                         {
@@ -9937,9 +9937,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                             __out.Write(__tmp151_line);
                             __tmp148_outputWritten = true;
                         }
-                        CodeBuilder __tmp152 = CodeBuilder.GetInstance();
+                        var __tmp152 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                         __tmp152.Write(CSharpName(prop, model));
-                        CodeReader __tmp152Reader = new CodeReader(__tmp152.ToStringAndFree());
+                        var __tmp152Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp152.ToStringAndFree());
                         bool __tmp152_last = __tmp152Reader.EndOfStream;
                         while(!__tmp152_last)
                         {
@@ -9965,9 +9965,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                             __out.Write(__tmp155_line);
                             __tmp154_outputWritten = true;
                         }
-                        CodeBuilder __tmp156 = CodeBuilder.GetInstance();
+                        var __tmp156 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                         __tmp156.Write(CSharpName(prop.Type, model, ClassKind.BuilderOperation, true));
-                        CodeReader __tmp156Reader = new CodeReader(__tmp156.ToStringAndFree());
+                        var __tmp156Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp156.ToStringAndFree());
                         bool __tmp156_last = __tmp156Reader.EndOfStream;
                         while(!__tmp156_last)
                         {
@@ -9986,9 +9986,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                             __out.Write(__tmp157_line);
                             __tmp154_outputWritten = true;
                         }
-                        CodeBuilder __tmp158 = CodeBuilder.GetInstance();
+                        var __tmp158 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                         __tmp158.Write(CSharpName(cls, model, ClassKind.Immutable));
-                        CodeReader __tmp158Reader = new CodeReader(__tmp158.ToStringAndFree());
+                        var __tmp158Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp158.ToStringAndFree());
                         bool __tmp158_last = __tmp158Reader.EndOfStream;
                         while(!__tmp158_last)
                         {
@@ -10007,9 +10007,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                             __out.Write(__tmp159_line);
                             __tmp154_outputWritten = true;
                         }
-                        CodeBuilder __tmp160 = CodeBuilder.GetInstance();
+                        var __tmp160 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                         __tmp160.Write(CSharpName(prop, model));
-                        CodeReader __tmp160Reader = new CodeReader(__tmp160.ToStringAndFree());
+                        var __tmp160Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp160.ToStringAndFree());
                         bool __tmp160_last = __tmp160Reader.EndOfStream;
                         while(!__tmp160_last)
                         {
@@ -10028,9 +10028,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                             __out.Write(__tmp161_line);
                             __tmp154_outputWritten = true;
                         }
-                        CodeBuilder __tmp162 = CodeBuilder.GetInstance();
+                        var __tmp162 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                         __tmp162.Write(CSharpName(cls, model, ClassKind.Builder));
-                        CodeReader __tmp162Reader = new CodeReader(__tmp162.ToStringAndFree());
+                        var __tmp162Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp162.ToStringAndFree());
                         bool __tmp162_last = __tmp162Reader.EndOfStream;
                         while(!__tmp162_last)
                         {
@@ -10079,9 +10079,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                             __out.Write(__tmp167_line);
                             __tmp166_outputWritten = true;
                         }
-                        CodeBuilder __tmp168 = CodeBuilder.GetInstance();
+                        var __tmp168 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                         __tmp168.Write(CSharpName(cls, model, ClassKind.Immutable));
-                        CodeReader __tmp168Reader = new CodeReader(__tmp168.ToStringAndFree());
+                        var __tmp168Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp168.ToStringAndFree());
                         bool __tmp168_last = __tmp168Reader.EndOfStream;
                         while(!__tmp168_last)
                         {
@@ -10100,9 +10100,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                             __out.Write(__tmp169_line);
                             __tmp166_outputWritten = true;
                         }
-                        CodeBuilder __tmp170 = CodeBuilder.GetInstance();
+                        var __tmp170 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                         __tmp170.Write(op.Name);
-                        CodeReader __tmp170Reader = new CodeReader(__tmp170.ToStringAndFree());
+                        var __tmp170Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp170.ToStringAndFree());
                         bool __tmp170_last = __tmp170Reader.EndOfStream;
                         while(!__tmp170_last)
                         {
@@ -10135,9 +10135,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                             __out.Write(__tmp174_line);
                             __tmp173_outputWritten = true;
                         }
-                        CodeBuilder __tmp175 = CodeBuilder.GetInstance();
+                        var __tmp175 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                         __tmp175.Write(CSharpName(op.ReturnType, model, ClassKind.ImmutableOperation, true));
-                        CodeReader __tmp175Reader = new CodeReader(__tmp175.ToStringAndFree());
+                        var __tmp175Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp175.ToStringAndFree());
                         bool __tmp175_last = __tmp175Reader.EndOfStream;
                         while(!__tmp175_last)
                         {
@@ -10156,9 +10156,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                             __out.Write(__tmp176_line);
                             __tmp173_outputWritten = true;
                         }
-                        CodeBuilder __tmp177 = CodeBuilder.GetInstance();
+                        var __tmp177 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                         __tmp177.Write(CSharpName(cls, model, ClassKind.Immutable));
-                        CodeReader __tmp177Reader = new CodeReader(__tmp177.ToStringAndFree());
+                        var __tmp177Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp177.ToStringAndFree());
                         bool __tmp177_last = __tmp177Reader.EndOfStream;
                         while(!__tmp177_last)
                         {
@@ -10177,9 +10177,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                             __out.Write(__tmp178_line);
                             __tmp173_outputWritten = true;
                         }
-                        CodeBuilder __tmp179 = CodeBuilder.GetInstance();
+                        var __tmp179 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                         __tmp179.Write(op.Name);
-                        CodeReader __tmp179Reader = new CodeReader(__tmp179.ToStringAndFree());
+                        var __tmp179Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp179.ToStringAndFree());
                         bool __tmp179_last = __tmp179Reader.EndOfStream;
                         while(!__tmp179_last)
                         {
@@ -10198,9 +10198,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                             __out.Write(__tmp180_line);
                             __tmp173_outputWritten = true;
                         }
-                        CodeBuilder __tmp181 = CodeBuilder.GetInstance();
+                        var __tmp181 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                         __tmp181.Write(GetImplParameters(model, cls, op, ClassKind.ImmutableOperation));
-                        CodeReader __tmp181Reader = new CodeReader(__tmp181.ToStringAndFree());
+                        var __tmp181Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp181.ToStringAndFree());
                         bool __tmp181_last = __tmp181Reader.EndOfStream;
                         while(!__tmp181_last)
                         {
@@ -10228,9 +10228,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.AppendLine(false); //751:3
                         bool __tmp184_outputWritten = false;
                         string __tmp183Prefix = "		"; //752:1
-                        CodeBuilder __tmp185 = CodeBuilder.GetInstance();
+                        var __tmp185 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                         __tmp185.Write(GetReturn(CSharpName(op.ReturnType, model, ClassKind.ImmutableOperation, true)));
-                        CodeReader __tmp185Reader = new CodeReader(__tmp185.ToStringAndFree());
+                        var __tmp185Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp185.ToStringAndFree());
                         bool __tmp185_last = __tmp185Reader.EndOfStream;
                         while(!__tmp185_last)
                         {
@@ -10254,9 +10254,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                             __out.Write(__tmp186_line);
                             __tmp184_outputWritten = true;
                         }
-                        CodeBuilder __tmp187 = CodeBuilder.GetInstance();
+                        var __tmp187 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                         __tmp187.Write(CSharpName(op.Class, model, ClassKind.Immutable));
-                        CodeReader __tmp187Reader = new CodeReader(__tmp187.ToStringAndFree());
+                        var __tmp187Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp187.ToStringAndFree());
                         bool __tmp187_last = __tmp187Reader.EndOfStream;
                         while(!__tmp187_last)
                         {
@@ -10275,9 +10275,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                             __out.Write(__tmp188_line);
                             __tmp184_outputWritten = true;
                         }
-                        CodeBuilder __tmp189 = CodeBuilder.GetInstance();
+                        var __tmp189 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                         __tmp189.Write(op.Name);
-                        CodeReader __tmp189Reader = new CodeReader(__tmp189.ToStringAndFree());
+                        var __tmp189Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp189.ToStringAndFree());
                         bool __tmp189_last = __tmp189Reader.EndOfStream;
                         while(!__tmp189_last)
                         {
@@ -10296,9 +10296,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                             __out.Write(__tmp190_line);
                             __tmp184_outputWritten = true;
                         }
-                        CodeBuilder __tmp191 = CodeBuilder.GetInstance();
+                        var __tmp191 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                         __tmp191.Write(GetImmBldCallParameterNames(model, op, ClassKind.BuilderOperation));
-                        CodeReader __tmp191Reader = new CodeReader(__tmp191.ToStringAndFree());
+                        var __tmp191Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp191.ToStringAndFree());
                         bool __tmp191_last = __tmp191Reader.EndOfStream;
                         while(!__tmp191_last)
                         {
@@ -10317,9 +10317,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                             __out.Write(__tmp192_line);
                             __tmp184_outputWritten = true;
                         }
-                        CodeBuilder __tmp193 = CodeBuilder.GetInstance();
+                        var __tmp193 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                         __tmp193.Write(GetImmBldReturn(model, op, ClassKind.ImmutableOperation));
-                        CodeReader __tmp193Reader = new CodeReader(__tmp193.ToStringAndFree());
+                        var __tmp193Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp193.ToStringAndFree());
                         bool __tmp193_last = __tmp193Reader.EndOfStream;
                         while(!__tmp193_last)
                         {
@@ -10356,9 +10356,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp197_line);
                         __tmp196_outputWritten = true;
                     }
-                    CodeBuilder __tmp198 = CodeBuilder.GetInstance();
+                    var __tmp198 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp198.Write(CSharpName(cls, model, ClassKind.Builder));
-                    CodeReader __tmp198Reader = new CodeReader(__tmp198.ToStringAndFree());
+                    var __tmp198Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp198.ToStringAndFree());
                     bool __tmp198_last = __tmp198Reader.EndOfStream;
                     while(!__tmp198_last)
                     {
@@ -10377,9 +10377,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp199_line);
                         __tmp196_outputWritten = true;
                     }
-                    CodeBuilder __tmp200 = CodeBuilder.GetInstance();
+                    var __tmp200 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp200.Write(op.Name);
-                    CodeReader __tmp200Reader = new CodeReader(__tmp200.ToStringAndFree());
+                    var __tmp200Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp200.ToStringAndFree());
                     bool __tmp200_last = __tmp200Reader.EndOfStream;
                     while(!__tmp200_last)
                     {
@@ -10412,9 +10412,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp204_line);
                         __tmp203_outputWritten = true;
                     }
-                    CodeBuilder __tmp205 = CodeBuilder.GetInstance();
+                    var __tmp205 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp205.Write(CSharpName(op.ReturnType, model, ClassKind.BuilderOperation, true));
-                    CodeReader __tmp205Reader = new CodeReader(__tmp205.ToStringAndFree());
+                    var __tmp205Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp205.ToStringAndFree());
                     bool __tmp205_last = __tmp205Reader.EndOfStream;
                     while(!__tmp205_last)
                     {
@@ -10433,9 +10433,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp206_line);
                         __tmp203_outputWritten = true;
                     }
-                    CodeBuilder __tmp207 = CodeBuilder.GetInstance();
+                    var __tmp207 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp207.Write(CSharpName(cls, model, ClassKind.Immutable));
-                    CodeReader __tmp207Reader = new CodeReader(__tmp207.ToStringAndFree());
+                    var __tmp207Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp207.ToStringAndFree());
                     bool __tmp207_last = __tmp207Reader.EndOfStream;
                     while(!__tmp207_last)
                     {
@@ -10454,9 +10454,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp208_line);
                         __tmp203_outputWritten = true;
                     }
-                    CodeBuilder __tmp209 = CodeBuilder.GetInstance();
+                    var __tmp209 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp209.Write(op.Name);
-                    CodeReader __tmp209Reader = new CodeReader(__tmp209.ToStringAndFree());
+                    var __tmp209Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp209.ToStringAndFree());
                     bool __tmp209_last = __tmp209Reader.EndOfStream;
                     while(!__tmp209_last)
                     {
@@ -10475,9 +10475,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp210_line);
                         __tmp203_outputWritten = true;
                     }
-                    CodeBuilder __tmp211 = CodeBuilder.GetInstance();
+                    var __tmp211 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp211.Write(GetImplParameters(model, cls, op, ClassKind.BuilderOperation));
-                    CodeReader __tmp211Reader = new CodeReader(__tmp211.ToStringAndFree());
+                    var __tmp211Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp211.ToStringAndFree());
                     bool __tmp211_last = __tmp211Reader.EndOfStream;
                     while(!__tmp211_last)
                     {
@@ -10538,9 +10538,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp217_line);
                         __tmp216_outputWritten = true;
                     }
-                    CodeBuilder __tmp218 = CodeBuilder.GetInstance();
+                    var __tmp218 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp218.Write(CSharpName(enm, model, ClassKind.Immutable));
-                    CodeReader __tmp218Reader = new CodeReader(__tmp218.ToStringAndFree());
+                    var __tmp218Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp218.ToStringAndFree());
                     bool __tmp218_last = __tmp218Reader.EndOfStream;
                     while(!__tmp218_last)
                     {
@@ -10559,9 +10559,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp219_line);
                         __tmp216_outputWritten = true;
                     }
-                    CodeBuilder __tmp220 = CodeBuilder.GetInstance();
+                    var __tmp220 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp220.Write(op.Name);
-                    CodeReader __tmp220Reader = new CodeReader(__tmp220.ToStringAndFree());
+                    var __tmp220Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp220.ToStringAndFree());
                     bool __tmp220_last = __tmp220Reader.EndOfStream;
                     while(!__tmp220_last)
                     {
@@ -10587,9 +10587,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp223_line);
                         __tmp222_outputWritten = true;
                     }
-                    CodeBuilder __tmp224 = CodeBuilder.GetInstance();
+                    var __tmp224 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp224.Write(CSharpName(op.ReturnType, model, ClassKind.ImmutableOperation, true));
-                    CodeReader __tmp224Reader = new CodeReader(__tmp224.ToStringAndFree());
+                    var __tmp224Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp224.ToStringAndFree());
                     bool __tmp224_last = __tmp224Reader.EndOfStream;
                     while(!__tmp224_last)
                     {
@@ -10608,9 +10608,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp225_line);
                         __tmp222_outputWritten = true;
                     }
-                    CodeBuilder __tmp226 = CodeBuilder.GetInstance();
+                    var __tmp226 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp226.Write(CSharpName(enm, model, ClassKind.Immutable));
-                    CodeReader __tmp226Reader = new CodeReader(__tmp226.ToStringAndFree());
+                    var __tmp226Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp226.ToStringAndFree());
                     bool __tmp226_last = __tmp226Reader.EndOfStream;
                     while(!__tmp226_last)
                     {
@@ -10629,9 +10629,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp227_line);
                         __tmp222_outputWritten = true;
                     }
-                    CodeBuilder __tmp228 = CodeBuilder.GetInstance();
+                    var __tmp228 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp228.Write(op.Name);
-                    CodeReader __tmp228Reader = new CodeReader(__tmp228.ToStringAndFree());
+                    var __tmp228Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp228.ToStringAndFree());
                     bool __tmp228_last = __tmp228Reader.EndOfStream;
                     while(!__tmp228_last)
                     {
@@ -10650,9 +10650,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp229_line);
                         __tmp222_outputWritten = true;
                     }
-                    CodeBuilder __tmp230 = CodeBuilder.GetInstance();
+                    var __tmp230 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp230.Write(GetImplParameters(model, enm, op, ClassKind.ImmutableOperation));
-                    CodeReader __tmp230Reader = new CodeReader(__tmp230.ToStringAndFree());
+                    var __tmp230Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp230.ToStringAndFree());
                     bool __tmp230_last = __tmp230Reader.EndOfStream;
                     while(!__tmp230_last)
                     {
@@ -10686,7 +10686,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
 
         public string GenerateImplementation(MetaModel model) //776:1
         {
-            CodeBuilder __out = CodeBuilder.GetInstance();
+            var __out = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             string metaNs = IsMetaMetaModel(model) ? "" : Properties.MetaNs + "."; //777:2
             bool metaMetaModel = IsMetaMetaModel(model); //778:2
             __out.Write("/// <summary>"); //779:1
@@ -10702,9 +10702,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp3_line);
                 __tmp2_outputWritten = true;
             }
-            CodeBuilder __tmp4 = CodeBuilder.GetInstance();
+            var __tmp4 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp4.Write(CSharpName(model, ModelKind.Implementation));
-            CodeReader __tmp4Reader = new CodeReader(__tmp4.ToStringAndFree());
+            var __tmp4Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp4.ToStringAndFree());
             bool __tmp4_last = __tmp4Reader.EndOfStream;
             while(!__tmp4_last)
             {
@@ -10723,9 +10723,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp5_line);
                 __tmp2_outputWritten = true;
             }
-            CodeBuilder __tmp6 = CodeBuilder.GetInstance();
+            var __tmp6 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp6.Write(CSharpName(model, ModelKind.ImplementationBase));
-            CodeReader __tmp6Reader = new CodeReader(__tmp6.ToStringAndFree());
+            var __tmp6Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp6.ToStringAndFree());
             bool __tmp6_last = __tmp6Reader.EndOfStream;
             while(!__tmp6_last)
             {
@@ -10780,9 +10780,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                             __out.Write(__tmp11_line);
                             __tmp10_outputWritten = true;
                         }
-                        CodeBuilder __tmp12 = CodeBuilder.GetInstance();
+                        var __tmp12 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                         __tmp12.Write(CSharpName(cls, model, ClassKind.Immutable));
-                        CodeReader __tmp12Reader = new CodeReader(__tmp12.ToStringAndFree());
+                        var __tmp12Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp12.ToStringAndFree());
                         bool __tmp12_last = __tmp12Reader.EndOfStream;
                         while(!__tmp12_last)
                         {
@@ -10801,9 +10801,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                             __out.Write(__tmp13_line);
                             __tmp10_outputWritten = true;
                         }
-                        CodeBuilder __tmp14 = CodeBuilder.GetInstance();
+                        var __tmp14 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                         __tmp14.Write(CSharpName(prop, model));
-                        CodeReader __tmp14Reader = new CodeReader(__tmp14.ToStringAndFree());
+                        var __tmp14Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp14.ToStringAndFree());
                         bool __tmp14_last = __tmp14Reader.EndOfStream;
                         while(!__tmp14_last)
                         {
@@ -10829,9 +10829,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                             __out.Write(__tmp17_line);
                             __tmp16_outputWritten = true;
                         }
-                        CodeBuilder __tmp18 = CodeBuilder.GetInstance();
+                        var __tmp18 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                         __tmp18.Write(CSharpName(prop.Type, model, ClassKind.BuilderOperation, true));
-                        CodeReader __tmp18Reader = new CodeReader(__tmp18.ToStringAndFree());
+                        var __tmp18Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp18.ToStringAndFree());
                         bool __tmp18_last = __tmp18Reader.EndOfStream;
                         while(!__tmp18_last)
                         {
@@ -10850,9 +10850,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                             __out.Write(__tmp19_line);
                             __tmp16_outputWritten = true;
                         }
-                        CodeBuilder __tmp20 = CodeBuilder.GetInstance();
+                        var __tmp20 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                         __tmp20.Write(CSharpName(cls, model, ClassKind.Immutable));
-                        CodeReader __tmp20Reader = new CodeReader(__tmp20.ToStringAndFree());
+                        var __tmp20Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp20.ToStringAndFree());
                         bool __tmp20_last = __tmp20Reader.EndOfStream;
                         while(!__tmp20_last)
                         {
@@ -10871,9 +10871,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                             __out.Write(__tmp21_line);
                             __tmp16_outputWritten = true;
                         }
-                        CodeBuilder __tmp22 = CodeBuilder.GetInstance();
+                        var __tmp22 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                         __tmp22.Write(CSharpName(prop, model));
-                        CodeReader __tmp22Reader = new CodeReader(__tmp22.ToStringAndFree());
+                        var __tmp22Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp22.ToStringAndFree());
                         bool __tmp22_last = __tmp22Reader.EndOfStream;
                         while(!__tmp22_last)
                         {
@@ -10892,9 +10892,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                             __out.Write(__tmp23_line);
                             __tmp16_outputWritten = true;
                         }
-                        CodeBuilder __tmp24 = CodeBuilder.GetInstance();
+                        var __tmp24 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                         __tmp24.Write(CSharpName(cls, model, ClassKind.Builder));
-                        CodeReader __tmp24Reader = new CodeReader(__tmp24.ToStringAndFree());
+                        var __tmp24Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp24.ToStringAndFree());
                         bool __tmp24_last = __tmp24Reader.EndOfStream;
                         while(!__tmp24_last)
                         {
@@ -10922,9 +10922,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.AppendLine(false); //793:3
                         bool __tmp27_outputWritten = false;
                         string __tmp26Prefix = "		"; //794:1
-                        CodeBuilder __tmp28 = CodeBuilder.GetInstance();
+                        var __tmp28 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                         __tmp28.Write(GetDefaultReturn(CSharpName(prop.Type, model, ClassKind.BuilderOperation, true)));
-                        CodeReader __tmp28Reader = new CodeReader(__tmp28.ToStringAndFree());
+                        var __tmp28Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp28.ToStringAndFree());
                         bool __tmp28_last = __tmp28Reader.EndOfStream;
                         while(!__tmp28_last)
                         {
@@ -10970,9 +10970,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp32_line);
                         __tmp31_outputWritten = true;
                     }
-                    CodeBuilder __tmp33 = CodeBuilder.GetInstance();
+                    var __tmp33 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp33.Write(CSharpName(cls, model, ClassKind.Builder));
-                    CodeReader __tmp33Reader = new CodeReader(__tmp33.ToStringAndFree());
+                    var __tmp33Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp33.ToStringAndFree());
                     bool __tmp33_last = __tmp33Reader.EndOfStream;
                     while(!__tmp33_last)
                     {
@@ -10991,9 +10991,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp34_line);
                         __tmp31_outputWritten = true;
                     }
-                    CodeBuilder __tmp35 = CodeBuilder.GetInstance();
+                    var __tmp35 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp35.Write(op.Name);
-                    CodeReader __tmp35Reader = new CodeReader(__tmp35.ToStringAndFree());
+                    var __tmp35Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp35.ToStringAndFree());
                     bool __tmp35_last = __tmp35Reader.EndOfStream;
                     while(!__tmp35_last)
                     {
@@ -11026,9 +11026,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp39_line);
                         __tmp38_outputWritten = true;
                     }
-                    CodeBuilder __tmp40 = CodeBuilder.GetInstance();
+                    var __tmp40 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp40.Write(CSharpName(op.ReturnType, model, ClassKind.BuilderOperation, true));
-                    CodeReader __tmp40Reader = new CodeReader(__tmp40.ToStringAndFree());
+                    var __tmp40Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp40.ToStringAndFree());
                     bool __tmp40_last = __tmp40Reader.EndOfStream;
                     while(!__tmp40_last)
                     {
@@ -11047,9 +11047,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp41_line);
                         __tmp38_outputWritten = true;
                     }
-                    CodeBuilder __tmp42 = CodeBuilder.GetInstance();
+                    var __tmp42 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp42.Write(CSharpName(cls, model, ClassKind.Immutable));
-                    CodeReader __tmp42Reader = new CodeReader(__tmp42.ToStringAndFree());
+                    var __tmp42Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp42.ToStringAndFree());
                     bool __tmp42_last = __tmp42Reader.EndOfStream;
                     while(!__tmp42_last)
                     {
@@ -11068,9 +11068,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp43_line);
                         __tmp38_outputWritten = true;
                     }
-                    CodeBuilder __tmp44 = CodeBuilder.GetInstance();
+                    var __tmp44 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp44.Write(op.Name);
-                    CodeReader __tmp44Reader = new CodeReader(__tmp44.ToStringAndFree());
+                    var __tmp44Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp44.ToStringAndFree());
                     bool __tmp44_last = __tmp44Reader.EndOfStream;
                     while(!__tmp44_last)
                     {
@@ -11089,9 +11089,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp45_line);
                         __tmp38_outputWritten = true;
                     }
-                    CodeBuilder __tmp46 = CodeBuilder.GetInstance();
+                    var __tmp46 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp46.Write(GetImplParameters(model, cls, op, ClassKind.BuilderOperation));
-                    CodeReader __tmp46Reader = new CodeReader(__tmp46.ToStringAndFree());
+                    var __tmp46Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp46.ToStringAndFree());
                     bool __tmp46_last = __tmp46Reader.EndOfStream;
                     while(!__tmp46_last)
                     {
@@ -11119,9 +11119,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.AppendLine(false); //804:3
                     bool __tmp49_outputWritten = false;
                     string __tmp48Prefix = "		"; //805:1
-                    CodeBuilder __tmp50 = CodeBuilder.GetInstance();
+                    var __tmp50 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp50.Write(GetDefaultReturn(CSharpName(op.ReturnType, model, ClassKind.BuilderOperation, true)));
-                    CodeReader __tmp50Reader = new CodeReader(__tmp50.ToStringAndFree());
+                    var __tmp50Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp50.ToStringAndFree());
                     bool __tmp50_last = __tmp50Reader.EndOfStream;
                     while(!__tmp50_last)
                     {
@@ -11182,9 +11182,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp55_line);
                         __tmp54_outputWritten = true;
                     }
-                    CodeBuilder __tmp56 = CodeBuilder.GetInstance();
+                    var __tmp56 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp56.Write(CSharpName(enm, model, ClassKind.Immutable));
-                    CodeReader __tmp56Reader = new CodeReader(__tmp56.ToStringAndFree());
+                    var __tmp56Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp56.ToStringAndFree());
                     bool __tmp56_last = __tmp56Reader.EndOfStream;
                     while(!__tmp56_last)
                     {
@@ -11203,9 +11203,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp57_line);
                         __tmp54_outputWritten = true;
                     }
-                    CodeBuilder __tmp58 = CodeBuilder.GetInstance();
+                    var __tmp58 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp58.Write(op.Name);
-                    CodeReader __tmp58Reader = new CodeReader(__tmp58.ToStringAndFree());
+                    var __tmp58Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp58.ToStringAndFree());
                     bool __tmp58_last = __tmp58Reader.EndOfStream;
                     while(!__tmp58_last)
                     {
@@ -11231,9 +11231,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp61_line);
                         __tmp60_outputWritten = true;
                     }
-                    CodeBuilder __tmp62 = CodeBuilder.GetInstance();
+                    var __tmp62 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp62.Write(CSharpName(op.ReturnType, model, ClassKind.ImmutableOperation, true));
-                    CodeReader __tmp62Reader = new CodeReader(__tmp62.ToStringAndFree());
+                    var __tmp62Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp62.ToStringAndFree());
                     bool __tmp62_last = __tmp62Reader.EndOfStream;
                     while(!__tmp62_last)
                     {
@@ -11252,9 +11252,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp63_line);
                         __tmp60_outputWritten = true;
                     }
-                    CodeBuilder __tmp64 = CodeBuilder.GetInstance();
+                    var __tmp64 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp64.Write(CSharpName(enm, model, ClassKind.Immutable));
-                    CodeReader __tmp64Reader = new CodeReader(__tmp64.ToStringAndFree());
+                    var __tmp64Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp64.ToStringAndFree());
                     bool __tmp64_last = __tmp64Reader.EndOfStream;
                     while(!__tmp64_last)
                     {
@@ -11273,9 +11273,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp65_line);
                         __tmp60_outputWritten = true;
                     }
-                    CodeBuilder __tmp66 = CodeBuilder.GetInstance();
+                    var __tmp66 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp66.Write(op.Name);
-                    CodeReader __tmp66Reader = new CodeReader(__tmp66.ToStringAndFree());
+                    var __tmp66Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp66.ToStringAndFree());
                     bool __tmp66_last = __tmp66Reader.EndOfStream;
                     while(!__tmp66_last)
                     {
@@ -11294,9 +11294,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp67_line);
                         __tmp60_outputWritten = true;
                     }
-                    CodeBuilder __tmp68 = CodeBuilder.GetInstance();
+                    var __tmp68 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp68.Write(GetImplParameters(model, enm, op, ClassKind.ImmutableOperation));
-                    CodeReader __tmp68Reader = new CodeReader(__tmp68.ToStringAndFree());
+                    var __tmp68Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp68.ToStringAndFree());
                     bool __tmp68_last = __tmp68Reader.EndOfStream;
                     while(!__tmp68_last)
                     {
@@ -11324,9 +11324,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.AppendLine(false); //817:3
                     bool __tmp71_outputWritten = false;
                     string __tmp70Prefix = "		"; //818:1
-                    CodeBuilder __tmp72 = CodeBuilder.GetInstance();
+                    var __tmp72 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp72.Write(GetDefaultReturn(CSharpName(op.ReturnType, model, ClassKind.ImmutableOperation, true)));
-                    CodeReader __tmp72Reader = new CodeReader(__tmp72.ToStringAndFree());
+                    var __tmp72Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp72.ToStringAndFree());
                     bool __tmp72_last = __tmp72Reader.EndOfStream;
                     while(!__tmp72_last)
                     {
@@ -11398,12 +11398,12 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
 
         public string GenerateEnum(MetaModel model, MetaEnum enm) //845:1
         {
-            CodeBuilder __out = CodeBuilder.GetInstance();
+            var __out = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __out.AppendLine(true); //846:1
             bool __tmp2_outputWritten = false;
-            CodeBuilder __tmp3 = CodeBuilder.GetInstance();
+            var __tmp3 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp3.Write(GenerateDocumentation(enm));
-            CodeReader __tmp3Reader = new CodeReader(__tmp3.ToStringAndFree());
+            var __tmp3Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp3.ToStringAndFree());
             bool __tmp3_last = __tmp3Reader.EndOfStream;
             while(!__tmp3_last)
             {
@@ -11427,9 +11427,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp6_line);
                 __tmp5_outputWritten = true;
             }
-            CodeBuilder __tmp7 = CodeBuilder.GetInstance();
+            var __tmp7 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp7.Write(CSharpName(enm, model));
-            CodeReader __tmp7Reader = new CodeReader(__tmp7.ToStringAndFree());
+            var __tmp7Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp7.ToStringAndFree());
             bool __tmp7_last = __tmp7Reader.EndOfStream;
             while(!__tmp7_last)
             {
@@ -11463,9 +11463,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 var value = __tmp8.value;
                 bool __tmp10_outputWritten = false;
                 string __tmp9Prefix = "	"; //851:1
-                CodeBuilder __tmp11 = CodeBuilder.GetInstance();
+                var __tmp11 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp11.Write(GenerateDocumentation(value));
-                CodeReader __tmp11Reader = new CodeReader(__tmp11.ToStringAndFree());
+                var __tmp11Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp11.ToStringAndFree());
                 bool __tmp11_last = __tmp11Reader.EndOfStream;
                 while(!__tmp11_last)
                 {
@@ -11489,9 +11489,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 }
                 bool __tmp13_outputWritten = false;
                 string __tmp12Prefix = "	"; //852:1
-                CodeBuilder __tmp14 = CodeBuilder.GetInstance();
+                var __tmp14 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp14.Write(value.Name);
-                CodeReader __tmp14Reader = new CodeReader(__tmp14.ToStringAndFree());
+                var __tmp14Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp14.ToStringAndFree());
                 bool __tmp14_last = __tmp14Reader.EndOfStream;
                 while(!__tmp14_last)
                 {
@@ -11509,9 +11509,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     }
                     if (!__tmp14_last) __out.AppendLine(true);
                 }
-                CodeBuilder __tmp15 = CodeBuilder.GetInstance();
+                var __tmp15 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp15.Write(delim);
-                CodeReader __tmp15Reader = new CodeReader(__tmp15.ToStringAndFree());
+                var __tmp15Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp15.ToStringAndFree());
                 bool __tmp15_last = __tmp15Reader.EndOfStream;
                 while(!__tmp15_last)
                 {
@@ -11539,9 +11539,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp18_line);
                 __tmp17_outputWritten = true;
             }
-            CodeBuilder __tmp19 = CodeBuilder.GetInstance();
+            var __tmp19 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp19.Write(enm.Name);
-            CodeReader __tmp19Reader = new CodeReader(__tmp19.ToStringAndFree());
+            var __tmp19Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp19.ToStringAndFree());
             bool __tmp19_last = __tmp19Reader.EndOfStream;
             while(!__tmp19_last)
             {
@@ -11584,9 +11584,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp24_line);
                     __tmp23_outputWritten = true;
                 }
-                CodeBuilder __tmp25 = CodeBuilder.GetInstance();
+                var __tmp25 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp25.Write(CSharpName(op.ReturnType, model, ClassKind.ImmutableOperation));
-                CodeReader __tmp25Reader = new CodeReader(__tmp25.ToStringAndFree());
+                var __tmp25Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp25.ToStringAndFree());
                 bool __tmp25_last = __tmp25Reader.EndOfStream;
                 while(!__tmp25_last)
                 {
@@ -11605,9 +11605,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp26_line);
                     __tmp23_outputWritten = true;
                 }
-                CodeBuilder __tmp27 = CodeBuilder.GetInstance();
+                var __tmp27 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp27.Write(op.Name);
-                CodeReader __tmp27Reader = new CodeReader(__tmp27.ToStringAndFree());
+                var __tmp27Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp27.ToStringAndFree());
                 bool __tmp27_last = __tmp27Reader.EndOfStream;
                 while(!__tmp27_last)
                 {
@@ -11626,9 +11626,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp28_line);
                     __tmp23_outputWritten = true;
                 }
-                CodeBuilder __tmp29 = CodeBuilder.GetInstance();
+                var __tmp29 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp29.Write(GetEnumImplParameters(model, enm, op, ClassKind.ImmutableOperation));
-                CodeReader __tmp29Reader = new CodeReader(__tmp29.ToStringAndFree());
+                var __tmp29Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp29.ToStringAndFree());
                 bool __tmp29_last = __tmp29Reader.EndOfStream;
                 while(!__tmp29_last)
                 {
@@ -11656,9 +11656,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.AppendLine(false); //860:3
                 bool __tmp32_outputWritten = false;
                 string __tmp31Prefix = "		"; //861:1
-                CodeBuilder __tmp33 = CodeBuilder.GetInstance();
+                var __tmp33 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp33.Write(GetReturn(CSharpName(op.ReturnType, model, ClassKind.ImmutableOperation)));
-                CodeReader __tmp33Reader = new CodeReader(__tmp33.ToStringAndFree());
+                var __tmp33Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp33.ToStringAndFree());
                 bool __tmp33_last = __tmp33Reader.EndOfStream;
                 while(!__tmp33_last)
                 {
@@ -11676,9 +11676,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     }
                     if (!__tmp33_last) __out.AppendLine(true);
                 }
-                CodeBuilder __tmp34 = CodeBuilder.GetInstance();
+                var __tmp34 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp34.Write(CSharpName(model, ModelKind.ImplementationProvider));
-                CodeReader __tmp34Reader = new CodeReader(__tmp34.ToStringAndFree());
+                var __tmp34Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp34.ToStringAndFree());
                 bool __tmp34_last = __tmp34Reader.EndOfStream;
                 while(!__tmp34_last)
                 {
@@ -11697,9 +11697,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp35_line);
                     __tmp32_outputWritten = true;
                 }
-                CodeBuilder __tmp36 = CodeBuilder.GetInstance();
+                var __tmp36 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp36.Write(CSharpName(op.Enum, model, ClassKind.Immutable));
-                CodeReader __tmp36Reader = new CodeReader(__tmp36.ToStringAndFree());
+                var __tmp36Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp36.ToStringAndFree());
                 bool __tmp36_last = __tmp36Reader.EndOfStream;
                 while(!__tmp36_last)
                 {
@@ -11718,9 +11718,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp37_line);
                     __tmp32_outputWritten = true;
                 }
-                CodeBuilder __tmp38 = CodeBuilder.GetInstance();
+                var __tmp38 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp38.Write(op.Name);
-                CodeReader __tmp38Reader = new CodeReader(__tmp38.ToStringAndFree());
+                var __tmp38Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp38.ToStringAndFree());
                 bool __tmp38_last = __tmp38Reader.EndOfStream;
                 while(!__tmp38_last)
                 {
@@ -11739,9 +11739,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp39_line);
                     __tmp32_outputWritten = true;
                 }
-                CodeBuilder __tmp40 = CodeBuilder.GetInstance();
+                var __tmp40 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp40.Write(GetEnumImplCallParameterNames(model, op, ClassKind.ImmutableOperation));
-                CodeReader __tmp40Reader = new CodeReader(__tmp40.ToStringAndFree());
+                var __tmp40Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp40.ToStringAndFree());
                 bool __tmp40_last = __tmp40Reader.EndOfStream;
                 while(!__tmp40_last)
                 {
@@ -11877,12 +11877,12 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
 
         public string GenerateClass(MetaModel model, MetaClass cls) //918:1
         {
-            CodeBuilder __out = CodeBuilder.GetInstance();
+            var __out = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __out.AppendLine(true); //919:1
             bool __tmp2_outputWritten = false;
-            CodeBuilder __tmp3 = CodeBuilder.GetInstance();
+            var __tmp3 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp3.Write(GenerateImmutableClass(model, cls));
-            CodeReader __tmp3Reader = new CodeReader(__tmp3.ToStringAndFree());
+            var __tmp3Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp3.ToStringAndFree());
             bool __tmp3_last = __tmp3Reader.EndOfStream;
             while(!__tmp3_last)
             {
@@ -11901,9 +11901,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             }
             __out.AppendLine(true); //921:1
             bool __tmp5_outputWritten = false;
-            CodeBuilder __tmp6 = CodeBuilder.GetInstance();
+            var __tmp6 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp6.Write(GenerateBuilderClass(model, cls));
-            CodeReader __tmp6Reader = new CodeReader(__tmp6.ToStringAndFree());
+            var __tmp6Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp6.ToStringAndFree());
             bool __tmp6_last = __tmp6Reader.EndOfStream;
             while(!__tmp6_last)
             {
@@ -11925,12 +11925,12 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
 
         public string GenerateClassInternal(MetaModel model, MetaClass cls) //925:1
         {
-            CodeBuilder __out = CodeBuilder.GetInstance();
+            var __out = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __out.AppendLine(true); //926:1
             bool __tmp2_outputWritten = false;
-            CodeBuilder __tmp3 = CodeBuilder.GetInstance();
+            var __tmp3 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp3.Write(GenerateIdClass(model, cls));
-            CodeReader __tmp3Reader = new CodeReader(__tmp3.ToStringAndFree());
+            var __tmp3Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp3.ToStringAndFree());
             bool __tmp3_last = __tmp3Reader.EndOfStream;
             while(!__tmp3_last)
             {
@@ -11949,9 +11949,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             }
             __out.AppendLine(true); //928:1
             bool __tmp5_outputWritten = false;
-            CodeBuilder __tmp6 = CodeBuilder.GetInstance();
+            var __tmp6 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp6.Write(GenerateImmutableImplClass(model, cls));
-            CodeReader __tmp6Reader = new CodeReader(__tmp6.ToStringAndFree());
+            var __tmp6Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp6.ToStringAndFree());
             bool __tmp6_last = __tmp6Reader.EndOfStream;
             while(!__tmp6_last)
             {
@@ -11970,9 +11970,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             }
             __out.AppendLine(true); //930:1
             bool __tmp8_outputWritten = false;
-            CodeBuilder __tmp9 = CodeBuilder.GetInstance();
+            var __tmp9 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp9.Write(GenerateBuilderImplClass(model, cls));
-            CodeReader __tmp9Reader = new CodeReader(__tmp9.ToStringAndFree());
+            var __tmp9Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp9.ToStringAndFree());
             bool __tmp9_last = __tmp9Reader.EndOfStream;
             while(!__tmp9_last)
             {
@@ -11994,7 +11994,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
 
         public string GenerateIdClass(MetaModel model, MetaClass cls) //934:1
         {
-            CodeBuilder __out = CodeBuilder.GetInstance();
+            var __out = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             bool __tmp2_outputWritten = false;
             string __tmp3_line = "internal class "; //935:1
             if (!string.IsNullOrEmpty(__tmp3_line))
@@ -12002,9 +12002,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp3_line);
                 __tmp2_outputWritten = true;
             }
-            CodeBuilder __tmp4 = CodeBuilder.GetInstance();
+            var __tmp4 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp4.Write(CSharpName(cls, model, ClassKind.Id));
-            CodeReader __tmp4Reader = new CodeReader(__tmp4.ToStringAndFree());
+            var __tmp4Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp4.ToStringAndFree());
             bool __tmp4_last = __tmp4Reader.EndOfStream;
             while(!__tmp4_last)
             {
@@ -12023,9 +12023,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp5_line);
                 __tmp2_outputWritten = true;
             }
-            CodeBuilder __tmp6 = CodeBuilder.GetInstance();
+            var __tmp6 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp6.Write(Properties.CoreNs);
-            CodeReader __tmp6Reader = new CodeReader(__tmp6.ToStringAndFree());
+            var __tmp6Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp6.ToStringAndFree());
             bool __tmp6_last = __tmp6Reader.EndOfStream;
             while(!__tmp6_last)
             {
@@ -12058,9 +12058,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp10_line);
                 __tmp9_outputWritten = true;
             }
-            CodeBuilder __tmp11 = CodeBuilder.GetInstance();
+            var __tmp11 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp11.Write(Properties.CoreNs);
-            CodeReader __tmp11Reader = new CodeReader(__tmp11.ToStringAndFree());
+            var __tmp11Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp11.ToStringAndFree());
             bool __tmp11_last = __tmp11Reader.EndOfStream;
             while(!__tmp11_last)
             {
@@ -12079,9 +12079,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp12_line);
                 __tmp9_outputWritten = true;
             }
-            CodeBuilder __tmp13 = CodeBuilder.GetInstance();
+            var __tmp13 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp13.Write(CSharpName(cls, null, ClassKind.Descriptor, true));
-            CodeReader __tmp13Reader = new CodeReader(__tmp13.ToStringAndFree());
+            var __tmp13Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp13.ToStringAndFree());
             bool __tmp13_last = __tmp13Reader.EndOfStream;
             while(!__tmp13_last)
             {
@@ -12113,9 +12113,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp17_line);
                 __tmp16_outputWritten = true;
             }
-            CodeBuilder __tmp18 = CodeBuilder.GetInstance();
+            var __tmp18 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp18.Write(Properties.CoreNs);
-            CodeReader __tmp18Reader = new CodeReader(__tmp18.ToStringAndFree());
+            var __tmp18Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp18.ToStringAndFree());
             bool __tmp18_last = __tmp18Reader.EndOfStream;
             while(!__tmp18_last)
             {
@@ -12134,9 +12134,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp19_line);
                 __tmp16_outputWritten = true;
             }
-            CodeBuilder __tmp20 = CodeBuilder.GetInstance();
+            var __tmp20 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp20.Write(Properties.CoreNs);
-            CodeReader __tmp20Reader = new CodeReader(__tmp20.ToStringAndFree());
+            var __tmp20Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp20.ToStringAndFree());
             bool __tmp20_last = __tmp20Reader.EndOfStream;
             while(!__tmp20_last)
             {
@@ -12169,9 +12169,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp24_line);
                 __tmp23_outputWritten = true;
             }
-            CodeBuilder __tmp25 = CodeBuilder.GetInstance();
+            var __tmp25 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp25.Write(CSharpName(cls, model, ClassKind.ImmutableImpl));
-            CodeReader __tmp25Reader = new CodeReader(__tmp25.ToStringAndFree());
+            var __tmp25Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp25.ToStringAndFree());
             bool __tmp25_last = __tmp25Reader.EndOfStream;
             while(!__tmp25_last)
             {
@@ -12205,9 +12205,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp29_line);
                 __tmp28_outputWritten = true;
             }
-            CodeBuilder __tmp30 = CodeBuilder.GetInstance();
+            var __tmp30 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp30.Write(Properties.CoreNs);
-            CodeReader __tmp30Reader = new CodeReader(__tmp30.ToStringAndFree());
+            var __tmp30Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp30.ToStringAndFree());
             bool __tmp30_last = __tmp30Reader.EndOfStream;
             while(!__tmp30_last)
             {
@@ -12226,9 +12226,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp31_line);
                 __tmp28_outputWritten = true;
             }
-            CodeBuilder __tmp32 = CodeBuilder.GetInstance();
+            var __tmp32 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp32.Write(Properties.CoreNs);
-            CodeReader __tmp32Reader = new CodeReader(__tmp32.ToStringAndFree());
+            var __tmp32Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp32.ToStringAndFree());
             bool __tmp32_last = __tmp32Reader.EndOfStream;
             while(!__tmp32_last)
             {
@@ -12261,9 +12261,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp36_line);
                 __tmp35_outputWritten = true;
             }
-            CodeBuilder __tmp37 = CodeBuilder.GetInstance();
+            var __tmp37 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp37.Write(CSharpName(cls, model, ClassKind.BuilderImpl));
-            CodeReader __tmp37Reader = new CodeReader(__tmp37.ToStringAndFree());
+            var __tmp37Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp37.ToStringAndFree());
             bool __tmp37_last = __tmp37Reader.EndOfStream;
             while(!__tmp37_last)
             {
@@ -12296,12 +12296,12 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
 
         public string GenerateImmutableClass(MetaModel model, MetaClass cls) //951:1
         {
-            CodeBuilder __out = CodeBuilder.GetInstance();
+            var __out = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             bool metaMetaModel = IsMetaMetaModel(model); //952:2
             bool __tmp2_outputWritten = false;
-            CodeBuilder __tmp3 = CodeBuilder.GetInstance();
+            var __tmp3 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp3.Write(GenerateDocumentation(cls));
-            CodeReader __tmp3Reader = new CodeReader(__tmp3.ToStringAndFree());
+            var __tmp3Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp3.ToStringAndFree());
             bool __tmp3_last = __tmp3Reader.EndOfStream;
             while(!__tmp3_last)
             {
@@ -12325,9 +12325,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp6_line);
                 __tmp5_outputWritten = true;
             }
-            CodeBuilder __tmp7 = CodeBuilder.GetInstance();
+            var __tmp7 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp7.Write(CSharpName(cls, model, ClassKind.Immutable));
-            CodeReader __tmp7Reader = new CodeReader(__tmp7.ToStringAndFree());
+            var __tmp7Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp7.ToStringAndFree());
             bool __tmp7_last = __tmp7Reader.EndOfStream;
             while(!__tmp7_last)
             {
@@ -12340,9 +12340,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 }
                 if (!__tmp7_last) __out.AppendLine(true);
             }
-            CodeBuilder __tmp8 = CodeBuilder.GetInstance();
+            var __tmp8 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp8.Write(GetImmutableAncestors(model, cls));
-            CodeReader __tmp8Reader = new CodeReader(__tmp8.ToStringAndFree());
+            var __tmp8Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp8.ToStringAndFree());
             bool __tmp8_last = __tmp8Reader.EndOfStream;
             while(!__tmp8_last)
             {
@@ -12355,9 +12355,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 }
                 if (!__tmp8_last) __out.AppendLine(true);
             }
-            CodeBuilder __tmp9 = CodeBuilder.GetInstance();
+            var __tmp9 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp9.Write(metaMetaModel && cls.Name == "MetaModel" ? ", " + Properties.CoreNs + ".IMetaModel" : "");
-            CodeReader __tmp9Reader = new CodeReader(__tmp9.ToStringAndFree());
+            var __tmp9Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp9.ToStringAndFree());
             bool __tmp9_last = __tmp9Reader.EndOfStream;
             while(!__tmp9_last)
             {
@@ -12399,9 +12399,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 var prop = __tmp10.prop;
                 bool __tmp12_outputWritten = false;
                 string __tmp11Prefix = "	"; //963:1
-                CodeBuilder __tmp13 = CodeBuilder.GetInstance();
+                var __tmp13 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp13.Write(GenerateImmutableProperty(model, prop));
-                CodeReader __tmp13Reader = new CodeReader(__tmp13.ToStringAndFree());
+                var __tmp13Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp13.ToStringAndFree());
                 bool __tmp13_last = __tmp13Reader.EndOfStream;
                 while(!__tmp13_last)
                 {
@@ -12438,9 +12438,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 var op = __tmp14.op;
                 bool __tmp16_outputWritten = false;
                 string __tmp15Prefix = "	"; //967:1
-                CodeBuilder __tmp17 = CodeBuilder.GetInstance();
+                var __tmp17 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp17.Write(GenerateImmutableOperation(model, op));
-                CodeReader __tmp17Reader = new CodeReader(__tmp17.ToStringAndFree());
+                var __tmp17Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp17.ToStringAndFree());
                 bool __tmp17_last = __tmp17Reader.EndOfStream;
                 while(!__tmp17_last)
                 {
@@ -12473,9 +12473,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp20_line);
                 __tmp19_outputWritten = true;
             }
-            CodeBuilder __tmp21 = CodeBuilder.GetInstance();
+            var __tmp21 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp21.Write(CSharpName(cls, model, ClassKind.Immutable));
-            CodeReader __tmp21Reader = new CodeReader(__tmp21.ToStringAndFree());
+            var __tmp21Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp21.ToStringAndFree());
             bool __tmp21_last = __tmp21Reader.EndOfStream;
             while(!__tmp21_last)
             {
@@ -12494,9 +12494,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp22_line);
                 __tmp19_outputWritten = true;
             }
-            CodeBuilder __tmp23 = CodeBuilder.GetInstance();
+            var __tmp23 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp23.Write(CSharpName(cls, model, ClassKind.Builder));
-            CodeReader __tmp23Reader = new CodeReader(__tmp23.ToStringAndFree());
+            var __tmp23Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp23.ToStringAndFree());
             bool __tmp23_last = __tmp23Reader.EndOfStream;
             while(!__tmp23_last)
             {
@@ -12529,9 +12529,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp27_line);
                 __tmp26_outputWritten = true;
             }
-            CodeBuilder __tmp28 = CodeBuilder.GetInstance();
+            var __tmp28 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp28.Write(CSharpName(cls, model, ClassKind.Builder, true));
-            CodeReader __tmp28Reader = new CodeReader(__tmp28.ToStringAndFree());
+            var __tmp28Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp28.ToStringAndFree());
             bool __tmp28_last = __tmp28Reader.EndOfStream;
             while(!__tmp28_last)
             {
@@ -12564,9 +12564,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp32_line);
                 __tmp31_outputWritten = true;
             }
-            CodeBuilder __tmp33 = CodeBuilder.GetInstance();
+            var __tmp33 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp33.Write(CSharpName(cls, model, ClassKind.Immutable));
-            CodeReader __tmp33Reader = new CodeReader(__tmp33.ToStringAndFree());
+            var __tmp33Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp33.ToStringAndFree());
             bool __tmp33_last = __tmp33Reader.EndOfStream;
             while(!__tmp33_last)
             {
@@ -12585,9 +12585,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp34_line);
                 __tmp31_outputWritten = true;
             }
-            CodeBuilder __tmp35 = CodeBuilder.GetInstance();
+            var __tmp35 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp35.Write(CSharpName(cls, model, ClassKind.Builder));
-            CodeReader __tmp35Reader = new CodeReader(__tmp35.ToStringAndFree());
+            var __tmp35Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp35.ToStringAndFree());
             bool __tmp35_last = __tmp35Reader.EndOfStream;
             while(!__tmp35_last)
             {
@@ -12624,9 +12624,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp39_line);
                 __tmp38_outputWritten = true;
             }
-            CodeBuilder __tmp40 = CodeBuilder.GetInstance();
+            var __tmp40 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp40.Write(CSharpName(cls, model, ClassKind.Builder, true));
-            CodeReader __tmp40Reader = new CodeReader(__tmp40.ToStringAndFree());
+            var __tmp40Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp40.ToStringAndFree());
             bool __tmp40_last = __tmp40Reader.EndOfStream;
             while(!__tmp40_last)
             {
@@ -12645,9 +12645,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp41_line);
                 __tmp38_outputWritten = true;
             }
-            CodeBuilder __tmp42 = CodeBuilder.GetInstance();
+            var __tmp42 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp42.Write(Properties.CoreNs);
-            CodeReader __tmp42Reader = new CodeReader(__tmp42.ToStringAndFree());
+            var __tmp42Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp42.ToStringAndFree());
             bool __tmp42_last = __tmp42Reader.EndOfStream;
             while(!__tmp42_last)
             {
@@ -12678,11 +12678,11 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
 
         public string GenerateImmutableProperty(MetaModel model, MetaProperty prop) //983:1
         {
-            CodeBuilder __out = CodeBuilder.GetInstance();
+            var __out = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             bool __tmp2_outputWritten = false;
-            CodeBuilder __tmp3 = CodeBuilder.GetInstance();
+            var __tmp3 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp3.Write(GenerateDocumentation(prop));
-            CodeReader __tmp3Reader = new CodeReader(__tmp3.ToStringAndFree());
+            var __tmp3Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp3.ToStringAndFree());
             bool __tmp3_last = __tmp3Reader.EndOfStream;
             while(!__tmp3_last)
             {
@@ -12704,9 +12704,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write("new "); //986:1
             }
             bool __tmp5_outputWritten = false;
-            CodeBuilder __tmp6 = CodeBuilder.GetInstance();
+            var __tmp6 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp6.Write(CSharpName(prop.Type, model, ClassKind.Immutable, true));
-            CodeReader __tmp6Reader = new CodeReader(__tmp6.ToStringAndFree());
+            var __tmp6Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp6.ToStringAndFree());
             bool __tmp6_last = __tmp6Reader.EndOfStream;
             while(!__tmp6_last)
             {
@@ -12725,9 +12725,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp7_line);
                 __tmp5_outputWritten = true;
             }
-            CodeBuilder __tmp8 = CodeBuilder.GetInstance();
+            var __tmp8 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp8.Write(CSharpName(prop, model, PropertyKind.Immutable));
-            CodeReader __tmp8Reader = new CodeReader(__tmp8.ToStringAndFree());
+            var __tmp8Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp8.ToStringAndFree());
             bool __tmp8_last = __tmp8Reader.EndOfStream;
             while(!__tmp8_last)
             {
@@ -12756,11 +12756,11 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
 
         public string GenerateImmutableOperation(MetaModel model, MetaOperation op) //991:1
         {
-            CodeBuilder __out = CodeBuilder.GetInstance();
+            var __out = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             bool __tmp2_outputWritten = false;
-            CodeBuilder __tmp3 = CodeBuilder.GetInstance();
+            var __tmp3 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp3.Write(GenerateDocumentation(op));
-            CodeReader __tmp3Reader = new CodeReader(__tmp3.ToStringAndFree());
+            var __tmp3Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp3.ToStringAndFree());
             bool __tmp3_last = __tmp3Reader.EndOfStream;
             while(!__tmp3_last)
             {
@@ -12778,9 +12778,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.AppendLine(false); //992:28
             }
             bool __tmp5_outputWritten = false;
-            CodeBuilder __tmp6 = CodeBuilder.GetInstance();
+            var __tmp6 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp6.Write(CSharpName(op.ReturnType, model, ClassKind.ImmutableOperation, true));
-            CodeReader __tmp6Reader = new CodeReader(__tmp6.ToStringAndFree());
+            var __tmp6Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp6.ToStringAndFree());
             bool __tmp6_last = __tmp6Reader.EndOfStream;
             while(!__tmp6_last)
             {
@@ -12799,9 +12799,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp7_line);
                 __tmp5_outputWritten = true;
             }
-            CodeBuilder __tmp8 = CodeBuilder.GetInstance();
+            var __tmp8 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp8.Write(op.Name);
-            CodeReader __tmp8Reader = new CodeReader(__tmp8.ToStringAndFree());
+            var __tmp8Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp8.ToStringAndFree());
             bool __tmp8_last = __tmp8Reader.EndOfStream;
             while(!__tmp8_last)
             {
@@ -12820,9 +12820,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp9_line);
                 __tmp5_outputWritten = true;
             }
-            CodeBuilder __tmp10 = CodeBuilder.GetInstance();
+            var __tmp10 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp10.Write(GetImmutableOperationParameters(model, op, ClassKind.ImmutableOperation));
-            CodeReader __tmp10Reader = new CodeReader(__tmp10.ToStringAndFree());
+            var __tmp10Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp10.ToStringAndFree());
             bool __tmp10_last = __tmp10Reader.EndOfStream;
             while(!__tmp10_last)
             {
@@ -12898,12 +12898,12 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
 
         public string GenerateBuilderClass(MetaModel model, MetaClass cls) //1016:1
         {
-            CodeBuilder __out = CodeBuilder.GetInstance();
+            var __out = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             bool metaMetaModel = IsMetaMetaModel(model); //1017:2
             bool __tmp2_outputWritten = false;
-            CodeBuilder __tmp3 = CodeBuilder.GetInstance();
+            var __tmp3 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp3.Write(GenerateDocumentation(cls));
-            CodeReader __tmp3Reader = new CodeReader(__tmp3.ToStringAndFree());
+            var __tmp3Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp3.ToStringAndFree());
             bool __tmp3_last = __tmp3Reader.EndOfStream;
             while(!__tmp3_last)
             {
@@ -12927,9 +12927,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp6_line);
                 __tmp5_outputWritten = true;
             }
-            CodeBuilder __tmp7 = CodeBuilder.GetInstance();
+            var __tmp7 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp7.Write(CSharpName(cls, model, ClassKind.Builder));
-            CodeReader __tmp7Reader = new CodeReader(__tmp7.ToStringAndFree());
+            var __tmp7Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp7.ToStringAndFree());
             bool __tmp7_last = __tmp7Reader.EndOfStream;
             while(!__tmp7_last)
             {
@@ -12942,9 +12942,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 }
                 if (!__tmp7_last) __out.AppendLine(true);
             }
-            CodeBuilder __tmp8 = CodeBuilder.GetInstance();
+            var __tmp8 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp8.Write(GetBuilderAncestors(model, cls));
-            CodeReader __tmp8Reader = new CodeReader(__tmp8.ToStringAndFree());
+            var __tmp8Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp8.ToStringAndFree());
             bool __tmp8_last = __tmp8Reader.EndOfStream;
             while(!__tmp8_last)
             {
@@ -12957,9 +12957,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 }
                 if (!__tmp8_last) __out.AppendLine(true);
             }
-            CodeBuilder __tmp9 = CodeBuilder.GetInstance();
+            var __tmp9 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp9.Write(metaMetaModel && cls.Name == "MetaModel" ? ", " + Properties.CoreNs + ".IMetaModel" : "");
-            CodeReader __tmp9Reader = new CodeReader(__tmp9.ToStringAndFree());
+            var __tmp9Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp9.ToStringAndFree());
             bool __tmp9_last = __tmp9Reader.EndOfStream;
             while(!__tmp9_last)
             {
@@ -13001,9 +13001,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 var prop = __tmp10.prop;
                 bool __tmp12_outputWritten = false;
                 string __tmp11Prefix = "	"; //1028:1
-                CodeBuilder __tmp13 = CodeBuilder.GetInstance();
+                var __tmp13 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp13.Write(GenerateBuilderProperty(model, prop));
-                CodeReader __tmp13Reader = new CodeReader(__tmp13.ToStringAndFree());
+                var __tmp13Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp13.ToStringAndFree());
                 bool __tmp13_last = __tmp13Reader.EndOfStream;
                 while(!__tmp13_last)
                 {
@@ -13039,9 +13039,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 var op = __tmp14.op;
                 bool __tmp16_outputWritten = false;
                 string __tmp15Prefix = "	"; //1032:1
-                CodeBuilder __tmp17 = CodeBuilder.GetInstance();
+                var __tmp17 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp17.Write(GenerateBuilderOperation(model, op));
-                CodeReader __tmp17Reader = new CodeReader(__tmp17.ToStringAndFree());
+                var __tmp17Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp17.ToStringAndFree());
                 bool __tmp17_last = __tmp17Reader.EndOfStream;
                 while(!__tmp17_last)
                 {
@@ -13074,9 +13074,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp20_line);
                 __tmp19_outputWritten = true;
             }
-            CodeBuilder __tmp21 = CodeBuilder.GetInstance();
+            var __tmp21 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp21.Write(CSharpName(cls, model, ClassKind.Builder));
-            CodeReader __tmp21Reader = new CodeReader(__tmp21.ToStringAndFree());
+            var __tmp21Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp21.ToStringAndFree());
             bool __tmp21_last = __tmp21Reader.EndOfStream;
             while(!__tmp21_last)
             {
@@ -13095,9 +13095,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp22_line);
                 __tmp19_outputWritten = true;
             }
-            CodeBuilder __tmp23 = CodeBuilder.GetInstance();
+            var __tmp23 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp23.Write(CSharpName(cls, model, ClassKind.Immutable));
-            CodeReader __tmp23Reader = new CodeReader(__tmp23.ToStringAndFree());
+            var __tmp23Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp23.ToStringAndFree());
             bool __tmp23_last = __tmp23Reader.EndOfStream;
             while(!__tmp23_last)
             {
@@ -13130,9 +13130,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp27_line);
                 __tmp26_outputWritten = true;
             }
-            CodeBuilder __tmp28 = CodeBuilder.GetInstance();
+            var __tmp28 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp28.Write(CSharpName(cls, model, ClassKind.Immutable, true));
-            CodeReader __tmp28Reader = new CodeReader(__tmp28.ToStringAndFree());
+            var __tmp28Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp28.ToStringAndFree());
             bool __tmp28_last = __tmp28Reader.EndOfStream;
             while(!__tmp28_last)
             {
@@ -13165,9 +13165,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp32_line);
                 __tmp31_outputWritten = true;
             }
-            CodeBuilder __tmp33 = CodeBuilder.GetInstance();
+            var __tmp33 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp33.Write(CSharpName(cls, model, ClassKind.Builder));
-            CodeReader __tmp33Reader = new CodeReader(__tmp33.ToStringAndFree());
+            var __tmp33Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp33.ToStringAndFree());
             bool __tmp33_last = __tmp33Reader.EndOfStream;
             while(!__tmp33_last)
             {
@@ -13186,9 +13186,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp34_line);
                 __tmp31_outputWritten = true;
             }
-            CodeBuilder __tmp35 = CodeBuilder.GetInstance();
+            var __tmp35 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp35.Write(CSharpName(cls, model, ClassKind.Immutable));
-            CodeReader __tmp35Reader = new CodeReader(__tmp35.ToStringAndFree());
+            var __tmp35Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp35.ToStringAndFree());
             bool __tmp35_last = __tmp35Reader.EndOfStream;
             while(!__tmp35_last)
             {
@@ -13225,9 +13225,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp39_line);
                 __tmp38_outputWritten = true;
             }
-            CodeBuilder __tmp40 = CodeBuilder.GetInstance();
+            var __tmp40 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp40.Write(CSharpName(cls, model, ClassKind.Immutable, true));
-            CodeReader __tmp40Reader = new CodeReader(__tmp40.ToStringAndFree());
+            var __tmp40Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp40.ToStringAndFree());
             bool __tmp40_last = __tmp40Reader.EndOfStream;
             while(!__tmp40_last)
             {
@@ -13246,9 +13246,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp41_line);
                 __tmp38_outputWritten = true;
             }
-            CodeBuilder __tmp42 = CodeBuilder.GetInstance();
+            var __tmp42 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp42.Write(Properties.CoreNs);
-            CodeReader __tmp42Reader = new CodeReader(__tmp42.ToStringAndFree());
+            var __tmp42Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp42.ToStringAndFree());
             bool __tmp42_last = __tmp42Reader.EndOfStream;
             while(!__tmp42_last)
             {
@@ -13279,11 +13279,11 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
 
         public string GenerateBuilderProperty(MetaModel model, MetaProperty prop) //1048:1
         {
-            CodeBuilder __out = CodeBuilder.GetInstance();
+            var __out = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             bool __tmp2_outputWritten = false;
-            CodeBuilder __tmp3 = CodeBuilder.GetInstance();
+            var __tmp3 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp3.Write(GenerateDocumentation(prop));
-            CodeReader __tmp3Reader = new CodeReader(__tmp3.ToStringAndFree());
+            var __tmp3Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp3.ToStringAndFree());
             bool __tmp3_last = __tmp3Reader.EndOfStream;
             while(!__tmp3_last)
             {
@@ -13307,9 +13307,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             if ((prop.Kind == MetaPropertyKind.Normal) && !(prop.Type is MetaCollectionType)) //1053:3
             {
                 bool __tmp5_outputWritten = false;
-                CodeBuilder __tmp6 = CodeBuilder.GetInstance();
+                var __tmp6 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp6.Write(CSharpName(prop.Type, model, ClassKind.Builder, true));
-                CodeReader __tmp6Reader = new CodeReader(__tmp6.ToStringAndFree());
+                var __tmp6Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp6.ToStringAndFree());
                 bool __tmp6_last = __tmp6Reader.EndOfStream;
                 while(!__tmp6_last)
                 {
@@ -13328,9 +13328,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp7_line);
                     __tmp5_outputWritten = true;
                 }
-                CodeBuilder __tmp8 = CodeBuilder.GetInstance();
+                var __tmp8 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp8.Write(CSharpName(prop, model, PropertyKind.Builder));
-                CodeReader __tmp8Reader = new CodeReader(__tmp8.ToStringAndFree());
+                var __tmp8Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp8.ToStringAndFree());
                 bool __tmp8_last = __tmp8Reader.EndOfStream;
                 while(!__tmp8_last)
                 {
@@ -13358,9 +13358,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             else //1055:3
             {
                 bool __tmp11_outputWritten = false;
-                CodeBuilder __tmp12 = CodeBuilder.GetInstance();
+                var __tmp12 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp12.Write(CSharpName(prop.Type, model, ClassKind.Builder, true));
-                CodeReader __tmp12Reader = new CodeReader(__tmp12.ToStringAndFree());
+                var __tmp12Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp12.ToStringAndFree());
                 bool __tmp12_last = __tmp12Reader.EndOfStream;
                 while(!__tmp12_last)
                 {
@@ -13379,9 +13379,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp13_line);
                     __tmp11_outputWritten = true;
                 }
-                CodeBuilder __tmp14 = CodeBuilder.GetInstance();
+                var __tmp14 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp14.Write(CSharpName(prop, model, PropertyKind.Builder));
-                CodeReader __tmp14Reader = new CodeReader(__tmp14.ToStringAndFree());
+                var __tmp14Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp14.ToStringAndFree());
                 bool __tmp14_last = __tmp14Reader.EndOfStream;
                 while(!__tmp14_last)
                 {
@@ -13409,9 +13409,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             if (!(prop.Type is MetaCollectionType)) //1058:3
             {
                 bool __tmp17_outputWritten = false;
-                CodeBuilder __tmp18 = CodeBuilder.GetInstance();
+                var __tmp18 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp18.Write(GenerateDocumentation(prop));
-                CodeReader __tmp18Reader = new CodeReader(__tmp18.ToStringAndFree());
+                var __tmp18Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp18.ToStringAndFree());
                 bool __tmp18_last = __tmp18Reader.EndOfStream;
                 while(!__tmp18_last)
                 {
@@ -13439,9 +13439,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp21_line);
                     __tmp20_outputWritten = true;
                 }
-                CodeBuilder __tmp22 = CodeBuilder.GetInstance();
+                var __tmp22 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp22.Write(CSharpName(prop, model, PropertyKind.Builder));
-                CodeReader __tmp22Reader = new CodeReader(__tmp22.ToStringAndFree());
+                var __tmp22Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp22.ToStringAndFree());
                 bool __tmp22_last = __tmp22Reader.EndOfStream;
                 while(!__tmp22_last)
                 {
@@ -13460,9 +13460,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp23_line);
                     __tmp20_outputWritten = true;
                 }
-                CodeBuilder __tmp24 = CodeBuilder.GetInstance();
+                var __tmp24 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp24.Write(CSharpName(prop.Type, model, ClassKind.Builder, true));
-                CodeReader __tmp24Reader = new CodeReader(__tmp24.ToStringAndFree());
+                var __tmp24Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp24.ToStringAndFree());
                 bool __tmp24_last = __tmp24Reader.EndOfStream;
                 while(!__tmp24_last)
                 {
@@ -13487,9 +13487,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.AppendLine(false); //1063:142
                 }
                 bool __tmp27_outputWritten = false;
-                CodeBuilder __tmp28 = CodeBuilder.GetInstance();
+                var __tmp28 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp28.Write(GenerateDocumentation(prop));
-                CodeReader __tmp28Reader = new CodeReader(__tmp28.ToStringAndFree());
+                var __tmp28Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp28.ToStringAndFree());
                 bool __tmp28_last = __tmp28Reader.EndOfStream;
                 while(!__tmp28_last)
                 {
@@ -13517,9 +13517,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp31_line);
                     __tmp30_outputWritten = true;
                 }
-                CodeBuilder __tmp32 = CodeBuilder.GetInstance();
+                var __tmp32 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp32.Write(CSharpName(prop, model, PropertyKind.Builder));
-                CodeReader __tmp32Reader = new CodeReader(__tmp32.ToStringAndFree());
+                var __tmp32Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp32.ToStringAndFree());
                 bool __tmp32_last = __tmp32Reader.EndOfStream;
                 while(!__tmp32_last)
                 {
@@ -13538,9 +13538,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp33_line);
                     __tmp30_outputWritten = true;
                 }
-                CodeBuilder __tmp34 = CodeBuilder.GetInstance();
+                var __tmp34 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp34.Write(CSharpName(prop.Class, model, ClassKind.Builder));
-                CodeReader __tmp34Reader = new CodeReader(__tmp34.ToStringAndFree());
+                var __tmp34Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp34.ToStringAndFree());
                 bool __tmp34_last = __tmp34Reader.EndOfStream;
                 while(!__tmp34_last)
                 {
@@ -13559,9 +13559,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp35_line);
                     __tmp30_outputWritten = true;
                 }
-                CodeBuilder __tmp36 = CodeBuilder.GetInstance();
+                var __tmp36 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp36.Write(CSharpName(prop.Type, model, ClassKind.Builder, true));
-                CodeReader __tmp36Reader = new CodeReader(__tmp36.ToStringAndFree());
+                var __tmp36Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp36.ToStringAndFree());
                 bool __tmp36_last = __tmp36Reader.EndOfStream;
                 while(!__tmp36_last)
                 {
@@ -13586,9 +13586,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.AppendLine(false); //1068:193
                 }
                 bool __tmp39_outputWritten = false;
-                CodeBuilder __tmp40 = CodeBuilder.GetInstance();
+                var __tmp40 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp40.Write(GenerateDocumentation(prop));
-                CodeReader __tmp40Reader = new CodeReader(__tmp40.ToStringAndFree());
+                var __tmp40Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp40.ToStringAndFree());
                 bool __tmp40_last = __tmp40Reader.EndOfStream;
                 while(!__tmp40_last)
                 {
@@ -13616,9 +13616,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp43_line);
                     __tmp42_outputWritten = true;
                 }
-                CodeBuilder __tmp44 = CodeBuilder.GetInstance();
+                var __tmp44 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp44.Write(CSharpName(prop, model, PropertyKind.Builder));
-                CodeReader __tmp44Reader = new CodeReader(__tmp44.ToStringAndFree());
+                var __tmp44Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp44.ToStringAndFree());
                 bool __tmp44_last = __tmp44Reader.EndOfStream;
                 while(!__tmp44_last)
                 {
@@ -13637,9 +13637,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp45_line);
                     __tmp42_outputWritten = true;
                 }
-                CodeBuilder __tmp46 = CodeBuilder.GetInstance();
+                var __tmp46 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp46.Write(CSharpName(prop.Class, model, ClassKind.Immutable));
-                CodeReader __tmp46Reader = new CodeReader(__tmp46.ToStringAndFree());
+                var __tmp46Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp46.ToStringAndFree());
                 bool __tmp46_last = __tmp46Reader.EndOfStream;
                 while(!__tmp46_last)
                 {
@@ -13658,9 +13658,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp47_line);
                     __tmp42_outputWritten = true;
                 }
-                CodeBuilder __tmp48 = CodeBuilder.GetInstance();
+                var __tmp48 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp48.Write(CSharpName(prop.Type, model, ClassKind.Immutable, true));
-                CodeReader __tmp48Reader = new CodeReader(__tmp48.ToStringAndFree());
+                var __tmp48Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp48.ToStringAndFree());
                 bool __tmp48_last = __tmp48Reader.EndOfStream;
                 while(!__tmp48_last)
                 {
@@ -13679,9 +13679,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp49_line);
                     __tmp42_outputWritten = true;
                 }
-                CodeBuilder __tmp50 = CodeBuilder.GetInstance();
+                var __tmp50 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp50.Write(CSharpName(prop.Class, model, ClassKind.Builder));
-                CodeReader __tmp50Reader = new CodeReader(__tmp50.ToStringAndFree());
+                var __tmp50Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp50.ToStringAndFree());
                 bool __tmp50_last = __tmp50Reader.EndOfStream;
                 while(!__tmp50_last)
                 {
@@ -13700,9 +13700,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp51_line);
                     __tmp42_outputWritten = true;
                 }
-                CodeBuilder __tmp52 = CodeBuilder.GetInstance();
+                var __tmp52 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp52.Write(CSharpName(prop.Type, model, ClassKind.Builder, true));
-                CodeReader __tmp52Reader = new CodeReader(__tmp52.ToStringAndFree());
+                var __tmp52Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp52.ToStringAndFree());
                 bool __tmp52_last = __tmp52Reader.EndOfStream;
                 while(!__tmp52_last)
                 {
@@ -13732,11 +13732,11 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
 
         public string GenerateBuilderOperation(MetaModel model, MetaOperation op) //1077:1
         {
-            CodeBuilder __out = CodeBuilder.GetInstance();
+            var __out = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             bool __tmp2_outputWritten = false;
-            CodeBuilder __tmp3 = CodeBuilder.GetInstance();
+            var __tmp3 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp3.Write(GenerateDocumentation(op));
-            CodeReader __tmp3Reader = new CodeReader(__tmp3.ToStringAndFree());
+            var __tmp3Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp3.ToStringAndFree());
             bool __tmp3_last = __tmp3Reader.EndOfStream;
             while(!__tmp3_last)
             {
@@ -13754,9 +13754,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.AppendLine(false); //1078:28
             }
             bool __tmp5_outputWritten = false;
-            CodeBuilder __tmp6 = CodeBuilder.GetInstance();
+            var __tmp6 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp6.Write(CSharpName(op.ReturnType, model, ClassKind.BuilderOperation, true));
-            CodeReader __tmp6Reader = new CodeReader(__tmp6.ToStringAndFree());
+            var __tmp6Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp6.ToStringAndFree());
             bool __tmp6_last = __tmp6Reader.EndOfStream;
             while(!__tmp6_last)
             {
@@ -13775,9 +13775,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp7_line);
                 __tmp5_outputWritten = true;
             }
-            CodeBuilder __tmp8 = CodeBuilder.GetInstance();
+            var __tmp8 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp8.Write(op.Name);
-            CodeReader __tmp8Reader = new CodeReader(__tmp8.ToStringAndFree());
+            var __tmp8Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp8.ToStringAndFree());
             bool __tmp8_last = __tmp8Reader.EndOfStream;
             while(!__tmp8_last)
             {
@@ -13796,9 +13796,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp9_line);
                 __tmp5_outputWritten = true;
             }
-            CodeBuilder __tmp10 = CodeBuilder.GetInstance();
+            var __tmp10 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp10.Write(GetBuilderOperationParameters(model, op, ClassKind.BuilderOperation));
-            CodeReader __tmp10Reader = new CodeReader(__tmp10.ToStringAndFree());
+            var __tmp10Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp10.ToStringAndFree());
             bool __tmp10_last = __tmp10Reader.EndOfStream;
             while(!__tmp10_last)
             {
@@ -13874,7 +13874,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
 
         public string GenerateImmutableImplClass(MetaModel model, MetaClass cls) //1102:1
         {
-            CodeBuilder __out = CodeBuilder.GetInstance();
+            var __out = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             bool metaMetaModel = IsMetaMetaModel(model); //1103:2
             string metaNs = metaMetaModel ? "" : Properties.MetaNs + "."; //1104:2
             bool __tmp2_outputWritten = false;
@@ -13884,9 +13884,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp3_line);
                 __tmp2_outputWritten = true;
             }
-            CodeBuilder __tmp4 = CodeBuilder.GetInstance();
+            var __tmp4 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp4.Write(CSharpName(cls, model, ClassKind.ImmutableImpl));
-            CodeReader __tmp4Reader = new CodeReader(__tmp4.ToStringAndFree());
+            var __tmp4Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp4.ToStringAndFree());
             bool __tmp4_last = __tmp4Reader.EndOfStream;
             while(!__tmp4_last)
             {
@@ -13905,9 +13905,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp5_line);
                 __tmp2_outputWritten = true;
             }
-            CodeBuilder __tmp6 = CodeBuilder.GetInstance();
+            var __tmp6 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp6.Write(Properties.CoreNs);
-            CodeReader __tmp6Reader = new CodeReader(__tmp6.ToStringAndFree());
+            var __tmp6Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp6.ToStringAndFree());
             bool __tmp6_last = __tmp6Reader.EndOfStream;
             while(!__tmp6_last)
             {
@@ -13926,9 +13926,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp7_line);
                 __tmp2_outputWritten = true;
             }
-            CodeBuilder __tmp8 = CodeBuilder.GetInstance();
+            var __tmp8 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp8.Write(CSharpName(cls, model, ClassKind.Immutable));
-            CodeReader __tmp8Reader = new CodeReader(__tmp8.ToStringAndFree());
+            var __tmp8Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp8.ToStringAndFree());
             bool __tmp8_last = __tmp8Reader.EndOfStream;
             while(!__tmp8_last)
             {
@@ -13959,9 +13959,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 var prop = __tmp9.prop;
                 bool __tmp11_outputWritten = false;
                 string __tmp10Prefix = "	"; //1108:1
-                CodeBuilder __tmp12 = CodeBuilder.GetInstance();
+                var __tmp12 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp12.Write(GenerateImmutableField(model, cls, prop));
-                CodeReader __tmp12Reader = new CodeReader(__tmp12.ToStringAndFree());
+                var __tmp12Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp12.ToStringAndFree());
                 bool __tmp12_last = __tmp12Reader.EndOfStream;
                 while(!__tmp12_last)
                 {
@@ -13992,9 +13992,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp15_line);
                 __tmp14_outputWritten = true;
             }
-            CodeBuilder __tmp16 = CodeBuilder.GetInstance();
+            var __tmp16 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp16.Write(CSharpName(cls, model, ClassKind.ImmutableImpl));
-            CodeReader __tmp16Reader = new CodeReader(__tmp16.ToStringAndFree());
+            var __tmp16Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp16.ToStringAndFree());
             bool __tmp16_last = __tmp16Reader.EndOfStream;
             while(!__tmp16_last)
             {
@@ -14013,9 +14013,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp17_line);
                 __tmp14_outputWritten = true;
             }
-            CodeBuilder __tmp18 = CodeBuilder.GetInstance();
+            var __tmp18 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp18.Write(Properties.CoreNs);
-            CodeReader __tmp18Reader = new CodeReader(__tmp18.ToStringAndFree());
+            var __tmp18Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp18.ToStringAndFree());
             bool __tmp18_last = __tmp18Reader.EndOfStream;
             while(!__tmp18_last)
             {
@@ -14034,9 +14034,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp19_line);
                 __tmp14_outputWritten = true;
             }
-            CodeBuilder __tmp20 = CodeBuilder.GetInstance();
+            var __tmp20 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp20.Write(Properties.CoreNs);
-            CodeReader __tmp20Reader = new CodeReader(__tmp20.ToStringAndFree());
+            var __tmp20Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp20.ToStringAndFree());
             bool __tmp20_last = __tmp20Reader.EndOfStream;
             while(!__tmp20_last)
             {
@@ -14074,9 +14074,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp24_line);
                 __tmp23_outputWritten = true;
             }
-            CodeBuilder __tmp25 = CodeBuilder.GetInstance();
+            var __tmp25 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp25.Write(Properties.CoreNs);
-            CodeReader __tmp25Reader = new CodeReader(__tmp25.ToStringAndFree());
+            var __tmp25Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp25.ToStringAndFree());
             bool __tmp25_last = __tmp25Reader.EndOfStream;
             while(!__tmp25_last)
             {
@@ -14109,9 +14109,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp29_line);
                 __tmp28_outputWritten = true;
             }
-            CodeBuilder __tmp30 = CodeBuilder.GetInstance();
+            var __tmp30 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp30.Write(CSharpName(cls.MetaModel, ModelKind.ImmutableInstance, true));
-            CodeReader __tmp30Reader = new CodeReader(__tmp30.ToStringAndFree());
+            var __tmp30Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp30.ToStringAndFree());
             bool __tmp30_last = __tmp30Reader.EndOfStream;
             while(!__tmp30_last)
             {
@@ -14145,9 +14145,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp34_line);
                 __tmp33_outputWritten = true;
             }
-            CodeBuilder __tmp35 = CodeBuilder.GetInstance();
+            var __tmp35 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp35.Write(metaNs);
-            CodeReader __tmp35Reader = new CodeReader(__tmp35.ToStringAndFree());
+            var __tmp35Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp35.ToStringAndFree());
             bool __tmp35_last = __tmp35Reader.EndOfStream;
             while(!__tmp35_last)
             {
@@ -14180,9 +14180,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp39_line);
                 __tmp38_outputWritten = true;
             }
-            CodeBuilder __tmp40 = CodeBuilder.GetInstance();
+            var __tmp40 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp40.Write(CSharpName(cls, model, ClassKind.ImmutableInstance, true));
-            CodeReader __tmp40Reader = new CodeReader(__tmp40.ToStringAndFree());
+            var __tmp40Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp40.ToStringAndFree());
             bool __tmp40_last = __tmp40Reader.EndOfStream;
             while(!__tmp40_last)
             {
@@ -14216,9 +14216,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp44_line);
                 __tmp43_outputWritten = true;
             }
-            CodeBuilder __tmp45 = CodeBuilder.GetInstance();
+            var __tmp45 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp45.Write(CSharpName(cls, model, ClassKind.Builder));
-            CodeReader __tmp45Reader = new CodeReader(__tmp45.ToStringAndFree());
+            var __tmp45Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp45.ToStringAndFree());
             bool __tmp45_last = __tmp45Reader.EndOfStream;
             while(!__tmp45_last)
             {
@@ -14251,9 +14251,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp49_line);
                 __tmp48_outputWritten = true;
             }
-            CodeBuilder __tmp50 = CodeBuilder.GetInstance();
+            var __tmp50 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp50.Write(CSharpName(cls, model, ClassKind.Builder));
-            CodeReader __tmp50Reader = new CodeReader(__tmp50.ToStringAndFree());
+            var __tmp50Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp50.ToStringAndFree());
             bool __tmp50_last = __tmp50Reader.EndOfStream;
             while(!__tmp50_last)
             {
@@ -14287,9 +14287,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp54_line);
                 __tmp53_outputWritten = true;
             }
-            CodeBuilder __tmp55 = CodeBuilder.GetInstance();
+            var __tmp55 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp55.Write(CSharpName(cls, model, ClassKind.Builder));
-            CodeReader __tmp55Reader = new CodeReader(__tmp55.ToStringAndFree());
+            var __tmp55Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp55.ToStringAndFree());
             bool __tmp55_last = __tmp55Reader.EndOfStream;
             while(!__tmp55_last)
             {
@@ -14308,9 +14308,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp56_line);
                 __tmp53_outputWritten = true;
             }
-            CodeBuilder __tmp57 = CodeBuilder.GetInstance();
+            var __tmp57 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp57.Write(Properties.CoreNs);
-            CodeReader __tmp57Reader = new CodeReader(__tmp57.ToStringAndFree());
+            var __tmp57Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp57.ToStringAndFree());
             bool __tmp57_last = __tmp57Reader.EndOfStream;
             while(!__tmp57_last)
             {
@@ -14343,9 +14343,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp61_line);
                 __tmp60_outputWritten = true;
             }
-            CodeBuilder __tmp62 = CodeBuilder.GetInstance();
+            var __tmp62 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp62.Write(CSharpName(cls, model, ClassKind.Builder));
-            CodeReader __tmp62Reader = new CodeReader(__tmp62.ToStringAndFree());
+            var __tmp62Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp62.ToStringAndFree());
             bool __tmp62_last = __tmp62Reader.EndOfStream;
             while(!__tmp62_last)
             {
@@ -14384,9 +14384,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.AppendLine(true); //1136:2
                 bool __tmp66_outputWritten = false;
                 string __tmp65Prefix = "	"; //1137:1
-                CodeBuilder __tmp67 = CodeBuilder.GetInstance();
+                var __tmp67 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp67.Write(CSharpName(sup, model, ClassKind.Builder, true));
-                CodeReader __tmp67Reader = new CodeReader(__tmp67.ToStringAndFree());
+                var __tmp67Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp67.ToStringAndFree());
                 bool __tmp67_last = __tmp67Reader.EndOfStream;
                 while(!__tmp67_last)
                 {
@@ -14410,9 +14410,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp68_line);
                     __tmp66_outputWritten = true;
                 }
-                CodeBuilder __tmp69 = CodeBuilder.GetInstance();
+                var __tmp69 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp69.Write(CSharpName(sup, model, ClassKind.Immutable, true));
-                CodeReader __tmp69Reader = new CodeReader(__tmp69.ToStringAndFree());
+                var __tmp69Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp69.ToStringAndFree());
                 bool __tmp69_last = __tmp69Reader.EndOfStream;
                 while(!__tmp69_last)
                 {
@@ -14445,9 +14445,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.AppendLine(true); //1141:2
                 bool __tmp72_outputWritten = false;
                 string __tmp71Prefix = "	"; //1142:1
-                CodeBuilder __tmp73 = CodeBuilder.GetInstance();
+                var __tmp73 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp73.Write(CSharpName(sup, model, ClassKind.Builder, true));
-                CodeReader __tmp73Reader = new CodeReader(__tmp73.ToStringAndFree());
+                var __tmp73Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp73.ToStringAndFree());
                 bool __tmp73_last = __tmp73Reader.EndOfStream;
                 while(!__tmp73_last)
                 {
@@ -14471,9 +14471,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp74_line);
                     __tmp72_outputWritten = true;
                 }
-                CodeBuilder __tmp75 = CodeBuilder.GetInstance();
+                var __tmp75 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp75.Write(CSharpName(sup, model, ClassKind.Immutable, true));
-                CodeReader __tmp75Reader = new CodeReader(__tmp75.ToStringAndFree());
+                var __tmp75Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp75.ToStringAndFree());
                 bool __tmp75_last = __tmp75Reader.EndOfStream;
                 while(!__tmp75_last)
                 {
@@ -14492,9 +14492,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp76_line);
                     __tmp72_outputWritten = true;
                 }
-                CodeBuilder __tmp77 = CodeBuilder.GetInstance();
+                var __tmp77 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp77.Write(Properties.CoreNs);
-                CodeReader __tmp77Reader = new CodeReader(__tmp77.ToStringAndFree());
+                var __tmp77Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp77.ToStringAndFree());
                 bool __tmp77_last = __tmp77Reader.EndOfStream;
                 while(!__tmp77_last)
                 {
@@ -14538,9 +14538,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.AppendLine(true); //1148:2
                 bool __tmp81_outputWritten = false;
                 string __tmp80Prefix = "	"; //1149:1
-                CodeBuilder __tmp82 = CodeBuilder.GetInstance();
+                var __tmp82 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp82.Write(GenerateImmutablePropertyImpl(model, cls, prop));
-                CodeReader __tmp82Reader = new CodeReader(__tmp82.ToStringAndFree());
+                var __tmp82Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp82.ToStringAndFree());
                 bool __tmp82_last = __tmp82Reader.EndOfStream;
                 while(!__tmp82_last)
                 {
@@ -14577,9 +14577,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.AppendLine(true); //1152:2
                 bool __tmp85_outputWritten = false;
                 string __tmp84Prefix = "	"; //1153:1
-                CodeBuilder __tmp86 = CodeBuilder.GetInstance();
+                var __tmp86 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp86.Write(GenerateImmutableOperationImpl(model, cls, op));
-                CodeReader __tmp86Reader = new CodeReader(__tmp86.ToStringAndFree());
+                var __tmp86Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp86.ToStringAndFree());
                 bool __tmp86_last = __tmp86Reader.EndOfStream;
                 while(!__tmp86_last)
                 {
@@ -14606,9 +14606,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             {
                 bool __tmp88_outputWritten = false;
                 string __tmp87Prefix = "	"; //1157:1
-                CodeBuilder __tmp89 = CodeBuilder.GetInstance();
+                var __tmp89 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp89.Write(Properties.CoreNs);
-                CodeReader __tmp89Reader = new CodeReader(__tmp89.ToStringAndFree());
+                var __tmp89Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp89.ToStringAndFree());
                 bool __tmp89_last = __tmp89Reader.EndOfStream;
                 while(!__tmp89_last)
                 {
@@ -14632,9 +14632,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp90_line);
                     __tmp88_outputWritten = true;
                 }
-                CodeBuilder __tmp91 = CodeBuilder.GetInstance();
+                var __tmp91 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp91.Write(Properties.CoreNs);
-                CodeReader __tmp91Reader = new CodeReader(__tmp91.ToStringAndFree());
+                var __tmp91Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp91.ToStringAndFree());
                 bool __tmp91_last = __tmp91Reader.EndOfStream;
                 while(!__tmp91_last)
                 {
@@ -14653,9 +14653,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp92_line);
                     __tmp88_outputWritten = true;
                 }
-                CodeBuilder __tmp93 = CodeBuilder.GetInstance();
+                var __tmp93 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp93.Write(CSharpName(model, ModelKind.ImmutableInstance));
-                CodeReader __tmp93Reader = new CodeReader(__tmp93.ToStringAndFree());
+                var __tmp93Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp93.ToStringAndFree());
                 bool __tmp93_last = __tmp93Reader.EndOfStream;
                 while(!__tmp93_last)
                 {
@@ -14686,9 +14686,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp97_line);
                     __tmp96_outputWritten = true;
                 }
-                CodeBuilder __tmp98 = CodeBuilder.GetInstance();
+                var __tmp98 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp98.Write(Properties.CoreNs);
-                CodeReader __tmp98Reader = new CodeReader(__tmp98.ToStringAndFree());
+                var __tmp98Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp98.ToStringAndFree());
                 bool __tmp98_last = __tmp98Reader.EndOfStream;
                 while(!__tmp98_last)
                 {
@@ -14714,9 +14714,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 }
                 bool __tmp101_outputWritten = false;
                 string __tmp100Prefix = "	"; //1159:1
-                CodeBuilder __tmp102 = CodeBuilder.GetInstance();
+                var __tmp102 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp102.Write(Properties.CoreNs);
-                CodeReader __tmp102Reader = new CodeReader(__tmp102.ToStringAndFree());
+                var __tmp102Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp102.ToStringAndFree());
                 bool __tmp102_last = __tmp102Reader.EndOfStream;
                 while(!__tmp102_last)
                 {
@@ -14740,9 +14740,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp103_line);
                     __tmp101_outputWritten = true;
                 }
-                CodeBuilder __tmp104 = CodeBuilder.GetInstance();
+                var __tmp104 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp104.Write(Properties.CoreNs);
-                CodeReader __tmp104Reader = new CodeReader(__tmp104.ToStringAndFree());
+                var __tmp104Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp104.ToStringAndFree());
                 bool __tmp104_last = __tmp104Reader.EndOfStream;
                 while(!__tmp104_last)
                 {
@@ -14761,9 +14761,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp105_line);
                     __tmp101_outputWritten = true;
                 }
-                CodeBuilder __tmp106 = CodeBuilder.GetInstance();
+                var __tmp106 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp106.Write(CSharpName(model, ModelKind.ImmutableInstance));
-                CodeReader __tmp106Reader = new CodeReader(__tmp106.ToStringAndFree());
+                var __tmp106Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp106.ToStringAndFree());
                 bool __tmp106_last = __tmp106Reader.EndOfStream;
                 while(!__tmp106_last)
                 {
@@ -14794,9 +14794,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp110_line);
                     __tmp109_outputWritten = true;
                 }
-                CodeBuilder __tmp111 = CodeBuilder.GetInstance();
+                var __tmp111 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp111.Write(Properties.CoreNs);
-                CodeReader __tmp111Reader = new CodeReader(__tmp111.ToStringAndFree());
+                var __tmp111Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp111.ToStringAndFree());
                 bool __tmp111_last = __tmp111Reader.EndOfStream;
                 while(!__tmp111_last)
                 {
@@ -14815,9 +14815,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp112_line);
                     __tmp109_outputWritten = true;
                 }
-                CodeBuilder __tmp113 = CodeBuilder.GetInstance();
+                var __tmp113 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp113.Write(CSharpName(model, ModelKind.ImmutableInstance));
-                CodeReader __tmp113Reader = new CodeReader(__tmp113.ToStringAndFree());
+                var __tmp113Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp113.ToStringAndFree());
                 bool __tmp113_last = __tmp113Reader.EndOfStream;
                 while(!__tmp113_last)
                 {
@@ -14848,9 +14848,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp117_line);
                     __tmp116_outputWritten = true;
                 }
-                CodeBuilder __tmp118 = CodeBuilder.GetInstance();
+                var __tmp118 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp118.Write(Properties.CoreNs);
-                CodeReader __tmp118Reader = new CodeReader(__tmp118.ToStringAndFree());
+                var __tmp118Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp118.ToStringAndFree());
                 bool __tmp118_last = __tmp118Reader.EndOfStream;
                 while(!__tmp118_last)
                 {
@@ -14881,9 +14881,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp122_line);
                     __tmp121_outputWritten = true;
                 }
-                CodeBuilder __tmp123 = CodeBuilder.GetInstance();
+                var __tmp123 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp123.Write(Properties.CoreNs);
-                CodeReader __tmp123Reader = new CodeReader(__tmp123.ToStringAndFree());
+                var __tmp123Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp123.ToStringAndFree());
                 bool __tmp123_last = __tmp123Reader.EndOfStream;
                 while(!__tmp123_last)
                 {
@@ -14909,9 +14909,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 }
                 bool __tmp126_outputWritten = false;
                 string __tmp125Prefix = "	"; //1163:1
-                CodeBuilder __tmp127 = CodeBuilder.GetInstance();
+                var __tmp127 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp127.Write(Properties.CoreNs);
-                CodeReader __tmp127Reader = new CodeReader(__tmp127.ToStringAndFree());
+                var __tmp127Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp127.ToStringAndFree());
                 bool __tmp127_last = __tmp127Reader.EndOfStream;
                 while(!__tmp127_last)
                 {
@@ -14935,9 +14935,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp128_line);
                     __tmp126_outputWritten = true;
                 }
-                CodeBuilder __tmp129 = CodeBuilder.GetInstance();
+                var __tmp129 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp129.Write(Properties.CoreNs);
-                CodeReader __tmp129Reader = new CodeReader(__tmp129.ToStringAndFree());
+                var __tmp129Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp129.ToStringAndFree());
                 bool __tmp129_last = __tmp129Reader.EndOfStream;
                 while(!__tmp129_last)
                 {
@@ -14956,9 +14956,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp130_line);
                     __tmp126_outputWritten = true;
                 }
-                CodeBuilder __tmp131 = CodeBuilder.GetInstance();
+                var __tmp131 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp131.Write(CSharpName(model, ModelKind.ImmutableInstance));
-                CodeReader __tmp131Reader = new CodeReader(__tmp131.ToStringAndFree());
+                var __tmp131Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp131.ToStringAndFree());
                 bool __tmp131_last = __tmp131Reader.EndOfStream;
                 while(!__tmp131_last)
                 {
@@ -14989,9 +14989,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp135_line);
                     __tmp134_outputWritten = true;
                 }
-                CodeBuilder __tmp136 = CodeBuilder.GetInstance();
+                var __tmp136 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp136.Write(Properties.CoreNs);
-                CodeReader __tmp136Reader = new CodeReader(__tmp136.ToStringAndFree());
+                var __tmp136Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp136.ToStringAndFree());
                 bool __tmp136_last = __tmp136Reader.EndOfStream;
                 while(!__tmp136_last)
                 {
@@ -15023,9 +15023,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp140_line);
                     __tmp139_outputWritten = true;
                 }
-                CodeBuilder __tmp141 = CodeBuilder.GetInstance();
+                var __tmp141 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp141.Write(Properties.CoreNs);
-                CodeReader __tmp141Reader = new CodeReader(__tmp141.ToStringAndFree());
+                var __tmp141Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp141.ToStringAndFree());
                 bool __tmp141_last = __tmp141Reader.EndOfStream;
                 while(!__tmp141_last)
                 {
@@ -15044,9 +15044,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp142_line);
                     __tmp139_outputWritten = true;
                 }
-                CodeBuilder __tmp143 = CodeBuilder.GetInstance();
+                var __tmp143 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp143.Write(Properties.CoreNs);
-                CodeReader __tmp143Reader = new CodeReader(__tmp143.ToStringAndFree());
+                var __tmp143Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp143.ToStringAndFree());
                 bool __tmp143_last = __tmp143Reader.EndOfStream;
                 while(!__tmp143_last)
                 {
@@ -15065,9 +15065,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp144_line);
                     __tmp139_outputWritten = true;
                 }
-                CodeBuilder __tmp145 = CodeBuilder.GetInstance();
+                var __tmp145 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp145.Write(Properties.CoreNs);
-                CodeReader __tmp145Reader = new CodeReader(__tmp145.ToStringAndFree());
+                var __tmp145Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp145.ToStringAndFree());
                 bool __tmp145_last = __tmp145Reader.EndOfStream;
                 while(!__tmp145_last)
                 {
@@ -15086,9 +15086,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp146_line);
                     __tmp139_outputWritten = true;
                 }
-                CodeBuilder __tmp147 = CodeBuilder.GetInstance();
+                var __tmp147 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp147.Write(Properties.CoreNs);
-                CodeReader __tmp147Reader = new CodeReader(__tmp147.ToStringAndFree());
+                var __tmp147Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp147.ToStringAndFree());
                 bool __tmp147_last = __tmp147Reader.EndOfStream;
                 while(!__tmp147_last)
                 {
@@ -15121,9 +15121,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp151_line);
                     __tmp150_outputWritten = true;
                 }
-                CodeBuilder __tmp152 = CodeBuilder.GetInstance();
+                var __tmp152 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp152.Write(CSharpName(model, ModelKind.Factory));
-                CodeReader __tmp152Reader = new CodeReader(__tmp152.ToStringAndFree());
+                var __tmp152Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp152.ToStringAndFree());
                 bool __tmp152_last = __tmp152Reader.EndOfStream;
                 while(!__tmp152_last)
                 {
@@ -15157,11 +15157,11 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
 
         public string GenerateImmutableField(MetaModel model, MetaClass cls, MetaProperty prop) //1174:1
         {
-            CodeBuilder __out = CodeBuilder.GetInstance();
+            var __out = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             bool __tmp2_outputWritten = false;
-            CodeBuilder __tmp3 = CodeBuilder.GetInstance();
+            var __tmp3 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp3.Write("[DebuggerBrowsable(DebuggerBrowsableState.Never)]");
-            CodeReader __tmp3Reader = new CodeReader(__tmp3.ToStringAndFree());
+            var __tmp3Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp3.ToStringAndFree());
             bool __tmp3_last = __tmp3Reader.EndOfStream;
             while(!__tmp3_last)
             {
@@ -15185,9 +15185,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp6_line);
                 __tmp5_outputWritten = true;
             }
-            CodeBuilder __tmp7 = CodeBuilder.GetInstance();
+            var __tmp7 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp7.Write(CSharpName(prop.Type, model, ClassKind.Immutable, true));
-            CodeReader __tmp7Reader = new CodeReader(__tmp7.ToStringAndFree());
+            var __tmp7Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp7.ToStringAndFree());
             bool __tmp7_last = __tmp7Reader.EndOfStream;
             while(!__tmp7_last)
             {
@@ -15206,9 +15206,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp8_line);
                 __tmp5_outputWritten = true;
             }
-            CodeBuilder __tmp9 = CodeBuilder.GetInstance();
+            var __tmp9 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp9.Write(GetFieldName(prop, cls));
-            CodeReader __tmp9Reader = new CodeReader(__tmp9.ToStringAndFree());
+            var __tmp9Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp9.ToStringAndFree());
             bool __tmp9_last = __tmp9Reader.EndOfStream;
             while(!__tmp9_last)
             {
@@ -15237,7 +15237,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
 
         public string GenerateImmutablePropertyImpl(MetaModel model, MetaClass cls, MetaProperty prop) //1179:1
         {
-            CodeBuilder __out = CodeBuilder.GetInstance();
+            var __out = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __out.AppendLine(true); //1180:1
             if (cls.GetAllFinalProperties().Contains(prop)) //1181:2
             {
@@ -15248,9 +15248,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp3_line);
                     __tmp2_outputWritten = true;
                 }
-                CodeBuilder __tmp4 = CodeBuilder.GetInstance();
+                var __tmp4 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp4.Write(CSharpName(prop.Type, model, ClassKind.Immutable, true));
-                CodeReader __tmp4Reader = new CodeReader(__tmp4.ToStringAndFree());
+                var __tmp4Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp4.ToStringAndFree());
                 bool __tmp4_last = __tmp4Reader.EndOfStream;
                 while(!__tmp4_last)
                 {
@@ -15269,9 +15269,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp5_line);
                     __tmp2_outputWritten = true;
                 }
-                CodeBuilder __tmp6 = CodeBuilder.GetInstance();
+                var __tmp6 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp6.Write(prop.Name);
-                CodeReader __tmp6Reader = new CodeReader(__tmp6.ToStringAndFree());
+                var __tmp6Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp6.ToStringAndFree());
                 bool __tmp6_last = __tmp6Reader.EndOfStream;
                 while(!__tmp6_last)
                 {
@@ -15292,9 +15292,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             else //1183:2
             {
                 bool __tmp8_outputWritten = false;
-                CodeBuilder __tmp9 = CodeBuilder.GetInstance();
+                var __tmp9 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp9.Write("[DebuggerBrowsable(DebuggerBrowsableState.Never)]");
-                CodeReader __tmp9Reader = new CodeReader(__tmp9.ToStringAndFree());
+                var __tmp9Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp9.ToStringAndFree());
                 bool __tmp9_last = __tmp9Reader.EndOfStream;
                 while(!__tmp9_last)
                 {
@@ -15312,9 +15312,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.AppendLine(false); //1184:54
                 }
                 bool __tmp11_outputWritten = false;
-                CodeBuilder __tmp12 = CodeBuilder.GetInstance();
+                var __tmp12 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp12.Write(CSharpName(prop.Type, model, ClassKind.Immutable, true));
-                CodeReader __tmp12Reader = new CodeReader(__tmp12.ToStringAndFree());
+                var __tmp12Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp12.ToStringAndFree());
                 bool __tmp12_last = __tmp12Reader.EndOfStream;
                 while(!__tmp12_last)
                 {
@@ -15333,9 +15333,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp13_line);
                     __tmp11_outputWritten = true;
                 }
-                CodeBuilder __tmp14 = CodeBuilder.GetInstance();
+                var __tmp14 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp14.Write(CSharpName(prop.Class, model, ClassKind.Immutable, true));
-                CodeReader __tmp14Reader = new CodeReader(__tmp14.ToStringAndFree());
+                var __tmp14Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp14.ToStringAndFree());
                 bool __tmp14_last = __tmp14Reader.EndOfStream;
                 while(!__tmp14_last)
                 {
@@ -15354,9 +15354,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp15_line);
                     __tmp11_outputWritten = true;
                 }
-                CodeBuilder __tmp16 = CodeBuilder.GetInstance();
+                var __tmp16 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp16.Write(prop.Name);
-                CodeReader __tmp16Reader = new CodeReader(__tmp16.ToStringAndFree());
+                var __tmp16Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp16.ToStringAndFree());
                 bool __tmp16_last = __tmp16Reader.EndOfStream;
                 while(!__tmp16_last)
                 {
@@ -15387,9 +15387,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp19_line);
                         __tmp18_outputWritten = true;
                     }
-                    CodeBuilder __tmp20 = CodeBuilder.GetInstance();
+                    var __tmp20 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp20.Write(CSharpName(((MetaCollectionType)prop.Type).InnerType, model, ClassKind.Immutable, true));
-                    CodeReader __tmp20Reader = new CodeReader(__tmp20.ToStringAndFree());
+                    var __tmp20Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp20.ToStringAndFree());
                     bool __tmp20_last = __tmp20Reader.EndOfStream;
                     while(!__tmp20_last)
                     {
@@ -15408,9 +15408,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp21_line);
                         __tmp18_outputWritten = true;
                     }
-                    CodeBuilder __tmp22 = CodeBuilder.GetInstance();
+                    var __tmp22 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp22.Write(CSharpName(prop, null, PropertyKind.Descriptor, true));
-                    CodeReader __tmp22Reader = new CodeReader(__tmp22.ToStringAndFree());
+                    var __tmp22Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp22.ToStringAndFree());
                     bool __tmp22_last = __tmp22Reader.EndOfStream;
                     while(!__tmp22_last)
                     {
@@ -15429,9 +15429,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp23_line);
                         __tmp18_outputWritten = true;
                     }
-                    CodeBuilder __tmp24 = CodeBuilder.GetInstance();
+                    var __tmp24 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp24.Write(GetFieldName(prop, cls));
-                    CodeReader __tmp24Reader = new CodeReader(__tmp24.ToStringAndFree());
+                    var __tmp24Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp24.ToStringAndFree());
                     bool __tmp24_last = __tmp24Reader.EndOfStream;
                     while(!__tmp24_last)
                     {
@@ -15465,9 +15465,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp28_line);
                         __tmp27_outputWritten = true;
                     }
-                    CodeBuilder __tmp29 = CodeBuilder.GetInstance();
+                    var __tmp29 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp29.Write(CSharpName(((MetaCollectionType)prop.Type).InnerType, model, ClassKind.Immutable, true));
-                    CodeReader __tmp29Reader = new CodeReader(__tmp29.ToStringAndFree());
+                    var __tmp29Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp29.ToStringAndFree());
                     bool __tmp29_last = __tmp29Reader.EndOfStream;
                     while(!__tmp29_last)
                     {
@@ -15486,9 +15486,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp30_line);
                         __tmp27_outputWritten = true;
                     }
-                    CodeBuilder __tmp31 = CodeBuilder.GetInstance();
+                    var __tmp31 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp31.Write(CSharpName(prop, null, PropertyKind.Descriptor, true));
-                    CodeReader __tmp31Reader = new CodeReader(__tmp31.ToStringAndFree());
+                    var __tmp31Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp31.ToStringAndFree());
                     bool __tmp31_last = __tmp31Reader.EndOfStream;
                     while(!__tmp31_last)
                     {
@@ -15507,9 +15507,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp32_line);
                         __tmp27_outputWritten = true;
                     }
-                    CodeBuilder __tmp33 = CodeBuilder.GetInstance();
+                    var __tmp33 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp33.Write(GetFieldName(prop, cls));
-                    CodeReader __tmp33Reader = new CodeReader(__tmp33.ToStringAndFree());
+                    var __tmp33Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp33.ToStringAndFree());
                     bool __tmp33_last = __tmp33Reader.EndOfStream;
                     while(!__tmp33_last)
                     {
@@ -15544,9 +15544,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp37_line);
                     __tmp36_outputWritten = true;
                 }
-                CodeBuilder __tmp38 = CodeBuilder.GetInstance();
+                var __tmp38 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp38.Write(CSharpName(prop.Type, model, ClassKind.Immutable, true));
-                CodeReader __tmp38Reader = new CodeReader(__tmp38.ToStringAndFree());
+                var __tmp38Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp38.ToStringAndFree());
                 bool __tmp38_last = __tmp38Reader.EndOfStream;
                 while(!__tmp38_last)
                 {
@@ -15565,9 +15565,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp39_line);
                     __tmp36_outputWritten = true;
                 }
-                CodeBuilder __tmp40 = CodeBuilder.GetInstance();
+                var __tmp40 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp40.Write(CSharpName(prop, null, PropertyKind.Descriptor, true));
-                CodeReader __tmp40Reader = new CodeReader(__tmp40.ToStringAndFree());
+                var __tmp40Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp40.ToStringAndFree());
                 bool __tmp40_last = __tmp40Reader.EndOfStream;
                 while(!__tmp40_last)
                 {
@@ -15586,9 +15586,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp41_line);
                     __tmp36_outputWritten = true;
                 }
-                CodeBuilder __tmp42 = CodeBuilder.GetInstance();
+                var __tmp42 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp42.Write(GetFieldName(prop, cls));
-                CodeReader __tmp42Reader = new CodeReader(__tmp42.ToStringAndFree());
+                var __tmp42Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp42.ToStringAndFree());
                 bool __tmp42_last = __tmp42Reader.EndOfStream;
                 while(!__tmp42_last)
                 {
@@ -15622,9 +15622,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp46_line);
                     __tmp45_outputWritten = true;
                 }
-                CodeBuilder __tmp47 = CodeBuilder.GetInstance();
+                var __tmp47 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp47.Write(CSharpName(prop.Type, model, ClassKind.Immutable, true));
-                CodeReader __tmp47Reader = new CodeReader(__tmp47.ToStringAndFree());
+                var __tmp47Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp47.ToStringAndFree());
                 bool __tmp47_last = __tmp47Reader.EndOfStream;
                 while(!__tmp47_last)
                 {
@@ -15643,9 +15643,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp48_line);
                     __tmp45_outputWritten = true;
                 }
-                CodeBuilder __tmp49 = CodeBuilder.GetInstance();
+                var __tmp49 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp49.Write(CSharpName(prop, null, PropertyKind.Descriptor, true));
-                CodeReader __tmp49Reader = new CodeReader(__tmp49.ToStringAndFree());
+                var __tmp49Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp49.ToStringAndFree());
                 bool __tmp49_last = __tmp49Reader.EndOfStream;
                 while(!__tmp49_last)
                 {
@@ -15664,9 +15664,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp50_line);
                     __tmp45_outputWritten = true;
                 }
-                CodeBuilder __tmp51 = CodeBuilder.GetInstance();
+                var __tmp51 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp51.Write(GetFieldName(prop, cls));
-                CodeReader __tmp51Reader = new CodeReader(__tmp51.ToStringAndFree());
+                var __tmp51Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp51.ToStringAndFree());
                 bool __tmp51_last = __tmp51Reader.EndOfStream;
                 while(!__tmp51_last)
                 {
@@ -15698,12 +15698,12 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
 
         public string GenerateImmutableOperationImpl(MetaModel model, MetaClass cls, MetaOperation op) //1202:1
         {
-            CodeBuilder __out = CodeBuilder.GetInstance();
+            var __out = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __out.AppendLine(true); //1203:1
             bool __tmp2_outputWritten = false;
-            CodeBuilder __tmp3 = CodeBuilder.GetInstance();
+            var __tmp3 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp3.Write(CSharpName(op.ReturnType, model, ClassKind.ImmutableOperation, true));
-            CodeReader __tmp3Reader = new CodeReader(__tmp3.ToStringAndFree());
+            var __tmp3Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp3.ToStringAndFree());
             bool __tmp3_last = __tmp3Reader.EndOfStream;
             while(!__tmp3_last)
             {
@@ -15722,9 +15722,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp4_line);
                 __tmp2_outputWritten = true;
             }
-            CodeBuilder __tmp5 = CodeBuilder.GetInstance();
+            var __tmp5 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp5.Write(CSharpName(op.Class, model, ClassKind.Immutable, true));
-            CodeReader __tmp5Reader = new CodeReader(__tmp5.ToStringAndFree());
+            var __tmp5Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp5.ToStringAndFree());
             bool __tmp5_last = __tmp5Reader.EndOfStream;
             while(!__tmp5_last)
             {
@@ -15743,9 +15743,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp6_line);
                 __tmp2_outputWritten = true;
             }
-            CodeBuilder __tmp7 = CodeBuilder.GetInstance();
+            var __tmp7 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp7.Write(op.Name);
-            CodeReader __tmp7Reader = new CodeReader(__tmp7.ToStringAndFree());
+            var __tmp7Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp7.ToStringAndFree());
             bool __tmp7_last = __tmp7Reader.EndOfStream;
             while(!__tmp7_last)
             {
@@ -15764,9 +15764,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp8_line);
                 __tmp2_outputWritten = true;
             }
-            CodeBuilder __tmp9 = CodeBuilder.GetInstance();
+            var __tmp9 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp9.Write(GetClassParameters(model, op.Class, op, ClassKind.ImmutableOperation));
-            CodeReader __tmp9Reader = new CodeReader(__tmp9.ToStringAndFree());
+            var __tmp9Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp9.ToStringAndFree());
             bool __tmp9_last = __tmp9Reader.EndOfStream;
             while(!__tmp9_last)
             {
@@ -15795,9 +15795,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             var finalOp = GetFinalOperation(cls, op); //1206:2
             bool __tmp12_outputWritten = false;
             string __tmp11Prefix = "    "; //1207:1
-            CodeBuilder __tmp13 = CodeBuilder.GetInstance();
+            var __tmp13 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp13.Write(GetReturn(CSharpName(finalOp.ReturnType, model, ClassKind.ImmutableOperation)));
-            CodeReader __tmp13Reader = new CodeReader(__tmp13.ToStringAndFree());
+            var __tmp13Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp13.ToStringAndFree());
             bool __tmp13_last = __tmp13Reader.EndOfStream;
             while(!__tmp13_last)
             {
@@ -15815,9 +15815,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 }
                 if (!__tmp13_last) __out.AppendLine(true);
             }
-            CodeBuilder __tmp14 = CodeBuilder.GetInstance();
+            var __tmp14 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp14.Write(CSharpName(model, ModelKind.ImplementationProvider));
-            CodeReader __tmp14Reader = new CodeReader(__tmp14.ToStringAndFree());
+            var __tmp14Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp14.ToStringAndFree());
             bool __tmp14_last = __tmp14Reader.EndOfStream;
             while(!__tmp14_last)
             {
@@ -15836,9 +15836,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp15_line);
                 __tmp12_outputWritten = true;
             }
-            CodeBuilder __tmp16 = CodeBuilder.GetInstance();
+            var __tmp16 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp16.Write(CSharpName(finalOp.Class, model, ClassKind.Immutable));
-            CodeReader __tmp16Reader = new CodeReader(__tmp16.ToStringAndFree());
+            var __tmp16Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp16.ToStringAndFree());
             bool __tmp16_last = __tmp16Reader.EndOfStream;
             while(!__tmp16_last)
             {
@@ -15857,9 +15857,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp17_line);
                 __tmp12_outputWritten = true;
             }
-            CodeBuilder __tmp18 = CodeBuilder.GetInstance();
+            var __tmp18 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp18.Write(finalOp.Name);
-            CodeReader __tmp18Reader = new CodeReader(__tmp18.ToStringAndFree());
+            var __tmp18Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp18.ToStringAndFree());
             bool __tmp18_last = __tmp18Reader.EndOfStream;
             while(!__tmp18_last)
             {
@@ -15878,9 +15878,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp19_line);
                 __tmp12_outputWritten = true;
             }
-            CodeBuilder __tmp20 = CodeBuilder.GetInstance();
+            var __tmp20 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp20.Write(GetClassImplCallParameterNames(model, finalOp, ClassKind.ImmutableOperation));
-            CodeReader __tmp20Reader = new CodeReader(__tmp20.ToStringAndFree());
+            var __tmp20Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp20.ToStringAndFree());
             bool __tmp20_last = __tmp20Reader.EndOfStream;
             while(!__tmp20_last)
             {
@@ -15911,7 +15911,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
 
         public string GenerateBuilderImplClass(MetaModel model, MetaClass cls) //1211:1
         {
-            CodeBuilder __out = CodeBuilder.GetInstance();
+            var __out = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             bool metaMetaModel = IsMetaMetaModel(model); //1212:2
             string metaNs = metaMetaModel ? "" : Properties.MetaNs + "."; //1213:2
             bool __tmp2_outputWritten = false;
@@ -15921,9 +15921,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp3_line);
                 __tmp2_outputWritten = true;
             }
-            CodeBuilder __tmp4 = CodeBuilder.GetInstance();
+            var __tmp4 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp4.Write(CSharpName(cls, model, ClassKind.BuilderImpl));
-            CodeReader __tmp4Reader = new CodeReader(__tmp4.ToStringAndFree());
+            var __tmp4Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp4.ToStringAndFree());
             bool __tmp4_last = __tmp4Reader.EndOfStream;
             while(!__tmp4_last)
             {
@@ -15942,9 +15942,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp5_line);
                 __tmp2_outputWritten = true;
             }
-            CodeBuilder __tmp6 = CodeBuilder.GetInstance();
+            var __tmp6 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp6.Write(Properties.CoreNs);
-            CodeReader __tmp6Reader = new CodeReader(__tmp6.ToStringAndFree());
+            var __tmp6Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp6.ToStringAndFree());
             bool __tmp6_last = __tmp6Reader.EndOfStream;
             while(!__tmp6_last)
             {
@@ -15963,9 +15963,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp7_line);
                 __tmp2_outputWritten = true;
             }
-            CodeBuilder __tmp8 = CodeBuilder.GetInstance();
+            var __tmp8 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp8.Write(CSharpName(cls, model, ClassKind.Builder));
-            CodeReader __tmp8Reader = new CodeReader(__tmp8.ToStringAndFree());
+            var __tmp8Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp8.ToStringAndFree());
             bool __tmp8_last = __tmp8Reader.EndOfStream;
             while(!__tmp8_last)
             {
@@ -15997,9 +15997,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 var prop = __tmp9.prop;
                 bool __tmp11_outputWritten = false;
                 string __tmp10Prefix = "	"; //1217:1
-                CodeBuilder __tmp12 = CodeBuilder.GetInstance();
+                var __tmp12 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp12.Write(GenerateBuilderField(model, cls, prop));
-                CodeReader __tmp12Reader = new CodeReader(__tmp12.ToStringAndFree());
+                var __tmp12Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp12.ToStringAndFree());
                 bool __tmp12_last = __tmp12Reader.EndOfStream;
                 while(!__tmp12_last)
                 {
@@ -16030,9 +16030,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp15_line);
                 __tmp14_outputWritten = true;
             }
-            CodeBuilder __tmp16 = CodeBuilder.GetInstance();
+            var __tmp16 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp16.Write(CSharpName(cls, model, ClassKind.BuilderImpl));
-            CodeReader __tmp16Reader = new CodeReader(__tmp16.ToStringAndFree());
+            var __tmp16Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp16.ToStringAndFree());
             bool __tmp16_last = __tmp16Reader.EndOfStream;
             while(!__tmp16_last)
             {
@@ -16051,9 +16051,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp17_line);
                 __tmp14_outputWritten = true;
             }
-            CodeBuilder __tmp18 = CodeBuilder.GetInstance();
+            var __tmp18 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp18.Write(Properties.CoreNs);
-            CodeReader __tmp18Reader = new CodeReader(__tmp18.ToStringAndFree());
+            var __tmp18Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp18.ToStringAndFree());
             bool __tmp18_last = __tmp18Reader.EndOfStream;
             while(!__tmp18_last)
             {
@@ -16072,9 +16072,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp19_line);
                 __tmp14_outputWritten = true;
             }
-            CodeBuilder __tmp20 = CodeBuilder.GetInstance();
+            var __tmp20 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp20.Write(Properties.CoreNs);
-            CodeReader __tmp20Reader = new CodeReader(__tmp20.ToStringAndFree());
+            var __tmp20Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp20.ToStringAndFree());
             bool __tmp20_last = __tmp20Reader.EndOfStream;
             while(!__tmp20_last)
             {
@@ -16111,9 +16111,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             __out.AppendLine(false); //1226:3
             bool __tmp23_outputWritten = false;
             string __tmp22Prefix = "		"; //1227:1
-            CodeBuilder __tmp24 = CodeBuilder.GetInstance();
+            var __tmp24 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp24.Write(CSharpName(model, ModelKind.ImplementationProvider));
-            CodeReader __tmp24Reader = new CodeReader(__tmp24.ToStringAndFree());
+            var __tmp24Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp24.ToStringAndFree());
             bool __tmp24_last = __tmp24Reader.EndOfStream;
             while(!__tmp24_last)
             {
@@ -16137,9 +16137,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp25_line);
                 __tmp23_outputWritten = true;
             }
-            CodeBuilder __tmp26 = CodeBuilder.GetInstance();
+            var __tmp26 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp26.Write(CSharpName(cls, model, ClassKind.Immutable));
-            CodeReader __tmp26Reader = new CodeReader(__tmp26.ToStringAndFree());
+            var __tmp26Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp26.ToStringAndFree());
             bool __tmp26_last = __tmp26Reader.EndOfStream;
             while(!__tmp26_last)
             {
@@ -16173,9 +16173,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp30_line);
                 __tmp29_outputWritten = true;
             }
-            CodeBuilder __tmp31 = CodeBuilder.GetInstance();
+            var __tmp31 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp31.Write(Properties.CoreNs);
-            CodeReader __tmp31Reader = new CodeReader(__tmp31.ToStringAndFree());
+            var __tmp31Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp31.ToStringAndFree());
             bool __tmp31_last = __tmp31Reader.EndOfStream;
             while(!__tmp31_last)
             {
@@ -16208,9 +16208,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp35_line);
                 __tmp34_outputWritten = true;
             }
-            CodeBuilder __tmp36 = CodeBuilder.GetInstance();
+            var __tmp36 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp36.Write(CSharpName(cls.MetaModel, ModelKind.ImmutableInstance, true));
-            CodeReader __tmp36Reader = new CodeReader(__tmp36.ToStringAndFree());
+            var __tmp36Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp36.ToStringAndFree());
             bool __tmp36_last = __tmp36Reader.EndOfStream;
             while(!__tmp36_last)
             {
@@ -16244,9 +16244,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp40_line);
                 __tmp39_outputWritten = true;
             }
-            CodeBuilder __tmp41 = CodeBuilder.GetInstance();
+            var __tmp41 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp41.Write(metaNs);
-            CodeReader __tmp41Reader = new CodeReader(__tmp41.ToStringAndFree());
+            var __tmp41Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp41.ToStringAndFree());
             bool __tmp41_last = __tmp41Reader.EndOfStream;
             while(!__tmp41_last)
             {
@@ -16279,9 +16279,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp45_line);
                 __tmp44_outputWritten = true;
             }
-            CodeBuilder __tmp46 = CodeBuilder.GetInstance();
+            var __tmp46 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp46.Write(CSharpName(cls, model, ClassKind.ImmutableInstance, true));
-            CodeReader __tmp46Reader = new CodeReader(__tmp46.ToStringAndFree());
+            var __tmp46Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp46.ToStringAndFree());
             bool __tmp46_last = __tmp46Reader.EndOfStream;
             while(!__tmp46_last)
             {
@@ -16315,9 +16315,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp50_line);
                 __tmp49_outputWritten = true;
             }
-            CodeBuilder __tmp51 = CodeBuilder.GetInstance();
+            var __tmp51 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp51.Write(CSharpName(cls, model, ClassKind.Immutable));
-            CodeReader __tmp51Reader = new CodeReader(__tmp51.ToStringAndFree());
+            var __tmp51Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp51.ToStringAndFree());
             bool __tmp51_last = __tmp51Reader.EndOfStream;
             while(!__tmp51_last)
             {
@@ -16350,9 +16350,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp55_line);
                 __tmp54_outputWritten = true;
             }
-            CodeBuilder __tmp56 = CodeBuilder.GetInstance();
+            var __tmp56 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp56.Write(CSharpName(cls, model, ClassKind.Immutable));
-            CodeReader __tmp56Reader = new CodeReader(__tmp56.ToStringAndFree());
+            var __tmp56Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp56.ToStringAndFree());
             bool __tmp56_last = __tmp56Reader.EndOfStream;
             while(!__tmp56_last)
             {
@@ -16386,9 +16386,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp60_line);
                 __tmp59_outputWritten = true;
             }
-            CodeBuilder __tmp61 = CodeBuilder.GetInstance();
+            var __tmp61 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp61.Write(CSharpName(cls, model, ClassKind.Immutable));
-            CodeReader __tmp61Reader = new CodeReader(__tmp61.ToStringAndFree());
+            var __tmp61Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp61.ToStringAndFree());
             bool __tmp61_last = __tmp61Reader.EndOfStream;
             while(!__tmp61_last)
             {
@@ -16407,9 +16407,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp62_line);
                 __tmp59_outputWritten = true;
             }
-            CodeBuilder __tmp63 = CodeBuilder.GetInstance();
+            var __tmp63 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp63.Write(Properties.CoreNs);
-            CodeReader __tmp63Reader = new CodeReader(__tmp63.ToStringAndFree());
+            var __tmp63Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp63.ToStringAndFree());
             bool __tmp63_last = __tmp63Reader.EndOfStream;
             while(!__tmp63_last)
             {
@@ -16442,9 +16442,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp67_line);
                 __tmp66_outputWritten = true;
             }
-            CodeBuilder __tmp68 = CodeBuilder.GetInstance();
+            var __tmp68 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp68.Write(CSharpName(cls, model, ClassKind.Immutable));
-            CodeReader __tmp68Reader = new CodeReader(__tmp68.ToStringAndFree());
+            var __tmp68Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp68.ToStringAndFree());
             bool __tmp68_last = __tmp68Reader.EndOfStream;
             while(!__tmp68_last)
             {
@@ -16483,9 +16483,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.AppendLine(true); //1250:2
                 bool __tmp72_outputWritten = false;
                 string __tmp71Prefix = "	"; //1251:1
-                CodeBuilder __tmp73 = CodeBuilder.GetInstance();
+                var __tmp73 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp73.Write(CSharpName(sup, model, ClassKind.Immutable, true));
-                CodeReader __tmp73Reader = new CodeReader(__tmp73.ToStringAndFree());
+                var __tmp73Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp73.ToStringAndFree());
                 bool __tmp73_last = __tmp73Reader.EndOfStream;
                 while(!__tmp73_last)
                 {
@@ -16509,9 +16509,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp74_line);
                     __tmp72_outputWritten = true;
                 }
-                CodeBuilder __tmp75 = CodeBuilder.GetInstance();
+                var __tmp75 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp75.Write(CSharpName(sup, model, ClassKind.Builder, true));
-                CodeReader __tmp75Reader = new CodeReader(__tmp75.ToStringAndFree());
+                var __tmp75Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp75.ToStringAndFree());
                 bool __tmp75_last = __tmp75Reader.EndOfStream;
                 while(!__tmp75_last)
                 {
@@ -16544,9 +16544,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.AppendLine(true); //1255:2
                 bool __tmp78_outputWritten = false;
                 string __tmp77Prefix = "	"; //1256:1
-                CodeBuilder __tmp79 = CodeBuilder.GetInstance();
+                var __tmp79 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp79.Write(CSharpName(sup, model, ClassKind.Immutable, true));
-                CodeReader __tmp79Reader = new CodeReader(__tmp79.ToStringAndFree());
+                var __tmp79Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp79.ToStringAndFree());
                 bool __tmp79_last = __tmp79Reader.EndOfStream;
                 while(!__tmp79_last)
                 {
@@ -16570,9 +16570,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp80_line);
                     __tmp78_outputWritten = true;
                 }
-                CodeBuilder __tmp81 = CodeBuilder.GetInstance();
+                var __tmp81 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp81.Write(CSharpName(sup, model, ClassKind.Builder, true));
-                CodeReader __tmp81Reader = new CodeReader(__tmp81.ToStringAndFree());
+                var __tmp81Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp81.ToStringAndFree());
                 bool __tmp81_last = __tmp81Reader.EndOfStream;
                 while(!__tmp81_last)
                 {
@@ -16591,9 +16591,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp82_line);
                     __tmp78_outputWritten = true;
                 }
-                CodeBuilder __tmp83 = CodeBuilder.GetInstance();
+                var __tmp83 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp83.Write(Properties.CoreNs);
-                CodeReader __tmp83Reader = new CodeReader(__tmp83.ToStringAndFree());
+                var __tmp83Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp83.ToStringAndFree());
                 bool __tmp83_last = __tmp83Reader.EndOfStream;
                 while(!__tmp83_last)
                 {
@@ -16637,9 +16637,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.AppendLine(true); //1262:2
                 bool __tmp87_outputWritten = false;
                 string __tmp86Prefix = "	"; //1263:1
-                CodeBuilder __tmp88 = CodeBuilder.GetInstance();
+                var __tmp88 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp88.Write(GenerateBuilderPropertyImpl(model, cls, prop));
-                CodeReader __tmp88Reader = new CodeReader(__tmp88.ToStringAndFree());
+                var __tmp88Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp88.ToStringAndFree());
                 bool __tmp88_last = __tmp88Reader.EndOfStream;
                 while(!__tmp88_last)
                 {
@@ -16675,9 +16675,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.AppendLine(true); //1266:2
                 bool __tmp91_outputWritten = false;
                 string __tmp90Prefix = "	"; //1267:1
-                CodeBuilder __tmp92 = CodeBuilder.GetInstance();
+                var __tmp92 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp92.Write(GenerateBuilderOperationImpl(model, cls, op));
-                CodeReader __tmp92Reader = new CodeReader(__tmp92.ToStringAndFree());
+                var __tmp92Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp92.ToStringAndFree());
                 bool __tmp92_last = __tmp92Reader.EndOfStream;
                 while(!__tmp92_last)
                 {
@@ -16705,9 +16705,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.AppendLine(true); //1270:1
                 bool __tmp94_outputWritten = false;
                 string __tmp93Prefix = "	"; //1271:1
-                CodeBuilder __tmp95 = CodeBuilder.GetInstance();
+                var __tmp95 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp95.Write(Properties.CoreNs);
-                CodeReader __tmp95Reader = new CodeReader(__tmp95.ToStringAndFree());
+                var __tmp95Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp95.ToStringAndFree());
                 bool __tmp95_last = __tmp95Reader.EndOfStream;
                 while(!__tmp95_last)
                 {
@@ -16731,9 +16731,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp96_line);
                     __tmp94_outputWritten = true;
                 }
-                CodeBuilder __tmp97 = CodeBuilder.GetInstance();
+                var __tmp97 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp97.Write(Properties.CoreNs);
-                CodeReader __tmp97Reader = new CodeReader(__tmp97.ToStringAndFree());
+                var __tmp97Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp97.ToStringAndFree());
                 bool __tmp97_last = __tmp97Reader.EndOfStream;
                 while(!__tmp97_last)
                 {
@@ -16752,9 +16752,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp98_line);
                     __tmp94_outputWritten = true;
                 }
-                CodeBuilder __tmp99 = CodeBuilder.GetInstance();
+                var __tmp99 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp99.Write(CSharpName(model, ModelKind.ImmutableInstance));
-                CodeReader __tmp99Reader = new CodeReader(__tmp99.ToStringAndFree());
+                var __tmp99Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp99.ToStringAndFree());
                 bool __tmp99_last = __tmp99Reader.EndOfStream;
                 while(!__tmp99_last)
                 {
@@ -16785,9 +16785,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp103_line);
                     __tmp102_outputWritten = true;
                 }
-                CodeBuilder __tmp104 = CodeBuilder.GetInstance();
+                var __tmp104 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp104.Write(Properties.CoreNs);
-                CodeReader __tmp104Reader = new CodeReader(__tmp104.ToStringAndFree());
+                var __tmp104Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp104.ToStringAndFree());
                 bool __tmp104_last = __tmp104Reader.EndOfStream;
                 while(!__tmp104_last)
                 {
@@ -16813,9 +16813,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 }
                 bool __tmp107_outputWritten = false;
                 string __tmp106Prefix = "	"; //1273:1
-                CodeBuilder __tmp108 = CodeBuilder.GetInstance();
+                var __tmp108 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp108.Write(Properties.CoreNs);
-                CodeReader __tmp108Reader = new CodeReader(__tmp108.ToStringAndFree());
+                var __tmp108Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp108.ToStringAndFree());
                 bool __tmp108_last = __tmp108Reader.EndOfStream;
                 while(!__tmp108_last)
                 {
@@ -16839,9 +16839,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp109_line);
                     __tmp107_outputWritten = true;
                 }
-                CodeBuilder __tmp110 = CodeBuilder.GetInstance();
+                var __tmp110 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp110.Write(Properties.CoreNs);
-                CodeReader __tmp110Reader = new CodeReader(__tmp110.ToStringAndFree());
+                var __tmp110Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp110.ToStringAndFree());
                 bool __tmp110_last = __tmp110Reader.EndOfStream;
                 while(!__tmp110_last)
                 {
@@ -16860,9 +16860,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp111_line);
                     __tmp107_outputWritten = true;
                 }
-                CodeBuilder __tmp112 = CodeBuilder.GetInstance();
+                var __tmp112 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp112.Write(CSharpName(model, ModelKind.ImmutableInstance));
-                CodeReader __tmp112Reader = new CodeReader(__tmp112.ToStringAndFree());
+                var __tmp112Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp112.ToStringAndFree());
                 bool __tmp112_last = __tmp112Reader.EndOfStream;
                 while(!__tmp112_last)
                 {
@@ -16893,9 +16893,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp116_line);
                     __tmp115_outputWritten = true;
                 }
-                CodeBuilder __tmp117 = CodeBuilder.GetInstance();
+                var __tmp117 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp117.Write(Properties.CoreNs);
-                CodeReader __tmp117Reader = new CodeReader(__tmp117.ToStringAndFree());
+                var __tmp117Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp117.ToStringAndFree());
                 bool __tmp117_last = __tmp117Reader.EndOfStream;
                 while(!__tmp117_last)
                 {
@@ -16914,9 +16914,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp118_line);
                     __tmp115_outputWritten = true;
                 }
-                CodeBuilder __tmp119 = CodeBuilder.GetInstance();
+                var __tmp119 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp119.Write(CSharpName(model, ModelKind.ImmutableInstance));
-                CodeReader __tmp119Reader = new CodeReader(__tmp119.ToStringAndFree());
+                var __tmp119Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp119.ToStringAndFree());
                 bool __tmp119_last = __tmp119Reader.EndOfStream;
                 while(!__tmp119_last)
                 {
@@ -16947,9 +16947,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp123_line);
                     __tmp122_outputWritten = true;
                 }
-                CodeBuilder __tmp124 = CodeBuilder.GetInstance();
+                var __tmp124 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp124.Write(Properties.CoreNs);
-                CodeReader __tmp124Reader = new CodeReader(__tmp124.ToStringAndFree());
+                var __tmp124Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp124.ToStringAndFree());
                 bool __tmp124_last = __tmp124Reader.EndOfStream;
                 while(!__tmp124_last)
                 {
@@ -16980,9 +16980,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp128_line);
                     __tmp127_outputWritten = true;
                 }
-                CodeBuilder __tmp129 = CodeBuilder.GetInstance();
+                var __tmp129 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp129.Write(Properties.CoreNs);
-                CodeReader __tmp129Reader = new CodeReader(__tmp129.ToStringAndFree());
+                var __tmp129Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp129.ToStringAndFree());
                 bool __tmp129_last = __tmp129Reader.EndOfStream;
                 while(!__tmp129_last)
                 {
@@ -17008,9 +17008,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 }
                 bool __tmp132_outputWritten = false;
                 string __tmp131Prefix = "	"; //1277:1
-                CodeBuilder __tmp133 = CodeBuilder.GetInstance();
+                var __tmp133 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp133.Write(Properties.CoreNs);
-                CodeReader __tmp133Reader = new CodeReader(__tmp133.ToStringAndFree());
+                var __tmp133Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp133.ToStringAndFree());
                 bool __tmp133_last = __tmp133Reader.EndOfStream;
                 while(!__tmp133_last)
                 {
@@ -17034,9 +17034,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp134_line);
                     __tmp132_outputWritten = true;
                 }
-                CodeBuilder __tmp135 = CodeBuilder.GetInstance();
+                var __tmp135 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp135.Write(Properties.CoreNs);
-                CodeReader __tmp135Reader = new CodeReader(__tmp135.ToStringAndFree());
+                var __tmp135Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp135.ToStringAndFree());
                 bool __tmp135_last = __tmp135Reader.EndOfStream;
                 while(!__tmp135_last)
                 {
@@ -17055,9 +17055,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp136_line);
                     __tmp132_outputWritten = true;
                 }
-                CodeBuilder __tmp137 = CodeBuilder.GetInstance();
+                var __tmp137 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp137.Write(CSharpName(model, ModelKind.ImmutableInstance));
-                CodeReader __tmp137Reader = new CodeReader(__tmp137.ToStringAndFree());
+                var __tmp137Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp137.ToStringAndFree());
                 bool __tmp137_last = __tmp137Reader.EndOfStream;
                 while(!__tmp137_last)
                 {
@@ -17088,9 +17088,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp141_line);
                     __tmp140_outputWritten = true;
                 }
-                CodeBuilder __tmp142 = CodeBuilder.GetInstance();
+                var __tmp142 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp142.Write(Properties.CoreNs);
-                CodeReader __tmp142Reader = new CodeReader(__tmp142.ToStringAndFree());
+                var __tmp142Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp142.ToStringAndFree());
                 bool __tmp142_last = __tmp142Reader.EndOfStream;
                 while(!__tmp142_last)
                 {
@@ -17122,9 +17122,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp146_line);
                     __tmp145_outputWritten = true;
                 }
-                CodeBuilder __tmp147 = CodeBuilder.GetInstance();
+                var __tmp147 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp147.Write(Properties.CoreNs);
-                CodeReader __tmp147Reader = new CodeReader(__tmp147.ToStringAndFree());
+                var __tmp147Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp147.ToStringAndFree());
                 bool __tmp147_last = __tmp147Reader.EndOfStream;
                 while(!__tmp147_last)
                 {
@@ -17143,9 +17143,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp148_line);
                     __tmp145_outputWritten = true;
                 }
-                CodeBuilder __tmp149 = CodeBuilder.GetInstance();
+                var __tmp149 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp149.Write(Properties.CoreNs);
-                CodeReader __tmp149Reader = new CodeReader(__tmp149.ToStringAndFree());
+                var __tmp149Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp149.ToStringAndFree());
                 bool __tmp149_last = __tmp149Reader.EndOfStream;
                 while(!__tmp149_last)
                 {
@@ -17164,9 +17164,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp150_line);
                     __tmp145_outputWritten = true;
                 }
-                CodeBuilder __tmp151 = CodeBuilder.GetInstance();
+                var __tmp151 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp151.Write(Properties.CoreNs);
-                CodeReader __tmp151Reader = new CodeReader(__tmp151.ToStringAndFree());
+                var __tmp151Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp151.ToStringAndFree());
                 bool __tmp151_last = __tmp151Reader.EndOfStream;
                 while(!__tmp151_last)
                 {
@@ -17185,9 +17185,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp152_line);
                     __tmp145_outputWritten = true;
                 }
-                CodeBuilder __tmp153 = CodeBuilder.GetInstance();
+                var __tmp153 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp153.Write(Properties.CoreNs);
-                CodeReader __tmp153Reader = new CodeReader(__tmp153.ToStringAndFree());
+                var __tmp153Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp153.ToStringAndFree());
                 bool __tmp153_last = __tmp153Reader.EndOfStream;
                 while(!__tmp153_last)
                 {
@@ -17220,9 +17220,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp157_line);
                     __tmp156_outputWritten = true;
                 }
-                CodeBuilder __tmp158 = CodeBuilder.GetInstance();
+                var __tmp158 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp158.Write(CSharpName(model, ModelKind.Factory));
-                CodeReader __tmp158Reader = new CodeReader(__tmp158.ToStringAndFree());
+                var __tmp158Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp158.ToStringAndFree());
                 bool __tmp158_last = __tmp158Reader.EndOfStream;
                 while(!__tmp158_last)
                 {
@@ -17256,7 +17256,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
 
         public string GenerateBuilderField(MetaModel model, MetaClass cls, MetaProperty prop) //1288:1
         {
-            CodeBuilder __out = CodeBuilder.GetInstance();
+            var __out = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             bool __tmp2_outputWritten = false;
             string __tmp3_line = "private "; //1289:1
             if (!string.IsNullOrEmpty(__tmp3_line))
@@ -17264,9 +17264,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp3_line);
                 __tmp2_outputWritten = true;
             }
-            CodeBuilder __tmp4 = CodeBuilder.GetInstance();
+            var __tmp4 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp4.Write(CSharpName(prop.Type, model, ClassKind.Builder, true));
-            CodeReader __tmp4Reader = new CodeReader(__tmp4.ToStringAndFree());
+            var __tmp4Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp4.ToStringAndFree());
             bool __tmp4_last = __tmp4Reader.EndOfStream;
             while(!__tmp4_last)
             {
@@ -17285,9 +17285,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp5_line);
                 __tmp2_outputWritten = true;
             }
-            CodeBuilder __tmp6 = CodeBuilder.GetInstance();
+            var __tmp6 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp6.Write(GetFieldName(prop, cls));
-            CodeReader __tmp6Reader = new CodeReader(__tmp6.ToStringAndFree());
+            var __tmp6Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp6.ToStringAndFree());
             bool __tmp6_last = __tmp6Reader.EndOfStream;
             while(!__tmp6_last)
             {
@@ -17316,7 +17316,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
 
         public string GenerateBuilderPropertyImpl(MetaModel model, MetaClass cls, MetaProperty prop) //1292:1
         {
-            CodeBuilder __out = CodeBuilder.GetInstance();
+            var __out = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __out.AppendLine(true); //1293:1
             if (cls.GetAllFinalProperties().Contains(prop)) //1294:2
             {
@@ -17327,9 +17327,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp3_line);
                     __tmp2_outputWritten = true;
                 }
-                CodeBuilder __tmp4 = CodeBuilder.GetInstance();
+                var __tmp4 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp4.Write(CSharpName(prop.Type, model, ClassKind.Builder, true));
-                CodeReader __tmp4Reader = new CodeReader(__tmp4.ToStringAndFree());
+                var __tmp4Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp4.ToStringAndFree());
                 bool __tmp4_last = __tmp4Reader.EndOfStream;
                 while(!__tmp4_last)
                 {
@@ -17348,9 +17348,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp5_line);
                     __tmp2_outputWritten = true;
                 }
-                CodeBuilder __tmp6 = CodeBuilder.GetInstance();
+                var __tmp6 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp6.Write(prop.Name);
-                CodeReader __tmp6Reader = new CodeReader(__tmp6.ToStringAndFree());
+                var __tmp6Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp6.ToStringAndFree());
                 bool __tmp6_last = __tmp6Reader.EndOfStream;
                 while(!__tmp6_last)
                 {
@@ -17371,9 +17371,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             else //1296:2
             {
                 bool __tmp8_outputWritten = false;
-                CodeBuilder __tmp9 = CodeBuilder.GetInstance();
+                var __tmp9 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp9.Write("[DebuggerBrowsable(DebuggerBrowsableState.Never)]");
-                CodeReader __tmp9Reader = new CodeReader(__tmp9.ToStringAndFree());
+                var __tmp9Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp9.ToStringAndFree());
                 bool __tmp9_last = __tmp9Reader.EndOfStream;
                 while(!__tmp9_last)
                 {
@@ -17391,9 +17391,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.AppendLine(false); //1297:54
                 }
                 bool __tmp11_outputWritten = false;
-                CodeBuilder __tmp12 = CodeBuilder.GetInstance();
+                var __tmp12 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp12.Write(CSharpName(prop.Type, model, ClassKind.Builder, true));
-                CodeReader __tmp12Reader = new CodeReader(__tmp12.ToStringAndFree());
+                var __tmp12Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp12.ToStringAndFree());
                 bool __tmp12_last = __tmp12Reader.EndOfStream;
                 while(!__tmp12_last)
                 {
@@ -17412,9 +17412,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp13_line);
                     __tmp11_outputWritten = true;
                 }
-                CodeBuilder __tmp14 = CodeBuilder.GetInstance();
+                var __tmp14 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp14.Write(CSharpName(prop.Class, model, ClassKind.Builder, true));
-                CodeReader __tmp14Reader = new CodeReader(__tmp14.ToStringAndFree());
+                var __tmp14Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp14.ToStringAndFree());
                 bool __tmp14_last = __tmp14Reader.EndOfStream;
                 while(!__tmp14_last)
                 {
@@ -17433,9 +17433,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp15_line);
                     __tmp11_outputWritten = true;
                 }
-                CodeBuilder __tmp16 = CodeBuilder.GetInstance();
+                var __tmp16 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp16.Write(prop.Name);
-                CodeReader __tmp16Reader = new CodeReader(__tmp16.ToStringAndFree());
+                var __tmp16Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp16.ToStringAndFree());
                 bool __tmp16_last = __tmp16Reader.EndOfStream;
                 while(!__tmp16_last)
                 {
@@ -17466,9 +17466,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp19_line);
                         __tmp18_outputWritten = true;
                     }
-                    CodeBuilder __tmp20 = CodeBuilder.GetInstance();
+                    var __tmp20 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp20.Write(CSharpName(((MetaCollectionType)prop.Type).InnerType, model, ClassKind.Builder, true));
-                    CodeReader __tmp20Reader = new CodeReader(__tmp20.ToStringAndFree());
+                    var __tmp20Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp20.ToStringAndFree());
                     bool __tmp20_last = __tmp20Reader.EndOfStream;
                     while(!__tmp20_last)
                     {
@@ -17487,9 +17487,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp21_line);
                         __tmp18_outputWritten = true;
                     }
-                    CodeBuilder __tmp22 = CodeBuilder.GetInstance();
+                    var __tmp22 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp22.Write(CSharpName(prop, null, PropertyKind.Descriptor, true));
-                    CodeReader __tmp22Reader = new CodeReader(__tmp22.ToStringAndFree());
+                    var __tmp22Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp22.ToStringAndFree());
                     bool __tmp22_last = __tmp22Reader.EndOfStream;
                     while(!__tmp22_last)
                     {
@@ -17508,9 +17508,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp23_line);
                         __tmp18_outputWritten = true;
                     }
-                    CodeBuilder __tmp24 = CodeBuilder.GetInstance();
+                    var __tmp24 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp24.Write(GetFieldName(prop, cls));
-                    CodeReader __tmp24Reader = new CodeReader(__tmp24.ToStringAndFree());
+                    var __tmp24Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp24.ToStringAndFree());
                     bool __tmp24_last = __tmp24Reader.EndOfStream;
                     while(!__tmp24_last)
                     {
@@ -17544,9 +17544,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp28_line);
                         __tmp27_outputWritten = true;
                     }
-                    CodeBuilder __tmp29 = CodeBuilder.GetInstance();
+                    var __tmp29 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp29.Write(CSharpName(((MetaCollectionType)prop.Type).InnerType, model, ClassKind.Builder, true));
-                    CodeReader __tmp29Reader = new CodeReader(__tmp29.ToStringAndFree());
+                    var __tmp29Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp29.ToStringAndFree());
                     bool __tmp29_last = __tmp29Reader.EndOfStream;
                     while(!__tmp29_last)
                     {
@@ -17565,9 +17565,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp30_line);
                         __tmp27_outputWritten = true;
                     }
-                    CodeBuilder __tmp31 = CodeBuilder.GetInstance();
+                    var __tmp31 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp31.Write(CSharpName(prop, null, PropertyKind.Descriptor, true));
-                    CodeReader __tmp31Reader = new CodeReader(__tmp31.ToStringAndFree());
+                    var __tmp31Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp31.ToStringAndFree());
                     bool __tmp31_last = __tmp31Reader.EndOfStream;
                     while(!__tmp31_last)
                     {
@@ -17586,9 +17586,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp32_line);
                         __tmp27_outputWritten = true;
                     }
-                    CodeBuilder __tmp33 = CodeBuilder.GetInstance();
+                    var __tmp33 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp33.Write(GetFieldName(prop, cls));
-                    CodeReader __tmp33Reader = new CodeReader(__tmp33.ToStringAndFree());
+                    var __tmp33Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp33.ToStringAndFree());
                     bool __tmp33_last = __tmp33Reader.EndOfStream;
                     while(!__tmp33_last)
                     {
@@ -17623,9 +17623,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp37_line);
                     __tmp36_outputWritten = true;
                 }
-                CodeBuilder __tmp38 = CodeBuilder.GetInstance();
+                var __tmp38 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp38.Write(CSharpName(prop.Type, model, ClassKind.Builder, true));
-                CodeReader __tmp38Reader = new CodeReader(__tmp38.ToStringAndFree());
+                var __tmp38Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp38.ToStringAndFree());
                 bool __tmp38_last = __tmp38Reader.EndOfStream;
                 while(!__tmp38_last)
                 {
@@ -17644,9 +17644,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp39_line);
                     __tmp36_outputWritten = true;
                 }
-                CodeBuilder __tmp40 = CodeBuilder.GetInstance();
+                var __tmp40 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp40.Write(CSharpName(prop, null, PropertyKind.Descriptor, true));
-                CodeReader __tmp40Reader = new CodeReader(__tmp40.ToStringAndFree());
+                var __tmp40Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp40.ToStringAndFree());
                 bool __tmp40_last = __tmp40Reader.EndOfStream;
                 while(!__tmp40_last)
                 {
@@ -17680,9 +17680,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp44_line);
                     __tmp43_outputWritten = true;
                 }
-                CodeBuilder __tmp45 = CodeBuilder.GetInstance();
+                var __tmp45 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp45.Write(CSharpName(prop.Type, model, ClassKind.Builder, true));
-                CodeReader __tmp45Reader = new CodeReader(__tmp45.ToStringAndFree());
+                var __tmp45Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp45.ToStringAndFree());
                 bool __tmp45_last = __tmp45Reader.EndOfStream;
                 while(!__tmp45_last)
                 {
@@ -17701,9 +17701,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp46_line);
                     __tmp43_outputWritten = true;
                 }
-                CodeBuilder __tmp47 = CodeBuilder.GetInstance();
+                var __tmp47 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp47.Write(CSharpName(prop, null, PropertyKind.Descriptor, true));
-                CodeReader __tmp47Reader = new CodeReader(__tmp47.ToStringAndFree());
+                var __tmp47Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp47.ToStringAndFree());
                 bool __tmp47_last = __tmp47Reader.EndOfStream;
                 while(!__tmp47_last)
                 {
@@ -17739,9 +17739,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp51_line);
                         __tmp50_outputWritten = true;
                     }
-                    CodeBuilder __tmp52 = CodeBuilder.GetInstance();
+                    var __tmp52 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp52.Write(CSharpName(prop.Type, model, ClassKind.Builder, true));
-                    CodeReader __tmp52Reader = new CodeReader(__tmp52.ToStringAndFree());
+                    var __tmp52Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp52.ToStringAndFree());
                     bool __tmp52_last = __tmp52Reader.EndOfStream;
                     while(!__tmp52_last)
                     {
@@ -17760,9 +17760,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp53_line);
                         __tmp50_outputWritten = true;
                     }
-                    CodeBuilder __tmp54 = CodeBuilder.GetInstance();
+                    var __tmp54 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp54.Write(CSharpName(prop, null, PropertyKind.Descriptor, true));
-                    CodeReader __tmp54Reader = new CodeReader(__tmp54.ToStringAndFree());
+                    var __tmp54Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp54.ToStringAndFree());
                     bool __tmp54_last = __tmp54Reader.EndOfStream;
                     while(!__tmp54_last)
                     {
@@ -17796,9 +17796,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp58_line);
                         __tmp57_outputWritten = true;
                     }
-                    CodeBuilder __tmp59 = CodeBuilder.GetInstance();
+                    var __tmp59 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp59.Write(CSharpName(prop.Type, model, ClassKind.Builder, true));
-                    CodeReader __tmp59Reader = new CodeReader(__tmp59.ToStringAndFree());
+                    var __tmp59Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp59.ToStringAndFree());
                     bool __tmp59_last = __tmp59Reader.EndOfStream;
                     while(!__tmp59_last)
                     {
@@ -17817,9 +17817,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp60_line);
                         __tmp57_outputWritten = true;
                     }
-                    CodeBuilder __tmp61 = CodeBuilder.GetInstance();
+                    var __tmp61 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp61.Write(CSharpName(prop, null, PropertyKind.Descriptor, true));
-                    CodeReader __tmp61Reader = new CodeReader(__tmp61.ToStringAndFree());
+                    var __tmp61Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp61.ToStringAndFree());
                     bool __tmp61_last = __tmp61Reader.EndOfStream;
                     while(!__tmp61_last)
                     {
@@ -17857,9 +17857,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp65_line);
                     __tmp64_outputWritten = true;
                 }
-                CodeBuilder __tmp66 = CodeBuilder.GetInstance();
+                var __tmp66 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp66.Write(CSharpName(prop.Class, model, ClassKind.Builder, true));
-                CodeReader __tmp66Reader = new CodeReader(__tmp66.ToStringAndFree());
+                var __tmp66Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp66.ToStringAndFree());
                 bool __tmp66_last = __tmp66Reader.EndOfStream;
                 while(!__tmp66_last)
                 {
@@ -17878,9 +17878,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp67_line);
                     __tmp64_outputWritten = true;
                 }
-                CodeBuilder __tmp68 = CodeBuilder.GetInstance();
+                var __tmp68 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp68.Write(prop.Name);
-                CodeReader __tmp68Reader = new CodeReader(__tmp68.ToStringAndFree());
+                var __tmp68Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp68.ToStringAndFree());
                 bool __tmp68_last = __tmp68Reader.EndOfStream;
                 while(!__tmp68_last)
                 {
@@ -17899,9 +17899,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp69_line);
                     __tmp64_outputWritten = true;
                 }
-                CodeBuilder __tmp70 = CodeBuilder.GetInstance();
+                var __tmp70 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp70.Write(CSharpName(prop.Type, model, ClassKind.Builder, true));
-                CodeReader __tmp70Reader = new CodeReader(__tmp70.ToStringAndFree());
+                var __tmp70Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp70.ToStringAndFree());
                 bool __tmp70_last = __tmp70Reader.EndOfStream;
                 while(!__tmp70_last)
                 {
@@ -17936,9 +17936,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp74_line);
                         __tmp73_outputWritten = true;
                     }
-                    CodeBuilder __tmp75 = CodeBuilder.GetInstance();
+                    var __tmp75 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp75.Write(CSharpName(prop, model, PropertyKind.Descriptor, true));
-                    CodeReader __tmp75Reader = new CodeReader(__tmp75.ToStringAndFree());
+                    var __tmp75Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp75.ToStringAndFree());
                     bool __tmp75_last = __tmp75Reader.EndOfStream;
                     while(!__tmp75_last)
                     {
@@ -17972,9 +17972,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp79_line);
                         __tmp78_outputWritten = true;
                     }
-                    CodeBuilder __tmp80 = CodeBuilder.GetInstance();
+                    var __tmp80 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp80.Write(CSharpName(prop, model, PropertyKind.Descriptor, true));
-                    CodeReader __tmp80Reader = new CodeReader(__tmp80.ToStringAndFree());
+                    var __tmp80Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp80.ToStringAndFree());
                     bool __tmp80_last = __tmp80Reader.EndOfStream;
                     while(!__tmp80_last)
                     {
@@ -18009,9 +18009,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp84_line);
                     __tmp83_outputWritten = true;
                 }
-                CodeBuilder __tmp85 = CodeBuilder.GetInstance();
+                var __tmp85 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp85.Write(CSharpName(prop.Class, model, ClassKind.Builder, true));
-                CodeReader __tmp85Reader = new CodeReader(__tmp85.ToStringAndFree());
+                var __tmp85Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp85.ToStringAndFree());
                 bool __tmp85_last = __tmp85Reader.EndOfStream;
                 while(!__tmp85_last)
                 {
@@ -18030,9 +18030,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp86_line);
                     __tmp83_outputWritten = true;
                 }
-                CodeBuilder __tmp87 = CodeBuilder.GetInstance();
+                var __tmp87 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp87.Write(prop.Name);
-                CodeReader __tmp87Reader = new CodeReader(__tmp87.ToStringAndFree());
+                var __tmp87Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp87.ToStringAndFree());
                 bool __tmp87_last = __tmp87Reader.EndOfStream;
                 while(!__tmp87_last)
                 {
@@ -18051,9 +18051,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp88_line);
                     __tmp83_outputWritten = true;
                 }
-                CodeBuilder __tmp89 = CodeBuilder.GetInstance();
+                var __tmp89 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp89.Write(CSharpName(prop.Class, model, ClassKind.Builder, true));
-                CodeReader __tmp89Reader = new CodeReader(__tmp89.ToStringAndFree());
+                var __tmp89Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp89.ToStringAndFree());
                 bool __tmp89_last = __tmp89Reader.EndOfStream;
                 while(!__tmp89_last)
                 {
@@ -18072,9 +18072,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp90_line);
                     __tmp83_outputWritten = true;
                 }
-                CodeBuilder __tmp91 = CodeBuilder.GetInstance();
+                var __tmp91 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp91.Write(CSharpName(prop.Type, model, ClassKind.Builder, true));
-                CodeReader __tmp91Reader = new CodeReader(__tmp91.ToStringAndFree());
+                var __tmp91Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp91.ToStringAndFree());
                 bool __tmp91_last = __tmp91Reader.EndOfStream;
                 while(!__tmp91_last)
                 {
@@ -18109,9 +18109,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp95_line);
                         __tmp94_outputWritten = true;
                     }
-                    CodeBuilder __tmp96 = CodeBuilder.GetInstance();
+                    var __tmp96 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp96.Write(CSharpName(prop, model, PropertyKind.Descriptor, true));
-                    CodeReader __tmp96Reader = new CodeReader(__tmp96.ToStringAndFree());
+                    var __tmp96Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp96.ToStringAndFree());
                     bool __tmp96_last = __tmp96Reader.EndOfStream;
                     while(!__tmp96_last)
                     {
@@ -18145,9 +18145,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp100_line);
                         __tmp99_outputWritten = true;
                     }
-                    CodeBuilder __tmp101 = CodeBuilder.GetInstance();
+                    var __tmp101 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp101.Write(CSharpName(prop, model, PropertyKind.Descriptor, true));
-                    CodeReader __tmp101Reader = new CodeReader(__tmp101.ToStringAndFree());
+                    var __tmp101Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp101.ToStringAndFree());
                     bool __tmp101_last = __tmp101Reader.EndOfStream;
                     while(!__tmp101_last)
                     {
@@ -18182,9 +18182,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp105_line);
                     __tmp104_outputWritten = true;
                 }
-                CodeBuilder __tmp106 = CodeBuilder.GetInstance();
+                var __tmp106 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp106.Write(CSharpName(prop.Class, model, ClassKind.Builder, true));
-                CodeReader __tmp106Reader = new CodeReader(__tmp106.ToStringAndFree());
+                var __tmp106Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp106.ToStringAndFree());
                 bool __tmp106_last = __tmp106Reader.EndOfStream;
                 while(!__tmp106_last)
                 {
@@ -18203,9 +18203,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp107_line);
                     __tmp104_outputWritten = true;
                 }
-                CodeBuilder __tmp108 = CodeBuilder.GetInstance();
+                var __tmp108 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp108.Write(prop.Name);
-                CodeReader __tmp108Reader = new CodeReader(__tmp108.ToStringAndFree());
+                var __tmp108Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp108.ToStringAndFree());
                 bool __tmp108_last = __tmp108Reader.EndOfStream;
                 while(!__tmp108_last)
                 {
@@ -18224,9 +18224,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp109_line);
                     __tmp104_outputWritten = true;
                 }
-                CodeBuilder __tmp110 = CodeBuilder.GetInstance();
+                var __tmp110 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp110.Write(CSharpName(prop.Class, model, ClassKind.Immutable, true));
-                CodeReader __tmp110Reader = new CodeReader(__tmp110.ToStringAndFree());
+                var __tmp110Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp110.ToStringAndFree());
                 bool __tmp110_last = __tmp110Reader.EndOfStream;
                 while(!__tmp110_last)
                 {
@@ -18245,9 +18245,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp111_line);
                     __tmp104_outputWritten = true;
                 }
-                CodeBuilder __tmp112 = CodeBuilder.GetInstance();
+                var __tmp112 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp112.Write(CSharpName(prop.Type, model, ClassKind.Immutable, true));
-                CodeReader __tmp112Reader = new CodeReader(__tmp112.ToStringAndFree());
+                var __tmp112Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp112.ToStringAndFree());
                 bool __tmp112_last = __tmp112Reader.EndOfStream;
                 while(!__tmp112_last)
                 {
@@ -18266,9 +18266,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp113_line);
                     __tmp104_outputWritten = true;
                 }
-                CodeBuilder __tmp114 = CodeBuilder.GetInstance();
+                var __tmp114 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp114.Write(CSharpName(prop.Class, model, ClassKind.Builder, true));
-                CodeReader __tmp114Reader = new CodeReader(__tmp114.ToStringAndFree());
+                var __tmp114Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp114.ToStringAndFree());
                 bool __tmp114_last = __tmp114Reader.EndOfStream;
                 while(!__tmp114_last)
                 {
@@ -18287,9 +18287,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.Write(__tmp115_line);
                     __tmp104_outputWritten = true;
                 }
-                CodeBuilder __tmp116 = CodeBuilder.GetInstance();
+                var __tmp116 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                 __tmp116.Write(CSharpName(prop.Type, model, ClassKind.Builder, true));
-                CodeReader __tmp116Reader = new CodeReader(__tmp116.ToStringAndFree());
+                var __tmp116Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp116.ToStringAndFree());
                 bool __tmp116_last = __tmp116Reader.EndOfStream;
                 while(!__tmp116_last)
                 {
@@ -18324,9 +18324,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp120_line);
                         __tmp119_outputWritten = true;
                     }
-                    CodeBuilder __tmp121 = CodeBuilder.GetInstance();
+                    var __tmp121 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp121.Write(CSharpName(prop, model, PropertyKind.Descriptor, true));
-                    CodeReader __tmp121Reader = new CodeReader(__tmp121.ToStringAndFree());
+                    var __tmp121Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp121.ToStringAndFree());
                     bool __tmp121_last = __tmp121Reader.EndOfStream;
                     while(!__tmp121_last)
                     {
@@ -18360,9 +18360,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         __out.Write(__tmp125_line);
                         __tmp124_outputWritten = true;
                     }
-                    CodeBuilder __tmp126 = CodeBuilder.GetInstance();
+                    var __tmp126 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp126.Write(CSharpName(prop, model, PropertyKind.Descriptor, true));
-                    CodeReader __tmp126Reader = new CodeReader(__tmp126.ToStringAndFree());
+                    var __tmp126Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp126.ToStringAndFree());
                     bool __tmp126_last = __tmp126Reader.EndOfStream;
                     while(!__tmp126_last)
                     {
@@ -18395,12 +18395,12 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
 
         public string GenerateBuilderOperationImpl(MetaModel model, MetaClass cls, MetaOperation op) //1351:1
         {
-            CodeBuilder __out = CodeBuilder.GetInstance();
+            var __out = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __out.AppendLine(true); //1352:1
             bool __tmp2_outputWritten = false;
-            CodeBuilder __tmp3 = CodeBuilder.GetInstance();
+            var __tmp3 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp3.Write(CSharpName(op.ReturnType, model, ClassKind.BuilderOperation, true));
-            CodeReader __tmp3Reader = new CodeReader(__tmp3.ToStringAndFree());
+            var __tmp3Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp3.ToStringAndFree());
             bool __tmp3_last = __tmp3Reader.EndOfStream;
             while(!__tmp3_last)
             {
@@ -18419,9 +18419,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp4_line);
                 __tmp2_outputWritten = true;
             }
-            CodeBuilder __tmp5 = CodeBuilder.GetInstance();
+            var __tmp5 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp5.Write(CSharpName(op.Class, model, ClassKind.Builder, true));
-            CodeReader __tmp5Reader = new CodeReader(__tmp5.ToStringAndFree());
+            var __tmp5Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp5.ToStringAndFree());
             bool __tmp5_last = __tmp5Reader.EndOfStream;
             while(!__tmp5_last)
             {
@@ -18440,9 +18440,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp6_line);
                 __tmp2_outputWritten = true;
             }
-            CodeBuilder __tmp7 = CodeBuilder.GetInstance();
+            var __tmp7 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp7.Write(op.Name);
-            CodeReader __tmp7Reader = new CodeReader(__tmp7.ToStringAndFree());
+            var __tmp7Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp7.ToStringAndFree());
             bool __tmp7_last = __tmp7Reader.EndOfStream;
             while(!__tmp7_last)
             {
@@ -18461,9 +18461,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp8_line);
                 __tmp2_outputWritten = true;
             }
-            CodeBuilder __tmp9 = CodeBuilder.GetInstance();
+            var __tmp9 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp9.Write(GetClassParameters(model, op.Class, op, ClassKind.BuilderOperation));
-            CodeReader __tmp9Reader = new CodeReader(__tmp9.ToStringAndFree());
+            var __tmp9Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp9.ToStringAndFree());
             bool __tmp9_last = __tmp9Reader.EndOfStream;
             while(!__tmp9_last)
             {
@@ -18492,9 +18492,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             var finalOp = GetFinalOperation(cls, op); //1355:2
             bool __tmp12_outputWritten = false;
             string __tmp11Prefix = "    "; //1356:1
-            CodeBuilder __tmp13 = CodeBuilder.GetInstance();
+            var __tmp13 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp13.Write(GetReturn(CSharpName(finalOp.ReturnType, model, ClassKind.BuilderOperation)));
-            CodeReader __tmp13Reader = new CodeReader(__tmp13.ToStringAndFree());
+            var __tmp13Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp13.ToStringAndFree());
             bool __tmp13_last = __tmp13Reader.EndOfStream;
             while(!__tmp13_last)
             {
@@ -18512,9 +18512,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 }
                 if (!__tmp13_last) __out.AppendLine(true);
             }
-            CodeBuilder __tmp14 = CodeBuilder.GetInstance();
+            var __tmp14 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp14.Write(CSharpName(model, ModelKind.ImplementationProvider));
-            CodeReader __tmp14Reader = new CodeReader(__tmp14.ToStringAndFree());
+            var __tmp14Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp14.ToStringAndFree());
             bool __tmp14_last = __tmp14Reader.EndOfStream;
             while(!__tmp14_last)
             {
@@ -18533,9 +18533,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp15_line);
                 __tmp12_outputWritten = true;
             }
-            CodeBuilder __tmp16 = CodeBuilder.GetInstance();
+            var __tmp16 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp16.Write(CSharpName(finalOp.Class, model, ClassKind.Immutable));
-            CodeReader __tmp16Reader = new CodeReader(__tmp16.ToStringAndFree());
+            var __tmp16Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp16.ToStringAndFree());
             bool __tmp16_last = __tmp16Reader.EndOfStream;
             while(!__tmp16_last)
             {
@@ -18554,9 +18554,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp17_line);
                 __tmp12_outputWritten = true;
             }
-            CodeBuilder __tmp18 = CodeBuilder.GetInstance();
+            var __tmp18 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp18.Write(finalOp.Name);
-            CodeReader __tmp18Reader = new CodeReader(__tmp18.ToStringAndFree());
+            var __tmp18Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp18.ToStringAndFree());
             bool __tmp18_last = __tmp18Reader.EndOfStream;
             while(!__tmp18_last)
             {
@@ -18575,9 +18575,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 __out.Write(__tmp19_line);
                 __tmp12_outputWritten = true;
             }
-            CodeBuilder __tmp20 = CodeBuilder.GetInstance();
+            var __tmp20 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
             __tmp20.Write(GetClassImplCallParameterNames(model, finalOp, ClassKind.BuilderOperation));
-            CodeReader __tmp20Reader = new CodeReader(__tmp20.ToStringAndFree());
+            var __tmp20Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp20.ToStringAndFree());
             bool __tmp20_last = __tmp20Reader.EndOfStream;
             while(!__tmp20_last)
             {

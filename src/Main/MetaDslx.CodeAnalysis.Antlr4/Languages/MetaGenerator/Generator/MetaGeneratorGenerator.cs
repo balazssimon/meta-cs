@@ -297,6 +297,10 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
             WriteLine("using System.Linq;");
             WriteLine("using System.Text;");
             WriteLine("using System.Threading.Tasks;");
+            if (context.generatorDeclaration()?.KStandalone() == null)
+            {
+                WriteLine("using MetaDslx.CodeGeneration;");
+            }
             VisitChildren(context);
             return null;
         }

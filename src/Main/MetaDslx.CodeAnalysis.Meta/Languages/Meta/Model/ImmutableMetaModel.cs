@@ -378,7 +378,6 @@ namespace MetaDslx.Languages.Meta.Model
 			return (MetaPropertyBuilder)obj;
 		}
 	}
-	
 
 	
 	public enum MetaCollectionKind

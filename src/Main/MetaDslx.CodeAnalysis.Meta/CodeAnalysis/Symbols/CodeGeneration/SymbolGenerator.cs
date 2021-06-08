@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MetaDslx.CodeGeneration;
 
 namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
 {

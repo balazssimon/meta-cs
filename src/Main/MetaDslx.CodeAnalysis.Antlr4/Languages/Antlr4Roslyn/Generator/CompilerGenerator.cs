@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MetaDslx.CodeGeneration;
 using MetaDslx.Languages.Meta; //4:1
 using MetaDslx.Languages.Antlr4Roslyn.Compilation; //5:1
 using Roslyn.Utilities; //6:1
