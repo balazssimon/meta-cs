@@ -1,5 +1,7 @@
 ﻿namespace MetaDslx.Languages.Ecore.Model
 {
+	using MetaDslx.CodeAnalysis.Symbols;
+
 	metamodel Ecore(Uri="http://www.eclipse.org/emf/2002/Ecore"); 
 
 	/// EJavaObject is a type representing the object type. In Java it is java.lang.Object. In .NET it is System.Object.
@@ -102,9 +104,10 @@
 		string ConvertToString(EDataType eDataType, EJavaObject instanceValue);
 	}
 
+	[symbol: MemberSymbol]
 	abstract class ENamedElement : EModelElement
 	{
-		[Name]
+		[symbol: Name]
 		string Name;
 	}
 
@@ -123,18 +126,21 @@
 		string Value;
 	}
 
+	[symbol: NamespaceSymbol]
 	class EPackage : ENamedElement
 	{
 		string NsURI;
 		string NsPrefix;
 		EPackage ESuperPackage;
+		[symbol: Members]
 		containment list<EPackage> ESubPackages;
+		[symbol: Members]
 		containment list<EClassifier> EClassifiers;
 		EFactory EFactoryInstance;
 		EClassifier GetEClassifier(string name);
 	}
 
-	[Type]
+	[symbol: NamedTypeSymbol]
 	class EClassifier : ENamedElement
 	{
 		string InstanceClassName;
@@ -186,6 +192,7 @@
 		EEnumLiteral GetEEnumLiteral(int value);
 	}
 
+	[symbol: MemberSymbol]
 	class EEnumLiteral : ENamedElement
 	{
 		EEnum EEnum;
@@ -195,7 +202,6 @@
 
 	class ETypedElement : ENamedElement
 	{
-		[Type]
 		EClassifier EType;
 		bool Ordered = "true";
 		bool Unique = "true";
@@ -206,6 +212,7 @@
 		containment EGenericType EGenericType;
 	}
 
+	[symbol: MemberSymbol]
 	class EStructuralFeature : ETypedElement
 	{
 		EClass EContainingClass;

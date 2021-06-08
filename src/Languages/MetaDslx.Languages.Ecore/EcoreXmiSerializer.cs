@@ -2,7 +2,7 @@ using MetaDslx.Languages.Ecore.Model;
 using MetaDslx.Languages.Meta.Model;
 using MetaDslx.Modeling;
 using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.Text;
+using Microsoft.CodeAnalysis.Text;
 using Roslyn.Utilities;
 using System;
 using System.Collections.Generic;

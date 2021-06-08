@@ -1,6 +1,6 @@
 using MetaDslx.Languages.Meta.Model;
 using MetaDslx.Modeling;
-using MetaDslx.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using Roslyn.Utilities;
 using System;
 using System.Collections.Generic;
@@ -163,7 +163,7 @@ namespace MetaDslx.Languages.Ecore.Model
             {
                 if (eattr.ID && eattr.EType == EcoreInstance.EString)
                 {
-                    mprop.Attributes.Add(MetaInstance.NameAttribute.ToMutable());
+                    mprop.SymbolProperty = "Name";
                 }
             }
             else if (eprop is EReference eref)
@@ -399,7 +399,7 @@ namespace MetaDslx.Languages.Ecore.Model
             else
             {
                 eprop = _factory.EAttribute();
-                if (mprop.Attributes.Any(attr => attr == MetaInstance.NameAttribute))
+                if (mprop.SymbolProperty == "Name")
                 {
                     ((EAttributeBuilder)eprop).ID = true;
                     eprop.EType = EcoreInstance.EString.ToMutable();
