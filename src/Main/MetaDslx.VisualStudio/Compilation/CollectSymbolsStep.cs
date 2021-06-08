@@ -69,7 +69,7 @@ namespace MetaDslx.VisualStudio.Compilation
                 {
                     if (cancellationToken.IsCancellationRequested) return null;
                     var ti = semanticModel.GetTypeInfo(node, cancellationToken);
-                    if (ti.Type is Symbol typeSymbol) return typeSymbol;
+                    if (ti.Type is TypeSymbol typeSymbol) return typeSymbol;
                     //var si = semanticModel.GetSymbolInfo(node, cancellationToken);
                     //if (si.Symbol != null) return si.Symbol;
                 }
