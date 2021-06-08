@@ -7,7 +7,7 @@ options
     ignoreRoslynRules=false;
 }
 
-sandyFile : line* EOF;
+main : line* EOF;
 
 line      : statement NEWLINE;
 

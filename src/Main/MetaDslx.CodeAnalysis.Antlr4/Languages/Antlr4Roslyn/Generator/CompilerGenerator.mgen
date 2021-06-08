@@ -1461,7 +1461,7 @@ namespace [Properties.DefaultNamespace]
             {
                 throw new ArgumentNullException(nameof(root));
             }
-            var directives = root.Kind == [lang]SyntaxKind.Main && root is ICompilationUnitRootSyntax compilationUnitRoot ?
+            var directives = root.Kind == [lang]SyntaxKind.[Instances.MainRule().PlainName()] && root is ICompilationUnitRootSyntax compilationUnitRoot ?
                 ((ICompilationUnitRootSyntax)root).GetConditionalDirectivesStack() :
                 DirectiveStack.Empty;
             return new ParsedSyntaxTree(
@@ -1712,7 +1712,7 @@ namespace [Properties.DefaultNamespace]
                 _path = path ?? string.Empty;
                 _root = cloneRoot ? this.CloneNodeAsRoot(root) : root;
                 _parseData = parseData;
-                _hasCompilationUnitRoot = root.Kind == [lang]SyntaxKind.Main;
+                _hasCompilationUnitRoot = root.Kind == [lang]SyntaxKind.[Instances.MainRule().PlainName()];
             }
             protected override ParseData ParseData => _parseData;
             public override string FilePath

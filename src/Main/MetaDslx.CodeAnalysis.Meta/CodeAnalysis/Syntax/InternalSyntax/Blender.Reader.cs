@@ -247,7 +247,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 }
 
                 if (_oldLexerState != incrementalData.StartLexerState) return false;
-                if (_oldParserState != incrementalData.StartParserState) return false;
+                if (_parser.State != incrementalData.StartParserState) return false;
 
                 return true;
             }
@@ -354,14 +354,14 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 {
                     customToken = _parser.CreateCustomTokenCore(token, _parser.TokenCount, _parser.LexerPosition - token.FullWidth);
                 }
-                else if (node != null)
-                {
-                    var lastToken = (InternalSyntaxToken)node.Green.GetLastTerminal();
-                    customToken = _parser.CreateCustomTokenCore(lastToken, _parser.TokenCount, _parser.LexerPosition - lastToken.FullWidth);
-                }
+                //else if (node != null)
+                //{
+                //    var lastToken = (InternalSyntaxToken)node.Green.GetLastTerminal();
+                //    customToken = _parser.CreateCustomTokenCore(lastToken, _parser.TokenCount, _parser.LexerPosition - lastToken.FullWidth);
+                //}
 
                 return new BlendedNode(node, token, customToken,
-                    new Blender(_parser, _oldTreeCursor, _changes, _newPosition, _changeDelta, _newDirectives, _oldDirectives, _newLexerState, _oldLexerState, _newParserState, _oldParserState));
+                    new Blender(_parser, _oldTreeCursor, _changes, _newPosition, _changeDelta, _newDirectives, _oldDirectives, _newLexerState, _oldLexerState, _newParserState, _parser.State));
             }
         }
     }

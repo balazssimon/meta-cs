@@ -26,6 +26,8 @@ namespace MetaDslx.CodeAnalysis
 
         protected abstract ParseData ParseData { get; }
 
+        public ParseData GetParseData() => this.ParseData;
+
         /// <summary>
         /// Determines if two trees are the same, disregarding trivia differences.
         /// </summary>

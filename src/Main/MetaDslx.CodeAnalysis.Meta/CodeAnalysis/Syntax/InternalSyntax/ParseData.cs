@@ -44,6 +44,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         public ParserStateManager? ParserStateManager => _parserStateManager;
 
+        internal ConditionalWeakTable<GreenNode, IncrementalNodeData>? IncrementalData => _incrementalData;
+
         public ParseData WithDirectives(DirectiveStack directives)
         {
             return new ParseData(this.Version, _lexerStateManager, _parserStateManager, directives, _minLexerLookahead, _maxLexerLookahead, _incrementalData);

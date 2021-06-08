@@ -67,7 +67,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 _oldRoot = oldTree;
                 _oldParseData = oldParseData;
                 _version = oldParseData != null ? oldParseData.Version + 1 : 1;
-                _incrementalData = new ConditionalWeakTable<GreenNode, IncrementalNodeData>();
+                _incrementalData = oldParseData?.IncrementalData != null ? oldParseData.IncrementalData : new ConditionalWeakTable<GreenNode, IncrementalNodeData>();
                 if (oldParseData?.LexerStateManager != null) Lexer.StateManager?.InternalSetCache(oldParseData.LexerStateManager);
                 if (oldParseData?.ParserStateManager != null) StateManager?.InternalSetCache(oldParseData.ParserStateManager);
             }
@@ -193,7 +193,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 {
                     var lookaheadBefore = minLookahead - incrementalState.position;
                     var lookaheadAfter = maxLookahead - incrementalState.position - green.FullWidth;
-                    var exists = _incrementalData.TryGetValue(green, out var existingData);
+                    var exists = this.TryGetIncrementalData(green, out var existingData);
                     if (exists && !existingData.Equals(incrementalState.lexerState, _lexerState, incrementalState.state, state, minTokenLookahead, maxTokenLookahead, lookaheadBefore, lookaheadAfter))
                     {
                         green = ((InternalSyntaxNode)green).Clone();
@@ -331,9 +331,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         internal bool TryGetIncrementalData(GreenNode green, out IncrementalNodeData? data)
         {
             data = null;
-            return (_incrementalData != null && _incrementalData.TryGetValue(green, out data) ||
-                _oldParseData != null && _oldParseData.TryGetIncrementalData(green, out data)) &&
-                data != null;
+            return _incrementalData != null && _incrementalData.TryGetValue(green, out data) && data != null;
         }
 
         protected void EraseState()
