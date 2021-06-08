@@ -31,8 +31,6 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         private readonly DirectiveStack _oldDirectives;
         private readonly LexerState? _newLexerState;
         private readonly LexerState? _oldLexerState;
-        private readonly ParserState? _newParserState;
-        private readonly ParserState? _oldParserState;
 
         public Blender(SyntaxParser parser, LanguageSyntaxNode? oldTree, ParseData? oldParseData, IEnumerable<TextChangeRange>? changes)
         {
@@ -82,8 +80,6 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             _oldDirectives = default;
             _newLexerState = null;
             _oldLexerState = null;
-            _newParserState = null;
-            _oldParserState = null;
         }
 
         private Blender(
@@ -95,9 +91,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             DirectiveStack newDirectives,
             DirectiveStack oldDirectives,
             LexerState? newLexerState,
-            LexerState? oldLexerState,
-            ParserState? newParserState,
-            ParserState? oldParserState)
+            LexerState? oldLexerState)
         {
             Debug.Assert(parser != null);
             Debug.Assert(changes != null);
@@ -111,14 +105,10 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             _oldDirectives = oldDirectives;
             _newLexerState = newLexerState;
             _oldLexerState = oldLexerState;
-            _newParserState = newParserState;
-            _oldParserState = oldParserState;
         }
 
         public LexerState? NewLexerState => _newLexerState;
         public LexerState? OldLexerState => _oldLexerState;
-        public ParserState? NewParserState => _newParserState;
-        public ParserState? OldParserState => _oldParserState;
         public int Position => _newPosition;
         public DirectiveStack Directives => _newDirectives;
 

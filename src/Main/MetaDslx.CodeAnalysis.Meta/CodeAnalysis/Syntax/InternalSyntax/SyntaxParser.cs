@@ -89,11 +89,13 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         public LanguageSyntaxNode OldRoot => _oldRoot;
 
-        public int LexerPosition => Lexer.Position;
-
         public LanguageParseOptions Options => Lexer.Options;
 
         public int Position => _position;
+
+        public int LexerPosition => Lexer.Position;
+
+        public LexerState? LexerState => Lexer.State;
 
         public ParserState? State
         {
@@ -306,13 +308,17 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             // remember result
             var result = WithCurrentSyntaxErrors(CurrentNode.Green, 0);
             var currentNode = _currentNode;
+            var newParserState = StateManager?.State;
 
-            if (this.TryGetIncrementalData(currentNode.Node.Green, out var incrementalData) && incrementalData != null)
+            var hasIncrementalData = this.TryGetIncrementalData(currentNode.Node.Green, out var incrementalData);
+            Debug.Assert(hasIncrementalData);
+            if (hasIncrementalData)
             {
                 _minTokenLookahead = Math.Min(_minTokenLookahead, incrementalData.LookaheadTokensBefore);
                 _maxTokenLookahead = Math.Max(_maxTokenLookahead, incrementalData.LookaheadTokensAfter);
                 _minLookahead = Math.Min(_minLookahead, _position + incrementalData.LookaheadBefore);
                 _maxLookahead = Math.Max(_maxLookahead, _position + currentNode.Node.FullWidth + incrementalData.LookaheadAfter);
+                newParserState = incrementalData.EndParserState;
             }
 
             _blendedTokens.InsertItem(currentNode);
@@ -320,7 +326,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             MoveToNextToken();
 
             // erase current state
-            RestoreParserState(currentNode.Blender.NewParserState);
+            RestoreParserState(newParserState);
             EraseState();
 
             // TODO:MetaDslx: correct Peek before this position
@@ -520,7 +526,6 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             {
                 _position += _currentNode.Node.FullWidth;
                 _prevTokenTrailingTrivia = _currentNode.Node.GetTrailingTrivia().Node;
-                _lexerState = _currentNode.Blender.NewLexerState;
             }
             else
             {
@@ -530,6 +535,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             _currentToken = default;
             if (_blendedTokens != null)
             {
+                _lexerState = _blendedTokens.GetCurrentItem().Blender.NewLexerState;
                 _blendedTokens.EatItem();
                 _currentNode = default;
             }

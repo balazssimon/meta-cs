@@ -30,20 +30,26 @@
 
   <Target Name="WriteAntlr4JarName" BeforeTargets="Build">
     <Exec Command="echo $(Antlr4JarName) &gt;&quot;$(ProjectDir)Resources\Antlr4JarName.txt&quot;" />
-    <Message Text="Writing $(Antlr4JarName) to resource file." Importance="High"/>
+    <Message Text="Writing $(Antlr4JarName) to resource file." Importance="High" />
   </Target>
 
 
   <ItemGroup>
     <None Include="license.txt" Pack="true" PackagePath="" />
     <None Include="tools\$(Antlr4JarName)" Pack="true" PackagePath="tools" />
+    <!--None Include="..\MetaDslx.CodeAnalysis\bin\$(Configuration)\netstandard2.0\*.dll" Pack="true" PackagePath="tools\net5.0\any" CopyToOutputDirectory="PreserveNewest" /-->
   </ItemGroup>
   
   <ItemGroup>
     <PackageReference Include="System.CommandLine" Version="2.0.0-beta1.20574.7" />
     <PackageReference Include="System.CommandLine.DragonFruit" Version="0.3.0-alpha.20574.7" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
-    <PackageReference Include="MetaDslx.CodeAnalysis" Version="$(VersionPrefix)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MetaDslx.CodeAnalysis.Meta\MetaDslx.CodeAnalysis.Meta.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\MetaDslx.CodeAnalysis.Antlr4\MetaDslx.CodeAnalysis.Antlr4.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\MetaDslx.Languages.Meta\MetaDslx.Languages.Meta.csproj" PrivateAssets="all" />
   </ItemGroup>
   
   <ItemGroup>

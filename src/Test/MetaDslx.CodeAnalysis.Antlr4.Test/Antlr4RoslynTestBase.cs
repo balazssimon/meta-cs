@@ -169,7 +169,11 @@ namespace MetaDslx.Tests
                     i = source.Length;
                     last = true;
                 }
-                if (i < source.Length && source[i] == '\r') continue;
+                if (i < source.Length && source[i] == '\r')
+                {
+                    i += delta;
+                    continue;
+                }
                 string currentSource = source.Substring(0, i);
                 try
                 {
@@ -193,15 +197,13 @@ namespace MetaDslx.Tests
             SourceText oldText = null;
             LanguageSyntaxTree oldTree = null;
             bool reachedEnd = false;
+            int prevI = 0;
             for (int i = 0; !reachedEnd; i += delta)
             {
-                var currentDelta = delta;
-                if (i >= source.Length)
-                {
-                    currentDelta = source.Length - (i - delta);
-                    i = source.Length;
-                }
-                if (i < source.Length && source[i] == '\r') continue;
+                if (i >= source.Length) i = source.Length;
+                if (i == source.Length) reachedEnd = true;
+                if (i > 0 && i <= source.Length && source[i - 1] == '\r') continue;
+                var currentDelta = i - prevI;
                 string currentSource = source.Substring(0, i);
                 try
                 {
@@ -220,7 +222,7 @@ namespace MetaDslx.Tests
                     //throw;
                     throw new WrappedXunitException($"Typing failed at position {i}\r\n----\r\n", ex);
                 }
-                if (i == source.Length) reachedEnd = true;
+                prevI = i;
             }
         }
 

@@ -152,6 +152,10 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 var lexeme = this.ScanLexeme();
                 if (lexeme.kind != SyntaxKind.None)
                 {
+                    if (lexeme.kind == SyntaxKind.Eof && TextWindow.Width > 0)
+                    {
+                        this.AppendLexeme(SyntaxKind.BadToken, true, false);
+                    }
                     this.AppendLexeme(lexeme.kind, lexeme.isTrivia, lexeme.cache);
                 }
             }

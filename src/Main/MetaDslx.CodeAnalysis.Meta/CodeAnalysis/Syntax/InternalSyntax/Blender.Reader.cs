@@ -23,8 +23,6 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             private DirectiveStack _oldDirectives;
             private LexerState? _newLexerState;
             private LexerState? _oldLexerState;
-            private ParserState? _newParserState;
-            private ParserState? _oldParserState;
 
             public Reader(Blender blender)
             {
@@ -34,11 +32,9 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 _newPosition = blender._newPosition;
                 _changeDelta = blender._changeDelta;
                 _newDirectives = blender._newDirectives;
-                _oldDirectives = blender._oldDirectives;
+                _oldDirectives = blender._newDirectives;
                 _newLexerState = blender._newLexerState;
-                _oldLexerState = blender._oldLexerState;
-                _newParserState = blender._newParserState;
-                _oldParserState = blender._oldParserState;
+                _oldLexerState = blender._newLexerState;
             }
 
             internal BlendedNode ReadNodeOrToken(bool asToken)
@@ -218,7 +214,6 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 _oldDirectives = currentNodeOrToken.ApplyDirectives(_oldDirectives);
 
                 _newLexerState = incrementalData.EndLexerState;
-                _newParserState = incrementalData.EndParserState;
 
                 blendedNode = CreateBlendedNode(
                     node: (LanguageSyntaxNode)currentNodeOrToken.AsNode(),
@@ -354,14 +349,14 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 {
                     customToken = _parser.CreateCustomTokenCore(token, _parser.TokenCount, _parser.LexerPosition - token.FullWidth);
                 }
-                //else if (node != null)
-                //{
-                //    var lastToken = (InternalSyntaxToken)node.Green.GetLastTerminal();
-                //    customToken = _parser.CreateCustomTokenCore(lastToken, _parser.TokenCount, _parser.LexerPosition - lastToken.FullWidth);
-                //}
+                else if (node != null)
+                {
+                    var lastToken = (InternalSyntaxToken)node.Green.GetLastTerminal();
+                    customToken = _parser.CreateCustomTokenCore(lastToken, _parser.TokenCount, _parser.LexerPosition - lastToken.FullWidth);
+                }
 
                 return new BlendedNode(node, token, customToken,
-                    new Blender(_parser, _oldTreeCursor, _changes, _newPosition, _changeDelta, _newDirectives, _oldDirectives, _newLexerState, _oldLexerState, _newParserState, _parser.State));
+                    new Blender(_parser, _oldTreeCursor, _changes, _newPosition, _changeDelta, _newDirectives, _oldDirectives, _newLexerState, _oldLexerState));
             }
         }
     }
