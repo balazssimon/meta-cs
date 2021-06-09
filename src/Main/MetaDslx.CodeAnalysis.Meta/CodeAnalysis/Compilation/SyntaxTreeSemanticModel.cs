@@ -258,7 +258,7 @@ namespace MetaDslx.CodeAnalysis
         {
             var binder = this.Compilation.GetBinder(syntax);
             var symbolBinder = binder.FindAncestorBinder<ValueBinder>();
-            if (symbolBinder is not null && symbolBinder.Syntax == syntax)
+            if (symbolBinder is not null && symbolBinder.Syntax.Span == syntax.Span)
             {
                 var boundSymbols = symbolBinder.Bind(null, cancellationToken) as BoundValue;
                 if (boundSymbols is not null)
@@ -274,7 +274,7 @@ namespace MetaDslx.CodeAnalysis
         {
             var binder = this.Compilation.GetBinder(syntax);
             var symbolBinder = binder.FindAncestorBinder<ValueBinder>();
-            if (symbolBinder is not null && symbolBinder.Syntax == syntax)
+            if (symbolBinder is not null && symbolBinder.Syntax.Span == syntax.Span)
             {
                 var boundSymbols = symbolBinder.Bind(null, cancellationToken) as BoundValue;
                 if (boundSymbols is not null)

@@ -33,7 +33,7 @@
   <PropertyGroup>
     <!-- Versions used by several individual references below -->
     <Antlr4RuntimeStandardVersion>4.9.1</Antlr4RuntimeStandardVersion>
-    <MicrosoftDependencyInjectionVersion>5.0.0</MicrosoftDependencyInjectionVersion>
+    <MicrosoftDependencyInjectionVersion>5.0.1</MicrosoftDependencyInjectionVersion>
     <MicrosoftBuildVersion>16.8.0</MicrosoftBuildVersion>
     <MicrosoftCodeAnalysisCSharpVersion>3.9.0</MicrosoftCodeAnalysisCSharpVersion>
     <MicrosoftCodeAnalysisAnalyzersVersion>3.3.2</MicrosoftCodeAnalysisAnalyzersVersion>

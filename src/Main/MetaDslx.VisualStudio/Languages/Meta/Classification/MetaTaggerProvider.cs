@@ -26,6 +26,8 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.VisualStudio.Languages.Meta.Classification
 {
+    using SymbolKind = MetaDslx.CodeAnalysis.Symbols.SymbolKind;
+
     //[Export(typeof(ITaggerProvider))]
     [Export(typeof(IViewTaggerProvider))]
     [TagType(typeof(IErrorTag))]
@@ -47,7 +49,7 @@ namespace MetaDslx.VisualStudio.Languages.Meta.Classification
 
         public override IClassificationType GetSymbolClassificationType(Symbol symbol, SyntaxToken token, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
-            if (symbol is ITypeSymbol && !(symbol is IErrorTypeSymbol))
+            if (symbol is TypeSymbol typeSymbol && (symbol.Kind != SymbolKind.ErrorType))
             {
                 if (symbol.Locations.Any(loc => loc.SourceSpan == token.Span)) return this.StandardClassificationService.SymbolDefinition;
                 else return this.StandardClassificationService.SymbolDefinition; // this.StandardClassificationService.SymbolReference

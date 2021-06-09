@@ -42,7 +42,7 @@ namespace MetaDslx.VisualStudio.Compilation
             SyntaxNode root;
             if (syntaxTree.TryGetRoot(out root))
             {
-                SemanticModel semanticModel = languageCompilation.GetSemanticModel(syntaxTree);
+                var semanticModel = (LanguageSemanticModel)languageCompilation.GetSemanticModel(syntaxTree);
                 foreach (var token in root.DescendantTokens())
                 {
                     if (cancellationToken.IsCancellationRequested) return null;
@@ -60,20 +60,13 @@ namespace MetaDslx.VisualStudio.Compilation
             return result;
         }
 
-        private Symbol GetSymbol(SyntaxToken token, SemanticModel semanticModel, CancellationToken cancellationToken)
+        private Symbol GetSymbol(SyntaxToken token, LanguageSemanticModel semanticModel, CancellationToken cancellationToken)
         {
             try
             {
-                LanguageSyntaxNode node = token.Parent as LanguageSyntaxNode;
-                if (node != null && node.SlotCount == 1)
-                {
-                    if (cancellationToken.IsCancellationRequested) return null;
-                    var ti = semanticModel.GetTypeInfo(node, cancellationToken);
-                    if (ti.Type is TypeSymbol typeSymbol) return typeSymbol;
-                    //var si = semanticModel.GetSymbolInfo(node, cancellationToken);
-                    //if (si.Symbol != null) return si.Symbol;
-                }
-                return null;
+                if (cancellationToken.IsCancellationRequested) return null;
+                var si = semanticModel.GetSymbolInfo(token, cancellationToken);
+                return si.Symbol;
             }
             catch (Exception ex)
             {
