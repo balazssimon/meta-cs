@@ -196,16 +196,26 @@ namespace MetaDslx.CodeAnalysis
             throw new NotSupportedException();
         }
 
-        public override DeclaredSymbol GetDeclaredSymbol(LanguageSyntaxNode declarationSyntax, CancellationToken cancellationToken = default(CancellationToken))
+        public override DeclaredSymbol GetDeclaredSymbol(SyntaxNodeOrToken declarationSyntax, CancellationToken cancellationToken = default(CancellationToken))
         {
             // Can't define namespace inside a member.
             return null;
         }
 
-        public override ImmutableArray<DeclaredSymbol> GetDeclaredSymbols(LanguageSyntaxNode declarationSyntax, CancellationToken cancellationToken = default(CancellationToken))
+        public override ImmutableArray<DeclaredSymbol> GetDeclaredSymbols(SyntaxNodeOrToken declarationSyntax, CancellationToken cancellationToken = default(CancellationToken))
         {
             // Can't define field inside member.
             return ImmutableArray.Create<DeclaredSymbol>();
+        }
+
+        public override TypeInfo GetTypeInfo(SyntaxNodeOrToken syntax, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override SymbolInfo GetSymbolInfo(SyntaxNodeOrToken syntax, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
         }
 
         public override SyntaxTree SyntaxTree

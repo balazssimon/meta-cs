@@ -82,25 +82,31 @@ namespace MetaDslx.CodeAnalysis
 
         public abstract new AliasSymbol? GetSpeculativeAliasInfo(int position, SyntaxNodeOrToken syntax, SpeculativeBindingOption bindingOption);
 
-        protected sealed override SymbolInfo GetSpeculativeSymbolInfoCore(int position, SyntaxNode expression, SpeculativeBindingOption bindingOption)
+        protected sealed override Microsoft.CodeAnalysis.SymbolInfo GetSpeculativeSymbolInfoCore(int position, SyntaxNode expression, SpeculativeBindingOption bindingOption)
         {
             throw new NotImplementedException();
         }
 
-        protected sealed override TypeInfo GetSpeculativeTypeInfoCore(int position, SyntaxNode expression, SpeculativeBindingOption bindingOption)
+        protected sealed override Microsoft.CodeAnalysis.TypeInfo GetSpeculativeTypeInfoCore(int position, SyntaxNode expression, SpeculativeBindingOption bindingOption)
         {
             throw new NotImplementedException();
         }
 
-        protected sealed override SymbolInfo GetSymbolInfoCore(SyntaxNode node, CancellationToken cancellationToken = default)
+        protected sealed override Microsoft.CodeAnalysis.SymbolInfo GetSymbolInfoCore(SyntaxNode node, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var result = this.GetSymbolInfo(node, cancellationToken);
+            return new Microsoft.CodeAnalysis.SymbolInfo(result.Symbol.GetPublicSymbol(), result.CandidateSymbols.SelectAsArray(s => s.GetPublicSymbol()), result.CandidateReason);
         }
 
-        protected sealed override TypeInfo GetTypeInfoCore(SyntaxNode node, CancellationToken cancellationToken = default)
+        public abstract new SymbolInfo GetSymbolInfo(SyntaxNodeOrToken syntax, CancellationToken cancellationToken = default);
+
+        protected sealed override Microsoft.CodeAnalysis.TypeInfo GetTypeInfoCore(SyntaxNode node, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var result = this.GetTypeInfo(node, cancellationToken);
+            return new Microsoft.CodeAnalysis.TypeInfo(result.Type.GetPublicSymbol(), result.ConvertedType.GetPublicSymbol(), default, default);
         }
+
+        public abstract new TypeInfo GetTypeInfo(SyntaxNodeOrToken syntax, CancellationToken cancellationToken = default);
 
         protected sealed override bool IsAccessibleCore(int position, ISymbol symbol)
         {

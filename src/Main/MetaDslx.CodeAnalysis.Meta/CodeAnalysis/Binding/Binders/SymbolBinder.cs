@@ -48,6 +48,11 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             return this.DefinedSymbol;
         }
 
+        public override ImmutableArray<Symbol> GetDefinedSymbols()
+        {
+            return this.DefinedSymbols;
+        }
+
         public override Imports GetImports(LookupConstraints recursionConstraints = null)
         {
             if (_lazyImports == null && (recursionConstraints == null || !recursionConstraints.InUsing))

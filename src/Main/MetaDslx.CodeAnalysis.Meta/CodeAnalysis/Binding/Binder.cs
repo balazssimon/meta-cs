@@ -333,7 +333,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             return null;
         }
 
-        protected TBinder FindAncestorBinder<TBinder>()
+        public TBinder FindAncestorBinder<TBinder>()
             where TBinder: Binder
         {
             var binder = this;

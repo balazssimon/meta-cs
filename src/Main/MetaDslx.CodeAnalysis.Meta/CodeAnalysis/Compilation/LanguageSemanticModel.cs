@@ -195,7 +195,7 @@ namespace MetaDslx.CodeAnalysis
             Debug.Assert(position == CheckAndAdjustPosition(position), "Expected adjusted position");
         }
 
-        protected void CheckSyntaxNode(LanguageSyntaxNode syntax)
+        protected void CheckSyntaxNode(SyntaxNodeOrToken syntax)
         {
             BoundTree.CheckSyntaxNode(syntax);
         }
@@ -639,53 +639,6 @@ namespace MetaDslx.CodeAnalysis
         {
             get;
         }
-
-        #region "GetDeclaredSymbol overloads for MemberDeclarationSyntax and its subtypes"
-
-        /// <summary>
-        /// Given a member declaration syntax, get the corresponding symbol.
-        /// </summary>
-        /// <param name="declarationSyntax">The syntax node that declares a member.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>The symbol that was declared.</returns>
-        /// <remarks>
-        /// NOTE:   We have no GetDeclaredSymbol overloads for following subtypes of MemberDeclarationSyntax:
-        /// NOTE:   (1) GlobalStatementSyntax as they don't declare any symbols.
-        /// NOTE:   (2) IncompleteMemberSyntax as there are no symbols for incomplete members.
-        /// NOTE:   (3) BaseFieldDeclarationSyntax or its subtypes as these declarations can contain multiple variable declarators.
-        /// NOTE:       GetDeclaredSymbol should be called on the variable declarators directly.
-        /// </remarks>
-        public abstract DeclaredSymbol GetDeclaredSymbol(LanguageSyntaxNode declarationSyntax, CancellationToken cancellationToken = default(CancellationToken));
-
-        /// <summary>
-        /// Given a base field declaration syntax, get the corresponding symbols.
-        /// </summary>
-        /// <param name="declarationSyntax">The syntax node that declares one or more fields or events.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>The symbols that were declared.</returns>
-        public abstract ImmutableArray<DeclaredSymbol> GetDeclaredSymbols(LanguageSyntaxNode declarationSyntax, CancellationToken cancellationToken = default(CancellationToken));
-
-        // Get the symbols and possible method or property group associated with a bound node, as
-        // they should be exposed through GetSemanticInfo.
-        // NB: It is not safe to pass a null binderOpt during speculative binding.
-        private ImmutableArray<Symbol> GetSemanticSymbols(
-            BoundNode boundNode,
-            BoundNode boundNodeForSyntacticParent,
-            Binder binderOpt,
-            SymbolInfoOptions options,
-            out bool isDynamic,
-            out LookupResultKind resultKind,
-            out ImmutableArray<Symbol> memberGroup)
-        {
-            memberGroup = ImmutableArray<Symbol>.Empty;
-            ImmutableArray<Symbol> symbols = ImmutableArray<Symbol>.Empty;
-            resultKind = LookupResultKind.Viable;
-            isDynamic = false;
-            throw new NotImplementedException("TODO:MetaDslx");
-            //return symbols;
-        }
-
-        #endregion
 
         internal BinderFlags GetSemanticModelBinderFlags()
         {

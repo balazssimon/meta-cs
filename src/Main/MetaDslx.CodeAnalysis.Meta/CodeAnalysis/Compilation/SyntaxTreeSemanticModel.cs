@@ -16,6 +16,7 @@ using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.FlowAnalysis;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.CodeAnalysis.Binding.Binders;
+using MetaDslx.CodeAnalysis.Binding.BoundNodes;
 
 namespace MetaDslx.CodeAnalysis
 {
@@ -228,39 +229,14 @@ namespace MetaDslx.CodeAnalysis
         /// NOTE:   (3) BaseFieldDeclarationSyntax or its subtypes as these declarations can contain multiple variable declarators.
         /// NOTE:       GetDeclaredSymbol should be called on the variable declarators directly.
         /// </remarks>
-        public override DeclaredSymbol GetDeclaredSymbol(LanguageSyntaxNode declarationSyntax, CancellationToken cancellationToken = default(CancellationToken))
+        public override DeclaredSymbol? GetDeclaredSymbol(SyntaxNodeOrToken declarationSyntax, CancellationToken cancellationToken = default(CancellationToken))
         {
-            CheckSyntaxNode(declarationSyntax);
-
-            return GetDeclaredNamespace(declarationSyntax);
+            var binder = this.Compilation.GetBinder(declarationSyntax);
+            var symbolBinder = binder.FindAncestorBinder<SymbolBinder>();
+            if (symbolBinder is not null && symbolBinder.Syntax == declarationSyntax) return symbolBinder?.GetDefinedSymbol() as DeclaredSymbol;
+            else return null;
         }
 
-        private NamespaceSymbol GetDeclaredNamespace(LanguageSyntaxNode declarationSyntax)
-        {
-            Debug.Assert(declarationSyntax != null);
-            throw new NotImplementedException("TODO:MetaDslx");
-            /*NamespaceOrTypeSymbol container;
-            if (declarationSyntax.Parent.RawKind == SyntaxKind.CompilationUnit)
-            {
-                container = _compilation.Assembly.GlobalNamespace;
-            }
-            else
-            {
-                container = GetDeclaredNamespaceOrType(declarationSyntax.Parent);
-            }
-
-            Debug.Assert((object)container != null);
-
-            // We should get a namespace symbol since we match the symbol location with a namespace declaration syntax location.
-            var symbol = (NamespaceSymbol)GetDeclaredMember(container, declarationSyntax.Span, declarationSyntax.Name);
-            Debug.Assert((object)symbol != null);
-
-            // Map to compilation-scoped namespace (Roslyn bug 9538)
-            symbol = _compilation.GetCompilationNamespace(symbol);
-            Debug.Assert((object)symbol != null);
-
-            return symbol;*/
-        }
 
         #endregion
 
@@ -270,24 +246,45 @@ namespace MetaDslx.CodeAnalysis
         /// <param name="declarationSyntax">The syntax node that declares one or more fields or events.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The field symbols that were declared.</returns>
-        public override ImmutableArray<DeclaredSymbol> GetDeclaredSymbols(LanguageSyntaxNode declarationSyntax, CancellationToken cancellationToken = default(CancellationToken))
+        public override ImmutableArray<DeclaredSymbol> GetDeclaredSymbols(SyntaxNodeOrToken declarationSyntax, CancellationToken cancellationToken = default(CancellationToken))
         {
-            CheckSyntaxNode(declarationSyntax);
+            var binder = this.Compilation.GetBinder(declarationSyntax);
+            var symbolBinder = binder.FindAncestorBinder<SymbolBinder>();
+            if (symbolBinder is not null && symbolBinder.Syntax == declarationSyntax) return symbolBinder.GetDefinedSymbols().OfType<DeclaredSymbol>().ToImmutableArray();
+            else return ImmutableArray<DeclaredSymbol>.Empty;
+        }
 
-            /* 
-            var builder = new ArrayBuilder<ISymbol>();
-
-            foreach (var declarator in declarationSyntax.Declaration.Variables)
+        public override TypeInfo GetTypeInfo(SyntaxNodeOrToken syntax, CancellationToken cancellationToken = default)
+        {
+            var binder = this.Compilation.GetBinder(syntax);
+            var symbolBinder = binder.FindAncestorBinder<ValueBinder>();
+            if (symbolBinder is not null && symbolBinder.Syntax == syntax)
             {
-                var field = this.GetDeclaredSymbol(declarator, cancellationToken) as ISymbol;
-                if (field != null)
+                var boundSymbols = symbolBinder.Bind(null, cancellationToken) as BoundValue;
+                if (boundSymbols is not null)
                 {
-                    builder.Add(field);
+                    var typeSymbol = boundSymbols.Values.OfType<TypeSymbol>().FirstOrDefault();
+                    if (typeSymbol is not null) return new TypeInfo(typeSymbol, typeSymbol);
                 }
             }
+            return default;
+        }
 
-            return builder.ToImmutableAndFree();*/
-            throw new NotImplementedException("TODO:MetaDslx");
+        public override SymbolInfo GetSymbolInfo(SyntaxNodeOrToken syntax, CancellationToken cancellationToken = default)
+        {
+            var binder = this.Compilation.GetBinder(syntax);
+            var symbolBinder = binder.FindAncestorBinder<ValueBinder>();
+            if (symbolBinder is not null && symbolBinder.Syntax == syntax)
+            {
+                var boundSymbols = symbolBinder.Bind(null, cancellationToken) as BoundValue;
+                if (boundSymbols is not null)
+                {
+                    var symbols = boundSymbols.Values.OfType<Symbol>().ToImmutableArray();
+                    var symbol = symbols.FirstOrDefault();
+                    return new SymbolInfo(symbol, symbols, CandidateReason.None);
+                }
+            }
+            return default;
         }
 
         public override ControlFlowAnalysis AnalyzeControlFlow(LanguageSyntaxNode firstStatement, LanguageSyntaxNode lastStatement)

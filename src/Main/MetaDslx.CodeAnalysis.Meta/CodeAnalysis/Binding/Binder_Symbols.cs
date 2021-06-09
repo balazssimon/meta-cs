@@ -180,5 +180,10 @@ namespace MetaDslx.CodeAnalysis.Binding
         {
             return null;
         }
+
+        public virtual ImmutableArray<Symbol> GetDefinedSymbols()
+        {
+            return ImmutableArray<Symbol>.Empty;
+        }
     }
 }

@@ -22,7 +22,7 @@ namespace MetaDslx.Bootstrap.MetaModel
             Console.WriteLine(coreModel);
 
             //string text = File.ReadAllText(@"..\..\..\..\..\Main\MetaDslx.CodeAnalysis.Meta\Languages\Meta\Model\ImmutableMetaModel.mm");
-            //string text = File.ReadAllText(@"..\..\..\ImmutableMetaModel.mm");
+            string text = File.ReadAllText(@"..\..\..\ImmutableMetaModel.mm");
             //string text = File.ReadAllText(@"..\..\..\PropertiesTestLang.mm");
             //string text = File.ReadAllText(@"..\..\..\Calculator.mm");
             //string text = File.ReadAllText(@"..\..\..\..\..\..\..\soal-cs\Src\Main\MetaDslx.Languages.Soal\Symbols\Soal.mm");
@@ -30,7 +30,7 @@ namespace MetaDslx.Bootstrap.MetaModel
             //string text = File.ReadAllText(@"..\..\..\..\..\Test\MetaDslx.CodeAnalysis.Languages.Test\Languages\Soal\Model\Soal.mm");
             //string text = File.ReadAllText(@"..\..\..\..\..\Test\MetaDslx.CodeAnalysis.Meta.Test\Languages\PropertiesTest\PropertiesTestLang.mm");
             //string text = File.ReadAllText(@"..\..\..\..\..\Main\MetaDslx.Languages.Omg\Mof\Model\Mof.mm");
-            string text = File.ReadAllText(@"..\..\..\..\..\Languages\MetaDslx.Languages.Uml-v2.5.1\Model\Uml.mm");
+            //string text = File.ReadAllText(@"..\..\..\..\..\Languages\MetaDslx.Languages.Uml-v2.5.1\Model\Uml.mm");
             //string text = File.ReadAllText(@"..\..\..\..\..\Languages\MetaDslx.Languages.Ecore\Model\Ecore.mm");
             //string text = File.ReadAllText(@"..\..\..\..\..\Examples\RailDsl\Model\RailDsl.mm");
             //string text = File.ReadAllText(@"..\..\..\Error0.mm");
@@ -75,6 +75,8 @@ namespace MetaDslx.Bootstrap.MetaModel
             //var node = tree.GetCompilationUnitRoot().NamespaceDeclaration.NamespaceBody.Declaration[0].ConstDeclaration.Name.Identifier;
             //var info = compilation.GetSemanticModel(tree, true).GetSymbolInfo(node);
             //Console.WriteLine(info.Symbol);
+            //var info = compilation.GetSemanticModel(tree, true).GetTypeInfo(node);
+            //Console.WriteLine(info.Type);
 
             using (StreamWriter writer = new StreamWriter("Model.txt"))
             {
