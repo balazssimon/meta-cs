@@ -162,16 +162,16 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             this.AddErrorToCurrentToken(MakeError(position, width, code));
         }
 
-        protected void AddErrorToCurrentToken(int position, int width, ErrorCode code, params object[] args)
-        {
-            this.AddErrorToCurrentToken(MakeError(position, width, code, args));
-        }
-        
         protected void AddErrorToCurrentToken(ErrorCode code)
         {
             this.AddErrorToCurrentToken(MakeError(CurrentToken, code));
         }
         */
+
+        protected void AddErrorToCurrentToken(int offset, int width, ErrorCode code, params object[] args)
+        {
+            this.AddSyntaxError(MakeError(offset, width, code, args));
+        }
 
         protected void AddErrorToCurrentToken(ErrorCode code, params object[] args)
         {
