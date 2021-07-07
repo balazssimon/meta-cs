@@ -11,8 +11,8 @@ namespace MetaDslx.Bootstrap.SourceGenerators
 {
     class Program
     {
-        //static readonly string SourceFilesPath = @"..\..\..\..\..\Experiments\GeneratedSourceSymbols";
-        static readonly string SourceFilesPath = @"..\..\..\..\..\Main\MetaDslx.CodeAnalysis.Meta\CodeAnalysis\Symbols";
+        static readonly string SourceFilesPath = @"..\..\..\..\..\Experiments\GeneratedSourceSymbols";
+        //static readonly string SourceFilesPath = @"..\..\..\..\..\Main\MetaDslx.CodeAnalysis.Meta\CodeAnalysis\Symbols";
         static readonly string GeneratedFilesPath = Path.Combine(SourceFilesPath, "Generated");
 
         static void Main(string[] args)
@@ -65,7 +65,7 @@ namespace MetaDslx.Bootstrap.SourceGenerators
 
         private static IEnumerable<MetadataReference> ReferencedAssemblies()
         {
-            var types = new Type[] { typeof(MetaDslx.CodeAnalysis.Diagnostic), typeof(MetaDslx.CodeAnalysis.Symbols.ISourceSymbol) };
+            var types = new Type[] { typeof(Microsoft.CodeAnalysis.Diagnostic), typeof(MetaDslx.CodeAnalysis.Symbols.Source.ISourceSymbol) };
             return types.Select(type => MetadataReference.CreateFromFile(type.Assembly.Location));
         }
     }

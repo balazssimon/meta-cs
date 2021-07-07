@@ -15,7 +15,7 @@ using System.Threading;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-    [Symbol(HasSubSymbolKinds = true)]
+    [Symbol(SubSymbolKindType = "TypeKind")]
     public abstract partial class TypeSymbol : NamespaceOrTypeSymbol
     {
         // TODO (tomat): Consider changing this to an empty name. This name shouldn't ever leak to the user in error messages.

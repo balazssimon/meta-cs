@@ -8,27 +8,44 @@ namespace MetaDslx.CodeAnalysis.Analyzers
 
     internal static class GeneratorUtils
     {
-        public static bool IsSourceSymbol(INamedTypeSymbol namedType)
+        public static bool IsSymbol(INamedTypeSymbol namedType)
         {
+            if (namedType == null) return false;
             if (namedType.DeclaringSyntaxReferences.IsDefaultOrEmpty) return false;
             if (namedType.TypeKind != TypeKind.Class) return false;
-            foreach (var intf in namedType.Interfaces)
+            var type = namedType;
+            while (type != null)
             {
-                if (intf.Name == "ISourceSymbol") return true;
+                if (type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat) == "global::MetaDslx.CodeAnalysis.Symbols.Symbol") return true;
+                type = type.BaseType;
             }
             return false;
         }
 
-        public static bool IsSymbol(INamedTypeSymbol namedType, out AttributeData symbolAttribute)
+        public static bool IsAnnotatedSymbol(INamedTypeSymbol namedType, out AttributeData symbolAttribute)
         {
             symbolAttribute = null;
-            if (namedType.DeclaringSyntaxReferences.IsDefaultOrEmpty) return false;
-            if (namedType.TypeKind != TypeKind.Class) return false;
+            if (!IsSymbol(namedType)) return false;
             foreach (var attr in namedType.GetAttributes())
             {
-                if (attr.AttributeClass.Name == "SymbolAttribute")
+                if (attr.AttributeClass.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat) == "global::MetaDslx.CodeAnalysis.Symbols.SymbolAttribute")
                 {
                     symbolAttribute = attr;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public static bool IsSymbolProperty(IPropertySymbol property, out AttributeData symbolPropertyAttribute)
+        {
+            symbolPropertyAttribute = null;
+            if (property.DeclaringSyntaxReferences.IsDefaultOrEmpty) return false;
+            foreach (var attr in property.GetAttributes())
+            {
+                if (attr.AttributeClass.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat) == "global::MetaDslx.CodeAnalysis.Symbols.SymbolPropertyAttribute")
+                {
+                    symbolPropertyAttribute = attr;
                     return true;
                 }
             }

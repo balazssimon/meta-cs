@@ -2,6 +2,7 @@
 generator SymbolGenerator;
 
 template GenerateSymbol(SymbolGenerationInfo symbol)
+using Microsoft.CodeAnalysis;
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Declarations;
 using MetaDslx.CodeAnalysis.Symbols;
@@ -13,68 +14,382 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Text;
 using System.Threading;
-
+^
 namespace [symbol.NamespaceName]
 {
-	public partial class [symbol.Name]
+	public abstract partial class [symbol.Name]
 	{
-        [if (symbol.ParentSymbol != null && symbol.ParentSymbol.SubSymbolKind != null)]
-        public sealed override [symbol.ParentSymbol.SubSymbolKind] [symbol.ParentSymbol.SubSymbolKindName] => [symbol.ParentSymbol.SubSymbolKind].[symbol.SymbolKind];
+        [if (symbol.SymbolKindType != null)]
+        public sealed override [symbol.SymbolKindType] [symbol.SymbolKindName] => [symbol.SymbolKindType].[symbol.SymbolKind];
         [end if]
 ^
-        [if (symbol.SubSymbolKind != null)]
-        public virtual [symbol.SubSymbolKind] [symbol.SubSymbolKindName] => [symbol.SubSymbolKind].None;
+        [if (symbol.SubSymbolKindType != null)]
+        public virtual [symbol.SubSymbolKindType] [symbol.SubSymbolKindName] => [symbol.SubSymbolKindType].None;
         [end if]
 ^
-        public [if (symbol.IsSymbolClass)]virtual[else]override[end if] void Accept(SymbolVisitor visitor)
+        public [if (symbol.IsSymbolClass)]virtual[else]override[end if] void Accept(MetaDslx.CodeAnalysis.Symbols.SymbolVisitor visitor)
         {
-            visitor.Accept(this);
+            if (visitor is ISymbolVisitor isv) isv.Visit(this);
         }
-
-        public [if (symbol.IsSymbolClass)]virtual[else]override[end if] TResult Accept<TResult>(SymbolVisitor<TResult> visitor)
+^
+        public [if (symbol.IsSymbolClass)]virtual[else]override[end if] TResult Accept<TResult>(MetaDslx.CodeAnalysis.Symbols.SymbolVisitor<TResult> visitor)
         {
-            return visitor.Accept(this);
+            if (visitor is ISymbolVisitor<TResult> isv) return isv.Visit(this);
+            else return default(TResult);
         }
-
-        public [if (symbol.IsSymbolClass)]virtual[else]override[end if] TResult Accept<TArgument, TResult>(SymbolVisitor<TArgument, TResult> visitor, TArgument argument)
+^
+        public [if (symbol.IsSymbolClass)]virtual[else]override[end if] TResult Accept<TArgument, TResult>(MetaDslx.CodeAnalysis.Symbols.SymbolVisitor<TArgument, TResult> visitor, TArgument argument)
         {
-            return visitor.Accept(this, argument);
+            if (visitor is ISymbolVisitor<TArgument, TResult> isv) return isv.Visit(this, argument);
+            else return default(TResult);
         }
-
+^
+        protected override ISymbol CreateISymbol()
+        {
+            throw new NotImplementedException();
+        }
 	}
-
-    public abstract partial class SymbolVisitor
-    {
-        public virtual void Visit[symbol.SymbolKind]([symbol.Name] symbol)
-        {
-            DefaultVisit(symbol);
-        }        
-    }
-
-    public abstract partial class SymbolVisitor<TResult>
-    {
-        public virtual TResult Visit[symbol.SymbolKind]([symbol.Name] symbol)
-        {
-            return DefaultVisit(symbol);
-        }       
-    }
-
-    public abstract partial class SymbolVisitor<TArgument, TResult>
-    {
-        public virtual TResult Visit[symbol.SymbolKind]([symbol.Name]Symbol symbol, TArgument argument)
-        {
-            return DefaultVisit(symbol, argument);
-        }      
-    }
 }
 end template
 
-template GenerateSourceSymbol(string namespaceName, string className)
+template GenerateModelSymbol(SymbolGenerationInfo symbol)
+using Microsoft.CodeAnalysis;
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Declarations;
 using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Symbols.Metadata;
 using MetaDslx.CodeAnalysis.Symbols.Source;
+using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Diagnostics;
+using System.Text;
+using System.Threading;
+using Roslyn.Utilities;
+^
+namespace [symbol.NamespaceName].Model
+{
+	public abstract partial class Model[symbol.Name] : [symbol.NamespaceName].[symbol.Name], MetaDslx.CodeAnalysis.Symbols.Metadata.IModelSymbol
+	{
+        public static class CompletionParts
+        {
+            public static readonly CompletionPart StartInitializing = new CompletionPart(nameof(StartInitializing));
+            public static readonly CompletionPart FinishInitializing = new CompletionPart(nameof(FinishInitializing));
+            public static readonly CompletionPart StartCreatingChildren = new CompletionPart(nameof(StartCreatingChildren));
+            public static readonly CompletionPart FinishCreatingChildren = new CompletionPart(nameof(FinishCreatingChildren));
+            public static readonly CompletionPart ChildrenCompleted = new CompletionPart(nameof(ChildrenCompleted));
+            [loop (prop:symbol.Properties)]
+            public static readonly CompletionPart StartComputingProperty_[prop.Name] = new CompletionPart(nameof(StartComputingProperty_[prop.Name]));
+            public static readonly CompletionPart FinishComputingProperty_[prop.Name] = new CompletionPart(nameof(FinishComputingProperty_[prop.Name]));
+            [end loop]
+            public static readonly ImmutableHashSet<CompletionPart> All = CompletionPart.Combine(StartInitializing, FinishInitializing, StartCreatingChildren, FinishCreatingChildren, ChildrenCompleted[loop (prop:symbol.Properties)], StartComputingProperty_[prop.Name], FinishComputingProperty_[prop.Name][end loop]);
+            public static readonly ImmutableHashSet<CompletionPart> AllWithLocation = CompletionPart.Combine(StartInitializing, FinishInitializing, StartCreatingChildren, FinishCreatingChildren[loop (prop:symbol.Properties)], StartComputingProperty_[prop.Name], FinishComputingProperty_[prop.Name][end loop]);
+            public static readonly CompletionGraph CompletionGraph = CompletionGraph.FromCompletionParts(StartInitializing, FinishInitializing, StartCreatingChildren, FinishCreatingChildren[loop (prop:symbol.Properties)], StartComputingProperty_[prop.Name], FinishComputingProperty_[prop.Name][end loop], ChildrenCompleted);
+        }
+^
+        private readonly Symbol _container;
+        private readonly object _modelObject;
+        private readonly CompletionState _state;
+        private ImmutableArray<Symbol> _childSymbols;
+        [loop (prop:symbol.Properties)]
+        private [prop.Type] [prop.FieldName];
+        [end loop]
+^
+        public Model[symbol.Name](Symbol container, object modelObject)
+        {
+            Debug.Assert(container is IModelSymbol);
+            if (modelObject == null) throw new ArgumentNullException(nameof(modelObject));
+            _container = container;
+            _modelObject = modelObject;
+            _state = CompletionParts.CompletionGraph.CreateState();
+        }
+^
+        public sealed override Language Language => ContainingModule.Language;
+^
+        public SymbolFactory SymbolFactory => ((IModelSymbol)_container).SymbolFactory;
+^
+        public object ModelObject => _modelObject;
+^
+        public Type ModelObjectType => _modelObject != null ? Language.SymbolFacts.GetModelObjectType(_modelObject) : null;
+^
+        public sealed override string Name => _modelObject != null ? Language.SymbolFacts.GetName(_modelObject) : string.Empty;
+^
+        public sealed override Symbol ContainingSymbol => _container;
+^
+        public sealed override ImmutableArray<Symbol> ChildSymbols 
+        {
+            get
+            {
+                this.ForceComplete(CompletionParts.FinishCreatingChildren, null, default);
+                return _childSymbols;
+            }
+        }
+^
+        [loop (prop:symbol.Properties)]
+        public override [prop.Type] [prop.Name]
+        {
+            get
+            {
+                this.ForceComplete(CompletionParts.FinishComputingProperty_[prop.Name], null, default);
+                return [prop.FieldName];
+            }
+        }
+        [end loop]
+^
+        #region Completion
+^
+        public sealed override bool RequiresCompletion => true;
+^
+        public sealed override bool HasComplete(CompletionPart part)
+        {
+            return _state.HasComplete(part);
+        }
+^
+        public override void ForceComplete(CompletionPart completionPart, SourceLocation locationOpt, CancellationToken cancellationToken)
+        {
+            if (completionPart != null && _state.HasComplete(completionPart)) return;
+            if (completionPart != null && !CompletionParts.All.Contains(completionPart)) throw new ArgumentException(nameof(completionPart));
+            while (true)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                var incompletePart = _state.NextIncompletePart;
+                if (incompletePart == CompletionParts.StartInitializing || incompletePart == CompletionParts.FinishInitializing)
+                {
+                    if (_state.NotePartComplete(CompletionParts.StartInitializing))
+                    {
+                        var diagnostics = DiagnosticBag.GetInstance();
+                        CompleteInitializingSymbol(locationOpt, diagnostics, cancellationToken);
+                        AddSymbolDiagnostics(diagnostics);
+                        diagnostics.Free();
+                        _state.NotePartComplete(CompletionParts.FinishInitializing);
+                    }
+                }
+                else if (incompletePart == CompletionParts.StartCreatingChildren || incompletePart == CompletionParts.FinishCreatingChildren)
+                {
+                    if (_state.NotePartComplete(CompletionParts.StartCreatingChildren))
+                    {
+                        var diagnostics = DiagnosticBag.GetInstance();
+                        _childSymbols = CompleteCreatingChildSymbols(locationOpt, diagnostics, cancellationToken);
+                        AddSymbolDiagnostics(diagnostics);
+                        diagnostics.Free();
+                        _state.NotePartComplete(CompletionParts.FinishCreatingChildren);
+                    }
+                }
+                [loop (prop:symbol.Properties)]
+                else if (incompletePart == CompletionParts.StartComputingProperty_[prop.Name] || incompletePart == CompletionParts.FinishComputingProperty_[prop.Name])
+                {
+                    if (_state.NotePartComplete(CompletionParts.StartComputingProperty_[prop.Name]))
+                    {
+                        var diagnostics = DiagnosticBag.GetInstance();
+                        [prop.FieldName] = CompleteSymbolProperty_[prop.Name](locationOpt, diagnostics, cancellationToken);
+                        AddSymbolDiagnostics(diagnostics);
+                        diagnostics.Free();
+                        _state.NotePartComplete(CompletionParts.FinishComputingProperty_[prop.Name]);
+                    }
+                }
+                [end loop]
+                else if (incompletePart == CompletionParts.ChildrenCompleted)
+                {
+                    var diagnostics = DiagnosticBag.GetInstance();
+                    CompleteImports(locationOpt, diagnostics, cancellationToken);
+                    AddSymbolDiagnostics(diagnostics);
+                    diagnostics.Free();
+
+                    bool allCompleted = true;
+                    if (locationOpt == null)
+                    {
+                        foreach (var child in _childSymbols)
+                        {
+                            cancellationToken.ThrowIfCancellationRequested();
+                            child.ForceComplete(null, locationOpt, cancellationToken);
+                        }
+                    }
+                    else
+                    {
+                        foreach (var child in _childSymbols)
+                        {
+                            ForceCompleteChildByLocation(locationOpt, child, cancellationToken);
+                            allCompleted = allCompleted && child.HasComplete(CompletionGraph.All);
+                        }
+                    }
+
+                    if (!allCompleted)
+                    {
+                        // We did not complete all members, so just kick out now.
+                        var allParts = CompletionParts.AllWithLocation;
+                        _state.SpinWaitComplete(allParts, cancellationToken);
+                        return;
+                    }
+
+                    // We've completed all members, proceed to the next iteration.
+                    _state.NotePartComplete(CompletionParts.ChildrenCompleted);
+                }
+                else if (incompletePart == null)
+                {
+                    return;
+                }
+                else
+                {
+                    // This assert will trigger if we forgot to handle any of the completion parts
+                    Debug.Assert(!CompletionParts.All.Contains(incompletePart));
+                    // any other values are completion parts intended for other kinds of symbols
+                    _state.NotePartComplete(incompletePart);
+                }
+                if (completionPart != null && _state.HasComplete(completionPart)) return;
+                _state.SpinWaitComplete(incompletePart, cancellationToken);
+            }
+^
+            throw ExceptionUtilities.Unreachable;
+        }
+^
+        protected abstract void CompleteInitializingSymbol(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken);
+        protected abstract ImmutableArray<Symbol> CompleteCreatingChildSymbols(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken);
+        protected abstract void CompleteImports(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken);
+        [loop (prop:symbol.Properties)]
+        protected abstract [prop.Type] CompleteSymbolProperty_[prop.Name](SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken);
+        [end loop]
+        #endregion
+^
+    }
+}
+end template
+
+template GenerateMetaSymbol(SymbolGenerationInfo symbol)
+using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Declarations;
+using MetaDslx.CodeAnalysis.Symbols;
+using MetaDslx.CodeAnalysis.Symbols.Metadata;
+using MetaDslx.CodeAnalysis.Symbols.Source;
+using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Diagnostics;
+using System.Text;
+using System.Threading;
+^
+namespace [symbol.NamespaceName].Metadata
+{
+	public partial class Meta[symbol.Name] : [symbol.NamespaceName].Model.Model[symbol.Name]
+	{
+        public Meta[symbol.Name](Symbol container, object modelObject)
+            : base(container, modelObject)
+        {
+        }
+^
+        public override ImmutableArray<Location> Locations => this.ContainingModule.Locations;
+^
+        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => ImmutableArray<SyntaxReference>.Empty;
+^
+        protected override void CompleteInitializingSymbol(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+        }
+^
+        protected override ImmutableArray<Symbol> CompleteCreatingChildSymbols(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            return SymbolFactory.GetChildSymbols(this.ModelObject);
+        }
+^
+        protected override void CompleteImports(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+        }
+^
+        [loop (prop:symbol.Properties)]
+        protected override [prop.Type] CompleteSymbolProperty_[prop.Name](SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            [if (prop.IsCollection)]
+            return SymbolFactory.GetSymbolPropertyValues<[prop.ItemType]>(this, nameof([prop.Name]), this.ModelObject);
+            [else]
+            return SymbolFactory.GetSymbolPropertyValue<[prop.Type]>(this, nameof([prop.Name]), this.ModelObject);
+            [end if]
+        }
+        [end loop]
+    }
+}
+end template
+
+template GenerateSourceSymbol(SymbolGenerationInfo symbol)
+using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Binding;
+using MetaDslx.CodeAnalysis.Binding.Binders;
+using MetaDslx.CodeAnalysis.Declarations;
+using MetaDslx.CodeAnalysis.Symbols;
+using MetaDslx.CodeAnalysis.Symbols.Metadata;
+using MetaDslx.CodeAnalysis.Symbols.Source;
+using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Diagnostics;
+using System.Linq;
+using System.Text;
+using System.Threading;
+^
+namespace [symbol.NamespaceName].Source
+{
+	public partial class Source[symbol.Name] : [symbol.NamespaceName].Model.Model[symbol.Name], MetaDslx.CodeAnalysis.Symbols.Source.ISourceSymbol
+	{
+        private readonly MergedDeclaration _declaration;
+
+		public Source[symbol.Name](Symbol containingSymbol, object modelObject, MergedDeclaration declaration)
+            : base(containingSymbol, modelObject)
+        {
+            Debug.Assert(declaration != null);
+            _declaration = declaration;
+		}
+^
+        public MergedDeclaration MergedDeclaration => _declaration;
+^
+        public override ImmutableArray<Location> Locations => _declaration.NameLocations;
+^
+        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => _declaration.SyntaxReferences;
+^
+        public BinderPosition<SymbolBinder> GetBinder(SyntaxReference reference)
+        {
+            Debug.Assert(this.DeclaringSyntaxReferences.Contains(reference));
+            return FindBinders.FindSymbolBinder(this, reference);
+        }
+^
+        public Symbol GetChildSymbol(SyntaxReference syntax)
+        {
+            foreach (var child in this.ChildSymbols)
+            {
+                if (child.DeclaringSyntaxReferences.Any(sr => sr.GetLocation() == syntax.GetLocation()))
+                {
+                    return child;
+                }
+            }
+            return null;
+        }
+^
+        protected override void CompleteInitializingSymbol(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+        }
+^
+        protected override ImmutableArray<Symbol> CompleteCreatingChildSymbols(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            return default;
+        }
+^
+        protected override void CompleteImports(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+        }
+^
+        [loop (prop:symbol.Properties)]
+        protected override [prop.Type] CompleteSymbolProperty_[prop.Name](SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            return default;
+        }
+        [end loop]
+^
+	}
+}
+end template
+
+template GenerateVisitor(string namespaceName, IEnumerable<SymbolGenerationInfo> symbols)
+using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Symbols;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -84,69 +399,25 @@ using System.Threading;
 
 namespace [namespaceName]
 {
-	public partial class [className]
+	public interface ISymbolVisitor
 	{
-        private readonly Symbol _containingSymbol;
-        private readonly MergedDeclaration _declaration;
-        private readonly CompletionState _state;
-        private DiagnosticBag _diagnostics;
-
-		public [className](Symbol containingSymbol, MergedDeclaration declaration)
-		{
-            Debug.Assert(declaration != null);
-            _containingSymbol = containingSymbol;
-            _declaration = declaration;
-            _state = CompletionState.Create(Language);
-		}
-
-        public override Symbol ContainingSymbol => _containingSymbol;
-
-        public override ImmutableArray<Symbol> ChildSymbols => ImmutableArray<Symbol>.Empty;
-
-        public MergedDeclaration MergedDeclaration => _declaration;
-
-        public override ImmutableArray<Location> Locations => _declaration.NameLocations;
-
-        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => _declaration.SyntaxReferences;
-
-        public ImmutableArray<Diagnostic> Diagnostics => _diagnostics != null ? _diagnostics.ToReadOnly() : ImmutableArray<Diagnostic>.Empty;
-
-        private void AddSymbolDiagnostics(DiagnosticBag diagnostics)
-        {
-            if (!diagnostics.IsEmptyWithoutResolution)
-            {
-                LanguageCompilation compilation = this.DeclaringCompilation;
-                Debug.Assert(compilation != null);
-                if (_diagnostics == null) _diagnostics = new DiagnosticBag();
-                _diagnostics.AddRange(diagnostics);
-            }
-        }
-
-        public override void Accept(CodeAnalysis.SymbolVisitor visitor)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override TResult Accept<TResult>(CodeAnalysis.SymbolVisitor<TResult> visitor)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void Accept(CodeAnalysis.Symbols.SymbolVisitor visitor)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override TResult Accept<TResult>(CodeAnalysis.Symbols.SymbolVisitor<TResult> visitor)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override TResult Accept<TArgument, TResult>(SymbolVisitor<TArgument, TResult> visitor, TArgument argument)
-        {
-            throw new NotImplementedException();
-        }
-
+        [loop (symbol: symbols)]
+        void Visit([symbol.Name] symbol);
+        [end loop]
+	}
+^
+	public interface ISymbolVisitor<TResult>
+	{
+        [loop (symbol: symbols)]
+        TResult Visit([symbol.Name] symbol);
+        [end loop]
+	}
+^
+	public interface ISymbolVisitor<TArgument, TResult>
+	{
+        [loop (symbol: symbols)]
+        TResult Visit([symbol.Name] symbol, TArgument argument);
+        [end loop]
 	}
 }
 end template

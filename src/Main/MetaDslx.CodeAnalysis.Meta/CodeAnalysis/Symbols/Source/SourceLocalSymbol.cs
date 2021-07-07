@@ -3,6 +3,7 @@ using MetaDslx.CodeAnalysis.Binding.Binders;
 using MetaDslx.CodeAnalysis.Declarations;
 using MetaDslx.CodeAnalysis.Symbols.Metadata;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 using System;
 using System.Collections.Generic;
@@ -50,9 +51,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 if (_childSymbols.IsDefault)
                 {
                     this.ForceComplete(CompletionGraph.FinishChildrenCreated, null, default);
-                    Debug.Assert(!_declaration.Children.Any(decl => decl.Symbol == null));
-                    var childSymbols = _declaration.Children.Where(decl => decl.Symbol != null).Select(decl => decl.Symbol).ToImmutableArray();
-                    ImmutableInterlocked.InterlockedInitialize(ref _childSymbols, childSymbols);
                 }
                 return _childSymbols;
             }
@@ -181,11 +179,13 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 {
                     if (_state.NotePartComplete(CompletionGraph.StartChildrenCreated))
                     {
+                        var childSymbols = ArrayBuilder<Symbol>.GetInstance();
                         var diagnostics = DiagnosticBag.GetInstance();
-                        _source.CreateContainedChildSymbols(diagnostics, cancellationToken);
+                        _source.CreateContainedChildSymbols(childSymbols, diagnostics, cancellationToken);
                         AddDeclarationDiagnostics(diagnostics);
-                        _state.NotePartComplete(CompletionGraph.FinishChildrenCreated);
                         diagnostics.Free();
+                        ImmutableInterlocked.InterlockedInitialize(ref _childSymbols, childSymbols.ToImmutableAndFree());
+                        _state.NotePartComplete(CompletionGraph.FinishChildrenCreated);
                     }
                 }
                 else if (incompletePart == CompletionGraph.Members)

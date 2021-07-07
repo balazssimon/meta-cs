@@ -6,7 +6,7 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-    [Symbol(HasSubSymbolKinds = true)]
+    [Symbol(SubSymbolKindType = "LocalKind")]
     public abstract class LocalSymbol : DeclaredSymbol
     {
         public sealed override SymbolKind Kind => SymbolKind.Member;

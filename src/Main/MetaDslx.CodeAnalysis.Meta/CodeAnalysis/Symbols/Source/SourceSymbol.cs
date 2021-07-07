@@ -18,7 +18,7 @@ using System.Threading;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Source
 {
-    public struct SourceSymbol : IModelSourceSymbol
+    public struct SourceSymbol //: IModelSourceSymbol
     {
         private Symbol _symbol;
 
@@ -65,7 +65,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             return FindBinders.FindPropertyValueBinders(propertyBinder);
         }
 
-        public void CreateRootSymbols(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        public void CreateRootSymbols(ArrayBuilder<Symbol> childSymbols, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             Debug.Assert(_symbol.ContainingSymbol is SourceModuleSymbol);
             var symbolFactory = SymbolFactory;
@@ -79,21 +79,22 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                     if (rootSymbol != null)
                     {
                         rootSymbol.ForceComplete(CompletionGraph.FinishCreated, null, cancellationToken);
+                        childSymbols.Add(rootSymbol);
                     }
                 }
             }
         }
 
-        public void CreateContainedChildSymbols(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        public void CreateContainedChildSymbols(ArrayBuilder<Symbol> childSymbols, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             Debug.Assert(_symbol.ContainingSymbol is IModelSourceSymbol);
             foreach (var reference in _symbol.DeclaringSyntaxReferences)
             {
-                CreateContainedChildSymbols(reference, diagnostics, cancellationToken);
+                CreateContainedChildSymbols(reference, childSymbols, diagnostics, cancellationToken);
             }
         }
 
-        public void CreateContainedChildSymbols(SyntaxReference symbolPartReference, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        public void CreateContainedChildSymbols(SyntaxReference symbolPartReference, ArrayBuilder<Symbol> childSymbols, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             Debug.Assert(_symbol.ContainingSymbol is IModelSourceSymbol);
             var symbolFacts = SymbolFacts;
@@ -124,6 +125,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                             {
                                 var childObject = childSourceSymbol.ModelObject;
                                 symbolFacts.SetOrAddPropertyValue(ModelObject, objectProperty, childObject, childDeclaration.NameLocations.FirstOrDefault(), diagnostics);
+                                childSymbols.Add(childSymbol);
                             }
                             else
                             {
@@ -148,6 +150,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                         if (childSymbol is IModelSymbol childSourceSymbol)
                         {
                             Debug.Assert(childSourceSymbol.ModelObject != null);
+                            childSymbols.Add(childSymbol);
                         }
                     }
                 }
@@ -226,6 +229,57 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             return result.ToImmutableAndFree();
         }
 
+        public T AssignPropertyValue<T>(string symbolProperty, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            if (symbolProperty == SymbolConstants.NameProperty)
+            {
+                var name = AssignNameProperty(diagnostics);
+                if (typeof(T) == typeof(string))
+                {
+                    return (T)(object)name;
+                }
+            }
+            else if (symbolProperty != null)
+            {
+                var values = AssignPropertyValues<T>(symbolProperty, diagnostics, cancellationToken);
+                if (values.Length == 1)
+                {
+                    return values[0];
+                }
+                else
+                {
+                    Debug.Assert(false);
+                    return default;
+                }
+            }
+            else
+            {
+                Debug.Assert(false, "Use AssignPropertyValues to assign non-symbol properties.");
+            }
+            return default;
+        }
+
+        public ImmutableArray<T> AssignPropertyValues<T>(string symbolProperty, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            if (symbolProperty == SymbolConstants.NameProperty)
+            {
+                Debug.Assert(false, "Use AssignPropertyValue to assign the Name property.");
+            }
+            else if (symbolProperty != null)
+            {
+                var values = ArrayBuilder<object>.GetInstance();
+                AssignSymbolProperty(symbolProperty, typeof(T), values, diagnostics, cancellationToken);
+                var result = values.Cast<T>().ToImmutableArray();
+                values.Free();
+                return result;
+            }
+            else
+            {
+                AssignNonSymbolProperties(diagnostics, cancellationToken);
+            }
+            return ImmutableArray<T>.Empty;
+        }
+
         public void AssignPropertyValues(string symbolProperty, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             if (symbolProperty == SymbolConstants.NameProperty)
@@ -234,7 +288,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             }
             else if (symbolProperty != null)
             {
-                AssignSymbolProperty(symbolProperty, diagnostics, cancellationToken);
+                AssignSymbolProperty(symbolProperty, null, null, diagnostics, cancellationToken);
             }
             else
             {
@@ -242,7 +296,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             }
         }
 
-        private void AssignNameProperty(DiagnosticBag diagnostics)
+        private string AssignNameProperty(DiagnosticBag diagnostics)
         {
             if (_symbol is DeclaredSymbol declaredSymbol)
             {
@@ -253,10 +307,12 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 {
                     symbolFacts.SetOrAddPropertyValue(ModelObject, objectProperty, mergedDeclaration.Name, mergedDeclaration.NameLocations.FirstOrDefault(), diagnostics);
                 }
+                return mergedDeclaration.Name;
             }
+            return string.Empty;
         }
 
-        private void AssignSymbolProperty(string symbolProperty, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        private void AssignSymbolProperty(string symbolProperty, Type expectedType, ArrayBuilder<object> symbolPropertyValues, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             var objectProperties = SymbolFacts.GetPropertiesForSymbol(ModelObject, symbolProperty);
             foreach (var reference in _symbol.DeclaringSyntaxReferences)
@@ -275,7 +331,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                             var values = FindValueBinders(property);
                             foreach (var value in values)
                             {
-                                AssignObjectProperty(value, property.Binder.PropertyName, objectProperty, diagnostics, cancellationToken);
+                                AssignObjectProperty(value, property.Binder.PropertyName, objectProperty, symbolProperty, expectedType, symbolPropertyValues, diagnostics, cancellationToken);
                             }
                         }
                     }
@@ -305,19 +361,19 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                                 AssertionDiagnostic(diagnostics, ModelErrorCode.ERR_PropertyDoesNotExist.ToDiagnostic(value.Syntax.GetLocation(), property.Binder.PropertyName, ModelObject));
                                 continue;
                             }
-                            AssignObjectProperty(value, property.Binder.PropertyName, objectProperty, diagnostics, cancellationToken);
+                            AssignObjectProperty(value, property.Binder.PropertyName, objectProperty, null, null, null, diagnostics, cancellationToken);
                         }
                     }
                 }
             }
         }
 
-        private void AssignObjectProperty(BinderPosition<ValueBinder> valueBinder, string propertyName, object objectProperty, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        private void AssignObjectProperty(BinderPosition<ValueBinder> valueBinder, string propertyName, object objectProperty, string symbolProperty, Type expectedType, ArrayBuilder<object> symbolPropertyValues, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             if (ModelObject == null) return;
             if (valueBinder.Binder is DefineBinder valueSymbolDef)
             {
-                AssignChildSymbols(valueSymbolDef, propertyName, objectProperty, diagnostics, cancellationToken);
+                AssignChildSymbols(valueSymbolDef, propertyName, objectProperty, symbolPropertyValues, diagnostics, cancellationToken);
             }
             else
             {
@@ -329,12 +385,20 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                     foreach (var value in boundValue.Values)
                     {
                         SymbolFacts.SetOrAddPropertyValue(ModelObject, objectProperty, value, location, diagnostics);
+                        if (symbolPropertyValues != null)
+                        {
+                            if (expectedType != null && value != null && expectedType.IsAssignableFrom(value.GetType()))
+                            {
+                                diagnostics.Add(ModelErrorCode.ERR_CannotSetSymbolProperty.ToDiagnostic(location, value, symbolProperty, _symbol, expectedType, value.GetType()));
+                            }
+                            symbolPropertyValues.Add(value);
+                        }
                     }
                 }
             }
         }
 
-        private void AssignChildSymbols(DefineBinder childBinder, string propertyName, object objectProperty, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        private void AssignChildSymbols(DefineBinder childBinder, string propertyName, object objectProperty, ArrayBuilder<object> symbolPropertyValues, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             var container = childBinder.ContainingDeclaration;
             var symbolPartReference = childBinder.Syntax.GetReference();
@@ -352,6 +416,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                             var childSingleDeclaration = childDeclaration.GetSingleDeclaration(symbolPartReference);
                             Debug.Assert(childSingleDeclaration != null);
                             SymbolFacts.SetOrAddPropertyValue(ModelObject, objectProperty, childSymbol, childSingleDeclaration.Location, diagnostics);
+                            if (symbolPropertyValues != null) symbolPropertyValues.Add(childSymbol);
                         }
                     }
                     else
@@ -400,12 +465,12 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             Debug.Assert(false, diagnostic.ToString());
         }
 
-        public Symbol GetChildSymbol(SyntaxReference syntax)
+        public Symbol GetChildSymbol(SyntaxReference reference)
         {
             Debug.Assert(!_symbol.ChildSymbols.IsDefault);
             foreach (var child in _symbol.ChildSymbols)
             {
-                if (child.DeclaringSyntaxReferences.Any(sr => sr.GetLocation() == syntax.GetLocation()))
+                if (child.DeclaringSyntaxReferences.Any(sr => sr.GetLocation() == reference.GetLocation()))
                 {
                     return child;
                 }

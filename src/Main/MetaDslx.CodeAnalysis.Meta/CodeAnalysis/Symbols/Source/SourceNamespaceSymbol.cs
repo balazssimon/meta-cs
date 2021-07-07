@@ -55,8 +55,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 if (_childSymbols.IsDefault)
                 {
                     this.ForceComplete(CompletionGraph.FinishChildrenCreated, null, default);
-                    var childSymbols = _declaration.Children.Where(decl => decl.Symbol != null).Select(decl => decl.Symbol).ToImmutableArray();
-                    ImmutableInterlocked.InterlockedInitialize(ref _childSymbols, childSymbols);
                 }
                 return _childSymbols;
             }
@@ -261,18 +259,20 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 {
                     if (_state.NotePartComplete(CompletionGraph.StartChildrenCreated))
                     {
+                        var childSymbols = ArrayBuilder<Symbol>.GetInstance();
                         var diagnostics = DiagnosticBag.GetInstance();
                         if (ModelObject != null)
                         {
-                            _source.CreateContainedChildSymbols(diagnostics, cancellationToken);
+                            _source.CreateContainedChildSymbols(childSymbols, diagnostics, cancellationToken);
                         }
                         else
                         {
-                            _source.CreateRootSymbols(diagnostics, cancellationToken);
+                            _source.CreateRootSymbols(childSymbols, diagnostics, cancellationToken);
                         }
                         AddDeclarationDiagnostics(diagnostics);
-                        _state.NotePartComplete(CompletionGraph.FinishChildrenCreated);
                         diagnostics.Free();
+                        ImmutableInterlocked.InterlockedInitialize(ref _childSymbols, childSymbols.ToImmutableAndFree());
+                        _state.NotePartComplete(CompletionGraph.FinishChildrenCreated);
                     }
                 }
                 else if (incompletePart == CompletionGraph.Members)

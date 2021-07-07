@@ -1,6 +1,7 @@
 ﻿using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Declarations;
 using MetaDslx.CodeAnalysis.Symbols;
+using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -9,33 +10,20 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MetaDslx.Bootstrap.SourceGenerators
+namespace GeneratedSourceSymbols
 {
-    [SourceSymbol]
-    public partial class CustomSymbol : Symbol, ISourceSymbol
+    [Symbol]
+    public partial class CustomSymbol : Symbol
     {
-        [Phase(false)]
-        protected virtual void CompleteFirst(CancellationToken cancellationToken)
-        {
-            var syntax = this.DeclaringSyntaxReferences[0].GetSyntax();
-            var compilation = this.DeclaringCompilation;
-            var binder = compilation.GetBinder(syntax);
-            var diagnostics = DiagnosticBag.GetInstance();
-            binder.Bind(diagnostics, cancellationToken);
-            AddSymbolDiagnostics(diagnostics);
-            diagnostics.Free();
-        }
-
-        [Phase(true)]
-        protected virtual void CompleteSecond(CancellationToken cancellationToken)
-        {
-            var syntax = this.DeclaringSyntaxReferences[0].GetSyntax();
-            var compilation = this.DeclaringCompilation;
-            var binder = compilation.GetBinder(syntax);
-            var diagnostics = DiagnosticBag.GetInstance();
-            binder.Bind(diagnostics, cancellationToken);
-            AddSymbolDiagnostics(diagnostics);
-            diagnostics.Free();
-        }
+        [SymbolProperty]
+        public abstract CustomSymbol Left { get; }
+        [SymbolProperty]
+        public abstract CustomSymbol Right { get; }
+        [SymbolProperty]
+        public abstract ImmutableArray<CustomSymbol> CustomArray { get; }
+        [SymbolProperty]
+        public abstract ImmutableArray<int> IntArray { get; }
+        [SymbolProperty]
+        public abstract int Int { get; }
     }
 }

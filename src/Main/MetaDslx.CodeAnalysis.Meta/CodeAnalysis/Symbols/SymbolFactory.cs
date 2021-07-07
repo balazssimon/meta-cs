@@ -169,5 +169,15 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return _symbolMap.GetValue(modelObject, mobj => symbol);
         }
 
+        public T GetSymbolPropertyValue<T>(Symbol symbol, string symbolProperty, object modelObject)
+        {
+            return default;
+        }
+
+        public ImmutableArray<T> GetSymbolPropertyValues<T>(Symbol symbol, string symbolProperty, object modelObject)
+        {
+            return ImmutableArray<T>.Empty;
+        }
+
     }
 }

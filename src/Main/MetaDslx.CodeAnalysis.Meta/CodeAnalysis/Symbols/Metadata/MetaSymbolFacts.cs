@@ -130,13 +130,14 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 
         public override Type GetSymbolType(object modelObject)
         {
-            var mobj = (IModelObject)modelObject;
+            var mobj = modelObject as IModelObject;
+            if (mobj is null) return null;
             return GetSymbolType(mobj.MId.Descriptor);
         }
 
         protected Type GetSymbolType(ModelObjectDescriptor descriptor)
         {
-            return descriptor?.SymbolType ?? typeof(MemberSymbol);
+            return descriptor?.SymbolType;
         }
 
         public override IEnumerable<object> GetPropertiesForSymbol(Type modelObjectType, string symbolProperty)

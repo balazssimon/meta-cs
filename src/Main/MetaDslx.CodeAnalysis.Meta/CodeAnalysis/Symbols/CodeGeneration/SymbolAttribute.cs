@@ -7,6 +7,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
     public class SymbolAttribute : Attribute
     {
-        public bool HasSubSymbolKinds { get; set; }
+        public string SubSymbolKindType { get; set; }
+        public string SubSymbolKindName { get; set; }
     }
 }

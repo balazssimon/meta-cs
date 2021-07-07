@@ -9,7 +9,7 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-    [Symbol(HasSubSymbolKinds = true)]
+    [Symbol(SubSymbolKindType = "MemberKind")]
     public abstract class MemberSymbol : DeclaredSymbol
     {
         public sealed override SymbolKind Kind => SymbolKind.Member;
