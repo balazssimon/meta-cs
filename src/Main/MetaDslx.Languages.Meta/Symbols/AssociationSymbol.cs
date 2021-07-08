@@ -1,4 +1,5 @@
 ﻿using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Binding.Binders;
 using MetaDslx.CodeAnalysis.Binding.BoundNodes;
 using MetaDslx.CodeAnalysis.Declarations;
 using MetaDslx.CodeAnalysis.Symbols;
@@ -148,6 +149,16 @@ namespace MetaDslx.Languages.Meta.Symbols
         }
 
         protected override ISymbol CreateISymbol()
+        {
+            throw new NotImplementedException();
+        }
+
+        public CodeAnalysis.Binding.BinderPosition<SymbolBinder> GetBinder(SyntaxReference syntax)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Symbol GetChildSymbol(SyntaxReference syntax)
         {
             throw new NotImplementedException();
         }

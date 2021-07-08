@@ -24,6 +24,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         public SourceSymbol(Symbol symbol)
         {
+            Debug.Assert(symbol is ISourceSymbol);
             _symbol = symbol;
         }
 
@@ -42,8 +43,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         public Type ModelObjectType => ((IModelSymbol)_symbol).ModelObjectType;
 
         public ImmutableArray<Diagnostic> Diagnostics => ((IModelSourceSymbol)_symbol).Diagnostics;
-
-        public DeclaredSymbol DeclaredSymbol => _symbol as DeclaredSymbol;
 
         public SourceSymbol Source => this;
 
@@ -69,10 +68,10 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         {
             Debug.Assert(_symbol.ContainingSymbol is SourceModuleSymbol);
             var symbolFactory = SymbolFactory;
-            var declaredSymbol = DeclaredSymbol;
-            if (declaredSymbol != null)
+            var ssymbol = _symbol as ISourceSymbol;
+            if (ssymbol != null)
             {
-                foreach (var decl in declaredSymbol.MergedDeclaration.Children)
+                foreach (var decl in ssymbol.MergedDeclaration.Children)
                 {
                     var rootSymbol = decl.DangerousCreateSymbol(_symbol, symbolFactory);
                     Debug.Assert(rootSymbol != null);
@@ -98,8 +97,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         {
             Debug.Assert(_symbol.ContainingSymbol is IModelSourceSymbol);
             var symbolFacts = SymbolFacts;
-            var declaredSymbol = DeclaredSymbol;
-            var nestingDeclaration = NestingParentDeclaration(symbolPartReference, declaredSymbol);
+            var ssymbol = _symbol as ISourceSymbol;
+            var nestingDeclaration = NestingParentDeclaration(symbolPartReference, _symbol);
             if (nestingDeclaration != null)
             {
                 foreach (var childDeclaration in nestingDeclaration.Children)
@@ -140,18 +139,22 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                     }
                 }
             }
-            else if (declaredSymbol != null && declaredSymbol.MergedDeclaration != null)
+            else if (ssymbol != null && ssymbol.MergedDeclaration != null)
             {
-                foreach (var childDeclaration in declaredSymbol.MergedDeclaration.Children)
+                foreach (var childDeclaration in ssymbol.MergedDeclaration.Children)
                 {
                     if (childDeclaration.Symbol == null)
                     {
                         var childSymbol = CreateChildSymbol(childDeclaration.NameLocations.FirstOrDefault(), childDeclaration, diagnostics, cancellationToken);
+                        childSymbols.Add(childSymbol);
                         if (childSymbol is IModelSymbol childSourceSymbol)
                         {
                             Debug.Assert(childSourceSymbol.ModelObject != null);
-                            childSymbols.Add(childSymbol);
                         }
+                    }
+                    else
+                    {
+                        childSymbols.Add(childDeclaration.Symbol);
                     }
                 }
             }
@@ -233,11 +236,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         {
             if (symbolProperty == SymbolConstants.NameProperty)
             {
-                var name = AssignNameProperty(diagnostics);
-                if (typeof(T) == typeof(string))
-                {
-                    return (T)(object)name;
-                }
+                AssignNameProperty(diagnostics);
+                //Debug.Assert(false, "Use AssignNameProperty to assign the Name property.");
             }
             else if (symbolProperty != null)
             {
@@ -263,7 +263,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         {
             if (symbolProperty == SymbolConstants.NameProperty)
             {
-                Debug.Assert(false, "Use AssignPropertyValue to assign the Name property.");
+                Debug.Assert(false, "Use AssignNameProperty to assign the Name property.");
             }
             else if (symbolProperty != null)
             {
@@ -296,13 +296,13 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             }
         }
 
-        private string AssignNameProperty(DiagnosticBag diagnostics)
+        public string AssignNameProperty(DiagnosticBag diagnostics)
         {
-            if (_symbol is DeclaredSymbol declaredSymbol)
+            if (_symbol is ISourceSymbol ssymbol)
             {
                 var symbolFacts = SymbolFacts;
                 var objectProperties = symbolFacts.GetPropertiesForSymbol(ModelObject, SymbolConstants.NameProperty);
-                var mergedDeclaration = declaredSymbol.MergedDeclaration;
+                var mergedDeclaration = ssymbol.MergedDeclaration;
                 foreach (var objectProperty in objectProperties)
                 {
                     symbolFacts.SetOrAddPropertyValue(ModelObject, objectProperty, mergedDeclaration.Name, mergedDeclaration.NameLocations.FirstOrDefault(), diagnostics);
@@ -506,10 +506,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         public void CompleteImports(Location locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
-            var declaredSymbol = DeclaredSymbol;
-            if (declaredSymbol != null)
+            if (_symbol is ISourceSymbol ssymbol)
             {
-                foreach (var declaration in declaredSymbol.MergedDeclaration.Declarations)
+                foreach (var declaration in ssymbol.MergedDeclaration.Declarations)
                 {
                     if (locationOpt == null || locationOpt.SourceTree == declaration.SyntaxReference.SyntaxTree)
                     {

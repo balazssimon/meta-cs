@@ -19,7 +19,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
         private readonly ImmutableArray<SingleDeclaration> _declarations;
         private ImmutableArray<MergedDeclaration> _lazyChildren;
         private ImmutableArray<string> _lazyChildNames;
-        private Symbol _symbol;
+        private Symbol? _symbol;
 
         public MergedDeclaration(ImmutableArray<SingleDeclaration> declarations)
             : base(declarations.IsEmpty ? null : declarations[0].Name,
@@ -59,7 +59,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             }
         }
 
-        public override Type SymbolType
+        public override Type? SymbolType
         {
             get
             {
@@ -67,7 +67,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             }
         }
 
-        public override Type ModelObjectType
+        public override Type? ModelObjectType
         {
             get
             {
@@ -75,7 +75,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             }
         }
 
-        public Symbol Symbol => _symbol;
+        public Symbol? Symbol => _symbol;
 
         internal Symbol DangerousCreateSymbol(Symbol container, SymbolFactory symbolFactory)
         {

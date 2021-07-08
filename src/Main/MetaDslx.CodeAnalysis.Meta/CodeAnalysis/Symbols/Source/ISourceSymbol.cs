@@ -11,6 +11,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 {
     public interface ISourceSymbol
     {
+        SymbolFactory SymbolFactory { get; }
         MergedDeclaration MergedDeclaration { get; }
         ImmutableArray<Diagnostic> Diagnostics { get; }
         BinderPosition<SymbolBinder> GetBinder(SyntaxReference syntax);
