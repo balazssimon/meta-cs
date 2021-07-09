@@ -28,14 +28,20 @@ namespace MetaDslx.CodeAnalysis.Analyzers.Symbols
                     Debug.WriteLine($"Generating source symbol for: {info.NamespaceName}.{info.Name}");
                     var symbolCode = generator.GenerateSymbol(info);
                     context.AddSource(symbol.Name + ".Generated.cs", symbolCode);
-                    if (!info.IsAbstract)
+                    if (!info.NoModel)
                     {
                         var modelSymbolCode = generator.GenerateModelSymbol(info);
                         context.AddSource("Model" + symbol.Name + ".Generated.cs", modelSymbolCode);
-                        var metaSymbolCode = generator.GenerateMetaSymbol(info);
-                        context.AddSource("Meta" + symbol.Name + ".Generated.cs", metaSymbolCode);
-                        var sourceSymbolCode = generator.GenerateSourceSymbol(info);
-                        context.AddSource("Source" + symbol.Name + ".Generated.cs", sourceSymbolCode);
+                        if (!info.NoMeta)
+                        {
+                            var metaSymbolCode = generator.GenerateMetaSymbol(info);
+                            context.AddSource("Meta" + symbol.Name + ".Generated.cs", metaSymbolCode);
+                        }
+                        if (!info.NoSource)
+                        {
+                            var sourceSymbolCode = generator.GenerateSourceSymbol(info);
+                            context.AddSource("Source" + symbol.Name + ".Generated.cs", sourceSymbolCode);
+                        }
                     }
                 }
             }
@@ -53,14 +59,29 @@ namespace MetaDslx.CodeAnalysis.Analyzers.Symbols
             if (_info.TryGetValue(symbol, out var info)) return info;
             if (!GeneratorUtils.IsAnnotatedSymbol(symbol, out var symbolAttribute)) return null;
             var ns = GeneratorUtils.GetFullName(symbol.ContainingNamespace);
-            bool isAbstract = false;
+            bool noSource = false;
+            bool noMeta = false;
+            bool noModel = false;
+            string? kind = null;
             string? subSymbolKindType = null;
             string? subSymbolKindName = null;
             foreach (var arg in symbolAttribute.NamedArguments)
             {
-                if (arg.Key == "IsAbstract")
+                if (arg.Key == "NoSource")
                 {
-                    isAbstract = (bool)arg.Value.Value;
+                    noSource = (bool)arg.Value.Value;
+                }
+                if (arg.Key == "NoMeta")
+                {
+                    noMeta = (bool)arg.Value.Value;
+                }
+                if (arg.Key == "NoModel")
+                {
+                    noModel = (bool)arg.Value.Value;
+                }
+                if (arg.Key == "Kind")
+                {
+                    kind = (string?)arg.Value.Value;
                 }
                 if (arg.Key == "SubSymbolKindType")
                 {
@@ -79,7 +100,7 @@ namespace MetaDslx.CodeAnalysis.Analyzers.Symbols
                 if (parentInfo is not null) break;
                 baseSymbol = baseSymbol.BaseType;
             }
-            return new SymbolGenerationInfo(symbol.Name, ns, isAbstract, subSymbolKindType, subSymbolKindName, parentInfo, GetSymbolPropertyGenerationInfos(symbol));
+            return new SymbolGenerationInfo(symbol.Name, ns, kind, noModel, noSource, noMeta, subSymbolKindType, subSymbolKindName, parentInfo, GetSymbolPropertyGenerationInfos(symbol));
         }
 
         private List<SymbolPropertyGenerationInfo> GetSymbolPropertyGenerationInfos(INamedTypeSymbol symbol)
@@ -91,15 +112,17 @@ namespace MetaDslx.CodeAnalysis.Analyzers.Symbols
                 AddSymbolPropertyGenerationInfos(currentSymbol, result);
                 currentSymbol = currentSymbol.BaseType;
             }
+            result.Reverse();
             return result;
         }
 
         private void AddSymbolPropertyGenerationInfos(INamedTypeSymbol symbol, List<SymbolPropertyGenerationInfo> result)
         {
-            foreach (var member in symbol.GetMembers())
+            foreach (var member in symbol.GetMembers().Reverse())
             {
                 if (member.Kind == SymbolKind.Property && member is IPropertySymbol prop)
                 {
+                    if (prop.Name == "Name") continue;
                     if (GeneratorUtils.IsSymbolProperty(prop, out var attr))
                     {
                         var type = prop.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);

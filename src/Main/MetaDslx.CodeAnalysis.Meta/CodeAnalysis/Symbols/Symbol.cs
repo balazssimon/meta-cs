@@ -30,7 +30,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
     /// exposed by the compiler.
     /// </summary>
     [DebuggerDisplay("{GetDebuggerDisplay(), nq}")]
-    [Symbol(IsAbstract = true, SubSymbolKindType = "SymbolKind", SubSymbolKindName = "Kind")]
+    [Symbol(NoModel = true, SubSymbolKindType = "SymbolKind", SubSymbolKindName = "Kind")]
     public abstract partial class Symbol : IFormattable
     {
         private static ConditionalWeakTable<Symbol, DiagnosticBag> s_diagnostics = new ConditionalWeakTable<Symbol, DiagnosticBag>();

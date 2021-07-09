@@ -44,8 +44,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
     ///     IList&lt;Symbol&gt; SemanticModel.LookupSymbols(CSharpSyntaxNode location, NamespaceOrTypeSymbol container = null, string name = null, int? arity = null, LookupOptions options = LookupOptions.Default, List&lt;Symbol> results = null);
     /// </pre>
     /// </summary>
-    [Symbol(IsAbstract = true)]
-    public sealed partial class AliasSymbol : DeclaredSymbol
+    [Symbol(NoMeta = true)]
+    public partial class AliasSymbol : DeclaredSymbol
     {
         private readonly string _aliasName;
         private readonly Binder _binder;

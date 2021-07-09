@@ -6,8 +6,8 @@ using System.Diagnostics;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-    [Symbol(IsAbstract = true)]
-    public sealed partial class DiscardSymbol : Symbol
+    [Symbol(NoMeta = true)]
+    public partial class DiscardSymbol : Symbol
     {
         public DiscardSymbol(TypeSymbol type)
         {

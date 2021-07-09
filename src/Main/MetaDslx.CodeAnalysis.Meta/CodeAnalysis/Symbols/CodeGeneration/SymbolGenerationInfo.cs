@@ -7,11 +7,13 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration
 {
     public class SymbolGenerationInfo
     {
-        public SymbolGenerationInfo(string name, string namespaceName, bool isAbstract, string? subSymbolKindType, string? subSymbolKindName, SymbolGenerationInfo parentSymbol, List<SymbolPropertyGenerationInfo> properties)
+        public SymbolGenerationInfo(string name, string namespaceName, string kind, bool noModel, bool noSource, bool noMeta, string? subSymbolKindType, string? subSymbolKindName, SymbolGenerationInfo parentSymbol, List<SymbolPropertyGenerationInfo> properties)
         {
             this.Name = name;
             this.NamespaceName = namespaceName;
-            this.IsAbstract = isAbstract;
+            this.NoModel = noModel;
+            this.NoSource = noSource;
+            this.NoMeta = noMeta;
             this.ParentSymbol = parentSymbol;
             var baseSymbol = parentSymbol;
             var symbolKindType = parentSymbol?.SubSymbolKindType;
@@ -28,22 +30,24 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration
             this.SubSymbolKindName = subSymbolKindName ?? subSymbolKindType;
             if (name == "Symbol")
             {
-                SymbolKind = "None";
+                SymbolKind = kind ?? "None";
                 IsSymbolClass = true;
             }
             else if (name.EndsWith("Symbol"))
             {
-                SymbolKind = Name.Substring(0, Name.Length - 6);
+                SymbolKind = kind ?? Name.Substring(0, Name.Length - 6);
             }
             else
             {
-                SymbolKind = Name;
+                SymbolKind = kind ?? Name;
             }
             this.Properties = properties;
         }
 
         public bool IsSymbolClass { get; private set; }
-        public bool IsAbstract { get; private set; }
+        public bool NoModel { get; private set; }
+        public bool NoMeta { get; private set; }
+        public bool NoSource { get; private set; }
         public string Name { get; private set; }
         public string NamespaceName { get; private set; }
         public string SymbolKind { get; private set; }
