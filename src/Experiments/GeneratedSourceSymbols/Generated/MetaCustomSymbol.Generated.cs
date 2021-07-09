@@ -26,11 +26,12 @@ namespace GeneratedSourceSymbols.Metadata
 
         protected override void CompleteInitializingSymbol(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
+            ModelSymbolImplementation.AssignSymbolPropertyValue<string>(this, nameof(Name), diagnostics, cancellationToken);
         }
 
         protected override ImmutableArray<Symbol> CompleteCreatingChildSymbols(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
-            return SymbolFactory.GetChildSymbols(this.ModelObject);
+            return ModelSymbolImplementation.MakeChildSymbols(this, nameof(ChildSymbols), diagnostics, cancellationToken);
         }
 
         protected override void CompleteImports(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
@@ -39,23 +40,27 @@ namespace GeneratedSourceSymbols.Metadata
 
         protected override global::GeneratedSourceSymbols.CustomSymbol CompleteSymbolProperty_Left(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
-            return SymbolFactory.GetSymbolPropertyValue<global::GeneratedSourceSymbols.CustomSymbol>(this, nameof(Left), this.ModelObject);
+            return ModelSymbolImplementation.AssignSymbolPropertyValue<global::GeneratedSourceSymbols.CustomSymbol>(this, nameof(Left), diagnostics, cancellationToken);
         }
         protected override global::GeneratedSourceSymbols.CustomSymbol CompleteSymbolProperty_Right(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
-            return SymbolFactory.GetSymbolPropertyValue<global::GeneratedSourceSymbols.CustomSymbol>(this, nameof(Right), this.ModelObject);
+            return ModelSymbolImplementation.AssignSymbolPropertyValue<global::GeneratedSourceSymbols.CustomSymbol>(this, nameof(Right), diagnostics, cancellationToken);
         }
         protected override global::System.Collections.Immutable.ImmutableArray<global::GeneratedSourceSymbols.CustomSymbol> CompleteSymbolProperty_CustomArray(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
-            return SymbolFactory.GetSymbolPropertyValues<global::GeneratedSourceSymbols.CustomSymbol>(this, nameof(CustomArray), this.ModelObject);
+            return ModelSymbolImplementation.AssignSymbolPropertyValues<global::GeneratedSourceSymbols.CustomSymbol>(this, nameof(CustomArray), diagnostics, cancellationToken);
         }
         protected override global::System.Collections.Immutable.ImmutableArray<int> CompleteSymbolProperty_IntArray(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
-            return SymbolFactory.GetSymbolPropertyValues<int>(this, nameof(IntArray), this.ModelObject);
+            return ModelSymbolImplementation.AssignSymbolPropertyValues<int>(this, nameof(IntArray), diagnostics, cancellationToken);
         }
         protected override int CompleteSymbolProperty_Int(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
-            return SymbolFactory.GetSymbolPropertyValue<int>(this, nameof(Int), this.ModelObject);
+            return ModelSymbolImplementation.AssignSymbolPropertyValue<int>(this, nameof(Int), diagnostics, cancellationToken);
+        }
+
+        protected override void CompleteNonSymbolProperties(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
         }
     }
 }

@@ -37,6 +37,14 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public static readonly CompletionPart None = new CompletionPart(nameof(None));
         public static readonly CompletionPart All = new CompletionPart(nameof(All));
 
+        public static readonly CompletionPart StartInitializing = new CompletionPart(nameof(StartInitializing));
+        public static readonly CompletionPart FinishInitializing = new CompletionPart(nameof(FinishInitializing));
+        public static readonly CompletionPart StartCreatingChildren = new CompletionPart(nameof(StartCreatingChildren));
+        public static readonly CompletionPart FinishCreatingChildren = new CompletionPart(nameof(FinishCreatingChildren));
+        public static readonly CompletionPart ChildrenCompleted = new CompletionPart(nameof(ChildrenCompleted));
+        public static readonly CompletionPart StartComputingNonSymbolProperties = new CompletionPart(nameof(StartComputingNonSymbolProperties));
+        public static readonly CompletionPart FinishComputingNonSymbolProperties = new CompletionPart(nameof(FinishComputingNonSymbolProperties));
+
         public static readonly CompletionPart StartCreated = new CompletionPart(nameof(StartCreated));
         public static readonly CompletionPart FinishCreated = new CompletionPart(nameof(FinishCreated));
         public static readonly CompletionPart StartChildrenCreated = new CompletionPart(nameof(StartChildrenCreated));
@@ -67,7 +75,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public static readonly CompletionPart StartProperties = new CompletionPart(nameof(StartProperties));
         public static readonly CompletionPart FinishProperties = new CompletionPart(nameof(FinishProperties));
 
-        public static readonly CompletionPart ChildrenCompleted = new CompletionPart(nameof(ChildrenCompleted));
+        //public static readonly CompletionPart ChildrenCompleted = new CompletionPart(nameof(ChildrenCompleted));
 
         public static readonly CompletionPart StartCustomBinders = new CompletionPart(nameof(StartCustomBinders));
         public static readonly CompletionPart FinishCustomBinders = new CompletionPart(nameof(FinishCustomBinders));

@@ -50,7 +50,9 @@ namespace MetaDslx.Languages.Meta.Symbols
 
         public override bool RequiresCompletion => true;
 
-        public override void ForceComplete(CompletionPart completionPart, SourceLocation locationOpt, CancellationToken cancellationToken)
+        public SymbolFactory SymbolFactory => ((ISourceSymbol)_containingSymbol).SymbolFactory;
+
+    public override void ForceComplete(CompletionPart completionPart, SourceLocation locationOpt, CancellationToken cancellationToken)
         {
             if (completionPart != null && _state.HasComplete(completionPart)) return;
             while (true)

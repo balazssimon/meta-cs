@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Text;
+using System.Threading;
 using MetaDslx.CodeAnalysis.Declarations;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
@@ -181,7 +182,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public abstract object GetProperty(object modelObject, string propertyName);
         public abstract bool IsContainmentProperty(object property);
         public abstract IEnumerable<object> GetPropertyValues(object modelObject, object property);
-        public abstract void SetOrAddPropertyValue(object modelObject, object property, object symbolValue, Location location, DiagnosticBag diagnostics);
+        public abstract void SetOrAddPropertyValue(object modelObject, object property, object symbolValue, Location location, DiagnosticBag diagnostics, CancellationToken cancellationToken);
 
         public virtual Type GetSymbolType(object modelObject)
         {

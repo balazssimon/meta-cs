@@ -8,6 +8,7 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 {
@@ -70,7 +71,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             else return ImmutableArray.Create(value);
         }
 
-        public override void SetOrAddPropertyValue(object modelObject, object property, object symbolValue, Location location, DiagnosticBag diagnostics)
+        public override void SetOrAddPropertyValue(object modelObject, object property, object symbolValue, Location location, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             try
             {

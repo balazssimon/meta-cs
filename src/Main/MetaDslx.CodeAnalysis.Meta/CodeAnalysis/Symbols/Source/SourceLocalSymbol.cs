@@ -40,7 +40,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             _state = CompletionState.Create(containingSymbol.ContainingModule.Language);
         }
 
-        public override MergedDeclaration MergedDeclaration => _declaration;
+        public MergedDeclaration MergedDeclaration => _declaration;
 
         public SourceSymbol Source => _source;
 

@@ -18,11 +18,6 @@ namespace GeneratedSourceSymbols.Model
 	{
         public static class CompletionParts
         {
-            public static readonly CompletionPart StartInitializing = new CompletionPart(nameof(StartInitializing));
-            public static readonly CompletionPart FinishInitializing = new CompletionPart(nameof(FinishInitializing));
-            public static readonly CompletionPart StartCreatingChildren = new CompletionPart(nameof(StartCreatingChildren));
-            public static readonly CompletionPart FinishCreatingChildren = new CompletionPart(nameof(FinishCreatingChildren));
-            public static readonly CompletionPart ChildrenCompleted = new CompletionPart(nameof(ChildrenCompleted));
             public static readonly CompletionPart StartComputingProperty_Left = new CompletionPart(nameof(StartComputingProperty_Left));
             public static readonly CompletionPart FinishComputingProperty_Left = new CompletionPart(nameof(FinishComputingProperty_Left));
             public static readonly CompletionPart StartComputingProperty_Right = new CompletionPart(nameof(StartComputingProperty_Right));
@@ -33,9 +28,9 @@ namespace GeneratedSourceSymbols.Model
             public static readonly CompletionPart FinishComputingProperty_IntArray = new CompletionPart(nameof(FinishComputingProperty_IntArray));
             public static readonly CompletionPart StartComputingProperty_Int = new CompletionPart(nameof(StartComputingProperty_Int));
             public static readonly CompletionPart FinishComputingProperty_Int = new CompletionPart(nameof(FinishComputingProperty_Int));
-            public static readonly ImmutableHashSet<CompletionPart> All = CompletionPart.Combine(StartInitializing, FinishInitializing, StartCreatingChildren, FinishCreatingChildren, ChildrenCompleted, StartComputingProperty_Left, FinishComputingProperty_Left, StartComputingProperty_Right, FinishComputingProperty_Right, StartComputingProperty_CustomArray, FinishComputingProperty_CustomArray, StartComputingProperty_IntArray, FinishComputingProperty_IntArray, StartComputingProperty_Int, FinishComputingProperty_Int);
-            public static readonly ImmutableHashSet<CompletionPart> AllWithLocation = CompletionPart.Combine(StartInitializing, FinishInitializing, StartCreatingChildren, FinishCreatingChildren, StartComputingProperty_Left, FinishComputingProperty_Left, StartComputingProperty_Right, FinishComputingProperty_Right, StartComputingProperty_CustomArray, FinishComputingProperty_CustomArray, StartComputingProperty_IntArray, FinishComputingProperty_IntArray, StartComputingProperty_Int, FinishComputingProperty_Int);
-            public static readonly CompletionGraph CompletionGraph = CompletionGraph.FromCompletionParts(StartInitializing, FinishInitializing, StartCreatingChildren, FinishCreatingChildren, StartComputingProperty_Left, FinishComputingProperty_Left, StartComputingProperty_Right, FinishComputingProperty_Right, StartComputingProperty_CustomArray, FinishComputingProperty_CustomArray, StartComputingProperty_IntArray, FinishComputingProperty_IntArray, StartComputingProperty_Int, FinishComputingProperty_Int, ChildrenCompleted);
+            public static readonly ImmutableHashSet<CompletionPart> AllWithLocation = CompletionPart.Combine(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Left, FinishComputingProperty_Left, StartComputingProperty_Right, FinishComputingProperty_Right, StartComputingProperty_CustomArray, FinishComputingProperty_CustomArray, StartComputingProperty_IntArray, FinishComputingProperty_IntArray, StartComputingProperty_Int, FinishComputingProperty_Int, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties);
+            public static readonly ImmutableHashSet<CompletionPart> All = CompletionPart.Combine(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Left, FinishComputingProperty_Left, StartComputingProperty_Right, FinishComputingProperty_Right, StartComputingProperty_CustomArray, FinishComputingProperty_CustomArray, StartComputingProperty_IntArray, FinishComputingProperty_IntArray, StartComputingProperty_Int, FinishComputingProperty_Int, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties, CompletionGraph.ChildrenCompleted);
+            public static readonly CompletionGraph CompletionGraph = CompletionGraph.FromCompletionParts(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Left, FinishComputingProperty_Left, StartComputingProperty_Right, FinishComputingProperty_Right, StartComputingProperty_CustomArray, FinishComputingProperty_CustomArray, StartComputingProperty_IntArray, FinishComputingProperty_IntArray, StartComputingProperty_Int, FinishComputingProperty_Int, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties, CompletionGraph.ChildrenCompleted);
         }
 
         private readonly Symbol _container;
@@ -73,7 +68,7 @@ namespace GeneratedSourceSymbols.Model
         {
             get
             {
-                this.ForceComplete(CompletionParts.FinishCreatingChildren, null, default);
+                this.ForceComplete(CompletionGraph.FinishCreatingChildren, null, default);
                 return _childSymbols;
             }
         }
@@ -136,26 +131,26 @@ namespace GeneratedSourceSymbols.Model
             {
                 cancellationToken.ThrowIfCancellationRequested();
                 var incompletePart = _state.NextIncompletePart;
-                if (incompletePart == CompletionParts.StartInitializing || incompletePart == CompletionParts.FinishInitializing)
+                if (incompletePart == CompletionGraph.StartInitializing || incompletePart == CompletionGraph.FinishInitializing)
                 {
-                    if (_state.NotePartComplete(CompletionParts.StartInitializing))
+                    if (_state.NotePartComplete(CompletionGraph.StartInitializing))
                     {
                         var diagnostics = DiagnosticBag.GetInstance();
                         CompleteInitializingSymbol(locationOpt, diagnostics, cancellationToken);
                         AddSymbolDiagnostics(diagnostics);
                         diagnostics.Free();
-                        _state.NotePartComplete(CompletionParts.FinishInitializing);
+                        _state.NotePartComplete(CompletionGraph.FinishInitializing);
                     }
                 }
-                else if (incompletePart == CompletionParts.StartCreatingChildren || incompletePart == CompletionParts.FinishCreatingChildren)
+                else if (incompletePart == CompletionGraph.StartCreatingChildren || incompletePart == CompletionGraph.FinishCreatingChildren)
                 {
-                    if (_state.NotePartComplete(CompletionParts.StartCreatingChildren))
+                    if (_state.NotePartComplete(CompletionGraph.StartCreatingChildren))
                     {
                         var diagnostics = DiagnosticBag.GetInstance();
                         _childSymbols = CompleteCreatingChildSymbols(locationOpt, diagnostics, cancellationToken);
                         AddSymbolDiagnostics(diagnostics);
                         diagnostics.Free();
-                        _state.NotePartComplete(CompletionParts.FinishCreatingChildren);
+                        _state.NotePartComplete(CompletionGraph.FinishCreatingChildren);
                     }
                 }
                 else if (incompletePart == CompletionParts.StartComputingProperty_Left || incompletePart == CompletionParts.FinishComputingProperty_Left)
@@ -213,7 +208,18 @@ namespace GeneratedSourceSymbols.Model
                         _state.NotePartComplete(CompletionParts.FinishComputingProperty_Int);
                     }
                 }
-                else if (incompletePart == CompletionParts.ChildrenCompleted)
+                else if (incompletePart == CompletionGraph.StartComputingNonSymbolProperties || incompletePart == CompletionGraph.FinishComputingNonSymbolProperties)
+                {
+                    if (_state.NotePartComplete(CompletionGraph.StartComputingNonSymbolProperties))
+                    {
+                        var diagnostics = DiagnosticBag.GetInstance();
+                        CompleteNonSymbolProperties(locationOpt, diagnostics, cancellationToken);
+                        AddSymbolDiagnostics(diagnostics);
+                        diagnostics.Free();
+                        _state.NotePartComplete(CompletionGraph.FinishComputingNonSymbolProperties);
+                    }
+                }
+                else if (incompletePart == CompletionGraph.ChildrenCompleted)
                 {
                     var diagnostics = DiagnosticBag.GetInstance();
                     CompleteImports(locationOpt, diagnostics, cancellationToken);
@@ -244,7 +250,7 @@ namespace GeneratedSourceSymbols.Model
                         return;
                     }
                     // We've completed all members, proceed to the next iteration.
-                    _state.NotePartComplete(CompletionParts.ChildrenCompleted);
+                    _state.NotePartComplete(CompletionGraph.ChildrenCompleted);
                 }
                 else if (incompletePart == null)
                 {
@@ -272,6 +278,7 @@ namespace GeneratedSourceSymbols.Model
         protected abstract global::System.Collections.Immutable.ImmutableArray<global::GeneratedSourceSymbols.CustomSymbol> CompleteSymbolProperty_CustomArray(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken);
         protected abstract global::System.Collections.Immutable.ImmutableArray<int> CompleteSymbolProperty_IntArray(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken);
         protected abstract int CompleteSymbolProperty_Int(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken);
+        protected abstract void CompleteNonSymbolProperties(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken);
         #endregion
 
     }

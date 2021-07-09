@@ -123,7 +123,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                             if (childSymbol is IModelSourceSymbol childSourceSymbol)
                             {
                                 var childObject = childSourceSymbol.ModelObject;
-                                symbolFacts.SetOrAddPropertyValue(ModelObject, objectProperty, childObject, childDeclaration.NameLocations.FirstOrDefault(), diagnostics);
+                                symbolFacts.SetOrAddPropertyValue(ModelObject, objectProperty, childObject, childDeclaration.NameLocations.FirstOrDefault(), diagnostics, cancellationToken);
                                 childSymbols.Add(childSymbol);
                             }
                             else
@@ -305,7 +305,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 var mergedDeclaration = ssymbol.MergedDeclaration;
                 foreach (var objectProperty in objectProperties)
                 {
-                    symbolFacts.SetOrAddPropertyValue(ModelObject, objectProperty, mergedDeclaration.Name, mergedDeclaration.NameLocations.FirstOrDefault(), diagnostics);
+                    symbolFacts.SetOrAddPropertyValue(ModelObject, objectProperty, mergedDeclaration.Name, mergedDeclaration.NameLocations.FirstOrDefault(), diagnostics, default);
                 }
                 return mergedDeclaration.Name;
             }
@@ -384,7 +384,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 {
                     foreach (var value in boundValue.Values)
                     {
-                        SymbolFacts.SetOrAddPropertyValue(ModelObject, objectProperty, value, location, diagnostics);
+                        SymbolFacts.SetOrAddPropertyValue(ModelObject, objectProperty, value, location, diagnostics, cancellationToken);
                         if (symbolPropertyValues != null)
                         {
                             if (expectedType != null && value != null && expectedType.IsAssignableFrom(value.GetType()))
@@ -415,7 +415,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                             Debug.Assert(childDeclaration.ModelObjectType == childBinder.ModelObjectType);
                             var childSingleDeclaration = childDeclaration.GetSingleDeclaration(symbolPartReference);
                             Debug.Assert(childSingleDeclaration != null);
-                            SymbolFacts.SetOrAddPropertyValue(ModelObject, objectProperty, childSymbol, childSingleDeclaration.Location, diagnostics);
+                            SymbolFacts.SetOrAddPropertyValue(ModelObject, objectProperty, childSymbol, childSingleDeclaration.Location, diagnostics, cancellationToken);
                             if (symbolPropertyValues != null) symbolPropertyValues.Add(childSymbol);
                         }
                     }
