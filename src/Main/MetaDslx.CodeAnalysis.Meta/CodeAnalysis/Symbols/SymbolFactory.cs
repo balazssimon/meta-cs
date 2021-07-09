@@ -1,5 +1,6 @@
 using MetaDslx.CodeAnalysis.Declarations;
 using MetaDslx.CodeAnalysis.Symbols.Metadata;
+using MetaDslx.CodeAnalysis.Symbols.Model;
 using MetaDslx.CodeAnalysis.Symbols.Source;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
@@ -111,9 +112,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         protected virtual Symbol CreateMetaSymbol(Symbol container, Type symbolType, object modelObject)
         {
-            if (symbolType == typeof(NamespaceSymbol)) return new ModelNamespaceSymbol(container, modelObject);
-            if (symbolType == typeof(NamedTypeSymbol)) return new ModelNamedTypeSymbol(container, modelObject);
-            if (symbolType == typeof(MemberSymbol)) return new ModelMemberSymbol(container, modelObject);
+            if (symbolType == typeof(NamespaceSymbol)) return new MetaNamespaceSymbol(container, modelObject);
+            if (symbolType == typeof(NamedTypeSymbol)) return new MetaNamedTypeSymbol(container, modelObject);
+            if (symbolType == typeof(MemberSymbol)) return new MetaMemberSymbol(container, modelObject);
             return new UnsupportedModelSymbol(container, modelObject);
         }
 

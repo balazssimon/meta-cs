@@ -1,3 +1,4 @@
+using MetaDslx.CodeAnalysis.Symbols.Metadata;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using System;
@@ -7,40 +8,12 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace MetaDslx.CodeAnalysis.Symbols.Metadata
+namespace MetaDslx.CodeAnalysis.Symbols.Model
 {
-    public class ModelMemberSymbol : MemberSymbol, IModelSymbol
+    public partial class ModelMemberSymbol
     {
-        private Symbol _container;
-        private object _modelObject;
         private ImmutableArray<DeclaredSymbol> _lazyMembers;
         private ImmutableArray<NamedTypeSymbol> _lazyTypeMembers;
-
-        public ModelMemberSymbol(Symbol container, object modelObject)
-        {
-            Debug.Assert(container is IModelSymbol);
-            if (modelObject == null) throw new ArgumentNullException(nameof(modelObject));
-            _container = container;
-            _modelObject = modelObject;
-        }
-
-        public sealed override Language Language => ContainingModule.Language;
-
-        public override MemberKind MemberKind => MemberKind.None;
-
-        public SymbolFactory SymbolFactory => ((IModelSymbol)_container).SymbolFactory;
-
-        public object ModelObject => _modelObject;
-
-        public Type ModelObjectType => _modelObject != null ? Language.SymbolFacts.GetModelObjectType(_modelObject) : null;
-
-        public sealed override string Name => _modelObject != null ? Language.SymbolFacts.GetName(_modelObject) : string.Empty;
-
-        public sealed override Symbol ContainingSymbol => _container;
-
-        public override ImmutableArray<Location> Locations => this.ContainingModule.Locations;
-
-        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => ImmutableArray<SyntaxReference>.Empty;
 
         public override bool IsStatic => false;
 

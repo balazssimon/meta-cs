@@ -15,7 +15,19 @@ using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 {
-    public class ModelModuleSymbol : NonMissingModuleSymbol, IModelSymbol
+    public partial class MetaModuleSymbol
+    {
+        public MetaModuleSymbol(AssemblySymbol owningAssembly, object model, object modelObject, int ordinal)
+            : base(owningAssembly, model, modelObject, ordinal)
+        {
+        }
+    }
+
+}
+
+namespace MetaDslx.CodeAnalysis.Symbols.Model
+{
+    public partial class ModelModuleSymbol : NonMissingModuleSymbol
     {
         private ModelGlobalNamespaceSymbol _globalNamespace;
         private AssemblySymbol _owningAssembly;
@@ -24,21 +36,18 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
         private readonly int _ordinal;
         private readonly ImmutableArray<MetadataLocation> _metadataLocation;
 
-        public ModelModuleSymbol(AssemblySymbol owningAssembly, object model, int ordinal)
+        public ModelModuleSymbol(AssemblySymbol owningAssembly, object model, object modelObject, int ordinal)
         {
+            _container = owningAssembly;
             _owningAssembly = owningAssembly;
+            _modelObject = modelObject;
+            _state = CompletionParts.CompletionGraph.CreateState();
             _model = model;
             _ordinal = ordinal;
             _metadataLocation = ImmutableArray.Create<MetadataLocation>(new MetadataLocation(this));
         }
 
-        public override Language Language => _owningAssembly.Language;
-
         public virtual object Model => _model;
-
-        public object ModelObject => null;
-
-        public Type ModelObjectType => null;
 
         public virtual ObjectFactory ObjectFactory => null;
 
@@ -87,8 +96,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
         internal override bool HasAssemblyRuntimeCompatibilityAttribute => false;
 
         internal override CharSet? DefaultMarshallingCharSet => null;
-
-        public override Symbol ContainingSymbol => _owningAssembly;
 
         public override ModuleMetadata GetMetadata()
         {

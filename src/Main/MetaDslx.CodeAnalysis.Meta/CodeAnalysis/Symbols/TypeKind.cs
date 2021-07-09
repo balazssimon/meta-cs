@@ -60,7 +60,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <summary>
         /// Type that represents an error.
         /// </summary>
-        public const string Error = nameof(Error);
+        public const string ErrorType = nameof(ErrorType);
 
         public const string NamedType = nameof(NamedType);
 

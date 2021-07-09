@@ -6,8 +6,8 @@ using System.Diagnostics;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-    [Symbol]
-    public sealed class DiscardSymbol : Symbol
+    [Symbol(IsAbstract = true)]
+    public sealed partial class DiscardSymbol : Symbol
     {
         public DiscardSymbol(TypeSymbol type)
         {
@@ -24,27 +24,13 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         public override Symbol ContainingSymbol => null;
         public override ImmutableArray<Symbol> ChildSymbols => ImmutableArray<Symbol>.Empty;
-        public override SymbolKind Kind => SymbolKind.Discard;
         public override ImmutableArray<Location> Locations => ImmutableArray<Location>.Empty;
         public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => ImmutableArray<SyntaxReference>.Empty;
 
         internal TypeWithAnnotations TypeWithAnnotations { get; set; }
 
-        public override void Accept(SymbolVisitor visitor) => visitor.VisitDiscard(this);
-        public override TResult Accept<TResult>(SymbolVisitor<TResult> visitor) => visitor.VisitDiscard(this);
-
-        public override TResult Accept<TArgument, TResult>(SymbolVisitor<TArgument, TResult> visitor, TArgument argument)
-        {
-            return visitor.VisitDiscard(this, argument);
-        }
-
         public override bool Equals(object obj) => obj is DiscardSymbol other && this.Type.Equals(other.Type);
         public override int GetHashCode() => this.Type.GetHashCode();
-
-        protected override ISymbol CreateISymbol()
-        {
-            return new PublicModel.DiscardSymbol(this);
-        }
 
     }
 }

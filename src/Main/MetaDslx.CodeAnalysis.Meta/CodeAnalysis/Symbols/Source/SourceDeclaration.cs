@@ -17,7 +17,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
     {
         private readonly DeclaredSymbol _symbol;
         private readonly MergedDeclaration _declaration;
-        private readonly CompletionState _state;
         private Members _lazyMembers;
 
         private Dictionary<string, ImmutableArray<DeclaredSymbol>> _lazyMembersDictionary;
@@ -29,10 +28,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         private static readonly Dictionary<string, ImmutableArray<NamedTypeSymbol>> s_emptyTypeMembers = new Dictionary<string, ImmutableArray<NamedTypeSymbol>>(EmptyComparer.Instance);
 
-        public SourceDeclaration(DeclaredSymbol symbol, MergedDeclaration declaration, CompletionState state)
+        public SourceDeclaration(DeclaredSymbol symbol, MergedDeclaration declaration)
         {
             _symbol = symbol;
-            _state = state;
             _declaration = declaration;
         }
 
@@ -126,7 +124,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 {
                     _symbol.AddDeclarationDiagnostics(diagnostics);
 
-                    _state.NotePartComplete(CompletionGraph.TypeMembers);
+                    //_state.NotePartComplete(CompletionGraph.TypeMembers);
                 }
 
                 diagnostics.Free();
@@ -256,10 +254,10 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         public Dictionary<string, ImmutableArray<DeclaredSymbol>> GetMembersByName()
         {
-            if (_state.HasComplete(CompletionGraph.Members))
+            /*if (_state.HasComplete(CompletionGraph.Members))
             {
                 return _lazyMembersDictionary;
-            }
+            }*/
 
             return GetMembersByNameSlow();
         }
@@ -279,14 +277,14 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                     _symbol.CheckMembers(membersDictionary, diagnostics);
                     _symbol.AddDeclarationDiagnostics(diagnostics);
                     _symbol.DeclaringCompilation.SymbolDeclaredEvent(_symbol);
-                    var wasSetThisThread = _state.NotePartComplete(CompletionGraph.Members);
-                    Debug.Assert(wasSetThisThread);
+                    //var wasSetThisThread = _state.NotePartComplete(CompletionGraph.Members);
+                    //Debug.Assert(wasSetThisThread);
                 }
 
                 diagnostics.Free();
             }
 
-            _state.SpinWaitComplete(CompletionGraph.Members, default);
+            //_state.SpinWaitComplete(CompletionGraph.Members, default);
             return _lazyMembersDictionary;
         }
 
@@ -377,7 +375,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             {
                 sourceSymbol?.AssignPropertyValues(SymbolConstants.MembersProperty, diagnostics, default);
             }
-            var builder = new MembersBuilder(_symbol, _state);
+            var builder = new MembersBuilder(_symbol, null/* _state*/);
             AddTypeMembers(builder.TypeMembers, diagnostics);
             AddNonTypeMembers(builder.NonTypeMembers, diagnostics);
 

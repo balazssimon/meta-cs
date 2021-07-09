@@ -13,6 +13,7 @@ using System.Collections.Concurrent;
 using MetaDslx.CodeAnalysis.Symbols.CSharp;
 using MetaDslx.Modeling;
 using MetaDslx.CodeAnalysis.Symbols.Metadata;
+using MetaDslx.CodeAnalysis.Symbols.Model;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Source
 {
@@ -21,7 +22,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
     using MessageProvider = Microsoft.CodeAnalysis.CSharp.MessageProvider;
     using CommonAssemblyWellKnownAttributeData = Microsoft.CodeAnalysis.CommonAssemblyWellKnownAttributeData<MetaDslx.CodeAnalysis.Symbols.NamedTypeSymbol>;
 
-    public class SourceAssemblySymbol : MetadataOrSourceAssemblySymbol
+    public partial class SourceAssemblySymbol 
     {
         /// <summary>
         /// A Compilation the assembly is created for.
@@ -159,12 +160,12 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                     if (metadata is ModelMetadata modelMetadata)
                     {
                         var model = modelMetadata.Model;
-                        moduleBuilder.Add(new ModelModuleSymbol(this, model, moduleBuilder.Count));
+                        moduleBuilder.Add(new MetaModuleSymbol(this, model, null, moduleBuilder.Count));
                     }
                     if (metadata is ModelGroupMetadata modelGroupMetadata)
                     {
                         var modelGroup = modelGroupMetadata.ModelGroup;
-                        moduleBuilder.Add(new ModelModuleSymbol(this, modelGroup, moduleBuilder.Count));
+                        moduleBuilder.Add(new MetaModuleSymbol(this, modelGroup, null, moduleBuilder.Count));
                     }
                 }
             }
@@ -737,16 +738,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         internal SourceModuleSymbol SourceModule
         {
             get { return (SourceModuleSymbol)this.Modules[0]; }
-        }
-
-        public override bool RequiresCompletion
-        {
-            get { return true; }
-        }
-
-        public override bool HasComplete(CompletionPart part)
-        {
-            return _state.HasComplete(part);
         }
 
         public override void ForceComplete(CompletionPart completionPart, SourceLocation locationOpt, CancellationToken cancellationToken)

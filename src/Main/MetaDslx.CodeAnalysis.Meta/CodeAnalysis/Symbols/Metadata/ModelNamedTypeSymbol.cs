@@ -9,35 +9,13 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace MetaDslx.CodeAnalysis.Symbols.Metadata
+namespace MetaDslx.CodeAnalysis.Symbols.Model
 {
-    public class ModelNamedTypeSymbol : NamedTypeSymbol, IModelSymbol
+    public partial class ModelNamedTypeSymbol
     {
-        private Symbol _container;
-        private object _modelObject;
         private ImmutableArray<string> _lazyMemberNames;
         private ImmutableArray<DeclaredSymbol> _lazyMembers;
         private ImmutableArray<NamedTypeSymbol> _lazyTypeMembers;
-
-        public ModelNamedTypeSymbol(Symbol container, object modelObject)
-        {
-            Debug.Assert(container is IModelSymbol);
-            if (modelObject == null) throw new ArgumentNullException(nameof(modelObject));
-            _container = container;
-            _modelObject = modelObject;
-        }
-
-        public sealed override Language Language => ContainingModule.Language;
-
-        public SymbolFactory SymbolFactory => ((IModelSymbol)_container).SymbolFactory;
-
-        public object ModelObject => _modelObject;
-
-        public Type ModelObjectType => _modelObject != null ? Language.SymbolFacts.GetModelObjectType(_modelObject) : null;
-
-        public sealed override string Name => _modelObject != null ? Language.SymbolFacts.GetName(_modelObject) : string.Empty;
-
-        public override TypeKind TypeKind => TypeKind.NamedType;
 
         public override IEnumerable<string> MemberNames
         {
@@ -52,13 +30,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             }
         }
 
-        public sealed override Symbol ContainingSymbol => _container;
-
         public sealed override NamedTypeSymbol ContainingType => _container as NamedTypeSymbol;
-
-        public override ImmutableArray<Location> Locations => this.ContainingModule.Locations;
-
-        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => ImmutableArray<SyntaxReference>.Empty;
 
         public override ImmutableArray<NamedTypeSymbol> GetBaseTypesNoUseSiteDiagnostics(ConsList<TypeSymbol> basesBeingResolved = null)
         {

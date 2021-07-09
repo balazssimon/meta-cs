@@ -6,6 +6,7 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
+    [Symbol]
     public class ParameterSymbol : LocalSymbol
     {
         public override LocalKind LocalKind => throw new NotImplementedException();
@@ -15,6 +16,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public override ImmutableArray<Location> Locations => throw new NotImplementedException();
 
         public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => throw new NotImplementedException();
+
+        public override ImmutableArray<Symbol> ChildSymbols => ImmutableArray<Symbol>.Empty;
 
         public ImmutableArray<CustomModifier> RefCustomModifiers { get; internal set; }
         public bool IsDiscard { get; internal set; }

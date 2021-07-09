@@ -7,14 +7,8 @@ using System.Text;
 namespace MetaDslx.CodeAnalysis.Symbols
 {
     [Symbol(SubSymbolKindType = "LocalKind")]
-    public abstract class LocalSymbol : DeclaredSymbol
+    public abstract partial class LocalSymbol : DeclaredSymbol
     {
-        public sealed override SymbolKind Kind => SymbolKind.Member;
-
-        public abstract LocalKind LocalKind { get; }
-
-        public override ImmutableArray<Symbol> ChildSymbols => GetMembers().Cast<DeclaredSymbol, Symbol>();
-
         public override bool IsStatic => false;
 
         public bool IsConst { get; internal set; }
@@ -25,23 +19,5 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public bool IsFixed { get; internal set; }
         internal TypeWithAnnotations TypeWithAnnotations { get;  set; }
 
-        public override void Accept(SymbolVisitor visitor)
-        {
-            visitor.VisitLocal(this);
-        }
-
-        public override TResult Accept<TResult>(SymbolVisitor<TResult> visitor)
-        {
-            return visitor.VisitLocal(this);
-        }
-
-        public override TResult Accept<TArgument, TResult>(SymbolVisitor<TArgument, TResult> visitor, TArgument argument)
-        {
-            return visitor.VisitLocal(this, argument);
-        }
-        protected sealed override ISymbol CreateISymbol()
-        {
-            return new PublicModel.LocalSymbol(this);
-        }
     }
 }

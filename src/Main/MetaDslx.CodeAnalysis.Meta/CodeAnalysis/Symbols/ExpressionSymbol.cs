@@ -5,25 +5,7 @@ using System.Text;
 namespace MetaDslx.CodeAnalysis.Symbols
 {
     [Symbol(SubSymbolKindType = "ExpressionKind")]
-    public abstract class ExpressionSymbol : NonDeclaredSymbol
+    public abstract partial class ExpressionSymbol : NonDeclaredSymbol
     {
-        public abstract ExpressionKind ExpressionKind { get; }
-
-
-        public override void Accept(SymbolVisitor visitor)
-        {
-            visitor.VisitExpression(this);
-        }
-
-        public override TResult Accept<TResult>(SymbolVisitor<TResult> visitor)
-        {
-            return visitor.VisitExpression(this);
-        }
-
-        public override TResult Accept<TArgument, TResult>(SymbolVisitor<TArgument, TResult> visitor, TArgument argument)
-        {
-            return visitor.VisitExpression(this, argument);
-        }
-
     }
 }

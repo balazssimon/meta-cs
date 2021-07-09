@@ -11,14 +11,13 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 
-namespace MetaDslx.CodeAnalysis.Symbols
+namespace MetaDslx.CodeAnalysis.Symbols.Model
 {
     /// <summary>
     /// Represents source or metadata assembly.
     /// </summary>
     /// <remarks></remarks>
-    public abstract class MetadataOrSourceAssemblySymbol
-        : NonMissingAssemblySymbol
+    public abstract partial class ModelAssemblySymbol : NonMissingAssemblySymbol
     {
         /// <summary>
         /// A dictionary of cached Cor types defined in this assembly.

@@ -28,12 +28,15 @@ namespace MetaDslx.CodeAnalysis.Analyzers.Symbols
                     Debug.WriteLine($"Generating source symbol for: {info.NamespaceName}.{info.Name}");
                     var symbolCode = generator.GenerateSymbol(info);
                     context.AddSource(symbol.Name + ".Generated.cs", symbolCode);
-                    var modelSymbolCode = generator.GenerateModelSymbol(info);
-                    context.AddSource("Model" + symbol.Name + ".Generated.cs", modelSymbolCode);
-                    var metaSymbolCode = generator.GenerateMetaSymbol(info);
-                    context.AddSource("Meta" + symbol.Name + ".Generated.cs", metaSymbolCode);
-                    var sourceSymbolCode = generator.GenerateSourceSymbol(info);
-                    context.AddSource("Source" + symbol.Name + ".Generated.cs", sourceSymbolCode);
+                    if (!info.IsAbstract)
+                    {
+                        var modelSymbolCode = generator.GenerateModelSymbol(info);
+                        context.AddSource("Model" + symbol.Name + ".Generated.cs", modelSymbolCode);
+                        var metaSymbolCode = generator.GenerateMetaSymbol(info);
+                        context.AddSource("Meta" + symbol.Name + ".Generated.cs", metaSymbolCode);
+                        var sourceSymbolCode = generator.GenerateSourceSymbol(info);
+                        context.AddSource("Source" + symbol.Name + ".Generated.cs", sourceSymbolCode);
+                    }
                 }
             }
             var symbolsByNamespace = symbols.GroupBy(s => s.NamespaceName);
@@ -50,10 +53,15 @@ namespace MetaDslx.CodeAnalysis.Analyzers.Symbols
             if (_info.TryGetValue(symbol, out var info)) return info;
             if (!GeneratorUtils.IsAnnotatedSymbol(symbol, out var symbolAttribute)) return null;
             var ns = GeneratorUtils.GetFullName(symbol.ContainingNamespace);
+            bool isAbstract = false;
             string? subSymbolKindType = null;
             string? subSymbolKindName = null;
             foreach (var arg in symbolAttribute.NamedArguments)
             {
+                if (arg.Key == "IsAbstract")
+                {
+                    isAbstract = (bool)arg.Value.Value;
+                }
                 if (arg.Key == "SubSymbolKindType")
                 {
                     subSymbolKindType = (string?)arg.Value.Value;
@@ -71,12 +79,23 @@ namespace MetaDslx.CodeAnalysis.Analyzers.Symbols
                 if (parentInfo is not null) break;
                 baseSymbol = baseSymbol.BaseType;
             }
-            return new SymbolGenerationInfo(symbol.Name, ns, subSymbolKindType, subSymbolKindName, parentInfo, GetSymbolPropertyGenerationInfos(symbol));
+            return new SymbolGenerationInfo(symbol.Name, ns, isAbstract, subSymbolKindType, subSymbolKindName, parentInfo, GetSymbolPropertyGenerationInfos(symbol));
         }
 
         private List<SymbolPropertyGenerationInfo> GetSymbolPropertyGenerationInfos(INamedTypeSymbol symbol)
         {
             var result = new List<SymbolPropertyGenerationInfo>();
+            var currentSymbol = symbol;
+            while (currentSymbol != null)
+            {
+                AddSymbolPropertyGenerationInfos(currentSymbol, result);
+                currentSymbol = currentSymbol.BaseType;
+            }
+            return result;
+        }
+
+        private void AddSymbolPropertyGenerationInfos(INamedTypeSymbol symbol, List<SymbolPropertyGenerationInfo> result)
+        {
             foreach (var member in symbol.GetMembers())
             {
                 if (member.Kind == SymbolKind.Property && member is IPropertySymbol prop)
@@ -106,8 +125,6 @@ namespace MetaDslx.CodeAnalysis.Analyzers.Symbols
                     }
                 }
             }
-            return result;
         }
-
     }
 }

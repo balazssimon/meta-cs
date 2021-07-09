@@ -44,8 +44,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
     ///     IList&lt;Symbol&gt; SemanticModel.LookupSymbols(CSharpSyntaxNode location, NamespaceOrTypeSymbol container = null, string name = null, int? arity = null, LookupOptions options = LookupOptions.Default, List&lt;Symbol> results = null);
     /// </pre>
     /// </summary>
-    [Symbol]
-    public sealed class AliasSymbol : DeclaredSymbol
+    [Symbol(IsAbstract = true)]
+    public sealed partial class AliasSymbol : DeclaredSymbol
     {
         private readonly string _aliasName;
         private readonly Binder _binder;
@@ -123,14 +123,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
             get
             {
                 return _aliasName;
-            }
-        }
-
-        public override SymbolKind Kind
-        {
-            get
-            {
-                return SymbolKind.Alias;
             }
         }
 
@@ -341,21 +333,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         #region ISymbol Members
 
-        public override void Accept(SymbolVisitor visitor)
-        {
-            visitor.VisitAlias(this);
-        }
-
-        public override TResult Accept<TResult>(SymbolVisitor<TResult> visitor)
-        {
-            return visitor.VisitAlias(this);
-        }
-
-        public override TResult Accept<TArgument, TResult>(SymbolVisitor<TArgument, TResult> visitor, TArgument argument)
-        {
-            return visitor.VisitAlias(this, argument);
-        }
-
         public override ImmutableArray<DeclaredSymbol> GetMembers()
         {
             return ImmutableArray<DeclaredSymbol>.Empty;
@@ -378,9 +355,5 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         #endregion
 
-        protected override ISymbol CreateISymbol()
-        {
-            return new PublicModel.AliasSymbol(this);
-        }
     }
 }

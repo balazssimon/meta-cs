@@ -12,10 +12,8 @@ using System.Text;
 namespace MetaDslx.CodeAnalysis.Symbols
 {
     [Symbol]
-    public abstract class NamedTypeSymbol : TypeSymbol
+    public abstract partial class NamedTypeSymbol : TypeSymbol
     {
-        public override SymbolKind Kind => SymbolKind.NamedType;
-
 
         /// <summary>
         /// Collection of names of members declared within this type.
@@ -338,7 +336,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             get
             {
                 var kind = TypeKind;
-                return kind != TypeKind.Enum && kind != TypeKind.Value && kind != TypeKind.Error;
+                return kind != TypeKind.Enum && kind != TypeKind.Value && kind != TypeKind.ErrorType;
             }
         }
 
@@ -464,27 +462,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
 
             return this.ConstructUnboundGenericType();
-        }
-
-
-        public override void Accept(SymbolVisitor visitor)
-        {
-            visitor.VisitNamedType(this);
-        }
-
-        public override TResult Accept<TResult>(SymbolVisitor<TResult> visitor)
-        {
-            return visitor.VisitNamedType(this);
-        }
-
-        public override TResult Accept<TArgument, TResult>(SymbolVisitor<TArgument, TResult> visitor, TArgument argument)
-        {
-            return visitor.VisitNamedType(this, argument);
-        }
-
-        protected override ISymbol CreateISymbol()
-        {
-            return new PublicModel.NonErrorNamedTypeSymbol(this, DefaultNullableAnnotation);
         }
 
         protected override ITypeSymbol CreateITypeSymbol(Microsoft.CodeAnalysis.NullableAnnotation nullableAnnotation)

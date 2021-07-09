@@ -10,12 +10,8 @@ using System.Text;
 namespace MetaDslx.CodeAnalysis.Symbols
 {
     [Symbol(SubSymbolKindType = "MemberKind")]
-    public abstract class MemberSymbol : DeclaredSymbol
+    public abstract partial class MemberSymbol : DeclaredSymbol
     {
-        public sealed override SymbolKind Kind => SymbolKind.Member;
-
-        public abstract MemberKind MemberKind { get; }
-
         public override ImmutableArray<Symbol> ChildSymbols => GetMembers().Cast<DeclaredSymbol, Symbol>();
 
         public virtual bool IsImplementableMember => !this.IsStatic;

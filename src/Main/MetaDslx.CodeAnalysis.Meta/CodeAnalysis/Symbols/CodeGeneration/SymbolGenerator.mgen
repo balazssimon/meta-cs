@@ -20,10 +20,16 @@ namespace [symbol.NamespaceName]
 	public abstract partial class [symbol.Name]
 	{
         [if (symbol.SymbolKindType != null)]
+        /// <summary>
+        /// Gets the kind of this symbol.
+        /// </summary>
         public sealed override [symbol.SymbolKindType] [symbol.SymbolKindName] => [symbol.SymbolKindType].[symbol.SymbolKind];
         [end if]
 ^
         [if (symbol.SubSymbolKindType != null)]
+        /// <summary>
+        /// Gets the kind of this symbol.
+        /// </summary>
         public virtual [symbol.SubSymbolKindType] [symbol.SubSymbolKindName] => [symbol.SubSymbolKindType].None;
         [end if]
 ^
@@ -44,7 +50,7 @@ namespace [symbol.NamespaceName]
             else return default(TResult);
         }
 ^
-        protected override ISymbol CreateISymbol()
+        protected [if (symbol.IsSymbolClass)]virtual[else]override[end if] ISymbol CreateISymbol()
         {
             throw new NotImplementedException();
         }

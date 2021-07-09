@@ -19,7 +19,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
     /// Represents a module within an assembly. Every assembly contains one or more modules.
     /// </summary>
     [Symbol]
-    public abstract class ModuleSymbol : Symbol, IModuleSymbolInternal
+    public abstract partial class ModuleSymbol : Symbol, IModuleSymbolInternal
     {
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         // Changes to the public interface of this class should remain synchronized with the VB version.

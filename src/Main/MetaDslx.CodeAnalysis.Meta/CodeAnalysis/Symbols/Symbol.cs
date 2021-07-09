@@ -30,7 +30,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
     /// exposed by the compiler.
     /// </summary>
     [DebuggerDisplay("{GetDebuggerDisplay(), nq}")]
-    [Symbol(SubSymbolKindType = "SymbolKind", SubSymbolKindName = "Kind")]
+    [Symbol(IsAbstract = true, SubSymbolKindType = "SymbolKind", SubSymbolKindName = "Kind")]
     public abstract partial class Symbol : IFormattable
     {
         private static ConditionalWeakTable<Symbol, DiagnosticBag> s_diagnostics = new ConditionalWeakTable<Symbol, DiagnosticBag>();
@@ -85,11 +85,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
             Debug.Assert(!this.RequiresCompletion);
             return true;
         }
-
-        /// <summary>
-        /// Gets the kind of this symbol.
-        /// </summary>
-        public virtual SymbolKind Kind => SymbolKind.None;
 
         /// <summary>
         /// Get the symbol that logically contains this symbol. 
@@ -553,12 +548,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return this.MetadataName + " (" + this.GetType().Name + ")";
         }
 
-        public abstract void Accept(SymbolVisitor visitor);
-
-        public abstract TResult Accept<TResult>(SymbolVisitor<TResult> visitor);
-
-        public abstract TResult Accept<TArgument, TResult>(SymbolVisitor<TArgument, TResult> visitor, TArgument argument);
-
         string IFormattable.ToString(string format, IFormatProvider formatProvider)
         {
             return ToString();
@@ -756,8 +745,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
             return first.Equals(second, compareKind);
         }
-
-        protected abstract ISymbol CreateISymbol();
 
         internal ISymbol ISymbol => s_publicModel.GetValue(this, s => s.CreateISymbol());
 

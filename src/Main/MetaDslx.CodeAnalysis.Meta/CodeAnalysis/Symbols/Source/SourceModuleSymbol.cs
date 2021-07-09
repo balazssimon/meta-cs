@@ -16,7 +16,7 @@ using System.Threading;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Source
 {
-    public class SourceModuleSymbol : ModelModuleSymbol
+    public partial class SourceModuleSymbol 
     {
         /// <summary>
         /// Owning assembly.
@@ -44,7 +44,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             SourceAssemblySymbol assemblySymbol,
             DeclarationTable declarations,
             string moduleName)
-            : base(assemblySymbol, null, 0)
+            : base(assemblySymbol, null, null, 0)
         {
             Debug.Assert((object)assemblySymbol != null);
 
@@ -212,16 +212,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             }
         }
 
-        public sealed override bool RequiresCompletion
-        {
-            get { return true; }
-        }
-
-        public sealed override bool HasComplete(CompletionPart part)
-        {
-            return _state.HasComplete(part);
-        }
-
         public override void ForceComplete(CompletionPart completionPart, SourceLocation locationOpt, CancellationToken cancellationToken)
         {
             if (completionPart != null && _state.HasComplete(completionPart)) return;
@@ -323,14 +313,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             get
             {
                 return _name;
-            }
-        }
-
-        public override Symbol ContainingSymbol
-        {
-            get
-            {
-                return _assemblySymbol;
             }
         }
 

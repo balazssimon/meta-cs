@@ -19,7 +19,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
     using CSharpSymbols = Microsoft.CodeAnalysis.CSharp.Symbols;
 
     [Symbol]
-    public abstract class AssemblySymbol : Symbol, IAssemblySymbolInternal
+    public abstract partial class AssemblySymbol : Symbol, IAssemblySymbolInternal
     {
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         // Changes to the public interface of this class should remain synchronized with the VB version.
@@ -175,14 +175,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// that holds the assembly manifest.
         /// </summary>
         public abstract ImmutableArray<ModuleSymbol> Modules { get; }
-
-        public sealed override SymbolKind Kind
-        {
-            get
-            {
-                return SymbolKind.Assembly;
-            }
-        }
 
         public sealed override AssemblySymbol ContainingAssembly
         {
@@ -751,7 +743,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         private bool IsValidWellKnownType(NamedTypeSymbol result)
         {
-            if ((object)result == null || result.TypeKind == TypeKind.Error)
+            if ((object)result == null || result.TypeKind == TypeKind.ErrorType)
             {
                 return false;
             }
@@ -853,21 +845,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         #region ISymbol Members
 
-        public override void Accept(SymbolVisitor visitor)
-        {
-            visitor.VisitAssembly(this);
-        }
-
-        public override TResult Accept<TResult>(SymbolVisitor<TResult> visitor)
-        {
-            return visitor.VisitAssembly(this);
-        }
-
-        public override TResult Accept<TArgument, TResult>(SymbolVisitor<TArgument, TResult> visitor, TArgument argument)
-        {
-            return visitor.VisitAssembly(this, argument);
-        }
-
         bool ISymbolInternal.Equals(ISymbolInternal? other, Microsoft.CodeAnalysis.TypeCompareKind compareKind)
         {
             throw new NotImplementedException();
@@ -895,9 +872,5 @@ namespace MetaDslx.CodeAnalysis.Symbols
             throw new NotImplementedException();
         }
 
-        protected override ISymbol CreateISymbol()
-        {
-            return new PublicModel.NonSourceAssemblySymbol(this);
-        }
     }
 }

@@ -8,9 +8,9 @@ using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
 
-namespace MetaDslx.CodeAnalysis.Symbols.Metadata
+namespace MetaDslx.CodeAnalysis.Symbols.Model
 {
-    public class ModelGlobalNamespaceSymbol : ModelNamespaceSymbol, IModelSymbol
+    public class ModelGlobalNamespaceSymbol : MetaDslx.CodeAnalysis.Symbols.Metadata.MetaNamespaceSymbol
     {
         private ModelModuleSymbol _module;
         private ImmutableArray<DeclaredSymbol> _lazyMembers;
@@ -27,8 +27,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
         public override NamespaceExtent Extent => new NamespaceExtent(_module);
 
         public override ImmutableArray<Location> Locations => _module.Locations;
-
-        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => ImmutableArray<SyntaxReference>.Empty;
 
         public ImmutableArray<string> NamespaceNames
         {

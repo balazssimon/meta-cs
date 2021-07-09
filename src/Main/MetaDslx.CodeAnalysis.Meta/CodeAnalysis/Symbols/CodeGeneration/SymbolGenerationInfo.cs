@@ -7,10 +7,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration
 {
     public class SymbolGenerationInfo
     {
-        public SymbolGenerationInfo(string name, string namespaceName, string? subSymbolKindType, string? subSymbolKindName, SymbolGenerationInfo parentSymbol, List<SymbolPropertyGenerationInfo> properties)
+        public SymbolGenerationInfo(string name, string namespaceName, bool isAbstract, string? subSymbolKindType, string? subSymbolKindName, SymbolGenerationInfo parentSymbol, List<SymbolPropertyGenerationInfo> properties)
         {
             this.Name = name;
             this.NamespaceName = namespaceName;
+            this.IsAbstract = isAbstract;
             this.ParentSymbol = parentSymbol;
             var baseSymbol = parentSymbol;
             var symbolKindType = parentSymbol?.SubSymbolKindType;
@@ -28,6 +29,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration
             if (name == "Symbol")
             {
                 SymbolKind = "None";
+                IsSymbolClass = true;
             }
             else if (name.EndsWith("Symbol"))
             {
@@ -41,6 +43,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration
         }
 
         public bool IsSymbolClass { get; private set; }
+        public bool IsAbstract { get; private set; }
         public string Name { get; private set; }
         public string NamespaceName { get; private set; }
         public string SymbolKind { get; private set; }

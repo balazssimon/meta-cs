@@ -49,14 +49,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
         }
 
-        public override SymbolKind Kind
-        {
-            get
-            {
-                return SymbolKind.DynamicType;
-            }
-        }
-
         public override TypeKind TypeKind
         {
             get

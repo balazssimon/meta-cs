@@ -16,7 +16,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
     /// of an error. For example, if a field is declared "Goo x;", and the type "Goo" cannot be
     /// found, an ErrorSymbol is returned when asking the field "x" what it's type is.
     /// </summary>
-    [Symbol]
+    [Symbol(IsAbstract = true)]
     public abstract partial class ErrorTypeSymbol : NamedTypeSymbol
     {
         internal static readonly ErrorTypeSymbol UnknownResultType = new UnsupportedMetadataTypeSymbol();
@@ -138,11 +138,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public sealed override SymbolKind Kind => SymbolKind.ErrorType;
 
         /// <summary>
-        /// Gets the kind of this type.
-        /// </summary>
-        public sealed override TypeKind TypeKind => TypeKind.Error;
-
-        /// <summary>
         /// Get the symbol that logically contains this symbol. 
         /// </summary>
         public override Symbol ContainingSymbol => null;
@@ -188,11 +183,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public virtual bool Unreported
         {
             get { return false; }
-        }
-
-        protected sealed override ISymbol CreateISymbol()
-        {
-            return new PublicModel.ErrorTypeSymbol(this, DefaultNullableAnnotation);
         }
 
         protected sealed override ITypeSymbol CreateITypeSymbol(Microsoft.CodeAnalysis.NullableAnnotation nullableAnnotation)

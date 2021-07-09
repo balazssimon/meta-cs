@@ -40,6 +40,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         public const string NamedType = nameof(NamedType);
 
+        public const string Type = nameof(Type);
+
         /// <summary>
         /// Symbol is a member (e.g. field, property or operation).
         /// </summary>
