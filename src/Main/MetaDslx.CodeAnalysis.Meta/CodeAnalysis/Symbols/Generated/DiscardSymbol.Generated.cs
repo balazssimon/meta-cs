@@ -15,6 +15,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
 {
 	public partial class DiscardSymbol
 	{
+        /// <summary>
+        /// Gets the kind of this symbol.
+        /// </summary>
         public sealed override SymbolKind Kind => SymbolKind.Discard;
 
 

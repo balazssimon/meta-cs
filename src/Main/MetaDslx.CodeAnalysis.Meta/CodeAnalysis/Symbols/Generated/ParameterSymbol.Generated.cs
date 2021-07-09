@@ -13,12 +13,12 @@ using System.Threading;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-	public abstract partial class NamedTypeSymbol
+	public abstract partial class ParameterSymbol
 	{
         /// <summary>
         /// Gets the kind of this symbol.
         /// </summary>
-        public override TypeKind TypeKind => TypeKind.NamedType;
+        public sealed override LocalKind LocalKind => LocalKind.Parameter;
 
 
         public override void Accept(MetaDslx.CodeAnalysis.Symbols.SymbolVisitor visitor)

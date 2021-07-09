@@ -15,6 +15,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
 {
 	public abstract partial class ErrorTypeSymbol
 	{
+        /// <summary>
+        /// Gets the kind of this symbol.
+        /// </summary>
         public sealed override TypeKind TypeKind => TypeKind.ErrorType;
 
 

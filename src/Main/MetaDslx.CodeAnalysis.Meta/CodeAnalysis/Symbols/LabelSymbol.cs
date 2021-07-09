@@ -7,19 +7,9 @@ using System.Text;
 namespace MetaDslx.CodeAnalysis.Symbols
 {
     [Symbol]
-    public class LabelSymbol : LocalSymbol
+    public partial class LabelSymbol : LocalSymbol
     {
-        public override LocalKind LocalKind => throw new NotImplementedException();
-
-        public override Symbol ContainingSymbol => throw new NotImplementedException();
-
-        public override ImmutableArray<Location> Locations => throw new NotImplementedException();
-
-        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => throw new NotImplementedException();
-
         public MethodSymbol ContainingMethod { get; internal set; }
-
-        public override ImmutableArray<Symbol> ChildSymbols => ImmutableArray<Symbol>.Empty;
 
         public override ImmutableArray<DeclaredSymbol> GetMembers()
         {

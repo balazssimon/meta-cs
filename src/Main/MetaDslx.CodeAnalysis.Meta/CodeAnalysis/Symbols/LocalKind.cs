@@ -12,6 +12,10 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         public const string None = nameof(None);
 
+        public const string Label = nameof(Label);
+
+        public const string Parameter = nameof(Parameter);
+
         protected LocalKind(string name)
             : base(name)
         {

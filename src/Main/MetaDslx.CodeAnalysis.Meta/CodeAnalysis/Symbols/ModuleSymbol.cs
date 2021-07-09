@@ -55,17 +55,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
         }
 
-        /// <summary>
-        /// Returns value 'NetModule' of the <see cref="SymbolKind"/>
-        /// </summary>
-        public sealed override SymbolKind Kind
-        {
-            get
-            {
-                return SymbolKind.NetModule;
-            }
-        }
-
         // Only the compiler can create ModuleSymbols.
         internal ModuleSymbol()
         {

@@ -14,7 +14,7 @@ using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Model
 {
-	public abstract partial class ModelNamespaceSymbol : MetaDslx.CodeAnalysis.Symbols.NamespaceSymbol, MetaDslx.CodeAnalysis.Symbols.Metadata.IModelSymbol
+	public abstract partial class ModelParameterSymbol : MetaDslx.CodeAnalysis.Symbols.ParameterSymbol, MetaDslx.CodeAnalysis.Symbols.Metadata.IModelSymbol
 	{
         public static class CompletionParts
         {
@@ -40,7 +40,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Model
         private string _name;
         private global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.Symbol> _attributes;
 
-        public ModelNamespaceSymbol(Symbol container, object modelObject)
+        public ModelParameterSymbol(Symbol container, object modelObject)
         {
             Debug.Assert(container is IModelSymbol);
             if (modelObject == null) throw new ArgumentNullException(nameof(modelObject));

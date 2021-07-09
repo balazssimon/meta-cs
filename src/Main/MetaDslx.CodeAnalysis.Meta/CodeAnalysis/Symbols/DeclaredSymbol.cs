@@ -122,10 +122,10 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public virtual bool IsImplicitlyDeclared => false;
 
         [SymbolProperty]
-        public ImmutableArray<DeclaredSymbol> Members => ImmutableArray<DeclaredSymbol>.Empty;
+        public virtual ImmutableArray<DeclaredSymbol> Members => ImmutableArray<DeclaredSymbol>.Empty;
 
         [SymbolProperty]
-        public ImmutableArray<TypeSymbol> TypeMembers => ImmutableArray<TypeSymbol>.Empty;
+        public virtual ImmutableArray<TypeSymbol> TypeMembers => ImmutableArray<TypeSymbol>.Empty;
 
         /// <summary>
         /// Get all the members of this symbol.

@@ -13,9 +13,9 @@ using System.Threading;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 {
-	public partial class MetaNamespaceSymbol : MetaDslx.CodeAnalysis.Symbols.Model.ModelNamespaceSymbol
+	public partial class MetaLabelSymbol : MetaDslx.CodeAnalysis.Symbols.Model.ModelLabelSymbol
 	{
-        public MetaNamespaceSymbol(Symbol container, object modelObject)
+        public MetaLabelSymbol(Symbol container, object modelObject)
             : base(container, modelObject)
         {
         }

@@ -15,8 +15,14 @@ namespace MetaDslx.CodeAnalysis.Symbols
 {
 	public abstract partial class MemberSymbol
 	{
+        /// <summary>
+        /// Gets the kind of this symbol.
+        /// </summary>
         public sealed override SymbolKind Kind => SymbolKind.Member;
 
+        /// <summary>
+        /// Gets the kind of this symbol.
+        /// </summary>
         public virtual MemberKind MemberKind => MemberKind.None;
 
         public override void Accept(MetaDslx.CodeAnalysis.Symbols.SymbolVisitor visitor)

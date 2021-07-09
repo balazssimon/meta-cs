@@ -16,10 +16,10 @@ using System.Threading;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Source
 {
-	public partial class SourceExpressionSymbol : MetaDslx.CodeAnalysis.Symbols.Model.ModelExpressionSymbol, MetaDslx.CodeAnalysis.Symbols.Source.ISourceSymbol
+	public partial class SourceParameterSymbol : MetaDslx.CodeAnalysis.Symbols.Model.ModelParameterSymbol, MetaDslx.CodeAnalysis.Symbols.Source.ISourceSymbol
 	{
         private readonly MergedDeclaration _declaration;
-		public SourceExpressionSymbol(Symbol containingSymbol, object modelObject, MergedDeclaration declaration)
+		public SourceParameterSymbol(Symbol containingSymbol, object modelObject, MergedDeclaration declaration)
             : base(containingSymbol, modelObject)
         {
             Debug.Assert(declaration != null);
@@ -65,6 +65,14 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             SourceSymbolImplementation.CompleteImports(this, locationOpt, diagnostics, cancellationToken);
         }
 
+        protected override global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.DeclaredSymbol> CompleteSymbolProperty_Members(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            return SourceSymbolImplementation.AssignSymbolPropertyValues<global::MetaDslx.CodeAnalysis.Symbols.DeclaredSymbol>(this, nameof(Members), diagnostics, cancellationToken);
+        }
+        protected override global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.TypeSymbol> CompleteSymbolProperty_TypeMembers(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            return SourceSymbolImplementation.AssignSymbolPropertyValues<global::MetaDslx.CodeAnalysis.Symbols.TypeSymbol>(this, nameof(TypeMembers), diagnostics, cancellationToken);
+        }
         protected override string CompleteSymbolProperty_Name(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             return SourceSymbolImplementation.AssignSymbolPropertyValue<string>(this, nameof(Name), diagnostics, cancellationToken);
