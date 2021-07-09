@@ -43,4 +43,8 @@
     </MetaModel>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="CodeAnalysis\Symbols\Generated\" />
+  </ItemGroup>
+
 </Project>

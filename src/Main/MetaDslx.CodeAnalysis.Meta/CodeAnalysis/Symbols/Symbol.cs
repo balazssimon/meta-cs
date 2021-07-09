@@ -30,7 +30,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
     /// exposed by the compiler.
     /// </summary>
     [DebuggerDisplay("{GetDebuggerDisplay(), nq}")]
-    [Symbol(SubSymbolKindType = "SymbolKind")]
+    [Symbol(SubSymbolKindType = "SymbolKind", SubSymbolKindName = "Kind")]
     public abstract partial class Symbol : IFormattable
     {
         private static ConditionalWeakTable<Symbol, DiagnosticBag> s_diagnostics = new ConditionalWeakTable<Symbol, DiagnosticBag>();
@@ -53,6 +53,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// Gets the name of this symbol. Symbols without a name return the empty string; null is
         /// never returned.
         /// </summary>
+        [SymbolProperty]
         public virtual string Name => string.Empty;
 
         /// <summary>
@@ -354,6 +355,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
             return builder.ToImmutableAndFree();
         }
+
+        [SymbolProperty]
+        public virtual ImmutableArray<Symbol> Attributes => ImmutableArray<Symbol>.Empty;
 
         public virtual ImmutableArray<AttributeData> GetAttributes()
         {

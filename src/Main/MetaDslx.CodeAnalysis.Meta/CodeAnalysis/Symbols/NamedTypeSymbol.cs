@@ -11,6 +11,7 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
+    [Symbol]
     public abstract class NamedTypeSymbol : TypeSymbol
     {
         public override SymbolKind Kind => SymbolKind.NamedType;

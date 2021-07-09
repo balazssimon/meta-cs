@@ -101,6 +101,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return info;
         }
 
+        [SymbolProperty]
+        public virtual ImmutableArray<NamedTypeSymbol> BaseTypes => ImmutableArray<NamedTypeSymbol>.Empty;
+
         public ImmutableArray<NamedTypeSymbol> BaseTypesWithDefinitionUseSiteDiagnostics(ref HashSet<DiagnosticInfo> useSiteDiagnostics)
         {
             var result = BaseTypesNoUseSiteDiagnostics;
