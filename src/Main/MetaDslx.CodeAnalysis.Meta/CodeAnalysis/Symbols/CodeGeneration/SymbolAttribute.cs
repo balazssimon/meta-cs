@@ -10,6 +10,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public bool NoSource { get; set; }
         public bool NoMeta { get; set; }
         public bool NoModel { get; set; }
+        public bool OptionalModelObject { get; set; }
         public string SymbolKind { get; set; }
         public string SubSymbolKindType { get; set; }
         public string SubSymbolKindName { get; set; }

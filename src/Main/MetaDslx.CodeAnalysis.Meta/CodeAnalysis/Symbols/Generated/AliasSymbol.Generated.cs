@@ -13,7 +13,7 @@ using System.Threading;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-	public partial class AliasSymbol
+	public abstract partial class AliasSymbol
 	{
         /// <summary>
         /// Gets the kind of this symbol.

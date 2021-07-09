@@ -23,7 +23,7 @@ namespace [symbol.NamespaceName]
         /// <summary>
         /// Gets the kind of this symbol.
         /// </summary>
-        public sealed override [symbol.SymbolKindType] [symbol.SymbolKindName] => [symbol.SymbolKindType].[symbol.SymbolKind];
+        public override [symbol.SymbolKindType] [symbol.SymbolKindName] => [symbol.SymbolKindType].[symbol.SymbolKind];
         [end if]
 ^
         [if (symbol.SubSymbolKindType != null)]
@@ -89,17 +89,19 @@ namespace [symbol.NamespaceName].Model
         }
 ^
         private readonly Symbol _container;
-        private readonly object _modelObject;
+        private readonly object? _modelObject;
         private readonly CompletionState _state;
         private ImmutableArray<Symbol> _childSymbols;
         [loop (prop:symbol.Properties)]
         private [prop.Type] [prop.FieldName];
         [end loop]
 ^
-        public Model[symbol.Name](Symbol container, object modelObject)
+        public Model[symbol.Name](Symbol container, object? modelObject[if(symbol.OptionalModelObject)] = null[end if])
         {
             Debug.Assert(container is IModelSymbol);
-            if (modelObject == null) throw new ArgumentNullException(nameof(modelObject));
+            [if(!symbol.OptionalModelObject)]
+            if (modelObject is null) throw new ArgumentNullException(nameof(modelObject));
+            [end if]
             _container = container;
             _modelObject = modelObject;
             _state = CompletionParts.CompletionGraph.CreateState();
@@ -111,9 +113,7 @@ namespace [symbol.NamespaceName].Model
 ^
         public object ModelObject => _modelObject;
 ^
-        public Type ModelObjectType => _modelObject != null ? Language.SymbolFacts.GetModelObjectType(_modelObject) : null;
-^
-        public sealed override string Name => _modelObject != null ? Language.SymbolFacts.GetName(_modelObject) : string.Empty;
+        public Type ModelObjectType => _modelObject is not null ? Language.SymbolFacts.GetModelObjectType(_modelObject) : null;
 ^
         public sealed override Symbol ContainingSymbol => _container;
 ^
@@ -159,6 +159,7 @@ namespace [symbol.NamespaceName].Model
                     if (_state.NotePartComplete(CompletionGraph.StartInitializing))
                     {
                         var diagnostics = DiagnosticBag.GetInstance();
+                        _name = CompleteSymbolProperty_Name(locationOpt, diagnostics, cancellationToken);
                         CompleteInitializingSymbol(locationOpt, diagnostics, cancellationToken);
                         AddSymbolDiagnostics(diagnostics);
                         diagnostics.Free();
@@ -257,6 +258,7 @@ namespace [symbol.NamespaceName].Model
         protected abstract void CompleteInitializingSymbol(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken);
         protected abstract ImmutableArray<Symbol> CompleteCreatingChildSymbols(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken);
         protected abstract void CompleteImports(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken);
+        protected abstract string CompleteSymbolProperty_Name(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken);
         [loop (prop:symbol.Properties)]
         protected abstract [prop.Type] CompleteSymbolProperty_[prop.Name](SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken);
         [end loop]
@@ -288,6 +290,9 @@ namespace [symbol.NamespaceName].Metadata
         public Meta[symbol.Name](Symbol container, object modelObject)
             : base(container, modelObject)
         {
+            [if(symbol.OptionalModelObject)]
+            if (modelObject is null) throw new ArgumentNullException(nameof(modelObject));
+            [end if]
         }
 ^
         public override ImmutableArray<Location> Locations => this.ContainingModule.Locations;
@@ -296,7 +301,6 @@ namespace [symbol.NamespaceName].Metadata
 ^
         protected override void CompleteInitializingSymbol(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
-            ModelSymbolImplementation.AssignSymbolPropertyValue<string>(this, nameof(Name), diagnostics, cancellationToken);
         }
 ^
         protected override ImmutableArray<Symbol> CompleteCreatingChildSymbols(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
@@ -306,6 +310,11 @@ namespace [symbol.NamespaceName].Metadata
 ^
         protected override void CompleteImports(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
+        }
+^
+        protected override string CompleteSymbolProperty_Name(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            return ModelSymbolImplementation.AssignSymbolPropertyValue<string>(this, nameof(Name), diagnostics, cancellationToken);
         }
 ^
         [loop (prop:symbol.Properties)]
@@ -353,6 +362,9 @@ namespace [symbol.NamespaceName].Source
             : base(containingSymbol, modelObject)
         {
             Debug.Assert(declaration != null);
+            [if(symbol.OptionalModelObject)]
+            if (modelObject is null) throw new ArgumentNullException(nameof(modelObject));
+            [end if]
             _declaration = declaration;
 		}
 ^
@@ -382,7 +394,6 @@ namespace [symbol.NamespaceName].Source
 ^
         protected override void CompleteInitializingSymbol(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
-            SourceSymbolImplementation.AssignSymbolPropertyValue<string>(this, nameof(Name), diagnostics, cancellationToken);
         }
 ^
         protected override ImmutableArray<Symbol> CompleteCreatingChildSymbols(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
@@ -393,6 +404,11 @@ namespace [symbol.NamespaceName].Source
         protected override void CompleteImports(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             SourceSymbolImplementation.CompleteImports(this, locationOpt, diagnostics, cancellationToken);
+        }
+^
+        protected override string CompleteSymbolProperty_Name(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            return SourceSymbolImplementation.AssignSymbolPropertyValue<string>(this, nameof(Name), diagnostics, cancellationToken);
         }
 ^
         [loop (prop:symbol.Properties)]

@@ -6,26 +6,11 @@ using System.Diagnostics;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-    [Symbol(NoMeta = true)]
+    [Symbol]
     public partial class DiscardSymbol : Symbol
     {
-        public DiscardSymbol(TypeSymbol type)
-        {
-            Debug.Assert((object)type != null);
-            Type = type;
-        }
-
         public TypeSymbol Type { get; }
 
-        /// <summary>
-        /// Produce a fresh discard symbol for testing.
-        /// </summary>
-        internal static DiscardSymbol CreateForTest(ITypeSymbol type) => new DiscardSymbol((TypeSymbol)type);
-
-        public override Symbol ContainingSymbol => null;
-        public override ImmutableArray<Symbol> ChildSymbols => ImmutableArray<Symbol>.Empty;
-        public override ImmutableArray<Location> Locations => ImmutableArray<Location>.Empty;
-        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => ImmutableArray<SyntaxReference>.Empty;
 
         internal TypeWithAnnotations TypeWithAnnotations { get; set; }
 

@@ -7,13 +7,14 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration
 {
     public class SymbolGenerationInfo
     {
-        public SymbolGenerationInfo(string name, string namespaceName, string kind, bool noModel, bool noSource, bool noMeta, string? subSymbolKindType, string? subSymbolKindName, SymbolGenerationInfo parentSymbol, List<SymbolPropertyGenerationInfo> properties)
+        public SymbolGenerationInfo(string name, string namespaceName, string kind, bool noModel, bool noSource, bool noMeta, bool optionalModelObject, string? subSymbolKindType, string? subSymbolKindName, SymbolGenerationInfo parentSymbol, List<SymbolPropertyGenerationInfo> properties)
         {
             this.Name = name;
             this.NamespaceName = namespaceName;
             this.NoModel = noModel;
             this.NoSource = noSource;
             this.NoMeta = noMeta;
+            this.OptionalModelObject = optionalModelObject;
             this.ParentSymbol = parentSymbol;
             var baseSymbol = parentSymbol;
             var symbolKindType = parentSymbol?.SubSymbolKindType;
@@ -48,6 +49,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration
         public bool NoModel { get; private set; }
         public bool NoMeta { get; private set; }
         public bool NoSource { get; private set; }
+        public bool OptionalModelObject { get; private set; }
         public string Name { get; private set; }
         public string NamespaceName { get; private set; }
         public string SymbolKind { get; private set; }

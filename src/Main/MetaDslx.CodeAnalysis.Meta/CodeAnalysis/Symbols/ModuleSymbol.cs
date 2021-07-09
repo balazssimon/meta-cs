@@ -18,7 +18,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
     /// <summary>
     /// Represents a module within an assembly. Every assembly contains one or more modules.
     /// </summary>
-    [Symbol(SymbolKind = "NetModule")]
+    [Symbol(SymbolKind = "NetModule", OptionalModelObject = true)]
     public abstract partial class ModuleSymbol : Symbol, IModuleSymbolInternal
     {
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

@@ -13,7 +13,7 @@ using System.Threading;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-	public partial class DiscardSymbol
+	public abstract partial class DiscardSymbol
 	{
         /// <summary>
         /// Gets the kind of this symbol.

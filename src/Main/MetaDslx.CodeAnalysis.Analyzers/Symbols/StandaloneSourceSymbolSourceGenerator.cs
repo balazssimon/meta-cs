@@ -62,6 +62,7 @@ namespace MetaDslx.CodeAnalysis.Analyzers.Symbols
             bool noSource = false;
             bool noMeta = false;
             bool noModel = false;
+            bool optionalModelObject = false;
             string? kind = null;
             string? subSymbolKindType = null;
             string? subSymbolKindName = null;
@@ -79,7 +80,11 @@ namespace MetaDslx.CodeAnalysis.Analyzers.Symbols
                 {
                     noModel = (bool)arg.Value.Value;
                 }
-                if (arg.Key == "Kind")
+                if (arg.Key == "OptionalModelObject")
+                {
+                    optionalModelObject = (bool)arg.Value.Value;
+                }
+                if (arg.Key == "SymbolKind")
                 {
                     kind = (string?)arg.Value.Value;
                 }
@@ -100,7 +105,7 @@ namespace MetaDslx.CodeAnalysis.Analyzers.Symbols
                 if (parentInfo is not null) break;
                 baseSymbol = baseSymbol.BaseType;
             }
-            return new SymbolGenerationInfo(symbol.Name, ns, kind, noModel, noSource, noMeta, subSymbolKindType, subSymbolKindName, parentInfo, GetSymbolPropertyGenerationInfos(symbol));
+            return new SymbolGenerationInfo(symbol.Name, ns, kind, noModel, noSource, noMeta, optionalModelObject, subSymbolKindType, subSymbolKindName, parentInfo, GetSymbolPropertyGenerationInfos(symbol));
         }
 
         private List<SymbolPropertyGenerationInfo> GetSymbolPropertyGenerationInfos(INamedTypeSymbol symbol)
