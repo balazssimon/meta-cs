@@ -9,6 +9,8 @@ using MetaDslx.CodeAnalysis.Binding.Binders;
 using MetaDslx.CodeAnalysis.Syntax;
 using Roslyn.Utilities;
 using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Symbols.Metadata;
+using System;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
@@ -63,39 +65,46 @@ namespace MetaDslx.CodeAnalysis.Symbols
         // to. This alias symbol is returned only when binding "global::" (special case code).
         internal static AliasSymbol CreateGlobalNamespaceAlias(NamespaceSymbol globalNamespace, Binder globalNamespaceBinder)
         {
-            return null;
+            return new MetaAliasSymbol(globalNamespaceBinder, globalNamespace, "global", ImmutableArray<Location>.Empty);
         }
 
         internal static AliasSymbol CreateCustomDebugInfoAlias(NamespaceOrTypeSymbol targetSymbol, SyntaxToken aliasToken, Binder binder)
         {
-            return null;
+            return new MetaAliasSymbol(binder, targetSymbol, aliasToken.ValueText, ImmutableArray.Create(aliasToken.GetLocation()));
         }
 
         internal static AliasSymbol CreateUsing(string aliasName, UsingDirective directive, Binder binder)
         {
-            return null;
+            return new MetaAliasSymbol(binder, aliasName, directive.TargetName, directive.Location, false);
         }
 
         internal static AliasSymbol CreateExternAlias(string aliasName, ExternAliasDirective directive, Binder binder)
         {
-            return null;
+            return new MetaAliasSymbol(binder, aliasName, null, directive.Location, true);
         }
 
-        internal AliasSymbol ToNewSubmission(LanguageCompilation compilation)
+        public virtual AliasSymbol ToNewSubmission(LanguageCompilation compilation)
         {
-            return null;
+            throw new NotImplementedException("Only MetaAliasSymbols can be forwarded to new submissions.");
         }
 
         // basesBeingResolved is only used to break circular references.
-        public DeclaredSymbol GetAliasTarget(LookupConstraints recursionConstraints)
+        public virtual DeclaredSymbol GetAliasTarget(LookupConstraints recursionConstraints)
         {
-            return null;
+            return this.Target;
         }
 
-        internal DiagnosticBag AliasTargetDiagnostics => null;
+        public virtual DiagnosticBag AliasTargetDiagnostics => null;
 
-        internal void CheckConstraints(DiagnosticBag diagnostics)
+        public virtual void CheckConstraints(DiagnosticBag diagnostics)
         {
+            var target = this.Target as TypeSymbol;
+            if ((object)target != null && Locations.Length > 0)
+            {
+                var corLibrary = this.ContainingAssembly.CorLibrary;
+                var conversions = new TypeConversions(corLibrary);
+                target.CheckAllConstraints(DeclaringCompilation, conversions, Locations[0], diagnostics);
+            }
         }
 
         public override ImmutableArray<DeclaredSymbol> GetMembers()

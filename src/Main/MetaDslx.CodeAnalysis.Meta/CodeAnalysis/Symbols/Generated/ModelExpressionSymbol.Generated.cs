@@ -26,15 +26,16 @@ namespace MetaDslx.CodeAnalysis.Symbols.Model
         }
 
         private readonly Symbol _container;
-        private readonly object _modelObject;
+        private readonly object? _modelObject;
         private readonly CompletionState _state;
         private ImmutableArray<Symbol> _childSymbols;
+        private string _name;
         private global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.Symbol> _attributes;
 
-        public ModelExpressionSymbol(Symbol container, object modelObject)
+        public ModelExpressionSymbol(Symbol container, object? modelObject)
         {
             Debug.Assert(container is IModelSymbol);
-            if (modelObject == null) throw new ArgumentNullException(nameof(modelObject));
+            if (modelObject is null) throw new ArgumentNullException(nameof(modelObject));
             _container = container;
             _modelObject = modelObject;
             _state = CompletionParts.CompletionGraph.CreateState();
@@ -46,9 +47,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Model
 
         public object ModelObject => _modelObject;
 
-        public Type ModelObjectType => _modelObject != null ? Language.SymbolFacts.GetModelObjectType(_modelObject) : null;
-
-        public sealed override string Name => _modelObject != null ? Language.SymbolFacts.GetName(_modelObject) : string.Empty;
+        public Type ModelObjectType => _modelObject is not null ? Language.SymbolFacts.GetModelObjectType(_modelObject) : null;
 
         public sealed override Symbol ContainingSymbol => _container;
 
@@ -58,6 +57,15 @@ namespace MetaDslx.CodeAnalysis.Symbols.Model
             {
                 this.ForceComplete(CompletionGraph.FinishCreatingChildren, null, default);
                 return _childSymbols;
+            }
+        }
+
+        public override string Name 
+        {
+            get
+            {
+                this.ForceComplete(CompletionGraph.FinishInitializing, null, default);
+                return _name;
             }
         }
 
@@ -92,6 +100,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Model
                     if (_state.NotePartComplete(CompletionGraph.StartInitializing))
                     {
                         var diagnostics = DiagnosticBag.GetInstance();
+                        _name = CompleteSymbolProperty_Name(locationOpt, diagnostics, cancellationToken);
                         CompleteInitializingSymbol(locationOpt, diagnostics, cancellationToken);
                         AddSymbolDiagnostics(diagnostics);
                         diagnostics.Free();
@@ -185,6 +194,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Model
         protected abstract void CompleteInitializingSymbol(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken);
         protected abstract ImmutableArray<Symbol> CompleteCreatingChildSymbols(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken);
         protected abstract void CompleteImports(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken);
+        protected abstract string CompleteSymbolProperty_Name(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken);
         protected abstract global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.Symbol> CompleteSymbolProperty_Attributes(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken);
         protected abstract void CompleteNonSymbolProperties(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken);
         #endregion

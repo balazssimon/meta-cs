@@ -23,6 +23,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             : base(containingSymbol, modelObject)
         {
             Debug.Assert(declaration != null);
+            if (modelObject is null) throw new ArgumentNullException(nameof(modelObject));
             _declaration = declaration;
 		}
 
@@ -52,7 +53,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         protected override void CompleteInitializingSymbol(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
-            SourceSymbolImplementation.AssignSymbolPropertyValue<string>(this, nameof(Name), diagnostics, cancellationToken);
         }
 
         protected override ImmutableArray<Symbol> CompleteCreatingChildSymbols(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
@@ -63,6 +63,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         protected override void CompleteImports(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             SourceSymbolImplementation.CompleteImports(this, locationOpt, diagnostics, cancellationToken);
+        }
+
+        protected override string CompleteSymbolProperty_Name(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            return SourceSymbolImplementation.AssignSymbolPropertyValue<string>(this, nameof(Name), diagnostics, cancellationToken);
         }
 
         protected override global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.Symbol> CompleteSymbolProperty_Attributes(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
@@ -76,6 +81,14 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         protected override global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.TypeSymbol> CompleteSymbolProperty_TypeMembers(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             return SourceSymbolImplementation.AssignSymbolPropertyValues<global::MetaDslx.CodeAnalysis.Symbols.TypeSymbol>(this, nameof(TypeMembers), diagnostics, cancellationToken);
+        }
+        protected override global::MetaDslx.CodeAnalysis.Symbols.DeclaredSymbol CompleteSymbolProperty_Target(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            return SourceSymbolImplementation.AssignSymbolPropertyValue<global::MetaDslx.CodeAnalysis.Symbols.DeclaredSymbol>(this, nameof(Target), diagnostics, cancellationToken);
+        }
+        protected override bool CompleteSymbolProperty_IsExtern(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            return SourceSymbolImplementation.AssignSymbolPropertyValue<bool>(this, nameof(IsExtern), diagnostics, cancellationToken);
         }
 
         protected override void CompleteNonSymbolProperties(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)

@@ -18,7 +18,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <summary>
         /// Gets the kind of this symbol.
         /// </summary>
-        public sealed override TypeKind TypeKind => TypeKind.ErrorType;
+        public override TypeKind TypeKind => TypeKind.ErrorType;
 
 
         public override void Accept(MetaDslx.CodeAnalysis.Symbols.SymbolVisitor visitor)

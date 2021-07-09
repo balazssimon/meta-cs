@@ -18,7 +18,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <summary>
         /// Gets the kind of this symbol.
         /// </summary>
-        public sealed override SymbolKind Kind => SymbolKind.Local;
+        public override SymbolKind Kind => SymbolKind.Local;
 
         /// <summary>
         /// Gets the kind of this symbol.

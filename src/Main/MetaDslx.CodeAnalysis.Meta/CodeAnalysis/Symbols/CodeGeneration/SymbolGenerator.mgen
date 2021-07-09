@@ -92,6 +92,7 @@ namespace [symbol.NamespaceName].Model
         private readonly object? _modelObject;
         private readonly CompletionState _state;
         private ImmutableArray<Symbol> _childSymbols;
+        private string _name;
         [loop (prop:symbol.Properties)]
         private [prop.Type] [prop.FieldName];
         [end loop]
@@ -123,6 +124,15 @@ namespace [symbol.NamespaceName].Model
             {
                 this.ForceComplete(CompletionGraph.FinishCreatingChildren, null, default);
                 return _childSymbols;
+            }
+        }
+^
+        public override string Name 
+        {
+            get
+            {
+                this.ForceComplete(CompletionGraph.FinishInitializing, null, default);
+                return _name;
             }
         }
 ^
