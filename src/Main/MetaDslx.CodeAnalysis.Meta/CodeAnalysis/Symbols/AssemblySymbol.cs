@@ -174,6 +174,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// Gets a read-only list of all the modules in this assembly. (There must be at least one.) The first one is the main module
         /// that holds the assembly manifest.
         /// </summary>
+        [SymbolProperty]
         public abstract ImmutableArray<ModuleSymbol> Modules { get; }
 
         public sealed override AssemblySymbol ContainingAssembly

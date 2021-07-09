@@ -35,6 +35,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         public override ImmutableArray<Symbol> ChildSymbols => ImmutableArray.Create<Symbol>(GlobalNamespace);
 
+        public override Language Language => ContainingAssembly.Language;
+
         /// <summary>
         /// Returns the containing assembly. Modules are always directly contained by an assembly,
         /// so this property always returns the same as ContainingSymbol.

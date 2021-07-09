@@ -34,6 +34,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             Debug.Assert(declaration != null);
             Debug.Assert(containingSymbol == module || modelObject != null);
             _module = module;
+            _declaration = declaration;
         }
 
         public override AssemblySymbol ContainingAssembly => _module.ContainingAssembly;

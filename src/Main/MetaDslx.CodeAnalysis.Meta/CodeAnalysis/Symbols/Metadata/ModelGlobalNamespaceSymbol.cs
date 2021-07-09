@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using MetaDslx.CodeAnalysis.Declarations;
+using MetaDslx.CodeAnalysis.Symbols.Metadata;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Model
 {
-    public class ModelGlobalNamespaceSymbol : MetaDslx.CodeAnalysis.Symbols.Metadata.MetaNamespaceSymbol
+    public class ModelGlobalNamespaceSymbol : ModelNamespaceSymbol
     {
         private ModelModuleSymbol _module;
-        private ImmutableArray<DeclaredSymbol> _lazyMembers;
-        private ImmutableArray<NamedTypeSymbol> _lazyTypeMembers;
         private ImmutableArray<string> _lazyTypeNames;
         private ImmutableArray<string> _lazyNamespaceNames;
 
@@ -83,30 +83,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Model
             }
         }
 
+        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => ImmutableArray<SyntaxReference>.Empty;
+
         public override ImmutableArray<DeclaredSymbol> GetMembers()
         {
-            if (_lazyMembers.IsDefault)
-            {
-                HashSet<DeclaredSymbol> symbols = new HashSet<DeclaredSymbol>();
-                try
-                {
-                    var symbolFacts = Language.SymbolFacts;
-                    var symbolFactory = _module.SymbolFactory;
-                    foreach (var ms in symbolFacts.GetRootObjects(_module.Model))
-                    {
-                        if (symbolFacts.GetParent(ms) == null)
-                        {
-                            var symbol = symbolFactory.GetSymbol(ms);
-                            if (symbol is DeclaredSymbol ds) symbols.Add(ds);
-                        }
-                    }
-                }
-                finally
-                {
-                    ImmutableInterlocked.InterlockedInitialize(ref _lazyMembers, symbols.ToImmutableArray());
-                }  
-            }
-            return _lazyMembers;
+            return Members;
         }
 
         public override ImmutableArray<DeclaredSymbol> GetMembers(string name)
@@ -121,28 +102,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Model
 
         public override ImmutableArray<NamedTypeSymbol> GetTypeMembers()
         {
-            if (_lazyTypeMembers.IsDefault)
-            {
-                HashSet<NamedTypeSymbol> symbols = new HashSet<NamedTypeSymbol>();
-                try
-                {
-                    var symbolFacts = Language.SymbolFacts;
-                    var symbolFactory = _module.SymbolFactory;
-                    foreach (var ms in symbolFacts.GetRootObjects(_module.Model))
-                    {
-                        if (symbolFacts.ToDeclarationKind(symbolFacts.GetSymbolType(ms)) == DeclarationKind.Type)
-                        {
-                            var symbol = symbolFactory.GetSymbol(ms);
-                            if (symbol is NamedTypeSymbol nts) symbols.Add(nts);
-                        }
-                    }
-                }
-                finally
-                {
-                    ImmutableInterlocked.InterlockedInitialize(ref _lazyTypeMembers, symbols.ToImmutableArray());
-                }
-            }
-            return _lazyTypeMembers;
+            return TypeMembers.OfType<NamedTypeSymbol>().ToImmutableArray();
         }
 
         public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name)
@@ -155,6 +115,41 @@ namespace MetaDslx.CodeAnalysis.Symbols.Model
             return GetTypeMembers().WhereAsArray(m => m.Name == name && m.MetadataName == metadataName);
         }
 
+        protected override ImmutableArray<Symbol> CompleteCreatingChildSymbols(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            return ModelSymbolImplementation.MakeGlobalSymbols(this, null, diagnostics, cancellationToken);
+        }
 
+        protected override void CompleteImports(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+        }
+
+        protected override void CompleteInitializingSymbol(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+        }
+
+        protected override void CompleteNonSymbolProperties(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+        }
+
+        protected override ImmutableArray<Symbol> CompleteSymbolProperty_Attributes(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            return ImmutableArray<Symbol>.Empty;
+        }
+
+        protected override ImmutableArray<DeclaredSymbol> CompleteSymbolProperty_Members(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            return this.ChildSymbols.OfType<DeclaredSymbol>().ToImmutableArray();
+        }
+
+        protected override string CompleteSymbolProperty_Name(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            return string.Empty;
+        }
+
+        protected override ImmutableArray<TypeSymbol> CompleteSymbolProperty_TypeMembers(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            return this.ChildSymbols.OfType<TypeSymbol>().ToImmutableArray();
+        }
     }
 }

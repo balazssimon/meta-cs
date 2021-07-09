@@ -11,6 +11,7 @@ using Microsoft.CodeAnalysis.PooledObjects;
 using MetaDslx.CodeAnalysis.Symbols;
 using System.Diagnostics;
 using MetaDslx.CodeAnalysis.Symbols.Source;
+using MetaDslx.CodeAnalysis.Symbols.Metadata;
 
 namespace MetaDslx.CodeAnalysis.Declarations
 {
@@ -89,7 +90,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             {
                 symbolFactory.RemoveSymbol(symbol);
             }
-            Debug.Assert(_symbol.Kind == Symbols.SymbolKind.ErrorType || ModelObjectType == null || (_symbol as IModelSourceSymbol)?.ModelObject != null);
+            Debug.Assert(_symbol.Kind == Symbols.SymbolKind.ErrorType || ModelObjectType == null || (_symbol as IModelSymbol)?.ModelObject != null);
             return _symbol;
         }
 

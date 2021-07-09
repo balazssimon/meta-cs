@@ -19,12 +19,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 	public partial class SourceNamespaceSymbol : MetaDslx.CodeAnalysis.Symbols.Model.ModelNamespaceSymbol, MetaDslx.CodeAnalysis.Symbols.Source.ISourceSymbol
 	{
         private readonly MergedDeclaration _declaration;
-		public SourceNamespaceSymbol(Symbol containingSymbol, object modelObject, MergedDeclaration declaration)
-            : base(containingSymbol, modelObject)
-        {
-            Debug.Assert(declaration != null);
-            _declaration = declaration;
-		}
 
         public MergedDeclaration MergedDeclaration => _declaration;
 

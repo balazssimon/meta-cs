@@ -18,6 +18,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
         public MetaNamespaceSymbol(Symbol container, object modelObject)
             : base(container, modelObject)
         {
+            if (modelObject is null) throw new ArgumentNullException(nameof(modelObject));
         }
 
         public override ImmutableArray<Location> Locations => this.ContainingModule.Locations;

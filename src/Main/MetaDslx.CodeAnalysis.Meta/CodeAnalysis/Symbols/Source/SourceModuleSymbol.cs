@@ -44,7 +44,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             SourceAssemblySymbol assemblySymbol,
             DeclarationTable declarations,
             string moduleName)
-            : base(assemblySymbol, null, null, 0)
+            : base(assemblySymbol, null, 0)
         {
             Debug.Assert((object)assemblySymbol != null);
 

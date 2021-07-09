@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using MetaDslx.CodeAnalysis.Symbols.CSharp;
+using MetaDslx.CodeAnalysis.Symbols.Metadata;
 using MetaDslx.CodeAnalysis.Symbols.Source;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
@@ -17,8 +18,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 {
     public partial class MetaModuleSymbol
     {
-        public MetaModuleSymbol(AssemblySymbol owningAssembly, object model, object modelObject, int ordinal)
-            : base(owningAssembly, model, modelObject, ordinal)
+        public MetaModuleSymbol(AssemblySymbol owningAssembly, object model, int ordinal)
+            : base(owningAssembly, model, ordinal)
         {
         }
     }
@@ -27,20 +28,17 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 
 namespace MetaDslx.CodeAnalysis.Symbols.Model
 {
-    public partial class ModelModuleSymbol : NonMissingModuleSymbol
+    public partial class ModelModuleSymbol : NonMissingModuleSymbol, IModelSymbol
     {
         private ModelGlobalNamespaceSymbol _globalNamespace;
-        private AssemblySymbol _owningAssembly;
         private SymbolFactory _symbolFactory;
         private object _model;
         private readonly int _ordinal;
         private readonly ImmutableArray<MetadataLocation> _metadataLocation;
 
-        public ModelModuleSymbol(AssemblySymbol owningAssembly, object model, object modelObject, int ordinal)
+        public ModelModuleSymbol(AssemblySymbol owningAssembly, object model, int ordinal)
         {
             _container = owningAssembly;
-            _owningAssembly = owningAssembly;
-            _modelObject = modelObject;
             _state = CompletionParts.CompletionGraph.CreateState();
             _model = model;
             _ordinal = ordinal;
@@ -50,6 +48,10 @@ namespace MetaDslx.CodeAnalysis.Symbols.Model
         public virtual object Model => _model;
 
         public virtual ObjectFactory ObjectFactory => null;
+
+        public object? ModelObject => null;
+
+        public Type? ModelObjectType => null;
 
         public SymbolFactory SymbolFactory
         {

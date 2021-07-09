@@ -38,10 +38,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Model
         private global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.DeclaredSymbol> _members;
         private global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.TypeSymbol> _typeMembers;
 
-        public ModelNamespaceSymbol(Symbol container, object? modelObject)
+        public ModelNamespaceSymbol(Symbol container, object? modelObject = null)
         {
             Debug.Assert(container is IModelSymbol);
-            if (modelObject is null) throw new ArgumentNullException(nameof(modelObject));
             _container = container;
             _modelObject = modelObject;
             _state = CompletionParts.CompletionGraph.CreateState();

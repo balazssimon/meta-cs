@@ -17,7 +17,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             _parts = parts;
         }
 
-        public CompletionGraph FromCompletionParts(params CompletionPart[] parts)
+        public static CompletionGraph FromCompletionParts(params CompletionPart[] parts)
         {
             return new CompletionGraph(parts.ToImmutableArray());
         }

@@ -22,6 +22,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         {
             var ssymbol = symbol as ISourceSymbol;
             if (ssymbol is null) throw new ArgumentException("Symbol must implement ISourceSymbol.");
+            if (ssymbol.MergedDeclaration is null) return;
             foreach (var declaration in ssymbol.MergedDeclaration.Declarations)
             {
                 if (locationOpt == null || locationOpt.SourceTree == declaration.SyntaxReference.SyntaxTree)
@@ -114,6 +115,10 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         public static T? AssignSymbolPropertyValue<T>(Symbol symbol, string symbolPropertyName, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
+            if (symbolPropertyName == SymbolConstants.NameProperty)
+            {
+                return (T)(object)AssignNameProperty(symbol, diagnostics);
+            }
             var values = ArrayBuilder<T>.GetInstance();
             try
             {
@@ -137,7 +142,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         public static void AssignNonSymbolProperties(Symbol symbol, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             var msymbol = symbol as IModelSymbol;
-            if (msymbol is null) return;
+            if (msymbol?.ModelObject is null) return;
             var language = symbol.Language;
             var symbolFacts = language.SymbolFacts;
             var mproperties = symbolFacts.GetProperties(msymbol.ModelObject);
@@ -166,12 +171,31 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             }
         }
 
+        private static string AssignNameProperty(Symbol symbol, DiagnosticBag diagnostics)
+        {
+            if (symbol is ISourceSymbol ssymbol && symbol is IModelSymbol msymbol && msymbol.ModelObject != null)
+            {
+                var symbolFacts = symbol.Language.SymbolFacts;
+                var objectProperties = symbolFacts.GetPropertiesForSymbol(msymbol.ModelObject, SymbolConstants.NameProperty);
+                var mergedDeclaration = ssymbol.MergedDeclaration;
+                foreach (var objectProperty in objectProperties)
+                {
+                    symbolFacts.SetOrAddPropertyValue(msymbol.ModelObject, objectProperty, mergedDeclaration.Name, mergedDeclaration.NameLocations.FirstOrDefault(), diagnostics, default);
+                }
+                return mergedDeclaration.Name;
+            }
+            return string.Empty;
+        }
+
         private static void AssignSymbolProperty<T>(Symbol symbol, string symbolPropertyName, ArrayBuilder<T> result, bool singleValue, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
+            var ssymbol = symbol as ISourceSymbol;
+            if (ssymbol?.MergedDeclaration is null) return;
             var msymbol = symbol as IModelSymbol;
             var language = symbol.Language;
             var symbolFacts = language.SymbolFacts;
-            var objectProperties = result != null && msymbol != null ? symbolFacts.GetPropertiesForSymbol(msymbol.ModelObject, symbolPropertyName) : null;
+            var mobj = msymbol?.ModelObject;
+            var objectProperties = result != null && mobj != null ? symbolFacts.GetPropertiesForSymbol(mobj, symbolPropertyName) : null;
             foreach (var reference in symbol.DeclaringSyntaxReferences)
             {
                 var nestingDeclaration = NestingParentDeclaration(reference, symbol as DeclaredSymbol);
@@ -182,15 +206,18 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 {
                     if (msymbol is not null)
                     {
-                        var objectProperty = symbolFacts.GetProperty(msymbol.ModelObject, property.Binder.PropertyName);
-                        if (objectProperty != null)
+                        if (mobj is not null)
                         {
-                            if (objectProperties == null || objectProperties.Contains(objectProperty))
+                            var objectProperty = symbolFacts.GetProperty(mobj, property.Binder.PropertyName);
+                            if (objectProperty != null)
                             {
-                                var values = FindValueBinders(property);
-                                foreach (var value in values)
+                                if (objectProperties == null || objectProperties.Contains(objectProperty))
                                 {
-                                    SetPropertyValue(value, result, singleValue, symbol, symbolPropertyName, objectProperty, diagnostics, cancellationToken);
+                                    var values = FindValueBinders(property);
+                                    foreach (var value in values)
+                                    {
+                                        SetPropertyValue(value, result, singleValue, symbol, symbolPropertyName, objectProperty, diagnostics, cancellationToken);
+                                    }
                                 }
                             }
                         }
@@ -281,7 +308,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         private static void SetPropertyValue<T>(object? value, Location? location, ArrayBuilder<T> result, bool singleValue, Symbol symbol, string symbolPropertyName, object modelObjectProperty, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
-            if (symbol is IModelSymbol msymbol)
+            if (symbol is IModelSymbol msymbol && msymbol.ModelObject != null && modelObjectProperty != null)
             {
                 symbol.Language.SymbolFacts.SetOrAddPropertyValue(msymbol.ModelObject, modelObjectProperty, value, location, diagnostics, cancellationToken);
             }

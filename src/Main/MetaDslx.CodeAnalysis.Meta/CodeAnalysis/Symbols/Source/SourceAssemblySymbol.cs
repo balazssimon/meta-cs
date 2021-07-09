@@ -160,12 +160,12 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                     if (metadata is ModelMetadata modelMetadata)
                     {
                         var model = modelMetadata.Model;
-                        moduleBuilder.Add(new MetaModuleSymbol(this, model, null, moduleBuilder.Count));
+                        moduleBuilder.Add(new MetaModuleSymbol(this, model, moduleBuilder.Count));
                     }
                     if (metadata is ModelGroupMetadata modelGroupMetadata)
                     {
                         var modelGroup = modelGroupMetadata.ModelGroup;
-                        moduleBuilder.Add(new MetaModuleSymbol(this, modelGroup, null, moduleBuilder.Count));
+                        moduleBuilder.Add(new MetaModuleSymbol(this, modelGroup, moduleBuilder.Count));
                     }
                 }
             }
@@ -740,7 +740,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             get { return (SourceModuleSymbol)this.Modules[0]; }
         }
 
-        public override void ForceComplete(CompletionPart completionPart, SourceLocation locationOpt, CancellationToken cancellationToken)
+        /*public override void ForceComplete(CompletionPart completionPart, SourceLocation locationOpt, CancellationToken cancellationToken)
         {
             if (completionPart != null && _state.HasComplete(completionPart)) return;
             while (true)
@@ -800,7 +800,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 _state.SpinWaitComplete(incompletePart, cancellationToken);
             }
         }
-
+        */
         private void ReportDiagnosticsForAddedModules()
         {
             var diagnostics = DiagnosticBag.GetInstance();

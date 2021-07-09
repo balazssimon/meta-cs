@@ -22,7 +22,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             var location = rootSymbol.ContainingModule.Locations.FirstOrDefault();
             var symbolFactory = msymbol.SymbolFactory;
             var result = ArrayBuilder<Symbol>.GetInstance();
-            var childObjects = rootSymbol.Language.SymbolFacts.GetRootObjects(module.Model);
+            var childObjects = module.Language.SymbolFacts.GetRootObjects(module.Model);
             foreach (var childObject in childObjects)
             {
                 var childSymbol = symbolFactory.GetSymbol(childObject);
@@ -40,14 +40,17 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             var symbolFactory = msymbol.SymbolFactory;
             var result = ArrayBuilder<Symbol>.GetInstance();
             var mproperties = symbolFacts.GetProperties(msymbol.ModelObject);
-            var cproperties = mproperties.Select(prop => symbolFacts.IsContainmentProperty(prop));
+            var cproperties = mproperties.Where(prop => symbolFacts.IsContainmentProperty(prop));
             foreach (var prop in cproperties)
             {
                 var childObjects = symbolFacts.GetPropertyValues(msymbol.ModelObject, prop);
                 foreach (var childObject in childObjects)
                 {
-                    var childSymbol = symbolFactory.GetSymbol(childObject);
-                    SetPropertyValue(childSymbol, location, result, false, symbol, symbolPropertyName, diagnostics, cancellationToken);
+                    if (childObject is not null)
+                    {
+                        var childSymbol = symbolFactory.GetSymbol(childObject);
+                        SetPropertyValue(childSymbol, location, result, false, symbol, symbolPropertyName, diagnostics, cancellationToken);
+                    }
                 }
             }
             return result.ToImmutableAndFree();
@@ -81,6 +84,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             if (msymbol == null) return;
             var language = symbol.Language;
             var location = symbol.ContainingModule.Locations.FirstOrDefault();
+            var symbolFactory = msymbol.SymbolFactory;
             var symbolFacts = language.SymbolFacts;
             var objectProperties = symbolFacts.GetPropertiesForSymbol(msymbol.ModelObject, symbolPropertyName);
             foreach (var prop in objectProperties)
@@ -88,7 +92,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
                 var values = symbolFacts.GetPropertyValues(msymbol.ModelObject, prop);
                 foreach (var value in values)
                 {
-                    SetPropertyValue(value, location, result, singleValue, symbol, symbolPropertyName, diagnostics, cancellationToken);
+                    if (value is not null)
+                    {
+                        var valueSymbol = symbolFactory.ResolveSymbol(value) ?? value;
+                        SetPropertyValue(valueSymbol, location, result, singleValue, symbol, symbolPropertyName, diagnostics, cancellationToken);
+                    }
                 }
             }
         }
@@ -97,7 +105,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
         {
             if (value != null && !typeof(T).IsAssignableFrom(value.GetType()))
             {
-                diagnostics.Add(ModelErrorCode.ERR_CannotSetSymbolProperty.ToDiagnostic(location, value, symbolPropertyName, symbol, typeof(T), value.GetType()));
+                diagnostics.Add(ModelErrorCode.ERR_CannotSetSymbolProperty.ToDiagnostic(location, value.ToString(), symbolPropertyName, symbol.ToString(), typeof(T).ToString(), value.GetType().ToString()));
             }
             else if (value != null)
             {
