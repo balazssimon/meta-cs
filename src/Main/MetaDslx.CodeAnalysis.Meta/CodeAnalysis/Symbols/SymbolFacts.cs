@@ -124,7 +124,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                     return CSharpTypeKind.Class;
                 case TypeKind.Enum:
                     return CSharpTypeKind.Enum;
-                case TypeKind.Error:
+                case TypeKind.ErrorType:
                     return CSharpTypeKind.Error;
                 case TypeKind.Dynamic:
                     return CSharpTypeKind.Dynamic;
@@ -148,7 +148,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 case CSharpTypeKind.Enum:
                     return TypeKind.Enum;
                 case CSharpTypeKind.Error:
-                    return TypeKind.Error;
+                    return TypeKind.ErrorType;
                 case CSharpTypeKind.Dynamic:
                     return TypeKind.Dynamic;
                 case CSharpTypeKind.Array:

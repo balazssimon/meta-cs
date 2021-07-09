@@ -428,25 +428,5 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return null;
         }
 
-        public override void Accept(SymbolVisitor visitor)
-        {
-            visitor.VisitMember(this);
-        }
-
-        public override TResult Accept<TResult>(SymbolVisitor<TResult> visitor)
-        {
-            return visitor.VisitMember(this);
-        }
-
-        public override TResult Accept<TArgument, TResult>(SymbolVisitor<TArgument, TResult> visitor, TArgument argument)
-        {
-            return visitor.VisitMember(this, argument);
-        }
-
-        protected override ISymbol CreateISymbol()
-        {
-            throw new NotImplementedException();
-        }
-
     }
 }

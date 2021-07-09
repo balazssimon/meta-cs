@@ -265,21 +265,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         #region ISymbol Members
 
-        public override void Accept(SymbolVisitor visitor)
-        {
-            visitor.VisitModule(this);
-        }
-
-        public override TResult Accept<TResult>(SymbolVisitor<TResult> visitor)
-        {
-            return visitor.VisitModule(this);
-        }
-
-        public override TResult Accept<TArgument, TResult>(SymbolVisitor<TArgument, TResult> visitor, TArgument argument)
-        {
-            return visitor.VisitModule(this, argument);
-        }
-
         /// <summary>
         /// If this symbol represents a metadata module returns the underlying <see cref="ModuleMetadata"/>.
         /// 
@@ -288,10 +273,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public abstract ModuleMetadata GetMetadata();
 
         #endregion
-        protected override ISymbol CreateISymbol()
-        {
-            return new PublicModel.ModuleSymbol(this);
-        }
 
         bool ISymbolInternal.Equals(ISymbolInternal? other, TypeCompareKind compareKind)
         {

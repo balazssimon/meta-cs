@@ -1,4 +1,5 @@
 using MetaDslx.CodeAnalysis.Symbols.Metadata;
+using MetaDslx.CodeAnalysis.Symbols.Model;
 using MetaDslx.CodeAnalysis.Symbols.Source;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;

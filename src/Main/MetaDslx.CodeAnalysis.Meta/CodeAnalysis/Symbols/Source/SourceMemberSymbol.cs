@@ -46,10 +46,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             return this.SourceDeclaration.GetLexicalSortKey();
         }
 
-        public override ImmutableArray<Location> Locations => _declaration.NameLocations;
-
-        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => _declaration.SyntaxReferences;
-
         public virtual ImmutableArray<DeclaredSymbol> GetDeclaredChildren()
         {
             return GetMembers();

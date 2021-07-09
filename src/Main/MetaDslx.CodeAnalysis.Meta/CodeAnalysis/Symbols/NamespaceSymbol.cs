@@ -71,11 +71,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
         }
 
-        /// <summary>
-        /// Gets the kind of this symbol.
-        /// </summary>
-        public sealed override SymbolKind Kind => SymbolKind.Namespace;
-
         public override bool IsImplicitlyDeclared => this.IsGlobalNamespace;
 
         /// <summary>
@@ -187,27 +182,5 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
         }
 
-        #region ISymbol Members
-
-        public override void Accept(SymbolVisitor visitor)
-        {
-            visitor.VisitNamespace(this);
-        }
-
-        public override TResult Accept<TResult>(SymbolVisitor<TResult> visitor)
-        {
-            return visitor.VisitNamespace(this);
-        }
-
-        public override TResult Accept<TArgument, TResult>(SymbolVisitor<TArgument, TResult> visitor, TArgument argument)
-        {
-            return visitor.VisitNamespace(this, argument);
-        }
-
-        #endregion
-        protected sealed override ISymbol CreateISymbol()
-        {
-            return new PublicModel.NamespaceSymbol(this);
-        }
     }
 }

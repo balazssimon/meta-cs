@@ -136,7 +136,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                     this.AddCandidateSymbolsInSubmissions(result, constraints);
                     break;
 
-                case Symbols.TypeKind.Error:
+                case Symbols.TypeKind.ErrorType:
                     this.AddCandidateSymbolsInErrorType(result, constraints);
                     break;
             }

@@ -15,8 +15,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
 {
 	public abstract partial class ModuleSymbol
 	{
-        public sealed override SymbolKind Kind => SymbolKind.Module;
-
 
         public override void Accept(MetaDslx.CodeAnalysis.Symbols.SymbolVisitor visitor)
         {
