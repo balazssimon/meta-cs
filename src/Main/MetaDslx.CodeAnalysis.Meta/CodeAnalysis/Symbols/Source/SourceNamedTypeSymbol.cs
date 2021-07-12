@@ -75,36 +75,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         public override IEnumerable<string> MemberNames => this.SourceDeclaration.MemberNames;
 
-        public override ImmutableArray<DeclaredSymbol> GetMembers()
-        {
-            return this.SourceDeclaration.GetMembers();
-        }
-
-        public override ImmutableArray<DeclaredSymbol> GetMembers(string name)
-        {
-            return this.SourceDeclaration.GetMembers(name);
-        }
-
-        public override ImmutableArray<DeclaredSymbol> GetMembers(string name, string metadataName)
-        {
-            return this.SourceDeclaration.GetMembers(name, metadataName);
-        }
-
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers()
-        {
-            return this.SourceDeclaration.GetTypeMembers();
-        }
-
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name)
-        {
-            return this.SourceDeclaration.GetTypeMembers(name);
-        }
-
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name, string metadataName)
-        {
-            return this.SourceDeclaration.GetTypeMembers(name, metadataName);
-        }
-
         #endregion
 
         public virtual void EnsureSymbolDefinitionsNoted()

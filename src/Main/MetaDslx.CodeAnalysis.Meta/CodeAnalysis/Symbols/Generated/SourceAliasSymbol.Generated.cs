@@ -80,7 +80,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         }
         protected override global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.TypeSymbol> CompleteSymbolProperty_TypeMembers(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
-            return SourceSymbolImplementation.AssignSymbolPropertyValues<global::MetaDslx.CodeAnalysis.Symbols.TypeSymbol>(this, nameof(TypeMembers), diagnostics, cancellationToken);
+            return ImmutableArray<TypeSymbol>.Empty;
         }
         protected override global::MetaDslx.CodeAnalysis.Symbols.DeclaredSymbol CompleteSymbolProperty_Target(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {

@@ -12,11 +12,17 @@ using System.Text;
 using System.Threading;
 using Microsoft.CodeAnalysis.Symbols;
 using Microsoft.Cci;
+using System.Runtime.CompilerServices;
+using Microsoft.CodeAnalysis.Collections;
+using System.Linq;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
     public abstract partial class DeclaredSymbol : Symbol, ISymbolInternal
     {
+        private static MemberLookupCache EmptyMemberCache = new MemberLookupCache(null);
+        private static ConditionalWeakTable<DeclaredSymbol, MemberLookupCache> s_memberLookup = new ConditionalWeakTable<DeclaredSymbol, MemberLookupCache>();
+
         /// <summary>
         /// The original definition of this symbol. If this symbol is constructed from another
         /// symbol by type substitution then OriginalDefinition gets the original symbol as it was defined in
@@ -124,15 +130,15 @@ namespace MetaDslx.CodeAnalysis.Symbols
         [SymbolProperty]
         public virtual ImmutableArray<DeclaredSymbol> Members => ImmutableArray<DeclaredSymbol>.Empty;
 
-        [SymbolProperty]
-        public virtual ImmutableArray<TypeSymbol> TypeMembers => ImmutableArray<TypeSymbol>.Empty;
-
         /// <summary>
         /// Get all the members of this symbol.
         /// </summary>
         /// <returns>An ImmutableArray containing all the members of this symbol. If this symbol has no members,
         /// returns an empty ImmutableArray. Never returns null.</returns>
-        public abstract ImmutableArray<DeclaredSymbol> GetMembers();
+        public ImmutableArray<DeclaredSymbol> GetMembers() 
+        {
+            return GetMemberLookupCache().GetMembers();
+        }
 
         /// <summary>
         /// Get all the members of this symbol. The members may not be in a particular order, and the order
@@ -140,7 +146,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         /// <returns>An ImmutableArray containing all the members of this symbol. If this symbol has no members,
         /// returns an empty ImmutableArray. Never returns null.</returns>
-        internal virtual ImmutableArray<DeclaredSymbol> GetMembersUnordered()
+        internal ImmutableArray<DeclaredSymbol> GetMembersUnordered()
         {
             // Default implementation is to use ordered version. When performance indicates, we specialize to have
             // separate implementation.
@@ -153,22 +159,20 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         /// <returns>An ImmutableArray containing all the members of this symbol with the given name. If there are
         /// no members with this name, returns an empty ImmutableArray. Never returns null.</returns>
-        public virtual ImmutableArray<DeclaredSymbol> GetMembers(string name)
+        public ImmutableArray<DeclaredSymbol> GetMembers(string name)
         {
-            return GetMembers().WhereAsArray(m => m.Name == name);
+            return GetMemberLookupCache().GetMembers(name);
         }
 
         /// <summary>
-        /// Get all the members of this symbol that are types that have a particular name and arity
+        /// Get all the members of this symbol that are types that have a particular name and metadata name
         /// </summary>
-        /// <returns>An IEnumerable containing all the types that are members of this symbol with the given name and arity.
-        /// If this symbol has no type members with this name and arity,
+        /// <returns>An IEnumerable containing all the types that are members of this symbol with the given name and metadata name.
+        /// If this symbol has no type members with this name and metadata name,
         /// returns an empty IEnumerable. Never returns null.</returns>
-        public virtual ImmutableArray<DeclaredSymbol> GetMembers(string name, string metadataName)
+        public ImmutableArray<DeclaredSymbol> GetMembers(string name, string metadataName)
         {
-            // default implementation does a post-filter. We can override this if its a performance burden, but 
-            // experience is that it won't be.
-            return GetMembers(name).WhereAsArray(m => m.MetadataName == metadataName);
+            return GetMemberLookupCache().GetMembers(name, metadataName);
         }
 
         /// <summary>
@@ -189,32 +193,31 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         /// <returns>An ImmutableArray containing all the types that are members of this symbol. If this symbol has no type members,
         /// returns an empty ImmutableArray. Never returns null.</returns>
-        public abstract ImmutableArray<NamedTypeSymbol> GetTypeMembers();
+        public ImmutableArray<NamedTypeSymbol> GetTypeMembers()
+        {
+            return GetMemberLookupCache().GetTypeMembers();
+        }
 
         /// <summary>
-        /// Get all the members of this symbol that are types that have a particular name, of any arity.
+        /// Get all the members of this symbol that are types that have a particular name, of any metadata name.
         /// </summary>
         /// <returns>An ImmutableArray containing all the types that are members of this symbol with the given name.
         /// If this symbol has no type members with this name,
         /// returns an empty ImmutableArray. Never returns null.</returns>
-        public virtual ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name)
+        public ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name)
         {
-            // default implementation does a post-filter. We can override this if its a performance burden, but 
-            // experience is that it won't be.
-            return GetTypeMembers().WhereAsArray(t => t.Name == name);
+            return GetMemberLookupCache().GetTypeMembers(name);
         }
 
         /// <summary>
-        /// Get all the members of this symbol that are types that have a particular name and arity
+        /// Get all the members of this symbol that are types that have a particular name and metadata name
         /// </summary>
-        /// <returns>An IEnumerable containing all the types that are members of this symbol with the given name and arity.
-        /// If this symbol has no type members with this name and arity,
+        /// <returns>An IEnumerable containing all the types that are members of this symbol with the given name and metadata name.
+        /// If this symbol has no type members with this name and metadata name,
         /// returns an empty IEnumerable. Never returns null.</returns>
-        public virtual ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name, string metadataName)
+        public ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name, string metadataName)
         {
-            // default implementation does a post-filter. We can override this if its a performance burden, but 
-            // experience is that it won't be.
-            return GetTypeMembers(name).WhereAsArray(t => t.MetadataName == metadataName);
+            return GetMemberLookupCache().GetTypeMembers(name, metadataName);
         }
 
         public virtual void CheckMembers(Dictionary<string, ImmutableArray<DeclaredSymbol>> result, DiagnosticBag diagnostics)
@@ -454,6 +457,123 @@ namespace MetaDslx.CodeAnalysis.Symbols
         IReference ISymbolInternal.GetCciAdapter()
         {
             throw new NotImplementedException();
+        }
+
+
+        private MemberLookupCache GetMemberLookupCache()
+        {
+            return s_memberLookup.GetValue(this, key => key.Members.IsDefaultOrEmpty ? EmptyMemberCache : new MemberLookupCache(key));
+        }
+
+        private class MemberLookupCache
+        {
+            private DeclaredSymbol? _symbol;
+            private ImmutableArray<DeclaredSymbol> _members;
+            private ImmutableArray<NamedTypeSymbol> _typeMembers;
+            private CachingDictionary<string, DeclaredSymbol> _membersByName;
+            private CachingDictionary<string, NamedTypeSymbol> _typeMembersByName;
+            private CachingDictionary<string, DeclaredSymbol> _membersByMetadataName;
+            private CachingDictionary<string, NamedTypeSymbol> _typeMembersByMetadataName;
+
+            public MemberLookupCache(DeclaredSymbol? symbol)
+            {
+                _symbol = symbol;
+                if (symbol is null)
+                {
+                    _members = ImmutableArray<DeclaredSymbol>.Empty;
+                    _typeMembers = ImmutableArray<NamedTypeSymbol>.Empty;
+                }
+            }
+
+            public ImmutableArray<DeclaredSymbol> GetMembers()
+            {
+                if (_members.IsDefault)
+                {
+                    ImmutableInterlocked.InterlockedInitialize(ref _members, _symbol.Members);
+                }
+                return _members;
+            }
+
+            public ImmutableArray<DeclaredSymbol> GetMembers(string name)
+            {
+                var members = this.GetMembers();
+                if (members.IsEmpty) return ImmutableArray<DeclaredSymbol>.Empty;
+                if (_membersByName is null)
+                {
+                    Interlocked.CompareExchange(ref _membersByName, new CachingDictionary<string, DeclaredSymbol>(cachedName => this.GetMembers().WhereAsArray(m => m.Name == cachedName), SlowGetMemberNames, EqualityComparer<string>.Default), null);
+                }
+                return _membersByName[name];
+            }
+
+            public ImmutableArray<DeclaredSymbol> GetMembers(string name, string metadataName)
+            {
+                var members = this.GetMembers();
+                if (members.IsEmpty) return ImmutableArray<DeclaredSymbol>.Empty;
+                if (_membersByMetadataName is null)
+                {
+                    Interlocked.CompareExchange(ref _membersByMetadataName, new CachingDictionary<string, DeclaredSymbol>(cachedName => this.GetMembers().WhereAsArray(m => m.MetadataName == cachedName), SlowGetMemberMetadataNames, EqualityComparer<string>.Default), null);
+                }
+                return _membersByMetadataName[metadataName];
+            }
+
+            public ImmutableArray<NamedTypeSymbol> GetTypeMembers()
+            {
+                if (_typeMembers.IsDefault)
+                {
+                    ImmutableInterlocked.InterlockedInitialize(ref _typeMembers, this.GetMembers().OfType<NamedTypeSymbol>().ToImmutableArray());
+                }
+                return _typeMembers;
+            }
+
+            public ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name)
+            {
+                var members = this.GetTypeMembers();
+                if (members.IsEmpty) return ImmutableArray<NamedTypeSymbol>.Empty;
+                if (_typeMembersByName is null)
+                {
+                    Interlocked.CompareExchange(ref _typeMembersByName, new CachingDictionary<string, NamedTypeSymbol>(cachedName => this.GetTypeMembers().WhereAsArray(m => m.Name == cachedName), SlowGetTypeMemberNames, EqualityComparer<string>.Default), null);
+                }
+                return _typeMembersByName[name];
+            }
+
+            public ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name, string metadataName)
+            {
+                var members = this.GetTypeMembers();
+                if (members.IsEmpty) return ImmutableArray<NamedTypeSymbol>.Empty;
+                if (_typeMembersByMetadataName is null)
+                {
+                    Interlocked.CompareExchange(ref _typeMembersByMetadataName, new CachingDictionary<string, NamedTypeSymbol>(cachedName => this.GetTypeMembers().WhereAsArray(m => m.MetadataName == cachedName), SlowGetTypeMemberMetadataNames, EqualityComparer<string>.Default), null);
+                }
+                return _typeMembersByMetadataName[metadataName];
+            }
+
+            private HashSet<string> SlowGetMemberNames(IEqualityComparer<string> comparer)
+            {
+                var names = new HashSet<string>(comparer);
+                names.UnionWith(this.GetMembers().Select(m => m.Name));
+                return names;
+            }
+
+            private HashSet<string> SlowGetTypeMemberNames(IEqualityComparer<string> comparer)
+            {
+                var names = new HashSet<string>(comparer);
+                names.UnionWith(this.GetTypeMembers().Select(m => m.Name));
+                return names;
+            }
+
+            private HashSet<string> SlowGetMemberMetadataNames(IEqualityComparer<string> comparer)
+            {
+                var names = new HashSet<string>(comparer);
+                names.UnionWith(this.GetMembers().Select(m => m.MetadataName));
+                return names;
+            }
+
+            private HashSet<string> SlowGetTypeMemberMetadataNames(IEqualityComparer<string> comparer)
+            {
+                var names = new HashSet<string>(comparer);
+                names.UnionWith(this.GetTypeMembers().Select(m => m.MetadataName));
+                return names;
+            }
         }
     }
 }

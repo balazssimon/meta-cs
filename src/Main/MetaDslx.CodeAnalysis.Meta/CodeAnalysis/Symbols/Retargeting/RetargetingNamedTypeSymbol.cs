@@ -69,45 +69,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
             }
         }
 
-        public override ImmutableArray<DeclaredSymbol> GetMembers()
-        {
-            return this.RetargetingTranslator.Retarget(_underlyingType.GetMembers());
-        }
-
-        internal override ImmutableArray<DeclaredSymbol> GetMembersUnordered()
-        {
-            return this.RetargetingTranslator.Retarget(_underlyingType.GetMembersUnordered());
-        }
-
-        public override ImmutableArray<DeclaredSymbol> GetMembers(string name)
-        {
-            return this.RetargetingTranslator.Retarget(_underlyingType.GetMembers(name));
-        }
-
-        public override ImmutableArray<DeclaredSymbol> GetMembers(string name, string metadataName)
-        {
-            return this.RetargetingTranslator.Retarget(_underlyingType.GetMembers(name, metadataName));
-        }
-
-        internal override ImmutableArray<NamedTypeSymbol> GetTypeMembersUnordered()
-        {
-            return this.RetargetingTranslator.Retarget(_underlyingType.GetTypeMembersUnordered());
-        }
-
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers()
-        {
-            return this.RetargetingTranslator.Retarget(_underlyingType.GetTypeMembers());
-        }
-
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name)
-        {
-            return this.RetargetingTranslator.Retarget(_underlyingType.GetTypeMembers(name));
-        }
-
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name, string metadataName)
-        {
-            return this.RetargetingTranslator.Retarget(_underlyingType.GetTypeMembers(name, metadataName));
-        }
+        public override ImmutableArray<DeclaredSymbol> Members => this.RetargetingTranslator.Retarget(_underlyingType.GetMembers());
 
         public override Symbol ContainingSymbol
         {

@@ -29,16 +29,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public Symbol AssociatedSymbol { get; internal set; }
         internal TypeWithAnnotations TypeWithAnnotations { get;  }
 
-        public override ImmutableArray<DeclaredSymbol> GetMembers()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers()
-        {
-            throw new NotImplementedException();
-        }
-
         protected override ISymbol CreateISymbol()
         {
             throw new NotImplementedException();

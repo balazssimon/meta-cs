@@ -20,24 +20,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         public abstract IEnumerable<string> MemberNames { get; }
 
-        /// <summary>
-        /// Get all the members of this symbol.
-        /// </summary>
-        /// <returns>An ImmutableArray containing all the members of this symbol. If this symbol has no members,
-        /// returns an empty ImmutableArray. Never returns null.</returns>
-        public abstract override ImmutableArray<DeclaredSymbol> GetMembers();
-
         public virtual ImmutableArray<DeclaredSymbol> GetNonTypeMembers(string name)
         {
-            return GetMembers(name);
+            // TODO:MetaDslx: cache this and other member lookups
+            return GetMembers(name).WhereAsArray(member => !(member is NamedTypeSymbol));
         }
-
-        /// <summary>
-        /// Get all the members of this symbol that are types.
-        /// </summary>
-        /// <returns>An ImmutableArray containing all the types that are members of this symbol. If this symbol has no type members,
-        /// returns an empty ImmutableArray. Never returns null.</returns>
-        public abstract override ImmutableArray<NamedTypeSymbol> GetTypeMembers();
 
         /// <summary>
         /// Get all instance members.

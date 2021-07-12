@@ -44,16 +44,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
             throw new NotImplementedException();
         }
 
-        public override ImmutableArray<DeclaredSymbol> GetMembers()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers()
-        {
-            throw new NotImplementedException();
-        }
-
         public override bool GetUnificationUseSiteDiagnosticRecursive(ref DiagnosticInfo result, Symbol owner, ref HashSet<TypeSymbol> checkedTypes)
         {
             throw new NotImplementedException();

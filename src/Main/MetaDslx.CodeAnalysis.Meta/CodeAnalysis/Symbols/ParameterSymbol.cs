@@ -19,15 +19,5 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public object ExplicitDefaultValue { get; internal set; }
         public ParameterSymbol OriginalDefinition { get; internal set; }
 
-        public override ImmutableArray<DeclaredSymbol> GetMembers()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers()
-        {
-            throw new NotImplementedException();
-        }
-
     }
 }

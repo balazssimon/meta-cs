@@ -12,28 +12,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Model
 {
     public partial class ModelMemberSymbol
     {
-        private ImmutableArray<DeclaredSymbol> _lazyMembers;
-        private ImmutableArray<NamedTypeSymbol> _lazyTypeMembers;
-
         public override bool IsStatic => false;
 
-        public override ImmutableArray<DeclaredSymbol> GetMembers()
-        {
-            if (_lazyMembers.IsDefault)
-            {
-                ImmutableInterlocked.InterlockedInitialize(ref _lazyMembers, SymbolFactory.GetChildDeclaredSymbols(ModelObject));
-            }
-            return _lazyMembers;
-        }
-
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers()
-        {
-            if (_lazyTypeMembers.IsDefault)
-            {
-                ImmutableInterlocked.InterlockedInitialize(ref _lazyTypeMembers, GetMembers().OfType<NamedTypeSymbol>().ToImmutableArray());
-            }
-            return _lazyTypeMembers;
-        }
 
         public override bool CanOverrideOrHide(MemberSymbol other)
         {

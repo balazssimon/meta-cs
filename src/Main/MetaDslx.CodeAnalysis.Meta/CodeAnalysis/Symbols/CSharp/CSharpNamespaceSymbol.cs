@@ -14,6 +14,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
     {
         private CSharpModuleSymbol _module;
         private CSharpSymbols.NamespaceSymbol _csharpSymbol;
+        private ImmutableArray<DeclaredSymbol> _lazyMembers;
 
         internal CSharpNamespaceSymbol(CSharpModuleSymbol module, CSharpSymbols.NamespaceSymbol csharpSymbol)
         {
@@ -39,36 +40,22 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
 
         public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => _csharpSymbol.DeclaringSyntaxReferences;
 
-        public override ImmutableArray<DeclaredSymbol> GetMembers()
+        public override ImmutableArray<DeclaredSymbol> Members
         {
-            var csharpMembers = _csharpSymbol.GetMembers();
-            var builder = ArrayBuilder<DeclaredSymbol>.GetInstance(csharpMembers.Length);
-            foreach (CSharpSymbol csharpMember in csharpMembers)
+            get
             {
-                builder.Add((DeclaredSymbol)CSharpSymbolMap.GetSymbol(csharpMember));
+                if (_lazyMembers.IsDefault)
+                {
+                    var csharpMembers = _csharpSymbol.GetMembers();
+                    var builder = ArrayBuilder<DeclaredSymbol>.GetInstance(csharpMembers.Length);
+                    foreach (CSharpSymbol csharpMember in csharpMembers)
+                    {
+                        builder.Add((DeclaredSymbol)CSharpSymbolMap.GetSymbol(csharpMember));
+                    }
+                    ImmutableInterlocked.InterlockedInitialize(ref _lazyMembers, builder.ToImmutableAndFree());
+                }
+                return _lazyMembers;
             }
-            return builder.ToImmutableAndFree();
-        }
-
-        public override ImmutableArray<DeclaredSymbol> GetMembers(string name)
-        {
-            return GetMembers().WhereAsArray(m => m.Name == name);
-        }
-
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers()
-        {
-            var csharpMembers = _csharpSymbol.GetTypeMembers();
-            var builder = ArrayBuilder<NamedTypeSymbol>.GetInstance(csharpMembers.Length);
-            foreach (CSharpSymbols.NamedTypeSymbol csharpMember in csharpMembers)
-            {
-                builder.Add(CSharpSymbolMap.GetNamedTypeSymbol(csharpMember));
-            }
-            return builder.ToImmutableAndFree();
-        }
-
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name)
-        {
-            return GetTypeMembers().WhereAsArray(m => m.Name == name);
         }
 
     }

@@ -33,16 +33,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public new PropertySymbol OriginalDefinition { get; internal set; }
         public ImmutableArray<PropertySymbol> ExplicitInterfaceImplementations { get; internal set; }
 
-        public override ImmutableArray<DeclaredSymbol> GetMembers()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers()
-        {
-            throw new NotImplementedException();
-        }
-
         protected override ISymbol CreateISymbol()
         {
             throw new NotImplementedException();

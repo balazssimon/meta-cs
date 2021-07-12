@@ -90,14 +90,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Model
                 return _members;
             }
         }
-        public override global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.TypeSymbol> TypeMembers
-        {
-            get
-            {
-                this.ForceComplete(CompletionParts.FinishComputingProperty_TypeMembers, null, default);
-                return _typeMembers;
-            }
-        }
+
 
         #region Completion
 

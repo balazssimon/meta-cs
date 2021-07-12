@@ -14,8 +14,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Model
     public partial class ModelNamedTypeSymbol
     {
         private ImmutableArray<string> _lazyMemberNames;
-        private ImmutableArray<DeclaredSymbol> _lazyMembers;
-        private ImmutableArray<NamedTypeSymbol> _lazyTypeMembers;
 
         public override IEnumerable<string> MemberNames
         {
@@ -48,24 +46,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Model
                 result.AddRange(baseTypeSymbols);
             }
             return result.ToImmutableAndFree();
-        }
-
-        public override ImmutableArray<DeclaredSymbol> GetMembers()
-        {
-            if (_lazyMembers.IsDefault)
-            {
-                ImmutableInterlocked.InterlockedInitialize(ref _lazyMembers, SymbolFactory.GetChildDeclaredSymbols(ModelObject));
-            }
-            return _lazyMembers;
-        }
-
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers()
-        {
-            if (_lazyTypeMembers.IsDefault)
-            {
-                ImmutableInterlocked.InterlockedInitialize(ref _lazyTypeMembers, GetMembers().OfType<NamedTypeSymbol>().ToImmutableArray());
-            }
-            return _lazyTypeMembers;
         }
 
     }

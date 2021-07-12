@@ -67,10 +67,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
             }
         }
 
-        public override ImmutableArray<DeclaredSymbol> GetMembers()
-        {
-            return RetargetMembers(_underlyingNamespace.GetMembers());
-        }
+        public override ImmutableArray<DeclaredSymbol> Members => RetargetMembers(_underlyingNamespace.GetMembers());
 
         private ImmutableArray<DeclaredSymbol> RetargetMembers(ImmutableArray<DeclaredSymbol> underlyingMembers)
         {
@@ -90,29 +87,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
             return builder.ToImmutableAndFree();
         }
 
-        internal override ImmutableArray<DeclaredSymbol> GetMembersUnordered()
-        {
-            return RetargetMembers(_underlyingNamespace.GetMembersUnordered());
-        }
-
-        public override ImmutableArray<DeclaredSymbol> GetMembers(string name)
-        {
-            return RetargetMembers(_underlyingNamespace.GetMembers(name));
-        }
-
-        public override ImmutableArray<DeclaredSymbol> GetMembers(string name, string metadataName)
-        {
-            return RetargetMembers(_underlyingNamespace.GetMembers(name, metadataName));
-        }
-
         internal override ImmutableArray<NamedTypeSymbol> GetTypeMembersUnordered()
         {
             return RetargetTypeMembers(_underlyingNamespace.GetTypeMembersUnordered());
-        }
-
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers()
-        {
-            return RetargetTypeMembers(_underlyingNamespace.GetTypeMembers());
         }
 
         private ImmutableArray<NamedTypeSymbol> RetargetTypeMembers(ImmutableArray<NamedTypeSymbol> underlyingMembers)
@@ -132,16 +109,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
             }
 
             return builder.ToImmutableAndFree();
-        }
-
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name)
-        {
-            return RetargetTypeMembers(_underlyingNamespace.GetTypeMembers(name));
-        }
-
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name, string metadataName)
-        {
-            return RetargetTypeMembers(_underlyingNamespace.GetTypeMembers(name, metadataName));
         }
 
         public override Symbol ContainingSymbol

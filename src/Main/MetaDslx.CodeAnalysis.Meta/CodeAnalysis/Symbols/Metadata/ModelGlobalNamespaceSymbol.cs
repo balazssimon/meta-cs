@@ -85,36 +85,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Model
 
         public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => ImmutableArray<SyntaxReference>.Empty;
 
-        public override ImmutableArray<DeclaredSymbol> GetMembers()
-        {
-            return Members;
-        }
-
-        public override ImmutableArray<DeclaredSymbol> GetMembers(string name)
-        {
-            return GetMembers().WhereAsArray(m => m.Name == name);
-        }
-
-        public override ImmutableArray<DeclaredSymbol> GetMembers(string name, string metadataName)
-        {
-            return GetMembers().WhereAsArray(m => m.Name == name && m.MetadataName == metadataName);
-        }
-
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers()
-        {
-            return TypeMembers.OfType<NamedTypeSymbol>().ToImmutableArray();
-        }
-
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name)
-        {
-            return GetTypeMembers().WhereAsArray(m => m.Name == name);
-        }
-
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name, string metadataName)
-        {
-            return GetTypeMembers().WhereAsArray(m => m.Name == name && m.MetadataName == metadataName);
-        }
-
         protected override ImmutableArray<Symbol> CompleteCreatingChildSymbols(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             return ModelSymbolImplementation.MakeGlobalSymbols(this, null, diagnostics, cancellationToken);

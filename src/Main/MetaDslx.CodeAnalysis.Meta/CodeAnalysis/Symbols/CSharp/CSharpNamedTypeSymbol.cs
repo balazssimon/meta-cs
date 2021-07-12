@@ -37,35 +37,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
 
         public override SpecialType SpecialType => _csharpSymbol.SpecialType;
 
-        public override ImmutableArray<DeclaredSymbol> GetMembers()
-        {
-            return CSharpSymbolMap.GetMemberSymbols(_csharpSymbol.GetMembers());
-        }
-
-        public override ImmutableArray<DeclaredSymbol> GetMembers(string name)
-        {
-            return CSharpSymbolMap.GetMemberSymbols(_csharpSymbol.GetMembers(name));
-        }
-
-        public override ImmutableArray<DeclaredSymbol> GetMembers(string name, string metadataName)
-        {
-            return GetMembers(name).WhereAsArray(s => s.MetadataName == metadataName);
-        }
-
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers()
-        {
-            return CSharpSymbolMap.GetNamedTypeSymbols(_csharpSymbol.GetTypeMembers());
-        }
-
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name)
-        {
-            return CSharpSymbolMap.GetNamedTypeSymbols(_csharpSymbol.GetTypeMembers(name));
-        }
-
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name, string metadataName)
-        {
-            return GetTypeMembers(name).WhereAsArray(s => s.MetadataName == metadataName);
-        }
+        public override ImmutableArray<DeclaredSymbol> Members => CSharpSymbolMap.GetMemberSymbols(_csharpSymbol.GetMembers());
 
         public override ImmutableArray<NamedTypeSymbol> GetDeclaredBaseTypes(ConsList<TypeSymbol> basesBeingResolved)
         {

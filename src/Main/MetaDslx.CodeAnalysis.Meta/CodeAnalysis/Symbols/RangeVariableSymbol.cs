@@ -18,15 +18,5 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         public override ImmutableArray<Symbol> ChildSymbols => ImmutableArray<Symbol>.Empty;
 
-        public override ImmutableArray<DeclaredSymbol> GetMembers()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers()
-        {
-            throw new NotImplementedException();
-        }
-
     }
 }

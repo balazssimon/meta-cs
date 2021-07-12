@@ -117,26 +117,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
             get { return null; }
         }
 
-        public override ImmutableArray<DeclaredSymbol> GetMembers()
-        {
-            return ImmutableArray<DeclaredSymbol>.Empty;
-        }
-
-        public override ImmutableArray<DeclaredSymbol> GetMembers(string name)
-        {
-            return ImmutableArray<DeclaredSymbol>.Empty;
-        }
-
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name)
-        {
-            return ImmutableArray<NamedTypeSymbol>.Empty;
-        }
-
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers()
-        {
-            return ImmutableArray<NamedTypeSymbol>.Empty;
-        }
-
         public override TResult Accept<TArgument, TResult>(SymbolVisitor<TArgument, TResult> visitor, TArgument argument)
         {
             return visitor.VisitDynamicType(this, argument);

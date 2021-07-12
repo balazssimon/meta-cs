@@ -52,7 +52,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
         }
         protected override global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.TypeSymbol> CompleteSymbolProperty_TypeMembers(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
-            return ModelSymbolImplementation.AssignSymbolPropertyValues<global::MetaDslx.CodeAnalysis.Symbols.TypeSymbol>(this, nameof(TypeMembers), diagnostics, cancellationToken);
+            return ImmutableArray<TypeSymbol>.Empty;
         }
         protected override global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.NamedTypeSymbol> CompleteSymbolProperty_BaseTypes(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {

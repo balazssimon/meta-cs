@@ -70,67 +70,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         public override IEnumerable<string> MemberNames => SpecializedCollections.EmptyEnumerable<string>();
 
-        /// <summary>
-        /// Get all the members of this symbol.
-        /// </summary>
-        /// <returns>An ImmutableArray containing all the members of this symbol. If this symbol has no members,
-        /// returns an empty ImmutableArray. Never returns Null.</returns>
-        public override ImmutableArray<DeclaredSymbol> GetMembers()
-        {
-            return ImmutableArray<DeclaredSymbol>.Empty;
-        }
-
-        /// <summary>
-        /// Get all the members of this symbol that have a particular name.
-        /// </summary>
-        /// <returns>An ImmutableArray containing all the members of this symbol with the given name. If there are
-        /// no members with this name, returns an empty ImmutableArray. Never returns Null.</returns>
-        public override ImmutableArray<DeclaredSymbol> GetMembers(string name)
-        {
-            return ImmutableArray<DeclaredSymbol>.Empty;
-        }
-
-        /// <summary>
-        /// Get all the members of this symbol that have a particular name.
-        /// </summary>
-        /// <returns>An ImmutableArray containing all the members of this symbol with the given name. If there are
-        /// no members with this name, returns an empty ImmutableArray. Never returns Null.</returns>
-        public override ImmutableArray<DeclaredSymbol> GetMembers(string name, string metadataName)
-        {
-            return ImmutableArray<DeclaredSymbol>.Empty;
-        }
-
-        /// <summary>
-        /// Get all the members of this symbol that are types.
-        /// </summary>
-        /// <returns>An ImmutableArray containing all the types that are members of this symbol. If this symbol has no type members,
-        /// returns an empty ImmutableArray. Never returns null.</returns>
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers()
-        {
-            return ImmutableArray<NamedTypeSymbol>.Empty;
-        }
-
-        /// <summary>
-        /// Get all the members of this symbol that are types that have a particular name, of any arity.
-        /// </summary>
-        /// <returns>An ImmutableArray containing all the types that are members of this symbol with the given name.
-        /// If this symbol has no type members with this name,
-        /// returns an empty ImmutableArray. Never returns null.</returns>
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name)
-        {
-            return ImmutableArray<NamedTypeSymbol>.Empty;
-        }
-
-        /// <summary>
-        /// Get all the members of this symbol that are types that have a particular name and arity
-        /// </summary>
-        /// <returns>An ImmutableArray containing all the types that are members of this symbol with the given name and arity.
-        /// If this symbol has no type members with this name and arity,
-        /// returns an empty ImmutableArray. Never returns null.</returns>
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name, string metadataName)
-        {
-            return ImmutableArray<NamedTypeSymbol>.Empty;
-        }
+        public override ImmutableArray<DeclaredSymbol> Members => ImmutableArray<DeclaredSymbol>.Empty;
 
         /// <summary>
         /// Gets the kind of this symbol.

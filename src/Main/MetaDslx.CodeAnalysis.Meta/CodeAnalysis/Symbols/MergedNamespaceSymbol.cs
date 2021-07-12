@@ -36,11 +36,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         // used when this namespace is constructed as the result of an extern alias directive
         private readonly string _nameOpt;
 
-        // The cachedLookup caches results of lookups on the constituent namespaces so that
-        // subsequent lookups for the same name are much faster than having to ask each of the
-        // constituent namespaces.
-        private readonly CachingDictionary<string, DeclaredSymbol> _cachedLookup;
-
         // GetMembers() is repeatedly called on merged namespaces in some IDE scenarios.
         // This caches the result that is built by asking the 'cachedLookup' for a concatenated
         // view of all of its values.
@@ -89,7 +84,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
             _extent = extent;
             _namespacesToMerge = namespacesToMerge;
             _containingNamespace = containingNamespace;
-            _cachedLookup = new CachingDictionary<string, DeclaredSymbol>(SlowGetChildrenOfName, SlowGetChildNames, EqualityComparer<string>.Default);
             _nameOpt = nameOpt;
 
 #if DEBUG
@@ -124,11 +118,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
         }
 
-        /// <summary>
-        /// Method that is called from the CachingLookup to lookup the children of a given name.
-        /// Looks in all the constituent namespaces.
-        /// </summary>
-        private ImmutableArray<DeclaredSymbol> SlowGetChildrenOfName(string name)
+        private ImmutableArray<DeclaredSymbol> SlowGetAllMembers()
         {
             ArrayBuilder<NamespaceSymbol> namespaceSymbols = null;
             var otherSymbols = ArrayBuilder<DeclaredSymbol>.GetInstance();
@@ -136,7 +126,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             // Accumulate all the child namespaces and types.
             foreach (NamespaceSymbol namespaceSymbol in _namespacesToMerge)
             {
-                foreach (DeclaredSymbol childSymbol in namespaceSymbol.GetMembers(name))
+                foreach (DeclaredSymbol childSymbol in namespaceSymbol.GetMembersUnordered())
                 {
                     if (childSymbol.Kind == SymbolKind.Namespace)
                     {
@@ -156,40 +146,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
 
             return otherSymbols.ToImmutableAndFree();
-        }
-
-        /// <summary>
-        /// Method that is called from the CachingLookup to get all child names. Looks in all
-        /// constituent namespaces.
-        /// </summary>
-        private HashSet<string> SlowGetChildNames(IEqualityComparer<string> comparer)
-        {
-            var childNames = new HashSet<string>(comparer);
-
-            foreach (var ns in _namespacesToMerge)
-            {
-                foreach (var child in ns.GetMembersUnordered())
-                {
-                    childNames.Add(child.Name);
-                }
-            }
-
-            return childNames;
-        }
-
-        private ImmutableArray<DeclaredSymbol> SlowGetAllMembers()
-        {
-            var members = ArrayBuilder<DeclaredSymbol>.GetInstance();
-
-            foreach (var ns in _namespacesToMerge)
-            {
-                foreach (var child in ns.GetMembersUnordered())
-                {
-                    members.Add(child);
-                }
-            }
-
-            return members.ToImmutableAndFree();
         }
 
         public override string Name
@@ -216,36 +172,23 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
         }
 
-        public override ImmutableArray<DeclaredSymbol> GetMembers()
+        public override ImmutableArray<DeclaredSymbol> Members
         {
-            // Return all the elements from every IGrouping in the ILookup.
-            if (_allMembers.IsDefault)
+            get
             {
-                ImmutableInterlocked.InterlockedInitialize(ref _allMembers, SlowGetAllMembers());
+                // Return all the elements from every IGrouping in the ILookup.
+                if (_allMembers.IsDefault)
+                {
+                    ImmutableInterlocked.InterlockedInitialize(ref _allMembers, SlowGetAllMembers());
+                }
+
+                return _allMembers;
             }
-
-            return _allMembers;
-        }
-
-        public override ImmutableArray<DeclaredSymbol> GetMembers(string name)
-        {
-            return _cachedLookup[name];
         }
 
         internal sealed override ImmutableArray<NamedTypeSymbol> GetTypeMembersUnordered()
         {
             return ImmutableArray.CreateRange<NamedTypeSymbol>(GetMembersUnordered().OfType<NamedTypeSymbol>());
-        }
-
-        public sealed override ImmutableArray<NamedTypeSymbol> GetTypeMembers()
-        {
-            return ImmutableArray.CreateRange<NamedTypeSymbol>(GetMembers().OfType<NamedTypeSymbol>());
-        }
-
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name)
-        {
-            // TODO - This is really inefficient. Creating a new array on each lookup needs to fixed!
-            return ImmutableArray.CreateRange<NamedTypeSymbol>(_cachedLookup[name].OfType<NamedTypeSymbol>());
         }
 
         public override Symbol ContainingSymbol

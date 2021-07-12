@@ -107,16 +107,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
         }
 
-        public override ImmutableArray<DeclaredSymbol> GetMembers()
-        {
-            return ImmutableArray<DeclaredSymbol>.Empty;
-        }
-
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers()
-        {
-            return ImmutableArray<NamedTypeSymbol>.Empty;
-        }
-
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(this, obj))

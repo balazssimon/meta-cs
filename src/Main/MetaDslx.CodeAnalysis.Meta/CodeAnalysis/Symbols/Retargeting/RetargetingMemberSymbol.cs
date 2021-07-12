@@ -99,34 +99,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
             return _lazyUseSiteDiagnostic;
         }
 
-        internal override ImmutableArray<DeclaredSymbol> GetMembersUnordered()
-        {
-            return RetargetMembers(_underlyingMember.GetMembersUnordered());
-        }
-
-        public override ImmutableArray<DeclaredSymbol> GetMembers()
-        {
-            return RetargetMembers(_underlyingMember.GetMembers());
-        }
-
-        public override ImmutableArray<DeclaredSymbol> GetMembers(string name)
-        {
-            return RetargetMembers(_underlyingMember.GetMembers(name));
-        }
-
-        public override ImmutableArray<DeclaredSymbol> GetMembers(string name, string metadataName)
-        {
-            return RetargetMembers(_underlyingMember.GetMembers(name, metadataName));
-        }
+        public override ImmutableArray<DeclaredSymbol> Members => RetargetMembers(_underlyingMember.Members);
 
         internal override ImmutableArray<NamedTypeSymbol> GetTypeMembersUnordered()
         {
             return RetargetTypeMembers(_underlyingMember.GetTypeMembersUnordered());
-        }
-
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers()
-        {
-            return RetargetTypeMembers(_underlyingMember.GetTypeMembers());
         }
 
         private ImmutableArray<NamedTypeSymbol> RetargetTypeMembers(ImmutableArray<NamedTypeSymbol> underlyingMembers)
@@ -146,16 +123,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
             }
 
             return builder.ToImmutableAndFree();
-        }
-
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name)
-        {
-            return RetargetTypeMembers(_underlyingMember.GetTypeMembers(name));
-        }
-
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name, string metadataName)
-        {
-            return RetargetTypeMembers(_underlyingMember.GetTypeMembers(name, metadataName));
         }
 
         private ImmutableArray<DeclaredSymbol> RetargetMembers(ImmutableArray<DeclaredSymbol> underlyingMembers)

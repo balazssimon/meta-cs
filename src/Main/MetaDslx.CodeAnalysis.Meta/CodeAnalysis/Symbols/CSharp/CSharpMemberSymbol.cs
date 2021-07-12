@@ -40,25 +40,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
 
         public override bool IsStatic => _csharpSymbol.IsStatic;
 
-        public override ImmutableArray<DeclaredSymbol> GetMembers()
-        {
-            return ImmutableArray<DeclaredSymbol>.Empty;
-        }
-
-        public override ImmutableArray<DeclaredSymbol> GetMembers(string name)
-        {
-            return GetMembers().WhereAsArray(m => m.Name == name);
-        }
-
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers()
-        {
-            return ImmutableArray<NamedTypeSymbol>.Empty;
-        }
-
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name)
-        {
-            return GetTypeMembers().WhereAsArray(m => m.Name == name);
-        }
+        public override ImmutableArray<DeclaredSymbol> Members => ImmutableArray<DeclaredSymbol>.Empty;
 
     }
 }
