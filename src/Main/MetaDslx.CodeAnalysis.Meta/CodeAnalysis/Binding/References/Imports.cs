@@ -25,6 +25,14 @@ namespace MetaDslx.CodeAnalysis.Binding
     [DebuggerDisplay("{GetDebuggerDisplay(),nq}")]
     public sealed class Imports
     {
+        public static class CompletionParts
+        {
+            public static readonly CompletionPart StartValidatingImports = new CompletionPart(nameof(StartValidatingImports));
+            public static readonly CompletionPart FinishValidatingImports = new CompletionPart(nameof(FinishValidatingImports));
+            public static readonly ImmutableHashSet<CompletionPart> All = CompletionPart.Combine(StartValidatingImports, FinishValidatingImports);
+            public static readonly CompletionGraph CompletionGraph = CompletionGraph.FromCompletionParts(StartValidatingImports, FinishValidatingImports);
+        }
+
         public static readonly Imports Empty = new Imports(
             null,
             ImmutableDictionary<string, AliasAndUsingDirective>.Empty,
@@ -59,8 +67,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             _diagnostics = diagnostics;
             this.ExternAliases = externs;
 
-            if (_compilation != null) _state = CompletionState.Create(_compilation.Language);
-            else _state = null;
+            _state = CompletionParts.CompletionGraph.CreateState();
         }
 
         public ImmutableArray<Diagnostic> Diagnostics => _diagnostics != null ? _diagnostics.ToReadOnly() : ImmutableArray<Diagnostic>.Empty;
@@ -613,20 +620,20 @@ namespace MetaDslx.CodeAnalysis.Binding
             {
                 cancellationToken.ThrowIfCancellationRequested();
                 var incompletePart = _state.NextIncompletePart;
-                if (incompletePart == CompletionGraph.StartValidatingImports)
+                if (incompletePart == CompletionParts.StartValidatingImports)
                 {
-                    if (_state.NotePartComplete(CompletionGraph.StartValidatingImports))
+                    if (_state.NotePartComplete(CompletionParts.StartValidatingImports))
                     {
                         Validate();
-                        _state.NotePartComplete(CompletionGraph.FinishValidatingImports);
+                        _state.NotePartComplete(CompletionParts.FinishValidatingImports);
                     }
                 }
-                else if (incompletePart == CompletionGraph.FinishValidatingImports)
+                else if (incompletePart == CompletionParts.FinishValidatingImports)
                 {
                     // some other thread has started validating imports (otherwise we would be in the case above) so
                     // we just wait for it to both finish and report the diagnostics.
-                    Debug.Assert(_state.HasComplete(CompletionGraph.StartValidatingImports));
-                    _state.SpinWaitComplete(CompletionGraph.FinishValidatingImports, cancellationToken);
+                    Debug.Assert(_state.HasComplete(CompletionParts.StartValidatingImports));
+                    _state.SpinWaitComplete(CompletionParts.FinishValidatingImports, cancellationToken);
                 }
                 else if (incompletePart == null || incompletePart == CompletionGraph.None)
                 {
@@ -636,7 +643,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                 {
                     // any other values are completion parts intended for other kinds of symbols
                     _state.NotePartComplete(incompletePart);
-                    Debug.Assert(!CompletionGraph.ImportsAll.Contains(incompletePart));
+                    Debug.Assert(!CompletionParts.All.Contains(incompletePart));
                 }
                 _state.SpinWaitComplete(incompletePart, cancellationToken);
             }

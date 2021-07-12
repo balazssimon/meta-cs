@@ -52,7 +52,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public void DefaultForceComplete(Symbol symbol, CancellationToken cancellationToken)
         {
             Debug.Assert(symbol.RequiresCompletion);
-            if (!HasComplete(CompletionGraph.Attributes))
+            /* TODO:MetaDslx: if (!HasComplete(CompletionGraph.Attributes))
             {
                 _ = symbol.GetAttributes();
 
@@ -71,7 +71,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 // SourceEventSymbol which raises SymbolDeclaredEvent before CompletionPart.Attributes is noted as completed. 
                 // Many other implementations have this pattern but no apparent code which could depend on it.
                 SpinWaitComplete(CompletionGraph.Attributes, cancellationToken);
-            }
+            }*/
 
             // any other values are completion parts intended for other kinds of symbols
             NotePartComplete(CompletionGraph.All);

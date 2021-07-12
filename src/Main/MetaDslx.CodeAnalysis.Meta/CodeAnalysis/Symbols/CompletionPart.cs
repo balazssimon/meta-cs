@@ -45,12 +45,14 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public static readonly CompletionPart StartComputingNonSymbolProperties = new CompletionPart(nameof(StartComputingNonSymbolProperties));
         public static readonly CompletionPart FinishComputingNonSymbolProperties = new CompletionPart(nameof(FinishComputingNonSymbolProperties));
 
+        public static readonly CompletionPart StartCustomBinders = new CompletionPart(nameof(StartCustomBinders));
+        public static readonly CompletionPart FinishCustomBinders = new CompletionPart(nameof(FinishCustomBinders));
+        /*
         public static readonly CompletionPart StartCreated = new CompletionPart(nameof(StartCreated));
         public static readonly CompletionPart FinishCreated = new CompletionPart(nameof(FinishCreated));
         public static readonly CompletionPart StartChildrenCreated = new CompletionPart(nameof(StartChildrenCreated));
         public static readonly CompletionPart FinishChildrenCreated = new CompletionPart(nameof(FinishChildrenCreated));
 
-        //*/
         public static readonly CompletionPart Attributes = new CompletionPart(nameof(Attributes));
         public static readonly CompletionPart Module = new CompletionPart(nameof(Module));
 
@@ -109,7 +111,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             CompletionPart.Combine(StartCreated, FinishCreated, Attributes, StartChildrenCreated, FinishChildrenCreated, StartProperties, FinishProperties);
         public static readonly ImmutableHashSet<CompletionPart> LocalSymbolAll =
             CompletionPart.Combine(StartCreated, FinishCreated, Attributes, StartChildrenCreated, FinishChildrenCreated, StartProperties, FinishProperties, ChildrenCompleted);
-
+        */
     }
 
     public sealed partial class CompletionGraphBuilder
@@ -117,7 +119,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public static CompletionGraphBuilder BuildDefaultGraph()
         {
             CompletionGraphBuilder builder = new CompletionGraphBuilder();
-            builder.AddLast(CompletionGraph.StartCreated);
+            /*builder.AddLast(CompletionGraph.StartCreated);
             builder.AddLast(CompletionGraph.FinishCreated);
             builder.AddLast(CompletionGraph.Attributes);
             builder.AddLast(CompletionGraph.StartAttributeChecks);
@@ -140,7 +142,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             builder.AddLast(CompletionGraph.StartValidatingAddedModules);
             builder.AddLast(CompletionGraph.FinishValidatingAddedModules);
             builder.AddLast(CompletionGraph.StartValidatingReferencedAssemblies);
-            builder.AddLast(CompletionGraph.FinishValidatingReferencedAssemblies);
+            builder.AddLast(CompletionGraph.FinishValidatingReferencedAssemblies);*/
             return builder;
         }
         //*/

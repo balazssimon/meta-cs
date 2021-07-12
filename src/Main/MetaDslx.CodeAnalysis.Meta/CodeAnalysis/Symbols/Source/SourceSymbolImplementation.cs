@@ -20,6 +20,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
     {
         public static void CompleteImports(Symbol symbol, Location locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
+            if (symbol is ModuleSymbol || symbol is AssemblySymbol) return;
             var ssymbol = symbol as ISourceSymbol;
             if (ssymbol is null) throw new ArgumentException("Symbol must implement ISourceSymbol.");
             if (ssymbol.MergedDeclaration is null) return;
@@ -61,6 +62,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         public static ImmutableArray<Symbol> MakeChildSymbols(Symbol symbol, string symbolPropertyName, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
+            if (symbol is SourceModuleSymbol sms) return ImmutableArray.Create<Symbol>(sms.GlobalNamespace);
             var ssymbol = symbol as ISourceSymbol;
             if (ssymbol is null) throw new ArgumentException("Symbol must implement ISourceSymbol.");
             var symbolFacts = symbol.Language.SymbolFacts;
@@ -113,8 +115,35 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             return result.ToImmutableAndFree();
         }
 
+        public static ImmutableArray<Symbol> GetInnermostNestedSymbols(SyntaxReference childSyntax, Symbol symbol)
+        {
+            if (symbol == null) return ImmutableArray<Symbol>.Empty;
+            var result = ArrayBuilder<Symbol>.GetInstance();
+            var childSymbols = GetChildSymbols(symbol, childSyntax);
+            result.AddRange(childSymbols);
+            int index = 0;
+            while (index < result.Count)
+            {
+                var childSymbol = result[index];
+                var nestingDeclaration = NestingParentDeclaration(childSyntax, childSymbol);
+                if (nestingDeclaration != null)
+                {
+                    var nestedChildSymbols = GetChildSymbols(childSymbol, childSyntax);
+                    result.RemoveAt(index);
+                    for (int i = 0; i < nestedChildSymbols.Length; i++)
+                    {
+                        result.Insert(index + i, nestedChildSymbols[i]);
+                    }
+                    --index;
+                }
+                ++index;
+            }
+            return result.ToImmutableAndFree();
+        }
+
         public static T? AssignSymbolPropertyValue<T>(Symbol symbol, string symbolPropertyName, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
+            if (symbol is ModuleSymbol || symbol is AssemblySymbol) return default;
             if (symbolPropertyName == SymbolConstants.NameProperty)
             {
                 return (T)(object)AssignNameProperty(symbol, diagnostics);
@@ -134,6 +163,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         public static ImmutableArray<T> AssignSymbolPropertyValues<T>(Symbol symbol, string symbolPropertyName, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
+            if (symbol is ModuleSymbol || symbol is AssemblySymbol) return ImmutableArray<T>.Empty;
             var values = ArrayBuilder<T>.GetInstance();
             AssignSymbolProperty<T>(symbol, symbolPropertyName, values, false, diagnostics, cancellationToken);
             return values.ToImmutableAndFree();
@@ -141,6 +171,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         public static void AssignNonSymbolProperties(Symbol symbol, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
+            if (symbol is ModuleSymbol || symbol is AssemblySymbol) return;
             var msymbol = symbol as IModelSymbol;
             if (msymbol?.ModelObject is null) return;
             var language = symbol.Language;
@@ -278,6 +309,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         private static BinderPosition<SymbolBinder> GetBinder(Symbol symbol, SyntaxReference reference)
         {
+            if (symbol.ContainingSymbol == symbol.ContainingModule) return default;
             Debug.Assert(symbol.DeclaringSyntaxReferences.Contains(reference));
             return FindBinders.FindSymbolBinder(symbol, reference);
         }
@@ -316,13 +348,46 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             {
                 if (value != null && !typeof(T).IsAssignableFrom(value.GetType()))
                 {
-                    diagnostics.Add(ModelErrorCode.ERR_CannotSetSymbolProperty.ToDiagnostic(location, value, symbolPropertyName, symbol, typeof(T), value.GetType()));
+                    diagnostics.Add(ModelErrorCode.ERR_CannotSetSymbolProperty.ToDiagnostic(location, value, symbolPropertyName, symbol, typeof(T).ToString(), value.GetType().ToString()));
                 }
                 else if (value != null)
                 {
                     result.Add((T)value);
                 }
             }
+        }
+
+        public static ImmutableArray<Symbol> GetChildSymbols(Symbol symbol, SyntaxReference childSyntax)
+        {
+            if (symbol == null) return ImmutableArray<Symbol>.Empty;
+            var childDeclarations = GetChildDeclarations(symbol, childSyntax);
+            var result = ArrayBuilder<Symbol>.GetInstance();
+            foreach (var childSymbol in symbol.ChildSymbols)
+            {
+                if (childSymbol is ISourceSymbol srcSymbol && childDeclarations.Contains(srcSymbol.MergedDeclaration))
+                {
+                    result.Add(childSymbol);
+                }
+            }
+            return result.ToImmutableAndFree();
+        }
+
+        private static ImmutableArray<MergedDeclaration> GetChildDeclarations(Symbol symbol, SyntaxReference childSyntax)
+        {
+            if ((symbol as ISourceSymbol)?.MergedDeclaration == null) return ImmutableArray<MergedDeclaration>.Empty;
+            var srcSymbol = (ISourceSymbol)symbol;
+            var result = ArrayBuilder<MergedDeclaration>.GetInstance();
+            foreach (var childDeclaration in srcSymbol.MergedDeclaration.Children)
+            {
+                foreach (var childReference in childDeclaration.SyntaxReferences)
+                {
+                    if (childReference.SyntaxTree == childSyntax.SyntaxTree && childSyntax.Span.Equals(childReference.Span))
+                    {
+                        result.Add(childDeclaration);
+                    }
+                }
+            }
+            return result.ToImmutableAndFree();
         }
 
     }

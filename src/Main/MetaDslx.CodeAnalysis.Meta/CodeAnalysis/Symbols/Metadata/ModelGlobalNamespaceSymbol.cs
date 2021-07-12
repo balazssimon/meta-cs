@@ -117,9 +117,5 @@ namespace MetaDslx.CodeAnalysis.Symbols.Model
             return string.Empty;
         }
 
-        protected override ImmutableArray<TypeSymbol> CompleteSymbolProperty_TypeMembers(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
-        {
-            return this.ChildSymbols.OfType<TypeSymbol>().ToImmutableArray();
-        }
     }
 }

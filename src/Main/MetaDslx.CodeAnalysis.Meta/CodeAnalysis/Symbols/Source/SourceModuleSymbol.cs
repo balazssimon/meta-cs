@@ -32,7 +32,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         /// </summary>
         private readonly DeclarationTable _sources;
 
-        private CompletionState _state;
         private CustomAttributesBag<AttributeData> _lazyCustomAttributesBag;
         private ImmutableArray<Location> _locations;
         private NamespaceSymbol _globalNamespace;
@@ -51,8 +50,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             _assemblySymbol = assemblySymbol;
             _sources = declarations;
             _name = moduleName;
-
-            _state = CompletionState.Create(assemblySymbol.Language);
         }
 
         public override object Model
@@ -212,7 +209,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             }
         }
 
-        public override void ForceComplete(CompletionPart completionPart, SourceLocation locationOpt, CancellationToken cancellationToken)
+        /*public override void ForceComplete(CompletionPart completionPart, SourceLocation locationOpt, CancellationToken cancellationToken)
         {
             if (completionPart != null && _state.HasComplete(completionPart)) return;
             while (true)
@@ -281,7 +278,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 if (completionPart != null && _state.HasComplete(completionPart)) return;
                 _state.SpinWaitComplete(incompletePart, cancellationToken);
             }
-        }
+        }*/
 
         private void ValidateLinkedAssemblies(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
@@ -380,8 +377,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             if (_lazyCustomAttributesBag == null)
             {
                 Interlocked.CompareExchange(ref _lazyCustomAttributesBag, CustomAttributesBag<AttributeData>.Empty, null);
-                var completed = _state.NotePartComplete(CompletionGraph.Attributes);
-                Debug.Assert(completed);
+                /*var completed = _state.NotePartComplete(CompletionParts.FinishComputingProperty_Attributes);
+                Debug.Assert(completed);*/
             }
             return _lazyCustomAttributesBag;
         }

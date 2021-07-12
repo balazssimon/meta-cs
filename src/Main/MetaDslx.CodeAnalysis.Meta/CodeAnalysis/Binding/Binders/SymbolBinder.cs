@@ -32,7 +32,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
 
         protected override BoundNode BindNode(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
-            var symbols = SourceSymbol.GetInnermostNestedSymbols(this.Syntax.GetReference(), this.ContainingDeclaration);
+            var symbols = SourceSymbolImplementation.GetInnermostNestedSymbols(this.Syntax.GetReference(), this.ContainingDeclaration);
             Debug.Assert(symbols.Length == 1 && symbols[0] != null);
             return new BoundSymbols(symbols);
         }

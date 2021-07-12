@@ -180,11 +180,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             return ImmutableArray<DeclaredSymbol>.Empty;
         }
 
-        protected override ImmutableArray<TypeSymbol> CompleteSymbolProperty_TypeMembers(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
-        {
-            return ImmutableArray<TypeSymbol>.Empty;
-        }
-
         protected override void CompleteNonSymbolProperties(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
         }

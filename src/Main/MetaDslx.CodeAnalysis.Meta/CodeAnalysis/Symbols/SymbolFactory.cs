@@ -160,7 +160,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         public void RemoveSymbol(Symbol symbol)
         {
-            var mobj = (symbol as IModelSourceSymbol)?.ModelObject;
+            var mobj = (symbol as IModelSymbol)?.ModelObject;
             _symbolMap.Remove(mobj);
             _module.DeclaringCompilation.ObjectFactory.RemoveObject(mobj);
         }

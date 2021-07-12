@@ -19,6 +19,13 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 	public partial class SourceNamespaceSymbol : MetaDslx.CodeAnalysis.Symbols.Model.ModelNamespaceSymbol, MetaDslx.CodeAnalysis.Symbols.Source.ISourceSymbol
 	{
         private readonly MergedDeclaration _declaration;
+		public SourceNamespaceSymbol(Symbol containingSymbol, object modelObject, MergedDeclaration declaration)
+            : base(containingSymbol, modelObject)
+        {
+            Debug.Assert(declaration != null);
+            if (modelObject is null) throw new ArgumentNullException(nameof(modelObject));
+            _declaration = declaration;
+		}
 
         public MergedDeclaration MergedDeclaration => _declaration;
 
@@ -70,10 +77,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         protected override global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.DeclaredSymbol> CompleteSymbolProperty_Members(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             return SourceSymbolImplementation.AssignSymbolPropertyValues<global::MetaDslx.CodeAnalysis.Symbols.DeclaredSymbol>(this, nameof(Members), diagnostics, cancellationToken);
-        }
-        protected override global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.TypeSymbol> CompleteSymbolProperty_TypeMembers(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
-        {
-            return ImmutableArray<TypeSymbol>.Empty;
         }
 
         protected override void CompleteNonSymbolProperties(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)

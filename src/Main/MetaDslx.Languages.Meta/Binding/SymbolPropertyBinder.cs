@@ -64,7 +64,7 @@ namespace MetaDslx.Languages.Meta.Binding
 
         private NamedTypeSymbol GetSymbolTypeSymbol(DeclaredSymbol symbol)
         {
-            symbol.ForceComplete(CompletionGraph.FinishProperties, null, default);
+            symbol.ForceComplete(CompletionGraph.FinishComputingNonSymbolProperties, null, default);
             var mclass = (symbol as IModelSymbol)?.ModelObject as MetaClassBuilder;
             if (mclass != null)
             {

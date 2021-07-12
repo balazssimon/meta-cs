@@ -22,7 +22,7 @@ namespace MetaDslx.Languages.Meta.Symbols
     {
         private readonly Symbol _containingSymbol;
         private readonly MergedDeclaration _declaration;
-        private readonly CompletionState _state;
+        //private readonly CompletionState _state;
         private DiagnosticBag _diagnostics;
 
         public AssociationSymbol(Symbol containingSymbol, MergedDeclaration declaration) 
@@ -31,7 +31,7 @@ namespace MetaDslx.Languages.Meta.Symbols
             Debug.Assert(declaration != null);
             _containingSymbol = containingSymbol;
             _declaration = declaration;
-            _state = CompletionState.Create(Language);
+            //_state = CompletionState.Create(Language);
         }
 
         public override SymbolKind Kind => SymbolKind.ConstructedType;
@@ -48,13 +48,13 @@ namespace MetaDslx.Languages.Meta.Symbols
 
         public ImmutableArray<Diagnostic> Diagnostics => _diagnostics != null ? _diagnostics.ToReadOnly() : ImmutableArray<Diagnostic>.Empty;
 
-        public override bool RequiresCompletion => true;
+        public override bool RequiresCompletion => false; //true;
 
         public SymbolFactory SymbolFactory => ((ISourceSymbol)_containingSymbol).SymbolFactory;
 
-    public override void ForceComplete(CompletionPart completionPart, SourceLocation locationOpt, CancellationToken cancellationToken)
+        public override void ForceComplete(CompletionPart completionPart, SourceLocation locationOpt, CancellationToken cancellationToken)
         {
-            if (completionPart != null && _state.HasComplete(completionPart)) return;
+            /*if (completionPart != null && _state.HasComplete(completionPart)) return;
             while (true)
             {
                 cancellationToken.ThrowIfCancellationRequested();
@@ -68,20 +68,22 @@ namespace MetaDslx.Languages.Meta.Symbols
             // Don't return until we've seen all of the CompletionParts. This ensures all
             // diagnostics have been reported (not necessarily on this thread).
             var allParts = completionPart == null ? ImmutableArray.Create(CompletionGraph.All) : ImmutableArray.Create(completionPart);
-            _state.SpinWaitComplete(allParts, cancellationToken);
+            _state.SpinWaitComplete(allParts, cancellationToken);*/
         }
 
         public override bool HasComplete(CompletionPart part)
         {
-            return _state.HasComplete(part);
+            return true;
+            //return _state.HasComplete(part);
         }
 
         protected virtual ImmutableHashSet<CompletionPart> GetAllCompletionParts(SourceLocation locationOpt)
         {
-            return (locationOpt == null) ? CompletionGraph.MemberSymbolAll : CompletionGraph.MemberSymbolWithLocationAll;
+            return ImmutableHashSet<CompletionPart>.Empty;
+            //return (locationOpt == null) ? CompletionGraph.MemberSymbolAll : CompletionGraph.MemberSymbolWithLocationAll;
         }
 
-        protected virtual bool CompletePart(CompletionPart incompletePart, SourceLocation locationOpt, CancellationToken cancellationToken)
+        /*protected virtual bool CompletePart(CompletionPart incompletePart, SourceLocation locationOpt, CancellationToken cancellationToken)
         {
             if (incompletePart == null)
             {
@@ -103,7 +105,7 @@ namespace MetaDslx.Languages.Meta.Symbols
                 _state.NotePartComplete(incompletePart);
             }
             return true;
-        }
+        }*/
 
         protected virtual void CompleteAssociation(CancellationToken cancellationToken)
         {

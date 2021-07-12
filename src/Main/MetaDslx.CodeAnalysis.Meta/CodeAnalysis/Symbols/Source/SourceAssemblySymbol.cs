@@ -34,8 +34,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         /// </summary>
         private readonly Language _language;
 
-        private CompletionState _state;
-
         /// <summary>
         /// Assembly's identity.
         /// </summary>
@@ -176,8 +174,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 // Private key is not necessary for assembly identity, only when emitting.  For this reason, the private key can remain null.
                 _lazyStrongNameKeys = StrongNameKeys.Create(compilation.Options.CryptoPublicKey, privateKey: null, hasCounterSignature: false, MessageProvider.Instance);
             }
-
-            _state = CompletionState.Create(_language);
         }
 
         public override string Name
@@ -1231,7 +1227,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             if (_lazySourceAttributesBag == null)
             {
                 Interlocked.CompareExchange(ref _lazySourceAttributesBag, CustomAttributesBag<AttributeData>.Empty, null);
-                _state.NotePartComplete(CompletionGraph.Attributes);
+                //_state.NotePartComplete(CompletionParts.FinishComputingProperty_Attributes);
             }
         }
 
@@ -1608,7 +1604,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 //Our maps of unread and unassigned fields won't be done until the assembly is complete.
                 this.ForceComplete(completionPart: null, locationOpt: null, cancellationToken: cancellationToken);
 
-                Debug.Assert(this.HasComplete(CompletionGraph.Module),
+                Debug.Assert(this.HasComplete(CompletionParts.FinishComputingProperty_Modules),
                     "Don't consume unused field information if there are still types to be processed.");
 
                 // Build this up in a local before we assign it to this.unusedFieldWarnings (so other threads

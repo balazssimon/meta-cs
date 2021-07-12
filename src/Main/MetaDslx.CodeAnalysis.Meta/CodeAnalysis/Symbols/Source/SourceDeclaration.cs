@@ -370,12 +370,13 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         private Members BuildMembers(DiagnosticBag diagnostics)
         {
-            var sourceSymbol = (_symbol as IModelSourceSymbol)?.Source;
+            return null;
+            /*var sourceSymbol = (_symbol as IModelSourceSymbol)?.Source;
             if (sourceSymbol?.ModelObject != null)
             {
                 sourceSymbol?.AssignPropertyValues(SymbolConstants.MembersProperty, diagnostics, default);
             }
-            var builder = new MembersBuilder(_symbol, null/* _state*/);
+            var builder = new MembersBuilder(_symbol, null); //, _state);
             AddTypeMembers(builder.TypeMembers, diagnostics);
             AddNonTypeMembers(builder.NonTypeMembers, diagnostics);
 
@@ -389,7 +390,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 return null;
             }
 
-            return builder.ToReadOnlyAndFree();
+            return builder.ToReadOnlyAndFree();*/
         }
 
         private void AddTypeMembers(ArrayBuilder<NamedTypeSymbol> builder, DiagnosticBag diagnostics)

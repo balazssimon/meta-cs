@@ -33,6 +33,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 
         public static ImmutableArray<Symbol> MakeChildSymbols(Symbol symbol, string symbolPropertyName, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
+            if (symbol is ModelModuleSymbol mms) return ImmutableArray.Create<Symbol>(mms.GlobalNamespace);
             var msymbol = symbol as IModelSymbol;
             if (msymbol is null) throw new ArgumentException("Symbol must implement IModelSymbol.");
             var location = symbol.ContainingModule.Locations.FirstOrDefault();
@@ -58,6 +59,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 
         public static T? AssignSymbolPropertyValue<T>(Symbol symbol, string symbolPropertyName, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
+            if (symbol is ModuleSymbol || symbol is AssemblySymbol) return default;
             var values = ArrayBuilder<T>.GetInstance();
             try
             {
@@ -73,6 +75,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 
         public static ImmutableArray<T> AssignSymbolPropertyValues<T>(Symbol symbol, string symbolPropertyName, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
+            if (symbol is ModuleSymbol || symbol is AssemblySymbol) return ImmutableArray<T>.Empty;
             var values = ArrayBuilder<T>.GetInstance();
             AssignSymbolProperty<T>(symbol, symbolPropertyName, values, false, diagnostics, cancellationToken);
             return values.ToImmutableAndFree();

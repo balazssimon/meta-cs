@@ -14,7 +14,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
     {
         new SymbolFactory SymbolFactory { get; }
         ImmutableArray<Diagnostic> Diagnostics { get; }
-        SourceSymbol Source { get; }
         BinderPosition<SymbolBinder> GetBinder(SyntaxReference syntax);
         Symbol GetChildSymbol(SyntaxReference syntax);
     }
