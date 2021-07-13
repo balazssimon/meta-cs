@@ -12,13 +12,8 @@ using System.Text;
 namespace MetaDslx.CodeAnalysis.Symbols
 {
     [Symbol]
-    public abstract partial class NamedTypeSymbol : TypeSymbol
+    public abstract partial class NamedTypeSymbol : TypeSymbol, INamedTypeSymbol
     {
-
-        /// <summary>
-        /// Collection of names of members declared within this type.
-        /// </summary>
-        public abstract IEnumerable<string> MemberNames { get; }
 
         public virtual ImmutableArray<DeclaredSymbol> GetNonTypeMembers(string name)
         {
@@ -141,10 +136,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return constructors.ToImmutableAndFree();
         }
 
-        public ImmutableArray<NamedTypeSymbol> DeclaredBaseTypes => GetDeclaredBaseTypes(null);
-
-        public abstract ImmutableArray<NamedTypeSymbol> GetDeclaredBaseTypes(ConsList<TypeSymbol> basesBeingResolved);
-
         public virtual int Arity => 0;
 
         /// <summary>
@@ -156,19 +147,14 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         protected override sealed TypeSymbol OriginalTypeSymbolDefinition => this.OriginalDefinition;
 
-        public virtual bool IsExplicitDefinitionOfNoPiaLocalType => false;
-
         /// <summary>
-        /// For enum types, gets the underlying type. Returns null on all other
-        /// kinds of types.
+        /// Returns the type symbol that this type was constructed from. This type symbol
+        /// has the same containing type (if any), but has type arguments that are the same
+        /// as the type parameters (although its containing type might not).
         /// </summary>
-        public virtual NamedTypeSymbol EnumUnderlyingType => null;
+        public new virtual NamedTypeSymbol ConstructedFrom => this;
 
-        /// <summary>
-        /// If this is a tuple type symbol, returns the symbol for its underlying type.
-        /// Otherwise, returns null.
-        /// </summary>
-        public virtual NamedTypeSymbol TupleUnderlyingType => null;
+        public virtual bool MightContainExtensionMethods => false;
 
         public override int GetHashCode()
         {
@@ -252,13 +238,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         #region Use-Site Diagnostics
 
-        internal DiagnosticInfo CalculateUseSiteDiagnostic()
-        {
-            // TODO:MetaDslx
-            return null;
-        }
-
-
         public override DiagnosticInfo GetUseSiteDiagnostic()
         {
             if (this.IsDefinition)
@@ -298,7 +277,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             // use-site errors to be reported on both Goo and Goo.Bar. Therefore we should
             // not recurse into the containing type here; doing so will result in errors
             // being reported twice if Goo is bad.
-            foreach (var @base in this.BaseTypesNoUseSiteDiagnostics)
+            foreach (var @base in this.BaseTypes)
             {
                 if (@base.GetUnificationUseSiteDiagnosticRecursive(ref result, owner, ref checkedTypes))
                 {
@@ -341,11 +320,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
         }
 
-        /// <summary>
-        /// Should the name returned by Name property be mangled with any suffix in order to get metadata name.
-        /// </summary>
-        public virtual bool MangleName => false;
-
         public virtual bool IsScript => false;
 
         public virtual bool IsSubmission => TypeKind == TypeKind.Submission;
@@ -354,107 +328,84 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         public virtual bool IsInterface => false;
 
-        public virtual bool MightContainExtensionMethods => false;
-
         public virtual bool IsGenericType => false;
 
-        /// <summary>
-        /// Returns the type parameters that this type has. If this is a non-generic type,
-        /// returns an empty ImmutableArray.  
-        /// </summary>
-        public virtual ImmutableArray<TypeParameterSymbol> TypeParameters => ImmutableArray<TypeParameterSymbol>.Empty;
 
-        /// <summary>
-        /// Returns the type arguments that have been substituted for the type parameters. 
-        /// If nothing has been substituted for a give type parameters,
-        /// then the type parameter itself is consider the type argument.
-        /// </summary>
-        internal virtual ImmutableArray<TypeWithAnnotations> TypeArgumentsWithAnnotationsNoUseSiteDiagnostics => ImmutableArray<TypeWithAnnotations>.Empty;
+        int INamedTypeSymbol.Arity => 0;
 
-        internal ImmutableArray<TypeWithAnnotations> TypeArgumentsWithDefinitionUseSiteDiagnostics(ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        bool INamedTypeSymbol.IsGenericType => false;
+
+        bool INamedTypeSymbol.IsUnboundGenericType => false;
+
+        bool INamedTypeSymbol.IsScriptClass => false;
+
+        bool INamedTypeSymbol.IsImplicitClass => false;
+
+        bool INamedTypeSymbol.IsComImport => false;
+
+        IEnumerable<string> INamedTypeSymbol.MemberNames => this.MemberNames;
+
+        ImmutableArray<ITypeParameterSymbol> INamedTypeSymbol.TypeParameters => ImmutableArray<ITypeParameterSymbol>.Empty;
+
+        ImmutableArray<ITypeSymbol> INamedTypeSymbol.TypeArguments => ImmutableArray<ITypeSymbol>.Empty;
+
+        ImmutableArray<Microsoft.CodeAnalysis.NullableAnnotation> INamedTypeSymbol.TypeArgumentNullableAnnotations => ImmutableArray<Microsoft.CodeAnalysis.NullableAnnotation>.Empty;
+
+        INamedTypeSymbol INamedTypeSymbol.OriginalDefinition => this.OriginalDefinition;
+
+        IMethodSymbol? INamedTypeSymbol.DelegateInvokeMethod => null;
+
+        INamedTypeSymbol? INamedTypeSymbol.EnumUnderlyingType => null;
+
+        INamedTypeSymbol INamedTypeSymbol.ConstructedFrom => this.ConstructedFrom;
+
+        ImmutableArray<IMethodSymbol> INamedTypeSymbol.InstanceConstructors => ImmutableArray<IMethodSymbol>.Empty;
+
+        ImmutableArray<IMethodSymbol> INamedTypeSymbol.StaticConstructors => ImmutableArray<IMethodSymbol>.Empty;
+
+        ImmutableArray<IMethodSymbol> INamedTypeSymbol.Constructors => ImmutableArray<IMethodSymbol>.Empty;
+
+        ISymbol? INamedTypeSymbol.AssociatedSymbol => null;
+
+        bool INamedTypeSymbol.MightContainExtensionMethods => this.MightContainExtensionMethods;
+
+        INamedTypeSymbol? INamedTypeSymbol.TupleUnderlyingType => null;
+
+        ImmutableArray<IFieldSymbol> INamedTypeSymbol.TupleElements => ImmutableArray<IFieldSymbol>.Empty;
+
+        bool INamedTypeSymbol.IsSerializable => false;
+
+        INamedTypeSymbol? INamedTypeSymbol.NativeIntegerUnderlyingType => null;
+
+        ImmutableArray<CustomModifier> INamedTypeSymbol.GetTypeArgumentCustomModifiers(int ordinal)
         {
-            var result = TypeArgumentsWithAnnotationsNoUseSiteDiagnostics;
-
-            foreach (var typeArgument in result)
-            {
-                typeArgument.Type.OriginalDefinition.AddUseSiteDiagnostics(ref useSiteDiagnostics);
-            }
-
-            return result;
+            throw new NotImplementedException();
         }
 
-        internal TypeWithAnnotations TypeArgumentWithDefinitionUseSiteDiagnostics(int index, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        INamedTypeSymbol INamedTypeSymbol.Construct(params ITypeSymbol[] typeArguments)
         {
-            var result = TypeArgumentsWithAnnotationsNoUseSiteDiagnostics[index];
-            result.Type.OriginalDefinition.AddUseSiteDiagnostics(ref useSiteDiagnostics);
-            return result;
+            throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// Returns the type symbol that this type was constructed from. This type symbol
-        /// has the same containing type (if any), but has type arguments that are the same
-        /// as the type parameters (although its containing type might not).
-        /// </summary>
-        public virtual NamedTypeSymbol ConstructedFrom { get; }
-        public bool IsUnboundGenericType { get; internal set; }
-        public bool IsScriptClass { get; internal set; }
-        public bool IsImplicitClass { get; internal set; }
-        public bool IsSerializable { get; internal set; }
-        public NamedTypeSymbol NativeIntegerUnderlyingType { get; internal set; }
-        public ImmutableArray<FieldSymbol> TupleElements { get; internal set; }
-        public MethodSymbol DelegateInvokeMethod { get; internal set; }
-
-        /// <summary>
-        /// Returns a constructed type given its type arguments.
-        /// </summary>
-        /// <param name="typeArguments">The immediate type arguments to be replaced for type
-        /// parameters in the type.</param>
-        internal NamedTypeSymbol Construct(params TypeWithAnnotations[] typeArguments)
+        INamedTypeSymbol INamedTypeSymbol.Construct(ImmutableArray<ITypeSymbol> typeArguments, ImmutableArray<Microsoft.CodeAnalysis.NullableAnnotation> typeArgumentNullableAnnotations)
         {
-            throw new NotImplementedException("TODO:MetaDslx");
+            throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// Returns a constructed type given its type arguments.
-        /// </summary>
-        /// <param name="typeArguments">The immediate type arguments to be replaced for type
-        /// parameters in the type.</param>
-        internal NamedTypeSymbol Construct(ImmutableArray<TypeWithAnnotations> typeArguments)
+        INamedTypeSymbol INamedTypeSymbol.ConstructUnboundGenericType()
         {
-            throw new NotImplementedException("TODO:MetaDslx");
+            throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// Returns a constructed type given its type arguments.
-        /// </summary>
-        /// <param name="typeArguments"></param>
-        internal NamedTypeSymbol Construct(IEnumerable<TypeWithAnnotations> typeArguments)
+        protected override void Accept(Microsoft.CodeAnalysis.SymbolVisitor visitor)
         {
-            throw new NotImplementedException("TODO:MetaDslx");
+            visitor.VisitNamedType(this);
         }
 
-        /// <summary>
-        /// Returns an unbound generic type of this named type.
-        /// </summary>
-        public NamedTypeSymbol ConstructUnboundGenericType()
+        protected override TResult Accept<TResult>(Microsoft.CodeAnalysis.SymbolVisitor<TResult> visitor)
         {
-            throw new NotImplementedException("TODO:MetaDslx");
+            return visitor.VisitNamedType(this);
         }
 
-        internal NamedTypeSymbol GetUnboundGenericTypeOrSelf()
-        {
-            if (!this.IsGenericType)
-            {
-                return this;
-            }
-
-            return this.ConstructUnboundGenericType();
-        }
-
-        protected override ITypeSymbol CreateITypeSymbol(Microsoft.CodeAnalysis.NullableAnnotation nullableAnnotation)
-        {
-            Debug.Assert(nullableAnnotation != DefaultNullableAnnotation);
-            return new PublicModel.NonErrorNamedTypeSymbol(this, nullableAnnotation);
-        }
     }
 }

@@ -41,10 +41,5 @@ namespace MetaDslx.CodeAnalysis.Symbols
             if (visitor is ISymbolVisitor<TArgument, TResult> isv) return isv.Visit(this, argument);
             else return default(TResult);
         }
-
-        protected override ISymbol CreateISymbol()
-        {
-            throw new NotImplementedException();
-        }
 	}
 }

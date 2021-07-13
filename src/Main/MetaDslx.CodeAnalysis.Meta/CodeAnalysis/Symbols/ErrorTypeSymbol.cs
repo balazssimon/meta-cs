@@ -108,28 +108,13 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         public sealed override Accessibility DeclaredAccessibility => Accessibility.NotApplicable;
 
-        public override ImmutableArray<NamedTypeSymbol> BaseTypesNoUseSiteDiagnostics => ImmutableArray<NamedTypeSymbol>.Empty;
-
-        public override ImmutableArray<NamedTypeSymbol> GetBaseTypesNoUseSiteDiagnostics(ConsList<TypeSymbol> basesBeingResolved)
-        {
-            return ImmutableArray<NamedTypeSymbol>.Empty;
-        }
-
-        public override ImmutableArray<NamedTypeSymbol> GetDeclaredBaseTypes(ConsList<TypeSymbol> basesBeingResolved)
-        {
-            return ImmutableArray<NamedTypeSymbol>.Empty;
-        }
+        public override ImmutableArray<NamedTypeSymbol> BaseTypes => ImmutableArray<NamedTypeSymbol>.Empty;
 
         public virtual bool Unreported
         {
             get { return false; }
         }
 
-        protected sealed override ITypeSymbol CreateITypeSymbol(Microsoft.CodeAnalysis.NullableAnnotation nullableAnnotation)
-        {
-            Debug.Assert(nullableAnnotation != DefaultNullableAnnotation);
-            return new PublicModel.ErrorTypeSymbol(this, nullableAnnotation);
-        }
     }
 
 }

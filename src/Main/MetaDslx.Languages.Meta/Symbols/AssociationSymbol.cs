@@ -152,11 +152,6 @@ namespace MetaDslx.Languages.Meta.Symbols
             throw new NotImplementedException();
         }
 
-        protected override ISymbol CreateISymbol()
-        {
-            throw new NotImplementedException();
-        }
-
         public CodeAnalysis.Binding.BinderPosition<SymbolBinder> GetBinder(SyntaxReference syntax)
         {
             throw new NotImplementedException();

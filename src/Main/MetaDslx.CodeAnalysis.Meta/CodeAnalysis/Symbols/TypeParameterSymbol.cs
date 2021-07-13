@@ -50,25 +50,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
             throw new NotImplementedException();
         }
 
-        public override ImmutableArray<NamedTypeSymbol> GetBaseTypesNoUseSiteDiagnostics(ConsList<TypeSymbol> basesBeingResolved = null)
-        {
-            throw new NotImplementedException();
-        }
-
         public override bool GetUnificationUseSiteDiagnosticRecursive(ref DiagnosticInfo result, Symbol owner, ref HashSet<TypeSymbol> checkedTypes)
         {
             throw new NotImplementedException();
-        }
-
-        protected sealed override ISymbol CreateISymbol()
-        {
-            return new PublicModel.TypeParameterSymbol(this, DefaultNullableAnnotation);
-        }
-
-        protected sealed override ITypeSymbol CreateITypeSymbol(Microsoft.CodeAnalysis.NullableAnnotation nullableAnnotation)
-        {
-            Debug.Assert(nullableAnnotation != DefaultNullableAnnotation);
-            return new PublicModel.TypeParameterSymbol(this, nullableAnnotation);
         }
 
     }

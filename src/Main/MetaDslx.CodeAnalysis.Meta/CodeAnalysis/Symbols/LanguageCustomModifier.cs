@@ -30,7 +30,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         {
             get
             {
-                return modifier.GetPublicSymbol();
+                return modifier;
             }
         }
 

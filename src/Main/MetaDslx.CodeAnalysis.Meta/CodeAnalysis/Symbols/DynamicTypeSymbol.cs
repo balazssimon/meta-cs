@@ -73,12 +73,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
         }
 
-        public override ImmutableArray<NamedTypeSymbol> BaseTypesNoUseSiteDiagnostics => ImmutableArray<NamedTypeSymbol>.Empty;
-
-        public override ImmutableArray<NamedTypeSymbol> GetBaseTypesNoUseSiteDiagnostics(ConsList<TypeSymbol> basesBeingResolved = null)
-        {
-            return ImmutableArray<NamedTypeSymbol>.Empty;
-        }
+        public override ImmutableArray<NamedTypeSymbol> BaseTypes => ImmutableArray<NamedTypeSymbol>.Empty;
 
         public override bool IsStatic
         {
@@ -89,14 +84,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         }
 
         public override bool IsValueType
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        public sealed override bool IsRefLikeType
         {
             get
             {
@@ -181,15 +168,5 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return false;
         }
 
-        protected override ISymbol CreateISymbol()
-        {
-            return new PublicModel.DynamicTypeSymbol(this, DefaultNullableAnnotation);
-        }
-
-        protected sealed override ITypeSymbol CreateITypeSymbol(Microsoft.CodeAnalysis.NullableAnnotation nullableAnnotation)
-        {
-            Debug.Assert(nullableAnnotation != DefaultNullableAnnotation);
-            return new PublicModel.DynamicTypeSymbol(this, nullableAnnotation);
-        }
     }
 }

@@ -47,7 +47,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
     /// </pre>
     /// </summary>
     [Symbol(NoMeta = true, OptionalModelObject = true)]
-    public partial class AliasSymbol : DeclaredSymbol
+    public partial class AliasSymbol : DeclaredSymbol, IAliasSymbol
     {
         [SymbolProperty]
         public virtual DeclaredSymbol? Target => null;
@@ -95,6 +95,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
         }
 
         public virtual DiagnosticBag AliasTargetDiagnostics => null;
+
+        INamespaceOrTypeSymbol IAliasSymbol.Target => this.Target as INamespaceOrTypeSymbol;
 
         public virtual void CheckConstraints(DiagnosticBag diagnostics)
         {

@@ -108,16 +108,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return new NullabilityInfo(ToPublicAnnotation(type, annotation), flowState.ToPublicFlowState());
         }
 
-        internal static ITypeSymbol GetPublicSymbol(this TypeWithAnnotations type)
-        {
-            return type.Type?.GetITypeSymbol(type.ToPublicAnnotation());
-        }
-
-        internal static ImmutableArray<ITypeSymbol> GetPublicSymbols(this ImmutableArray<TypeWithAnnotations> types)
-        {
-            return types.SelectAsArray(t => t.GetPublicSymbol());
-        }
-
         internal static Microsoft.CodeAnalysis.NullableAnnotation ToPublicAnnotation(this TypeWithAnnotations type) =>
             ToPublicAnnotation(type.Type, type.NullableAnnotation);
 

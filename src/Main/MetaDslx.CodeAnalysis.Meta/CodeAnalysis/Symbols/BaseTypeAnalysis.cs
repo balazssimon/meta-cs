@@ -30,7 +30,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             type = type.OriginalDefinition;
             if (partialClosure.Add(type))
             {
-                foreach (var bt in type.GetDeclaredBaseTypes(null))
+                foreach (var bt in type.BaseTypes)
                 {
                     TypeDependsClosure(bt, partialClosure);
                     // containment is not interesting for interfaces as they cannot nest in C#

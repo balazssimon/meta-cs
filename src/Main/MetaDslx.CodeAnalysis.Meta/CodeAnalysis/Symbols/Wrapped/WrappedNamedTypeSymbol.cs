@@ -149,11 +149,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Wrapped
             get { return _underlyingType.ObsoleteAttributeData; }
         }
 
-        public override bool IsRefLikeType
-        {
-            get { return _underlyingType.IsRefLikeType; }
-        }
-
         public override bool IsReadOnly
         {
             get { return _underlyingType.IsReadOnly; }

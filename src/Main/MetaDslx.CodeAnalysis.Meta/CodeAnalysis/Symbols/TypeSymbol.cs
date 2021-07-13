@@ -16,7 +16,7 @@ using System.Threading;
 namespace MetaDslx.CodeAnalysis.Symbols
 {
     [Symbol(NoModel = true, SubSymbolKindType = "TypeKind")]
-    public abstract partial class TypeSymbol : NamespaceOrTypeSymbol
+    public abstract partial class TypeSymbol : NamespaceOrTypeSymbol, ITypeSymbol
     {
         // TODO (tomat): Consider changing this to an empty name. This name shouldn't ever leak to the user in error messages.
         internal const string ImplicitTypeName = "<invalid-global-code>";
@@ -86,7 +86,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 return info;
             }
 
-            if (this.BaseTypesNoUseSiteDiagnostics.Length > 0)
+            if (this.BaseTypes.Length > 0)
             {
                 // it looks like we have at least one base type
                 info = new BaseTypeInfo();
@@ -101,12 +101,20 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return info;
         }
 
+        /// <summary>
+        /// Gets the set of base types that this type directly inherits from. This set does not include
+        /// base types that are base types of directly implemented base types.
+        /// If a base type could not be determined, then 
+        /// an instance of ErrorType is returned. If this kind of type does not have a base type
+        /// (for example, interfaces), null is returned. Also the special class System.Object
+        /// always has a BaseType of null.
+        /// </summary>
         [SymbolProperty]
         public virtual ImmutableArray<NamedTypeSymbol> BaseTypes => ImmutableArray<NamedTypeSymbol>.Empty;
 
         public ImmutableArray<NamedTypeSymbol> BaseTypesWithDefinitionUseSiteDiagnostics(ref HashSet<DiagnosticInfo> useSiteDiagnostics)
         {
-            var result = BaseTypesNoUseSiteDiagnostics;
+            var result = BaseTypes;
             foreach (var baseType in result)
             {
                 baseType.OriginalDefinition.AddUseSiteDiagnostics(ref useSiteDiagnostics);
@@ -117,7 +125,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public ImmutableArray<NamedTypeSymbol> BaseTypesOriginalDefinition(ref HashSet<DiagnosticInfo> useSiteDiagnostics)
         {
             ArrayBuilder<NamedTypeSymbol> result = ArrayBuilder<NamedTypeSymbol>.GetInstance();
-            foreach (var baseType in this.BaseTypesNoUseSiteDiagnostics)
+            foreach (var baseType in this.BaseTypes)
             {
                 var originalBaseType = (NamedTypeSymbol)baseType.OriginalDefinition;
                 result.Add(originalBaseType);
@@ -125,18 +133,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
             return result.ToImmutableAndFree();
         }
-
-        /// <summary>
-        /// Gets the set of base types that this type directly inherits from. This set does not include
-        /// base types that are base types of directly implemented base types.
-        /// If a base type could not be determined, then 
-        /// an instance of ErrorType is returned. If this kind of type does not have a base type
-        /// (for example, interfaces), null is returned. Also the special class System.Object
-        /// always has a BaseType of null.
-        /// </summary>
-        public virtual ImmutableArray<NamedTypeSymbol> BaseTypesNoUseSiteDiagnostics => this.GetBaseTypesNoUseSiteDiagnostics();
-
-        public abstract ImmutableArray<NamedTypeSymbol> GetBaseTypesNoUseSiteDiagnostics(ConsList<TypeSymbol> basesBeingResolved = null);
 
         /// <summary>
         /// The list of all interfaces of which this type is a declared subtype, excluding this type
@@ -255,7 +251,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         {
             var result = ArrayBuilder<NamedTypeSymbol>.GetInstance();
             var visited = new HashSet<NamedTypeSymbol>();
-            var baseTypes = this.BaseTypesNoUseSiteDiagnostics;
+            var baseTypes = this.BaseTypes;
             for (int i = baseTypes.Length - 1; i >= 0; i--)
             {
                 AddAllBaseTypes(baseTypes[i], visited, result);
@@ -268,7 +264,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         {
             if (visited.Add(baseType))
             {
-                ImmutableArray<NamedTypeSymbol> baseTypes = baseType.BaseTypesNoUseSiteDiagnostics;
+                ImmutableArray<NamedTypeSymbol> baseTypes = baseType.BaseTypes;
                 for (int i = baseTypes.Length - 1; i >= 0; i--)
                 {
                     var nextBaseType = baseTypes[i];
@@ -301,7 +297,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
                 if (info.baseTypesAndTheirBaseTypes == null)
                 {
-                    Interlocked.CompareExchange(ref info.baseTypesAndTheirBaseTypes, MakeBaseTypesAndTheirBaseTypes(this.BaseTypesNoUseSiteDiagnostics), null);
+                    Interlocked.CompareExchange(ref info.baseTypesAndTheirBaseTypes, MakeBaseTypesAndTheirBaseTypes(this.BaseTypes), null);
                 }
 
                 return info.baseTypesAndTheirBaseTypes;
@@ -410,11 +406,39 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         public virtual bool IsTupleType => false;
 
-        public virtual bool IsRefLikeType => false;
-
-        public virtual bool IsUnmanagedType => false;
-
         public virtual bool IsReadOnly => false;
+
+        Microsoft.CodeAnalysis.TypeKind ITypeSymbol.TypeKind => throw new NotImplementedException();
+
+        INamedTypeSymbol? ITypeSymbol.BaseType => throw new NotImplementedException();
+
+        ImmutableArray<INamedTypeSymbol> ITypeSymbol.Interfaces => throw new NotImplementedException();
+
+        ImmutableArray<INamedTypeSymbol> ITypeSymbol.AllInterfaces => throw new NotImplementedException();
+
+        bool ITypeSymbol.IsReferenceType => throw new NotImplementedException();
+
+        bool ITypeSymbol.IsValueType => throw new NotImplementedException();
+
+        bool ITypeSymbol.IsAnonymousType => throw new NotImplementedException();
+
+        bool ITypeSymbol.IsTupleType => throw new NotImplementedException();
+
+        bool ITypeSymbol.IsNativeIntegerType => throw new NotImplementedException();
+
+        ITypeSymbol ITypeSymbol.OriginalDefinition => throw new NotImplementedException();
+
+        SpecialType ITypeSymbol.SpecialType => throw new NotImplementedException();
+
+        bool ITypeSymbol.IsRefLikeType => throw new NotImplementedException();
+
+        bool ITypeSymbol.IsUnmanagedType => throw new NotImplementedException();
+
+        bool ITypeSymbol.IsReadOnly => throw new NotImplementedException();
+
+        bool ITypeSymbol.IsRecord => throw new NotImplementedException();
+
+        Microsoft.CodeAnalysis.NullableAnnotation ITypeSymbol.NullableAnnotation => throw new NotImplementedException();
 
         #region Interface member checks
 
@@ -483,20 +507,38 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return ok;
         }
 
-
-        #endregion
-
-        internal ITypeSymbol GetITypeSymbol(Microsoft.CodeAnalysis.NullableAnnotation nullableAnnotation)
+        ISymbol? ITypeSymbol.FindImplementationForInterfaceMember(ISymbol interfaceMember)
         {
-            if (nullableAnnotation == DefaultNullableAnnotation)
-            {
-                return (ITypeSymbol)this.ISymbol;
-            }
-
-            return CreateITypeSymbol(nullableAnnotation);
+            throw new NotImplementedException();
         }
 
-        protected abstract ITypeSymbol CreateITypeSymbol(Microsoft.CodeAnalysis.NullableAnnotation nullableAnnotation);
+        string ITypeSymbol.ToDisplayString(Microsoft.CodeAnalysis.NullableFlowState topLevelNullability, SymbolDisplayFormat? format)
+        {
+            throw new NotImplementedException();
+        }
+
+        ImmutableArray<SymbolDisplayPart> ITypeSymbol.ToDisplayParts(Microsoft.CodeAnalysis.NullableFlowState topLevelNullability, SymbolDisplayFormat? format)
+        {
+            throw new NotImplementedException();
+        }
+
+        string ITypeSymbol.ToMinimalDisplayString(SemanticModel semanticModel, Microsoft.CodeAnalysis.NullableFlowState topLevelNullability, int position, SymbolDisplayFormat? format)
+        {
+            throw new NotImplementedException();
+        }
+
+        ImmutableArray<SymbolDisplayPart> ITypeSymbol.ToMinimalDisplayParts(SemanticModel semanticModel, Microsoft.CodeAnalysis.NullableFlowState topLevelNullability, int position, SymbolDisplayFormat? format)
+        {
+            throw new NotImplementedException();
+        }
+
+        ITypeSymbol ITypeSymbol.WithNullableAnnotation(Microsoft.CodeAnalysis.NullableAnnotation nullableAnnotation)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        #endregion
 
     }
 }

@@ -123,12 +123,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             }
         }
 
-        internal bool MightContainNoPiaLocalTypes()
-        {
-            return AnyReferencedAssembliesAreLinked ||
-                ContainsExplicitDefinitionOfNoPiaLocalTypes;
-        }
-
         internal ImmutableArray<AssemblySymbol> GetAssembliesToEmbedTypesFrom()
         {
             if (_lazyAssembliesToEmbedTypesFrom.IsDefault)
@@ -151,47 +145,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
             Debug.Assert(!_lazyAssembliesToEmbedTypesFrom.IsDefault);
             return _lazyAssembliesToEmbedTypesFrom;
-        }
-
-        internal bool ContainsExplicitDefinitionOfNoPiaLocalTypes
-        {
-            get
-            {
-                if (_lazyContainsExplicitDefinitionOfNoPiaLocalTypes == ThreeState.Unknown)
-                {
-                    _lazyContainsExplicitDefinitionOfNoPiaLocalTypes = NamespaceContainsExplicitDefinitionOfNoPiaLocalTypes(GlobalNamespace).ToThreeState();
-                }
-
-                Debug.Assert(_lazyContainsExplicitDefinitionOfNoPiaLocalTypes != ThreeState.Unknown);
-                return _lazyContainsExplicitDefinitionOfNoPiaLocalTypes == ThreeState.True;
-            }
-        }
-
-        private static bool NamespaceContainsExplicitDefinitionOfNoPiaLocalTypes(NamespaceSymbol ns)
-        {
-            foreach (Symbol s in ns.GetMembersUnordered())
-            {
-                switch (s.Kind.Switch())
-                {
-                    case SymbolKind.Namespace:
-                        if (NamespaceContainsExplicitDefinitionOfNoPiaLocalTypes((NamespaceSymbol)s))
-                        {
-                            return true;
-                        }
-
-                        break;
-
-                    case SymbolKind.NamedType:
-                        if (((NamedTypeSymbol)s).IsExplicitDefinitionOfNoPiaLocalType)
-                        {
-                            return true;
-                        }
-
-                        break;
-                }
-            }
-
-            return false;
         }
 
         public override NamespaceSymbol GlobalNamespace

@@ -29,9 +29,5 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public Symbol AssociatedSymbol { get; internal set; }
         internal TypeWithAnnotations TypeWithAnnotations { get;  }
 
-        protected override ISymbol CreateISymbol()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

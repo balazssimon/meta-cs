@@ -30,7 +30,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         /// Returns null for a submission class.
         /// This ensures that a submission class does not inherit methods such as ToString or GetHashCode.
         /// </summary>
-        public override ImmutableArray<NamedTypeSymbol> BaseTypesNoUseSiteDiagnostics
+        public override ImmutableArray<NamedTypeSymbol> BaseTypes
         {
             get
             {
@@ -39,15 +39,5 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             }
         }
             
-        public override ImmutableArray<NamedTypeSymbol> GetBaseTypesNoUseSiteDiagnostics(ConsList<TypeSymbol> basesBeingResolved)
-        {
-            return ImmutableArray<NamedTypeSymbol>.Empty;
-        }
-
-        public override ImmutableArray<NamedTypeSymbol> GetDeclaredBaseTypes(ConsList<TypeSymbol> basesBeingResolved)
-        {
-            return ImmutableArray<NamedTypeSymbol>.Empty;
-        }
-
     }
 }

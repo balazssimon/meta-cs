@@ -137,11 +137,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         
         public override ImmutableArray<Location> Locations => ImmutableArray<Location>.Empty;
 
-        public override ImmutableArray<NamedTypeSymbol> GetDeclaredBaseTypes(ConsList<TypeSymbol> basesBeingResolved)
-        {
-            return ImmutableArray<NamedTypeSymbol>.Empty;
-        }
-
         /// <summary>
         /// If (we believe) we know which symbol the user intended, then we should retain that information
         /// in the corresponding error symbol - it can be useful for deciding how to handle the error.

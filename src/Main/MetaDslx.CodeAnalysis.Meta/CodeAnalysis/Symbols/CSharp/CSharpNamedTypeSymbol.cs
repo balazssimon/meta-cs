@@ -39,16 +39,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
 
         public override ImmutableArray<DeclaredSymbol> Members => CSharpSymbolMap.GetMemberSymbols(_csharpSymbol.GetMembers());
 
-        public override ImmutableArray<NamedTypeSymbol> GetDeclaredBaseTypes(ConsList<TypeSymbol> basesBeingResolved)
-        {
-            throw new NotImplementedException("TODO:MetaDslx");
-        }
-
-        public override ImmutableArray<NamedTypeSymbol> GetBaseTypesNoUseSiteDiagnostics(ConsList<TypeSymbol> basesBeingResolved = null)
-        {
-            throw new NotImplementedException("TODO:MetaDslx");
-        }
-
         internal CSharpSymbols.NamedTypeSymbol CSharpSymbol => _csharpSymbol;
 
         public override Symbol ContainingSymbol => CSharpSymbolMap.GetSymbol(_csharpSymbol.ContainingSymbol);
@@ -59,7 +49,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
 
         public override IEnumerable<string> MemberNames => _csharpSymbol.MemberNames;
 
-        public override ImmutableArray<NamedTypeSymbol> BaseTypesNoUseSiteDiagnostics
+        public override ImmutableArray<NamedTypeSymbol> BaseTypes
         {
             get
             {

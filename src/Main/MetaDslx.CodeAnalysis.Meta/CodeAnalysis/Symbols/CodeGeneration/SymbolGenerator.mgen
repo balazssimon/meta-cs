@@ -49,11 +49,6 @@ namespace [symbol.NamespaceName]
             if (visitor is ISymbolVisitor<TArgument, TResult> isv) return isv.Visit(this, argument);
             else return default(TResult);
         }
-^
-        protected [if (symbol.IsSymbolClass)]virtual[else]override[end if] ISymbol CreateISymbol()
-        {
-            throw new NotImplementedException();
-        }
 	}
 }
 end template

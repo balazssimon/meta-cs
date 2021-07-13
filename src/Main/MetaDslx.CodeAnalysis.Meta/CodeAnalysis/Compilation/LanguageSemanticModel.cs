@@ -423,7 +423,7 @@ namespace MetaDslx.CodeAnalysis
                     return ImmutableArray<DeclaredSymbol>.Empty;
                 }
 
-                if (containingType is null || containingType.BaseTypesNoUseSiteDiagnostics.IsEmpty)
+                if (containingType is null || containingType.BaseTypes.IsEmpty)
                 {
                     throw new ArgumentException(
                         "Not a valid position for a call to LookupBaseMembers (must be in a type with a base type)",
@@ -737,7 +737,7 @@ namespace MetaDslx.CodeAnalysis
 
         internal override void ComputeDeclarationsInNode(SyntaxNode node, ISymbol associatedSymbol, bool getSymbol, ArrayBuilder<DeclarationInfo> builder, CancellationToken cancellationToken, int? levelsToCompute = null)
         {
-            LanguageDeclarationComputer.ComputeDeclarationsInNode(this, node, associatedSymbol.GetSymbol(), getSymbol, builder, cancellationToken, levelsToCompute);
+            LanguageDeclarationComputer.ComputeDeclarationsInNode(this, node, associatedSymbol as DeclaredSymbol, getSymbol, builder, cancellationToken, levelsToCompute);
         }
 
         protected internal override SyntaxNode GetTopmostNodeForDiagnosticAnalysis(ISymbol symbol, SyntaxNode declaringSyntax)

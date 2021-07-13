@@ -33,9 +33,5 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public new PropertySymbol OriginalDefinition { get; internal set; }
         public ImmutableArray<PropertySymbol> ExplicitInterfaceImplementations { get; internal set; }
 
-        protected override ISymbol CreateISymbol()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

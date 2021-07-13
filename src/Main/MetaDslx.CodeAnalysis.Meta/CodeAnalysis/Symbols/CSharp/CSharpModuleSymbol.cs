@@ -5,7 +5,6 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols.CSharp
 {
-    using MetaDslx.CodeAnalysis.Symbols.Retargeting;
     using MetaDslx.CodeAnalysis.Symbols.Source;
     using System.Collections.Concurrent;
     using System.Collections.Immutable;

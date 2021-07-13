@@ -13,13 +13,15 @@ using System.Reflection.PortableExecutable;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis.Symbols;
 using Microsoft.Cci;
+using System.Globalization;
+using System.Threading;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
     using CSharpSymbols = Microsoft.CodeAnalysis.CSharp.Symbols;
 
     [Symbol(NoMeta = true, OptionalModelObject = true)]
-    public abstract partial class AssemblySymbol : Symbol, IAssemblySymbolInternal
+    public abstract partial class AssemblySymbol : Symbol, IAssemblySymbol, IAssemblySymbolInternal
     {
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         // Changes to the public interface of this class should remain synchronized with the VB version.
@@ -795,43 +797,103 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         internal abstract ImmutableArray<byte> PublicKey { get; }
 
-        Version? IAssemblySymbolInternal.AssemblyVersionPattern => throw new NotImplementedException();
+        bool IAssemblySymbol.IsInteractive => this.IsInteractive;
 
-        AssemblyIdentity IAssemblySymbolInternal.Identity => throw new NotImplementedException();
+        AssemblyIdentity IAssemblySymbol.Identity => this.Identity;
 
-        Microsoft.CodeAnalysis.SymbolKind ISymbolInternal.Kind => throw new NotImplementedException();
+        INamespaceSymbol IAssemblySymbol.GlobalNamespace => this.GlobalNamespace;
 
-        string ISymbolInternal.Name => throw new NotImplementedException();
+        IEnumerable<IModuleSymbol> IAssemblySymbol.Modules => this.Modules;
 
-        string ISymbolInternal.MetadataName => throw new NotImplementedException();
+        ICollection<string> IAssemblySymbol.TypeNames => this.TypeNames;
 
-        Compilation ISymbolInternal.DeclaringCompilation => throw new NotImplementedException();
+        ICollection<string> IAssemblySymbol.NamespaceNames => this.NamespaceNames;
 
-        ISymbolInternal ISymbolInternal.ContainingSymbol => throw new NotImplementedException();
+        bool IAssemblySymbol.MightContainExtensionMethods => this.MightContainExtensionMethods;
 
-        IAssemblySymbolInternal ISymbolInternal.ContainingAssembly => throw new NotImplementedException();
+        Microsoft.CodeAnalysis.SymbolKind ISymbol.Kind => Microsoft.CodeAnalysis.SymbolKind.Assembly;
 
-        IModuleSymbolInternal ISymbolInternal.ContainingModule => throw new NotImplementedException();
+        string ISymbol.Language => this.Language.Name;
 
-        INamedTypeSymbolInternal ISymbolInternal.ContainingType => throw new NotImplementedException();
+        string ISymbol.Name => this.Name;
 
-        INamespaceSymbolInternal ISymbolInternal.ContainingNamespace => throw new NotImplementedException();
+        string ISymbol.MetadataName => this.MetadataName;
 
-        bool ISymbolInternal.IsDefinition => throw new NotImplementedException();
+        ISymbol ISymbol.ContainingSymbol => null;
 
-        ImmutableArray<Location> ISymbolInternal.Locations => throw new NotImplementedException();
+        IAssemblySymbol ISymbol.ContainingAssembly => null;
 
-        bool ISymbolInternal.IsImplicitlyDeclared => throw new NotImplementedException();
+        IModuleSymbol ISymbol.ContainingModule => null;
 
-        Accessibility ISymbolInternal.DeclaredAccessibility => throw new NotImplementedException();
+        INamedTypeSymbol ISymbol.ContainingType => null;
 
-        bool ISymbolInternal.IsStatic => throw new NotImplementedException();
+        INamespaceSymbol ISymbol.ContainingNamespace => null;
 
-        bool ISymbolInternal.IsVirtual => throw new NotImplementedException();
+        bool ISymbol.IsDefinition => false;
 
-        bool ISymbolInternal.IsOverride => throw new NotImplementedException();
+        bool ISymbol.IsStatic => false;
 
-        bool ISymbolInternal.IsAbstract => throw new NotImplementedException();
+        bool ISymbol.IsVirtual => false;
+
+        bool ISymbol.IsOverride => false;
+
+        bool ISymbol.IsAbstract => false;
+
+        bool ISymbol.IsSealed => false;
+
+        bool ISymbol.IsExtern => false;
+
+        bool ISymbol.IsImplicitlyDeclared => false;
+
+        bool ISymbol.CanBeReferencedByName => false;
+
+        ImmutableArray<Location> ISymbol.Locations => this.Locations;
+
+        ImmutableArray<SyntaxReference> ISymbol.DeclaringSyntaxReferences => this.DeclaringSyntaxReferences;
+
+        Accessibility ISymbol.DeclaredAccessibility => Accessibility.NotApplicable;
+
+        ISymbol ISymbol.OriginalDefinition => this;
+
+        bool ISymbol.HasUnsupportedMetadata => this.HasUnsupportedMetadata;
+
+        Version? IAssemblySymbolInternal.AssemblyVersionPattern => this.AssemblyVersionPattern;
+
+        AssemblyIdentity IAssemblySymbolInternal.Identity => this.Identity;
+
+        Microsoft.CodeAnalysis.SymbolKind ISymbolInternal.Kind => Microsoft.CodeAnalysis.SymbolKind.Assembly;
+
+        string ISymbolInternal.Name => this.Name;
+
+        string ISymbolInternal.MetadataName => this.MetadataName;
+
+        Compilation ISymbolInternal.DeclaringCompilation => this.DeclaringCompilation;
+
+        ISymbolInternal ISymbolInternal.ContainingSymbol => null;
+
+        IAssemblySymbolInternal ISymbolInternal.ContainingAssembly => null;
+
+        IModuleSymbolInternal ISymbolInternal.ContainingModule => null;
+
+        INamedTypeSymbolInternal ISymbolInternal.ContainingType => null;
+
+        INamespaceSymbolInternal ISymbolInternal.ContainingNamespace => null;
+
+        bool ISymbolInternal.IsDefinition => false;
+
+        ImmutableArray<Location> ISymbolInternal.Locations => this.Locations;
+
+        bool ISymbolInternal.IsImplicitlyDeclared => false;
+
+        Accessibility ISymbolInternal.DeclaredAccessibility => Accessibility.NotApplicable;
+
+        bool ISymbolInternal.IsStatic => false;
+
+        bool ISymbolInternal.IsVirtual => false;
+
+        bool ISymbolInternal.IsOverride => false;
+
+        bool ISymbolInternal.IsAbstract => false;
 
         #region IAssemblySymbol Members
 
@@ -841,25 +903,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// Otherwise, this returns <see langword="null"/>.
         /// </summary>
         public abstract AssemblyMetadata GetMetadata();
-
-        #endregion
-
-        #region ISymbol Members
-
-        bool ISymbolInternal.Equals(ISymbolInternal? other, Microsoft.CodeAnalysis.TypeCompareKind compareKind)
-        {
-            throw new NotImplementedException();
-        }
-
-        ISymbol ISymbolInternal.GetISymbol()
-        {
-            return this.ISymbol;
-        }
-
-        IReference ISymbolInternal.GetCciAdapter()
-        {
-            throw new NotImplementedException();
-        }
 
         #endregion
 
@@ -873,5 +916,99 @@ namespace MetaDslx.CodeAnalysis.Symbols
             throw new NotImplementedException();
         }
 
+        bool IAssemblySymbol.GivesAccessTo(IAssemblySymbol toAssembly)
+        {
+            throw new NotImplementedException();
+        }
+
+        INamedTypeSymbol? IAssemblySymbol.GetTypeByMetadataName(string fullyQualifiedMetadataName)
+        {
+            throw new NotImplementedException();
+        }
+
+        INamedTypeSymbol? IAssemblySymbol.ResolveForwardedType(string fullyQualifiedMetadataName)
+        {
+            throw new NotImplementedException();
+        }
+
+        ImmutableArray<INamedTypeSymbol> IAssemblySymbol.GetForwardedTypes()
+        {
+            throw new NotImplementedException();
+        }
+
+        AssemblyMetadata? IAssemblySymbol.GetMetadata()
+        {
+            throw new NotImplementedException();
+        }
+
+        ImmutableArray<AttributeData> ISymbol.GetAttributes()
+        {
+            throw new NotImplementedException();
+        }
+
+        void ISymbol.Accept(Microsoft.CodeAnalysis.SymbolVisitor visitor)
+        {
+            visitor.VisitAssembly(this);
+        }
+
+        TResult ISymbol.Accept<TResult>(Microsoft.CodeAnalysis.SymbolVisitor<TResult> visitor)
+        {
+            return visitor.VisitAssembly(this);
+        }
+
+        string? ISymbol.GetDocumentationCommentId()
+        {
+            throw new NotImplementedException();
+        }
+
+        string? ISymbol.GetDocumentationCommentXml(CultureInfo? preferredCulture, bool expandIncludes, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        string ISymbol.ToDisplayString(SymbolDisplayFormat? format)
+        {
+            throw new NotImplementedException();
+        }
+
+        ImmutableArray<SymbolDisplayPart> ISymbol.ToDisplayParts(SymbolDisplayFormat? format)
+        {
+            throw new NotImplementedException();
+        }
+
+        string ISymbol.ToMinimalDisplayString(SemanticModel semanticModel, int position, SymbolDisplayFormat? format)
+        {
+            throw new NotImplementedException();
+        }
+
+        ImmutableArray<SymbolDisplayPart> ISymbol.ToMinimalDisplayParts(SemanticModel semanticModel, int position, SymbolDisplayFormat? format)
+        {
+            throw new NotImplementedException();
+        }
+
+        bool ISymbol.Equals(ISymbol? other, SymbolEqualityComparer equalityComparer)
+        {
+            throw new NotImplementedException();
+        }
+
+        bool IEquatable<ISymbol?>.Equals(ISymbol? other)
+        {
+            throw new NotImplementedException();
+        }
+
+        bool ISymbolInternal.Equals(ISymbolInternal? other, TypeCompareKind compareKind)
+        {
+            throw new NotImplementedException();
+        }
+
+        ISymbol ISymbolInternal.GetISymbol()
+        {
+            throw new NotImplementedException();
+        }
+
+        IReference ISymbolInternal.GetCciAdapter()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

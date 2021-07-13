@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Text;
+using System.Reflection.Metadata;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
@@ -11,7 +12,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
     /// Represents a method or method-like symbol (including constructor,
     /// destructor, operator, or property/event accessor).
     /// </summary>
-    public abstract class MethodSymbol : MemberSymbol
+    public abstract class MethodSymbol : MemberSymbol, IMethodSymbol
     {
         internal const MethodSymbol None = null;
 
@@ -80,6 +81,78 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public RefKind RefKind { get; internal set; }
         public bool IsConditional { get; internal set; }
 
+        MethodKind IMethodSymbol.MethodKind => this.MethodKind;
+
+        int IMethodSymbol.Arity => 0;
+
+        bool IMethodSymbol.IsGenericMethod => this.IsGenericMethod;
+
+        bool IMethodSymbol.IsExtensionMethod => this.IsExtensionMethod;
+
+        bool IMethodSymbol.IsAsync => this.IsAsync;
+
+        bool IMethodSymbol.IsVararg => this.IsVararg;
+
+        bool IMethodSymbol.IsCheckedBuiltin => this.IsCheckedBuiltin;
+
+        bool IMethodSymbol.HidesBaseMethodsByName => this.HidesBaseMethodsByName;
+
+        bool IMethodSymbol.ReturnsVoid => this.ReturnsVoid;
+
+        bool IMethodSymbol.ReturnsByRef => this.ReturnsByRef;
+
+        bool IMethodSymbol.ReturnsByRefReadonly => this.ReturnsByRefReadonly;
+
+        RefKind IMethodSymbol.RefKind => this.RefKind;
+
+        ITypeSymbol IMethodSymbol.ReturnType => this.ReturnType;
+
+        Microsoft.CodeAnalysis.NullableAnnotation IMethodSymbol.ReturnNullableAnnotation => Microsoft.CodeAnalysis.NullableAnnotation.NotAnnotated;
+
+        ImmutableArray<ITypeSymbol> IMethodSymbol.TypeArguments => ImmutableArray<ITypeSymbol>.Empty;
+
+        ImmutableArray<Microsoft.CodeAnalysis.NullableAnnotation> IMethodSymbol.TypeArgumentNullableAnnotations => ImmutableArray<Microsoft.CodeAnalysis.NullableAnnotation>.Empty;
+
+        ImmutableArray<ITypeParameterSymbol> IMethodSymbol.TypeParameters => ImmutableArray<ITypeParameterSymbol>.Empty;
+
+        ImmutableArray<IParameterSymbol> IMethodSymbol.Parameters => ImmutableArray<IParameterSymbol>.Empty;
+
+        IMethodSymbol IMethodSymbol.ConstructedFrom => this.ConstructedFrom;
+
+        bool IMethodSymbol.IsReadOnly => this.IsEffectivelyReadOnly;
+
+        bool IMethodSymbol.IsInitOnly => this.IsInitOnly;
+
+        IMethodSymbol IMethodSymbol.OriginalDefinition => this.OriginalDefinition;
+
+        IMethodSymbol IMethodSymbol.OverriddenMethod => this.OverriddenMethod;
+
+        ITypeSymbol IMethodSymbol.ReceiverType => this.ReceiverType;
+
+        Microsoft.CodeAnalysis.NullableAnnotation IMethodSymbol.ReceiverNullableAnnotation => this.ReceiverNullableAnnotation;
+
+        IMethodSymbol IMethodSymbol.ReducedFrom => this.ReducedFrom;
+
+        ImmutableArray<IMethodSymbol> IMethodSymbol.ExplicitInterfaceImplementations => this.ExplicitInterfaceImplementations.Cast<MethodSymbol, IMethodSymbol>();
+
+        ImmutableArray<CustomModifier> IMethodSymbol.ReturnTypeCustomModifiers => ImmutableArray<CustomModifier>.Empty;
+
+        ImmutableArray <CustomModifier> IMethodSymbol.RefCustomModifiers => ImmutableArray<CustomModifier>.Empty;
+
+        SignatureCallingConvention IMethodSymbol.CallingConvention => SignatureCallingConvention.Default;
+
+        ImmutableArray<INamedTypeSymbol> IMethodSymbol.UnmanagedCallingConventionTypes => ImmutableArray<INamedTypeSymbol>.Empty;
+
+        ISymbol IMethodSymbol.AssociatedSymbol => this.AssociatedSymbol as DeclaredSymbol;
+
+        IMethodSymbol IMethodSymbol.PartialDefinitionPart => this.PartialDefinitionPart;
+
+        IMethodSymbol IMethodSymbol.PartialImplementationPart => this.PartialImplementationPart;
+
+        INamedTypeSymbol IMethodSymbol.AssociatedAnonymousDelegate => null;
+
+        bool IMethodSymbol.IsConditional => this.IsConditional;
+
         public override void Accept(SymbolVisitor visitor)
         {
             visitor.VisitMethod(this);
@@ -111,6 +184,36 @@ namespace MetaDslx.CodeAnalysis.Symbols
         }
 
         internal MethodSymbol Construct(ImmutableArray<TypeWithAnnotations> typeWithAnnotations)
+        {
+            throw new NotImplementedException();
+        }
+
+        ITypeSymbol IMethodSymbol.GetTypeInferredDuringReduction(ITypeParameterSymbol reducedFromTypeParameter)
+        {
+            throw new NotImplementedException();
+        }
+
+        IMethodSymbol IMethodSymbol.ReduceExtensionMethod(ITypeSymbol receiverType)
+        {
+            throw new NotImplementedException();
+        }
+
+        ImmutableArray<AttributeData> IMethodSymbol.GetReturnTypeAttributes()
+        {
+            throw new NotImplementedException();
+        }
+
+        IMethodSymbol IMethodSymbol.Construct(params ITypeSymbol[] typeArguments)
+        {
+            throw new NotImplementedException();
+        }
+
+        IMethodSymbol IMethodSymbol.Construct(ImmutableArray<ITypeSymbol> typeArguments, ImmutableArray<Microsoft.CodeAnalysis.NullableAnnotation> typeArgumentNullableAnnotations)
+        {
+            throw new NotImplementedException();
+        }
+
+        DllImportData IMethodSymbol.GetDllImportData()
         {
             throw new NotImplementedException();
         }

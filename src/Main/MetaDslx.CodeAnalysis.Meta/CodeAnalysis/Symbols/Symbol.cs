@@ -34,7 +34,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
     public abstract partial class Symbol : IFormattable
     {
         private static ConditionalWeakTable<Symbol, DiagnosticBag> s_diagnostics = new ConditionalWeakTable<Symbol, DiagnosticBag>();
-        private static ConditionalWeakTable<Symbol, ISymbol> s_publicModel = new ConditionalWeakTable<Symbol, ISymbol>();
 
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         // Changes to the public interface of this class should remain synchronized with the VB version of Symbol.
@@ -66,7 +65,12 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// the name property.
         /// </summary>
         public virtual string MetadataName => this.Name;
-        
+
+        /// <summary>
+        /// Should the name returned by Name property be mangled with any suffix in order to get metadata name.
+        /// </summary>
+        public virtual bool MangleName => this.Name != this.MetadataName;
+
         /// <summary>
         /// True if this Symbol should be completed by calling ForceComplete.
         /// Intuitively, true for source entities (from any compilation).
@@ -746,8 +750,5 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return first.Equals(second, compareKind);
         }
 
-        internal ISymbol ISymbol => s_publicModel.GetValue(this, s => s.CreateISymbol());
-
-        public Symbol OriginalDefinition { get; internal set; }
     }
 }

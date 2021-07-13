@@ -18,7 +18,7 @@ using System.Linq;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-    public abstract partial class DeclaredSymbol : Symbol, ISymbolInternal
+    public abstract partial class DeclaredSymbol : Symbol, ISymbol, ISymbolInternal
     {
         private static MemberLookupCache EmptyMemberCache = new MemberLookupCache(null);
         private static ConditionalWeakTable<DeclaredSymbol, MemberLookupCache> s_memberLookup = new ConditionalWeakTable<DeclaredSymbol, MemberLookupCache>();
@@ -129,6 +129,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         [SymbolProperty]
         public virtual ImmutableArray<DeclaredSymbol> Members => ImmutableArray<DeclaredSymbol>.Empty;
+
+        public virtual IEnumerable<string> MemberNames => GetMemberLookupCache().GetMemberNames();
 
         /// <summary>
         /// Get all the members of this symbol.
@@ -373,19 +375,85 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         public virtual DeclaredSymbol ConstructedFrom => this;
 
+        Microsoft.CodeAnalysis.SymbolKind ISymbol.Kind => this.Kind.ToCSharp();
+
+        string ISymbol.Language => this.Language.Name;
+
+        string ISymbol.Name => this.Name;
+
+        string ISymbol.MetadataName => this.MetadataName;
+
+        ISymbol ISymbol.ContainingSymbol => this.ContainingDeclaration;
+
+        IAssemblySymbol ISymbol.ContainingAssembly => this.ContainingAssembly;
+
+        IModuleSymbol ISymbol.ContainingModule => this.ContainingModule;
+
+        INamedTypeSymbol ISymbol.ContainingType => this.ContainingType;
+
+        INamespaceSymbol ISymbol.ContainingNamespace => this.ContainingNamespace;
+
+        bool ISymbol.IsDefinition => this.IsDefinition;
+
+        bool ISymbol.IsStatic => this.IsStatic;
+
+        bool ISymbol.IsVirtual => this.IsVirtual;
+
+        bool ISymbol.IsOverride => this.IsOverride;
+
+        bool ISymbol.IsAbstract => this.IsAbstract;
+
+        bool ISymbol.IsSealed => this.IsSealed;
+
+        bool ISymbol.IsExtern => this.IsExtern;
+
+        bool ISymbol.IsImplicitlyDeclared => this.IsImplicitlyDeclared;
+
+        bool ISymbol.CanBeReferencedByName => this.CanBeReferencedByName;
+
+        ImmutableArray<Location> ISymbol.Locations => this.Locations;
+
+        ImmutableArray<SyntaxReference> ISymbol.DeclaringSyntaxReferences => this.DeclaringSyntaxReferences;
+
+        Accessibility ISymbol.DeclaredAccessibility => this.DeclaredAccessibility;
+
+        ISymbol ISymbol.OriginalDefinition => this.OriginalDefinition;
+
+        bool ISymbol.HasUnsupportedMetadata => this.HasUnsupportedMetadata;
+
         Microsoft.CodeAnalysis.SymbolKind ISymbolInternal.Kind => this.Kind.ToCSharp();
+
+        string ISymbolInternal.Name => this.Name;
+
+        string ISymbolInternal.MetadataName => this.MetadataName;
 
         Compilation ISymbolInternal.DeclaringCompilation => this.DeclaringCompilation;
 
         ISymbolInternal ISymbolInternal.ContainingSymbol => this.ContainingDeclaration;
 
-        IAssemblySymbolInternal ISymbolInternal.ContainingAssembly => throw new NotImplementedException();
+        IAssemblySymbolInternal ISymbolInternal.ContainingAssembly => this.ContainingAssembly;
 
         IModuleSymbolInternal ISymbolInternal.ContainingModule => throw new NotImplementedException();
 
         INamedTypeSymbolInternal ISymbolInternal.ContainingType => throw new NotImplementedException();
 
         INamespaceSymbolInternal ISymbolInternal.ContainingNamespace => throw new NotImplementedException();
+
+        bool ISymbolInternal.IsDefinition => throw new NotImplementedException();
+
+        ImmutableArray<Location> ISymbolInternal.Locations => throw new NotImplementedException();
+
+        bool ISymbolInternal.IsImplicitlyDeclared => throw new NotImplementedException();
+
+        Accessibility ISymbolInternal.DeclaredAccessibility => throw new NotImplementedException();
+
+        bool ISymbolInternal.IsStatic => throw new NotImplementedException();
+
+        bool ISymbolInternal.IsVirtual => throw new NotImplementedException();
+
+        bool ISymbolInternal.IsOverride => throw new NotImplementedException();
+
+        bool ISymbolInternal.IsAbstract => throw new NotImplementedException();
 
         /// <summary>
         /// Returns the original virtual or abstract method which a given method symbol overrides,
@@ -444,14 +512,84 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return this.DeclaringCompilation.AccessCheck.IsSymbolAccessible(this, within, ref useSiteDiagnostics);
         }
 
+        private MemberLookupCache GetMemberLookupCache()
+        {
+            return s_memberLookup.GetValue(this, key => key.Members.IsDefaultOrEmpty ? EmptyMemberCache : new MemberLookupCache(key));
+        }
+
+        ImmutableArray<AttributeData> ISymbol.GetAttributes()
+        {
+            return this.GetAttributes();
+        }
+
+        void ISymbol.Accept(Microsoft.CodeAnalysis.SymbolVisitor visitor)
+        {
+            this.Accept(visitor);
+        }
+
+        protected virtual void Accept(Microsoft.CodeAnalysis.SymbolVisitor visitor)
+        {
+
+        }
+
+        TResult ISymbol.Accept<TResult>(Microsoft.CodeAnalysis.SymbolVisitor<TResult> visitor)
+        {
+            return this.Accept(visitor);
+        }
+
+        protected virtual TResult Accept<TResult>(Microsoft.CodeAnalysis.SymbolVisitor<TResult> visitor)
+        {
+            return default;
+        }
+
+        string? ISymbol.GetDocumentationCommentId()
+        {
+            throw new NotImplementedException();
+        }
+
+        string? ISymbol.GetDocumentationCommentXml(CultureInfo? preferredCulture, bool expandIncludes, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        string ISymbol.ToDisplayString(SymbolDisplayFormat? format)
+        {
+            throw new NotImplementedException();
+        }
+
+        ImmutableArray<SymbolDisplayPart> ISymbol.ToDisplayParts(SymbolDisplayFormat? format)
+        {
+            throw new NotImplementedException();
+        }
+
+        string ISymbol.ToMinimalDisplayString(SemanticModel semanticModel, int position, SymbolDisplayFormat? format)
+        {
+            throw new NotImplementedException();
+        }
+
+        ImmutableArray<SymbolDisplayPart> ISymbol.ToMinimalDisplayParts(SemanticModel semanticModel, int position, SymbolDisplayFormat? format)
+        {
+            throw new NotImplementedException();
+        }
+
+        bool ISymbol.Equals(ISymbol? other, SymbolEqualityComparer equalityComparer)
+        {
+            throw new NotImplementedException();
+        }
+
+        bool IEquatable<ISymbol?>.Equals(ISymbol? other)
+        {
+            throw new NotImplementedException();
+        }
+
         bool ISymbolInternal.Equals(ISymbolInternal? other, TypeCompareKind compareKind)
         {
-            return this.Equals(other as DeclaredSymbol, compareKind);
+            throw new NotImplementedException();
         }
 
         ISymbol ISymbolInternal.GetISymbol()
         {
-            return this.ISymbol;
+            throw new NotImplementedException();
         }
 
         IReference ISymbolInternal.GetCciAdapter()
@@ -459,15 +597,10 @@ namespace MetaDslx.CodeAnalysis.Symbols
             throw new NotImplementedException();
         }
 
-
-        private MemberLookupCache GetMemberLookupCache()
-        {
-            return s_memberLookup.GetValue(this, key => key.Members.IsDefaultOrEmpty ? EmptyMemberCache : new MemberLookupCache(key));
-        }
-
         private class MemberLookupCache
         {
             private DeclaredSymbol? _symbol;
+            private ImmutableArray<string> _memberNames;
             private ImmutableArray<DeclaredSymbol> _members;
             private ImmutableArray<NamedTypeSymbol> _typeMembers;
             private CachingDictionary<string, DeclaredSymbol> _membersByName;
@@ -480,6 +613,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 _symbol = symbol;
                 if (symbol is null)
                 {
+                    _memberNames = ImmutableArray<string>.Empty;
                     _members = ImmutableArray<DeclaredSymbol>.Empty;
                     _typeMembers = ImmutableArray<NamedTypeSymbol>.Empty;
                 }
@@ -492,6 +626,15 @@ namespace MetaDslx.CodeAnalysis.Symbols
                     ImmutableInterlocked.InterlockedInitialize(ref _members, _symbol.Members);
                 }
                 return _members;
+            }
+
+            public ImmutableArray<string> GetMemberNames()
+            {
+                if (_memberNames.IsDefault)
+                {
+                    ImmutableInterlocked.InterlockedInitialize(ref _memberNames, this.GetMembers().Select(m => m.Name).Distinct().ToImmutableArray());
+                }
+                return _memberNames;
             }
 
             public ImmutableArray<DeclaredSymbol> GetMembers(string name)

@@ -30,23 +30,5 @@ namespace MetaDslx.CodeAnalysis.Symbols.Model
 
         public sealed override NamedTypeSymbol ContainingType => _container as NamedTypeSymbol;
 
-        public override ImmutableArray<NamedTypeSymbol> GetBaseTypesNoUseSiteDiagnostics(ConsList<TypeSymbol> basesBeingResolved = null)
-        {
-            return this.GetDeclaredBaseTypes(basesBeingResolved);
-        }
-
-        public override ImmutableArray<NamedTypeSymbol> GetDeclaredBaseTypes(ConsList<TypeSymbol> basesBeingResolved)
-        {
-            var result = ArrayBuilder<NamedTypeSymbol>.GetInstance();
-            var symbolFacts = Language.SymbolFacts;
-            foreach (var prop in symbolFacts.GetPropertiesForSymbol(this.ModelObject, SymbolConstants.DeclaredBaseTypesProperty))
-            {
-                var baseTypeObjects = symbolFacts.GetPropertyValues(this.ModelObject, prop);
-                var baseTypeSymbols = SymbolFactory.ResolveSymbols(baseTypeObjects).OfType<NamedTypeSymbol>();
-                result.AddRange(baseTypeSymbols);
-            }
-            return result.ToImmutableAndFree();
-        }
-
     }
 }

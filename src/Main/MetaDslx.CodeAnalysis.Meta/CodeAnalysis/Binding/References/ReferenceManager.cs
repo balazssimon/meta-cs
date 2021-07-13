@@ -8,7 +8,6 @@ using System.Linq;
 using System.Threading;
 using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Symbols.CSharp;
-using MetaDslx.CodeAnalysis.Symbols.Retargeting;
 using MetaDslx.CodeAnalysis.Symbols.Source;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Collections;

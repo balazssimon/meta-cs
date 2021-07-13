@@ -218,10 +218,11 @@ namespace MetaDslx.CodeAnalysis.Binding
 
             failedThroughTypeCheck = false;
 
+            /*TODO:MetaDslx
             if (containingType.IsTupleType)
             {
                 containingType = containingType.TupleUnderlyingType;
-            }
+            }*/
 
             // easy case - members of containing type are accessible.
             if ((object)containingType == (object)within)

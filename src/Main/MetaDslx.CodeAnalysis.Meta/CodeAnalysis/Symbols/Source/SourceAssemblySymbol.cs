@@ -207,21 +207,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             }
         }
 
-        internal bool MightContainNoPiaLocalTypes()
-        {
-            for (int i = 1; i < _peModules.Length; i++)
-            {
-                var csharpModuleSymbol = (CSharpModuleSymbol)_peModules[i];
-                var peModuleSymbol = (CSharpSymbols.Metadata.PE.PEModuleSymbol)csharpModuleSymbol.UnderlyingModule;
-                if (peModuleSymbol.Module.ContainsNoPiaLocalTypes())
-                {
-                    return true;
-                }
-            }
-
-            return SourceModule.MightContainNoPiaLocalTypes();
-        }
-
         public override AssemblyIdentity Identity
         {
             get

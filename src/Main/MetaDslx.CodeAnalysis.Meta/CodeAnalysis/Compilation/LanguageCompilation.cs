@@ -377,7 +377,7 @@ namespace MetaDslx.CodeAnalysis
             Debug.Assert(debugEntryPoint != null);
 
             // Debug entry point has to be a method definition from this compilation.
-            var methodSymbol = (debugEntryPoint as Symbols.PublicModel.MethodSymbol)?.UnderlyingMethodSymbol;
+            var methodSymbol = debugEntryPoint as MethodSymbol;
             if (methodSymbol?.DeclaringCompilation != this || !methodSymbol.IsDefinition)
             {
                 diagnostics.Add(InternalErrorCode.ERR_DebugEntryPointNotSourceMethodDefinition, Location.None);
@@ -1142,7 +1142,7 @@ namespace MetaDslx.CodeAnalysis
 
         private protected override MetadataReference? CommonGetMetadataReference(IAssemblySymbol assemblySymbol)
         {
-            if (assemblySymbol is Symbols.PublicModel.AssemblySymbol { UnderlyingAssemblySymbol: var underlyingSymbol })
+            if (assemblySymbol is AssemblySymbol underlyingSymbol)
             {
                 return GetMetadataReference(underlyingSymbol);
             }
@@ -1257,11 +1257,11 @@ namespace MetaDslx.CodeAnalysis
         /// </summary>
         internal new NamespaceSymbol? GetCompilationNamespace(INamespaceSymbol namespaceSymbol)
         {
-            if (namespaceSymbol is Symbols.PublicModel.NamespaceSymbol n &&
+            if (namespaceSymbol is NamespaceSymbol n &&
                 namespaceSymbol.NamespaceKind == NamespaceKind.Compilation &&
                 namespaceSymbol.ContainingCompilation == this)
             {
-                return n.UnderlyingNamespaceSymbol;
+                return n;
             }
 
             var containingNamespace = namespaceSymbol.ContainingNamespace;
@@ -1358,7 +1358,7 @@ namespace MetaDslx.CodeAnalysis
         /// <returns>The Script class symbol or null if it is not defined.</returns>
         private ImplicitNamedTypeSymbol? BindScriptClass()
         {
-            return (ImplicitNamedTypeSymbol?)CommonBindScriptClass().GetSymbol();
+            return (ImplicitNamedTypeSymbol?)CommonBindScriptClass();
         }
 
         internal bool IsSubmissionSyntaxTree(SyntaxTree tree)
@@ -1485,7 +1485,7 @@ namespace MetaDslx.CodeAnalysis
         }
 
         protected override ITypeSymbol? CommonScriptGlobalsType
-            => GetHostObjectTypeSymbol()?.GetPublicSymbol();
+            => GetHostObjectTypeSymbol();
 
         internal TypeSymbol? GetHostObjectTypeSymbol()
         {
@@ -1954,11 +1954,6 @@ namespace MetaDslx.CodeAnalysis
                 this.MethodSymbol = methodSymbol;
                 this.Diagnostics = diagnostics;
             }
-        }
-
-        internal bool MightContainNoPiaLocalTypes()
-        {
-            return SourceAssembly.MightContainNoPiaLocalTypes();
         }
 
         // NOTE(cyrusn): There is a bit of a discoverability problem with this method and the same
@@ -2856,12 +2851,12 @@ namespace MetaDslx.CodeAnalysis
 
         protected override IAssemblySymbol CommonAssembly
         {
-            get { return this.Assembly.GetPublicSymbol(); }
+            get { return this.Assembly; }
         }
 
         protected override INamespaceSymbol CommonGlobalNamespace
         {
-            get { return this.GlobalNamespace.GetPublicSymbol(); }
+            get { return this.GlobalNamespace; }
         }
 
         protected override CompilationOptions CommonOptions
@@ -2919,7 +2914,7 @@ namespace MetaDslx.CodeAnalysis
 
         protected override ISymbol? CommonGetAssemblyOrModuleSymbol(MetadataReference reference)
         {
-            return this.GetAssemblyOrModuleSymbol(reference).GetPublicSymbol();
+            return this.GetAssemblyOrModuleSymbol(reference) as ISymbol;
         }
 
         protected override Compilation CommonClone()
@@ -2929,7 +2924,7 @@ namespace MetaDslx.CodeAnalysis
 
         protected override IModuleSymbol CommonSourceModule
         {
-            get { return this.SourceModule.GetPublicSymbol(); }
+            get { return this.SourceModule; }
         }
 
         private protected override INamedTypeSymbolInternal CommonGetSpecialType(SpecialType specialType)
@@ -2940,32 +2935,32 @@ namespace MetaDslx.CodeAnalysis
 
         protected override INamespaceSymbol? CommonGetCompilationNamespace(INamespaceSymbol namespaceSymbol)
         {
-            return this.GetCompilationNamespace(namespaceSymbol).GetPublicSymbol();
+            return this.GetCompilationNamespace(namespaceSymbol);
         }
 
         protected override INamedTypeSymbol? CommonGetTypeByMetadataName(string metadataName)
         {
-            return this.GetTypeByMetadataName(metadataName).GetPublicSymbol();
+            return this.GetTypeByMetadataName(metadataName);
         }
 
         protected override INamedTypeSymbol? CommonScriptClass
         {
-            get { return this.ScriptClass.GetPublicSymbol(); }
+            get { return this.ScriptClass; }
         }
 
         protected override ITypeSymbol CommonDynamicType
         {
-            get { return DynamicType.GetPublicSymbol(); }
+            get { return DynamicType; }
         }
 
         protected override INamedTypeSymbol CommonObjectType
         {
-            get { return this.ObjectType.GetPublicSymbol(); }
+            get { return this.ObjectType; }
         }
 
         protected override IMethodSymbol? CommonGetEntryPoint(CancellationToken cancellationToken)
         {
-            return this.GetEntryPoint(cancellationToken).GetPublicSymbol();
+            return this.GetEntryPoint(cancellationToken);
         }
 
         internal override int CompareSourceLocations(Location loc1, Location loc2)
@@ -3026,7 +3021,7 @@ namespace MetaDslx.CodeAnalysis
                 throw new ArgumentException(CSharpResources.NoNoneSearchCriteria, nameof(filter));
             }
 
-            return new PredicateSymbolSearcher(this, filter, predicate, cancellationToken).GetSymbolsWithName().GetPublicSymbols()!;
+            return new PredicateSymbolSearcher(this, filter, predicate, cancellationToken).GetSymbolsWithName()!;
         }
 
 #pragma warning disable RS0026 // Do not add multiple public overloads with optional parameters
@@ -3058,10 +3053,10 @@ namespace MetaDslx.CodeAnalysis
         /// </summary>
         public override IEnumerable<ISymbol> GetSymbolsWithName(string name, SymbolFilter filter = SymbolFilter.TypeAndMember, CancellationToken cancellationToken = default)
         {
-            return GetSymbolsWithNameCore(name, filter, cancellationToken).GetPublicSymbols()!;
+            return GetSymbolsWithNameCore(name, filter, cancellationToken)!;
         }
 
-        internal IEnumerable<Symbol> GetSymbolsWithNameCore(string name, SymbolFilter filter = SymbolFilter.TypeAndMember, CancellationToken cancellationToken = default)
+        internal IEnumerable<DeclaredSymbol> GetSymbolsWithNameCore(string name, SymbolFilter filter = SymbolFilter.TypeAndMember, CancellationToken cancellationToken = default)
         {
             if (name == null)
             {
@@ -3086,9 +3081,9 @@ namespace MetaDslx.CodeAnalysis
             return new AnalyzerDriver<int>(analyzers, getKind, analyzerManager, severityFilter, isComment);
         }
 
-        internal void SymbolDeclaredEvent(Symbol symbol)
+        internal void SymbolDeclaredEvent(DeclaredSymbol symbol)
         {
-            EventQueue?.TryEnqueue(new SymbolDeclaredCompilationEvent(this, symbol.GetPublicSymbol()));
+            EventQueue?.TryEnqueue(new SymbolDeclaredCompilationEvent(this, symbol));
         }
 
         private ImmutableArray<string> GetPreprocessorSymbols()
@@ -3129,9 +3124,9 @@ namespace MetaDslx.CodeAnalysis
             protected abstract bool Matches(string name);
             protected abstract bool ShouldCheckTypeForMembers(MergedDeclaration current);
 
-            public IEnumerable<Symbol> GetSymbolsWithName()
+            public IEnumerable<DeclaredSymbol> GetSymbolsWithName()
             {
-                var result = new HashSet<Symbol>();
+                var result = new HashSet<DeclaredSymbol>();
                 var spine = ArrayBuilder<MergedDeclaration>.GetInstance();
 
                 AppendSymbolsWithName(spine, _compilation.MergedRootDeclaration, result);
@@ -3143,7 +3138,7 @@ namespace MetaDslx.CodeAnalysis
 
             private void AppendSymbolsWithName(
                 ArrayBuilder<MergedDeclaration> spine, MergedDeclaration current,
-                HashSet<Symbol> set)
+                HashSet<DeclaredSymbol> set)
             {
                 if (current.IsNamespace)
                 {
@@ -3197,7 +3192,7 @@ namespace MetaDslx.CodeAnalysis
             }
 
             private void AppendMemberSymbolsWithName(
-                ArrayBuilder<MergedDeclaration> spine, MergedDeclaration current, HashSet<Symbol> set)
+                ArrayBuilder<MergedDeclaration> spine, MergedDeclaration current, HashSet<DeclaredSymbol> set)
             {
                 _cancellationToken.ThrowIfCancellationRequested();
                 spine.Add(current);
