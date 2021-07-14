@@ -120,32 +120,42 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         private ImmutableArray<DeclaredSymbol> SlowGetAllMembers()
         {
-            ArrayBuilder<NamespaceSymbol> namespaceSymbols = null;
-            var otherSymbols = ArrayBuilder<DeclaredSymbol>.GetInstance();
-
-            // Accumulate all the child namespaces and types.
+            var memberNames = new HashSet<string>();
+            // Accumulate all the child namespace and type names.
             foreach (NamespaceSymbol namespaceSymbol in _namespacesToMerge)
             {
-                foreach (DeclaredSymbol childSymbol in namespaceSymbol.GetMembersUnordered())
+                memberNames.UnionWith(namespaceSymbol.MemberNames);
+            }
+
+            var memberSymbols = ArrayBuilder<DeclaredSymbol>.GetInstance();
+
+            foreach (var name in memberNames)
+            {
+                ArrayBuilder<NamespaceSymbol> namespaceSymbols = null;
+                // Accumulate all the child namespaces and types.
+                foreach (NamespaceSymbol namespaceSymbol in _namespacesToMerge)
                 {
-                    if (childSymbol.Kind == SymbolKind.Namespace)
+                    foreach (DeclaredSymbol childSymbol in namespaceSymbol.GetMembers(name))
                     {
-                        namespaceSymbols = namespaceSymbols ?? ArrayBuilder<NamespaceSymbol>.GetInstance();
-                        namespaceSymbols.Add((NamespaceSymbol)childSymbol);
+                        if (childSymbol.Kind == SymbolKind.Namespace)
+                        {
+                            namespaceSymbols = namespaceSymbols ?? ArrayBuilder<NamespaceSymbol>.GetInstance();
+                            namespaceSymbols.Add((NamespaceSymbol)childSymbol);
+                        }
+                        else
+                        {
+                            memberSymbols.Add(childSymbol);
+                        }
                     }
-                    else
-                    {
-                        otherSymbols.Add(childSymbol);
-                    }
+                }
+
+                if (namespaceSymbols != null)
+                {
+                    memberSymbols.Add(MergedNamespaceSymbol.Create(_extent, this, namespaceSymbols.ToImmutableAndFree()));
                 }
             }
 
-            if (namespaceSymbols != null)
-            {
-                otherSymbols.Add(MergedNamespaceSymbol.Create(_extent, this, namespaceSymbols.ToImmutableAndFree()));
-            }
-
-            return otherSymbols.ToImmutableAndFree();
+            return memberSymbols.ToImmutableAndFree();
         }
 
         public override string Name

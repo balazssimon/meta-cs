@@ -551,7 +551,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         private class MemberLookupCache
         {
             private DeclaredSymbol? _symbol;
-            private ImmutableArray<string> _memberNames;
+            private HashSet<string> _memberNames;
             private ImmutableArray<DeclaredSymbol> _members;
             private ImmutableArray<NamedTypeSymbol> _typeMembers;
             private CachingDictionary<string, DeclaredSymbol> _membersByName;
@@ -564,7 +564,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 _symbol = symbol;
                 if (symbol is null)
                 {
-                    _memberNames = ImmutableArray<string>.Empty;
+                    _memberNames = new HashSet<string>();
                     _members = ImmutableArray<DeclaredSymbol>.Empty;
                     _typeMembers = ImmutableArray<NamedTypeSymbol>.Empty;
                 }
@@ -579,17 +579,18 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 return _members;
             }
 
-            public ImmutableArray<string> GetMemberNames()
+            public HashSet<string> GetMemberNames()
             {
-                if (_memberNames.IsDefault)
+                if (_memberNames == null)
                 {
-                    ImmutableInterlocked.InterlockedInitialize(ref _memberNames, this.GetMembers().Select(m => m.Name).Distinct().ToImmutableArray());
+                    Interlocked.CompareExchange(ref _memberNames, new HashSet<string>(this.GetMembers().Select(m => m.Name)), null);
                 }
                 return _memberNames;
             }
 
             public ImmutableArray<DeclaredSymbol> GetMembers(string name)
             {
+                if (name == null || !GetMemberNames().Contains(name)) return ImmutableArray<DeclaredSymbol>.Empty;
                 var members = this.GetMembers();
                 if (members.IsEmpty) return ImmutableArray<DeclaredSymbol>.Empty;
                 if (_membersByName is null)
@@ -601,6 +602,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
             public ImmutableArray<DeclaredSymbol> GetMembers(string name, string metadataName)
             {
+                if (name == null || !GetMemberNames().Contains(name)) return ImmutableArray<DeclaredSymbol>.Empty;
                 var members = this.GetMembers();
                 if (members.IsEmpty) return ImmutableArray<DeclaredSymbol>.Empty;
                 if (_membersByMetadataName is null)
@@ -621,6 +623,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
             public ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name)
             {
+                if (name == null || !GetMemberNames().Contains(name)) return ImmutableArray<NamedTypeSymbol>.Empty;
                 var members = this.GetTypeMembers();
                 if (members.IsEmpty) return ImmutableArray<NamedTypeSymbol>.Empty;
                 if (_typeMembersByName is null)
@@ -632,6 +635,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
             public ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name, string metadataName)
             {
+                if (name == null || !GetMemberNames().Contains(name)) return ImmutableArray<NamedTypeSymbol>.Empty;
                 var members = this.GetTypeMembers();
                 if (members.IsEmpty) return ImmutableArray<NamedTypeSymbol>.Empty;
                 if (_typeMembersByMetadataName is null)
