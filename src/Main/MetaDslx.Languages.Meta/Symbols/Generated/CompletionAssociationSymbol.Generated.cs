@@ -12,9 +12,9 @@ using System.Text;
 using System.Threading;
 using Roslyn.Utilities;
 
-namespace MetaDslx.Languages.Meta.Symbols.Model
+namespace MetaDslx.Languages.Meta.Symbols.Completion
 {
-	public abstract partial class ModelAssociationSymbol : MetaDslx.Languages.Meta.Symbols.AssociationSymbol, MetaDslx.CodeAnalysis.Symbols.Metadata.IModelSymbol
+	public abstract partial class CompletionAssociationSymbol : MetaDslx.Languages.Meta.Symbols.AssociationSymbol
 	{
         public static class CompletionParts
         {
@@ -28,28 +28,21 @@ namespace MetaDslx.Languages.Meta.Symbols.Model
         }
 
         private readonly Symbol _container;
-        private readonly object? _modelObject;
         private readonly CompletionState _state;
         private ImmutableArray<Symbol> _childSymbols;
         private string _name;
         private global::MetaDslx.CodeAnalysis.Symbols.Symbol _left;
         private global::MetaDslx.CodeAnalysis.Symbols.Symbol _right;
 
-        public ModelAssociationSymbol(Symbol container, object? modelObject = null)
+        public CompletionAssociationSymbol(Symbol container)
         {
-            Debug.Assert(container is IModelSymbol);
             _container = container;
-            _modelObject = modelObject;
             _state = CompletionParts.CompletionGraph.CreateState();
         }
 
         public sealed override Language Language => ContainingModule.Language;
 
-        public SymbolFactory SymbolFactory => ((IModelSymbol)_container).SymbolFactory;
-
-        public object ModelObject => _modelObject;
-
-        public Type ModelObjectType => _modelObject is not null ? Language.SymbolFacts.GetModelObjectType(_modelObject) : null;
+        public SymbolFactory SymbolFactory => ContainingModule.SymbolFactory;
 
         public sealed override Symbol ContainingSymbol => _container;
 
@@ -79,6 +72,7 @@ namespace MetaDslx.Languages.Meta.Symbols.Model
                 return _left;
             }
         }
+
         public override global::MetaDslx.CodeAnalysis.Symbols.Symbol Right
         {
             get
@@ -110,8 +104,8 @@ namespace MetaDslx.Languages.Meta.Symbols.Model
                     if (_state.NotePartComplete(CompletionGraph.StartInitializing))
                     {
                         var diagnostics = DiagnosticBag.GetInstance();
-                        _name = CompleteSymbolProperty_Name(locationOpt, diagnostics, cancellationToken);
-                        CompleteInitializingSymbol(locationOpt, diagnostics, cancellationToken);
+                        _name = CompleteSymbolProperty_Name(diagnostics, cancellationToken);
+                        CompleteInitializingSymbol(diagnostics, cancellationToken);
                         AddSymbolDiagnostics(diagnostics);
                         diagnostics.Free();
                         _state.NotePartComplete(CompletionGraph.FinishInitializing);
@@ -122,7 +116,7 @@ namespace MetaDslx.Languages.Meta.Symbols.Model
                     if (_state.NotePartComplete(CompletionGraph.StartCreatingChildren))
                     {
                         var diagnostics = DiagnosticBag.GetInstance();
-                        _childSymbols = CompleteCreatingChildSymbols(locationOpt, diagnostics, cancellationToken);
+                        _childSymbols = CompleteCreatingChildSymbols(diagnostics, cancellationToken);
                         AddSymbolDiagnostics(diagnostics);
                         diagnostics.Free();
                         _state.NotePartComplete(CompletionGraph.FinishCreatingChildren);
@@ -133,7 +127,7 @@ namespace MetaDslx.Languages.Meta.Symbols.Model
                     if (_state.NotePartComplete(CompletionParts.StartComputingProperty_Left))
                     {
                         var diagnostics = DiagnosticBag.GetInstance();
-                        _left = CompleteSymbolProperty_Left(locationOpt, diagnostics, cancellationToken);
+                        _left = CompleteSymbolProperty_Left(diagnostics, cancellationToken);
                         AddSymbolDiagnostics(diagnostics);
                         diagnostics.Free();
                         _state.NotePartComplete(CompletionParts.FinishComputingProperty_Left);
@@ -144,7 +138,7 @@ namespace MetaDslx.Languages.Meta.Symbols.Model
                     if (_state.NotePartComplete(CompletionParts.StartComputingProperty_Right))
                     {
                         var diagnostics = DiagnosticBag.GetInstance();
-                        _right = CompleteSymbolProperty_Right(locationOpt, diagnostics, cancellationToken);
+                        _right = CompleteSymbolProperty_Right(diagnostics, cancellationToken);
                         AddSymbolDiagnostics(diagnostics);
                         diagnostics.Free();
                         _state.NotePartComplete(CompletionParts.FinishComputingProperty_Right);
@@ -208,16 +202,15 @@ namespace MetaDslx.Languages.Meta.Symbols.Model
                 if (completionPart != null && _state.HasComplete(completionPart)) return;
                 _state.SpinWaitComplete(incompletePart, cancellationToken);
             }
-
             throw ExceptionUtilities.Unreachable;
         }
 
-        protected abstract void CompleteInitializingSymbol(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken);
-        protected abstract ImmutableArray<Symbol> CompleteCreatingChildSymbols(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken);
+        protected abstract string CompleteSymbolProperty_Name(DiagnosticBag diagnostics, CancellationToken cancellationToken);
+        protected abstract void CompleteInitializingSymbol(DiagnosticBag diagnostics, CancellationToken cancellationToken);
+        protected abstract ImmutableArray<Symbol> CompleteCreatingChildSymbols(DiagnosticBag diagnostics, CancellationToken cancellationToken);
         protected abstract void CompleteImports(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken);
-        protected abstract string CompleteSymbolProperty_Name(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken);
-        protected abstract global::MetaDslx.CodeAnalysis.Symbols.Symbol CompleteSymbolProperty_Left(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken);
-        protected abstract global::MetaDslx.CodeAnalysis.Symbols.Symbol CompleteSymbolProperty_Right(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken);
+        protected abstract global::MetaDslx.CodeAnalysis.Symbols.Symbol CompleteSymbolProperty_Left(DiagnosticBag diagnostics, CancellationToken cancellationToken);
+        protected abstract global::MetaDslx.CodeAnalysis.Symbols.Symbol CompleteSymbolProperty_Right(DiagnosticBag diagnostics, CancellationToken cancellationToken);
         protected abstract void CompleteNonSymbolProperties(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken);
         #endregion
 

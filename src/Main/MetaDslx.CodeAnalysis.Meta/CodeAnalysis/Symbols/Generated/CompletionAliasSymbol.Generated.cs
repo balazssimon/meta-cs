@@ -234,7 +234,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
                     // We've completed all members, proceed to the next iteration.
                     _state.NotePartComplete(CompletionGraph.ChildrenCompleted);
                 }
-                if (incompletePart == null)
+                else if (incompletePart == null)
                 {
                     return;
                 }

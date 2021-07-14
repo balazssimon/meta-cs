@@ -214,6 +214,17 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             }
         }
 
+
+        protected override ImmutableArray<Symbol> CompleteCreatingChildSymbols(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            return base.CompleteCreatingChildSymbols(diagnostics, cancellationToken);
+        }
+
+        protected override string CompleteSymbolProperty_Name(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            return base.CompleteSymbolProperty_Name(diagnostics, cancellationToken);
+        }
+
         internal override DeclaredSymbol GetSpecialTypeMember(SpecialMember member)
         {
             return _compilation.IsMemberMissing(member) ? null : base.GetSpecialTypeMember(member);

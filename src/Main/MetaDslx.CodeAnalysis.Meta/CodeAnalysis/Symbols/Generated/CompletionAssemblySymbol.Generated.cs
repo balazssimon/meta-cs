@@ -175,7 +175,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
                     // We've completed all members, proceed to the next iteration.
                     _state.NotePartComplete(CompletionGraph.ChildrenCompleted);
                 }
-                if (incompletePart == null)
+                else if (incompletePart == null)
                 {
                     return;
                 }
@@ -192,9 +192,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
             throw ExceptionUtilities.Unreachable;
         }
 
-        protected abstract string CompleteSymbolProperty_Name(DiagnosticBag diagnostics, CancellationToken cancellationToken);
         protected abstract void CompleteInitializingSymbol(DiagnosticBag diagnostics, CancellationToken cancellationToken);
-        protected abstract ImmutableArray<Symbol> CompleteCreatingChildSymbols(DiagnosticBag diagnostics, CancellationToken cancellationToken);
         protected abstract void CompleteImports(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken);
         protected abstract global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.Symbol> CompleteSymbolProperty_Attributes(DiagnosticBag diagnostics, CancellationToken cancellationToken);
         protected abstract global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.ModuleSymbol> CompleteSymbolProperty_Modules(DiagnosticBag diagnostics, CancellationToken cancellationToken);

@@ -12,6 +12,22 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
 {
     public abstract partial class CompletionAssemblySymbol : NonMissingAssemblySymbol
     {
+        public CompletionAssemblySymbol()
+        {
+            _state = CompletionParts.CompletionGraph.CreateState();
+        }
+
+        protected virtual string CompleteSymbolProperty_Name(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            return this.Identity.Name;
+        }
+
+        protected virtual ImmutableArray<Symbol> CompleteCreatingChildSymbols(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            return this.Modules.Cast<ModuleSymbol, Symbol>();
+        }
+
+
         /// <summary>
         /// A dictionary of cached Cor types defined in this assembly.
         /// Lazily filled by GetSpecialSymbol method.

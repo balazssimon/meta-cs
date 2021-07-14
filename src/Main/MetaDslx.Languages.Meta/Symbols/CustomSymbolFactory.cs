@@ -16,7 +16,7 @@ namespace MetaDslx.Languages.Meta.Symbols
 
         protected override Symbol CreateSourceSymbol(Symbol container, Type symbolType, object modelObject, MergedDeclaration declaration)
         {
-            if (symbolType == typeof(AssociationSymbol)) return new SourceAssociationSymbol(container, modelObject, declaration);
+            if (symbolType == typeof(AssociationSymbol)) return new SourceAssociationSymbol(container, declaration);
             return base.CreateSourceSymbol(container, symbolType, modelObject, declaration);
         }
     }

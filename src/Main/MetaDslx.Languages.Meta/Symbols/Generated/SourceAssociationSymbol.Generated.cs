@@ -16,14 +16,14 @@ using System.Threading;
 
 namespace MetaDslx.Languages.Meta.Symbols.Source
 {
-	public partial class SourceAssociationSymbol : MetaDslx.Languages.Meta.Symbols.Model.ModelAssociationSymbol, MetaDslx.CodeAnalysis.Symbols.Source.ISourceSymbol
+	public partial class SourceAssociationSymbol : MetaDslx.Languages.Meta.Symbols.Completion.CompletionAssociationSymbol, MetaDslx.CodeAnalysis.Symbols.Source.ISourceSymbol
 	{
         private readonly MergedDeclaration _declaration;
-		public SourceAssociationSymbol(Symbol containingSymbol, object modelObject, MergedDeclaration declaration)
-            : base(containingSymbol, modelObject)
+
+		public SourceAssociationSymbol(Symbol containingSymbol, MergedDeclaration declaration)
+            : base(containingSymbol)
         {
-            Debug.Assert(declaration != null);
-            if (modelObject is null) throw new ArgumentNullException(nameof(modelObject));
+            if (declaration is null) throw new ArgumentNullException(nameof(declaration));
             _declaration = declaration;
 		}
 
@@ -51,11 +51,11 @@ namespace MetaDslx.Languages.Meta.Symbols.Source
             return null;
         }
 
-        protected override void CompleteInitializingSymbol(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        protected override void CompleteInitializingSymbol(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
         }
 
-        protected override ImmutableArray<Symbol> CompleteCreatingChildSymbols(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        protected override ImmutableArray<Symbol> CompleteCreatingChildSymbols(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             return SourceSymbolImplementation.MakeChildSymbols(this, nameof(ChildSymbols), diagnostics, cancellationToken);
         }
@@ -65,16 +65,16 @@ namespace MetaDslx.Languages.Meta.Symbols.Source
             SourceSymbolImplementation.CompleteImports(this, locationOpt, diagnostics, cancellationToken);
         }
 
-        protected override string CompleteSymbolProperty_Name(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        protected override string CompleteSymbolProperty_Name(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             return SourceSymbolImplementation.AssignSymbolPropertyValue<string>(this, nameof(Name), diagnostics, cancellationToken);
         }
 
-        protected override global::MetaDslx.CodeAnalysis.Symbols.Symbol CompleteSymbolProperty_Left(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        protected override global::MetaDslx.CodeAnalysis.Symbols.Symbol CompleteSymbolProperty_Left(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             return SourceSymbolImplementation.AssignSymbolPropertyValue<global::MetaDslx.CodeAnalysis.Symbols.Symbol>(this, nameof(Left), diagnostics, cancellationToken);
         }
-        protected override global::MetaDslx.CodeAnalysis.Symbols.Symbol CompleteSymbolProperty_Right(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        protected override global::MetaDslx.CodeAnalysis.Symbols.Symbol CompleteSymbolProperty_Right(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             return SourceSymbolImplementation.AssignSymbolPropertyValue<global::MetaDslx.CodeAnalysis.Symbols.Symbol>(this, nameof(Right), diagnostics, cancellationToken);
         }

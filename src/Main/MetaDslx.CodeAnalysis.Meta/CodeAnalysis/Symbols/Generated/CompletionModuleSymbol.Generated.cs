@@ -25,17 +25,10 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
             public static readonly CompletionGraph CompletionGraph = CompletionGraph.FromCompletionParts(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Attributes, FinishComputingProperty_Attributes, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties, CompletionGraph.ChildrenCompleted);
         }
 
-        private readonly Symbol _container;
         private readonly CompletionState _state;
         private ImmutableArray<Symbol> _childSymbols;
         private string _name;
         private global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.Symbol> _attributes;
-
-        public sealed override Language Language => ContainingModule.Language;
-
-        public SymbolFactory SymbolFactory => ContainingModule.SymbolFactory;
-
-        public sealed override Symbol ContainingSymbol => _container;
 
         public sealed override ImmutableArray<Symbol> ChildSymbols 
         {
@@ -159,7 +152,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
                     // We've completed all members, proceed to the next iteration.
                     _state.NotePartComplete(CompletionGraph.ChildrenCompleted);
                 }
-                if (incompletePart == null)
+                else if (incompletePart == null)
                 {
                     return;
                 }

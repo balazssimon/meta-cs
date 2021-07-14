@@ -11,10 +11,17 @@ using System.Diagnostics;
 using System.Text;
 using System.Threading;
 
-namespace MetaDslx.CodeAnalysis.Symbols.Metadata
+namespace MetaDslx.Languages.Meta.Symbols.Metadata
 {
-	public partial class MetadataModuleSymbol : MetaDslx.CodeAnalysis.Symbols.Completion.CompletionModuleSymbol
+	public partial class MetadataAssociationSymbol : MetaDslx.Languages.Meta.Symbols.Completion.CompletionAssociationSymbol
 	{
+        public MetadataAssociationSymbol(Symbol container)
+            : base(container)
+        {
+        }
+
+        public override ImmutableArray<Location> Locations => this.ContainingModule.Locations;
+        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => ImmutableArray<SyntaxReference>.Empty;
 
         protected override string CompleteSymbolProperty_Name(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
@@ -34,9 +41,14 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
         {
         }
 
-        protected override global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.Symbol> CompleteSymbolProperty_Attributes(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        protected override global::MetaDslx.CodeAnalysis.Symbols.Symbol CompleteSymbolProperty_Left(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
-            return ModelSymbolImplementation.AssignSymbolPropertyValues<global::MetaDslx.CodeAnalysis.Symbols.Symbol>(this, nameof(Attributes), diagnostics, cancellationToken);
+            return ModelSymbolImplementation.AssignSymbolPropertyValue<global::MetaDslx.CodeAnalysis.Symbols.Symbol>(this, nameof(Left), diagnostics, cancellationToken);
+        }
+
+        protected override global::MetaDslx.CodeAnalysis.Symbols.Symbol CompleteSymbolProperty_Right(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            return ModelSymbolImplementation.AssignSymbolPropertyValue<global::MetaDslx.CodeAnalysis.Symbols.Symbol>(this, nameof(Right), diagnostics, cancellationToken);
         }
 
         protected override void CompleteNonSymbolProperties(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)

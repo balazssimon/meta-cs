@@ -25,8 +25,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         private ImmutableArray<AssemblySymbol> _lazyAssembliesToEmbedTypesFrom;
 
-        private ThreeState _lazyContainsExplicitDefinitionOfNoPiaLocalTypes = ThreeState.Unknown;
-
         /// <summary>
         /// The declarations corresponding to the source files of this module.
         /// </summary>
@@ -51,6 +49,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             _sources = declarations;
             _name = moduleName;
         }
+
+        public override Language Language => _assemblySymbol.Language;
 
         public override object Model
         {
@@ -244,7 +244,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 {
                     ImmutableInterlocked.InterlockedInitialize(
                         ref _locations,
-                        DeclaringCompilation.MergedRootDeclaration.Declarations.SelectAsArray(d => (Location)d.Location));
+                        DeclaringCompilation.MergedRootDeclaration.Declarations.SelectAsArray(d => d.Location));
                 }
 
                 return _locations;

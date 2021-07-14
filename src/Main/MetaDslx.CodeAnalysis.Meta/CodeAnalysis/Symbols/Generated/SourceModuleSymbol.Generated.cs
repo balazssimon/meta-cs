@@ -16,31 +16,8 @@ using System.Threading;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Source
 {
-	public partial class SourceModuleSymbol : MetaDslx.CodeAnalysis.Symbols.Completion.CompletionModuleSymbol, MetaDslx.CodeAnalysis.Symbols.Source.ISourceSymbol
+	public partial class SourceModuleSymbol : MetaDslx.CodeAnalysis.Symbols.Completion.CompletionModuleSymbol
 	{
-        private readonly MergedDeclaration _declaration;
-
-        public MergedDeclaration MergedDeclaration => _declaration;
-
-        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => _declaration.SyntaxReferences;
-
-        public BinderPosition<SymbolBinder> GetBinder(SyntaxReference reference)
-        {
-            Debug.Assert(this.DeclaringSyntaxReferences.Contains(reference));
-            return FindBinders.FindSymbolBinder(this, reference);
-        }
-
-        public Symbol GetChildSymbol(SyntaxReference syntax)
-        {
-            foreach (var child in this.ChildSymbols)
-            {
-                if (child.DeclaringSyntaxReferences.Any(sr => sr.GetLocation() == syntax.GetLocation()))
-                {
-                    return child;
-                }
-            }
-            return null;
-        }
 
         protected override void CompleteInitializingSymbol(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
