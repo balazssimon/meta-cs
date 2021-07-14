@@ -1955,7 +1955,7 @@ namespace MetaDslx.Languages.Meta.Model
 					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaClass_IsAbstract,
 					defaultValue: null);
 			
-			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("DeclaredBaseTypes")]
+			[global::MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolPropertyAttribute("BaseTypes")]
 			[global::MetaDslx.Modeling.CollectionAttribute]
 			[global::MetaDslx.Modeling.OrderedAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty SuperClassesProperty =
@@ -9143,7 +9143,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			MetaClass_SuperClasses.SetTypeLazy(() => __tmp43);
 			MetaClass_SuperClasses.Documentation = null;
 			MetaClass_SuperClasses.Name = "SuperClasses";
-			MetaClass_SuperClasses.SymbolProperty = "DeclaredBaseTypes";
+			MetaClass_SuperClasses.SymbolProperty = "BaseTypes";
 			MetaClass_SuperClasses.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Normal;
 			MetaClass_SuperClasses.SetClassLazy(() => MetaClass);
 			MetaClass_SuperClasses.DefaultValue = null;
