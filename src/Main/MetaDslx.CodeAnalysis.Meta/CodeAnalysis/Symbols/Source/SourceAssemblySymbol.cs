@@ -10,10 +10,9 @@ using System.Threading;
 using System.Reflection;
 using Roslyn.Utilities;
 using System.Collections.Concurrent;
-using MetaDslx.CodeAnalysis.Symbols.CSharp;
 using MetaDslx.Modeling;
 using MetaDslx.CodeAnalysis.Symbols.Metadata;
-using MetaDslx.CodeAnalysis.Symbols.Model;
+using MetaDslx.CodeAnalysis.Symbols.CSharp;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Source
 {
@@ -22,7 +21,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
     using MessageProvider = Microsoft.CodeAnalysis.CSharp.MessageProvider;
     using CommonAssemblyWellKnownAttributeData = Microsoft.CodeAnalysis.CommonAssemblyWellKnownAttributeData<MetaDslx.CodeAnalysis.Symbols.NamedTypeSymbol>;
 
-    public partial class SourceAssemblySymbol 
+    public partial class SourceAssemblySymbol
     {
         /// <summary>
         /// A Compilation the assembly is created for.
@@ -110,8 +109,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         /// </summary>
         private ImmutableArray<Diagnostic> _unusedFieldWarnings;
 
-        private ImmutableArray<object> _models;
-
         internal SourceAssemblySymbol(
             LanguageCompilation compilation,
             string assemblySimpleName,
@@ -129,7 +126,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             _language = _compilation.Language;
             _assemblySimpleName = assemblySimpleName;
 
-            ArrayBuilder<object> modelBuilder0 = new ArrayBuilder<object>(1 + netModules.Length);
             ArrayBuilder<ModuleSymbol> moduleBuilder = new ArrayBuilder<ModuleSymbol>(1 + netModules.Length);
 
             var sourceModule = new SourceModuleSymbol(this, compilation.Declarations, moduleName);
@@ -158,12 +154,12 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                     if (metadata is ModelMetadata modelMetadata)
                     {
                         var model = modelMetadata.Model;
-                        moduleBuilder.Add(new MetaModuleSymbol(this, model, moduleBuilder.Count));
+                        moduleBuilder.Add(new MetadataModuleSymbol(this, model, moduleBuilder.Count));
                     }
                     if (metadata is ModelGroupMetadata modelGroupMetadata)
                     {
                         var modelGroup = modelGroupMetadata.ModelGroup;
-                        moduleBuilder.Add(new MetaModuleSymbol(this, modelGroup, moduleBuilder.Count));
+                        moduleBuilder.Add(new MetadataModuleSymbol(this, modelGroup, moduleBuilder.Count));
                     }
                 }
             }

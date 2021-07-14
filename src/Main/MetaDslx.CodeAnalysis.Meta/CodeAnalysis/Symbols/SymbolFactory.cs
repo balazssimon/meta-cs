@@ -1,6 +1,6 @@
 using MetaDslx.CodeAnalysis.Declarations;
+using MetaDslx.CodeAnalysis.Symbols.Completion;
 using MetaDslx.CodeAnalysis.Symbols.Metadata;
-using MetaDslx.CodeAnalysis.Symbols.Model;
 using MetaDslx.CodeAnalysis.Symbols.Source;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
@@ -112,9 +112,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         protected virtual Symbol CreateMetaSymbol(Symbol container, Type symbolType, object modelObject)
         {
-            if (symbolType == typeof(NamespaceSymbol)) return new MetaNamespaceSymbol(container, modelObject);
-            if (symbolType == typeof(NamedTypeSymbol)) return new MetaNamedTypeSymbol(container, modelObject);
-            if (symbolType == typeof(MemberSymbol)) return new MetaMemberSymbol(container, modelObject);
+            if (symbolType == typeof(NamespaceSymbol)) return new MetadataNamespaceSymbol(container, modelObject);
+            if (symbolType == typeof(NamedTypeSymbol)) return new MetadataNamedTypeSymbol(container, modelObject);
+            if (symbolType == typeof(MemberSymbol)) return new MetadataMemberSymbol(container, modelObject);
             return new UnsupportedModelSymbol(container, modelObject);
         }
 
@@ -134,7 +134,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             if (_module.ContainingAssembly == null) return null;
             foreach (var module in _module.ContainingAssembly.Modules)
             {
-                if (module != _module && module is ModelModuleSymbol ms && ModuleContainsObject(module, modelObject))
+                if (module != _module && module is CompletionModuleSymbol ms && ModuleContainsObject(module, modelObject))
                 {
                     return ms.SymbolFactory.GetSymbol(modelObject);
                 }
@@ -144,7 +144,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         private bool ModuleContainsObject(ModuleSymbol module, object modelObject)
         {
-            return module is ModelModuleSymbol ms && _symbolFacts.ContainsObject(ms.Model, modelObject);
+            return module is CompletionModuleSymbol cms && _symbolFacts.ContainsObject(cms.Model, modelObject);
         }
 
         public IEnumerable<Symbol> ResolveSymbols(IEnumerable<object> modelObjects)

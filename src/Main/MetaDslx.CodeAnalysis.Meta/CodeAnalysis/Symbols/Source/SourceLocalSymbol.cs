@@ -18,31 +18,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 {
     public partial class SourceLocalSymbol
     {
-        private SourceDeclaration _sourceDeclaration;
-        private ImmutableArray<(CompletionPart start, CompletionPart finish)> _phaseBinders;
-
-        public override AssemblySymbol ContainingAssembly => ContainingSymbol.ContainingAssembly;
-
-        public override bool IsStatic => false;
-
-        public override ModuleSymbol ContainingModule => ContainingSymbol.ContainingModule;
-
-        protected SourceDeclaration SourceDeclaration
-        {
-            get
-            {
-                if (_sourceDeclaration == null)
-                {
-                    Interlocked.CompareExchange(ref _sourceDeclaration, new SourceDeclaration(this, _declaration), null);
-                }
-                return _sourceDeclaration;
-            }
-        }
-
-        public override LexicalSortKey GetLexicalSortKey()
-        {
-            return this.SourceDeclaration.GetLexicalSortKey();
-        }
 
     }
 }

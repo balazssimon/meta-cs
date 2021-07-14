@@ -1,7 +1,6 @@
 ﻿using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Binding.Binders;
-using MetaDslx.CodeAnalysis.Symbols.Model;
-using MetaDslx.CodeAnalysis.Syntax;
+using MetaDslx.CodeAnalysis.Symbols.Completion;
 using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
@@ -13,7 +12,7 @@ using System.Threading;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 {
-    public class MetaAliasSymbol : ModelAliasSymbol
+    public class MetadataAliasSymbol : CompletionAliasSymbol
     {
         private readonly string _aliasName;
         private readonly Binder _binder;
@@ -26,7 +25,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
         private readonly bool _isExtern;
         private DiagnosticBag _aliasTargetDiagnostics;
 
-        public MetaAliasSymbol(Binder binder, DeclaredSymbol target, string aliasName, ImmutableArray<Location> locations)
+        public MetadataAliasSymbol(Binder binder, DeclaredSymbol target, string aliasName, ImmutableArray<Location> locations)
             : base(binder.ContainingSymbol)
         {
             _aliasName = aliasName;
@@ -35,7 +34,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             _binder = binder;
         }
 
-        public MetaAliasSymbol(Binder binder, string aliasName, SyntaxNodeOrToken aliasTargetName, Location location, bool isExtern = false)
+        public MetadataAliasSymbol(Binder binder, string aliasName, SyntaxNodeOrToken aliasTargetName, Location location, bool isExtern = false)
             : base(binder.ContainingSymbol)
         {
             _aliasName = aliasName;
@@ -49,12 +48,12 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 
         public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => GetDeclaringSyntaxReferenceHelper<LanguageSyntaxNode>(_locations);
 
-        protected override string CompleteSymbolProperty_Name(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        protected override string CompleteSymbolProperty_Name(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             return _aliasName;
         }
 
-        protected override DeclaredSymbol CompleteSymbolProperty_Target(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        protected override DeclaredSymbol CompleteSymbolProperty_Target(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             // the target is not yet bound. If it is an ordinary alias, bind the target
             // symbol. If it is an extern alias then find the target in the list of metadata references.
@@ -73,7 +72,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             return symbol;
         }
 
-        protected override bool CompleteSymbolProperty_IsExtern(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        protected override bool CompleteSymbolProperty_IsExtern(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             return _isExtern;
         }
@@ -93,7 +92,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             var expandedGlobalNamespace = compilation.GlobalNamespace;
             var expandedNamespace = (NamespaceOrTypeSymbol)Imports.ExpandPreviousSubmissionNamespace((NamespaceSymbol)previousTarget, expandedGlobalNamespace);
             var binder = new InContainerBinder(expandedGlobalNamespace, new BuckStopsHereBinder(compilation));
-            return new MetaAliasSymbol(binder, expandedNamespace, _aliasName, _locations);
+            return new MetadataAliasSymbol(binder, expandedNamespace, _aliasName, _locations);
         }
 
         // basesBeingResolved is only used to break circular references.
@@ -157,11 +156,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
                 return Name.GetHashCode();
         }
 
-        protected override void CompleteInitializingSymbol(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        protected override void CompleteInitializingSymbol(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
         }
 
-        protected override ImmutableArray<Symbol> CompleteCreatingChildSymbols(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        protected override ImmutableArray<Symbol> CompleteCreatingChildSymbols(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             return ImmutableArray<Symbol>.Empty;
         }
@@ -170,12 +169,12 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
         {
         }
 
-        protected override ImmutableArray<Symbol> CompleteSymbolProperty_Attributes(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        protected override ImmutableArray<Symbol> CompleteSymbolProperty_Attributes(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             return ImmutableArray<Symbol>.Empty;
         }
 
-        protected override ImmutableArray<DeclaredSymbol> CompleteSymbolProperty_Members(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        protected override ImmutableArray<DeclaredSymbol> CompleteSymbolProperty_Members(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             return ImmutableArray<DeclaredSymbol>.Empty;
         }

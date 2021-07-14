@@ -7,15 +7,15 @@ using System.Text;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 
-namespace MetaDslx.CodeAnalysis.Symbols.Model
+namespace MetaDslx.CodeAnalysis.Symbols.Completion
 {
-    public partial class ModelNamespaceSymbol
+    public partial class CompletionNamespaceSymbol
     {
         public override NamespaceExtent Extent
         {
             get
             {
-                if (_container is ModelNamespaceSymbol containingNamespace) return containingNamespace.Extent;
+                if (_container is CompletionNamespaceSymbol containingNamespace) return containingNamespace.Extent;
                 if (_container is ModuleSymbol containingModule) return new NamespaceExtent(containingModule);
                 return new NamespaceExtent(_container.ContainingModule);
             }

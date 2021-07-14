@@ -12,31 +12,46 @@ using System.Text;
 using System.Threading;
 using Roslyn.Utilities;
 
-namespace MetaDslx.CodeAnalysis.Symbols.Model
+namespace MetaDslx.CodeAnalysis.Symbols.Completion
 {
-	public abstract partial class ModelAssemblySymbol
+	public abstract partial class CompletionMemberSymbol : MetaDslx.CodeAnalysis.Symbols.MemberSymbol, MetaDslx.CodeAnalysis.Symbols.Metadata.IModelSymbol
 	{
         public static class CompletionParts
         {
             public static readonly CompletionPart StartComputingProperty_Attributes = new CompletionPart(nameof(StartComputingProperty_Attributes));
             public static readonly CompletionPart FinishComputingProperty_Attributes = new CompletionPart(nameof(FinishComputingProperty_Attributes));
-            public static readonly CompletionPart StartComputingProperty_Modules = new CompletionPart(nameof(StartComputingProperty_Modules));
-            public static readonly CompletionPart FinishComputingProperty_Modules = new CompletionPart(nameof(FinishComputingProperty_Modules));
-            public static readonly ImmutableHashSet<CompletionPart> AllWithLocation = CompletionPart.Combine(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Attributes, FinishComputingProperty_Attributes, StartComputingProperty_Modules, FinishComputingProperty_Modules, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties);
-            public static readonly ImmutableHashSet<CompletionPart> All = CompletionPart.Combine(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Attributes, FinishComputingProperty_Attributes, StartComputingProperty_Modules, FinishComputingProperty_Modules, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties, CompletionGraph.ChildrenCompleted);
-            public static readonly CompletionGraph CompletionGraph = CompletionGraph.FromCompletionParts(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Attributes, FinishComputingProperty_Attributes, StartComputingProperty_Modules, FinishComputingProperty_Modules, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties, CompletionGraph.ChildrenCompleted);
+            public static readonly CompletionPart StartComputingProperty_Members = new CompletionPart(nameof(StartComputingProperty_Members));
+            public static readonly CompletionPart FinishComputingProperty_Members = new CompletionPart(nameof(FinishComputingProperty_Members));
+            public static readonly ImmutableHashSet<CompletionPart> AllWithLocation = CompletionPart.Combine(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Attributes, FinishComputingProperty_Attributes, StartComputingProperty_Members, FinishComputingProperty_Members, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties);
+            public static readonly ImmutableHashSet<CompletionPart> All = CompletionPart.Combine(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Attributes, FinishComputingProperty_Attributes, StartComputingProperty_Members, FinishComputingProperty_Members, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties, CompletionGraph.ChildrenCompleted);
+            public static readonly CompletionGraph CompletionGraph = CompletionGraph.FromCompletionParts(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Attributes, FinishComputingProperty_Attributes, StartComputingProperty_Members, FinishComputingProperty_Members, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties, CompletionGraph.ChildrenCompleted);
         }
 
+        private readonly Symbol _container;
+        private readonly object? _modelObject;
         private readonly CompletionState _state;
         private ImmutableArray<Symbol> _childSymbols;
         private string _name;
         private global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.Symbol> _attributes;
-        private global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.ModuleSymbol> _modules;
+        private global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.DeclaredSymbol> _members;
 
-        public ModelAssemblySymbol()
+        public CompletionMemberSymbol(Symbol container, object? modelObject)
         {
+            _container = container;
+            if (modelObject is null) throw new ArgumentNullException(nameof(modelObject));
+            _modelObject = modelObject;
             _state = CompletionParts.CompletionGraph.CreateState();
         }
+
+        public sealed override Language Language => ContainingModule.Language;
+
+        public SymbolFactory SymbolFactory => ContainingModule.SymbolFactory;
+
+        public object ModelObject => _modelObject;
+
+        public Type ModelObjectType => _modelObject is not null ? Language.SymbolFacts.GetModelObjectType(_modelObject) : null;
+
+        public sealed override Symbol ContainingSymbol => _container;
 
         public sealed override ImmutableArray<Symbol> ChildSymbols 
         {
@@ -47,12 +62,30 @@ namespace MetaDslx.CodeAnalysis.Symbols.Model
             }
         }
 
+        public override string Name 
+        {
+            get
+            {
+                this.ForceComplete(CompletionGraph.FinishInitializing, null, default);
+                return _name;
+            }
+        }
+
         public override global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.Symbol> Attributes
         {
             get
             {
                 this.ForceComplete(CompletionParts.FinishComputingProperty_Attributes, null, default);
                 return _attributes;
+            }
+        }
+
+        public override global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.DeclaredSymbol> Members
+        {
+            get
+            {
+                this.ForceComplete(CompletionParts.FinishComputingProperty_Members, null, default);
+                return _members;
             }
         }
 
@@ -78,7 +111,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Model
                     if (_state.NotePartComplete(CompletionGraph.StartInitializing))
                     {
                         var diagnostics = DiagnosticBag.GetInstance();
-                        CompleteInitializingSymbol(locationOpt, diagnostics, cancellationToken);
+                        _name = CompleteSymbolProperty_Name(diagnostics, cancellationToken);
+                        CompleteInitializingSymbol(diagnostics, cancellationToken);
                         AddSymbolDiagnostics(diagnostics);
                         diagnostics.Free();
                         _state.NotePartComplete(CompletionGraph.FinishInitializing);
@@ -89,7 +123,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Model
                     if (_state.NotePartComplete(CompletionGraph.StartCreatingChildren))
                     {
                         var diagnostics = DiagnosticBag.GetInstance();
-                        _childSymbols = CompleteCreatingChildSymbols(locationOpt, diagnostics, cancellationToken);
+                        _childSymbols = CompleteCreatingChildSymbols(diagnostics, cancellationToken);
                         AddSymbolDiagnostics(diagnostics);
                         diagnostics.Free();
                         _state.NotePartComplete(CompletionGraph.FinishCreatingChildren);
@@ -100,21 +134,21 @@ namespace MetaDslx.CodeAnalysis.Symbols.Model
                     if (_state.NotePartComplete(CompletionParts.StartComputingProperty_Attributes))
                     {
                         var diagnostics = DiagnosticBag.GetInstance();
-                        _attributes = CompleteSymbolProperty_Attributes(locationOpt, diagnostics, cancellationToken);
+                        _attributes = CompleteSymbolProperty_Attributes(diagnostics, cancellationToken);
                         AddSymbolDiagnostics(diagnostics);
                         diagnostics.Free();
                         _state.NotePartComplete(CompletionParts.FinishComputingProperty_Attributes);
                     }
                 }
-                else if (incompletePart == CompletionParts.StartComputingProperty_Modules || incompletePart == CompletionParts.FinishComputingProperty_Modules)
+                else if (incompletePart == CompletionParts.StartComputingProperty_Members || incompletePart == CompletionParts.FinishComputingProperty_Members)
                 {
-                    if (_state.NotePartComplete(CompletionParts.StartComputingProperty_Modules))
+                    if (_state.NotePartComplete(CompletionParts.StartComputingProperty_Members))
                     {
                         var diagnostics = DiagnosticBag.GetInstance();
-                        _modules = CompleteSymbolProperty_Modules(locationOpt, diagnostics, cancellationToken);
+                        _members = CompleteSymbolProperty_Members(diagnostics, cancellationToken);
                         AddSymbolDiagnostics(diagnostics);
                         diagnostics.Free();
-                        _state.NotePartComplete(CompletionParts.FinishComputingProperty_Modules);
+                        _state.NotePartComplete(CompletionParts.FinishComputingProperty_Members);
                     }
                 }
                 else if (incompletePart == CompletionGraph.StartComputingNonSymbolProperties || incompletePart == CompletionGraph.FinishComputingNonSymbolProperties)
@@ -161,7 +195,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Model
                     // We've completed all members, proceed to the next iteration.
                     _state.NotePartComplete(CompletionGraph.ChildrenCompleted);
                 }
-                else if (incompletePart == null)
+                if (incompletePart == null)
                 {
                     return;
                 }
@@ -175,15 +209,15 @@ namespace MetaDslx.CodeAnalysis.Symbols.Model
                 if (completionPart != null && _state.HasComplete(completionPart)) return;
                 _state.SpinWaitComplete(incompletePart, cancellationToken);
             }
-
             throw ExceptionUtilities.Unreachable;
         }
 
-        protected abstract void CompleteInitializingSymbol(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken);
-        protected abstract ImmutableArray<Symbol> CompleteCreatingChildSymbols(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken);
+        protected abstract string CompleteSymbolProperty_Name(DiagnosticBag diagnostics, CancellationToken cancellationToken);
+        protected abstract void CompleteInitializingSymbol(DiagnosticBag diagnostics, CancellationToken cancellationToken);
+        protected abstract ImmutableArray<Symbol> CompleteCreatingChildSymbols(DiagnosticBag diagnostics, CancellationToken cancellationToken);
         protected abstract void CompleteImports(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken);
-        protected abstract global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.Symbol> CompleteSymbolProperty_Attributes(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken);
-        protected abstract global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.ModuleSymbol> CompleteSymbolProperty_Modules(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken);
+        protected abstract global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.Symbol> CompleteSymbolProperty_Attributes(DiagnosticBag diagnostics, CancellationToken cancellationToken);
+        protected abstract global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.DeclaredSymbol> CompleteSymbolProperty_Members(DiagnosticBag diagnostics, CancellationToken cancellationToken);
         protected abstract void CompleteNonSymbolProperties(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken);
         #endregion
 

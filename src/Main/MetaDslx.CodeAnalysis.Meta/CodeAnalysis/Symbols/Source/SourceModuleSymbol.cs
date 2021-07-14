@@ -64,8 +64,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             }
         }
 
-        public override Language Language => _assemblySymbol.Language;
-
         internal void RecordPresenceOfBadAttributes()
         {
             _hasBadAttributes = true;

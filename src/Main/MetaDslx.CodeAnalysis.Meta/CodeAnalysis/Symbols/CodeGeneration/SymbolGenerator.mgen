@@ -346,7 +346,7 @@ namespace [symbol.NamespaceName].Metadata
 	{
         [if (!symbol.ExistingMetadataMemberNames.Contains(".ctor"))]
         public Metadata[symbol.Name](Symbol container[if(symbol.ModelObjectOption != ParameterOption.Disabled)], object modelObject[if(symbol.ModelObjectOption == ParameterOption.Optional)] = null[end if][end if])
-            : base(container, modelObject)
+            : base(container[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if])
         {
         }
         [end if]
@@ -434,7 +434,7 @@ namespace [symbol.NamespaceName].Source
         [if (!symbol.ExistingSourceMemberNames.Contains(".ctor"))]
 ^
 		public Source[symbol.Name](Symbol containingSymbol, [if(symbol.ModelObjectOption != ParameterOption.Disabled)]object modelObject[if(symbol.ModelObjectOption == ParameterOption.Optional)] = null[end if], [end if]MergedDeclaration declaration)
-            : base(containingSymbol, modelObject)
+            : base(containingSymbol[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if])
         {
             if (declaration is null) throw new ArgumentNullException(nameof(declaration));
             _declaration = declaration;

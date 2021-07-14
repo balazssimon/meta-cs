@@ -1,5 +1,5 @@
+using MetaDslx.CodeAnalysis.Symbols.Completion;
 using MetaDslx.CodeAnalysis.Symbols.Metadata;
-using MetaDslx.CodeAnalysis.Symbols.Model;
 using MetaDslx.CodeAnalysis.Symbols.Source;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
@@ -47,11 +47,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
                     var models = ArrayBuilder<object>.GetInstance();
                     foreach (var module in _compilation.SourceAssembly.Modules)
                     {
-                        if (module.Ordinal > 0 && module is ModelModuleSymbol mms && mms.Model != null)
+                        if (module.Ordinal > 0 && module is CompletionModuleSymbol cms && cms.Model != null)
                         {
-                            if (!models.Contains(mms.Model))
+                            if (!models.Contains(cms.Model))
                             {
-                                models.Add(mms.Model);
+                                models.Add(cms.Model);
                             }
                         }
                     }

@@ -10,16 +10,16 @@ using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
 
-namespace MetaDslx.CodeAnalysis.Symbols.Model
+namespace MetaDslx.CodeAnalysis.Symbols.Completion
 {
-    public class ModelGlobalNamespaceSymbol : ModelNamespaceSymbol
+    public class CompletionGlobalNamespaceSymbol : CompletionNamespaceSymbol
     {
-        private ModelModuleSymbol _module;
+        private CompletionModuleSymbol _module;
         private ImmutableArray<string> _lazyTypeNames;
         private ImmutableArray<string> _lazyNamespaceNames;
 
-        public ModelGlobalNamespaceSymbol(ModelModuleSymbol module)
-            : base(module, null)
+        public CompletionGlobalNamespaceSymbol(CompletionModuleSymbol module)
+            : base(module)
         {
             _module = module;
         }
@@ -85,7 +85,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Model
 
         public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => ImmutableArray<SyntaxReference>.Empty;
 
-        protected override ImmutableArray<Symbol> CompleteCreatingChildSymbols(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        protected override ImmutableArray<Symbol> CompleteCreatingChildSymbols(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             return ModelSymbolImplementation.MakeGlobalSymbols(this, null, diagnostics, cancellationToken);
         }
@@ -94,7 +94,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Model
         {
         }
 
-        protected override void CompleteInitializingSymbol(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        protected override void CompleteInitializingSymbol(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
         }
 
@@ -102,17 +102,17 @@ namespace MetaDslx.CodeAnalysis.Symbols.Model
         {
         }
 
-        protected override ImmutableArray<Symbol> CompleteSymbolProperty_Attributes(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        protected override ImmutableArray<Symbol> CompleteSymbolProperty_Attributes(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             return ImmutableArray<Symbol>.Empty;
         }
 
-        protected override ImmutableArray<DeclaredSymbol> CompleteSymbolProperty_Members(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        protected override ImmutableArray<DeclaredSymbol> CompleteSymbolProperty_Members(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             return this.ChildSymbols.OfType<DeclaredSymbol>().ToImmutableArray();
         }
 
-        protected override string CompleteSymbolProperty_Name(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        protected override string CompleteSymbolProperty_Name(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             return string.Empty;
         }

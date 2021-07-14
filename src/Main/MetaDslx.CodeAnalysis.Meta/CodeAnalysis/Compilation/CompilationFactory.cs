@@ -1,11 +1,8 @@
 ﻿using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Declarations;
 using MetaDslx.CodeAnalysis.Symbols;
-using MetaDslx.CodeAnalysis.Symbols.CSharp;
+using MetaDslx.CodeAnalysis.Symbols.Completion;
 using MetaDslx.CodeAnalysis.Symbols.Metadata;
-using MetaDslx.CodeAnalysis.Symbols.Model;
-using MetaDslx.CodeAnalysis.Symbols.Source;
-using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
@@ -80,12 +77,12 @@ namespace MetaDslx.CodeAnalysis
 
         public virtual Symbol CreateSpecialSymbol(ModuleSymbol module, object key)
         {
-            if (module is ModelModuleSymbol modelModule)
+            if (module is CompletionModuleSymbol cms)
             {
                 var symbolFacts = Language.SymbolFacts;
-                if (key != null && symbolFacts.GetBuiltInObjects().Contains(key) && symbolFacts.ContainsObject(modelModule.Model, key))
+                if (key != null && symbolFacts.GetBuiltInObjects().Contains(key) && symbolFacts.ContainsObject(cms.Model, key))
                 {
-                    return modelModule.SymbolFactory.GetSymbol(key);
+                    return cms.SymbolFactory.GetSymbol(key);
                 }
             }
             return null;

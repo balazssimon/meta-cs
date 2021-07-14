@@ -8,13 +8,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace MetaDslx.CodeAnalysis.Symbols.Model
+namespace MetaDslx.CodeAnalysis.Symbols.Completion
 {
-    public partial class ModelMemberSymbol
+    public partial class CompletionMemberSymbol
     {
-        public override bool IsStatic => false;
-
-
         public override bool CanOverrideOrHide(MemberSymbol other)
         {
             var otherMember = other as IModelSymbol;

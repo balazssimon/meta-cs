@@ -2015,8 +2015,13 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                 {
                     __out.AppendLine(false); //348:214
                 }
-                __out.Write("            : base(container, modelObject)"); //349:1
-                __out.AppendLine(false); //349:43
+                __out.Write("            : base(container"); //349:1
+                if (symbol.ModelObjectOption != ParameterOption.Disabled) //349:30
+                {
+                    __out.Write(", modelObject"); //349:87
+                }
+                __out.Write(")"); //349:108
+                __out.AppendLine(false); //349:109
                 __out.Write("        {"); //350:1
                 __out.AppendLine(false); //350:10
                 __out.Write("        }"); //351:1
@@ -2522,8 +2527,13 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                 {
                     __out.AppendLine(false); //436:244
                 }
-                __out.Write("            : base(containingSymbol, modelObject)"); //437:1
-                __out.AppendLine(false); //437:50
+                __out.Write("            : base(containingSymbol"); //437:1
+                if (symbol.ModelObjectOption != ParameterOption.Disabled) //437:37
+                {
+                    __out.Write(", modelObject"); //437:94
+                }
+                __out.Write(")"); //437:115
+                __out.AppendLine(false); //437:116
                 __out.Write("        {"); //438:1
                 __out.AppendLine(false); //438:10
                 __out.Write("            if (declaration is null) throw new ArgumentNullException(nameof(declaration));"); //439:1

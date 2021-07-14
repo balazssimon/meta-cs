@@ -14,29 +14,17 @@ using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using Roslyn.Utilities;
 
-namespace MetaDslx.CodeAnalysis.Symbols.Metadata
+namespace MetaDslx.CodeAnalysis.Symbols.Completion
 {
-    public partial class MetaModuleSymbol
+    public partial class CompletionModuleSymbol : NonMissingModuleSymbol
     {
-        public MetaModuleSymbol(AssemblySymbol owningAssembly, object model, int ordinal)
-            : base(owningAssembly, model, ordinal)
-        {
-        }
-    }
-
-}
-
-namespace MetaDslx.CodeAnalysis.Symbols.Model
-{
-    public partial class ModelModuleSymbol : NonMissingModuleSymbol, IModelSymbol
-    {
-        private ModelGlobalNamespaceSymbol _globalNamespace;
+        private CompletionGlobalNamespaceSymbol _globalNamespace;
         private SymbolFactory _symbolFactory;
         private object _model;
         private readonly int _ordinal;
         private readonly ImmutableArray<MetadataLocation> _metadataLocation;
 
-        public ModelModuleSymbol(AssemblySymbol owningAssembly, object model, int ordinal)
+        public CompletionModuleSymbol(AssemblySymbol owningAssembly, object model, int ordinal)
         {
             _container = owningAssembly;
             _state = CompletionParts.CompletionGraph.CreateState();
@@ -49,10 +37,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Model
 
         public virtual ObjectFactory ObjectFactory => null;
 
-        public object? ModelObject => null;
-
-        public Type? ModelObjectType => null;
-
         public override int Ordinal => _ordinal;
 
         public override bool HasUnifiedReferences => false;
@@ -63,7 +47,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Model
             {
                 if (_globalNamespace == null)
                 {
-                    Interlocked.CompareExchange(ref _globalNamespace, new ModelGlobalNamespaceSymbol(this), null);
+                    Interlocked.CompareExchange(ref _globalNamespace, new CompletionGlobalNamespaceSymbol(this), null);
                 }
                 return _globalNamespace;
             }

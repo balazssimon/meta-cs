@@ -1,5 +1,4 @@
-﻿using MetaDslx.CodeAnalysis.Symbols.Model;
-using MetaDslx.Modeling;
+﻿using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
 using System;
@@ -15,8 +14,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
     {
         public static ImmutableArray<Symbol> MakeGlobalSymbols(Symbol rootSymbol, string symbolPropertyName, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
-            var module = rootSymbol.ContainingSymbol as ModelModuleSymbol;
-            if (module is null) throw new ArgumentException("Containing symbol of the root symbol must be a ModelModuleSymbol.");
+            var module = rootSymbol.ContainingSymbol as MetadataModuleSymbol;
+            if (module is null) throw new ArgumentException("Containing symbol of the root symbol must be a MetadataModuleSymbol.");
             var location = rootSymbol.ContainingModule.Locations.FirstOrDefault();
             var symbolFactory = rootSymbol.ContainingModule.SymbolFactory;
             var result = ArrayBuilder<Symbol>.GetInstance();
@@ -31,7 +30,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 
         public static ImmutableArray<Symbol> MakeChildSymbols(Symbol symbol, string symbolPropertyName, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
-            if (symbol is ModelModuleSymbol mms) return ImmutableArray.Create<Symbol>(mms.GlobalNamespace);
+            if (symbol is MetadataModuleSymbol mms) return ImmutableArray.Create<Symbol>(mms.GlobalNamespace);
             var msymbol = symbol as IModelSymbol;
             if (msymbol is null) throw new ArgumentException("Symbol must implement IModelSymbol.");
             var location = symbol.ContainingModule.Locations.FirstOrDefault();

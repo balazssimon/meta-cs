@@ -14,6 +14,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
     {
         public override ImmutableArray<Symbol> ChildSymbols => GetMembers().Cast<DeclaredSymbol, Symbol>();
 
+        public override bool IsStatic => false;
+
         public virtual bool IsImplementableMember => !this.IsStatic;
 
         /// <summary>

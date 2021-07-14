@@ -1,9 +1,4 @@
-// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
-
-using MetaDslx.CodeAnalysis.Symbols.Completion;
-using MetaDslx.CodeAnalysis.Symbols.Metadata;
-using MetaDslx.Modeling;
-using Microsoft.CodeAnalysis;
+﻿using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -12,13 +7,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 
-namespace MetaDslx.CodeAnalysis.Symbols
+
+namespace MetaDslx.CodeAnalysis.Symbols.Completion
 {
-    /// <summary>
-    /// Represents source or metadata assembly.
-    /// </summary>
-    /// <remarks></remarks>
-    public abstract partial class MetadataOrSourceAssemblySymbol : CompletionAssemblySymbol
+    public abstract partial class CompletionAssemblySymbol : NonMissingAssemblySymbol
     {
         /// <summary>
         /// A dictionary of cached Cor types defined in this assembly.
@@ -239,5 +231,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 return _assembliesToWhichInternalAccessHasBeenAnalyzed;
             }
         }
+
     }
 }

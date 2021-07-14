@@ -46,7 +46,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
     ///     IList&lt;Symbol&gt; SemanticModel.LookupSymbols(CSharpSyntaxNode location, NamespaceOrTypeSymbol container = null, string name = null, int? arity = null, LookupOptions options = LookupOptions.Default, List&lt;Symbol> results = null);
     /// </pre>
     /// </summary>
-    [Symbol(SymbolParts = SymbolParts.Source, ModelObjectOption = ParameterOption.Disabled)]
+    [Symbol(SymbolParts = SymbolParts.All, ModelObjectOption = ParameterOption.Disabled)]
     public partial class AliasSymbol : DeclaredSymbol, IAliasSymbol
     {
         [SymbolProperty]
@@ -65,22 +65,22 @@ namespace MetaDslx.CodeAnalysis.Symbols
         // to. This alias symbol is returned only when binding "global::" (special case code).
         internal static AliasSymbol CreateGlobalNamespaceAlias(NamespaceSymbol globalNamespace, Binder globalNamespaceBinder)
         {
-            return new MetaAliasSymbol(globalNamespaceBinder, globalNamespace, "global", ImmutableArray<Location>.Empty);
+            return new MetadataAliasSymbol(globalNamespaceBinder, globalNamespace, "global", ImmutableArray<Location>.Empty);
         }
 
         internal static AliasSymbol CreateCustomDebugInfoAlias(NamespaceOrTypeSymbol targetSymbol, SyntaxToken aliasToken, Binder binder)
         {
-            return new MetaAliasSymbol(binder, targetSymbol, aliasToken.ValueText, ImmutableArray.Create(aliasToken.GetLocation()));
+            return new MetadataAliasSymbol(binder, targetSymbol, aliasToken.ValueText, ImmutableArray.Create(aliasToken.GetLocation()));
         }
 
         internal static AliasSymbol CreateUsing(string aliasName, UsingDirective directive, Binder binder)
         {
-            return new MetaAliasSymbol(binder, aliasName, directive.TargetName, directive.Location, false);
+            return new MetadataAliasSymbol(binder, aliasName, directive.TargetName, directive.Location, false);
         }
 
         internal static AliasSymbol CreateExternAlias(string aliasName, ExternAliasDirective directive, Binder binder)
         {
-            return new MetaAliasSymbol(binder, aliasName, null, directive.Location, true);
+            return new MetadataAliasSymbol(binder, aliasName, null, directive.Location, true);
         }
 
         public virtual AliasSymbol ToNewSubmission(LanguageCompilation compilation)

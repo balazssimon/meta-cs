@@ -16,18 +16,37 @@ using System.Threading;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Source
 {
-	public partial class SourceModuleSymbol : MetaDslx.CodeAnalysis.Symbols.Model.ModelModuleSymbol
+	public partial class SourceModuleSymbol : MetaDslx.CodeAnalysis.Symbols.Completion.CompletionModuleSymbol, MetaDslx.CodeAnalysis.Symbols.Source.ISourceSymbol
 	{
-		public SourceModuleSymbol(Symbol containingSymbol)
-            : base(containingSymbol)
-        {
-		}
+        private readonly MergedDeclaration _declaration;
 
-        protected override void CompleteInitializingSymbol(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        public MergedDeclaration MergedDeclaration => _declaration;
+
+        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => _declaration.SyntaxReferences;
+
+        public BinderPosition<SymbolBinder> GetBinder(SyntaxReference reference)
+        {
+            Debug.Assert(this.DeclaringSyntaxReferences.Contains(reference));
+            return FindBinders.FindSymbolBinder(this, reference);
+        }
+
+        public Symbol GetChildSymbol(SyntaxReference syntax)
+        {
+            foreach (var child in this.ChildSymbols)
+            {
+                if (child.DeclaringSyntaxReferences.Any(sr => sr.GetLocation() == syntax.GetLocation()))
+                {
+                    return child;
+                }
+            }
+            return null;
+        }
+
+        protected override void CompleteInitializingSymbol(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
         }
 
-        protected override ImmutableArray<Symbol> CompleteCreatingChildSymbols(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        protected override ImmutableArray<Symbol> CompleteCreatingChildSymbols(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             return SourceSymbolImplementation.MakeChildSymbols(this, nameof(ChildSymbols), diagnostics, cancellationToken);
         }
@@ -37,7 +56,12 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             SourceSymbolImplementation.CompleteImports(this, locationOpt, diagnostics, cancellationToken);
         }
 
-        protected override global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.Symbol> CompleteSymbolProperty_Attributes(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        protected override string CompleteSymbolProperty_Name(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            return SourceSymbolImplementation.AssignSymbolPropertyValue<string>(this, nameof(Name), diagnostics, cancellationToken);
+        }
+
+        protected override global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.Symbol> CompleteSymbolProperty_Attributes(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             return SourceSymbolImplementation.AssignSymbolPropertyValues<global::MetaDslx.CodeAnalysis.Symbols.Symbol>(this, nameof(Attributes), diagnostics, cancellationToken);
         }
