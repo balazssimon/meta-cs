@@ -8,10 +8,6 @@ namespace GeneratedSourceSymbols.Completion
 {
     public partial class CompletionCustomSymbol
     {
-        public CompletionCustomSymbol()
-        {
-
-        }
 
         public override void CheckCustomArray(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {

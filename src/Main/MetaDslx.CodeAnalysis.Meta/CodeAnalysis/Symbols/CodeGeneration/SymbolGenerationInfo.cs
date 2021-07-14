@@ -53,9 +53,12 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration
         public string? SubSymbolKindType { get; private set; }
         public SymbolGenerationInfo ParentSymbol { get; private set; }
         public List<CompletionPartGenerationInfo> CompletionParts { get; init; }
-        public HashSet<string> ExistingCompletionMethodNames { get; init; }
-        public HashSet<string> ExistingMetadataMethodNames { get; init; }
-        public HashSet<string> ExistingSourceMethodNames { get; init; }
+        public string? ExistingCompletionBaseType { get; init; }
+        public string? ExistingMetadataBaseType { get; init; }
+        public string? ExistingSourceBaseType { get; init; }
+        public HashSet<string> ExistingCompletionMemberNames { get; init; }
+        public HashSet<string> ExistingMetadataMemberNames { get; init; }
+        public HashSet<string> ExistingSourceMemberNames { get; init; }
 
         public IEnumerable<SymbolPropertyGenerationInfo> Properties => this.CompletionParts.OfType<SymbolPropertyGenerationInfo>();
         public IEnumerable<SymbolMethodGenerationInfo> Methods => this.CompletionParts.OfType<SymbolMethodGenerationInfo>();
