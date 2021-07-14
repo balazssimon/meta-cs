@@ -25,6 +25,8 @@ namespace MetaDslx.CodeGeneration
             return s_pool.Allocate();
         }
 
+        public int Length => _sb.Length;
+
         public void Free()
         {
             _sb.Clear();

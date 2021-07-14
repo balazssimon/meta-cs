@@ -46,7 +46,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Model
 
         public sealed override Language Language => ContainingModule.Language;
 
-        public SymbolFactory SymbolFactory => ((IModelSymbol)_container).SymbolFactory;
+        public SymbolFactory SymbolFactory => ContainingModule.SymbolFactory;
 
         public object ModelObject => _modelObject;
 

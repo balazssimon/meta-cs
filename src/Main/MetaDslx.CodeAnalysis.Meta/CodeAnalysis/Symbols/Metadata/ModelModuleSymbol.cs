@@ -53,18 +53,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Model
 
         public Type? ModelObjectType => null;
 
-        public SymbolFactory SymbolFactory
-        {
-            get
-            {
-                if (_symbolFactory == null)
-                {
-                    Interlocked.CompareExchange(ref _symbolFactory, Language.CompilationFactory.CreateSymbolFactory(this), null);
-                }
-                return _symbolFactory;
-            }
-        }
-
         public override int Ordinal => _ordinal;
 
         public override bool HasUnifiedReferences => false;

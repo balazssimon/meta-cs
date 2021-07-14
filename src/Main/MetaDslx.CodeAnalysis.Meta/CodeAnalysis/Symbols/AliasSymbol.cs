@@ -46,7 +46,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
     ///     IList&lt;Symbol&gt; SemanticModel.LookupSymbols(CSharpSyntaxNode location, NamespaceOrTypeSymbol container = null, string name = null, int? arity = null, LookupOptions options = LookupOptions.Default, List&lt;Symbol> results = null);
     /// </pre>
     /// </summary>
-    [Symbol(NoMeta = true, OptionalModelObject = true)]
+    [Symbol(SymbolParts = SymbolParts.Source, ModelObjectOption = ParameterOption.Disabled)]
     public partial class AliasSymbol : DeclaredSymbol, IAliasSymbol
     {
         [SymbolProperty]

@@ -53,7 +53,7 @@ namespace [symbol.NamespaceName]
 }
 end template
 
-template GenerateModelSymbol(SymbolGenerationInfo symbol)
+template GenerateCompletionSymbol(SymbolGenerationInfo symbol)
 using Microsoft.CodeAnalysis;
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Declarations;
@@ -68,23 +68,24 @@ using System.Text;
 using System.Threading;
 using Roslyn.Utilities;
 ^
-namespace [symbol.NamespaceName].Model
+namespace [symbol.NamespaceName].Completion
 {
-	public abstract partial class Model[symbol.Name] : [symbol.NamespaceName].[symbol.Name], MetaDslx.CodeAnalysis.Symbols.Metadata.IModelSymbol
+	public abstract partial class Completion[symbol.Name] : [symbol.NamespaceName].[symbol.Name][if(symbol.ModelObjectOption != ParameterOption.Disabled)], MetaDslx.CodeAnalysis.Symbols.Metadata.IModelSymbol[end if]
 	{
         public static class CompletionParts
         {
-            [loop (prop:symbol.Properties)]
-            public static readonly CompletionPart StartComputingProperty_[prop.Name] = new CompletionPart(nameof(StartComputingProperty_[prop.Name]));
-            public static readonly CompletionPart FinishComputingProperty_[prop.Name] = new CompletionPart(nameof(FinishComputingProperty_[prop.Name]));
+            [loop (partName:symbol.GetCompletionPartNames())]
+            public static readonly CompletionPart [partName] = new CompletionPart(nameof([partName]));
             [end loop]
-            public static readonly ImmutableHashSet<CompletionPart> AllWithLocation = CompletionPart.Combine(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren[loop (prop:symbol.Properties)], StartComputingProperty_[prop.Name], FinishComputingProperty_[prop.Name][end loop], CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties);
-            public static readonly ImmutableHashSet<CompletionPart> All = CompletionPart.Combine(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren[loop (prop:symbol.Properties)], StartComputingProperty_[prop.Name], FinishComputingProperty_[prop.Name][end loop], CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties, CompletionGraph.ChildrenCompleted);
-            public static readonly CompletionGraph CompletionGraph = CompletionGraph.FromCompletionParts(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren[loop (prop:symbol.Properties)], StartComputingProperty_[prop.Name], FinishComputingProperty_[prop.Name][end loop], CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties, CompletionGraph.ChildrenCompleted);
+            public static readonly ImmutableHashSet<CompletionPart> AllWithLocation = CompletionPart.Combine([loop (partName:symbol.GetOrderedCompletionParts(true); separator comma = ", ")][partName][comma][end loop]);
+            public static readonly ImmutableHashSet<CompletionPart> All = CompletionPart.Combine([loop (partName:symbol.GetOrderedCompletionParts(false); separator comma = ", ")][partName][comma][end loop]);
+            public static readonly CompletionGraph CompletionGraph = CompletionGraph.FromCompletionParts([loop (partName:symbol.GetOrderedCompletionParts(false); separator comma = ", ")][partName][comma][end loop]);
         }
 ^
         private readonly Symbol _container;
+        [if(symbol.ModelObjectOption != ParameterOption.Disabled)]
         private readonly object? _modelObject;
+        [end if]
         private readonly CompletionState _state;
         private ImmutableArray<Symbol> _childSymbols;
         private string _name;
@@ -92,24 +93,27 @@ namespace [symbol.NamespaceName].Model
         private [prop.Type] [prop.FieldName];
         [end loop]
 ^
-        public Model[symbol.Name](Symbol container, object? modelObject[if(symbol.OptionalModelObject)] = null[end if])
+        public Completion[symbol.Name](Symbol container[if(symbol.ModelObjectOption != ParameterOption.Disabled)], object? modelObject[if(symbol.ModelObjectOption == ParameterOption.Optional)] = null[end if][end if])
         {
-            Debug.Assert(container is IModelSymbol);
-            [if(!symbol.OptionalModelObject)]
+            _container = container;
+            [if(symbol.ModelObjectOption == ParameterOption.Required)]
             if (modelObject is null) throw new ArgumentNullException(nameof(modelObject));
             [end if]
-            _container = container;
+            [if(symbol.ModelObjectOption != ParameterOption.Disabled)]
             _modelObject = modelObject;
+            [end if]
             _state = CompletionParts.CompletionGraph.CreateState();
         }
 ^
         public sealed override Language Language => ContainingModule.Language;
 ^
-        public SymbolFactory SymbolFactory => ((IModelSymbol)_container).SymbolFactory;
+        public SymbolFactory SymbolFactory => ContainingModule.SymbolFactory;
+        [if(symbol.ModelObjectOption != ParameterOption.Disabled)]
 ^
         public object ModelObject => _modelObject;
 ^
         public Type ModelObjectType => _modelObject is not null ? Language.SymbolFacts.GetModelObjectType(_modelObject) : null;
+        [end if]
 ^
         public sealed override Symbol ContainingSymbol => _container;
 ^
@@ -136,7 +140,7 @@ namespace [symbol.NamespaceName].Model
         {
             get
             {
-                this.ForceComplete(CompletionParts.FinishComputingProperty_[prop.Name], null, default);
+                this.ForceComplete(CompletionParts.[prop.FinishCompletionPartName], null, default);
                 return [prop.FieldName];
             }
         }
@@ -164,8 +168,8 @@ namespace [symbol.NamespaceName].Model
                     if (_state.NotePartComplete(CompletionGraph.StartInitializing))
                     {
                         var diagnostics = DiagnosticBag.GetInstance();
-                        _name = CompleteSymbolProperty_Name(locationOpt, diagnostics, cancellationToken);
-                        CompleteInitializingSymbol(locationOpt, diagnostics, cancellationToken);
+                        _name = CompleteSymbolProperty_Name(diagnostics, cancellationToken);
+                        CompleteInitializingSymbol(diagnostics, cancellationToken);
                         AddSymbolDiagnostics(diagnostics);
                         diagnostics.Free();
                         _state.NotePartComplete(CompletionGraph.FinishInitializing);
@@ -176,24 +180,43 @@ namespace [symbol.NamespaceName].Model
                     if (_state.NotePartComplete(CompletionGraph.StartCreatingChildren))
                     {
                         var diagnostics = DiagnosticBag.GetInstance();
-                        _childSymbols = CompleteCreatingChildSymbols(locationOpt, diagnostics, cancellationToken);
+                        _childSymbols = CompleteCreatingChildSymbols(diagnostics, cancellationToken);
                         AddSymbolDiagnostics(diagnostics);
                         diagnostics.Free();
                         _state.NotePartComplete(CompletionGraph.FinishCreatingChildren);
                     }
                 }
-                [loop (prop:symbol.Properties)]
-                else if (incompletePart == CompletionParts.StartComputingProperty_[prop.Name] || incompletePart == CompletionParts.FinishComputingProperty_[prop.Name])
+                [loop (part:symbol.CompletionParts)]
+                    [if (part.IsLocked)]
+                else if (incompletePart == CompletionParts.[part.StartCompletionPartName] || incompletePart == CompletionParts.[part.FinishCompletionPartName])
                 {
-                    if (_state.NotePartComplete(CompletionParts.StartComputingProperty_[prop.Name]))
+                    if (_state.NotePartComplete(CompletionParts.[part.StartCompletionPartName]))
                     {
+                        [if (part.CompleteMethodParameters.HasFlag(CompleteMethodParameters.Diagnostics))]
                         var diagnostics = DiagnosticBag.GetInstance();
-                        [prop.FieldName] = CompleteSymbolProperty_[prop.Name](locationOpt, diagnostics, cancellationToken);
+                        [end if]
+                        [if (part is SymbolPropertyGenerationInfo)][((SymbolPropertyGenerationInfo)part).FieldName] = [end if][part.CompleteMethodName]([part.CompleteMethodArgList]);
+                        [if (part.CompleteMethodParameters.HasFlag(CompleteMethodParameters.Diagnostics))]
                         AddSymbolDiagnostics(diagnostics);
                         diagnostics.Free();
-                        _state.NotePartComplete(CompletionParts.FinishComputingProperty_[prop.Name]);
+                        [end if]
+                        _state.NotePartComplete(CompletionParts.[part.FinishCompletionPartName]);
                     }
                 }
+                    [else]
+                else if (incompletePart == CompletionParts.[part.CompletionPartName])
+                {
+                    [if (part.CompleteMethodParameters.HasFlag(CompleteMethodParameters.Diagnostics))]
+                    var diagnostics = DiagnosticBag.GetInstance();
+                    [end if]
+                    [part.CompleteMethodName]([part.CompleteMethodArgList]);
+                    [if (part.CompleteMethodParameters.HasFlag(CompleteMethodParameters.Diagnostics))]
+                    AddSymbolDiagnostics(diagnostics);
+                    diagnostics.Free();
+                    [end if]
+                    _state.NotePartComplete(CompletionParts.[part.CompletionPartName]);
+                }
+                    [end if]
                 [end loop]
                 else if (incompletePart == CompletionGraph.StartComputingNonSymbolProperties || incompletePart == CompletionGraph.FinishComputingNonSymbolProperties)
                 {
@@ -242,7 +265,7 @@ namespace [symbol.NamespaceName].Model
                     // We've completed all members, proceed to the next iteration.
                     _state.NotePartComplete(CompletionGraph.ChildrenCompleted);
                 }
-                else if (incompletePart == null)
+                if (incompletePart == null)
                 {
                     return;
                 }
@@ -256,16 +279,15 @@ namespace [symbol.NamespaceName].Model
                 if (completionPart != null && _state.HasComplete(completionPart)) return;
                 _state.SpinWaitComplete(incompletePart, cancellationToken);
             }
-^
             throw ExceptionUtilities.Unreachable;
         }
 ^
-        protected abstract void CompleteInitializingSymbol(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken);
-        protected abstract ImmutableArray<Symbol> CompleteCreatingChildSymbols(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken);
+        protected abstract string CompleteSymbolProperty_Name(DiagnosticBag diagnostics, CancellationToken cancellationToken);
+        protected abstract void CompleteInitializingSymbol(DiagnosticBag diagnostics, CancellationToken cancellationToken);
+        protected abstract ImmutableArray<Symbol> CompleteCreatingChildSymbols(DiagnosticBag diagnostics, CancellationToken cancellationToken);
         protected abstract void CompleteImports(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken);
-        protected abstract string CompleteSymbolProperty_Name(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken);
-        [loop (prop:symbol.Properties)]
-        protected abstract [prop.Type] CompleteSymbolProperty_[prop.Name](SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken);
+        [loop (part:symbol.CompletionParts where part.GenerateCompleteMethod)]
+        protected abstract [part.CompleteMethodReturnType] [part.CompleteMethodName]([part.CompleteMethodParamList]);
         [end loop]
         protected abstract void CompleteNonSymbolProperties(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken);
         #endregion
@@ -274,7 +296,7 @@ namespace [symbol.NamespaceName].Model
 }
 end template
 
-template GenerateMetaSymbol(SymbolGenerationInfo symbol)
+template GenerateMetadataSymbol(SymbolGenerationInfo symbol)
 using Microsoft.CodeAnalysis;
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Declarations;
@@ -290,25 +312,27 @@ using System.Threading;
 ^
 namespace [symbol.NamespaceName].Metadata
 {
-	public partial class Meta[symbol.Name] : [symbol.NamespaceName].Model.Model[symbol.Name]
+	public partial class Metadata[symbol.Name] : [symbol.NamespaceName].Completion.Completion[symbol.Name]
 	{
-        public Meta[symbol.Name](Symbol container, object modelObject)
+        public Metadata[symbol.Name](Symbol container[if(symbol.ModelObjectOption != ParameterOption.Disabled)], object modelObject[if(symbol.ModelObjectOption == ParameterOption.Optional)] = null[end if][end if])
             : base(container, modelObject)
         {
-            [if(symbol.OptionalModelObject)]
-            if (modelObject is null) throw new ArgumentNullException(nameof(modelObject));
-            [end if]
         }
 ^
         public override ImmutableArray<Location> Locations => this.ContainingModule.Locations;
 ^
         public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => ImmutableArray<SyntaxReference>.Empty;
 ^
-        protected override void CompleteInitializingSymbol(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        protected override string CompleteSymbolProperty_Name(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            return ModelSymbolImplementation.AssignSymbolPropertyValue<string>(this, nameof(Name), diagnostics, cancellationToken);
+        }
+^
+        protected override void CompleteInitializingSymbol(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
         }
 ^
-        protected override ImmutableArray<Symbol> CompleteCreatingChildSymbols(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        protected override ImmutableArray<Symbol> CompleteCreatingChildSymbols(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             return ModelSymbolImplementation.MakeChildSymbols(this, nameof(ChildSymbols), diagnostics, cancellationToken);
         }
@@ -317,18 +341,16 @@ namespace [symbol.NamespaceName].Metadata
         {
         }
 ^
-        protected override string CompleteSymbolProperty_Name(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        [loop (part:symbol.CompletionParts where part.GenerateCompleteMethod)]
+        protected override [part.CompleteMethodReturnType] [part.CompleteMethodName]([part.CompleteMethodParamList])
         {
-            return ModelSymbolImplementation.AssignSymbolPropertyValue<string>(this, nameof(Name), diagnostics, cancellationToken);
-        }
-^
-        [loop (prop:symbol.Properties)]
-        protected override [prop.Type] CompleteSymbolProperty_[prop.Name](SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
-        {
-            [if (prop.IsCollection)]
+            [if (part is SymbolPropertyGenerationInfo)]
+                [var prop = (SymbolPropertyGenerationInfo)part]
+                [if (prop.IsCollection)]
             return ModelSymbolImplementation.AssignSymbolPropertyValues<[prop.ItemType]>(this, nameof([prop.Name]), diagnostics, cancellationToken);
-            [else]
+                [else]
             return ModelSymbolImplementation.AssignSymbolPropertyValue<[prop.Type]>(this, nameof([prop.Name]), diagnostics, cancellationToken);
+                [end if]
             [end if]
         }
         [end loop]
@@ -359,17 +381,14 @@ using System.Threading;
 ^
 namespace [symbol.NamespaceName].Source
 {
-	public partial class Source[symbol.Name] : [symbol.NamespaceName].Model.Model[symbol.Name], MetaDslx.CodeAnalysis.Symbols.Source.ISourceSymbol
+	public partial class Source[symbol.Name] : [symbol.NamespaceName].Completion.Completion[symbol.Name], MetaDslx.CodeAnalysis.Symbols.Source.ISourceSymbol
 	{
         private readonly MergedDeclaration _declaration;
 
-		public Source[symbol.Name](Symbol containingSymbol, object modelObject, MergedDeclaration declaration)
+		public Source[symbol.Name](Symbol containingSymbol, [if(symbol.ModelObjectOption != ParameterOption.Disabled)]object modelObject[if(symbol.ModelObjectOption == ParameterOption.Optional)] = null[end if], [end if]MergedDeclaration declaration)
             : base(containingSymbol, modelObject)
         {
-            Debug.Assert(declaration != null);
-            [if(symbol.OptionalModelObject)]
-            if (modelObject is null) throw new ArgumentNullException(nameof(modelObject));
-            [end if]
+            if (declaration is null) throw new ArgumentNullException(nameof(declaration));
             _declaration = declaration;
 		}
 ^
@@ -397,11 +416,11 @@ namespace [symbol.NamespaceName].Source
             return null;
         }
 ^
-        protected override void CompleteInitializingSymbol(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        protected override void CompleteInitializingSymbol(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
         }
 ^
-        protected override ImmutableArray<Symbol> CompleteCreatingChildSymbols(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        protected override ImmutableArray<Symbol> CompleteCreatingChildSymbols(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             return SourceSymbolImplementation.MakeChildSymbols(this, nameof(ChildSymbols), diagnostics, cancellationToken);
         }
@@ -411,18 +430,21 @@ namespace [symbol.NamespaceName].Source
             SourceSymbolImplementation.CompleteImports(this, locationOpt, diagnostics, cancellationToken);
         }
 ^
-        protected override string CompleteSymbolProperty_Name(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        protected override string CompleteSymbolProperty_Name(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             return SourceSymbolImplementation.AssignSymbolPropertyValue<string>(this, nameof(Name), diagnostics, cancellationToken);
         }
 ^
-        [loop (prop:symbol.Properties)]
-        protected override [prop.Type] CompleteSymbolProperty_[prop.Name](SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        [loop (part:symbol.CompletionParts where part.GenerateCompleteMethod)]
+        protected override [part.CompleteMethodReturnType] [part.CompleteMethodName]([part.CompleteMethodParamList])
         {
-            [if (prop.IsCollection)]
+            [if (part is SymbolPropertyGenerationInfo)]
+                [var prop = (SymbolPropertyGenerationInfo)part]
+                [if (prop.IsCollection)]
             return SourceSymbolImplementation.AssignSymbolPropertyValues<[prop.ItemType]>(this, nameof([prop.Name]), diagnostics, cancellationToken);
-            [else]
+                [else]
             return SourceSymbolImplementation.AssignSymbolPropertyValue<[prop.Type]>(this, nameof([prop.Name]), diagnostics, cancellationToken);
+                [end if]
             [end if]
         }
         [end loop]

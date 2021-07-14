@@ -8,7 +8,7 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-    [Symbol(OptionalModelObject = true)]
+    [Symbol(ModelObjectOption = ParameterOption.Optional)]
     public abstract partial class NamespaceSymbol : NamespaceOrTypeSymbol, INamespaceSymbol
     {
         // PERF: initialization of the following fields will allocate, so we make them lazy

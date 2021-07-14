@@ -21,6 +21,10 @@ namespace GeneratedSourceSymbols
         public abstract CustomSymbol Right { get; }
         [SymbolProperty]
         public abstract ImmutableArray<CustomSymbol> CustomArray { get; }
+
+        [SymbolCompletionPart(IsLocked = false)]
+        public abstract void CheckCustomArray(DiagnosticBag diagnostics, CancellationToken cancellationToken);
+
         [SymbolProperty]
         public abstract ImmutableArray<int> IntArray { get; }
         [SymbolProperty]

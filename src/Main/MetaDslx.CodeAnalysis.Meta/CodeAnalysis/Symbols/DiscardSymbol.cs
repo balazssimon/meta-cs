@@ -6,7 +6,7 @@ using System.Diagnostics;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-    [Symbol(NoMeta = true)]
+    [Symbol(SymbolParts = SymbolParts.None)]
     public partial class DiscardSymbol : Symbol
     {
         public TypeSymbol Type { get; }

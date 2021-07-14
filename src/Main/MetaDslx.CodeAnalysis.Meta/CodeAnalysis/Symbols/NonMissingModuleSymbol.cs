@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
+using System.Threading;
 using MetaDslx.CodeAnalysis.Symbols.CSharp;
 using MetaDslx.CodeAnalysis.Symbols.Source;
 using Microsoft.CodeAnalysis;
@@ -17,6 +18,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
     /// </summary>
     public abstract class NonMissingModuleSymbol : ModuleSymbol
     {
+        private SymbolFactory _symbolFactory;
+
         /// <summary>
         /// An array of <see cref="AssemblySymbol"/> objects corresponding to assemblies directly referenced by this module.
         /// </summary>
@@ -24,6 +27,18 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// The contents are provided by ReferenceManager and may not be modified.
         /// </remarks>
         private ModuleReferences<AssemblySymbol> _moduleReferences;
+
+        public override SymbolFactory SymbolFactory
+        {
+            get
+            {
+                if (_symbolFactory == null)
+                {
+                    Interlocked.CompareExchange(ref _symbolFactory, Language.CompilationFactory.CreateSymbolFactory(this), null);
+                }
+                return _symbolFactory;
+            }
+        }
 
         /// <summary>
         /// Does this symbol represent a missing module.

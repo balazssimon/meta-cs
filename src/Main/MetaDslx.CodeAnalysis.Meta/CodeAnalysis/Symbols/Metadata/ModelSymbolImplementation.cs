@@ -15,12 +15,10 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
     {
         public static ImmutableArray<Symbol> MakeGlobalSymbols(Symbol rootSymbol, string symbolPropertyName, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
-            var msymbol = rootSymbol as IModelSymbol;
             var module = rootSymbol.ContainingSymbol as ModelModuleSymbol;
             if (module is null) throw new ArgumentException("Containing symbol of the root symbol must be a ModelModuleSymbol.");
-            if (msymbol is null) throw new ArgumentException("Symbol must implement IModelSymbol.");
             var location = rootSymbol.ContainingModule.Locations.FirstOrDefault();
-            var symbolFactory = msymbol.SymbolFactory;
+            var symbolFactory = rootSymbol.ContainingModule.SymbolFactory;
             var result = ArrayBuilder<Symbol>.GetInstance();
             var childObjects = module.Language.SymbolFacts.GetRootObjects(module.Model);
             foreach (var childObject in childObjects)
@@ -38,7 +36,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             if (msymbol is null) throw new ArgumentException("Symbol must implement IModelSymbol.");
             var location = symbol.ContainingModule.Locations.FirstOrDefault();
             var symbolFacts = symbol.Language.SymbolFacts;
-            var symbolFactory = msymbol.SymbolFactory;
+            var symbolFactory = symbol.ContainingModule.SymbolFactory;
             var result = ArrayBuilder<Symbol>.GetInstance();
             var mproperties = symbolFacts.GetProperties(msymbol.ModelObject);
             var cproperties = mproperties.Where(prop => symbolFacts.IsContainmentProperty(prop));
@@ -87,7 +85,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             if (msymbol == null) return;
             var language = symbol.Language;
             var location = symbol.ContainingModule.Locations.FirstOrDefault();
-            var symbolFactory = msymbol.SymbolFactory;
+            var symbolFactory = symbol.ContainingModule.SymbolFactory;
             var symbolFacts = language.SymbolFacts;
             var objectProperties = symbolFacts.GetPropertiesForSymbol(msymbol.ModelObject, symbolPropertyName);
             foreach (var prop in objectProperties)

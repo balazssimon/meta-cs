@@ -52,6 +52,21 @@ namespace MetaDslx.CodeAnalysis.Analyzers
             return false;
         }
 
+        public static bool IsCompletionMethod(IMethodSymbol method, out AttributeData symbolMethodAttribute)
+        {
+            symbolMethodAttribute = null;
+            if (method.DeclaringSyntaxReferences.IsDefaultOrEmpty) return false;
+            foreach (var attr in method.GetAttributes())
+            {
+                if (attr.AttributeClass.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat) == "global::MetaDslx.CodeAnalysis.Symbols.SymbolCompletionPartAttribute")
+                {
+                    symbolMethodAttribute = attr;
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public static string GetFullName(INamespaceOrTypeSymbol namedType)
         {
             return namedType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat).Substring(8);

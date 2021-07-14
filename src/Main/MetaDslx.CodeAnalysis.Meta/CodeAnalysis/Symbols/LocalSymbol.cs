@@ -6,7 +6,7 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-    [Symbol(SubSymbolKindType = "LocalKind")]
+    [Symbol(SymbolParts = SymbolParts.None, SubSymbolKindType = "LocalKind")]
     public abstract partial class LocalSymbol : DeclaredSymbol
     {
         public override bool IsStatic => false;

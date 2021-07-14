@@ -5,14 +5,13 @@ using System.Text;
 namespace MetaDslx.CodeAnalysis.Symbols
 {
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    public class PhaseAttribute : Attribute
+    public class SymbolCompletionPartAttribute : Attribute
     {
-        public PhaseAttribute()
+        public SymbolCompletionPartAttribute()
         {
+            this.IsLocked = true;
         }
 
-        public bool Locked { get; set; }
-        public CompletionPart Before { get; set; }
-        public CompletionPart After { get; set; }
+        public bool IsLocked { get; set; }
     }
 }

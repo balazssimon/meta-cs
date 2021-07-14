@@ -9,28 +9,9 @@ namespace GeneratedSourceSymbols.Source
 {
     public partial class SourceCustomSymbol
     {
-        [Phase(Locked = false)]
-        protected virtual void CompleteFirst(CancellationToken cancellationToken)
+        protected override int CompleteSymbolProperty_Int(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
-            var syntax = this.DeclaringSyntaxReferences[0].GetSyntax();
-            var compilation = this.DeclaringCompilation;
-            var binder = compilation.GetBinder(syntax);
-            var diagnostics = DiagnosticBag.GetInstance();
-            binder.Bind(diagnostics, cancellationToken);
-            AddSymbolDiagnostics(diagnostics);
-            diagnostics.Free();
-        }
-
-        [Phase(Locked = true)]
-        protected virtual void CompleteSecond(CancellationToken cancellationToken)
-        {
-            var syntax = this.DeclaringSyntaxReferences[0].GetSyntax();
-            var compilation = this.DeclaringCompilation;
-            var binder = compilation.GetBinder(syntax);
-            var diagnostics = DiagnosticBag.GetInstance();
-            binder.Bind(diagnostics, cancellationToken);
-            AddSymbolDiagnostics(diagnostics);
-            diagnostics.Free();
+            return -1;
         }
     }
 }

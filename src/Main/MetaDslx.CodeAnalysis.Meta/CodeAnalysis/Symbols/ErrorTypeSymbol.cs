@@ -16,7 +16,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
     /// of an error. For example, if a field is declared "Goo x;", and the type "Goo" cannot be
     /// found, an ErrorSymbol is returned when asking the field "x" what it's type is.
     /// </summary>
-    [Symbol(NoModel = true)]
+    [Symbol(SymbolParts = SymbolParts.None)]
     public abstract partial class ErrorTypeSymbol : NamedTypeSymbol
     {
         internal static readonly ErrorTypeSymbol UnknownResultType = new UnsupportedMetadataTypeSymbol();

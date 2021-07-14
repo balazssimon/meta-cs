@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-    [Symbol(SubSymbolKindType = "StatementKind")]
+    [Symbol(SymbolParts = SymbolParts.None, SubSymbolKindType = "StatementKind")]
     public abstract partial class StatementSymbol : NonDeclaredSymbol
     {
 

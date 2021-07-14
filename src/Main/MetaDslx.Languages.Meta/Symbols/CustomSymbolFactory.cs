@@ -1,5 +1,6 @@
 ﻿using MetaDslx.CodeAnalysis.Declarations;
 using MetaDslx.CodeAnalysis.Symbols;
+using MetaDslx.Languages.Meta.Symbols.Source;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -15,7 +16,7 @@ namespace MetaDslx.Languages.Meta.Symbols
 
         protected override Symbol CreateSourceSymbol(Symbol container, Type symbolType, object modelObject, MergedDeclaration declaration)
         {
-            if (symbolType == typeof(AssociationSymbol)) return new AssociationSymbol(container, declaration);
+            if (symbolType == typeof(AssociationSymbol)) return new SourceAssociationSymbol(container, modelObject, declaration);
             return base.CreateSourceSymbol(container, symbolType, modelObject, declaration);
         }
     }

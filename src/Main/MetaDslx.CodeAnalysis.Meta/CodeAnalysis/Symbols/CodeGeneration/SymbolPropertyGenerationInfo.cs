@@ -5,9 +5,10 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration
 {
-    public class SymbolPropertyGenerationInfo
+    public class SymbolPropertyGenerationInfo : CompletionPartGenerationInfo
     {
-        public SymbolPropertyGenerationInfo(string name, string type, string itemType, bool isAbstract, bool isSymbol)
+        public SymbolPropertyGenerationInfo(string name, string type, string itemType, bool isAbstract, bool isSymbol, CompleteMethodParameters completeMethodParameters, bool generateCompleteMethod)
+            : base("ComputingProperty_" + name, "CompleteSymbolProperty_" + name, completeMethodParameters, generateCompleteMethod, true)
         {
             this.Name = name;
             this.FieldName = "_"+name.ToCamelCase();
@@ -25,5 +26,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration
         public bool IsAbstract { get; private set; }
         public bool IsSymbol { get; private set; }
         public bool IsCollection { get; private set; }
+
+        public override string CompleteMethodReturnType => this.Type;
     }
 }

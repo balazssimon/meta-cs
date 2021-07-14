@@ -11,9 +11,9 @@ using System.Diagnostics;
 using System.Text;
 using System.Threading;
 
-namespace GeneratedSourceSymbols
+namespace MetaDslx.Languages.Meta.Symbols
 {
-	public abstract partial class CustomSymbol
+	public abstract partial class AssociationSymbol
 	{
 
 
@@ -32,11 +32,6 @@ namespace GeneratedSourceSymbols
         {
             if (visitor is ISymbolVisitor<TArgument, TResult> isv) return isv.Visit(this, argument);
             else return default(TResult);
-        }
-
-        protected override ISymbol CreateISymbol()
-        {
-            throw new NotImplementedException();
         }
 	}
 }

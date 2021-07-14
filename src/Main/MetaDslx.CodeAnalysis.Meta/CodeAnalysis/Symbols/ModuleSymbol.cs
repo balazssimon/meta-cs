@@ -20,7 +20,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
     /// <summary>
     /// Represents a module within an assembly. Every assembly contains one or more modules.
     /// </summary>
-    [Symbol(SymbolKind = "NetModule", OptionalModelObject = true)]
+    [Symbol(SymbolKind = "NetModule", ModelObjectOption = ParameterOption.Disabled)]
     public abstract partial class ModuleSymbol : Symbol, IModuleSymbol
     {
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -38,6 +38,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public override ImmutableArray<Symbol> ChildSymbols => ImmutableArray.Create<Symbol>(GlobalNamespace);
 
         public override Language Language => ContainingAssembly.Language;
+
+        public abstract SymbolFactory SymbolFactory { get; }
 
         /// <summary>
         /// Returns the containing assembly. Modules are always directly contained by an assembly,

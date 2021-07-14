@@ -20,7 +20,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 {
     using CSharpSymbols = Microsoft.CodeAnalysis.CSharp.Symbols;
 
-    [Symbol(NoMeta = true, OptionalModelObject = true)]
+    [Symbol(SymbolParts = SymbolParts.Source, ModelObjectOption = ParameterOption.Disabled)]
     public abstract partial class AssemblySymbol : Symbol, IAssemblySymbol
     {
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

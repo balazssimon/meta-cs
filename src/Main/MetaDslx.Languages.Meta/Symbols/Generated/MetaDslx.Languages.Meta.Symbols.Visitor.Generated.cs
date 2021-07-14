@@ -7,20 +7,20 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Text;
 using System.Threading;
-namespace GeneratedSourceSymbols
+namespace MetaDslx.Languages.Meta.Symbols
 {
 	public interface ISymbolVisitor
 	{
-        void Visit(CustomSymbol symbol);
+        void Visit(AssociationSymbol symbol);
 	}
 
 	public interface ISymbolVisitor<TResult>
 	{
-        TResult Visit(CustomSymbol symbol);
+        TResult Visit(AssociationSymbol symbol);
 	}
 
 	public interface ISymbolVisitor<TArgument, TResult>
 	{
-        TResult Visit(CustomSymbol symbol, TArgument argument);
+        TResult Visit(AssociationSymbol symbol, TArgument argument);
 	}
 }
