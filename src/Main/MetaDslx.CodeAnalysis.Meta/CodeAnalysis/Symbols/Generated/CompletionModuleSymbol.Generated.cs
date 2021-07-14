@@ -33,6 +33,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
 
         public sealed override Language Language => ContainingModule.Language;
 
+        public SymbolFactory SymbolFactory => ContainingModule.SymbolFactory;
+
         public sealed override Symbol ContainingSymbol => _container;
 
         public sealed override ImmutableArray<Symbol> ChildSymbols 

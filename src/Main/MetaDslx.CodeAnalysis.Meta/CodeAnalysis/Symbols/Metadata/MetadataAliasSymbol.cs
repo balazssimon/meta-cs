@@ -12,7 +12,7 @@ using System.Threading;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 {
-    public class MetadataAliasSymbol : CompletionAliasSymbol
+    public partial class MetadataAliasSymbol : CompletionAliasSymbol
     {
         private readonly string _aliasName;
         private readonly Binder _binder;

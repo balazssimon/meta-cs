@@ -16,6 +16,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 	public partial class MetadataModuleSymbol : MetaDslx.CodeAnalysis.Symbols.Completion.CompletionModuleSymbol
 	{
 
+        public override ImmutableArray<Location> Locations => this.ContainingModule.Locations;
+        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => ImmutableArray<SyntaxReference>.Empty;
+
         protected override string CompleteSymbolProperty_Name(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             return ModelSymbolImplementation.AssignSymbolPropertyValue<string>(this, nameof(Name), diagnostics, cancellationToken);

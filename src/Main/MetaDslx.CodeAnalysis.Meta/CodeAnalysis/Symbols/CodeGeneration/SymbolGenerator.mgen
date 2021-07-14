@@ -82,8 +82,10 @@ namespace [symbol.NamespaceName].Completion
             public static readonly CompletionGraph CompletionGraph = CompletionGraph.FromCompletionParts([loop (partName:symbol.GetOrderedCompletionParts(false); separator comma = ", ")][partName][comma][end loop]);
         }
 ^
+        [if (symbol.Name != "AssemblySymbol")]
         private readonly Symbol _container;
-        [if(symbol.ModelObjectOption != ParameterOption.Disabled)]
+        [end if]
+        [if (symbol.ModelObjectOption != ParameterOption.Disabled)]
         private readonly object? _modelObject;
         [end if]
         private readonly CompletionState _state;
@@ -92,7 +94,7 @@ namespace [symbol.NamespaceName].Completion
         [loop (prop:symbol.Properties)]
         private [prop.Type] [prop.FieldName];
         [end loop]
-        [if (!symbol.ExistingCompletionMemberNames.Contains(".ctor"))]
+        [if (symbol.Name != "AssemblySymbol" && !symbol.ExistingCompletionMemberNames.Contains(".ctor"))]
 ^
         public Completion[symbol.Name](Symbol container[if(symbol.ModelObjectOption != ParameterOption.Disabled)], object? modelObject[if(symbol.ModelObjectOption == ParameterOption.Optional)] = null[end if][end if])
         {
@@ -106,15 +108,15 @@ namespace [symbol.NamespaceName].Completion
             _state = CompletionParts.CompletionGraph.CreateState();
         }
         [end if]
-        [if (!symbol.ExistingCompletionMemberNames.Contains("Language"))]
+        [if (symbol.Name != "AssemblySymbol" && !symbol.ExistingCompletionMemberNames.Contains("Language"))]
 ^
         public sealed override Language Language => ContainingModule.Language;
         [end if]
-        [if (!symbol.ExistingCompletionMemberNames.Contains("SymbolFactory"))]
+        [if (symbol.Name != "AssemblySymbol" && !symbol.ExistingCompletionMemberNames.Contains("SymbolFactory"))]
 ^
         public SymbolFactory SymbolFactory => ContainingModule.SymbolFactory;
         [end if]
-        [if(symbol.ModelObjectOption != ParameterOption.Disabled)]
+        [if (symbol.ModelObjectOption != ParameterOption.Disabled)]
             [if (!symbol.ExistingCompletionMemberNames.Contains("ModelObject"))]
 ^
         public object ModelObject => _modelObject;
@@ -124,7 +126,7 @@ namespace [symbol.NamespaceName].Completion
         public Type ModelObjectType => _modelObject is not null ? Language.SymbolFacts.GetModelObjectType(_modelObject) : null;
             [end if]
         [end if]
-        [if (!symbol.ExistingCompletionMemberNames.Contains("ContainingSymbol"))]
+        [if (symbol.Name != "AssemblySymbol" && !symbol.ExistingCompletionMemberNames.Contains("ContainingSymbol"))]
 ^
         public sealed override Symbol ContainingSymbol => _container;
         [end if]
@@ -428,8 +430,9 @@ using System.Threading;
 ^
 namespace [symbol.NamespaceName].Source
 {
-	public partial class Source[symbol.Name][if (symbol.ExistingSourceBaseType == null)] : [symbol.NamespaceName].Completion.Completion[symbol.Name], MetaDslx.CodeAnalysis.Symbols.Source.ISourceSymbol[end if]
+	public partial class Source[symbol.Name][if (symbol.ExistingSourceBaseType == null)] : [symbol.NamespaceName].Completion.Completion[symbol.Name][if (symbol.Name != "AssemblySymbol")], MetaDslx.CodeAnalysis.Symbols.Source.ISourceSymbol[end if][end if]
 	{
+        [if (symbol.Name != "AssemblySymbol")]
         private readonly MergedDeclaration _declaration;
         [if (!symbol.ExistingSourceMemberNames.Contains(".ctor"))]
 ^
@@ -473,6 +476,7 @@ namespace [symbol.NamespaceName].Source
             }
             return null;
         }
+        [end if]
         [end if]
         [if (!symbol.ExistingSourceMemberNames.Contains("CompleteInitializingSymbol"))]
 ^
