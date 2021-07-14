@@ -69,7 +69,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             var result = ArrayBuilder<Symbol>.GetInstance();
             foreach (var symbolPartReference in symbol.DeclaringSyntaxReferences)
             {
-                var nestingDeclaration = NestingParentDeclaration(symbolPartReference, symbol);
+                var nestingDeclaration = NestingParentMergedDeclaration(symbolPartReference, symbol);
                 if (nestingDeclaration != null)
                 {
                     foreach (var childDeclaration in nestingDeclaration.Children)
@@ -125,7 +125,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             while (index < result.Count)
             {
                 var childSymbol = result[index];
-                var nestingDeclaration = NestingParentDeclaration(childSyntax, childSymbol);
+                var nestingDeclaration = NestingParentMergedDeclaration(childSyntax, childSymbol);
                 if (nestingDeclaration != null)
                 {
                     var nestedChildSymbols = GetChildSymbols(childSymbol, childSyntax);
@@ -180,7 +180,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             var objectProperties = mproperties.Where(prop => symbolFacts.GetSymbolProperty(msymbol.ModelObjectType, prop) == null).ToImmutableHashSet();
             foreach (var reference in symbol.DeclaringSyntaxReferences)
             {
-                var nestingDeclaration = NestingParentDeclaration(reference, symbol as DeclaredSymbol);
+                var nestingDeclaration = NestingParentSingleDeclaration(reference, symbol);
                 if (nestingDeclaration != null) continue;
                 var symbolDef = GetBinder(symbol, reference);
                 var properties = FindPropertyBinders(symbolDef);
@@ -229,8 +229,26 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             var objectProperties = result != null && mobj != null ? symbolFacts.GetPropertiesForSymbol(mobj, symbolPropertyName) : null;
             foreach (var reference in symbol.DeclaringSyntaxReferences)
             {
-                var nestingDeclaration = NestingParentDeclaration(reference, symbol as DeclaredSymbol);
-                if (nestingDeclaration != null) continue;
+                var nestingDeclaration = NestingParentMergedDeclaration(reference, symbol);
+                if (nestingDeclaration != null)
+                {
+                    var nestingSingleDeclaration = NestingParentSingleDeclaration(reference, symbol);
+                    if (nestingSingleDeclaration != null && mobj != null)
+                    {
+                        Debug.Assert(nestingSingleDeclaration.Children.Length == 1);
+                        var singleChildDeclaration = (SingleDeclaration)nestingSingleDeclaration.Children[0];
+                        var mergedChildDeclaration = nestingDeclaration.Children.FirstOrDefault(c => c.Declarations.Contains(singleChildDeclaration));
+                        if (mergedChildDeclaration != null)
+                        {
+                            var objectProperty = symbolFacts.GetProperty(mobj, singleChildDeclaration.NestingProperty);
+                            if (objectProperties != null && objectProperties.Contains(objectProperty))
+                            {
+                                SetPropertyValue(mergedChildDeclaration.Symbol, reference.GetLocation(), result, singleValue, symbol, symbolPropertyName, null, diagnostics, cancellationToken);
+                            }
+                        }
+                    }
+                    continue;
+                }
                 var symbolDef = GetBinder(symbol, reference);
                 var properties = FindPropertyBinders(symbolDef);
                 foreach (var property in properties)
@@ -298,12 +316,21 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             return childSymbol;
         }
 
-        private static MergedDeclaration? NestingParentDeclaration(SyntaxReference symbolPartReference, Symbol? symbol)
+        private static MergedDeclaration? NestingParentMergedDeclaration(SyntaxReference symbolPartReference, Symbol? symbol)
         {
             if ((symbol as ISourceSymbol)?.MergedDeclaration == null) return null;
             var srcSymbol = (ISourceSymbol)symbol;
             var singleDeclaration = srcSymbol.MergedDeclaration.GetSingleDeclaration(symbolPartReference);
-            if (singleDeclaration.IsNestingParent) return srcSymbol.MergedDeclaration;
+            if (singleDeclaration != null && singleDeclaration.IsNestingParent) return srcSymbol.MergedDeclaration;
+            else return null;
+        }
+
+        private static SingleDeclaration? NestingParentSingleDeclaration(SyntaxReference symbolPartReference, Symbol? symbol)
+        {
+            if ((symbol as ISourceSymbol)?.MergedDeclaration == null) return null;
+            var srcSymbol = (ISourceSymbol)symbol;
+            var singleDeclaration = srcSymbol.MergedDeclaration.GetSingleDeclaration(symbolPartReference);
+            if (singleDeclaration != null && singleDeclaration.IsNestingParent) return singleDeclaration;
             else return null;
         }
 

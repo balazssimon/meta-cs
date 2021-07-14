@@ -22,9 +22,11 @@ namespace MetaDslx.Languages.Meta.Symbols.Completion
             public static readonly CompletionPart FinishComputingProperty_Left = new CompletionPart(nameof(FinishComputingProperty_Left));
             public static readonly CompletionPart StartComputingProperty_Right = new CompletionPart(nameof(StartComputingProperty_Right));
             public static readonly CompletionPart FinishComputingProperty_Right = new CompletionPart(nameof(FinishComputingProperty_Right));
-            public static readonly ImmutableHashSet<CompletionPart> AllWithLocation = CompletionPart.Combine(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Left, FinishComputingProperty_Left, StartComputingProperty_Right, FinishComputingProperty_Right, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties);
-            public static readonly ImmutableHashSet<CompletionPart> All = CompletionPart.Combine(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Left, FinishComputingProperty_Left, StartComputingProperty_Right, FinishComputingProperty_Right, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties, CompletionGraph.ChildrenCompleted);
-            public static readonly CompletionGraph CompletionGraph = CompletionGraph.FromCompletionParts(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Left, FinishComputingProperty_Left, StartComputingProperty_Right, FinishComputingProperty_Right, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties, CompletionGraph.ChildrenCompleted);
+            public static readonly CompletionPart StartCompleteAssociation = new CompletionPart(nameof(StartCompleteAssociation));
+            public static readonly CompletionPart FinishCompleteAssociation = new CompletionPart(nameof(FinishCompleteAssociation));
+            public static readonly ImmutableHashSet<CompletionPart> AllWithLocation = CompletionPart.Combine(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Left, FinishComputingProperty_Left, StartComputingProperty_Right, FinishComputingProperty_Right, StartCompleteAssociation, FinishCompleteAssociation, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties);
+            public static readonly ImmutableHashSet<CompletionPart> All = CompletionPart.Combine(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Left, FinishComputingProperty_Left, StartComputingProperty_Right, FinishComputingProperty_Right, StartCompleteAssociation, FinishCompleteAssociation, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties, CompletionGraph.ChildrenCompleted);
+            public static readonly CompletionGraph CompletionGraph = CompletionGraph.FromCompletionParts(CompletionGraph.StartInitializing, CompletionGraph.FinishInitializing, CompletionGraph.StartCreatingChildren, CompletionGraph.FinishCreatingChildren, StartComputingProperty_Left, FinishComputingProperty_Left, StartComputingProperty_Right, FinishComputingProperty_Right, StartCompleteAssociation, FinishCompleteAssociation, CompletionGraph.StartComputingNonSymbolProperties, CompletionGraph.FinishComputingNonSymbolProperties, CompletionGraph.ChildrenCompleted);
         }
 
         private readonly Symbol _container;
@@ -142,6 +144,17 @@ namespace MetaDslx.Languages.Meta.Symbols.Completion
                         AddSymbolDiagnostics(diagnostics);
                         diagnostics.Free();
                         _state.NotePartComplete(CompletionParts.FinishComputingProperty_Right);
+                    }
+                }
+                else if (incompletePart == CompletionParts.StartCompleteAssociation || incompletePart == CompletionParts.FinishCompleteAssociation)
+                {
+                    if (_state.NotePartComplete(CompletionParts.StartCompleteAssociation))
+                    {
+                        var diagnostics = DiagnosticBag.GetInstance();
+CompleteAssociation(diagnostics, cancellationToken);
+                        AddSymbolDiagnostics(diagnostics);
+                        diagnostics.Free();
+                        _state.NotePartComplete(CompletionParts.FinishCompleteAssociation);
                     }
                 }
                 else if (incompletePart == CompletionGraph.StartComputingNonSymbolProperties || incompletePart == CompletionGraph.FinishComputingNonSymbolProperties)

@@ -26,23 +26,21 @@ namespace MetaDslx.Languages.Meta.Symbols
         [SymbolProperty]
         public abstract Symbol Right { get; }
 
-        protected virtual void CompleteAssociation(CancellationToken cancellationToken)
+        [SymbolCompletionPart]
+        protected virtual void CompleteAssociation(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             var assoc = this.DeclaringSyntaxReferences[0].GetSyntax() as AssociationDeclarationSyntax;
             var compilation = this.DeclaringCompilation;
             var sourceBinder = compilation.GetBinder(assoc.Source);
             var targetBinder = compilation.GetBinder(assoc.Target);
-            var diagnostics = DiagnosticBag.GetInstance();
             var source = (BoundSymbol)sourceBinder.Bind(diagnostics, cancellationToken);
             var target = (BoundSymbol)targetBinder.Bind(diagnostics, cancellationToken);
-            AddSymbolDiagnostics(diagnostics);
             if (!diagnostics.HasAnyErrors())
             {
                 var sourceProp = (MetaPropertyBuilder)(source.Symbols[0] as IModelSymbol).ModelObject;
                 var targetProp = (MetaPropertyBuilder)(target.Symbols[0] as IModelSymbol).ModelObject;
                 sourceProp.OppositeProperties.Add(targetProp);
             }
-            diagnostics.Free();
         }
     }
 }
