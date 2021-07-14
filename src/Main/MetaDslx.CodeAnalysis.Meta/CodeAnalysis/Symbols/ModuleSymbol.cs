@@ -21,7 +21,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
     /// Represents a module within an assembly. Every assembly contains one or more modules.
     /// </summary>
     [Symbol(SymbolKind = "NetModule", OptionalModelObject = true)]
-    public abstract partial class ModuleSymbol : Symbol, IModuleSymbol, IModuleSymbolInternal
+    public abstract partial class ModuleSymbol : Symbol, IModuleSymbol
     {
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         // Changes to the public interface of this class should remain synchronized with the VB version.
@@ -243,40 +243,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         bool ISymbol.HasUnsupportedMetadata => this.HasUnsupportedMetadata;
 
-        Microsoft.CodeAnalysis.SymbolKind ISymbolInternal.Kind => Microsoft.CodeAnalysis.SymbolKind.NetModule;
-
-        string ISymbolInternal.Name => this.Name;
-
-        string ISymbolInternal.MetadataName => this.MetadataName;
-
-        Compilation ISymbolInternal.DeclaringCompilation => this.DeclaringCompilation;
-
-        ISymbolInternal ISymbolInternal.ContainingSymbol => this.ContainingAssembly;
-
-        IAssemblySymbolInternal ISymbolInternal.ContainingAssembly => this.ContainingAssembly;
-
-        IModuleSymbolInternal ISymbolInternal.ContainingModule => throw new NotImplementedException();
-
-        INamedTypeSymbolInternal ISymbolInternal.ContainingType => throw new NotImplementedException();
-
-        INamespaceSymbolInternal ISymbolInternal.ContainingNamespace => throw new NotImplementedException();
-
-        bool ISymbolInternal.IsDefinition => throw new NotImplementedException();
-
-        ImmutableArray<Location> ISymbolInternal.Locations => this.Locations;
-
-        bool ISymbolInternal.IsImplicitlyDeclared => throw new NotImplementedException();
-
-        Accessibility ISymbolInternal.DeclaredAccessibility => Accessibility.NotApplicable;
-
-        bool ISymbolInternal.IsStatic => throw new NotImplementedException();
-
-        bool ISymbolInternal.IsVirtual => throw new NotImplementedException();
-
-        bool ISymbolInternal.IsOverride => throw new NotImplementedException();
-
-        bool ISymbolInternal.IsAbstract => throw new NotImplementedException();
-
         internal virtual ImmutableArray<byte> GetHash(AssemblyHashAlgorithm algorithmId)
         {
             throw ExceptionUtilities.Unreachable;
@@ -384,21 +350,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         }
 
         bool IEquatable<ISymbol?>.Equals(ISymbol? other)
-        {
-            throw new NotImplementedException();
-        }
-
-        bool ISymbolInternal.Equals(ISymbolInternal? other, TypeCompareKind compareKind)
-        {
-            throw new NotImplementedException();
-        }
-
-        ISymbol ISymbolInternal.GetISymbol()
-        {
-            throw new NotImplementedException();
-        }
-
-        IReference ISymbolInternal.GetCciAdapter()
         {
             throw new NotImplementedException();
         }

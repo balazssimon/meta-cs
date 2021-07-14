@@ -18,7 +18,7 @@ using System.Linq;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-    public abstract partial class DeclaredSymbol : Symbol, ISymbol, ISymbolInternal
+    public abstract partial class DeclaredSymbol : Symbol, ISymbol
     {
         private static MemberLookupCache EmptyMemberCache = new MemberLookupCache(null);
         private static ConditionalWeakTable<DeclaredSymbol, MemberLookupCache> s_memberLookup = new ConditionalWeakTable<DeclaredSymbol, MemberLookupCache>();
@@ -421,40 +421,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         bool ISymbol.HasUnsupportedMetadata => this.HasUnsupportedMetadata;
 
-        Microsoft.CodeAnalysis.SymbolKind ISymbolInternal.Kind => this.Kind.ToCSharp();
-
-        string ISymbolInternal.Name => this.Name;
-
-        string ISymbolInternal.MetadataName => this.MetadataName;
-
-        Compilation ISymbolInternal.DeclaringCompilation => this.DeclaringCompilation;
-
-        ISymbolInternal ISymbolInternal.ContainingSymbol => this.ContainingDeclaration;
-
-        IAssemblySymbolInternal ISymbolInternal.ContainingAssembly => this.ContainingAssembly;
-
-        IModuleSymbolInternal ISymbolInternal.ContainingModule => throw new NotImplementedException();
-
-        INamedTypeSymbolInternal ISymbolInternal.ContainingType => throw new NotImplementedException();
-
-        INamespaceSymbolInternal ISymbolInternal.ContainingNamespace => throw new NotImplementedException();
-
-        bool ISymbolInternal.IsDefinition => throw new NotImplementedException();
-
-        ImmutableArray<Location> ISymbolInternal.Locations => throw new NotImplementedException();
-
-        bool ISymbolInternal.IsImplicitlyDeclared => throw new NotImplementedException();
-
-        Accessibility ISymbolInternal.DeclaredAccessibility => throw new NotImplementedException();
-
-        bool ISymbolInternal.IsStatic => throw new NotImplementedException();
-
-        bool ISymbolInternal.IsVirtual => throw new NotImplementedException();
-
-        bool ISymbolInternal.IsOverride => throw new NotImplementedException();
-
-        bool ISymbolInternal.IsAbstract => throw new NotImplementedException();
-
         /// <summary>
         /// Returns the original virtual or abstract method which a given method symbol overrides,
         /// ignoring any other overriding methods in base classes.
@@ -578,21 +544,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         }
 
         bool IEquatable<ISymbol?>.Equals(ISymbol? other)
-        {
-            throw new NotImplementedException();
-        }
-
-        bool ISymbolInternal.Equals(ISymbolInternal? other, TypeCompareKind compareKind)
-        {
-            throw new NotImplementedException();
-        }
-
-        ISymbol ISymbolInternal.GetISymbol()
-        {
-            throw new NotImplementedException();
-        }
-
-        IReference ISymbolInternal.GetCciAdapter()
         {
             throw new NotImplementedException();
         }

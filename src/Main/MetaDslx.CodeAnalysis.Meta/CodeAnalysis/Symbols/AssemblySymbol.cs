@@ -21,7 +21,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
     using CSharpSymbols = Microsoft.CodeAnalysis.CSharp.Symbols;
 
     [Symbol(NoMeta = true, OptionalModelObject = true)]
-    public abstract partial class AssemblySymbol : Symbol, IAssemblySymbol, IAssemblySymbolInternal
+    public abstract partial class AssemblySymbol : Symbol, IAssemblySymbol
     {
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         // Changes to the public interface of this class should remain synchronized with the VB version.
@@ -857,44 +857,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         bool ISymbol.HasUnsupportedMetadata => this.HasUnsupportedMetadata;
 
-        Version? IAssemblySymbolInternal.AssemblyVersionPattern => this.AssemblyVersionPattern;
-
-        AssemblyIdentity IAssemblySymbolInternal.Identity => this.Identity;
-
-        Microsoft.CodeAnalysis.SymbolKind ISymbolInternal.Kind => Microsoft.CodeAnalysis.SymbolKind.Assembly;
-
-        string ISymbolInternal.Name => this.Name;
-
-        string ISymbolInternal.MetadataName => this.MetadataName;
-
-        Compilation ISymbolInternal.DeclaringCompilation => this.DeclaringCompilation;
-
-        ISymbolInternal ISymbolInternal.ContainingSymbol => null;
-
-        IAssemblySymbolInternal ISymbolInternal.ContainingAssembly => null;
-
-        IModuleSymbolInternal ISymbolInternal.ContainingModule => null;
-
-        INamedTypeSymbolInternal ISymbolInternal.ContainingType => null;
-
-        INamespaceSymbolInternal ISymbolInternal.ContainingNamespace => null;
-
-        bool ISymbolInternal.IsDefinition => false;
-
-        ImmutableArray<Location> ISymbolInternal.Locations => this.Locations;
-
-        bool ISymbolInternal.IsImplicitlyDeclared => false;
-
-        Accessibility ISymbolInternal.DeclaredAccessibility => Accessibility.NotApplicable;
-
-        bool ISymbolInternal.IsStatic => false;
-
-        bool ISymbolInternal.IsVirtual => false;
-
-        bool ISymbolInternal.IsOverride => false;
-
-        bool ISymbolInternal.IsAbstract => false;
-
         #region IAssemblySymbol Members
 
         /// <summary>
@@ -996,19 +958,5 @@ namespace MetaDslx.CodeAnalysis.Symbols
             throw new NotImplementedException();
         }
 
-        bool ISymbolInternal.Equals(ISymbolInternal? other, TypeCompareKind compareKind)
-        {
-            throw new NotImplementedException();
-        }
-
-        ISymbol ISymbolInternal.GetISymbol()
-        {
-            throw new NotImplementedException();
-        }
-
-        IReference ISymbolInternal.GetCciAdapter()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

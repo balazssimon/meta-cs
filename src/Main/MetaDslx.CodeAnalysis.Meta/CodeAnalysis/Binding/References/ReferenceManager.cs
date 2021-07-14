@@ -406,7 +406,7 @@ namespace MetaDslx.CodeAnalysis
             }
 
 
-            private ModuleReferences<AssemblySymbol> FromCSharp(ModuleReferences<CSharpSymbols.AssemblySymbol> csharpModuleReferences)
+            private ModuleReferences<AssemblySymbol> FromCSharp(Microsoft.CodeAnalysis.ModuleReferences<CSharpSymbols.AssemblySymbol> csharpModuleReferences)
             {
                 return new ModuleReferences<AssemblySymbol>(
                     csharpModuleReferences.Identities,

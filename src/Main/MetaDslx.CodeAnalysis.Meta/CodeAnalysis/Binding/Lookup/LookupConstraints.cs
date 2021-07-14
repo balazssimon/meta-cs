@@ -14,6 +14,7 @@ using MetaDslx.CodeAnalysis.Symbols.Source;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
 using MetaDslx.Languages.Meta.Model;
+using MetaDslx.CodeAnalysis.Symbols.Internal;
 
 namespace MetaDslx.CodeAnalysis.Binding
 {
@@ -430,8 +431,8 @@ namespace MetaDslx.CodeAnalysis.Binding
                                 // '{0}' is an ambiguous reference between '{1}' and '{2}'
                                 info = new SymbolDiagnosticInfo(errorSymbols, InternalErrorCode.ERR_AmbigContext,
                                         this.Name,
-                                        new FormattedSymbol(first, SymbolDisplayFormat.CSharpErrorMessageFormat),
-                                        new FormattedSymbol(second, SymbolDisplayFormat.CSharpErrorMessageFormat));
+                                        new FormattedSymbol(new InternalSymbol(first), SymbolDisplayFormat.CSharpErrorMessageFormat),
+                                        new FormattedSymbol(new InternalSymbol(second), SymbolDisplayFormat.CSharpErrorMessageFormat));
                             }
                             else
                             {
@@ -578,8 +579,8 @@ namespace MetaDslx.CodeAnalysis.Binding
                                 // '{0}' is an ambiguous reference between '{1}' and '{2}'
                                 info = new SymbolDiagnosticInfo(errorSymbols, InternalErrorCode.ERR_AmbigContext,
                                         this.Name,
-                                        new FormattedSymbol(first, SymbolDisplayFormat.CSharpErrorMessageFormat),
-                                        new FormattedSymbol(second, SymbolDisplayFormat.CSharpErrorMessageFormat));
+                                        new FormattedSymbol(new InternalSymbol(first), SymbolDisplayFormat.CSharpErrorMessageFormat),
+                                        new FormattedSymbol(new InternalSymbol(second), SymbolDisplayFormat.CSharpErrorMessageFormat));
                             }
                         }
                         else

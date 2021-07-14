@@ -59,12 +59,12 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
             return csharpSymbols.Select(symbol => GetAssemblySymbol(symbol)).ToImmutableArray();
         }
 
-        public static UnifiedAssembly<AssemblySymbol> GetAssemblySymbol(UnifiedAssembly<CSharpSymbols.AssemblySymbol> csharpSymbol)
+        public static UnifiedAssembly<AssemblySymbol> GetAssemblySymbol(Microsoft.CodeAnalysis.UnifiedAssembly<CSharpSymbols.AssemblySymbol> csharpSymbol)
         {
             return new UnifiedAssembly<AssemblySymbol>(GetAssemblySymbol(csharpSymbol.TargetAssembly), csharpSymbol.OriginalReference);
         }
 
-        public static ImmutableArray<UnifiedAssembly<AssemblySymbol>> GetAssemblySymbols(ImmutableArray<UnifiedAssembly<CSharpSymbols.AssemblySymbol>> csharpSymbols)
+        public static ImmutableArray<UnifiedAssembly<AssemblySymbol>> GetAssemblySymbols(ImmutableArray<Microsoft.CodeAnalysis.UnifiedAssembly<CSharpSymbols.AssemblySymbol>> csharpSymbols)
         {
             return csharpSymbols.Select(symbol => GetAssemblySymbol(symbol)).ToImmutableArray();
         }
@@ -79,12 +79,12 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
             return csharpSymbols.Select(symbol => (CSharpAssemblySymbol)GetAssemblySymbol(symbol)).ToImmutableArray();
         }
 
-        public static UnifiedAssembly<CSharpAssemblySymbol> GetCSharpAssemblySymbol(UnifiedAssembly<CSharpSymbols.AssemblySymbol> csharpSymbol)
+        public static UnifiedAssembly<CSharpAssemblySymbol> GetCSharpAssemblySymbol(Microsoft.CodeAnalysis.UnifiedAssembly<CSharpSymbols.AssemblySymbol> csharpSymbol)
         {
             return new UnifiedAssembly<CSharpAssemblySymbol>(GetCSharpAssemblySymbol(csharpSymbol.TargetAssembly), csharpSymbol.OriginalReference);
         }
 
-        public static ImmutableArray<UnifiedAssembly<CSharpAssemblySymbol>> GetCSharpAssemblySymbols(ImmutableArray<UnifiedAssembly<CSharpSymbols.AssemblySymbol>> csharpSymbols)
+        public static ImmutableArray<UnifiedAssembly<CSharpAssemblySymbol>> GetCSharpAssemblySymbols(ImmutableArray<Microsoft.CodeAnalysis.UnifiedAssembly<CSharpSymbols.AssemblySymbol>> csharpSymbols)
         {
             return csharpSymbols.Select(symbol => GetCSharpAssemblySymbol(symbol)).ToImmutableArray();
         }
