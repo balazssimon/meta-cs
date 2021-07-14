@@ -732,6 +732,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
                 // types are considered static members for purposes of "using static" feature
                 // regardless of whether they are declared with "static" modifier or not
+                case Symbols.SymbolKind.Type:
                 case Symbols.SymbolKind.NamedType:
                     break;
 

@@ -35,6 +35,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         {
             Debug.Assert(((object)containingSymbol == null) ||
                 (containingSymbol.Kind == SymbolKind.Namespace) ||
+                (containingSymbol.Kind == SymbolKind.Type) ||
                 (containingSymbol.Kind == SymbolKind.NamedType) ||
                 (containingSymbol.Kind == SymbolKind.ErrorType));
 

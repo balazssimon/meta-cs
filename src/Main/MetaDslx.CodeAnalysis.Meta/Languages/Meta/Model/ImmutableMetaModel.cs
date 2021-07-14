@@ -1365,6 +1365,7 @@ namespace MetaDslx.Languages.Meta.Model
 				get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaElement; }
 			}
 			
+			[MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolProperty("Attributes")]
 			[global::MetaDslx.Modeling.CollectionAttribute]
 			[global::MetaDslx.Modeling.OrderedAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty AttributesProperty =
@@ -1940,7 +1941,8 @@ namespace MetaDslx.Languages.Meta.Model
 			{
 				get { return global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaClass; }
 			}
-			
+
+			[MetaDslx.CodeAnalysis.Symbols.ModelObjectSymbolProperty("Attributes")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty SymbolTypeProperty =
 			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaClass), name: "SymbolType",
 			        immutableType: typeof(global::System.Type),

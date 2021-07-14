@@ -25,6 +25,7 @@
 	abstract class MetaElement
 	{
 		// List of attributes
+    [symbol: Attributes]
 		list<MetaAttribute> Attributes; 
 	}
 
@@ -139,9 +140,10 @@
 
 	class MetaClass : MetaNamedType
 	{
+    [symbol: Attributes]
 		SystemType SymbolType;
 		bool IsAbstract;
-		[symbol: DeclaredBaseTypes]
+		[symbol: BaseTypes]
 		list<MetaClass> SuperClasses;
 		[symbol: Members]
 		containment list<MetaProperty> Properties;

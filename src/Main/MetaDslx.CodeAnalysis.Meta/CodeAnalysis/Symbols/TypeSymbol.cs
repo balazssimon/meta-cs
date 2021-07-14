@@ -408,37 +408,37 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         public virtual bool IsReadOnly => false;
 
-        Microsoft.CodeAnalysis.TypeKind ITypeSymbol.TypeKind => throw new NotImplementedException();
+        Microsoft.CodeAnalysis.TypeKind ITypeSymbol.TypeKind => Microsoft.CodeAnalysis.TypeKind.Class;
 
-        INamedTypeSymbol? ITypeSymbol.BaseType => throw new NotImplementedException();
+        INamedTypeSymbol? ITypeSymbol.BaseType => null;
 
         ImmutableArray<INamedTypeSymbol> ITypeSymbol.Interfaces => throw new NotImplementedException();
 
         ImmutableArray<INamedTypeSymbol> ITypeSymbol.AllInterfaces => throw new NotImplementedException();
 
-        bool ITypeSymbol.IsReferenceType => throw new NotImplementedException();
+        bool ITypeSymbol.IsReferenceType => false;
 
-        bool ITypeSymbol.IsValueType => throw new NotImplementedException();
+        bool ITypeSymbol.IsValueType => false;
 
-        bool ITypeSymbol.IsAnonymousType => throw new NotImplementedException();
+        bool ITypeSymbol.IsAnonymousType => false;
 
-        bool ITypeSymbol.IsTupleType => throw new NotImplementedException();
+        bool ITypeSymbol.IsTupleType => false;
 
-        bool ITypeSymbol.IsNativeIntegerType => throw new NotImplementedException();
+        bool ITypeSymbol.IsNativeIntegerType => false;
 
-        ITypeSymbol ITypeSymbol.OriginalDefinition => throw new NotImplementedException();
+        ITypeSymbol ITypeSymbol.OriginalDefinition => this;
 
-        SpecialType ITypeSymbol.SpecialType => throw new NotImplementedException();
+        SpecialType ITypeSymbol.SpecialType => SpecialType.None;
 
-        bool ITypeSymbol.IsRefLikeType => throw new NotImplementedException();
+        bool ITypeSymbol.IsRefLikeType => false;
 
-        bool ITypeSymbol.IsUnmanagedType => throw new NotImplementedException();
+        bool ITypeSymbol.IsUnmanagedType => false;
 
-        bool ITypeSymbol.IsReadOnly => throw new NotImplementedException();
+        bool ITypeSymbol.IsReadOnly => false;
 
-        bool ITypeSymbol.IsRecord => throw new NotImplementedException();
+        bool ITypeSymbol.IsRecord => false;
 
-        Microsoft.CodeAnalysis.NullableAnnotation ITypeSymbol.NullableAnnotation => throw new NotImplementedException();
+        Microsoft.CodeAnalysis.NullableAnnotation ITypeSymbol.NullableAnnotation => Microsoft.CodeAnalysis.NullableAnnotation.None;
 
         #region Interface member checks
 
