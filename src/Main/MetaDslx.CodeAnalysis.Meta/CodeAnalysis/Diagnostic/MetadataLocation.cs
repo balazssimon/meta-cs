@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Diagnostics;
+using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Symbols.Internal;
 using Microsoft.Cci;
 using Microsoft.CodeAnalysis;
@@ -20,7 +21,7 @@ namespace MetaDslx.CodeAnalysis
     {
         private readonly InternalModuleSymbol _module;
 
-        internal MetadataLocation(IModuleSymbol module)
+        internal MetadataLocation(ModuleSymbol module)
         {
             RoslynDebug.Assert(module != null);
             _module = new InternalModuleSymbol(module);

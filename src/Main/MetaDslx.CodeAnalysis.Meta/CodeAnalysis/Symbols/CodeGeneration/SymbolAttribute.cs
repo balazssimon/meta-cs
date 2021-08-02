@@ -15,8 +15,5 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         public SymbolParts SymbolParts { get; set; }
         public ParameterOption ModelObjectOption { get; set; }
-        public string SymbolKind { get; set; }
-        public string SubSymbolKindType { get; set; }
-        public string SubSymbolKindName { get; set; }
     }
 }

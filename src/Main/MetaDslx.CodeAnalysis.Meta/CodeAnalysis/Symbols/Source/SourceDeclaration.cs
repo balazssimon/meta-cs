@@ -420,7 +420,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                     if (index < childSymbols.Length)
                     {
                         var symbol = childSymbols[index] as SourceNamedTypeSymbol;
-                        if (symbol != null && symbol.Kind != SymbolKind.ErrorType) builder.Add(symbol);
+                        if (symbol is not null && !symbol.IsError) builder.Add(symbol);
                     }
                 }
             }
@@ -450,7 +450,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 if (index < childSymbols.Length)
                 {
                     var symbol = childSymbols[index] as DeclaredSymbol;
-                    if (symbol != null && symbol.Kind != SymbolKind.ErrorType) builder.Add(symbol);
+                    if (symbol is not null && !symbol.IsError) builder.Add(symbol);
                 }
             }
         }

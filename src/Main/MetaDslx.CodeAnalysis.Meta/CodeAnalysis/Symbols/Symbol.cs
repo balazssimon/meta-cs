@@ -30,7 +30,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
     /// exposed by the compiler.
     /// </summary>
     [DebuggerDisplay("{GetDebuggerDisplay(), nq}")]
-    [Symbol(SymbolParts = SymbolParts.None, SubSymbolKindType = "SymbolKind", SubSymbolKindName = "Kind")]
+    [Symbol(SymbolParts = SymbolParts.None)]
     public abstract partial class Symbol : IFormattable
     {
         private static ConditionalWeakTable<Symbol, DiagnosticBag> s_diagnostics = new ConditionalWeakTable<Symbol, DiagnosticBag>();
@@ -71,6 +71,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         public virtual bool MangleName => this.Name != this.MetadataName;
 
+        public virtual bool IsError => false;
+
         /// <summary>
         /// True if this Symbol should be completed by calling ForceComplete.
         /// Intuitively, true for source entities (from any compilation).
@@ -104,14 +106,14 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// Returns the assembly containing this symbol. If this symbol is shared across multiple
         /// assemblies, or doesn't belong to an assembly, returns null.
         /// </summary>
-        public virtual AssemblySymbol ContainingAssembly
+        public virtual AssemblySymbol? ContainingAssembly
         {
             get
             {
                 // Default implementation gets the containers assembly.
 
                 var container = this.ContainingSymbol;
-                return (object)container != null ? container.ContainingAssembly : null;
+                return container?.ContainingAssembly;
             }
         }
 
@@ -128,24 +130,21 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// 
         /// Remarks, not "ContainingCompilation" because it isn't transitive.
         /// </remarks>
-        public virtual LanguageCompilation DeclaringCompilation
+        public virtual LanguageCompilation? DeclaringCompilation
         {
             get
             {
-                switch (this.Kind.Switch())
+                if (this.IsError) return null;
+                if (this is AssemblySymbol)
                 {
-                    case SymbolKind.ErrorType:
-                        return null;
-                    case SymbolKind.Assembly:
-                        Debug.Assert(!(this is SourceAssemblySymbol), "SourceAssemblySymbol must override DeclaringCompilation");
-                        return null;
-                    case SymbolKind.NetModule:
-                        Debug.Assert(!(this is SourceModuleSymbol), "SourceModuleSymbol must override DeclaringCompilation");
-                        return null;
+                    Debug.Assert(!(this is SourceAssemblySymbol), "SourceAssemblySymbol must override DeclaringCompilation");
                 }
-
+                if (this is ModuleSymbol)
+                {
+                    Debug.Assert(!(this is SourceModuleSymbol), "SourceModuleSymbol must override DeclaringCompilation");
+                }
                 var sourceModuleSymbol = this.ContainingModule as SourceModuleSymbol;
-                return (object)sourceModuleSymbol == null ? null : sourceModuleSymbol.DeclaringCompilation;
+                return sourceModuleSymbol?.DeclaringCompilation;
             }
         }
 
@@ -153,46 +152,33 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// Returns the module containing this symbol. If this symbol is shared across multiple
         /// modules, or doesn't belong to a module, returns null.
         /// </summary>
-        public virtual ModuleSymbol ContainingModule
+        public virtual ModuleSymbol? ContainingModule
         {
             get
             {
                 // Default implementation gets the containers module.
                 var container = this.ContainingSymbol;
                 if (container is ModuleSymbol moduleSymbol) return moduleSymbol;
-                return (object)container != null ? container.ContainingModule : null;
+                return container?.ContainingModule;
             }
         }
 
         /// <summary>
         /// Returns the nearest lexically enclosing declaration, or null if there is none.
         /// </summary>
-        public virtual DeclaredSymbol ContainingDeclaration
+        public virtual DeclaredSymbol? ContainingDeclaration
         {
             get
             {
                 Symbol container = this.ContainingSymbol;
-
-                while (container != null)
+                while (container is not null)
                 {
-                    DeclaredSymbol containerAsDeclaration = container as DeclaredSymbol;
-
-                    // NOTE: container could be null, so we do not check 
-                    //       whether containerAsType is not null, but 
-                    //       instead check if it did not change after 
-                    //       the cast.
-                    if ((object)containerAsDeclaration == (object)container)
+                    if (container is DeclaredSymbol result)
                     {
-                        // this should be relatively uncommon
-                        // most symbols that may be contained in a type
-                        // know their containing type and can override ContainingType
-                        // with a more precise implementation
-                        return containerAsDeclaration;
+                        return result;
                     }
-
                     container = container.ContainingSymbol;
                 }
-
                 return null;
             }
         }
@@ -200,30 +186,20 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <summary>
         /// Returns the nearest lexically enclosing type, or null if there is none.
         /// </summary>
-        public virtual NamedTypeSymbol ContainingType
+        public virtual NamedTypeSymbol? ContainingType
         {
             get
             {
-                DeclaredSymbol container = this.ContainingDeclaration;
-
-                NamedTypeSymbol containerAsType = container as NamedTypeSymbol;
-
-                // NOTE: container could be null, so we do not check 
-                //       whether containerAsType is not null, but 
-                //       instead check if it did not change after 
-                //       the cast.
-                if ((object)containerAsType == (object)container)
+                Symbol container = this.ContainingSymbol;
+                while (container is not null)
                 {
-                    // this should be relatively uncommon
-                    // most symbols that may be contained in a type
-                    // know their containing type and can override ContainingType
-                    // with a more precise implementation
-                    return containerAsType;
+                    if (container is NamedTypeSymbol result)
+                    {
+                        return result;
+                    }
+                    container = container.ContainingSymbol;
                 }
-
-                // this is recursive, but recursion should be very short 
-                // before we reach symbol that definitely knows its containing type.
-                return container.ContainingType;
+                return null;
             }
         }
 
@@ -231,19 +207,19 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// Gets the nearest enclosing namespace for this namespace or type. For a nested type,
         /// returns the namespace that contains its container.
         /// </summary>
-        public virtual NamespaceSymbol ContainingNamespace
+        public virtual NamespaceSymbol? ContainingNamespace
         {
             get
             {
-                for (var container = this.ContainingDeclaration; (object)container != null; container = container.ContainingDeclaration)
+                Symbol container = this.ContainingSymbol;
+                while (container is not null)
                 {
-                    var ns = container as NamespaceSymbol;
-                    if ((object)ns != null)
+                    if (container is NamespaceSymbol result)
                     {
-                        return ns;
+                        return result;
                     }
+                    container = container.ContainingSymbol;
                 }
-
                 return null;
             }
         }
@@ -544,7 +520,15 @@ namespace MetaDslx.CodeAnalysis.Symbols
         {
             // TODO:MetaDslx
             //return SymbolDisplay.ToDisplayString(this, format);
-            return this.MetadataName + " (" + this.Kind.ToString() + ")";
+            return this.MetadataName + " (" + GetKindText() + ")";
+        }
+
+        public string GetKindText()
+        {
+            var typeName = this.GetType().Name;
+            if (typeName.StartsWith("Source")) typeName = typeName.Substring(6);
+            if (typeName.StartsWith("Metadata")) typeName = typeName.Substring(8);
+            return typeName;
         }
 
         private string GetDebuggerDisplay()

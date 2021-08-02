@@ -179,38 +179,6 @@ namespace MetaDslx.CodeAnalysis.Binding
             return _next.GetImports(recursionConstraints);
         }
 
-        /// <summary>
-        /// Returns true if the binder is binding top-level script code.
-        /// </summary>
-        public bool BindingTopLevelScriptCode
-        {
-            get
-            {
-                var containingMember = this.ContainingDeclaration;
-                switch (containingMember?.Kind.Switch())
-                {
-                    case Symbols.SymbolKind.Member:
-                        var memberSymbol = (MemberSymbol)containingMember;
-                        if (memberSymbol.MemberKind == MemberKind.Method)
-                        {
-                            // global statements
-                            return ((MethodSymbol)containingMember).IsScriptInitializer;
-                        }
-                        else
-                        {
-                            return false;
-                        }
-
-                    case Symbols.SymbolKind.NamedType:
-                        // script variable initializers
-                        return ((NamedTypeSymbol)containingMember).IsScript;
-
-                    default:
-                        return false;
-                }
-            }
-        }
-
         public Conversions Conversions
         {
             get

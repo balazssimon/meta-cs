@@ -302,14 +302,14 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 Debug.Assert(false);
                 childSymbol = null;
             }
-            if (childSymbol == null || childSymbol.Kind == SymbolKind.ErrorType)
+            if (childSymbol is null || childSymbol.IsError)
             {
                 if (childDeclaration != null)
                 {
                     diagnostics.Add(ModelErrorCode.ERR_CannotCreateSourceDeclaredSymbol.ToDiagnostic(location, symbolFacts.GetSymbolType(childDeclaration.ModelObjectType), childDeclaration.Name, childDeclaration.ModelObjectType));
                 }
             }
-            if (childSymbol != null)
+            if (childSymbol is not null)
             {
                 childSymbol.ForceComplete(CompletionGraph.FinishInitializing, null, cancellationToken);
             }

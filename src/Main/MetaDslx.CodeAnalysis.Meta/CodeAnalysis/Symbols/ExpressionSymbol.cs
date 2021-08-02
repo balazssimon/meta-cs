@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-    [Symbol(SymbolParts = SymbolParts.None, SubSymbolKindType = "ExpressionKind")]
+    [Symbol(SymbolParts = SymbolParts.None)]
     public abstract partial class ExpressionSymbol : NonDeclaredSymbol
     {
     }

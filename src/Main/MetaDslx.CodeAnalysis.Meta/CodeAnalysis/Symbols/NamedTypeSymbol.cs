@@ -12,8 +12,22 @@ using System.Text;
 namespace MetaDslx.CodeAnalysis.Symbols
 {
     [Symbol]
-    public abstract partial class NamedTypeSymbol : TypeSymbol, INamedTypeSymbol
+    public abstract partial class NamedTypeSymbol : TypeSymbol
     {
+        /// <summary>
+        /// Returns true a type declared as "abstract", all interface types, and members of interface types.
+        /// </summary>
+        [SymbolProperty]
+        public virtual bool IsAbstract => false;
+
+        /// <summary>
+        /// Returns true for types that do not allow a derived type (declared with <c>sealed</c> or <c>static</c> or <c>struct</c>
+        /// or <c>enum</c> or <c>delegate</c>).
+        /// </summary>
+        [SymbolProperty]
+        public virtual bool IsSealed => false;
+
+        public override bool IsStatic => false;
 
         public virtual ImmutableArray<DeclaredSymbol> GetNonTypeMembers(string name)
         {
@@ -61,18 +75,18 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <summary>
         /// Get the operators for this type by their metadata name
         /// </summary>
-        public ImmutableArray<MethodSymbol> GetOperators(string name)
+        public ImmutableArray<OperatorSymbol> GetOperators(string name)
         {
             ImmutableArray<DeclaredSymbol> candidates = GetNonTypeMembers(name);
             if (candidates.IsEmpty)
             {
-                return ImmutableArray<MethodSymbol>.Empty;
+                return ImmutableArray<OperatorSymbol>.Empty;
             }
 
-            ArrayBuilder<MethodSymbol> operators = ArrayBuilder<MethodSymbol>.GetInstance();
-            foreach (MethodSymbol candidate in candidates.OfType<MethodSymbol>())
+            ArrayBuilder<OperatorSymbol> operators = ArrayBuilder<OperatorSymbol>.GetInstance();
+            foreach (OperatorSymbol candidate in candidates.OfType<OperatorSymbol>())
             {
-                if (candidate.MethodKind == MethodKind.UserDefinedOperator || candidate.MethodKind == MethodKind.Conversion)
+                if (candidate is OperatorSymbol)
                 {
                     operators.Add(candidate);
                 }
@@ -84,59 +98,32 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <summary>
         /// Get the instance constructors for this type.
         /// </summary>
-        public ImmutableArray<MethodSymbol> InstanceConstructors => GetConstructors<MethodSymbol>(includeInstance: true, includeStatic: false);
+        public ImmutableArray<ConstructorSymbol> InstanceConstructors => GetConstructors(includeInstance: true, includeStatic: false);
 
         /// <summary>
         /// Get the static constructors for this type.
         /// </summary>
-        public ImmutableArray<MethodSymbol> StaticConstructors => GetConstructors<MethodSymbol>(includeInstance: false, includeStatic: true);
+        public ImmutableArray<ConstructorSymbol> StaticConstructors => GetConstructors(includeInstance: false, includeStatic: true);
 
         /// <summary>
         /// Get the instance and static constructors for this type.
         /// </summary>
-        public ImmutableArray<MethodSymbol> Constructors => GetConstructors<MethodSymbol>(includeInstance: true, includeStatic: true);
+        public ImmutableArray<ConstructorSymbol> Constructors => GetConstructors(includeInstance: true, includeStatic: true);
 
-        private ImmutableArray<TMethodSymbol> GetConstructors<TMethodSymbol>(bool includeInstance, bool includeStatic) where TMethodSymbol : MethodSymbol
+        private ImmutableArray<ConstructorSymbol> GetConstructors(bool includeInstance, bool includeStatic) 
         {
             Debug.Assert(includeInstance || includeStatic);
-
-            ImmutableArray<DeclaredSymbol> instanceCandidates = includeInstance
-                ? GetMembers(WellKnownMemberNames.InstanceConstructorName)
-                : ImmutableArray<DeclaredSymbol>.Empty;
-            ImmutableArray<DeclaredSymbol> staticCandidates = includeStatic
-                ? GetMembers(WellKnownMemberNames.StaticConstructorName)
-                : ImmutableArray<DeclaredSymbol>.Empty;
-
-            if (instanceCandidates.IsEmpty && staticCandidates.IsEmpty)
+            ArrayBuilder<ConstructorSymbol> constructors = ArrayBuilder<ConstructorSymbol>.GetInstance();
+            if (includeInstance)
             {
-                return ImmutableArray<TMethodSymbol>.Empty;
+                constructors.AddRange(GetMembers(WellKnownMemberNames.InstanceConstructorName).OfType<ConstructorSymbol>());
             }
-
-            ArrayBuilder<TMethodSymbol> constructors = ArrayBuilder<TMethodSymbol>.GetInstance();
-            foreach (Symbol candidate in instanceCandidates)
+            if (includeStatic)
             {
-                if (candidate.Kind == SymbolKind.Member && ((MemberSymbol)candidate).MemberKind == MemberKind.Method)
-                {
-                    TMethodSymbol method = candidate as TMethodSymbol;
-                    Debug.Assert((object)method != null);
-                    Debug.Assert(method.MethodKind == MethodKind.Constructor);
-                    constructors.Add(method);
-                }
-            }
-            foreach (Symbol candidate in staticCandidates)
-            {
-                if (candidate.Kind == SymbolKind.Member && ((MemberSymbol)candidate).MemberKind == MemberKind.Method)
-                {
-                    TMethodSymbol method = candidate as TMethodSymbol;
-                    Debug.Assert((object)method != null);
-                    Debug.Assert(method.MethodKind == MethodKind.StaticConstructor);
-                    constructors.Add(method);
-                }
+                constructors.AddRange(GetMembers(WellKnownMemberNames.StaticConstructorName).OfType<ConstructorSymbol>());
             }
             return constructors.ToImmutableAndFree();
         }
-
-        public virtual int Arity => 0;
 
         /// <summary>
         /// The original definition of this symbol. If this symbol is constructed from another
@@ -175,14 +162,14 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         public override bool Equals(TypeSymbol t2, TypeCompareKind comparison)
         {
-            Debug.Assert(!this.IsTupleType);
+            Debug.Assert(this is not TupleTypeSymbol);
 
             if ((object)t2 == this) return true;
             if ((object)t2 == null) return false;
             
             if ((comparison & TypeCompareKind.IgnoreDynamic) != 0)
             {
-                if (t2.TypeKind == TypeKind.Dynamic)
+                if (t2 is DynamicTypeSymbol)
                 {
                     // if ignoring dynamic, then treat dynamic the same as the type 'object'
                     if (this.SpecialType == SpecialType.System_Object)
@@ -290,122 +277,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         #endregion
 
-        public override bool IsStatic => false;
-
-        /// <summary>
-        /// Returns true if this type is known to be a reference type. It is never the case that
-        /// IsReferenceType and IsValueType both return true. However, for an unconstrained type
-        /// parameter, IsReferenceType and IsValueType will both return false.
-        /// </summary>
-        public override bool IsReferenceType
-        {
-            get
-            {
-                var kind = TypeKind;
-                return kind != TypeKind.Enum && kind != TypeKind.Value && kind != TypeKind.ErrorType;
-            }
-        }
-
-        /// <summary>
-        /// Returns true if this type is known to be a value type. It is never the case that
-        /// IsReferenceType and IsValueType both return true. However, for an unconstrained type
-        /// parameter, IsReferenceType and IsValueType will both return false.
-        /// </summary>
-        public override bool IsValueType
-        {
-            get
-            {
-                var kind = TypeKind;
-                return kind == TypeKind.Value || kind == TypeKind.Enum;
-            }
-        }
-
-        public virtual bool IsScript => false;
-
-        public virtual bool IsSubmission => TypeKind == TypeKind.Submission;
-
-        public virtual bool IsImplicit => false;
-
-        public virtual bool IsInterface => false;
-
-        public virtual bool IsGenericType => false;
-
-
-        int INamedTypeSymbol.Arity => 0;
-
-        bool INamedTypeSymbol.IsGenericType => false;
-
-        bool INamedTypeSymbol.IsUnboundGenericType => false;
-
-        bool INamedTypeSymbol.IsScriptClass => false;
-
-        bool INamedTypeSymbol.IsImplicitClass => false;
-
-        bool INamedTypeSymbol.IsComImport => false;
-
-        IEnumerable<string> INamedTypeSymbol.MemberNames => this.MemberNames;
-
-        ImmutableArray<ITypeParameterSymbol> INamedTypeSymbol.TypeParameters => ImmutableArray<ITypeParameterSymbol>.Empty;
-
-        ImmutableArray<ITypeSymbol> INamedTypeSymbol.TypeArguments => ImmutableArray<ITypeSymbol>.Empty;
-
-        ImmutableArray<Microsoft.CodeAnalysis.NullableAnnotation> INamedTypeSymbol.TypeArgumentNullableAnnotations => ImmutableArray<Microsoft.CodeAnalysis.NullableAnnotation>.Empty;
-
-        INamedTypeSymbol INamedTypeSymbol.OriginalDefinition => this.OriginalDefinition;
-
-        IMethodSymbol? INamedTypeSymbol.DelegateInvokeMethod => null;
-
-        INamedTypeSymbol? INamedTypeSymbol.EnumUnderlyingType => null;
-
-        INamedTypeSymbol INamedTypeSymbol.ConstructedFrom => this.ConstructedFrom;
-
-        ImmutableArray<IMethodSymbol> INamedTypeSymbol.InstanceConstructors => ImmutableArray<IMethodSymbol>.Empty;
-
-        ImmutableArray<IMethodSymbol> INamedTypeSymbol.StaticConstructors => ImmutableArray<IMethodSymbol>.Empty;
-
-        ImmutableArray<IMethodSymbol> INamedTypeSymbol.Constructors => ImmutableArray<IMethodSymbol>.Empty;
-
-        ISymbol? INamedTypeSymbol.AssociatedSymbol => null;
-
-        bool INamedTypeSymbol.MightContainExtensionMethods => this.MightContainExtensionMethods;
-
-        INamedTypeSymbol? INamedTypeSymbol.TupleUnderlyingType => null;
-
-        ImmutableArray<IFieldSymbol> INamedTypeSymbol.TupleElements => ImmutableArray<IFieldSymbol>.Empty;
-
-        bool INamedTypeSymbol.IsSerializable => false;
-
-        INamedTypeSymbol? INamedTypeSymbol.NativeIntegerUnderlyingType => null;
-
-        ImmutableArray<CustomModifier> INamedTypeSymbol.GetTypeArgumentCustomModifiers(int ordinal)
-        {
-            throw new NotImplementedException();
-        }
-
-        INamedTypeSymbol INamedTypeSymbol.Construct(params ITypeSymbol[] typeArguments)
-        {
-            throw new NotImplementedException();
-        }
-
-        INamedTypeSymbol INamedTypeSymbol.Construct(ImmutableArray<ITypeSymbol> typeArguments, ImmutableArray<Microsoft.CodeAnalysis.NullableAnnotation> typeArgumentNullableAnnotations)
-        {
-            throw new NotImplementedException();
-        }
-
-        INamedTypeSymbol INamedTypeSymbol.ConstructUnboundGenericType()
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override void Accept(Microsoft.CodeAnalysis.SymbolVisitor visitor)
-        {
-            visitor.VisitNamedType(this);
-        }
-
-        protected override TResult Accept<TResult>(Microsoft.CodeAnalysis.SymbolVisitor<TResult> visitor)
-        {
-            return visitor.VisitNamedType(this);
-        }
+        public virtual bool IsGenericType => this.Arity > 0;
 
     }
 }

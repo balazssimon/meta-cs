@@ -10,18 +10,8 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-    public abstract class NamespaceOrTypeSymbol : DeclaredSymbol, INamespaceOrTypeSymbol
+    public abstract class NamespaceOrTypeSymbol : DeclaredSymbol
     {
-        /// <summary>
-        /// Returns true if this symbol is a namespace. If it is not a namespace, it must be a type.
-        /// </summary>
-        public bool IsNamespace => Kind == SymbolKind.Namespace;
-
-        /// <summary>
-        /// Returns true if this symbols is a type. Equivalent to !IsNamespace.
-        /// </summary>
-        public bool IsType => !IsNamespace;
-
         public override ImmutableArray<Symbol> ChildSymbols => GetMembers().Cast<DeclaredSymbol, Symbol>();
 
         /// <summary>
@@ -40,7 +30,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
             NamespaceOrTypeSymbol scope = this;
 
-            if (scope.Kind == SymbolKind.ErrorType)
+            if (scope.IsError)
             {
                 return new MissingMetadataTypeSymbol.Nested((NamedTypeSymbol)scope, ref emittedTypeName);
             }
@@ -48,7 +38,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             NamedTypeSymbol namedType = null;
 
             ImmutableArray<NamedTypeSymbol> namespaceOrTypeMembers;
-            bool isTopLevel = scope.IsNamespace;
+            bool isTopLevel = scope is NamespaceSymbol;
 
             Debug.Assert(!isTopLevel || scope.ToDisplayString(SymbolDisplayFormat.QualifiedNameOnlyFormat) == emittedTypeName.NamespaceName);
 
@@ -169,35 +159,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
 
             return symbols;
-        }
-
-        bool INamespaceOrTypeSymbol.IsNamespace => this.IsNamespace;
-
-        bool INamespaceOrTypeSymbol.IsType => this.IsType;
-
-        ImmutableArray<ISymbol> INamespaceOrTypeSymbol.GetMembers()
-        {
-            return this.GetMembers().Cast<DeclaredSymbol, ISymbol>();
-        }
-
-        ImmutableArray<ISymbol> INamespaceOrTypeSymbol.GetMembers(string name)
-        {
-            return this.GetMembers(name).Cast<DeclaredSymbol, ISymbol>();
-        }
-
-        ImmutableArray<INamedTypeSymbol> INamespaceOrTypeSymbol.GetTypeMembers()
-        {
-            return this.GetTypeMembers().Cast<NamedTypeSymbol, INamedTypeSymbol>();
-        }
-
-        ImmutableArray<INamedTypeSymbol> INamespaceOrTypeSymbol.GetTypeMembers(string name)
-        {
-            return this.GetTypeMembers(name).Cast<NamedTypeSymbol, INamedTypeSymbol>();
-        }
-
-        ImmutableArray<INamedTypeSymbol> INamespaceOrTypeSymbol.GetTypeMembers(string name, int arity)
-        {
-            return this.GetTypeMembers(name, arity == 0 ? name : name+"`"+arity).Cast<NamedTypeSymbol, INamedTypeSymbol>();
         }
     }
 }

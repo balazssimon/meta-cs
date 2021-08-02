@@ -938,9 +938,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 // Descent into child namespaces.
                 foreach (Symbol member in mergedNs.GetMembers())
                 {
-                    if (member.Kind == SymbolKind.Namespace)
+                    if (member is NamespaceSymbol memberNs)
                     {
-                        ReportNameCollisionDiagnosticsForAddedModules((NamespaceSymbol)member, diagnostics);
+                        ReportNameCollisionDiagnosticsForAddedModules(memberNs, diagnostics);
                     }
                 }
             }
@@ -1146,7 +1146,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
                         if (forwardedTypes.Add(forwarded))
                         {
-                            if (forwarded.IsErrorType())
+                            if (forwarded.IsError)
                             {
                                 DiagnosticInfo info = forwarded.GetUseSiteDiagnostic() ?? ((ErrorTypeSymbol)forwarded).ErrorInfo;
 
@@ -1350,7 +1350,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
                 var obj = (NamedTypeSymbol)GetSpecialSymbol(SpecialType.System_Object);
 
-                return !obj.IsErrorType() && obj.DeclaredAccessibility == Accessibility.Public;
+                return !obj.IsError && obj.DeclaredAccessibility == Accessibility.Public;
             }
         }
 
@@ -1419,22 +1419,23 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         {
             foreach (var member in ns.GetMembersUnordered())
             {
-                switch (member.Kind.Switch())
+                if (member is NamespaceSymbol memberNs)
                 {
-                    case SymbolKind.Namespace:
-                        if (ContainsExtensionMethods((NamespaceSymbol)member))
-                        {
-                            return true;
-                        }
-                        break;
-                    case SymbolKind.NamedType:
-                        if (((NamedTypeSymbol)member).MightContainExtensionMethods)
-                        {
-                            return true;
-                        }
-                        break;
-                    default:
-                        throw ExceptionUtilities.UnexpectedValue(member.Kind);
+                    if (ContainsExtensionMethods(memberNs))
+                    {
+                        return true;
+                    }
+                } 
+                else if (member is NamedTypeSymbol memberType)
+                {
+                    if (memberType.MightContainExtensionMethods)
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    throw ExceptionUtilities.UnexpectedValue(member.GetType());
                 }
             }
             return false;

@@ -226,6 +226,5 @@ CompleteAssociation(diagnostics, cancellationToken);
         protected abstract global::MetaDslx.CodeAnalysis.Symbols.Symbol CompleteSymbolProperty_Right(DiagnosticBag diagnostics, CancellationToken cancellationToken);
         protected abstract void CompleteNonSymbolProperties(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken);
         #endregion
-
     }
 }

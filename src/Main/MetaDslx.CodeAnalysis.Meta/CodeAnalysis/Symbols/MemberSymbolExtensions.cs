@@ -11,18 +11,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         internal static int GetMemberArity(this Symbol symbol)
         {
-            switch (symbol.Kind.Switch())
-            {
-                case SymbolKind.Method:
-                    return ((MethodSymbol)symbol).Arity;
-
-                case SymbolKind.NamedType:
-                case SymbolKind.ErrorType:
-                    return ((NamedTypeSymbol)symbol).Arity;
-
-                default:
-                    return 0;
-            }
+            if (symbol is NamedTypeSymbol namedTypeSymbol) return namedTypeSymbol.Arity;
+            if (symbol is MemberSymbol memberSymbol) return memberSymbol.Arity;
+            return 0;
         }
 
         internal static NamespaceOrTypeSymbol OfMinimalArity(this IEnumerable<NamespaceOrTypeSymbol> symbols)

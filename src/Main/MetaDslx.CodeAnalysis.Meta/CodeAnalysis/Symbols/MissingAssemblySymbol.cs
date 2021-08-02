@@ -30,6 +30,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
             moduleSymbol = new MissingModuleSymbol(this, 0);
         }
 
+        public sealed override bool IsError => true; 
+
         public sealed override bool IsMissing
         {
             get

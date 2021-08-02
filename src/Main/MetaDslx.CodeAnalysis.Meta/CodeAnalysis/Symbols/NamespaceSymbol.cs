@@ -9,11 +9,8 @@ using System.Text;
 namespace MetaDslx.CodeAnalysis.Symbols
 {
     [Symbol(ModelObjectOption = ParameterOption.Optional)]
-    public abstract partial class NamespaceSymbol : NamespaceOrTypeSymbol, INamespaceSymbol
+    public abstract partial class NamespaceSymbol : NamespaceOrTypeSymbol
     {
-        // PERF: initialization of the following fields will allocate, so we make them lazy
-        private string _lazyQualifiedName;
-
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         // Changes to the public interface of this class should remain synchronized with the VB version.
         // Do not make any changes to the public interface without making the corresponding change
@@ -153,10 +150,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         {
             foreach (var sym in this.GetMembers(name))
             {
-                if (sym.Kind == SymbolKind.Namespace)
-                {
-                    return (NamespaceSymbol)sym;
-                }
+                if (sym is NamespaceSymbol ns) return ns;
             }
 
             return null;
@@ -172,47 +166,5 @@ namespace MetaDslx.CodeAnalysis.Symbols
         {
             return this.GetMembers().OfType<NamespaceSymbol>();
         }
-
-        protected override void Accept(Microsoft.CodeAnalysis.SymbolVisitor visitor)
-        {
-            visitor.VisitNamespace(this);
-        }
-
-        protected override TResult Accept<TResult>(Microsoft.CodeAnalysis.SymbolVisitor<TResult> visitor)
-        {
-            return visitor.VisitNamespace(this);
-        }
-
-        IEnumerable<INamespaceOrTypeSymbol> INamespaceSymbol.GetMembers()
-        {
-            return this.GetMembers().OfType<INamespaceOrTypeSymbol>();
-        }
-
-        IEnumerable<INamespaceOrTypeSymbol> INamespaceSymbol.GetMembers(string name)
-        {
-            return this.GetMembers(name).OfType<INamespaceOrTypeSymbol>();
-        }
-
-        IEnumerable<INamespaceSymbol> INamespaceSymbol.GetNamespaceMembers()
-        {
-            return this.GetNamespaceMembers();
-        }
-
-        public string QualifiedName
-        {
-            get
-            {
-                return _lazyQualifiedName ??
-                    (_lazyQualifiedName = this.ToDisplayString(SymbolDisplayFormat.QualifiedNameOnlyFormat));
-            }
-        }
-
-        bool INamespaceSymbol.IsGlobalNamespace => this.IsGlobalNamespace;
-
-        NamespaceKind INamespaceSymbol.NamespaceKind => this.NamespaceKind;
-
-        Compilation? INamespaceSymbol.ContainingCompilation => this.ContainingCompilation;
-
-        ImmutableArray<INamespaceSymbol> INamespaceSymbol.ConstituentNamespaces => this.ConstituentNamespaces.Cast<NamespaceSymbol, INamespaceSymbol>();
     }
 }

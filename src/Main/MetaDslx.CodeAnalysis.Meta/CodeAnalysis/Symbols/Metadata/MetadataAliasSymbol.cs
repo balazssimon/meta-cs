@@ -84,13 +84,13 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             // We can pass basesBeingResolved: null because base type cycles can't cross
             // submission boundaries - there's no way to depend on a subsequent submission.
             var previousTarget = GetAliasTarget(null);
-            if (previousTarget.Kind != SymbolKind.Namespace)
+            if (previousTarget is not NamespaceSymbol previousNamespace)
             {
                 return this;
             }
 
             var expandedGlobalNamespace = compilation.GlobalNamespace;
-            var expandedNamespace = (NamespaceOrTypeSymbol)Imports.ExpandPreviousSubmissionNamespace((NamespaceSymbol)previousTarget, expandedGlobalNamespace);
+            var expandedNamespace = Imports.ExpandPreviousSubmissionNamespace(previousNamespace, expandedGlobalNamespace);
             var binder = new InContainerBinder(expandedGlobalNamespace, new BuckStopsHereBinder(compilation));
             return new MetadataAliasSymbol(binder, expandedNamespace, _aliasName, _locations);
         }

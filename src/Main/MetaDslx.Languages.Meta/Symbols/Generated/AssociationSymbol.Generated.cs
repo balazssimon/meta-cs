@@ -15,8 +15,6 @@ namespace MetaDslx.Languages.Meta.Symbols
 {
 	public abstract partial class AssociationSymbol
 	{
-
-
         public override void Accept(MetaDslx.CodeAnalysis.Symbols.SymbolVisitor visitor)
         {
             if (visitor is ISymbolVisitor isv) isv.Visit(this);

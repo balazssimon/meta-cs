@@ -51,7 +51,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 {
                     emittedName = MetadataTypeName.FromFullName(((SpecialType)key).GetMetadataName(), useCLSCompliantNameArityEncoding: true);
                     result = firstModule.LookupTopLevelMetadataType(ref emittedName);
-                    if (result.Kind == SymbolKind.ErrorType || result.DeclaredAccessibility != Accessibility.Public)
+                    if (result.IsError || result.DeclaredAccessibility != Accessibility.Public)
                     {
                         result = null;
                     }
@@ -68,7 +68,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                         }
                     }
                 }
-                if (result == null || (result.Kind != SymbolKind.ErrorType && result.DeclaredAccessibility != Accessibility.Public))
+                if (result == null || (!result.IsError && result.DeclaredAccessibility != Accessibility.Public))
                 {
                     if (key is SpecialType)
                     {
@@ -169,7 +169,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 NamedTypeSymbol type = (NamedTypeSymbol)GetDeclaredSpecialSymbol((SpecialType)descriptor.DeclaringTypeId);
                 DeclaredSymbol result = null;
 
-                if (!type.IsErrorType())
+                if (!type.IsError)
                 {
                     throw new NotImplementedException("TODO:MetaDslx");
                     // result = LanguageCompilation.GetRuntimeMember(type, ref descriptor, LanguageCompilation.SpecialMembersSignatureComparer.Instance, accessWithinOpt: null);

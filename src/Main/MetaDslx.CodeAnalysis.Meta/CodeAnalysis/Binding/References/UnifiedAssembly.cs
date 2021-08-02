@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using System.Diagnostics;
+using MetaDslx.CodeAnalysis.Symbols;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Symbols;
 using Microsoft.CodeAnalysis.Text;
@@ -16,7 +17,7 @@ namespace MetaDslx.CodeAnalysis
     /// i.e. not for Framework assemblies.
     /// </summary>
     internal struct UnifiedAssembly<TAssemblySymbol>
-        where TAssemblySymbol : class, IAssemblySymbol
+        where TAssemblySymbol : AssemblySymbol
     {
         /// <summary>
         /// Original reference that was unified to the identity of the <see cref="TargetAssembly"/>.

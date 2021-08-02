@@ -19,20 +19,6 @@ namespace [symbol.NamespaceName]
 {
 	public abstract partial class [symbol.Name]
 	{
-        [if (symbol.SymbolKindType != null)]
-        /// <summary>
-        /// Gets the kind of this symbol.
-        /// </summary>
-        public override [symbol.SymbolKindType] [symbol.SymbolKindName] => [symbol.SymbolKindType].[symbol.SymbolKind];
-        [end if]
-^
-        [if (symbol.SubSymbolKindType != null)]
-        /// <summary>
-        /// Gets the kind of this symbol.
-        /// </summary>
-        public virtual [symbol.SubSymbolKindType] [symbol.SubSymbolKindName] => [symbol.SubSymbolKindType].None;
-        [end if]
-^
         public [if (symbol.IsSymbolClass)]virtual[else]override[end if] void Accept(MetaDslx.CodeAnalysis.Symbols.SymbolVisitor visitor)
         {
             if (visitor is ISymbolVisitor isv) isv.Visit(this);
@@ -325,7 +311,6 @@ namespace [symbol.NamespaceName].Completion
         protected abstract void CompleteNonSymbolProperties(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken);
         [end if]
         #endregion
-^
     }
 }
 end template
@@ -409,6 +394,18 @@ namespace [symbol.NamespaceName].Metadata
 ^
         protected override void CompleteNonSymbolProperties(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
+        }
+        [end if]
+        [if (symbol.Name != "AssemblySymbol" && symbol.Name != "ModuleSymbol")]
+^
+        public partial class Error : Metadata[symbol.Name]
+        {
+            public Error(Symbol container[if(symbol.ModelObjectOption != ParameterOption.Disabled)], object modelObject = null[end if])
+                : base(container[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if])
+            {
+            }
+^
+            public sealed override bool IsError => true;
         }
         [end if]
     }
@@ -532,7 +529,18 @@ namespace [symbol.NamespaceName].Source
             SourceSymbolImplementation.AssignNonSymbolProperties(this, diagnostics, cancellationToken);
         }
         [end if]
+        [if (symbol.Name != "AssemblySymbol" && symbol.Name != "ModuleSymbol")]
 ^
+        public partial class Error : Source[symbol.Name]
+        {
+            public Error(Symbol container[if(symbol.ModelObjectOption != ParameterOption.Disabled)], object modelObject = null[end if], MergedDeclaration declaration)
+                : base(container[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if], declaration)
+            {
+            }
+^
+            public sealed override bool IsError => true;
+        }
+        [end if]
 	}
 }
 end template

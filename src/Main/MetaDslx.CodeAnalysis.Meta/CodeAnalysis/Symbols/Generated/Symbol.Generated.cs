@@ -15,12 +15,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
 {
 	public abstract partial class Symbol
 	{
-
-        /// <summary>
-        /// Gets the kind of this symbol.
-        /// </summary>
-        public virtual SymbolKind Kind => SymbolKind.None;
-
         public virtual void Accept(MetaDslx.CodeAnalysis.Symbols.SymbolVisitor visitor)
         {
             if (visitor is ISymbolVisitor isv) isv.Visit(this);

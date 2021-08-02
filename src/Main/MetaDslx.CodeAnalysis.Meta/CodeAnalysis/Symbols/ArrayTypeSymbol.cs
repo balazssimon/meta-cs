@@ -8,45 +8,14 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-    public class ArrayTypeSymbol : TypeSymbol
+    [Symbol]
+    public abstract class ArrayTypeSymbol : TypeSymbol
     {
-        public override bool IsStatic => throw new NotImplementedException();
-
-        public override Symbol ContainingSymbol => throw new NotImplementedException();
-
-        public override ImmutableArray<Location> Locations => throw new NotImplementedException();
-
-        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => throw new NotImplementedException();
-
-        public int Rank { get; internal set; }
-        public bool IsSZArray { get; internal set; }
-        public ImmutableArray<int> LowerBounds { get; internal set; }
-        public ImmutableArray<int> Sizes { get; internal set; }
-        internal TypeWithAnnotations ElementTypeWithAnnotations { get; set; }
-
-        public override void Accept(SymbolVisitor visitor)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override TResult Accept<TResult>(SymbolVisitor<TResult> visitor)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override TResult Accept<TArgument, TResult>(SymbolVisitor<TArgument, TResult> visitor, TArgument argument)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool GetUnificationUseSiteDiagnosticRecursive(ref DiagnosticInfo result, Symbol owner, ref HashSet<TypeSymbol> checkedTypes)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal static ArrayTypeSymbol CreateArray(AssemblySymbol assembly, TypeWithAnnotations typeWithAnnotations, int rank)
-        {
-            throw new NotImplementedException();
-        }
+        [SymbolProperty]
+        public virtual int LowerBound { get; }
+        [SymbolProperty]
+        public virtual int Size { get; }
+        [SymbolProperty]
+        public virtual TypeSymbol ElementType { get; }
     }
 }

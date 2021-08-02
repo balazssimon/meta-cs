@@ -8,8 +8,6 @@ using MetaDslx.CodeAnalysis.Symbols;
 
 namespace MetaDslx.CodeAnalysis
 {
-    using SymbolKind = MetaDslx.CodeAnalysis.Symbols.SymbolKind;
-
     public struct SymbolInfo : IEquatable<SymbolInfo>
     {
         internal static readonly SymbolInfo None = new SymbolInfo(null, ImmutableArray<Symbol>.Empty, CandidateReason.None);
@@ -78,16 +76,6 @@ namespace MetaDslx.CodeAnalysis
         {
             this.Symbol = symbol;
             _candidateSymbols = candidateSymbols.IsDefault ? ImmutableArray.Create<Symbol>() : candidateSymbols;
-
-#if DEBUG
-            const NamespaceKind NamespaceKindNamespaceGroup = (NamespaceKind)0;
-            Debug.Assert(symbol is null || symbol.Kind != SymbolKind.Namespace || ((INamespaceSymbol)symbol).NamespaceKind != NamespaceKindNamespaceGroup);
-            foreach (var item in _candidateSymbols)
-            {
-                Debug.Assert(item.Kind != SymbolKind.Namespace || ((INamespaceSymbol)item).NamespaceKind != NamespaceKindNamespaceGroup);
-            }
-#endif
-
             this.CandidateReason = candidateReason;
         }
 

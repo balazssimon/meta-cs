@@ -9,8 +9,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
     [Symbol]
     public partial class LabelSymbol : LocalSymbol
     {
-        public MethodSymbol ContainingMethod { get; internal set; }
-
 
     }
 }

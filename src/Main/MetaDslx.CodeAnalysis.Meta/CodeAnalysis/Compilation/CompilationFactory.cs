@@ -15,8 +15,6 @@ namespace MetaDslx.CodeAnalysis
 {
     public abstract class CompilationFactory
     {
-        private CompletionGraph _lazyCompletionGraph;
-
         public CompilationFactory()
         {
         }
@@ -63,18 +61,6 @@ namespace MetaDslx.CodeAnalysis
             Type globalsType = null);
 
 
-        public CompletionGraph CompletionGraph
-        {
-            get
-            {
-                if (_lazyCompletionGraph == null)
-                {
-                    Interlocked.CompareExchange(ref _lazyCompletionGraph, this.ConstructCompletionGraph().Build(), null);
-                }
-                return _lazyCompletionGraph;
-            }
-        }
-
         public virtual Symbol CreateSpecialSymbol(ModuleSymbol module, object key)
         {
             if (module is CompletionModuleSymbol cms)
@@ -86,11 +72,6 @@ namespace MetaDslx.CodeAnalysis
                 }
             }
             return null;
-        }
-
-        protected virtual CompletionGraphBuilder ConstructCompletionGraph()
-        {
-            return CompletionGraphBuilder.BuildDefaultGraph();
         }
 
         public abstract RootSingleDeclaration CreateDeclarationTree(LanguageSyntaxTree syntaxTree, string scriptClassName, bool isSubmission);

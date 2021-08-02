@@ -18,16 +18,16 @@ using System.Linq;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-    public abstract partial class DeclaredSymbol : Symbol, ISymbol
+    public abstract partial class DeclaredSymbol : Symbol
     {
         private static MemberLookupCache EmptyMemberCache = new MemberLookupCache(null);
         private static ConditionalWeakTable<DeclaredSymbol, MemberLookupCache> s_memberLookup = new ConditionalWeakTable<DeclaredSymbol, MemberLookupCache>();
+        private string _lazyQualifiedName;
 
-        /// <summary>
-        /// The original definition of this symbol. If this symbol is constructed from another
-        /// symbol by type substitution then OriginalDefinition gets the original symbol as it was defined in
-        /// source or metadata.
-        /// </summary>
+        public virtual int Arity => this.TypeParameters.Length;
+        [SymbolProperty]
+        public virtual ImmutableArray<TypeParameterSymbol> TypeParameters => ImmutableArray<TypeParameterSymbol>.Empty;
+
         /// <summary>
         /// The original definition of this symbol. If this symbol is constructed from another
         /// symbol by type substitution then OriginalDefinition gets the original symbol as it was defined in
@@ -60,6 +60,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// Get this accessibility that was declared on this symbol. For symbols that do not have
         /// accessibility declared on them, returns <see cref="Accessibility.NotApplicable"/>.
         /// </summary>
+        [SymbolProperty]
         public virtual Accessibility DeclaredAccessibility => Accessibility.Public;
 
         /// <summary>
@@ -69,42 +70,10 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public abstract bool IsStatic { get; }
 
         /// <summary>
-        /// Returns true if this symbol is "virtual", has an implementation, and does not override a
-        /// base class member; i.e., declared with the <c>virtual</c> modifier. Does not return true for
-        /// members declared as abstract or override.
-        /// </summary>
-        public virtual bool IsVirtual => false;
-
-        /// <summary>
-        /// Returns true if this symbol was declared to override a base class member; i.e., declared
-        /// with the <c>override</c> modifier. Still returns true if member was declared to override
-        /// something, but (erroneously) no member to override exists.
-        /// </summary>
-        /// <remarks>
-        /// Even for metadata symbols, <see cref="IsOverride"/> = true does not imply that <see cref="IMethodSymbol.OverriddenMethod"/> will
-        /// be non-null.
-        /// </remarks>
-        public virtual bool IsOverride => false;
-
-        /// <summary>
-        /// Returns true if this symbol was declared as requiring an override; i.e., declared with
-        /// the <c>abstract</c> modifier. Also returns true on a type declared as "abstract", all
-        /// interface types, and members of interface types.
-        /// </summary>
-        public virtual bool IsAbstract => false;
-
-        /// <summary>
-        /// Returns true if this symbol was declared to override a base class member and was also
-        /// sealed from further overriding; i.e., declared with the <c>sealed</c> modifier. Also set for
-        /// types that do not allow a derived class (declared with <c>sealed</c> or <c>static</c> or <c>struct</c>
-        /// or <c>enum</c> or <c>delegate</c>).
-        /// </summary>
-        public virtual bool IsSealed => false;
-
-        /// <summary>
         /// Returns true if this symbol has external implementation; i.e., declared with the 
         /// <c>extern</c> modifier. 
         /// </summary>
+        [SymbolProperty]
         public virtual bool IsExtern => false;
 
         /// <summary>
@@ -306,120 +275,16 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return string.Empty;
         }
 
-
-        /// <summary>
-        /// Returns true and a <see cref="string"/> from the first <see cref="GuidAttribute"/> on the symbol, 
-        /// the string might be null or an invalid guid representation. False, 
-        /// if there is no <see cref="GuidAttribute"/> with string argument.
-        /// </summary>
-        public virtual bool GetGuidStringDefaultImplementation(out string guidString)
-        {
-            // TODO:MetaDslx
-            guidString = null;
-            return false;
-        }
-
-        internal DiagnosticInfo GetUseSiteDiagnosticForSymbolOrContainingType()
-        {
-            var info = this.GetUseSiteDiagnostic();
-            if (info != null && info.Severity == DiagnosticSeverity.Error)
-            {
-                return info;
-            }
-            return this.ContainingType.GetUseSiteDiagnostic() ?? info;
-        }
-
         /// <summary>
         /// Derive error info from a type symbol.
         /// </summary>
-        internal bool DeriveUseSiteDiagnosticFromType(ref DiagnosticInfo result, TypeSymbol type)
+        protected virtual bool DeriveUseSiteDiagnosticFromType(ref DiagnosticInfo result, TypeSymbol type)
         {
             DiagnosticInfo info = type.GetUseSiteDiagnostic();
-            if (info != null)
-            {
-                if (info.HasErrorCode(InternalErrorCode.ERR_BogusType))
-                {
-                    switch (this.Kind.Switch())
-                    {
-                        case SymbolKind.Member:
-                            info = new LanguageDiagnosticInfo(InternalErrorCode.ERR_BindToBogus, this);
-                            break;
-                    }
-                }
-            }
-
             return MergeUseSiteDiagnostics(ref result, info);
         }
 
-        internal bool DeriveUseSiteDiagnosticFromCustomModifiers(ref DiagnosticInfo result, ImmutableArray<CustomModifier> customModifiers)
-        {
-            foreach (CustomModifier modifier in customModifiers)
-            {
-                var modifierType = (NamedTypeSymbol)modifier.Modifier;
-                if (DeriveUseSiteDiagnosticFromType(ref result, modifierType))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        internal DeclaredSymbol AsMember(NamedTypeSymbol newOwner)
-        {
-            Debug.Assert(this.IsDefinition);
-            Debug.Assert(ReferenceEquals(newOwner.OriginalDefinition, (this.ContainingSymbol as DeclaredSymbol)?.OriginalDefinition));
-            return this; // TODO:MetaDslx
-            //return newOwner.IsDefinition ? this : new SubstitutedPropertySymbol(newOwner as SubstitutedNamedTypeSymbol, this);
-        }
-
-
         public virtual DeclaredSymbol ConstructedFrom => this;
-
-        Microsoft.CodeAnalysis.SymbolKind ISymbol.Kind => this.Kind.ToCSharp();
-
-        string ISymbol.Language => this.Language.Name;
-
-        string ISymbol.Name => this.Name;
-
-        string ISymbol.MetadataName => this.MetadataName;
-
-        ISymbol ISymbol.ContainingSymbol => this.ContainingDeclaration;
-
-        IAssemblySymbol ISymbol.ContainingAssembly => this.ContainingAssembly;
-
-        IModuleSymbol ISymbol.ContainingModule => this.ContainingModule;
-
-        INamedTypeSymbol ISymbol.ContainingType => this.ContainingType;
-
-        INamespaceSymbol ISymbol.ContainingNamespace => this.ContainingNamespace;
-
-        bool ISymbol.IsDefinition => this.IsDefinition;
-
-        bool ISymbol.IsStatic => this.IsStatic;
-
-        bool ISymbol.IsVirtual => this.IsVirtual;
-
-        bool ISymbol.IsOverride => this.IsOverride;
-
-        bool ISymbol.IsAbstract => this.IsAbstract;
-
-        bool ISymbol.IsSealed => this.IsSealed;
-
-        bool ISymbol.IsExtern => this.IsExtern;
-
-        bool ISymbol.IsImplicitlyDeclared => this.IsImplicitlyDeclared;
-
-        bool ISymbol.CanBeReferencedByName => this.CanBeReferencedByName;
-
-        ImmutableArray<Location> ISymbol.Locations => this.Locations;
-
-        ImmutableArray<SyntaxReference> ISymbol.DeclaringSyntaxReferences => this.DeclaringSyntaxReferences;
-
-        Accessibility ISymbol.DeclaredAccessibility => this.DeclaredAccessibility;
-
-        ISymbol ISymbol.OriginalDefinition => this.OriginalDefinition;
-
-        bool ISymbol.HasUnsupportedMetadata => this.HasUnsupportedMetadata;
 
         /// <summary>
         /// Returns the original virtual or abstract method which a given method symbol overrides,
@@ -483,69 +348,18 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return s_memberLookup.GetValue(this, key => key.Members.IsDefaultOrEmpty ? EmptyMemberCache : new MemberLookupCache(key));
         }
 
-        ImmutableArray<AttributeData> ISymbol.GetAttributes()
+        public string QualifiedName
         {
-            return this.GetAttributes();
-        }
-
-        void ISymbol.Accept(Microsoft.CodeAnalysis.SymbolVisitor visitor)
-        {
-            this.Accept(visitor);
-        }
-
-        protected virtual void Accept(Microsoft.CodeAnalysis.SymbolVisitor visitor)
-        {
-
-        }
-
-        TResult ISymbol.Accept<TResult>(Microsoft.CodeAnalysis.SymbolVisitor<TResult> visitor)
-        {
-            return this.Accept(visitor);
-        }
-
-        protected virtual TResult Accept<TResult>(Microsoft.CodeAnalysis.SymbolVisitor<TResult> visitor)
-        {
-            return default;
-        }
-
-        string? ISymbol.GetDocumentationCommentId()
-        {
-            throw new NotImplementedException();
-        }
-
-        string? ISymbol.GetDocumentationCommentXml(CultureInfo? preferredCulture, bool expandIncludes, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
-
-        string ISymbol.ToDisplayString(SymbolDisplayFormat? format)
-        {
-            throw new NotImplementedException();
-        }
-
-        ImmutableArray<SymbolDisplayPart> ISymbol.ToDisplayParts(SymbolDisplayFormat? format)
-        {
-            throw new NotImplementedException();
-        }
-
-        string ISymbol.ToMinimalDisplayString(SemanticModel semanticModel, int position, SymbolDisplayFormat? format)
-        {
-            throw new NotImplementedException();
-        }
-
-        ImmutableArray<SymbolDisplayPart> ISymbol.ToMinimalDisplayParts(SemanticModel semanticModel, int position, SymbolDisplayFormat? format)
-        {
-            throw new NotImplementedException();
-        }
-
-        bool ISymbol.Equals(ISymbol? other, SymbolEqualityComparer equalityComparer)
-        {
-            throw new NotImplementedException();
-        }
-
-        bool IEquatable<ISymbol?>.Equals(ISymbol? other)
-        {
-            throw new NotImplementedException();
+            get
+            {
+                if (_lazyQualifiedName is null)
+                {
+                    var container = this.ContainingDeclaration;
+                    if (container is not null) Interlocked.CompareExchange(ref _lazyQualifiedName, container.QualifiedName + "." + this.Name, null);
+                    else Interlocked.CompareExchange(ref _lazyQualifiedName, this.Name, null);
+                }
+                return _lazyQualifiedName;
+            }
         }
 
         private class MemberLookupCache

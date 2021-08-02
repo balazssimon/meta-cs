@@ -198,6 +198,5 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
         protected abstract global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.ModuleSymbol> CompleteSymbolProperty_Modules(DiagnosticBag diagnostics, CancellationToken cancellationToken);
         protected abstract void CompleteNonSymbolProperties(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken);
         #endregion
-
     }
 }

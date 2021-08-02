@@ -15,12 +15,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
 {
 	public abstract partial class ModuleSymbol
 	{
-        /// <summary>
-        /// Gets the kind of this symbol.
-        /// </summary>
-        public override SymbolKind Kind => SymbolKind.NetModule;
-
-
         public override void Accept(MetaDslx.CodeAnalysis.Symbols.SymbolVisitor visitor)
         {
             if (visitor is ISymbolVisitor isv) isv.Visit(this);

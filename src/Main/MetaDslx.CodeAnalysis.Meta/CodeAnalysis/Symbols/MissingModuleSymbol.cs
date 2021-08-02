@@ -33,6 +33,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
             globalNamespace = new MissingNamespaceSymbol(this);
         }
 
+        public sealed override bool IsError => true;
+
         public override SymbolFactory SymbolFactory => null;
 
         public override int Ordinal

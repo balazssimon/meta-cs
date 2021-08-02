@@ -92,5 +92,14 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             SourceSymbolImplementation.AssignNonSymbolProperties(this, diagnostics, cancellationToken);
         }
 
+        public partial class Error : SourceAliasSymbol
+        {
+            public Error(Symbol container, MergedDeclaration declaration)
+                : base(container, declaration)
+            {
+            }
+
+            public override bool IsError => true;
+        }
 	}
 }

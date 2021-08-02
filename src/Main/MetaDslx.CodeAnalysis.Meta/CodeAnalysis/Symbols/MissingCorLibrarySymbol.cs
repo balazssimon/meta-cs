@@ -53,7 +53,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 {
                     MetadataTypeName emittedName = MetadataTypeName.FromFullName(type.GetMetadataName(), useCLSCompliantNameArityEncoding: true);
                     result = module.LookupTopLevelMetadataType(ref emittedName);
-                    if (result.Kind != SymbolKind.ErrorType && result.DeclaredAccessibility != Accessibility.Public)
+                    if (!result.IsError && result.DeclaredAccessibility != Accessibility.Public)
                     {
                         result = new MissingMetadataTypeSymbol.TopLevel(module, ref emittedName, type);
                     }

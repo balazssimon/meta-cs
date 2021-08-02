@@ -9,7 +9,8 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-    public class DynamicTypeSymbol : TypeSymbol
+    [Symbol(SymbolParts = SymbolParts.None, ModelObjectOption = ParameterOption.Disabled)]
+    public sealed partial class DynamicTypeSymbol : TypeSymbol
     {
         internal static readonly DynamicTypeSymbol Instance = new DynamicTypeSymbol();
 
@@ -17,87 +18,21 @@ namespace MetaDslx.CodeAnalysis.Symbols
         {
         }
 
-        public override string Name
-        {
-            get
-            {
-                return "dynamic";
-            }
-        }
+        public override string Name => "dynamic";
 
-        public override bool IsAbstract
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool IsReferenceType => true;
 
-        public override bool IsReferenceType
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override ImmutableArray<Location> Locations => ImmutableArray<Location>.Empty;
 
-        public override bool IsSealed
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        public override TypeKind TypeKind
-        {
-            get
-            {
-                return TypeKind.Dynamic;
-            }
-        }
-
-        public override ImmutableArray<Location> Locations
-        {
-            get
-            {
-                return ImmutableArray<Location>.Empty;
-            }
-        }
-
-        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences
-        {
-            get
-            {
-                return ImmutableArray<SyntaxReference>.Empty;
-            }
-        }
+        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => ImmutableArray<SyntaxReference>.Empty;
 
         public override ImmutableArray<NamedTypeSymbol> BaseTypes => ImmutableArray<NamedTypeSymbol>.Empty;
 
-        public override bool IsStatic
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool IsStatic => false;
 
-        public override bool IsValueType
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool IsValueType => false;
 
-        public sealed override bool IsReadOnly
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public sealed override bool IsReadOnly => false;
 
         public sealed override ObsoleteAttributeData? ObsoleteAttributeData
         {
@@ -154,7 +89,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 return false;
             }
 
-            if (ReferenceEquals(this, t2) || t2.TypeKind == TypeKind.Dynamic)
+            if (ReferenceEquals(this, t2) || t2 is DynamicTypeSymbol)
             {
                 return true;
             }

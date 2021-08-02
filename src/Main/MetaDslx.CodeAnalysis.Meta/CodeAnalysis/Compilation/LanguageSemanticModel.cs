@@ -400,7 +400,7 @@ namespace MetaDslx.CodeAnalysis
             SyntaxToken token;
             position = CheckAndAdjustPosition(position, out token);
 
-            if (container is null || container.Kind == Symbols.SymbolKind.Namespace)
+            if (container is null || container is NamespaceSymbol)
             {
                 options &= ~LookupOptions.IncludeExtensionMethods;
             }
@@ -418,7 +418,7 @@ namespace MetaDslx.CodeAnalysis
                 TypeSymbol baseType = null;
 
                 // For a script class or a submission class base should have no members.
-                if (containingType is not null && containingType.Kind == Symbols.SymbolKind.NamedType && ((NamedTypeSymbol)containingType).IsScript)
+                if (containingType is ScriptSymbol || containingType is SubmissionSymbol)
                 {
                     return ImmutableArray<DeclaredSymbol>.Empty;
                 }
@@ -530,7 +530,7 @@ namespace MetaDslx.CodeAnalysis
 
             foreach (Symbol symbol in symbols)
             {
-                if (symbol.Kind == Symbols.SymbolKind.Alias)
+                if (symbol is AliasSymbol)
                     anyAliases = true;
             }
 

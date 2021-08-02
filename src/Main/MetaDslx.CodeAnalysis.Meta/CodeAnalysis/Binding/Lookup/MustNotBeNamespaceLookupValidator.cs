@@ -16,7 +16,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         public SingleLookupResult CheckSingleResultViability(SingleLookupResult result, AliasSymbol aliasSymbol, LookupConstraints constraints)
         {
             var symbol = result.Symbol;
-            if (symbol.Kind == SymbolKind.Namespace)
+            if (symbol is NamespaceSymbol)
             {
                 return LookupResult.StaticInstanceMismatch(symbol, new LanguageDiagnosticInfo(InternalErrorCode.ERR_BadSKunknown, symbol, symbol.GetKindText()));
             }

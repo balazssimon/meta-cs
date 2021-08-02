@@ -28,6 +28,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             SourceSymbolImplementation.CompleteImports(this, locationOpt, diagnostics, cancellationToken);
         }
 
+
         protected override global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.Symbol> CompleteSymbolProperty_Attributes(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             return SourceSymbolImplementation.AssignSymbolPropertyValues<global::MetaDslx.CodeAnalysis.Symbols.Symbol>(this, nameof(Attributes), diagnostics, cancellationToken);
@@ -41,6 +42,5 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         {
             SourceSymbolImplementation.AssignNonSymbolProperties(this, diagnostics, cancellationToken);
         }
-
 	}
 }

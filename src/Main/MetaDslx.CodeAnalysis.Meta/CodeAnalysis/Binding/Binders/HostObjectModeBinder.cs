@@ -29,7 +29,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
         protected override void AddLookupCandidateSymbolsInScope(LookupCandidates result, LookupConstraints constraints)
         {
             var hostObjectType = GetHostObjectType();
-            if (hostObjectType.Kind != Symbols.SymbolKind.ErrorType)
+            if (!hostObjectType.IsError)
             {
                 base.AddLookupCandidateSymbolsInScope(result, constraints.WithQualifier(hostObjectType));
             }
@@ -43,7 +43,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
         protected override void CheckFinalResultViability(LookupResult result, LookupConstraints constraints)
         {
             var hostObjectType = GetHostObjectType();
-            if (hostObjectType.Kind == Symbols.SymbolKind.ErrorType)
+            if (hostObjectType.IsError)
             {
                 // The name '{0}' does not exist in the current context (are you missing a reference to assembly '{1}'?)
                 result.SetFrom(new LanguageDiagnosticInfo(

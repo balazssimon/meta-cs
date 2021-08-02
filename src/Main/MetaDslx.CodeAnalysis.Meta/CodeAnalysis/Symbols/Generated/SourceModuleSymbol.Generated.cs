@@ -47,6 +47,5 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         {
             SourceSymbolImplementation.AssignNonSymbolProperties(this, diagnostics, cancellationToken);
         }
-
 	}
 }

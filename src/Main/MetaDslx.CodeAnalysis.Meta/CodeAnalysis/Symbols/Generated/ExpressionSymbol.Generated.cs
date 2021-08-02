@@ -15,16 +15,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
 {
 	public abstract partial class ExpressionSymbol
 	{
-        /// <summary>
-        /// Gets the kind of this symbol.
-        /// </summary>
-        public override SymbolKind Kind => SymbolKind.Expression;
-
-        /// <summary>
-        /// Gets the kind of this symbol.
-        /// </summary>
-        public virtual ExpressionKind ExpressionKind => ExpressionKind.None;
-
         public override void Accept(MetaDslx.CodeAnalysis.Symbols.SymbolVisitor visitor)
         {
             if (visitor is ISymbolVisitor isv) isv.Visit(this);

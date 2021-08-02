@@ -175,9 +175,9 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         public static DeclaredSymbol UnwrapAlias(DeclaredSymbol symbol, LookupConstraints recursionConstraint)
         {
-            if (symbol.Kind == Symbols.SymbolKind.Alias)
+            if (symbol is AliasSymbol aliasSymbol)
             {
-                return ((AliasSymbol)symbol).GetAliasTarget(recursionConstraint);
+                return aliasSymbol.GetAliasTarget(recursionConstraint);
             }
             return symbol;
         }
@@ -202,10 +202,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             // General pattern: checks and diagnostics refer to unwrapped symbol,
             // but lookup results refer to symbol.
 
-            var unwrappedSymbol = symbol.Kind == Symbols.SymbolKind.Alias
-                ? ((AliasSymbol)symbol).GetAliasTarget(this)
-                : symbol;
-
+            var unwrappedSymbol = UnwrapAlias(symbol, this);
             var result = LookupResult.Good(unwrappedSymbol);
             if (!this.Validators.IsDefaultOrEmpty)
             {
@@ -279,7 +276,6 @@ namespace MetaDslx.CodeAnalysis.Binding
         public virtual bool HidesSymbol(DeclaredSymbol hidingSymbol, DeclaredSymbol hiddenSymbol)
         {
             if (hiddenSymbol.Name != hidingSymbol.Name) return false;
-            if (hiddenSymbol.Kind != hidingSymbol.Kind) return false;
             if (hiddenSymbol is IModelSymbol hiddenModelSymbol && hidingSymbol is IModelSymbol hidingModelSymbol)
             {
                 return hiddenModelSymbol.ModelObjectType == hidingModelSymbol.ModelObjectType;
@@ -358,7 +354,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                         if (srcSymbol.ToDisplayString(SymbolDisplayFormat.QualifiedNameArityFormat) ==
                             mdSymbol.ToDisplayString(SymbolDisplayFormat.QualifiedNameArityFormat))
                         {
-                            if (srcSymbol.Kind == Symbols.SymbolKind.Namespace && mdSymbol.Kind == Symbols.SymbolKind.NamedType)
+                            if (srcSymbol is NamespaceSymbol && mdSymbol is NamedTypeSymbol)
                             {
                                 // InternalErrorCode.WRN_SameFullNameThisNsAgg: The namespace '{1}' in '{0}' conflicts with the imported type '{3}' in '{2}'. Using the namespace defined in '{0}'.
                                 diagnostics.Add(errorSymbols, InternalErrorCode.WRN_SameFullNameThisNsAgg, where.GetLocation(),
@@ -369,7 +365,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
                                 return originalSymbols[best.Index];
                             }
-                            else if (srcSymbol.Kind == Symbols.SymbolKind.NamedType && mdSymbol.Kind == Symbols.SymbolKind.Namespace)
+                            else if (srcSymbol is NamedTypeSymbol && mdSymbol is NamespaceSymbol)
                             {
                                 // InternalErrorCode.WRN_SameFullNameThisAggNs: The type '{1}' in '{0}' conflicts with the imported namespace '{3}' in '{2}'. Using the type defined in '{0}'.
                                 diagnostics.Add(errorSymbols, InternalErrorCode.WRN_SameFullNameThisAggNs, where.GetLocation(),
@@ -380,7 +376,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
                                 return originalSymbols[best.Index];
                             }
-                            else if (srcSymbol.Kind == Symbols.SymbolKind.NamedType && mdSymbol.Kind == Symbols.SymbolKind.NamedType)
+                            else if (srcSymbol is NamedTypeSymbol && mdSymbol is NamedTypeSymbol)
                             {
                                 // WRN_SameFullNameThisAggAgg: The type '{1}' in '{0}' conflicts with the imported type '{3}' in '{2}'. Using the type defined in '{0}'.
                                 diagnostics.Add(errorSymbols, InternalErrorCode.WRN_SameFullNameThisAggAgg, where.GetLocation(),
@@ -394,7 +390,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                             else
                             {
                                 // namespace would be merged with the source namespace:
-                                Debug.Assert(!(srcSymbol.Kind == Symbols.SymbolKind.Namespace && mdSymbol.Kind == Symbols.SymbolKind.Namespace));
+                                Debug.Assert(!(srcSymbol is NamespaceSymbol && mdSymbol is NamespaceSymbol));
                             }
                         }
                     }
@@ -420,7 +416,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                         // since an error has already been reported from the declaration
                         reportError = !(best.IsFromSourceModule && secondBest.IsFromSourceModule);
 
-                        if (first.Kind == Symbols.SymbolKind.NamedType && second.Kind == Symbols.SymbolKind.NamedType)
+                        if (first is NamedTypeSymbol && second is NamedTypeSymbol)
                         {
                             if (first.OriginalDefinition == second.OriginalDefinition)
                             {
@@ -429,10 +425,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                                 reportError = true;
 
                                 // '{0}' is an ambiguous reference between '{1}' and '{2}'
-                                info = new SymbolDiagnosticInfo(errorSymbols, InternalErrorCode.ERR_AmbigContext,
-                                        this.Name,
-                                        new FormattedSymbol(new InternalSymbol(first), SymbolDisplayFormat.CSharpErrorMessageFormat),
-                                        new FormattedSymbol(new InternalSymbol(second), SymbolDisplayFormat.CSharpErrorMessageFormat));
+                                info = new SymbolDiagnosticInfo(errorSymbols, InternalErrorCode.ERR_AmbigContext, this.Name, first.QualifiedName, second.QualifiedName);
                             }
                             else
                             {
@@ -468,7 +461,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                                 }
                             }
                         }
-                        else if (first.Kind == Symbols.SymbolKind.Namespace && second.Kind == Symbols.SymbolKind.NamedType)
+                        else if (first is NamespaceSymbol && second is NamedTypeSymbol)
                         {
                             // InternalErrorCode.ERR_SameFullNameNsAgg: The namespace '{1}' in '{0}' conflicts with the type '{3}' in '{2}'
                             info = new SymbolDiagnosticInfo(errorSymbols, InternalErrorCode.ERR_SameFullNameNsAgg, GetContainingAssembly(first), first, second.ContainingAssembly, second);
@@ -480,7 +473,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                                 reportError = false;
                             }
                         }
-                        else if (first.Kind == Symbols.SymbolKind.NamedType && second.Kind == Symbols.SymbolKind.Namespace)
+                        else if (first is NamedTypeSymbol && second is NamespaceSymbol)
                         {
                             if (!secondBest.IsFromCompilation || secondBest.IsFromSourceModule)
                             {
@@ -562,8 +555,8 @@ namespace MetaDslx.CodeAnalysis.Binding
                         if (first is NamespaceOrTypeSymbol && second is NamespaceOrTypeSymbol)
                         {
                             if (this.IsAutomaticNameLookup &&
-                                first.Kind == Symbols.SymbolKind.NamedType &&
-                                second.Kind == Symbols.SymbolKind.NamedType &&
+                                first is NamedTypeSymbol &&
+                                second is NamedTypeSymbol &&
                                 originalSymbols[best.Index].Name != originalSymbols[secondBest.Index].Name && // Use alias names, if available.
                                 Compilation.IsAttributeType((NamedTypeSymbol)first) &&
                                 Compilation.IsAttributeType((NamedTypeSymbol)second))
@@ -577,10 +570,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                             else
                             {
                                 // '{0}' is an ambiguous reference between '{1}' and '{2}'
-                                info = new SymbolDiagnosticInfo(errorSymbols, InternalErrorCode.ERR_AmbigContext,
-                                        this.Name,
-                                        new FormattedSymbol(new InternalSymbol(first), SymbolDisplayFormat.CSharpErrorMessageFormat),
-                                        new FormattedSymbol(new InternalSymbol(second), SymbolDisplayFormat.CSharpErrorMessageFormat));
+                                info = new SymbolDiagnosticInfo(errorSymbols, InternalErrorCode.ERR_AmbigContext, this.Name, first.QualifiedName, second.QualifiedName);
                             }
                         }
                         else
@@ -598,7 +588,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                     }
 
                     return new ExtendedErrorTypeSymbol(
-                        GetContainingNamespaceOrType(originalSymbols[0]),
+                        GetContainingDeclaration(originalSymbols[0]),
                         originalSymbols,
                         LookupResultKind.Ambiguous,
                         info,
@@ -616,7 +606,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                         wasError = true;
                         var errorInfo = new LanguageDiagnosticInfo(InternalErrorCode.ERR_SystemVoid);
                         diagnostics.Add(errorInfo, where.GetLocation());
-                        singleResult = new ExtendedErrorTypeSymbol(GetContainingNamespaceOrType(singleResult), singleResult, LookupResultKind.NotReferencable, errorInfo); // UNDONE: Review resultkind.
+                        singleResult = new ExtendedErrorTypeSymbol(GetContainingDeclaration(singleResult), singleResult, LookupResultKind.NotReferencable, errorInfo); // UNDONE: Review resultkind.
                     }
                     // Check for bad symbol.
                     else
@@ -625,7 +615,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                         {
                             wasError = ReportUseSiteDiagnostics(singleResult, diagnostics, where);
                         }
-                        else if (singleResult.Kind == Symbols.SymbolKind.ErrorType)
+                        else if (singleResult.IsError)
                         {
                             // We want to report ERR_CircularBase error on the spot to make sure 
                             // that the right location is used for it.
@@ -639,7 +629,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                                 {
                                     wasError = true;
                                     diagnostics.Add(errorInfo, where.GetLocation());
-                                    singleResult = new ExtendedErrorTypeSymbol(GetContainingNamespaceOrType(errorType), errorType.Name, errorType.MetadataName, errorInfo, unreported: false);
+                                    singleResult = new ExtendedErrorTypeSymbol(GetContainingDeclaration(errorType), errorType.Name, errorType.MetadataName, errorInfo, unreported: false);
                                 }
                             }
                         }
@@ -672,7 +662,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             // result.Error might be null if we have already generated parser errors,
             // e.g. when generic name is used for attribute name.
             if (result.Error != null &&
-                ((object)QualifierOpt == null || QualifierOpt.Kind != Symbols.SymbolKind.ErrorType)) // Suppress cascading.
+                ((object)QualifierOpt == null || !QualifierOpt.IsError)) // Suppress cascading.
             {
                 diagnostics.Add(result.Error, where.GetLocation());
             }
@@ -683,7 +673,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                 // Bad type or namespace (or things expected as types/namespaces) are packaged up as error types, preserving the symbols and the result kind.
                 // We do this if there are multiple symbols too, because just returning one would be losing important information, and they might
                 // be of different kinds.
-                return new ExtendedErrorTypeSymbol(GetContainingNamespaceOrType(symbols[0]), symbols.ToImmutable(), result.Kind, result.Error, MetadataName);
+                return new ExtendedErrorTypeSymbol(GetContainingDeclaration(symbols[0]), symbols.ToImmutable(), result.Kind, result.Error, MetadataName);
             }
             else
             {
@@ -696,9 +686,9 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// The immediately containing namespace or named type, or the global
         /// namespace if containing symbol is neither a namespace or named type.
         /// </summary>
-        private NamespaceOrTypeSymbol GetContainingNamespaceOrType(Symbol symbol)
+        private DeclaredSymbol GetContainingDeclaration(Symbol symbol)
         {
-            return symbol.ContainingNamespaceOrType() ?? this.Compilation.Assembly.GlobalNamespace;
+            return symbol.ContainingDeclaration ?? this.Compilation.Assembly.GlobalNamespace;
         }
 
         /// <remarks>
@@ -734,7 +724,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
             if ((object)qualifierOpt != null)
             {
-                if (qualifierOpt.IsType)
+                if (qualifierOpt is TypeSymbol)
                 {
                     var errorQualifier = qualifierOpt as ErrorTypeSymbol;
                     if ((object)errorQualifier != null && errorQualifier.ErrorInfo != null)
@@ -746,7 +736,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                 }
                 else
                 {
-                    Debug.Assert(qualifierOpt.IsNamespace);
+                    Debug.Assert(qualifierOpt is NamespaceSymbol);
 
                     forwardedToAssembly = GetForwardedToAssembly(Name, MetadataName, ref qualifierOpt, diagnostics, location);
 
@@ -763,7 +753,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
                         // If there was an alias (e.g. A::C) and the given qualifier is the global namespace of the alias,
                         // then use the alias name in the error message, since it's more helpful than "<global namespace>".
-                        if (aliasOpt != null && qualifierOpt.IsNamespace && ((NamespaceSymbol)qualifierOpt).IsGlobalNamespace)
+                        if (aliasOpt != null && qualifierOpt is NamespaceSymbol qualifierNs && qualifierNs.IsGlobalNamespace)
                         {
                             container = aliasOpt;
                         }
@@ -813,7 +803,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                     referencedAssembly.TryLookupForwardedMetadataType(ref metadataName);
                 if ((object)forwardedType != null)
                 {
-                    if (forwardedType.Kind == Symbols.SymbolKind.ErrorType)
+                    if (forwardedType.IsError)
                     {
                         DiagnosticInfo diagInfo = ((ErrorTypeSymbol)forwardedType).ErrorInfo;
 
@@ -1032,10 +1022,10 @@ namespace MetaDslx.CodeAnalysis.Binding
                 var symbol = symbols[i];
                 BestSymbolLocation location;
 
-                if (symbol.Kind == Symbols.SymbolKind.Namespace)
+                if (symbol is NamespaceSymbol namespaceSymbol)
                 {
                     location = BestSymbolLocation.None;
-                    foreach (var ns in ((NamespaceSymbol)symbol).ConstituentNamespaces)
+                    foreach (var ns in namespaceSymbol.ConstituentNamespaces)
                     {
                         var current = GetLocation(Compilation, ns);
                         if (BestSymbolInfo.IsSecondLocationBetter(location, current))
@@ -1131,7 +1121,8 @@ namespace MetaDslx.CodeAnalysis.Binding
                 if ((object)fst == null) return -1;
                 if ((object)snd == null) return 1;
                 if (snd.Name != fst.Name) return string.CompareOrdinal(fst.Name, snd.Name);
-                if (snd.Kind != fst.Kind) return (int)fst.Kind - (int)snd.Kind;
+                if (snd.GetKindText() != fst.GetKindText()) return string.CompareOrdinal(fst.GetKindText(), snd.GetKindText());
+                //if (snd.Kind != fst.Kind) return (int)fst.Kind - (int)snd.Kind;
                 int aLocationsCount = !snd.Locations.IsDefault ? snd.Locations.Length : 0;
                 int bLocationsCount = fst.Locations.Length;
                 if (aLocationsCount != bLocationsCount) return aLocationsCount - bLocationsCount;

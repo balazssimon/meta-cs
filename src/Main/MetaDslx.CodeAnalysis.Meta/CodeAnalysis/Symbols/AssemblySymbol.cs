@@ -21,7 +21,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
     using CSharpSymbols = Microsoft.CodeAnalysis.CSharp.Symbols;
 
     [Symbol(SymbolParts = SymbolParts.Source, ModelObjectOption = ParameterOption.Disabled)]
-    public abstract partial class AssemblySymbol : Symbol, IAssemblySymbol
+    public abstract partial class AssemblySymbol : Symbol
     {
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         // Changes to the public interface of this class should remain synchronized with the VB version.
@@ -477,7 +477,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 type = GetTopLevelTypeByMetadataName(ref mdName, assemblyOpt: null, includeReferences: includeReferences, isWellKnownType: isWellKnownType,
                     conflicts: out conflicts, warnings: warnings, ignoreCorLibraryDuplicatedTypes: ignoreCorLibraryDuplicatedTypes);
 
-                for (int i = 1; (object)type != null && !type.IsErrorType() && i < parts.Length; i++)
+                for (int i = 1; (object)type != null && !type.IsError && i < parts.Length; i++)
                 {
                     mdName = MetadataTypeName.FromTypeName(parts[i]);
                     NamedTypeSymbol temp = type.LookupMetadataType(ref mdName);
@@ -491,7 +491,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                     conflicts: out conflicts, warnings: warnings, ignoreCorLibraryDuplicatedTypes: ignoreCorLibraryDuplicatedTypes);
             }
 
-            return ((object)type == null || type.IsErrorType()) ? null : type;
+            return ((object)type == null || type.IsError) ? null : type;
         }
 
         private static readonly char[] s_nestedTypeNameSeparators = new char[] { '+' };
@@ -572,7 +572,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                     MetadataTypeName mdName = MetadataTypeName.FromTypeName(nestedTypes[i].Name, forcedArity: forcedArity);
 
                     symbol = symbol.LookupMetadataType(ref mdName);
-                    if ((object)symbol == null || symbol.IsErrorType())
+                    if ((object)symbol == null || symbol.IsError)
                     {
                         return null;
                     }
@@ -599,7 +599,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
                 NamedTypeSymbol symbol = GetTopLevelTypeByMetadataName(ref mdName, assemblyId, includeReferences, isWellKnownType: false, conflicts: out var _);
 
-                if ((object)symbol == null || symbol.IsErrorType())
+                if ((object)symbol == null || symbol.IsError)
                 {
                     return null;
                 }
@@ -746,7 +746,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         private bool IsValidWellKnownType(NamedTypeSymbol result)
         {
-            if ((object)result == null || result.TypeKind == TypeKind.ErrorType)
+            if ((object)result == null || result.IsError)
             {
                 return false;
             }
@@ -775,7 +775,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         private static bool IsAcceptableMatchForGetTypeByMetadataName(NamedTypeSymbol candidate)
         {
-            return candidate.Kind != SymbolKind.ErrorType || !(candidate is MissingMetadataTypeSymbol);
+            return !candidate.IsError || !(candidate is MissingMetadataTypeSymbol);
         }
 
         /// <summary>
@@ -797,66 +797,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         internal abstract ImmutableArray<byte> PublicKey { get; }
 
-        bool IAssemblySymbol.IsInteractive => this.IsInteractive;
-
-        AssemblyIdentity IAssemblySymbol.Identity => this.Identity;
-
-        INamespaceSymbol IAssemblySymbol.GlobalNamespace => this.GlobalNamespace;
-
-        IEnumerable<IModuleSymbol> IAssemblySymbol.Modules => this.Modules;
-
-        ICollection<string> IAssemblySymbol.TypeNames => this.TypeNames;
-
-        ICollection<string> IAssemblySymbol.NamespaceNames => this.NamespaceNames;
-
-        bool IAssemblySymbol.MightContainExtensionMethods => this.MightContainExtensionMethods;
-
-        Microsoft.CodeAnalysis.SymbolKind ISymbol.Kind => Microsoft.CodeAnalysis.SymbolKind.Assembly;
-
-        string ISymbol.Language => this.Language.Name;
-
-        string ISymbol.Name => this.Name;
-
-        string ISymbol.MetadataName => this.MetadataName;
-
-        ISymbol ISymbol.ContainingSymbol => null;
-
-        IAssemblySymbol ISymbol.ContainingAssembly => null;
-
-        IModuleSymbol ISymbol.ContainingModule => null;
-
-        INamedTypeSymbol ISymbol.ContainingType => null;
-
-        INamespaceSymbol ISymbol.ContainingNamespace => null;
-
-        bool ISymbol.IsDefinition => false;
-
-        bool ISymbol.IsStatic => false;
-
-        bool ISymbol.IsVirtual => false;
-
-        bool ISymbol.IsOverride => false;
-
-        bool ISymbol.IsAbstract => false;
-
-        bool ISymbol.IsSealed => false;
-
-        bool ISymbol.IsExtern => false;
-
-        bool ISymbol.IsImplicitlyDeclared => false;
-
-        bool ISymbol.CanBeReferencedByName => false;
-
-        ImmutableArray<Location> ISymbol.Locations => this.Locations;
-
-        ImmutableArray<SyntaxReference> ISymbol.DeclaringSyntaxReferences => this.DeclaringSyntaxReferences;
-
-        Accessibility ISymbol.DeclaredAccessibility => Accessibility.NotApplicable;
-
-        ISymbol ISymbol.OriginalDefinition => this;
-
-        bool ISymbol.HasUnsupportedMetadata => this.HasUnsupportedMetadata;
-
         #region IAssemblySymbol Members
 
         /// <summary>
@@ -877,86 +817,5 @@ namespace MetaDslx.CodeAnalysis.Symbols
         {
             throw new NotImplementedException();
         }
-
-        bool IAssemblySymbol.GivesAccessTo(IAssemblySymbol toAssembly)
-        {
-            throw new NotImplementedException();
-        }
-
-        INamedTypeSymbol? IAssemblySymbol.GetTypeByMetadataName(string fullyQualifiedMetadataName)
-        {
-            throw new NotImplementedException();
-        }
-
-        INamedTypeSymbol? IAssemblySymbol.ResolveForwardedType(string fullyQualifiedMetadataName)
-        {
-            throw new NotImplementedException();
-        }
-
-        ImmutableArray<INamedTypeSymbol> IAssemblySymbol.GetForwardedTypes()
-        {
-            throw new NotImplementedException();
-        }
-
-        AssemblyMetadata? IAssemblySymbol.GetMetadata()
-        {
-            throw new NotImplementedException();
-        }
-
-        ImmutableArray<AttributeData> ISymbol.GetAttributes()
-        {
-            throw new NotImplementedException();
-        }
-
-        void ISymbol.Accept(Microsoft.CodeAnalysis.SymbolVisitor visitor)
-        {
-            visitor.VisitAssembly(this);
-        }
-
-        TResult ISymbol.Accept<TResult>(Microsoft.CodeAnalysis.SymbolVisitor<TResult> visitor)
-        {
-            return visitor.VisitAssembly(this);
-        }
-
-        string? ISymbol.GetDocumentationCommentId()
-        {
-            throw new NotImplementedException();
-        }
-
-        string? ISymbol.GetDocumentationCommentXml(CultureInfo? preferredCulture, bool expandIncludes, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
-
-        string ISymbol.ToDisplayString(SymbolDisplayFormat? format)
-        {
-            throw new NotImplementedException();
-        }
-
-        ImmutableArray<SymbolDisplayPart> ISymbol.ToDisplayParts(SymbolDisplayFormat? format)
-        {
-            throw new NotImplementedException();
-        }
-
-        string ISymbol.ToMinimalDisplayString(SemanticModel semanticModel, int position, SymbolDisplayFormat? format)
-        {
-            throw new NotImplementedException();
-        }
-
-        ImmutableArray<SymbolDisplayPart> ISymbol.ToMinimalDisplayParts(SemanticModel semanticModel, int position, SymbolDisplayFormat? format)
-        {
-            throw new NotImplementedException();
-        }
-
-        bool ISymbol.Equals(ISymbol? other, SymbolEqualityComparer equalityComparer)
-        {
-            throw new NotImplementedException();
-        }
-
-        bool IEquatable<ISymbol?>.Equals(ISymbol? other)
-        {
-            throw new NotImplementedException();
-        }
-
     }
 }

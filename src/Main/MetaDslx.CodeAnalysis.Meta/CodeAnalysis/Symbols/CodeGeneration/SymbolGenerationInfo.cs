@@ -8,37 +8,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration
 {
     public class SymbolGenerationInfo
     {
-        public SymbolGenerationInfo(string name, string namespaceName, string kind, string? subSymbolKindType, string? subSymbolKindName, SymbolGenerationInfo parentSymbol)
+        public SymbolGenerationInfo(string name, string namespaceName, SymbolGenerationInfo parentSymbol)
         {
             this.Name = name;
             this.NamespaceName = namespaceName;
             this.ParentSymbol = parentSymbol;
-            var baseSymbol = parentSymbol;
-            var symbolKindType = parentSymbol?.SubSymbolKindType;
-            var symbolKindName = parentSymbol?.SubSymbolKindName;
-            while (baseSymbol is not null && symbolKindType is null)
-            {
-                symbolKindType = baseSymbol.SubSymbolKindType;
-                symbolKindName = baseSymbol.SubSymbolKindName;
-                baseSymbol = baseSymbol.ParentSymbol;
-            }
-            this.SymbolKindName = symbolKindName;
-            this.SymbolKindType = symbolKindType;
-            this.SubSymbolKindType = subSymbolKindType;
-            this.SubSymbolKindName = subSymbolKindName ?? subSymbolKindType;
-            if (name == "Symbol")
-            {
-                SymbolKind = kind ?? "None";
-                IsSymbolClass = true;
-            }
-            else if (name.EndsWith("Symbol"))
-            {
-                SymbolKind = kind ?? Name.Substring(0, Name.Length - 6);
-            }
-            else
-            {
-                SymbolKind = kind ?? Name;
-            }
         }
 
         public bool IsSymbolClass { get; private set; }
@@ -46,11 +20,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration
         public ParameterOption ModelObjectOption { get; init; }
         public string Name { get; private set; }
         public string NamespaceName { get; private set; }
-        public string SymbolKind { get; private set; }
-        public string? SymbolKindType { get; private set; }
-        public string? SymbolKindName { get; private set; }
-        public string? SubSymbolKindName { get; private set; }
-        public string? SubSymbolKindType { get; private set; }
         public SymbolGenerationInfo ParentSymbol { get; private set; }
         public List<CompletionPartGenerationInfo> CompletionParts { get; init; }
         public string? ExistingCompletionBaseType { get; init; }

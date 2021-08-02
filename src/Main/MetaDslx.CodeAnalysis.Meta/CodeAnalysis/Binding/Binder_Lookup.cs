@@ -108,7 +108,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         private void AddCandidateSymbolsInternal(LookupCandidates result, LookupConstraints constraints)
         {
             var qualifier = constraints.QualifierOpt as NamespaceOrTypeSymbol;
-            if (qualifier == null || qualifier.IsNamespace)
+            if (qualifier is null || qualifier is NamespaceSymbol)
             {
                 AddCandidateSymbolsInNamespace(result, constraints);
             }
@@ -121,24 +121,17 @@ namespace MetaDslx.CodeAnalysis.Binding
         private void AddCandidateSymbolsInType(LookupCandidates result, LookupConstraints constraints)
         {
             TypeSymbol type = (TypeSymbol)constraints.QualifierOpt;
-            switch (type.TypeKind.Switch())
+            if (type.IsError)
             {
-                case Symbols.TypeKind.NamedType:
-                case Symbols.TypeKind.Class:
-                case Symbols.TypeKind.Struct:
-                case Symbols.TypeKind.Enum:
-                case Symbols.TypeKind.Dynamic:
-                case Symbols.TypeKind.Constructed:
-                    this.AddCandidateSymbolsInTypeAndBaseTypes(result, constraints.WithAccessThroughType(type));
-                    break;
-
-                case Symbols.TypeKind.Submission:
-                    this.AddCandidateSymbolsInSubmissions(result, constraints);
-                    break;
-
-                case Symbols.TypeKind.ErrorType:
-                    this.AddCandidateSymbolsInErrorType(result, constraints);
-                    break;
+                this.AddCandidateSymbolsInErrorType(result, constraints);
+            }
+            else if (type is SubmissionSymbol)
+            {
+                this.AddCandidateSymbolsInSubmissions(result, constraints);
+            }
+            else
+            {
+                this.AddCandidateSymbolsInTypeAndBaseTypes(result, constraints.WithAccessThroughType(type));
             }
         }
 

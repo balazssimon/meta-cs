@@ -15,12 +15,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
 {
 	public abstract partial class NamedTypeSymbol
 	{
-        /// <summary>
-        /// Gets the kind of this symbol.
-        /// </summary>
-        public override TypeKind TypeKind => TypeKind.NamedType;
-
-
         public override void Accept(MetaDslx.CodeAnalysis.Symbols.SymbolVisitor visitor)
         {
             if (visitor is ISymbolVisitor isv) isv.Visit(this);

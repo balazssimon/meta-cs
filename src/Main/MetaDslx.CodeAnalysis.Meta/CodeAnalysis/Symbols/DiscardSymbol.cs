@@ -6,13 +6,10 @@ using System.Diagnostics;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-    [Symbol(SymbolParts = SymbolParts.None)]
-    public partial class DiscardSymbol : Symbol
+    [Symbol(ModelObjectOption = ParameterOption.Disabled)]
+    public abstract partial class DiscardSymbol : ExpressionSymbol
     {
         public TypeSymbol Type { get; }
-
-
-        internal TypeWithAnnotations TypeWithAnnotations { get; set; }
 
         public override bool Equals(object obj) => obj is DiscardSymbol other && this.Type.Equals(other.Type);
         public override int GetHashCode() => this.Type.GetHashCode();

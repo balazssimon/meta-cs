@@ -15,16 +15,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
 {
 	public abstract partial class StatementSymbol
 	{
-        /// <summary>
-        /// Gets the kind of this symbol.
-        /// </summary>
-        public override SymbolKind Kind => SymbolKind.Statement;
-
-        /// <summary>
-        /// Gets the kind of this symbol.
-        /// </summary>
-        public virtual StatementKind StatementKind => StatementKind.None;
-
         public override void Accept(MetaDslx.CodeAnalysis.Symbols.SymbolVisitor visitor)
         {
             if (visitor is ISymbolVisitor isv) isv.Visit(this);

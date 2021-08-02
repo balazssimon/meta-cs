@@ -137,10 +137,10 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 {
                     foreach (DeclaredSymbol childSymbol in namespaceSymbol.GetMembers(name))
                     {
-                        if (childSymbol.Kind == SymbolKind.Namespace)
+                        if (childSymbol is NamespaceSymbol ns)
                         {
                             namespaceSymbols = namespaceSymbols ?? ArrayBuilder<NamespaceSymbol>.GetInstance();
-                            namespaceSymbols.Add((NamespaceSymbol)childSymbol);
+                            namespaceSymbols.Add(ns);
                         }
                         else
                         {

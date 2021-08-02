@@ -72,7 +72,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
                 if (_lazyImportChain == null)
                 {
                     ImportChain importChain = this.Next.ImportChain;
-                    if ((object)DefinedSymbol == null || DefinedSymbol.Kind == Symbols.SymbolKind.Namespace)
+                    if (DefinedSymbol is null || DefinedSymbol is NamespaceSymbol)
                     {
                         importChain = new ImportChain(GetImports(), importChain);
                     }

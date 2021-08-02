@@ -14,11 +14,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
 {
     internal static class SymbolExtensions
     {
-        public static string GetKindText(this Symbol symbol)
-        {
-            if (symbol is IModelSymbol ms && ms.ModelObject != null) return ms.ModelObject.GetType().Name;
-            else return symbol.Kind.ToString();
-        }
 
         [return: NotNullIfNotNull("symbol")]
         internal static Symbol? EnsureLanguageSymbolOrNull(this ISymbol? symbol, string paramName)
@@ -74,48 +69,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return (TypeParameterSymbol?)EnsureLanguageSymbolOrNull((ISymbol?)symbol, paramName);
         }
 
-        [return: NotNullIfNotNull("symbol")]
-        internal static EventSymbol? EnsureLanguageSymbolOrNull(this IEventSymbol? symbol, string paramName)
-        {
-            return (EventSymbol?)EnsureLanguageSymbolOrNull((ISymbol?)symbol, paramName);
-        }
-
-
-        /// <summary>
-        /// The immediately containing namespace or named type, or null
-        /// if the containing symbol is neither a namespace or named type.
-        /// </summary>
-        internal static NamespaceOrTypeSymbol ContainingNamespaceOrType(this Symbol symbol)
-        {
-            var containingSymbol = symbol.ContainingSymbol;
-            if ((object)containingSymbol != null)
-            {
-                switch (containingSymbol.Kind.Switch())
-                {
-                    case SymbolKind.Namespace:
-                    case SymbolKind.NamedType:
-                    case SymbolKind.ErrorType:
-                        return (NamespaceOrTypeSymbol)containingSymbol;
-                }
-            }
-            return null;
-        }
-
         public static bool IsTypeOrTypeAlias(this Symbol symbol)
         {
-            switch (symbol.Kind.Switch())
-            {
-                case SymbolKind.ConstructedType:
-                case SymbolKind.DynamicType:
-                case SymbolKind.ErrorType:
-                case SymbolKind.NamedType:
-                    return true;
-                case SymbolKind.Alias:
-                    return IsTypeOrTypeAlias(((AliasSymbol)symbol).Target);
-                default:
-                    Debug.Assert(!(symbol is TypeSymbol));
-                    return false;
-            }
+            return symbol is TypeSymbol || symbol is AliasSymbol aliasSymbol && IsTypeOrTypeAlias(aliasSymbol.Target);
         }
 
         /// <summary>
@@ -129,7 +85,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return (object)result != null;*/
         }
 
-        private static readonly Func<TypeSymbol, object, bool, bool> s_containsDynamicPredicate = (type, unused1, unused2) => type.TypeKind == TypeKind.Dynamic;
+        private static readonly Func<TypeSymbol, object, bool, bool> s_containsDynamicPredicate = (type, unused1, unused2) => type is DynamicTypeSymbol;
 
         public static BinderPosition ToBinderPosition(this SyntaxReference reference, LanguageCompilation compilation)
         {

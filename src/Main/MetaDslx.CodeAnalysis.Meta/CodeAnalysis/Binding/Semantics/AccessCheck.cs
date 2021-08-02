@@ -96,48 +96,42 @@ namespace MetaDslx.CodeAnalysis.Binding
             failedThroughTypeCheck = false;
             var declaredSymbol = symbol as DeclaredSymbol;
 
-            switch (symbol.Kind.Switch())
+            if (symbol.IsError)
             {
-                case Symbols.SymbolKind.ConstructedType:
-                    throw new NotImplementedException("TODO:MetaDslx");
-                    //return IsSymbolAccessibleCore(((ArrayTypeSymbol)symbol).ElementType, within, null, out failedThroughTypeCheck, compilation, ref useSiteDiagnostics, basesBeingResolved);
-
-                case Symbols.SymbolKind.NamedType:
-                    return IsNamedTypeAccessible((NamedTypeSymbol)symbol, within, ref useSiteDiagnostics, basesBeingResolved);
-
-                case Symbols.SymbolKind.Alias:
-                    return IsSymbolAccessibleCore(((AliasSymbol)symbol).Target, within, null, out failedThroughTypeCheck, compilation, ref useSiteDiagnostics, basesBeingResolved);
-
-                case Symbols.SymbolKind.Discard:
-                    return IsSymbolAccessibleCore(((DiscardSymbol)symbol).Type, within, null, out failedThroughTypeCheck, compilation, ref useSiteDiagnostics, basesBeingResolved);
-
-                case Symbols.SymbolKind.ErrorType:
-                    // Always assume that error types are accessible.
-                    return true;
-
-                case Symbols.SymbolKind.Namespace:
-                case Symbols.SymbolKind.DynamicType:
-                case Symbols.SymbolKind.Assembly:
-                case Symbols.SymbolKind.NetModule:
-                    // These types of symbols are always accessible (if visible).
-                    return true;
-
-                case Symbols.SymbolKind.Member:
-                    if (declaredSymbol.IsStatic)
-                    {
-                        // members aren't accessed "through" an "instance" of any type.  So we
-                        // null out the "through" instance here.  This ensures that we'll understand
-                        // accessing protected statics properly.
-                        throughTypeOpt = null;
-                    }
-
-                    return IsMemberAccessible(declaredSymbol.ContainingType, declaredSymbol.DeclaredAccessibility, within, throughTypeOpt, out failedThroughTypeCheck, compilation, ref useSiteDiagnostics);
-
-                case Symbols.SymbolKind.None:
-                    return false;
-                default:
-                    throw ExceptionUtilities.UnexpectedValue(symbol.Kind);
+                // Always assume that error types are accessible.
+                return true;
             }
+            if (symbol is AssemblySymbol || symbol is ModuleSymbol || symbol is DynamicTypeSymbol || symbol is NamespaceSymbol)
+            {
+                // These types of symbols are always accessible (if visible).
+                return true;
+            }
+            else if (symbol is NamedTypeSymbol)
+            {
+                return IsNamedTypeAccessible((NamedTypeSymbol)symbol, within, ref useSiteDiagnostics, basesBeingResolved);
+            }
+            else if (symbol is MemberSymbol)
+            {
+                if (declaredSymbol.IsStatic)
+                {
+                    // members aren't accessed "through" an "instance" of any type.  So we
+                    // null out the "through" instance here.  This ensures that we'll understand
+                    // accessing protected statics properly.
+                    throughTypeOpt = null;
+                }
+
+                return IsMemberAccessible(declaredSymbol.ContainingType, declaredSymbol.DeclaredAccessibility, within, throughTypeOpt, out failedThroughTypeCheck, compilation, ref useSiteDiagnostics);
+            }
+            else if (symbol is AliasSymbol aliasSymbol)
+            {
+                return IsSymbolAccessibleCore(aliasSymbol.Target, within, null, out failedThroughTypeCheck, compilation, ref useSiteDiagnostics, basesBeingResolved);
+            }
+            else if (symbol is DiscardSymbol discardSymbol)
+            {
+                return IsSymbolAccessibleCore(discardSymbol.Type, within, null, out failedThroughTypeCheck, compilation, ref useSiteDiagnostics, basesBeingResolved);
+            }
+            throw ExceptionUtilities.UnexpectedValue(symbol.GetKindText());
+            // TODO:MetaDslx: make a virtual method for this, it should be overriden in ArrayType, NullableType, etc.
         }
 
         /// <summary>
@@ -279,7 +273,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                     // type) can access previous submission's private top-level members. Previous
                     // submissions are treated like outer classes for the current submission - the
                     // inner class can access private members of the outer class.
-                    if (containingType.TypeKind == Symbols.TypeKind.Submission)
+                    if (containingType is SubmissionSymbol)
                     {
                         return true;
                     }
@@ -342,7 +336,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             // It is not an error to define protected member in a sealed Script class, it's just a
             // warning. The member behaves like a private one - it is visible in all subsequent
             // submissions.
-            if (originalContainingType.TypeKind == Symbols.TypeKind.Submission)
+            if (originalContainingType is SubmissionSymbol)
             {
                 return true;
             }

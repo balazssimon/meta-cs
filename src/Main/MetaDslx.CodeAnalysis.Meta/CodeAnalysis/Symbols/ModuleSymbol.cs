@@ -20,8 +20,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
     /// <summary>
     /// Represents a module within an assembly. Every assembly contains one or more modules.
     /// </summary>
-    [Symbol(SymbolKind = "NetModule", ModelObjectOption = ParameterOption.Disabled)]
-    public abstract partial class ModuleSymbol : Symbol, IModuleSymbol
+    [Symbol(ModelObjectOption = ParameterOption.Disabled)]
+    public abstract partial class ModuleSymbol : Symbol
     {
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         // Changes to the public interface of this class should remain synchronized with the VB version.
@@ -193,58 +193,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         internal abstract CharSet? DefaultMarshallingCharSet { get; }
 
-        INamespaceSymbol IModuleSymbol.GlobalNamespace => this.GlobalNamespace;
-
-        ImmutableArray<AssemblyIdentity> IModuleSymbol.ReferencedAssemblies => this.ReferencedAssemblies;
-
-        ImmutableArray<IAssemblySymbol> IModuleSymbol.ReferencedAssemblySymbols => this.ReferencedAssemblySymbols.Cast<AssemblySymbol, IAssemblySymbol>();
-
-        Microsoft.CodeAnalysis.SymbolKind ISymbol.Kind => Microsoft.CodeAnalysis.SymbolKind.NetModule;
-
-        string ISymbol.Language => this.Language.Name;
-
-        string ISymbol.Name => this.Name;
-
-        string ISymbol.MetadataName => this.MetadataName;
-
-        ISymbol ISymbol.ContainingSymbol => this.ContainingAssembly;
-
-        IAssemblySymbol ISymbol.ContainingAssembly => this.ContainingAssembly;
-
-        IModuleSymbol ISymbol.ContainingModule => null;
-
-        INamedTypeSymbol ISymbol.ContainingType => null;
-
-        INamespaceSymbol ISymbol.ContainingNamespace => null;
-
-        bool ISymbol.IsDefinition => false;
-
-        bool ISymbol.IsStatic => false;
-
-        bool ISymbol.IsVirtual => false;
-
-        bool ISymbol.IsOverride => false;
-
-        bool ISymbol.IsAbstract => false;
-
-        bool ISymbol.IsSealed => false;
-
-        bool ISymbol.IsExtern => false;
-
-        bool ISymbol.IsImplicitlyDeclared => false;
-
-        bool ISymbol.CanBeReferencedByName => false;
-
-        ImmutableArray<Location> ISymbol.Locations => this.Locations;
-
-        ImmutableArray<SyntaxReference> ISymbol.DeclaringSyntaxReferences => this.DeclaringSyntaxReferences;
-
-        Accessibility ISymbol.DeclaredAccessibility => Accessibility.NotApplicable;
-
-        ISymbol ISymbol.OriginalDefinition => this;
-
-        bool ISymbol.HasUnsupportedMetadata => this.HasUnsupportedMetadata;
-
         internal virtual ImmutableArray<byte> GetHash(AssemblyHashAlgorithm algorithmId)
         {
             throw ExceptionUtilities.Unreachable;
@@ -291,72 +239,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         public abstract ModuleMetadata GetMetadata();
 
-        INamespaceSymbol? IModuleSymbol.GetModuleNamespace(INamespaceSymbol namespaceSymbol)
-        {
-            return this.GetModuleNamespace(namespaceSymbol);
-        }
-
-        ModuleMetadata? IModuleSymbol.GetMetadata()
-        {
-            return this.GetMetadata();
-        }
-
-        ImmutableArray<AttributeData> ISymbol.GetAttributes()
-        {
-            return this.GetAttributes();
-        }
-
-        void ISymbol.Accept(Microsoft.CodeAnalysis.SymbolVisitor visitor)
-        {
-            visitor.VisitModule(this);
-        }
-
-        TResult ISymbol.Accept<TResult>(Microsoft.CodeAnalysis.SymbolVisitor<TResult> visitor)
-        {
-            return visitor.VisitModule(this);
-        }
-
-        string? ISymbol.GetDocumentationCommentId()
-        {
-            throw new NotImplementedException();
-        }
-
-        string? ISymbol.GetDocumentationCommentXml(CultureInfo? preferredCulture, bool expandIncludes, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
-
-        string ISymbol.ToDisplayString(SymbolDisplayFormat? format)
-        {
-            throw new NotImplementedException();
-        }
-
-        ImmutableArray<SymbolDisplayPart> ISymbol.ToDisplayParts(SymbolDisplayFormat? format)
-        {
-            throw new NotImplementedException();
-        }
-
-        string ISymbol.ToMinimalDisplayString(SemanticModel semanticModel, int position, SymbolDisplayFormat? format)
-        {
-            throw new NotImplementedException();
-        }
-
-        ImmutableArray<SymbolDisplayPart> ISymbol.ToMinimalDisplayParts(SemanticModel semanticModel, int position, SymbolDisplayFormat? format)
-        {
-            throw new NotImplementedException();
-        }
-
-        bool ISymbol.Equals(ISymbol? other, SymbolEqualityComparer equalityComparer)
-        {
-            throw new NotImplementedException();
-        }
-
-        bool IEquatable<ISymbol?>.Equals(ISymbol? other)
-        {
-            throw new NotImplementedException();
-        }
-
         #endregion
-
     }
 }

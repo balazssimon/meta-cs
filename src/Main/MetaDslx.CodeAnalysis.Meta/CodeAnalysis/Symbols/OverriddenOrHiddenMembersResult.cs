@@ -15,23 +15,23 @@ namespace MetaDslx.CodeAnalysis.Symbols
     {
         public static readonly OverriddenOrHiddenMembersResult Empty =
             new OverriddenOrHiddenMembersResult(
-                ImmutableArray<DeclaredSymbol>.Empty,
-                ImmutableArray<DeclaredSymbol>.Empty,
-                ImmutableArray<DeclaredSymbol>.Empty);
+                ImmutableArray<MemberSymbol>.Empty,
+                ImmutableArray<MemberSymbol>.Empty,
+                ImmutableArray<MemberSymbol>.Empty);
 
-        private readonly ImmutableArray<DeclaredSymbol> _overriddenMembers;
-        public ImmutableArray<DeclaredSymbol> OverriddenMembers { get { return _overriddenMembers; } }
+        private readonly ImmutableArray<MemberSymbol> _overriddenMembers;
+        public ImmutableArray<MemberSymbol> OverriddenMembers { get { return _overriddenMembers; } }
 
-        private readonly ImmutableArray<DeclaredSymbol> _hiddenMembers;
-        public ImmutableArray<DeclaredSymbol> HiddenMembers { get { return _hiddenMembers; } }
+        private readonly ImmutableArray<MemberSymbol> _hiddenMembers;
+        public ImmutableArray<MemberSymbol> HiddenMembers { get { return _hiddenMembers; } }
 
-        private readonly ImmutableArray<DeclaredSymbol> _runtimeOverriddenMembers;
-        public ImmutableArray<DeclaredSymbol> RuntimeOverriddenMembers { get { return _runtimeOverriddenMembers; } }
+        private readonly ImmutableArray<MemberSymbol> _runtimeOverriddenMembers;
+        public ImmutableArray<MemberSymbol> RuntimeOverriddenMembers { get { return _runtimeOverriddenMembers; } }
 
         private OverriddenOrHiddenMembersResult(
-            ImmutableArray<DeclaredSymbol> overriddenMembers,
-            ImmutableArray<DeclaredSymbol> hiddenMembers,
-            ImmutableArray<DeclaredSymbol> runtimeOverriddenMembers)
+            ImmutableArray<MemberSymbol> overriddenMembers,
+            ImmutableArray<MemberSymbol> hiddenMembers,
+            ImmutableArray<MemberSymbol> runtimeOverriddenMembers)
         {
             _overriddenMembers = overriddenMembers;
             _hiddenMembers = hiddenMembers;
@@ -39,9 +39,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
         }
 
         public static OverriddenOrHiddenMembersResult Create(
-            ImmutableArray<DeclaredSymbol> overriddenMembers,
-            ImmutableArray<DeclaredSymbol> hiddenMembers,
-            ImmutableArray<DeclaredSymbol> runtimeOverriddenMembers)
+            ImmutableArray<MemberSymbol> overriddenMembers,
+            ImmutableArray<MemberSymbol> hiddenMembers,
+            ImmutableArray<MemberSymbol> runtimeOverriddenMembers)
         {
             if (overriddenMembers.IsEmpty && hiddenMembers.IsEmpty && runtimeOverriddenMembers.IsEmpty)
             {
@@ -53,7 +53,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
         }
 
-        internal static DeclaredSymbol GetOverriddenMember(DeclaredSymbol substitutedOverridingMember, DeclaredSymbol overriddenByDefinitionMember)
+        internal static MemberSymbol GetOverriddenMember(MemberSymbol substitutedOverridingMember, MemberSymbol overriddenByDefinitionMember)
         {
             Debug.Assert(!substitutedOverridingMember.IsDefinition);
 
@@ -69,7 +69,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
                         {
                             return overriddenByDefinitionMember;
                         }
-
                         return overriddenByDefinitionMember.OriginalDefinition.AsMember(baseType);
                     }
                 }
@@ -82,10 +81,10 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         /// <summary>
         /// It is not suitable to call this method on a <see cref="OverriddenOrHiddenMembersResult"/> object
-        /// associated with a member within substituted type, <see cref="GetOverriddenMember(DeclaredSymbol, DeclaredSymbol)"/>
+        /// associated with a member within substituted type, <see cref="GetOverriddenMember(MemberSymbol, MemberSymbol)"/>
         /// should be used instead.
         /// </summary>
-        internal DeclaredSymbol GetOverriddenMember()
+        internal MemberSymbol GetOverriddenMember()
         {
             foreach (var overriddenMember in _overriddenMembers)
             {

@@ -33,6 +33,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
             this.mangleName = (mangleName && arity > 0);
         }
 
+        public sealed override bool IsError => true;
+
         public override string Name
         {
             get { return name; }
@@ -214,9 +216,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
                                 foreach (NamespaceOrTypeSymbol symbol in container.GetMembers(namespaces[i]))
                                 {
-                                    if (symbol.Kind == SymbolKind.Namespace) // VB should also check name casing.
+                                    if (symbol is NamespaceSymbol ns) // VB should also check name casing.
                                     {
-                                        newContainer = (NamespaceSymbol)symbol;
+                                        newContainer = ns;
                                         break;
                                     }
                                 }
@@ -310,7 +312,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 // if ignoring dynamic, then treat dynamic the same as the type 'object'
                 if ((comparison & TypeCompareKind.IgnoreDynamic) != 0 &&
                     (object)t2 != null &&
-                    t2.TypeKind == TypeKind.Dynamic &&
+                    t2 is DynamicTypeSymbol &&
                     this.SpecialType == Microsoft.CodeAnalysis.SpecialType.System_Object)
                 {
                     return true;

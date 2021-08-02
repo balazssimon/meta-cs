@@ -18,26 +18,14 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
     /// <summary>
     /// Represents implicit, script and submission classes.
     /// </summary>
-    public sealed class ImplicitNamedTypeSymbol : SourceNamedTypeSymbol
+    public abstract class ImplicitNamedTypeSymbol : SourceNamedTypeSymbol
     {
-        internal ImplicitNamedTypeSymbol(NamespaceOrTypeSymbol containingSymbol, object modelObject, MergedDeclaration declaration)
+        protected ImplicitNamedTypeSymbol(NamespaceOrTypeSymbol containingSymbol, object modelObject, MergedDeclaration declaration)
             : base(containingSymbol, modelObject, declaration)
         {
             Debug.Assert(declaration.IsImplicit || declaration.IsSubmission || declaration.IsScript);
         }
-        
-        /// <summary>
-        /// Returns null for a submission class.
-        /// This ensures that a submission class does not inherit methods such as ToString or GetHashCode.
-        /// </summary>
-        public override ImmutableArray<NamedTypeSymbol> BaseTypes
-        {
-            get
-            {
-                if (this.IsScript) return ImmutableArray<NamedTypeSymbol>.Empty;
-                else return ImmutableArray.Create(this.DeclaringCompilation.GetSpecialType(Microsoft.CodeAnalysis.SpecialType.System_Object));
-            }
-        }
-            
+
+        public override bool IsImplicitlyDeclared => true;
     }
 }

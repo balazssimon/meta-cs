@@ -100,10 +100,10 @@ namespace MetaDslx.CodeAnalysis.Binding
                 bool wasError;
 
                 bindingResult = constraints.ResultSymbol(result, diagnostics, recursionConstraints?.Diagnose ?? true, out wasError);
-                if (bindingResult.Kind == Symbols.SymbolKind.Alias)
+                if (bindingResult is AliasSymbol aliasSymbol)
                 {
-                    var aliasTarget = ((AliasSymbol)bindingResult).GetAliasTarget(recursionConstraints);
-                    if (aliasTarget.Kind == Symbols.SymbolKind.NamedType && ((NamedTypeSymbol)aliasTarget).ContainsDynamic())
+                    var aliasTarget = aliasSymbol.GetAliasTarget(recursionConstraints);
+                    if (aliasTarget is NamedTypeSymbol namedTypeSymbol && namedTypeSymbol.ContainsDynamic())
                     {
                         ReportUseSiteDiagnosticForDynamic(diagnostics, identifierSyntax);
                     }
@@ -163,13 +163,13 @@ namespace MetaDslx.CodeAnalysis.Binding
 
             foreach (var s in result.Symbols)
             {
-                switch (s.Kind.Switch())
+                if (s is AliasSymbol aliasSymbol)
                 {
-                    case Symbols.SymbolKind.Alias:
-                        if (((AliasSymbol)s).Target.Kind == Symbols.SymbolKind.NamedType) return true;
-                        break;
-                    case Symbols.SymbolKind.NamedType:
-                        return true;
+                    return aliasSymbol.Target is NamedTypeSymbol;
+                }
+                else if (s is NamedTypeSymbol)
+                {
+                    return true;
                 }
             }
 

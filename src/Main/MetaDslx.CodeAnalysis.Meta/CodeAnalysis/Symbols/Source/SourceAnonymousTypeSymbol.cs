@@ -12,7 +12,5 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             : base(containingSymbol, modelObject, declaration)
         {
         }
-
-        public override TypeKind TypeKind => TypeKind.AnonymousType;
     }
 }

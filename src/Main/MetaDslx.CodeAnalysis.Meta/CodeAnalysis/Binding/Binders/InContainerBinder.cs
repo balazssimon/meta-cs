@@ -90,7 +90,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
                 if (_lazyImportChain == null)
                 {
                     ImportChain importChain = this.Next.ImportChain;
-                    if ((object)_container == null || _container.Kind == Symbols.SymbolKind.Namespace)
+                    if ((object)_container == null || _container is NamespaceSymbol)
                     {
                         importChain = new ImportChain(GetImports(), importChain);
                     }
@@ -111,16 +111,6 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
                 var merged = _container as MergedNamespaceSymbol;
                 return ((object)merged != null) ? merged.GetConstituentForCompilation(this.Compilation) : _container;
             }
-        }
-
-        private bool IsSubmission
-        {
-            get { return (_container?.Kind == Symbols.SymbolKind.NamedType) && ((NamedTypeSymbol)_container).IsSubmission; }
-        }
-
-        private bool IsScript
-        {
-            get { return (_container?.Kind == Symbols.SymbolKind.NamedType) && ((NamedTypeSymbol)_container).IsScript; }
         }
 
         protected override LookupConstraints AdjustConstraints(LookupConstraints constraints)

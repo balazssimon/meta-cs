@@ -33,11 +33,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         internal ExtendedErrorTypeSymbol(DeclaredSymbol containingSymbol, string name, string metadataName, DiagnosticInfo errorInfo, bool unreported = false, bool variableUsedBeforeDeclaration = false)
         {
-            Debug.Assert(((object)containingSymbol == null) ||
-                (containingSymbol.Kind == SymbolKind.Namespace) ||
-                (containingSymbol.Kind == SymbolKind.Type) ||
-                (containingSymbol.Kind == SymbolKind.NamedType) ||
-                (containingSymbol.Kind == SymbolKind.ErrorType));
+            Debug.Assert(((object)containingSymbol == null) || containingSymbol.IsError || containingSymbol is NamespaceOrTypeSymbol);
 
             Debug.Assert(name != null);
             Debug.Assert(unreported == false || errorInfo != null);
@@ -64,7 +60,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         }
 
         internal ExtendedErrorTypeSymbol(DeclaredSymbol guessSymbol, LookupResultKind resultKind, DiagnosticInfo errorInfo, bool unreported = false)
-            : this(guessSymbol.ContainingNamespaceOrType(), guessSymbol, resultKind, errorInfo, unreported)
+            : this(guessSymbol.ContainingDeclaration, guessSymbol, resultKind, errorInfo, unreported)
         {
         }
 
@@ -137,90 +133,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public override NamedTypeSymbol OriginalDefinition => this;
         
         public override ImmutableArray<Location> Locations => ImmutableArray<Location>.Empty;
-
-        /// <summary>
-        /// If (we believe) we know which symbol the user intended, then we should retain that information
-        /// in the corresponding error symbol - it can be useful for deciding how to handle the error.
-        /// For example, we might want to know whether (we believe) the error type was supposed to be an
-        /// interface, so that we can put it in a derived type's interface list, rather than in the base
-        /// type slot.
-        /// 
-        /// Sometimes we will return the original definition of the intended symbol.  For example, if we see 
-        /// <![CDATA[IGoo<int>]]> and we have an IGoo with a different arity or accessibility 
-        /// (e.g. <![CDATA[IGoo<int>]]> was constructed from an error symbol based on <![CDATA[IGoo<T>]]>), 
-        /// then we'll return <![CDATA[IGoo<T>]]>, rather than trying to construct a corresponding closed
-        /// type (which may not be difficult/possible in the case of nested types or mismatched arities).
-        /// 
-        /// NOTE: Any non-null type symbol returned is guaranteed not to be an error type.
-        /// </summary>
-        /// <remarks>
-        /// TypeSymbolExtensions.GetNonErrorGuess is a more discoverable version of this functionality.
-        /// However, the real definition is in this class so that it can access the private field 
-        /// nonErrorGuessType.
-        /// </remarks>
-        internal static TypeSymbol ExtractNonErrorType(TypeSymbol oldSymbol)
-        {
-            if ((object)oldSymbol == null || oldSymbol.TypeKind != TypeKind.ErrorType)
-            {
-                return oldSymbol;
-            }
-
-            // At this point, we know that oldSymbol is a non-null type symbol with kind error.
-            // Hence, it is either an ErrorTypeSymbol or it has an ErrorTypeSymbol as its
-            // original definition.  In the former case, it is its own original definition.
-            // Thus, if there's a CSErrorTypeSymbol in there somewhere, it's returned by
-            // OriginalDefinition.
-            ExtendedErrorTypeSymbol oldError = oldSymbol.OriginalDefinition as ExtendedErrorTypeSymbol;
-
-            // If the original definition isn't a CSErrorTypeSymbol, then we don't know how to
-            // pull out a non-error type.  If it is, then if there is a unambiguous type inside it,
-            // use that.
-            if ((object)oldError != null && !oldError._candidateSymbols.IsDefault && oldError._candidateSymbols.Length == 1)
-            {
-                TypeSymbol type = oldError._candidateSymbols[0] as TypeSymbol;
-                if ((object)type != null)
-                    return type.GetNonErrorGuess();
-            }
-
-            return null;
-        }
-
-        // Get the type kind of a symbol, going to candidates if possible.
-        internal static TypeKind ExtractNonErrorTypeKind(TypeSymbol oldSymbol)
-        {
-            if (oldSymbol.TypeKind != TypeKind.ErrorType)
-            {
-                return oldSymbol.TypeKind;
-            }
-
-            // At this point, we know that oldSymbol is a non-null type symbol with kind error.
-            // Hence, it is either an ErrorTypeSymbol or it has an ErrorTypeSymbol as its
-            // original definition.  In the former case, it is its own original definition.
-            // Thus, if there's a CSErrorTypeSymbol in there somewhere, it's returned by
-            // OriginalDefinition.
-            ExtendedErrorTypeSymbol oldError = oldSymbol.OriginalDefinition as ExtendedErrorTypeSymbol;
-
-            // If the original definition isn't a CSErrorTypeSymbol, then we don't know how to
-            // pull out a non-error type.  If it is, then if there is a unambiguous type inside it,
-            // use that.
-            TypeKind commonTypeKind = TypeKind.ErrorType;
-            if ((object)oldError != null && !oldError._candidateSymbols.IsDefault && oldError._candidateSymbols.Length > 0)
-            {
-                foreach (Symbol sym in oldError._candidateSymbols)
-                {
-                    TypeSymbol type = sym as TypeSymbol;
-                    if ((object)type != null && type.TypeKind != TypeKind.ErrorType)
-                    {
-                        if (commonTypeKind == TypeKind.ErrorType)
-                            commonTypeKind = type.TypeKind;
-                        else if (commonTypeKind != type.TypeKind)
-                            return TypeKind.ErrorType;  // no common kind.
-                    }
-                }
-            }
-
-            return commonTypeKind;
-        }
 
         public override bool Equals(TypeSymbol t2, TypeCompareKind comparison)
         {

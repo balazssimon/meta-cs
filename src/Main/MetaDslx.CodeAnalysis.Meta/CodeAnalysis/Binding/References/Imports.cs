@@ -221,7 +221,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                         var imported = target.Length > 0 ? target[target.Length - 1] : null;
                         if (imported == null) continue;
 
-                        if (imported.Kind == Symbols.SymbolKind.Namespace)
+                        if (imported is NamespaceSymbol)
                         {
                             if (usingDirective.IsStatic)
                             {
@@ -237,7 +237,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                                 usings.Add(new DeclaredSymbolAndUsingDirective(imported, usingDirective));
                             }
                         }
-                        else if (imported.Kind == Symbols.SymbolKind.NamedType)
+                        else if (imported is NamedTypeSymbol)
                         {
                             if (usingDirective.IsStatic)
                             {
@@ -257,7 +257,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                                 }
                             }
                         }
-                        else if (imported.Kind != Symbols.SymbolKind.ErrorType)
+                        else if (!imported.IsError)
                         {
                             // Do not report additional error if the symbol itself is erroneous.
 
@@ -715,38 +715,8 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         private static bool IsValidLookupCandidateInUsings(DeclaredSymbol symbol)
         {
-            switch (symbol.Kind.Switch())
-            {
-                // lookup via "using namespace" ignores namespaces inside
-                case Symbols.SymbolKind.Namespace:
-                    return false;
-
-                // lookup via "using static" ignores extension methods and non-static methods
-                case Symbols.SymbolKind.Member:
-                    if (!symbol.IsStatic)
-                    {
-                        return false;
-                    }
-
-                    break;
-
-                // types are considered static members for purposes of "using static" feature
-                // regardless of whether they are declared with "static" modifier or not
-                case Symbols.SymbolKind.Type:
-                case Symbols.SymbolKind.NamedType:
-                    break;
-
-                // lookup via "using static" ignores non-static members
-                default:
-                    if (!symbol.IsStatic)
-                    {
-                        return false;
-                    }
-
-                    break;
-            }
-
-            return true;
+            // lookup via "using static" ignores non-static members
+            return symbol is NamespaceSymbol || symbol is TypeSymbol || (symbol is MemberSymbol memberSymbol && memberSymbol.IsStatic);
         }
 
         // Note: we do not mark nodes when looking up arities or names.  This is because these two

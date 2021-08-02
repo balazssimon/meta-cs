@@ -36,9 +36,6 @@ namespace MetaDslx.CodeAnalysis
     using CSharpCompilation = Microsoft.CodeAnalysis.CSharp.CSharpCompilation;
     using MessageProvider = Microsoft.CodeAnalysis.CSharp.MessageProvider;
     using Binder = MetaDslx.CodeAnalysis.Binding.Binder;
-    using SymbolKind = MetaDslx.CodeAnalysis.Symbols.SymbolKind;
-    using TypeKind = MetaDslx.CodeAnalysis.Symbols.TypeKind;
-    using NullableAnnotation = MetaDslx.CodeAnalysis.Symbols.NullableAnnotation;
 
     /// <summary>
     /// The compilation object is an immutable representation of a single invocation of the
@@ -1485,7 +1482,8 @@ namespace MetaDslx.CodeAnalysis
         }
 
         protected override ITypeSymbol? CommonScriptGlobalsType
-            => GetHostObjectTypeSymbol();
+            => throw new NotImplementedException("TODO:MetaDslx");
+            //=> GetHostObjectTypeSymbol();
 
         internal TypeSymbol? GetHostObjectTypeSymbol()
         {
@@ -1647,7 +1645,7 @@ namespace MetaDslx.CodeAnalysis
                     }
 
                     mainType = mainTypeOrNamespace as NamedTypeSymbol;
-                    if (mainType is null || mainType.IsGenericType || (mainType.TypeKind != TypeKind.Class && mainType.TypeKind != TypeKind.Struct && !mainType.IsInterface))
+                    if (mainType is null || mainType.IsGenericType)
                     {
                         diagnostics.Add(InternalErrorCode.ERR_MainClassNotClass, mainTypeOrNamespace.Locations.First(), mainTypeOrNamespace);
                         return null;
@@ -2038,38 +2036,6 @@ namespace MetaDslx.CodeAnalysis
             return result;
         }
 
-        /// <summary>
-        /// Returns a new ArrayTypeSymbol representing an array type tied to the base types of the
-        /// COR Library in this Compilation.
-        /// </summary>
-        internal ArrayTypeSymbol CreateArrayTypeSymbol(TypeSymbol elementType, int rank = 1, NullableAnnotation elementNullableAnnotation = NullableAnnotation.Oblivious)
-        {
-            if ((object)elementType == null)
-            {
-                throw new ArgumentNullException(nameof(elementType));
-            }
-
-            if (rank < 1)
-            {
-                throw new ArgumentException(nameof(rank));
-            }
-
-            return ArrayTypeSymbol.CreateArray(this.Assembly, TypeWithAnnotations.Create(elementType, elementNullableAnnotation), rank);
-        }
-
-        /// <summary>
-        /// Returns a new PointerTypeSymbol representing a pointer type tied to a type in this Compilation.
-        /// </summary>
-        internal PointerTypeSymbol CreatePointerTypeSymbol(TypeSymbol elementType, NullableAnnotation elementNullableAnnotation = NullableAnnotation.Oblivious)
-        {
-            if ((object)elementType == null)
-            {
-                throw new ArgumentNullException(nameof(elementType));
-            }
-
-            return new PointerTypeSymbol(TypeWithAnnotations.Create(elementType, elementNullableAnnotation));
-        }
-
         private protected override bool IsSymbolAccessibleWithinCore(
             ISymbol symbol,
             ISymbol within,
@@ -2080,7 +2046,7 @@ namespace MetaDslx.CodeAnalysis
             TypeSymbol? throughType0 = throughType.EnsureLanguageSymbolOrNull(nameof(throughType));
             HashSet<DiagnosticInfo>? useSiteDiagnostics = null;
             return
-                within0.Kind == SymbolKind.Assembly ?
+                within0 is AssemblySymbol ?
                 AccessCheck.IsSymbolAccessible(symbol0, (AssemblySymbol)within0, ref useSiteDiagnostics) :
                 AccessCheck.IsSymbolAccessible(symbol0, (NamedTypeSymbol)within0, ref useSiteDiagnostics, throughType0);
         }
@@ -2613,7 +2579,7 @@ namespace MetaDslx.CodeAnalysis
                 return true;
             }
 
-            if (symbol.Kind == Symbols.SymbolKind.Member && ((MemberSymbol)symbol).MemberKind == MemberKind.Method && symbol.IsImplicitlyDeclared && ((MethodSymbol)symbol).MethodKind == MethodKind.Constructor)
+            if (symbol is ConstructorSymbol && symbol.IsImplicitlyDeclared)
             {
                 // Include implicitly declared constructor if containing type is included
                 return IsDefinedOrImplementedInSourceTree(symbol.ContainingType, tree, span);
@@ -2851,12 +2817,20 @@ namespace MetaDslx.CodeAnalysis
 
         protected override IAssemblySymbol CommonAssembly
         {
-            get { return this.Assembly; }
+            get
+            {
+                throw new NotImplementedException("TODO:MetaDslx");
+                //return this.Assembly;
+            }
         }
 
         protected override INamespaceSymbol CommonGlobalNamespace
         {
-            get { return this.GlobalNamespace; }
+            get 
+            {
+                throw new NotImplementedException("TODO:MetaDslx");
+                //return this.GlobalNamespace; 
+            }
         }
 
         protected override CompilationOptions CommonOptions
@@ -2924,7 +2898,11 @@ namespace MetaDslx.CodeAnalysis
 
         protected override IModuleSymbol CommonSourceModule
         {
-            get { return this.SourceModule; }
+            get 
+            {
+                throw new NotImplementedException("TODO:MetaDslx");
+                //return this.SourceModule; 
+            }
         }
 
         private protected override INamedTypeSymbolInternal CommonGetSpecialType(SpecialType specialType)
@@ -2935,32 +2913,47 @@ namespace MetaDslx.CodeAnalysis
 
         protected override INamespaceSymbol? CommonGetCompilationNamespace(INamespaceSymbol namespaceSymbol)
         {
-            return this.GetCompilationNamespace(namespaceSymbol);
+            throw new NotImplementedException("TODO:MetaDslx");
+            //return this.GetCompilationNamespace(namespaceSymbol);
         }
 
         protected override INamedTypeSymbol? CommonGetTypeByMetadataName(string metadataName)
         {
-            return this.GetTypeByMetadataName(metadataName);
+            throw new NotImplementedException("TODO:MetaDslx");
+            //return this.GetTypeByMetadataName(metadataName);
         }
 
         protected override INamedTypeSymbol? CommonScriptClass
         {
-            get { return this.ScriptClass; }
+            get 
+            {
+                throw new NotImplementedException("TODO:MetaDslx");
+                //return this.ScriptClass; 
+            }
         }
 
         protected override ITypeSymbol CommonDynamicType
         {
-            get { return DynamicType; }
+            get 
+            {
+                throw new NotImplementedException("TODO:MetaDslx");
+                //return DynamicType; 
+            }
         }
 
         protected override INamedTypeSymbol CommonObjectType
         {
-            get { return this.ObjectType; }
+            get 
+            {
+                throw new NotImplementedException("TODO:MetaDslx");
+                //return this.ObjectType; 
+            }
         }
 
         protected override IMethodSymbol? CommonGetEntryPoint(CancellationToken cancellationToken)
         {
-            return this.GetEntryPoint(cancellationToken);
+            throw new NotImplementedException("TODO:MetaDslx");
+            //return this.GetEntryPoint(cancellationToken);
         }
 
         internal override int CompareSourceLocations(Location loc1, Location loc2)
@@ -3021,7 +3014,8 @@ namespace MetaDslx.CodeAnalysis
                 throw new ArgumentException(CSharpResources.NoNoneSearchCriteria, nameof(filter));
             }
 
-            return new PredicateSymbolSearcher(this, filter, predicate, cancellationToken).GetSymbolsWithName()!;
+            throw new NotImplementedException("TODO:MetaDslx");
+            //return new PredicateSymbolSearcher(this, filter, predicate, cancellationToken).GetSymbolsWithName()!;
         }
 
 #pragma warning disable RS0026 // Do not add multiple public overloads with optional parameters
@@ -3053,7 +3047,8 @@ namespace MetaDslx.CodeAnalysis
         /// </summary>
         public override IEnumerable<ISymbol> GetSymbolsWithName(string name, SymbolFilter filter = SymbolFilter.TypeAndMember, CancellationToken cancellationToken = default)
         {
-            return GetSymbolsWithNameCore(name, filter, cancellationToken)!;
+            throw new NotImplementedException("TODO:MetaDslx");
+            //return GetSymbolsWithNameCore(name, filter, cancellationToken)!;
         }
 
         internal IEnumerable<DeclaredSymbol> GetSymbolsWithNameCore(string name, SymbolFilter filter = SymbolFilter.TypeAndMember, CancellationToken cancellationToken = default)
@@ -3083,7 +3078,8 @@ namespace MetaDslx.CodeAnalysis
 
         internal void SymbolDeclaredEvent(DeclaredSymbol symbol)
         {
-            EventQueue?.TryEnqueue(new SymbolDeclaredCompilationEvent(this, symbol));
+            // TODO:MetaDslx
+            //EventQueue?.TryEnqueue(new SymbolDeclaredCompilationEvent(this, symbol));
         }
 
         private ImmutableArray<string> GetPreprocessorSymbols()

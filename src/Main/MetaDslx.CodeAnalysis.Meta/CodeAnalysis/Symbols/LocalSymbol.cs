@@ -6,18 +6,28 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-    [Symbol(SymbolParts = SymbolParts.None, SubSymbolKindType = "LocalKind")]
     public abstract partial class LocalSymbol : DeclaredSymbol
     {
         public override bool IsStatic => false;
 
-        public bool IsConst { get; internal set; }
-        public bool IsRef { get; internal set; }
-        public RefKind RefKind { get; internal set; }
-        public bool HasConstantValue { get; internal set; }
-        public object ConstantValue { get; internal set; }
-        public bool IsFixed { get; internal set; }
-        internal TypeWithAnnotations TypeWithAnnotations { get;  set; }
-
+        /// <summary>
+        /// Gets the nearest enclosing member for this local symbol.
+        /// </summary>
+        public virtual BehavioralMemberSymbol? ContainingMember
+        {
+            get
+            {
+                Symbol container = this.ContainingSymbol;
+                while (container is not null)
+                {
+                    if (container is BehavioralMemberSymbol result)
+                    {
+                        return result;
+                    }
+                    container = container.ContainingSymbol;
+                }
+                return null;
+            }
+        }
     }
 }

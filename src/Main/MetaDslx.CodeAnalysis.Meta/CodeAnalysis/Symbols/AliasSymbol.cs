@@ -46,18 +46,12 @@ namespace MetaDslx.CodeAnalysis.Symbols
     ///     IList&lt;Symbol&gt; SemanticModel.LookupSymbols(CSharpSyntaxNode location, NamespaceOrTypeSymbol container = null, string name = null, int? arity = null, LookupOptions options = LookupOptions.Default, List&lt;Symbol> results = null);
     /// </pre>
     /// </summary>
-    [Symbol(SymbolParts = SymbolParts.All, ModelObjectOption = ParameterOption.Disabled)]
-    public partial class AliasSymbol : DeclaredSymbol, IAliasSymbol
+    [Symbol(ModelObjectOption = ParameterOption.Disabled)]
+    public partial class AliasSymbol : DeclaredSymbol
     {
         [SymbolProperty]
         public virtual DeclaredSymbol? Target => null;
-        [SymbolProperty]
-        public override bool IsExtern => false;
 
-        public override bool IsSealed => false;
-        public override bool IsAbstract => false;
-        public override bool IsOverride => false;
-        public override bool IsVirtual => false;
         public override bool IsStatic => false;
         public override Accessibility DeclaredAccessibility => Accessibility.NotApplicable;
 
@@ -95,8 +89,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         }
 
         public virtual DiagnosticBag AliasTargetDiagnostics => null;
-
-        INamespaceOrTypeSymbol IAliasSymbol.Target => this.Target as INamespaceOrTypeSymbol;
 
         public virtual void CheckConstraints(DiagnosticBag diagnostics)
         {

@@ -28,11 +28,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
             _graph = graph;
         }
 
-        public static CompletionState Create(Language language)
-        {
-            return language.CompilationFactory.CompletionGraph.CreateState();
-        }
-
         public IEnumerable<CompletionPart> IncompleteParts
         {
             get

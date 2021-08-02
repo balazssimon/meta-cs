@@ -96,14 +96,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Wrapped
             }
         }
 
-        public override TypeKind TypeKind
-        {
-            get
-            {
-                return _underlyingType.TypeKind;
-            }
-        }
-
         public override ImmutableArray<Location> Locations
         {
             get

@@ -201,7 +201,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 
         public virtual object GetSymbolValue(Symbol symbol, Type expectedType)
         {
-            if (symbol.Kind == SymbolKind.ErrorType)
+            if (symbol.IsError)
             {
                 return null;
             }
@@ -219,11 +219,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
         private string GetFullMetadataName(CSharpNamedTypeSymbol symbol)
         {
             var result = symbol.MetadataName;
-            var ns = symbol.ContainingNamespaceOrType();
-            while (ns != null)
+            var ns = symbol.ContainingDeclaration;
+            while (ns is not null)
             {
                 result = ns.MetadataName + "." + result;
-                ns = ns.ContainingNamespaceOrType();
+                ns = ns.ContainingDeclaration;
             }
             return result;
         }

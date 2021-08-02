@@ -130,12 +130,12 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="PresentationFramework">
-      <Version>4.6.0</Version>
+      <Version>4.6</Version>
     </PackageReference>
     <PackageReference Include="Antlr4.Runtime.Standard" Version="$(Antlr4RuntimeStandardVersion)" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="$(MicrosoftDependencyInjectionVersion)" />
     <PackageReference Include="WindowsBase">
-      <Version>4.6.1055</Version>
+      <Version>4.6</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
@@ -145,10 +145,10 @@
     <ProjectReference Include="..\MetaDslx.Languages.Meta\MetaDslx.Languages.Meta.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.VisualStudio.SDK" Version="16.9.31025.194" ExcludeAssets="runtime">
+    <PackageReference Include="Microsoft.VisualStudio.SDK" Version="16.9" ExcludeAssets="runtime">
       <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="17.0.1600">
+    <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="17.0">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>

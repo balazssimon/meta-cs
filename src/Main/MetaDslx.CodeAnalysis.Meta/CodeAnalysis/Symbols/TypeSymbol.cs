@@ -15,8 +15,8 @@ using System.Threading;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-    [Symbol(SymbolParts = SymbolParts.None, SubSymbolKindType = "TypeKind")]
-    public abstract partial class TypeSymbol : NamespaceOrTypeSymbol, ITypeSymbol
+    [Symbol(SymbolParts = SymbolParts.None)]
+    public abstract partial class TypeSymbol : NamespaceOrTypeSymbol
     {
         // TODO (tomat): Consider changing this to an empty name. This name shouldn't ever leak to the user in error messages.
         internal const string ImplicitTypeName = "<invalid-global-code>";
@@ -25,7 +25,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         // InterfaceInfo for a common case of a type not implementing anything directly or indirectly.
         private static readonly BaseTypeInfo s_noBaseTypes = new BaseTypeInfo();
 
-        private ImmutableHashSet<Symbol> _lazyAbstractMembers;
         private BaseTypeInfo _lazyBaseTypeInfo;
 
         private class BaseTypeInfo
@@ -402,43 +401,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         public virtual bool IsValueType => false;
 
-        public virtual bool IsAnonymousType => false;
-
-        public virtual bool IsTupleType => false;
-
         public virtual bool IsReadOnly => false;
-
-        Microsoft.CodeAnalysis.TypeKind ITypeSymbol.TypeKind => Microsoft.CodeAnalysis.TypeKind.Class;
-
-        INamedTypeSymbol? ITypeSymbol.BaseType => null;
-
-        ImmutableArray<INamedTypeSymbol> ITypeSymbol.Interfaces => throw new NotImplementedException();
-
-        ImmutableArray<INamedTypeSymbol> ITypeSymbol.AllInterfaces => throw new NotImplementedException();
-
-        bool ITypeSymbol.IsReferenceType => false;
-
-        bool ITypeSymbol.IsValueType => false;
-
-        bool ITypeSymbol.IsAnonymousType => false;
-
-        bool ITypeSymbol.IsTupleType => false;
-
-        bool ITypeSymbol.IsNativeIntegerType => false;
-
-        ITypeSymbol ITypeSymbol.OriginalDefinition => this;
-
-        SpecialType ITypeSymbol.SpecialType => SpecialType.None;
-
-        bool ITypeSymbol.IsRefLikeType => false;
-
-        bool ITypeSymbol.IsUnmanagedType => false;
-
-        bool ITypeSymbol.IsReadOnly => false;
-
-        bool ITypeSymbol.IsRecord => false;
-
-        Microsoft.CodeAnalysis.NullableAnnotation ITypeSymbol.NullableAnnotation => Microsoft.CodeAnalysis.NullableAnnotation.None;
 
         #region Interface member checks
 
@@ -505,36 +468,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
             bool ok = !diagnostics.HasAnyErrors();
             diagnostics.Free();
             return ok;
-        }
-
-        ISymbol? ITypeSymbol.FindImplementationForInterfaceMember(ISymbol interfaceMember)
-        {
-            throw new NotImplementedException();
-        }
-
-        string ITypeSymbol.ToDisplayString(Microsoft.CodeAnalysis.NullableFlowState topLevelNullability, SymbolDisplayFormat? format)
-        {
-            throw new NotImplementedException();
-        }
-
-        ImmutableArray<SymbolDisplayPart> ITypeSymbol.ToDisplayParts(Microsoft.CodeAnalysis.NullableFlowState topLevelNullability, SymbolDisplayFormat? format)
-        {
-            throw new NotImplementedException();
-        }
-
-        string ITypeSymbol.ToMinimalDisplayString(SemanticModel semanticModel, Microsoft.CodeAnalysis.NullableFlowState topLevelNullability, int position, SymbolDisplayFormat? format)
-        {
-            throw new NotImplementedException();
-        }
-
-        ImmutableArray<SymbolDisplayPart> ITypeSymbol.ToMinimalDisplayParts(SemanticModel semanticModel, Microsoft.CodeAnalysis.NullableFlowState topLevelNullability, int position, SymbolDisplayFormat? format)
-        {
-            throw new NotImplementedException();
-        }
-
-        ITypeSymbol ITypeSymbol.WithNullableAnnotation(Microsoft.CodeAnalysis.NullableAnnotation nullableAnnotation)
-        {
-            throw new NotImplementedException();
         }
 
 

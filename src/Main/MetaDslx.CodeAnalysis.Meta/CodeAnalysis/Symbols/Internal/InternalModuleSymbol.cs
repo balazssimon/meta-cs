@@ -10,14 +10,14 @@ namespace MetaDslx.CodeAnalysis.Symbols.Internal
 {
     internal class InternalModuleSymbol : IModuleSymbolInternal
     {
-        private readonly IModuleSymbol _module;
+        private readonly ModuleSymbol _module;
 
-        public InternalModuleSymbol(IModuleSymbol module)
+        public InternalModuleSymbol(ModuleSymbol module)
         {
             _module = module;
         }
 
-        public Microsoft.CodeAnalysis.SymbolKind Kind => _module.Kind;
+        public Microsoft.CodeAnalysis.SymbolKind Kind => SymbolKind.NetModule;
 
         public string Name => _module.Name;
 
@@ -63,7 +63,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Internal
 
         public ISymbol GetISymbol()
         {
-            return _module;
+            throw new NotImplementedException();
         }
     }
 

@@ -47,16 +47,6 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             }
         }
 
-        private bool IsSubmission
-        {
-            get { return (Container?.Kind == Symbols.SymbolKind.NamedType) && ((NamedTypeSymbol)Container).IsSubmission; }
-        }
-
-        private bool IsScript
-        {
-            get { return (Container?.Kind == Symbols.SymbolKind.NamedType) && ((NamedTypeSymbol)Container).IsScript; }
-        }
-
         protected override LookupConstraints AdjustConstraints(LookupConstraints constraints)
         {
             return base.AdjustConstraints(constraints).WithAdditionalValidators(this);

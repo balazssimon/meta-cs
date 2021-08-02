@@ -35,6 +35,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
             _name = name;
         }
 
+        public sealed override bool IsError => true;
+
         public override string Name
         {
             get
@@ -63,9 +65,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
         {
             get
             {
-                if (_containingSymbol.Kind == SymbolKind.NetModule)
+                if (_containingSymbol is ModuleSymbol moduleSymbol)
                 {
-                    return new NamespaceExtent((ModuleSymbol)_containingSymbol);
+                    return new NamespaceExtent(moduleSymbol);
                 }
 
                 return ((NamespaceSymbol)_containingSymbol).Extent;

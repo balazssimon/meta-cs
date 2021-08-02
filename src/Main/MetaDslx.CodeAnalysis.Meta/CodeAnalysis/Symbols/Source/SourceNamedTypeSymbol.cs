@@ -34,20 +34,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         #region Syntax
 
-        public override bool IsScript => _declaration.IsScript;
-
-        public override bool IsSubmission => _declaration.IsSubmission;
-
-        public override bool IsImplicit => _declaration.IsImplicit;
-
-        public override bool IsImplicitlyDeclared
-        {
-            get
-            {
-                return IsImplicit || IsScript || IsSubmission;
-            }
-        }
-
         public override string MetadataName => _declaration.MetadataName;
 
         public override bool MangleName => _declaration.Name != _declaration.MetadataName;

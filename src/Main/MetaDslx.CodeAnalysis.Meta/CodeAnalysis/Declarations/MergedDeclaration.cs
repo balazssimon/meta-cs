@@ -90,7 +90,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             {
                 symbolFactory.RemoveSymbol(symbol);
             }
-            Debug.Assert(_symbol.Kind == Symbols.SymbolKind.ErrorType || ModelObjectType == null || (_symbol as IModelSymbol)?.ModelObject != null);
+            Debug.Assert(_symbol.IsError || ModelObjectType == null || (_symbol as IModelSymbol)?.ModelObject != null);
             return _symbol;
         }
 

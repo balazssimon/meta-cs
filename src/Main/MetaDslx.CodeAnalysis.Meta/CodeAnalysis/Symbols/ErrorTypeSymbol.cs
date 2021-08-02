@@ -16,10 +16,12 @@ namespace MetaDslx.CodeAnalysis.Symbols
     /// of an error. For example, if a field is declared "Goo x;", and the type "Goo" cannot be
     /// found, an ErrorSymbol is returned when asking the field "x" what it's type is.
     /// </summary>
-    [Symbol(SymbolParts = SymbolParts.None)]
     public abstract partial class ErrorTypeSymbol : NamedTypeSymbol
     {
         internal static readonly ErrorTypeSymbol UnknownResultType = new UnsupportedMetadataTypeSymbol();
+
+        public override bool IsError => true;
+        public override bool IsStatic => false;
 
         /// <summary>
         /// The underlying error.
@@ -71,11 +73,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public override IEnumerable<string> MemberNames => SpecializedCollections.EmptyEnumerable<string>();
 
         public override ImmutableArray<DeclaredSymbol> Members => ImmutableArray<DeclaredSymbol>.Empty;
-
-        /// <summary>
-        /// Gets the kind of this symbol.
-        /// </summary>
-        public sealed override SymbolKind Kind => SymbolKind.ErrorType;
 
         /// <summary>
         /// Get the symbol that logically contains this symbol. 

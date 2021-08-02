@@ -291,55 +291,6 @@ namespace MetaDslx.CodeAnalysis
 
         public class NoSymbolFacts : SymbolFacts
         {
-            public override Symbols.SymbolKind FromCSharpKind(Microsoft.CodeAnalysis.SymbolKind kind)
-            {
-                switch (kind)
-                {
-                    case Microsoft.CodeAnalysis.SymbolKind.Alias:
-                        return Symbols.SymbolKind.Alias;
-                    case Microsoft.CodeAnalysis.SymbolKind.ArrayType:
-                        return Symbols.SymbolKind.ConstructedType;
-                    case Microsoft.CodeAnalysis.SymbolKind.Assembly:
-                        return Symbols.SymbolKind.Assembly;
-                    case Microsoft.CodeAnalysis.SymbolKind.DynamicType:
-                        return Symbols.SymbolKind.DynamicType;
-                    case Microsoft.CodeAnalysis.SymbolKind.ErrorType:
-                        return Symbols.SymbolKind.ErrorType;
-                    case Microsoft.CodeAnalysis.SymbolKind.Event:
-                        return Symbols.SymbolKind.Member;
-                    case Microsoft.CodeAnalysis.SymbolKind.Field:
-                        return Symbols.SymbolKind.Member;
-                    case Microsoft.CodeAnalysis.SymbolKind.Label:
-                        return Symbols.SymbolKind.Local;
-                    case Microsoft.CodeAnalysis.SymbolKind.Local:
-                        return Symbols.SymbolKind.Local;
-                    case Microsoft.CodeAnalysis.SymbolKind.Method:
-                        return Symbols.SymbolKind.Member;
-                    case Microsoft.CodeAnalysis.SymbolKind.NetModule:
-                        return Symbols.SymbolKind.NetModule;
-                    case Microsoft.CodeAnalysis.SymbolKind.NamedType:
-                        return Symbols.SymbolKind.NamedType;
-                    case Microsoft.CodeAnalysis.SymbolKind.Namespace:
-                        return Symbols.SymbolKind.Namespace;
-                    case Microsoft.CodeAnalysis.SymbolKind.Parameter:
-                        return Symbols.SymbolKind.Local;
-                    case Microsoft.CodeAnalysis.SymbolKind.PointerType:
-                        return Symbols.SymbolKind.ConstructedType;
-                    case Microsoft.CodeAnalysis.SymbolKind.Property:
-                        return Symbols.SymbolKind.Member;
-                    case Microsoft.CodeAnalysis.SymbolKind.RangeVariable:
-                        return Symbols.SymbolKind.Local;
-                    case Microsoft.CodeAnalysis.SymbolKind.TypeParameter:
-                        return Symbols.SymbolKind.Local;
-                    case Microsoft.CodeAnalysis.SymbolKind.Preprocessing:
-                        return Symbols.SymbolKind.Local;
-                    case Microsoft.CodeAnalysis.SymbolKind.Discard:
-                        return Symbols.SymbolKind.Discard;
-                    default:
-                        return Symbols.SymbolKind.None;
-                }
-            }
-
             public override bool ContainsObject(object model, object modelObject)
             {
                 throw new NotImplementedException();
