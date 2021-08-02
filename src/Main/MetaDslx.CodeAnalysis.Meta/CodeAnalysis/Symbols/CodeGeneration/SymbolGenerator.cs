@@ -458,35 +458,50 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                 }
                 if (symbol.SymbolParts.HasFlag(SymbolParts.Source)) //100:10
                 {
-                    __out.Write("        private readonly MergedDeclaration? _declaration;"); //101:1
-                    __out.AppendLine(false); //101:58
-                    if (!symbol.ExistingSourceTypeInfo.Members.Contains("Locations")) //102:10
+                    __out.AppendLine(true); //101:1
+                    if (!symbol.ExistingSourceTypeInfo.Members.Contains("MergedDeclaration")) //102:10
                     {
-                        __out.AppendLine(true); //103:1
-                        __out.Write("        public override ImmutableArray<Location> Locations => _declaration?.NameLocations ?? ImmutableArray<Location>.Empty;"); //104:1
-                        __out.AppendLine(false); //104:125
+                        __out.Write("        public MergedDeclaration MergedDeclaration => _declaration;"); //103:1
+                        __out.AppendLine(false); //103:68
                     }
-                    if (!symbol.ExistingSourceTypeInfo.Members.Contains("DeclaringSyntaxReferences")) //106:10
+                    if (!symbol.ExistingSourceTypeInfo.Members.Contains("GetBinder")) //105:10
                     {
-                        __out.AppendLine(true); //107:1
-                        __out.Write("        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => _declaration?.SyntaxReferences ?? ImmutableArray<SyntaxReference>.Empty;"); //108:1
-                        __out.AppendLine(false); //108:158
+                        __out.Write("        public MetaDslx.CodeAnalysis.Binding.BinderPosition<MetaDslx.CodeAnalysis.Binding.Binders.SymbolBinder> GetBinder(SyntaxReference syntax) => default;"); //106:1
+                        __out.AppendLine(false); //106:158
+                    }
+                    if (!symbol.ExistingSourceTypeInfo.Members.Contains("GetChildSymbol")) //108:10
+                    {
+                        __out.Write("        public Symbol GetChildSymbol(SyntaxReference syntax) => null;"); //109:1
+                        __out.AppendLine(false); //109:70
                     }
                 }
-                else //110:10
+                if (!symbol.ExistingSourceTypeInfo.Members.Contains("Locations")) //112:10
                 {
-                    if (!symbol.ExistingSourceTypeInfo.Members.Contains("Locations")) //111:10
+                    __out.AppendLine(true); //113:1
+                    __out.Write("        public override ImmutableArray<Location> Locations => "); //114:1
+                    if (symbol.SymbolParts.HasFlag(SymbolParts.Source)) //114:64
                     {
-                        __out.AppendLine(true); //112:1
-                        __out.Write("        public override ImmutableArray<Location> Locations => ImmutableArray<Location>.Empty;"); //113:1
-                        __out.AppendLine(false); //113:94
+                        __out.Write("_declaration?.NameLocations ?? ImmutableArray<Location>.Empty;"); //114:116
                     }
-                    if (!symbol.ExistingSourceTypeInfo.Members.Contains("DeclaringSyntaxReferences")) //115:10
+                    else //114:179
                     {
-                        __out.AppendLine(true); //116:1
-                        __out.Write("        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => ImmutableArray<SyntaxReference>.Empty;"); //117:1
-                        __out.AppendLine(false); //117:124
+                        __out.Write("ImmutableArray<Location>.Empty;"); //114:184
                     }
+                    __out.AppendLine(false); //114:223
+                }
+                if (!symbol.ExistingSourceTypeInfo.Members.Contains("DeclaringSyntaxReferences")) //116:10
+                {
+                    __out.AppendLine(true); //117:1
+                    __out.Write("        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => "); //118:1
+                    if (symbol.SymbolParts.HasFlag(SymbolParts.Source)) //118:87
+                    {
+                        __out.Write("_declaration?.SyntaxReferences ?? ImmutableArray<SyntaxReference>.Empty;"); //118:139
+                    }
+                    else //118:212
+                    {
+                        __out.Write("ImmutableArray<SyntaxReference>.Empty;"); //118:217
+                    }
+                    __out.AppendLine(false); //118:263
                 }
                 if (!symbol.ExistingErrorTypeInfo.Members.Contains("ContainingSymbol")) //120:10
                 {
@@ -507,8 +522,16 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
             if (!symbol.ExistingErrorTypeInfo.Members.Contains("Name")) //131:10
             {
                 __out.AppendLine(true); //132:1
-                __out.Write("        public sealed override string Name => _modelObject is not null ? Language.SymbolFacts.GetName(_modelObject) : string.Empty;"); //133:1
-                __out.AppendLine(false); //133:132
+                __out.Write("        public sealed override string Name => "); //133:1
+                if (symbol.ModelObjectOption != ParameterOption.Disabled) //133:48
+                {
+                    __out.Write("_modelObject is not null ? Language.SymbolFacts.GetName(_modelObject) : string.Empty;"); //133:106
+                }
+                else //133:192
+                {
+                    __out.Write("string.Empty;"); //133:197
+                }
+                __out.AppendLine(false); //133:218
             }
             var __loop1_results = 
                 (from prop in __Enumerate((symbol.Properties).GetEnumerator()) //135:16

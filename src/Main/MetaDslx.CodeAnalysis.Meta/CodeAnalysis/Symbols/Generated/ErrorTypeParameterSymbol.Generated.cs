@@ -14,15 +14,15 @@ using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Error
 {
-	public abstract partial class ErrorTypeParameterSymbol : MetaDslx.CodeAnalysis.Symbols.TypeParameterSymbol, MetaDslx.CodeAnalysis.Symbols.Metadata.IModelSymbol
+	public partial class ErrorTypeParameterSymbol : MetaDslx.CodeAnalysis.Symbols.TypeParameterSymbol, MetaDslx.CodeAnalysis.Symbols.Metadata.IModelSymbol, MetaDslx.CodeAnalysis.Symbols.Source.ISourceSymbol
 	{
         private readonly Symbol _container;
+        private readonly MergedDeclaration? _declaration;
         private readonly object? _modelObject;
 
-        public ErrorTypeParameterSymbol(Symbol container, object? modelObject)
+        public ErrorTypeParameterSymbol(Symbol container, object? modelObject = null, MergedDeclaration? declaration = null)
         {
             if (container is null) throw new ArgumentNullException(nameof(container));
-            if (modelObject is null) throw new ArgumentNullException(nameof(modelObject));
             _container = container;
             _modelObject = modelObject;
         }
@@ -35,11 +35,21 @@ namespace MetaDslx.CodeAnalysis.Symbols.Error
 
         public Type ModelObjectType => _modelObject is not null ? Language.SymbolFacts.GetModelObjectType(_modelObject) : null;
 
+        public MergedDeclaration MergedDeclaration => _declaration;
+        public MetaDslx.CodeAnalysis.Binding.BinderPosition<MetaDslx.CodeAnalysis.Binding.Binders.SymbolBinder> GetBinder(SyntaxReference syntax) => default;
+        public Symbol GetChildSymbol(SyntaxReference syntax) => null;
+
+        public override ImmutableArray<Location> Locations => _declaration?.NameLocations ?? ImmutableArray<Location>.Empty;
+
+        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => _declaration?.SyntaxReferences ?? ImmutableArray<SyntaxReference>.Empty;
+
         public sealed override Symbol ContainingSymbol => _container;
+
+        public sealed override bool IsError => true;
 
         public sealed override ImmutableArray<Symbol> ChildSymbols => ImmutableArray<Symbol>.Empty;
 
-        public sealed override string Name => string.Empty;
+        public sealed override string Name => _modelObject is not null ? Language.SymbolFacts.GetName(_modelObject) : string.Empty;
 
         public override global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.Symbol> Attributes => default;
 

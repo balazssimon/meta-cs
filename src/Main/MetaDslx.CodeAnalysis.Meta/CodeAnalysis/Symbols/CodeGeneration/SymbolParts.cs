@@ -8,9 +8,10 @@ namespace MetaDslx.CodeAnalysis.Symbols
     public enum SymbolParts
     {
         None = 0,
-        Source = 1,
-        Metadata = 2,
-        All = Source | Metadata
+        Error = 1,
+        Source = 2,
+        Metadata = 4,
+        All = Error | Source | Metadata
     }
 }
             

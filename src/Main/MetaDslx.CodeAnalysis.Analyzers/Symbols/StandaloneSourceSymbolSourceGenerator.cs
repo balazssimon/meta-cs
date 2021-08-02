@@ -31,8 +31,11 @@ namespace MetaDslx.CodeAnalysis.Analyzers.Symbols
                     context.AddSource(symbol.Name + ".Generated.cs", symbolCode);
                     if (info.SymbolParts != SymbolParts.None)
                     {
-                        var errorSymbolCode = generator.GenerateErrorSymbol(info);
-                        context.AddSource("Error" + symbol.Name + ".Generated.cs", errorSymbolCode);
+                        if (info.SymbolParts.HasFlag(SymbolParts.Error))
+                        {
+                            var errorSymbolCode = generator.GenerateErrorSymbol(info);
+                            context.AddSource("Error" + symbol.Name + ".Generated.cs", errorSymbolCode);
+                        }
                         var completionSymbolCode = generator.GenerateCompletionSymbol(info);
                         context.AddSource("Completion" + symbol.Name + ".Generated.cs", completionSymbolCode);
                         if (info.SymbolParts.HasFlag(SymbolParts.Metadata))
@@ -141,9 +144,9 @@ namespace MetaDslx.CodeAnalysis.Analyzers.Symbols
             var symbol = symbolName == null ? originalSymbol : originalSymbol.ContainingAssembly.GetTypeByMetadataName(symbolName);
             string? baseType = null;
             var memberNames = new HashSet<string>();
+            CollectMemberNames(originalSymbol, symbol, memberNames);
             if (symbol is not null)
             {
-                CollectMemberNames(originalSymbol, symbol, memberNames);
                 var baseTypeName = symbol.BaseType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
                 if (baseTypeName != "object" && baseTypeName != expectedBaseTypeName) baseType = baseTypeName;
             }
@@ -157,18 +160,24 @@ namespace MetaDslx.CodeAnalysis.Analyzers.Symbols
 
         private void CollectMemberNames(INamedTypeSymbol originalSymbol, INamedTypeSymbol symbol, HashSet<string> memberNames)
         {
-            foreach (var member in originalSymbol.GetMembers().Where(m => m.DeclaringSyntaxReferences.Length > 0))
+            if (originalSymbol is not null)
             {
-                if (member.IsSealed && (member.Kind == Microsoft.CodeAnalysis.SymbolKind.Method || member.Kind == Microsoft.CodeAnalysis.SymbolKind.Property))
+                foreach (var member in originalSymbol.GetMembers().Where(m => m.DeclaringSyntaxReferences.Length > 0))
                 {
-                    memberNames.Add(member.Name);
+                    if (member.IsSealed && (member.Kind == Microsoft.CodeAnalysis.SymbolKind.Method || member.Kind == Microsoft.CodeAnalysis.SymbolKind.Property))
+                    {
+                        memberNames.Add(member.Name);
+                    }
                 }
             }
-            foreach (var member in symbol.GetMembers().Where(m => m.DeclaringSyntaxReferences.Length > 0))
+            if (symbol is not null)
             {
-                if (member.Kind == Microsoft.CodeAnalysis.SymbolKind.Method || member.Kind == Microsoft.CodeAnalysis.SymbolKind.Property)
+                foreach (var member in symbol.GetMembers().Where(m => m.DeclaringSyntaxReferences.Length > 0))
                 {
-                    memberNames.Add(member.Name);
+                    if (member.Kind == Microsoft.CodeAnalysis.SymbolKind.Method || member.Kind == Microsoft.CodeAnalysis.SymbolKind.Property)
+                    {
+                        memberNames.Add(member.Name);
+                    }
                 }
             }
         }

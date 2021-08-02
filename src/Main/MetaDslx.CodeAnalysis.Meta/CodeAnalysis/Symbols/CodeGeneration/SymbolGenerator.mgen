@@ -98,24 +98,24 @@ namespace [symbol.NamespaceName].Error
             [end if]
         [end if]
         [if (symbol.SymbolParts.HasFlag(SymbolParts.Source))]
-        private readonly MergedDeclaration? _declaration;
+^
+        [if (!symbol.ExistingSourceTypeInfo.Members.Contains("MergedDeclaration"))]
+        public MergedDeclaration MergedDeclaration => _declaration;
+        [end if]
+        [if (!symbol.ExistingSourceTypeInfo.Members.Contains("GetBinder"))]
+        public MetaDslx.CodeAnalysis.Binding.BinderPosition<MetaDslx.CodeAnalysis.Binding.Binders.SymbolBinder> GetBinder(SyntaxReference syntax) => default;
+        [end if]
+        [if (!symbol.ExistingSourceTypeInfo.Members.Contains("GetChildSymbol"))]
+        public Symbol GetChildSymbol(SyntaxReference syntax) => null;
+        [end if]
+        [end if]
         [if (!symbol.ExistingSourceTypeInfo.Members.Contains("Locations"))]
 ^
-        public override ImmutableArray<Location> Locations => _declaration?.NameLocations ?? ImmutableArray<Location>.Empty;
+        public override ImmutableArray<Location> Locations => [if (symbol.SymbolParts.HasFlag(SymbolParts.Source))]_declaration?.NameLocations ?? ImmutableArray<Location>.Empty;[else]ImmutableArray<Location>.Empty;[end if]
         [end if]
         [if (!symbol.ExistingSourceTypeInfo.Members.Contains("DeclaringSyntaxReferences"))]
 ^
-        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => _declaration?.SyntaxReferences ?? ImmutableArray<SyntaxReference>.Empty;
-        [end if]
-        [else]
-        [if (!symbol.ExistingSourceTypeInfo.Members.Contains("Locations"))]
-^
-        public override ImmutableArray<Location> Locations => ImmutableArray<Location>.Empty;
-        [end if]
-        [if (!symbol.ExistingSourceTypeInfo.Members.Contains("DeclaringSyntaxReferences"))]
-^
-        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => ImmutableArray<SyntaxReference>.Empty;
-        [end if]
+        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => [if (symbol.SymbolParts.HasFlag(SymbolParts.Source))]_declaration?.SyntaxReferences ?? ImmutableArray<SyntaxReference>.Empty;[else]ImmutableArray<SyntaxReference>.Empty;[end if]
         [end if]
         [if (!symbol.ExistingErrorTypeInfo.Members.Contains("ContainingSymbol"))]
 ^
@@ -130,7 +130,7 @@ namespace [symbol.NamespaceName].Error
         [end if]
         [if (!symbol.ExistingErrorTypeInfo.Members.Contains("Name"))]
 ^
-        public sealed override string Name => _modelObject is not null ? Language.SymbolFacts.GetName(_modelObject) : string.Empty;
+        public sealed override string Name => [if (symbol.ModelObjectOption != ParameterOption.Disabled)]_modelObject is not null ? Language.SymbolFacts.GetName(_modelObject) : string.Empty;[else]string.Empty;[end if]
         [end if]
         [loop (prop:symbol.Properties)]
             [if (!symbol.ExistingErrorTypeInfo.Members.Contains(prop.Name))]

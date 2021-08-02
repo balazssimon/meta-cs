@@ -20,7 +20,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
     /// <summary>
     /// Represents a module within an assembly. Every assembly contains one or more modules.
     /// </summary>
-    [Symbol(ModelObjectOption = ParameterOption.Disabled)]
+    [Symbol(SymbolParts = SymbolParts.Metadata | SymbolParts.Source, ModelObjectOption = ParameterOption.Disabled)]
     public abstract partial class ModuleSymbol : Symbol
     {
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

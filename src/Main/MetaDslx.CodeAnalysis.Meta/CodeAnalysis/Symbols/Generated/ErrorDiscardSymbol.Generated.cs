@@ -14,11 +14,12 @@ using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Error
 {
-	public abstract partial class ErrorDiscardSymbol : MetaDslx.CodeAnalysis.Symbols.DiscardSymbol
+	public partial class ErrorDiscardSymbol : MetaDslx.CodeAnalysis.Symbols.DiscardSymbol, MetaDslx.CodeAnalysis.Symbols.Source.ISourceSymbol
 	{
         private readonly Symbol _container;
+        private readonly MergedDeclaration? _declaration;
 
-        public ErrorDiscardSymbol(Symbol container)
+        public ErrorDiscardSymbol(Symbol container, MergedDeclaration? declaration = null)
         {
             if (container is null) throw new ArgumentNullException(nameof(container));
             _container = container;
@@ -28,7 +29,17 @@ namespace MetaDslx.CodeAnalysis.Symbols.Error
 
         public SymbolFactory SymbolFactory => ContainingModule.SymbolFactory;
 
+        public MergedDeclaration MergedDeclaration => _declaration;
+        public MetaDslx.CodeAnalysis.Binding.BinderPosition<MetaDslx.CodeAnalysis.Binding.Binders.SymbolBinder> GetBinder(SyntaxReference syntax) => default;
+        public Symbol GetChildSymbol(SyntaxReference syntax) => null;
+
+        public override ImmutableArray<Location> Locations => _declaration?.NameLocations ?? ImmutableArray<Location>.Empty;
+
+        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => _declaration?.SyntaxReferences ?? ImmutableArray<SyntaxReference>.Empty;
+
         public sealed override Symbol ContainingSymbol => _container;
+
+        public sealed override bool IsError => true;
 
         public sealed override ImmutableArray<Symbol> ChildSymbols => ImmutableArray<Symbol>.Empty;
 
