@@ -14,7 +14,6 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Text;
 using System.Threading;
-using SymbolKind = MetaDslx.CodeAnalysis.Symbols.SymbolKind;
 
 namespace MetaDslx.Languages.Meta.Symbols
 {

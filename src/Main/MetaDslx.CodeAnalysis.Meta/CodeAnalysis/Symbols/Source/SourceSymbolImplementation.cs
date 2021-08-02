@@ -306,7 +306,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             {
                 if (childDeclaration != null)
                 {
-                    diagnostics.Add(ModelErrorCode.ERR_CannotCreateSourceDeclaredSymbol.ToDiagnostic(location, symbolFacts.GetSymbolType(childDeclaration.ModelObjectType), childDeclaration.Name, childDeclaration.ModelObjectType));
+                    diagnostics.Add(ModelErrorCode.ERR_CannotCreateSourceDeclaredSymbol.ToDiagnostic(location, symbolFacts.GetSymbolType(childDeclaration.ModelObjectType).FullName, childDeclaration.Name, childDeclaration.ModelObjectType.FullName));
                 }
             }
             if (childSymbol is not null)
