@@ -18,8 +18,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 {
 	public partial class SourceNullableTypeSymbol : MetaDslx.CodeAnalysis.Symbols.Completion.CompletionNullableTypeSymbol, MetaDslx.CodeAnalysis.Symbols.Source.ISourceSymbol
 	{
-        private LexicalSortKey _lazyLexicalSortKey = LexicalSortKey.NotInitialized;
         private readonly MergedDeclaration _declaration;
+        private LexicalSortKey _lazyLexicalSortKey = LexicalSortKey.NotInitialized;
 
 		public SourceNullableTypeSymbol(Symbol containingSymbol, object modelObject, MergedDeclaration declaration)
             : base(containingSymbol, modelObject)

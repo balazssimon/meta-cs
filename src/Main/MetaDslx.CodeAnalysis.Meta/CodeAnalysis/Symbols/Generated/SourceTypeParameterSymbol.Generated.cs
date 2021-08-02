@@ -18,8 +18,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 {
 	public partial class SourceTypeParameterSymbol : MetaDslx.CodeAnalysis.Symbols.Completion.CompletionTypeParameterSymbol, MetaDslx.CodeAnalysis.Symbols.Source.ISourceSymbol
 	{
-        private LexicalSortKey _lazyLexicalSortKey = LexicalSortKey.NotInitialized;
         private readonly MergedDeclaration _declaration;
+        private LexicalSortKey _lazyLexicalSortKey = LexicalSortKey.NotInitialized;
 
 		public SourceTypeParameterSymbol(Symbol containingSymbol, object modelObject, MergedDeclaration declaration)
             : base(containingSymbol, modelObject)

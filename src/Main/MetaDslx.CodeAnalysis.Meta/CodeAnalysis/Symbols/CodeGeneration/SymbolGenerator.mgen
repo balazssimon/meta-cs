@@ -56,10 +56,13 @@ using Roslyn.Utilities;
 ^
 namespace [symbol.NamespaceName].Error
 {
-	public partial class Error[symbol.Name][if (symbol.ExistingErrorTypeInfo.BaseType == null)] : [symbol.NamespaceName].[symbol.Name][if(symbol.ModelObjectOption != ParameterOption.Disabled)], MetaDslx.CodeAnalysis.Symbols.Metadata.IModelSymbol[end if][end if]
+	public partial class Error[symbol.Name][if (symbol.ExistingErrorTypeInfo.BaseType == null)] : [symbol.NamespaceName].[symbol.Name][if(symbol.ModelObjectOption != ParameterOption.Disabled)], MetaDslx.CodeAnalysis.Symbols.Metadata.IModelSymbol[end if][if (symbol.SymbolParts.HasFlag(SymbolParts.Source))], MetaDslx.CodeAnalysis.Symbols.Source.ISourceSymbol[end if][end if]
 	{
         [if (symbol.Name != "AssemblySymbol" && symbol.Name != "ModuleSymbol")]
         private readonly Symbol _container;
+        [if (symbol.SymbolParts.HasFlag(SymbolParts.Source))]
+        private readonly MergedDeclaration? _declaration;
+        [end if]
         [end if]
         [if (symbol.ModelObjectOption != ParameterOption.Disabled)]
         private readonly object? _modelObject;
@@ -67,12 +70,9 @@ namespace [symbol.NamespaceName].Error
         [if (symbol.Name != "AssemblySymbol" && symbol.Name != "ModuleSymbol")]
         [if (!symbol.ExistingErrorTypeInfo.Members.Contains(".ctor"))]
 ^
-        public Error[symbol.Name](Symbol container[if(symbol.ModelObjectOption != ParameterOption.Disabled)], object? modelObject[if(symbol.ModelObjectOption == ParameterOption.Optional)] = null[end if][end if])
+        public Error[symbol.Name](Symbol container[if(symbol.ModelObjectOption != ParameterOption.Disabled)], object? modelObject = null[end if], MergedDeclaration? declaration = null)
         {
             if (container is null) throw new ArgumentNullException(nameof(container));
-            [if(symbol.ModelObjectOption == ParameterOption.Required)]
-            if (modelObject is null) throw new ArgumentNullException(nameof(modelObject));
-            [end if]
             _container = container;
             [if(symbol.ModelObjectOption != ParameterOption.Disabled)]
             _modelObject = modelObject;
@@ -97,18 +97,40 @@ namespace [symbol.NamespaceName].Error
         public Type ModelObjectType => _modelObject is not null ? Language.SymbolFacts.GetModelObjectType(_modelObject) : null;
             [end if]
         [end if]
+        [if (symbol.SymbolParts.HasFlag(SymbolParts.Source))]
+        private readonly MergedDeclaration? _declaration;
+        [if (!symbol.ExistingSourceTypeInfo.Members.Contains("Locations"))]
+^
+        public override ImmutableArray<Location> Locations => _declaration?.NameLocations ?? ImmutableArray<Location>.Empty;
+        [end if]
+        [if (!symbol.ExistingSourceTypeInfo.Members.Contains("DeclaringSyntaxReferences"))]
+^
+        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => _declaration?.SyntaxReferences ?? ImmutableArray<SyntaxReference>.Empty;
+        [end if]
+        [else]
+        [if (!symbol.ExistingSourceTypeInfo.Members.Contains("Locations"))]
+^
+        public override ImmutableArray<Location> Locations => ImmutableArray<Location>.Empty;
+        [end if]
+        [if (!symbol.ExistingSourceTypeInfo.Members.Contains("DeclaringSyntaxReferences"))]
+^
+        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => ImmutableArray<SyntaxReference>.Empty;
+        [end if]
+        [end if]
         [if (!symbol.ExistingErrorTypeInfo.Members.Contains("ContainingSymbol"))]
 ^
         public sealed override Symbol ContainingSymbol => _container;
         [end if]
         [end if]
+^
+        public sealed override bool IsError => true;
         [if (!symbol.ExistingErrorTypeInfo.Members.Contains("ChildSymbols"))]
 ^
         public sealed override ImmutableArray<Symbol> ChildSymbols => ImmutableArray<Symbol>.Empty;
         [end if]
         [if (!symbol.ExistingErrorTypeInfo.Members.Contains("Name"))]
 ^
-        public sealed override string Name => string.Empty;
+        public sealed override string Name => _modelObject is not null ? Language.SymbolFacts.GetName(_modelObject) : string.Empty;
         [end if]
         [loop (prop:symbol.Properties)]
             [if (!symbol.ExistingErrorTypeInfo.Members.Contains(prop.Name))]

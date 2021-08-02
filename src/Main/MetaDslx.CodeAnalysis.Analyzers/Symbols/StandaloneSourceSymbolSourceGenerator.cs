@@ -147,7 +147,7 @@ namespace MetaDslx.CodeAnalysis.Analyzers.Symbols
                 var baseTypeName = symbol.BaseType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
                 if (baseTypeName != "object" && baseTypeName != expectedBaseTypeName) baseType = baseTypeName;
             }
-            return new ExistingTypeInfo(symbol.IsSealed, baseType, memberNames);
+            return new ExistingTypeInfo(symbol?.IsSealed ?? false, baseType, memberNames);
         }
 
         private string GetSymbolName(INamedTypeSymbol symbol, string namePrefix)

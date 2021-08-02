@@ -25,6 +25,5 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
         {
             return ModelSymbolImplementation.AssignSymbolPropertyValue<global::Microsoft.CodeAnalysis.Accessibility>(this, nameof(DeclaredAccessibility), diagnostics, cancellationToken);
         }
-
     }
 }

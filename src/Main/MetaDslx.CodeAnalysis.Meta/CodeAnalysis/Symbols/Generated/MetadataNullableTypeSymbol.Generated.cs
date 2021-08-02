@@ -79,15 +79,5 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
         protected override void CompleteNonSymbolProperties(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
         }
-
-        public partial class Error : MetadataNullableTypeSymbol
-        {
-            public Error(Symbol container, object modelObject = null)
-                : base(container, modelObject)
-            {
-            }
-
-            public sealed override bool IsError => true;
-        }
     }
 }

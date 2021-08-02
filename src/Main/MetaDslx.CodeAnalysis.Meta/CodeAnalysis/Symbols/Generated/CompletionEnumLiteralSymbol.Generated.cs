@@ -188,7 +188,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
             }
         }
 
-
         #region Completion
 
         public sealed override bool RequiresCompletion => true;
