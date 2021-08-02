@@ -31,6 +31,8 @@ namespace MetaDslx.CodeAnalysis.Analyzers.Symbols
                     context.AddSource(symbol.Name + ".Generated.cs", symbolCode);
                     if (info.SymbolParts != SymbolParts.None)
                     {
+                        var errorSymbolCode = generator.GenerateErrorSymbol(info);
+                        context.AddSource("Error" + symbol.Name + ".Generated.cs", errorSymbolCode);
                         var completionSymbolCode = generator.GenerateCompletionSymbol(info);
                         context.AddSource("Completion" + symbol.Name + ".Generated.cs", completionSymbolCode);
                         if (info.SymbolParts.HasFlag(SymbolParts.Metadata))
@@ -88,32 +90,21 @@ namespace MetaDslx.CodeAnalysis.Analyzers.Symbols
                     SymbolParts = symbolParts,
                     ModelObjectOption = modelObjectOption,
                     CompletionParts = cpgi.completionParts,
-                    ExistingErrorBaseType = cpgi.errorBaseType,
-                    ExistingErrorMemberNames = cpgi.errorMemberNames,
-                    ExistingCompletionBaseType = cpgi.completionBaseType,
-                    ExistingCompletionMemberNames = cpgi.completionMemberNames,
-                    ExistingMetadataBaseType = cpgi.metadataBaseType,
-                    ExistingMetadataMemberNames = cpgi.metadataMemberNames,
-                    ExistingSourceBaseType = cpgi.sourceBaseType,
-                    ExistingSourceMemberNames = cpgi.sourceMemberNames
+                    ExistingTypeInfo = cpgi.typeInfo,
+                    ExistingErrorTypeInfo = cpgi.errorTypeInfo,
+                    ExistingCompletionTypeInfo = cpgi.completionTypeInfo,
+                    ExistingMetadataTypeInfo = cpgi.metadataTypeInfo,
+                    ExistingSourceTypeInfo = cpgi.sourceTypeInfo,
                 };
         }
 
-        private (List<CompletionPartGenerationInfo> completionParts, string? errorBaseType, HashSet<string> errorMemberNames, string? completionBaseType, HashSet<string> completionMemberNames, string? metadataBaseType, HashSet<string> metadataMemberNames, string? sourceBaseType, HashSet<string> sourceMemberNames) GetCompletionPartGenerationInfos(INamedTypeSymbol symbol)
+        private (List<CompletionPartGenerationInfo> completionParts, ExistingTypeInfo typeInfo, ExistingTypeInfo errorTypeInfo, ExistingTypeInfo completionTypeInfo, ExistingTypeInfo metadataTypeInfo, ExistingTypeInfo sourceTypeInfo) GetCompletionPartGenerationInfos(INamedTypeSymbol symbol)
         {
             var symbolName = symbol.ContainingSymbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
             var errorName = GetSymbolName(symbol, ".Error.Error");
             var completionName = GetSymbolName(symbol, ".Completion.Completion");
             var metadataName = GetSymbolName(symbol, ".Metadata.Metadata");
             var sourceName = GetSymbolName(symbol, ".Source.Source");
-            string? errorBaseType = null;
-            var errorMemberNames = new HashSet<string>();
-            string? completionBaseType = null;
-            var completionMemberNames = new HashSet<string>();
-            string? metadataBaseType = null;
-            var metadataMemberNames = new HashSet<string>();
-            string? sourceBaseType = null;
-            var sourceMemberNames = new HashSet<string>();
             var completionParts = new List<CompletionPartGenerationInfo>();
             var currentSymbol = symbol;
             while (currentSymbol != null)
@@ -137,35 +128,26 @@ namespace MetaDslx.CodeAnalysis.Analyzers.Symbols
                 currentSymbol = currentSymbol.BaseType;
             }
             completionParts.Reverse();
-            var errorSymbol = symbol.ContainingAssembly.GetTypeByMetadataName(errorName);
-            if (errorSymbol is not null)
+            var typeInfo = GetExistingTypeInfo(symbol, null, null);
+            var errorTypeInfo = GetExistingTypeInfo(symbol, errorName, symbolName);
+            var completionTypeInfo = GetExistingTypeInfo(symbol, completionName, symbolName);
+            var metadataTypeInfo = GetExistingTypeInfo(symbol, metadataName, completionName);
+            var sourceTypeInfo = GetExistingTypeInfo(symbol, sourceName, completionName);
+            return (completionParts, typeInfo, errorTypeInfo, completionTypeInfo, metadataTypeInfo, sourceTypeInfo);
+        }
+
+        private ExistingTypeInfo GetExistingTypeInfo(INamedTypeSymbol originalSymbol, string? symbolName, string? expectedBaseTypeName)
+        {
+            var symbol = symbolName == null ? originalSymbol : originalSymbol.ContainingAssembly.GetTypeByMetadataName(symbolName);
+            string? baseType = null;
+            var memberNames = new HashSet<string>();
+            if (symbol is not null)
             {
-                CollectMemberNames(symbol, errorSymbol, errorMemberNames);
-                var baseTypeName = errorSymbol.BaseType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
-                if (baseTypeName != "object" && baseTypeName != symbolName) errorBaseType = baseTypeName;
+                CollectMemberNames(originalSymbol, symbol, memberNames);
+                var baseTypeName = symbol.BaseType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+                if (baseTypeName != "object" && baseTypeName != expectedBaseTypeName) baseType = baseTypeName;
             }
-            var completionSymbol = symbol.ContainingAssembly.GetTypeByMetadataName(completionName);
-            if (completionSymbol is not null)
-            {
-                CollectMemberNames(symbol, completionSymbol, completionMemberNames);
-                var baseTypeName = completionSymbol.BaseType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
-                if (baseTypeName != "object" && baseTypeName != symbolName) completionBaseType = baseTypeName;
-            }
-            var metadataSymbol = symbol.ContainingAssembly.GetTypeByMetadataName(metadataName);
-            if (metadataSymbol is not null)
-            {
-                CollectMemberNames(symbol, metadataSymbol, metadataMemberNames);
-                var baseTypeName = metadataSymbol.BaseType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
-                if (baseTypeName != "object" && baseTypeName != completionName) metadataBaseType = baseTypeName;
-            }
-            var sourceSymbol = symbol.ContainingAssembly.GetTypeByMetadataName(sourceName);
-            if (sourceSymbol is not null)
-            {
-                CollectMemberNames(symbol, sourceSymbol, sourceMemberNames);
-                var baseTypeName = sourceSymbol.BaseType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
-                if (baseTypeName != "object" && baseTypeName != completionName) sourceBaseType = baseTypeName;
-            }
-            return (completionParts, errorBaseType, errorMemberNames, completionBaseType, completionMemberNames, metadataBaseType, metadataMemberNames, sourceBaseType, sourceMemberNames);
+            return new ExistingTypeInfo(symbol.IsSealed, baseType, memberNames);
         }
 
         private string GetSymbolName(INamedTypeSymbol symbol, string namePrefix)

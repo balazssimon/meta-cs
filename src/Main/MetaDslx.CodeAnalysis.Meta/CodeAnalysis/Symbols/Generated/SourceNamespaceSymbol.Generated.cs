@@ -88,10 +88,5 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         {
             SourceSymbolImplementation.AssignNonSymbolProperties(this, diagnostics, cancellationToken);
         }
-
-        public partial class Error : SourceNamespaceSymbol
-        {
-            public sealed override bool IsError => true;
-        }
 	}
 }

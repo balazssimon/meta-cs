@@ -135,13 +135,5 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             }
         }
 
-        public partial class Error
-        {
-            public Error(SourceModuleSymbol module, Symbol container, object modelObject, MergedDeclaration declaration)
-                : base(module, container, modelObject, declaration)
-            {
-            }
-
-        }
     }
 }

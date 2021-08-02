@@ -18,6 +18,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 {
 	public partial class SourceDiscardSymbol : MetaDslx.CodeAnalysis.Symbols.Completion.CompletionDiscardSymbol, MetaDslx.CodeAnalysis.Symbols.Source.ISourceSymbol
 	{
+        private LexicalSortKey _lazyLexicalSortKey = LexicalSortKey.NotInitialized;
         private readonly MergedDeclaration _declaration;
 
 		public SourceDiscardSymbol(Symbol containingSymbol, MergedDeclaration declaration)
@@ -50,6 +51,14 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             }
             return null;
         }
+        public override LexicalSortKey GetLexicalSortKey()
+        {
+            if (!_lazyLexicalSortKey.IsInitialized)
+            {
+                _lazyLexicalSortKey.SetFrom(this.MergedDeclaration.GetLexicalSortKey(this.DeclaringCompilation));
+            }
+            return _lazyLexicalSortKey;
+        }
 
         protected override void CompleteInitializingSymbol(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
@@ -78,16 +87,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         protected override void CompleteNonSymbolProperties(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             SourceSymbolImplementation.AssignNonSymbolProperties(this, diagnostics, cancellationToken);
-        }
-
-        public partial class Error : SourceDiscardSymbol
-        {
-            public Error(Symbol container, MergedDeclaration declaration)
-                : base(container, declaration)
-            {
-            }
-
-            public sealed override bool IsError => true;
         }
 	}
 }

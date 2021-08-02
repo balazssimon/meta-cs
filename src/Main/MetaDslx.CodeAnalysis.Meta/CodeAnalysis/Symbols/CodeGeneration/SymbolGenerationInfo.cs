@@ -23,14 +23,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration
         public string NamespaceName { get; private set; }
         public SymbolGenerationInfo ParentSymbol { get; private set; }
         public List<CompletionPartGenerationInfo> CompletionParts { get; init; }
-        public string? ExistingErrorBaseType { get; init; }
-        public string? ExistingCompletionBaseType { get; init; }
-        public string? ExistingMetadataBaseType { get; init; }
-        public string? ExistingSourceBaseType { get; init; }
-        public HashSet<string> ExistingErrorMemberNames { get; init; }
-        public HashSet<string> ExistingCompletionMemberNames { get; init; }
-        public HashSet<string> ExistingMetadataMemberNames { get; init; }
-        public HashSet<string> ExistingSourceMemberNames { get; init; }
+        public ExistingTypeInfo ExistingTypeInfo { get; init; }
+        public ExistingTypeInfo ExistingErrorTypeInfo { get; init; }
+        public ExistingTypeInfo ExistingCompletionTypeInfo { get; init; }
+        public ExistingTypeInfo ExistingMetadataTypeInfo { get; init; }
+        public ExistingTypeInfo ExistingSourceTypeInfo { get; init; }
 
         public IEnumerable<SymbolPropertyGenerationInfo> Properties => this.CompletionParts.OfType<SymbolPropertyGenerationInfo>();
         public IEnumerable<SymbolMethodGenerationInfo> Methods => this.CompletionParts.OfType<SymbolMethodGenerationInfo>();

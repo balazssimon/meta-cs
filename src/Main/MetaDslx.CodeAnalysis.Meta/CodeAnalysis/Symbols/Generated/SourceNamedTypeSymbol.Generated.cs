@@ -107,15 +107,5 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         {
             SourceSymbolImplementation.AssignNonSymbolProperties(this, diagnostics, cancellationToken);
         }
-
-        public partial class Error : SourceNamedTypeSymbol
-        {
-            public Error(Symbol container, object modelObject, MergedDeclaration declaration)
-                : base(container, modelObject, declaration)
-            {
-            }
-
-            public sealed override bool IsError => true;
-        }
 	}
 }
