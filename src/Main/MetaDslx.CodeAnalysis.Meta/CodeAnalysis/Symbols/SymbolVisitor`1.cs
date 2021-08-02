@@ -31,7 +31,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return DefaultVisit(symbol);
         }
 
-        public virtual TResult VisitDiscard(DiscardSymbol symbol)
+        public virtual TResult VisitDiscard(DiscardExpressionSymbol symbol)
         {
             return DefaultVisit(symbol);
         }

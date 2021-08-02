@@ -7,11 +7,11 @@ using System.Diagnostics;
 namespace MetaDslx.CodeAnalysis.Symbols
 {
     [Symbol(ModelObjectOption = ParameterOption.Disabled)]
-    public abstract partial class DiscardSymbol : ExpressionSymbol
+    public abstract partial class DiscardExpressionSymbol : ExpressionSymbol
     {
         public TypeSymbol Type { get; }
 
-        public override bool Equals(object obj) => obj is DiscardSymbol other && this.Type.Equals(other.Type);
+        public override bool Equals(object obj) => obj is DiscardExpressionSymbol other && this.Type.Equals(other.Type);
         public override int GetHashCode() => this.Type.GetHashCode();
 
     }

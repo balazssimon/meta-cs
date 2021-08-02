@@ -13,7 +13,7 @@ using System.Threading;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-	public abstract partial class DiscardSymbol
+	public abstract partial class DiscardExpressionSymbol
 	{
         public override void Accept(MetaDslx.CodeAnalysis.Symbols.SymbolVisitor visitor)
         {

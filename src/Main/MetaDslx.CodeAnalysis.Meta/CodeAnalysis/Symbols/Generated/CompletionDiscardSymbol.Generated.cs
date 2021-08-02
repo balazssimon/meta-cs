@@ -14,7 +14,7 @@ using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Completion
 {
-	public abstract partial class CompletionDiscardSymbol : MetaDslx.CodeAnalysis.Symbols.DiscardSymbol
+	public abstract partial class CompletionDiscardSymbol : MetaDslx.CodeAnalysis.Symbols.DiscardExpressionSymbol
 	{
         public static class CompletionParts
         {

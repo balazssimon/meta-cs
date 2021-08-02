@@ -14,7 +14,7 @@ using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Error
 {
-	public partial class ErrorDiscardSymbol : MetaDslx.CodeAnalysis.Symbols.DiscardSymbol, MetaDslx.CodeAnalysis.Symbols.Source.ISourceSymbol
+	public partial class ErrorDiscardSymbol : MetaDslx.CodeAnalysis.Symbols.DiscardExpressionSymbol, MetaDslx.CodeAnalysis.Symbols.Source.ISourceSymbol
 	{
         private readonly Symbol _container;
         private readonly MergedDeclaration? _declaration;

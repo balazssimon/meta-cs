@@ -126,7 +126,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             {
                 return IsSymbolAccessibleCore(aliasSymbol.Target, within, null, out failedThroughTypeCheck, compilation, ref useSiteDiagnostics, basesBeingResolved);
             }
-            else if (symbol is DiscardSymbol discardSymbol)
+            else if (symbol is DiscardExpressionSymbol discardSymbol)
             {
                 return IsSymbolAccessibleCore(discardSymbol.Type, within, null, out failedThroughTypeCheck, compilation, ref useSiteDiagnostics, basesBeingResolved);
             }

@@ -15,7 +15,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         void Visit(AssemblySymbol symbol);
         void Visit(ClassTypeSymbol symbol);
         void Visit(ConstructorSymbol symbol);
-        void Visit(DiscardSymbol symbol);
+        void Visit(DiscardExpressionSymbol symbol);
         void Visit(DynamicTypeSymbol symbol);
         void Visit(EnumLiteralSymbol symbol);
         void Visit(EnumTypeSymbol symbol);
@@ -46,7 +46,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         TResult Visit(AssemblySymbol symbol);
         TResult Visit(ClassTypeSymbol symbol);
         TResult Visit(ConstructorSymbol symbol);
-        TResult Visit(DiscardSymbol symbol);
+        TResult Visit(DiscardExpressionSymbol symbol);
         TResult Visit(DynamicTypeSymbol symbol);
         TResult Visit(EnumLiteralSymbol symbol);
         TResult Visit(EnumTypeSymbol symbol);
@@ -77,7 +77,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         TResult Visit(AssemblySymbol symbol, TArgument argument);
         TResult Visit(ClassTypeSymbol symbol, TArgument argument);
         TResult Visit(ConstructorSymbol symbol, TArgument argument);
-        TResult Visit(DiscardSymbol symbol, TArgument argument);
+        TResult Visit(DiscardExpressionSymbol symbol, TArgument argument);
         TResult Visit(DynamicTypeSymbol symbol, TArgument argument);
         TResult Visit(EnumLiteralSymbol symbol, TArgument argument);
         TResult Visit(EnumTypeSymbol symbol, TArgument argument);
