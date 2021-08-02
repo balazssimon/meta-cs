@@ -13,7 +13,7 @@ using System.Threading;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-	public abstract partial class MemberSymbol
+	public abstract partial class ClassTypeSymbol
 	{
         public override void Accept(MetaDslx.CodeAnalysis.Symbols.SymbolVisitor visitor)
         {

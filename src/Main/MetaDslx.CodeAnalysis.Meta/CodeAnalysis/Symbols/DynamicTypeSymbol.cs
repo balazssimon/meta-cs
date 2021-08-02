@@ -39,21 +39,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
             get { return null; }
         }
 
-        public override TResult Accept<TArgument, TResult>(SymbolVisitor<TArgument, TResult> visitor, TArgument argument)
-        {
-            return visitor.VisitDynamicType(this, argument);
-        }
-
-        public override void Accept(SymbolVisitor visitor)
-        {
-            visitor.VisitDynamicType(this);
-        }
-
-        public override TResult Accept<TResult>(SymbolVisitor<TResult> visitor)
-        {
-            return visitor.VisitDynamicType(this);
-        }
-
         public override Symbol? ContainingSymbol
         {
             get

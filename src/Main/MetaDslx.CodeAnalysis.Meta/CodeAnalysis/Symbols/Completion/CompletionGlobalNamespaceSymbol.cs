@@ -117,5 +117,19 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
             return string.Empty;
         }
 
+        protected override bool CompleteSymbolProperty_IsExtern(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            return false;
+        }
+
+        protected override Accessibility CompleteSymbolProperty_DeclaredAccessibility(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            return Accessibility.NotApplicable;
+        }
+
+        protected override ImmutableArray<TypeParameterSymbol> CompleteSymbolProperty_TypeParameters(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            return ImmutableArray<TypeParameterSymbol>.Empty;
+        }
     }
 }

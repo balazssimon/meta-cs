@@ -39,6 +39,88 @@ namespace [symbol.NamespaceName]
 }
 end template
 
+template GenerateErrorSymbol(SymbolGenerationInfo symbol)
+using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Declarations;
+using MetaDslx.CodeAnalysis.Symbols;
+using MetaDslx.CodeAnalysis.Symbols.Metadata;
+using MetaDslx.CodeAnalysis.Symbols.Source;
+using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Diagnostics;
+using System.Text;
+using System.Threading;
+using Roslyn.Utilities;
+^
+namespace [symbol.NamespaceName].Error
+{
+	public abstract partial class Error[symbol.Name][if (symbol.ExistingErrorBaseType == null)] : [symbol.NamespaceName].[symbol.Name][if(symbol.ModelObjectOption != ParameterOption.Disabled)], MetaDslx.CodeAnalysis.Symbols.Metadata.IModelSymbol[end if][end if]
+	{
+        [if (symbol.Name != "AssemblySymbol" && symbol.Name != "ModuleSymbol")]
+        private readonly Symbol _container;
+        [end if]
+        [if (symbol.ModelObjectOption != ParameterOption.Disabled)]
+        private readonly object? _modelObject;
+        [end if]
+        [if (symbol.Name != "AssemblySymbol" && symbol.Name != "ModuleSymbol")]
+        [if (!symbol.ExistingErrorMemberNames.Contains(".ctor"))]
+^
+        public Error[symbol.Name](Symbol container[if(symbol.ModelObjectOption != ParameterOption.Disabled)], object? modelObject[if(symbol.ModelObjectOption == ParameterOption.Optional)] = null[end if][end if])
+        {
+            if (container is null) throw new ArgumentNullException(nameof(container));
+            [if(symbol.ModelObjectOption == ParameterOption.Required)]
+            if (modelObject is null) throw new ArgumentNullException(nameof(modelObject));
+            [end if]
+            _container = container;
+            [if(symbol.ModelObjectOption != ParameterOption.Disabled)]
+            _modelObject = modelObject;
+            [end if]
+        }
+        [end if]
+        [if (!symbol.ExistingErrorMemberNames.Contains("Language"))]
+^
+        public sealed override Language Language => ContainingModule.Language;
+        [end if]
+        [if (!symbol.ExistingErrorMemberNames.Contains("SymbolFactory"))]
+^
+        public SymbolFactory SymbolFactory => ContainingModule.SymbolFactory;
+        [end if]
+        [if (symbol.ModelObjectOption != ParameterOption.Disabled)]
+            [if (!symbol.ExistingErrorMemberNames.Contains("ModelObject"))]
+^
+        public object ModelObject => _modelObject;
+            [end if]
+            [if (!symbol.ExistingErrorMemberNames.Contains("ModelObjectType"))]
+^
+        public Type ModelObjectType => _modelObject is not null ? Language.SymbolFacts.GetModelObjectType(_modelObject) : null;
+            [end if]
+        [end if]
+        [if (!symbol.ExistingErrorMemberNames.Contains("ContainingSymbol"))]
+^
+        public sealed override Symbol ContainingSymbol => _container;
+        [end if]
+        [end if]
+        [if (!symbol.ExistingErrorMemberNames.Contains("ChildSymbols"))]
+^
+        public sealed override ImmutableArray<Symbol> ChildSymbols => ImmutableArray<Symbol>.Empty;
+        [end if]
+        [if (!symbol.ExistingErrorMemberNames.Contains("Name"))]
+^
+        public sealed override string Name => string.Empty;
+        [end if]
+        [loop (prop:symbol.Properties)]
+            [if (!symbol.ExistingErrorMemberNames.Contains(prop.Name))]
+^
+        public override [prop.Type] [prop.Name] => default;
+            [end if]
+        [end loop]
+^
+    }
+}
+end template
+
 template GenerateCompletionSymbol(SymbolGenerationInfo symbol)
 using Microsoft.CodeAnalysis;
 using MetaDslx.CodeAnalysis;
@@ -433,6 +515,9 @@ namespace [symbol.NamespaceName].Source
 {
 	public partial class Source[symbol.Name][if (symbol.ExistingSourceBaseType == null)] : [symbol.NamespaceName].Completion.Completion[symbol.Name][if (symbol.Name != "AssemblySymbol" && symbol.Name != "ModuleSymbol")], MetaDslx.CodeAnalysis.Symbols.Source.ISourceSymbol[end if][end if]
 	{
+        [if (!symbol.ExistingSourceMemberNames.Contains("GetLexicalSortKey"))]
+        private LexicalSortKey _lazyLexicalSortKey = LexicalSortKey.NotInitialized;
+        [end if]
         [if (symbol.Name != "AssemblySymbol" && symbol.Name != "ModuleSymbol")]
         private readonly MergedDeclaration _declaration;
         [if (!symbol.ExistingSourceMemberNames.Contains(".ctor"))]
@@ -478,6 +563,16 @@ namespace [symbol.NamespaceName].Source
             return null;
         }
         [end if]
+        [end if]
+        [if (!symbol.ExistingSourceMemberNames.Contains("GetLexicalSortKey"))]
+        public override LexicalSortKey GetLexicalSortKey()
+        {
+            if (!_lazyLexicalSortKey.IsInitialized)
+            {
+                _lazyLexicalSortKey.SetFrom(this.MergedDeclaration.GetLexicalSortKey(this.DeclaringCompilation));
+            }
+            return _lazyLexicalSortKey;
+        }
         [end if]
         [if (!symbol.ExistingSourceMemberNames.Contains("CompleteInitializingSymbol"))]
 ^
@@ -527,18 +622,6 @@ namespace [symbol.NamespaceName].Source
         protected override void CompleteNonSymbolProperties(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             SourceSymbolImplementation.AssignNonSymbolProperties(this, diagnostics, cancellationToken);
-        }
-        [end if]
-        [if (symbol.Name != "AssemblySymbol" && symbol.Name != "ModuleSymbol")]
-^
-        public partial class Error : Source[symbol.Name]
-        {
-            public Error(Symbol container[if(symbol.ModelObjectOption != ParameterOption.Disabled)], object modelObject = null[end if], MergedDeclaration declaration)
-                : base(container[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if], declaration)
-            {
-            }
-^
-            public sealed override bool IsError => true;
         }
         [end if]
 	}

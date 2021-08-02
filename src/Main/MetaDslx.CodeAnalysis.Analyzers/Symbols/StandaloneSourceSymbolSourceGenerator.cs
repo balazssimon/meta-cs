@@ -62,9 +62,6 @@ namespace MetaDslx.CodeAnalysis.Analyzers.Symbols
             var ns = GeneratorUtils.GetFullName(symbol.ContainingNamespace);
             SymbolParts symbolParts = SymbolParts.All;
             ParameterOption modelObjectOption = ParameterOption.Required;
-            string? kind = null;
-            string? subSymbolKindType = null;
-            string? subSymbolKindName = null;
             foreach (var arg in symbolAttribute.NamedArguments)
             {
                 if (arg.Key == "SymbolParts")
@@ -74,18 +71,6 @@ namespace MetaDslx.CodeAnalysis.Analyzers.Symbols
                 if (arg.Key == "ModelObjectOption")
                 {
                     modelObjectOption = (ParameterOption)arg.Value.Value;
-                }
-                if (arg.Key == "SymbolKind")
-                {
-                    kind = (string?)arg.Value.Value;
-                }
-                if (arg.Key == "SubSymbolKindType")
-                {
-                    subSymbolKindType = (string?)arg.Value.Value;
-                }
-                if (arg.Key == "SubSymbolKindName")
-                {
-                    subSymbolKindName = (string?)arg.Value.Value;
                 }
             }
             var baseSymbol = symbol.BaseType;
@@ -98,26 +83,31 @@ namespace MetaDslx.CodeAnalysis.Analyzers.Symbols
             }
             var cpgi = GetCompletionPartGenerationInfos(symbol);
             return
-                new SymbolGenerationInfo(symbol.Name, ns, kind, subSymbolKindType, subSymbolKindName, parentInfo)
+                new SymbolGenerationInfo(symbol.Name, ns, parentInfo)
                 {
                     SymbolParts = symbolParts,
                     ModelObjectOption = modelObjectOption,
                     CompletionParts = cpgi.completionParts,
+                    ExistingErrorBaseType = cpgi.errorBaseType,
+                    ExistingErrorMemberNames = cpgi.errorMemberNames,
                     ExistingCompletionBaseType = cpgi.completionBaseType,
-                    ExistingCompletionMemberNames = cpgi.completionMethodNames,
+                    ExistingCompletionMemberNames = cpgi.completionMemberNames,
                     ExistingMetadataBaseType = cpgi.metadataBaseType,
-                    ExistingMetadataMemberNames = cpgi.metadataMethodNames,
+                    ExistingMetadataMemberNames = cpgi.metadataMemberNames,
                     ExistingSourceBaseType = cpgi.sourceBaseType,
-                    ExistingSourceMemberNames = cpgi.sourceMethodNames
+                    ExistingSourceMemberNames = cpgi.sourceMemberNames
                 };
         }
 
-        private (List<CompletionPartGenerationInfo> completionParts, string? completionBaseType, HashSet<string> completionMethodNames, string? metadataBaseType, HashSet<string> metadataMethodNames, string? sourceBaseType, HashSet<string> sourceMethodNames) GetCompletionPartGenerationInfos(INamedTypeSymbol symbol)
+        private (List<CompletionPartGenerationInfo> completionParts, string? errorBaseType, HashSet<string> errorMemberNames, string? completionBaseType, HashSet<string> completionMemberNames, string? metadataBaseType, HashSet<string> metadataMemberNames, string? sourceBaseType, HashSet<string> sourceMemberNames) GetCompletionPartGenerationInfos(INamedTypeSymbol symbol)
         {
             var symbolName = symbol.ContainingSymbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+            var errorName = GetSymbolName(symbol, ".Error.Error");
             var completionName = GetSymbolName(symbol, ".Completion.Completion");
             var metadataName = GetSymbolName(symbol, ".Metadata.Metadata");
             var sourceName = GetSymbolName(symbol, ".Source.Source");
+            string? errorBaseType = null;
+            var errorMemberNames = new HashSet<string>();
             string? completionBaseType = null;
             var completionMemberNames = new HashSet<string>();
             string? metadataBaseType = null;
@@ -147,28 +137,35 @@ namespace MetaDslx.CodeAnalysis.Analyzers.Symbols
                 currentSymbol = currentSymbol.BaseType;
             }
             completionParts.Reverse();
+            var errorSymbol = symbol.ContainingAssembly.GetTypeByMetadataName(errorName);
+            if (errorSymbol is not null)
+            {
+                CollectMemberNames(symbol, errorSymbol, errorMemberNames);
+                var baseTypeName = errorSymbol.BaseType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+                if (baseTypeName != "object" && baseTypeName != symbolName) errorBaseType = baseTypeName;
+            }
             var completionSymbol = symbol.ContainingAssembly.GetTypeByMetadataName(completionName);
             if (completionSymbol is not null)
             {
-                CollectMemberNames(completionSymbol, completionMemberNames);
+                CollectMemberNames(symbol, completionSymbol, completionMemberNames);
                 var baseTypeName = completionSymbol.BaseType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
                 if (baseTypeName != "object" && baseTypeName != symbolName) completionBaseType = baseTypeName;
             }
             var metadataSymbol = symbol.ContainingAssembly.GetTypeByMetadataName(metadataName);
             if (metadataSymbol is not null)
             {
-                CollectMemberNames(metadataSymbol, metadataMemberNames);
+                CollectMemberNames(symbol, metadataSymbol, metadataMemberNames);
                 var baseTypeName = metadataSymbol.BaseType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
                 if (baseTypeName != "object" && baseTypeName != completionName) metadataBaseType = baseTypeName;
             }
             var sourceSymbol = symbol.ContainingAssembly.GetTypeByMetadataName(sourceName);
             if (sourceSymbol is not null)
             {
-                CollectMemberNames(sourceSymbol, sourceMemberNames);
+                CollectMemberNames(symbol, sourceSymbol, sourceMemberNames);
                 var baseTypeName = sourceSymbol.BaseType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
                 if (baseTypeName != "object" && baseTypeName != completionName) sourceBaseType = baseTypeName;
             }
-            return (completionParts, completionBaseType, completionMemberNames, metadataBaseType, metadataMemberNames, sourceBaseType, sourceMemberNames);
+            return (completionParts, errorBaseType, errorMemberNames, completionBaseType, completionMemberNames, metadataBaseType, metadataMemberNames, sourceBaseType, sourceMemberNames);
         }
 
         private string GetSymbolName(INamedTypeSymbol symbol, string namePrefix)
@@ -176,8 +173,15 @@ namespace MetaDslx.CodeAnalysis.Analyzers.Symbols
             return symbol.ContainingSymbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat).Substring(8) + namePrefix + symbol.Name;
         }
 
-        private void CollectMemberNames(INamedTypeSymbol symbol, HashSet<string> memberNames)
+        private void CollectMemberNames(INamedTypeSymbol originalSymbol, INamedTypeSymbol symbol, HashSet<string> memberNames)
         {
+            foreach (var member in originalSymbol.GetMembers().Where(m => m.DeclaringSyntaxReferences.Length > 0))
+            {
+                if (member.IsSealed && (member.Kind == Microsoft.CodeAnalysis.SymbolKind.Method || member.Kind == Microsoft.CodeAnalysis.SymbolKind.Property))
+                {
+                    memberNames.Add(member.Name);
+                }
+            }
             foreach (var member in symbol.GetMembers().Where(m => m.DeclaringSyntaxReferences.Length > 0))
             {
                 if (member.Kind == Microsoft.CodeAnalysis.SymbolKind.Method || member.Kind == Microsoft.CodeAnalysis.SymbolKind.Property)

@@ -114,7 +114,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
         {
             if (symbolType == typeof(NamespaceSymbol)) return new MetadataNamespaceSymbol(container, modelObject);
             if (symbolType == typeof(NamedTypeSymbol)) return new MetadataNamedTypeSymbol(container, modelObject);
-            if (symbolType == typeof(MemberSymbol)) return new MetadataMemberSymbol(container, modelObject);
+            if (symbolType == typeof(MethodSymbol)) return new MetadataMethodSymbol(container, modelObject);
+            if (symbolType == typeof(PropertySymbol)) return new MetadataPropertySymbol(container, modelObject);
             return new UnsupportedModelSymbol(container, modelObject);
         }
 
@@ -123,7 +124,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
             if (symbolType == typeof(NamespaceSymbol)) return new SourceNamespaceSymbol((SourceModuleSymbol)container.ContainingModule, container, modelObject, declaration);
             if (symbolType == typeof(NamedTypeSymbol)) return new SourceNamedTypeSymbol(container, modelObject, declaration);
             if (symbolType == typeof(TypeSymbol)) return new SourceAnonymousTypeSymbol(container, modelObject, declaration);
-            if (symbolType == typeof(MemberSymbol)) return new SourceMemberSymbol(container, modelObject, declaration);
+            if (symbolType == typeof(MethodSymbol)) return new SourceMethodSymbol(container, modelObject, declaration);
+            if (symbolType == typeof(PropertySymbol)) return new SourceMethodSymbol(container, modelObject, declaration);
             return new UnsupportedModelSymbol(container, modelObject);
         }
 

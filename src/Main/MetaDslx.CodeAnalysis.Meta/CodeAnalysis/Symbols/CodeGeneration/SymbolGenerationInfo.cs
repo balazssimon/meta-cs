@@ -13,6 +13,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration
             this.Name = name;
             this.NamespaceName = namespaceName;
             this.ParentSymbol = parentSymbol;
+            this.IsSymbolClass = this.Name == "Symbol" && parentSymbol == null;
         }
 
         public bool IsSymbolClass { get; private set; }
@@ -22,9 +23,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration
         public string NamespaceName { get; private set; }
         public SymbolGenerationInfo ParentSymbol { get; private set; }
         public List<CompletionPartGenerationInfo> CompletionParts { get; init; }
+        public string? ExistingErrorBaseType { get; init; }
         public string? ExistingCompletionBaseType { get; init; }
         public string? ExistingMetadataBaseType { get; init; }
         public string? ExistingSourceBaseType { get; init; }
+        public HashSet<string> ExistingErrorMemberNames { get; init; }
         public HashSet<string> ExistingCompletionMemberNames { get; init; }
         public HashSet<string> ExistingMetadataMemberNames { get; init; }
         public HashSet<string> ExistingSourceMemberNames { get; init; }

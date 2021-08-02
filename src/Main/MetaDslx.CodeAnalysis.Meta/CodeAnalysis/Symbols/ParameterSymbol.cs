@@ -22,7 +22,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public virtual bool IsVarArg => false;
 
         [SymbolProperty]
-        public RefKind RefKind => RefKind.None;
+        public virtual RefKind RefKind => RefKind.None;
 
         public new ParameterSymbol OriginalDefinition => this;
     }
