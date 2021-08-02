@@ -14,20 +14,26 @@ using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Error
 {
-	public partial class ErrorDiscardSymbol : MetaDslx.CodeAnalysis.Symbols.DiscardExpressionSymbol, MetaDslx.CodeAnalysis.Symbols.Source.ISourceSymbol
+	public partial class ErrorParenthesizedExpressionSymbol : MetaDslx.CodeAnalysis.Symbols.ParenthesizedExpressionSymbol, MetaDslx.CodeAnalysis.Symbols.Metadata.IModelSymbol, MetaDslx.CodeAnalysis.Symbols.Source.ISourceSymbol
 	{
         private readonly Symbol _container;
         private readonly MergedDeclaration? _declaration;
+        private readonly object? _modelObject;
 
-        public ErrorDiscardSymbol(Symbol container, MergedDeclaration? declaration = null)
+        public ErrorParenthesizedExpressionSymbol(Symbol container, object? modelObject = null, MergedDeclaration? declaration = null)
         {
             if (container is null) throw new ArgumentNullException(nameof(container));
             _container = container;
+            _modelObject = modelObject;
         }
 
         public sealed override Language Language => ContainingModule.Language;
 
         public SymbolFactory SymbolFactory => ContainingModule.SymbolFactory;
+
+        public object ModelObject => _modelObject;
+
+        public Type ModelObjectType => _modelObject is not null ? Language.SymbolFacts.GetModelObjectType(_modelObject) : null;
 
         public MergedDeclaration MergedDeclaration => _declaration;
         public MetaDslx.CodeAnalysis.Binding.BinderPosition<MetaDslx.CodeAnalysis.Binding.Binders.SymbolBinder> GetBinder(SyntaxReference syntax) => default;
@@ -43,9 +49,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Error
 
         public sealed override ImmutableArray<Symbol> ChildSymbols => ImmutableArray<Symbol>.Empty;
 
-        public sealed override string Name => string.Empty;
+        public sealed override string Name => _modelObject is not null ? Language.SymbolFacts.GetName(_modelObject) : string.Empty;
 
         public override global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.Symbol> Attributes => default;
+
+        public override global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol Inner => default;
 
     }
 }

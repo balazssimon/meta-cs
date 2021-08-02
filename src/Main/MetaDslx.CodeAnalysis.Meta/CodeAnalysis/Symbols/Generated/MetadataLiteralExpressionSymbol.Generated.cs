@@ -13,10 +13,10 @@ using System.Threading;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 {
-	public partial class MetadataDiscardSymbol : MetaDslx.CodeAnalysis.Symbols.Completion.CompletionDiscardSymbol
+	public partial class MetadataLiteralExpressionSymbol : MetaDslx.CodeAnalysis.Symbols.Completion.CompletionLiteralExpressionSymbol
 	{
-        public MetadataDiscardSymbol(Symbol container)
-            : base(container)
+        public MetadataLiteralExpressionSymbol(Symbol container, object modelObject)
+            : base(container, modelObject)
         {
         }
 
@@ -44,6 +44,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
         protected override global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.Symbol> CompleteSymbolProperty_Attributes(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             return ModelSymbolImplementation.AssignSymbolPropertyValues<global::MetaDslx.CodeAnalysis.Symbols.Symbol>(this, nameof(Attributes), diagnostics, cancellationToken);
+        }
+
+        protected override object CompleteSymbolProperty_Value(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            return ModelSymbolImplementation.AssignSymbolPropertyValue<object>(this, nameof(Value), diagnostics, cancellationToken);
         }
 
         protected override void CompleteNonSymbolProperties(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)

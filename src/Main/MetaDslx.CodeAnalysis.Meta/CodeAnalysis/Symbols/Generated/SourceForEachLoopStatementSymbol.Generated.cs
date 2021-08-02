@@ -16,13 +16,13 @@ using System.Threading;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Source
 {
-	public partial class SourceDiscardSymbol : MetaDslx.CodeAnalysis.Symbols.Completion.CompletionDiscardSymbol, MetaDslx.CodeAnalysis.Symbols.Source.ISourceSymbol
+	public partial class SourceForEachLoopStatementSymbol : MetaDslx.CodeAnalysis.Symbols.Completion.CompletionForEachLoopStatementSymbol, MetaDslx.CodeAnalysis.Symbols.Source.ISourceSymbol
 	{
         private readonly MergedDeclaration _declaration;
         private LexicalSortKey _lazyLexicalSortKey = LexicalSortKey.NotInitialized;
 
-		public SourceDiscardSymbol(Symbol containingSymbol, MergedDeclaration declaration)
-            : base(containingSymbol)
+		public SourceForEachLoopStatementSymbol(Symbol containingSymbol, object modelObject, MergedDeclaration declaration)
+            : base(containingSymbol, modelObject)
         {
             if (declaration is null) throw new ArgumentNullException(nameof(declaration));
             _declaration = declaration;
@@ -82,6 +82,26 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         protected override global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.Symbol> CompleteSymbolProperty_Attributes(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             return SourceSymbolImplementation.AssignSymbolPropertyValues<global::MetaDslx.CodeAnalysis.Symbols.Symbol>(this, nameof(Attributes), diagnostics, cancellationToken);
+        }
+        protected override global::MetaDslx.CodeAnalysis.Symbols.StatementSymbol CompleteSymbolProperty_Body(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            return SourceSymbolImplementation.AssignSymbolPropertyValue<global::MetaDslx.CodeAnalysis.Symbols.StatementSymbol>(this, nameof(Body), diagnostics, cancellationToken);
+        }
+        protected override global::MetaDslx.CodeAnalysis.Symbols.LabelSymbol CompleteSymbolProperty_ContinueLabel(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            return SourceSymbolImplementation.AssignSymbolPropertyValue<global::MetaDslx.CodeAnalysis.Symbols.LabelSymbol>(this, nameof(ContinueLabel), diagnostics, cancellationToken);
+        }
+        protected override global::MetaDslx.CodeAnalysis.Symbols.LabelSymbol CompleteSymbolProperty_ExitLabel(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            return SourceSymbolImplementation.AssignSymbolPropertyValue<global::MetaDslx.CodeAnalysis.Symbols.LabelSymbol>(this, nameof(ExitLabel), diagnostics, cancellationToken);
+        }
+        protected override global::MetaDslx.CodeAnalysis.Symbols.LocalVariableSymbol CompleteSymbolProperty_LoopControlVariable(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            return SourceSymbolImplementation.AssignSymbolPropertyValue<global::MetaDslx.CodeAnalysis.Symbols.LocalVariableSymbol>(this, nameof(LoopControlVariable), diagnostics, cancellationToken);
+        }
+        protected override global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol CompleteSymbolProperty_Collection(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            return SourceSymbolImplementation.AssignSymbolPropertyValue<global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol>(this, nameof(Collection), diagnostics, cancellationToken);
         }
 
         protected override void CompleteNonSymbolProperties(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)

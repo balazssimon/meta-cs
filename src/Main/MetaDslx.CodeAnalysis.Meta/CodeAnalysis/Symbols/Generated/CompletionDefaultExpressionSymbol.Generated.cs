@@ -14,7 +14,7 @@ using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Completion
 {
-	public abstract partial class CompletionDiscardSymbol : MetaDslx.CodeAnalysis.Symbols.DiscardExpressionSymbol
+	public abstract partial class CompletionDefaultExpressionSymbol : MetaDslx.CodeAnalysis.Symbols.DefaultExpressionSymbol, MetaDslx.CodeAnalysis.Symbols.Metadata.IModelSymbol
 	{
         public static class CompletionParts
         {
@@ -26,20 +26,27 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
         }
 
         private readonly Symbol _container;
+        private readonly object? _modelObject;
         private readonly CompletionState _state;
         private ImmutableArray<Symbol> _childSymbols;
         private string _name;
         private global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.Symbol> _attributes;
 
-        public CompletionDiscardSymbol(Symbol container)
+        public CompletionDefaultExpressionSymbol(Symbol container, object? modelObject)
         {
             _container = container;
+            if (modelObject is null) throw new ArgumentNullException(nameof(modelObject));
+            _modelObject = modelObject;
             _state = CompletionParts.CompletionGraph.CreateState();
         }
 
         public sealed override Language Language => ContainingModule.Language;
 
         public SymbolFactory SymbolFactory => ContainingModule.SymbolFactory;
+
+        public object ModelObject => _modelObject;
+
+        public Type ModelObjectType => _modelObject is not null ? Language.SymbolFacts.GetModelObjectType(_modelObject) : null;
 
         public sealed override Symbol ContainingSymbol => _container;
 
