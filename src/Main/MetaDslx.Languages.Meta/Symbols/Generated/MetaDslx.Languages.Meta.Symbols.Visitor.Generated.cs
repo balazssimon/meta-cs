@@ -7,6 +7,7 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Text;
 using System.Threading;
+
 namespace MetaDslx.Languages.Meta.Symbols
 {
 	public interface ISymbolVisitor

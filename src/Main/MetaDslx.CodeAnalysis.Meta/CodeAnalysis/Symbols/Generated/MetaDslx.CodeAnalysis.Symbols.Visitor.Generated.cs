@@ -7,6 +7,7 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Text;
 using System.Threading;
+
 namespace MetaDslx.CodeAnalysis.Symbols
 {
 	public interface ISymbolVisitor
@@ -35,6 +36,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         void Visit(NamespaceSymbol symbol);
         void Visit(BlockStatementSymbol symbol);
         void Visit(CatchClauseSymbol symbol);
+        void Visit(EmptyStatementSymbol symbol);
         void Visit(ExpressionStatementSymbol symbol);
         void Visit(ForEachLoopStatementSymbol symbol);
         void Visit(ForLoopStatementSymbol symbol);
@@ -90,6 +92,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         TResult Visit(NamespaceSymbol symbol);
         TResult Visit(BlockStatementSymbol symbol);
         TResult Visit(CatchClauseSymbol symbol);
+        TResult Visit(EmptyStatementSymbol symbol);
         TResult Visit(ExpressionStatementSymbol symbol);
         TResult Visit(ForEachLoopStatementSymbol symbol);
         TResult Visit(ForLoopStatementSymbol symbol);
@@ -145,6 +148,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         TResult Visit(NamespaceSymbol symbol, TArgument argument);
         TResult Visit(BlockStatementSymbol symbol, TArgument argument);
         TResult Visit(CatchClauseSymbol symbol, TArgument argument);
+        TResult Visit(EmptyStatementSymbol symbol, TArgument argument);
         TResult Visit(ExpressionStatementSymbol symbol, TArgument argument);
         TResult Visit(ForEachLoopStatementSymbol symbol, TArgument argument);
         TResult Visit(ForLoopStatementSymbol symbol, TArgument argument);

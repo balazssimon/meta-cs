@@ -14,8 +14,60 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
+    /*public partial class GeneratedSymbolFactory : IGeneratedSymbolFactory
+    {
+        public Symbol? CreateErrorSymbol(Symbol? container, Type symbolType, object? modelObject, MergedDeclaration? declaration)
+        {
+            return null;
+        }
+
+        public Symbol? CreateMetadataSymbol(Symbol container, Type symbolType, object modelObject)
+        {
+            if (symbolType == typeof(NamespaceSymbol)) return new MetadataNamespaceSymbol(container, modelObject);
+            if (symbolType == typeof(NamedTypeSymbol)) return new MetadataNamedTypeSymbol(container, modelObject);
+            if (symbolType == typeof(InterfaceTypeSymbol)) return new MetadataInterfaceTypeSymbol(container, modelObject);
+            if (symbolType == typeof(ClassTypeSymbol)) return new MetadataClassTypeSymbol(container, modelObject);
+            if (symbolType == typeof(StructTypeSymbol)) return new MetadataStructTypeSymbol(container, modelObject);
+            if (symbolType == typeof(EnumTypeSymbol)) return new MetadataEnumTypeSymbol(container, modelObject);
+            if (symbolType == typeof(EnumLiteralSymbol)) return new MetadataEnumLiteralSymbol(container, modelObject);
+            if (symbolType == typeof(ArrayTypeSymbol)) return new MetadataArrayTypeSymbol(container, modelObject);
+            if (symbolType == typeof(NullableTypeSymbol)) return new MetadataNullableTypeSymbol(container, modelObject);
+            if (symbolType == typeof(TupleTypeSymbol)) return new MetadataTupleTypeSymbol(container, modelObject);
+            if (symbolType == typeof(TypeParameterSymbol)) return new MetadataTypeParameterSymbol(container, modelObject);
+            if (symbolType == typeof(MemberSymbol)) return new MetadataMemberSymbol(container, modelObject);
+            if (symbolType == typeof(ConstructorSymbol)) return new MetadataConstructorSymbol(container, modelObject);
+            if (symbolType == typeof(MethodSymbol)) return new MetadataMethodSymbol(container, modelObject);
+            if (symbolType == typeof(ParameterSymbol)) return new MetadataParameterSymbol(container, modelObject);
+            if (symbolType == typeof(PropertySymbol)) return new MetadataPropertySymbol(container, modelObject);
+            return null;
+        }
+
+        public Symbol? CreateSourceSymbol(Symbol container, Type symbolType, object modelObject, MergedDeclaration declaration)
+        {
+            if (symbolType == typeof(NamespaceSymbol)) return new SourceNamespaceSymbol((SourceModuleSymbol)container.ContainingModule, container, modelObject, declaration);
+            if (symbolType == typeof(NamedTypeSymbol)) return new SourceNamedTypeSymbol(container, modelObject, declaration);
+            if (symbolType == typeof(InterfaceTypeSymbol)) return new SourceInterfaceTypeSymbol(container, modelObject, declaration);
+            if (symbolType == typeof(ClassTypeSymbol)) return new SourceClassTypeSymbol(container, modelObject, declaration);
+            if (symbolType == typeof(StructTypeSymbol)) return new SourceStructTypeSymbol(container, modelObject, declaration);
+            if (symbolType == typeof(EnumTypeSymbol)) return new SourceEnumTypeSymbol(container, modelObject, declaration);
+            if (symbolType == typeof(EnumLiteralSymbol)) return new SourceEnumLiteralSymbol(container, modelObject, declaration);
+            if (symbolType == typeof(ArrayTypeSymbol)) return new SourceArrayTypeSymbol(container, modelObject, declaration);
+            if (symbolType == typeof(NullableTypeSymbol)) return new SourceNullableTypeSymbol(container, modelObject, declaration);
+            if (symbolType == typeof(TupleTypeSymbol)) return new SourceTupleTypeSymbol(container, modelObject, declaration);
+            if (symbolType == typeof(TypeParameterSymbol)) return new SourceTypeParameterSymbol(container, modelObject, declaration);
+            if (symbolType == typeof(MemberSymbol)) return new SourceMemberSymbol(container, modelObject, declaration);
+            if (symbolType == typeof(ConstructorSymbol)) return new SourceConstructorSymbol(container, modelObject, declaration);
+            if (symbolType == typeof(MethodSymbol)) return new SourceMethodSymbol(container, modelObject, declaration);
+            if (symbolType == typeof(ParameterSymbol)) return new SourceParameterSymbol(container, modelObject, declaration);
+            if (symbolType == typeof(PropertySymbol)) return new SourcePropertySymbol(container, modelObject, declaration);
+            return null;
+        }
+    }*/
+
     public class SymbolFactory
     {
+        private static ConditionalWeakTable<Type, IGeneratedSymbolFactory?> s_generatedSymbolFactoryMap = new ConditionalWeakTable<Type, IGeneratedSymbolFactory?>();
+
         private ModuleSymbol _module;
         private SymbolFacts _symbolFacts;
         private ConditionalWeakTable<MergedDeclaration, object> _objectMap = new ConditionalWeakTable<MergedDeclaration, object>();
@@ -106,50 +158,33 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
             else
             {
-                return CreateMetaSymbol(container, symbolType, modelObject);
+                return CreateMetadataSymbol(container, symbolType, modelObject);
             }
         }
 
-        protected virtual Symbol CreateMetaSymbol(Symbol container, Type symbolType, object modelObject)
+        protected virtual Symbol CreateMetadataSymbol(Symbol container, Type symbolType, object modelObject)
         {
-            if (symbolType == typeof(NamespaceSymbol)) return new MetadataNamespaceSymbol(container, modelObject);
-            if (symbolType == typeof(NamedTypeSymbol)) return new MetadataNamedTypeSymbol(container, modelObject);
-            if (symbolType == typeof(InterfaceTypeSymbol)) return new MetadataInterfaceTypeSymbol(container, modelObject);
-            if (symbolType == typeof(ClassTypeSymbol)) return new MetadataClassTypeSymbol(container, modelObject);
-            if (symbolType == typeof(StructTypeSymbol)) return new MetadataStructTypeSymbol(container, modelObject);
-            if (symbolType == typeof(EnumTypeSymbol)) return new MetadataEnumTypeSymbol(container, modelObject);
-            if (symbolType == typeof(EnumLiteralSymbol)) return new MetadataEnumLiteralSymbol(container, modelObject);
-            if (symbolType == typeof(ArrayTypeSymbol)) return new MetadataArrayTypeSymbol(container, modelObject);
-            if (symbolType == typeof(NullableTypeSymbol)) return new MetadataNullableTypeSymbol(container, modelObject);
-            if (symbolType == typeof(TupleTypeSymbol)) return new MetadataTupleTypeSymbol(container, modelObject);
-            if (symbolType == typeof(TypeParameterSymbol)) return new MetadataTypeParameterSymbol(container, modelObject);
-            if (symbolType == typeof(MemberSymbol)) return new MetadataMemberSymbol(container, modelObject);
-            if (symbolType == typeof(ConstructorSymbol)) return new MetadataConstructorSymbol(container, modelObject);
-            if (symbolType == typeof(MethodSymbol)) return new MetadataMethodSymbol(container, modelObject);
-            if (symbolType == typeof(ParameterSymbol)) return new MetadataParameterSymbol(container, modelObject);
-            if (symbolType == typeof(PropertySymbol)) return new MetadataPropertySymbol(container, modelObject);
-            return new UnsupportedModelSymbol(container, modelObject);
+            Symbol? result = null;
+            var generatedFactory = GetGeneratedSymbolFactory(symbolType);
+            if (generatedFactory is not null)
+            {
+                result = generatedFactory.CreateMetadataSymbol(container, modelObject);
+            }
+            if (result is not null) return result;
+            else return new UnsupportedModelSymbol(container, modelObject);
         }
 
         protected virtual Symbol CreateSourceSymbol(Symbol container, Type symbolType, object modelObject, MergedDeclaration declaration)
         {
             if (symbolType == typeof(NamespaceSymbol)) return new SourceNamespaceSymbol((SourceModuleSymbol)container.ContainingModule, container, modelObject, declaration);
-            if (symbolType == typeof(NamedTypeSymbol)) return new SourceNamedTypeSymbol(container, modelObject, declaration);
-            if (symbolType == typeof(InterfaceTypeSymbol)) return new SourceInterfaceTypeSymbol(container, modelObject, declaration);
-            if (symbolType == typeof(ClassTypeSymbol)) return new SourceClassTypeSymbol(container, modelObject, declaration);
-            if (symbolType == typeof(StructTypeSymbol)) return new SourceStructTypeSymbol(container, modelObject, declaration);
-            if (symbolType == typeof(EnumTypeSymbol)) return new SourceEnumTypeSymbol(container, modelObject, declaration);
-            if (symbolType == typeof(EnumLiteralSymbol)) return new SourceEnumLiteralSymbol(container, modelObject, declaration);
-            if (symbolType == typeof(ArrayTypeSymbol)) return new SourceArrayTypeSymbol(container, modelObject, declaration);
-            if (symbolType == typeof(NullableTypeSymbol)) return new SourceNullableTypeSymbol(container, modelObject, declaration);
-            if (symbolType == typeof(TupleTypeSymbol)) return new SourceTupleTypeSymbol(container, modelObject, declaration);
-            if (symbolType == typeof(TypeParameterSymbol)) return new SourceTypeParameterSymbol(container, modelObject, declaration);
-            if (symbolType == typeof(MemberSymbol)) return new SourceMemberSymbol(container, modelObject, declaration);
-            if (symbolType == typeof(ConstructorSymbol)) return new SourceConstructorSymbol(container, modelObject, declaration);
-            if (symbolType == typeof(MethodSymbol)) return new SourceMethodSymbol(container, modelObject, declaration);
-            if (symbolType == typeof(ParameterSymbol)) return new SourceParameterSymbol(container, modelObject, declaration);
-            if (symbolType == typeof(PropertySymbol)) return new SourcePropertySymbol(container, modelObject, declaration);
-            return new UnsupportedModelSymbol(container, modelObject);
+            Symbol? result = null;
+            var generatedFactory = GetGeneratedSymbolFactory(symbolType);
+            if (generatedFactory is not null)
+            {
+                result = generatedFactory.CreateSourceSymbol(container, modelObject, declaration);
+            }
+            if (result is not null) return result;
+            else return new UnsupportedModelSymbol(container, modelObject);
         }
 
         public Symbol ResolveSymbol(object modelObject)
@@ -195,5 +230,21 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return _symbolMap.GetValue(modelObject, mobj => symbol);
         }
 
+        private static IGeneratedSymbolFactory? GetGeneratedSymbolFactory(Type symbolType)
+        {
+            return s_generatedSymbolFactoryMap.GetValue(symbolType, LoadGeneratedSymbolFactory);
+        }
+
+        private static IGeneratedSymbolFactory? LoadGeneratedSymbolFactory(Type symbolType)
+        {
+            var className = symbolType.Namespace + ".Factory." + symbolType.Name + "Factory";
+            var factoryType = symbolType.Assembly.GetType(className);
+            if (factoryType is not null)
+            {
+                var defaultConstructor = factoryType.GetConstructor(Type.EmptyTypes);
+                if (defaultConstructor is not null) return defaultConstructor.Invoke(null) as IGeneratedSymbolFactory;
+            }
+            return null;
+        }
     }
 }

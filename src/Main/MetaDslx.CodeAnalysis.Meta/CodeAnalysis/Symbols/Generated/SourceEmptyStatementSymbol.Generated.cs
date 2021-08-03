@@ -14,9 +14,9 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 
-namespace MetaDslx.CodeAnalysis.Symbols.Statements.Source
+namespace MetaDslx.CodeAnalysis.Symbols.Source
 {
-	public partial class SourceEmptyStatementSymbol : MetaDslx.CodeAnalysis.Symbols.Statements.Completion.CompletionEmptyStatementSymbol, MetaDslx.CodeAnalysis.Symbols.Source.ISourceSymbol
+	public partial class SourceEmptyStatementSymbol : MetaDslx.CodeAnalysis.Symbols.Completion.CompletionEmptyStatementSymbol, MetaDslx.CodeAnalysis.Symbols.Source.ISourceSymbol
 	{
         private readonly MergedDeclaration _declaration;
         private LexicalSortKey _lazyLexicalSortKey = LexicalSortKey.NotInitialized;

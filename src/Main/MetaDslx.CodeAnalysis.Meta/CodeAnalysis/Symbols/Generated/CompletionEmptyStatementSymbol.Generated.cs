@@ -12,9 +12,9 @@ using System.Text;
 using System.Threading;
 using Roslyn.Utilities;
 
-namespace MetaDslx.CodeAnalysis.Symbols.Statements.Completion
+namespace MetaDslx.CodeAnalysis.Symbols.Completion
 {
-	public abstract partial class CompletionEmptyStatementSymbol : MetaDslx.CodeAnalysis.Symbols.Statements.EmptyStatementSymbol, MetaDslx.CodeAnalysis.Symbols.Metadata.IModelSymbol
+	public abstract partial class CompletionEmptyStatementSymbol : MetaDslx.CodeAnalysis.Symbols.EmptyStatementSymbol, MetaDslx.CodeAnalysis.Symbols.Metadata.IModelSymbol
 	{
         public static class CompletionParts
         {

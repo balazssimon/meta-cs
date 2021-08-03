@@ -54,9 +54,12 @@ namespace MetaDslx.CodeAnalysis.Analyzers.Symbols
             var symbolsByNamespace = symbols.GroupBy(s => s.NamespaceName);
             foreach (var sns in symbolsByNamespace)
             {
+                Debug.WriteLine($"Generating symbol factory for: {sns.Key}");
+                var factoryCode = generator.GenerateFactory(sns.Key, sns);
+                context.AddSource(sns.Key+".Factory.Generated.cs", factoryCode);
                 Debug.WriteLine($"Generating symbol visitor for: {sns.Key}");
                 var visitorCode = generator.GenerateVisitor(sns.Key, sns);
-                context.AddSource(sns.Key+".Visitor.Generated.cs", visitorCode);
+                context.AddSource(sns.Key + ".Visitor.Generated.cs", visitorCode);
             }
         }
 

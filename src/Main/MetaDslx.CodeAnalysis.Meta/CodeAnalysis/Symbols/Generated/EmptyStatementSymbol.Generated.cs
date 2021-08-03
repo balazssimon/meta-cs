@@ -11,7 +11,7 @@ using System.Diagnostics;
 using System.Text;
 using System.Threading;
 
-namespace MetaDslx.CodeAnalysis.Symbols.Statements
+namespace MetaDslx.CodeAnalysis.Symbols
 {
 	public abstract partial class EmptyStatementSymbol
 	{

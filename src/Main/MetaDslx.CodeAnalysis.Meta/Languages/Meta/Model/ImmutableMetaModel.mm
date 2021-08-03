@@ -22,9 +22,11 @@
 	/**
 	Represents an element.
 	*/
+	[symbol: Symbol]
 	abstract class MetaElement
 	{
 		// List of attributes
+		[symbol: Attributes]
 		list<MetaAttribute> Attributes; 
 	}
 
@@ -33,7 +35,6 @@
 		string Documentation;
 	}
 
-	[symbol: MemberSymbol]
 	abstract class MetaNamedElement : MetaDocumentedElement
 	{
 		[symbol: Name]
@@ -78,6 +79,7 @@
 
 	association MetaNamespace.Declarations with MetaDeclaration.Namespace;
 
+	[symbol: NamedTypeSymbol]
 	class MetaModel : MetaNamedElement
 	{
 		string Uri;
@@ -95,17 +97,19 @@
 		MultiSet
 	}
 
-	[symbol: NamedTypeSymbol]
+	[symbol: ArrayTypeSymbol]
 	class MetaCollectionType : MetaType
 	{
 		MetaCollectionKind Kind;
+		[symbol: ElementType]
 		MetaType InnerType;
 		bool ConformsTo(MetaType type);
 	}
 
-	[symbol: NamedTypeSymbol]
+	[symbol: NullableTypeSymbol]
 	class MetaNullableType : MetaType
 	{
+		[symbol: InnerType]
 		MetaType InnerType;
 		bool ConformsTo(MetaType type);
 	}
@@ -115,6 +119,7 @@
 		bool ConformsTo(MetaType type);
 	}
 
+	[symbol: EnumTypeSymbol]
 	class MetaEnum : MetaNamedType
 	{
 		[symbol: Members]
@@ -123,6 +128,7 @@
 		containment list<MetaOperation> Operations;
 	}
 
+	[symbol: EnumLiteralSymbol]
 	class MetaEnumLiteral : MetaNamedElement, MetaTypedElement
 	{
 		MetaEnum Enum redefines MetaTypedElement.Type;
@@ -137,11 +143,13 @@
 		bool ConformsTo(MetaType type);
 	}
 
+	[symbol: ClassTypeSymbol]
 	class MetaClass : MetaNamedType
 	{
+		[symbol: Attributes]
 		SystemType SymbolType;
 		bool IsAbstract;
-		[symbol: DeclaredBaseTypes]
+		[symbol: BaseTypes]
 		list<MetaClass> SuperClasses;
 		[symbol: Members]
 		containment list<MetaProperty> Properties;
@@ -157,13 +165,16 @@
 		list<MetaOperation> GetAllFinalOperations();
 	}
 	
+	[symbol: MethodSymbol]
 	class MetaOperation : MetaNamedElement
 	{
 		MetaClass Class;
 		MetaEnum Enum;
 		bool IsBuilder;
 		bool IsReadonly;
+		[symbol: Members]
 		containment list<MetaParameter> Parameters;
+		[symbol: ReturnTypeSymbol]
 		MetaType ReturnType;
 		bool ConformsTo(MetaOperation operation);
 	}
@@ -171,6 +182,7 @@
 	association MetaOperation.Class with MetaClass.Operations;
 	association MetaOperation.Enum with MetaEnum.Operations;
 
+	[symbol: ParameterSymbol]
 	class MetaParameter : MetaNamedElement, MetaTypedElement
 	{
 		MetaOperation Operation;
@@ -187,6 +199,7 @@
 		DerivedUnion
 	}
 
+	[symbol: PropertySymbol]
 	class MetaProperty : MetaNamedElement, MetaTypedElement
 	{
 		string SymbolProperty;

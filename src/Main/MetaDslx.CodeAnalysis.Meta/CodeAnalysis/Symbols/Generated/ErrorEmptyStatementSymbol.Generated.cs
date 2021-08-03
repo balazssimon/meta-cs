@@ -12,9 +12,9 @@ using System.Text;
 using System.Threading;
 using Roslyn.Utilities;
 
-namespace MetaDslx.CodeAnalysis.Symbols.Statements.Error
+namespace MetaDslx.CodeAnalysis.Symbols.Error
 {
-	public partial class ErrorEmptyStatementSymbol : MetaDslx.CodeAnalysis.Symbols.Statements.EmptyStatementSymbol, MetaDslx.CodeAnalysis.Symbols.Metadata.IModelSymbol, MetaDslx.CodeAnalysis.Symbols.Source.ISourceSymbol
+	public partial class ErrorEmptyStatementSymbol : MetaDslx.CodeAnalysis.Symbols.EmptyStatementSymbol, MetaDslx.CodeAnalysis.Symbols.Metadata.IModelSymbol, MetaDslx.CodeAnalysis.Symbols.Source.ISourceSymbol
 	{
         private readonly Symbol _container;
         private readonly MergedDeclaration? _declaration;

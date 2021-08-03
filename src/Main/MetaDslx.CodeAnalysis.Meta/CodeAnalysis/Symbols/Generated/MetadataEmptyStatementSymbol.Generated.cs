@@ -11,9 +11,9 @@ using System.Diagnostics;
 using System.Text;
 using System.Threading;
 
-namespace MetaDslx.CodeAnalysis.Symbols.Statements.Metadata
+namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 {
-	public partial class MetadataEmptyStatementSymbol : MetaDslx.CodeAnalysis.Symbols.Statements.Completion.CompletionEmptyStatementSymbol
+	public partial class MetadataEmptyStatementSymbol : MetaDslx.CodeAnalysis.Symbols.Completion.CompletionEmptyStatementSymbol
 	{
         public MetadataEmptyStatementSymbol(Symbol container, object modelObject)
             : base(container, modelObject)

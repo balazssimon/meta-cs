@@ -648,7 +648,7 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Text;
 using System.Threading;
-
+^
 namespace [namespaceName]
 {
 	public interface ISymbolVisitor
@@ -671,6 +671,54 @@ namespace [namespaceName]
         TResult Visit([symbol.Name] symbol, TArgument argument);
         [end loop]
 	}
+}
+end template
+
+template GenerateFactory(string namespaceName, IEnumerable<SymbolGenerationInfo> symbols)
+using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Symbols;
+using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Diagnostics;
+using System.Text;
+using System.Threading;
+using MetaDslx.CodeAnalysis.Declarations;
+^
+namespace [namespaceName].Factory
+{
+    [loop (symbol: symbols where symbol.Name != "AssemblySymbol" && symbol.Name != "ModuleSymbol" && symbol.SymbolParts != SymbolParts.None)]
+	public class [symbol.Name]Factory : IGeneratedSymbolFactory
+	{
+        public Symbol? CreateErrorSymbol(Symbol? container, object? modelObject, MergedDeclaration? declaration)
+        {
+            [if (symbol.ExistingErrorTypeInfo.Members.Contains(".ctor"))]
+            throw new NotImplementedException("CreateErrorSymbol for Error[symbol.Name] should be implemented in a custom SymbolFactory.");
+            [else]
+            return new Error.Error[symbol.Name](container[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if], declaration);
+            [end if]
+        }
+^
+        public Symbol? CreateMetadataSymbol(Symbol container, object modelObject)
+        {
+            [if (symbol.ExistingMetadataTypeInfo.Members.Contains(".ctor"))]
+            throw new NotImplementedException("CreateMetadataSymbol for Metadata[symbol.Name] should be implemented in a custom SymbolFactory.");
+            [else]
+            return new Metadata.Metadata[symbol.Name](container[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if]);
+            [end if]
+        }
+^
+        public Symbol? CreateSourceSymbol(Symbol container, object modelObject, MergedDeclaration declaration)
+        {
+            [if (symbol.ExistingSourceTypeInfo.Members.Contains(".ctor"))]
+            throw new NotImplementedException("CreateSourceSymbol for Source[symbol.Name] should be implemented in a custom SymbolFactory.");
+            [else]
+            return new Source.Source[symbol.Name](container[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if], declaration);
+            [end if]
+        }
+	}
+    [end loop]
 }
 end template
 
