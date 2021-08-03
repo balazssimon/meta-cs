@@ -237,8 +237,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
         {
             if (!diagnostics.IsEmptyWithoutResolution)
             {
-                LanguageCompilation compilation = this.DeclaringCompilation;
-                Debug.Assert(compilation != null);
+                //LanguageCompilation compilation = this.DeclaringCompilation;
+                //Debug.Assert(compilation != null);
                 var symbolDiagnostics = s_diagnostics.GetOrCreateValue(this);
                 symbolDiagnostics.AddRange(diagnostics);
             }
