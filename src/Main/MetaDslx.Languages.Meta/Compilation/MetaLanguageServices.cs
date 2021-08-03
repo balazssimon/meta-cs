@@ -13,10 +13,5 @@ namespace MetaDslx.Languages.Meta
         {
             return new CustomMetaSymbolFacts();
         }
-
-        public override CompilationFactory CreateCompilationFactory()
-        {
-            return new CustomMetaCompilationFactory();
-        }
     }
 }
