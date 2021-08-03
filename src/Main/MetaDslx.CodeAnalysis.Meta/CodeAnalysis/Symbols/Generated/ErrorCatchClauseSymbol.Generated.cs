@@ -53,9 +53,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Error
 
         public override global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.Symbol> Attributes => default;
 
-        public override global::MetaDslx.CodeAnalysis.Symbols.LocalVariableSymbol ExceptionVariable => default;
+        public override global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol ExceptionDeclarationOrExpression => default;
 
-        public override global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol Condition => default;
+        public override global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol Filter => default;
+
+        public override global::MetaDslx.CodeAnalysis.Symbols.StatementSymbol Handler => default;
 
     }
 }

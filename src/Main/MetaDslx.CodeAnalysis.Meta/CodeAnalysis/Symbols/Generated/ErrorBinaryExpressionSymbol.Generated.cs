@@ -53,9 +53,13 @@ namespace MetaDslx.CodeAnalysis.Symbols.Error
 
         public override global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.Symbol> Attributes => default;
 
-        public override global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol Left => default;
+        public override global::MetaDslx.CodeAnalysis.Symbols.BinaryOperatorKind OperatorKind => default;
 
-        public override global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol Right => default;
+        public override global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol LeftOperand => default;
+
+        public override global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol RightOperand => default;
+
+        public override bool IsChecked => default;
 
     }
 }

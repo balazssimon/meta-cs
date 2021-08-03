@@ -96,11 +96,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             return ModelSymbolImplementation.AssignSymbolPropertyValue<global::MetaDslx.CodeAnalysis.Symbols.TypeSymbol>(this, nameof(Type), diagnostics, cancellationToken);
         }
 
-        protected override global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.ParameterSymbol> CompleteSymbolProperty_Parameters(DiagnosticBag diagnostics, CancellationToken cancellationToken)
-        {
-            return ModelSymbolImplementation.AssignSymbolPropertyValues<global::MetaDslx.CodeAnalysis.Symbols.ParameterSymbol>(this, nameof(Parameters), diagnostics, cancellationToken);
-        }
-
         protected override global::MetaDslx.CodeAnalysis.Symbols.MethodSymbol CompleteSymbolProperty_GetMethod(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             return ModelSymbolImplementation.AssignSymbolPropertyValue<global::MetaDslx.CodeAnalysis.Symbols.MethodSymbol>(this, nameof(GetMethod), diagnostics, cancellationToken);

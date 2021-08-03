@@ -71,11 +71,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Error
 
         public override bool IsSealed => default;
 
-        public override bool IsAsync => default;
-
-        public override global::MetaDslx.CodeAnalysis.Symbols.TypeSymbol ReturnType => default;
-
         public override global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.ParameterSymbol> Parameters => default;
+
+        public override global::MetaDslx.CodeAnalysis.Symbols.InvocationExpressionSymbol NextConstructorInvocation => default;
+
+        public override global::MetaDslx.CodeAnalysis.Symbols.StatementSymbol Body => default;
 
     }
 }

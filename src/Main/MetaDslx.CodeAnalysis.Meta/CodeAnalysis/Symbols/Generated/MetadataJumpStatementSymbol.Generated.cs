@@ -46,6 +46,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             return ModelSymbolImplementation.AssignSymbolPropertyValues<global::MetaDslx.CodeAnalysis.Symbols.Symbol>(this, nameof(Attributes), diagnostics, cancellationToken);
         }
 
+        protected override global::MetaDslx.CodeAnalysis.Symbols.JumpKind CompleteSymbolProperty_JumpKind(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            return ModelSymbolImplementation.AssignSymbolPropertyValue<global::MetaDslx.CodeAnalysis.Symbols.JumpKind>(this, nameof(JumpKind), diagnostics, cancellationToken);
+        }
+
         protected override global::MetaDslx.CodeAnalysis.Symbols.LabelSymbol CompleteSymbolProperty_Target(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             return ModelSymbolImplementation.AssignSymbolPropertyValue<global::MetaDslx.CodeAnalysis.Symbols.LabelSymbol>(this, nameof(Target), diagnostics, cancellationToken);

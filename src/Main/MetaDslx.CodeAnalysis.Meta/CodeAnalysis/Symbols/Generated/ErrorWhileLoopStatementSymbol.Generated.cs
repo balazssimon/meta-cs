@@ -55,10 +55,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Error
 
         public override global::MetaDslx.CodeAnalysis.Symbols.StatementSymbol Body => default;
 
-        public override global::MetaDslx.CodeAnalysis.Symbols.LabelSymbol ContinueLabel => default;
-
-        public override global::MetaDslx.CodeAnalysis.Symbols.LabelSymbol ExitLabel => default;
-
         public override global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol Condition => default;
 
         public override bool ConditionIsTop => default;

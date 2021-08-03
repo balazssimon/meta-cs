@@ -77,5 +77,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Error
 
         public override global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.ParameterSymbol> Parameters => default;
 
+        public override global::MetaDslx.CodeAnalysis.Symbols.StatementSymbol Body => default;
+
     }
 }

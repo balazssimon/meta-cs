@@ -6,6 +6,9 @@ using System.Diagnostics;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
+    /// <summary>
+    /// Represents a discard expression.
+    /// </summary>
     [Symbol(ModelObjectOption = ParameterOption.Disabled)]
     public abstract partial class DiscardExpressionSymbol : ExpressionSymbol
     {

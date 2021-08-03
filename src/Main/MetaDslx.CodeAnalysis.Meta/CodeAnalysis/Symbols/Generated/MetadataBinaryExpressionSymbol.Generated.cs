@@ -46,14 +46,24 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             return ModelSymbolImplementation.AssignSymbolPropertyValues<global::MetaDslx.CodeAnalysis.Symbols.Symbol>(this, nameof(Attributes), diagnostics, cancellationToken);
         }
 
-        protected override global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol CompleteSymbolProperty_Left(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        protected override global::MetaDslx.CodeAnalysis.Symbols.BinaryOperatorKind CompleteSymbolProperty_OperatorKind(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
-            return ModelSymbolImplementation.AssignSymbolPropertyValue<global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol>(this, nameof(Left), diagnostics, cancellationToken);
+            return ModelSymbolImplementation.AssignSymbolPropertyValue<global::MetaDslx.CodeAnalysis.Symbols.BinaryOperatorKind>(this, nameof(OperatorKind), diagnostics, cancellationToken);
         }
 
-        protected override global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol CompleteSymbolProperty_Right(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        protected override global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol CompleteSymbolProperty_LeftOperand(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
-            return ModelSymbolImplementation.AssignSymbolPropertyValue<global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol>(this, nameof(Right), diagnostics, cancellationToken);
+            return ModelSymbolImplementation.AssignSymbolPropertyValue<global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol>(this, nameof(LeftOperand), diagnostics, cancellationToken);
+        }
+
+        protected override global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol CompleteSymbolProperty_RightOperand(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            return ModelSymbolImplementation.AssignSymbolPropertyValue<global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol>(this, nameof(RightOperand), diagnostics, cancellationToken);
+        }
+
+        protected override bool CompleteSymbolProperty_IsChecked(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            return ModelSymbolImplementation.AssignSymbolPropertyValue<bool>(this, nameof(IsChecked), diagnostics, cancellationToken);
         }
 
         protected override void CompleteNonSymbolProperties(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)

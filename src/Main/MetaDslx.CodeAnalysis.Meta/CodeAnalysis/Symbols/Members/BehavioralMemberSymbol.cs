@@ -11,11 +11,5 @@ namespace MetaDslx.CodeAnalysis.Symbols
     /// </summary>
     public abstract class BehavioralMemberSymbol : MemberSymbol
     {
-        [SymbolProperty]
-        public virtual bool IsAsync => false;
-        [SymbolProperty]
-        public abstract TypeSymbol ReturnType { get; }
-        [SymbolProperty]
-        public abstract ImmutableArray<ParameterSymbol> Parameters { get; }
     }
 }

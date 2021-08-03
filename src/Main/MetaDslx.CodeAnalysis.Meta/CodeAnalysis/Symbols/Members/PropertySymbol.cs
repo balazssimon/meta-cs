@@ -10,16 +10,13 @@ namespace MetaDslx.CodeAnalysis.Symbols
     public abstract partial class PropertySymbol : StructuralMemberSymbol
     {
         [SymbolProperty]
-        public virtual ImmutableArray<ParameterSymbol> Parameters { get; internal set; }
+        public virtual MethodSymbol GetMethod { get; }
 
         [SymbolProperty]
-        public virtual MethodSymbol GetMethod { get; internal set; }
-
-        [SymbolProperty]
-        public virtual MethodSymbol SetMethod { get; internal set; }
+        public virtual MethodSymbol SetMethod { get; }
 
         public new PropertySymbol OriginalDefinition => this;
-        public PropertySymbol OverriddenProperty { get; internal set; }
-
+        public PropertySymbol OverriddenProperty { get; }
+        public FieldSymbol BackingField { get; }
     }
 }

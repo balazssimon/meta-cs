@@ -51,19 +51,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             return ModelSymbolImplementation.AssignSymbolPropertyValue<global::MetaDslx.CodeAnalysis.Symbols.StatementSymbol>(this, nameof(Body), diagnostics, cancellationToken);
         }
 
-        protected override global::MetaDslx.CodeAnalysis.Symbols.LabelSymbol CompleteSymbolProperty_ContinueLabel(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        protected override global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol CompleteSymbolProperty_LoopControlVariable(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
-            return ModelSymbolImplementation.AssignSymbolPropertyValue<global::MetaDslx.CodeAnalysis.Symbols.LabelSymbol>(this, nameof(ContinueLabel), diagnostics, cancellationToken);
-        }
-
-        protected override global::MetaDslx.CodeAnalysis.Symbols.LabelSymbol CompleteSymbolProperty_ExitLabel(DiagnosticBag diagnostics, CancellationToken cancellationToken)
-        {
-            return ModelSymbolImplementation.AssignSymbolPropertyValue<global::MetaDslx.CodeAnalysis.Symbols.LabelSymbol>(this, nameof(ExitLabel), diagnostics, cancellationToken);
-        }
-
-        protected override global::MetaDslx.CodeAnalysis.Symbols.LocalVariableSymbol CompleteSymbolProperty_LoopControlVariable(DiagnosticBag diagnostics, CancellationToken cancellationToken)
-        {
-            return ModelSymbolImplementation.AssignSymbolPropertyValue<global::MetaDslx.CodeAnalysis.Symbols.LocalVariableSymbol>(this, nameof(LoopControlVariable), diagnostics, cancellationToken);
+            return ModelSymbolImplementation.AssignSymbolPropertyValue<global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol>(this, nameof(LoopControlVariable), diagnostics, cancellationToken);
         }
 
         protected override global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol CompleteSymbolProperty_Collection(DiagnosticBag diagnostics, CancellationToken cancellationToken)

@@ -55,9 +55,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Error
 
         public override global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol Condition => default;
 
-        public override global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol IfTrue => default;
+        public override global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol WhenTrue => default;
 
-        public override global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol IfFalse => default;
+        public override global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol WhenFalse => default;
 
     }
 }

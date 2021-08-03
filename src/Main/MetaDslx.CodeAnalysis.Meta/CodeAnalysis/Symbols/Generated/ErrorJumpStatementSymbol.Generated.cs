@@ -53,6 +53,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Error
 
         public override global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.Symbol> Attributes => default;
 
+        public override global::MetaDslx.CodeAnalysis.Symbols.JumpKind JumpKind => default;
+
         public override global::MetaDslx.CodeAnalysis.Symbols.LabelSymbol Target => default;
 
     }

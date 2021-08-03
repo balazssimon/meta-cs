@@ -73,8 +73,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Error
 
         public override global::MetaDslx.CodeAnalysis.Symbols.TypeSymbol Type => default;
 
-        public override global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.ParameterSymbol> Parameters => default;
-
         public override global::MetaDslx.CodeAnalysis.Symbols.MethodSymbol GetMethod => default;
 
         public override global::MetaDslx.CodeAnalysis.Symbols.MethodSymbol SetMethod => default;

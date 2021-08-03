@@ -53,7 +53,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Error
 
         public override global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.Symbol> Attributes => default;
 
-        public override global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol Test => default;
+        public override global::MetaDslx.CodeAnalysis.Symbols.ExpressionSymbol Value => default;
 
         public override global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.SwitchCaseSymbol> Cases => default;
 
