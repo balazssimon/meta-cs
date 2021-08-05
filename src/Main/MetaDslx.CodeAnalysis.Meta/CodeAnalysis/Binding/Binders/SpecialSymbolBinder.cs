@@ -17,7 +17,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
 
         protected override void AddLookupCandidateSymbolsInScope(LookupCandidates result, LookupConstraints constraints)
         {
-            result.AddRange(Compilation.SourceAssembly.DeclaredSpecialSymbols);
+            //result.AddRange(Compilation.Language.SymbolFacts.SpecialSymbols);
         }
     }
 }

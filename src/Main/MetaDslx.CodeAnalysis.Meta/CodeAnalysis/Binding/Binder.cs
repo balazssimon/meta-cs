@@ -179,18 +179,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             return _next.GetImports(recursionConstraints);
         }
 
-        public Conversions Conversions
-        {
-            get
-            {
-                if (_lazyConversions == null)
-                {
-                    Interlocked.CompareExchange(ref _lazyConversions, new Conversions(this), null);
-                }
-
-                return _lazyConversions;
-            }
-        }
+        public Conversions Conversions => Compilation.Conversions;
 
         public OverloadResolution OverloadResolution
         {

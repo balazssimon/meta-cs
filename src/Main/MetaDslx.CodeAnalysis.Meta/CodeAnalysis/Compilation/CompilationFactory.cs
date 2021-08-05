@@ -61,19 +61,6 @@ namespace MetaDslx.CodeAnalysis
             Type globalsType = null);
 
 
-        public virtual Symbol CreateSpecialSymbol(ModuleSymbol module, object key)
-        {
-            if (module is CompletionModuleSymbol cms)
-            {
-                var symbolFacts = Language.SymbolFacts;
-                if (key != null && symbolFacts.GetBuiltInObjects().Contains(key) && symbolFacts.ContainsObject(cms.Model, key))
-                {
-                    return cms.SymbolFactory.GetSymbol(key);
-                }
-            }
-            return null;
-        }
-
         public abstract RootSingleDeclaration CreateDeclarationTree(LanguageSyntaxTree syntaxTree, string scriptClassName, bool isSubmission);
         public abstract BinderFactoryVisitor CreateBinderFactoryVisitor(BinderFactory binderFactory);
 

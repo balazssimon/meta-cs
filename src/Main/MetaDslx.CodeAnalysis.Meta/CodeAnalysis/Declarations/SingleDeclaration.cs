@@ -36,7 +36,6 @@ namespace MetaDslx.CodeAnalysis.Declarations
 
         public SingleDeclaration(
             string name, 
-            DeclarationKind kind,
             Type symbolType,
             Type modelObjectType,
             SyntaxReference syntaxReference,
@@ -48,7 +47,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             ImmutableArray<SingleDeclaration> children,
             ImmutableArray<DeclarationTreeInfo.Property> properties,
             ImmutableArray<Diagnostic> diagnostics)
-            : base(name, kind, canMerge, hasUsings, isNestingParent)
+            : base(name, canMerge, hasUsings, isNestingParent)
         {
             _symbolType = symbolType;
             _modelObjectType = modelObjectType;
@@ -162,7 +161,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
                 if (otherDecl.Name == null) return false;
 
                 // kind and name must match
-                if ((thisDecl.Kind != otherDecl.Kind) ||
+                if ((thisDecl.SymbolType != otherDecl.SymbolType) ||
                     (thisDecl.ModelObjectType != otherDecl.ModelObjectType) ||
                     (thisDecl.Name != otherDecl.Name))
                 {
@@ -176,7 +175,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             public override int GetHashCode()
             {
                 var thisDecl = _decl;
-                return Hash.Combine(thisDecl.Kind.GetHashCode(), Hash.Combine(thisDecl.Name?.GetHashCode() ?? 0, thisDecl.ModelObjectType?.GetHashCode() ?? 0));
+                return Hash.Combine(thisDecl.SymbolType.GetHashCode(), Hash.Combine(thisDecl.Name?.GetHashCode() ?? 0, thisDecl.ModelObjectType?.GetHashCode() ?? 0));
             }
         }
     }

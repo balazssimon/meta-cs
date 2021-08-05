@@ -95,9 +95,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             var target = this.Target as TypeSymbol;
             if ((object)target != null && Locations.Length > 0)
             {
-                var corLibrary = this.ContainingAssembly.CorLibrary;
-                var conversions = new TypeConversions(corLibrary);
-                target.CheckAllConstraints(DeclaringCompilation, conversions, Locations[0], diagnostics);
+                target.CheckAllConstraints(DeclaringCompilation, Locations[0], diagnostics);
             }
         }
 

@@ -1654,31 +1654,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             return _unusedFieldWarnings;
         }
 
-        private static string DefaultValue(TypeSymbol type)
-        {
-            // TODO: localize these strings
-            if (type.IsReferenceType) return "null";
-            switch (type.SpecialType)
-            {
-                case SpecialType.System_Boolean:
-                    return "false";
-                case SpecialType.System_Byte:
-                case SpecialType.System_Decimal:
-                case SpecialType.System_Double:
-                case SpecialType.System_Int16:
-                case SpecialType.System_Int32:
-                case SpecialType.System_Int64:
-                case SpecialType.System_SByte:
-                case SpecialType.System_Single:
-                case SpecialType.System_UInt16:
-                case SpecialType.System_UInt32:
-                case SpecialType.System_UInt64:
-                    return "0";
-                default:
-                    return "";
-            }
-        }
-
         internal override NamedTypeSymbol TryLookupForwardedMetadataTypeWithCycleDetection(ref MetadataTypeName emittedName, ConsList<AssemblySymbol> visitedAssemblies)
         {
             int forcedArity = emittedName.ForcedArity;
@@ -1779,5 +1754,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         {
             return _compilation.Options.OutputKind.IsNetModule();
         }
+
     }
 }

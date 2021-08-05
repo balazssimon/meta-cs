@@ -26,5 +26,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
                 return _metadataLocation.Cast<MetadataLocation, Location>();
             }
         }
+
     }
 }

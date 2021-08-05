@@ -40,7 +40,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
                         var symbolFacts = Language.SymbolFacts;
                         foreach (var ms in symbolFacts.GetRootObjects(_module.Model))
                         {
-                            if (symbolFacts.ToDeclarationKind(symbolFacts.GetSymbolType(ms)) == DeclarationKind.Namespace)
+                            if (typeof(NamespaceSymbol).IsAssignableFrom(symbolFacts.GetSymbolType(ms)))
                             {
                                 names.Add(symbolFacts.GetName(ms));
                             }
@@ -67,7 +67,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
                         var symbolFacts = Language.SymbolFacts;
                         foreach (var ms in symbolFacts.GetRootObjects(_module.Model))
                         {
-                            if (symbolFacts.ToDeclarationKind(symbolFacts.GetSymbolType(ms)) == DeclarationKind.Type)
+                            if (typeof(NamedTypeSymbol).IsAssignableFrom(symbolFacts.GetSymbolType(ms)))
                             {
                                 var name = symbolFacts.GetName(ms);
                                 if (!string.IsNullOrEmpty(name)) names.Add(symbolFacts.GetName(ms));

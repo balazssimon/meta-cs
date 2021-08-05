@@ -15,6 +15,7 @@ using Microsoft.CodeAnalysis.Symbols;
 using Microsoft.Cci;
 using System.Globalization;
 using System.Threading;
+using System.Collections.Concurrent;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
@@ -282,25 +283,17 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return null;
         }
 
-        internal ErrorTypeSymbol CreateCycleInTypeForwarderErrorTypeSymbol(ref MetadataTypeName emittedName)
+        internal NamedTypeSymbol CreateCycleInTypeForwarderErrorTypeSymbol(ref MetadataTypeName emittedName)
         {
             DiagnosticInfo diagnosticInfo = new LanguageDiagnosticInfo(InternalErrorCode.ERR_CycleInTypeForwarder, emittedName.FullName, this.Name);
             return new MissingMetadataTypeSymbol.TopLevelWithCustomErrorInfo(this.Modules[0], ref emittedName, diagnosticInfo);
         }
 
-        internal ErrorTypeSymbol CreateMultipleForwardingErrorTypeSymbol(ref MetadataTypeName emittedName, ModuleSymbol forwardingModule, AssemblySymbol destination1, AssemblySymbol destination2)
+        internal NamedTypeSymbol CreateMultipleForwardingErrorTypeSymbol(ref MetadataTypeName emittedName, ModuleSymbol forwardingModule, AssemblySymbol destination1, AssemblySymbol destination2)
         {
             var diagnosticInfo = new LanguageDiagnosticInfo(InternalErrorCode.ERR_TypeForwardedToMultipleAssemblies, forwardingModule, this, emittedName.FullName, destination1, destination2);
             return new MissingMetadataTypeSymbol.TopLevelWithCustomErrorInfo(forwardingModule, ref emittedName, diagnosticInfo);
         }
-
-        /// <summary>
-        /// Lookup declaration for predefined symbol in this Assembly.
-        /// </summary>
-        /// <returns>The symbol for the pre-defined symbol or an error type if the symbol is not defined in the core library.</returns>
-        public abstract DeclaredSymbol GetDeclaredSpecialSymbol(object key);
-
-        public abstract ImmutableArray<DeclaredSymbol> DeclaredSpecialSymbols { get; }
 
         /// <summary>
         /// Figure out if the target runtime supports default interface implementation.
@@ -375,16 +368,39 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </remarks>
         public abstract bool MightContainExtensionMethods { get; }
 
+        internal virtual Type? GetSpecialSymbolType(SpecialType specialType)
+        {
+            return typeof(NamedTypeSymbol);
+        }
+
         /// <summary>
         /// Gets the symbol for the pre-defined symbol from this assembly.
         /// </summary>
         /// <returns>The symbol for the pre-defined symbol or an error type if the symbol is not defined.</returns>
-        public Symbol GetSpecialSymbol(object key)
+        public Symbol GetSpecialSymbol(object specialSymbol)
         {
-            return GetDeclaredSpecialSymbol(key);
+            Symbol? result = null;
+            foreach (var module in this.Modules)
+            {
+                var symbol = module.GetDeclaredSpecialSymbol(specialSymbol);
+                if (symbol is not null)
+                {
+                    if (result is null || result.IsError && !symbol.IsError)
+                    {
+                        result = symbol;
+                    }
+                    if (!result.IsError) return result;
+                }
+            }
+            var firstModule = this.Modules[0];
+            var metadataName = firstModule.Language.SymbolFacts.GetSpecialSymbolMetadataName(specialSymbol);
+            if (metadataName is null)
+            {
+                metadataName = specialSymbol is SpecialType st ? st.GetMetadataName() : specialSymbol.ToString();
+            }
+            MetadataTypeName emittedName = MetadataTypeName.FromFullName(metadataName, useCLSCompliantNameArityEncoding: true);
+            return new MissingMetadataTypeSymbol.TopLevel(firstModule, ref emittedName, null);
         }
-
-        public ImmutableArray<DeclaredSymbol> SpecialSymbols => DeclaredSpecialSymbols;
 
         internal static TypeSymbol DynamicType
         {
@@ -813,9 +829,5 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return false;
         }
 
-        internal NamedTypeSymbol GetSpecialType(SpecialType specialType)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

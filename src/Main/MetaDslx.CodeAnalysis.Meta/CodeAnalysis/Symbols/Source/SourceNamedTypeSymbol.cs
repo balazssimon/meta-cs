@@ -25,43 +25,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
     /// </summary>
     public partial class SourceNamedTypeSymbol
     {
-        private SourceDeclaration _sourceDeclaration;
-        private ImmutableArray<NamedTypeSymbol> _lazyDeclaredBases;
-        private ImmutableArray<NamedTypeSymbol> _lazyBaseTypes;
-        private ImmutableArray<(CompletionPart start, CompletionPart finish)> _phaseBinders;
-
         public virtual bool IsPartial => _declaration.Merge;
-
-        #region Syntax
-
-        public override string MetadataName => _declaration.MetadataName;
-
-        public override bool MangleName => _declaration.Name != _declaration.MetadataName;
-
-        protected SourceDeclaration SourceDeclaration
-        {
-            get
-            {
-                if (_sourceDeclaration == null)
-                {
-                    Interlocked.CompareExchange(ref _sourceDeclaration, new SourceDeclaration(this, _declaration), null);
-                }
-                return _sourceDeclaration;
-            }
-        }
-
-        public override LexicalSortKey GetLexicalSortKey()
-        {
-            return this.SourceDeclaration.GetLexicalSortKey();
-        }
-
-        #endregion
-
-        #region members
-
-        public override IEnumerable<string> MemberNames => this.SourceDeclaration.MemberNames;
-
-        #endregion
 
         public virtual void EnsureSymbolDefinitionsNoted()
         {

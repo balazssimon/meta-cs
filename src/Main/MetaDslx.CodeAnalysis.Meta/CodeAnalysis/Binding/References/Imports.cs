@@ -672,15 +672,13 @@ namespace MetaDslx.CodeAnalysis.Binding
                 alias.Alias.CheckConstraints(semanticDiagnostics);
             }
 
-            var corLibrary = _compilation.SourceAssembly.CorLibrary;
-            var conversions = new TypeConversions(corLibrary);
             foreach (var @using in Usings)
             {
                 // Check if `using static` directives meet constraints.
                 if (@using.DeclaredSymbol is TypeSymbol typeSymbol)
                 {
                     var location = @using.UsingDirective?.TargetName.GetLocation() ?? NoLocation.Singleton;
-                    typeSymbol.CheckAllConstraints(_compilation, conversions, location, semanticDiagnostics);
+                    typeSymbol.CheckAllConstraints(_compilation, location, semanticDiagnostics);
                 }
             }
 

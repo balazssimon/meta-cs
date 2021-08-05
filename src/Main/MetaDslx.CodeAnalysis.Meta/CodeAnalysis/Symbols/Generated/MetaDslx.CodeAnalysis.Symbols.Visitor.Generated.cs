@@ -88,6 +88,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         void Visit(InterfaceTypeSymbol symbol);
         void Visit(NamedTypeSymbol symbol);
         void Visit(NullableTypeSymbol symbol);
+        void Visit(PrimitiveTypeSymbol symbol);
         void Visit(StructTypeSymbol symbol);
         void Visit(TupleTypeSymbol symbol);
         void Visit(TypeParameterSymbol symbol);
@@ -173,6 +174,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         TResult Visit(InterfaceTypeSymbol symbol);
         TResult Visit(NamedTypeSymbol symbol);
         TResult Visit(NullableTypeSymbol symbol);
+        TResult Visit(PrimitiveTypeSymbol symbol);
         TResult Visit(StructTypeSymbol symbol);
         TResult Visit(TupleTypeSymbol symbol);
         TResult Visit(TypeParameterSymbol symbol);
@@ -258,6 +260,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         TResult Visit(InterfaceTypeSymbol symbol, TArgument argument);
         TResult Visit(NamedTypeSymbol symbol, TArgument argument);
         TResult Visit(NullableTypeSymbol symbol, TArgument argument);
+        TResult Visit(PrimitiveTypeSymbol symbol, TArgument argument);
         TResult Visit(StructTypeSymbol symbol, TArgument argument);
         TResult Visit(TupleTypeSymbol symbol, TArgument argument);
         TResult Visit(TypeParameterSymbol symbol, TArgument argument);

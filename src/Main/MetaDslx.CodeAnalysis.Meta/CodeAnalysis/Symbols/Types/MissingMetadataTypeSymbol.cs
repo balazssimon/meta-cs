@@ -6,6 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 using Roslyn.Utilities;
 using System;
+using MetaDslx.CodeAnalysis.Symbols.Error;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
@@ -18,35 +19,27 @@ namespace MetaDslx.CodeAnalysis.Symbols
     ///   c) The metadata file was referenced, contained the correct outer type, but
     ///      didn't contains a nested type in that outer type.
     /// </summary>
-    internal abstract class MissingMetadataTypeSymbol : ErrorTypeSymbol
+    internal abstract class MissingMetadataTypeSymbol : ErrorNamedTypeSymbol
     {
         protected readonly string name;
         protected readonly int arity;
-        protected readonly bool mangleName;
+        protected readonly string metadataName;
 
-        private MissingMetadataTypeSymbol(string name, int arity, bool mangleName)
+        private MissingMetadataTypeSymbol(Symbol container, string name, int arity, object? modelObject)
+            : base(container, modelObject)
         {
             Debug.Assert(name != null);
 
             this.name = name;
             this.arity = arity;
-            this.mangleName = (mangleName && arity > 0);
+            this.metadataName = arity > 0 ? name + "`" + arity : name;
         }
-
-        public sealed override bool IsError => true;
 
         public override string Name
         {
             get { return name; }
         }
 
-        public override bool MangleName
-        {
-            get
-            {
-                return mangleName;
-            }
-        }
         /// <summary>
         /// Get the arity of the missing type.
         /// </summary>
@@ -132,8 +125,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
             /// </summary>
             private int _lazyTypeId = -1;
 
-            public TopLevel(ModuleSymbol module, string @namespace, string name, int arity, bool mangleName)
-                : base(name, arity, mangleName)
+            public TopLevel(ModuleSymbol module, string @namespace, string name, int arity, object? modelObject = null)
+                : base(module, name, arity, modelObject)
             {
                 Debug.Assert((object)module != null);
                 Debug.Assert(@namespace != null);
@@ -142,33 +135,33 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 _containingModule = module;
             }
 
-            public TopLevel(ModuleSymbol module, ref MetadataTypeName fullName)
-                : this(module, ref fullName, -1)
+            public TopLevel(ModuleSymbol module, ref MetadataTypeName fullName, object? modelObject = null)
+                : this(module, ref fullName, -1, modelObject)
             {
             }
 
-            public TopLevel(ModuleSymbol module, ref MetadataTypeName fullName, SpecialType specialType)
-                : this(module, ref fullName, (int)specialType)
+            public TopLevel(ModuleSymbol module, ref MetadataTypeName fullName, SpecialType specialType, object? modelObject = null)
+                : this(module, ref fullName, (int)specialType, modelObject)
             {
             }
 
-            public TopLevel(ModuleSymbol module, ref MetadataTypeName fullName, WellKnownType wellKnownType)
-                : this(module, ref fullName, (int)wellKnownType)
+            public TopLevel(ModuleSymbol module, ref MetadataTypeName fullName, WellKnownType wellKnownType, object? modelObject = null)
+                : this(module, ref fullName, (int)wellKnownType, modelObject)
             {
             }
 
-            private TopLevel(ModuleSymbol module, ref MetadataTypeName fullName, int typeId)
-                : this(module, ref fullName, fullName.ForcedArity == -1 || fullName.ForcedArity == fullName.InferredArity)
+            private TopLevel(ModuleSymbol module, ref MetadataTypeName fullName, int typeId, object? modelObject)
+                : this(module, ref fullName, fullName.ForcedArity == -1 || fullName.ForcedArity == fullName.InferredArity, modelObject)
             {
                 Debug.Assert(typeId == -1 || typeId == (int)SpecialType.None || Arity == 0 || MangleName);
                 _lazyTypeId = typeId;
             }
 
-            private TopLevel(ModuleSymbol module, ref MetadataTypeName fullName, bool mangleName)
+            private TopLevel(ModuleSymbol module, ref MetadataTypeName fullName, bool mangleName, object? modelObject)
                 : this(module, fullName.NamespaceName,
                        mangleName ? fullName.UnmangledTypeName : fullName.TypeName,
                        mangleName ? fullName.InferredArity : fullName.ForcedArity,
-                       mangleName)
+                       modelObject)
             {
             }
 
@@ -278,6 +271,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 }
             }
 
+            public override object? SpecialSymbol => this.SpecialType;
+
             public override DiagnosticInfo ErrorInfo
             {
                 get
@@ -333,22 +328,22 @@ namespace MetaDslx.CodeAnalysis.Symbols
         {
             private readonly DiagnosticInfo _errorInfo;
 
-            public TopLevelWithCustomErrorInfo(ModuleSymbol module, ref MetadataTypeName emittedName, DiagnosticInfo errorInfo)
-                : base(module, ref emittedName)
+            public TopLevelWithCustomErrorInfo(ModuleSymbol module, ref MetadataTypeName emittedName, DiagnosticInfo errorInfo, object? modelObject = null)
+                : base(module, ref emittedName, modelObject)
             {
                 Debug.Assert(errorInfo != null);
                 _errorInfo = errorInfo;
             }
 
-            public TopLevelWithCustomErrorInfo(ModuleSymbol module, ref MetadataTypeName emittedName, DiagnosticInfo errorInfo, SpecialType typeId)
-                : base(module, ref emittedName, typeId)
+            public TopLevelWithCustomErrorInfo(ModuleSymbol module, ref MetadataTypeName emittedName, DiagnosticInfo errorInfo, SpecialType typeId, object? modelObject = null)
+                : base(module, ref emittedName, typeId, modelObject)
             {
                 Debug.Assert(errorInfo != null);
                 _errorInfo = errorInfo;
             }
 
-            public TopLevelWithCustomErrorInfo(ModuleSymbol module, ref MetadataTypeName emittedName, DiagnosticInfo errorInfo, WellKnownType typeId)
-                : base(module, ref emittedName, typeId)
+            public TopLevelWithCustomErrorInfo(ModuleSymbol module, ref MetadataTypeName emittedName, DiagnosticInfo errorInfo, WellKnownType typeId, object? modelObject = null)
+                : base(module, ref emittedName, typeId, modelObject)
             {
                 Debug.Assert(errorInfo != null);
                 _errorInfo = errorInfo;
@@ -370,24 +365,24 @@ namespace MetaDslx.CodeAnalysis.Symbols
         {
             private readonly NamedTypeSymbol _containingType;
 
-            public Nested(NamedTypeSymbol containingType, string name, int arity, bool mangleName)
-                : base(name, arity, mangleName)
+            public Nested(NamedTypeSymbol containingType, string name, int arity, object? modelObject = null)
+                : base(containingType, name, arity, modelObject)
             {
                 Debug.Assert((object)containingType != null);
 
                 _containingType = containingType;
             }
 
-            public Nested(NamedTypeSymbol containingType, ref MetadataTypeName emittedName)
-                : this(containingType, ref emittedName, emittedName.ForcedArity == -1 || emittedName.ForcedArity == emittedName.InferredArity)
+            public Nested(NamedTypeSymbol containingType, ref MetadataTypeName emittedName, object? modelObject = null)
+                : this(containingType, ref emittedName, emittedName.ForcedArity == -1 || emittedName.ForcedArity == emittedName.InferredArity, modelObject)
             {
             }
 
-            private Nested(NamedTypeSymbol containingType, ref MetadataTypeName emittedName, bool mangleName)
+            private Nested(NamedTypeSymbol containingType, ref MetadataTypeName emittedName, bool mangleName, object? modelObject = null)
                 : this(containingType,
                        mangleName ? emittedName.UnmangledTypeName : emittedName.TypeName,
                        mangleName ? emittedName.InferredArity : emittedName.ForcedArity,
-                       mangleName)
+                       modelObject)
             {
             }
 
@@ -407,6 +402,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
                     return SpecialType.None; // do not have nested types among CORE types yet.
                 }
             }
+
+            public override object? SpecialSymbol => this.SpecialType;
 
             public override int GetHashCode()
             {

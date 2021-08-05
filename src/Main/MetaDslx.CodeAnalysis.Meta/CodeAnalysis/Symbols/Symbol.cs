@@ -45,7 +45,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         {
         }
 
-        public virtual Language Language => ContainingSymbol?.ContainingModule?.Language ?? Language.None;
+        public virtual Language Language => ContainingModule?.Language ?? Language.None;
 
 
         /// <summary>
@@ -70,6 +70,14 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// Should the name returned by Name property be mangled with any suffix in order to get metadata name.
         /// </summary>
         public virtual bool MangleName => this.Name != this.MetadataName;
+
+        /// <summary>
+        /// Gets corresponding special symbol id of this symbol.
+        /// </summary>
+        /// <remarks>
+        /// Not preserved in symbols constructed from this one.
+        /// </remarks>
+        public virtual object? SpecialSymbol => null;
 
         public virtual bool IsError => false;
 

@@ -43,13 +43,13 @@ namespace MetaDslx.CodeAnalysis.Symbols.Error
 
         public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => _declaration?.SyntaxReferences ?? ImmutableArray<SyntaxReference>.Empty;
 
-        public sealed override Symbol ContainingSymbol => _container;
+        public override Symbol ContainingSymbol => _container;
 
         public sealed override bool IsError => true;
 
         public sealed override ImmutableArray<Symbol> ChildSymbols => ImmutableArray<Symbol>.Empty;
 
-        public sealed override string Name => _modelObject is not null ? Language.SymbolFacts.GetName(_modelObject) : string.Empty;
+        public override string Name => _modelObject is not null ? Language.SymbolFacts.GetName(_modelObject) : string.Empty;
 
         public override global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.Symbol> Attributes => default;
 
@@ -66,6 +66,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Error
         public override bool IsAbstract => default;
 
         public override bool IsSealed => default;
+
+        public virtual DiagnosticInfo ErrorInfo { get; }
 
     }
 }

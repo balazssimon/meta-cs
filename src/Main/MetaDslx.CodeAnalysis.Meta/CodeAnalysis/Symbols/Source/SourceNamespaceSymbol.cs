@@ -21,8 +21,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
     public partial class SourceNamespaceSymbol
     {
         private readonly SourceModuleSymbol _module;
-        private SourceDeclaration _sourceDeclaration;
-        private ImmutableArray<(CompletionPart start, CompletionPart finish)> _phaseBinders;
 
         public SourceNamespaceSymbol(
             SourceModuleSymbol module, 
@@ -49,23 +47,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                     yield return compilation.GetImports(declaration);
                 }
             }
-        }
-
-        protected SourceDeclaration SourceDeclaration
-        {
-            get
-            {
-                if (_sourceDeclaration == null)
-                {
-                    Interlocked.CompareExchange(ref _sourceDeclaration, new SourceDeclaration(this, _declaration), null);
-                }
-                return _sourceDeclaration;
-            }
-        }
-
-        public override LexicalSortKey GetLexicalSortKey()
-        {
-            return this.SourceDeclaration.GetLexicalSortKey();
         }
 
         public override ModuleSymbol ContainingModule => _module;

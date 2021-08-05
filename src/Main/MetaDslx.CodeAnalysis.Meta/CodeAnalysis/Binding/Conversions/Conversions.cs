@@ -10,42 +10,21 @@ using Microsoft.CodeAnalysis.Operations;
 
 namespace MetaDslx.CodeAnalysis.Binding
 {
-    // TODO:MetaDslx
-    public sealed class Conversions : ConversionsBase
+    public sealed class Conversions 
     {
-        private readonly Binder _binder;
+        private readonly LanguageCompilation _compilation;
 
-        public Conversions(Binder binder)
-            : this(binder, currentRecursionDepth: 0)
+        public Conversions(LanguageCompilation compilation)
         {
+            _compilation = compilation;
         }
 
-        private Conversions(Binder binder, int currentRecursionDepth)
-            : base(binder.Compilation.Assembly.CorLibrary, currentRecursionDepth)
-        {
-            _binder = binder;
-        }
-
-        protected override ConversionsBase CreateInstance(int currentRecursionDepth)
-        {
-            return new Conversions(_binder, currentRecursionDepth);
-        }
-
-        private LanguageCompilation Compilation { get { return _binder.Compilation; } }
+        public LanguageCompilation Compilation => _compilation;
 
         public Conversion ClassifyConversionFromType(TypeSymbol source, TypeSymbol destination, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
         {
             throw new NotImplementedException();
         }
 
-        public Conversion ClassifyConversionFromExpression(object bnode, TypeSymbol destination, ref HashSet<DiagnosticInfo> useSiteDiagnostics, bool forCast)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Conversion ClassifyConversionFromExpression(object bnode, TypeSymbol cdestination, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

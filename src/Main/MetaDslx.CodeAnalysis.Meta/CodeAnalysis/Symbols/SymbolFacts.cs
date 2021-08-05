@@ -14,14 +14,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
     public abstract class SymbolFacts
     {
-        public virtual string AttributeNameSuffix => "Attribute";
+        private Dictionary<object, object> _specialModelObjects;
 
-        public virtual DeclarationKind ToDeclarationKind(Type symbolType)
-        {
-            if (typeof(NamespaceSymbol).IsAssignableFrom(symbolType)) return DeclarationKind.Namespace;
-            if (typeof(TypeSymbol).IsAssignableFrom(symbolType)) return DeclarationKind.Type;
-            return DeclarationKind.None;
-        }
+        public virtual string AttributeNameSuffix => "Attribute";
 
         public abstract object GetModel(object modelObject);
         public abstract bool ContainsObject(object model, object modelObject);
@@ -40,6 +35,42 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public abstract bool IsContainmentProperty(object property);
         public abstract IEnumerable<object> GetPropertyValues(object modelObject, object property);
         public abstract void SetOrAddPropertyValue(object modelObject, object property, object symbolValue, Location location, DiagnosticBag diagnostics, CancellationToken cancellationToken);
+
+        public virtual ImmutableArray<object> SpecialTypes => ImmutableArray<object>.Empty;
+
+        public virtual string? GetSpecialSymbolMetadataName(object specialSymbol)
+        {
+            return null;
+        }
+
+        public virtual object? GetSpecialModelObject(object specialType)
+        {
+            return null;
+        }
+
+        public virtual object? GetSpecialSymbol(object modelObject)
+        {
+            BuildSpecialSymbolMap();
+            _specialModelObjects.TryGetValue(modelObject, out var result);
+            return result;
+        }
+
+        private void BuildSpecialSymbolMap()
+        {
+            if (_specialModelObjects == null)
+            {
+                var dict = new Dictionary<object, object>();
+                foreach (var st in this.SpecialTypes)
+                {
+                    var mobj = this.GetSpecialModelObject(st);
+                    if (mobj is not null)
+                    {
+                        dict.Add(mobj, st);
+                    }
+                }
+                Interlocked.CompareExchange(ref _specialModelObjects, dict, null);
+            }
+        }
 
         public virtual Type GetSymbolType(object modelObject)
         {
@@ -64,9 +95,5 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         public abstract Type GetSymbolType(Type modelObjectType);
 
-        public virtual IEnumerable<IModelObject> GetBuiltInObjects()
-        {
-            return ImmutableArray<IModelObject>.Empty;
-        }
     }
 }

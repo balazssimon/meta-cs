@@ -96,6 +96,10 @@ namespace [symbol.NamespaceName].Error
 ^
         public Type ModelObjectType => _modelObject is not null ? Language.SymbolFacts.GetModelObjectType(_modelObject) : null;
             [end if]
+            [if (!symbol.ExistingErrorTypeInfo.Members.Contains("SpecialSymbol"))]
+^
+        public virtual object? SpecialSymbol => _modelObject is not null ? Language.SymbolFacts.GetSpecialSymbol(_modelObject) : null;
+            [end if]
         [end if]
         [if (symbol.SymbolParts.HasFlag(SymbolParts.Source))]
 ^
@@ -119,18 +123,22 @@ namespace [symbol.NamespaceName].Error
         [end if]
         [if (!symbol.ExistingErrorTypeInfo.Members.Contains("ContainingSymbol"))]
 ^
-        public sealed override Symbol ContainingSymbol => _container;
+        public override Symbol ContainingSymbol => _container;
         [end if]
         [end if]
 ^
         public sealed override bool IsError => true;
         [if (!symbol.ExistingErrorTypeInfo.Members.Contains("ChildSymbols"))]
 ^
-        public sealed override ImmutableArray<Symbol> ChildSymbols => ImmutableArray<Symbol>.Empty;
+        public override ImmutableArray<Symbol> ChildSymbols => ImmutableArray<Symbol>.Empty;
         [end if]
         [if (!symbol.ExistingErrorTypeInfo.Members.Contains("Name"))]
 ^
-        public sealed override string Name => [if (symbol.ModelObjectOption != ParameterOption.Disabled)]_modelObject is not null ? Language.SymbolFacts.GetName(_modelObject) : string.Empty;[else]string.Empty;[end if]
+        public override string Name => [if (symbol.ModelObjectOption != ParameterOption.Disabled)]_modelObject is not null ? Language.SymbolFacts.GetName(_modelObject) : string.Empty;[else]string.Empty;[end if]
+        [end if]
+        [if (!symbol.ExistingErrorTypeInfo.Members.Contains("ErrorInfo"))]
+^
+        public virtual DiagnosticInfo ErrorInfo { get; }
         [end if]
         [loop (prop:symbol.Properties)]
             [if (!symbol.ExistingErrorTypeInfo.Members.Contains(prop.Name))]
@@ -215,6 +223,10 @@ namespace [symbol.NamespaceName].Completion
             [if (!symbol.ExistingCompletionTypeInfo.Members.Contains("ModelObjectType"))]
 ^
         public Type ModelObjectType => _modelObject is not null ? Language.SymbolFacts.GetModelObjectType(_modelObject) : null;
+            [end if]
+            [if (!symbol.ExistingCompletionTypeInfo.Members.Contains("SpecialSymbol"))]
+^
+        public virtual object? SpecialSymbol => _modelObject is not null ? Language.SymbolFacts.GetSpecialSymbol(_modelObject) : null;
             [end if]
         [end if]
         [if (!symbol.ExistingCompletionTypeInfo.Members.Contains("ContainingSymbol"))]
@@ -693,7 +705,9 @@ namespace [namespaceName].Factory
 	{
         public Symbol? CreateErrorSymbol(Symbol? container, object? modelObject, MergedDeclaration? declaration)
         {
-            [if (symbol.ExistingErrorTypeInfo.Members.Contains(".ctor"))]
+            [if (!symbol.SymbolParts.HasFlag(SymbolParts.Error))]
+            throw new NotImplementedException("There is no Error[symbol.Name] implemented.");
+            [else if (symbol.ExistingErrorTypeInfo.Members.Contains(".ctor"))]
             throw new NotImplementedException("CreateErrorSymbol for Error[symbol.Name] should be implemented in a custom SymbolFactory.");
             [else]
             return new Error.Error[symbol.Name](container[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if], declaration);
@@ -702,7 +716,9 @@ namespace [namespaceName].Factory
 ^
         public Symbol? CreateMetadataSymbol(Symbol container, object modelObject)
         {
-            [if (symbol.ExistingMetadataTypeInfo.Members.Contains(".ctor"))]
+            [if (!symbol.SymbolParts.HasFlag(SymbolParts.Metadata))]
+            throw new NotImplementedException("There is no Metadata[symbol.Name] implemented.");
+            [else if (symbol.ExistingMetadataTypeInfo.Members.Contains(".ctor"))]
             throw new NotImplementedException("CreateMetadataSymbol for Metadata[symbol.Name] should be implemented in a custom SymbolFactory.");
             [else]
             return new Metadata.Metadata[symbol.Name](container[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if]);
@@ -711,7 +727,9 @@ namespace [namespaceName].Factory
 ^
         public Symbol? CreateSourceSymbol(Symbol container, object modelObject, MergedDeclaration declaration)
         {
-            [if (symbol.ExistingSourceTypeInfo.Members.Contains(".ctor"))]
+            [if (!symbol.SymbolParts.HasFlag(SymbolParts.Source))]
+            throw new NotImplementedException("There is no Source[symbol.Name] implemented.");
+            [else if (symbol.ExistingSourceTypeInfo.Members.Contains(".ctor"))]
             throw new NotImplementedException("CreateSourceSymbol for Source[symbol.Name] should be implemented in a custom SymbolFactory.");
             [else]
             return new Source.Source[symbol.Name](container[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if], declaration);

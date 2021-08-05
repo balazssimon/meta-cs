@@ -24,7 +24,6 @@ namespace MetaDslx.CodeAnalysis.Declarations
 
         public MergedDeclaration(ImmutableArray<SingleDeclaration> declarations)
             : base(declarations.IsEmpty ? null : declarations[0].Name,
-                  declarations.IsEmpty ? DeclarationKind.None : declarations[0].Kind,
                   declarations.IsEmpty ? false : declarations[0].Merge,
                   declarations.Any(decl => decl.HasImports),
                   false)

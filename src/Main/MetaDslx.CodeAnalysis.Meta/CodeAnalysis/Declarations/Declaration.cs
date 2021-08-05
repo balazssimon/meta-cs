@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using System;
@@ -41,15 +42,13 @@ namespace MetaDslx.CodeAnalysis.Declarations
     {
         private readonly string name;
         private readonly DeclarationFlags flags;
-        private DeclarationKind kind;
 
-        protected Declaration(string name, DeclarationKind kind, bool merge, bool hasUsings, bool isNestingParent)
+        protected Declaration(string name, bool merge, bool hasUsings, bool isNestingParent)
         {
             this.name = name;
             if (merge) this.flags |= DeclarationFlags.Merge;
             if (hasUsings) this.flags |= DeclarationFlags.HasImports;
             if (isNestingParent) this.flags |= DeclarationFlags.IsNestingParent;
-            this.kind = kind;
         }
 
         public string Name
@@ -87,17 +86,15 @@ namespace MetaDslx.CodeAnalysis.Declarations
 
         protected abstract ImmutableArray<Declaration> GetDeclarationChildren();
 
-        public DeclarationKind Kind => kind;
+        public bool IsType => typeof(TypeSymbol).IsAssignableFrom(SymbolType);
 
-        public bool IsType => kind == DeclarationKind.Type;
+        public bool IsNamespace => typeof(NamespaceSymbol).IsAssignableFrom(SymbolType);
 
-        public bool IsNamespace => kind == DeclarationKind.Namespace;
+        public bool IsScript => typeof(ScriptSymbol).IsAssignableFrom(SymbolType);
 
-        public bool IsScript => kind == DeclarationKind.Script;
+        public bool IsSubmission => typeof(SubmissionSymbol).IsAssignableFrom(SymbolType);
 
-        public bool IsSubmission => kind == DeclarationKind.Submission;
-
-        public bool IsImplicit => kind == DeclarationKind.Implicit;
+        public bool IsImplicit => IsScript || IsSubmission;
 
         public bool HasImports => this.flags.HasFlag(DeclarationFlags.HasImports);
 
@@ -135,7 +132,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             private static void Dump(StringBuilder sb, string indent, Declaration declaration)
             {
                 if (declaration == null) return;
-                sb.AppendFormat("{0}{1} {2}: {3}", indent, declaration.Kind.ToString().ToLower(), declaration.Name, declaration.ModelObjectType.Name ?? "<root>");
+                sb.AppendFormat("{0}{1} {2}: {3}", indent, declaration.SymbolType.Name, declaration.Name, declaration.ModelObjectType.Name ?? "<root>");
                 sb.AppendLine();
                 foreach (var child in declaration.GetDeclarationChildren())
                 {

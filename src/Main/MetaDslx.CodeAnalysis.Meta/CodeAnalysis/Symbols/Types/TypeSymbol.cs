@@ -355,17 +355,12 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return FindMostSpecificImplementationWithDiagnostics(baseTypeMember, (NamedTypeSymbol)this).Symbol;
         }
 
-        /// <summary>
-        /// Gets corresponding special TypeId of this type.
-        /// </summary>
-        /// <remarks>
-        /// Not preserved in types constructed from this one.
-        /// </remarks>
-        public virtual SpecialType SpecialType => SpecialType.None;
+        public virtual SpecialType SpecialType => SpecialSymbol is SpecialType st ? st : SpecialType.None;
+
         /// <summary>
         /// Gets corresponding primitive type code for this type declaration.
         /// </summary>
-        internal Microsoft.Cci.PrimitiveTypeCode PrimitiveTypeCode => SpecialTypes.GetTypeCode(SpecialType);
+        internal Microsoft.Cci.PrimitiveTypeCode PrimitiveTypeCode => SpecialSymbol is SpecialType st ? SpecialTypes.GetTypeCode(st) : Microsoft.Cci.PrimitiveTypeCode.NotPrimitive;
 
         #region Use-Site Diagnostics
 
@@ -447,24 +442,18 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// (such as A&lt;T&gt; in A&lt;T&gt;.B&lt;U&gt;). This includes checking constraints
         /// on generic types within the type (such as B&lt;T&gt; in A&lt;B&lt;T&gt;[]&gt;).
         /// </summary>
-        public virtual void CheckAllConstraints(
-            LanguageCompilation compilation,
-            ConversionsBase conversions,
-            Location location,
-            DiagnosticBag diagnostics)
+        public virtual void CheckAllConstraints(LanguageCompilation compilation, Location location, DiagnosticBag diagnostics)
         {
             // TODO:MetaDslx
         }
 
-        public bool CheckAllConstraints(
-            LanguageCompilation compilation,
-            ConversionsBase conversions)
+        public bool CheckAllConstraints(LanguageCompilation compilation)
         {
             var diagnostics = DiagnosticBag.GetInstance();
 
             // Nullability checks can only add warnings here so skip them for this check as we are only
             // concerned with errors.
-            CheckAllConstraints(compilation, conversions, NoLocation.Singleton, diagnostics);
+            CheckAllConstraints(compilation, NoLocation.Singleton, diagnostics);
             bool ok = !diagnostics.HasAnyErrors();
             diagnostics.Free();
             return ok;

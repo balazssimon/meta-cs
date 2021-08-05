@@ -1218,6 +1218,23 @@ namespace MetaDslx.CodeAnalysis.Symbols.Factory
             return new Source.SourceNullableTypeSymbol(container, modelObject, declaration);
         }
 	}
+	public class PrimitiveTypeSymbolFactory : IGeneratedSymbolFactory
+	{
+        public Symbol? CreateErrorSymbol(Symbol? container, object? modelObject, MergedDeclaration? declaration)
+        {
+            return new Error.ErrorPrimitiveTypeSymbol(container, modelObject, declaration);
+        }
+
+        public Symbol? CreateMetadataSymbol(Symbol container, object modelObject)
+        {
+            return new Metadata.MetadataPrimitiveTypeSymbol(container, modelObject);
+        }
+
+        public Symbol? CreateSourceSymbol(Symbol container, object modelObject, MergedDeclaration declaration)
+        {
+            return new Source.SourcePrimitiveTypeSymbol(container, modelObject, declaration);
+        }
+	}
 	public class StructTypeSymbolFactory : IGeneratedSymbolFactory
 	{
         public Symbol? CreateErrorSymbol(Symbol? container, object? modelObject, MergedDeclaration? declaration)

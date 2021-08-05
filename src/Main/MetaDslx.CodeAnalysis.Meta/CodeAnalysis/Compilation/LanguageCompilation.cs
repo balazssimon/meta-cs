@@ -72,10 +72,6 @@ namespace MetaDslx.CodeAnalysis
         // and re-created.
         private ConcurrentSet<ImportInfo>? _lazyImportInfos;
 
-        // Cache the CLS diagnostics for the whole compilation so they aren't computed repeatedly.
-        // NOTE: Presently, we do not cache the per-tree diagnostics.
-        private ImmutableArray<Diagnostic> _lazyClsComplianceDiagnostics;
-
         private Conversions? _conversions;
         /// <summary>
         /// A conversions object that ignores nullability.
@@ -903,7 +899,7 @@ namespace MetaDslx.CodeAnalysis
         /// <remarks>
         /// Uses object identity when comparing two references.
         /// </remarks>
-        internal new Symbol? GetAssemblyOrModuleSymbol(MetadataReference reference)
+        public new Symbol? GetAssemblyOrModuleSymbol(MetadataReference reference)
         {
             if (reference == null)
             {
@@ -1114,7 +1110,7 @@ namespace MetaDslx.CodeAnalysis
         /// <summary>
         /// The AssemblySymbol that represents the assembly being created.
         /// </summary>
-        internal new AssemblySymbol Assembly
+        public new AssemblySymbol Assembly
         {
             get
             {
@@ -1127,7 +1123,7 @@ namespace MetaDslx.CodeAnalysis
         /// By getting the GlobalNamespace property of that module, all of the namespaces and types
         /// defined in source code can be obtained.
         /// </summary>
-        internal new SourceModuleSymbol SourceModule
+        public new SourceModuleSymbol SourceModule
         {
             get
             {
@@ -1139,7 +1135,7 @@ namespace MetaDslx.CodeAnalysis
         /// Gets the root namespace that contains all namespaces and types defined in source code or in
         /// referenced metadata, merged into a single namespace hierarchy.
         /// </summary>
-        internal new NamespaceSymbol GlobalNamespace
+        public new NamespaceSymbol GlobalNamespace
         {
             get
             {
@@ -1196,7 +1192,7 @@ namespace MetaDslx.CodeAnalysis
             return null;
         }
 
-        internal NamespaceSymbol? GetCompilationNamespace(NamespaceSymbol namespaceSymbol)
+        public NamespaceSymbol? GetCompilationNamespace(NamespaceSymbol namespaceSymbol)
         {
             if (namespaceSymbol.NamespaceKind == NamespaceKind.Compilation &&
                 namespaceSymbol.ContainingCompilation == this)
@@ -1338,10 +1334,21 @@ namespace MetaDslx.CodeAnalysis
             }
         }
 
+        public Symbol GetSpecialSymbol(object specialSymbol)
+        {
+            if (!Language.SymbolFacts.SpecialTypes.Contains(specialSymbol))
+            {
+                throw new ArgumentOutOfRangeException(nameof(specialSymbol), $"Unexpected SpecialSymbol: '{specialSymbol}'.");
+            }
+            var result = SourceAssembly.GetSpecialSymbol(specialSymbol);
+            Debug.Assert(specialSymbol.Equals(result.SpecialSymbol));
+            return result;
+        }
+
         /// <summary>
         /// Get the symbol for the predefined type from the COR Library referenced by this compilation.
         /// </summary>
-        internal new NamedTypeSymbol GetSpecialType(SpecialType specialType)
+        public new NamedTypeSymbol GetSpecialType(SpecialType specialType)
         {
             if (specialType <= SpecialType.None || specialType > SpecialType.Count)
             {
@@ -1356,10 +1363,10 @@ namespace MetaDslx.CodeAnalysis
             }
             else
             {
-                result = Assembly.GetSpecialType(specialType);
+                result = (NamedTypeSymbol)SourceAssembly.GetSpecialSymbol(specialType);
             }
 
-            Debug.Assert(result.SpecialType == specialType);
+            Debug.Assert(result.SpecialSymbol is SpecialType st && specialType == st);
             return result;
         }
 
@@ -1920,12 +1927,14 @@ namespace MetaDslx.CodeAnalysis
         /// <paramref name="source"/> type to the <paramref name="destination"/> type.</returns>
         public override CommonConversion ClassifyCommonConversion(ITypeSymbol source, ITypeSymbol destination)
         {
-            return ClassifyConversion(source, destination).ToCommonConversion();
+            throw new NotImplementedException("TODO:MetaDslx");
+            //return ClassifyConversion(source, destination).ToCommonConversion();
         }
-
+        
         internal override IConvertibleConversion ClassifyConvertibleConversion(IOperation source, ITypeSymbol? destination, out ConstantValue? constantValue)
         {
-            constantValue = null;
+            throw new NotImplementedException("TODO:MetaDslx");
+            /*constantValue = null;
 
             if (destination is null)
             {
@@ -1953,9 +1962,9 @@ namespace MetaDslx.CodeAnalysis
                 constantValue = sourceConstantValue;
             }
 
-            return result;
+            return result;*/
         }
-
+        
         private protected override bool IsSymbolAccessibleWithinCore(
             ISymbol symbol,
             ISymbol within,
@@ -3162,7 +3171,7 @@ namespace MetaDslx.CodeAnalysis
                     return _compilation.GlobalNamespace;
                 }
 
-                if (declaration.Kind == DeclarationKind.Namespace)
+                if (declaration.IsNamespace)
                 {
                     AddCache(container.GetMembers(declaration.Name).OfType<NamespaceOrTypeSymbol>());
                 }

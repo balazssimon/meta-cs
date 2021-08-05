@@ -1,8 +1,10 @@
 // Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
 using System.Reflection.PortableExecutable;
@@ -28,6 +30,13 @@ namespace MetaDslx.CodeAnalysis.Symbols
         // Do not make any changes to the public interface without making the corresponding change
         // to the VB version.
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+        /// <summary>
+        /// A dictionary of cached Cor types defined in this assembly.
+        /// Lazily filled by GetSpecialSymbol method.
+        /// </summary>
+        /// <remarks></remarks>
+        private ConcurrentDictionary<object, DeclaredSymbol> _lazySpecialSymbols;
 
         /// <summary>
         /// Returns a NamespaceSymbol representing the global (root) namespace, with
@@ -240,5 +249,52 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public abstract ModuleMetadata GetMetadata();
 
         #endregion
+
+        /// <summary>
+        /// Lookup declaration for predefined symbol in this module.
+        /// </summary>
+        /// <param name="key">The key </param>
+        internal DeclaredSymbol? GetDeclaredSpecialSymbol(object specialSymbol)
+        {
+            if (!this.Language.SymbolFacts.SpecialTypes.Contains(specialSymbol)) return null;
+            DeclaredSymbol result = null;
+            if (_lazySpecialSymbols == null || !_lazySpecialSymbols.ContainsKey(specialSymbol))
+            {
+                var modelObject = this.Language.SymbolFacts.GetSpecialModelObject(specialSymbol);
+                var metadataName = this.Language.SymbolFacts.GetSpecialSymbolMetadataName(specialSymbol);
+                if (metadataName is null)
+                {
+                    metadataName = specialSymbol is SpecialType st ? st.GetMetadataName() : specialSymbol.ToString();
+                }
+                MetadataTypeName emittedName = MetadataTypeName.FromFullName(metadataName, useCLSCompliantNameArityEncoding: true);
+                result = this.LookupTopLevelMetadataType(ref emittedName);
+                if (!result.IsError && result.DeclaredAccessibility != Accessibility.Public)
+                {
+                    result = new MissingMetadataTypeSymbol.TopLevel(this, ref emittedName, modelObject);
+                }
+                else if (result.IsError && modelObject is not null)
+                {
+                    result = new MissingMetadataTypeSymbol.TopLevel(this, ref emittedName, modelObject);
+                }
+                RegisterDeclaredSpecialSymbol(specialSymbol, ref result);
+            }
+
+            return _lazySpecialSymbols[specialSymbol];
+        }
+
+        /// <summary>
+        /// Register declaration of predefined symbol in this Module.
+        /// </summary>
+        /// <param name="corType"></param>
+        private void RegisterDeclaredSpecialSymbol(object specialType, ref DeclaredSymbol symbol)
+        {
+            Debug.Assert(specialType != null);
+            Debug.Assert(ReferenceEquals(symbol.ContainingModule, this));
+            if (_lazySpecialSymbols == null)
+            {
+                Interlocked.CompareExchange(ref _lazySpecialSymbols, new ConcurrentDictionary<object, DeclaredSymbol>(), null);
+            }
+            _lazySpecialSymbols.TryAdd(specialType, symbol);
+        }
     }
 }

@@ -158,25 +158,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
             return CSharpSymbolMap.GetAttributes(_underlyingAssembly.GetAttributes(), ref _lazyCustomAttributes);
         }
 
-        /// <summary>
-        /// Lookup declaration for FX type in this Assembly.
-        /// </summary>
-        /// <param name="type"></param>
-        /// <returns></returns>
-        /// <remarks></remarks>
-        public override DeclaredSymbol GetDeclaredSpecialSymbol(object key)
+        internal override Type? GetSpecialSymbolType(SpecialType specialType)
         {
-            if (key is SpecialType type)
-            {
-                return CSharpSymbolMap.GetNamedTypeSymbol(_underlyingAssembly.GetDeclaredSpecialType(type));
-            }
-            else
-            {
-                return null;
-            }
+            var symbol = _underlyingAssembly.GetDeclaredSpecialType(specialType);
+            return symbol.ToMetaDslxType();
         }
-
-        public override ImmutableArray<DeclaredSymbol> DeclaredSpecialSymbols => ImmutableArray<DeclaredSymbol>.Empty; // TODO:MetaDslx
 
         internal override ImmutableArray<AssemblySymbol> GetNoPiaResolutionAssemblies()
         {
