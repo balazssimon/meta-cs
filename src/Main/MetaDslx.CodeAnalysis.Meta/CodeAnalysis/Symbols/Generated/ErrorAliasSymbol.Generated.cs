@@ -37,13 +37,15 @@ namespace MetaDslx.CodeAnalysis.Symbols.Error
 
         public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => _declaration?.SyntaxReferences ?? ImmutableArray<SyntaxReference>.Empty;
 
-        public sealed override Symbol ContainingSymbol => _container;
+        public override Symbol ContainingSymbol => _container;
 
         public sealed override bool IsError => true;
 
-        public sealed override ImmutableArray<Symbol> ChildSymbols => ImmutableArray<Symbol>.Empty;
+        public override ImmutableArray<Symbol> ChildSymbols => ImmutableArray<Symbol>.Empty;
 
-        public sealed override string Name => string.Empty;
+        public override string Name => string.Empty;
+
+        public virtual DiagnosticInfo ErrorInfo { get; }
 
         public override global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.Symbol> Attributes => default;
 

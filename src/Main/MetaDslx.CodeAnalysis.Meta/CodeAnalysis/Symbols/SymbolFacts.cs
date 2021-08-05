@@ -48,7 +48,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return null;
         }
 
-        public virtual object? GetSpecialSymbol(object modelObject)
+        public object? GetSpecialSymbol(object modelObject)
         {
             BuildSpecialSymbolMap();
             _specialModelObjects.TryGetValue(modelObject, out var result);

@@ -87,6 +87,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
 
         public Type ModelObjectType => _modelObject is not null ? Language.SymbolFacts.GetModelObjectType(_modelObject) : null;
 
+        public override object? SpecialSymbol => _modelObject is not null ? Language.SymbolFacts.GetSpecialSymbol(_modelObject) : null;
+
         public sealed override Symbol ContainingSymbol => _container;
 
         public sealed override ImmutableArray<Symbol> ChildSymbols 

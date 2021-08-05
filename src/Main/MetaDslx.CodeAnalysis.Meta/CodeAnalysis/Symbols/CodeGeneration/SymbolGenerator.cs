@@ -458,8 +458,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                     if (!symbol.ExistingErrorTypeInfo.Members.Contains("SpecialSymbol")) //99:14
                     {
                         __out.AppendLine(true); //100:1
-                        __out.Write("        public virtual object? SpecialSymbol => _modelObject is not null ? Language.SymbolFacts.GetSpecialSymbol(_modelObject) : null;"); //101:1
-                        __out.AppendLine(false); //101:135
+                        __out.Write("        public override object? SpecialSymbol => _modelObject is not null ? Language.SymbolFacts.GetSpecialSymbol(_modelObject) : null;"); //101:1
+                        __out.AppendLine(false); //101:136
                     }
                 }
                 if (symbol.SymbolParts.HasFlag(SymbolParts.Source)) //104:10
@@ -1207,8 +1207,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                     if (!symbol.ExistingCompletionTypeInfo.Members.Contains("SpecialSymbol")) //227:14
                     {
                         __out.AppendLine(true); //228:1
-                        __out.Write("        public virtual object? SpecialSymbol => _modelObject is not null ? Language.SymbolFacts.GetSpecialSymbol(_modelObject) : null;"); //229:1
-                        __out.AppendLine(false); //229:135
+                        __out.Write("        public override object? SpecialSymbol => _modelObject is not null ? Language.SymbolFacts.GetSpecialSymbol(_modelObject) : null;"); //229:1
+                        __out.AppendLine(false); //229:136
                     }
                 }
                 if (!symbol.ExistingCompletionTypeInfo.Members.Contains("ContainingSymbol")) //232:10

@@ -35,6 +35,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Error
 
         public Type ModelObjectType => _modelObject is not null ? Language.SymbolFacts.GetModelObjectType(_modelObject) : null;
 
+        public override object? SpecialSymbol => _modelObject is not null ? Language.SymbolFacts.GetSpecialSymbol(_modelObject) : null;
+
         public MergedDeclaration MergedDeclaration => _declaration;
         public MetaDslx.CodeAnalysis.Binding.BinderPosition<MetaDslx.CodeAnalysis.Binding.Binders.SymbolBinder> GetBinder(SyntaxReference syntax) => default;
         public Symbol GetChildSymbol(SyntaxReference syntax) => null;
@@ -47,9 +49,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Error
 
         public sealed override bool IsError => true;
 
-        public sealed override ImmutableArray<Symbol> ChildSymbols => ImmutableArray<Symbol>.Empty;
+        public override ImmutableArray<Symbol> ChildSymbols => ImmutableArray<Symbol>.Empty;
 
         public override string Name => _modelObject is not null ? Language.SymbolFacts.GetName(_modelObject) : string.Empty;
+
+        public virtual DiagnosticInfo ErrorInfo { get; }
 
         public override global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.Symbol> Attributes => default;
 
@@ -66,8 +70,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Error
         public override bool IsAbstract => default;
 
         public override bool IsSealed => default;
-
-        public virtual DiagnosticInfo ErrorInfo { get; }
 
     }
 }

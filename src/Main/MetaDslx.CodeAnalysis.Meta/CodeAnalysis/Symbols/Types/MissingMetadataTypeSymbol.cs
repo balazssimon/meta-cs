@@ -262,7 +262,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 }
             }
 
-            public override SpecialType SpecialType
+            /*public override SpecialType SpecialType
             {
                 get
                 {
@@ -271,7 +271,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 }
             }
 
-            public override object? SpecialSymbol => this.SpecialType;
+            public override object? SpecialSymbol => this.SpecialType;*/
 
             public override DiagnosticInfo ErrorInfo
             {
@@ -395,7 +395,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
 
 
-            public override SpecialType SpecialType
+            /*public override SpecialType SpecialType
             {
                 get
                 {
@@ -403,7 +403,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 }
             }
 
-            public override object? SpecialSymbol => this.SpecialType;
+            public override object? SpecialSymbol => this.SpecialType;*/
 
             public override int GetHashCode()
             {

@@ -19,6 +19,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 	public partial class SourceNamedTypeSymbol : MetaDslx.CodeAnalysis.Symbols.Completion.CompletionNamedTypeSymbol, MetaDslx.CodeAnalysis.Symbols.Source.ISourceSymbol
 	{
         private readonly MergedDeclaration _declaration;
+        private LexicalSortKey _lazyLexicalSortKey = LexicalSortKey.NotInitialized;
 
 		public SourceNamedTypeSymbol(Symbol containingSymbol, object modelObject, MergedDeclaration declaration)
             : base(containingSymbol, modelObject)
@@ -49,6 +50,14 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 }
             }
             return null;
+        }
+        public override LexicalSortKey GetLexicalSortKey()
+        {
+            if (!_lazyLexicalSortKey.IsInitialized)
+            {
+                _lazyLexicalSortKey.SetFrom(this.MergedDeclaration.GetLexicalSortKey(this.DeclaringCompilation));
+            }
+            return _lazyLexicalSortKey;
         }
 
         protected override void CompleteInitializingSymbol(DiagnosticBag diagnostics, CancellationToken cancellationToken)

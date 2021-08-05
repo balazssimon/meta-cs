@@ -392,6 +392,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                     if (!result.IsError) return result;
                 }
             }
+            if (result is not null) return result;
             var firstModule = this.Modules[0];
             var metadataName = firstModule.Language.SymbolFacts.GetSpecialSymbolMetadataName(specialSymbol);
             if (metadataName is null)

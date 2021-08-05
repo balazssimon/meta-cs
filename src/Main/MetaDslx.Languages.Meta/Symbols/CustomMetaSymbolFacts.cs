@@ -149,19 +149,5 @@ namespace MetaDslx.Languages.Meta.Symbols
             return null;
         }
 
-        public override object? GetSpecialSymbol(object modelObject)
-        {
-            if (ReferenceEquals(modelObject, MetaInstance.Object)) return SpecialType.System_Object;
-            if (ReferenceEquals(modelObject, MetaInstance.String)) return SpecialType.System_String;
-            if (ReferenceEquals(modelObject, MetaInstance.Int)) return SpecialType.System_Int32;
-            if (ReferenceEquals(modelObject, MetaInstance.Long)) return SpecialType.System_Int64;
-            if (ReferenceEquals(modelObject, MetaInstance.Float)) return SpecialType.System_Single;
-            if (ReferenceEquals(modelObject, MetaInstance.Double)) return SpecialType.System_Double;
-            if (ReferenceEquals(modelObject, MetaInstance.Byte)) return SpecialType.System_Byte;
-            if (ReferenceEquals(modelObject, MetaInstance.Bool)) return SpecialType.System_Boolean;
-            if (ReferenceEquals(modelObject, MetaInstance.Void)) return SpecialType.System_Void;
-            if (ReferenceEquals(modelObject, MetaInstance.ModelObject)) return MetaInstance.ModelObject;
-            return null;
-        }
     }
 }

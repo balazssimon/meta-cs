@@ -98,7 +98,7 @@ namespace [symbol.NamespaceName].Error
             [end if]
             [if (!symbol.ExistingErrorTypeInfo.Members.Contains("SpecialSymbol"))]
 ^
-        public virtual object? SpecialSymbol => _modelObject is not null ? Language.SymbolFacts.GetSpecialSymbol(_modelObject) : null;
+        public override object? SpecialSymbol => _modelObject is not null ? Language.SymbolFacts.GetSpecialSymbol(_modelObject) : null;
             [end if]
         [end if]
         [if (symbol.SymbolParts.HasFlag(SymbolParts.Source))]
@@ -226,7 +226,7 @@ namespace [symbol.NamespaceName].Completion
             [end if]
             [if (!symbol.ExistingCompletionTypeInfo.Members.Contains("SpecialSymbol"))]
 ^
-        public virtual object? SpecialSymbol => _modelObject is not null ? Language.SymbolFacts.GetSpecialSymbol(_modelObject) : null;
+        public override object? SpecialSymbol => _modelObject is not null ? Language.SymbolFacts.GetSpecialSymbol(_modelObject) : null;
             [end if]
         [end if]
         [if (!symbol.ExistingCompletionTypeInfo.Members.Contains("ContainingSymbol"))]
