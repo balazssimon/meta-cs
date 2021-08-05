@@ -528,6 +528,12 @@ namespace MetaDslx.CodeAnalysis.Symbols
         {
             // TODO:MetaDslx
             //return SymbolDisplay.ToDisplayString(this, format);
+            if (format == SymbolDisplayFormat.QualifiedNameOnlyFormat)
+            {
+                var container = this.ContainingDeclaration;
+                if (container is not null) return MetadataHelpers.BuildQualifiedName(container.ToDisplayString(format), this.MetadataName);
+                else return this.MetadataName;
+            }
             return this.MetadataName + " (" + GetKindText() + ")";
         }
 

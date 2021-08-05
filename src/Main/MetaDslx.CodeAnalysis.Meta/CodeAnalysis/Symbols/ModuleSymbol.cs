@@ -268,13 +268,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 }
                 MetadataTypeName emittedName = MetadataTypeName.FromFullName(metadataName, useCLSCompliantNameArityEncoding: true);
                 result = this.LookupTopLevelMetadataType(ref emittedName);
-                /*if (result.IsError)
+                /*if (result.IsError && this.DeclaringCompilation is not null)
                 {
-                    foreach (var referencedAssembly in this.ReferencedAssemblySymbols)
-                    {
-                        result = referencedAssembly.LookupTopLevelMetadataType(ref emittedName, false);
-                        if (!result.IsError) break;
-                    }
+                    result = this.DeclaringCompilation.LookupTopLevelMetadataType(ref emittedName);
                 }*/
                 if (!result.IsError && result.DeclaredAccessibility != Accessibility.Public)
                 {

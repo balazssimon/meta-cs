@@ -1371,6 +1371,36 @@ namespace MetaDslx.CodeAnalysis
         }
 
         /// <summary>
+        /// Lookup a top level type referenced from metadata, names should be
+        /// compared case-sensitively.
+        /// </summary>
+        /// <param name="emittedName">
+        /// Full type name, possibly with generic name mangling.
+        /// </param>
+        /// <returns>
+        /// Symbol for the type, or MissingMetadataSymbol if the type isn't found.
+        /// </returns>
+        /// <remarks></remarks>
+        public NamedTypeSymbol LookupTopLevelMetadataType(ref MetadataTypeName emittedName)
+        {
+            NamedTypeSymbol result;
+            NamespaceSymbol scope = this.GlobalNamespace.LookupNestedNamespace(emittedName.NamespaceSegments);
+
+            if ((object)scope == null)
+            {
+                // We failed to locate the namespace
+                result = new MissingMetadataTypeSymbol.TopLevel(this.SourceModule, ref emittedName);
+            }
+            else
+            {
+                result = scope.LookupMetadataType(ref emittedName);
+            }
+
+            Debug.Assert((object)result != null);
+            return result;
+        }
+
+        /// <summary>
         /// Get the symbol for the predefined type member from the COR Library referenced by this compilation.
         /// </summary>
         internal DeclaredSymbol GetSpecialTypeMember(SpecialMember specialMember)
