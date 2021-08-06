@@ -374,28 +374,71 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <returns>The symbol for the pre-defined symbol or an error type if the symbol is not defined.</returns>
         public Symbol GetSpecialSymbol(object specialSymbolId)
         {
-            Symbol? result = null;
+            var results = ArrayBuilder<Symbol>.GetInstance();
             foreach (var module in this.Modules)
             {
                 var symbol = module.GetDeclaredSpecialSymbol(specialSymbolId);
                 if (symbol is not null)
                 {
-                    if (result is null || result.IsError && !symbol.IsError)
-                    {
-                        result = symbol;
-                    }
-                    if (!result.IsError) return result;
+                    results.Add(symbol);
                 }
             }
-            if (result is not null) return result;
-            var firstModule = this.Modules[0];
-            var metadataName = firstModule.Language.SymbolFacts.GetSpecialSymbolMetadataName(specialSymbolId);
-            if (metadataName is null)
+            var modelObject = this.Language.SymbolFacts.GetSpecialModelObject(specialSymbolId) ?? specialSymbolId;
+            var result = SelectSingleModelSymbolResult(results, modelObject, this.Modules[0].SymbolFactory, nullIfNotFound: false);
+            results.Free();
+            return result!;
+        }
+
+        public Symbol? GetDeclaredModelSymbol(object modelObject)
+        {
+            var results = ArrayBuilder<Symbol>.GetInstance();
+            foreach (var module in this.Modules)
             {
-                metadataName = specialSymbolId is SpecialType st ? st.GetMetadataName() : specialSymbolId.ToString();
+                var symbol = module.GetDeclaredModelSymbol(modelObject);
+                if (symbol is not null)
+                {
+                    results.Add(symbol);
+                }
             }
-            MetadataTypeName emittedName = MetadataTypeName.FromFullName(metadataName, useCLSCompliantNameArityEncoding: true);
-            return new MissingMetadataTypeSymbol.TopLevel(firstModule, ref emittedName, null);
+            var result = SelectSingleModelSymbolResult(results, modelObject, this.Modules[0].SymbolFactory, nullIfNotFound: true);
+            results.Free();
+            return result;
+        }
+
+        public Symbol ResolveModelSymbol(object modelObject)
+        {
+            var result = this.GetDeclaredModelSymbol(modelObject);
+            if (result is not null && !result.IsError) return result;
+            var results = ArrayBuilder<Symbol>.GetInstance();
+            foreach (var module in this.Modules)
+            {
+                var symbol = module.ResolveModelSymbolFromReferencedAssemblies(modelObject);
+                if (symbol is not null)
+                {
+                    results.Add(symbol);
+                }
+            }
+            result = SelectSingleModelSymbolResult(results, modelObject, this.Modules[0].SymbolFactory, nullIfNotFound: false);
+            results.Free();
+            return result!;
+        }
+
+        internal static Symbol? SelectSingleModelSymbolResult(ArrayBuilder<Symbol> results, object modelObject, SymbolFactory symbolFactory, bool nullIfNotFound)
+        {
+            var goodCount = results.Count(s => !s.IsError);
+            var badCount = results.Count - goodCount;
+            if (results.Count == 0)
+            {
+                return nullIfNotFound ? null : symbolFactory.MakeMetadataErrorSymbol(modelObject);
+            }
+            else if (goodCount == 1)
+            {
+                return results.First(s => !s.IsError);
+            }
+            else
+            {
+                return symbolFactory.MakeMetadataErrorSymbol(modelObject);
+            }
         }
 
         internal static TypeSymbol DynamicType

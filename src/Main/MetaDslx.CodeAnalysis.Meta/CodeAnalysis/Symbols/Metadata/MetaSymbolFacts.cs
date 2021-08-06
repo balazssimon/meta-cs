@@ -17,31 +17,31 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
     {
         public override object GetModel(object modelObject)
         {
-            var mobj = (IModelObject)modelObject;
+            if (modelObject is not IModelObject mobj) return null;
             return mobj.MModel;
         }
 
         public override Type GetModelObjectType(object modelObject)
         {
-            var mobj = (IModelObject)modelObject;
+            if (modelObject is not IModelObject mobj) return null;
             return mobj.MId.Descriptor.ImmutableType;
         }
 
         public override string GetName(object modelObject)
         {
-            var mobj = (IModelObject)modelObject;
+            if (modelObject is not IModelObject mobj) return null;
             return mobj.MName;
         }
 
         public override object GetParent(object modelObject)
         {
-            var mobj = (IModelObject)modelObject;
+            if (modelObject is not IModelObject mobj) return null;
             return mobj.MParent;
         }
 
         public override IEnumerable<object> GetChildren(object modelObject)
         {
-            var mobj = (IModelObject)modelObject;
+            if (modelObject is not IModelObject mobj) return ImmutableArray<object>.Empty;
             return mobj.MChildren;
         }
 
@@ -53,7 +53,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 
         public override IEnumerable<object> GetProperties(object modelObject)
         {
-            var mobj = (IModelObject)modelObject;
+            if (modelObject is not IModelObject mobj) return ImmutableArray<object>.Empty;
             return GetProperties(mobj.MId.Descriptor);
         }
 
@@ -65,7 +65,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 
         public override IEnumerable<object> GetPropertyValues(object modelObject, object property)
         {
-            var mobj = (IModelObject)modelObject;
+            if (modelObject is not IModelObject mobj) return ImmutableArray<object>.Empty;
             var mprop = (ModelProperty)property;
             var value = mobj.MGet(mprop);
             if (mprop.IsCollection) return (IEnumerable<object>)value;

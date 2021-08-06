@@ -330,5 +330,10 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
                 }
             }
         }
+
+        internal protected override Symbol? GetDeclaredModelSymbol(object modelObject)
+        {
+            return null;
+        }
     }
 }

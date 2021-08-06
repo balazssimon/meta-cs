@@ -46,19 +46,19 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
         private global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.DeclaredSymbol> _members;
         private global::MetaDslx.CodeAnalysis.Symbols.DeclaredSymbol _target;
 
-        public CompletionAliasSymbol(Symbol container)
+        public CompletionAliasSymbol(Symbol container, bool isError = false)
         {
             _container = container;
             _state = CompletionParts.CompletionGraph.CreateState();
         }
 
-        public sealed override Language Language => ContainingModule.Language;
+        public override Language Language => ContainingModule.Language;
 
         public SymbolFactory SymbolFactory => ContainingModule.SymbolFactory;
 
-        public sealed override Symbol ContainingSymbol => _container;
+        public override Symbol ContainingSymbol => _container;
 
-        public sealed override ImmutableArray<Symbol> ChildSymbols 
+        public override ImmutableArray<Symbol> ChildSymbols 
         {
             get
             {

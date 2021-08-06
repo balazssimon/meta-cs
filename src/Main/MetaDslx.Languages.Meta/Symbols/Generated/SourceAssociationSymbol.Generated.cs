@@ -21,8 +21,8 @@ namespace MetaDslx.Languages.Meta.Symbols.Source
         private readonly MergedDeclaration _declaration;
         private LexicalSortKey _lazyLexicalSortKey = LexicalSortKey.NotInitialized;
 
-		public SourceAssociationSymbol(Symbol containingSymbol, MergedDeclaration declaration)
-            : base(containingSymbol)
+		public SourceAssociationSymbol(Symbol containingSymbol, MergedDeclaration declaration, bool isError = false)
+            : base(containingSymbol, isError)
         {
             if (declaration is null) throw new ArgumentNullException(nameof(declaration));
             _declaration = declaration;
@@ -91,6 +91,36 @@ namespace MetaDslx.Languages.Meta.Symbols.Source
         protected override void CompleteNonSymbolProperties(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             SourceSymbolImplementation.AssignNonSymbolProperties(this, diagnostics, cancellationToken);
+        }
+
+        public partial class Error : SourceAssociationSymbol
+        {
+            private DiagnosticInfo? _errorInfo;
+
+            public Error(Symbol container, MergedDeclaration declaration, DiagnosticInfo? errorInfo)
+                : base(container, declaration, true)
+            {
+                _errorInfo = errorInfo;
+            }
+
+            public sealed override bool IsError => true;
+
+            public DiagnosticInfo? ErrorInfo
+            {
+                get
+                {
+                    if (_errorInfo is null)
+                    {
+                        System.Threading.Interlocked.CompareExchange(ref _errorInfo, MakeErrorInfo(), null);
+                    }
+                    return _errorInfo;
+                }
+            }
+
+            protected virtual DiagnosticInfo? MakeErrorInfo()
+            {
+                return null;
+            }
         }
 	}
 }

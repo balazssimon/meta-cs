@@ -152,7 +152,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 if ((object)_globalNamespace == null)
                 {
                     Debug.Assert(!DeclaringCompilation.MergedRootDeclaration.HasDiagnostics);
-                    var globalNS = new SourceNamespaceSymbol(this, this, null, DeclaringCompilation.MergedRootDeclaration);
+                    var globalNS = new SourceNamespaceSymbol(this, this, DeclaringCompilation.MergedRootDeclaration, null);
                     Interlocked.CompareExchange(ref _globalNamespace, globalNS, null);
                 }
 

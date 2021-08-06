@@ -105,7 +105,10 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
         {
             if (value != null && !typeof(T).IsAssignableFrom(value.GetType()))
             {
-                diagnostics.Add(ModelErrorCode.ERR_CannotSetSymbolProperty.ToDiagnostic(location, value.ToString(), symbolPropertyName, symbol.ToString(), typeof(T).ToString(), value.GetType().ToString()));
+                if (symbolPropertyName != "Name")
+                {
+                    diagnostics.Add(ModelErrorCode.ERR_CannotSetSymbolProperty.ToDiagnostic(location, value.ToString(), symbolPropertyName, symbol.ToString(), typeof(T).ToString(), value.GetType().ToString()));
+                }
             }
             else if (value != null)
             {

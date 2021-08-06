@@ -13,19 +13,24 @@ namespace MetaDslx.Languages.Meta.Symbols.Factory
 {
 	public class AssociationSymbolFactory : IGeneratedSymbolFactory
 	{
-        public Symbol? CreateErrorSymbol(Symbol? container, object? modelObject, MergedDeclaration? declaration)
-        {
-            return new Error.ErrorAssociationSymbol(container, declaration);
-        }
-
-        public Symbol? CreateMetadataSymbol(Symbol container, object modelObject)
+        public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
         {
             return new Metadata.MetadataAssociationSymbol(container);
         }
 
-        public Symbol? CreateSourceSymbol(Symbol container, object modelObject, MergedDeclaration declaration)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        {
+            return new Metadata.MetadataAssociationSymbol.Error(container, errorInfo);
+        }
+
+        public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             return new Source.SourceAssociationSymbol(container, declaration);
+        }
+
+        public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, object? modelObject, DiagnosticInfo errorInfo)
+        {
+            return new Source.SourceAssociationSymbol.Error(container, declaration, errorInfo);
         }
 	}
 }

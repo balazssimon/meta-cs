@@ -97,5 +97,29 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         {
             SourceSymbolImplementation.AssignNonSymbolProperties(this, diagnostics, cancellationToken);
         }
+
+        public partial class Error : SourceNamespaceSymbol
+        {
+            private DiagnosticInfo? _errorInfo;
+
+            public sealed override bool IsError => true;
+
+            public DiagnosticInfo? ErrorInfo
+            {
+                get
+                {
+                    if (_errorInfo is null)
+                    {
+                        System.Threading.Interlocked.CompareExchange(ref _errorInfo, MakeErrorInfo(), null);
+                    }
+                    return _errorInfo;
+                }
+            }
+
+            protected virtual DiagnosticInfo? MakeErrorInfo()
+            {
+                return null;
+            }
+        }
 	}
 }

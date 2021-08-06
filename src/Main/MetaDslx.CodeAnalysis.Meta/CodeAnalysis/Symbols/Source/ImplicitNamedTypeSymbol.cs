@@ -21,7 +21,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
     public abstract class ImplicitNamedTypeSymbol : SourceNamedTypeSymbol
     {
         protected ImplicitNamedTypeSymbol(NamespaceOrTypeSymbol containingSymbol, MergedDeclaration declaration, object modelObject)
-            : base(containingSymbol, modelObject, declaration)
+            : base(containingSymbol, declaration, modelObject)
         {
             Debug.Assert(declaration.IsImplicit || declaration.IsSubmission || declaration.IsScript);
         }

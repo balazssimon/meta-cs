@@ -20,14 +20,14 @@ namespace MetaDslx.CodeAnalysis.Symbols
     ///   c) The metadata file was referenced, contained the correct outer type, but
     ///      didn't contains a nested type in that outer type.
     /// </summary>
-    internal abstract class MissingMetadataTypeSymbol : ErrorNamedTypeSymbol
+    internal abstract class MissingMetadataTypeSymbol : MetadataNamedTypeSymbol.Error
     {
         protected readonly string name;
         protected readonly int arity;
         protected readonly string metadataName;
 
         private MissingMetadataTypeSymbol(Symbol container, string name, int arity, object? modelObject)
-            : base(container, modelObject, null)
+            : base(container, null, modelObject)
         {
             Debug.Assert(name != null);
 

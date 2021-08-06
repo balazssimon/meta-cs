@@ -21,8 +21,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         private readonly MergedDeclaration _declaration;
         private LexicalSortKey _lazyLexicalSortKey = LexicalSortKey.NotInitialized;
 
-		public SourceConversionOperatorSymbol(Symbol containingSymbol, object modelObject, MergedDeclaration declaration)
-            : base(containingSymbol, modelObject)
+		public SourceConversionOperatorSymbol(Symbol containingSymbol, MergedDeclaration declaration, object? modelObject, bool isError = false)
+            : base(containingSymbol, modelObject, isError)
         {
             if (declaration is null) throw new ArgumentNullException(nameof(declaration));
             _declaration = declaration;
@@ -143,6 +143,36 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         protected override void CompleteNonSymbolProperties(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             SourceSymbolImplementation.AssignNonSymbolProperties(this, diagnostics, cancellationToken);
+        }
+
+        public partial class Error : SourceConversionOperatorSymbol
+        {
+            private DiagnosticInfo? _errorInfo;
+
+            public Error(Symbol container, MergedDeclaration declaration, DiagnosticInfo? errorInfo, object? modelObject = null)
+                : base(container, declaration, modelObject, true)
+            {
+                _errorInfo = errorInfo;
+            }
+
+            public sealed override bool IsError => true;
+
+            public DiagnosticInfo? ErrorInfo
+            {
+                get
+                {
+                    if (_errorInfo is null)
+                    {
+                        System.Threading.Interlocked.CompareExchange(ref _errorInfo, MakeErrorInfo(), null);
+                    }
+                    return _errorInfo;
+                }
+            }
+
+            protected virtual DiagnosticInfo? MakeErrorInfo()
+            {
+                return null;
+            }
         }
 	}
 }

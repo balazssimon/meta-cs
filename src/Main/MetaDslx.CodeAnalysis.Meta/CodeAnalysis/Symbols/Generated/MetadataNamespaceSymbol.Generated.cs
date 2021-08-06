@@ -15,8 +15,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 {
 	public partial class MetadataNamespaceSymbol : MetaDslx.CodeAnalysis.Symbols.Completion.CompletionNamespaceSymbol
 	{
-        public MetadataNamespaceSymbol(Symbol container, object modelObject = null)
-            : base(container, modelObject)
+        public MetadataNamespaceSymbol(Symbol container, object? modelObject = null, bool isError = false)
+            : base(container, modelObject, isError)
         {
         }
 
@@ -68,6 +68,36 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 
         protected override void CompleteNonSymbolProperties(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
+        }
+
+        public partial class Error : MetadataNamespaceSymbol, MetaDslx.CodeAnalysis.Symbols.IErrorSymbol
+        {
+            private DiagnosticInfo _errorInfo;
+
+            public Error(Symbol container, DiagnosticInfo? errorInfo, object? modelObject = null)
+                : base(container, modelObject, true)
+            {
+                _errorInfo = errorInfo;
+            }
+
+            public sealed override bool IsError => true;
+
+            public DiagnosticInfo? ErrorInfo
+            {
+                get
+                {
+                    if (_errorInfo is null)
+                    {
+                        System.Threading.Interlocked.CompareExchange(ref _errorInfo, MakeErrorInfo(), null);
+                    }
+                    return _errorInfo;
+                }
+            }
+
+            protected virtual DiagnosticInfo? MakeErrorInfo()
+            {
+                return null;
+            }
         }
     }
 }

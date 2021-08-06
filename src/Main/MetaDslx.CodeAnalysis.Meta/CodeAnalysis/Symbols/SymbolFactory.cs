@@ -29,21 +29,21 @@ namespace MetaDslx.CodeAnalysis.Symbols
             _symbolFacts = module.Language.SymbolFacts;
         }
 
-        public bool IsSourceSymbolFactory => _module.Ordinal == 0;
+        public bool IsSourceSymbolFactory => _module is SourceModuleSymbol;
         public ModuleSymbol Module => _module;
 
-        public bool TryGetSymbol(object modelObject, out Symbol symbol)
+        internal bool TryGetSymbol(object modelObject, out Symbol symbol)
         {
             return _symbolMap.TryGetValue(modelObject, out symbol);
         }
 
-        public Symbol GetSymbol(object modelObject)
+        internal Symbol GetSymbol(object modelObject)
         {
             if (_symbolMap.TryGetValue(modelObject, out var symbol)) return symbol;
             return CreateSymbol(modelObject);
         }
 
-        public Symbol MakeSourceSymbol(Symbol container, Type symbolType, Type modelObjectType, MergedDeclaration declaration)
+        internal Symbol MakeSourceSymbol(Symbol container, Type symbolType, Type modelObjectType, MergedDeclaration declaration)
         {
             object modelObject = null;
             if (modelObjectType != null)
@@ -68,49 +68,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
         }
 
-        public ImmutableArray<Symbol> GetChildSymbols(object modelObject)
-        {
-            var builder = ArrayBuilder<Symbol>.GetInstance();
-            foreach (var child in _symbolFacts.GetChildren(modelObject))
-            {
-                var sym = GetSymbol(child);
-                builder.Add(sym);
-            }
-            return builder.ToImmutableAndFree();
-        }
-
-        public ImmutableArray<DeclaredSymbol> GetChildDeclaredSymbols(object modelObject)
-        {
-            var builder = ArrayBuilder<DeclaredSymbol>.GetInstance();
-            foreach (var child in _symbolFacts.GetChildren(modelObject))
-            {
-                var sym = GetSymbol(child);
-                var dsym = sym as DeclaredSymbol;
-                if (dsym != null) builder.Add(dsym);
-            }
-            return builder.ToImmutableAndFree();
-        }
-
         protected Symbol CreateSymbol(object modelObject)
         {
-            /*Type? symbolType;
-            if (modelObject is SpecialType specialType)
-            {
-                var specialModelObject = _symbolFacts.GetSpecialType(specialType);
-                if (specialModelObject is not null)
-                {
-                    modelObject = specialModelObject;
-                    symbolType = _symbolFacts.GetSymbolType(modelObject);
-                }
-                else
-                {
-                    symbolType = _module.ContainingAssembly.GetSpecialSymbolType(specialType);
-                }
-            }
-            else
-            {
-                symbolType = _symbolFacts.GetSymbolType(modelObject);
-            }*/
             var symbolType = _symbolFacts.GetSymbolType(modelObject);
             var pobj = _symbolFacts.GetParent(modelObject);
             var psym = pobj != null ? GetSymbol(pobj) : _module;
@@ -145,7 +104,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         protected virtual Symbol CreateSourceSymbol(Symbol container, Type? symbolType, object modelObject, MergedDeclaration declaration)
         {
-            if (symbolType == typeof(NamespaceSymbol)) return new SourceNamespaceSymbol((SourceModuleSymbol)container.ContainingModule, container, modelObject, declaration);
+            if (symbolType == typeof(NamespaceSymbol)) return new SourceNamespaceSymbol((SourceModuleSymbol)container.ContainingModule, container, declaration, modelObject);
             Symbol? result = null;
             var generatedFactory = GetGeneratedSymbolFactory(symbolType);
             if (generatedFactory is not null)
@@ -156,31 +115,31 @@ namespace MetaDslx.CodeAnalysis.Symbols
             else return new UnsupportedModelSymbol(container, modelObject);
         }
 
+        public Symbol MakeMetadataErrorSymbol(object modelObject, DiagnosticInfo? errorInfo = null)
+        {
+            var symbolType = _symbolFacts.GetSymbolType(modelObject);
+            var pobj = _symbolFacts.GetParent(modelObject);
+            var container = pobj != null ? GetSymbol(pobj) : _module;
+            Symbol? result = null;
+            var generatedFactory = GetGeneratedSymbolFactory(symbolType);
+            if (generatedFactory is not null)
+            {
+                result = generatedFactory.CreateMetadataErrorSymbol(container, modelObject, errorInfo);
+            }
+            if (result is not null) return result;
+            else return new UnsupportedModelSymbol(container, modelObject);
+        }
+
         public Symbol ResolveSymbol(object modelObject)
         {
             if (_symbolMap.TryGetValue(modelObject, out var symbol)) return symbol;
-            if (ModuleContainsObject(_module, modelObject)) return GetSymbol(modelObject);
-            if (_module.ContainingAssembly == null) return null;
-            foreach (var module in _module.ContainingAssembly.Modules)
-            {
-                if (module != _module && module is CompletionModuleSymbol ms && ModuleContainsObject(module, modelObject))
-                {
-                    return ms.SymbolFactory.GetSymbol(modelObject);
-                }
-            }
-            return null;
+            var result = _module.GetDeclaredModelSymbol(modelObject);
+            if (result is not null) return result;
+            return _module.ContainingAssembly.ResolveModelSymbol(modelObject);
         }
 
         private bool ModuleContainsObject(ModuleSymbol module, object modelObject)
         {
-            /*if (modelObject is SpecialType specialType)
-            {
-                var specialModelObject = _symbolFacts.GetSpecialType(specialType);
-                if (specialModelObject is not null)
-                {
-                    modelObject = specialModelObject;
-                }
-            }*/
             return module is CompletionModuleSymbol cms && _symbolFacts.ContainsObject(cms.Model, modelObject);
         }
 
@@ -195,11 +154,14 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return builder.ToImmutableAndFree();
         }
 
-        public void RemoveSymbol(Symbol symbol)
+        internal void RemoveSymbol(Symbol symbol)
         {
             var mobj = (symbol as IModelSymbol)?.ModelObject;
             _symbolMap.Remove(mobj);
-            _module.DeclaringCompilation.ObjectFactory.RemoveObject(mobj);
+            if (_module.DeclaringCompilation is not null)
+            {
+                _module.DeclaringCompilation.ObjectFactory.RemoveObject(mobj);
+            }
         }
 
         private Symbol GetOrAddSymbol(object modelObject, Symbol symbol)

@@ -32,15 +32,15 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
         private string _name;
         private global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.Symbol> _attributes;
 
-        public CompletionDefaultValueExpressionSymbol(Symbol container, object? modelObject)
+        public CompletionDefaultValueExpressionSymbol(Symbol container, object? modelObject, bool isError = false)
         {
             _container = container;
-            if (modelObject is null) throw new ArgumentNullException(nameof(modelObject));
+            if (!isError && modelObject is null) throw new ArgumentNullException(nameof(modelObject));
             _modelObject = modelObject;
             _state = CompletionParts.CompletionGraph.CreateState();
         }
 
-        public sealed override Language Language => ContainingModule.Language;
+        public override Language Language => ContainingModule.Language;
 
         public SymbolFactory SymbolFactory => ContainingModule.SymbolFactory;
 
@@ -48,11 +48,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
 
         public Type ModelObjectType => _modelObject is not null ? Language.SymbolFacts.GetModelObjectType(_modelObject) : null;
 
-        public override object? SpecialSymbol => _modelObject is not null ? Language.SymbolFacts.GetSpecialSymbol(_modelObject) : null;
+        public override Symbol ContainingSymbol => _container;
 
-        public sealed override Symbol ContainingSymbol => _container;
-
-        public sealed override ImmutableArray<Symbol> ChildSymbols 
+        public override ImmutableArray<Symbol> ChildSymbols 
         {
             get
             {

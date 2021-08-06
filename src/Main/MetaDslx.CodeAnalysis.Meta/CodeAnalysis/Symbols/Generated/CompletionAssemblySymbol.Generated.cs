@@ -33,7 +33,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
         private global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.Symbol> _attributes;
         private global::System.Collections.Immutable.ImmutableArray<global::MetaDslx.CodeAnalysis.Symbols.ModuleSymbol> _modules;
 
-        public sealed override ImmutableArray<Symbol> ChildSymbols 
+        public override ImmutableArray<Symbol> ChildSymbols 
         {
             get
             {

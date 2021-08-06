@@ -25,9 +25,10 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         public SourceNamespaceSymbol(
             SourceModuleSymbol module, 
             Symbol containingSymbol,
-            object modelObject,
-            MergedDeclaration declaration)
-            : base(containingSymbol, modelObject)
+            MergedDeclaration declaration,
+            object? modelObject,
+            bool isError = false)
+            : base(containingSymbol, modelObject, isError)
         {
             Debug.Assert(declaration != null);
             Debug.Assert(containingSymbol == module || modelObject != null);
@@ -116,5 +117,14 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             }
         }
 
+        public partial class Error
+        {
+            public Error(SourceModuleSymbol module, Symbol containingSymbol, MergedDeclaration declaration, object modelObject) 
+                : base(module, containingSymbol, declaration, modelObject, true)
+            {
+            }
+
+
+        }
     }
 }

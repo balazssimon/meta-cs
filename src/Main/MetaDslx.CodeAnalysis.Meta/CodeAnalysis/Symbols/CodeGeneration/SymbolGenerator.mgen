@@ -510,7 +510,7 @@ namespace [symbol.NamespaceName].Metadata
         [end if]
 ^
         [if (symbol.Name != "AssemblySymbol" && symbol.Name != "ModuleSymbol")]
-        public class Error : Metadata[symbol.Name], MetaDslx.CodeAnalysis.Symbols.IErrorSymbol
+        public partial class Error : Metadata[symbol.Name], MetaDslx.CodeAnalysis.Symbols.IErrorSymbol
         {
             private DiagnosticInfo _errorInfo;
 ^
@@ -678,7 +678,7 @@ namespace [symbol.NamespaceName].Source
         [end if]
 ^
         [if (symbol.Name != "AssemblySymbol" && symbol.Name != "ModuleSymbol")]
-        public class Error : Source[symbol.Name]
+        public partial class Error : Source[symbol.Name]
         {
             private DiagnosticInfo? _errorInfo;
 ^

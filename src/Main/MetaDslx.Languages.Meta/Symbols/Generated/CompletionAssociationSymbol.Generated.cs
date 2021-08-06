@@ -36,19 +36,19 @@ namespace MetaDslx.Languages.Meta.Symbols.Completion
         private global::MetaDslx.CodeAnalysis.Symbols.Symbol _left;
         private global::MetaDslx.CodeAnalysis.Symbols.Symbol _right;
 
-        public CompletionAssociationSymbol(Symbol container)
+        public CompletionAssociationSymbol(Symbol container, bool isError = false)
         {
             _container = container;
             _state = CompletionParts.CompletionGraph.CreateState();
         }
 
-        public sealed override Language Language => ContainingModule.Language;
+        public override Language Language => ContainingModule.Language;
 
         public SymbolFactory SymbolFactory => ContainingModule.SymbolFactory;
 
-        public sealed override Symbol ContainingSymbol => _container;
+        public override Symbol ContainingSymbol => _container;
 
-        public sealed override ImmutableArray<Symbol> ChildSymbols 
+        public override ImmutableArray<Symbol> ChildSymbols 
         {
             get
             {

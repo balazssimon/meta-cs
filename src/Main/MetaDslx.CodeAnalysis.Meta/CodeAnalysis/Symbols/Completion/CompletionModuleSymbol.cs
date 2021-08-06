@@ -76,5 +76,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Completion
             return null;
         }
 
+        internal protected override Symbol? GetDeclaredModelSymbol(object modelObject)
+        {
+            if (this.SymbolFactory.TryGetSymbol(modelObject, out var result)) return result;
+            if (this.Language.SymbolFacts.ContainsObject(this.Model, modelObject)) return this.SymbolFactory.GetSymbol(modelObject);
+            return null;
+        }
     }
 }

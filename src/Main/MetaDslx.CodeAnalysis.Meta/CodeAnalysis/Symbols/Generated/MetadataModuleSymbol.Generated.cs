@@ -42,5 +42,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
         protected override void CompleteNonSymbolProperties(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
         }
+
     }
 }

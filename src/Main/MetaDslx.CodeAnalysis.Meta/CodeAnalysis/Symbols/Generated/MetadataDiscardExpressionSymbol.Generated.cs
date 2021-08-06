@@ -15,8 +15,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 {
 	public partial class MetadataDiscardExpressionSymbol : MetaDslx.CodeAnalysis.Symbols.Completion.CompletionDiscardExpressionSymbol
 	{
-        public MetadataDiscardExpressionSymbol(Symbol container)
-            : base(container)
+        public MetadataDiscardExpressionSymbol(Symbol container, bool isError = false)
+            : base(container, isError)
         {
         }
 
@@ -48,6 +48,36 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 
         protected override void CompleteNonSymbolProperties(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
+        }
+
+        public partial class Error : MetadataDiscardExpressionSymbol, MetaDslx.CodeAnalysis.Symbols.IErrorSymbol
+        {
+            private DiagnosticInfo _errorInfo;
+
+            public Error(Symbol container, DiagnosticInfo? errorInfo)
+                : base(container, true)
+            {
+                _errorInfo = errorInfo;
+            }
+
+            public sealed override bool IsError => true;
+
+            public DiagnosticInfo? ErrorInfo
+            {
+                get
+                {
+                    if (_errorInfo is null)
+                    {
+                        System.Threading.Interlocked.CompareExchange(ref _errorInfo, MakeErrorInfo(), null);
+                    }
+                    return _errorInfo;
+                }
+            }
+
+            protected virtual DiagnosticInfo? MakeErrorInfo()
+            {
+                return null;
+            }
         }
     }
 }

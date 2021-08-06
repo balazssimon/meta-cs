@@ -180,6 +180,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
         }
 
         public override ModuleMetadata GetMetadata() => null;
+
+        internal protected override Symbol? GetDeclaredModelSymbol(object modelObject)
+        {
+            return null;
+        }
     }
 
     internal sealed class MissingModuleSymbolWithName : MissingModuleSymbol

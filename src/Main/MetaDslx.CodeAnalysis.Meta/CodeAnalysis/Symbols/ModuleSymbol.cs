@@ -14,6 +14,7 @@ using MetaDslx.CodeAnalysis.Symbols.Source;
 using MetaDslx.Modeling;
 using Microsoft.Cci;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.PooledObjects;
 using Microsoft.CodeAnalysis.Symbols;
 using Roslyn.Utilities;
 
@@ -36,7 +37,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// Lazily filled by GetSpecialSymbol method.
         /// </summary>
         /// <remarks></remarks>
-        private ConcurrentDictionary<object, DeclaredSymbol> _lazySpecialSymbols;
+        private ConcurrentDictionary<object, Symbol> _lazySpecialSymbols;
 
         /// <summary>
         /// Returns a NamespaceSymbol representing the global (root) namespace, with
@@ -253,8 +254,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <summary>
         /// Lookup declaration for predefined symbol in this module.
         /// </summary>
-        /// <param name="key">The key </param>
-        internal DeclaredSymbol? GetDeclaredSpecialSymbol(object specialSymbolId)
+        /// <param name="specialSymbolId">The identifier of the special symbol.</param>
+        internal Symbol? GetDeclaredSpecialSymbol(object specialSymbolId)
         {
             if (!this.Language.SymbolFacts.SpecialTypes.Contains(specialSymbolId)) return null;
             if (_lazySpecialSymbols == null || !_lazySpecialSymbols.ContainsKey(specialSymbolId))
@@ -263,21 +264,21 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 var metadataName = this.Language.SymbolFacts.GetSpecialSymbolMetadataName(specialSymbolId);
                 if (metadataName is null)
                 {
-                    metadataName = specialSymbolId is SpecialType st ? st.GetMetadataName() : specialSymbolId.ToString();
+                    metadataName = specialSymbolId is SpecialType st ? st.GetMetadataName() : null;
                 }
-                MetadataTypeName emittedName = MetadataTypeName.FromFullName(metadataName, useCLSCompliantNameArityEncoding: true);
-                DeclaredSymbol result = this.LookupTopLevelMetadataType(ref emittedName);
-                /*if (result.IsError && this.DeclaringCompilation is not null)
+                Symbol? result = null;
+                if (metadataName is not null)
                 {
-                    result = this.DeclaringCompilation.LookupTopLevelMetadataType(ref emittedName);
-                }*/
-                if (!result.IsError && result.DeclaredAccessibility != Accessibility.Public)
-                {
-                    result = new MissingMetadataTypeSymbol.TopLevel(this, ref emittedName, modelObject);
+                    MetadataTypeName emittedName = MetadataTypeName.FromFullName(metadataName, useCLSCompliantNameArityEncoding: true);
+                    result = this.LookupTopLevelMetadataType(ref emittedName);
                 }
-                else if (result.IsError && modelObject is not null)
+                else if (modelObject is not null)
                 {
-                    result = new MissingMetadataTypeSymbol.TopLevel(this, ref emittedName, modelObject);
+                    result = this.GetDeclaredModelSymbol(modelObject);
+                }
+                if (result is null || result.IsError || result is DeclaredSymbol declaredSymbol && !declaredSymbol.IsError && declaredSymbol.DeclaredAccessibility != Accessibility.Public)
+                {
+                    result = this.SymbolFactory.MakeMetadataErrorSymbol(modelObject ?? specialSymbolId);
                 }
                 RegisterDeclaredSpecialSymbol(specialSymbolId, ref result);
             }
@@ -289,20 +290,41 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// Register declaration of predefined symbol in this Module.
         /// </summary>
         /// <param name="corType"></param>
-        private void RegisterDeclaredSpecialSymbol(object specialType, ref DeclaredSymbol symbol)
+        private void RegisterDeclaredSpecialSymbol(object specialType, ref Symbol symbol)
         {
             Debug.Assert(specialType != null);
             Debug.Assert(ReferenceEquals(symbol.ContainingModule, this));
             if (_lazySpecialSymbols == null)
             {
-                Interlocked.CompareExchange(ref _lazySpecialSymbols, new ConcurrentDictionary<object, DeclaredSymbol>(), null);
+                Interlocked.CompareExchange(ref _lazySpecialSymbols, new ConcurrentDictionary<object, Symbol>(), null);
             }
             _lazySpecialSymbols.TryAdd(specialType, symbol);
         }
 
-        internal object? GetSpecialSymbolId(Symbol symbol)
+        internal protected abstract Symbol? GetDeclaredModelSymbol(object modelObject);
+
+        public Symbol ResolveModelSymbol(object modelObject)
         {
-            return null;
+            var result = GetDeclaredModelSymbol(modelObject);
+            if (result is not null) return result;
+            return ResolveModelSymbolFromReferencedAssemblies(modelObject);
         }
+
+        internal Symbol ResolveModelSymbolFromReferencedAssemblies(object modelObject)
+        {
+            var results = ArrayBuilder<Symbol>.GetInstance();
+            foreach (var referencedAssembly in this.ReferencedAssemblySymbols)
+            {
+                var symbol = referencedAssembly.GetDeclaredModelSymbol(modelObject);
+                if (symbol is not null)
+                {
+                    results.Add(symbol);
+                }
+            }
+            var result = AssemblySymbol.SelectSingleModelSymbolResult(results, modelObject, this.SymbolFactory, false);
+            results.Free();
+            return result;
+        }
+
     }
 }

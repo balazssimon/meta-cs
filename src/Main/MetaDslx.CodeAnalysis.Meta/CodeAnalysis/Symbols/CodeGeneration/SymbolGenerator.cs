@@ -2569,7 +2569,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
             if (symbol.Name != "AssemblySymbol" && symbol.Name != "ModuleSymbol") //512:10
             {
                 bool __tmp53_outputWritten = false;
-                string __tmp54_line = "        public class Error : Metadata"; //513:1
+                string __tmp54_line = "        public partial class Error : Metadata"; //513:1
                 if (!string.IsNullOrEmpty(__tmp54_line))
                 {
                     __out.Write(__tmp54_line);
@@ -2590,7 +2590,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                     }
                     if (!__tmp55_last) __out.AppendLine(true);
                 }
-                string __tmp56_line = ", MetaDslx.CodeAnalysis.Symbols.IErrorSymbol"; //513:51
+                string __tmp56_line = ", MetaDslx.CodeAnalysis.Symbols.IErrorSymbol"; //513:59
                 if (!string.IsNullOrEmpty(__tmp56_line))
                 {
                     __out.Write(__tmp56_line);
@@ -2599,7 +2599,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                 if (__tmp53_outputWritten) __out.AppendLine(true);
                 if (__tmp53_outputWritten)
                 {
-                    __out.AppendLine(false); //513:95
+                    __out.AppendLine(false); //513:103
                 }
                 __out.Write("        {"); //514:1
                 __out.AppendLine(false); //514:10
@@ -3266,7 +3266,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
             if (symbol.Name != "AssemblySymbol" && symbol.Name != "ModuleSymbol") //680:10
             {
                 bool __tmp56_outputWritten = false;
-                string __tmp57_line = "        public class Error : Source"; //681:1
+                string __tmp57_line = "        public partial class Error : Source"; //681:1
                 if (!string.IsNullOrEmpty(__tmp57_line))
                 {
                     __out.Write(__tmp57_line);
@@ -3289,7 +3289,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                 }
                 if (__tmp56_outputWritten)
                 {
-                    __out.AppendLine(false); //681:49
+                    __out.AppendLine(false); //681:57
                 }
                 __out.Write("        {"); //682:1
                 __out.AppendLine(false); //682:10

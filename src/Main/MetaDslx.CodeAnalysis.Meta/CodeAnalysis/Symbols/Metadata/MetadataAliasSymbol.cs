@@ -25,8 +25,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
         private readonly bool _isExtern;
         private DiagnosticBag _aliasTargetDiagnostics;
 
-        public MetadataAliasSymbol(Binder binder, DeclaredSymbol target, string aliasName, ImmutableArray<Location> locations)
-            : base(binder.ContainingSymbol)
+        public MetadataAliasSymbol(Binder binder, DeclaredSymbol target, string aliasName, ImmutableArray<Location> locations, bool isError = false)
+            : base(binder.ContainingSymbol, isError)
         {
             _aliasName = aliasName;
             _locations = locations;
@@ -34,8 +34,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             _binder = binder;
         }
 
-        public MetadataAliasSymbol(Binder binder, string aliasName, SyntaxNodeOrToken aliasTargetName, Location location, bool isExtern = false)
-            : base(binder.ContainingSymbol)
+        public MetadataAliasSymbol(Binder binder, string aliasName, SyntaxNodeOrToken aliasTargetName, Location location, bool isExtern = false, bool isError = false)
+            : base(binder.ContainingSymbol, isError)
         {
             _aliasName = aliasName;
             _locations = ImmutableArray.Create(location);
@@ -181,6 +181,20 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 
         protected override void CompleteNonSymbolProperties(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
+        }
+
+        public partial class Error
+        {
+            public Error(Binder binder, DeclaredSymbol target, string aliasName, ImmutableArray<Location> locations) 
+                : base(binder, target, aliasName, locations, true)
+            {
+            }
+
+            public Error(Binder binder, string aliasName, SyntaxNodeOrToken aliasTargetName, Location location, bool isExtern = false) 
+                : base(binder, aliasName, aliasTargetName, location, isExtern, true)
+            {
+            }
+
         }
     }
 }
