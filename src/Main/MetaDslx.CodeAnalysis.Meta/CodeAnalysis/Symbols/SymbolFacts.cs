@@ -14,7 +14,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
     public abstract class SymbolFacts
     {
-        private Dictionary<object, object> _specialModelObjects;
+        private Dictionary<object, object> _specialModelObjectsToSpecialId;
+        private Dictionary<string, object> _metadataNameToSpecialModelObject;
 
         public virtual string AttributeNameSuffix => "Attribute";
 
@@ -38,12 +39,12 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         public virtual ImmutableArray<object> SpecialTypes => ImmutableArray<object>.Empty;
 
-        public virtual string? GetSpecialSymbolMetadataName(object specialSymbol)
+        public virtual string? GetSpecialSymbolMetadataName(object specialSymbolId)
         {
             return null;
         }
 
-        public virtual object? GetSpecialModelObject(object specialType)
+        public virtual object? GetSpecialModelObject(object specialSymbolId)
         {
             return null;
         }
@@ -51,13 +52,13 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public object? GetSpecialSymbol(object modelObject)
         {
             BuildSpecialSymbolMap();
-            _specialModelObjects.TryGetValue(modelObject, out var result);
+            _specialModelObjectsToSpecialId.TryGetValue(modelObject, out var result);
             return result;
         }
 
         private void BuildSpecialSymbolMap()
         {
-            if (_specialModelObjects == null)
+            if (_specialModelObjectsToSpecialId == null)
             {
                 var dict = new Dictionary<object, object>();
                 foreach (var st in this.SpecialTypes)
@@ -68,7 +69,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                         dict.Add(mobj, st);
                     }
                 }
-                Interlocked.CompareExchange(ref _specialModelObjects, dict, null);
+                Interlocked.CompareExchange(ref _specialModelObjectsToSpecialId, dict, null);
             }
         }
 

@@ -31,11 +31,6 @@ namespace MetaDslx.CodeAnalysis.Analyzers.Symbols
                     context.AddSource(symbol.Name + ".Generated.cs", symbolCode);
                     if (info.SymbolParts != SymbolParts.None)
                     {
-                        if (info.SymbolParts.HasFlag(SymbolParts.Error))
-                        {
-                            var errorSymbolCode = generator.GenerateErrorSymbol(info);
-                            context.AddSource("Error" + symbol.Name + ".Generated.cs", errorSymbolCode);
-                        }
                         var completionSymbolCode = generator.GenerateCompletionSymbol(info);
                         context.AddSource("Completion" + symbol.Name + ".Generated.cs", completionSymbolCode);
                         if (info.SymbolParts.HasFlag(SymbolParts.Metadata))

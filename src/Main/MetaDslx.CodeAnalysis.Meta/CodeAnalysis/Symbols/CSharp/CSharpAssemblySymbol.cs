@@ -158,12 +158,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
             return CSharpSymbolMap.GetAttributes(_underlyingAssembly.GetAttributes(), ref _lazyCustomAttributes);
         }
 
-        internal override Type? GetSpecialSymbolType(SpecialType specialType)
-        {
-            var symbol = _underlyingAssembly.GetDeclaredSpecialType(specialType);
-            return symbol.ToMetaDslxType();
-        }
-
         internal override ImmutableArray<AssemblySymbol> GetNoPiaResolutionAssemblies()
         {
             return _noPiaResolutionAssemblies;

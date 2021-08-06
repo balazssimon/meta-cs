@@ -23,7 +23,8 @@ namespace MetaDslx.CodeAnalysis.Declarations
         private Symbol? _symbol;
 
         public MergedDeclaration(ImmutableArray<SingleDeclaration> declarations)
-            : base(declarations.IsEmpty ? null : declarations[0].Name,
+            : base(declarations.IsEmpty ? string.Empty : declarations[0].Name,
+                  declarations.IsEmpty ? string.Empty : declarations[0].MetadataName,
                   declarations.IsEmpty ? false : declarations[0].Merge,
                   declarations.Any(decl => decl.HasImports),
                   false)

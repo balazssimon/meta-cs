@@ -122,7 +122,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
         public void RegisterIdentifier(SyntaxNodeOrToken syntax)
         {
             var node = syntax.GetNodeOrParent();
-            this.RegisterIdentifier(new Identifier(node.Language.SyntaxFacts.ExtractName(syntax), syntax));
+            this.RegisterIdentifier(new Identifier(node.Language.SyntaxFacts.ExtractName(syntax), node.Language.SyntaxFacts.ExtractMetadataName(syntax), syntax));
         }
 
         private void RegisterIdentifier(in Identifier identifier)
@@ -155,18 +155,20 @@ namespace MetaDslx.CodeAnalysis.Declarations
 
         public struct Identifier
         {
-            public readonly string Text;
+            public readonly string Name;
+            public readonly string MetadataName;
             public readonly SyntaxNodeOrToken Syntax;
 
-            public Identifier(string text, SyntaxNodeOrToken syntax)
+            public Identifier(string name, string metadataName, SyntaxNodeOrToken syntax)
             {
-                Text = text;
+                Name = name;
+                MetadataName = metadataName;
                 Syntax = syntax;
             }
 
             public override string ToString()
             {
-                return Text;
+                return MetadataName;
             }
         }
 

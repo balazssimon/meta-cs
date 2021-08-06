@@ -254,20 +254,19 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// Lookup declaration for predefined symbol in this module.
         /// </summary>
         /// <param name="key">The key </param>
-        internal DeclaredSymbol? GetDeclaredSpecialSymbol(object specialSymbol)
+        internal DeclaredSymbol? GetDeclaredSpecialSymbol(object specialSymbolId)
         {
-            if (!this.Language.SymbolFacts.SpecialTypes.Contains(specialSymbol)) return null;
-            DeclaredSymbol result = null;
-            if (_lazySpecialSymbols == null || !_lazySpecialSymbols.ContainsKey(specialSymbol))
+            if (!this.Language.SymbolFacts.SpecialTypes.Contains(specialSymbolId)) return null;
+            if (_lazySpecialSymbols == null || !_lazySpecialSymbols.ContainsKey(specialSymbolId))
             {
-                var modelObject = this.Language.SymbolFacts.GetSpecialModelObject(specialSymbol);
-                var metadataName = this.Language.SymbolFacts.GetSpecialSymbolMetadataName(specialSymbol);
+                var modelObject = this.Language.SymbolFacts.GetSpecialModelObject(specialSymbolId);
+                var metadataName = this.Language.SymbolFacts.GetSpecialSymbolMetadataName(specialSymbolId);
                 if (metadataName is null)
                 {
-                    metadataName = specialSymbol is SpecialType st ? st.GetMetadataName() : specialSymbol.ToString();
+                    metadataName = specialSymbolId is SpecialType st ? st.GetMetadataName() : specialSymbolId.ToString();
                 }
                 MetadataTypeName emittedName = MetadataTypeName.FromFullName(metadataName, useCLSCompliantNameArityEncoding: true);
-                result = this.LookupTopLevelMetadataType(ref emittedName);
+                DeclaredSymbol result = this.LookupTopLevelMetadataType(ref emittedName);
                 /*if (result.IsError && this.DeclaringCompilation is not null)
                 {
                     result = this.DeclaringCompilation.LookupTopLevelMetadataType(ref emittedName);
@@ -280,10 +279,10 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 {
                     result = new MissingMetadataTypeSymbol.TopLevel(this, ref emittedName, modelObject);
                 }
-                RegisterDeclaredSpecialSymbol(specialSymbol, ref result);
+                RegisterDeclaredSpecialSymbol(specialSymbolId, ref result);
             }
 
-            return _lazySpecialSymbols[specialSymbol];
+            return _lazySpecialSymbols[specialSymbolId];
         }
 
         /// <summary>
@@ -299,6 +298,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 Interlocked.CompareExchange(ref _lazySpecialSymbols, new ConcurrentDictionary<object, DeclaredSymbol>(), null);
             }
             _lazySpecialSymbols.TryAdd(specialType, symbol);
+        }
+
+        internal object? GetSpecialSymbolId(Symbol symbol)
+        {
+            return null;
         }
     }
 }

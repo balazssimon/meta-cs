@@ -36,6 +36,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
 
         public SingleDeclaration(
             string name, 
+            string metadataName,
             Type symbolType,
             Type modelObjectType,
             SyntaxReference syntaxReference,
@@ -47,7 +48,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             ImmutableArray<SingleDeclaration> children,
             ImmutableArray<DeclarationTreeInfo.Property> properties,
             ImmutableArray<Diagnostic> diagnostics)
-            : base(name, canMerge, hasUsings, isNestingParent)
+            : base(name, metadataName, canMerge, hasUsings, isNestingParent)
         {
             _symbolType = symbolType;
             _modelObjectType = modelObjectType;
@@ -157,13 +158,13 @@ namespace MetaDslx.CodeAnalysis.Declarations
                 }
 
                 // cannot merge anonymous symbols
-                if (thisDecl.Name == null) return false;
-                if (otherDecl.Name == null) return false;
+                if (thisDecl.MetadataName == null) return false;
+                if (otherDecl.MetadataName == null) return false;
 
                 // kind and name must match
                 if ((thisDecl.SymbolType != otherDecl.SymbolType) ||
                     (thisDecl.ModelObjectType != otherDecl.ModelObjectType) ||
-                    (thisDecl.Name != otherDecl.Name))
+                    (thisDecl.MetadataName != otherDecl.MetadataName))
                 {
                     return false;
                 }
@@ -175,7 +176,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             public override int GetHashCode()
             {
                 var thisDecl = _decl;
-                return Hash.Combine(thisDecl.SymbolType.GetHashCode(), Hash.Combine(thisDecl.Name?.GetHashCode() ?? 0, thisDecl.ModelObjectType?.GetHashCode() ?? 0));
+                return Hash.Combine(thisDecl.SymbolType.GetHashCode(), Hash.Combine(thisDecl.MetadataName?.GetHashCode() ?? 0, thisDecl.ModelObjectType?.GetHashCode() ?? 0));
             }
         }
     }

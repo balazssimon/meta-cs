@@ -195,11 +195,11 @@ namespace [symbol.NamespaceName].Completion
         [if (symbol.Name != "AssemblySymbol" && symbol.Name != "ModuleSymbol")]
         [if (!symbol.ExistingCompletionTypeInfo.Members.Contains(".ctor"))]
 ^
-        public Completion[symbol.Name](Symbol container[if(symbol.ModelObjectOption != ParameterOption.Disabled)], object? modelObject[if(symbol.ModelObjectOption == ParameterOption.Optional)] = null[end if][end if])
+        public Completion[symbol.Name](Symbol container[if(symbol.ModelObjectOption != ParameterOption.Disabled)], object? modelObject[if(symbol.ModelObjectOption == ParameterOption.Optional)] = null[end if][end if], bool isError = false)
         {
             _container = container;
             [if(symbol.ModelObjectOption == ParameterOption.Required)]
-            if (modelObject is null) throw new ArgumentNullException(nameof(modelObject));
+            if (!isError && modelObject is null) throw new ArgumentNullException(nameof(modelObject));
             [end if]
             [if(symbol.ModelObjectOption != ParameterOption.Disabled)]
             _modelObject = modelObject;
@@ -209,7 +209,7 @@ namespace [symbol.NamespaceName].Completion
         [end if]
         [if (!symbol.ExistingCompletionTypeInfo.Members.Contains("Language"))]
 ^
-        public sealed override Language Language => ContainingModule.Language;
+        public override Language Language => ContainingModule.Language;
         [end if]
         [if (!symbol.ExistingCompletionTypeInfo.Members.Contains("SymbolFactory"))]
 ^
@@ -224,19 +224,15 @@ namespace [symbol.NamespaceName].Completion
 ^
         public Type ModelObjectType => _modelObject is not null ? Language.SymbolFacts.GetModelObjectType(_modelObject) : null;
             [end if]
-            [if (!symbol.ExistingCompletionTypeInfo.Members.Contains("SpecialSymbol"))]
-^
-        public override object? SpecialSymbol => _modelObject is not null ? Language.SymbolFacts.GetSpecialSymbol(_modelObject) : null;
-            [end if]
         [end if]
         [if (!symbol.ExistingCompletionTypeInfo.Members.Contains("ContainingSymbol"))]
 ^
-        public sealed override Symbol ContainingSymbol => _container;
+        public override Symbol ContainingSymbol => _container;
         [end if]
         [end if]
         [if (!symbol.ExistingCompletionTypeInfo.Members.Contains("ChildSymbols"))]
 ^
-        public sealed override ImmutableArray<Symbol> ChildSymbols 
+        public override ImmutableArray<Symbol> ChildSymbols 
         {
             get
             {
@@ -451,8 +447,8 @@ namespace [symbol.NamespaceName].Metadata
 	{
         [if (symbol.Name != "AssemblySymbol" && symbol.Name != "ModuleSymbol")]
         [if (!symbol.ExistingMetadataTypeInfo.Members.Contains(".ctor"))]
-        public Metadata[symbol.Name](Symbol container[if(symbol.ModelObjectOption != ParameterOption.Disabled)], object modelObject[if(symbol.ModelObjectOption == ParameterOption.Optional)] = null[end if][end if])
-            : base(container[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if])
+        public Metadata[symbol.Name](Symbol container[if(symbol.ModelObjectOption != ParameterOption.Disabled)], object? modelObject[if(symbol.ModelObjectOption == ParameterOption.Optional)] = null[end if][end if], bool isError = false)
+            : base(container[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if], isError)
         {
         }
         [end if]
@@ -512,6 +508,25 @@ namespace [symbol.NamespaceName].Metadata
         {
         }
         [end if]
+^
+        [if (symbol.Name != "AssemblySymbol" && symbol.Name != "ModuleSymbol")]
+        public class Error
+        {
+            private DiagnosticInfo _errorInfo;
+^
+            [if (!symbol.ExistingMetadataTypeInfo.Members.Contains(".ctor"))]
+            public Error[symbol.Name](Symbol container, DiagnosticInfo errorInfo[if(symbol.ModelObjectOption != ParameterOption.Disabled)], object? modelObject[if(symbol.ModelObjectOption == ParameterOption.Optional)] = null[end if][end if])
+                : base(container[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if], true)
+            {
+                _errorInfo = errorInfo;
+            }
+            [end if]
+^
+            public sealed override IsError => true;
+^
+            public DiagnosticInfo ErrorInfo => _errorInfo;
+        }
+        [end if]
     }
 }
 end template
@@ -544,8 +559,8 @@ namespace [symbol.NamespaceName].Source
         [end if]
         [if (!symbol.ExistingSourceTypeInfo.Members.Contains(".ctor"))]
 ^
-		public Source[symbol.Name](Symbol containingSymbol, [if(symbol.ModelObjectOption != ParameterOption.Disabled)]object modelObject[if(symbol.ModelObjectOption == ParameterOption.Optional)] = null[end if], [end if]MergedDeclaration declaration)
-            : base(containingSymbol[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if])
+		public Source[symbol.Name](Symbol containingSymbol, MergedDeclaration declaration, [if(symbol.ModelObjectOption != ParameterOption.Disabled)]object? modelObject[if(symbol.ModelObjectOption == ParameterOption.Optional)] = null[end if][end if], bool isError)
+            : base(containingSymbol[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if], isError)
         {
             if (declaration is null) throw new ArgumentNullException(nameof(declaration));
             _declaration = declaration;
@@ -646,6 +661,25 @@ namespace [symbol.NamespaceName].Source
             SourceSymbolImplementation.AssignNonSymbolProperties(this, diagnostics, cancellationToken);
         }
         [end if]
+^
+        [if (symbol.Name != "AssemblySymbol" && symbol.Name != "ModuleSymbol")]
+        public class Error
+        {
+            private DiagnosticInfo _errorInfo;
+^
+            [if (!symbol.ExistingMetadataTypeInfo.Members.Contains(".ctor"))]
+            public Error[symbol.Name](Symbol container, MergedDeclaration declaration, DiagnosticInfo errorInfo[if(symbol.ModelObjectOption != ParameterOption.Disabled)], object modelObject[if(symbol.ModelObjectOption == ParameterOption.Optional)] = null[end if][end if])
+                : base(container, declaration, [if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if], true)
+            {
+                _errorInfo = errorInfo;
+            }
+            [end if]
+^
+            public sealed override IsError => true;
+^
+            public DiagnosticInfo ErrorInfo => _errorInfo;
+        }
+        [end if]
 	}
 }
 end template
@@ -703,18 +737,7 @@ namespace [namespaceName].Factory
     [loop (symbol: symbols where symbol.Name != "AssemblySymbol" && symbol.Name != "ModuleSymbol" && symbol.SymbolParts != SymbolParts.None)]
 	public class [symbol.Name]Factory : IGeneratedSymbolFactory
 	{
-        public Symbol? CreateErrorSymbol(Symbol? container, object? modelObject, MergedDeclaration? declaration)
-        {
-            [if (!symbol.SymbolParts.HasFlag(SymbolParts.Error))]
-            throw new NotImplementedException("There is no Error[symbol.Name] implemented.");
-            [else if (symbol.ExistingErrorTypeInfo.Members.Contains(".ctor"))]
-            throw new NotImplementedException("CreateErrorSymbol for Error[symbol.Name] should be implemented in a custom SymbolFactory.");
-            [else]
-            return new Error.Error[symbol.Name](container[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if], declaration);
-            [end if]
-        }
-^
-        public Symbol? CreateMetadataSymbol(Symbol container, object modelObject)
+        public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)
         {
             [if (!symbol.SymbolParts.HasFlag(SymbolParts.Metadata))]
             throw new NotImplementedException("There is no Metadata[symbol.Name] implemented.");
@@ -725,14 +748,36 @@ namespace [namespaceName].Factory
             [end if]
         }
 ^
-        public Symbol? CreateSourceSymbol(Symbol container, object modelObject, MergedDeclaration declaration)
+        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)
+        {
+            [if (!symbol.SymbolParts.HasFlag(SymbolParts.Metadata))]
+            throw new NotImplementedException("There is no Metadata[symbol.Name] implemented.");
+            [else if (symbol.ExistingMetadataTypeInfo.Members.Contains(".ctor"))]
+            throw new NotImplementedException("CreateMetadataSymbol for Metadata[symbol.Name] should be implemented in a custom SymbolFactory.");
+            [else]
+            return new Metadata.Metadata[symbol.Name].Error(container, errorInfo[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if]);
+            [end if]
+        }
+^
+        public Symbol? CreateSourceSymbol(Symbol container, object? modelObject, MergedDeclaration declaration)
         {
             [if (!symbol.SymbolParts.HasFlag(SymbolParts.Source))]
             throw new NotImplementedException("There is no Source[symbol.Name] implemented.");
             [else if (symbol.ExistingSourceTypeInfo.Members.Contains(".ctor"))]
             throw new NotImplementedException("CreateSourceSymbol for Source[symbol.Name] should be implemented in a custom SymbolFactory.");
             [else]
-            return new Source.Source[symbol.Name](container[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if], declaration);
+            return new Source.Source[symbol.Name](container, declaration[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if]);
+            [end if]
+        }
+^
+        public Symbol? CreateSourceErrorSymbol(Symbol container, object? modelObject, MergedDeclaration declaration, DiagnosticInfo errorInfo)
+        {
+            [if (!symbol.SymbolParts.HasFlag(SymbolParts.Source))]
+            throw new NotImplementedException("There is no Source[symbol.Name] implemented.");
+            [else if (symbol.ExistingSourceTypeInfo.Members.Contains(".ctor"))]
+            throw new NotImplementedException("CreateSourceSymbol for Source[symbol.Name] should be implemented in a custom SymbolFactory.");
+            [else]
+            return new Source.Source[symbol.Name].Error(container, declaration, errorInfo[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if]);
             [end if]
         }
 	}

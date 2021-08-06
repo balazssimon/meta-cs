@@ -41,11 +41,13 @@ namespace MetaDslx.CodeAnalysis.Declarations
     public abstract class Declaration
     {
         private readonly string name;
+        private readonly string metadataName;
         private readonly DeclarationFlags flags;
 
-        protected Declaration(string name, bool merge, bool hasUsings, bool isNestingParent)
+        protected Declaration(string name, string metadataName, bool merge, bool hasUsings, bool isNestingParent)
         {
             this.name = name;
+            this.metadataName = metadataName;
             if (merge) this.flags |= DeclarationFlags.Merge;
             if (hasUsings) this.flags |= DeclarationFlags.HasImports;
             if (isNestingParent) this.flags |= DeclarationFlags.IsNestingParent;
@@ -58,7 +60,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
 
         public string MetadataName
         {
-            get { return this.name; } // TODO:MetaDslx
+            get { return this.metadataName; }
         }
 
         public bool Merge
@@ -86,13 +88,13 @@ namespace MetaDslx.CodeAnalysis.Declarations
 
         protected abstract ImmutableArray<Declaration> GetDeclarationChildren();
 
-        public bool IsType => typeof(TypeSymbol).IsAssignableFrom(SymbolType);
+        public bool IsType => SymbolType is not null && typeof(TypeSymbol).IsAssignableFrom(SymbolType);
 
-        public bool IsNamespace => typeof(NamespaceSymbol).IsAssignableFrom(SymbolType);
+        public bool IsNamespace => SymbolType is not null && typeof(NamespaceSymbol).IsAssignableFrom(SymbolType);
 
-        public bool IsScript => typeof(ScriptSymbol).IsAssignableFrom(SymbolType);
+        public bool IsScript => SymbolType is not null && typeof(ScriptSymbol).IsAssignableFrom(SymbolType);
 
-        public bool IsSubmission => typeof(SubmissionSymbol).IsAssignableFrom(SymbolType);
+        public bool IsSubmission => SymbolType is not null && typeof(SubmissionSymbol).IsAssignableFrom(SymbolType);
 
         public bool IsImplicit => IsScript || IsSubmission;
 
@@ -114,7 +116,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
 
         public override string ToString()
         {
-            return $"{ModelObjectType?.Name} {Name}";
+            return $"{ModelObjectType?.Name} {MetadataName}";
         }
 
 #if DEBUG
@@ -132,7 +134,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             private static void Dump(StringBuilder sb, string indent, Declaration declaration)
             {
                 if (declaration == null) return;
-                sb.AppendFormat("{0}{1} {2}: {3}", indent, declaration.SymbolType.Name, declaration.Name, declaration.ModelObjectType.Name ?? "<root>");
+                sb.AppendFormat("{0}{1} {2}: {3}", indent, declaration.SymbolType.Name, declaration.MetadataName, declaration.ModelObjectType.Name ?? "<root>");
                 sb.AppendLine();
                 foreach (var child in declaration.GetDeclarationChildren())
                 {

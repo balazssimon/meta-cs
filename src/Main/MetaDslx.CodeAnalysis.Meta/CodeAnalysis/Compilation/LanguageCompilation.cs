@@ -1334,15 +1334,22 @@ namespace MetaDslx.CodeAnalysis
             }
         }
 
-        public Symbol GetSpecialSymbol(object specialSymbol)
+        public Symbol GetSpecialSymbol(object specialSymbolId)
         {
-            if (!Language.SymbolFacts.SpecialTypes.Contains(specialSymbol))
+            if (!Language.SymbolFacts.SpecialTypes.Contains(specialSymbolId))
             {
-                throw new ArgumentOutOfRangeException(nameof(specialSymbol), $"Unexpected SpecialSymbol: '{specialSymbol}'.");
+                throw new ArgumentOutOfRangeException(nameof(specialSymbolId), $"Unexpected SpecialSymbol: '{specialSymbolId}'.");
             }
-            var result = SourceAssembly.GetSpecialSymbol(specialSymbol);
-            Debug.Assert(specialSymbol.Equals(result.SpecialSymbol));
-            return result;
+            if (specialSymbolId is SpecialType specialType)
+            {
+                return GetSpecialType(specialType);
+            }
+            else
+            {
+                var result = SourceAssembly.GetSpecialSymbol(specialSymbolId);
+                Debug.Assert(specialSymbolId.Equals(result.SpecialSymbol));
+                return result;
+            }
         }
 
         /// <summary>

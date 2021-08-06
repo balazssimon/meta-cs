@@ -368,21 +368,16 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </remarks>
         public abstract bool MightContainExtensionMethods { get; }
 
-        internal virtual Type? GetSpecialSymbolType(SpecialType specialType)
-        {
-            return typeof(NamedTypeSymbol);
-        }
-
         /// <summary>
         /// Gets the symbol for the pre-defined symbol from this assembly.
         /// </summary>
         /// <returns>The symbol for the pre-defined symbol or an error type if the symbol is not defined.</returns>
-        public Symbol GetSpecialSymbol(object specialSymbol)
+        public Symbol GetSpecialSymbol(object specialSymbolId)
         {
             Symbol? result = null;
             foreach (var module in this.Modules)
             {
-                var symbol = module.GetDeclaredSpecialSymbol(specialSymbol);
+                var symbol = module.GetDeclaredSpecialSymbol(specialSymbolId);
                 if (symbol is not null)
                 {
                     if (result is null || result.IsError && !symbol.IsError)
@@ -394,10 +389,10 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
             if (result is not null) return result;
             var firstModule = this.Modules[0];
-            var metadataName = firstModule.Language.SymbolFacts.GetSpecialSymbolMetadataName(specialSymbol);
+            var metadataName = firstModule.Language.SymbolFacts.GetSpecialSymbolMetadataName(specialSymbolId);
             if (metadataName is null)
             {
-                metadataName = specialSymbol is SpecialType st ? st.GetMetadataName() : specialSymbol.ToString();
+                metadataName = specialSymbolId is SpecialType st ? st.GetMetadataName() : specialSymbolId.ToString();
             }
             MetadataTypeName emittedName = MetadataTypeName.FromFullName(metadataName, useCLSCompliantNameArityEncoding: true);
             return new MissingMetadataTypeSymbol.TopLevel(firstModule, ref emittedName, null);

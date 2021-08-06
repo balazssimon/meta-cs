@@ -1148,7 +1148,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                             }
                         }
                     }
-                    string __tmp73_line = ")"; //198:216
+                    string __tmp73_line = ", bool isError = false)"; //198:216
                     if (!string.IsNullOrEmpty(__tmp73_line))
                     {
                         __out.Write(__tmp73_line);
@@ -1157,7 +1157,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                     if (__tmp63_outputWritten) __out.AppendLine(true);
                     if (__tmp63_outputWritten)
                     {
-                        __out.AppendLine(false); //198:217
+                        __out.AppendLine(false); //198:239
                     }
                     __out.Write("        {"); //199:1
                     __out.AppendLine(false); //199:10
@@ -1165,8 +1165,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                     __out.AppendLine(false); //200:36
                     if (symbol.ModelObjectOption == ParameterOption.Required) //201:14
                     {
-                        __out.Write("            if (modelObject is null) throw new ArgumentNullException(nameof(modelObject));"); //202:1
-                        __out.AppendLine(false); //202:91
+                        __out.Write("            if (!isError && modelObject is null) throw new ArgumentNullException(nameof(modelObject));"); //202:1
+                        __out.AppendLine(false); //202:103
                     }
                     if (symbol.ModelObjectOption != ParameterOption.Disabled) //204:14
                     {
@@ -1181,8 +1181,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                 if (!symbol.ExistingCompletionTypeInfo.Members.Contains("Language")) //210:10
                 {
                     __out.AppendLine(true); //211:1
-                    __out.Write("        public sealed override Language Language => ContainingModule.Language;"); //212:1
-                    __out.AppendLine(false); //212:79
+                    __out.Write("        public override Language Language => ContainingModule.Language;"); //212:1
+                    __out.AppendLine(false); //212:72
                 }
                 if (!symbol.ExistingCompletionTypeInfo.Members.Contains("SymbolFactory")) //214:10
                 {
@@ -1204,73 +1204,67 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                         __out.Write("        public Type ModelObjectType => _modelObject is not null ? Language.SymbolFacts.GetModelObjectType(_modelObject) : null;"); //225:1
                         __out.AppendLine(false); //225:128
                     }
-                    if (!symbol.ExistingCompletionTypeInfo.Members.Contains("SpecialSymbol")) //227:14
-                    {
-                        __out.AppendLine(true); //228:1
-                        __out.Write("        public override object? SpecialSymbol => _modelObject is not null ? Language.SymbolFacts.GetSpecialSymbol(_modelObject) : null;"); //229:1
-                        __out.AppendLine(false); //229:136
-                    }
                 }
-                if (!symbol.ExistingCompletionTypeInfo.Members.Contains("ContainingSymbol")) //232:10
+                if (!symbol.ExistingCompletionTypeInfo.Members.Contains("ContainingSymbol")) //228:10
                 {
-                    __out.AppendLine(true); //233:1
-                    __out.Write("        public sealed override Symbol ContainingSymbol => _container;"); //234:1
-                    __out.AppendLine(false); //234:70
+                    __out.AppendLine(true); //229:1
+                    __out.Write("        public override Symbol ContainingSymbol => _container;"); //230:1
+                    __out.AppendLine(false); //230:63
                 }
             }
-            if (!symbol.ExistingCompletionTypeInfo.Members.Contains("ChildSymbols")) //237:10
+            if (!symbol.ExistingCompletionTypeInfo.Members.Contains("ChildSymbols")) //233:10
             {
-                __out.AppendLine(true); //238:1
-                __out.Write("        public sealed override ImmutableArray<Symbol> ChildSymbols "); //239:1
-                __out.AppendLine(false); //239:68
-                __out.Write("        {"); //240:1
-                __out.AppendLine(false); //240:10
-                __out.Write("            get"); //241:1
-                __out.AppendLine(false); //241:16
-                __out.Write("            {"); //242:1
-                __out.AppendLine(false); //242:14
-                __out.Write("                this.ForceComplete(CompletionGraph.FinishCreatingChildren, null, default);"); //243:1
-                __out.AppendLine(false); //243:91
-                __out.Write("                return _childSymbols;"); //244:1
-                __out.AppendLine(false); //244:38
-                __out.Write("            }"); //245:1
-                __out.AppendLine(false); //245:14
-                __out.Write("        }"); //246:1
-                __out.AppendLine(false); //246:10
+                __out.AppendLine(true); //234:1
+                __out.Write("        public override ImmutableArray<Symbol> ChildSymbols "); //235:1
+                __out.AppendLine(false); //235:61
+                __out.Write("        {"); //236:1
+                __out.AppendLine(false); //236:10
+                __out.Write("            get"); //237:1
+                __out.AppendLine(false); //237:16
+                __out.Write("            {"); //238:1
+                __out.AppendLine(false); //238:14
+                __out.Write("                this.ForceComplete(CompletionGraph.FinishCreatingChildren, null, default);"); //239:1
+                __out.AppendLine(false); //239:91
+                __out.Write("                return _childSymbols;"); //240:1
+                __out.AppendLine(false); //240:38
+                __out.Write("            }"); //241:1
+                __out.AppendLine(false); //241:14
+                __out.Write("        }"); //242:1
+                __out.AppendLine(false); //242:10
             }
-            if (!symbol.ExistingCompletionTypeInfo.Members.Contains("Name")) //248:10
+            if (!symbol.ExistingCompletionTypeInfo.Members.Contains("Name")) //244:10
             {
-                __out.AppendLine(true); //249:1
-                __out.Write("        public override string Name "); //250:1
-                __out.AppendLine(false); //250:37
-                __out.Write("        {"); //251:1
-                __out.AppendLine(false); //251:10
-                __out.Write("            get"); //252:1
-                __out.AppendLine(false); //252:16
-                __out.Write("            {"); //253:1
-                __out.AppendLine(false); //253:14
-                __out.Write("                this.ForceComplete(CompletionGraph.FinishInitializing, null, default);"); //254:1
-                __out.AppendLine(false); //254:87
-                __out.Write("                return _name;"); //255:1
-                __out.AppendLine(false); //255:30
-                __out.Write("            }"); //256:1
-                __out.AppendLine(false); //256:14
-                __out.Write("        }"); //257:1
-                __out.AppendLine(false); //257:10
+                __out.AppendLine(true); //245:1
+                __out.Write("        public override string Name "); //246:1
+                __out.AppendLine(false); //246:37
+                __out.Write("        {"); //247:1
+                __out.AppendLine(false); //247:10
+                __out.Write("            get"); //248:1
+                __out.AppendLine(false); //248:16
+                __out.Write("            {"); //249:1
+                __out.AppendLine(false); //249:14
+                __out.Write("                this.ForceComplete(CompletionGraph.FinishInitializing, null, default);"); //250:1
+                __out.AppendLine(false); //250:87
+                __out.Write("                return _name;"); //251:1
+                __out.AppendLine(false); //251:30
+                __out.Write("            }"); //252:1
+                __out.AppendLine(false); //252:14
+                __out.Write("        }"); //253:1
+                __out.AppendLine(false); //253:10
             }
             var __loop7_results = 
-                (from prop in __Enumerate((symbol.Properties).GetEnumerator()) //259:16
+                (from prop in __Enumerate((symbol.Properties).GetEnumerator()) //255:16
                 select new { prop = prop}
-                ).ToList(); //259:10
+                ).ToList(); //255:10
             for (int __loop7_iteration = 0; __loop7_iteration < __loop7_results.Count; ++__loop7_iteration)
             {
                 var __tmp74 = __loop7_results[__loop7_iteration];
                 var prop = __tmp74.prop;
-                if (!symbol.ExistingCompletionTypeInfo.Members.Contains(prop.Name)) //260:14
+                if (!symbol.ExistingCompletionTypeInfo.Members.Contains(prop.Name)) //256:14
                 {
-                    __out.AppendLine(true); //261:1
+                    __out.AppendLine(true); //257:1
                     bool __tmp76_outputWritten = false;
-                    string __tmp77_line = "        public override "; //262:1
+                    string __tmp77_line = "        public override "; //258:1
                     if (!string.IsNullOrEmpty(__tmp77_line))
                     {
                         __out.Write(__tmp77_line);
@@ -1291,7 +1285,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                         }
                         if (!__tmp78_last) __out.AppendLine(true);
                     }
-                    string __tmp79_line = " "; //262:36
+                    string __tmp79_line = " "; //258:36
                     if (!string.IsNullOrEmpty(__tmp79_line))
                     {
                         __out.Write(__tmp79_line);
@@ -1314,16 +1308,16 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                     }
                     if (__tmp76_outputWritten)
                     {
-                        __out.AppendLine(false); //262:48
+                        __out.AppendLine(false); //258:48
                     }
-                    __out.Write("        {"); //263:1
-                    __out.AppendLine(false); //263:10
-                    __out.Write("            get"); //264:1
-                    __out.AppendLine(false); //264:16
-                    __out.Write("            {"); //265:1
-                    __out.AppendLine(false); //265:14
+                    __out.Write("        {"); //259:1
+                    __out.AppendLine(false); //259:10
+                    __out.Write("            get"); //260:1
+                    __out.AppendLine(false); //260:16
+                    __out.Write("            {"); //261:1
+                    __out.AppendLine(false); //261:14
                     bool __tmp82_outputWritten = false;
-                    string __tmp83_line = "                this.ForceComplete(CompletionParts."; //266:1
+                    string __tmp83_line = "                this.ForceComplete(CompletionParts."; //262:1
                     if (!string.IsNullOrEmpty(__tmp83_line))
                     {
                         __out.Write(__tmp83_line);
@@ -1344,7 +1338,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                         }
                         if (!__tmp84_last) __out.AppendLine(true);
                     }
-                    string __tmp85_line = ", null, default);"; //266:83
+                    string __tmp85_line = ", null, default);"; //262:83
                     if (!string.IsNullOrEmpty(__tmp85_line))
                     {
                         __out.Write(__tmp85_line);
@@ -1353,10 +1347,10 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                     if (__tmp82_outputWritten) __out.AppendLine(true);
                     if (__tmp82_outputWritten)
                     {
-                        __out.AppendLine(false); //266:100
+                        __out.AppendLine(false); //262:100
                     }
                     bool __tmp87_outputWritten = false;
-                    string __tmp88_line = "                return "; //267:1
+                    string __tmp88_line = "                return "; //263:1
                     if (!string.IsNullOrEmpty(__tmp88_line))
                     {
                         __out.Write(__tmp88_line);
@@ -1377,7 +1371,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                         }
                         if (!__tmp89_last) __out.AppendLine(true);
                     }
-                    string __tmp90_line = ";"; //267:40
+                    string __tmp90_line = ";"; //263:40
                     if (!string.IsNullOrEmpty(__tmp90_line))
                     {
                         __out.Write(__tmp90_line);
@@ -1386,104 +1380,104 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                     if (__tmp87_outputWritten) __out.AppendLine(true);
                     if (__tmp87_outputWritten)
                     {
-                        __out.AppendLine(false); //267:41
+                        __out.AppendLine(false); //263:41
                     }
-                    __out.Write("            }"); //268:1
-                    __out.AppendLine(false); //268:14
-                    __out.Write("        }"); //269:1
-                    __out.AppendLine(false); //269:10
+                    __out.Write("            }"); //264:1
+                    __out.AppendLine(false); //264:14
+                    __out.Write("        }"); //265:1
+                    __out.AppendLine(false); //265:10
                 }
             }
+            __out.AppendLine(true); //268:1
+            __out.Write("        #region Completion"); //269:1
+            __out.AppendLine(false); //269:27
+            __out.AppendLine(true); //270:1
+            __out.Write("        public sealed override bool RequiresCompletion => true;"); //271:1
+            __out.AppendLine(false); //271:64
             __out.AppendLine(true); //272:1
-            __out.Write("        #region Completion"); //273:1
-            __out.AppendLine(false); //273:27
-            __out.AppendLine(true); //274:1
-            __out.Write("        public sealed override bool RequiresCompletion => true;"); //275:1
-            __out.AppendLine(false); //275:64
-            __out.AppendLine(true); //276:1
-            __out.Write("        public sealed override bool HasComplete(CompletionPart part)"); //277:1
-            __out.AppendLine(false); //277:69
-            __out.Write("        {"); //278:1
-            __out.AppendLine(false); //278:10
-            __out.Write("            return _state.HasComplete(part);"); //279:1
-            __out.AppendLine(false); //279:45
-            __out.Write("        }"); //280:1
-            __out.AppendLine(false); //280:10
-            __out.AppendLine(true); //281:1
-            __out.Write("        public override void ForceComplete(CompletionPart completionPart, SourceLocation locationOpt, CancellationToken cancellationToken)"); //282:1
-            __out.AppendLine(false); //282:139
-            __out.Write("        {"); //283:1
-            __out.AppendLine(false); //283:10
-            __out.Write("            if (completionPart != null && _state.HasComplete(completionPart)) return;"); //284:1
-            __out.AppendLine(false); //284:86
-            __out.Write("            if (completionPart != null && !CompletionParts.All.Contains(completionPart)) throw new ArgumentException(nameof(completionPart));"); //285:1
-            __out.AppendLine(false); //285:142
-            __out.Write("            while (true)"); //286:1
-            __out.AppendLine(false); //286:25
-            __out.Write("            {"); //287:1
-            __out.AppendLine(false); //287:14
-            __out.Write("                cancellationToken.ThrowIfCancellationRequested();"); //288:1
-            __out.AppendLine(false); //288:66
-            __out.Write("                var incompletePart = _state.NextIncompletePart;"); //289:1
-            __out.AppendLine(false); //289:64
-            __out.Write("                if (incompletePart == CompletionGraph.StartInitializing || incompletePart == CompletionGraph.FinishInitializing)"); //290:1
-            __out.AppendLine(false); //290:129
-            __out.Write("                {"); //291:1
-            __out.AppendLine(false); //291:18
-            __out.Write("                    if (_state.NotePartComplete(CompletionGraph.StartInitializing))"); //292:1
+            __out.Write("        public sealed override bool HasComplete(CompletionPart part)"); //273:1
+            __out.AppendLine(false); //273:69
+            __out.Write("        {"); //274:1
+            __out.AppendLine(false); //274:10
+            __out.Write("            return _state.HasComplete(part);"); //275:1
+            __out.AppendLine(false); //275:45
+            __out.Write("        }"); //276:1
+            __out.AppendLine(false); //276:10
+            __out.AppendLine(true); //277:1
+            __out.Write("        public override void ForceComplete(CompletionPart completionPart, SourceLocation locationOpt, CancellationToken cancellationToken)"); //278:1
+            __out.AppendLine(false); //278:139
+            __out.Write("        {"); //279:1
+            __out.AppendLine(false); //279:10
+            __out.Write("            if (completionPart != null && _state.HasComplete(completionPart)) return;"); //280:1
+            __out.AppendLine(false); //280:86
+            __out.Write("            if (completionPart != null && !CompletionParts.All.Contains(completionPart)) throw new ArgumentException(nameof(completionPart));"); //281:1
+            __out.AppendLine(false); //281:142
+            __out.Write("            while (true)"); //282:1
+            __out.AppendLine(false); //282:25
+            __out.Write("            {"); //283:1
+            __out.AppendLine(false); //283:14
+            __out.Write("                cancellationToken.ThrowIfCancellationRequested();"); //284:1
+            __out.AppendLine(false); //284:66
+            __out.Write("                var incompletePart = _state.NextIncompletePart;"); //285:1
+            __out.AppendLine(false); //285:64
+            __out.Write("                if (incompletePart == CompletionGraph.StartInitializing || incompletePart == CompletionGraph.FinishInitializing)"); //286:1
+            __out.AppendLine(false); //286:129
+            __out.Write("                {"); //287:1
+            __out.AppendLine(false); //287:18
+            __out.Write("                    if (_state.NotePartComplete(CompletionGraph.StartInitializing))"); //288:1
+            __out.AppendLine(false); //288:84
+            __out.Write("                    {"); //289:1
+            __out.AppendLine(false); //289:22
+            __out.Write("                        var diagnostics = DiagnosticBag.GetInstance();"); //290:1
+            __out.AppendLine(false); //290:71
+            __out.Write("                        _name = CompleteSymbolProperty_Name(diagnostics, cancellationToken);"); //291:1
+            __out.AppendLine(false); //291:93
+            __out.Write("                        CompleteInitializingSymbol(diagnostics, cancellationToken);"); //292:1
             __out.AppendLine(false); //292:84
-            __out.Write("                    {"); //293:1
-            __out.AppendLine(false); //293:22
-            __out.Write("                        var diagnostics = DiagnosticBag.GetInstance();"); //294:1
-            __out.AppendLine(false); //294:71
-            __out.Write("                        _name = CompleteSymbolProperty_Name(diagnostics, cancellationToken);"); //295:1
-            __out.AppendLine(false); //295:93
-            __out.Write("                        CompleteInitializingSymbol(diagnostics, cancellationToken);"); //296:1
-            __out.AppendLine(false); //296:84
-            __out.Write("                        AddSymbolDiagnostics(diagnostics);"); //297:1
-            __out.AppendLine(false); //297:59
-            __out.Write("                        diagnostics.Free();"); //298:1
-            __out.AppendLine(false); //298:44
-            __out.Write("                        _state.NotePartComplete(CompletionGraph.FinishInitializing);"); //299:1
-            __out.AppendLine(false); //299:85
-            __out.Write("                    }"); //300:1
-            __out.AppendLine(false); //300:22
-            __out.Write("                }"); //301:1
-            __out.AppendLine(false); //301:18
-            __out.Write("                else if (incompletePart == CompletionGraph.StartCreatingChildren || incompletePart == CompletionGraph.FinishCreatingChildren)"); //302:1
-            __out.AppendLine(false); //302:142
-            __out.Write("                {"); //303:1
-            __out.AppendLine(false); //303:18
-            __out.Write("                    if (_state.NotePartComplete(CompletionGraph.StartCreatingChildren))"); //304:1
-            __out.AppendLine(false); //304:88
-            __out.Write("                    {"); //305:1
-            __out.AppendLine(false); //305:22
-            __out.Write("                        var diagnostics = DiagnosticBag.GetInstance();"); //306:1
-            __out.AppendLine(false); //306:71
-            __out.Write("                        _childSymbols = CompleteCreatingChildSymbols(diagnostics, cancellationToken);"); //307:1
-            __out.AppendLine(false); //307:102
-            __out.Write("                        AddSymbolDiagnostics(diagnostics);"); //308:1
-            __out.AppendLine(false); //308:59
-            __out.Write("                        diagnostics.Free();"); //309:1
-            __out.AppendLine(false); //309:44
-            __out.Write("                        _state.NotePartComplete(CompletionGraph.FinishCreatingChildren);"); //310:1
-            __out.AppendLine(false); //310:89
-            __out.Write("                    }"); //311:1
-            __out.AppendLine(false); //311:22
-            __out.Write("                }"); //312:1
-            __out.AppendLine(false); //312:18
+            __out.Write("                        AddSymbolDiagnostics(diagnostics);"); //293:1
+            __out.AppendLine(false); //293:59
+            __out.Write("                        diagnostics.Free();"); //294:1
+            __out.AppendLine(false); //294:44
+            __out.Write("                        _state.NotePartComplete(CompletionGraph.FinishInitializing);"); //295:1
+            __out.AppendLine(false); //295:85
+            __out.Write("                    }"); //296:1
+            __out.AppendLine(false); //296:22
+            __out.Write("                }"); //297:1
+            __out.AppendLine(false); //297:18
+            __out.Write("                else if (incompletePart == CompletionGraph.StartCreatingChildren || incompletePart == CompletionGraph.FinishCreatingChildren)"); //298:1
+            __out.AppendLine(false); //298:142
+            __out.Write("                {"); //299:1
+            __out.AppendLine(false); //299:18
+            __out.Write("                    if (_state.NotePartComplete(CompletionGraph.StartCreatingChildren))"); //300:1
+            __out.AppendLine(false); //300:88
+            __out.Write("                    {"); //301:1
+            __out.AppendLine(false); //301:22
+            __out.Write("                        var diagnostics = DiagnosticBag.GetInstance();"); //302:1
+            __out.AppendLine(false); //302:71
+            __out.Write("                        _childSymbols = CompleteCreatingChildSymbols(diagnostics, cancellationToken);"); //303:1
+            __out.AppendLine(false); //303:102
+            __out.Write("                        AddSymbolDiagnostics(diagnostics);"); //304:1
+            __out.AppendLine(false); //304:59
+            __out.Write("                        diagnostics.Free();"); //305:1
+            __out.AppendLine(false); //305:44
+            __out.Write("                        _state.NotePartComplete(CompletionGraph.FinishCreatingChildren);"); //306:1
+            __out.AppendLine(false); //306:89
+            __out.Write("                    }"); //307:1
+            __out.AppendLine(false); //307:22
+            __out.Write("                }"); //308:1
+            __out.AppendLine(false); //308:18
             var __loop8_results = 
-                (from part in __Enumerate((symbol.CompletionParts).GetEnumerator()) //313:24
+                (from part in __Enumerate((symbol.CompletionParts).GetEnumerator()) //309:24
                 select new { part = part}
-                ).ToList(); //313:18
+                ).ToList(); //309:18
             for (int __loop8_iteration = 0; __loop8_iteration < __loop8_results.Count; ++__loop8_iteration)
             {
                 var __tmp91 = __loop8_results[__loop8_iteration];
                 var part = __tmp91.part;
-                if (part.IsLocked) //314:22
+                if (part.IsLocked) //310:22
                 {
                     bool __tmp93_outputWritten = false;
-                    string __tmp94_line = "                else if (incompletePart == CompletionParts."; //315:1
+                    string __tmp94_line = "                else if (incompletePart == CompletionParts."; //311:1
                     if (!string.IsNullOrEmpty(__tmp94_line))
                     {
                         __out.Write(__tmp94_line);
@@ -1504,7 +1498,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                         }
                         if (!__tmp95_last) __out.AppendLine(true);
                     }
-                    string __tmp96_line = " || incompletePart == CompletionParts."; //315:90
+                    string __tmp96_line = " || incompletePart == CompletionParts."; //311:90
                     if (!string.IsNullOrEmpty(__tmp96_line))
                     {
                         __out.Write(__tmp96_line);
@@ -1525,7 +1519,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                         }
                         if (!__tmp97_last) __out.AppendLine(true);
                     }
-                    string __tmp98_line = ")"; //315:159
+                    string __tmp98_line = ")"; //311:159
                     if (!string.IsNullOrEmpty(__tmp98_line))
                     {
                         __out.Write(__tmp98_line);
@@ -1534,12 +1528,12 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                     if (__tmp93_outputWritten) __out.AppendLine(true);
                     if (__tmp93_outputWritten)
                     {
-                        __out.AppendLine(false); //315:160
+                        __out.AppendLine(false); //311:160
                     }
-                    __out.Write("                {"); //316:1
-                    __out.AppendLine(false); //316:18
+                    __out.Write("                {"); //312:1
+                    __out.AppendLine(false); //312:18
                     bool __tmp100_outputWritten = false;
-                    string __tmp101_line = "                    if (_state.NotePartComplete(CompletionParts."; //317:1
+                    string __tmp101_line = "                    if (_state.NotePartComplete(CompletionParts."; //313:1
                     if (!string.IsNullOrEmpty(__tmp101_line))
                     {
                         __out.Write(__tmp101_line);
@@ -1560,7 +1554,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                         }
                         if (!__tmp102_last) __out.AppendLine(true);
                     }
-                    string __tmp103_line = "))"; //317:95
+                    string __tmp103_line = "))"; //313:95
                     if (!string.IsNullOrEmpty(__tmp103_line))
                     {
                         __out.Write(__tmp103_line);
@@ -1569,18 +1563,18 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                     if (__tmp100_outputWritten) __out.AppendLine(true);
                     if (__tmp100_outputWritten)
                     {
-                        __out.AppendLine(false); //317:97
+                        __out.AppendLine(false); //313:97
                     }
-                    __out.Write("                    {"); //318:1
-                    __out.AppendLine(false); //318:22
-                    if (part.CompleteMethodParameters.HasFlag(CompleteMethodParameters.Diagnostics)) //319:26
+                    __out.Write("                    {"); //314:1
+                    __out.AppendLine(false); //314:22
+                    if (part.CompleteMethodParameters.HasFlag(CompleteMethodParameters.Diagnostics)) //315:26
                     {
-                        __out.Write("                        var diagnostics = DiagnosticBag.GetInstance();"); //320:1
-                        __out.AppendLine(false); //320:71
+                        __out.Write("                        var diagnostics = DiagnosticBag.GetInstance();"); //316:1
+                        __out.AppendLine(false); //316:71
                     }
                     bool __tmp105_outputWritten = false;
-                    string __tmp104Prefix = "                        "; //322:1
-                    if (part is SymbolPropertyGenerationInfo) //322:26
+                    string __tmp104Prefix = "                        "; //318:1
+                    if (part is SymbolPropertyGenerationInfo) //318:26
                     {
                         if (!string.IsNullOrEmpty(__tmp104Prefix))
                         {
@@ -1602,7 +1596,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                             }
                             if (!__tmp107_last) __out.AppendLine(true);
                         }
-                        string __tmp108_line = " = "; //322:116
+                        string __tmp108_line = " = "; //318:116
                         if (!string.IsNullOrEmpty(__tmp108_line))
                         {
                             __out.Write(__tmp108_line);
@@ -1624,7 +1618,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                         }
                         if (!__tmp110_last) __out.AppendLine(true);
                     }
-                    string __tmp111_line = "("; //322:152
+                    string __tmp111_line = "("; //318:152
                     if (!string.IsNullOrEmpty(__tmp111_line))
                     {
                         __out.Write(__tmp111_line);
@@ -1645,7 +1639,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                         }
                         if (!__tmp112_last) __out.AppendLine(true);
                     }
-                    string __tmp113_line = ");"; //322:181
+                    string __tmp113_line = ");"; //318:181
                     if (!string.IsNullOrEmpty(__tmp113_line))
                     {
                         __out.Write(__tmp113_line);
@@ -1654,17 +1648,17 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                     if (__tmp105_outputWritten) __out.AppendLine(true);
                     if (__tmp105_outputWritten)
                     {
-                        __out.AppendLine(false); //322:183
+                        __out.AppendLine(false); //318:183
                     }
-                    if (part.CompleteMethodParameters.HasFlag(CompleteMethodParameters.Diagnostics)) //323:26
+                    if (part.CompleteMethodParameters.HasFlag(CompleteMethodParameters.Diagnostics)) //319:26
                     {
-                        __out.Write("                        AddSymbolDiagnostics(diagnostics);"); //324:1
-                        __out.AppendLine(false); //324:59
-                        __out.Write("                        diagnostics.Free();"); //325:1
-                        __out.AppendLine(false); //325:44
+                        __out.Write("                        AddSymbolDiagnostics(diagnostics);"); //320:1
+                        __out.AppendLine(false); //320:59
+                        __out.Write("                        diagnostics.Free();"); //321:1
+                        __out.AppendLine(false); //321:44
                     }
                     bool __tmp115_outputWritten = false;
-                    string __tmp116_line = "                        _state.NotePartComplete(CompletionParts."; //327:1
+                    string __tmp116_line = "                        _state.NotePartComplete(CompletionParts."; //323:1
                     if (!string.IsNullOrEmpty(__tmp116_line))
                     {
                         __out.Write(__tmp116_line);
@@ -1685,7 +1679,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                         }
                         if (!__tmp117_last) __out.AppendLine(true);
                     }
-                    string __tmp118_line = ");"; //327:96
+                    string __tmp118_line = ");"; //323:96
                     if (!string.IsNullOrEmpty(__tmp118_line))
                     {
                         __out.Write(__tmp118_line);
@@ -1694,17 +1688,17 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                     if (__tmp115_outputWritten) __out.AppendLine(true);
                     if (__tmp115_outputWritten)
                     {
-                        __out.AppendLine(false); //327:98
+                        __out.AppendLine(false); //323:98
                     }
-                    __out.Write("                    }"); //328:1
-                    __out.AppendLine(false); //328:22
-                    __out.Write("                }"); //329:1
-                    __out.AppendLine(false); //329:18
+                    __out.Write("                    }"); //324:1
+                    __out.AppendLine(false); //324:22
+                    __out.Write("                }"); //325:1
+                    __out.AppendLine(false); //325:18
                 }
-                else //330:22
+                else //326:22
                 {
                     bool __tmp120_outputWritten = false;
-                    string __tmp121_line = "                else if (incompletePart == CompletionParts."; //331:1
+                    string __tmp121_line = "                else if (incompletePart == CompletionParts."; //327:1
                     if (!string.IsNullOrEmpty(__tmp121_line))
                     {
                         __out.Write(__tmp121_line);
@@ -1725,7 +1719,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                         }
                         if (!__tmp122_last) __out.AppendLine(true);
                     }
-                    string __tmp123_line = ")"; //331:85
+                    string __tmp123_line = ")"; //327:85
                     if (!string.IsNullOrEmpty(__tmp123_line))
                     {
                         __out.Write(__tmp123_line);
@@ -1734,17 +1728,17 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                     if (__tmp120_outputWritten) __out.AppendLine(true);
                     if (__tmp120_outputWritten)
                     {
-                        __out.AppendLine(false); //331:86
+                        __out.AppendLine(false); //327:86
                     }
-                    __out.Write("                {"); //332:1
-                    __out.AppendLine(false); //332:18
-                    if (part.CompleteMethodParameters.HasFlag(CompleteMethodParameters.Diagnostics)) //333:22
+                    __out.Write("                {"); //328:1
+                    __out.AppendLine(false); //328:18
+                    if (part.CompleteMethodParameters.HasFlag(CompleteMethodParameters.Diagnostics)) //329:22
                     {
-                        __out.Write("                    var diagnostics = DiagnosticBag.GetInstance();"); //334:1
-                        __out.AppendLine(false); //334:67
+                        __out.Write("                    var diagnostics = DiagnosticBag.GetInstance();"); //330:1
+                        __out.AppendLine(false); //330:67
                     }
                     bool __tmp125_outputWritten = false;
-                    string __tmp124Prefix = "                    "; //336:1
+                    string __tmp124Prefix = "                    "; //332:1
                     var __tmp126 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
                     __tmp126.Write(part.CompleteMethodName);
                     var __tmp126Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp126.ToStringAndFree());
@@ -1765,7 +1759,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                         }
                         if (!__tmp126_last) __out.AppendLine(true);
                     }
-                    string __tmp127_line = "("; //336:46
+                    string __tmp127_line = "("; //332:46
                     if (!string.IsNullOrEmpty(__tmp127_line))
                     {
                         __out.Write(__tmp127_line);
@@ -1786,7 +1780,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                         }
                         if (!__tmp128_last) __out.AppendLine(true);
                     }
-                    string __tmp129_line = ");"; //336:75
+                    string __tmp129_line = ");"; //332:75
                     if (!string.IsNullOrEmpty(__tmp129_line))
                     {
                         __out.Write(__tmp129_line);
@@ -1795,17 +1789,17 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                     if (__tmp125_outputWritten) __out.AppendLine(true);
                     if (__tmp125_outputWritten)
                     {
-                        __out.AppendLine(false); //336:77
+                        __out.AppendLine(false); //332:77
                     }
-                    if (part.CompleteMethodParameters.HasFlag(CompleteMethodParameters.Diagnostics)) //337:22
+                    if (part.CompleteMethodParameters.HasFlag(CompleteMethodParameters.Diagnostics)) //333:22
                     {
-                        __out.Write("                    AddSymbolDiagnostics(diagnostics);"); //338:1
-                        __out.AppendLine(false); //338:55
-                        __out.Write("                    diagnostics.Free();"); //339:1
-                        __out.AppendLine(false); //339:40
+                        __out.Write("                    AddSymbolDiagnostics(diagnostics);"); //334:1
+                        __out.AppendLine(false); //334:55
+                        __out.Write("                    diagnostics.Free();"); //335:1
+                        __out.AppendLine(false); //335:40
                     }
                     bool __tmp131_outputWritten = false;
-                    string __tmp132_line = "                    _state.NotePartComplete(CompletionParts."; //341:1
+                    string __tmp132_line = "                    _state.NotePartComplete(CompletionParts."; //337:1
                     if (!string.IsNullOrEmpty(__tmp132_line))
                     {
                         __out.Write(__tmp132_line);
@@ -1826,7 +1820,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                         }
                         if (!__tmp133_last) __out.AppendLine(true);
                     }
-                    string __tmp134_line = ");"; //341:86
+                    string __tmp134_line = ");"; //337:86
                     if (!string.IsNullOrEmpty(__tmp134_line))
                     {
                         __out.Write(__tmp134_line);
@@ -1835,166 +1829,166 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                     if (__tmp131_outputWritten) __out.AppendLine(true);
                     if (__tmp131_outputWritten)
                     {
-                        __out.AppendLine(false); //341:88
+                        __out.AppendLine(false); //337:88
                     }
-                    __out.Write("                }"); //342:1
-                    __out.AppendLine(false); //342:18
+                    __out.Write("                }"); //338:1
+                    __out.AppendLine(false); //338:18
                 }
             }
-            __out.Write("                else if (incompletePart == CompletionGraph.StartComputingNonSymbolProperties || incompletePart == CompletionGraph.FinishComputingNonSymbolProperties)"); //345:1
-            __out.AppendLine(false); //345:166
-            __out.Write("                {"); //346:1
-            __out.AppendLine(false); //346:18
-            __out.Write("                    if (_state.NotePartComplete(CompletionGraph.StartComputingNonSymbolProperties))"); //347:1
-            __out.AppendLine(false); //347:100
-            __out.Write("                    {"); //348:1
-            __out.AppendLine(false); //348:22
-            __out.Write("                        var diagnostics = DiagnosticBag.GetInstance();"); //349:1
-            __out.AppendLine(false); //349:71
-            __out.Write("                        CompleteNonSymbolProperties(locationOpt, diagnostics, cancellationToken);"); //350:1
-            __out.AppendLine(false); //350:98
-            __out.Write("                        AddSymbolDiagnostics(diagnostics);"); //351:1
-            __out.AppendLine(false); //351:59
-            __out.Write("                        diagnostics.Free();"); //352:1
-            __out.AppendLine(false); //352:44
-            __out.Write("                        _state.NotePartComplete(CompletionGraph.FinishComputingNonSymbolProperties);"); //353:1
-            __out.AppendLine(false); //353:101
-            __out.Write("                    }"); //354:1
-            __out.AppendLine(false); //354:22
-            __out.Write("                }"); //355:1
-            __out.AppendLine(false); //355:18
-            __out.Write("                else if (incompletePart == CompletionGraph.ChildrenCompleted)"); //356:1
-            __out.AppendLine(false); //356:78
-            __out.Write("                {"); //357:1
-            __out.AppendLine(false); //357:18
-            __out.Write("                    var diagnostics = DiagnosticBag.GetInstance();"); //358:1
-            __out.AppendLine(false); //358:67
-            __out.Write("                    CompleteImports(locationOpt, diagnostics, cancellationToken);"); //359:1
-            __out.AppendLine(false); //359:82
-            __out.Write("                    AddSymbolDiagnostics(diagnostics);"); //360:1
-            __out.AppendLine(false); //360:55
-            __out.Write("                    diagnostics.Free();"); //361:1
-            __out.AppendLine(false); //361:40
-            __out.Write("                    bool allCompleted = true;"); //363:1
-            __out.AppendLine(false); //363:46
-            __out.Write("                    if (locationOpt == null)"); //364:1
-            __out.AppendLine(false); //364:45
-            __out.Write("                    {"); //365:1
-            __out.AppendLine(false); //365:22
-            __out.Write("                        foreach (var child in _childSymbols)"); //366:1
-            __out.AppendLine(false); //366:61
-            __out.Write("                        {"); //367:1
-            __out.AppendLine(false); //367:26
-            __out.Write("                            cancellationToken.ThrowIfCancellationRequested();"); //368:1
-            __out.AppendLine(false); //368:78
-            __out.Write("                            child.ForceComplete(null, locationOpt, cancellationToken);"); //369:1
-            __out.AppendLine(false); //369:87
-            __out.Write("                        }"); //370:1
-            __out.AppendLine(false); //370:26
-            __out.Write("                    }"); //371:1
-            __out.AppendLine(false); //371:22
-            __out.Write("                    else"); //372:1
-            __out.AppendLine(false); //372:25
-            __out.Write("                    {"); //373:1
-            __out.AppendLine(false); //373:22
-            __out.Write("                        foreach (var child in _childSymbols)"); //374:1
-            __out.AppendLine(false); //374:61
-            __out.Write("                        {"); //375:1
-            __out.AppendLine(false); //375:26
-            __out.Write("                            ForceCompleteChildByLocation(locationOpt, child, cancellationToken);"); //376:1
-            __out.AppendLine(false); //376:97
-            __out.Write("                            allCompleted = allCompleted && child.HasComplete(CompletionGraph.All);"); //377:1
-            __out.AppendLine(false); //377:99
-            __out.Write("                        }"); //378:1
-            __out.AppendLine(false); //378:26
-            __out.Write("                    }"); //379:1
-            __out.AppendLine(false); //379:22
-            __out.Write("                    if (!allCompleted)"); //381:1
-            __out.AppendLine(false); //381:39
-            __out.Write("                    {"); //382:1
-            __out.AppendLine(false); //382:22
-            __out.Write("                        // We did not complete all members, so just kick out now."); //383:1
-            __out.AppendLine(false); //383:82
-            __out.Write("                        var allParts = CompletionParts.AllWithLocation;"); //384:1
-            __out.AppendLine(false); //384:72
-            __out.Write("                        _state.SpinWaitComplete(allParts, cancellationToken);"); //385:1
-            __out.AppendLine(false); //385:78
-            __out.Write("                        return;"); //386:1
-            __out.AppendLine(false); //386:32
-            __out.Write("                    }"); //387:1
-            __out.AppendLine(false); //387:22
-            __out.Write("                    // We've completed all members, proceed to the next iteration."); //389:1
-            __out.AppendLine(false); //389:83
-            __out.Write("                    _state.NotePartComplete(CompletionGraph.ChildrenCompleted);"); //390:1
-            __out.AppendLine(false); //390:80
+            __out.Write("                else if (incompletePart == CompletionGraph.StartComputingNonSymbolProperties || incompletePart == CompletionGraph.FinishComputingNonSymbolProperties)"); //341:1
+            __out.AppendLine(false); //341:166
+            __out.Write("                {"); //342:1
+            __out.AppendLine(false); //342:18
+            __out.Write("                    if (_state.NotePartComplete(CompletionGraph.StartComputingNonSymbolProperties))"); //343:1
+            __out.AppendLine(false); //343:100
+            __out.Write("                    {"); //344:1
+            __out.AppendLine(false); //344:22
+            __out.Write("                        var diagnostics = DiagnosticBag.GetInstance();"); //345:1
+            __out.AppendLine(false); //345:71
+            __out.Write("                        CompleteNonSymbolProperties(locationOpt, diagnostics, cancellationToken);"); //346:1
+            __out.AppendLine(false); //346:98
+            __out.Write("                        AddSymbolDiagnostics(diagnostics);"); //347:1
+            __out.AppendLine(false); //347:59
+            __out.Write("                        diagnostics.Free();"); //348:1
+            __out.AppendLine(false); //348:44
+            __out.Write("                        _state.NotePartComplete(CompletionGraph.FinishComputingNonSymbolProperties);"); //349:1
+            __out.AppendLine(false); //349:101
+            __out.Write("                    }"); //350:1
+            __out.AppendLine(false); //350:22
+            __out.Write("                }"); //351:1
+            __out.AppendLine(false); //351:18
+            __out.Write("                else if (incompletePart == CompletionGraph.ChildrenCompleted)"); //352:1
+            __out.AppendLine(false); //352:78
+            __out.Write("                {"); //353:1
+            __out.AppendLine(false); //353:18
+            __out.Write("                    var diagnostics = DiagnosticBag.GetInstance();"); //354:1
+            __out.AppendLine(false); //354:67
+            __out.Write("                    CompleteImports(locationOpt, diagnostics, cancellationToken);"); //355:1
+            __out.AppendLine(false); //355:82
+            __out.Write("                    AddSymbolDiagnostics(diagnostics);"); //356:1
+            __out.AppendLine(false); //356:55
+            __out.Write("                    diagnostics.Free();"); //357:1
+            __out.AppendLine(false); //357:40
+            __out.Write("                    bool allCompleted = true;"); //359:1
+            __out.AppendLine(false); //359:46
+            __out.Write("                    if (locationOpt == null)"); //360:1
+            __out.AppendLine(false); //360:45
+            __out.Write("                    {"); //361:1
+            __out.AppendLine(false); //361:22
+            __out.Write("                        foreach (var child in _childSymbols)"); //362:1
+            __out.AppendLine(false); //362:61
+            __out.Write("                        {"); //363:1
+            __out.AppendLine(false); //363:26
+            __out.Write("                            cancellationToken.ThrowIfCancellationRequested();"); //364:1
+            __out.AppendLine(false); //364:78
+            __out.Write("                            child.ForceComplete(null, locationOpt, cancellationToken);"); //365:1
+            __out.AppendLine(false); //365:87
+            __out.Write("                        }"); //366:1
+            __out.AppendLine(false); //366:26
+            __out.Write("                    }"); //367:1
+            __out.AppendLine(false); //367:22
+            __out.Write("                    else"); //368:1
+            __out.AppendLine(false); //368:25
+            __out.Write("                    {"); //369:1
+            __out.AppendLine(false); //369:22
+            __out.Write("                        foreach (var child in _childSymbols)"); //370:1
+            __out.AppendLine(false); //370:61
+            __out.Write("                        {"); //371:1
+            __out.AppendLine(false); //371:26
+            __out.Write("                            ForceCompleteChildByLocation(locationOpt, child, cancellationToken);"); //372:1
+            __out.AppendLine(false); //372:97
+            __out.Write("                            allCompleted = allCompleted && child.HasComplete(CompletionGraph.All);"); //373:1
+            __out.AppendLine(false); //373:99
+            __out.Write("                        }"); //374:1
+            __out.AppendLine(false); //374:26
+            __out.Write("                    }"); //375:1
+            __out.AppendLine(false); //375:22
+            __out.Write("                    if (!allCompleted)"); //377:1
+            __out.AppendLine(false); //377:39
+            __out.Write("                    {"); //378:1
+            __out.AppendLine(false); //378:22
+            __out.Write("                        // We did not complete all members, so just kick out now."); //379:1
+            __out.AppendLine(false); //379:82
+            __out.Write("                        var allParts = CompletionParts.AllWithLocation;"); //380:1
+            __out.AppendLine(false); //380:72
+            __out.Write("                        _state.SpinWaitComplete(allParts, cancellationToken);"); //381:1
+            __out.AppendLine(false); //381:78
+            __out.Write("                        return;"); //382:1
+            __out.AppendLine(false); //382:32
+            __out.Write("                    }"); //383:1
+            __out.AppendLine(false); //383:22
+            __out.Write("                    // We've completed all members, proceed to the next iteration."); //385:1
+            __out.AppendLine(false); //385:83
+            __out.Write("                    _state.NotePartComplete(CompletionGraph.ChildrenCompleted);"); //386:1
+            __out.AppendLine(false); //386:80
+            __out.Write("                }"); //387:1
+            __out.AppendLine(false); //387:18
+            __out.Write("                else if (incompletePart == null)"); //388:1
+            __out.AppendLine(false); //388:49
+            __out.Write("                {"); //389:1
+            __out.AppendLine(false); //389:18
+            __out.Write("                    return;"); //390:1
+            __out.AppendLine(false); //390:28
             __out.Write("                }"); //391:1
             __out.AppendLine(false); //391:18
-            __out.Write("                else if (incompletePart == null)"); //392:1
-            __out.AppendLine(false); //392:49
+            __out.Write("                else"); //392:1
+            __out.AppendLine(false); //392:21
             __out.Write("                {"); //393:1
             __out.AppendLine(false); //393:18
-            __out.Write("                    return;"); //394:1
-            __out.AppendLine(false); //394:28
-            __out.Write("                }"); //395:1
-            __out.AppendLine(false); //395:18
-            __out.Write("                else"); //396:1
-            __out.AppendLine(false); //396:21
-            __out.Write("                {"); //397:1
-            __out.AppendLine(false); //397:18
-            __out.Write("                    // This assert will trigger if we forgot to handle any of the completion parts"); //398:1
-            __out.AppendLine(false); //398:99
-            __out.Write("                    Debug.Assert(!CompletionParts.All.Contains(incompletePart));"); //399:1
-            __out.AppendLine(false); //399:81
-            __out.Write("                    // any other values are completion parts intended for other kinds of symbols"); //400:1
-            __out.AppendLine(false); //400:97
-            __out.Write("                    _state.NotePartComplete(incompletePart);"); //401:1
-            __out.AppendLine(false); //401:61
-            __out.Write("                }"); //402:1
-            __out.AppendLine(false); //402:18
-            __out.Write("                if (completionPart != null && _state.HasComplete(completionPart)) return;"); //403:1
-            __out.AppendLine(false); //403:90
-            __out.Write("                _state.SpinWaitComplete(incompletePart, cancellationToken);"); //404:1
-            __out.AppendLine(false); //404:76
-            __out.Write("            }"); //405:1
-            __out.AppendLine(false); //405:14
-            __out.Write("            throw ExceptionUtilities.Unreachable;"); //406:1
-            __out.AppendLine(false); //406:50
-            __out.Write("        }"); //407:1
-            __out.AppendLine(false); //407:10
-            __out.AppendLine(true); //408:1
-            if (!symbol.ExistingCompletionTypeInfo.Members.Contains("CompleteSymbolProperty_Name")) //409:10
+            __out.Write("                    // This assert will trigger if we forgot to handle any of the completion parts"); //394:1
+            __out.AppendLine(false); //394:99
+            __out.Write("                    Debug.Assert(!CompletionParts.All.Contains(incompletePart));"); //395:1
+            __out.AppendLine(false); //395:81
+            __out.Write("                    // any other values are completion parts intended for other kinds of symbols"); //396:1
+            __out.AppendLine(false); //396:97
+            __out.Write("                    _state.NotePartComplete(incompletePart);"); //397:1
+            __out.AppendLine(false); //397:61
+            __out.Write("                }"); //398:1
+            __out.AppendLine(false); //398:18
+            __out.Write("                if (completionPart != null && _state.HasComplete(completionPart)) return;"); //399:1
+            __out.AppendLine(false); //399:90
+            __out.Write("                _state.SpinWaitComplete(incompletePart, cancellationToken);"); //400:1
+            __out.AppendLine(false); //400:76
+            __out.Write("            }"); //401:1
+            __out.AppendLine(false); //401:14
+            __out.Write("            throw ExceptionUtilities.Unreachable;"); //402:1
+            __out.AppendLine(false); //402:50
+            __out.Write("        }"); //403:1
+            __out.AppendLine(false); //403:10
+            __out.AppendLine(true); //404:1
+            if (!symbol.ExistingCompletionTypeInfo.Members.Contains("CompleteSymbolProperty_Name")) //405:10
             {
-                __out.Write("        protected abstract string CompleteSymbolProperty_Name(DiagnosticBag diagnostics, CancellationToken cancellationToken);"); //410:1
-                __out.AppendLine(false); //410:127
+                __out.Write("        protected abstract string CompleteSymbolProperty_Name(DiagnosticBag diagnostics, CancellationToken cancellationToken);"); //406:1
+                __out.AppendLine(false); //406:127
             }
-            if (!symbol.ExistingCompletionTypeInfo.Members.Contains("CompleteInitializingSymbol")) //412:10
+            if (!symbol.ExistingCompletionTypeInfo.Members.Contains("CompleteInitializingSymbol")) //408:10
             {
-                __out.Write("        protected abstract void CompleteInitializingSymbol(DiagnosticBag diagnostics, CancellationToken cancellationToken);"); //413:1
-                __out.AppendLine(false); //413:124
+                __out.Write("        protected abstract void CompleteInitializingSymbol(DiagnosticBag diagnostics, CancellationToken cancellationToken);"); //409:1
+                __out.AppendLine(false); //409:124
             }
-            if (!symbol.ExistingCompletionTypeInfo.Members.Contains("CompleteCreatingChildSymbols")) //415:10
+            if (!symbol.ExistingCompletionTypeInfo.Members.Contains("CompleteCreatingChildSymbols")) //411:10
             {
-                __out.Write("        protected abstract ImmutableArray<Symbol> CompleteCreatingChildSymbols(DiagnosticBag diagnostics, CancellationToken cancellationToken);"); //416:1
-                __out.AppendLine(false); //416:144
+                __out.Write("        protected abstract ImmutableArray<Symbol> CompleteCreatingChildSymbols(DiagnosticBag diagnostics, CancellationToken cancellationToken);"); //412:1
+                __out.AppendLine(false); //412:144
             }
-            if (!symbol.ExistingCompletionTypeInfo.Members.Contains("CompleteImports")) //418:10
+            if (!symbol.ExistingCompletionTypeInfo.Members.Contains("CompleteImports")) //414:10
             {
-                __out.Write("        protected abstract void CompleteImports(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken);"); //419:1
-                __out.AppendLine(false); //419:141
+                __out.Write("        protected abstract void CompleteImports(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken);"); //415:1
+                __out.AppendLine(false); //415:141
             }
             var __loop9_results = 
-                (from part in __Enumerate((symbol.CompletionParts).GetEnumerator()) //421:16
-                where part.GenerateCompleteMethod //421:44
+                (from part in __Enumerate((symbol.CompletionParts).GetEnumerator()) //417:16
+                where part.GenerateCompleteMethod //417:44
                 select new { part = part}
-                ).ToList(); //421:10
+                ).ToList(); //417:10
             for (int __loop9_iteration = 0; __loop9_iteration < __loop9_results.Count; ++__loop9_iteration)
             {
                 var __tmp135 = __loop9_results[__loop9_iteration];
                 var part = __tmp135.part;
-                if (!symbol.ExistingCompletionTypeInfo.Members.Contains(part.CompleteMethodName)) //422:14
+                if (!symbol.ExistingCompletionTypeInfo.Members.Contains(part.CompleteMethodName)) //418:14
                 {
                     bool __tmp137_outputWritten = false;
-                    string __tmp138_line = "        protected abstract "; //423:1
+                    string __tmp138_line = "        protected abstract "; //419:1
                     if (!string.IsNullOrEmpty(__tmp138_line))
                     {
                         __out.Write(__tmp138_line);
@@ -2015,7 +2009,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                         }
                         if (!__tmp139_last) __out.AppendLine(true);
                     }
-                    string __tmp140_line = " "; //423:59
+                    string __tmp140_line = " "; //419:59
                     if (!string.IsNullOrEmpty(__tmp140_line))
                     {
                         __out.Write(__tmp140_line);
@@ -2036,7 +2030,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                         }
                         if (!__tmp141_last) __out.AppendLine(true);
                     }
-                    string __tmp142_line = "("; //423:85
+                    string __tmp142_line = "("; //419:85
                     if (!string.IsNullOrEmpty(__tmp142_line))
                     {
                         __out.Write(__tmp142_line);
@@ -2057,7 +2051,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                         }
                         if (!__tmp143_last) __out.AppendLine(true);
                     }
-                    string __tmp144_line = ");"; //423:116
+                    string __tmp144_line = ");"; //419:116
                     if (!string.IsNullOrEmpty(__tmp144_line))
                     {
                         __out.Write(__tmp144_line);
@@ -2066,54 +2060,54 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                     if (__tmp137_outputWritten) __out.AppendLine(true);
                     if (__tmp137_outputWritten)
                     {
-                        __out.AppendLine(false); //423:118
+                        __out.AppendLine(false); //419:118
                     }
                 }
             }
-            if (!symbol.ExistingCompletionTypeInfo.Members.Contains("CompleteNonSymbolProperties")) //426:10
+            if (!symbol.ExistingCompletionTypeInfo.Members.Contains("CompleteNonSymbolProperties")) //422:10
             {
-                __out.Write("        protected abstract void CompleteNonSymbolProperties(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken);"); //427:1
-                __out.AppendLine(false); //427:153
+                __out.Write("        protected abstract void CompleteNonSymbolProperties(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken);"); //423:1
+                __out.AppendLine(false); //423:153
             }
-            __out.Write("        #endregion"); //429:1
-            __out.AppendLine(false); //429:19
-            __out.Write("    }"); //430:1
-            __out.AppendLine(false); //430:6
-            __out.Write("}"); //431:1
-            __out.AppendLine(false); //431:2
+            __out.Write("        #endregion"); //425:1
+            __out.AppendLine(false); //425:19
+            __out.Write("    }"); //426:1
+            __out.AppendLine(false); //426:6
+            __out.Write("}"); //427:1
+            __out.AppendLine(false); //427:2
             return __out.ToStringAndFree();
         }
 
-        public string GenerateMetadataSymbol(SymbolGenerationInfo symbol) //434:1
+        public string GenerateMetadataSymbol(SymbolGenerationInfo symbol) //430:1
         {
             var __out = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
-            __out.Write("using Microsoft.CodeAnalysis;"); //435:1
-            __out.AppendLine(false); //435:30
-            __out.Write("using MetaDslx.CodeAnalysis;"); //436:1
-            __out.AppendLine(false); //436:29
-            __out.Write("using MetaDslx.CodeAnalysis.Declarations;"); //437:1
-            __out.AppendLine(false); //437:42
-            __out.Write("using MetaDslx.CodeAnalysis.Symbols;"); //438:1
-            __out.AppendLine(false); //438:37
-            __out.Write("using MetaDslx.CodeAnalysis.Symbols.Metadata;"); //439:1
-            __out.AppendLine(false); //439:46
-            __out.Write("using MetaDslx.CodeAnalysis.Symbols.Source;"); //440:1
-            __out.AppendLine(false); //440:44
-            __out.Write("using System;"); //441:1
-            __out.AppendLine(false); //441:14
-            __out.Write("using System.Collections.Generic;"); //442:1
-            __out.AppendLine(false); //442:34
-            __out.Write("using System.Collections.Immutable;"); //443:1
-            __out.AppendLine(false); //443:36
-            __out.Write("using System.Diagnostics;"); //444:1
-            __out.AppendLine(false); //444:26
-            __out.Write("using System.Text;"); //445:1
-            __out.AppendLine(false); //445:19
-            __out.Write("using System.Threading;"); //446:1
-            __out.AppendLine(false); //446:24
-            __out.AppendLine(true); //447:1
+            __out.Write("using Microsoft.CodeAnalysis;"); //431:1
+            __out.AppendLine(false); //431:30
+            __out.Write("using MetaDslx.CodeAnalysis;"); //432:1
+            __out.AppendLine(false); //432:29
+            __out.Write("using MetaDslx.CodeAnalysis.Declarations;"); //433:1
+            __out.AppendLine(false); //433:42
+            __out.Write("using MetaDslx.CodeAnalysis.Symbols;"); //434:1
+            __out.AppendLine(false); //434:37
+            __out.Write("using MetaDslx.CodeAnalysis.Symbols.Metadata;"); //435:1
+            __out.AppendLine(false); //435:46
+            __out.Write("using MetaDslx.CodeAnalysis.Symbols.Source;"); //436:1
+            __out.AppendLine(false); //436:44
+            __out.Write("using System;"); //437:1
+            __out.AppendLine(false); //437:14
+            __out.Write("using System.Collections.Generic;"); //438:1
+            __out.AppendLine(false); //438:34
+            __out.Write("using System.Collections.Immutable;"); //439:1
+            __out.AppendLine(false); //439:36
+            __out.Write("using System.Diagnostics;"); //440:1
+            __out.AppendLine(false); //440:26
+            __out.Write("using System.Text;"); //441:1
+            __out.AppendLine(false); //441:19
+            __out.Write("using System.Threading;"); //442:1
+            __out.AppendLine(false); //442:24
+            __out.AppendLine(true); //443:1
             bool __tmp2_outputWritten = false;
-            string __tmp3_line = "namespace "; //448:1
+            string __tmp3_line = "namespace "; //444:1
             if (!string.IsNullOrEmpty(__tmp3_line))
             {
                 __out.Write(__tmp3_line);
@@ -2134,7 +2128,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                 }
                 if (!__tmp4_last) __out.AppendLine(true);
             }
-            string __tmp5_line = ".Metadata"; //448:33
+            string __tmp5_line = ".Metadata"; //444:33
             if (!string.IsNullOrEmpty(__tmp5_line))
             {
                 __out.Write(__tmp5_line);
@@ -2143,12 +2137,12 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
             if (__tmp2_outputWritten) __out.AppendLine(true);
             if (__tmp2_outputWritten)
             {
-                __out.AppendLine(false); //448:42
+                __out.AppendLine(false); //444:42
             }
-            __out.Write("{"); //449:1
-            __out.AppendLine(false); //449:2
+            __out.Write("{"); //445:1
+            __out.AppendLine(false); //445:2
             bool __tmp7_outputWritten = false;
-            string __tmp8_line = "	public partial class Metadata"; //450:1
+            string __tmp8_line = "	public partial class Metadata"; //446:1
             if (!string.IsNullOrEmpty(__tmp8_line))
             {
                 __out.Write(__tmp8_line);
@@ -2169,9 +2163,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                 }
                 if (!__tmp9_last) __out.AppendLine(true);
             }
-            if (symbol.ExistingMetadataTypeInfo.BaseType == null) //450:45
+            if (symbol.ExistingMetadataTypeInfo.BaseType == null) //446:45
             {
-                string __tmp11_line = " : "; //450:99
+                string __tmp11_line = " : "; //446:99
                 if (!string.IsNullOrEmpty(__tmp11_line))
                 {
                     __out.Write(__tmp11_line);
@@ -2192,7 +2186,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                     }
                     if (!__tmp12_last) __out.AppendLine(true);
                 }
-                string __tmp13_line = ".Completion.Completion"; //450:124
+                string __tmp13_line = ".Completion.Completion"; //446:124
                 if (!string.IsNullOrEmpty(__tmp13_line))
                 {
                     __out.Write(__tmp13_line);
@@ -2217,16 +2211,16 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
             if (__tmp7_outputWritten) __out.AppendLine(true);
             if (__tmp7_outputWritten)
             {
-                __out.AppendLine(false); //450:167
+                __out.AppendLine(false); //446:167
             }
-            __out.Write("	{"); //451:1
-            __out.AppendLine(false); //451:3
-            if (symbol.Name != "AssemblySymbol" && symbol.Name != "ModuleSymbol") //452:10
+            __out.Write("	{"); //447:1
+            __out.AppendLine(false); //447:3
+            if (symbol.Name != "AssemblySymbol" && symbol.Name != "ModuleSymbol") //448:10
             {
-                if (!symbol.ExistingMetadataTypeInfo.Members.Contains(".ctor")) //453:10
+                if (!symbol.ExistingMetadataTypeInfo.Members.Contains(".ctor")) //449:10
                 {
                     bool __tmp17_outputWritten = false;
-                    string __tmp18_line = "        public Metadata"; //454:1
+                    string __tmp18_line = "        public Metadata"; //450:1
                     if (!string.IsNullOrEmpty(__tmp18_line))
                     {
                         __out.Write(__tmp18_line);
@@ -2247,23 +2241,23 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                         }
                         if (!__tmp19_last) __out.AppendLine(true);
                     }
-                    string __tmp20_line = "(Symbol container"; //454:37
+                    string __tmp20_line = "(Symbol container"; //450:37
                     if (!string.IsNullOrEmpty(__tmp20_line))
                     {
                         __out.Write(__tmp20_line);
                         __tmp17_outputWritten = true;
                     }
-                    if (symbol.ModelObjectOption != ParameterOption.Disabled) //454:55
+                    if (symbol.ModelObjectOption != ParameterOption.Disabled) //450:55
                     {
-                        string __tmp22_line = ", object modelObject"; //454:112
+                        string __tmp22_line = ", object? modelObject"; //450:112
                         if (!string.IsNullOrEmpty(__tmp22_line))
                         {
                             __out.Write(__tmp22_line);
                             __tmp17_outputWritten = true;
                         }
-                        if (symbol.ModelObjectOption == ParameterOption.Optional) //454:133
+                        if (symbol.ModelObjectOption == ParameterOption.Optional) //450:134
                         {
-                            string __tmp24_line = " = null"; //454:190
+                            string __tmp24_line = " = null"; //450:191
                             if (!string.IsNullOrEmpty(__tmp24_line))
                             {
                                 __out.Write(__tmp24_line);
@@ -2271,7 +2265,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                             }
                         }
                     }
-                    string __tmp27_line = ")"; //454:213
+                    string __tmp27_line = ", bool isError = false)"; //450:214
                     if (!string.IsNullOrEmpty(__tmp27_line))
                     {
                         __out.Write(__tmp27_line);
@@ -2280,90 +2274,90 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                     if (__tmp17_outputWritten) __out.AppendLine(true);
                     if (__tmp17_outputWritten)
                     {
-                        __out.AppendLine(false); //454:214
+                        __out.AppendLine(false); //450:237
                     }
-                    __out.Write("            : base(container"); //455:1
-                    if (symbol.ModelObjectOption != ParameterOption.Disabled) //455:30
+                    __out.Write("            : base(container"); //451:1
+                    if (symbol.ModelObjectOption != ParameterOption.Disabled) //451:30
                     {
-                        __out.Write(", modelObject"); //455:87
+                        __out.Write(", modelObject"); //451:87
                     }
-                    __out.Write(")"); //455:108
-                    __out.AppendLine(false); //455:109
-                    __out.Write("        {"); //456:1
-                    __out.AppendLine(false); //456:10
-                    __out.Write("        }"); //457:1
-                    __out.AppendLine(false); //457:10
+                    __out.Write(", isError)"); //451:108
+                    __out.AppendLine(false); //451:118
+                    __out.Write("        {"); //452:1
+                    __out.AppendLine(false); //452:10
+                    __out.Write("        }"); //453:1
+                    __out.AppendLine(false); //453:10
                 }
-                if (!symbol.ExistingMetadataTypeInfo.Members.Contains("Locations")) //459:10
+                if (!symbol.ExistingMetadataTypeInfo.Members.Contains("Locations")) //455:10
                 {
-                    __out.AppendLine(true); //460:1
-                    __out.Write("        public override ImmutableArray<Location> Locations => this.ContainingModule.Locations;"); //461:1
-                    __out.AppendLine(false); //461:95
+                    __out.AppendLine(true); //456:1
+                    __out.Write("        public override ImmutableArray<Location> Locations => this.ContainingModule.Locations;"); //457:1
+                    __out.AppendLine(false); //457:95
                 }
-                if (!symbol.ExistingMetadataTypeInfo.Members.Contains("DeclaringSyntaxReferences")) //463:10
+                if (!symbol.ExistingMetadataTypeInfo.Members.Contains("DeclaringSyntaxReferences")) //459:10
                 {
-                    __out.Write("        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => ImmutableArray<SyntaxReference>.Empty;"); //464:1
-                    __out.AppendLine(false); //464:124
+                    __out.Write("        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => ImmutableArray<SyntaxReference>.Empty;"); //460:1
+                    __out.AppendLine(false); //460:124
                 }
             }
-            if (!symbol.ExistingMetadataTypeInfo.Members.Contains("CompleteSymbolProperty_Name")) //467:10
+            if (!symbol.ExistingMetadataTypeInfo.Members.Contains("CompleteSymbolProperty_Name")) //463:10
             {
-                __out.AppendLine(true); //468:1
-                __out.Write("        protected override string CompleteSymbolProperty_Name(DiagnosticBag diagnostics, CancellationToken cancellationToken)"); //469:1
-                __out.AppendLine(false); //469:126
-                __out.Write("        {"); //470:1
-                __out.AppendLine(false); //470:10
-                __out.Write("            return ModelSymbolImplementation.AssignSymbolPropertyValue<string>(this, nameof(Name), diagnostics, cancellationToken);"); //471:1
-                __out.AppendLine(false); //471:132
-                __out.Write("        }"); //472:1
-                __out.AppendLine(false); //472:10
+                __out.AppendLine(true); //464:1
+                __out.Write("        protected override string CompleteSymbolProperty_Name(DiagnosticBag diagnostics, CancellationToken cancellationToken)"); //465:1
+                __out.AppendLine(false); //465:126
+                __out.Write("        {"); //466:1
+                __out.AppendLine(false); //466:10
+                __out.Write("            return ModelSymbolImplementation.AssignSymbolPropertyValue<string>(this, nameof(Name), diagnostics, cancellationToken);"); //467:1
+                __out.AppendLine(false); //467:132
+                __out.Write("        }"); //468:1
+                __out.AppendLine(false); //468:10
             }
-            if (!symbol.ExistingMetadataTypeInfo.Members.Contains("CompleteInitializingSymbol")) //474:10
+            if (!symbol.ExistingMetadataTypeInfo.Members.Contains("CompleteInitializingSymbol")) //470:10
             {
-                __out.AppendLine(true); //475:1
-                __out.Write("        protected override void CompleteInitializingSymbol(DiagnosticBag diagnostics, CancellationToken cancellationToken)"); //476:1
-                __out.AppendLine(false); //476:123
-                __out.Write("        {"); //477:1
-                __out.AppendLine(false); //477:10
-                __out.Write("        }"); //478:1
-                __out.AppendLine(false); //478:10
+                __out.AppendLine(true); //471:1
+                __out.Write("        protected override void CompleteInitializingSymbol(DiagnosticBag diagnostics, CancellationToken cancellationToken)"); //472:1
+                __out.AppendLine(false); //472:123
+                __out.Write("        {"); //473:1
+                __out.AppendLine(false); //473:10
+                __out.Write("        }"); //474:1
+                __out.AppendLine(false); //474:10
             }
-            if (!symbol.ExistingMetadataTypeInfo.Members.Contains("CompleteCreatingChildSymbols")) //480:10
+            if (!symbol.ExistingMetadataTypeInfo.Members.Contains("CompleteCreatingChildSymbols")) //476:10
             {
-                __out.AppendLine(true); //481:1
-                __out.Write("        protected override ImmutableArray<Symbol> CompleteCreatingChildSymbols(DiagnosticBag diagnostics, CancellationToken cancellationToken)"); //482:1
-                __out.AppendLine(false); //482:143
-                __out.Write("        {"); //483:1
-                __out.AppendLine(false); //483:10
-                __out.Write("            return ModelSymbolImplementation.MakeChildSymbols(this, nameof(ChildSymbols), diagnostics, cancellationToken);"); //484:1
-                __out.AppendLine(false); //484:123
-                __out.Write("        }"); //485:1
-                __out.AppendLine(false); //485:10
+                __out.AppendLine(true); //477:1
+                __out.Write("        protected override ImmutableArray<Symbol> CompleteCreatingChildSymbols(DiagnosticBag diagnostics, CancellationToken cancellationToken)"); //478:1
+                __out.AppendLine(false); //478:143
+                __out.Write("        {"); //479:1
+                __out.AppendLine(false); //479:10
+                __out.Write("            return ModelSymbolImplementation.MakeChildSymbols(this, nameof(ChildSymbols), diagnostics, cancellationToken);"); //480:1
+                __out.AppendLine(false); //480:123
+                __out.Write("        }"); //481:1
+                __out.AppendLine(false); //481:10
             }
-            if (!symbol.ExistingMetadataTypeInfo.Members.Contains("CompleteImports")) //487:10
+            if (!symbol.ExistingMetadataTypeInfo.Members.Contains("CompleteImports")) //483:10
             {
-                __out.AppendLine(true); //488:1
-                __out.Write("        protected override void CompleteImports(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)"); //489:1
-                __out.AppendLine(false); //489:140
-                __out.Write("        {"); //490:1
-                __out.AppendLine(false); //490:10
-                __out.Write("        }"); //491:1
-                __out.AppendLine(false); //491:10
+                __out.AppendLine(true); //484:1
+                __out.Write("        protected override void CompleteImports(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)"); //485:1
+                __out.AppendLine(false); //485:140
+                __out.Write("        {"); //486:1
+                __out.AppendLine(false); //486:10
+                __out.Write("        }"); //487:1
+                __out.AppendLine(false); //487:10
             }
             var __loop10_results = 
-                (from part in __Enumerate((symbol.CompletionParts).GetEnumerator()) //493:16
-                where part.GenerateCompleteMethod //493:44
+                (from part in __Enumerate((symbol.CompletionParts).GetEnumerator()) //489:16
+                where part.GenerateCompleteMethod //489:44
                 select new { part = part}
-                ).ToList(); //493:10
+                ).ToList(); //489:10
             for (int __loop10_iteration = 0; __loop10_iteration < __loop10_results.Count; ++__loop10_iteration)
             {
                 var __tmp28 = __loop10_results[__loop10_iteration];
                 var part = __tmp28.part;
-                if (!symbol.ExistingMetadataTypeInfo.Members.Contains(part.CompleteMethodName)) //494:14
+                if (!symbol.ExistingMetadataTypeInfo.Members.Contains(part.CompleteMethodName)) //490:14
                 {
-                    __out.AppendLine(true); //495:1
+                    __out.AppendLine(true); //491:1
                     bool __tmp30_outputWritten = false;
-                    string __tmp31_line = "        protected override "; //496:1
+                    string __tmp31_line = "        protected override "; //492:1
                     if (!string.IsNullOrEmpty(__tmp31_line))
                     {
                         __out.Write(__tmp31_line);
@@ -2384,7 +2378,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                         }
                         if (!__tmp32_last) __out.AppendLine(true);
                     }
-                    string __tmp33_line = " "; //496:59
+                    string __tmp33_line = " "; //492:59
                     if (!string.IsNullOrEmpty(__tmp33_line))
                     {
                         __out.Write(__tmp33_line);
@@ -2405,7 +2399,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                         }
                         if (!__tmp34_last) __out.AppendLine(true);
                     }
-                    string __tmp35_line = "("; //496:85
+                    string __tmp35_line = "("; //492:85
                     if (!string.IsNullOrEmpty(__tmp35_line))
                     {
                         __out.Write(__tmp35_line);
@@ -2426,7 +2420,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                         }
                         if (!__tmp36_last) __out.AppendLine(true);
                     }
-                    string __tmp37_line = ")"; //496:116
+                    string __tmp37_line = ")"; //492:116
                     if (!string.IsNullOrEmpty(__tmp37_line))
                     {
                         __out.Write(__tmp37_line);
@@ -2435,17 +2429,17 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                     if (__tmp30_outputWritten) __out.AppendLine(true);
                     if (__tmp30_outputWritten)
                     {
-                        __out.AppendLine(false); //496:117
+                        __out.AppendLine(false); //492:117
                     }
-                    __out.Write("        {"); //497:1
-                    __out.AppendLine(false); //497:10
-                    if (part is SymbolPropertyGenerationInfo) //498:14
+                    __out.Write("        {"); //493:1
+                    __out.AppendLine(false); //493:10
+                    if (part is SymbolPropertyGenerationInfo) //494:14
                     {
-                        var prop = (SymbolPropertyGenerationInfo)part; //499:18
-                        if (prop.IsCollection) //500:18
+                        var prop = (SymbolPropertyGenerationInfo)part; //495:18
+                        if (prop.IsCollection) //496:18
                         {
                             bool __tmp39_outputWritten = false;
-                            string __tmp40_line = "            return ModelSymbolImplementation.AssignSymbolPropertyValues<"; //501:1
+                            string __tmp40_line = "            return ModelSymbolImplementation.AssignSymbolPropertyValues<"; //497:1
                             if (!string.IsNullOrEmpty(__tmp40_line))
                             {
                                 __out.Write(__tmp40_line);
@@ -2466,7 +2460,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                                 }
                                 if (!__tmp41_last) __out.AppendLine(true);
                             }
-                            string __tmp42_line = ">(this, nameof("; //501:88
+                            string __tmp42_line = ">(this, nameof("; //497:88
                             if (!string.IsNullOrEmpty(__tmp42_line))
                             {
                                 __out.Write(__tmp42_line);
@@ -2487,7 +2481,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                                 }
                                 if (!__tmp43_last) __out.AppendLine(true);
                             }
-                            string __tmp44_line = "), diagnostics, cancellationToken);"; //501:114
+                            string __tmp44_line = "), diagnostics, cancellationToken);"; //497:114
                             if (!string.IsNullOrEmpty(__tmp44_line))
                             {
                                 __out.Write(__tmp44_line);
@@ -2496,13 +2490,13 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                             if (__tmp39_outputWritten) __out.AppendLine(true);
                             if (__tmp39_outputWritten)
                             {
-                                __out.AppendLine(false); //501:149
+                                __out.AppendLine(false); //497:149
                             }
                         }
-                        else //502:18
+                        else //498:18
                         {
                             bool __tmp46_outputWritten = false;
-                            string __tmp47_line = "            return ModelSymbolImplementation.AssignSymbolPropertyValue<"; //503:1
+                            string __tmp47_line = "            return ModelSymbolImplementation.AssignSymbolPropertyValue<"; //499:1
                             if (!string.IsNullOrEmpty(__tmp47_line))
                             {
                                 __out.Write(__tmp47_line);
@@ -2523,7 +2517,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                                 }
                                 if (!__tmp48_last) __out.AppendLine(true);
                             }
-                            string __tmp49_line = ">(this, nameof("; //503:83
+                            string __tmp49_line = ">(this, nameof("; //499:83
                             if (!string.IsNullOrEmpty(__tmp49_line))
                             {
                                 __out.Write(__tmp49_line);
@@ -2544,7 +2538,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                                 }
                                 if (!__tmp50_last) __out.AppendLine(true);
                             }
-                            string __tmp51_line = "), diagnostics, cancellationToken);"; //503:109
+                            string __tmp51_line = "), diagnostics, cancellationToken);"; //499:109
                             if (!string.IsNullOrEmpty(__tmp51_line))
                             {
                                 __out.Write(__tmp51_line);
@@ -2553,67 +2547,159 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                             if (__tmp46_outputWritten) __out.AppendLine(true);
                             if (__tmp46_outputWritten)
                             {
-                                __out.AppendLine(false); //503:144
+                                __out.AppendLine(false); //499:144
                             }
                         }
                     }
-                    __out.Write("        }"); //506:1
-                    __out.AppendLine(false); //506:10
+                    __out.Write("        }"); //502:1
+                    __out.AppendLine(false); //502:10
                 }
             }
-            if (!symbol.ExistingMetadataTypeInfo.Members.Contains("CompleteNonSymbolProperties")) //509:10
+            if (!symbol.ExistingMetadataTypeInfo.Members.Contains("CompleteNonSymbolProperties")) //505:10
             {
-                __out.AppendLine(true); //510:1
-                __out.Write("        protected override void CompleteNonSymbolProperties(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)"); //511:1
-                __out.AppendLine(false); //511:152
-                __out.Write("        {"); //512:1
-                __out.AppendLine(false); //512:10
-                __out.Write("        }"); //513:1
-                __out.AppendLine(false); //513:10
+                __out.AppendLine(true); //506:1
+                __out.Write("        protected override void CompleteNonSymbolProperties(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)"); //507:1
+                __out.AppendLine(false); //507:152
+                __out.Write("        {"); //508:1
+                __out.AppendLine(false); //508:10
+                __out.Write("        }"); //509:1
+                __out.AppendLine(false); //509:10
             }
-            __out.Write("    }"); //515:1
-            __out.AppendLine(false); //515:6
-            __out.Write("}"); //516:1
-            __out.AppendLine(false); //516:2
+            __out.AppendLine(true); //511:1
+            if (symbol.Name != "AssemblySymbol" && symbol.Name != "ModuleSymbol") //512:10
+            {
+                __out.Write("        public class Error"); //513:1
+                __out.AppendLine(false); //513:27
+                __out.Write("        {"); //514:1
+                __out.AppendLine(false); //514:10
+                __out.Write("            private DiagnosticInfo _errorInfo;"); //515:1
+                __out.AppendLine(false); //515:47
+                __out.AppendLine(true); //516:1
+                if (!symbol.ExistingMetadataTypeInfo.Members.Contains(".ctor")) //517:14
+                {
+                    bool __tmp53_outputWritten = false;
+                    string __tmp54_line = "            public Error"; //518:1
+                    if (!string.IsNullOrEmpty(__tmp54_line))
+                    {
+                        __out.Write(__tmp54_line);
+                        __tmp53_outputWritten = true;
+                    }
+                    var __tmp55 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
+                    __tmp55.Write(symbol.Name);
+                    var __tmp55Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp55.ToStringAndFree());
+                    bool __tmp55_last = __tmp55Reader.EndOfStream;
+                    while(!__tmp55_last)
+                    {
+                        ReadOnlySpan<char> __tmp55_line = __tmp55Reader.ReadLine();
+                        __tmp55_last = __tmp55Reader.EndOfStream;
+                        if (!__tmp55_last || !__tmp55_line.IsEmpty)
+                        {
+                            __out.Write(__tmp55_line);
+                            __tmp53_outputWritten = true;
+                        }
+                        if (!__tmp55_last) __out.AppendLine(true);
+                    }
+                    string __tmp56_line = "(Symbol container, DiagnosticInfo errorInfo"; //518:38
+                    if (!string.IsNullOrEmpty(__tmp56_line))
+                    {
+                        __out.Write(__tmp56_line);
+                        __tmp53_outputWritten = true;
+                    }
+                    if (symbol.ModelObjectOption != ParameterOption.Disabled) //518:82
+                    {
+                        string __tmp58_line = ", object? modelObject"; //518:139
+                        if (!string.IsNullOrEmpty(__tmp58_line))
+                        {
+                            __out.Write(__tmp58_line);
+                            __tmp53_outputWritten = true;
+                        }
+                        if (symbol.ModelObjectOption == ParameterOption.Optional) //518:161
+                        {
+                            string __tmp60_line = " = null"; //518:218
+                            if (!string.IsNullOrEmpty(__tmp60_line))
+                            {
+                                __out.Write(__tmp60_line);
+                                __tmp53_outputWritten = true;
+                            }
+                        }
+                    }
+                    string __tmp63_line = ")"; //518:241
+                    if (!string.IsNullOrEmpty(__tmp63_line))
+                    {
+                        __out.Write(__tmp63_line);
+                        __tmp53_outputWritten = true;
+                    }
+                    if (__tmp53_outputWritten) __out.AppendLine(true);
+                    if (__tmp53_outputWritten)
+                    {
+                        __out.AppendLine(false); //518:242
+                    }
+                    __out.Write("                : base(container"); //519:1
+                    if (symbol.ModelObjectOption != ParameterOption.Disabled) //519:34
+                    {
+                        __out.Write(", modelObject"); //519:91
+                    }
+                    __out.Write(", true)"); //519:112
+                    __out.AppendLine(false); //519:119
+                    __out.Write("            {"); //520:1
+                    __out.AppendLine(false); //520:14
+                    __out.Write("                _errorInfo = errorInfo;"); //521:1
+                    __out.AppendLine(false); //521:40
+                    __out.Write("            }"); //522:1
+                    __out.AppendLine(false); //522:14
+                }
+                __out.AppendLine(true); //524:1
+                __out.Write("            public sealed override IsError => true;"); //525:1
+                __out.AppendLine(false); //525:52
+                __out.AppendLine(true); //526:1
+                __out.Write("            public DiagnosticInfo ErrorInfo => _errorInfo;"); //527:1
+                __out.AppendLine(false); //527:59
+                __out.Write("        }"); //528:1
+                __out.AppendLine(false); //528:10
+            }
+            __out.Write("    }"); //530:1
+            __out.AppendLine(false); //530:6
+            __out.Write("}"); //531:1
+            __out.AppendLine(false); //531:2
             return __out.ToStringAndFree();
         }
 
-        public string GenerateSourceSymbol(SymbolGenerationInfo symbol) //519:1
+        public string GenerateSourceSymbol(SymbolGenerationInfo symbol) //534:1
         {
             var __out = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
-            __out.Write("using Microsoft.CodeAnalysis;"); //520:1
-            __out.AppendLine(false); //520:30
-            __out.Write("using MetaDslx.CodeAnalysis;"); //521:1
-            __out.AppendLine(false); //521:29
-            __out.Write("using MetaDslx.CodeAnalysis.Binding;"); //522:1
-            __out.AppendLine(false); //522:37
-            __out.Write("using MetaDslx.CodeAnalysis.Binding.Binders;"); //523:1
-            __out.AppendLine(false); //523:45
-            __out.Write("using MetaDslx.CodeAnalysis.Declarations;"); //524:1
-            __out.AppendLine(false); //524:42
-            __out.Write("using MetaDslx.CodeAnalysis.Symbols;"); //525:1
-            __out.AppendLine(false); //525:37
-            __out.Write("using MetaDslx.CodeAnalysis.Symbols.Metadata;"); //526:1
-            __out.AppendLine(false); //526:46
-            __out.Write("using MetaDslx.CodeAnalysis.Symbols.Source;"); //527:1
-            __out.AppendLine(false); //527:44
-            __out.Write("using System;"); //528:1
-            __out.AppendLine(false); //528:14
-            __out.Write("using System.Collections.Generic;"); //529:1
-            __out.AppendLine(false); //529:34
-            __out.Write("using System.Collections.Immutable;"); //530:1
-            __out.AppendLine(false); //530:36
-            __out.Write("using System.Diagnostics;"); //531:1
-            __out.AppendLine(false); //531:26
-            __out.Write("using System.Linq;"); //532:1
-            __out.AppendLine(false); //532:19
-            __out.Write("using System.Text;"); //533:1
-            __out.AppendLine(false); //533:19
-            __out.Write("using System.Threading;"); //534:1
-            __out.AppendLine(false); //534:24
-            __out.AppendLine(true); //535:1
+            __out.Write("using Microsoft.CodeAnalysis;"); //535:1
+            __out.AppendLine(false); //535:30
+            __out.Write("using MetaDslx.CodeAnalysis;"); //536:1
+            __out.AppendLine(false); //536:29
+            __out.Write("using MetaDslx.CodeAnalysis.Binding;"); //537:1
+            __out.AppendLine(false); //537:37
+            __out.Write("using MetaDslx.CodeAnalysis.Binding.Binders;"); //538:1
+            __out.AppendLine(false); //538:45
+            __out.Write("using MetaDslx.CodeAnalysis.Declarations;"); //539:1
+            __out.AppendLine(false); //539:42
+            __out.Write("using MetaDslx.CodeAnalysis.Symbols;"); //540:1
+            __out.AppendLine(false); //540:37
+            __out.Write("using MetaDslx.CodeAnalysis.Symbols.Metadata;"); //541:1
+            __out.AppendLine(false); //541:46
+            __out.Write("using MetaDslx.CodeAnalysis.Symbols.Source;"); //542:1
+            __out.AppendLine(false); //542:44
+            __out.Write("using System;"); //543:1
+            __out.AppendLine(false); //543:14
+            __out.Write("using System.Collections.Generic;"); //544:1
+            __out.AppendLine(false); //544:34
+            __out.Write("using System.Collections.Immutable;"); //545:1
+            __out.AppendLine(false); //545:36
+            __out.Write("using System.Diagnostics;"); //546:1
+            __out.AppendLine(false); //546:26
+            __out.Write("using System.Linq;"); //547:1
+            __out.AppendLine(false); //547:19
+            __out.Write("using System.Text;"); //548:1
+            __out.AppendLine(false); //548:19
+            __out.Write("using System.Threading;"); //549:1
+            __out.AppendLine(false); //549:24
+            __out.AppendLine(true); //550:1
             bool __tmp2_outputWritten = false;
-            string __tmp3_line = "namespace "; //536:1
+            string __tmp3_line = "namespace "; //551:1
             if (!string.IsNullOrEmpty(__tmp3_line))
             {
                 __out.Write(__tmp3_line);
@@ -2634,7 +2720,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                 }
                 if (!__tmp4_last) __out.AppendLine(true);
             }
-            string __tmp5_line = ".Source"; //536:33
+            string __tmp5_line = ".Source"; //551:33
             if (!string.IsNullOrEmpty(__tmp5_line))
             {
                 __out.Write(__tmp5_line);
@@ -2643,12 +2729,12 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
             if (__tmp2_outputWritten) __out.AppendLine(true);
             if (__tmp2_outputWritten)
             {
-                __out.AppendLine(false); //536:40
+                __out.AppendLine(false); //551:40
             }
-            __out.Write("{"); //537:1
-            __out.AppendLine(false); //537:2
+            __out.Write("{"); //552:1
+            __out.AppendLine(false); //552:2
             bool __tmp7_outputWritten = false;
-            string __tmp8_line = "	public partial class Source"; //538:1
+            string __tmp8_line = "	public partial class Source"; //553:1
             if (!string.IsNullOrEmpty(__tmp8_line))
             {
                 __out.Write(__tmp8_line);
@@ -2669,9 +2755,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                 }
                 if (!__tmp9_last) __out.AppendLine(true);
             }
-            if (symbol.ExistingSourceTypeInfo.BaseType == null) //538:43
+            if (symbol.ExistingSourceTypeInfo.BaseType == null) //553:43
             {
-                string __tmp11_line = " : "; //538:95
+                string __tmp11_line = " : "; //553:95
                 if (!string.IsNullOrEmpty(__tmp11_line))
                 {
                     __out.Write(__tmp11_line);
@@ -2692,7 +2778,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                     }
                     if (!__tmp12_last) __out.AppendLine(true);
                 }
-                string __tmp13_line = ".Completion.Completion"; //538:120
+                string __tmp13_line = ".Completion.Completion"; //553:120
                 if (!string.IsNullOrEmpty(__tmp13_line))
                 {
                     __out.Write(__tmp13_line);
@@ -2713,9 +2799,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                     }
                     if (!__tmp14_last) __out.AppendLine(true);
                 }
-                if (symbol.Name != "AssemblySymbol" && symbol.Name != "ModuleSymbol") //538:156
+                if (symbol.Name != "AssemblySymbol" && symbol.Name != "ModuleSymbol") //553:156
                 {
-                    string __tmp16_line = ", MetaDslx.CodeAnalysis.Symbols.Source.ISourceSymbol"; //538:226
+                    string __tmp16_line = ", MetaDslx.CodeAnalysis.Symbols.Source.ISourceSymbol"; //553:226
                     if (!string.IsNullOrEmpty(__tmp16_line))
                     {
                         __out.Write(__tmp16_line);
@@ -2726,24 +2812,24 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
             if (__tmp7_outputWritten) __out.AppendLine(true);
             if (__tmp7_outputWritten)
             {
-                __out.AppendLine(false); //538:294
+                __out.AppendLine(false); //553:294
             }
-            __out.Write("	{"); //539:1
-            __out.AppendLine(false); //539:3
-            if (symbol.Name != "AssemblySymbol" && symbol.Name != "ModuleSymbol") //540:10
+            __out.Write("	{"); //554:1
+            __out.AppendLine(false); //554:3
+            if (symbol.Name != "AssemblySymbol" && symbol.Name != "ModuleSymbol") //555:10
             {
-                __out.Write("        private readonly MergedDeclaration _declaration;"); //541:1
-                __out.AppendLine(false); //541:57
-                if (!symbol.ExistingSourceTypeInfo.Members.Contains("GetLexicalSortKey")) //542:10
+                __out.Write("        private readonly MergedDeclaration _declaration;"); //556:1
+                __out.AppendLine(false); //556:57
+                if (!symbol.ExistingSourceTypeInfo.Members.Contains("GetLexicalSortKey")) //557:10
                 {
-                    __out.Write("        private LexicalSortKey _lazyLexicalSortKey = LexicalSortKey.NotInitialized;"); //543:1
-                    __out.AppendLine(false); //543:84
+                    __out.Write("        private LexicalSortKey _lazyLexicalSortKey = LexicalSortKey.NotInitialized;"); //558:1
+                    __out.AppendLine(false); //558:84
                 }
-                if (!symbol.ExistingSourceTypeInfo.Members.Contains(".ctor")) //545:10
+                if (!symbol.ExistingSourceTypeInfo.Members.Contains(".ctor")) //560:10
                 {
-                    __out.AppendLine(true); //546:1
+                    __out.AppendLine(true); //561:1
                     bool __tmp20_outputWritten = false;
-                    string __tmp21_line = "		public Source"; //547:1
+                    string __tmp21_line = "		public Source"; //562:1
                     if (!string.IsNullOrEmpty(__tmp21_line))
                     {
                         __out.Write(__tmp21_line);
@@ -2764,441 +2850,527 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                         }
                         if (!__tmp22_last) __out.AppendLine(true);
                     }
-                    string __tmp23_line = "(Symbol containingSymbol, "; //547:29
+                    string __tmp23_line = "(Symbol containingSymbol, MergedDeclaration declaration, "; //562:29
                     if (!string.IsNullOrEmpty(__tmp23_line))
                     {
                         __out.Write(__tmp23_line);
                         __tmp20_outputWritten = true;
                     }
-                    if (symbol.ModelObjectOption != ParameterOption.Disabled) //547:56
+                    if (symbol.ModelObjectOption != ParameterOption.Disabled) //562:87
                     {
-                        string __tmp25_line = "object modelObject"; //547:113
+                        string __tmp25_line = "object? modelObject"; //562:144
                         if (!string.IsNullOrEmpty(__tmp25_line))
                         {
                             __out.Write(__tmp25_line);
                             __tmp20_outputWritten = true;
                         }
-                        if (symbol.ModelObjectOption == ParameterOption.Optional) //547:132
+                        if (symbol.ModelObjectOption == ParameterOption.Optional) //562:164
                         {
-                            string __tmp27_line = " = null"; //547:189
+                            string __tmp27_line = " = null"; //562:221
                             if (!string.IsNullOrEmpty(__tmp27_line))
                             {
                                 __out.Write(__tmp27_line);
                                 __tmp20_outputWritten = true;
                             }
                         }
-                        string __tmp29_line = ", "; //547:204
-                        if (!string.IsNullOrEmpty(__tmp29_line))
-                        {
-                            __out.Write(__tmp29_line);
-                            __tmp20_outputWritten = true;
-                        }
                     }
-                    string __tmp31_line = "MergedDeclaration declaration)"; //547:214
-                    if (!string.IsNullOrEmpty(__tmp31_line))
+                    string __tmp30_line = ", bool isError)"; //562:244
+                    if (!string.IsNullOrEmpty(__tmp30_line))
                     {
-                        __out.Write(__tmp31_line);
+                        __out.Write(__tmp30_line);
                         __tmp20_outputWritten = true;
                     }
                     if (__tmp20_outputWritten) __out.AppendLine(true);
                     if (__tmp20_outputWritten)
                     {
-                        __out.AppendLine(false); //547:244
+                        __out.AppendLine(false); //562:259
                     }
-                    __out.Write("            : base(containingSymbol"); //548:1
-                    if (symbol.ModelObjectOption != ParameterOption.Disabled) //548:37
+                    __out.Write("            : base(containingSymbol"); //563:1
+                    if (symbol.ModelObjectOption != ParameterOption.Disabled) //563:37
                     {
-                        __out.Write(", modelObject"); //548:94
+                        __out.Write(", modelObject"); //563:94
                     }
-                    __out.Write(")"); //548:115
-                    __out.AppendLine(false); //548:116
-                    __out.Write("        {"); //549:1
-                    __out.AppendLine(false); //549:10
-                    __out.Write("            if (declaration is null) throw new ArgumentNullException(nameof(declaration));"); //550:1
-                    __out.AppendLine(false); //550:91
-                    __out.Write("            _declaration = declaration;"); //551:1
-                    __out.AppendLine(false); //551:40
-                    __out.Write("		}"); //552:1
-                    __out.AppendLine(false); //552:4
+                    __out.Write(", isError)"); //563:115
+                    __out.AppendLine(false); //563:125
+                    __out.Write("        {"); //564:1
+                    __out.AppendLine(false); //564:10
+                    __out.Write("            if (declaration is null) throw new ArgumentNullException(nameof(declaration));"); //565:1
+                    __out.AppendLine(false); //565:91
+                    __out.Write("            _declaration = declaration;"); //566:1
+                    __out.AppendLine(false); //566:40
+                    __out.Write("		}"); //567:1
+                    __out.AppendLine(false); //567:4
                 }
-                if (!symbol.ExistingSourceTypeInfo.Members.Contains("MergedDeclaration")) //554:10
+                if (!symbol.ExistingSourceTypeInfo.Members.Contains("MergedDeclaration")) //569:10
                 {
-                    __out.AppendLine(true); //555:1
-                    __out.Write("        public MergedDeclaration MergedDeclaration => _declaration;"); //556:1
-                    __out.AppendLine(false); //556:68
+                    __out.AppendLine(true); //570:1
+                    __out.Write("        public MergedDeclaration MergedDeclaration => _declaration;"); //571:1
+                    __out.AppendLine(false); //571:68
                 }
-                if (!symbol.ExistingSourceTypeInfo.Members.Contains("Locations")) //558:10
+                if (!symbol.ExistingSourceTypeInfo.Members.Contains("Locations")) //573:10
                 {
-                    __out.AppendLine(true); //559:1
-                    __out.Write("        public override ImmutableArray<Location> Locations => _declaration.NameLocations;"); //560:1
-                    __out.AppendLine(false); //560:90
+                    __out.AppendLine(true); //574:1
+                    __out.Write("        public override ImmutableArray<Location> Locations => _declaration.NameLocations;"); //575:1
+                    __out.AppendLine(false); //575:90
                 }
-                if (!symbol.ExistingSourceTypeInfo.Members.Contains("DeclaringSyntaxReferences")) //562:10
+                if (!symbol.ExistingSourceTypeInfo.Members.Contains("DeclaringSyntaxReferences")) //577:10
                 {
-                    __out.AppendLine(true); //563:1
-                    __out.Write("        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => _declaration.SyntaxReferences;"); //564:1
-                    __out.AppendLine(false); //564:116
+                    __out.AppendLine(true); //578:1
+                    __out.Write("        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => _declaration.SyntaxReferences;"); //579:1
+                    __out.AppendLine(false); //579:116
                 }
-                if (!symbol.ExistingSourceTypeInfo.Members.Contains("GetBinder")) //566:10
+                if (!symbol.ExistingSourceTypeInfo.Members.Contains("GetBinder")) //581:10
                 {
-                    __out.AppendLine(true); //567:1
-                    __out.Write("        public BinderPosition<SymbolBinder> GetBinder(SyntaxReference reference)"); //568:1
-                    __out.AppendLine(false); //568:81
-                    __out.Write("        {"); //569:1
-                    __out.AppendLine(false); //569:10
-                    __out.Write("            Debug.Assert(this.DeclaringSyntaxReferences.Contains(reference));"); //570:1
-                    __out.AppendLine(false); //570:78
-                    __out.Write("            return FindBinders.FindSymbolBinder(this, reference);"); //571:1
-                    __out.AppendLine(false); //571:66
-                    __out.Write("        }"); //572:1
-                    __out.AppendLine(false); //572:10
+                    __out.AppendLine(true); //582:1
+                    __out.Write("        public BinderPosition<SymbolBinder> GetBinder(SyntaxReference reference)"); //583:1
+                    __out.AppendLine(false); //583:81
+                    __out.Write("        {"); //584:1
+                    __out.AppendLine(false); //584:10
+                    __out.Write("            Debug.Assert(this.DeclaringSyntaxReferences.Contains(reference));"); //585:1
+                    __out.AppendLine(false); //585:78
+                    __out.Write("            return FindBinders.FindSymbolBinder(this, reference);"); //586:1
+                    __out.AppendLine(false); //586:66
+                    __out.Write("        }"); //587:1
+                    __out.AppendLine(false); //587:10
                 }
-                if (!symbol.ExistingSourceTypeInfo.Members.Contains("GetChildSymbol")) //574:10
+                if (!symbol.ExistingSourceTypeInfo.Members.Contains("GetChildSymbol")) //589:10
                 {
-                    __out.AppendLine(true); //575:1
-                    __out.Write("        public Symbol GetChildSymbol(SyntaxReference syntax)"); //576:1
-                    __out.AppendLine(false); //576:61
-                    __out.Write("        {"); //577:1
-                    __out.AppendLine(false); //577:10
-                    __out.Write("            foreach (var child in this.ChildSymbols)"); //578:1
-                    __out.AppendLine(false); //578:53
-                    __out.Write("            {"); //579:1
-                    __out.AppendLine(false); //579:14
-                    __out.Write("                if (child.DeclaringSyntaxReferences.Any(sr => sr.GetLocation() == syntax.GetLocation()))"); //580:1
-                    __out.AppendLine(false); //580:105
-                    __out.Write("                {"); //581:1
-                    __out.AppendLine(false); //581:18
-                    __out.Write("                    return child;"); //582:1
-                    __out.AppendLine(false); //582:34
-                    __out.Write("                }"); //583:1
-                    __out.AppendLine(false); //583:18
-                    __out.Write("            }"); //584:1
-                    __out.AppendLine(false); //584:14
-                    __out.Write("            return null;"); //585:1
-                    __out.AppendLine(false); //585:25
-                    __out.Write("        }"); //586:1
-                    __out.AppendLine(false); //586:10
-                }
-                if (!symbol.ExistingSourceTypeInfo.Members.Contains("GetLexicalSortKey")) //588:10
-                {
-                    __out.Write("        public override LexicalSortKey GetLexicalSortKey()"); //589:1
-                    __out.AppendLine(false); //589:59
-                    __out.Write("        {"); //590:1
-                    __out.AppendLine(false); //590:10
-                    __out.Write("            if (!_lazyLexicalSortKey.IsInitialized)"); //591:1
-                    __out.AppendLine(false); //591:52
-                    __out.Write("            {"); //592:1
-                    __out.AppendLine(false); //592:14
-                    __out.Write("                _lazyLexicalSortKey.SetFrom(this.MergedDeclaration.GetLexicalSortKey(this.DeclaringCompilation));"); //593:1
-                    __out.AppendLine(false); //593:114
-                    __out.Write("            }"); //594:1
+                    __out.AppendLine(true); //590:1
+                    __out.Write("        public Symbol GetChildSymbol(SyntaxReference syntax)"); //591:1
+                    __out.AppendLine(false); //591:61
+                    __out.Write("        {"); //592:1
+                    __out.AppendLine(false); //592:10
+                    __out.Write("            foreach (var child in this.ChildSymbols)"); //593:1
+                    __out.AppendLine(false); //593:53
+                    __out.Write("            {"); //594:1
                     __out.AppendLine(false); //594:14
-                    __out.Write("            return _lazyLexicalSortKey;"); //595:1
-                    __out.AppendLine(false); //595:40
-                    __out.Write("        }"); //596:1
-                    __out.AppendLine(false); //596:10
+                    __out.Write("                if (child.DeclaringSyntaxReferences.Any(sr => sr.GetLocation() == syntax.GetLocation()))"); //595:1
+                    __out.AppendLine(false); //595:105
+                    __out.Write("                {"); //596:1
+                    __out.AppendLine(false); //596:18
+                    __out.Write("                    return child;"); //597:1
+                    __out.AppendLine(false); //597:34
+                    __out.Write("                }"); //598:1
+                    __out.AppendLine(false); //598:18
+                    __out.Write("            }"); //599:1
+                    __out.AppendLine(false); //599:14
+                    __out.Write("            return null;"); //600:1
+                    __out.AppendLine(false); //600:25
+                    __out.Write("        }"); //601:1
+                    __out.AppendLine(false); //601:10
+                }
+                if (!symbol.ExistingSourceTypeInfo.Members.Contains("GetLexicalSortKey")) //603:10
+                {
+                    __out.Write("        public override LexicalSortKey GetLexicalSortKey()"); //604:1
+                    __out.AppendLine(false); //604:59
+                    __out.Write("        {"); //605:1
+                    __out.AppendLine(false); //605:10
+                    __out.Write("            if (!_lazyLexicalSortKey.IsInitialized)"); //606:1
+                    __out.AppendLine(false); //606:52
+                    __out.Write("            {"); //607:1
+                    __out.AppendLine(false); //607:14
+                    __out.Write("                _lazyLexicalSortKey.SetFrom(this.MergedDeclaration.GetLexicalSortKey(this.DeclaringCompilation));"); //608:1
+                    __out.AppendLine(false); //608:114
+                    __out.Write("            }"); //609:1
+                    __out.AppendLine(false); //609:14
+                    __out.Write("            return _lazyLexicalSortKey;"); //610:1
+                    __out.AppendLine(false); //610:40
+                    __out.Write("        }"); //611:1
+                    __out.AppendLine(false); //611:10
                 }
             }
-            if (!symbol.ExistingSourceTypeInfo.Members.Contains("CompleteInitializingSymbol")) //599:10
+            if (!symbol.ExistingSourceTypeInfo.Members.Contains("CompleteInitializingSymbol")) //614:10
             {
-                __out.AppendLine(true); //600:1
-                __out.Write("        protected override void CompleteInitializingSymbol(DiagnosticBag diagnostics, CancellationToken cancellationToken)"); //601:1
-                __out.AppendLine(false); //601:123
-                __out.Write("        {"); //602:1
-                __out.AppendLine(false); //602:10
-                __out.Write("        }"); //603:1
-                __out.AppendLine(false); //603:10
-            }
-            if (!symbol.ExistingSourceTypeInfo.Members.Contains("CompleteCreatingChildSymbols")) //605:10
-            {
-                __out.AppendLine(true); //606:1
-                __out.Write("        protected override ImmutableArray<Symbol> CompleteCreatingChildSymbols(DiagnosticBag diagnostics, CancellationToken cancellationToken)"); //607:1
-                __out.AppendLine(false); //607:143
-                __out.Write("        {"); //608:1
-                __out.AppendLine(false); //608:10
-                __out.Write("            return SourceSymbolImplementation.MakeChildSymbols(this, nameof(ChildSymbols), diagnostics, cancellationToken);"); //609:1
-                __out.AppendLine(false); //609:124
-                __out.Write("        }"); //610:1
-                __out.AppendLine(false); //610:10
-            }
-            if (!symbol.ExistingSourceTypeInfo.Members.Contains("CompleteImports")) //612:10
-            {
-                __out.AppendLine(true); //613:1
-                __out.Write("        protected override void CompleteImports(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)"); //614:1
-                __out.AppendLine(false); //614:140
-                __out.Write("        {"); //615:1
-                __out.AppendLine(false); //615:10
-                __out.Write("            SourceSymbolImplementation.CompleteImports(this, locationOpt, diagnostics, cancellationToken);"); //616:1
-                __out.AppendLine(false); //616:107
-                __out.Write("        }"); //617:1
+                __out.AppendLine(true); //615:1
+                __out.Write("        protected override void CompleteInitializingSymbol(DiagnosticBag diagnostics, CancellationToken cancellationToken)"); //616:1
+                __out.AppendLine(false); //616:123
+                __out.Write("        {"); //617:1
                 __out.AppendLine(false); //617:10
-                __out.AppendLine(true); //618:1
+                __out.Write("        }"); //618:1
+                __out.AppendLine(false); //618:10
             }
-            if (!symbol.ExistingSourceTypeInfo.Members.Contains("CompleteSymbolProperty_Name")) //620:10
+            if (!symbol.ExistingSourceTypeInfo.Members.Contains("CompleteCreatingChildSymbols")) //620:10
             {
-                __out.Write("        protected override string CompleteSymbolProperty_Name(DiagnosticBag diagnostics, CancellationToken cancellationToken)"); //621:1
-                __out.AppendLine(false); //621:126
-                __out.Write("        {"); //622:1
-                __out.AppendLine(false); //622:10
-                __out.Write("            return SourceSymbolImplementation.AssignSymbolPropertyValue<string>(this, nameof(Name), diagnostics, cancellationToken);"); //623:1
-                __out.AppendLine(false); //623:133
-                __out.Write("        }"); //624:1
-                __out.AppendLine(false); //624:10
+                __out.AppendLine(true); //621:1
+                __out.Write("        protected override ImmutableArray<Symbol> CompleteCreatingChildSymbols(DiagnosticBag diagnostics, CancellationToken cancellationToken)"); //622:1
+                __out.AppendLine(false); //622:143
+                __out.Write("        {"); //623:1
+                __out.AppendLine(false); //623:10
+                __out.Write("            return SourceSymbolImplementation.MakeChildSymbols(this, nameof(ChildSymbols), diagnostics, cancellationToken);"); //624:1
+                __out.AppendLine(false); //624:124
+                __out.Write("        }"); //625:1
+                __out.AppendLine(false); //625:10
             }
-            __out.AppendLine(true); //626:1
+            if (!symbol.ExistingSourceTypeInfo.Members.Contains("CompleteImports")) //627:10
+            {
+                __out.AppendLine(true); //628:1
+                __out.Write("        protected override void CompleteImports(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)"); //629:1
+                __out.AppendLine(false); //629:140
+                __out.Write("        {"); //630:1
+                __out.AppendLine(false); //630:10
+                __out.Write("            SourceSymbolImplementation.CompleteImports(this, locationOpt, diagnostics, cancellationToken);"); //631:1
+                __out.AppendLine(false); //631:107
+                __out.Write("        }"); //632:1
+                __out.AppendLine(false); //632:10
+                __out.AppendLine(true); //633:1
+            }
+            if (!symbol.ExistingSourceTypeInfo.Members.Contains("CompleteSymbolProperty_Name")) //635:10
+            {
+                __out.Write("        protected override string CompleteSymbolProperty_Name(DiagnosticBag diagnostics, CancellationToken cancellationToken)"); //636:1
+                __out.AppendLine(false); //636:126
+                __out.Write("        {"); //637:1
+                __out.AppendLine(false); //637:10
+                __out.Write("            return SourceSymbolImplementation.AssignSymbolPropertyValue<string>(this, nameof(Name), diagnostics, cancellationToken);"); //638:1
+                __out.AppendLine(false); //638:133
+                __out.Write("        }"); //639:1
+                __out.AppendLine(false); //639:10
+            }
+            __out.AppendLine(true); //641:1
             var __loop11_results = 
-                (from part in __Enumerate((symbol.CompletionParts).GetEnumerator()) //627:16
-                where part.GenerateCompleteMethod //627:44
+                (from part in __Enumerate((symbol.CompletionParts).GetEnumerator()) //642:16
+                where part.GenerateCompleteMethod //642:44
                 select new { part = part}
-                ).ToList(); //627:10
+                ).ToList(); //642:10
             for (int __loop11_iteration = 0; __loop11_iteration < __loop11_results.Count; ++__loop11_iteration)
             {
-                var __tmp32 = __loop11_results[__loop11_iteration];
-                var part = __tmp32.part;
-                if (!symbol.ExistingSourceTypeInfo.Members.Contains(part.CompleteMethodName)) //628:14
+                var __tmp31 = __loop11_results[__loop11_iteration];
+                var part = __tmp31.part;
+                if (!symbol.ExistingSourceTypeInfo.Members.Contains(part.CompleteMethodName)) //643:14
                 {
-                    bool __tmp34_outputWritten = false;
-                    string __tmp35_line = "        protected override "; //629:1
-                    if (!string.IsNullOrEmpty(__tmp35_line))
+                    bool __tmp33_outputWritten = false;
+                    string __tmp34_line = "        protected override "; //644:1
+                    if (!string.IsNullOrEmpty(__tmp34_line))
                     {
-                        __out.Write(__tmp35_line);
-                        __tmp34_outputWritten = true;
+                        __out.Write(__tmp34_line);
+                        __tmp33_outputWritten = true;
                     }
-                    var __tmp36 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
-                    __tmp36.Write(part.CompleteMethodReturnType);
-                    var __tmp36Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp36.ToStringAndFree());
-                    bool __tmp36_last = __tmp36Reader.EndOfStream;
-                    while(!__tmp36_last)
+                    var __tmp35 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
+                    __tmp35.Write(part.CompleteMethodReturnType);
+                    var __tmp35Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp35.ToStringAndFree());
+                    bool __tmp35_last = __tmp35Reader.EndOfStream;
+                    while(!__tmp35_last)
                     {
-                        ReadOnlySpan<char> __tmp36_line = __tmp36Reader.ReadLine();
-                        __tmp36_last = __tmp36Reader.EndOfStream;
-                        if (!__tmp36_last || !__tmp36_line.IsEmpty)
+                        ReadOnlySpan<char> __tmp35_line = __tmp35Reader.ReadLine();
+                        __tmp35_last = __tmp35Reader.EndOfStream;
+                        if (!__tmp35_last || !__tmp35_line.IsEmpty)
                         {
-                            __out.Write(__tmp36_line);
-                            __tmp34_outputWritten = true;
+                            __out.Write(__tmp35_line);
+                            __tmp33_outputWritten = true;
                         }
-                        if (!__tmp36_last) __out.AppendLine(true);
+                        if (!__tmp35_last) __out.AppendLine(true);
                     }
-                    string __tmp37_line = " "; //629:59
-                    if (!string.IsNullOrEmpty(__tmp37_line))
+                    string __tmp36_line = " "; //644:59
+                    if (!string.IsNullOrEmpty(__tmp36_line))
                     {
-                        __out.Write(__tmp37_line);
-                        __tmp34_outputWritten = true;
+                        __out.Write(__tmp36_line);
+                        __tmp33_outputWritten = true;
                     }
-                    var __tmp38 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
-                    __tmp38.Write(part.CompleteMethodName);
-                    var __tmp38Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp38.ToStringAndFree());
-                    bool __tmp38_last = __tmp38Reader.EndOfStream;
-                    while(!__tmp38_last)
+                    var __tmp37 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
+                    __tmp37.Write(part.CompleteMethodName);
+                    var __tmp37Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp37.ToStringAndFree());
+                    bool __tmp37_last = __tmp37Reader.EndOfStream;
+                    while(!__tmp37_last)
                     {
-                        ReadOnlySpan<char> __tmp38_line = __tmp38Reader.ReadLine();
-                        __tmp38_last = __tmp38Reader.EndOfStream;
-                        if (!__tmp38_last || !__tmp38_line.IsEmpty)
+                        ReadOnlySpan<char> __tmp37_line = __tmp37Reader.ReadLine();
+                        __tmp37_last = __tmp37Reader.EndOfStream;
+                        if (!__tmp37_last || !__tmp37_line.IsEmpty)
                         {
-                            __out.Write(__tmp38_line);
-                            __tmp34_outputWritten = true;
+                            __out.Write(__tmp37_line);
+                            __tmp33_outputWritten = true;
                         }
-                        if (!__tmp38_last) __out.AppendLine(true);
+                        if (!__tmp37_last) __out.AppendLine(true);
                     }
-                    string __tmp39_line = "("; //629:85
-                    if (!string.IsNullOrEmpty(__tmp39_line))
+                    string __tmp38_line = "("; //644:85
+                    if (!string.IsNullOrEmpty(__tmp38_line))
                     {
-                        __out.Write(__tmp39_line);
-                        __tmp34_outputWritten = true;
+                        __out.Write(__tmp38_line);
+                        __tmp33_outputWritten = true;
                     }
-                    var __tmp40 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
-                    __tmp40.Write(part.CompleteMethodParamList);
-                    var __tmp40Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp40.ToStringAndFree());
-                    bool __tmp40_last = __tmp40Reader.EndOfStream;
-                    while(!__tmp40_last)
+                    var __tmp39 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
+                    __tmp39.Write(part.CompleteMethodParamList);
+                    var __tmp39Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp39.ToStringAndFree());
+                    bool __tmp39_last = __tmp39Reader.EndOfStream;
+                    while(!__tmp39_last)
                     {
-                        ReadOnlySpan<char> __tmp40_line = __tmp40Reader.ReadLine();
-                        __tmp40_last = __tmp40Reader.EndOfStream;
-                        if (!__tmp40_last || !__tmp40_line.IsEmpty)
+                        ReadOnlySpan<char> __tmp39_line = __tmp39Reader.ReadLine();
+                        __tmp39_last = __tmp39Reader.EndOfStream;
+                        if (!__tmp39_last || !__tmp39_line.IsEmpty)
                         {
-                            __out.Write(__tmp40_line);
-                            __tmp34_outputWritten = true;
+                            __out.Write(__tmp39_line);
+                            __tmp33_outputWritten = true;
                         }
-                        if (!__tmp40_last) __out.AppendLine(true);
+                        if (!__tmp39_last) __out.AppendLine(true);
                     }
-                    string __tmp41_line = ")"; //629:116
-                    if (!string.IsNullOrEmpty(__tmp41_line))
+                    string __tmp40_line = ")"; //644:116
+                    if (!string.IsNullOrEmpty(__tmp40_line))
                     {
-                        __out.Write(__tmp41_line);
-                        __tmp34_outputWritten = true;
+                        __out.Write(__tmp40_line);
+                        __tmp33_outputWritten = true;
                     }
-                    if (__tmp34_outputWritten) __out.AppendLine(true);
-                    if (__tmp34_outputWritten)
+                    if (__tmp33_outputWritten) __out.AppendLine(true);
+                    if (__tmp33_outputWritten)
                     {
-                        __out.AppendLine(false); //629:117
+                        __out.AppendLine(false); //644:117
                     }
-                    __out.Write("        {"); //630:1
-                    __out.AppendLine(false); //630:10
-                    if (part is SymbolPropertyGenerationInfo) //631:14
+                    __out.Write("        {"); //645:1
+                    __out.AppendLine(false); //645:10
+                    if (part is SymbolPropertyGenerationInfo) //646:14
                     {
-                        var prop = (SymbolPropertyGenerationInfo)part; //632:18
-                        if (prop.IsCollection) //633:18
+                        var prop = (SymbolPropertyGenerationInfo)part; //647:18
+                        if (prop.IsCollection) //648:18
                         {
-                            bool __tmp43_outputWritten = false;
-                            string __tmp44_line = "            return SourceSymbolImplementation.AssignSymbolPropertyValues<"; //634:1
-                            if (!string.IsNullOrEmpty(__tmp44_line))
+                            bool __tmp42_outputWritten = false;
+                            string __tmp43_line = "            return SourceSymbolImplementation.AssignSymbolPropertyValues<"; //649:1
+                            if (!string.IsNullOrEmpty(__tmp43_line))
                             {
-                                __out.Write(__tmp44_line);
-                                __tmp43_outputWritten = true;
+                                __out.Write(__tmp43_line);
+                                __tmp42_outputWritten = true;
                             }
-                            var __tmp45 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
-                            __tmp45.Write(prop.ItemType);
-                            var __tmp45Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp45.ToStringAndFree());
-                            bool __tmp45_last = __tmp45Reader.EndOfStream;
-                            while(!__tmp45_last)
+                            var __tmp44 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
+                            __tmp44.Write(prop.ItemType);
+                            var __tmp44Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp44.ToStringAndFree());
+                            bool __tmp44_last = __tmp44Reader.EndOfStream;
+                            while(!__tmp44_last)
                             {
-                                ReadOnlySpan<char> __tmp45_line = __tmp45Reader.ReadLine();
-                                __tmp45_last = __tmp45Reader.EndOfStream;
-                                if (!__tmp45_last || !__tmp45_line.IsEmpty)
+                                ReadOnlySpan<char> __tmp44_line = __tmp44Reader.ReadLine();
+                                __tmp44_last = __tmp44Reader.EndOfStream;
+                                if (!__tmp44_last || !__tmp44_line.IsEmpty)
                                 {
-                                    __out.Write(__tmp45_line);
-                                    __tmp43_outputWritten = true;
+                                    __out.Write(__tmp44_line);
+                                    __tmp42_outputWritten = true;
                                 }
-                                if (!__tmp45_last) __out.AppendLine(true);
+                                if (!__tmp44_last) __out.AppendLine(true);
                             }
-                            string __tmp46_line = ">(this, nameof("; //634:89
-                            if (!string.IsNullOrEmpty(__tmp46_line))
+                            string __tmp45_line = ">(this, nameof("; //649:89
+                            if (!string.IsNullOrEmpty(__tmp45_line))
                             {
-                                __out.Write(__tmp46_line);
-                                __tmp43_outputWritten = true;
+                                __out.Write(__tmp45_line);
+                                __tmp42_outputWritten = true;
                             }
-                            var __tmp47 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
-                            __tmp47.Write(prop.Name);
-                            var __tmp47Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp47.ToStringAndFree());
-                            bool __tmp47_last = __tmp47Reader.EndOfStream;
-                            while(!__tmp47_last)
+                            var __tmp46 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
+                            __tmp46.Write(prop.Name);
+                            var __tmp46Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp46.ToStringAndFree());
+                            bool __tmp46_last = __tmp46Reader.EndOfStream;
+                            while(!__tmp46_last)
                             {
-                                ReadOnlySpan<char> __tmp47_line = __tmp47Reader.ReadLine();
-                                __tmp47_last = __tmp47Reader.EndOfStream;
-                                if (!__tmp47_last || !__tmp47_line.IsEmpty)
+                                ReadOnlySpan<char> __tmp46_line = __tmp46Reader.ReadLine();
+                                __tmp46_last = __tmp46Reader.EndOfStream;
+                                if (!__tmp46_last || !__tmp46_line.IsEmpty)
                                 {
-                                    __out.Write(__tmp47_line);
-                                    __tmp43_outputWritten = true;
+                                    __out.Write(__tmp46_line);
+                                    __tmp42_outputWritten = true;
                                 }
-                                if (!__tmp47_last) __out.AppendLine(true);
+                                if (!__tmp46_last) __out.AppendLine(true);
                             }
-                            string __tmp48_line = "), diagnostics, cancellationToken);"; //634:115
-                            if (!string.IsNullOrEmpty(__tmp48_line))
+                            string __tmp47_line = "), diagnostics, cancellationToken);"; //649:115
+                            if (!string.IsNullOrEmpty(__tmp47_line))
                             {
-                                __out.Write(__tmp48_line);
-                                __tmp43_outputWritten = true;
+                                __out.Write(__tmp47_line);
+                                __tmp42_outputWritten = true;
                             }
-                            if (__tmp43_outputWritten) __out.AppendLine(true);
-                            if (__tmp43_outputWritten)
+                            if (__tmp42_outputWritten) __out.AppendLine(true);
+                            if (__tmp42_outputWritten)
                             {
-                                __out.AppendLine(false); //634:150
+                                __out.AppendLine(false); //649:150
                             }
                         }
-                        else //635:18
+                        else //650:18
                         {
-                            bool __tmp50_outputWritten = false;
-                            string __tmp51_line = "            return SourceSymbolImplementation.AssignSymbolPropertyValue<"; //636:1
-                            if (!string.IsNullOrEmpty(__tmp51_line))
+                            bool __tmp49_outputWritten = false;
+                            string __tmp50_line = "            return SourceSymbolImplementation.AssignSymbolPropertyValue<"; //651:1
+                            if (!string.IsNullOrEmpty(__tmp50_line))
                             {
-                                __out.Write(__tmp51_line);
-                                __tmp50_outputWritten = true;
+                                __out.Write(__tmp50_line);
+                                __tmp49_outputWritten = true;
                             }
-                            var __tmp52 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
-                            __tmp52.Write(prop.Type);
-                            var __tmp52Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp52.ToStringAndFree());
-                            bool __tmp52_last = __tmp52Reader.EndOfStream;
-                            while(!__tmp52_last)
+                            var __tmp51 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
+                            __tmp51.Write(prop.Type);
+                            var __tmp51Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp51.ToStringAndFree());
+                            bool __tmp51_last = __tmp51Reader.EndOfStream;
+                            while(!__tmp51_last)
                             {
-                                ReadOnlySpan<char> __tmp52_line = __tmp52Reader.ReadLine();
-                                __tmp52_last = __tmp52Reader.EndOfStream;
-                                if (!__tmp52_last || !__tmp52_line.IsEmpty)
+                                ReadOnlySpan<char> __tmp51_line = __tmp51Reader.ReadLine();
+                                __tmp51_last = __tmp51Reader.EndOfStream;
+                                if (!__tmp51_last || !__tmp51_line.IsEmpty)
                                 {
-                                    __out.Write(__tmp52_line);
-                                    __tmp50_outputWritten = true;
+                                    __out.Write(__tmp51_line);
+                                    __tmp49_outputWritten = true;
                                 }
-                                if (!__tmp52_last) __out.AppendLine(true);
+                                if (!__tmp51_last) __out.AppendLine(true);
                             }
-                            string __tmp53_line = ">(this, nameof("; //636:84
-                            if (!string.IsNullOrEmpty(__tmp53_line))
+                            string __tmp52_line = ">(this, nameof("; //651:84
+                            if (!string.IsNullOrEmpty(__tmp52_line))
                             {
-                                __out.Write(__tmp53_line);
-                                __tmp50_outputWritten = true;
+                                __out.Write(__tmp52_line);
+                                __tmp49_outputWritten = true;
                             }
-                            var __tmp54 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
-                            __tmp54.Write(prop.Name);
-                            var __tmp54Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp54.ToStringAndFree());
-                            bool __tmp54_last = __tmp54Reader.EndOfStream;
-                            while(!__tmp54_last)
+                            var __tmp53 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
+                            __tmp53.Write(prop.Name);
+                            var __tmp53Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp53.ToStringAndFree());
+                            bool __tmp53_last = __tmp53Reader.EndOfStream;
+                            while(!__tmp53_last)
                             {
-                                ReadOnlySpan<char> __tmp54_line = __tmp54Reader.ReadLine();
-                                __tmp54_last = __tmp54Reader.EndOfStream;
-                                if (!__tmp54_last || !__tmp54_line.IsEmpty)
+                                ReadOnlySpan<char> __tmp53_line = __tmp53Reader.ReadLine();
+                                __tmp53_last = __tmp53Reader.EndOfStream;
+                                if (!__tmp53_last || !__tmp53_line.IsEmpty)
                                 {
-                                    __out.Write(__tmp54_line);
-                                    __tmp50_outputWritten = true;
+                                    __out.Write(__tmp53_line);
+                                    __tmp49_outputWritten = true;
                                 }
-                                if (!__tmp54_last) __out.AppendLine(true);
+                                if (!__tmp53_last) __out.AppendLine(true);
                             }
-                            string __tmp55_line = "), diagnostics, cancellationToken);"; //636:110
-                            if (!string.IsNullOrEmpty(__tmp55_line))
+                            string __tmp54_line = "), diagnostics, cancellationToken);"; //651:110
+                            if (!string.IsNullOrEmpty(__tmp54_line))
                             {
-                                __out.Write(__tmp55_line);
-                                __tmp50_outputWritten = true;
+                                __out.Write(__tmp54_line);
+                                __tmp49_outputWritten = true;
                             }
-                            if (__tmp50_outputWritten) __out.AppendLine(true);
-                            if (__tmp50_outputWritten)
+                            if (__tmp49_outputWritten) __out.AppendLine(true);
+                            if (__tmp49_outputWritten)
                             {
-                                __out.AppendLine(false); //636:145
+                                __out.AppendLine(false); //651:145
                             }
                         }
                     }
-                    __out.Write("        }"); //639:1
-                    __out.AppendLine(false); //639:10
+                    __out.Write("        }"); //654:1
+                    __out.AppendLine(false); //654:10
                 }
             }
-            if (!symbol.ExistingSourceTypeInfo.Members.Contains("CompleteNonSymbolProperties")) //642:10
+            if (!symbol.ExistingSourceTypeInfo.Members.Contains("CompleteNonSymbolProperties")) //657:10
             {
-                __out.AppendLine(true); //643:1
-                __out.Write("        protected override void CompleteNonSymbolProperties(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)"); //644:1
-                __out.AppendLine(false); //644:152
-                __out.Write("        {"); //645:1
-                __out.AppendLine(false); //645:10
-                __out.Write("            SourceSymbolImplementation.AssignNonSymbolProperties(this, diagnostics, cancellationToken);"); //646:1
-                __out.AppendLine(false); //646:104
-                __out.Write("        }"); //647:1
-                __out.AppendLine(false); //647:10
+                __out.AppendLine(true); //658:1
+                __out.Write("        protected override void CompleteNonSymbolProperties(SourceLocation locationOpt, DiagnosticBag diagnostics, CancellationToken cancellationToken)"); //659:1
+                __out.AppendLine(false); //659:152
+                __out.Write("        {"); //660:1
+                __out.AppendLine(false); //660:10
+                __out.Write("            SourceSymbolImplementation.AssignNonSymbolProperties(this, diagnostics, cancellationToken);"); //661:1
+                __out.AppendLine(false); //661:104
+                __out.Write("        }"); //662:1
+                __out.AppendLine(false); //662:10
             }
-            __out.Write("	}"); //649:1
-            __out.AppendLine(false); //649:3
-            __out.Write("}"); //650:1
-            __out.AppendLine(false); //650:2
+            __out.AppendLine(true); //664:1
+            if (symbol.Name != "AssemblySymbol" && symbol.Name != "ModuleSymbol") //665:10
+            {
+                __out.Write("        public class Error"); //666:1
+                __out.AppendLine(false); //666:27
+                __out.Write("        {"); //667:1
+                __out.AppendLine(false); //667:10
+                __out.Write("            private DiagnosticInfo _errorInfo;"); //668:1
+                __out.AppendLine(false); //668:47
+                __out.AppendLine(true); //669:1
+                if (!symbol.ExistingMetadataTypeInfo.Members.Contains(".ctor")) //670:14
+                {
+                    bool __tmp56_outputWritten = false;
+                    string __tmp57_line = "            public Error"; //671:1
+                    if (!string.IsNullOrEmpty(__tmp57_line))
+                    {
+                        __out.Write(__tmp57_line);
+                        __tmp56_outputWritten = true;
+                    }
+                    var __tmp58 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
+                    __tmp58.Write(symbol.Name);
+                    var __tmp58Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp58.ToStringAndFree());
+                    bool __tmp58_last = __tmp58Reader.EndOfStream;
+                    while(!__tmp58_last)
+                    {
+                        ReadOnlySpan<char> __tmp58_line = __tmp58Reader.ReadLine();
+                        __tmp58_last = __tmp58Reader.EndOfStream;
+                        if (!__tmp58_last || !__tmp58_line.IsEmpty)
+                        {
+                            __out.Write(__tmp58_line);
+                            __tmp56_outputWritten = true;
+                        }
+                        if (!__tmp58_last) __out.AppendLine(true);
+                    }
+                    string __tmp59_line = "(Symbol container, MergedDeclaration declaration, DiagnosticInfo errorInfo"; //671:38
+                    if (!string.IsNullOrEmpty(__tmp59_line))
+                    {
+                        __out.Write(__tmp59_line);
+                        __tmp56_outputWritten = true;
+                    }
+                    if (symbol.ModelObjectOption != ParameterOption.Disabled) //671:113
+                    {
+                        string __tmp61_line = ", object modelObject"; //671:170
+                        if (!string.IsNullOrEmpty(__tmp61_line))
+                        {
+                            __out.Write(__tmp61_line);
+                            __tmp56_outputWritten = true;
+                        }
+                        if (symbol.ModelObjectOption == ParameterOption.Optional) //671:191
+                        {
+                            string __tmp63_line = " = null"; //671:248
+                            if (!string.IsNullOrEmpty(__tmp63_line))
+                            {
+                                __out.Write(__tmp63_line);
+                                __tmp56_outputWritten = true;
+                            }
+                        }
+                    }
+                    string __tmp66_line = ")"; //671:271
+                    if (!string.IsNullOrEmpty(__tmp66_line))
+                    {
+                        __out.Write(__tmp66_line);
+                        __tmp56_outputWritten = true;
+                    }
+                    if (__tmp56_outputWritten) __out.AppendLine(true);
+                    if (__tmp56_outputWritten)
+                    {
+                        __out.AppendLine(false); //671:272
+                    }
+                    __out.Write("                : base(container, declaration, "); //672:1
+                    if (symbol.ModelObjectOption != ParameterOption.Disabled) //672:49
+                    {
+                        __out.Write(", modelObject"); //672:106
+                    }
+                    __out.Write(", true)"); //672:127
+                    __out.AppendLine(false); //672:134
+                    __out.Write("            {"); //673:1
+                    __out.AppendLine(false); //673:14
+                    __out.Write("                _errorInfo = errorInfo;"); //674:1
+                    __out.AppendLine(false); //674:40
+                    __out.Write("            }"); //675:1
+                    __out.AppendLine(false); //675:14
+                }
+                __out.AppendLine(true); //677:1
+                __out.Write("            public sealed override IsError => true;"); //678:1
+                __out.AppendLine(false); //678:52
+                __out.AppendLine(true); //679:1
+                __out.Write("            public DiagnosticInfo ErrorInfo => _errorInfo;"); //680:1
+                __out.AppendLine(false); //680:59
+                __out.Write("        }"); //681:1
+                __out.AppendLine(false); //681:10
+            }
+            __out.Write("	}"); //683:1
+            __out.AppendLine(false); //683:3
+            __out.Write("}"); //684:1
+            __out.AppendLine(false); //684:2
             return __out.ToStringAndFree();
         }
 
-        public string GenerateVisitor(string namespaceName, IEnumerable<SymbolGenerationInfo> symbols) //653:1
+        public string GenerateVisitor(string namespaceName, IEnumerable<SymbolGenerationInfo> symbols) //687:1
         {
             var __out = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
-            __out.Write("using Microsoft.CodeAnalysis;"); //654:1
-            __out.AppendLine(false); //654:30
-            __out.Write("using MetaDslx.CodeAnalysis;"); //655:1
-            __out.AppendLine(false); //655:29
-            __out.Write("using MetaDslx.CodeAnalysis.Symbols;"); //656:1
-            __out.AppendLine(false); //656:37
-            __out.Write("using System;"); //657:1
-            __out.AppendLine(false); //657:14
-            __out.Write("using System.Collections.Generic;"); //658:1
-            __out.AppendLine(false); //658:34
-            __out.Write("using System.Collections.Immutable;"); //659:1
-            __out.AppendLine(false); //659:36
-            __out.Write("using System.Diagnostics;"); //660:1
-            __out.AppendLine(false); //660:26
-            __out.Write("using System.Text;"); //661:1
-            __out.AppendLine(false); //661:19
-            __out.Write("using System.Threading;"); //662:1
-            __out.AppendLine(false); //662:24
-            __out.AppendLine(true); //663:1
+            __out.Write("using Microsoft.CodeAnalysis;"); //688:1
+            __out.AppendLine(false); //688:30
+            __out.Write("using MetaDslx.CodeAnalysis;"); //689:1
+            __out.AppendLine(false); //689:29
+            __out.Write("using MetaDslx.CodeAnalysis.Symbols;"); //690:1
+            __out.AppendLine(false); //690:37
+            __out.Write("using System;"); //691:1
+            __out.AppendLine(false); //691:14
+            __out.Write("using System.Collections.Generic;"); //692:1
+            __out.AppendLine(false); //692:34
+            __out.Write("using System.Collections.Immutable;"); //693:1
+            __out.AppendLine(false); //693:36
+            __out.Write("using System.Diagnostics;"); //694:1
+            __out.AppendLine(false); //694:26
+            __out.Write("using System.Text;"); //695:1
+            __out.AppendLine(false); //695:19
+            __out.Write("using System.Threading;"); //696:1
+            __out.AppendLine(false); //696:24
+            __out.AppendLine(true); //697:1
             bool __tmp2_outputWritten = false;
-            string __tmp3_line = "namespace "; //664:1
+            string __tmp3_line = "namespace "; //698:1
             if (!string.IsNullOrEmpty(__tmp3_line))
             {
                 __out.Write(__tmp3_line);
@@ -3221,24 +3393,24 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
             }
             if (__tmp2_outputWritten)
             {
-                __out.AppendLine(false); //664:26
+                __out.AppendLine(false); //698:26
             }
-            __out.Write("{"); //665:1
-            __out.AppendLine(false); //665:2
-            __out.Write("	public interface ISymbolVisitor"); //666:1
-            __out.AppendLine(false); //666:33
-            __out.Write("	{"); //667:1
-            __out.AppendLine(false); //667:3
+            __out.Write("{"); //699:1
+            __out.AppendLine(false); //699:2
+            __out.Write("	public interface ISymbolVisitor"); //700:1
+            __out.AppendLine(false); //700:33
+            __out.Write("	{"); //701:1
+            __out.AppendLine(false); //701:3
             var __loop12_results = 
-                (from symbol in __Enumerate((symbols).GetEnumerator()) //668:16
+                (from symbol in __Enumerate((symbols).GetEnumerator()) //702:16
                 select new { symbol = symbol}
-                ).ToList(); //668:10
+                ).ToList(); //702:10
             for (int __loop12_iteration = 0; __loop12_iteration < __loop12_results.Count; ++__loop12_iteration)
             {
                 var __tmp5 = __loop12_results[__loop12_iteration];
                 var symbol = __tmp5.symbol;
                 bool __tmp7_outputWritten = false;
-                string __tmp8_line = "        void Visit("; //669:1
+                string __tmp8_line = "        void Visit("; //703:1
                 if (!string.IsNullOrEmpty(__tmp8_line))
                 {
                     __out.Write(__tmp8_line);
@@ -3259,7 +3431,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                     }
                     if (!__tmp9_last) __out.AppendLine(true);
                 }
-                string __tmp10_line = " symbol);"; //669:33
+                string __tmp10_line = " symbol);"; //703:33
                 if (!string.IsNullOrEmpty(__tmp10_line))
                 {
                     __out.Write(__tmp10_line);
@@ -3268,26 +3440,26 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                 if (__tmp7_outputWritten) __out.AppendLine(true);
                 if (__tmp7_outputWritten)
                 {
-                    __out.AppendLine(false); //669:42
+                    __out.AppendLine(false); //703:42
                 }
             }
-            __out.Write("	}"); //671:1
-            __out.AppendLine(false); //671:3
-            __out.AppendLine(true); //672:1
-            __out.Write("	public interface ISymbolVisitor<TResult>"); //673:1
-            __out.AppendLine(false); //673:42
-            __out.Write("	{"); //674:1
-            __out.AppendLine(false); //674:3
+            __out.Write("	}"); //705:1
+            __out.AppendLine(false); //705:3
+            __out.AppendLine(true); //706:1
+            __out.Write("	public interface ISymbolVisitor<TResult>"); //707:1
+            __out.AppendLine(false); //707:42
+            __out.Write("	{"); //708:1
+            __out.AppendLine(false); //708:3
             var __loop13_results = 
-                (from symbol in __Enumerate((symbols).GetEnumerator()) //675:16
+                (from symbol in __Enumerate((symbols).GetEnumerator()) //709:16
                 select new { symbol = symbol}
-                ).ToList(); //675:10
+                ).ToList(); //709:10
             for (int __loop13_iteration = 0; __loop13_iteration < __loop13_results.Count; ++__loop13_iteration)
             {
                 var __tmp11 = __loop13_results[__loop13_iteration];
                 var symbol = __tmp11.symbol;
                 bool __tmp13_outputWritten = false;
-                string __tmp14_line = "        TResult Visit("; //676:1
+                string __tmp14_line = "        TResult Visit("; //710:1
                 if (!string.IsNullOrEmpty(__tmp14_line))
                 {
                     __out.Write(__tmp14_line);
@@ -3308,7 +3480,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                     }
                     if (!__tmp15_last) __out.AppendLine(true);
                 }
-                string __tmp16_line = " symbol);"; //676:36
+                string __tmp16_line = " symbol);"; //710:36
                 if (!string.IsNullOrEmpty(__tmp16_line))
                 {
                     __out.Write(__tmp16_line);
@@ -3317,26 +3489,26 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                 if (__tmp13_outputWritten) __out.AppendLine(true);
                 if (__tmp13_outputWritten)
                 {
-                    __out.AppendLine(false); //676:45
+                    __out.AppendLine(false); //710:45
                 }
             }
-            __out.Write("	}"); //678:1
-            __out.AppendLine(false); //678:3
-            __out.AppendLine(true); //679:1
-            __out.Write("	public interface ISymbolVisitor<TArgument, TResult>"); //680:1
-            __out.AppendLine(false); //680:53
-            __out.Write("	{"); //681:1
-            __out.AppendLine(false); //681:3
+            __out.Write("	}"); //712:1
+            __out.AppendLine(false); //712:3
+            __out.AppendLine(true); //713:1
+            __out.Write("	public interface ISymbolVisitor<TArgument, TResult>"); //714:1
+            __out.AppendLine(false); //714:53
+            __out.Write("	{"); //715:1
+            __out.AppendLine(false); //715:3
             var __loop14_results = 
-                (from symbol in __Enumerate((symbols).GetEnumerator()) //682:16
+                (from symbol in __Enumerate((symbols).GetEnumerator()) //716:16
                 select new { symbol = symbol}
-                ).ToList(); //682:10
+                ).ToList(); //716:10
             for (int __loop14_iteration = 0; __loop14_iteration < __loop14_results.Count; ++__loop14_iteration)
             {
                 var __tmp17 = __loop14_results[__loop14_iteration];
                 var symbol = __tmp17.symbol;
                 bool __tmp19_outputWritten = false;
-                string __tmp20_line = "        TResult Visit("; //683:1
+                string __tmp20_line = "        TResult Visit("; //717:1
                 if (!string.IsNullOrEmpty(__tmp20_line))
                 {
                     __out.Write(__tmp20_line);
@@ -3357,7 +3529,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                     }
                     if (!__tmp21_last) __out.AppendLine(true);
                 }
-                string __tmp22_line = " symbol, TArgument argument);"; //683:36
+                string __tmp22_line = " symbol, TArgument argument);"; //717:36
                 if (!string.IsNullOrEmpty(__tmp22_line))
                 {
                     __out.Write(__tmp22_line);
@@ -3366,42 +3538,42 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                 if (__tmp19_outputWritten) __out.AppendLine(true);
                 if (__tmp19_outputWritten)
                 {
-                    __out.AppendLine(false); //683:65
+                    __out.AppendLine(false); //717:65
                 }
             }
-            __out.Write("	}"); //685:1
-            __out.AppendLine(false); //685:3
-            __out.Write("}"); //686:1
-            __out.AppendLine(false); //686:2
+            __out.Write("	}"); //719:1
+            __out.AppendLine(false); //719:3
+            __out.Write("}"); //720:1
+            __out.AppendLine(false); //720:2
             return __out.ToStringAndFree();
         }
 
-        public string GenerateFactory(string namespaceName, IEnumerable<SymbolGenerationInfo> symbols) //689:1
+        public string GenerateFactory(string namespaceName, IEnumerable<SymbolGenerationInfo> symbols) //723:1
         {
             var __out = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
-            __out.Write("using Microsoft.CodeAnalysis;"); //690:1
-            __out.AppendLine(false); //690:30
-            __out.Write("using MetaDslx.CodeAnalysis;"); //691:1
-            __out.AppendLine(false); //691:29
-            __out.Write("using MetaDslx.CodeAnalysis.Symbols;"); //692:1
-            __out.AppendLine(false); //692:37
-            __out.Write("using System;"); //693:1
-            __out.AppendLine(false); //693:14
-            __out.Write("using System.Collections.Generic;"); //694:1
-            __out.AppendLine(false); //694:34
-            __out.Write("using System.Collections.Immutable;"); //695:1
-            __out.AppendLine(false); //695:36
-            __out.Write("using System.Diagnostics;"); //696:1
-            __out.AppendLine(false); //696:26
-            __out.Write("using System.Text;"); //697:1
-            __out.AppendLine(false); //697:19
-            __out.Write("using System.Threading;"); //698:1
-            __out.AppendLine(false); //698:24
-            __out.Write("using MetaDslx.CodeAnalysis.Declarations;"); //699:1
-            __out.AppendLine(false); //699:42
-            __out.AppendLine(true); //700:1
+            __out.Write("using Microsoft.CodeAnalysis;"); //724:1
+            __out.AppendLine(false); //724:30
+            __out.Write("using MetaDslx.CodeAnalysis;"); //725:1
+            __out.AppendLine(false); //725:29
+            __out.Write("using MetaDslx.CodeAnalysis.Symbols;"); //726:1
+            __out.AppendLine(false); //726:37
+            __out.Write("using System;"); //727:1
+            __out.AppendLine(false); //727:14
+            __out.Write("using System.Collections.Generic;"); //728:1
+            __out.AppendLine(false); //728:34
+            __out.Write("using System.Collections.Immutable;"); //729:1
+            __out.AppendLine(false); //729:36
+            __out.Write("using System.Diagnostics;"); //730:1
+            __out.AppendLine(false); //730:26
+            __out.Write("using System.Text;"); //731:1
+            __out.AppendLine(false); //731:19
+            __out.Write("using System.Threading;"); //732:1
+            __out.AppendLine(false); //732:24
+            __out.Write("using MetaDslx.CodeAnalysis.Declarations;"); //733:1
+            __out.AppendLine(false); //733:42
+            __out.AppendLine(true); //734:1
             bool __tmp2_outputWritten = false;
-            string __tmp3_line = "namespace "; //701:1
+            string __tmp3_line = "namespace "; //735:1
             if (!string.IsNullOrEmpty(__tmp3_line))
             {
                 __out.Write(__tmp3_line);
@@ -3422,7 +3594,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                 }
                 if (!__tmp4_last) __out.AppendLine(true);
             }
-            string __tmp5_line = ".Factory"; //701:26
+            string __tmp5_line = ".Factory"; //735:26
             if (!string.IsNullOrEmpty(__tmp5_line))
             {
                 __out.Write(__tmp5_line);
@@ -3431,21 +3603,21 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
             if (__tmp2_outputWritten) __out.AppendLine(true);
             if (__tmp2_outputWritten)
             {
-                __out.AppendLine(false); //701:34
+                __out.AppendLine(false); //735:34
             }
-            __out.Write("{"); //702:1
-            __out.AppendLine(false); //702:2
+            __out.Write("{"); //736:1
+            __out.AppendLine(false); //736:2
             var __loop15_results = 
-                (from symbol in __Enumerate((symbols).GetEnumerator()) //703:12
-                where symbol.Name != "AssemblySymbol" && symbol.Name != "ModuleSymbol" && symbol.SymbolParts != SymbolParts.None //703:28
+                (from symbol in __Enumerate((symbols).GetEnumerator()) //737:12
+                where symbol.Name != "AssemblySymbol" && symbol.Name != "ModuleSymbol" && symbol.SymbolParts != SymbolParts.None //737:28
                 select new { symbol = symbol}
-                ).ToList(); //703:6
+                ).ToList(); //737:6
             for (int __loop15_iteration = 0; __loop15_iteration < __loop15_results.Count; ++__loop15_iteration)
             {
                 var __tmp6 = __loop15_results[__loop15_iteration];
                 var symbol = __tmp6.symbol;
                 bool __tmp8_outputWritten = false;
-                string __tmp9_line = "	public class "; //704:1
+                string __tmp9_line = "	public class "; //738:1
                 if (!string.IsNullOrEmpty(__tmp9_line))
                 {
                     __out.Write(__tmp9_line);
@@ -3466,7 +3638,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                     }
                     if (!__tmp10_last) __out.AppendLine(true);
                 }
-                string __tmp11_line = "Factory : IGeneratedSymbolFactory"; //704:28
+                string __tmp11_line = "Factory : IGeneratedSymbolFactory"; //738:28
                 if (!string.IsNullOrEmpty(__tmp11_line))
                 {
                     __out.Write(__tmp11_line);
@@ -3475,18 +3647,18 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                 if (__tmp8_outputWritten) __out.AppendLine(true);
                 if (__tmp8_outputWritten)
                 {
-                    __out.AppendLine(false); //704:61
+                    __out.AppendLine(false); //738:61
                 }
-                __out.Write("	{"); //705:1
-                __out.AppendLine(false); //705:3
-                __out.Write("        public Symbol? CreateErrorSymbol(Symbol? container, object? modelObject, MergedDeclaration? declaration)"); //706:1
-                __out.AppendLine(false); //706:113
-                __out.Write("        {"); //707:1
-                __out.AppendLine(false); //707:10
-                if (!symbol.SymbolParts.HasFlag(SymbolParts.Error)) //708:14
+                __out.Write("	{"); //739:1
+                __out.AppendLine(false); //739:3
+                __out.Write("        public Symbol? CreateMetadataSymbol(Symbol container, object? modelObject)"); //740:1
+                __out.AppendLine(false); //740:83
+                __out.Write("        {"); //741:1
+                __out.AppendLine(false); //741:10
+                if (!symbol.SymbolParts.HasFlag(SymbolParts.Metadata)) //742:14
                 {
                     bool __tmp13_outputWritten = false;
-                    string __tmp14_line = "            throw new NotImplementedException(\"There is no Error"; //709:1
+                    string __tmp14_line = "            throw new NotImplementedException(\"There is no Metadata"; //743:1
                     if (!string.IsNullOrEmpty(__tmp14_line))
                     {
                         __out.Write(__tmp14_line);
@@ -3507,7 +3679,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                         }
                         if (!__tmp15_last) __out.AppendLine(true);
                     }
-                    string __tmp16_line = " implemented.\");"; //709:78
+                    string __tmp16_line = " implemented.\");"; //743:81
                     if (!string.IsNullOrEmpty(__tmp16_line))
                     {
                         __out.Write(__tmp16_line);
@@ -3516,13 +3688,13 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                     if (__tmp13_outputWritten) __out.AppendLine(true);
                     if (__tmp13_outputWritten)
                     {
-                        __out.AppendLine(false); //709:94
+                        __out.AppendLine(false); //743:97
                     }
                 }
-                else if (symbol.ExistingErrorTypeInfo.Members.Contains(".ctor")) //710:14
+                else if (symbol.ExistingMetadataTypeInfo.Members.Contains(".ctor")) //744:14
                 {
                     bool __tmp18_outputWritten = false;
-                    string __tmp19_line = "            throw new NotImplementedException(\"CreateErrorSymbol for Error"; //711:1
+                    string __tmp19_line = "            throw new NotImplementedException(\"CreateMetadataSymbol for Metadata"; //745:1
                     if (!string.IsNullOrEmpty(__tmp19_line))
                     {
                         __out.Write(__tmp19_line);
@@ -3543,7 +3715,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                         }
                         if (!__tmp20_last) __out.AppendLine(true);
                     }
-                    string __tmp21_line = " should be implemented in a custom SymbolFactory.\");"; //711:88
+                    string __tmp21_line = " should be implemented in a custom SymbolFactory.\");"; //745:94
                     if (!string.IsNullOrEmpty(__tmp21_line))
                     {
                         __out.Write(__tmp21_line);
@@ -3552,13 +3724,13 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                     if (__tmp18_outputWritten) __out.AppendLine(true);
                     if (__tmp18_outputWritten)
                     {
-                        __out.AppendLine(false); //711:140
+                        __out.AppendLine(false); //745:146
                     }
                 }
-                else //712:14
+                else //746:14
                 {
                     bool __tmp23_outputWritten = false;
-                    string __tmp24_line = "            return new Error.Error"; //713:1
+                    string __tmp24_line = "            return new Metadata.Metadata"; //747:1
                     if (!string.IsNullOrEmpty(__tmp24_line))
                     {
                         __out.Write(__tmp24_line);
@@ -3579,22 +3751,22 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                         }
                         if (!__tmp25_last) __out.AppendLine(true);
                     }
-                    string __tmp26_line = "(container"; //713:48
+                    string __tmp26_line = "(container"; //747:54
                     if (!string.IsNullOrEmpty(__tmp26_line))
                     {
                         __out.Write(__tmp26_line);
                         __tmp23_outputWritten = true;
                     }
-                    if (symbol.ModelObjectOption != ParameterOption.Disabled) //713:59
+                    if (symbol.ModelObjectOption != ParameterOption.Disabled) //747:65
                     {
-                        string __tmp28_line = ", modelObject"; //713:116
+                        string __tmp28_line = ", modelObject"; //747:122
                         if (!string.IsNullOrEmpty(__tmp28_line))
                         {
                             __out.Write(__tmp28_line);
                             __tmp23_outputWritten = true;
                         }
                     }
-                    string __tmp30_line = ", declaration);"; //713:137
+                    string __tmp30_line = ");"; //747:143
                     if (!string.IsNullOrEmpty(__tmp30_line))
                     {
                         __out.Write(__tmp30_line);
@@ -3603,20 +3775,20 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                     if (__tmp23_outputWritten) __out.AppendLine(true);
                     if (__tmp23_outputWritten)
                     {
-                        __out.AppendLine(false); //713:152
+                        __out.AppendLine(false); //747:145
                     }
                 }
-                __out.Write("        }"); //715:1
-                __out.AppendLine(false); //715:10
-                __out.AppendLine(true); //716:1
-                __out.Write("        public Symbol? CreateMetadataSymbol(Symbol container, object modelObject)"); //717:1
-                __out.AppendLine(false); //717:82
-                __out.Write("        {"); //718:1
-                __out.AppendLine(false); //718:10
-                if (!symbol.SymbolParts.HasFlag(SymbolParts.Metadata)) //719:14
+                __out.Write("        }"); //749:1
+                __out.AppendLine(false); //749:10
+                __out.AppendLine(true); //750:1
+                __out.Write("        public Symbol? CreateMetadataErrorSymbol(Symbol container, object? modelObject, DiagnosticInfo errorInfo)"); //751:1
+                __out.AppendLine(false); //751:114
+                __out.Write("        {"); //752:1
+                __out.AppendLine(false); //752:10
+                if (!symbol.SymbolParts.HasFlag(SymbolParts.Metadata)) //753:14
                 {
                     bool __tmp32_outputWritten = false;
-                    string __tmp33_line = "            throw new NotImplementedException(\"There is no Metadata"; //720:1
+                    string __tmp33_line = "            throw new NotImplementedException(\"There is no Metadata"; //754:1
                     if (!string.IsNullOrEmpty(__tmp33_line))
                     {
                         __out.Write(__tmp33_line);
@@ -3637,7 +3809,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                         }
                         if (!__tmp34_last) __out.AppendLine(true);
                     }
-                    string __tmp35_line = " implemented.\");"; //720:81
+                    string __tmp35_line = " implemented.\");"; //754:81
                     if (!string.IsNullOrEmpty(__tmp35_line))
                     {
                         __out.Write(__tmp35_line);
@@ -3646,13 +3818,13 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                     if (__tmp32_outputWritten) __out.AppendLine(true);
                     if (__tmp32_outputWritten)
                     {
-                        __out.AppendLine(false); //720:97
+                        __out.AppendLine(false); //754:97
                     }
                 }
-                else if (symbol.ExistingMetadataTypeInfo.Members.Contains(".ctor")) //721:14
+                else if (symbol.ExistingMetadataTypeInfo.Members.Contains(".ctor")) //755:14
                 {
                     bool __tmp37_outputWritten = false;
-                    string __tmp38_line = "            throw new NotImplementedException(\"CreateMetadataSymbol for Metadata"; //722:1
+                    string __tmp38_line = "            throw new NotImplementedException(\"CreateMetadataSymbol for Metadata"; //756:1
                     if (!string.IsNullOrEmpty(__tmp38_line))
                     {
                         __out.Write(__tmp38_line);
@@ -3673,7 +3845,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                         }
                         if (!__tmp39_last) __out.AppendLine(true);
                     }
-                    string __tmp40_line = " should be implemented in a custom SymbolFactory.\");"; //722:94
+                    string __tmp40_line = " should be implemented in a custom SymbolFactory.\");"; //756:94
                     if (!string.IsNullOrEmpty(__tmp40_line))
                     {
                         __out.Write(__tmp40_line);
@@ -3682,13 +3854,13 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                     if (__tmp37_outputWritten) __out.AppendLine(true);
                     if (__tmp37_outputWritten)
                     {
-                        __out.AppendLine(false); //722:146
+                        __out.AppendLine(false); //756:146
                     }
                 }
-                else //723:14
+                else //757:14
                 {
                     bool __tmp42_outputWritten = false;
-                    string __tmp43_line = "            return new Metadata.Metadata"; //724:1
+                    string __tmp43_line = "            return new Metadata.Metadata"; //758:1
                     if (!string.IsNullOrEmpty(__tmp43_line))
                     {
                         __out.Write(__tmp43_line);
@@ -3709,22 +3881,22 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                         }
                         if (!__tmp44_last) __out.AppendLine(true);
                     }
-                    string __tmp45_line = "(container"; //724:54
+                    string __tmp45_line = ".Error(container, errorInfo"; //758:54
                     if (!string.IsNullOrEmpty(__tmp45_line))
                     {
                         __out.Write(__tmp45_line);
                         __tmp42_outputWritten = true;
                     }
-                    if (symbol.ModelObjectOption != ParameterOption.Disabled) //724:65
+                    if (symbol.ModelObjectOption != ParameterOption.Disabled) //758:82
                     {
-                        string __tmp47_line = ", modelObject"; //724:122
+                        string __tmp47_line = ", modelObject"; //758:139
                         if (!string.IsNullOrEmpty(__tmp47_line))
                         {
                             __out.Write(__tmp47_line);
                             __tmp42_outputWritten = true;
                         }
                     }
-                    string __tmp49_line = ");"; //724:143
+                    string __tmp49_line = ");"; //758:160
                     if (!string.IsNullOrEmpty(__tmp49_line))
                     {
                         __out.Write(__tmp49_line);
@@ -3733,20 +3905,20 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                     if (__tmp42_outputWritten) __out.AppendLine(true);
                     if (__tmp42_outputWritten)
                     {
-                        __out.AppendLine(false); //724:145
+                        __out.AppendLine(false); //758:162
                     }
                 }
-                __out.Write("        }"); //726:1
-                __out.AppendLine(false); //726:10
-                __out.AppendLine(true); //727:1
-                __out.Write("        public Symbol? CreateSourceSymbol(Symbol container, object modelObject, MergedDeclaration declaration)"); //728:1
-                __out.AppendLine(false); //728:111
-                __out.Write("        {"); //729:1
-                __out.AppendLine(false); //729:10
-                if (!symbol.SymbolParts.HasFlag(SymbolParts.Source)) //730:14
+                __out.Write("        }"); //760:1
+                __out.AppendLine(false); //760:10
+                __out.AppendLine(true); //761:1
+                __out.Write("        public Symbol? CreateSourceSymbol(Symbol container, object? modelObject, MergedDeclaration declaration)"); //762:1
+                __out.AppendLine(false); //762:112
+                __out.Write("        {"); //763:1
+                __out.AppendLine(false); //763:10
+                if (!symbol.SymbolParts.HasFlag(SymbolParts.Source)) //764:14
                 {
                     bool __tmp51_outputWritten = false;
-                    string __tmp52_line = "            throw new NotImplementedException(\"There is no Source"; //731:1
+                    string __tmp52_line = "            throw new NotImplementedException(\"There is no Source"; //765:1
                     if (!string.IsNullOrEmpty(__tmp52_line))
                     {
                         __out.Write(__tmp52_line);
@@ -3767,7 +3939,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                         }
                         if (!__tmp53_last) __out.AppendLine(true);
                     }
-                    string __tmp54_line = " implemented.\");"; //731:79
+                    string __tmp54_line = " implemented.\");"; //765:79
                     if (!string.IsNullOrEmpty(__tmp54_line))
                     {
                         __out.Write(__tmp54_line);
@@ -3776,13 +3948,13 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                     if (__tmp51_outputWritten) __out.AppendLine(true);
                     if (__tmp51_outputWritten)
                     {
-                        __out.AppendLine(false); //731:95
+                        __out.AppendLine(false); //765:95
                     }
                 }
-                else if (symbol.ExistingSourceTypeInfo.Members.Contains(".ctor")) //732:14
+                else if (symbol.ExistingSourceTypeInfo.Members.Contains(".ctor")) //766:14
                 {
                     bool __tmp56_outputWritten = false;
-                    string __tmp57_line = "            throw new NotImplementedException(\"CreateSourceSymbol for Source"; //733:1
+                    string __tmp57_line = "            throw new NotImplementedException(\"CreateSourceSymbol for Source"; //767:1
                     if (!string.IsNullOrEmpty(__tmp57_line))
                     {
                         __out.Write(__tmp57_line);
@@ -3803,7 +3975,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                         }
                         if (!__tmp58_last) __out.AppendLine(true);
                     }
-                    string __tmp59_line = " should be implemented in a custom SymbolFactory.\");"; //733:90
+                    string __tmp59_line = " should be implemented in a custom SymbolFactory.\");"; //767:90
                     if (!string.IsNullOrEmpty(__tmp59_line))
                     {
                         __out.Write(__tmp59_line);
@@ -3812,13 +3984,13 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                     if (__tmp56_outputWritten) __out.AppendLine(true);
                     if (__tmp56_outputWritten)
                     {
-                        __out.AppendLine(false); //733:142
+                        __out.AppendLine(false); //767:142
                     }
                 }
-                else //734:14
+                else //768:14
                 {
                     bool __tmp61_outputWritten = false;
-                    string __tmp62_line = "            return new Source.Source"; //735:1
+                    string __tmp62_line = "            return new Source.Source"; //769:1
                     if (!string.IsNullOrEmpty(__tmp62_line))
                     {
                         __out.Write(__tmp62_line);
@@ -3839,22 +4011,22 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                         }
                         if (!__tmp63_last) __out.AppendLine(true);
                     }
-                    string __tmp64_line = "(container"; //735:50
+                    string __tmp64_line = "(container, declaration"; //769:50
                     if (!string.IsNullOrEmpty(__tmp64_line))
                     {
                         __out.Write(__tmp64_line);
                         __tmp61_outputWritten = true;
                     }
-                    if (symbol.ModelObjectOption != ParameterOption.Disabled) //735:61
+                    if (symbol.ModelObjectOption != ParameterOption.Disabled) //769:74
                     {
-                        string __tmp66_line = ", modelObject"; //735:118
+                        string __tmp66_line = ", modelObject"; //769:131
                         if (!string.IsNullOrEmpty(__tmp66_line))
                         {
                             __out.Write(__tmp66_line);
                             __tmp61_outputWritten = true;
                         }
                     }
-                    string __tmp68_line = ", declaration);"; //735:139
+                    string __tmp68_line = ");"; //769:152
                     if (!string.IsNullOrEmpty(__tmp68_line))
                     {
                         __out.Write(__tmp68_line);
@@ -3863,16 +4035,146 @@ namespace MetaDslx.CodeAnalysis.Symbols.CodeGeneration //1:1
                     if (__tmp61_outputWritten) __out.AppendLine(true);
                     if (__tmp61_outputWritten)
                     {
-                        __out.AppendLine(false); //735:154
+                        __out.AppendLine(false); //769:154
                     }
                 }
-                __out.Write("        }"); //737:1
-                __out.AppendLine(false); //737:10
-                __out.Write("	}"); //738:1
-                __out.AppendLine(false); //738:3
+                __out.Write("        }"); //771:1
+                __out.AppendLine(false); //771:10
+                __out.AppendLine(true); //772:1
+                __out.Write("        public Symbol? CreateSourceErrorSymbol(Symbol container, object? modelObject, MergedDeclaration declaration, DiagnosticInfo errorInfo)"); //773:1
+                __out.AppendLine(false); //773:143
+                __out.Write("        {"); //774:1
+                __out.AppendLine(false); //774:10
+                if (!symbol.SymbolParts.HasFlag(SymbolParts.Source)) //775:14
+                {
+                    bool __tmp70_outputWritten = false;
+                    string __tmp71_line = "            throw new NotImplementedException(\"There is no Source"; //776:1
+                    if (!string.IsNullOrEmpty(__tmp71_line))
+                    {
+                        __out.Write(__tmp71_line);
+                        __tmp70_outputWritten = true;
+                    }
+                    var __tmp72 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
+                    __tmp72.Write(symbol.Name);
+                    var __tmp72Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp72.ToStringAndFree());
+                    bool __tmp72_last = __tmp72Reader.EndOfStream;
+                    while(!__tmp72_last)
+                    {
+                        ReadOnlySpan<char> __tmp72_line = __tmp72Reader.ReadLine();
+                        __tmp72_last = __tmp72Reader.EndOfStream;
+                        if (!__tmp72_last || !__tmp72_line.IsEmpty)
+                        {
+                            __out.Write(__tmp72_line);
+                            __tmp70_outputWritten = true;
+                        }
+                        if (!__tmp72_last) __out.AppendLine(true);
+                    }
+                    string __tmp73_line = " implemented.\");"; //776:79
+                    if (!string.IsNullOrEmpty(__tmp73_line))
+                    {
+                        __out.Write(__tmp73_line);
+                        __tmp70_outputWritten = true;
+                    }
+                    if (__tmp70_outputWritten) __out.AppendLine(true);
+                    if (__tmp70_outputWritten)
+                    {
+                        __out.AppendLine(false); //776:95
+                    }
+                }
+                else if (symbol.ExistingSourceTypeInfo.Members.Contains(".ctor")) //777:14
+                {
+                    bool __tmp75_outputWritten = false;
+                    string __tmp76_line = "            throw new NotImplementedException(\"CreateSourceSymbol for Source"; //778:1
+                    if (!string.IsNullOrEmpty(__tmp76_line))
+                    {
+                        __out.Write(__tmp76_line);
+                        __tmp75_outputWritten = true;
+                    }
+                    var __tmp77 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
+                    __tmp77.Write(symbol.Name);
+                    var __tmp77Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp77.ToStringAndFree());
+                    bool __tmp77_last = __tmp77Reader.EndOfStream;
+                    while(!__tmp77_last)
+                    {
+                        ReadOnlySpan<char> __tmp77_line = __tmp77Reader.ReadLine();
+                        __tmp77_last = __tmp77Reader.EndOfStream;
+                        if (!__tmp77_last || !__tmp77_line.IsEmpty)
+                        {
+                            __out.Write(__tmp77_line);
+                            __tmp75_outputWritten = true;
+                        }
+                        if (!__tmp77_last) __out.AppendLine(true);
+                    }
+                    string __tmp78_line = " should be implemented in a custom SymbolFactory.\");"; //778:90
+                    if (!string.IsNullOrEmpty(__tmp78_line))
+                    {
+                        __out.Write(__tmp78_line);
+                        __tmp75_outputWritten = true;
+                    }
+                    if (__tmp75_outputWritten) __out.AppendLine(true);
+                    if (__tmp75_outputWritten)
+                    {
+                        __out.AppendLine(false); //778:142
+                    }
+                }
+                else //779:14
+                {
+                    bool __tmp80_outputWritten = false;
+                    string __tmp81_line = "            return new Source.Source"; //780:1
+                    if (!string.IsNullOrEmpty(__tmp81_line))
+                    {
+                        __out.Write(__tmp81_line);
+                        __tmp80_outputWritten = true;
+                    }
+                    var __tmp82 = global::MetaDslx.CodeGeneration.CodeBuilder.GetInstance();
+                    __tmp82.Write(symbol.Name);
+                    var __tmp82Reader = new global::MetaDslx.CodeGeneration.CodeReader(__tmp82.ToStringAndFree());
+                    bool __tmp82_last = __tmp82Reader.EndOfStream;
+                    while(!__tmp82_last)
+                    {
+                        ReadOnlySpan<char> __tmp82_line = __tmp82Reader.ReadLine();
+                        __tmp82_last = __tmp82Reader.EndOfStream;
+                        if (!__tmp82_last || !__tmp82_line.IsEmpty)
+                        {
+                            __out.Write(__tmp82_line);
+                            __tmp80_outputWritten = true;
+                        }
+                        if (!__tmp82_last) __out.AppendLine(true);
+                    }
+                    string __tmp83_line = ".Error(container, declaration, errorInfo"; //780:50
+                    if (!string.IsNullOrEmpty(__tmp83_line))
+                    {
+                        __out.Write(__tmp83_line);
+                        __tmp80_outputWritten = true;
+                    }
+                    if (symbol.ModelObjectOption != ParameterOption.Disabled) //780:91
+                    {
+                        string __tmp85_line = ", modelObject"; //780:148
+                        if (!string.IsNullOrEmpty(__tmp85_line))
+                        {
+                            __out.Write(__tmp85_line);
+                            __tmp80_outputWritten = true;
+                        }
+                    }
+                    string __tmp87_line = ");"; //780:169
+                    if (!string.IsNullOrEmpty(__tmp87_line))
+                    {
+                        __out.Write(__tmp87_line);
+                        __tmp80_outputWritten = true;
+                    }
+                    if (__tmp80_outputWritten) __out.AppendLine(true);
+                    if (__tmp80_outputWritten)
+                    {
+                        __out.AppendLine(false); //780:171
+                    }
+                }
+                __out.Write("        }"); //782:1
+                __out.AppendLine(false); //782:10
+                __out.Write("	}"); //783:1
+                __out.AppendLine(false); //783:3
             }
-            __out.Write("}"); //740:1
-            __out.AppendLine(false); //740:2
+            __out.Write("}"); //785:1
+            __out.AppendLine(false); //785:2
             return __out.ToStringAndFree();
         }
 
