@@ -27,6 +27,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Error
             _modelObject = modelObject;
         }
 
+        public override NamespaceExtent Extent => throw new NotImplementedException();
+
         public sealed override Language Language => ContainingModule.Language;
 
         public SymbolFactory SymbolFactory => ContainingModule.SymbolFactory;

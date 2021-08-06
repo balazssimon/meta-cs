@@ -9,8 +9,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
 {
     public sealed class ScriptSymbol : ImplicitNamedTypeSymbol
     {
-        protected ScriptSymbol(NamespaceOrTypeSymbol containingSymbol, object modelObject, MergedDeclaration declaration) 
-            : base(containingSymbol, modelObject, declaration)
+        protected ScriptSymbol(NamespaceOrTypeSymbol containingSymbol, MergedDeclaration declaration, object modelObject) 
+            : base(containingSymbol, declaration, modelObject)
         {
         }
 

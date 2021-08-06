@@ -9,8 +9,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
 {
     public sealed class SubmissionSymbol : ImplicitNamedTypeSymbol
     {
-        public SubmissionSymbol(NamespaceOrTypeSymbol containingSymbol, object modelObject, MergedDeclaration declaration) 
-            : base(containingSymbol, modelObject, declaration)
+        public SubmissionSymbol(NamespaceOrTypeSymbol containingSymbol, MergedDeclaration declaration, object modelObject) 
+            : base(containingSymbol, declaration, modelObject)
         {
         }
 

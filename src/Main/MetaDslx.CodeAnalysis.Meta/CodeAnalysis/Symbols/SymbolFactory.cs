@@ -150,7 +150,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             var generatedFactory = GetGeneratedSymbolFactory(symbolType);
             if (generatedFactory is not null)
             {
-                result = generatedFactory.CreateSourceSymbol(container, modelObject, declaration);
+                result = generatedFactory.CreateSourceSymbol(container, declaration, modelObject);
             }
             if (result is not null) return result;
             else return new UnsupportedModelSymbol(container, modelObject);

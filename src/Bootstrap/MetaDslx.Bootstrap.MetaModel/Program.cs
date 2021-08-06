@@ -1,6 +1,7 @@
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Symbols;
+using MetaDslx.CodeAnalysis.Symbols.Source;
 using MetaDslx.Languages.Meta;
 using MetaDslx.Languages.Meta.Binding;
 using MetaDslx.Languages.Meta.Generator;
@@ -64,11 +65,19 @@ namespace MetaDslx.Bootstrap.MetaModel
             var compilation = MetaCompilation.
                 Create("MetaTest").
                 AddSyntaxTrees(tree).
+                AddReferences(SystemRuntimeAssemblies()).
                 AddReferences(ModelReference.CreateFromModel(coreModel)).
                 AddReferences(MetadataReference.CreateFromFile(typeof(Symbol).Assembly.Location)).
                 WithOptions(options);
             var compiledModel = compilation.Model as MutableModel;
             Console.WriteLine(compiledModel);
+
+            var int32 = compilation.GetSpecialSymbol(SpecialType.System_Int32);
+            Console.WriteLine(int32);
+            int32 = compilation.GetSpecialType(SpecialType.System_Int32);
+            Console.WriteLine(int32);
+            var mobj = compilation.GetSpecialSymbol(MetaInstance.ModelObject);
+            Console.WriteLine(mobj);
 
             //var node = tree.GetCompilationUnitRoot().NamespaceDeclaration.NamespaceBody.Declaration[0].ConstDeclaration;
             //var node = tree.GetCompilationUnitRoot().NamespaceDeclaration.NamespaceBody.Declaration[0].ConstDeclaration.TypeReference.SimpleType.ClassType.Qualifier.Identifier[0];
@@ -119,5 +128,19 @@ namespace MetaDslx.Bootstrap.MetaModel
             //*/
 
         }
+
+        private static IEnumerable<MetadataReference> SystemRuntimeAssemblies()
+        {
+            var assemblyNames = new string[] { "mscorlib.dll" };
+            var coreTypes = new Type[] { typeof(object) };
+            var coreAssembly = typeof(object).Assembly.Location;
+            var assemblyPath = Path.GetDirectoryName(coreAssembly);
+            var result = new List<MetadataReference>();
+            result.AddRange(assemblyNames.Select(assemblyName => MetadataReference.CreateFromFile(Path.Combine(assemblyPath, assemblyName))));
+            result.AddRange(coreTypes.Select(type => MetadataReference.CreateFromFile(type.Assembly.Location)));
+            return result;
+        }
     }
+
+
 }

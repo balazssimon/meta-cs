@@ -7,6 +7,7 @@ using Microsoft.CodeAnalysis.Text;
 using Roslyn.Utilities;
 using System;
 using MetaDslx.CodeAnalysis.Symbols.Error;
+using MetaDslx.CodeAnalysis.Symbols.Metadata;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
@@ -26,7 +27,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         protected readonly string metadataName;
 
         private MissingMetadataTypeSymbol(Symbol container, string name, int arity, object? modelObject)
-            : base(container, modelObject)
+            : base(container, modelObject, null)
         {
             Debug.Assert(name != null);
 
@@ -48,7 +49,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             get { return arity; }
         }
 
-        public override DiagnosticInfo ErrorInfo
+        public new DiagnosticInfo ErrorInfo
         {
             get
             {
@@ -273,7 +274,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
             public override object? SpecialSymbol => this.SpecialType;*/
 
-            public override DiagnosticInfo ErrorInfo
+            public new DiagnosticInfo ErrorInfo
             {
                 get
                 {
@@ -349,7 +350,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 _errorInfo = errorInfo;
             }
 
-            public override DiagnosticInfo ErrorInfo
+            public new DiagnosticInfo ErrorInfo
             {
                 get
                 {

@@ -8,7 +8,7 @@ using Roslyn.Utilities;
 
 namespace Microsoft.CodeAnalysis
 {
-    internal static class SpecialTypes
+    public static class SpecialTypes
     {
         /// <summary>
         /// Array of names for types from Cor Library.
@@ -159,12 +159,12 @@ namespace Microsoft.CodeAnalysis
             return SpecialType.None;
         }
 
-        public static SpecialType GetTypeFromMetadataName(Microsoft.Cci.PrimitiveTypeCode typeCode)
+        internal static SpecialType GetTypeFromMetadataName(Microsoft.Cci.PrimitiveTypeCode typeCode)
         {
             return s_typeCodeToTypeIdMap[(int)typeCode];
         }
 
-        public static Microsoft.Cci.PrimitiveTypeCode GetTypeCode(SpecialType typeId)
+        internal static Microsoft.Cci.PrimitiveTypeCode GetTypeCode(SpecialType typeId)
         {
             return s_typeIdToTypeCodeMap[(int)typeId];
         }

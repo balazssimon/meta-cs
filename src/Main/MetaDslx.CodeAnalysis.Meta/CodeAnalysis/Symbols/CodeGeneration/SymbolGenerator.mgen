@@ -510,21 +510,36 @@ namespace [symbol.NamespaceName].Metadata
         [end if]
 ^
         [if (symbol.Name != "AssemblySymbol" && symbol.Name != "ModuleSymbol")]
-        public class Error
+        public class Error : Metadata[symbol.Name], MetaDslx.CodeAnalysis.Symbols.IErrorSymbol
         {
             private DiagnosticInfo _errorInfo;
 ^
             [if (!symbol.ExistingMetadataTypeInfo.Members.Contains(".ctor"))]
-            public Error[symbol.Name](Symbol container, DiagnosticInfo errorInfo[if(symbol.ModelObjectOption != ParameterOption.Disabled)], object? modelObject[if(symbol.ModelObjectOption == ParameterOption.Optional)] = null[end if][end if])
+            public Error(Symbol container, DiagnosticInfo? errorInfo[if(symbol.ModelObjectOption != ParameterOption.Disabled)], object? modelObject[if(symbol.ModelObjectOption == ParameterOption.Optional)] = null[end if][end if])
                 : base(container[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if], true)
             {
                 _errorInfo = errorInfo;
             }
             [end if]
 ^
-            public sealed override IsError => true;
+            public sealed override bool IsError => true;
 ^
-            public DiagnosticInfo ErrorInfo => _errorInfo;
+            public DiagnosticInfo? ErrorInfo
+            {
+                get
+                {
+                    if (_errorInfo is null)
+                    {
+                        System.Threading.Interlocked.CompareExchange(ref _errorInfo, MakeErrorInfo(), null);
+                    }
+                    return _errorInfo;
+                }
+            }
+^
+            protected virtual DiagnosticInfo? MakeErrorInfo()
+            {
+                return null;
+            }
         }
         [end if]
     }
@@ -559,7 +574,7 @@ namespace [symbol.NamespaceName].Source
         [end if]
         [if (!symbol.ExistingSourceTypeInfo.Members.Contains(".ctor"))]
 ^
-		public Source[symbol.Name](Symbol containingSymbol, MergedDeclaration declaration, [if(symbol.ModelObjectOption != ParameterOption.Disabled)]object? modelObject[if(symbol.ModelObjectOption == ParameterOption.Optional)] = null[end if][end if], bool isError)
+		public Source[symbol.Name](Symbol containingSymbol, MergedDeclaration declaration[if(symbol.ModelObjectOption != ParameterOption.Disabled)], object? modelObject[if(symbol.ModelObjectOption == ParameterOption.Optional)] = null[end if][end if], bool isError = false)
             : base(containingSymbol[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if], isError)
         {
             if (declaration is null) throw new ArgumentNullException(nameof(declaration));
@@ -663,21 +678,36 @@ namespace [symbol.NamespaceName].Source
         [end if]
 ^
         [if (symbol.Name != "AssemblySymbol" && symbol.Name != "ModuleSymbol")]
-        public class Error
+        public class Error : Source[symbol.Name]
         {
-            private DiagnosticInfo _errorInfo;
+            private DiagnosticInfo? _errorInfo;
 ^
-            [if (!symbol.ExistingMetadataTypeInfo.Members.Contains(".ctor"))]
-            public Error[symbol.Name](Symbol container, MergedDeclaration declaration, DiagnosticInfo errorInfo[if(symbol.ModelObjectOption != ParameterOption.Disabled)], object modelObject[if(symbol.ModelObjectOption == ParameterOption.Optional)] = null[end if][end if])
-                : base(container, declaration, [if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if], true)
+            [if (!symbol.ExistingSourceTypeInfo.Members.Contains(".ctor"))]
+            public Error(Symbol container, MergedDeclaration declaration, DiagnosticInfo? errorInfo[if(symbol.ModelObjectOption != ParameterOption.Disabled)], object? modelObject = null[end if])
+                : base(container, declaration[if(symbol.ModelObjectOption != ParameterOption.Disabled)], modelObject[end if], true)
             {
                 _errorInfo = errorInfo;
             }
             [end if]
 ^
-            public sealed override IsError => true;
+            public sealed override bool IsError => true;
 ^
-            public DiagnosticInfo ErrorInfo => _errorInfo;
+            public DiagnosticInfo? ErrorInfo
+            {
+                get
+                {
+                    if (_errorInfo is null)
+                    {
+                        System.Threading.Interlocked.CompareExchange(ref _errorInfo, MakeErrorInfo(), null);
+                    }
+                    return _errorInfo;
+                }
+            }
+^
+            protected virtual DiagnosticInfo? MakeErrorInfo()
+            {
+                return null;
+            }
         }
         [end if]
 	}
@@ -759,7 +789,7 @@ namespace [namespaceName].Factory
             [end if]
         }
 ^
-        public Symbol? CreateSourceSymbol(Symbol container, object? modelObject, MergedDeclaration declaration)
+        public Symbol? CreateSourceSymbol(Symbol container, MergedDeclaration declaration, object? modelObject)
         {
             [if (!symbol.SymbolParts.HasFlag(SymbolParts.Source))]
             throw new NotImplementedException("There is no Source[symbol.Name] implemented.");
@@ -770,7 +800,7 @@ namespace [namespaceName].Factory
             [end if]
         }
 ^
-        public Symbol? CreateSourceErrorSymbol(Symbol container, object? modelObject, MergedDeclaration declaration, DiagnosticInfo errorInfo)
+        public Symbol? CreateSourceErrorSymbol(Symbol container, MergedDeclaration declaration, object? modelObject, DiagnosticInfo errorInfo)
         {
             [if (!symbol.SymbolParts.HasFlag(SymbolParts.Source))]
             throw new NotImplementedException("There is no Source[symbol.Name] implemented.");
